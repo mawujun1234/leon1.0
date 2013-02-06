@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<!-- http://blessht.iteye.com/blog/1097005  mybatis3入门学习笔记  -->
+	<!-- http://code.google.com/p/mybatis/ -->
+	<properties resource="com/mawujun/repository/hibernate.properties">
+ 	</properties>
+ 	
+ 	<typeAliases>
+		<!-- <typeAlias type="com.mawujun.repository.mybatis.Record" alias="record"/> -->
+		<package name="com.mawujun.repository.mybatis"/><!-- 会自动从这个包里搜索使用了@Alias("record")的类 -->
+	</typeAliases>
+	
+	<plugins>
+ 		<plugin interceptor="com.mawujun.repository.mybatis.OffsetLimitInterceptor">
+ 			<property name="dialectClass" value="${mybatis.dialectClass}"/>
+ 		</plugin>
+ 	</plugins>
+	
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC"/>
+			<dataSource type="POOLED">
+				<property name="driver" value="${hibernate.connection.driver_class}"/>
+				<property name="url" value="${hibernate.connection.url}"/>
+				<property name="username" value="${hibernate.connection.username}"/>
+				<property name="password" value="${hibernate.connection.password}"/>
+			</dataSource>
+		</environment>
+	</environments>
+ 	<!-- 通过VendorDatabaseIdProvider从metaData.getDatabaseProductName()获取数据库的名称
+ 	然后通过这个键值对，获取相应的databaseId，这样在mapper文件中，指定相应的databaseId就可以了，没有指定表示所有的数据库都可以读取到 ，有多少数据库产品，这里就应该设置多少个键值对
+ 	和spring集成的话，也可以使用自己定义的DatabaseIdProvider，这样只要在配置文件中指定哪个数据库就可以了。-->
+ 	<databaseIdProvider type="VENDOR">
+	  <property name="SQL Server" value="sqlserver"/>
+	  <property name="DB2" value="db2"/>
+	  <property name="Oracle" value="oracle" />
+	  <property name="H2" value="h2" />
+	</databaseIdProvider>
+	
+	<mappers>
+		<mapper resource="com\mawujun\repository\EntityTest_Mapper.xml"/>
+	</mappers>
+
+ 	
+ 	
+ 	
+</configuration>

@@ -1,0 +1,183 @@
+package com.mawujun.utils.spring.mvc;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializeConfig;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.mawujun.utils.page.PageRequest;
+import com.mawujun.utils.page.QueryResult;
+import com.mawujun.utils.page.WhereInfo;
+import com.mawujun.utils.spring.mvc.JsonResult;
+
+/**
+ * 过滤，日期格式等设置http://hi.baidu.com/ien_leo/item/d1601c4d1a44b23dfa8960d5
+ * @author mawujun
+ *
+ */
+@Controller
+public class SpringMVCController {
+	
+	private QueryResult<Map<String,String>> getQueryResult(){
+		QueryResult<Map<String,String>> page=new QueryResult<Map<String,String>>();
+		page.setStratAndLimit(1, 10);
+		
+		List<Map<String,String>> list=new ArrayList<Map<String,String>>();
+		for(int i=0;i<9;i++){
+			Map<String,String> map=new HashMap<String,String>();
+			map.put("name", "name"+i);
+			map.put("age", "111"+i);
+			map.put("weight", "100"+i);
+			list.add(map);
+		}
+		page.setResult(list);
+		page.setTotalItems(100);
+		return page;
+	}
+	
+	@RequestMapping("/test/queryPage.do")
+	@ResponseBody
+	public ModelMap queryPage(){		
+		QueryResult<Map<String,String>> page=getQueryResult();
+		
+		ModelMap map=new ModelMap();
+		map.put("root", page.getResult());
+		map.put("totalProperty", page.getTotalItems());	
+		return map;
+	}
+	@RequestMapping("/test/queryPage1.do")
+	@ResponseBody
+	public QueryResult queryPage1(){
+		QueryResult<Map<String,String>> page=new QueryResult<Map<String,String>>();
+		page.setStratAndLimit(1, 10);
+		
+		List<Map<String,String>> list=new ArrayList<Map<String,String>>();
+		for(int i=0;i<9;i++){
+			Map<String,String> map=new HashMap<String,String>();
+			map.put("name", "name"+i);
+			map.put("age", "111"+i);
+			map.put("weight", "100"+i);
+			list.add(map);
+		}
+		page.setResult(list);
+		page.setTotalItems(100);	
+		return page;
+	}
+	@RequestMapping("/test/queryMap.do")
+	@ResponseBody
+	public JsonResult queryMap(){
+		Map<String,String> map=new HashMap<String,String>();
+		map.put("name", "name");
+		map.put("age", "111");
+		map.put("weight", "100");
+		
+		return JsonResult.initResult(map);
+	}
+	@RequestMapping("/test/queryModel.do")
+	@ResponseBody
+	public Model queryModel(){
+		Model parent=new Model();
+		parent.setId(1);
+		parent.setAge(11);
+		parent.setCreateDate(new Date());
+		parent.setName("parent");
+		
+		return parent;
+	}
+	/**
+	 * 死循环默认会解决掉
+	 * @return
+	 */
+	@RequestMapping("/test/queryCycle.do")
+	@ResponseBody
+	public Model queryCycle(){
+		Model parent=new Model();
+		parent.setId(1);
+		parent.setAge(11);
+		parent.setCreateDate(new Date());
+		parent.setName("parent");
+		
+		Model child=new Model();
+		child.setId(1);
+		child.setAge(11);
+		child.setName("child");
+		child.setParent(parent);
+		parent.addChilden(child);
+		
+		Model child1=new Model();
+		child1.setId(2);
+		child1.setAge(22);
+		child1.setName("child1");
+		child1.setParent(parent);
+		parent.addChilden(child1);
+
+		return parent;
+	}
+	@RequestMapping("/test/filterProperty.do")
+	@ResponseBody
+	public ModelMap filterProperty(){
+		Model parent=new Model();
+		parent.setId(1);
+		parent.setAge(11);
+		parent.setCreateDate(new Date());
+		parent.setName("parent");
+		
+		ModelMap map=new ModelMap();
+		map.put("filterPropertys", "age,name");//过滤属性的设置
+		map.put("root", parent);
+		return map;
+	}
+	
+	
+	@RequestMapping("/test/bindModel.do")
+	@ResponseBody
+	public Model bindModel(@RequestBody Model model){
+		return model;
+	}
+	
+	@RequestMapping("/test/bindPageRequestByJosn.do")
+	@ResponseBody
+	public QueryResult bindPageRequestByJosn(@RequestBody PageRequest pageRequest){
+		QueryResult aa=new QueryResult(pageRequest);
+		return aa;
+	}
+	@RequestMapping("/test/bindPageRequestByConverter.do")
+	@ResponseBody
+	public QueryResult bindPageRequestByConverter(@RequestParam("pageRequest")PageRequest pageRequest){
+		QueryResult aa=new QueryResult(pageRequest);
+		return aa;
+	}
+	//http://www.iteye.com/topic/1122793?page=3#2385378
+	@RequestMapping("/test/bindPageRequestNormal.do")
+	@ResponseBody
+	public QueryResult bindPageRequestNormal(PageRequest pageRequest){
+		//pageRequest.setWheres(wheres);
+		QueryResult aa=new QueryResult(pageRequest);
+//		http://blog.csdn.net/idilent/article/details/1845227
+//			http://blog.csdn.net/idilent/article/details/1800262
+//		添加sortInfo的测试
+		for(WhereInfo where:aa.getWheres()){
+			where.getProperty();
+		}
+		return aa;
+	}
+	
+	//创建一个实体类，测试该实体类的一对多关联，一对以关联，自身关联（是否会死循环）这几种情况的参数绑定和返回
+	//测试方法绑定这些情况的参数，同时测试当对象一对多，一对一和自身关联的时候是是否能正常的转换为json
+	//下载测试，页面跳转测试
+	//各种数据绑定测试
+	//各种数据返回测试
+}

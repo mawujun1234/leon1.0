@@ -1,0 +1,276 @@
+package com.mawujun.utils.spring.mvc;
+
+import static org.junit.Assert.assertNotNull;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.mock.web.MockServletContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.request.ServletWebRequest;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@WebAppConfiguration // path defaults to "file:src/main/webapp"
+@ContextConfiguration(locations={"classpath:com/mawujun/utils/spring/mvc/dispatcher-servlet.xml"})
+public class SpringMVCControllerTest {
+	@Autowired
+    private WebApplicationContext wac;
+
+    @Autowired
+    private MockServletContext servletContext;
+
+    @Autowired
+    private MockHttpServletRequest request;
+
+    @Autowired
+    private MockHttpServletResponse response;
+
+    @Autowired
+    private MockHttpSession session;
+
+    @Autowired
+    private ServletWebRequest webRequest;
+    
+    private MockMvc mockMvc; 
+
+
+	
+	@Test
+	public void test() {
+		assertNotNull(wac);
+	}
+
+	@Before
+	public void setup() {
+		assertNotNull(wac);
+		this.mockMvc = webAppContextSetup(this.wac).build();
+
+	}
+	@Ignore
+	@Test
+	public void getFoo() throws Exception {
+		this.mockMvc.perform(get("/foo").accept(MediaType.APPLICATION_JSON))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType("application/json"))
+		.andExpect(jsonPath("$.name").value("Lee"));
+
+	}
+	@Ignore
+	@Test
+	public void getFoo1() throws Exception {
+		mockMvc.perform(get("/form"))
+	    .andExpect(status().isOk())
+	    .andExpect(content().contentType("text/html"))
+	    .andExpect(forwardedUrl("/WEB-INF/layouts/main.jsp"));
+
+	}
+	
+	@Test
+	public void queryPage() throws Exception {
+		this.mockMvc.perform(get("/test/queryPage.do").accept(MediaType.APPLICATION_JSON))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType("application/json"))
+		.andExpect(jsonPath("$.success").value(true))
+		.andExpect(jsonPath("$.totalProperty").value(100))
+		.andExpect(jsonPath("$..root[0].name").value("name0"));
+		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"message\":\"The title cannot be empty.\"}]}"));
+
+
+	}
+	@Test
+	public void queryPage1() throws Exception {
+		this.mockMvc.perform(get("/test/queryPage1.do").accept(MediaType.APPLICATION_JSON))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType("application/json"))
+		.andExpect(jsonPath("$.success").value(true))
+		.andExpect(jsonPath("$.totalProperty").value(100))
+		.andExpect(jsonPath("$..root[0].name").value("name0"));
+		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"message\":\"The title cannot be empty.\"}]}"));
+
+
+	}
+	
+	@Test
+	public void queryMap() throws Exception {
+		this.mockMvc.perform(get("/test/queryMap.do").accept(MediaType.APPLICATION_JSON))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType("application/json"))
+		.andExpect(jsonPath("$.success").value(true))
+		//.andExpect(jsonPath("$.totalProperty").value(1))//http://goessner.net/articles/JsonPath/
+		.andExpect(jsonPath("$..root.name").value("name"))
+		.andExpect(jsonPath("$..root.age").value("111"));
+		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"message\":\"The title cannot be empty.\"}]}"));
+
+
+		
+	}
+	DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
+	@Test
+	public void queryModel() throws Exception {
+		this.mockMvc.perform(get("/test/queryModel.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
+		.andExpect(status().isOk())
+		.andExpect(content().encoding("ISO-8859-1"))
+		.andExpect(content().contentType("application/json"))
+		.andExpect(jsonPath("$.success").value(true))
+		//.andExpect(jsonPath("$.totalProperty").value(1))//http://goessner.net/articles/JsonPath/
+		.andExpect(jsonPath("$..root.name").value("parent"))
+		.andExpect(jsonPath("$..root.id").value(1))
+		.andExpect(jsonPath("$..root.createDate").value(formatter.format(new Date())))
+		.andExpect(jsonPath("$..root.age").value(11));
+		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"message\":\"The title cannot be empty.\"}]}"));
+	}
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void queryCycle() throws Exception {
+		this.mockMvc.perform(get("/test/queryCycle.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
+		.andExpect(status().isOk())
+		.andExpect(content().encoding("ISO-8859-1"))
+		.andExpect(content().contentType("application/json"))
+		.andExpect(jsonPath("$.success").value(true))
+		//.andExpect(jsonPath("$.totalProperty").value(1))//http://goessner.net/articles/JsonPath/
+		.andExpect(jsonPath("$..root.name").value("parent"))
+		.andExpect(jsonPath("$..root.id").value(1))
+		.andExpect(jsonPath("$..root.createDate").value(formatter.format(new Date())))
+		.andExpect(jsonPath("$..root.age").value(11));
+		//.andExpect(content().string("{\"age\":11,\"childen\":[{\"age\":11,\"id\":1,\"name\":\"child\"},{\"age\":22,\"id\":2,\"name\":\"child1\"}],\"createDate\":1358225425226,\"id\":1,\"name\":\"parent\"}"));
+	}
+	@Test
+	public void filterProperty() throws Exception {
+		this.mockMvc.perform(get("/test/filterProperty.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
+		.andExpect(status().isOk())
+		.andExpect(content().encoding("ISO-8859-1"))
+		.andExpect(content().contentType("application/json"))
+		.andExpect(jsonPath("$.success").value(true))
+		//.andExpect(jsonPath("$.totalProperty").value(1))//http://goessner.net/articles/JsonPath/
+		.andExpect(jsonPath("$..root.name").doesNotExist())
+		.andExpect(jsonPath("$..root.id").value(1))
+		.andExpect(jsonPath("$..root.createDate").value(formatter.format(new Date())))
+		.andExpect(jsonPath("$..root.age").doesNotExist());
+		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"message\":\"The title cannot be empty.\"}]}"));
+	}
+	
+	
+	/**
+	 * 测试了对象内集合的绑定
+	 * @throws Exception
+	 */
+	@Test
+	public void bindModel() throws Exception {//.content("{name:'parent',id:1,createDate:"+((new Date()).toString()+",age:11}")
+		this.mockMvc.perform(get("/test/bindModel.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
+				.content("{name:'parent',id:1,createDate:'2012-11-11',age:11,childen:[{name:'childrens'}]}").contentType(MediaType.APPLICATION_JSON))
+		.andExpect(status().isOk())
+		.andExpect(content().encoding("ISO-8859-1"))
+		.andExpect(content().contentType("application/json"))
+		.andExpect(jsonPath("$.success").value(true))
+		//.andExpect(jsonPath("$.totalProperty").value(1))//http://goessner.net/articles/JsonPath/
+		.andExpect(jsonPath("$..root.name").value("parent"))
+		.andExpect(jsonPath("$..root.id").value(1))
+		.andExpect(jsonPath("$..root.createDate").value("2012-11-11"))
+		.andExpect(jsonPath("$..root.age").value(11))
+		.andExpect(jsonPath("$..root.childen[0].name").value("childrens"));
+		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"message\":\"The title cannot be empty.\"}]}"));
+	}
+
+
+	@Test
+	public void bindPageRequestByJosn() throws Exception {//.content("{name:'parent',id:1,createDate:"+((new Date()).toString()+",age:11}")
+		this.mockMvc.perform(get("/test/bindPageRequestByJosn.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
+				.content("{start:1,limit:10,wheres:[{key:'name_like',value:'ma'},{property:'age',op:'LT',value:10}],sorts:[{property:'name',direction:'ASC'},{property:'age',direction:'DESC'}]}").contentType(MediaType.APPLICATION_JSON))
+		.andExpect(status().isOk())
+		.andExpect(content().encoding("ISO-8859-1"))
+		.andExpect(content().contentType("application/json"))
+		.andExpect(jsonPath("$.success").value(true))
+		//.andExpect(jsonPath("$.totalProperty").value(1))//http://goessner.net/articles/JsonPath/
+		.andExpect(jsonPath("$..start").value(1))
+		.andExpect(jsonPath("$..limit").value(10))
+		.andExpect(jsonPath("$..wheres[0].property").value("name"))
+		.andExpect(jsonPath("$..wheres[0].value").value("%ma%"))
+		.andExpect(jsonPath("$..wheres[0].op").value("LIKE"))
+		.andExpect(jsonPath("$..wheres[1].property").value("age"))
+		.andExpect(jsonPath("$..wheres[1].value").value("10"))
+		.andExpect(jsonPath("$..wheres[1].op").value("LT"))
+		.andExpect(jsonPath("$..sorts[0].property").value("name"))
+		.andExpect(jsonPath("$..sorts[0].direction").value("ASC"))
+		.andExpect(jsonPath("$..sorts[1].property").value("age"))
+		.andExpect(jsonPath("$..sorts[1].direction").value("DESC"));
+	}
+	
+	@Test
+	public void bindPageRequestByConverter() throws Exception {//.content("{name:'parent',id:1,createDate:"+((new Date()).toString()+",age:11}")
+		this.mockMvc.perform(get("/test/bindPageRequestByConverter.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
+				.param("pageRequest", "{start:1,limit:10,wheres:[{key:'name_like',value:'ma'},{property:'age',op:'LT',value:10}],sorts:[{property:'name',direction:'ASC'},{property:'age',direction:'DESC'}]}").contentType(MediaType.TEXT_HTML))
+		.andExpect(status().isOk())
+		.andExpect(content().encoding("ISO-8859-1"))
+		.andExpect(content().contentType("application/json"))
+		.andExpect(jsonPath("$.success").value(true))
+		//.andExpect(jsonPath("$.totalProperty").value(1))//http://goessner.net/articles/JsonPath/
+		.andExpect(jsonPath("$..start").value(1))
+		.andExpect(jsonPath("$..limit").value(10))
+		.andExpect(jsonPath("$..wheres[0].property").value("name"))
+		.andExpect(jsonPath("$..wheres[0].value").value("%ma%"))
+		.andExpect(jsonPath("$..wheres[0].op").value("LIKE"))
+		.andExpect(jsonPath("$..wheres[1].property").value("age"))
+		.andExpect(jsonPath("$..wheres[1].value").value("10"))
+		.andExpect(jsonPath("$..wheres[1].op").value("LT"))
+		.andExpect(jsonPath("$..sorts[0].property").value("name"))
+		.andExpect(jsonPath("$..sorts[0].direction").value("ASC"))
+		.andExpect(jsonPath("$..sorts[1].property").value("age"))
+		.andExpect(jsonPath("$..sorts[1].direction").value("DESC"));
+	}
+	//http://www.iteye.com/topic/1122793?page=3#2385378
+	@Test
+	public void bindPageRequestNormal() throws Exception {//.content("{name:'parent',id:1,createDate:"+((new Date()).toString()+",age:11}")
+		this.mockMvc.perform(get("/test/bindPageRequestNormal.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
+				.param("start", "1").param("limit", "10")
+				.param("wheres[0].key", "name_like")
+				.param("wheres[0].value", "ma")
+				.param("wheres[1].property", "age")
+				.param("wheres[1].op", "LT")
+				.param("wheres[1].value", "10")
+				.param("sorts[0].property", "name")
+				.param("sorts[0].direction", "ASC")
+				.param("sorts[1].prop", "age")
+				.param("sorts[1].dir", "DESC")
+				.contentType(MediaType.TEXT_HTML))
+		.andExpect(status().isOk())
+		.andExpect(content().encoding("ISO-8859-1"))
+		.andExpect(content().contentType("application/json"))
+		.andExpect(jsonPath("$.success").value(true))
+		//.andExpect(jsonPath("$.totalProperty").value(1))//http://goessner.net/articles/JsonPath/
+		.andExpect(jsonPath("$..start").value(1))
+		.andExpect(jsonPath("$..limit").value(10))
+		.andExpect(jsonPath("$..wheres[0].property").value("name"))
+		.andExpect(jsonPath("$..wheres[0].value").value("%ma%"))
+		.andExpect(jsonPath("$..wheres[0].op").value("LIKE"))
+		.andExpect(jsonPath("$..wheres[1].property").value("age"))
+		.andExpect(jsonPath("$..wheres[1].value").value("10"))
+		.andExpect(jsonPath("$..wheres[1].op").value("LT"))
+		.andExpect(jsonPath("$..sorts[0].property").value("name"))
+		.andExpect(jsonPath("$..sorts[0].direction").value("ASC"))
+		.andExpect(jsonPath("$..sorts[1].property").value("age"))
+		.andExpect(jsonPath("$..sorts[1].direction").value("DESC"));
+	}
+}

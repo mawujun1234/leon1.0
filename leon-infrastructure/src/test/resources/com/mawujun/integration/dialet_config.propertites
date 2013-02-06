@@ -1,0 +1,8 @@
+h2.hibernate.dialet=org.hibernate.dialect.H2Dialect
+h2.mybatis.dialet=com.mawujun.repository.mybatis.dialect.H2Dialect
+
+mysql.hibernate.dialet=org.hibernate.dialect.MySQLDialect
+mysql.mybatis.dialet=com.mawujun.repository.mybatis.dialect.MySQLDialect
+
+oracle9i.hibernate.dialet=org.hibernate.dialect.Oracle9iDialect
+oracle9i.mybatis.dialet=com.mawujun.repository.mybatis.dialect.OracleDialect

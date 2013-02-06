@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.mawujun</groupId>
+    <artifactId>leon</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <groupId>com.mawujun</groupId>
+  <artifactId>leon-example</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
+  <name>leon-example Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+  <dependencies>
+
+  <dependency>
+  	<groupId>com.mawujun</groupId>
+  	<artifactId>leon-infrastructure</artifactId>
+  	<version>0.0.1-SNAPSHOT</version>
+  </dependency>
+  <dependency>
+  	<groupId>com.mawujun</groupId>
+  	<artifactId>leon-constant</artifactId>
+  	<version>0.0.1-SNAPSHOT</version>
+  </dependency>
+  <dependency>
+  	<groupId>com.mawujun</groupId>
+  	<artifactId>leon</artifactId>
+  	<version>0.0.1-SNAPSHOT</version>
+  	<type>pom</type>
+  </dependency>
+  <dependency>
+  	<groupId>com.mawujun</groupId>
+  	<artifactId>leon-utils</artifactId>
+  	<version>0.0.1-SNAPSHOT</version>
+  </dependency>
+  
+  <dependency>
+  	<groupId>com.mawujun</groupId>
+  	<artifactId>leon-web-common</artifactId>
+  	<version>0.0.1-SNAPSHOT</version>
+  	<type>war</type>
+  	<scope>runtime</scope>
+  </dependency>
+
+  </dependencies>
+  
+  <build>
+    <finalName>leon-example</finalName>
+        <plugins>
+			<plugin>
+	    		<groupId>org.apache.maven.plugins</groupId>
+	    		<artifactId>maven-war-plugin</artifactId>
+	    		<version>2.3</version>
+	    		
+	    		<configuration>
+			     <workDirectory>${project.build.directory}/tmp/extract_here</workDirectory><!-- 文件提取过来后暂时的存放地 -->
+			     <useCache>false</useCache>
+			     <archive>
+			      <addMavenDescriptor>true</addMavenDescriptor>
+			     </archive>
+			     <overlays>		      
+			      <overlay>
+			       <groupId>com.mawujun</groupId>
+			       <artifactId>leon-web-common</artifactId>
+			      </overlay>
+			     </overlays>
+			     <!-- <dependentWarExcludes>WEB-INF/web.xml,WEB-INF/lib/*,/META-INF/*</dependentWarExcludes>--> 
+			    </configuration>
+	    	</plugin>
+	    	
+			
+			<plugin>
+	    		<groupId>org.apache.tomcat.maven</groupId>
+	    		<artifactId>tomcat6-maven-plugin</artifactId>
+	    		<version>2.0</version>
+	    		<configuration>
+	                 <port>8082</port>
+	                 <path>/</path>
+	                 <uriEncoding>utf-8</uriEncoding>
+	                 <contextReloadable>true</contextReloadable> 
+	                 <warSourceDirectory>${project.build.directory}/WebContent</warSourceDirectory>              
+	              </configuration>
+	    	</plugin>
+	    	
+	    	<plugin>
+	    		<groupId>org.apache.tomcat.maven</groupId>
+	    		<artifactId>tomcat7-maven-plugin</artifactId>
+	    		<version>2.0</version>
+	    		<configuration>
+	                 <port>8082</port>
+	                 <path>/</path>
+	                 <!--<protocol>org.apache.coyote.http11.Http11NioProtocol</protocol> -->
+	                 <uriEncoding>utf-8</uriEncoding>
+	                 <!-- <contextReloadable>true</contextReloadable>
+	                 <backgroundProcessorDelay>2</backgroundProcessorDelay> -->
+	                 <warSourceDirectory>${project.build.directory}/WebContent</warSourceDirectory>
+	              </configuration>
+	    	</plugin>
+	    	
+	    	<plugin>
+	    		<groupId>org.eclipse.jetty</groupId>
+	    		<artifactId>jetty-maven-plugin</artifactId>
+	    		<version>9.0.0.M3</version>
+	    	</plugin>
+	    	
+	    	<plugin>
+		        <artifactId>maven-resources-plugin</artifactId>
+		        <version>2.6</version>
+		        <executions>
+		          <execution>
+		            <id>copy-resources</id>
+		            <!-- here the phase you need -->
+		            <phase>process-resources</phase>
+		            <goals>
+		              <goal>copy-resources</goal>
+		            </goals>
+		            <configuration>
+		          		<includeEmptyDirs>true</includeEmptyDirs>
+		          		<overwrite>true</overwrite>
+		              <outputDirectory>${project.build.directory}/WebContent</outputDirectory>
+		              <resources>          
+		                <resource>
+		                  <directory>${basedir}/src/main/webapp</directory>
+		                  <filtering>true</filtering>
+		                </resource>
+		                <resource>                  
+		                  <directory>${basedir}/../leon-web-common/src/main/webapp</directory>
+						  <filtering>true</filtering>
+						  <excludes>
+					          <exclude>WEB-INF/*</exclude>
+					      </excludes>
+						</resource>
+		                
+		              </resources>              
+		            </configuration>            
+		          </execution>
+		        </executions>
+		    </plugin>
+	    	
+        </plugins> 
+  </build>
+</project>
