@@ -19,24 +19,19 @@ public class DAO {
 	
 	public Connection getConnection() 
 	{
-		try {
-			return TxUnit.getConnection();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
+		return null;//TxUnit.getConnection();
 	}
 	
 	private NamedStatement createNamedStatement(String sql)
 	{
 		Connection db=getConnection();
 		NamedStatement st=null;
-		try {
-			st = new NamedStatement(db);
-			st.prepare(sql);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		//try {
+			st = new NamedStatement();
+			//st.prepare(sql);
+		//} catch (SQLException e) {
+		//	e.printStackTrace();
+		//}
 		return st;
 	}
 
@@ -44,59 +39,59 @@ public class DAO {
 			HashMap<String, Object> ps) throws SQLException {
 		for(String fld:ps.keySet())
 		{
-			Object val=ps.get(fld);
-			if(val==null)
-			{
-				throw new SQLException(fld +" = null is not allowed !");
-			}
-			if(val instanceof String)
-			{
-				st.setString(fld, (String)val);
-			}
-			else if(val instanceof Character)
-			{
-				st.setString(fld, ((Character)val)+"");
-			}
-			else if(val instanceof Byte)
-			{
-				st.setByte(fld, (Byte)val);
-			}
-			else if(val instanceof Short)
-			{
-				st.setShort(fld, (Short)val);
-			}
-			else if(val instanceof Integer)
-			{
-				st.setInt(fld, (Integer)val);
-			}
-			else if(val instanceof Long)
-			{
-				st.setLong(fld, (Long)val);
-			}
-			else if(val instanceof Float)
-			{
-				st.setFloat(fld, (Float)val);
-			}
-			else if(val instanceof Double)
-			{
-				st.setDouble(fld, (Double)val);
-			}
-			else if(val instanceof BigDecimal)
-			{
-				st.setBigDecimal(fld, (BigDecimal)val);
-			}
-			else if(val instanceof java.sql.Date)
-			{
-				st.setDate(fld, (java.sql.Date)val);
-			}
-			else if(val instanceof java.util.Date)
-			{
-				st.setDate(fld, (java.sql.Date)val);
-			}
-			else
-			{
-				throw new SQLException("不支持的值类型！"+val.getClass().getName());
-			}
+//			Object val=ps.get(fld);
+//			if(val==null)
+//			{
+//				throw new SQLException(fld +" = null is not allowed !");
+//			}
+//			if(val instanceof String)
+//			{
+//				st.setString(fld, (String)val);
+//			}
+//			else if(val instanceof Character)
+//			{
+//				st.setString(fld, ((Character)val)+"");
+//			}
+//			else if(val instanceof Byte)
+//			{
+//				st.setByte(fld, (Byte)val);
+//			}
+//			else if(val instanceof Short)
+//			{
+//				st.setShort(fld, (Short)val);
+//			}
+//			else if(val instanceof Integer)
+//			{
+//				st.setInt(fld, (Integer)val);
+//			}
+//			else if(val instanceof Long)
+//			{
+//				st.setLong(fld, (Long)val);
+//			}
+//			else if(val instanceof Float)
+//			{
+//				st.setFloat(fld, (Float)val);
+//			}
+//			else if(val instanceof Double)
+//			{
+//				st.setDouble(fld, (Double)val);
+//			}
+//			else if(val instanceof BigDecimal)
+//			{
+//				st.setBigDecimal(fld, (BigDecimal)val);
+//			}
+//			else if(val instanceof java.sql.Date)
+//			{
+//				st.setDate(fld, (java.sql.Date)val);
+//			}
+//			else if(val instanceof java.util.Date)
+//			{
+//				st.setDate(fld, (java.sql.Date)val);
+//			}
+//			else
+//			{
+//				throw new SQLException("不支持的值类型！"+val.getClass().getName());
+//			}
 		}
 	}
 	
@@ -197,16 +192,16 @@ public class DAO {
 			}
 		}
 		
-		if(nst!=null)
-		try {
-			nst.close();
-		} catch (SQLException e) {
-			try {
-				nst.close();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
-		}
+//		if(nst!=null)
+//		try {
+//			nst.close();
+//		} catch (SQLException e) {
+//			try {
+//				nst.close();
+//			} catch (SQLException e1) {
+//				e1.printStackTrace();
+//			}
+//		}
 		
 		
 	}
@@ -221,7 +216,7 @@ public class DAO {
 		ResultSet rs=null;
 		try {
 			setNamedParameters(st, sql.getNamedParams());
-			 rs= st.executeQuery();
+			 //rs= st.executeQuery();
 			set=new RcdSet(rs);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -235,90 +230,90 @@ public class DAO {
 		return quiz(new SE(sql,ps));
 	}
 	
-	/**
-	 * 查询
-	 * */
-	public RecordSet query(SQL sql,RecordSet ds) {
-		if(ds==null) ds = new RecordSet();
-		NamedStatement st=createNamedStatement(sql.getParamNamedSQL());
-		ResultSet rs=null;
-		try {
-			setNamedParameters(st, sql.getNamedParams());
-			rs = st.executeQuery();
-			RecordSetHelper.loadFromResultSet(rs, ds);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		close(null, st, rs);
-		return ds;
+//	/**
+//	 * 查询
+//	 * */
+//	public RcdSet query(SQL sql,RcdSet ds) {
+//		if(ds==null) ds = new RcdSet();
+//		NamedStatement st=createNamedStatement(sql.getParamNamedSQL());
+//		ResultSet rs=null;
+//		try {
+//			setNamedParameters(st, sql.getNamedParams());
+//			rs = st.executeQuery();
+//			RecordSetHelper.loadFromResultSet(rs, ds);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		close(null, st, rs);
+//		return ds;
+//	}
+//	
+	public RcdSet query(SQL sql)  {
+		return null;//query(sql, null);
 	}
+//	/**
+//	 * 查询
+//	 * */
+//	public RcdSet query(String sql,HashMap<String,Object> ps,RcdSet ds)  {
+//		if(ds==null)  ds = new RcdSet();
+//		NamedStatement st=createNamedStatement(sql);
+//		ResultSet rs=null;
+//		try {
+//			setNamedParameters(st,ps);
+//			rs = st.executeQuery();
+//			RecordSetHelper.loadFromResultSet(rs, ds);
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		close(null, st, rs);
+//		return ds;
+//	}
 	
-	public RecordSet query(SQL sql)  {
-		return query(sql, null);
-	}
-	/**
-	 * 查询
-	 * */
-	public RecordSet query(String sql,HashMap<String,Object> ps,RecordSet ds)  {
-		if(ds==null)  ds = new RecordSet();
-		NamedStatement st=createNamedStatement(sql);
-		ResultSet rs=null;
-		try {
-			setNamedParameters(st,ps);
-			rs = st.executeQuery();
-			RecordSetHelper.loadFromResultSet(rs, ds);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		close(null, st, rs);
-		return ds;
-	}
-	
-	public RecordSet query(String sql,HashMap<String,Object> ps)  {
+	public RcdSet query(String sql,HashMap<String,Object> ps)  {
 			return query(sql, ps, null);
 	}
 		
 	/**
 	 * 查询
 	 * */
-	public RecordSet query(String sql,RecordSet ds,Object... ps) {
+	public RcdSet query(String sql,RcdSet ds,Object... ps) {
 		SE se=new SE(sql,ps);
-		return query(se,ds);
+		return null;//、query(se,ds);
 	}
 	
 	/**
 	 * 查询
 	 * */
-	public RecordSet query(String sql,Object... ps)  {
+	public RcdSet query(String sql,Object... ps)  {
 		SE se=new SE(sql,ps);
-		return query(se,null);
+		return null;//query(se,null);
 	}
 
 
-	public Record uniqueRecord(SQL sql)  {
-		 RecordSet set=query(sql);
-		 if(set.recordCount()>0)
-		 {
-			 return set.getRecord(0);
-		 }
-		 else
-		 {
-			 return null;
-		 }
-	}
-	
-	public Object uniqueValue(SQL sql)  {
-		Record r=uniqueRecord(sql);
-		if(r==null)
-		{
-			return null;
-		}
-		return r.getField(0).getAsObject();
-	}
+//	public Record uniqueRecord(SQL sql)  {
+//		Record set=query(sql);
+//		 if(set.recordCount()>0)
+//		 {
+//			 return set.getRecord(0);
+//		 }
+//		 else
+//		 {
+//			 return null;
+//		 }
+//	}
+//	
+//	public Object uniqueValue(SQL sql)  {
+//		Record r=uniqueRecord(sql);
+//		if(r==null)
+//		{
+//			return null;
+//		}
+//		return r.getField(0).getAsObject();
+//	}
 
 	public Integer uniqueInteger(SQL sql)  {
-		 Object val=uniqueValue(sql);
+		 Object val=null;//uniqueValue(sql);
 		 if(val==null) return null;
 		 else return dp.parseInteger(val);
 	}
@@ -327,25 +322,25 @@ public class DAO {
 		return uniqueString(new SE(sql,ps));
 	}
 	public String uniqueString(SQL sql)  {
-		 Object val=uniqueValue(sql);
+		 Object val=null;//uniqueValue(sql);
 		 if(val==null) return null;
 		 else return dp.parseString(val);
 	}
 
 	public Long uniqueLong(SQL sql)  {
-		 Object val=uniqueValue(sql);
+		 Object val=null;//uniqueValue(sql);
 		 if(val==null) return null;
 		 else return dp.parseLong(val);
 	}
 
 	public Date uniqueDate(SQL sql)  {
-		 Object val=uniqueValue(sql);
+		 Object val=null;//uniqueValue(sql);
 		 if(val==null) return null;
 		 else return dp.parseDate(val);
 	}
 
 	public BigDecimal uniqueDecimal(SQL sql)  {
-		 Object val=uniqueValue(sql);
+		 Object val=null;//uniqueValue(sql);
 		 if(val==null) return null;
 		 else return dp.parseBigDecimal(val);
 	}
@@ -358,7 +353,7 @@ public class DAO {
 		int i =-1;
 		try {
 			setNamedParameters(st, sql.getNamedParams());
-			i= st.executeUpdate();
+			//i= st.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -376,7 +371,7 @@ public class DAO {
 		int i=0;
 		try {
 			setNamedParameters(st, ps);
-			i = st.executeUpdate();
+			//i = st.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -444,7 +439,7 @@ public class DAO {
 	}
 
 	public Record uniqueRecord(String sql,Object... ps)  {
-		return uniqueRecord(new SE(sql,ps));
+		return null;//uniqueRecord(new SE(sql,ps));
 	}
 
 	public Rcd uniqueRcd(SQL se) { 

@@ -539,7 +539,7 @@ public class SE extends SubSQL implements ExecutableSQL,QueryableSQL
  
 	public Record record() 
 	{
-		return dao.uniqueRecord(this);
+		return null;//dao.uniqueRecord(this);
 	}
 	
 	public Rcd rcd() 

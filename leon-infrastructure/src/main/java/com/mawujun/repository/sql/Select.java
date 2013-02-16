@@ -442,7 +442,7 @@ public class Select extends DML implements QueryableSQL
 
 	public Record record() 
 	{
-		return dao.uniqueRecord(this);
+		return null;//dao.uniqueRecord(this);
 	}
 	
 	public Rcd rcd() 
