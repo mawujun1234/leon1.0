@@ -27,6 +27,8 @@ public class PageRequest {
 	//mybatis时候用的较多
 	protected Map  params;//具体的参数形式，可能是Map也可能是Bean
 	
+	protected String sqlId;//mybatis中的statement名称，可以在前台指定，这样后台dao就不需要再写了。
+	
 //	//主要是自动查询，通过修改前台的参数形式来传递
 //	protected List<WhereInfo> wheres=new ArrayList<WhereInfo>();
 //	
@@ -398,6 +400,16 @@ public class PageRequest {
 	}
 	public void setSorts(SortInfo[] sorts) {
 		this.sorts=sorts;
+	}
+
+
+	public String getSqlId() {
+		return sqlId;
+	}
+
+
+	public void setSqlId(String sqlId) {
+		this.sqlId = sqlId;
 	}
 
 	

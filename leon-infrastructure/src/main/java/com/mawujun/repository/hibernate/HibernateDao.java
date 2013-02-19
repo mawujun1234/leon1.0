@@ -93,10 +93,25 @@ public class HibernateDao<T, ID extends Serializable>{
 	 * 如需初始化关联属性,需执行:
 	 * Hibernate.initialize(user.getRoles())，初始化User的直接属性和关联集合.
 	 * Hibernate.initialize(user.getDescription())，初始化User的直接属性和延迟加载的Description属性.
+	 * 
+	 * 使用示例
+	 * 获取全部用户对象，并在返回前完成LazyLoad属性的初始化。
+	 *
+	 *	public List<User> getAllUserInitialized() {
+	 *		List<User> result = (List<User>) userDao.findAll();
+	 *		for (User user : result) {
+	 *			Hibernates.initLazyProperty(user.getRoleList());
+	 *		}
+	 *		return result;
+	 *	}
+	 * 
+	 * 
+	 * 
 	 */
-	public void initProxyObject(Object proxy) {
+	public void initLazyProperty(Object proxy) {
 		Hibernate.initialize(proxy);
 	}
+
 
 	/**
 	 * Flush当前Session.

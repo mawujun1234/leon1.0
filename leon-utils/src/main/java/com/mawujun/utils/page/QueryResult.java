@@ -40,6 +40,7 @@ public class QueryResult<T> extends PageRequest implements Iterable<T> {
 			this.sorts=request.getSorts();
 			this.starFlag=request.starFlag;
 			this.start=request.start;
+			this.sqlId=request.getSqlId();
 		}
 		
 	}

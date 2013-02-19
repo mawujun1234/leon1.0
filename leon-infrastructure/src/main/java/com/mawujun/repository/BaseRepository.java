@@ -55,7 +55,7 @@ import com.mawujun.utils.page.WhereInfo;
  * @param <T>
  * @param <ID>
  */
-public abstract class Repository<T, ID extends Serializable> implements IRepository<T, ID> {
+public abstract class BaseRepository<T, ID extends Serializable> implements IRepository<T, ID> {
 	
 	
 
@@ -68,7 +68,7 @@ public abstract class Repository<T, ID extends Serializable> implements IReposit
 	private String namespace;
 	private MybatisRepository mybatisRepository;
 	
-	public Repository() {
+	public BaseRepository() {
 		Class<T> entityClass = ReflectionUtils.getSuperClassGenricType(getClass());
 		hibernateDao=new HibernateDao<T,ID>(entityClass);
 		mybatisRepository=new MybatisRepository();
@@ -95,6 +95,31 @@ public abstract class Repository<T, ID extends Serializable> implements IReposit
 		if(batchSize!=null && batchSize!=0){
 			hibernateDao.setBatchSize(batchSize);
 		}
+	}
+	/**
+	 * 初始化对象.
+	 * 使用load()方法得到的仅是对象Proxy, 在传到View层前需要进行初始化.
+	 * 如果传入entity, 则只初始化entity的直接属性,但不会初始化延迟加载的关联集合和属性.
+	 * 如需初始化关联属性,需执行:
+	 * Hibernate.initialize(user.getRoles())，初始化User的直接属性和关联集合.
+	 * Hibernate.initialize(user.getDescription())，初始化User的直接属性和延迟加载的Description属性.
+	 * 
+	 * 使用示例
+	 * 获取全部用户对象，并在返回前完成LazyLoad属性的初始化。
+	 * 这个方法是service中的方法
+	 *	public List<User> getAllUserInitialized() {
+	 *		List<User> result = (List<User>) userDao.findAll();
+	 *		for (User user : result) {//这里不知道会不会产生新能问题
+	 *			Hibernates.initLazyProperty(user.getRoleList());
+	 *		}
+	 *		return result;
+	 *	}
+	 * 
+	 * 
+	 * 
+	 */
+	public void initLazyProperty(Object proxy) {
+		hibernateDao.initLazyProperty(proxy);
 	}
 
 	public void save(T entity) {

@@ -38,11 +38,11 @@ import com.mawujun.utils.page.WhereInfo;
 public class RepositoryTest extends DbunitBaseRepositoryTest {
 	
 	private String EntityTest_TableName="t_EntityTest";
-	private static Repository<EntityTest,Integer> repository;
+	private static BaseRepository<EntityTest,Integer> repository;
 	private static SessionFactory sessionFactory;
 	private static SqlSessionFactory sqlSessionFactory;
 	
-	private static class EntityTestRepository extends Repository<EntityTest,Integer> {
+	private static class EntityTestRepository extends BaseRepository<EntityTest,Integer> {
 		
 	}
 	
