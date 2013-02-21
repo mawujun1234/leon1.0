@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +19,11 @@ import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.mawujun.exception.BussinessException;
+import com.mawujun.exception.DefaulExceptionCode;
+import com.mawujun.repository.EntityTest;
+import com.mawujun.repository.hibernate.validate.ValidatorUtils;
+import com.mawujun.utils.Validate;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 import com.mawujun.utils.page.WhereInfo;
@@ -175,9 +181,20 @@ public class SpringMVCController {
 		return aa;
 	}
 	
-	//创建一个实体类，测试该实体类的一对多关联，一对以关联，自身关联（是否会死循环）这几种情况的参数绑定和返回
-	//测试方法绑定这些情况的参数，同时测试当对象一对多，一对一和自身关联的时候是是否能正常的转换为json
-	//下载测试，页面跳转测试
-	//各种数据绑定测试
-	//各种数据返回测试
+	@RequestMapping("/test/testException.do")
+	public void testException() throws Exception{
+		throw new Exception("显示信息错误");
+	}
+	@RequestMapping("/test/testBussinessException.do")
+	public void testBussinessException() throws Exception{
+		throw new BussinessException(DefaulExceptionCode.SYSTEM_EXCEPTION);
+	}
+	@RequestMapping("/test/testConstraintViolationException.do")
+	public void testConstraintViolationException() throws Exception{
+		EntityTest entity1=new EntityTest();
+		entity1.setFirstName("ma");
+		entity1.setLastName("wujun");
+		entity1.setEmail("11");
+		ValidatorUtils.validate(entity1);
+	}
 }

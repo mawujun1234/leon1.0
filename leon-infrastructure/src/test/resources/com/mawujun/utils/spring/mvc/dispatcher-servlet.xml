@@ -67,7 +67,7 @@
 				<property name="writeAcceptCharset" value="false" />
 			</bean>
 			<bean id="jsonHttpMessageConverter"
-				class="com.mawujun.utils.spring.mvc.FastJsonHttpMessageConverter" /><!-- 在循环引用和属性过滤上设置更方便 -->
+				class="com.mawujun.utils.spring.mvc.HttpMessageConverter_FastJson" /><!-- 在循环引用和属性过滤上设置更方便 -->
 			<!-- <bean id="jsonHttpMessageConverter"
 				class="com.mawujun.utils.spring.HttpMessageConverter_JsonLib" />
 			<bean id="jsonHttpMessageConverter" class="com.mawujun.utils.spring.MappingJackson2HttpMessageConverter" 
@@ -87,29 +87,9 @@
 
 <!-- 视图数据解析  可以通过三种方式，来确定返回的类型是什么-->
 	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
-		<!-- 默认展现形式 -->  
-	  <property name="defaultContentType" value="application/json"/>  
-	  <property name="order" value="1" />
-	  <!-- 设置为true以忽略对Accept Header的支持-->
-	  <property name="ignoreAcceptHeader" value="false" />
-	  <!-- 用于开启 /userinfo/123?format=json 的支持 -->  
-	  <property name="favorParameter" value="true"/>
-	  <!-- 用于关闭 /userinfo/123.json 的支持，扩展名至mimeType的映射,即 /user.json => application/json -->  
-	  <property name="favorPathExtension" value="true"/>
-	  
-	  <!-- 定义跳转的对应关系，View继承的设置的contentType属性，就是色绘制跳转到哪里的 
-	  <property name="mediaTypes">
-		<map>
-		   <entry key="json" value="application/json" />
-		   <entry key="html" value="text/html"/> 
-		   <entry key="xml" value="application/xml" />
-		   <entry key="rss" value="application/rss+xml" />
-		   <entry key="excel" value="application/excel" />  
-           <entry key="pdf" value="application/pdf" /> 
-		</map>
-	  </property>-->
 	  <property name="contentNegotiationManager"> 
          <bean class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean"> 
+         <!--<bean class="com.mawujun.utils.spring.mvc.exception.ContentNegotiationManagerFactoryBean_Custom">-->
              <property name="mediaTypes"> 
                    <props>
                    	<prop key="json">application/json</prop>
@@ -117,8 +97,19 @@
                    	<prop key="xml">application/xml</prop>
                    </props>
              </property> 
+             <!-- 默认展现形式 -->  
+			  <property name="defaultContentType" value="application/json"/>  
+			  <!-- 设置为true以忽略对Accept Header的支持-->
+			  <property name="ignoreAcceptHeader" value="false" />
+			  <!-- 用于开启 /userinfo/123?format=json 的支持 -->  
+			  <property name="favorParameter" value="true"/>
+			  <!-- 用于关闭 /userinfo/123.json 的支持，扩展名至mimeType的映射,即 /user.json => application/json -->  
+			  <!-- 现在变成这三种方式，只能选一个的情况了，看ContentNegotiationManager的resolveMediaTypes方法，主要还是因为启用后缀这个
+			  的优先级比较高，而这个ServletPathExtensionContentNegotiationStrategy又会返回默认值，所以一直都走不到其他两种方案了
+			  现在重新实现了两个类，注意这个bug的解决ContentNegotiationManagerFactoryBean_Custom，现在先禁用favorPathExtension这种方式 -->
+			  <property name="favorPathExtension" value="false"/>
          </bean> 
-     </property> 
+     	</property> 
 	  <!--  默认视图解析,加了这个后，就能同时支持jsp跳转-->
 	  <property name="viewResolvers">  
             <list>  
@@ -132,11 +123,8 @@
       <!-- 根据MediaType进行返回视图的选择 -->
 	  <property name="defaultViews">
 		<list>
-			<bean id="jsobLib" class="com.mawujun.utils.spring.mvc.JSONView_JsonLib">
-				<!-- <property name="extractValueFromSingleKeyModel" value="true"></property>
-				 <property name="modelKey" value="model"></property>--><!-- 转换指定的属性值 -->
+			<bean id="jackson2JsonView" class="com.mawujun.utils.spring.mvc.exception.MappingJackson2JsonView_Custom">
 			</bean>
-
           <bean class="org.springframework.web.servlet.view.xml.MarshallingView" >  
             <property name="marshaller">  
                 <bean class="org.springframework.oxm.xstream.XStreamMarshaller"/>  
@@ -147,18 +135,18 @@
 	  </property> 
 	</bean>
 	
-	<bean id="exceptionResolver" class="com.mawujun.utils.spring.mvc.CustomerExceptionResolver">
-		<property name="jsonMediaType" value="application/json"></property>
-  		<property name="exceptionMappings">     
+	
+	<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+  		<property name="exceptionMappings"> 
              <props>     
-                 <prop key="java.lang.Exception">errors/error</prop>     
-                 <prop key="java.lang.Throwable">errors/err</prop>     
+                 <prop key="java.lang.Exception">errors/error</prop>         
              </props>     
          </property>     
         <property name="statusCodes">     
              <props>     
-                 <prop key="errors/error">500</prop>     
-                 <prop key="errors/404">404</prop>     
+                 <prop key="errors/error">503</prop>     
+                 <prop key="errors/404">404</prop>  
+                 <prop key="exceptionJsonView">503</prop>     
              </props>     
          </property> 
    </bean> 

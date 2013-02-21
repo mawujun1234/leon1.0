@@ -13,7 +13,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
-import com.mawujun.exception.AppException;
+import com.mawujun.exception.BussinessException;
+import com.mawujun.exception.DefaulExceptionCode;
+import com.mawujun.exception.PaymentCode;
 import com.mawujun.repository.hibernate.HibernateDao;
 import com.mawujun.repository.hibernate.NamingStrategy;
 import com.mawujun.repository.mybatis.MybatisRepository;
@@ -257,7 +259,8 @@ public abstract class BaseRepository<T, ID extends Serializable> implements IRep
 			String[] columns=classMetadata.getPropertyColumnNames(whereInfo.getPropertyToDefault());
 
 			if(columns==null){
-				throw new AppException(whereInfo.getPropertyToDefault()+"不存在这个查询属性");
+				//throw new BussinessException(whereInfo.getPropertyToDefault()+"不存在这个查询属性");
+				throw new BussinessException(DefaulExceptionCode.SYSTEM_PROPERTY_IS_NOT_EXISTS).set("propertyName", whereInfo.getPropertyToDefault());
 			}
 	
 			whereInfo.setProperty(columns[0]);

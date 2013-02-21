@@ -37,7 +37,7 @@ import com.mawujun.utils.page.QueryResult;
  * @author Administrator
  *
  */
-public class FastJsonHttpMessageConverter extends AbstractHttpMessageConverter<Object> {
+public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<Object> {
 	
 	public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
 	
@@ -49,7 +49,7 @@ public class FastJsonHttpMessageConverter extends AbstractHttpMessageConverter<O
 		 
 	 } 
 	
-	public FastJsonHttpMessageConverter() {
+	public HttpMessageConverter_FastJson() {
 		super(new MediaType("application", "json", DEFAULT_CHARSET));
 
 		serializeConfig.put(Date.class, new SimpleDateFormatSerializer(datePattern));  

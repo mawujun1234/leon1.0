@@ -31,7 +31,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mawujun.exception.AppException;
+import com.mawujun.exception.BussinessException;
+import com.mawujun.exception.DefaulExceptionCode;
 import com.mawujun.repository.hibernate.NamingStrategy;
 import com.mawujun.repository.idEntity.IdEntity;
 import com.mawujun.repository.mybatis.MybatisRepository;
@@ -592,7 +593,8 @@ public abstract class BaseRepository_Temp<T extends IdEntity<ID>, ID extends Ser
 			String[] columns=classMetadata.getPropertyColumnNames(whereInfo.getPropertyToDefault());
 
 			if(columns==null){
-				throw new AppException(whereInfo.getPropertyToDefault()+"不存在这个查询属性");
+				//throw new BussinessException(whereInfo.getPropertyToDefault()+"不存在这个查询属性");
+				throw new BussinessException(DefaulExceptionCode.SYSTEM_PROPERTY_IS_NOT_EXISTS).set("propertyName", whereInfo.getPropertyToDefault());
 			}
 	
 			whereInfo.setProperty(columns[0]);

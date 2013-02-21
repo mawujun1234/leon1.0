@@ -273,4 +273,42 @@ public class SpringMVCControllerTest {
 		.andExpect(jsonPath("$..sorts[1].property").value("age"))
 		.andExpect(jsonPath("$..sorts[1].direction").value("DESC"));
 	}
+	
+	/**
+	 * 测试同个异常，以不同的形式返回错误形式
+	 * @throws Exception
+	 */
+	@Test
+	public void testExceptionReturnView() throws Exception {
+		this.mockMvc.perform(get("/test/testException.do").accept(MediaType.TEXT_HTML))
+		.andExpect(status().isServiceUnavailable())
+		//.andExpect(content().contentType("text/html"))
+	    .andExpect(forwardedUrl("/errors/error.jsp"));
+	}
+	
+	@Test
+	public void testExceptionReturnJson() throws Exception {
+		this.mockMvc.perform(get("/test/testException.do").accept(MediaType.APPLICATION_JSON))
+		.andExpect(status().isServiceUnavailable())
+		.andExpect(content().contentType("application/json"))
+		.andExpect(jsonPath("$.success").value(false))
+		.andExpect(jsonPath("$.message").value("显示信息错误"));
+	}
+	@Test
+	public void testBussinessExceptionReturnJson() throws Exception {
+		this.mockMvc.perform(get("/test/testBussinessException.do").accept(MediaType.APPLICATION_JSON))
+		.andExpect(status().isServiceUnavailable())
+		.andExpect(content().contentType("application/json"))
+		.andExpect(jsonPath("$.success").value(false))
+		.andExpect(jsonPath("$.message").value("系统异常，请重试或者联系管理员"));
+	}
+	@Test
+	public void testConstraintViolationExceptionReturnJson() throws Exception {
+		this.mockMvc.perform(get("/test/testConstraintViolationException.do").accept(MediaType.APPLICATION_JSON))
+		.andExpect(status().isServiceUnavailable())
+		.andExpect(content().contentType("application/json"))
+		.andExpect(jsonPath("$.success").value(false))
+		.andExpect(jsonPath("$.message").value("email字段不是一个合法的电子邮件地址:11;"));
+	}
+	
 }
