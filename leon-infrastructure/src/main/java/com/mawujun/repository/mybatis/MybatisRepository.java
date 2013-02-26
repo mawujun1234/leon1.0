@@ -8,13 +8,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.ibatis.builder.MapperBuilderAssistant;
-import org.apache.ibatis.builder.xml.dynamic.DynamicSqlSource;
-import org.apache.ibatis.builder.xml.dynamic.IfSqlNode;
-import org.apache.ibatis.builder.xml.dynamic.MixedSqlNode;
-import org.apache.ibatis.builder.xml.dynamic.SqlNode;
-import org.apache.ibatis.builder.xml.dynamic.TextSqlNode;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlSource;
+import org.apache.ibatis.scripting.xmltags.DynamicSqlSource;
+import org.apache.ibatis.scripting.xmltags.IfSqlNode;
+import org.apache.ibatis.scripting.xmltags.MixedSqlNode;
+import org.apache.ibatis.scripting.xmltags.SqlNode;
+import org.apache.ibatis.scripting.xmltags.TextSqlNode;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -487,24 +487,39 @@ public class MybatisRepository  {
 			} else {
 				parameterMap=mappedStatement.getParameterMap().getId();
 			}
-			 assistant.addMappedStatement(
-						statement+"_count", 
-						newDynamicSqlSource, 
-						mappedStatement.getStatementType(), 
-						mappedStatement.getSqlCommandType(), 
-						mappedStatement.getFetchSize(),
-						mappedStatement.getTimeout(), 
-						parameterMap, 
-						mappedStatement.getParameterMap().getType(), //参数类型parameterType
-						null, //resultMap
-						Integer.class,//resultType
-						mappedStatement.getResultSetType(), 
-						true//flushCache
-						, false//useCache
-						, mappedStatement.getKeyGenerator(),
-						null, //keyProperty
-						null, //keyColumn
-						mappedStatement.getDatabaseId());
+//			 assistant.addMappedStatement(
+//						statement+"_count", 
+//						newDynamicSqlSource, 
+//						mappedStatement.getStatementType(), 
+//						mappedStatement.getSqlCommandType(), 
+//						mappedStatement.getFetchSize(),
+//						mappedStatement.getTimeout(), 
+//						parameterMap, 
+//						mappedStatement.getParameterMap().getType(), //参数类型parameterType
+//						null, //resultMap
+//						Integer.class,//resultType
+//						mappedStatement.getResultSetType(), 
+//						true//flushCache
+//						, false//useCache
+//						, mappedStatement.getKeyGenerator(),
+//						null, //keyProperty
+//						null, //keyColumn
+//						mappedStatement.getDatabaseId());
+//			 
+			 assistant.addMappedStatement(statement+"_count", newDynamicSqlSource, 
+					 mappedStatement.getStatementType(), 
+					 mappedStatement.getSqlCommandType(), 
+					 mappedStatement.getFetchSize(), 
+					 mappedStatement.getTimeout(), 
+					 parameterMap,
+					 mappedStatement.getParameterMap().getType(), 
+					 null, 
+					 Integer.class, 
+					 mappedStatement.getResultSetType(), 
+					 true, false,
+					 false,//resultOrdered,
+					 mappedStatement.getKeyGenerator(), 
+					 null, null, mappedStatement.getDatabaseId(), mappedStatement.getLang());
 
 		}
 		//System.out.println("============================"+sqlSessionFactory.getConfiguration().hasStatement(statement+"_count"));

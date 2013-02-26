@@ -15,4 +15,79 @@
   <url>http://maven.apache.org</url>
 
   
+  <build>
+  	  <plugins>	
+			<plugin>
+	    		<groupId>org.apache.tomcat.maven</groupId>
+	    		<artifactId>tomcat6-maven-plugin</artifactId>
+	    		<version>2.0</version>
+	    		<configuration>
+	                 <port>8082</port>
+	                 <path>/</path>
+	                 <uriEncoding>utf-8</uriEncoding>
+	                 <contextReloadable>true</contextReloadable> 
+	                 <warSourceDirectory>${project.build.directory}/WebContent</warSourceDirectory>              
+	              </configuration>
+	    	</plugin>
+	    	
+	    	<plugin>
+	    		<groupId>org.apache.tomcat.maven</groupId>
+	    		<artifactId>tomcat7-maven-plugin</artifactId>
+	    		<version>2.0</version>
+	    		<configuration>
+	                 <port>8082</port>
+	                 <path>/</path>
+	                 <!--<protocol>org.apache.coyote.http11.Http11NioProtocol</protocol> -->
+	                 <uriEncoding>utf-8</uriEncoding>
+	                 <!-- <contextReloadable>true</contextReloadable>
+	                 <backgroundProcessorDelay>2</backgroundProcessorDelay> -->
+	                 <warSourceDirectory>${project.build.directory}/WebContent</warSourceDirectory>
+	              </configuration>
+	    	</plugin>
+	    	<!-- 替换web.xml中的${profiles.active}和拷贝相应的文件到指定的地方-->
+	    	<plugin>
+		        <artifactId>maven-resources-plugin</artifactId>
+		        <version>2.6</version>
+		        <executions>
+		          <execution>
+		            <id>copy-resources</id>
+		            <phase>validate</phase>
+		            <goals>
+		              <goal>copy-resources</goal>
+		            </goals>
+		            <configuration>
+		            	<nonFilteredFileExtensions>
+		            		<nonFilteredFileExtension>jsp</nonFilteredFileExtension>
+		            		<nonFilteredFileExtension>js</nonFilteredFileExtension>
+		            		<nonFilteredFileExtension>css</nonFilteredFileExtension>
+		            		<nonFilteredFileExtension>pdf</nonFilteredFileExtension>
+		            		<nonFilteredFileExtension>swf</nonFilteredFileExtension>
+		            		<nonFilteredFileExtension>jsp</nonFilteredFileExtension>
+		            		<nonFilteredFileExtension>scss</nonFilteredFileExtension>
+		            		<nonFilteredFileExtension>rb</nonFilteredFileExtension>
+		            		<!-- 这些是默认的过滤的时候不进行替换的文件
+		            		<nonFilteredFileExtension>jpg</nonFilteredFileExtension>
+		            		<nonFilteredFileExtension>jpeg</nonFilteredFileExtension>
+		            		<nonFilteredFileExtension>gif</nonFilteredFileExtension>
+		            		<nonFilteredFileExtension>bmp</nonFilteredFileExtension>
+		            		<nonFilteredFileExtension>png</nonFilteredFileExtension>
+		            		 -->
+		            	</nonFilteredFileExtensions>
+		          		<includeEmptyDirs>true</includeEmptyDirs>
+		          		<overwrite>true</overwrite>
+		          		
+		                <outputDirectory>${project.build.directory}/WebContent</outputDirectory>
+		                <resources>          
+		                  <resource>
+		                    <directory>${basedir}/src/main/webapp</directory>
+		                    <filtering>true</filtering>	                    
+		                  </resource>
+		                </resources>             
+		            </configuration>            
+		          </execution>
+		        </executions>
+		    </plugin>
+	    	 
+        </plugins> 
+  </build>
 </project>

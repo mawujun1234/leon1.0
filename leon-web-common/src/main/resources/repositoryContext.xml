@@ -50,9 +50,9 @@
 		</property>
 	</bean>
 -->
-	<!-- 这里也可以引用web.xml中的${spring.profiles.active}，没有测试。
+	<!-- 这里也可以引用web.xml中的${spring.profiles.active}，测试成功。
 	${profiles.active}是maven默认定义的key值-->
-	<context:property-placeholder location="classpath:com/mawujun/integration/leon.${profiles.active}.properties,com/mawujun/integration/dialet_config.propertites" />  
+	<context:property-placeholder location="classpath:leon.${spring.profiles.active}.properties,classpath:dialet_config.properties" />  
 
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"  lazy-init="false">
 				<property name="dataSource" ref="dataSource" />

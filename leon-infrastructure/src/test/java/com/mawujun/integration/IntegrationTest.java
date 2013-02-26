@@ -75,6 +75,10 @@ public class IntegrationTest  extends DbunitBaseRepositoryTest{
 //		//tx.commit();
 //	}
 
+	/**
+	 * 测试mybatis和 <context:property-placeholder的冲突，不能使用${${jdbc.dbName}.mybatis.dialet}，嵌套的属性应用
+	 * @throws IOException
+	 */
 	@Test
 	public void test() throws IOException{
 		PropertiesUtils aa=new PropertiesUtils();

@@ -5,7 +5,12 @@
                       http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
   version="3.0" metadata-complete="false" >  
 <!-- 
-	<filter>
+	<welcome-file-list>
+   	   <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>  
+   
+   
+    <filter>
         <filter-name>Set Character Encoding</filter-name>
         <filter-class>com.mawujun.util.web.SetCharacterEncodingFilter</filter-class>
         <init-param>
@@ -22,20 +27,18 @@
         <url-pattern>/*</url-pattern>
    </filter-mapping>
    
- 	<context-param>
+   
+   <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
         	classpath:applicationContext.xml
         </param-value>
     </context-param>
-    
- 
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener
         </listener-class>
     </listener>
-
-  <servlet>
+   <servlet>
         <servlet-name>dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet
         </servlet-class>
@@ -52,10 +55,11 @@
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
-    
+
     <context-param>
-  	    <param-name>spring.profiles.default</param-name>
-  	    <param-value>dev</param-value>
-	</context-param>
+		<param-name>spring.profiles.active</param-name>
+		<param-value>${profiles.active}</param-value>
+   </context-param>
 	 -->
+	  
 </web-app>
