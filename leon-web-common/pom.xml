@@ -16,6 +16,13 @@
 
   
   <build>
+  		<resources>
+	      <resource>
+	        <directory>src/main/resources</directory>
+	        <filtering>true</filtering>
+	      </resource>
+	    </resources>
+  
   	  <plugins>	
 			<plugin>
 	    		<groupId>org.apache.tomcat.maven</groupId>
@@ -44,44 +51,13 @@
 	                 <warSourceDirectory>${project.build.directory}/WebContent</warSourceDirectory>
 	              </configuration>
 	    	</plugin>
-	    	<!-- 替换web.xml中的${profiles.active}和拷贝相应的文件到指定的地方
-	    	<plugin>
-		        <artifactId>maven-resources-plugin</artifactId>
-		        <version>2.6</version>
-		        <executions>
-		          <execution>
-		            <id>copy-resources</id>
-		            <phase>validate</phase>
-		            <goals>
-		              <goal>copy-resources</goal>
-		            </goals>
-		            <configuration>
-		            	<nonFilteredFileExtensions>
-		            		<nonFilteredFileExtension>jsp</nonFilteredFileExtension>
-		            		<nonFilteredFileExtension>js</nonFilteredFileExtension>
-		            		<nonFilteredFileExtension>css</nonFilteredFileExtension>
-		            		<nonFilteredFileExtension>pdf</nonFilteredFileExtension>
-		            		<nonFilteredFileExtension>swf</nonFilteredFileExtension>
-		            		<nonFilteredFileExtension>jsp</nonFilteredFileExtension>
-		            		<nonFilteredFileExtension>scss</nonFilteredFileExtension>
-		            		<nonFilteredFileExtension>rb</nonFilteredFileExtension>
-		            		
-		            	</nonFilteredFileExtensions>
-		          		<includeEmptyDirs>true</includeEmptyDirs>
-		          		<overwrite>true</overwrite>
-		          		
-		                <outputDirectory>${project.build.directory}/WebContent</outputDirectory>
-		                <resources>          
-		                  <resource>
-		                    <directory>${basedir}/src/main/webapp</directory>
-		                    <filtering>true</filtering>	                    
-		                  </resource>
-		                </resources>             
-		            </configuration>            
-		          </execution>
-		        </executions>
-		    </plugin>
-	    	 -->
         </plugins> 
   </build>
+  <dependencies>
+  	<dependency>
+  		<groupId>com.mawujun</groupId>
+  		<artifactId>leon-utils</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  </dependencies>
 </project>

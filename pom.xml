@@ -21,6 +21,69 @@
     <module>leon-example</module>
     <module>leon-web-common</module>
   </modules>
+  
+  <profiles>
+    <profile>
+      <id>dev</id>
+      <properties>  
+           <profiles.active>dev</profiles.active>  
+       </properties> 
+       <activation>
+        <activeByDefault>true</activeByDefault>
+       </activation>
+    </profile>
+    <profile>
+      <id>test</id>
+      <properties>  
+            <profiles.active>test</profiles.active>  
+       </properties> 
+    </profile>
+    <profile>
+      <id>prod</id>
+      <properties>  
+            <profiles.active>prod</profiles.active>  
+       </properties> 
+    </profile>
+  </profiles>
+  
+    <build>
+  		<resources>
+	      <resource>
+	        <directory>src/main/resources</directory>
+	        <filtering>true</filtering>
+	      </resource>
+	    </resources>
+  
+  	  <plugins>	
+			<plugin>
+	    		<groupId>org.apache.tomcat.maven</groupId>
+	    		<artifactId>tomcat6-maven-plugin</artifactId>
+	    		<version>2.0</version>
+	    		<configuration>
+	                 <port>8082</port>
+	                 <path>/</path>
+	                 <uriEncoding>utf-8</uriEncoding>
+	                 <contextReloadable>true</contextReloadable> 
+	                 <!-- <warSourceDirectory>${project.build.directory}/WebContent</warSourceDirectory>      -->         
+	              </configuration>
+	    	</plugin>
+	    	
+	    	<plugin>
+	    		<groupId>org.apache.tomcat.maven</groupId>
+	    		<artifactId>tomcat7-maven-plugin</artifactId>
+	    		<version>2.0</version>
+	    		<configuration>
+	                 <port>8082</port>
+	                 <path>/</path>
+	                 <!--<protocol>org.apache.coyote.http11.Http11NioProtocol</protocol> -->
+	                 <uriEncoding>utf-8</uriEncoding>
+	                 <!-- <contextReloadable>true</contextReloadable>
+	                 <backgroundProcessorDelay>2</backgroundProcessorDelay> -->
+	                 <warSourceDirectory>${project.build.directory}/WebContent</warSourceDirectory>
+	              </configuration>
+	    	</plugin>
+        </plugins> 
+  </build>
 
   <dependencies>
     <dependency>
@@ -243,28 +306,6 @@
   </dependencies>
 
 
- <profiles>
-    <profile>
-      <id>dev</id>
-      <properties>  
-           <profiles.active>dev</profiles.active>  
-       </properties> 
-       <activation>
-        <activeByDefault>true</activeByDefault>
-       </activation>
-    </profile>
-    <profile>
-      <id>test</id>
-      <properties>  
-            <profiles.active>test</profiles.active>  
-       </properties> 
-    </profile>
-    <profile>
-      <id>prod</id>
-      <properties>  
-            <profiles.active>prod</profiles.active>  
-       </properties> 
-    </profile>
-  </profiles>
+ 
   
  </project>
