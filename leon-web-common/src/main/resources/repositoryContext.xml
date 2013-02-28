@@ -56,7 +56,7 @@
 
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"  lazy-init="false">
 				<property name="dataSource" ref="dataSource" />
-				<property name="configLocation" value="classpath:com/mawujun/integration/Configuration.xml" />
+				<property name="configLocation" value="classpath:Configuration.xml" />
 				<property name="plugins">
 					<list>
 						<bean class="com.mawujun.repository.mybatis.OffsetLimitInterceptor">
@@ -155,7 +155,7 @@
 	</beans>
 	
 	<beans profile="dev">
-		<!-- 数据源配置,使用应用内的DBCP数据库连接池 -->
+		<!-- 数据源配置,使用应用内的DBCP数据库连接池>
 		<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 			<property name="driverClassName" value="${jdbc.driver}"/>
 			<property name="url" value="${jdbc.url}" />
@@ -168,6 +168,9 @@
 			<property name="timeBetweenEvictionRunsMillis" value="3600000" />
 			<property name="minEvictableIdleTimeMillis" value="3600000" />
 		</bean>
+		-->
+		<jdbc:embedded-database id="dataSource" type="H2">
+		</jdbc:embedded-database>
 	</beans>
 	
 	<!-- unit test环境 -->

@@ -18,7 +18,7 @@
   	<module>leon-utils</module>
     <module>leon-infrastructure</module>    
     <module>leon-constant</module>
-    <module>leon-example</module>
+    <!-- <module>leon-example</module> -->
     <module>leon-web-common</module>
   </modules>
   
@@ -82,7 +82,32 @@
 	                 <warSourceDirectory>${project.build.directory}/WebContent</warSourceDirectory>
 	              </configuration>
 	    	</plugin>
-        </plugins> 
+	    	
+	    	<plugin>
+	    		<groupId>org.eclipse.jetty</groupId>
+	    		<artifactId>jetty-maven-plugin</artifactId>
+	    		<version>9.0.0.M3</version>
+	    		<configuration>
+					<!-- 每隔一段时间扫描项目是否更新  -->
+					<scanIntervalSeconds>0</scanIntervalSeconds>
+					<connectors>
+						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+							<port>8082</port><!--端口-->
+							<maxIdleTime>60000</maxIdleTime>
+						</connector>
+					</connectors>
+					<webAppConfig>
+						<contextPath>/</contextPath>
+					</webAppConfig>
+				</configuration>
+	    		
+	    	</plugin>
+	    	<plugin>
+	    		<groupId>org.eclipse.jetty</groupId>
+	    		<artifactId>jetty-maven-plugin</artifactId>
+	    		<version>9.0.0.RC1</version>
+	    	</plugin>
+  	  </plugins> 
   </build>
 
   <dependencies>
@@ -303,6 +328,7 @@
     	<artifactId>log4j</artifactId>
     	<version>1.2.17</version>
     </dependency>
+
   </dependencies>
 
 

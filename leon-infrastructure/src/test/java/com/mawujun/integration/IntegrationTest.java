@@ -38,6 +38,11 @@ public class IntegrationTest  extends DbunitBaseRepositoryTest{
 	private String mybatisDialet;
 	@Value("${${jdbc.dbName}.hibernate.dialet}")
 	private String hibernateDialet;
+	
+	{
+		//@ActiveProfiles("test")设置后，在application.xml中并不能使用${spring.profiles.active}这个属性
+		System.setProperty("spring.profiles.active", "test");
+	}
 
 	
 //	private static class EntityTestRepository extends Repository<EntityTest,Integer> {

@@ -9,6 +9,9 @@
         <dependent-module archiveName="leon-utils-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/leon-utils/leon-utils">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="leon-infrastructure-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/leon-infrastructure/leon-infrastructure">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="leon-web-common"/>
         <property name="java-output-path" value="/leon-web-common/target/classes"/>
     </wb-module>

@@ -48,7 +48,7 @@
 	                 <uriEncoding>utf-8</uriEncoding>
 	                 <!-- <contextReloadable>true</contextReloadable>
 	                 <backgroundProcessorDelay>2</backgroundProcessorDelay> -->
-	                 <warSourceDirectory>${project.build.directory}/WebContent</warSourceDirectory>
+	                 <!-- <warSourceDirectory>${project.build.directory}/WebContent</warSourceDirectory>      -->   
 	              </configuration>
 	    	</plugin>
         </plugins> 
@@ -57,6 +57,11 @@
   	<dependency>
   		<groupId>com.mawujun</groupId>
   		<artifactId>leon-utils</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.mawujun</groupId>
+  		<artifactId>leon-infrastructure</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   </dependencies>

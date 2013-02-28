@@ -43,11 +43,11 @@ public class SetSpringProfileActiveListener implements ServletContextListener {
 			String system_config_file_path=sce.getServletContext().getInitParameter("system_config_file_path");
 			if(system_config_file_path!=null && !"".equals(system_config_file_path.trim())){
 				system_config_file_path=system_config_file_path.substring(0, system_config_file_path.lastIndexOf('.'));
-				System.out.println(system_config_file_path);
+				//System.out.println(system_config_file_path);
 				ResourceBundle buddle=ResourceBundle.getBundle(system_config_file_path);
-				System.out.println(buddle);
+				//System.out.println(buddle);
 				active=buddle.getString("spring.profiles.active");
-				System.out.println(active);
+				//System.out.println(active);
 				//sce.getServletContext().setInitParameter("spring.profiles.active", active);
 				System.setProperty("spring.profiles.active", active);
 			}
