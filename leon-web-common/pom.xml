@@ -51,6 +51,16 @@
 	                 <!-- <warSourceDirectory>${project.build.directory}/WebContent</warSourceDirectory>      -->   
 	              </configuration>
 	    	</plugin>
+	    	
+	    	<plugin>
+	    		<groupId>org.eclipse.jetty</groupId>
+	    		<artifactId>jetty-maven-plugin</artifactId>
+	    		<version>9.0.0.RC1</version>
+	    		<configuration>
+					<!-- 每隔一段时间扫描项目是否更新  -->
+					<scanIntervalSeconds>0</scanIntervalSeconds>
+				</configuration>
+	    	</plugin>
         </plugins> 
   </build>
   <dependencies>
