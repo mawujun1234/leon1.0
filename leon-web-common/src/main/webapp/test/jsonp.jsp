@@ -20,10 +20,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	-->
 	
 	<%@include file="../common/init.jsp" %>
-
+	<script type="text/javascript" src="jsonp.js"></script>
   </head>
   
   <body>
-    This is my JSP page. <br>
+    <div id="test"></div>
   </body>
 </html>

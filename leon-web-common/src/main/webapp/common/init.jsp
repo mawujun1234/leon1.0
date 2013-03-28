@@ -12,5 +12,9 @@
 <script type="text/javascript">
 
 Ext.ContextPath="<%=request.getContextPath()%>";//应用程序上下文
+Ext.Loader.setConfig({enabled:true});
+Ext.Loader.setPath({
+	//加载路径配置对象
+});
 </script>
 
