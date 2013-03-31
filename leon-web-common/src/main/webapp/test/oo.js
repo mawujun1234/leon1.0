@@ -121,11 +121,6 @@ Ext.apply(Ext,{
 	 }
 });
 
-//var reader=Ext.create('Ext.data.reader.Json',{
-//			type:'json',
-//			root:'root'
-//		});
-		
 Ext.define("Order",{
 	extend:"Ext.data.Model",
 	idProperty:'id',
@@ -136,7 +131,7 @@ Ext.define("Order",{
 		{name:'email',type:'auto'}
 	],
 	associations:[//name是必须的，用来访问orderLine的
-		{type:'hasMany',model:'OrderLine',name : 'orderLines',autoLoad:true,storeConfig:{model:'OrderLine'}}//,name : 'orderLines',associationKey:'orderLines'
+		{type:'hasMany',model:'OrderLine',name : 'orderLines',autoLoad:false}//,name : 'orderLines',associationKey:'orderLines'
 	]
 	,proxy:{
 		type:'ajax',
@@ -152,10 +147,7 @@ Ext.define("Order",{
 		}
 	
 	}
-	
 });
-
-
 Ext.define("OrderLine",{
 	extend:"Ext.data.Model",
 	idProperty:'id',
@@ -163,7 +155,7 @@ Ext.define("OrderLine",{
 		{name:'id',type:'int'},
 		{name:'name',type:'auto'},
 		{name:'num',type:'int'}
-		,{name:'order_id',type:'int'}
+		//{name:'order'}
 	],
 	associations:[//,associationKey:"order",foreignKey:'order',associatedName:'Order'
 		{type:'belongsTo',model:'Order',autoLoad:false}//后台传过来的数据，如果有order，就不会使用ajax加载，否则就会使用ajax
@@ -187,30 +179,6 @@ Ext.define("OrderLine",{
 
 
 Ext.onReady(function(){
-
-	
-//	var order=Ext.create('Order',{
-//		id:1,
-//		name:'order1'
-//	});
-//	var orderlines=order.orderLines();
-//	alert(orderlines.getCount( ));
-////	//console.dir(orderlines);
-////	orderlines.on("load",function(){
-////		alert(orderlines.getCount( ) );
-////	});
-////	
-//	
-	
-//	Order.load(1,{
-//		 success: function(order, operation) {
-//		 	//console.dir(order);
-//		 	alert(order.get("id"));
-//		 	//alert(order.get('orderLines'));
-//		 	alert(order.orderLines().getCount( ));
-//		 }
-//	});
-	
 //	OrderLine.load(1,{
 //		 success: function(record, operation) {
 //		 	alert(record.get("id"));
@@ -240,7 +208,6 @@ Ext.onReady(function(){
 //			name:'order1'
 //		}
 //	});
-//	alert(orderLine.getOrder().get("name"));
 
 
 	//console.dir(orderLine);
@@ -257,18 +224,18 @@ Ext.onReady(function(){
 	
 //	orderLine.save();
 
-//	var orderLine=Ext.createModel('OrderLine',{
-//		id:1,
-//		name:'line1',
-//		num:1
-//		,order:{
-//			id:11,
-//			name:'order1'
-//		}
-//	});
-//	var order=orderLine.getOrder();
-//	console.dir(order);
-//	alert(order.get("name"));
+	var orderLine=Ext.createModel('OrderLine',{
+		id:1,
+		name:'line1',
+		num:1
+		,order:{
+			id:11,
+			name:'order1'
+		}
+	});
+	var order=orderLine.getOrder();
+	console.dir(order);
+	alert(order.get("name"));
 
 
 });
