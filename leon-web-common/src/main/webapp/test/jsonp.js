@@ -136,7 +136,7 @@ Ext.define("Order",{
 		{name:'email',type:'auto'}
 	],
 	associations:[//name是必须的，用来访问orderLine的
-		{type:'hasMany',model:'OrderLine',name : 'orderLines',autoLoad:true,storeConfig:{model:'OrderLine'}}//,name : 'orderLines',associationKey:'orderLines'
+		{type:'hasMany',model:'OrderLine',name : 'orderLines'}//,name : 'orderLines',associationKey:'orderLines'
 	]
 	,proxy:{
 		type:'ajax',
@@ -187,29 +187,69 @@ Ext.define("OrderLine",{
 
 
 Ext.onReady(function(){
-
 	
+	
+//=========hasmany的测试	
 //	var order=Ext.create('Order',{
 //		id:1,
 //		name:'order1'
 //	});
 //	var orderlines=order.orderLines();
-//	alert(orderlines.getCount( ));
-////	//console.dir(orderlines);
-////	orderlines.on("load",function(){
-////		alert(orderlines.getCount( ) );
-////	});
-////	
+//	//alert(orderlines.getCount( ));
 //	
+//	order.orderLines().each(function(post) {//使用aotoLoad=true，获取不到数据
+//            console.log("Comments for post: " + post.get('name'));
+//     });
+//        
+//	orderlines.load({//这种方法才可以
+//		callback:function(posts){
+//			 Ext.each(posts, function(post) {
+//                    alert("orderlines for order: " + post.get('name'));
+//           });
+//		}
+//	});
+//has many的测试
 	
+	
+//========================下面的是belongsTO的
+     
+//	OrderLine.load(1,{
+//		 success: function(record, operation) {
+//		 	alert(record.get("id"));
+//		 	//alert(record.getOrder().get("name"));获取不到数据，因为异步加载
+//		 	record.getOrder(function(order, operation){
+//		 		 alert(order.get('name'));
+//		 	});
+//		 }
+//	});
+
+//	var orderLine=Ext.create('OrderLine',{
+//		id:1,
+//		name:'line1',
+//		num:1,
+//		order_id:'1'
+//	});
+//	
+//	orderLine.getOrder(function(order, operation){
+//		  alert(order.get('name'));
+//	});
+//     
+//     
+
+//	//即时加载
 //	Order.load(1,{
 //		 success: function(order, operation) {
 //		 	//console.dir(order);
 //		 	alert(order.get("id"));
 //		 	//alert(order.get('orderLines'));
-//		 	alert(order.orderLines().getCount( ));
+//		 	//alert(order.orderLines().getCount( ));
+//		 	order.orderLines().each(function(post) {
+//	            console.log("Comments for post: " + post.get('name'));
+//	        });
 //		 }
 //	});
+
+//==========================================================前面的都是正常可用的
 	
 //	OrderLine.load(1,{
 //		 success: function(record, operation) {
