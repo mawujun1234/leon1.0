@@ -190,18 +190,22 @@ Ext.onReady(function(){
 	
 	
 //=========hasmany的测试	
-//	var order=Ext.create('Order',{
-//		id:1,
-//		name:'order1'
-//	});
-//	var orderlines=order.orderLines();
-//	//alert(orderlines.getCount( ));
-//	
+	var order=Ext.create('Order',{
+		id:1,
+		name:'order1'
+	});
+	var orderlines=order.orderLines();
+	//alert(orderlines.getCount( ));
+	
 //	order.orderLines().each(function(post) {//使用aotoLoad=true，获取不到数据
 //            console.log("Comments for post: " + post.get('name'));
 //     });
 //        
 //	orderlines.load({//这种方法才可以
+//		filters: [{
+//	         property: 'firstName',
+//	         value: 'Ed'
+//	     }],
 //		callback:function(posts){
 //			 Ext.each(posts, function(post) {
 //                    alert("orderlines for order: " + post.get('name'));
