@@ -120,6 +120,42 @@
 //
 //	 }
 //});
+//
+//
+//
+//Ext.apply(Ext,{
+//	 createModel:function(className,data){
+//	 	if (typeof className !== 'string') {
+//	                Ext.Error.raise({
+//	                    sourceClass: "Ext",
+//	                    sourceMethod: "define",
+//	                    msg: "Invalid class name '" + className + "' specified, must be a non-empty string"
+//	                });
+//	     }
+//	            
+//		var record=Ext.create(className,data);
+//		//if (implicitIncludes ) {
+//			var reader=record.getProxy().getReader();
+//			reader.readAssociated(record, data);
+//		//}
+//		return record;
+//
+//	 }
+//});
+//
+//Ext.override(Ext.data.writer.Writer, { 
+//    getRecordData: function(record,operation) { 
+//    	var me=this;
+//        var data=this.callOverridden(arguments);
+//        if(operation.includeAssociated){
+//        	var aa=record.getAssociatedData( );
+//    		Ext.apply(data,aa)
+//        }
+//        
+//        return data;
+//    } 
+//});
+
 
 
 		
@@ -148,6 +184,9 @@ Ext.define("Order",{
 			type:'json',
 			root:'root'
 		}
+		,writer:{
+			type:'json'
+		}
 	
 	}
 	
@@ -170,7 +209,7 @@ Ext.define("OrderLine",{
 		type:'ajax',
 		api:{
 			read:'OrderLine.js',
-			load    : 'load.js',
+			load    : 'OrderLine.js',
 			create:'save.js',
 			update:'update.js',
 			destroy:'destroy.js'
@@ -179,6 +218,9 @@ Ext.define("OrderLine",{
 			type:'json',
 			root:'root'
 		}
+		,writer:{
+			type:'json'
+		}
 	
 	}
 });
@@ -186,22 +228,39 @@ Ext.define("OrderLine",{
 
 
 Ext.onReady(function(){
-	var orderLine=null;
-	OrderLine.load(1,{
-		action:'load',
-		success: function(record, operation) {
-			alert(record.get('name'));
-			orderLine=record;
-			//alert(Ext.encode(operation.response.responseText ))
-			orderLine.save({
-				success: function(record, operation) {
-					alert(record.get('name'));
-				}
-			});
-		}
-		//,failure: function(record, operation) {}
-		//,callback: function(record, operation) {}
+	//用ext
+	var store=Ext.create('Ext.data.Store',{
+		model:'Order',
+		autoLoad:false
 	});
+	store.load({
+	    scope: this,
+	    callback: function(records, operation, success) {
+	        // the operation object
+	        // contains all of the details of the load operation
+	        //console.log(records);
+	    	store.getAt(0).set("name","order1111");
+	    	store.add({name:"order2"});
+	    	store.sync();
+	    }
+	});
+//
+//	var orderLine=null;
+//	OrderLine.load(1,{
+//		action:'load',
+//		success: function(record, operation) {
+//			alert(record.get('name'));
+//			orderLine=record;
+//			//alert(Ext.encode(operation.response.responseText ))
+//			orderLine.save({
+//				success: function(record, operation) {
+//					alert(record.get('name'));
+//				}
+//			});
+//		}
+//		//,failure: function(record, operation) {}
+//		//,callback: function(record, operation) {}
+//	});
 	
 	
 //	var order=null;
@@ -221,6 +280,47 @@ Ext.onReady(function(){
 //		//,failure: function(record, operation) {}
 //		//,callback: function(record, operation) {}
 //	});
+
+//	var orderLine=null;
+//	OrderLine.load(1,{
+//		action:'load',
+//		success: function(record, operation) {
+//			alert(record.get('name'));
+//			orderLine=record;
+//			//alert(Ext.encode(operation.response.responseText ))
+//			orderLine.save({
+//				includeAssociated:false,
+//				success: function(record, operation) {
+//					alert(record.get('name'));
+//				}
+//			});
+//		}
+//		//,failure: function(record, operation) {}
+//		//,callback: function(record, operation) {}
+//	});
+//	
+//	
+//	var order=null;
+//	Order.load(1,{
+//		action:'load',
+//		success: function(record, operation) {
+//			alert(record.get('name'));
+//			order=record;
+////			//alert(Ext.encode(operation.response.responseText ))
+////			order.destroy({
+////				includeAssociated:false,
+////				success: function(record, operation) {
+////					alert(record.get('name'));
+////					order=record;
+////				}
+////			});
+//			order.orderLines().add({name:'orderline2'});
+//			order.orderLines().sync();
+//		}
+//		//,failure: function(record, operation) {}
+//		//,callback: function(record, operation) {}
+//	});
+
 	
 //	var order=Ext.create('Order',{
 //		id:1,
