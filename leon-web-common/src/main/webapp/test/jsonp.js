@@ -236,9 +236,6 @@ Ext.onReady(function(){
 	store.load({
 	    scope: this,
 	    callback: function(records, operation, success) {
-	        // the operation object
-	        // contains all of the details of the load operation
-	        //console.log(records);
 	    	store.getAt(0).set("name","order1111");
 	    	store.add({name:"order2"});
 	    	store.sync();
