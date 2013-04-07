@@ -2,12 +2,12 @@
 	success:true,
 	root:[{
 		id:11,
-		name:'order1',
+		text:'order1',
 		email:'1@163.com'
-		,orderLines:[{
-			id:11,
-			name:'line1',
-			num:1
+		,children:[{
+			id:22,
+			text:'line1',
+			email:1
 		}]
 	}]
 }
