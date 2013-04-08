@@ -18,6 +18,7 @@ import com.mawujun.exception.DefaulExceptionCode;
 import com.mawujun.exception.PaymentCode;
 import com.mawujun.repository.hibernate.HibernateDao;
 import com.mawujun.repository.hibernate.NamingStrategy;
+import com.mawujun.repository.idEntity.IdEntity;
 import com.mawujun.repository.mybatis.MybatisRepository;
 import com.mawujun.repository.mybatis.Record;
 import com.mawujun.utils.ReflectionUtils;
@@ -57,7 +58,7 @@ import com.mawujun.utils.page.WhereInfo;
  * @param <T>
  * @param <ID>
  */
-public abstract class BaseRepository<T, ID extends Serializable> implements IRepository<T, ID> {
+public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializable> implements IRepository<T, ID> {
 	
 	
 
