@@ -7,6 +7,7 @@ import java.util.Map;
 import com.mawujun.exception.BussinessException;
 import com.mawujun.exception.DefaulExceptionCode;
 import com.mawujun.repository.BaseRepository;
+import com.mawujun.repository.idEntity.IdEntity;
 import com.mawujun.repository.mybatis.Record;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
@@ -16,7 +17,7 @@ import com.mawujun.utils.page.QueryResult;
  * @author mawujun
  *
  */
-public abstract class BaseService<T, ID extends Serializable> {
+public abstract class BaseService<T extends IdEntity<ID>, ID extends Serializable> {
 	/**
 	 * 返回一个具体实体类的Repository，每个service都必须实现这个方法
 	 * 供默认的方法调用
