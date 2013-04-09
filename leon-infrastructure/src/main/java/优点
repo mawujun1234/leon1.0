@@ -3,3 +3,4 @@
 2：id自动生成代码的抽象类
 3：查询，分页组件
 4：hibernate和mybatis组合，自动返回结果
+5：支持reset
