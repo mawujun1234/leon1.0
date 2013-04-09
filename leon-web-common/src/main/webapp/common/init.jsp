@@ -22,8 +22,7 @@ Ext.Loader.setConfig({
 	enabled: true,
 	paths:{
 		'Leon':'.',
-		//'Ext.ux.desktop': 'js',
-		//'Ext.ux':'../../ext-4/examples/ux',
+		'Ext.ux':'../ext-4/examples/ux',
 		//'MyDesktop':'.'
 	}
 });

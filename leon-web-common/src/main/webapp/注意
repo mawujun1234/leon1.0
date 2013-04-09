@@ -10,3 +10,6 @@
 9：字符统计例子：http://docs.sencha.com/ext-js/4-2/extjs-build/examples/statusbar/statusbar-demo.html
 10:即时通讯或消息提示工具 也可以做成悬浮框，悬浮可拖动的功能，就可以到处点了。参考theme的拖动和 drag的三个示例：
 	http://docs.sencha.com/ext-js/4-2/extjs-build/examples/draw/Tiger.html
+	
+	
+	window如何最小化，并且要把菜单的点击事件委托给Desktop进行打开，这样打开的动作就被控制在了desktop中。
