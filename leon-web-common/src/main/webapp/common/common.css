@@ -1,0 +1,6 @@
+.menuBar-index-button { 
+        background: url(../icons/house.png) left top no-repeat !important; 
+}
+.taskBar-index-button { 
+        background: url(../icons/bricks.png) left top no-repeat !important; 
+}

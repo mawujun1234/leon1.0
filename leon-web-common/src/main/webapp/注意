@@ -1,1 +1,12 @@
 1：根据书上的要求把，extjs需要的注意点，例如s.gif的图片的配置
+2：把修改样式的功能添加进去，http://docs.sencha.com/ext-js/4-2/extjs-build/examples/portal/portal.html?theme=classic
+	注意portal中的portlet是否可以拖动大小
+3：参照拖拉的theme选择框，做一个界面切换器，可以切换界面，一个界面是快捷方式，另一个界面是portal界面
+4：快捷方式 实现方式 参考 http://docs.sencha.com/ext-js/4-2/extjs-build/examples/build/KitchenSink/ext-theme-neptune/#dataview-multisort
+5：树的节点信息科参考，鼠标放上去就会有很多提示信息http://docs.sencha.com/ext-js/4-2/extjs-build/examples/build/KitchenSink/ext-theme-neptune/#tree-reorder
+6：菜单的实现，可以使用拖树（双树）的方式，把功能拖到菜单上，或者根据功能生成菜单http://docs.sencha.com/ext-js/4-2/extjs-build/examples/build/KitchenSink/ext-theme-neptune/#tree-two
+7：给角色授权的时候也可以是这个样子
+8：	theme悬浮框，例子中很多地方都用到这个了，可以参考，可拖拉的theme选择框http://docs.sencha.com/ext-js/4-2/extjs-build/examples/shared/options-toolbar.js
+9：字符统计例子：http://docs.sencha.com/ext-js/4-2/extjs-build/examples/statusbar/statusbar-demo.html
+10:即时通讯或消息提示工具 也可以做成悬浮框，悬浮可拖动的功能，就可以到处点了。参考theme的拖动和 drag的三个示例：
+	http://docs.sencha.com/ext-js/4-2/extjs-build/examples/draw/Tiger.html
