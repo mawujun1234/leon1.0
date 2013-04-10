@@ -1,4 +1,4 @@
-Ext.define('Leon.desktop.TaskBar', {
+Ext.define('Leon.desktop.Menubar', {
     extend: 'Ext.toolbar.Toolbar', // TODO - make this a basic hbox panel...
 
     requires: [

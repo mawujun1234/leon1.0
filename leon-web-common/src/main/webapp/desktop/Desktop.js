@@ -2,8 +2,8 @@ Ext.define('Leon.desktop.Desktop', {
 	//extend: 'Ext.container.Viewport',
 	extend: 'Ext.panel.Panel',
 	requires: [
-	     'Leon.desktop.MenuBar',
-	     'Leon.desktop.TaskBar',
+	     'Leon.desktop.Menubar',
+	     'Leon.desktop.Taskbar',
 	     'Leon.desktop.Window'
 	],
 	layout:'fit',
@@ -15,16 +15,9 @@ Ext.define('Leon.desktop.Desktop', {
         var me = this;
         me.windows = new Ext.util.MixedCollection();
 
-        var menuBar=Ext.create('Leon.desktop.MenuBar',{
-        	items:[{iconCls: 'menuBar-index-button',xtype:'button',text:'桌面'}
+        var menubar=Ext.create('Leon.desktop.Menubar',{
+        	items:[{iconCls: 'menubar-index-button',xtype:'button',text:'桌面'}
         	,{text:'测试',handler:function(){
-//        		var win=Ext.create('Leon.desktop.Window',{
-//        			
-//        		});
-//        		me.add(win);//这行很重要，防止window覆盖了工具栏
-//        		win.show();
-        		
-        		
         		me.createWindow({
         			//id:1111,
         			title:'测试',
@@ -33,15 +26,15 @@ Ext.define('Leon.desktop.Desktop', {
         		
         	}}]
         });
-        var taskBar=Ext.create('Leon.desktop.TaskBar',{
-        	items:[{iconCls: 'taskBar-index-button',text:'任务栏：'}]
+        var taskbar=Ext.create('Leon.desktop.Taskbar',{
+        	
         });
-        me.tbar=menuBar;
-        me.bbar=taskBar;
+        me.tbar=menubar;
+        me.bbar=taskbar;
         
         //因为到时候可能做到 任务栏可以设置到左边或右边
-        me.menuBar=menuBar;
-        me.taskBar=taskBar;
+        me.menubar=menubar;
+        me.taskbar=taskbar;
 
         me.callParent();
     },
@@ -68,8 +61,8 @@ Ext.define('Leon.desktop.Desktop', {
 		me.add(win);
 	    me.windows.add(config.url,win);
 	
-	    //win.taskButton = me.taskbar.addTaskButton(win);
-	   // win.animateTarget = win.taskButton.el;
+	    win.taskButton = me.taskbar.addTaskButton(win);
+	    win.animateTarget = win.taskButton.el;
 	
 	    win.on({
 	        activate: me.updateActiveWindow,
@@ -132,7 +125,7 @@ Ext.define('Leon.desktop.Desktop', {
             activeWindow.active = true;
         }
 
-        //me.taskbar.setActiveButton(activeWindow && activeWindow.taskButton);
+        me.taskbar.setActiveButton(activeWindow && activeWindow.taskButton);
     },
     minimizeWindow: function(win) {
         win.minimized = true;
@@ -188,9 +181,9 @@ Ext.define('Leon.desktop.Desktop', {
      * @return {}
      */
     getViewHeight : function(){
-      //return (Ext.lib.Dom.getViewHeight() - this.getTaskbarHeight());
+      //return (Ext.lib.Dom.getViewHeight() - this.gettaskbarHeight());
     	var me=this;
-    	return (Ext.getBody( ).getHeight() - me.menuBar.getHeight( ) - me.taskBar.getHeight( ));
+    	return (Ext.getBody( ).getHeight() - me.menubar.getHeight( ) - me.taskbar.getHeight( ));
     },
     getViewWidth : function(){
        return Ext.getBody( ).getWidth();
