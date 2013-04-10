@@ -1,7 +1,8 @@
 Ext.define('Leon.desktop.Window', {
-    extend: 'Ext.Window',
+    extend: 'Ext.window.Window',
 	//type : 'IframeWindow',
-	//url : '',
+	url : '',//iframe链接的地址
+	
 	shrinkWrap :true,
 	resizable:true,
 	plain : true,
@@ -11,9 +12,9 @@ Ext.define('Leon.desktop.Window', {
 	//constrain:true,
 	maximizable :true,
 	minimizable:true,
-	maximized:false,
+	//maximized:false,
 	closeAction:'close',
-	title:'测试1',
+	//title:'测试1',
 	initComponent:function(){
 		var me=this;
 //		this.items = [{        
@@ -30,8 +31,8 @@ Ext.define('Leon.desktop.Window', {
 //			}     
 //		}];
 		var iframe=Ext.create('Ext.ux.IFrame',{
-			  src:'http://www.baidu.com',
-			  title:'google'
+			  src:me.url
+			  //title:'google'
 		});
 		me.items=[iframe];
 		this.callParent();
