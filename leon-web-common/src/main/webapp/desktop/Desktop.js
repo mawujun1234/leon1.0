@@ -24,6 +24,20 @@ Ext.define('Leon.desktop.Desktop', {
         			url:'http://www.baidu.com'
         		});
         		
+        	}},{text:'测试jsWindow',handler:function(){
+        		me.createWindow({
+        			//id:1111,
+        			title:'测试jsWindow',
+        			url:'/desktop/JsWindow.js'
+        		});
+        		
+        	}},{text:'测试jsPanel',handler:function(){
+        		me.createWindow({
+        			//id:1111,
+        			title:'测试jsPanel',
+        			url:'/desktop/JsPanel.js'
+        		});
+        		
         	}}]
         });
         var taskbar=Ext.create('Leon.desktop.Taskbar',{
@@ -38,27 +52,95 @@ Ext.define('Leon.desktop.Desktop', {
 
         me.callParent();
     },
+
     createWindow:function(config){
     	//如果已经存在这个窗口，就显示已经存在的窗口
     	if(this.windows.containsKey(config.url)){
     		this.restoreWindow(this.windows.get(config.url));
     		return;
     	}
+    	
+    	var me = this,win;
+    	
+    	
+    	if(config.url.lastIndexOf('.js')!=-1){
+			//就使用js来作为url的话，就实例化这个url，
+    		//接着判断这个对象是否是window对象，如果是，就直接show，否则就封装在window中
+    		Ext.Loader.loadScript({
+    			url:'..'+config.url,
+    			onLoad:function(options){
+    				console.dir(options);
+    				var className=config.url.substring(1,config.url.length-3);
+    				className='Leon.'+className.replace('/','.');
+    				var cfg = Ext.applyIf(config || {}, {
+			            //stateful: false,
+			            //isWindow: true,
+			            constrainHeader: true,
+			            desktop:me
+			            //minimizable: true,
+			           // maximizable: true  
+			            //,height:me.getViewHeight()*0.9
+			            //,width:me.getViewWidth()*0.9
+			        });
+    				var obj=Ext.create(className,cfg);
+    				if(obj instanceof Ext.window.Window){
+    					obj.setTitle(config.title);
+    					//还要添加进管理
+    					me.configWindow(obj,cfg);
+    					obj.show();
+    					return obj;
+    				} else {
+    					//还要使用window进行包裹
+    					var cfg = Ext.applyIf(config || {}, {
+				            stateful: false,
+				            isWindow: true,
+				            constrainHeader: true,
+				            minimizable: true,
+				            maximizable: true
+				            ,layout:'fit'
+				            ,closeAction:'close'
+				            ,items:[obj]
+				            //,height:me.getViewHeight()*0.9
+				            //,width:me.getViewWidth()*0.9
+				            //maximized:false,
+				        });
+    					win=Ext.create('Ext.window.Window',cfg);
+    					me.configWindow(win,cfg);
+						win.show();
+						return win;
+    				}
+    				//alert(className);
+    			},
+    			onError:function(){
+    				alert('url文档加载失败!');
+    				return;
+    			}
+    		});
+    		return;
+		} else {
+			//使用jsp，html等的时候，使用iframe进行加载
+			var cfg = Ext.applyIf(config || {}, {
+	            stateful: false,
+	            isWindow: true,
+	            constrainHeader: true,
+	            minimizable: true,
+	            maximizable: true
+	            ,closeAction:'close'
+	            ,height:me.getViewHeight()*0.9
+	            ,width:me.getViewWidth()*0.9
+	            //maximized:false,
+	        });
+			win=Ext.create('Leon.desktop.Window',cfg);
+			me.configWindow(win,cfg);
+			win.show();
+			return win;
+		}
 
-		var me = this,  cfg = Ext.applyIf(config || {}, {
-            stateful: false,
-            isWindow: true,
-            constrainHeader: true,
-            minimizable: true,
-            maximizable: true
-            
-            ,height:me.getViewHeight()*0.9
-            ,width:me.getViewWidth()*0.9
-            //maximized:false,
-        });
-
-		var win=Ext.create('Leon.desktop.Window',cfg);
-		me.add(win);
+    },
+        //对win进行配置，并和taskbar进行关联
+    configWindow:function(win,config){
+    	var me=this;
+    	me.add(win);
 	    me.windows.add(config.url,win);
 	
 	    win.taskButton = me.taskbar.addTaskButton(win);
@@ -98,9 +180,6 @@ Ext.define('Leon.desktop.Desktop', {
 	            }
 	        });
 	    };
-		
-		win.show();
-		return win;
     },
     updateActiveWindow: function () {
         var me = this, activeWindow = me.getActiveWindow(), last = me.lastActiveWindow;

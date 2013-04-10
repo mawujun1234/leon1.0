@@ -1,7 +1,11 @@
-Ext.define('Leon.desktop.Window', {
+/**
+ * 这是个例子
+ */
+Ext.define('Leon.desktop.JsWindow', {
     extend: 'Ext.window.Window',
 	//type : 'IframeWindow',
 	url : '',//iframe链接的地址
+	desktop:null,//desktop对象
 	
 	shrinkWrap :true,
 	resizable:true,
@@ -12,6 +16,8 @@ Ext.define('Leon.desktop.Window', {
 	//constrain:true,
 	maximizable :true,
 	minimizable:true,
+	height:300,
+	width:300,
 	//maximized:false,
 	closeAction:'close',
 	//title:'测试1',
@@ -31,11 +37,7 @@ Ext.define('Leon.desktop.Window', {
 //			}     
 //		}];
 		
-		var iframe=Ext.create('Ext.ux.IFrame',{
-			  src:me.url
-			  //title:'google'
-		});
-		me.items=[iframe];
+		me.html="js测试";
 		this.callParent();
 	}
 
