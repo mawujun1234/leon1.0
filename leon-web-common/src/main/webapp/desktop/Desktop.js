@@ -47,6 +47,15 @@ Ext.define('Leon.desktop.Desktop', {
         			url:'/desktop/example/MenuExten.js'
         		});
         		
+        	}},{text:'scripts',
+        		plugins:[{ptype:'menuplugin',scripts:'function aa(){menuItem.setText(menuItem.getText( ) +"(scripts)");}'}],
+        		handler:function(){
+        		me.createWindow({
+        			//id:1111,
+        			title:'测试menuExten',
+        			url:'/desktop/example/MenuExten.js'
+        		});
+        		
         	}}]
         });
         var taskbar=Ext.create('Leon.desktop.Taskbar',{
