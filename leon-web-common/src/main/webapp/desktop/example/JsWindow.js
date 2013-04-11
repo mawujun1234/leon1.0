@@ -1,11 +1,12 @@
 /**
  * 这是个例子
  */
-Ext.define('Leon.desktop.JsWindow', {
+Ext.define('Leon.desktop.example.JsWindow', {
     extend: 'Ext.window.Window',
 	//type : 'IframeWindow',
 	url : '',//iframe链接的地址
 	desktop:null,//desktop对象
+	menuItem:null,//菜单按钮的链接
 	
 	shrinkWrap :true,
 	resizable:true,

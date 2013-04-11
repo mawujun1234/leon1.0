@@ -28,14 +28,23 @@ Ext.define('Leon.desktop.Desktop', {
         		me.createWindow({
         			//id:1111,
         			title:'测试jsWindow',
-        			url:'/desktop/JsWindow.js'
+        			url:'/desktop/example/JsWindow.js'
         		});
         		
         	}},{text:'测试jsPanel',handler:function(){
         		me.createWindow({
         			//id:1111,
         			title:'测试jsPanel',
-        			url:'/desktop/JsPanel.js'
+        			url:'/desktop/example/JsPanel.js'
+        		});
+        		
+        	}},{text:'测试menuExten,插件，子菜单',
+        		plugins:[{ptype:'menuplugin',url:'/desktop/example/MenuPluginUpdateText.js'}],
+        		handler:function(){
+        		me.createWindow({
+        			//id:1111,
+        			title:'测试menuExten',
+        			url:'/desktop/example/MenuExten.js'
         		});
         		
         	}}]
@@ -69,9 +78,9 @@ Ext.define('Leon.desktop.Desktop', {
     		Ext.Loader.loadScript({
     			url:'..'+config.url,
     			onLoad:function(options){
-    				console.dir(options);
+    				//console.dir(options);
     				var className=config.url.substring(1,config.url.length-3);
-    				className='Leon.'+className.replace('/','.');
+    				className='Leon.'+className.split('/').join('.');
     				var cfg = Ext.applyIf(config || {}, {
 			            //stateful: false,
 			            //isWindow: true,
@@ -83,6 +92,11 @@ Ext.define('Leon.desktop.Desktop', {
 			            //,width:me.getViewWidth()*0.9
 			        });
     				var obj=Ext.create(className,cfg);
+    				//判断是否要使用window进行展示
+    				if(!obj.isWindow){
+    					obj.run();
+    					return null;
+    				}
     				if(obj instanceof Ext.window.Window){
     					obj.setTitle(config.title);
     					//还要添加进管理
@@ -90,6 +104,7 @@ Ext.define('Leon.desktop.Desktop', {
     					obj.show();
     					return obj;
     				} else {
+    					
     					//还要使用window进行包裹
     					var cfg = Ext.applyIf(config || {}, {
 				            stateful: false,
