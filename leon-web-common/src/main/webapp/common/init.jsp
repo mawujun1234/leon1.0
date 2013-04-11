@@ -1,7 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/ext-4/resources/css/ext-all.css" />
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/common/common.css" />
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/common/icons.css" />
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/ext-4/bootstrap.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/ext-4/locale/ext-lang-zh_CN.js"></script>

@@ -4,7 +4,8 @@ Ext.define('Leon.desktop.Desktop', {
 	requires: [
 	     'Leon.desktop.Menubar',
 	     'Leon.desktop.Taskbar',
-	     'Leon.desktop.Window'
+	     'Leon.desktop.Window',
+	     'Leon.desktop.model.Menu'
 	],
 	layout:'fit',
 	border:false,
@@ -15,48 +16,51 @@ Ext.define('Leon.desktop.Desktop', {
         var me = this;
         me.windows = new Ext.util.MixedCollection();
 
+//        var menubar=Ext.create('Leon.desktop.Menubar',{
+//        	items:[{iconCls: 'menubar-index-button',xtype:'button',text:'桌面'}
+//        	,{text:'测试',handler:function(){
+//        		me.createWindow({
+//        			//id:1111,
+//        			title:'测试',
+//        			url:'http://www.baidu.com'
+//        		});
+//        		
+//        	}},{text:'测试jsWindow',handler:function(){
+//        		me.createWindow({
+//        			//id:1111,
+//        			title:'测试jsWindow',
+//        			url:'/desktop/example/JsWindow.js'
+//        		});
+//        		
+//        	}},{text:'测试jsPanel',handler:function(){
+//        		me.createWindow({
+//        			//id:1111,
+//        			title:'测试jsPanel',
+//        			url:'/desktop/example/JsPanel.js'
+//        		});
+//        		
+//        	}},{text:'测试menuExten,插件，子菜单',
+//        		plugins:[{ptype:'menuplugin',url:'/desktop/example/MenuPluginUpdateText.js'}],
+//        		handler:function(){
+//        		me.createWindow({
+//        			//id:1111,
+//        			title:'测试menuExten',
+//        			url:'/desktop/example/MenuExten.js'
+//        		});
+//        		
+//        	}},{text:'scripts',
+//        		plugins:[{ptype:'menuplugin',scripts:'function aa(){menuItem.setText(menuItem.getText( ) +"(scripts)");}'}],
+//        		handler:function(){
+//        		me.createWindow({
+//        			//id:1111,
+//        			title:'测试menuExten',
+//        			url:'/desktop/example/MenuExten.js'
+//        		});
+//        		
+//        	}}]
+//        });
         var menubar=Ext.create('Leon.desktop.Menubar',{
-        	items:[{iconCls: 'menubar-index-button',xtype:'button',text:'桌面'}
-        	,{text:'测试',handler:function(){
-        		me.createWindow({
-        			//id:1111,
-        			title:'测试',
-        			url:'http://www.baidu.com'
-        		});
-        		
-        	}},{text:'测试jsWindow',handler:function(){
-        		me.createWindow({
-        			//id:1111,
-        			title:'测试jsWindow',
-        			url:'/desktop/example/JsWindow.js'
-        		});
-        		
-        	}},{text:'测试jsPanel',handler:function(){
-        		me.createWindow({
-        			//id:1111,
-        			title:'测试jsPanel',
-        			url:'/desktop/example/JsPanel.js'
-        		});
-        		
-        	}},{text:'测试menuExten,插件，子菜单',
-        		plugins:[{ptype:'menuplugin',url:'/desktop/example/MenuPluginUpdateText.js'}],
-        		handler:function(){
-        		me.createWindow({
-        			//id:1111,
-        			title:'测试menuExten',
-        			url:'/desktop/example/MenuExten.js'
-        		});
-        		
-        	}},{text:'scripts',
-        		plugins:[{ptype:'menuplugin',scripts:'function aa(){menuItem.setText(menuItem.getText( ) +"(scripts)");}'}],
-        		handler:function(){
-        		me.createWindow({
-        			//id:1111,
-        			title:'测试menuExten',
-        			url:'/desktop/example/MenuExten.js'
-        		});
-        		
-        	}}]
+        	items:[{iconCls: 'menubar-index-button',xtype:'button',text:'桌面'}]
         });
         var taskbar=Ext.create('Leon.desktop.Taskbar',{
         	

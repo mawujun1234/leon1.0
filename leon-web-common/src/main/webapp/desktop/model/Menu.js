@@ -1,0 +1,11 @@
+Ext.define("Leon.desktop.model.Menu",{
+	extend:"Ext.data.Model",
+	fields:[
+		{name:'id',type:'auto'},
+		{name:'text',type:'string'},
+		{name:'pluginUrl',type:'string'},
+		{name:'scripts',type:'string'},
+		{name:'iconCls',type:'string'},
+		{name:'url',type:'string'}//是从功能里面来的
+	]
+});
