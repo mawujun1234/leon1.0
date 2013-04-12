@@ -6,6 +6,7 @@ Ext.define("Leon.desktop.model.Menu",{
 		{name:'pluginUrl',type:'string'},
 		{name:'scripts',type:'string'},
 		{name:'iconCls',type:'string'},
+		{name:'reportCode',type:'string'},
 		{name:'url',type:'string'}//是从功能里面来的
 	]
 });
