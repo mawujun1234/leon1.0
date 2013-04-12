@@ -33,6 +33,12 @@ public class MenuController {
 				Menu child=new Menu();
 				child.setId(i+"");
 				child.setText(i+"的子菜单"+j);
+				for(int m=0;m<5;m++){
+					Menu child1=new Menu();
+					child1.setId(m+"");
+					child1.setText(m+"的子子菜单"+j);
+					child.addChild(child1);
+				}
 				menu.addChild(child);
 			}
 			list.add(menu);

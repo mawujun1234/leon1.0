@@ -60,9 +60,13 @@ Ext.define('Leon.desktop.Desktop', {
 //        		
 //        	}}]
 //        });
+        var menuItems=[{iconCls: 'menubar-index-button',xtype:'button',text:'桌面'},'-','-'];
+        me.returnMenuItem(menuItems,me.initMenus);
+       
         var menubar=Ext.create('Leon.desktop.Menubar',{
-        	items:[{iconCls: 'menubar-index-button',xtype:'button',text:'桌面'}]
+        	items:menuItems
         });
+       
         var taskbar=Ext.create('Leon.desktop.Taskbar',{
         	
         });
@@ -75,8 +79,45 @@ Ext.define('Leon.desktop.Desktop', {
 
         me.callParent();
     },
+    /**
+     * 返回菜单的组件形式
+     */
+    returnMenuItem:function(menuItems,initMenus){
+    	var me=this;
+    	//var initMenus=model.children;
+    	if(initMenus){
+        	for(var i=0;i<initMenus.length;i++){
+        		var model=initMenus[i];
+        		var menu={
+        			text:model.text,
+        			url:model.url,
+        			pluginUrl:model.pluginUrl,
+        			scripts:model.scripts,
+        			iconCls:model.iconCls
+        		};
+        		if(model.children && model.children.length>0){
+        			menu.menu={items:[]};
+        			me.returnMenuItem(menu.menu.items, model.children);
+        		} else {
+        			menu.plugins=[{ptype:'menuplugin',pluginUrl:menu.pluginUrl,scripts:menu.scripts}];
+	        		menu.handler=function(){
+		        		me.createWindow({
+		        			title:menu.text,
+		        			url:menu.url,
+		        			iconCls:menu.iconCls
+		        		});
+	        		}
+        		}
+        		menuItems.push(menu);
+        	}
+        }
+        return menuItems;
+    },
 
     createWindow:function(config){
+    	if(!config.url){
+    		return;
+    	}
     	//如果已经存在这个窗口，就显示已经存在的窗口
     	if(this.windows.containsKey(config.url)){
     		this.restoreWindow(this.windows.get(config.url));
