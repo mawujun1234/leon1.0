@@ -5,6 +5,7 @@
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/ext-4/bootstrap.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/ext-4/locale/ext-lang-zh_CN.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/common/common.js"></script>
     
 <style>
 

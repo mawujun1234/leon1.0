@@ -9,6 +9,7 @@ Ext.define('Leon.desktop.Desktop', {
 	],
 	layout:'fit',
 	border:false,
+	initMenus:'',//初始化时，传递过来的菜单，根据这菜单数据生成菜单
 	
 	windows:null,
 	lastActiveWindow:null,
