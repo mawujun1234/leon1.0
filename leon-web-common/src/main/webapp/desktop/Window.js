@@ -17,25 +17,27 @@ Ext.define('Leon.desktop.Window', {
 	//title:'测试1',
 	initComponent:function(){
 		var me=this;
-//		this.items = [{        
-//			xtype : "component",         
-//			autoEl : {             
-//				tag : "iframe",   
-//				scrolling:"auto",
-//				id:this.id+ "_iframe",
-//				frameborder:0,
-//				width:'100%',
-//				height:'100%',
-//				shim : false,
-//				src:me.entryPoint					
-//			}     
-//		}];
+		this.items = [{        
+			xtype : "component",         
+			autoEl : {             
+				tag : "iframe",   
+				scrolling:"auto",
+				//id:this.id+ "_iframe",
+				frameborder:0,
+				width:'100%',
+				height:'100%',
+				shim : false,
+				src:me.url					
+			}     
+		}];
 		
-		var iframe=Ext.create('Ext.ux.IFrame',{
-			  src:me.url
-			  //title:'google'
-		});
-		me.items=[iframe];
+//		var iframe=Ext.create('Ext.ux.IFrame',{
+//			  src:me.url
+//			//src:'http://www.baidu.com'
+//			  //title:'google'
+//		});
+//		me.items=[iframe];
+		
 		this.callParent();
 	}
 

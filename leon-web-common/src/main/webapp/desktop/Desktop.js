@@ -4,8 +4,7 @@ Ext.define('Leon.desktop.Desktop', {
 	requires: [
 	     'Leon.desktop.Menubar',
 	     'Leon.desktop.Taskbar',
-	     'Leon.desktop.Window',
-	     'Leon.desktop.model.Menu'
+	     'Leon.desktop.Window'
 	],
 	layout:'fit',
 	border:false,
@@ -61,6 +60,16 @@ Ext.define('Leon.desktop.Desktop', {
 //        	}}]
 //        });
         var menuItems=[{iconCls: 'menubar-index-button',xtype:'button',text:'桌面'},'-','-'];
+        menuItems.push(
+        {text:'测试',handler:function(){
+        		me.createWindow({
+        			//id:1111,
+        			title:'测试',
+        			url:'http://www.baidu.com'
+        		});
+        		
+        	}})
+        
         me.returnMenuItem(menuItems,me.initMenus);
        
         var menubar=Ext.create('Leon.desktop.Menubar',{
@@ -88,23 +97,26 @@ Ext.define('Leon.desktop.Desktop', {
     	if(initMenus){
         	for(var i=0;i<initMenus.length;i++){
         		var model=initMenus[i];
+        		//alert(model.url);
         		var menu={
         			text:model.text,
-        			url:model.url,
+        			link_url:model.url,
         			pluginUrl:model.pluginUrl,
         			scripts:model.scripts,
         			iconCls:model.iconCls
         		};
+        		
         		if(model.children && model.children.length>0){
         			menu.menu={items:[]};
         			me.returnMenuItem(menu.menu.items, model.children);
         		} else {
         			menu.plugins=[{ptype:'menuplugin',pluginUrl:menu.pluginUrl,scripts:menu.scripts}];
-	        		menu.handler=function(){
+        			//alert(menu.url+"===");
+	        		menu.handler=function(btn){
 		        		me.createWindow({
-		        			title:menu.text,
-		        			url:menu.url,
-		        			iconCls:menu.iconCls
+		        			title:btn.text,
+		        			url:btn.link_url,
+		        			iconCls:btn.iconCls
 		        		});
 	        		}
         		}
@@ -126,8 +138,9 @@ Ext.define('Leon.desktop.Desktop', {
     	
     	var me = this,win;
     	
-    	
-    	if(config.url.lastIndexOf('.js')!=-1){
+    	//alert(config.url.lastIndexOf('.js')+'=='+config.url.length);
+    	//config.url='/aaa/aa.js';
+    	if(config.url.lastIndexOf('.js')==config.url.length-2){
 			//就使用js来作为url的话，就实例化这个url，
     		//接着判断这个对象是否是window对象，如果是，就直接show，否则就封装在window中
     		Ext.Loader.loadScript({
@@ -188,6 +201,7 @@ Ext.define('Leon.desktop.Desktop', {
     		});
     		return;
 		} else {
+			//alert(3);
 			//使用jsp，html等的时候，使用iframe进行加载
 			var cfg = Ext.applyIf(config || {}, {
 	            stateful: false,

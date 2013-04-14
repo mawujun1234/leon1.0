@@ -2,13 +2,15 @@
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
     
-    <title>首页</title>
+    <title>功能管理</title>
+    <base href="">
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -19,15 +21,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 	
-	<%@include file="common/init.jsp" %>
-	<script type="text/javascript" src="desktop/Desktop.js"></script>
-	<script type="text/javascript" src="index.js"></script>
-	<script type="text/javascript" src="desktop/MenuPlugin.js"></script>
-	<script type="text/javascript" src="desktop/menu/Menu.js"></script>
-
+	<%@include file="../../common/init.jsp" %>
+	<script type="text/javascript" src="FunPanel.js"></script>
   </head>
   
   <body>
-    
+   
   </body>
 </html>

@@ -10,23 +10,36 @@
 <style>
 
 </style>
-
+<%
+String servletPath=request.getServletPath();
+int routeLength=servletPath.split("/").length-2;
+String route="";
+if(routeLength>0){
+	for(int i=0;i<routeLength;i++){
+		route+="../";
+	}
+	route=route.substring(0, route.length()-1);
+} else if (routeLength==0){
+	route=".";
+}
+%>
 <script type="text/javascript">
-
+//var servletPath='<%=servletPath%>';
+//int routeLength	=servletPath.split(regex).length-1;
+//if
 Ext.ContextPath="<%=request.getContextPath()%>";//应用程序上下文
-//Ext.Loader.setConfig({enabled:true});
-//Ext.Loader.setPath({
-//	//加载路径配置对象
-//});
+Ext.QuickTips.init();
+
 Ext.ns('Leon');
 Ext.Loader.setConfig({
 	enabled: true,
 	paths:{
-		'Leon':'.',
-		'Ext.ux':'../ext-4/examples/ux',
+		'Leon':'<%=route%>',
+		'Ext.ux':'<%=route%>'+'/ext-4/examples/ux',
 		//'MyDesktop':'.'
 	}
 });
+
 //Ext.setGlyphFontFamily("Pictos");
 </script>
 

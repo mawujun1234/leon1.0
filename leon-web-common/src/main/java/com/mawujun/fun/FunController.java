@@ -1,4 +1,4 @@
-package com.mawujun.menu;
+package com.mawujun.fun;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,42 +11,34 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mawujun.fun.Fun;
 
 @Controller
-public class MenuController {
+public class FunController {
 
 	/**
 	 * 桌面程序中把菜单按权限读取出来
 	 * @return
 	 */
-	@RequestMapping("/desktop/menu/list")
+	@RequestMapping("/fun/list")
 	@ResponseBody
-	public List<Menu> list(){		
+	public List<Fun> list(){		
 		//"".split(regex)
-		List<Menu> list=getQueryResult();
+		List<Fun> list=getQueryResult();
 		System.out.println("=============================="+list.size());
 		return list;
 	}
 	
-	private List<Menu> getQueryResult(){
-		List<Menu> list=new ArrayList<Menu>();
-		Menu menuFun=new Menu();
-		menuFun.setId("11111");
-		menuFun.setText("功能管理");
-		Fun fun=new Fun();
-		fun.setUrl("/desktop/fun/FunPanel.jsp");
-		//fun.setUrl("http://www.baidu.com");
-		menuFun.setFun(fun);
-		list.add(menuFun);
-		
+	private List<Fun> getQueryResult(){
+		List<Fun> list=new ArrayList<Fun>();
+
 		for(int i=0;i<2;i++){
-			Menu menu=new Menu();
+			Fun menu=new Fun();
 			menu.setId(i+"");
 			menu.setText(i+"菜单");
 			for(int j=0;j<2;j++){
-				Menu child=new Menu();
+				Fun child=new Fun();
 				child.setId(i+"");
 				child.setText(i+"的子菜单"+j);
 				for(int m=0;m<1;m++){
-					Menu child1=new Menu();
+					Fun child1=new Fun();
 					child1.setId(m+"");
 					child1.setText(m+"的子子菜单"+j);
 					child.addChild(child1);

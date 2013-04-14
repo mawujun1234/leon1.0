@@ -4,3 +4,15 @@
 .taskBar-index-button { 
         background: url(../icons/bricks.png) left top no-repeat !important; 
 }
+.form-save-button { 
+        background: url(../icons/disk.png) left top no-repeat !important; 
+}
+.form-update-button { 
+        background: url(../icons/fugue_hammer_screwdriver.png) left top no-repeat !important; 
+}
+.form-delete-button { 
+        background: url(../icons/delete.png) left top no-repeat !important; 
+}
+.form-addChild-button { 
+        background: url(../icons/expand-all.gif) left top no-repeat !important; 
+}

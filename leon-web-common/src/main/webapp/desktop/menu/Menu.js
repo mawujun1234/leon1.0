@@ -1,7 +1,8 @@
-Ext.define("Leon.desktop.model.Menu",{
+Ext.define("Leon.desktop.menu.Menu",{
 	extend:"Ext.data.Model",
 	fields:[
 		{name:'id',type:'auto'},
+		{name:'code',type:'string'},
 		{name:'text',type:'string'},
 		{name:'pluginUrl',type:'string'},
 		{name:'scripts',type:'string'},

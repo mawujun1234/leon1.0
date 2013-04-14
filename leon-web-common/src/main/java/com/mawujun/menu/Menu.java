@@ -12,7 +12,8 @@ public class Menu extends UUIDEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+	private String code;//帮助记码
+
 	private String text;
 	private String pluginUrl;
 	private String scripts;
@@ -25,6 +26,13 @@ public class Menu extends UUIDEntity {
 	
 	public void addChild(Menu child) {
 		this.children.add(child);
+	}
+	
+	public String getUrl() {
+		if(this.getFun()!=null){
+			return this.getFun().getUrl();
+		}
+		return null;
 	}
 	
 
@@ -82,6 +90,14 @@ public class Menu extends UUIDEntity {
 
 	public void setFun(Fun fun) {
 		this.fun = fun;
+	}
+	public String getCode() {
+		return code;
+	}
+
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 }
