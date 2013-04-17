@@ -104,7 +104,7 @@ Ext.override(Ext.data.Model,{
 	 * @param {} depth
 	 * @return {}
 	 */
-	prepareAssociatedData: function(seenKeys, depth) {
+	prepareAssociatedDataCustomer: function(seenKeys, depth) {
 
         var me               = this,
             associations     = me.associations.items,
@@ -182,7 +182,8 @@ Ext.override(Ext.data.writer.Writer, {
         var data=this.callOverridden(arguments);
         if(operation.includeAssociated){
         	//获取所有的关联数据，这里还是有只设置id的时候的问题
-        	var aa=record.getAssociatedData( );
+        	//var aa=record.getAssociatedData( );
+        	var aa=record.prepareAssociatedDataCustomer({},1);
     		Ext.apply(data,aa)
         } else {
         	//默认情况下，只获取hasOne和BelongsTo的关联对象的id

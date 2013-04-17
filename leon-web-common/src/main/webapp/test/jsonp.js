@@ -96,7 +96,7 @@ Ext.onReady(function(){
 			orderLine.save({includeAssociated:false});		
 			
 			orderLine.setOrder(2);			
-			orderLine.save({includeAssociated:true});
+			orderLine.save({includeAssociated:false});
 		}
 	});
 	
