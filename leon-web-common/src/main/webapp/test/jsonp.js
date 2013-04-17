@@ -1,160 +1,5 @@
-//Ext.override(Ext.data.BelongsToAssociation, {
-//	createSetter : function() {
-//		var me = this, foreignKey = me.foreignKey;
-//		// 'this' refers to the Model instance inside this function
-//		return function(value, options, scope) {
-////			// If we pass in an instance, pull the id out
-////			//原来不的代码
-////			if (value && value.isModel) {
-////				value = value.getId();
-////			}
-////			this.set(foreignKey, value); 
-////			//原来不的代码
-//			//添加的内容
-//			if (value && value.isModel) {
-//				this[me.instanceName]=value;
-//				this.set(foreignKey, value.getId());
-//			} else {
-//		        var obj=Ext.create(me.associatedModel,value);
-//		        this[me.instanceName]=obj;
-//		        this.set(foreignKey, obj.getId());
-//		    }
-//		    //体哪家的内容
-//
-//			
-//			if (Ext.isFunction(options)) {
-//				options = {
-//					callback : options,
-//					scope : scope || this
-//				};
-//			}
-//			if (Ext.isObject(options)) {
-//				return this.save(options);
-//			}
-//		};
-//	}
-//	
-//	,createGetter: function() {
-//        var me              = this,
-//            associatedName  = me.associatedName,
-//            associatedModel = me.associatedModel,
-//            foreignKey      = me.foreignKey,
-//            primaryKey      = me.primaryKey,
-//            instanceName    = me.instanceName;
-//
-//        //'this' refers to the Model instance inside this function
-//        return function(options, scope) {
-//            options = options || {};
-//
-//            var model = this,
-//                foreignKeyId = model.get(foreignKey),
-//                success,
-//                instance,
-//                args;
-//                
-//                ///=======这样就支持面向对象的方式获取关联对象的id了，不用定义order_id这种Filed，只要定义普通field和关联关系就可以延迟从后台加载数据了
-//                if(!foreignKeyId){
-//                	foreignKeyId=model.raw[Ext.String.uncapitalize(associatedName)].id;
-//                }
-//                //=========
-//
-//            if (options.reload === true || model[instanceName] === undefined) {
-//                instance = Ext.ModelManager.create({}, associatedName);
-//                instance.set(primaryKey, foreignKeyId);
-//
-//                if (typeof options == 'function') {
-//                    options = {
-//                        callback: options,
-//                        scope: scope || model
-//                    };
-//                }
-//                
-//                // Overwrite the success handler so we can assign the current instance
-//                success = options.success;
-//                options.success = function(rec){
-//                    model[instanceName] = rec;
-//                    if (success) {
-//                        success.apply(this, arguments);
-//                    }
-//                };
-//
-//                associatedModel.load(foreignKeyId, options);
-//                // assign temporarily while we wait for data to return
-//                model[instanceName] = instance;
-//                return instance;
-//            } else {
-//                instance = model[instanceName];
-//                args = [instance];
-//                scope = scope || options.scope || model;
-//
-//                //TODO: We're duplicating the callback invokation code that the instance.load() call above
-//                //makes here - ought to be able to normalize this - perhaps by caching at the Model.load layer
-//                //instead of the association layer.
-//                Ext.callback(options, scope, args);
-//                Ext.callback(options.success, scope, args);
-//                Ext.callback(options.failure, scope, args);
-//                Ext.callback(options.callback, scope, args);
-//
-//                return instance;
-//            }
-//        };
-//    }
-//});
-//
-//Ext.apply(Ext,{
-//	 createModel:function(className,data){
-//	 	if (typeof className !== 'string') {
-//	                Ext.Error.raise({
-//	                    sourceClass: "Ext",
-//	                    sourceMethod: "define",
-//	                    msg: "Invalid class name '" + className + "' specified, must be a non-empty string"
-//	                });
-//	     }
-//	            
-//		var record=Ext.create(className,data);
-//		//if (implicitIncludes ) {
-//			var reader=record.getProxy().getReader();
-//			reader.readAssociated(record, data);
-//		//}
-//		return record;
-//
-//	 }
-//});
-//
-//
-//
-//Ext.apply(Ext,{
-//	 createModel:function(className,data){
-//	 	if (typeof className !== 'string') {
-//	                Ext.Error.raise({
-//	                    sourceClass: "Ext",
-//	                    sourceMethod: "define",
-//	                    msg: "Invalid class name '" + className + "' specified, must be a non-empty string"
-//	                });
-//	     }
-//	            
-//		var record=Ext.create(className,data);
-//		//if (implicitIncludes ) {
-//			var reader=record.getProxy().getReader();
-//			reader.readAssociated(record, data);
-//		//}
-//		return record;
-//
-//	 }
-//});
-//
-//Ext.override(Ext.data.writer.Writer, { 
-//    getRecordData: function(record,operation) { 
-//    	var me=this;
-//        var data=this.callOverridden(arguments);
-//        if(operation.includeAssociated){
-//        	var aa=record.getAssociatedData( );
-//    		Ext.apply(data,aa)
-//        }
-//        
-//        return data;
-//    } 
-//});
+
+
 
 
 
@@ -168,17 +13,17 @@ Ext.define("Order",{
 		{name:'text',type:'auto'},
 		{name:'age',type:'int'},
 		{name:'email',type:'auto'}
-		,{ name: 'orderLine_id', type: 'int'}//重要
+		//,{ name: 'orderLine_id', type: 'int'}//重要
 	],
 	associations:[//name是必须的，用来访问orderLine的
-		//{type:'hasMany',model:'OrderLine',name : 'orderLines'}
-		{ type: 'hasOne', model: 'OrderLine',associationKey:'orderLine',foreignKey:'orderLine_id' }//
+		{type:'hasMany',model:'OrderLine',name : 'orderLines'}
+		//{ type: 'hasOne', model: 'OrderLine',associationKey:'orderLine',foreignKey:'orderLine_id' }//
 	]
 	,proxy:{
 		type:'ajax',
 		api:{
 			read:'Order.js',
-			load    : 'hasOne.js',
+			load    : 'Order.js',
 			create:'save.js',
 			update:'update.js',
 			destroy:'destroy.js'
@@ -233,21 +78,46 @@ Ext.define("OrderLine",{
 
 
 Ext.onReady(function(){
-//	var order = new Order({
-//	    id: 100,
-//	    orderLine_id: 20,
-//	    name: 'John Smith'
-//	});
-	Order.load(1,{
+	
+		//var orderLine=null;
+	OrderLine.load(1,{
 		action:'load',
-		success: function(order, operation) {
-			alert(order.getOrderLine().getId());
-			alert(order.get('orderLine_id'));
-			alert(order.getOrderLine().getOrder().getId());
-			alert(order.getOrderLine().get("order_id"));
+		success: function(record, operation) {
+			orderLine=record;
+			//alert(record.get('order_id'));//返回了1
+			orderLine=record;
+			//alert(orderLine.getOrder().getId());//弹出了11
 
+			var order2=Ext.create('Order',{
+				id:2,
+				text:11
+			});
+			orderLine.setOrder(order2);			
+			orderLine.save({includeAssociated:false});		
+			
+			orderLine.setOrder(2);			
+			orderLine.save({includeAssociated:true});
 		}
 	});
+	
+	
+	
+	
+////	var order = new Order({
+////	    id: 100,
+////	    orderLine_id: 20,
+////	    name: 'John Smith'
+////	});
+//	Order.load(1,{
+//		action:'load',
+//		success: function(order, operation) {
+//			alert(order.getOrderLine().getId());
+//			alert(order.get('orderLine_id'));
+//			alert(order.getOrderLine().getOrder().getId());
+//			alert(order.getOrderLine().get("order_id"));
+//
+//		}
+//	});
 	
 //	order.getOrderLine(function(orderLine, operation) {
 //	    // do something with the address object
@@ -286,11 +156,15 @@ Ext.onReady(function(){
 	
 	
 	
-	//var orderLine=null;
+//	//var orderLine=null;
 //	OrderLine.load(1,{
 //		action:'load',
 //		success: function(record, operation) {
 //			orderLine=record;
+//			alert(record.get('order_id'));//返回了1
+//			orderLine=record;
+//			alert(orderLine.getOrder().getId());//弹出了11
+//
 //			var order2=Ext.create('Order',{
 //				id:2
 //			});

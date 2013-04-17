@@ -36,9 +36,9 @@ Ext.apply(Ext,{
  */
 Ext.override(Ext.data.BelongsToAssociation, { 
     read: function(record, reader, associationData){
+    	//this.callOverridden(record, reader, associationData);
     	record[this.instanceName] = reader.read([associationData]).records[0];;
     	record.set(this.foreignKey,record[this.instanceName].getId());//主键必须是id
-    	//this.callParent(record, reader, associationData);   
     }
 });
 Ext.override(Ext.data.HasOneAssociation, { 
@@ -62,4 +62,134 @@ Ext.override(Ext.data.HasOneAssociation, {
             newRecord.set(inverAssoc.foreignKey,record.getId());//设置外键的值
         }
     }
+});
+
+Ext.override(Ext.data.Model,{
+	/**
+	 * 只会获取hasOne或belongsTo的id的数据
+	 */
+	getAssociatedDataOnlyId:function(){
+		var me               = this,
+            associations     = me.associations.items,
+            associationCount = associations.length,
+            associationData  = {},
+
+              associatedRecord,    
+              association, type, associationKey;
+            
+		for (i = 0; i < associationCount; i++) {
+            association = associations[i];
+            
+            type = association.type;
+            associationKey = association.associationKey;
+            if (type == 'hasMany') {//hasMany就不做处理
+               
+            } else if (type == 'belongsTo' || type == 'hasOne') {
+                associatedRecord = me[association.instanceName];
+                // If we have a record, put it onto our list
+                if (associatedRecord !== undefined) {
+                    associationData[associationKey] = associatedRecord.getData();
+                } else {
+                	associationData[associationKey]={
+                		id:me.get(association.foreignKey)
+                	}
+                }
+            }
+		}
+		return associationData;
+	},
+	/**
+	 * 修改了两处地方，associationKey和id
+	 * @param {} seenKeys
+	 * @param {} depth
+	 * @return {}
+	 */
+	prepareAssociatedData: function(seenKeys, depth) {
+
+        var me               = this,
+            associations     = me.associations.items,
+            associationCount = associations.length,
+            associationData  = {},
+            toRead           = [],
+            toReadKey        = [],
+            toReadIndex      = [],
+            associatedStore, associatedRecords, associatedRecord, o, index, result, seenDepth,
+            associationId, associatedRecordCount, association, i, j, type, name;
+
+        for (i = 0; i < associationCount; i++) {
+            association = associations[i];
+            associationId = association.associationId;
+            
+            seenDepth = seenKeys[associationId];
+            if (seenDepth && seenDepth !== depth) {
+                continue;
+            }
+            seenKeys[associationId] = depth;
+
+            type = association.type;
+            //name = association.name;
+            name = association.associationKey;//修改为associationKey
+            if (type == 'hasMany') {
+                associatedStore = me[association.storeName];
+
+                associationData[name] = [];
+                if (associatedStore && associatedStore.getCount() > 0) {
+                    associatedRecords = associatedStore.data.items;
+                    associatedRecordCount = associatedRecords.length;
+
+                    for (j = 0; j < associatedRecordCount; j++) {
+                        associatedRecord = associatedRecords[j];
+                        associationData[name][j] = associatedRecord.getData();
+                        toRead.push(associatedRecord);
+                        toReadKey.push(name);
+                        toReadIndex.push(j);
+                    }
+                }
+            } else if (type == 'belongsTo' || type == 'hasOne') {
+                associatedRecord = me[association.instanceName];
+                if (associatedRecord !== undefined) {
+                    associationData[name] = associatedRecord.getData();
+                    toRead.push(associatedRecord);
+                    toReadKey.push(name);
+                    toReadIndex.push(-1);
+                } else {//这个else是添加的
+                	associationData[name]={
+                		id:me.get(association.foreignKey)
+                	}
+                }
+            }
+        }
+        
+        for (i = 0, associatedRecordCount = toRead.length; i < associatedRecordCount; ++i) {
+            associatedRecord = toRead[i];
+            o = associationData[toReadKey[i]];
+            index = toReadIndex[i];
+            result = associatedRecord.prepareAssociatedData(seenKeys, depth + 1);
+            if (index === -1) {
+                Ext.apply(o, result);
+            } else {
+                Ext.apply(o[index], result);
+            }
+        }
+
+        return associationData;
+    }
+});
+
+Ext.override(Ext.data.writer.Writer, { 
+    getRecordData: function(record,operation) { 
+    	var me=this;
+        var data=this.callOverridden(arguments);
+        if(operation.includeAssociated){
+        	//获取所有的关联数据，这里还是有只设置id的时候的问题
+        	var aa=record.getAssociatedData( );
+    		Ext.apply(data,aa)
+        } else {
+        	//默认情况下，只获取hasOne和BelongsTo的关联对象的id
+        	var aa=record.getAssociatedDataOnlyId( );
+    		Ext.apply(data,aa)
+        }
+        
+        return data;
+    } 
 });
