@@ -158,6 +158,7 @@
 
 
 
+
 		
 Ext.define("Order",{
 	extend:"Ext.data.Model",
@@ -167,15 +168,17 @@ Ext.define("Order",{
 		{name:'text',type:'auto'},
 		{name:'age',type:'int'},
 		{name:'email',type:'auto'}
+		,{ name: 'orderLine_id', type: 'int'}//重要
 	],
 	associations:[//name是必须的，用来访问orderLine的
-		{type:'hasMany',model:'OrderLine',name : 'orderLines'}//,name : 'orderLines',associationKey:'orderLines'
+		//{type:'hasMany',model:'OrderLine',name : 'orderLines'}
+		{ type: 'hasOne', model: 'OrderLine',associationKey:'orderLine',foreignKey:'orderLine_id' }//
 	]
 	,proxy:{
 		type:'ajax',
 		api:{
 			read:'Order.js',
-			load    : 'load.js',
+			load    : 'hasOne.js',
 			create:'save.js',
 			update:'update.js',
 			destroy:'destroy.js'
@@ -227,45 +230,121 @@ Ext.define("OrderLine",{
 
 
 
+
+
 Ext.onReady(function(){
-var store = Ext.create('Ext.data.TreeStore', {
-//	proxy:{
-//		type:'ajax',
-//		url:'Order.js'
-//	
-//	},
-	model:'Order',
-	//nodeParam :'qq',
-    root: {
-        expanded: false
-        ,text:'11'
-        ,children: [
-            { text: "detention", leaf: true },
-            { text: "homework", expanded: true, children: [
-                { text: "book report", leaf: true },
-                { text: "algebra", leaf: true}
-            ] },
-            { text: "buy lottery tickets", leaf: true ,id:'test'}
-        ]
-    }
-});
+//	var order = new Order({
+//	    id: 100,
+//	    orderLine_id: 20,
+//	    name: 'John Smith'
+//	});
+	Order.load(1,{
+		action:'load',
+		success: function(order, operation) {
+			alert(order.getOrderLine().getId());
+			alert(order.get('orderLine_id'));
+			alert(order.getOrderLine().getOrder().getId());
+			alert(order.getOrderLine().get("order_id"));
 
+		}
+	});
+	
+//	order.getOrderLine(function(orderLine, operation) {
+//	    // do something with the address object
+//	    alert(orderLine.get('id')); // alerts 20
+//	}, this);
+	
+	
 
-
-Ext.create('Ext.tree.Panel', {
-	tbar:[{text:'删除',handler:function(){
-		//store.removeAll();
-		var node=store.getNodeById("11");
-		node.destroy();
-		store.sync();
-	}}],
-    title: 'Simple Tree',
-    width: 200,
-    height: 150,
-    store: store,
-    rootVisible: true,
-    renderTo: Ext.getBody()
-});
+//	Order.load(1,{
+//		action:'load',
+//		success: function(record, operation) {
+//			alert(record.get('text'));
+//			order=record;
+//			//双向关联已经配置好了
+//			//alert(order.orderLines().getAt(0).getOrder().getId());
+//			var line1=order.orderLines().getAt(0);
+//			var orderline=Ext.create('OrderLine',{
+//				id:33,
+//				name:'更新的'//因为设置了id
+//			});
+//			var orderline1=Ext.create('OrderLine',{
+//				//id:44,
+//				name:'新增的'//因为没有设置id
+//			});
+//			var orderLines=order.orderLines();
+//			orderLines.add(orderline);
+//			orderLines.add(orderline1);
+//			//orderLines.remove(line1);
+//			orderLines.removeAt(0);
+//			orderLines.sync();
+//		}
+//		//,failure: function(record, operation) {}
+//		//,callback: function(record, operation) {}
+//	});
+	
+	
+	
+	
+	//var orderLine=null;
+//	OrderLine.load(1,{
+//		action:'load',
+//		success: function(record, operation) {
+//			orderLine=record;
+//			var order2=Ext.create('Order',{
+//				id:2
+//			});
+//			orderLine.setOrder(order2);
+//			
+//			orderLine.getOrder().getId();
+//		}
+//	});
+	
+	
+	
+	
+	
+	
+	
+	
+//var store = Ext.create('Ext.data.TreeStore', {
+////	proxy:{
+////		type:'ajax',
+////		url:'Order.js'
+////	
+////	},
+//	model:'Order',
+//	//nodeParam :'qq',
+//    root: {
+//        expanded: false
+//        ,text:'11'
+//        ,children: [
+//            { text: "detention", leaf: true },
+//            { text: "homework", expanded: true, children: [
+//                { text: "book report", leaf: true },
+//                { text: "algebra", leaf: true}
+//            ] },
+//            { text: "buy lottery tickets", leaf: true ,id:'test'}
+//        ]
+//    }
+//});
+//
+//
+//
+//Ext.create('Ext.tree.Panel', {
+//	tbar:[{text:'删除',handler:function(){
+//		//store.removeAll();
+//		var node=store.getNodeById("11");
+//		node.destroy();
+//		store.sync();
+//	}}],
+//    title: 'Simple Tree',
+//    width: 200,
+//    height: 150,
+//    store: store,
+//    rootVisible: true,
+//    renderTo: Ext.getBody()
+//});
 
 
 
