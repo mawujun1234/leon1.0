@@ -136,7 +136,7 @@
 			<property name="defaultAutoCommit" value="false" />
 			<property name="timeBetweenEvictionRunsMillis" value="3600000" />
 			<property name="minEvictableIdleTimeMillis" value="3600000" />
-		</bean>
+	</bean>
 		
 	<beans profile="prod">
 		<!-- 数据源配置,使用应用内的DBCP数据库连接池 -->

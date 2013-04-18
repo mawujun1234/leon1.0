@@ -39,7 +39,7 @@ public abstract class BaseService<T extends IdEntity<ID>, ID extends Serializabl
 		getRepository().delete(id);
 	}
 	
-	public T get(Serializable id) {
+	public T get(ID id) {
 		return getRepository().get(id);
 	}
 	

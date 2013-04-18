@@ -125,21 +125,21 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
     <tx:annotation-driven transaction-manager="transactionManager"  proxy-target-class="false" order="50" />
-		<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-			<property name="driverClassName" value="${jdbc.driver}"/>
-			<property name="url" value="${jdbc.url}" />
-			<property name="username" value="${jdbc.username}" />
-			<property name="password" value="${jdbc.password}" />
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driver}"/>
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
 			
-			<property name="maxIdle" value="${dbcp.maxIdle}" />
-			<property name="maxActive" value="${dbcp.maxActive}" />
-			<property name="defaultAutoCommit" value="false" />
-			<property name="timeBetweenEvictionRunsMillis" value="3600000" />
-			<property name="minEvictableIdleTimeMillis" value="3600000" />
-		</bean>
+		<property name="maxIdle" value="${dbcp.maxIdle}" />
+		<property name="maxActive" value="${dbcp.maxActive}" />
+		<property name="defaultAutoCommit" value="false" />
+		<property name="timeBetweenEvictionRunsMillis" value="3600000" />
+		<property name="minEvictableIdleTimeMillis" value="3600000" />
+	</bean>
 		
 	<beans profile="prod">
-		<!-- 数据源配置,使用应用内的DBCP数据库连接池 -->
+		<!-- 数据源配置,使用应用内的DBCP数据库连接池 
 		<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 			<property name="driverClassName" value="${jdbc.driver}"/>
 			<property name="url" value="${jdbc.url}" />
@@ -152,6 +152,7 @@
 			<property name="timeBetweenEvictionRunsMillis" value="3600000" />
 			<property name="minEvictableIdleTimeMillis" value="3600000" />
 		</bean>
+		-->
 	</beans>
 	
 	<beans profile="dev">
@@ -168,9 +169,9 @@
 			<property name="timeBetweenEvictionRunsMillis" value="3600000" />
 			<property name="minEvictableIdleTimeMillis" value="3600000" />
 		</bean>
-		-->
-		<jdbc:embedded-database id="dataSource" type="H2">
-		</jdbc:embedded-database>
+		
+		<jdbc:embedded-database id="dataSource" type="H2" >
+		</jdbc:embedded-database>-->
 	</beans>
 	
 	<!-- unit test环境 -->

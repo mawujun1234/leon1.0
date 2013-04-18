@@ -3,22 +3,35 @@ package com.mawujun.fun;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mawujun.menu.Menu;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import com.mawujun.repository.idEntity.UUIDEntity;
 
+@Entity
+@Table(name="leon_Fun")
 public class Fun extends UUIDEntity{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private String code;//帮助记码
-	
+	@Column(length=20)
+	private String code;//助记码
+	@Column(length=20)
 	private String text;
+	@Column(length=80)
 	private String url;
 	//private String iconCls;
+	@Column(length=40)
 	private String reportCode;//等级关系代码
 	
+	@ManyToOne
+	private Fun parent;
+	@OneToMany(mappedBy="parent")
 	private List<Fun> children=new ArrayList<Fun>();
 	
 	public void addChild(Fun child) {
@@ -54,6 +67,14 @@ public class Fun extends UUIDEntity{
 	}
 	public void setChildren(List<Fun> children) {
 		this.children = children;
+	}
+
+	public Fun getParent() {
+		return parent;
+	}
+
+	public void setParent(Fun parent) {
+		this.parent = parent;
 	}
 
 }

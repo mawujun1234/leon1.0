@@ -3,9 +3,17 @@ package com.mawujun.menu;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 import com.mawujun.fun.Fun;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
+@Entity
+@Table(name="leon_menu")
 public class Menu extends UUIDEntity {
 
 	/**
@@ -20,8 +28,11 @@ public class Menu extends UUIDEntity {
 	private String iconCls;
 	private String reportCode;//等级关系代码
 	
+	@OneToOne
 	private Fun fun;
-	
+	@ManyToOne
+	private Menu parent;
+	@OneToMany(mappedBy="parent")
 	private List<Menu> children=new ArrayList<Menu>();
 	
 	public void addChild(Menu child) {

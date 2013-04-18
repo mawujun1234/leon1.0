@@ -16,6 +16,7 @@
 
   
   <build>
+      	<!-- 进行profile的切换 -->
   		<resources>
 	      <resource>
 	        <directory>src/main/resources</directory>
@@ -29,7 +30,7 @@
 	    		<artifactId>tomcat6-maven-plugin</artifactId>
 	    		<version>2.1</version>
 	    		<configuration>
-	                 <port>8082</port>
+	                 <port>8083</port>
 	                 <path>/</path>
 	                 <uriEncoding>utf-8</uriEncoding>
 	                 <contextReloadable>true</contextReloadable> 
@@ -42,7 +43,7 @@
 	    		<artifactId>tomcat7-maven-plugin</artifactId>
 	    		<version>2.1</version>
 	    		<configuration>
-	                 <port>8082</port>
+	                 <port>8083</port>
 	                 <path>/</path>
 	                 <!--<protocol>org.apache.coyote.http11.Http11NioProtocol</protocol> -->
 	                 <uriEncoding>utf-8</uriEncoding>

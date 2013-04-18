@@ -3,6 +3,7 @@ package com.mawujun.menu;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,8 @@ import com.mawujun.fun.Fun;
 @Controller
 public class MenuController {
 
+	@Autowired
+	private MenuService menuService;
 	/**
 	 * 桌面程序中把菜单按权限读取出来
 	 * @return
@@ -20,6 +23,7 @@ public class MenuController {
 	@RequestMapping("/desktop/menu/list")
 	@ResponseBody
 	public List<Menu> list(){		
+		//menuService.get("1");
 		//"".split(regex)
 		List<Menu> list=getQueryResult();
 		System.out.println("=============================="+list.size());

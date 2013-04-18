@@ -18,7 +18,7 @@ import org.hibernate.annotations.GenericGenerator;
  *
  */
 @MappedSuperclass
-public abstract class UUIDEntity implements Serializable{
+public abstract class UUIDEntity  implements IdEntity<String>,Serializable{
 
 	/**
 	 * 
