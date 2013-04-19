@@ -14,12 +14,6 @@
         <dependent-module archiveName="leon-utils-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/leon-utils/leon-utils">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module deploy-path="/" handle="module:/overlay/prj/leon-web-common?includes=**/**&amp;excludes=META-INF/MANIFEST.MF">
-            <dependency-type>consumes</dependency-type>
-        </dependent-module>
-        <dependent-module deploy-path="/" handle="module:/overlay/slf/?includes=**/**&amp;excludes=META-INF/MANIFEST.MF">
-            <dependency-type>consumes</dependency-type>
-        </dependent-module>
         <property name="context-root" value="leon-example"/>
         <property name="java-output-path" value="/leon-example/target/classes"/>
     </wb-module>

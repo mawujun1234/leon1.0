@@ -17,10 +17,11 @@
   </properties>
   <dependencies>
 
-    <dependency>
-    	<groupId>com.mawujun</groupId>
-    	<artifactId>leon-repository</artifactId>
-    	<version>0.0.1-SNAPSHOT</version>
-    </dependency>
+
+  <dependency>
+  	<groupId>com.mawujun</groupId>
+  	<artifactId>leon-infrastructure</artifactId>
+  	<version>0.0.1-SNAPSHOT</version>
+  </dependency>
   </dependencies>
 </project>

@@ -62,7 +62,8 @@
 					<scanIntervalSeconds>0</scanIntervalSeconds>
 				</configuration>
 	    	</plugin>
-        </plugins> 
+
+  	  </plugins> 
   </build>
   <dependencies>
   	<dependency>
@@ -70,6 +71,7 @@
   		<artifactId>leon-utils</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
+
   	<dependency>
   		<groupId>com.mawujun</groupId>
   		<artifactId>leon-infrastructure</artifactId>

@@ -125,6 +125,7 @@
 		<list>
 			<bean id="jackson2JsonView" class="com.mawujun.utils.spring.mvc.exception.MappingJackson2JsonView_Custom">
 			</bean>
+			<!--  -->
           <bean class="org.springframework.web.servlet.view.xml.MarshallingView" >  
             <property name="marshaller">  
                 <bean class="org.springframework.oxm.xstream.XStreamMarshaller"/>  

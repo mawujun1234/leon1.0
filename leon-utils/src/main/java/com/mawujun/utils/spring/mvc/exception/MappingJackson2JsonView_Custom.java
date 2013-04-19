@@ -53,6 +53,7 @@ public class MappingJackson2JsonView_Custom extends MappingJackson2JsonView {
 				
 			}
 			model=map;
+			//exception.printStackTrace();
 		}
 		super.renderMergedOutputModel(model, request, response);
 	}
