@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.mawujun.exception.BussinessException;
 import com.mawujun.exception.DefaulExceptionCode;
 import com.mawujun.repository.BaseRepository;
@@ -17,6 +20,7 @@ import com.mawujun.utils.page.QueryResult;
  * @author mawujun
  *
  */
+@Transactional(propagation=Propagation.REQUIRED)
 public abstract class BaseService<T extends IdEntity<ID>, ID extends Serializable> {
 	/**
 	 * 返回一个具体实体类的Repository，每个service都必须实现这个方法
@@ -35,10 +39,9 @@ public abstract class BaseService<T extends IdEntity<ID>, ID extends Serializabl
 	public void delete(T entity) {
 		getRepository().delete(entity);
 	}
-	public void delete(Serializable id) {
+	public void delete(ID id) {
 		getRepository().delete(id);
 	}
-	
 	public T get(ID id) {
 		return getRepository().get(id);
 	}

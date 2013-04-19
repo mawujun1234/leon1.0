@@ -23,7 +23,13 @@ public class MenuController {
 	@RequestMapping("/desktop/menu/list")
 	@ResponseBody
 	public List<Menu> list(){		
-		menuService.get("1");
+		try {
+			menuService.get("1");
+		} catch(RuntimeException e) {
+			e.printStackTrace();
+			throw e;
+		}
+		
 		//"".split(regex)
 		List<Menu> list=getQueryResult();
 		System.out.println("=============================="+list.size());
