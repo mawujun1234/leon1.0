@@ -11,11 +11,20 @@ Ext.onReady(function(){
 		region:'center'
 	});
 	tree.on('itemclick',function(view,record,item,index){
-		alert(1);
+		//alert(1);
 		form.getForm().loadRecord(record);
 	});
+	
+	
+	
+	
 	var viewPort=Ext.create('Ext.container.Viewport',{
 		layout:'border',
 		items:[tree,form]
 	});
+	
+//	form.down("button[action=save]").on('click',function(btn){
+//		this.up('form').getForm().isValid();
+//		grid.getStore().reload();
+//	});
 });

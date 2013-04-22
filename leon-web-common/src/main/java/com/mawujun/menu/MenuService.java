@@ -9,6 +9,7 @@ import com.mawujun.repository.BaseRepository;
 import com.mawujun.service.BaseService;
 
 @Service
+@Transactional(propagation=Propagation.REQUIRED)
 public class MenuService extends BaseService<Menu, String> {
 	
 	@Autowired

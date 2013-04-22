@@ -9,6 +9,8 @@ import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.mawujun.annotation.AttrName;
+
 /**
  * 统一定义id的entity基类.是使用UUID作为生成策略
  * 
@@ -33,6 +35,7 @@ public abstract class UUIDEntity  implements IdEntity<String>,Serializable{
 	@Column(length=36,updatable=false,unique=true)
 	//@Access(AccessType.PROPERTY)
 	@org.hibernate.annotations.AccessType("property")
+	@AttrName(name="id")
 	protected String id;
 
 	

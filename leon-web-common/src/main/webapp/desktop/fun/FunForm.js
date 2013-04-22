@@ -46,10 +46,12 @@ Ext.define('Leon.desktop.fun.FunForm',{
             }
 	    ];
 	    me.buttons= [{
+	    	action:'save',
             text: '保存',
             iconCls:'form-save-button',
             handler: function() {
                 this.up('form').getForm().isValid();
+                me.onSave();
             }
         },{
             text: '更新',
@@ -58,7 +60,7 @@ Ext.define('Leon.desktop.fun.FunForm',{
                 this.up('form').getForm().isValid();
             }
         },{
-            text: '新建子菜单',
+            text: '新建子功能',
             iconCls:'form-addChild-button',
             handler: function() {
                 this.up('form').getForm().reset();
@@ -72,5 +74,8 @@ Ext.define('Leon.desktop.fun.FunForm',{
         }]
        
        me.callParent();
+	},
+	onSave:function(form){
+	
 	}
 });

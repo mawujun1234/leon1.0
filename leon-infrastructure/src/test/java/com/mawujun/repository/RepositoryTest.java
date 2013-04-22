@@ -94,7 +94,7 @@ public class RepositoryTest extends DbunitBaseRepositoryTest {
 		entity.setFirstName("ma");
 		entity.setLastName("wujun");
 		entity.setEmail("160649888@163.com");
-		repository.save(entity);
+		repository.create(entity);
 		tx.commit();
 		
 		assertNotNull(entity.getId());
@@ -117,7 +117,7 @@ public class RepositoryTest extends DbunitBaseRepositoryTest {
 		entity1.setEmail("11");//如果不是email的格式，就会爆实体类验证异常。
 		try {
 			//不回滚的话，后面的测试就执行部下去了，会爆org.hibernate.TransactionException: nested transactions not supported异常
-			repository.save(entity1);//这里就报错了
+			repository.create(entity1);//这里就报错了
 			tx.commit();
 		} catch(Exception e){
 			tx.rollback();

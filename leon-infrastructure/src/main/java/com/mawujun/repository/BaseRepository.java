@@ -125,7 +125,7 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 		hibernateDao.initLazyProperty(proxy);
 	}
 
-	public void save(T entity) {
+	public void create(T entity) {
 		// TODO Auto-generated method stub
 		hibernateDao.save(entity);
 		hibernateDao.flush();

@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.mawujun.annotation.AttrName;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
 @Entity
@@ -19,11 +20,14 @@ public class Fun extends UUIDEntity{
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	@AttrName(name="助记码")
 	@Column(length=20)
 	private String code;//助记码
 	@Column(length=20)
+	@AttrName(name="名称")
 	private String text;
 	@Column(length=80)
+	@AttrName(name="地址")
 	private String url;
 	//private String iconCls;
 	@Column(length=40)

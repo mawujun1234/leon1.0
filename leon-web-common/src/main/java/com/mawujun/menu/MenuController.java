@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mawujun.fun.Fun;
 
 @Controller
+//@Transactional(propagation=Propagation.REQUIRED)
 public class MenuController {
 
 	@Autowired
@@ -20,11 +23,11 @@ public class MenuController {
 	 * 桌面程序中把菜单按权限读取出来
 	 * @return
 	 */
-	@RequestMapping("/desktop/menu/list")
+	@RequestMapping("/menu/queryAll")
 	@ResponseBody
-	public List<Menu> list(){		
+	public List<Menu> queryAll(){		
 		try {
-			menuService.get("1");
+			menuService.get1("1");
 		} catch(RuntimeException e) {
 			e.printStackTrace();
 			throw e;

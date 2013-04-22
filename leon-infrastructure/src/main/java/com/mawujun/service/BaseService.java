@@ -20,7 +20,6 @@ import com.mawujun.utils.page.QueryResult;
  * @author mawujun
  *
  */
-@Transactional(propagation=Propagation.REQUIRED)
 public abstract class BaseService<T extends IdEntity<ID>, ID extends Serializable> {
 	/**
 	 * 返回一个具体实体类的Repository，每个service都必须实现这个方法
@@ -28,8 +27,8 @@ public abstract class BaseService<T extends IdEntity<ID>, ID extends Serializabl
 	 */
 	public abstract BaseRepository<T,ID> getRepository();
 	
-	public void save(T entity) {
-		getRepository().save(entity);
+	public void create(T entity) {
+		getRepository().create(entity);
 	}
 	
 	public void update(T entity) {

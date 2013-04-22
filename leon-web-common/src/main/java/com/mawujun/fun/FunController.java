@@ -1,54 +1,80 @@
 package com.mawujun.fun;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.mawujun.fun.Fun;
-
+/**
+ * 
+ * @author mawujun mawujun1234@163.com
+ *
+ */
 @Controller
+@Transactional
 public class FunController {
+	@Autowired
+	private FunService funService;
 
 	/**
 	 * 桌面程序中把菜单按权限读取出来
 	 * @return
 	 */
-	@RequestMapping("/fun/list")
+	@RequestMapping("/fun/query")
 	@ResponseBody
-	public List<Fun> list(){		
-		//"".split(regex)
-		List<Fun> list=getQueryResult();
-		System.out.println("=============================="+list.size());
-		return list;
+	public List<Fun> query(String id,String node){		
+		
+		return funService.queryAll();
+	}
+	/**
+	 * 一次性读取出所有的节点数据
+	 * @return
+	 */
+	@RequestMapping("/fun/queryAll")
+	@ResponseBody
+	public List<Fun> queryAll(){		
+		
+		return funService.queryAll();
+	}
+	@RequestMapping("/fun/get")
+	@ResponseBody
+	public Fun get(String id){		
+		return funService.get(id);
 	}
 	
-	private List<Fun> getQueryResult(){
-		List<Fun> list=new ArrayList<Fun>();
-
-		for(int i=0;i<2;i++){
-			Fun menu=new Fun();
-			menu.setId(i+"");
-			menu.setText(i+"菜单");
-			for(int j=0;j<2;j++){
-				Fun child=new Fun();
-				child.setId(i+"");
-				child.setText(i+"的子菜单"+j);
-				for(int m=0;m<1;m++){
-					Fun child1=new Fun();
-					child1.setId(m+"");
-					child1.setText(m+"的子子菜单"+j);
-					child.addChild(child1);
-				}
-				menu.addChild(child);
-			}
-			list.add(menu);
-		}
-		return list;
+	@RequestMapping("/fun/create")
+	@ResponseBody
+	public void create(Fun fun){		
+		funService.create(fun);
 	}
-
-
+	
+	@RequestMapping("/fun/update")
+	@ResponseBody
+	public void update(Fun fun){		
+		 funService.update(fun);
+	}
+	
+	@RequestMapping("/fun/destory")
+	@ResponseBody
+	public void destory(Fun fun){		
+		funService.delete(fun);
+	}
+	
+	@RequestMapping("/fun/get/{id}")
+	@ResponseBody
+	public Fun getByReset(@PathVariable String id){		
+		return funService.get(id);
+	}
+	
+	@RequestMapping("/fun/destory/{id}")
+	@ResponseBody
+	public void destory(@PathVariable String id){		
+		funService.delete(id);
+	}
+	
+	
 }

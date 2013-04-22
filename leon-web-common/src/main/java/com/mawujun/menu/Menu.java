@@ -3,12 +3,14 @@ package com.mawujun.menu;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.mawujun.annotation.AttrName;
 import com.mawujun.fun.Fun;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
@@ -20,12 +22,21 @@ public class Menu extends UUIDEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	@Column(length=20)
 	private String code;//帮助记码
-
+	@AttrName(name="名称")
+	@Column(length=20)
 	private String text;
+	@AttrName(name="插件地址")
+	@Column(length=80)
 	private String pluginUrl;
+	@AttrName(name="代码")
+	@Column(length=1000)
 	private String scripts;
+	@AttrName(name="icon")
+	@Column(length=40)
 	private String iconCls;
+	@Column(length=40)
 	private String reportCode;//等级关系代码
 	
 	@OneToOne

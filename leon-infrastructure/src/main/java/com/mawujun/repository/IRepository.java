@@ -9,7 +9,7 @@ import com.mawujun.utils.page.QueryResult;
 import com.mawujun.utils.page.WhereInfo;
 
 public interface IRepository<T, ID extends Serializable> {
-	public void save(T entity);
+	public void create(T entity);
 	public void update(T entity);
 	public void updateDynamic(T entity);
 	public void updateDynamic(T entity,WhereInfo... wheres);
