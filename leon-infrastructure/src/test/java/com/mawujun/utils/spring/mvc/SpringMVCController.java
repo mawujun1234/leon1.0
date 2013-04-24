@@ -147,6 +147,24 @@ public class SpringMVCController {
 		return map;
 	}
 	
+	@RequestMapping("/test/filterPropertyList.do")
+	@ResponseBody
+	public ModelMap filterPropertyList(){
+		//还没有测试root是List的情况
+		Model parent=new Model();
+		parent.setId(1);
+		parent.setAge(11);
+		parent.setCreateDate(new Date());
+		parent.setName("parent");
+		List<Model> list=new ArrayList<Model>();
+		list.add(parent);
+		
+		ModelMap map=new ModelMap();
+		map.put("filterPropertys", "age,name");//过滤属性的设置
+		map.put("root", list);
+		return map;
+	}
+	
 	
 	@RequestMapping("/test/bindModel.do")
 	@ResponseBody

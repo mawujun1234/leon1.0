@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,9 +27,17 @@ public class FunController {
 	 */
 	@RequestMapping("/fun/query")
 	@ResponseBody
-	public List<Fun> query(String id,String node){		
-		
-		return funService.queryAll();
+	public ModelMap query(String id,String node){		
+//		try {
+//			 funService.queryAll();
+//		} catch (Exception e){
+//			e.printStackTrace();
+//		}
+		List<Fun> funes=funService.queryAll();
+		ModelMap map=new ModelMap();
+		map.put("filterPropertys", "children");//过滤属性的设置
+		map.put("root", funes);
+		return map;
 	}
 	/**
 	 * 一次性读取出所有的节点数据

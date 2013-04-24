@@ -23,8 +23,10 @@ Ext.onReady(function(){
 		items:[tree,form]
 	});
 	
-//	form.down("button[action=save]").on('click',function(btn){
-//		this.up('form').getForm().isValid();
-//		grid.getStore().reload();
-//	});
+	form.down("button[action=createChild]").on('click',function(btn){
+		//btn.up('form').getForm().reset();
+		form.getForm().reset();
+		var fun=tree.getSelectionModel( ).getLastSelected( ) ;
+		form.getForm().setValues('parent_id',fun.get("id"));
+	});
 });

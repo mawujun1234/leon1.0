@@ -16,7 +16,7 @@ Ext.define('Leon.desktop.fun.FunForm',{
        var me = this;
       
        me.items= [{
-	            fieldLabel: 'parent.id',
+	            fieldLabel: 'parent_id',
 	            //afterLabelTextTpl: me.required,
 	            name: 'parent_id'
 	            //allowBlank: false,
@@ -76,8 +76,9 @@ Ext.define('Leon.desktop.fun.FunForm',{
         },{
             text: '新建子功能',
             iconCls:'form-addChild-button',
+            action:'createChild',
             handler: function() {
-                this.up('form').getForm().reset();
+                //this.up('form').getForm().reset();
                 //var newRecord=Ext.create("Leon.desktop.fun.Fun",{})
                 //this.up('form').getForm().loadRecord(newRecord);
             }

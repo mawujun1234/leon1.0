@@ -171,6 +171,20 @@ public class SpringMVCControllerTest {
 		.andExpect(jsonPath("$..root.age").doesNotExist());
 		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"message\":\"The title cannot be empty.\"}]}"));
 	}
+	@Test
+	public void filterPropertyList() throws Exception {
+		this.mockMvc.perform(get("/test/filterPropertyList.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
+		.andExpect(status().isOk())
+		.andExpect(content().encoding("ISO-8859-1"))
+		.andExpect(content().contentType("application/json"))
+		.andExpect(jsonPath("$.success").value(true))
+		//.andExpect(jsonPath("$.totalProperty").value(1))//http://goessner.net/articles/JsonPath/
+		.andExpect(jsonPath("$..root.name").doesNotExist())
+		.andExpect(jsonPath("$..root.id").value(1))
+		.andExpect(jsonPath("$..root.createDate").value(formatter.format(new Date())))
+		.andExpect(jsonPath("$..root.age").doesNotExist());
+		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"message\":\"The title cannot be empty.\"}]}"));
+	}
 	
 	
 	/**

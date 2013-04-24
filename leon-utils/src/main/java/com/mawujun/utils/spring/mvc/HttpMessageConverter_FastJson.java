@@ -145,7 +145,7 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 		//JSONObject result=JSONObjectUtils.toJson(t);
 		MediaType contentType = outputMessage.getHeaders().getContentType();
 		Charset charset = contentType.getCharSet() != null ? contentType.getCharSet() : DEFAULT_CHARSET;
-		
+		try {
 		if(object instanceof Map){
 			Map map=(Map)object;
 			if(!map.containsKey("success")){
@@ -153,6 +153,7 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 			}
 			if(map.containsKey("filterPropertys")){
 				String[] excludes=((String)map.get("filterPropertys")).split(",");
+				应该是这里的问题
 				SimplePropertyPreFilter filter = new SimplePropertyPreFilter(map.get("root").getClass() ); 
 				for(String str:excludes){
 					filter.getExcludes().add(str);
@@ -192,9 +193,12 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 			object=map;
 		
 		}
+		
 		FileCopyUtils.copy(JSON.toJSONString(object,serializeConfig, SerializerFeature.PrettyFormat,SerializerFeature.UseSingleQuotes), new OutputStreamWriter(outputMessage.getBody(), charset));
 		
-
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		
 
 	}
