@@ -22,7 +22,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	-->
 	
 	<%@include file="../../common/init.jsp" %>
-	<script type="text/javascript" src="FunPanel.js"></script>
+	<script type="text/javascript" src="FunApp.js"></script>
   </head>
   
   <body>

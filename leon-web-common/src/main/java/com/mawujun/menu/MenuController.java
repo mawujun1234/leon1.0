@@ -45,7 +45,7 @@ public class MenuController {
 		menuFun.setId("11111");
 		menuFun.setText("功能管理");
 		Fun fun=new Fun();
-		fun.setUrl("/desktop/fun/FunPanel.jsp");
+		fun.setUrl("/desktop/fun/FunApp.jsp");
 		//fun.setUrl("http://www.baidu.com");
 		menuFun.setFun(fun);
 		list.add(menuFun);
