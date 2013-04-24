@@ -153,7 +153,7 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 			}
 			if(map.containsKey("filterPropertys")){
 				String[] excludes=((String)map.get("filterPropertys")).split(",");
-				应该是这里的问题
+				应该是这里的问题，因为返回的是List
 				SimplePropertyPreFilter filter = new SimplePropertyPreFilter(map.get("root").getClass() ); 
 				for(String str:excludes){
 					filter.getExcludes().add(str);
