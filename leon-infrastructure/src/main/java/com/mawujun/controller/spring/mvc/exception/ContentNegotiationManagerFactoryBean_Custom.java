@@ -1,4 +1,4 @@
-package com.mawujun.utils.spring.mvc.exception;
+package com.mawujun.controller.spring.mvc.exception;
 
 import java.util.ArrayList;
 import java.util.HashMap;

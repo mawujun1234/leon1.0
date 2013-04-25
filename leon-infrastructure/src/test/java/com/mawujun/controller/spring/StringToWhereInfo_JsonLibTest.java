@@ -1,10 +1,10 @@
-package com.mawujun.utils.spring;
+package com.mawujun.controller.spring;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.mawujun.controller.spring.mvc.StringToWhereInfo_JsonLib;
 import com.mawujun.utils.page.WhereInfo;
-import com.mawujun.utils.spring.mvc.StringToWhereInfo_JsonLib;
 
 public class StringToWhereInfo_JsonLibTest {
 	@Test

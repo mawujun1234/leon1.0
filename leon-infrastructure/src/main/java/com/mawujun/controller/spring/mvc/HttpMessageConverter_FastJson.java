@@ -1,4 +1,4 @@
-package com.mawujun.utils.spring.mvc;
+package com.mawujun.controller.spring.mvc;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,6 +29,8 @@ import com.alibaba.fastjson.serializer.SerializeWriter;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.serializer.SimpleDateFormatSerializer;
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
+import com.alibaba.fastjson.serializer.ValueFilter;
+import com.mawujun.repository.idEntity.IdEntity;
 import com.mawujun.utils.page.QueryResult;
 
 /**
@@ -185,6 +187,36 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 				}
 		
 				serializer.getPropertyPreFilters().add((PropertyPreFilter) filter);
+			}
+			if(map.containsKey("onlyIds")){
+				String[] excludes=((String)map.get("onlyIds")).split(",");
+				for(final String str:excludes){
+					//final String str_final=str;
+					ValueFilter filter = new ValueFilter() {		 
+					    public Object process(Object source, String name, final Object value) {
+					        if (name.equals(str) && value!=null && (value instanceof IdEntity)) {
+					        	//现在只是把
+					        	return new IdEntity(){
+									@Override
+									public void setId(Object id) {
+										// TODO Auto-generated method stub
+										
+									}
+									@Override
+									public Object getId() {
+										// TODO Auto-generated method stub
+										return ((IdEntity)value).getId();
+									}
+					        		
+					        	};
+					            //return ((IdEntity)value).getId();
+					        } 
+					        return value;
+					    }
+					};
+					serializer.getValueFilters().add(filter);
+				}
+				
 			}
 			serializer.write(object);
 			FileCopyUtils.copy(serializer.toString(), new OutputStreamWriter(outputMessage.getBody(), charset));

@@ -1,11 +1,10 @@
-package com.mawujun.utils.spring;
+package com.mawujun.controller.spring;
 
 import org.junit.Assert;
-
 import org.junit.Test;
 
 import com.mawujun.utils.page.WhereInfo;
-import com.mawujun.utils.spring.mvc.JsonStringToWhereInfo_FastJson;
+import com.mawujun.utils.spring.JsonStringToWhereInfo_FastJson;
 
 public class JsonStringToSortInfo_FastJsonTest {
 	@Test

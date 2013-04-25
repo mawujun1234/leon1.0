@@ -1,4 +1,4 @@
-package com.mawujun.utils.spring.mvc;
+package com.mawujun.controller.spring.mvc;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

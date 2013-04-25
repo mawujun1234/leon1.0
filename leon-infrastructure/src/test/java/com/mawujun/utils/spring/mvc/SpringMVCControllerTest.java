@@ -29,6 +29,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.ServletWebRequest;
 
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration // path defaults to "file:src/main/webapp"
 @ContextConfiguration(locations={"classpath:com/mawujun/utils/spring/mvc/dispatcher-servlet.xml"})
@@ -183,6 +184,24 @@ public class SpringMVCControllerTest {
 		.andExpect(jsonPath("$..root[0].id").value(1))
 		.andExpect(jsonPath("$..root[0].createDate").value(formatter.format(new Date())))
 		.andExpect(jsonPath("$..root[0].age").doesNotExist());
+		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"message\":\"The title cannot be empty.\"}]}"));
+	}
+	/**
+	 * 测试只返回id的关联数据
+	 * @throws Exception
+	 */
+	@Test
+	public void filterOnlyId() throws Exception {
+		this.mockMvc.perform(get("/test/filterOnlyId.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
+		.andExpect(status().isOk())
+		.andExpect(content().encoding("ISO-8859-1"))
+		.andExpect(content().contentType("application/json"))
+		.andExpect(jsonPath("$.success").value(true))
+		//.andExpect(jsonPath("$.totalProperty").value(1))//http://goessner.net/articles/JsonPath/
+		.andExpect(jsonPath("$..root.name").value("child"))
+		.andExpect(jsonPath("$..root.id").value(1))
+		.andExpect(jsonPath("$..root.createDate").value(formatter.format(new Date())))
+		.andExpect(jsonPath("$..root.parent.id").value(2));
 		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"message\":\"The title cannot be empty.\"}]}"));
 	}
 	

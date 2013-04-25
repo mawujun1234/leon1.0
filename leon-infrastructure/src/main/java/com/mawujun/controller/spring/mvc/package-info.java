@@ -5,4 +5,4 @@
  * @author mawujun
  *
  */
-package com.mawujun.utils.spring.mvc;
+package com.mawujun.controller.spring.mvc;

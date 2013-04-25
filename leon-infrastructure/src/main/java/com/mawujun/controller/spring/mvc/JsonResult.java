@@ -1,4 +1,4 @@
-package com.mawujun.utils.spring.mvc;
+package com.mawujun.controller.spring.mvc;
 
 import com.mawujun.utils.page.QueryResult;
 

@@ -44,9 +44,9 @@
 				<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
 					<property name="converters">
 						<list>
-							<bean class="com.mawujun.utils.spring.mvc.JsonStringToPageRequest_FastJson"></bean>
-							<bean class="com.mawujun.utils.spring.mvc.JsonStringToSortInfo_FastJson"></bean>
-							<bean class="com.mawujun.utils.spring.mvc.JsonStringToWhereInfo_FastJson"></bean>
+							<bean class="com.mawujun.controller.spring.mvc.JsonStringToPageRequest_FastJson"></bean>
+							<bean class="com.mawujun.controller.spring.mvc.JsonStringToSortInfo_FastJson"></bean>
+							<bean class="com.mawujun.controller.spring.mvc.JsonStringToWhereInfo_FastJson"></bean>
 						</list>
 					</property>
 				</bean>
@@ -54,7 +54,7 @@
 			<!--  -->
 			<property name="propertyEditorRegistrars">
 				<array>
-					<bean class="com.mawujun.utils.spring.mvc.CustomPropertyEditorRegistrar"></bean>
+					<bean class="com.mawujun.controller.spring.mvc.CustomPropertyEditorRegistrar"></bean>
 				</array>
 			</property>
 		</bean>
@@ -67,10 +67,10 @@
 				<property name="writeAcceptCharset" value="false" />
 			</bean>
 			<bean id="jsonHttpMessageConverter"
-				class="com.mawujun.utils.spring.mvc.HttpMessageConverter_FastJson" /><!-- 在循环引用和属性过滤上设置更方便 -->
+				class="com.mawujun.controller.spring.mvc.HttpMessageConverter_FastJson" /><!-- 在循环引用和属性过滤上设置更方便 -->
 			<!-- <bean id="jsonHttpMessageConverter"
-				class="com.mawujun.utils.spring.HttpMessageConverter_JsonLib" />
-			<bean id="jsonHttpMessageConverter" class="com.mawujun.utils.spring.MappingJackson2HttpMessageConverter" 
+				class="com.mawujun.controller.spring.HttpMessageConverter_JsonLib" />
+			<bean id="jsonHttpMessageConverter" class="com.mawujun.controller.spring.MappingJackson2HttpMessageConverter" 
 				/> -->
 			<bean id="byteArrayHttpMessageConverter"
 				class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
@@ -89,7 +89,7 @@
 	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
 	  <property name="contentNegotiationManager"> 
          <bean class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean"> 
-         <!--<bean class="com.mawujun.utils.spring.mvc.exception.ContentNegotiationManagerFactoryBean_Custom">-->
+         <!--<bean class="com.mawujun.controller.spring.mvc.exception.ContentNegotiationManagerFactoryBean_Custom">-->
              <property name="mediaTypes"> 
                    <props>
                    	<prop key="json">application/json</prop>
@@ -123,7 +123,7 @@
       <!-- 根据MediaType进行返回视图的选择 -->
 	  <property name="defaultViews">
 		<list>
-			<bean id="jackson2JsonView" class="com.mawujun.utils.spring.mvc.exception.MappingJackson2JsonView_Custom">
+			<bean id="jackson2JsonView" class="com.mawujun.controller.spring.mvc.exception.MappingJackson2JsonView_Custom">
 			</bean>
 			<!--  -->
           <bean class="org.springframework.web.servlet.view.xml.MarshallingView" >  

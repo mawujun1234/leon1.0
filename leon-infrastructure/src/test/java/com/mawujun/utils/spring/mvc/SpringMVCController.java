@@ -19,6 +19,7 @@ import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.mawujun.controller.spring.mvc.JsonResult;
 import com.mawujun.exception.BussinessException;
 import com.mawujun.exception.DefaulExceptionCode;
 import com.mawujun.repository.EntityTest;
@@ -27,7 +28,6 @@ import com.mawujun.utils.Validate;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 import com.mawujun.utils.page.WhereInfo;
-import com.mawujun.utils.spring.mvc.JsonResult;
 
 /**
  * 过滤，日期格式等设置http://hi.baidu.com/ien_leo/item/d1601c4d1a44b23dfa8960d5
@@ -164,7 +164,27 @@ public class SpringMVCController {
 		map.put("root", list);
 		return map;
 	}
-	
+	@RequestMapping("/test/filterOnlyId.do")
+	@ResponseBody
+	public ModelMap filterOnlyId(){
+		Model parent=new Model();
+		parent.setId(2);
+		parent.setAge(22);
+		parent.setCreateDate(new Date());
+		parent.setName("parent");
+		
+		Model child=new Model();
+		child.setId(1);
+		child.setAge(11);
+		child.setCreateDate(new Date());
+		child.setName("child");
+		child.setParent(parent);
+		
+		ModelMap map=new ModelMap();
+		map.put("onlyIds", "parent");//parent属性只获取id
+		map.put("root", child);
+		return map;
+	}
 	
 	@RequestMapping("/test/bindModel.do")
 	@ResponseBody
