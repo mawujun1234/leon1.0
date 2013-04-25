@@ -36,7 +36,7 @@ import com.mawujun.utils.page.QueryResult;
 /**
  * 在接收的时候，重载了
  * 在返回响应内容的时候，如果返回的不是JSONObject货JSONArray就调用原来的方法
- * @author Administrator
+ * @author mawujun
  *
  */
 public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<Object> {
