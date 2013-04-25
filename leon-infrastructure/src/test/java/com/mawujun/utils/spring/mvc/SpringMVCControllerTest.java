@@ -179,10 +179,10 @@ public class SpringMVCControllerTest {
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(true))
 		//.andExpect(jsonPath("$.totalProperty").value(1))//http://goessner.net/articles/JsonPath/
-		.andExpect(jsonPath("$..root.name").doesNotExist())
-		.andExpect(jsonPath("$..root.id").value(1))
-		.andExpect(jsonPath("$..root.createDate").value(formatter.format(new Date())))
-		.andExpect(jsonPath("$..root.age").doesNotExist());
+		.andExpect(jsonPath("$..root[0].name").doesNotExist())
+		.andExpect(jsonPath("$..root[0].id").value(1))
+		.andExpect(jsonPath("$..root[0].createDate").value(formatter.format(new Date())))
+		.andExpect(jsonPath("$..root[0].age").doesNotExist());
 		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"message\":\"The title cannot be empty.\"}]}"));
 	}
 	

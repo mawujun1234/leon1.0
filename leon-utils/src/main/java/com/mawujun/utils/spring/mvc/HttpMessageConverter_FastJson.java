@@ -147,33 +147,48 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 		Charset charset = contentType.getCharSet() != null ? contentType.getCharSet() : DEFAULT_CHARSET;
 		try {
 		if(object instanceof Map){
+			SerializeWriter out = new SerializeWriter();
+			JSONSerializer serializer = new JSONSerializer(out);     
+			serializer.setDateFormat(datePattern);
+			//SerializerFeature[] features = {SerializerFeature.UseISO8601DateFormat, SerializerFeature.UseSingleQuotes }; 
+			serializer.config(SerializerFeature.WriteDateUseDateFormat,true);//SerializerFeature.WriteDateUseDateFormat
+			serializer.config(SerializerFeature.UseSingleQuotes,true);//SerializerFeature.
+			serializer.config(SerializerFeature.SkipTransientField,true);
+			serializer.config(SerializerFeature.WriteEnumUsingToString,true);
+			serializer.config(SerializerFeature.SortField,true);
+			
 			Map map=(Map)object;
 			if(!map.containsKey("success")){
 				map.put("success", true);
 			}
 			if(map.containsKey("filterPropertys")){
 				String[] excludes=((String)map.get("filterPropertys")).split(",");
-				应该是这里的问题，因为返回的是List
-				SimplePropertyPreFilter filter = new SimplePropertyPreFilter(map.get("root").getClass() ); 
-				for(String str:excludes){
-					filter.getExcludes().add(str);
+//				应该是这里的问题，因为返回的是List
+//				SimplePropertyPreFilter filter = new SimplePropertyPreFilter(map.get("root").getClass() ); 
+//				for(String str:excludes){
+//					filter.getExcludes().add(str);
+//				}
+				SimplePropertyPreFilter filter =null;
+				if(map.get("root") instanceof List){
+					if(((List)map.get("root")).size()>0){
+						filter = new SimplePropertyPreFilter(((List)map.get("root")).get(0).getClass() ); 
+						for(String str:excludes){
+							filter.getExcludes().add(str);
+						}
+					}
+					
+				} else {
+					filter = new SimplePropertyPreFilter(map.get("root").getClass() ); 
+					for(String str:excludes){
+						filter.getExcludes().add(str);
+					}
 				}
-
-				SerializeWriter out = new SerializeWriter();
-				JSONSerializer serializer = new JSONSerializer(out);     
-				serializer.setDateFormat(datePattern);
-				//SerializerFeature[] features = {SerializerFeature.UseISO8601DateFormat, SerializerFeature.UseSingleQuotes }; 
-				serializer.config(SerializerFeature.WriteDateUseDateFormat,true);//SerializerFeature.WriteDateUseDateFormat
-				serializer.config(SerializerFeature.UseSingleQuotes,true);//SerializerFeature.
-				serializer.config(SerializerFeature.SkipTransientField,true);
-				serializer.config(SerializerFeature.WriteEnumUsingToString,true);
-				serializer.config(SerializerFeature.SortField,true);
-				
+		
 				serializer.getPropertyPreFilters().add((PropertyPreFilter) filter);
-				serializer.write(object);
-				FileCopyUtils.copy(serializer.toString(), new OutputStreamWriter(outputMessage.getBody(), charset));
-				return;
 			}
+			serializer.write(object);
+			FileCopyUtils.copy(serializer.toString(), new OutputStreamWriter(outputMessage.getBody(), charset));
+			return;
 		} else if(object instanceof QueryResult){
 			QueryResult page=(QueryResult)object;
 			ModelMap map=new ModelMap();
