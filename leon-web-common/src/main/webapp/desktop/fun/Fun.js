@@ -15,7 +15,7 @@ Ext.define("Leon.desktop.fun.Fun",{
 	,proxy:{
 		type:'ajax',
 		api:{
-			read:'/fun/query',
+			read:'/fun/queryChildren',
 			get : '/fun/get',
 			create:'/fun/craete',
 			update:'/fun/update',

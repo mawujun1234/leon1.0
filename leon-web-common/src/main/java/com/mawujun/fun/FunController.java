@@ -25,14 +25,15 @@ public class FunController {
 	 * 桌面程序中把菜单按权限读取出来
 	 * @return
 	 */
-	@RequestMapping("/fun/query")
+	@RequestMapping("/fun/queryChildren")
 	@ResponseBody
-	public ModelMap query(String id,String node){		
+	public ModelMap queryChildren(String node){		
 //		try {
 //			 funService.queryAll();
 //		} catch (Exception e){
 //			e.printStackTrace();
 //		}
+		funService.
 		List<Fun> funes=funService.queryAll();
 		ModelMap map=new ModelMap();
 		map.put("filterPropertys", "children");//过滤属性的设置
