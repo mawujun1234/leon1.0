@@ -3,8 +3,8 @@ package com.mawujun.controller.spring;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.mawujun.controller.spring.JsonStringToSortInfo_FastJson;
 import com.mawujun.utils.page.SortInfo;
-import com.mawujun.utils.spring.JsonStringToSortInfo_FastJson;
 
 public class JsonStringToWhereInfo_FastJsonTest {
 	@Test

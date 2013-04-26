@@ -1,4 +1,4 @@
-package com.mawujun.utils.spring.mvc;
+package com.mawujun.controller.spring.mvc;
 
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -32,7 +32,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration // path defaults to "file:src/main/webapp"
-@ContextConfiguration(locations={"classpath:com/mawujun/utils/spring/mvc/dispatcher-servlet.xml"})
+@ContextConfiguration(locations={"classpath:com/mawujun/controller/spring/mvc/dispatcher-servlet.xml"})
 public class SpringMVCControllerTest {
 	@Autowired
     private WebApplicationContext wac;

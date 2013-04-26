@@ -1,4 +1,4 @@
-package com.mawujun.utils.spring;
+package com.mawujun.controller.spring;
 
 import java.util.ResourceBundle;
 
@@ -21,7 +21,7 @@ import javax.servlet.ServletContextListener;
 		<param-value>system_config.properties</param-value>
    </context-param>
    <listener>
-     	<listener-class>com.mawujun.utils.spring.SetSpringProfileActiveListener</listener-class>
+     	<listener-class>com.mawujun.controller.spring.SetSpringProfileActiveListener</listener-class>
     </listener>
     
     文件内容为：

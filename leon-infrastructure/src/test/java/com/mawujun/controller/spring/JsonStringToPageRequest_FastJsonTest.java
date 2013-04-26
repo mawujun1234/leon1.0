@@ -3,8 +3,8 @@ package com.mawujun.controller.spring;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.mawujun.controller.spring.JsonStringToPageRequest_FastJson;
 import com.mawujun.utils.page.PageRequest;
-import com.mawujun.utils.spring.JsonStringToPageRequest_FastJson;
 
 //@RunWith(SpringJUnit4ClassRunner.class)
 public class JsonStringToPageRequest_FastJsonTest {

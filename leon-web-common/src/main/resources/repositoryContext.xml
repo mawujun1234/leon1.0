@@ -158,8 +158,8 @@
 	</beans>
 	
 	<beans profile="dev">
-		<jdbc:initialize-database data-source="dataSource">
-		  <jdbc:script location="classpath:sql/initData.sql"/>
+		<jdbc:initialize-database data-source="dataSource" >
+		  <jdbc:script location="classpath:sql/initData.sql" encoding="UTF-8"/>
 		</jdbc:initialize-database>
 	</beans>
 	

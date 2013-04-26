@@ -67,7 +67,7 @@
 		<param-value>system_config.properties</param-value>
    </context-param>
    <listener>
-     	<listener-class>com.mawujun.utils.spring.SetSpringProfileActiveListener</listener-class>
+     	<listener-class>com.mawujun.controller.spring.SetSpringProfileActiveListener</listener-class>
     </listener>
    <context-param>
         <param-name>contextConfigLocation</param-name>

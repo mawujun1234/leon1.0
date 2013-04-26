@@ -27,7 +27,7 @@ import org.springframework.web.context.ServletContextAware;
 //<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
 //<property name="contentNegotiationManager"> 
 //   <!--  <bean class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean"> -->
-//   <bean class="com.mawujun.utils.spring.mvc.exception.ContentNegotiationManagerFactoryBean_Custom">
+//   <bean class="com.mawujun.controller.spring.mvc.exception.ContentNegotiationManagerFactoryBean_Custom">
 //       <property name="mediaTypes"> 
 //             <props>
 //             	<prop key="json">application/json</prop>

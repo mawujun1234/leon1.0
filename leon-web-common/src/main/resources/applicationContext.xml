@@ -21,7 +21,6 @@
 	 -->
 	 
 
-<bean class="com.mawujun.utils.spring.event.ApplicationListenerAAA"></bean>
 	 
 
 
