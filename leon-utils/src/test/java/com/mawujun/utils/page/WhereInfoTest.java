@@ -15,6 +15,16 @@ public class WhereInfoTest {
 		assertEquals("=", eq.getOpSymbol());
 		assertEquals("name", eq.getProperty());
 		
+		WhereInfo eq1=WhereInfo.parse("name", "mawujun");
+		assertEquals("mawujun", eq1.getValue());
+		assertEquals("=", eq1.getOpSymbol());
+		assertEquals("name", eq1.getProperty());
+		
+		WhereInfo eq2=WhereInfo.parse("parent.id", "mawujun");
+		assertEquals("mawujun", eq2.getValue());
+		assertEquals("=", eq2.getOpSymbol());
+		assertEquals("parent.id", eq2.getProperty());
+		
 		WhereInfo LT=WhereInfo.parse("age_LT", "10");
 		assertEquals("10", LT.getValue());
 		assertEquals("<", LT.getOpSymbol());

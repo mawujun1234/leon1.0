@@ -146,16 +146,8 @@
     	<artifactId>commons-codec</artifactId>
     	<version>1.7</version>
     </dependency>
-    <dependency>
-    	<groupId>org.slf4j</groupId>
-    	<artifactId>integration</artifactId>
-    	<version>1.7.2</version>
-    </dependency>
-    <dependency>
-    	<groupId>ch.qos.logback</groupId>
-    	<artifactId>logback-core</artifactId>
-    	<version>1.0.9</version>
-    </dependency>
+   
+    
     <dependency>
     	<groupId>org.springframework</groupId>
     	<artifactId>spring-core</artifactId>
@@ -250,7 +242,7 @@
     <dependency>
     	<groupId>org.mybatis</groupId>
     	<artifactId>mybatis</artifactId>
-    	<version>3.2.0</version>
+    	<version>3.2.2</version>
     </dependency>
     <dependency>
     	<groupId>org.mybatis</groupId>
@@ -263,13 +255,42 @@
     <dependency>
     	<groupId>ch.qos.logback</groupId>
     	<artifactId>logback-classic</artifactId>
-    	<version>1.0.9</version>
+    	<version>1.0.11</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.logback-extensions</groupId>
+    	<artifactId>logback-ext-spring</artifactId>
+    	<version>0.1.1</version>
+    </dependency>
+    <!--<dependency>
+    	<groupId>ch.qos.logback</groupId>
+    	<artifactId>logback-core</artifactId>
+    	<version>1.0.11</version>
     </dependency>
     <dependency>
     	<groupId>ch.qos.logback</groupId>
     	<artifactId>logback-access</artifactId>
-    	<version>1.0.9</version>
+    	<version>1.0.11</version>
     </dependency>
+    -->
+    <!--
+    <dependency>
+    	<groupId>log4j</groupId>
+    	<artifactId>log4j</artifactId>
+    	<version>1.2.17</version>
+    </dependency>
+    -->
+    <dependency>
+    	<groupId>org.slf4j</groupId>
+    	<artifactId>slf4j-parent</artifactId>
+    	<version>1.7.5</version>
+    	<type>pom</type>
+    </dependency>
+    <!-- <dependency>
+    	<groupId>org.slf4j</groupId>
+    	<artifactId>integration</artifactId>
+    	<version>1.7.2</version>
+    </dependency>-->
     <!--<dependency>
     	<groupId>junit</groupId>
     	<artifactId>junit-dep</artifactId>
@@ -328,11 +349,7 @@
     	<version>2.1.2</version>
     </dependency>
 
-    <dependency>
-    	<groupId>log4j</groupId>
-    	<artifactId>log4j</artifactId>
-    	<version>1.2.17</version>
-    </dependency>
+ 
     
     <dependency>
     	<groupId>org.hibernate</groupId>
@@ -360,9 +377,9 @@
     	<version>1.4</version>
     </dependency>
 
-   
+	
   </dependencies>
-
+   
 
  
   

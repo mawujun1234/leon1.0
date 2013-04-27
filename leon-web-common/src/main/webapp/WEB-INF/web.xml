@@ -9,7 +9,8 @@
     <welcome-file-list>
    	   <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>  
-   
+    
+
    
     <filter>
         <filter-name>Set Character Encoding</filter-name>
@@ -95,6 +96,15 @@
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+    
+	<context-param>  
+		<param-name>logbackConfigLocation</param-name>  
+		<param-value>classpath:logback.xml</param-value>  
+	</context-param>  
+	<listener>  
+		<listener-class>ch.qos.logback.ext.spring.web.LogbackConfigListener</listener-class>  
+	</listener> 
+
  <!-- 
     <context-param>
 		<param-name>spring.profiles.active</param-name>

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mawujun.utils.page.WhereInfo;
+
 /**
  * 
  * @author mawujun mawujun1234@163.com
@@ -33,13 +35,21 @@ public class FunController {
 //		} catch (Exception e){
 //			e.printStackTrace();
 //		}
-		funService.
-		List<Fun> funes=funService.queryAll();
+		WhereInfo whereinfo=WhereInfo.parse("parent.id", node);
+		try {
+			System.out.println("==================结开始");
+		List<Fun> funes=funService.query(whereinfo);
+		System.out.println("==================结果输出来了");
 		ModelMap map=new ModelMap();
 		map.put("filterPropertys", "children");//过滤属性的设置
 		map.put("onlyIds", "parent");
 		map.put("root", funes);
 		return map;
+		} catch (Exception e){
+			System.out.println("==================异常");
+			e.printStackTrace();
+			return null;
+		}
 	}
 	/**
 	 * 一次性读取出所有的节点数据

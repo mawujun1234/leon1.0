@@ -645,6 +645,80 @@ public class HibernateDao<T, ID extends Serializable>{
 		Criteria criteria = getSession().createCriteria(entityClass);
 		return criteria.list();
 	}
+	public List<T> query(WhereInfo... whereInfos) {
+		Criteria criteria = getSession().createCriteria(entityClass);
+		whereInfo2Criterion(criteria,whereInfos);
+		return criteria.list();
+	}
+	
+	private void whereInfo2Criterion(Criteria criteria,WhereInfo... whereInfos) {
+		if(whereInfos==null || whereInfos.length==0){
+			return;
+		}
+		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
+		for(WhereInfo whereInfo:whereInfos){
+			AssertUtils.notNull(whereInfo.getOp());
+			Type type=classMetadata.getPropertyType(whereInfo.getProperty());
+			Criterion criterion = null;
+			switch(whereInfo.getOp()){
+			case EQ:
+				criterion = Restrictions.eq(whereInfo.getPropertyToDefault(), BeanMapper.convert(whereInfo.getValue(), type.getReturnedClass()));
+				break;
+			case LIKE:
+				criterion = Restrictions.like(whereInfo.getPropertyToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.ANYWHERE);
+				break;
+			case LIKESTART:
+				criterion = Restrictions.like(whereInfo.getPropertyToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.START);
+				break;
+			case LIKEEND:
+				criterion = Restrictions.like(whereInfo.getPropertyToDefault(),(String) whereInfo.getValueToDefault(), MatchMode.END);
+				break;
+			case ILIKE:
+				criterion = Restrictions.ilike(whereInfo.getPropertyToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.ANYWHERE);
+				break;
+			case ILIKESTART:
+				criterion = Restrictions.ilike(whereInfo.getPropertyToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.START);
+				break;
+			case ILIKEEND:
+				criterion = Restrictions.ilike(whereInfo.getPropertyToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.END);
+				break;
+			case LE:
+				criterion = Restrictions.le(whereInfo.getPropertyToDefault(), BeanMapper.convert(whereInfo.getValue(), type.getReturnedClass()));
+				break;
+			case LT:
+				criterion = Restrictions.lt(whereInfo.getPropertyToDefault(), BeanMapper.convert(whereInfo.getValue(), type.getReturnedClass()));
+				break;
+			case GE:
+				criterion = Restrictions.ge(whereInfo.getPropertyToDefault(), BeanMapper.convert(whereInfo.getValue(), type.getReturnedClass()));
+				break;
+			case GT:
+				criterion = Restrictions.gt(whereInfo.getPropertyToDefault(), BeanMapper.convert(whereInfo.getValue(), type.getReturnedClass()));
+				break;
+			case ISNULL:
+				criterion =Restrictions.isNull(whereInfo.getPropertyToDefault());
+				break;
+			case ISNOTNULL:
+				criterion =Restrictions.isNotNull(whereInfo.getPropertyToDefault());
+				break;
+			case BETWEEN:
+				criterion =Restrictions.between(whereInfo.getPropertyToDefault(),  BeanMapper.convert(((Object[])whereInfo.getValue())[0], type.getReturnedClass()), 
+						BeanMapper.convert(((Object[])whereInfo.getValue())[1], type.getReturnedClass()));
+				break;
+			case IN:
+				Object[] old=(Object[])whereInfo.getValue();
+				Object[] aaa=new Object[old.length];
+				for(int i=0;i<old.length;i++){
+					aaa[i]= BeanMapper.convert(old[i], type.getReturnedClass());
+				}
+				criterion =Restrictions.in(whereInfo.getPropertyToDefault(), (Object[])whereInfo.getValue());
+				break;
+			default:
+				break;
+			}
+			//criterionList.add(criterion);
+			criteria.add(criterion);
+		}
+	}
 	
 	/**
 	 * 分页获取全部对象.这里是使用自动查询,不会使用params参数
@@ -658,73 +732,74 @@ public class HibernateDao<T, ID extends Serializable>{
 		QueryResult<T> page = new QueryResult<T>(pageRequest);
 		Criteria criteria = this.getSession().createCriteria(entityClass);
 		
-		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
+		//AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
 		
 		//设置查询条件
 		//List<Criterion> criterionList = new ArrayList<Criterion>();
 		if(pageRequest.hasWhereInfo()){
-			for(WhereInfo whereInfo:pageRequest.getWheres()){
-				AssertUtils.notNull(whereInfo.getOp());
-				Type type=classMetadata.getPropertyType(whereInfo.getProperty());
-				Criterion criterion = null;
-				switch(whereInfo.getOp()){
-				case EQ:
-					criterion = Restrictions.eq(whereInfo.getPropertyToDefault(), BeanMapper.convert(whereInfo.getValue(), type.getReturnedClass()));
-					break;
-				case LIKE:
-					criterion = Restrictions.like(whereInfo.getPropertyToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.ANYWHERE);
-					break;
-				case LIKESTART:
-					criterion = Restrictions.like(whereInfo.getPropertyToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.START);
-					break;
-				case LIKEEND:
-					criterion = Restrictions.like(whereInfo.getPropertyToDefault(),(String) whereInfo.getValueToDefault(), MatchMode.END);
-					break;
-				case ILIKE:
-					criterion = Restrictions.ilike(whereInfo.getPropertyToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.ANYWHERE);
-					break;
-				case ILIKESTART:
-					criterion = Restrictions.ilike(whereInfo.getPropertyToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.START);
-					break;
-				case ILIKEEND:
-					criterion = Restrictions.ilike(whereInfo.getPropertyToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.END);
-					break;
-				case LE:
-					criterion = Restrictions.le(whereInfo.getPropertyToDefault(), BeanMapper.convert(whereInfo.getValue(), type.getReturnedClass()));
-					break;
-				case LT:
-					criterion = Restrictions.lt(whereInfo.getPropertyToDefault(), BeanMapper.convert(whereInfo.getValue(), type.getReturnedClass()));
-					break;
-				case GE:
-					criterion = Restrictions.ge(whereInfo.getPropertyToDefault(), BeanMapper.convert(whereInfo.getValue(), type.getReturnedClass()));
-					break;
-				case GT:
-					criterion = Restrictions.gt(whereInfo.getPropertyToDefault(), BeanMapper.convert(whereInfo.getValue(), type.getReturnedClass()));
-					break;
-				case ISNULL:
-					criterion =Restrictions.isNull(whereInfo.getPropertyToDefault());
-					break;
-				case ISNOTNULL:
-					criterion =Restrictions.isNotNull(whereInfo.getPropertyToDefault());
-					break;
-				case BETWEEN:
-					criterion =Restrictions.between(whereInfo.getPropertyToDefault(),  BeanMapper.convert(((Object[])whereInfo.getValue())[0], type.getReturnedClass()), 
-							BeanMapper.convert(((Object[])whereInfo.getValue())[1], type.getReturnedClass()));
-					break;
-				case IN:
-					Object[] old=(Object[])whereInfo.getValue();
-					Object[] aaa=new Object[old.length];
-					for(int i=0;i<old.length;i++){
-						aaa[i]= BeanMapper.convert(old[i], type.getReturnedClass());
-					}
-					criterion =Restrictions.in(whereInfo.getPropertyToDefault(), (Object[])whereInfo.getValue());
-					break;
-				default:
-					break;
-				}
-				//criterionList.add(criterion);
-				criteria.add(criterion);
-			}
+			whereInfo2Criterion(criteria,pageRequest.getWheres());
+//			for(WhereInfo whereInfo:pageRequest.getWheres()){
+//				AssertUtils.notNull(whereInfo.getOp());
+//				Type type=classMetadata.getPropertyType(whereInfo.getProperty());
+//				Criterion criterion = null;
+//				switch(whereInfo.getOp()){
+//				case EQ:
+//					criterion = Restrictions.eq(whereInfo.getPropertyToDefault(), BeanMapper.convert(whereInfo.getValue(), type.getReturnedClass()));
+//					break;
+//				case LIKE:
+//					criterion = Restrictions.like(whereInfo.getPropertyToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.ANYWHERE);
+//					break;
+//				case LIKESTART:
+//					criterion = Restrictions.like(whereInfo.getPropertyToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.START);
+//					break;
+//				case LIKEEND:
+//					criterion = Restrictions.like(whereInfo.getPropertyToDefault(),(String) whereInfo.getValueToDefault(), MatchMode.END);
+//					break;
+//				case ILIKE:
+//					criterion = Restrictions.ilike(whereInfo.getPropertyToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.ANYWHERE);
+//					break;
+//				case ILIKESTART:
+//					criterion = Restrictions.ilike(whereInfo.getPropertyToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.START);
+//					break;
+//				case ILIKEEND:
+//					criterion = Restrictions.ilike(whereInfo.getPropertyToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.END);
+//					break;
+//				case LE:
+//					criterion = Restrictions.le(whereInfo.getPropertyToDefault(), BeanMapper.convert(whereInfo.getValue(), type.getReturnedClass()));
+//					break;
+//				case LT:
+//					criterion = Restrictions.lt(whereInfo.getPropertyToDefault(), BeanMapper.convert(whereInfo.getValue(), type.getReturnedClass()));
+//					break;
+//				case GE:
+//					criterion = Restrictions.ge(whereInfo.getPropertyToDefault(), BeanMapper.convert(whereInfo.getValue(), type.getReturnedClass()));
+//					break;
+//				case GT:
+//					criterion = Restrictions.gt(whereInfo.getPropertyToDefault(), BeanMapper.convert(whereInfo.getValue(), type.getReturnedClass()));
+//					break;
+//				case ISNULL:
+//					criterion =Restrictions.isNull(whereInfo.getPropertyToDefault());
+//					break;
+//				case ISNOTNULL:
+//					criterion =Restrictions.isNotNull(whereInfo.getPropertyToDefault());
+//					break;
+//				case BETWEEN:
+//					criterion =Restrictions.between(whereInfo.getPropertyToDefault(),  BeanMapper.convert(((Object[])whereInfo.getValue())[0], type.getReturnedClass()), 
+//							BeanMapper.convert(((Object[])whereInfo.getValue())[1], type.getReturnedClass()));
+//					break;
+//				case IN:
+//					Object[] old=(Object[])whereInfo.getValue();
+//					Object[] aaa=new Object[old.length];
+//					for(int i=0;i<old.length;i++){
+//						aaa[i]= BeanMapper.convert(old[i], type.getReturnedClass());
+//					}
+//					criterion =Restrictions.in(whereInfo.getPropertyToDefault(), (Object[])whereInfo.getValue());
+//					break;
+//				default:
+//					break;
+//				}
+//				//criterionList.add(criterion);
+//				criteria.add(criterion);
+//			}
 		}
 
 		//设置分页

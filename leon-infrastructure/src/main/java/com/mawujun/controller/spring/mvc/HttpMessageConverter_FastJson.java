@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
@@ -42,6 +44,7 @@ import com.mawujun.utils.page.QueryResult;
 public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<Object> {
 	
 	public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
+	final static Logger logger = LoggerFactory.getLogger(HttpMessageConverter_FastJson.class);   
 	
 	private String datePattern = "yyyy-MM-dd";//"yyyy-MM-dd HH:mm:ss"; 
 	//List<String> datePatterns=new ArrayList<String>();
@@ -131,7 +134,7 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 			return null;
 			
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			logger.debug(ex.getMessage());
 			throw new HttpMessageNotReadableException("解析json字符串出错: "
 					+ ex.getMessage(), ex);
 		}

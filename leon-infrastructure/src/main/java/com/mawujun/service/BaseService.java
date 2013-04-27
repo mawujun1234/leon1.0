@@ -14,6 +14,7 @@ import com.mawujun.repository.idEntity.IdEntity;
 import com.mawujun.repository.mybatis.Record;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
+import com.mawujun.utils.page.WhereInfo;
 
 /**
  * 基础的service，封装了一些通用的代码，减少代码重复的编写
@@ -47,6 +48,17 @@ public abstract class BaseService<T extends IdEntity<ID>, ID extends Serializabl
 	
 	public List<T> queryAll() {
 		return getRepository().queryAll();
+	}
+	/**
+	 * 简单对象的查询，根据一个对象的属性进行过滤的简单查询,使用案例：
+	 * WhereInfo whereinfo=WhereInfo.parse("parent.id", node);
+	 * BaseService.query(whereinfo);
+	 * @author mawujun email:mawujun1234@163.com qq:16064988
+	 * @param whereInfos
+	 * @return
+	 */
+	public List<T> query(WhereInfo... whereInfos) {
+		return getRepository().query(whereInfos);
 	}
 	
 	public QueryResult<T> queryPage(final PageRequest pageRequest) {

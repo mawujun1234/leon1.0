@@ -33,7 +33,8 @@
 	                 <port>8083</port>
 	                 <path>/</path>
 	                 <uriEncoding>utf-8</uriEncoding>
-	                 <contextReloadable>true</contextReloadable> 
+	                 <contextReloadable>true</contextReloadable>
+	                 <backgroundProcessorDelay>2</backgroundProcessorDelay> 
 	                 <!-- http://blog.csdn.net/jbgtwang/article/details/7696908 <warSourceDirectory>${project.build.directory}/WebContent</warSourceDirectory>      -->         
 	              </configuration>
 	    	</plugin>

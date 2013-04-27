@@ -35,7 +35,7 @@ public class MenuController {
 		
 		//"".split(regex)
 		List<Menu> list=getQueryResult();
-		System.out.println("=============================="+list.size());
+		//System.out.println("=============================="+list.size());
 		return list;
 	}
 	

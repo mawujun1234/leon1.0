@@ -142,7 +142,10 @@ public class WhereInfo  implements Serializable{
 	private static Object[] parseKeyValue(String key,String value){
 		int last=key.lastIndexOf('_');
 		if(last==-1){
-			throw new IllegalArgumentException(key + " is not a valid whereinfo name");
+			//默认是等于号
+			key=key+"_eq";
+			last=key.lastIndexOf('_');
+			//throw new IllegalArgumentException(key + " is not a valid whereinfo name");
 		}
 		
 		Object[] names = new Object[3];//.split(key, "_");

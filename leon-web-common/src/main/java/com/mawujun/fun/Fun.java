@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -33,9 +34,9 @@ public class Fun extends UUIDEntity{
 	@Column(length=40)
 	private String reportCode;//等级关系代码
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	private Fun parent;
-	@OneToMany(mappedBy="parent")
+	@OneToMany(mappedBy="parent",fetch=FetchType.LAZY)
 	private List<Fun> children=new ArrayList<Fun>();
 	
 	public void addChild(Fun child) {

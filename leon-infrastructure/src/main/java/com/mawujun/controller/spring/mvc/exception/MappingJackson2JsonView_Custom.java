@@ -10,9 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
+import com.mawujun.controller.spring.mvc.HttpMessageConverter_FastJson;
 import com.mawujun.exception.BussinessException;
 import com.mawujun.exception.ExceptionCode;
 
@@ -22,6 +25,7 @@ import com.mawujun.exception.ExceptionCode;
  *
  */
 public class MappingJackson2JsonView_Custom extends MappingJackson2JsonView {
+	final static Logger logger = LoggerFactory.getLogger(MappingJackson2JsonView_Custom.class);   
 	ResourceBundle bundle = ResourceBundle.getBundle("com.mawujun.exception.exceptions");
 	@Override
 	protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request,
@@ -54,6 +58,7 @@ public class MappingJackson2JsonView_Custom extends MappingJackson2JsonView {
 			}
 			model=map;
 			//exception.printStackTrace();
+			logger.info(exception.getMessage());
 		}
 		super.renderMergedOutputModel(model, request, response);
 	}
