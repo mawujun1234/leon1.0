@@ -54,11 +54,10 @@ public class MappingJackson2JsonView_Custom extends MappingJackson2JsonView {
 				map.put("message",detailMsg);
 			} else {
 				map.put("message", exception.getMessage());
-				
 			}
 			model=map;
 			//exception.printStackTrace();
-			logger.info(exception.getMessage());
+			logger.debug(exception.getMessage(),exception);
 		}
 		super.renderMergedOutputModel(model, request, response);
 	}
