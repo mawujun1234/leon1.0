@@ -47,6 +47,8 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 	final static Logger logger = LoggerFactory.getLogger(HttpMessageConverter_FastJson.class);   
 	
 	private String datePattern = "yyyy-MM-dd";//"yyyy-MM-dd HH:mm:ss"; 
+	private static final  String filterPropertys="filterPropertys";
+	private static final  String onlyIds="onlyIds";
 	//List<String> datePatterns=new ArrayList<String>();
 	 private static SerializeConfig serializeConfig = new SerializeConfig();     
 	 static {         
@@ -166,8 +168,8 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 			if(!map.containsKey("success")){
 				map.put("success", true);
 			}
-			if(map.containsKey("filterPropertys")){
-				String[] excludes=((String)map.get("filterPropertys")).split(",");
+			if(map.containsKey(filterPropertys)){
+				String[] excludes=((String)map.get(filterPropertys)).split(",");
 //				应该是这里的问题，因为返回的是List
 //				SimplePropertyPreFilter filter = new SimplePropertyPreFilter(map.get("root").getClass() ); 
 //				for(String str:excludes){
@@ -188,11 +190,14 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 						filter.getExcludes().add(str);
 					}
 				}
-		
-				serializer.getPropertyPreFilters().add((PropertyPreFilter) filter);
+				if(filter!=null){
+					serializer.getPropertyPreFilters().add((PropertyPreFilter) filter);
+				}
+				map.remove(filterPropertys);
 			}
-			if(map.containsKey("onlyIds")){
-				String[] excludes=((String)map.get("onlyIds")).split(",");
+			
+			if(map.containsKey(onlyIds)){
+				String[] excludes=((String)map.get(onlyIds)).split(",");
 				for(final String str:excludes){
 					//final String str_final=str;
 					ValueFilter filter = new ValueFilter() {		 
@@ -219,8 +224,9 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 					};
 					serializer.getValueFilters().add(filter);
 				}
-				
+				map.remove(onlyIds);
 			}
+			
 			serializer.write(object);
 			FileCopyUtils.copy(serializer.toString(), new OutputStreamWriter(outputMessage.getBody(), charset));
 			return;
@@ -247,7 +253,8 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 		FileCopyUtils.copy(JSON.toJSONString(object,serializeConfig, SerializerFeature.PrettyFormat,SerializerFeature.UseSingleQuotes), new OutputStreamWriter(outputMessage.getBody(), charset));
 		
 		}catch(Exception e){
-			e.printStackTrace();
+			logger.debug(e.getMessage());
+			//e.printStackTrace();
 		}
 		
 
