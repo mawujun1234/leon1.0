@@ -37,8 +37,8 @@ public class FunController {
 		List<Fun> funes=funService.query(whereinfo);
 		System.out.println("==================结果输出来了"+funes.size());
 		ModelMap map=new ModelMap();
-		map.put("filterPropertys", "children");//过滤属性的设置
-		map.put("onlyIds", "parent");
+		//map.put("filterPropertys", "children");//过滤属性的设置
+		//map.put("onlyIds", "parent");
 		map.put("root", funes);
 		return map;
 //		} catch (Exception e){

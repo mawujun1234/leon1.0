@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.collection.spi.PersistentCollection;
+import org.hibernate.proxy.HibernateProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpInputMessage;
@@ -49,7 +51,12 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 	
 	private String datePattern = "yyyy-MM-dd";//"yyyy-MM-dd HH:mm:ss"; 
 	private static final  String filterPropertys="filterPropertys";
-	private static final  String onlyIds="onlyIds";
+	//private static final  String onlyIds="onlyIds";
+	//是否过滤hibernate未初始化的数据
+	private boolean enableHibernateLazyInitializerFilter=true;
+	
+
+
 	//List<String> datePatterns=new ArrayList<String>();
 	 private static SerializeConfig serializeConfig = new SerializeConfig();     
 	 static {         
@@ -197,44 +204,48 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 				map.remove(filterPropertys);
 			}
 			
-			if(map.containsKey(onlyIds)){
-				String[] excludes=((String)map.get(onlyIds)).split(",");
-				for(final String str:excludes){
-					
-					//final String str_final=str;
-					ValueFilter filter = new ValueFilter() {		 
-					    public Object process(Object source, String name, final Object value) {
-					        if (name.equals(str) && value!=null && (value instanceof IdEntity)) {
-					        	
-					        	//现在只是把
-					        	return new IdEntity(){
-									@Override
-									public void setId(Object id) {
-										// TODO Auto-generated method stub
-										
-									}
-									@Override
-									public Object getId() {
-										// TODO Auto-generated method stub
-//										IdEntity aa=((IdEntity)value);
-//										Object id=aa.getId();
-//										这里报异常，代理不能初始化的异常
-//										return id;
-										//return "11";
-										return HibernateUtils.getIdDirect((IdEntity)value);
-									}
-					        		
-					        	};
-					        	
-					            //return ((IdEntity)value).getId();
-					        } 
-					        return value;
-					    }
-					};
-					serializer.getValueFilters().add(filter);
-				}
-				map.remove(onlyIds);
+			if(enableHibernateLazyInitializerFilter){
+				serializer.getValueFilters().add(new HibernateLazyInitializerFilter());
 			}
+			
+//			if(map.containsKey(onlyIds)){
+//				String[] excludes=((String)map.get(onlyIds)).split(",");
+//				for(final String str:excludes){
+//					
+//					//final String str_final=str;
+//					ValueFilter filter = new ValueFilter() {		 
+//					    public Object process(Object source, String name, final Object value) {
+//					        if (name.equals(str) && value!=null && (value instanceof IdEntity)) {
+//					        	
+//					        	//现在只是把
+//					        	return new IdEntity(){
+//									@Override
+//									public void setId(Object id) {
+//										// TODO Auto-generated method stub
+//										
+//									}
+//									@Override
+//									public Object getId() {
+//										// TODO Auto-generated method stub
+////										IdEntity aa=((IdEntity)value);
+////										Object id=aa.getId();
+////										这里报异常，代理不能初始化的异常
+////										return id;
+//										//return "11";
+//										return HibernateUtils.getIdDirect((IdEntity)value);
+//									}
+//					        		
+//					        	};
+//					        	
+//					            //return ((IdEntity)value).getId();
+//					        } 
+//					        return value;
+//					    }
+//					};
+//					serializer.getValueFilters().add(filter);
+//				}
+//				map.remove(onlyIds);
+//			}
 			
 			serializer.write(object);
 			FileCopyUtils.copy(serializer.toString(), new OutputStreamWriter(outputMessage.getBody(), charset));
@@ -282,6 +293,46 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 	}
 
 
+
+	private class HibernateLazyInitializerFilter implements ValueFilter {
+		public Object process(Object source, String name, final Object value) {
+	        if ( value!=null && value instanceof HibernateProxy) {
+	        	if(value instanceof IdEntity){
+	        		//现在只是把
+		        	return new IdEntity(){
+						@Override
+						public void setId(Object id) {
+							// TODO Auto-generated method stub
+							
+						}
+						@Override
+						public Object getId() {
+							return HibernateUtils.getIdDirect((IdEntity)value);
+						}
+		        		
+		        	};
+	        	} else {        		
+	        		return null;
+	        	}
+	        	
+	            //return ((IdEntity)value).getId();
+	        } else if(value instanceof PersistentCollection) {
+	        	
+	        	return null;
+	        }
+	        return value;
+	    }
+	}
+	
+	public boolean isEnableHibernateLazyInitializerFilter() {
+		return enableHibernateLazyInitializerFilter;
+	}
+
+
+	public void setEnableHibernateLazyInitializerFilter(
+			boolean enableHibernateLazyInitializerFilter) {
+		this.enableHibernateLazyInitializerFilter = enableHibernateLazyInitializerFilter;
+	}
 
 
 }
