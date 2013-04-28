@@ -25,13 +25,14 @@ Ext.define('Leon.desktop.fun.FunForm',{
 	        },{
 	            fieldLabel: '上级名称',
 	            //afterLabelTextTpl: me.required,
-	            name: 'parent_name',
+	            name: 'parent_text',
 	            readOnly:true
 	            //allowBlank: false,
 	            //tooltip: 'Enter your first name'
 	        },{
 	            fieldLabel: 'id',
 	            //afterLabelTextTpl: me.required,
+	            readOnly:true,
 	            name: 'id'
 	            //allowBlank: false,
 	            //tooltip: 'Enter your first name'

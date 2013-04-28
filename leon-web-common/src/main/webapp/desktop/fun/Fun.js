@@ -11,14 +11,15 @@ Ext.define("Leon.desktop.fun.Fun",{
 	],
 	associations:[
 		//{type:'hasMany',model:'Leon.desktop.fun.Fun',name : 'children'},不用，因为树形结构一般都是通过store来获取子节点的
-		{type:'belongsTo',model:'Leon.desktop.fun.Fun'}
+		{type:'belongsTo',model:'Leon.desktop.fun.Fun',foreignKey:'parent_id',associationKey:'parent'}
 	]
 	,proxy:{
+		actionMethods: { read: 'POST' },
 		type:'ajax',
 		api:{
 			read:'/fun/queryChildren',
 			get : '/fun/get',
-			create:'/fun/craete',
+			create:'/fun/create',
 			update:'/fun/update',
 			destory:'/fun/destory'
 		},

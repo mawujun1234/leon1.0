@@ -32,6 +32,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.serializer.SimpleDateFormatSerializer;
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.alibaba.fastjson.serializer.ValueFilter;
+import com.mawujun.repository.hibernate.HibernateUtils;
 import com.mawujun.repository.idEntity.IdEntity;
 import com.mawujun.utils.page.QueryResult;
 
@@ -199,10 +200,12 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 			if(map.containsKey(onlyIds)){
 				String[] excludes=((String)map.get(onlyIds)).split(",");
 				for(final String str:excludes){
+					
 					//final String str_final=str;
 					ValueFilter filter = new ValueFilter() {		 
 					    public Object process(Object source, String name, final Object value) {
 					        if (name.equals(str) && value!=null && (value instanceof IdEntity)) {
+					        	
 					        	//现在只是把
 					        	return new IdEntity(){
 									@Override
@@ -213,10 +216,16 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 									@Override
 									public Object getId() {
 										// TODO Auto-generated method stub
-										return ((IdEntity)value).getId();
+//										IdEntity aa=((IdEntity)value);
+//										Object id=aa.getId();
+//										这里报异常，代理不能初始化的异常
+//										return id;
+										//return "11";
+										return HibernateUtils.getIdDirect((IdEntity)value);
 									}
 					        		
 					        	};
+					        	
 					            //return ((IdEntity)value).getId();
 					        } 
 					        return value;
@@ -252,8 +261,10 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 		
 		FileCopyUtils.copy(JSON.toJSONString(object,serializeConfig, SerializerFeature.PrettyFormat,SerializerFeature.UseSingleQuotes), new OutputStreamWriter(outputMessage.getBody(), charset));
 		
-		}catch(Exception e){
-			logger.debug(e.getMessage());
+		}catch(RuntimeException e){
+			logger.error(e.getMessage(),e);
+			
+			throw e;
 			//e.printStackTrace();
 		}
 		

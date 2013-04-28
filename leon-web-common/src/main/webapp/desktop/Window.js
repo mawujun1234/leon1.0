@@ -29,7 +29,7 @@ Ext.define('Leon.desktop.Window', {
 		    	//panel.getEl().query('#111',true).document.location.reload();
 		    	me.el.mask("正在加载...");
 		    	var innerDocument=null;
-		    	if (document.all){//IE
+		    	if (Ext.isIE ){//IE本来的判断是 docuemnt.all
 		                innerDocument = document.getElementById(iframe_id).document;
 		        }else{//Firefox    
 		                innerDocument = document.getElementById(iframe_id).contentDocument;

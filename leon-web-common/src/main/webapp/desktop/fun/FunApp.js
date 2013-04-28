@@ -29,6 +29,6 @@ Ext.onReady(function(){
 		//btn.up('form').getForm().reset();
 		form.getForm().reset();
 		var fun=tree.getSelectionModel( ).getLastSelected( ) ;
-		form.getForm().setValues({'parent_id':fun.get("id")});
+		form.getForm().setValues({'parent_id':fun.get("id"),'parent_text':fun.get("text")});
 	});
 });

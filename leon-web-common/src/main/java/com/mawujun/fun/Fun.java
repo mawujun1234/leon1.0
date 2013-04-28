@@ -34,8 +34,8 @@ public class Fun extends UUIDEntity{
 	@Column(length=40)
 	private String reportCode;//等级关系代码
 	@AttrName(name="帮助")
-	@Column(length=400)
-	private String helpContent;
+	@Column(length=100)
+	private String helpContent;//存放的是html内容的地址
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Fun parent;

@@ -77,7 +77,7 @@ Ext.override(Ext.data.Model,{
               associatedRecord,    
               association, type, associationKey;
             
-		for (i = 0; i < associationCount; i++) {
+		for (var i = 0; i < associationCount; i++) {
             association = associations[i];
             
             type = association.type;

@@ -20,7 +20,8 @@ import com.mawujun.exception.BussinessException;
 import com.mawujun.exception.ExceptionCode;
 
 /**
- * 添加了构建异常处理信息的model
+ * 添加了构建异常处理信息的model，这是json视图
+ * 注意这里使用的是jackson，没有解决循环依赖，hibernate等问题，有空的时候最好使用fastjson进行整合下
  * @author mawujun
  *
  */
@@ -30,6 +31,7 @@ public class MappingJackson2JsonView_Custom extends MappingJackson2JsonView {
 	@Override
 	protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
+		//处理异常的json视图
 		if(model.get(SimpleMappingExceptionResolver.DEFAULT_EXCEPTION_ATTRIBUTE)!=null){
 			Exception exception=(Exception)model.get(SimpleMappingExceptionResolver.DEFAULT_EXCEPTION_ATTRIBUTE);
 			Map<String,Object> map=new  HashMap<String, Object>();
@@ -39,7 +41,12 @@ public class MappingJackson2JsonView_Custom extends MappingJackson2JsonView {
 			if(exception instanceof BussinessException){
 				ExceptionCode errorCode=((BussinessException) exception).getErrorCode();
 				String key = errorCode.getClass().getSimpleName() + "." + errorCode;
-				map.put("message", bundle.getString(key));
+				if( bundle.getString(key)==null){
+					map.put("message",exception.getMessage());
+				} else {
+					map.put("message", bundle.getString(key));
+				}
+				
 				
 				//还要监听验证异常，从hibernate后台抛出来的
 			} else if(exception instanceof ConstraintViolationException ){
@@ -59,6 +66,7 @@ public class MappingJackson2JsonView_Custom extends MappingJackson2JsonView {
 			//exception.printStackTrace();
 			logger.debug(exception.getMessage(),exception);
 		}
+		//正常情况的 视图解析
 		super.renderMergedOutputModel(model, request, response);
 	}
 }

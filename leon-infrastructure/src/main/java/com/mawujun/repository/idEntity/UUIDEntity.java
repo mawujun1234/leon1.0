@@ -2,12 +2,16 @@ package com.mawujun.repository.idEntity;
 
 import java.io.Serializable;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.proxy.HibernateProxy;
+import org.hibernate.proxy.LazyInitializer;
 
 import com.mawujun.annotation.AttrName;
 
@@ -34,11 +38,11 @@ public abstract class UUIDEntity  implements IdEntity<String>,Serializable{
 	//@GeneratedValue(generator="idGenerator")
 	@Column(length=36,updatable=false,unique=true)
 	//@Access(AccessType.PROPERTY)
-	@org.hibernate.annotations.AccessType("property")
+	//@org.hibernate.annotations.AccessType("property")
 	@AttrName(name="id")
 	protected String id;
 
-	
+	//@org.hibernate.annotations.AccessType("field")
 	public String getId() {
 		return id;
 	}

@@ -18,7 +18,7 @@ public class SystemExceptionExample3 {
         if (errorCode == null) {
             return null;
         }
-        String key = errorCode.getClass().getSimpleName() + "__" + errorCode;
+        String key = errorCode.getClass().getSimpleName() + "." + errorCode;
         ResourceBundle bundle = ResourceBundle.getBundle("com.mawujun.exception.example.exceptions");
         return bundle.getString(key);
     }
