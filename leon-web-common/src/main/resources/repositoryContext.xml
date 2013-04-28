@@ -157,9 +157,9 @@
 		-->
 	</beans>
 	
-	<beans profile="dev">
-		<jdbc:initialize-database data-source="dataSource" >
-		  <jdbc:script location="classpath:sql/initData.sql" encoding="UTF-8"/>
+	<beans profile="dev" >
+		<jdbc:initialize-database data-source="dataSource" enabled="#{systemProperties.INITIALIZE_DATABASE}"  ignore-failures="DROPS">
+		  <jdbc:script location="classpath:sql/initData.sql" encoding="UTF-8" />
 		</jdbc:initialize-database>
 	</beans>
 	

@@ -1,5 +1,10 @@
 package com.mawujun.controller.spring;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 import javax.servlet.ServletContextEvent;
@@ -42,14 +47,38 @@ public class SetSpringProfileActiveListener implements ServletContextListener {
 		if(active==null || "".equals(active.trim())){
 			String system_config_file_path=sce.getServletContext().getInitParameter("system_config_file_path");
 			if(system_config_file_path!=null && !"".equals(system_config_file_path.trim())){
+//				system_config_file_path=system_config_file_path.substring(0, system_config_file_path.lastIndexOf('.'));
+//				//System.out.println(system_config_file_path);
+//				ResourceBundle buddle=ResourceBundle.getBundle(system_config_file_path);
+//				//System.out.println(buddle);
+//				active=buddle.getString("spring.profiles.active");
+//
+//				System.setProperty("spring.profiles.active", active);
+				
 				system_config_file_path=system_config_file_path.substring(0, system_config_file_path.lastIndexOf('.'));
-				//System.out.println(system_config_file_path);
 				ResourceBundle buddle=ResourceBundle.getBundle(system_config_file_path);
-				//System.out.println(buddle);
-				active=buddle.getString("spring.profiles.active");
-				//System.out.println(active);
-				//sce.getServletContext().setInitParameter("spring.profiles.active", active);
-				System.setProperty("spring.profiles.active", active);
+				Enumeration<String> enu =buddle.getKeys();
+				while(enu.hasMoreElements()) {  
+		            //System.out.println(enu.nextElement());  
+					String key=enu.nextElement();
+		            System.setProperty(key, buddle.getString(key));
+		        }  
+				
+//				Properties prop = new Properties();  
+//			    FileInputStream fis;
+//				try {
+//					fis = new FileInputStream(system_config_file_path);
+//					 prop.load(fis);  	
+//					 System.setProperties(prop);
+//				} catch (FileNotFoundException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}  
+			   
+				
 			}
 
 		}
