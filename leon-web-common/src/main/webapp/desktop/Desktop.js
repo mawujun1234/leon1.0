@@ -87,6 +87,7 @@ Ext.define('Leon.desktop.Desktop', {
         me.taskbar=taskbar;
 
         me.callParent();
+        window.desktop=me;
     },
     /**
      * 返回菜单的组件形式
@@ -189,6 +190,7 @@ Ext.define('Leon.desktop.Desktop', {
 				        });
     					win=Ext.create('Ext.window.Window',cfg);
     					me.configWindow(win,cfg);
+
 						win.show();
 						return win;
     				}
@@ -216,11 +218,13 @@ Ext.define('Leon.desktop.Desktop', {
 	        });
 			win=Ext.create('Leon.desktop.Window',cfg);
 			me.configWindow(win,cfg);
+
 			win.show();
 			return win;
 		}
 
     },
+    
         //对win进行配置，并和taskbar进行关联
     configWindow:function(win,config){
     	var me=this;
@@ -303,6 +307,13 @@ Ext.define('Leon.desktop.Desktop', {
         }
         return win;
     },
+    //一般用于弹出window的 点刷新按钮的时候
+    removeWindowMask: function () {
+       //.break
+        var me = this, activeWindow = me.getActiveWindow();
+        activeWindow.el.unmask();
+    },
+    
     getDesktopZIndexManager: function () {
         var windows = this.windows;
         // TODO - there has to be a better way to get this...

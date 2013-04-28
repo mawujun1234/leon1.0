@@ -18,7 +18,15 @@ Ext.define('Leon.desktop.fun.FunForm',{
        me.items= [{
 	            fieldLabel: 'parent_id',
 	            //afterLabelTextTpl: me.required,
-	            name: 'parent_id'
+	            name: 'parent_id',
+	            readOnly:true
+	            //allowBlank: false,
+	            //tooltip: 'Enter your first name'
+	        },{
+	            fieldLabel: '上级名称',
+	            //afterLabelTextTpl: me.required,
+	            name: 'parent_name',
+	            readOnly:true
 	            //allowBlank: false,
 	            //tooltip: 'Enter your first name'
 	        },{

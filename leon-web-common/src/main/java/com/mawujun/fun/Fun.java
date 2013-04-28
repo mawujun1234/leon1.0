@@ -33,6 +33,9 @@ public class Fun extends UUIDEntity{
 	//private String iconCls;
 	@Column(length=40)
 	private String reportCode;//等级关系代码
+	@AttrName(name="帮助")
+	@Column(length=400)
+	private String helpContent;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Fun parent;
@@ -80,6 +83,14 @@ public class Fun extends UUIDEntity{
 
 	public void setParent(Fun parent) {
 		this.parent = parent;
+	}
+
+	public String getHelpContent() {
+		return helpContent;
+	}
+
+	public void setHelpContent(String helpContent) {
+		this.helpContent = helpContent;
 	}
 
 }

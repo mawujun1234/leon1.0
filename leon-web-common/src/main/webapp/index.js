@@ -1,4 +1,4 @@
-Ext.require('Ext.ux.IFrame');
+//Ext.require('Ext.ux.IFrame');
 //Ext.require('Leon.desktop.example.MenuUpdateText');
 Ext.onReady(function(){
 	//alert(1);
@@ -14,6 +14,7 @@ Ext.onReady(function(){
 				border:false,
 				items:[desktop]
 			});
+			
 		}
 	});
 //	var desktop=Ext.create('Leon.desktop.Desktop');

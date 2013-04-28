@@ -6,6 +6,7 @@ Ext.define("Leon.desktop.fun.Fun",{
 		{name:'text',type:'string'},
 		{name:'url',type:'string'},
 		{name:'reportCode',type:'string'},
+		{name:'helpContent',type:'string'},
 		{name:'parent_id',type:'auto'}
 	],
 	associations:[
