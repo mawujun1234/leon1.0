@@ -64,14 +64,16 @@ public class FunController {
 	
 	@RequestMapping("/fun/create")
 	@ResponseBody
-	public void create(@RequestBody Fun fun){		
+	public Fun create(@RequestBody Fun fun){		
 		funService.create(fun);
+		return fun;
 	}
 	
 	@RequestMapping("/fun/update")
 	@ResponseBody
-	public void update(@RequestBody Fun fun){		
+	public Fun update(@RequestBody Fun fun){		
 		 funService.update(fun);
+		 return fun;
 	}
 	
 	@RequestMapping("/fun/destroy")

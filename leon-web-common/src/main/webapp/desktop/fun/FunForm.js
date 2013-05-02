@@ -97,12 +97,16 @@ Ext.define('Leon.desktop.fun.FunForm',{
 //            }
 //        }
         ,{
-            text: '更新',
+            text: '保存',
             iconCls:'form-save-button',
             handler: function() {
                 this.up('form').getForm().isValid();
                 this.up('form').getForm().updateRecord();
-				this.up('form').getRecord().save();
+				this.up('form').getRecord().save({
+					success: function(record, operation) {
+						
+					}
+				});
             }
         },{
             text: '新建子功能',
