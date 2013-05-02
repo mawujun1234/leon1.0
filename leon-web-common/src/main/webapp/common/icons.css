@@ -16,3 +16,12 @@
 .form-addChild-button { 
         background: url(../icons/expand-all.gif) left top no-repeat !important; 
 }
+.form-copy-button { 
+        background: url(../icons/page_copy.png) left top no-repeat !important; 
+}
+.form-paste-button { 
+        background: url(../icons/page_paste.png) left top no-repeat !important; 
+}
+.form-reset-button { 
+        background: url(../icons/arrow_redo.png) left top no-repeat !important; 
+}

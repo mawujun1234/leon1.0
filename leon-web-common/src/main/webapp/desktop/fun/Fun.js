@@ -22,7 +22,7 @@ Ext.define("Leon.desktop.fun.Fun",{
 			get : '/fun/get',
 			create:'/fun/create',
 			update:'/fun/update',
-			destory:'/fun/destory'
+			destroy:'/fun/destroy'
 		},
 		reader:{
 			type:'json',

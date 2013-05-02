@@ -74,9 +74,9 @@ public class FunController {
 		 funService.update(fun);
 	}
 	
-	@RequestMapping("/fun/destory")
+	@RequestMapping("/fun/destroy")
 	@ResponseBody
-	public void destory(@RequestBody Fun fun){		
+	public void destroy(@RequestBody Fun fun){		
 		funService.delete(fun);
 	}
 	
