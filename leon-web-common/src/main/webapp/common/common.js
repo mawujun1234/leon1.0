@@ -1,7 +1,39 @@
 Ext.Ajax.timeout=60000000;
 Ext.Ajax.on({
 	requestexception:function(conn, response, options, eOpts ){
-		alert('连接后台失败，请检查网络和后台服务器是否正常运行!');
+		var status = response.status;
+ 		var text = response.responseText;
+ 		switch (status) {
+			case 404 :
+				top.Ext.MessageBox.alert("错误", "加载数据时发生错误:请求url不可用");
+				break;
+			case 200 :
+				if (text.length > 0) {
+					var data = Ext.decode(text);
+					if (data && data.error) {
+						top.Ext.MessageBox.alert("错误", "加载数据时发生错误:<br/>"
+										+ data.error);
+					} else {
+						top.Ext.MessageBox
+								.alert("错误", "加载数据时发生错误:<br/>" + text);
+					}
+				}
+				break;
+			case 0 :
+				top.Ext.MessageBox.alert("错误", "加载数据时发生错误:<br/>" + "远程服务器无响应");
+				break;
+			default :
+				var data = Ext.decode(text);
+				if (data && data.success==false) {
+					//top.Ext.MessageBox.alert("错误", "加载数据时发生错误<br/>错误码:"+ status + "<br/>错误信息:" + data.message);
+					top.Ext.MessageBox.alert("错误", "错误信息:" + data.message);
+				} else {
+					top.Ext.MessageBox.alert("错误", "错误信息:" + text);
+				}
+
+				break;
+		}
+		//alert('连接后台失败，请检查网络和后台服务器是否正常运行!');
 	}
 //	,requestcomplete:function(conn, response, options, eOpts ){
 //		alert('后台业务发生错误,错误信息为:'+11);

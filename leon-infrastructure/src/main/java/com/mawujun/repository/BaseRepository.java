@@ -232,6 +232,9 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 	public List<T> query(WhereInfo... whereInfos) {
 		return hibernateDao.query(whereInfos);
 	}
+	public int queryCount(WhereInfo... whereInfos) {
+		return hibernateDao.queryCount(whereInfos);
+	}
 	public List<T> queryByExample(T t) {
 		return hibernateDao.queryByExample(t);
 	}

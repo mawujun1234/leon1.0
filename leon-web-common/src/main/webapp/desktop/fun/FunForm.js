@@ -100,11 +100,17 @@ Ext.define('Leon.desktop.fun.FunForm',{
             text: '保存',
             iconCls:'form-save-button',
             handler: function() {
-                this.up('form').getForm().isValid();
-                this.up('form').getForm().updateRecord();
-				this.up('form').getRecord().save({
+            	var form=this.up('form');
+                form.getForm().isValid();
+                form.getForm().updateRecord();
+				form.getRecord().save({
 					success: function(record, operation) {
-						
+						if(form.action=="create"){
+							me.fireEvent("created",record);
+							form.action=="update"
+						} else {
+							
+						}
 					}
 				});
             }
@@ -118,16 +124,20 @@ Ext.define('Leon.desktop.fun.FunForm',{
             	var newRecord=Ext.createModel("Leon.desktop.fun.Fun",{'parent_id':parent.get("id"),'parent_text':parent.get("text")});
             	this.up('form').getForm().setValues({'parent_id':parent.get("id"),'parent_text':parent.get("text")});
             	this.up('form').getForm().loadRecord(newRecord);
+            	this.up('form').action="create";
             }
         },{
             text: '删除',
             iconCls:'form-delete-button',
             handler: function() {
                 //this.up('form').getForm().reset();
-                this.up('form').getRecord( ).destroy();
+            	//参数silent默认为删除下面的所有子节点
+                this.up('form').getRecord().destroy(false);
+                在发送ajax请求之前，nodeinterface就已经把自己删除了，但treestore里面有一个getRemovedRecords( )方法不知道有没有用
             }
         }];
        
+        me.addEvents("created");
        me.callParent();
 	}
 });

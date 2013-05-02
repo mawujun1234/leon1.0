@@ -32,6 +32,11 @@ Ext.onReady(function(){
 		items:[tree,form]
 	});
 	
+	form.on("created",function(record){
+		var fun=tree.getSelectionModel( ).getLastSelected( ) ;
+		tree.getStore().load({node:fun});
+	});
+	
 //	form.down("button[action=createChild]").on('click',function(btn){
 //		//btn.up('form').getForm().reset();
 //		form.getForm().reset();

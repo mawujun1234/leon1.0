@@ -2,6 +2,7 @@ package com.mawujun.controller.spring.mvc.exception;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -41,12 +42,17 @@ public class MappingJackson2JsonView_Custom extends MappingJackson2JsonView {
 			if(exception instanceof BussinessException){
 				ExceptionCode errorCode=((BussinessException) exception).getErrorCode();
 				String key = errorCode.getClass().getSimpleName() + "." + errorCode;
-				if( bundle.getString(key)==null){
-					map.put("message",exception.getMessage());
-				} else {
+				try {
 					map.put("message", bundle.getString(key));
+				} catch(MissingResourceException e){
+					map.put("message",exception.getMessage());
 				}
-				
+//				if( bundle.getString(key)==null){
+//					map.put("message",exception.getMessage());
+//				} else {
+//					map.put("message", bundle.getString(key));
+//				}
+				response.setStatus(200);
 				
 				//还要监听验证异常，从hibernate后台抛出来的
 			} else if(exception instanceof ConstraintViolationException ){

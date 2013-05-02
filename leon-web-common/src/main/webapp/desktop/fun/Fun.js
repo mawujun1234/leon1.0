@@ -16,6 +16,7 @@ Ext.define("Leon.desktop.fun.Fun",{
 	,proxy:{
 		actionMethods: { read: 'POST' },
 		timeout :600000,
+		headers:{ 'Accept':'application/json;'},
 		type:'ajax',
 		api:{
 			read:'/fun/queryChildren',
@@ -28,5 +29,10 @@ Ext.define("Leon.desktop.fun.Fun",{
 			type:'json',
 			root:'root'
 		}
+//		,listeners:{
+//			exception:function(proxy,response,operation){
+//				alert(response.responseText);
+//			}
+//		}
 	}
 });

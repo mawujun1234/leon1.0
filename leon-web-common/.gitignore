@@ -1,3 +1,4 @@
 /target
 /leon.lock.db
 /hibernate.log
+/leon.trace.db

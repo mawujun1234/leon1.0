@@ -650,6 +650,12 @@ public class HibernateDao<T, ID extends Serializable>{
 		whereInfo2Criterion(criteria,whereInfos);
 		return criteria.list();
 	}
+	public int queryCount(WhereInfo... whereInfos) {
+		Criteria criteria = getSession().createCriteria(entityClass);
+		whereInfo2Criterion(criteria,whereInfos);
+		int totalCount = countCriteriaResult(criteria);
+		return totalCount;
+	}
 	
 	private void whereInfo2Criterion(Criteria criteria,WhereInfo... whereInfos) {
 		if(whereInfos==null || whereInfos.length==0){
