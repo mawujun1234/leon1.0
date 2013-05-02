@@ -134,6 +134,7 @@ Ext.define('Leon.desktop.fun.FunForm',{
             	//参数silent默认为删除下面的所有子节点
                 this.up('form').getRecord().destroy(false);
                 在发送ajax请求之前，nodeinterface就已经把自己删除了，但treestore里面有一个getRemovedRecords( )方法不知道有没有用
+                ，可以为noterface新建一个方法，先判断后台是否删除成功，删除成功后，再消除节点
             }
         }];
        
