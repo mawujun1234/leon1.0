@@ -78,8 +78,9 @@ public class FunController {
 	
 	@RequestMapping("/fun/destroy")
 	@ResponseBody
-	public void destroy(@RequestBody Fun fun){		
+	public Fun destroy(@RequestBody Fun fun){		
 		funService.delete(fun);
+		return fun;
 	}
 	
 	@RequestMapping("/fun/get/{id}")

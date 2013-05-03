@@ -12,6 +12,11 @@ Ext.define('Leon.desktop.fun.FunTree',{
 		    root: {
 		        expanded: true,
 		        text:'功能管理'
+		    },
+		    listeners:{
+		    	load:function(store,node,records){//alert(1);
+		    		node.expand();
+		    	}
 		    }
 		});
        //store.load();

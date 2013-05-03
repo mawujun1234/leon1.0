@@ -33,7 +33,7 @@ Ext.onReady(function(){
 	});
 	
 	form.on("created",function(record){
-		var fun=tree.getSelectionModel( ).getLastSelected( ) ;
+		var fun=tree.getSelectionModel().getLastSelected( ) ;
 		tree.getStore().load({node:fun});
 	});
 	

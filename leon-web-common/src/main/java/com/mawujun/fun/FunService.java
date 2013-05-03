@@ -24,7 +24,7 @@ public class FunService extends BaseService<Fun, String> {
 		//判断是否具有子节点
 		WhereInfo whereinfo=WhereInfo.parse("parent.id", entity.getId());
 		int childs=this.getRepository().queryCount(whereinfo);
-		if(true){
+		if(childs>0){
 			throw new BussinessException("存在子节点，不能删除。",WebCommonExceptionCode3.EXISTS_CHILDREN);
 		}
 		

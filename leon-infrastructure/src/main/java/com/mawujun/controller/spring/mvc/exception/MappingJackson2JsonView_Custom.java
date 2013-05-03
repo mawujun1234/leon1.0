@@ -52,7 +52,7 @@ public class MappingJackson2JsonView_Custom extends MappingJackson2JsonView {
 //				} else {
 //					map.put("message", bundle.getString(key));
 //				}
-				response.setStatus(200);
+				//response.setStatus(200);
 				
 				//还要监听验证异常，从hibernate后台抛出来的
 			} else if(exception instanceof ConstraintViolationException ){
