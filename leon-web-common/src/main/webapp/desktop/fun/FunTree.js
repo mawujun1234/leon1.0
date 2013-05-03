@@ -15,7 +15,7 @@ Ext.define('Leon.desktop.fun.FunTree',{
 		    },
 		    listeners:{
 		    	load:function(store,node,records){//alert(1);
-		    		node.expand();
+		    		//node.expand();
 		    	}
 		    }
 		});

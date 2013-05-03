@@ -62,10 +62,31 @@ Ext.define('Leon.desktop.fun.FunForm',{
             }
 	    ];
 	    me.buttons= [{
+            text: '保存',
+            iconCls:'form-save-button',
+            handler: function() {
+            	var form=this.up('form');
+                form.getForm().isValid();
+                form.getForm().updateRecord();
+				form.getRecord().save({
+					success: function(record, operation) {
+						if(form.action=="create"){
+							me.fireEvent("created",record);
+							form.action="update"
+							
+							me.down("button[action=createChild]").show();
+						} else {
+							
+						}
+					}
+				});
+            }
+        },{
             text: '重置',
             iconCls:'form-reset-button',
             handler: function() {
-                this.up('form').getForm().reset();
+            	var copyRcd=this.up('form').getRecord( );
+                this.up('form').getForm().reset(copyRcd);
             }
         },{
             text: '复制',
@@ -83,6 +104,7 @@ Ext.define('Leon.desktop.fun.FunForm',{
             iconCls:'form-paste-button',
             handler: function() {
             	this.up('form').getForm().loadRecord(this.up('form').copyRcd);
+            	this.up('form').action="create";
                 this.hide();
             }
         }
@@ -97,34 +119,18 @@ Ext.define('Leon.desktop.fun.FunForm',{
 //            }
 //        }
         ,{
-            text: '保存',
-            iconCls:'form-save-button',
-            handler: function() {
-            	var form=this.up('form');
-                form.getForm().isValid();
-                form.getForm().updateRecord();
-				form.getRecord().save({
-					success: function(record, operation) {
-						if(form.action=="create"){
-							me.fireEvent("created",record);
-							form.action=="update"
-						} else {
-							
-						}
-					}
-				});
-            }
-        },{
             text: '新建子功能',
             iconCls:'form-addChild-button',
             action:'createChild',
-            handler: function() {
+            handler: function(bth) {
             	var parent=this.up('form').getRecord( );
             	this.up('form').getForm().reset();
             	var newRecord=Ext.createModel("Leon.desktop.fun.Fun",{'parent_id':parent.get("id"),'parent_text':parent.get("text")});
             	this.up('form').getForm().setValues({'parent_id':parent.get("id"),'parent_text':parent.get("text")});
             	this.up('form').getForm().loadRecord(newRecord);
             	this.up('form').action="create";
+            	
+            	bth.hide();
             }
         },{
             text: '删除',
