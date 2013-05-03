@@ -10,15 +10,15 @@ import com.mawujun.service.BaseService;
 
 @Service
 @Transactional(propagation=Propagation.REQUIRED)
-public class MenuService extends BaseService<Menu, String> {
+public class MenuItemService extends BaseService<MenuItem, String> {
 	
 	@Autowired
-	private MenuRepository menuRepository;
+	private MenuItemRepository menuItemRepository;
 
 	@Override
-	public BaseRepository<Menu, String> getRepository() {
+	public BaseRepository<MenuItem, String> getRepository() {
 		// TODO Auto-generated method stub
-		return menuRepository;
+		return menuItemRepository;
 	}
 
 }

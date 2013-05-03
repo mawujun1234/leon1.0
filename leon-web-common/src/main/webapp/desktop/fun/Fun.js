@@ -29,10 +29,8 @@ Ext.define("Leon.desktop.fun.Fun",{
 			type:'json',
 			root:'root'
 		}
-//		,listeners:{
-//			exception:function(proxy,response,operation){
-//				alert(response.responseText);
-//			}
-//		}
+		,writer:{
+			type:'json'
+		}
 	}
 });

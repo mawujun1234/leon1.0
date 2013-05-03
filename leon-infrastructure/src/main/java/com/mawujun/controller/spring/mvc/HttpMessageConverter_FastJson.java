@@ -160,17 +160,32 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 		//JSONObject result=JSONObjectUtils.toJson(t);
 		MediaType contentType = outputMessage.getHeaders().getContentType();
 		Charset charset = contentType.getCharSet() != null ? contentType.getCharSet() : DEFAULT_CHARSET;
+		
+		SerializeWriter out = new SerializeWriter();
+		JSONSerializer serializer = new JSONSerializer(out);     
+		serializer.setDateFormat(datePattern);
+		//SerializerFeature[] features = {SerializerFeature.UseISO8601DateFormat, SerializerFeature.UseSingleQuotes }; 
+		serializer.config(SerializerFeature.WriteDateUseDateFormat,true);//SerializerFeature.WriteDateUseDateFormat
+		serializer.config(SerializerFeature.UseSingleQuotes,true);//SerializerFeature.
+		serializer.config(SerializerFeature.SkipTransientField,true);
+		serializer.config(SerializerFeature.WriteEnumUsingToString,true);
+		serializer.config(SerializerFeature.SortField,true);
+		
+		if(enableHibernateLazyInitializerFilter){
+			serializer.getValueFilters().add(new HibernateLazyInitializerFilter());
+		}
+		
 		try {
 		if(object instanceof Map){
-			SerializeWriter out = new SerializeWriter();
-			JSONSerializer serializer = new JSONSerializer(out);     
-			serializer.setDateFormat(datePattern);
-			//SerializerFeature[] features = {SerializerFeature.UseISO8601DateFormat, SerializerFeature.UseSingleQuotes }; 
-			serializer.config(SerializerFeature.WriteDateUseDateFormat,true);//SerializerFeature.WriteDateUseDateFormat
-			serializer.config(SerializerFeature.UseSingleQuotes,true);//SerializerFeature.
-			serializer.config(SerializerFeature.SkipTransientField,true);
-			serializer.config(SerializerFeature.WriteEnumUsingToString,true);
-			serializer.config(SerializerFeature.SortField,true);
+//			SerializeWriter out = new SerializeWriter();
+//			JSONSerializer serializer = new JSONSerializer(out);     
+//			serializer.setDateFormat(datePattern);
+//			//SerializerFeature[] features = {SerializerFeature.UseISO8601DateFormat, SerializerFeature.UseSingleQuotes }; 
+//			serializer.config(SerializerFeature.WriteDateUseDateFormat,true);//SerializerFeature.WriteDateUseDateFormat
+//			serializer.config(SerializerFeature.UseSingleQuotes,true);//SerializerFeature.
+//			serializer.config(SerializerFeature.SkipTransientField,true);
+//			serializer.config(SerializerFeature.WriteEnumUsingToString,true);
+//			serializer.config(SerializerFeature.SortField,true);
 			
 			Map map=(Map)object;
 			if(!map.containsKey("success")){
@@ -204,9 +219,9 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 				map.remove(filterPropertys);
 			}
 			
-			if(enableHibernateLazyInitializerFilter){
-				serializer.getValueFilters().add(new HibernateLazyInitializerFilter());
-			}
+//			if(enableHibernateLazyInitializerFilter){
+//				serializer.getValueFilters().add(new HibernateLazyInitializerFilter());
+//			}
 			
 //			if(map.containsKey(onlyIds)){
 //				String[] excludes=((String)map.get(onlyIds)).split(",");
@@ -247,9 +262,9 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 //				map.remove(onlyIds);
 //			}
 			
-			serializer.write(object);
-			FileCopyUtils.copy(serializer.toString(), new OutputStreamWriter(outputMessage.getBody(), charset));
-			return;
+//			serializer.write(object);
+//			FileCopyUtils.copy(serializer.toString(), new OutputStreamWriter(outputMessage.getBody(), charset));
+//			return;
 		} else if(object instanceof QueryResult){
 			QueryResult page=(QueryResult)object;
 			ModelMap map=new ModelMap();
@@ -270,7 +285,9 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 		
 		}
 		
-		FileCopyUtils.copy(JSON.toJSONString(object,serializeConfig, SerializerFeature.PrettyFormat,SerializerFeature.UseSingleQuotes), new OutputStreamWriter(outputMessage.getBody(), charset));
+		//FileCopyUtils.copy(JSON.toJSONString(object,serializeConfig, SerializerFeature.PrettyFormat,SerializerFeature.UseSingleQuotes), new OutputStreamWriter(outputMessage.getBody(), charset));
+		serializer.write(object);
+		FileCopyUtils.copy(serializer.toString(), new OutputStreamWriter(outputMessage.getBody(), charset));
 		
 		}catch(RuntimeException e){
 			logger.error(e.getMessage(),e);
