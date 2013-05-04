@@ -4,6 +4,9 @@ Ext.define('Leon.desktop.menu.MenuItemTree',{
 	     'Leon.desktop.menu.MenuItem'
 	],
 	rootVisible: true,
+	config:{
+		menuId:'default'//默认的菜单id
+	},
 	initComponent: function () {
        var me = this;
        var store = Ext.create('Ext.data.TreeStore', {
@@ -11,11 +14,11 @@ Ext.define('Leon.desktop.menu.MenuItemTree',{
        		model:'Leon.desktop.menu.MenuItem',
 		    root: {
 		        expanded: true,
-		        text:'功能管理'
+		        text:'默认菜单'
 		    },
 		    listeners:{
-		    	load:function(store,node,records){//alert(1);
-		    		//node.expand();
+		    	beforeload:function(store){
+		    		store.getProxy().extraParams={menuId:me.getMenuId()}
 		    	}
 		    }
 		});

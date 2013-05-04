@@ -26,9 +26,10 @@ public class MenuItemController {
 	 */
 	@RequestMapping("/menuItem/queryChildren")
 	@ResponseBody
-	public ModelMap queryChildren(String node){
+	public ModelMap queryChildren(String node,String menuId){
 		WhereInfo whereinfo=WhereInfo.parse("parent.id", node);
-		List<MenuItem> funes=menuItemService.query(whereinfo);
+		WhereInfo menuIdwhereinfo=WhereInfo.parse("menu.id", menuId);
+		List<MenuItem> funes=menuItemService.query(whereinfo,menuIdwhereinfo);
 		//System.out.println("==================结果输出来了"+funes.size());
 		ModelMap map=new ModelMap();
 		map.put("root", funes);
@@ -42,8 +43,10 @@ public class MenuItemController {
 	 */
 	@RequestMapping("/menuItem/queryAll")
 	@ResponseBody
-	public List<MenuItem> queryAll(){		
-		return menuItemService.queryAll();
+	public List<MenuItem> queryAll(String menuId){		
+		WhereInfo menuIdwhereinfo=WhereInfo.parse("menu.id", menuId);
+		List<MenuItem> funes=menuItemService.query(menuIdwhereinfo);
+		return funes;
 	}
 	@RequestMapping("/menuItem/get")
 	@ResponseBody

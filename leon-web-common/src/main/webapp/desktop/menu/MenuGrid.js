@@ -11,7 +11,8 @@ Ext.define('Leon.desktop.menu.MenuGrid',{
 	//selType: 'cellmodel',
     plugins: [
         Ext.create('Ext.grid.plugin.CellEditing', {
-            clicksToEdit: 1
+        	pluginId: 'cellEditingPlugin',
+            clicksToEdit: 2
         })
     ],
 	initComponent: function () {
@@ -21,7 +22,8 @@ Ext.define('Leon.desktop.menu.MenuGrid',{
 	        { text: '名称', dataIndex: 'text', flex: 1 ,
 	        	editor: {
 	                xtype: 'textfield',
-	                allowBlank: false
+	                allowBlank: false,
+	                selectOnFocus:true
 	            }
 	        }
        ];
@@ -38,6 +40,9 @@ Ext.define('Leon.desktop.menu.MenuGrid',{
        			handler:function(){
        				var menu=Ext.create('Leon.desktop.menu.Menu',{text:'新菜单'});
        				me.store.add(menu);
+       				me.getPlugin("cellEditingPlugin").startEditByPosition({column:0,row:me.store.getCount( ) -1});
+       				//menu.beginEdit( );
+       				
        			}	
        		},{
        			text:'删除',
@@ -45,6 +50,10 @@ Ext.define('Leon.desktop.menu.MenuGrid',{
        			handler:function(){
        				var model=me.getSelectionModel( ).getLastSelected( ) ;
        				if(model){
+       					if(model.get("id")=="default"){
+       						Ext.Msg.alert("消息","默认菜单不能删除");
+       						return;
+       					}
        					model.destroy();
        				}
        			}	

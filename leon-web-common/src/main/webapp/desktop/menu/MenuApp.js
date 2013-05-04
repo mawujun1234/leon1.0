@@ -9,6 +9,12 @@ Ext.onReady(function(){
 		title:'菜单',
 		width:200
 	});
+	grid.on('itemclick',function(view,record,item,index){
+		//alert(tree.getMenuId());
+		tree.setMenuId(record.get("id"));
+		tree.getStore().reload();
+		tree.getRootNode( ).set("text",record.get("text"))
+	});
 
 	var tree=Ext.create('Leon.desktop.menu.MenuItemTree',{
 		title:'菜单树',
