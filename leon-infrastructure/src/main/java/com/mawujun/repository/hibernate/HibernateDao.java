@@ -265,11 +265,11 @@ public class HibernateDao<T, ID extends Serializable>{
 		builder.append(" where ");
 		for(WhereInfo whereInfo:wheres){
 			if(whereInfo.getOp().equals(Operation.BETWEEN)){
-				builder.append(" obj."+whereInfo.getProperty()+" "+whereInfo.getOp()+":"+whereInfo.getProperty()+0+" and :"+whereInfo.getProperty()+1);
+				builder.append(" obj."+whereInfo.getProperty()+" "+whereInfo.getOp()+":"+whereInfo.getPropertyTrans()+0+" and :"+whereInfo.getPropertyTrans()+1);
 			} else if(whereInfo.getOp().equals(Operation.IN)){
-				builder.append(" obj."+whereInfo.getProperty()+" in (:"+whereInfo.getProperty()+")");
+				builder.append(" obj."+whereInfo.getProperty()+" in (:"+whereInfo.getPropertyTrans()+")");
 			}else {
-				builder.append(" obj."+whereInfo.getProperty()+whereInfo.getOp()+":"+whereInfo.getProperty());
+				builder.append(" obj."+whereInfo.getProperty()+whereInfo.getOp()+":"+whereInfo.getPropertyTrans());
 			}
 			
 		}
@@ -302,8 +302,8 @@ public class HibernateDao<T, ID extends Serializable>{
 			 if(whereInfo.getOp().equals(Operation.BETWEEN)){
 				 Type type=classMetadata.getPropertyType(whereInfo.getProperty());
 				 
-				 query.setParameter(whereInfo.getProperty()+"0",  BeanMapper.convert(((Object[])whereInfo.getValue())[0],type.getReturnedClass()));
-				 query.setParameter(whereInfo.getProperty()+"1",  BeanMapper.convert(((Object[])whereInfo.getValue())[1],type.getReturnedClass()));
+				 query.setParameter(whereInfo.getPropertyTrans()+"0",  BeanMapper.convert(((Object[])whereInfo.getValue())[0],type.getReturnedClass()));
+				 query.setParameter(whereInfo.getPropertyTrans()+"1",  BeanMapper.convert(((Object[])whereInfo.getValue())[1],type.getReturnedClass()));
 			} else if(whereInfo.getOp().equals(Operation.IN)){
 
 //				Type type=classMetadata.getPropertyType(whereInfo.getProperty());
@@ -313,11 +313,11 @@ public class HibernateDao<T, ID extends Serializable>{
 //					aaa[i]= BeanMapper.convert(old[i], type.getReturnedClass());
 //				}
 				Object obj1=BeanMapper.convert((String[])whereInfo.getValue(), Integer.class);
-				query.setParameterList(whereInfo.getProperty(),(Object[])obj1);
+				query.setParameterList(whereInfo.getPropertyTrans(),(Object[])obj1);
 			}else {	
 				Type type=classMetadata.getPropertyType(whereInfo.getProperty());
 				//ClassUtils.isPrimitiveOrWrapper(type)
-				query.setParameter(whereInfo.getProperty(), BeanMapper.convert(whereInfo.getValue(), type.getReturnedClass()));
+				query.setParameter(whereInfo.getPropertyTrans(), BeanMapper.convert(whereInfo.getValue(), type.getReturnedClass()));
 			}
 			 
 		}
@@ -495,14 +495,14 @@ public class HibernateDao<T, ID extends Serializable>{
 			return 0;
 		}
 		
-		String hql="delete from "+this.entityClass.getName() +" obj where ";
+		String hql="delete from "+this.entityClass.getName() +" obj where 1=1 ";
 		for(WhereInfo whereInfo:wheres){
 			if(whereInfo.getOp().equals(Operation.BETWEEN)){
-				hql=hql+" obj."+whereInfo.getProperty()+" "+whereInfo.getOp()+":"+whereInfo.getProperty()+0+" and :"+whereInfo.getProperty()+1;
+				hql=hql+" and obj."+whereInfo.getProperty()+" "+whereInfo.getOp()+":"+whereInfo.getPropertyTrans()+0+" and :"+whereInfo.getPropertyTrans()+1;
 			} else if(whereInfo.getOp().equals(Operation.IN)){
-				hql=hql+" obj."+whereInfo.getProperty()+" in (:"+whereInfo.getProperty()+")";
+				hql=hql+" and obj."+whereInfo.getProperty()+" in (:"+whereInfo.getPropertyTrans()+")";
 			}else {
-				hql=hql+" obj."+whereInfo.getProperty()+whereInfo.getOp()+":"+whereInfo.getProperty();
+				hql=hql+" and obj."+whereInfo.getProperty()+whereInfo.getOp()+":"+whereInfo.getPropertyTrans();
 			}
 			
 		}
@@ -655,6 +655,20 @@ public class HibernateDao<T, ID extends Serializable>{
 		whereInfo2Criterion(criteria,whereInfos);
 		int totalCount = countCriteriaResult(criteria);
 		return totalCount;
+	}
+	public T queryUnique(WhereInfo... whereInfos) {
+		List<T> list=query(whereInfos);
+		if(list!=null && list.size()!=0){
+			return list.get(0);
+		}
+		return null;
+	}
+	
+	public Object queryMax(String property,WhereInfo... whereInfos) {
+		Criteria criteria = getSession().createCriteria(entityClass);
+		criteria.setProjection(Projections.projectionList().add( Projections.max(property)));
+		whereInfo2Criterion(criteria,whereInfos);
+		return criteria.uniqueResult();
 	}
 	
 	private void whereInfo2Criterion(Criteria criteria,WhereInfo... whereInfos) {

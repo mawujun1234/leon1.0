@@ -41,7 +41,7 @@ public class MenuItem extends UUIDEntity {
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Menu menu;
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	private Fun fun;
 	@ManyToOne(fetch=FetchType.LAZY)
 	private MenuItem parent;
@@ -122,6 +122,22 @@ public class MenuItem extends UUIDEntity {
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public Menu getMenu() {
+		return menu;
+	}
+
+	public void setMenu(Menu menu) {
+		this.menu = menu;
+	}
+
+	public MenuItem getParent() {
+		return parent;
+	}
+
+	public void setParent(MenuItem parent) {
+		this.parent = parent;
 	}
 
 }

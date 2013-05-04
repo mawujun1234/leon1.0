@@ -247,6 +247,14 @@ public class WhereInfo  implements Serializable{
 		return property;
 	}
 	/**
+	 * 把parent.id转换成parent_id
+	 * @return
+	 */
+	public String getPropertyTrans() {
+		return getProperty().replaceAll(".", "_");
+	}
+	
+	/**
 	 * 获取前台设置的操作符，用于hibernte
 	 * @return
 	 */

@@ -17,6 +17,15 @@ public class Menu  extends UUIDEntity{
 	@AttrName(name="名称")
 	@Column(length=20)
 	private String text;
+	public Menu(){
+		super();
+	}
+	public Menu(String id){
+		super();
+		this.id=id;
+		
+	}
+	
 	public String getText() {
 		return text;
 	}
