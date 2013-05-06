@@ -13,6 +13,16 @@ Ext.define('Leon.desktop.fun.FunForm',{
     frame: true,
     bodyPadding: '5 5 0',
     //trackResetOnLoad:true,
+    
+    fieldDefaults: {
+            labelWidth: 55,
+            anchor: '100%'
+        },
+
+    layout: {
+            type: 'vbox',
+            align: 'stretch'  // Child items are stretched to full width
+    },
 	initComponent: function () {
        var me = this;
       

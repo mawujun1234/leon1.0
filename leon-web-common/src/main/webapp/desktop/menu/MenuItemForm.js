@@ -11,8 +11,19 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
     required:'<span style="color:red;font-weight:bold" data-qtip="Required">*</span>',
     defaultType: 'textfield',
     frame: true,
-    bodyPadding: '5 5 0',
+    bodyPadding: '5 5 0 0',
     //trackResetOnLoad:true,
+    
+    fieldDefaults: {
+            labelWidth: 75,
+            labelAlign:'right',
+            anchor: '100%'
+    },
+
+    layout: {
+            type: 'vbox',
+            align: 'stretch'  // Child items are stretched to full width
+    },
 	initComponent: function () {
        var me = this;
       
@@ -31,6 +42,38 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
 	            //allowBlank: false,
 	            //tooltip: 'Enter your first name'
 	        },{
+                xtype: 'fieldcontainer',
+                fieldLabel: '所属功能',
+                combineErrors: true,
+                msgTarget : 'side',
+                layout: 'hbox',
+                defaults: {
+                    flex: 1,
+                    hideLabel: true
+                },
+                items: [{
+                        xtype     : 'textfield',
+                        name      : 'fun_text',
+                        fieldLabel: '功能名称',
+                        //margin: '0 5 0 0',
+                        allowBlank: false
+                    },{
+                        xtype     : 'hidden',
+                        name      : 'fun_id',
+                        flex:0,
+                        fieldLabel: '功能id',
+                        //margin: '0 5 0 0',
+                        allowBlank: false
+                    },{
+                        xtype     : 'button',
+                        flex:0,
+                        width:80,
+                        text      : '选择功能',
+                        handler:function(btn){
+                        	me.showFunTree(btn);
+                        }
+                    }]
+            },{
 	            fieldLabel: 'id',
 	            //afterLabelTextTpl: me.required,
 	            readOnly:true,
@@ -50,16 +93,16 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
 	            //allowBlank: false,
 	            //tooltip: '请输入名称'
 	        },{
-	            fieldLabel: 'url',
-	            name: 'url',
-	            tooltip: "请输入url"
+	            fieldLabel: '菜单插件URL',
+	            name: 'pluginUrl',
+	            tooltip: "请输入pluginUrl"
 	        },{
-	        	xtype:'checkboxfield',
-                fieldLabel  : '创建菜单',
-                name      : 'isCreateMenu',
-                inputValue: '2',
-                checked   : true
-            }
+	            fieldLabel: 'scripts',
+	            xtype:'textareafield',
+	            grow      : true,
+	            name: 'scripts',
+	            tooltip: "请输入scripts"
+	        }
 	    ];
 	    me.buttons= [{
             text: '保存',
@@ -152,7 +195,24 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
             }
         }];
        
-        me.addEvents("created");
+       me.addEvents("created");
        me.callParent();
+	},
+	showFunTree:function(showTarget){
+		var tree=Ext.create('Leon.desktop.fun.FunTree',{
+//			region:'west',
+//			split: true,
+//			collapsible: true,
+//			title:'功能树',
+			width:400,
+			height:500
+		});
+		var win=Ext.create('Ext.Window',{
+			layout:'fit',
+			modal:true,
+			title:showTarget.getText(),
+			items:tree
+		});
+		win.show(showTarget);
 	}
 });

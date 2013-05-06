@@ -1,5 +1,8 @@
 Ext.define("Leon.desktop.menu.MenuItem",{
 	extend:"Ext.data.Model",
+	requires: [
+	     'Leon.desktop.fun.Fun'
+	],
 	fields:[
 		{name:'id',type:'auto'},
 		{name:'code',type:'string'},
@@ -15,9 +18,9 @@ Ext.define("Leon.desktop.menu.MenuItem",{
 	],
 	associations:[
 		//{type:'hasMany',model:'Leon.desktop.fun.Fun',name : 'children'},不用，因为树形结构一般都是通过store来获取子节点的
-		{type:'belongsTo',model:'Leon.desktop.fun.Fun',foreignKey:'fun_id',associationKey:'fun'},
-		{type:'belongsTo',model:'Leon.desktop.menu.Menu',foreignKey:'menu_id',associationKey:'menu'},
-		{type:'belongsTo',model:'Leon.desktop.menu.MenuItem',foreignKey:'parent_id',associationKey:'parent'}
+		{type:'belongsTo',model:'Leon.desktop.fun.Fun',associatedName:'Fun'},
+		{type:'belongsTo',model:'Leon.desktop.menu.Menu',associatedName:'Menu'},
+		{type:'belongsTo',model:'Leon.desktop.menu.MenuItem',associatedName:'Parent'}//,foreignKey:'parent_id',associationKey:'parent'
 	]
 	,proxy:{
 		actionMethods: { read: 'POST' },
