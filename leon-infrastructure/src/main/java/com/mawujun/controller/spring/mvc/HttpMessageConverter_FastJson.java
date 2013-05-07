@@ -249,8 +249,10 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 		
 
 	}
-	
-	Pattern pattern = Pattern.compile("\\{\"\\$ref\":.*\"\\}");  
+	//Pattern pattern = Pattern.compile("\\{\"\\$ref\":.*\"\\}");  
+	//这里的？很重要，否则由于贪婪匹配的原因会造成问题
+	//http://www.imkevinyang.com/2010/07/javajs%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%8C%B9%E9%85%8D%E5%B5%8C%E5%A5%97html%E6%A0%87%E7%AD%BE.html
+	Pattern pattern = Pattern.compile("\\{\"\\$ref\":.*?\"\\}");  
 	public String replaceJsonPath(final String jsonString){
         Matcher matcher = pattern.matcher(jsonString);
         String result=jsonString;
@@ -258,14 +260,27 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
         {
         	//http://su1216.iteye.com/blog/1571083
         	System.out.println("找到匹配的数据");
+        	System.out.println(jsonString);
         	String tmp = matcher.group(0);
+        	System.out.println("=========="+tmp);
         	String jsonPath=tmp.substring(9, tmp.length()-2);
         	//System.out.println(jsonPath);
         	
         	//System.out.println(tmp); 	
         	Object bb=JsonPath.read(jsonString, jsonPath);
+        	bb里面包含有正则表达式里的符号，所以需要先取出这部分内容才可以替换
+        	System.out.println(bb.toString().replaceAll(tmp, "{}"));
         	
-        	result=matcher.replaceAll(bb.toString());
+        	
+//        	System.out.println(bb+">>>>>>>>>>>>");
+//        	Matcher matcher1 = pattern.matcher(bb.toString());
+//        	while (matcher.find()) {
+//        		//String tmp1 = matcher.group(0);
+//        		bb=matcher.replaceAll(bb.toString());
+//        	}
+//        	System.out.println(bb+">>>>>>>>>>>>");
+        	
+        	//result=matcher.replaceAll(bb.toString());
         	//System.out.println(result);
         	
         }
