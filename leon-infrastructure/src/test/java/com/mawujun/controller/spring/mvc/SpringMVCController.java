@@ -132,6 +132,39 @@ public class SpringMVCController {
 
 		return parent;
 	}
+	/**
+	 * 死循环默认会解决掉
+	 * @return
+	 */
+	@RequestMapping("/test/queryCycleList.do")
+	@ResponseBody
+	public List<Model> queryCycleList(){
+		Model parent=new Model();
+		parent.setId(1);
+		parent.setAge(11);
+		parent.setCreateDate(new Date());
+		parent.setName("parent");
+		
+		Model child=new Model();
+		child.setId(1);
+		child.setAge(11);
+		child.setName("child");
+		child.setParent(parent);
+		parent.addChilden(child);
+		
+		Model child1=new Model();
+		child1.setId(2);
+		child1.setAge(22);
+		child1.setName("child1");
+		child1.setParent(parent);
+		parent.addChilden(child1);
+		
+		List<Model> list=new ArrayList<Model>();
+		list.add(parent);
+
+		return list;
+	}
+	
 	@RequestMapping("/test/filterProperty.do")
 	@ResponseBody
 	public ModelMap filterProperty(){

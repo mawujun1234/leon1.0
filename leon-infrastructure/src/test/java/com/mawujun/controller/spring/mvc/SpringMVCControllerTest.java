@@ -145,6 +145,24 @@ public class SpringMVCControllerTest {
 	 * @throws Exception
 	 */
 	@Test
+	public void queryCycleList() throws Exception {
+		this.mockMvc.perform(get("/test/queryCycleList.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
+		.andExpect(status().isOk())
+		.andExpect(content().encoding("ISO-8859-1"))
+		.andExpect(content().contentType("application/json"))
+		.andExpect(jsonPath("$.success").value(true))
+		//.andExpect(jsonPath("$.totalProperty").value(1))//http://goessner.net/articles/JsonPath/
+		.andExpect(jsonPath("$..root.name").value("parent"))
+		.andExpect(jsonPath("$..root.id").value(1))
+		.andExpect(jsonPath("$..root.createDate").value(formatter.format(new Date())))
+		.andExpect(jsonPath("$..root.age").value(11));
+		//.andExpect(content().string("{\"age\":11,\"childen\":[{\"age\":11,\"id\":1,\"name\":\"child\"},{\"age\":22,\"id\":2,\"name\":\"child1\"}],\"createDate\":1358225425226,\"id\":1,\"name\":\"parent\"}"));
+	}
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	@Test
 	public void queryCycle() throws Exception {
 		this.mockMvc.perform(get("/test/queryCycle.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
 		.andExpect(status().isOk())

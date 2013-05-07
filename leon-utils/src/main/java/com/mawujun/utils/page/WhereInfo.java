@@ -201,7 +201,10 @@ public class WhereInfo  implements Serializable{
 	}
 	
 	public void setValue(Object value) {
-		setValue((String)value);
+		if(value!=null){
+			setValue(value.toString());
+		}
+		
 	}
 	
 	public String getKey() {

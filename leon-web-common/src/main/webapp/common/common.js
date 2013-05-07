@@ -69,7 +69,7 @@ Ext.apply(Ext,{
 Ext.override(Ext.data.BelongsToAssociation, { 
     read: function(record, reader, associationData){
     	//this.callOverridden(record, reader, associationData);
-    	record[this.instanceName] = reader.read([associationData]).records[0];;
+    	record[this.instanceName] = reader.read([associationData]).records[0];
     	record.set(this.foreignKey,record[this.instanceName].getId());//主键必须是id
     }
 });
@@ -119,7 +119,13 @@ Ext.override(Ext.data.Model,{
             } else if (type == 'belongsTo' || type == 'hasOne') {
                 associatedRecord = me[association.instanceName];
                 // If we have a record, put it onto our list
-                if (associatedRecord !== undefined) {
+                if (associatedRecord ) {
+                	if(me.get(association.foreignKey)!=associatedRecord.getId()){
+                		alert("数据不一致，请联系管理员!");
+                		throw new Error("association.instanceName的id和association.foreignKey的值不一致,请先进行处理！或者设置"+association.instanceName+"==null，或者更改foreignKey:" 
+                		+association.foreignKey+"，即重新加载关联对象的数据getter({reload:true})或者调用setter方法，更新关联对象");
+
+                	}
                     associationData[associationKey] = associatedRecord.getData();
                 } else {
                 	associationData[associationKey]={
@@ -206,6 +212,43 @@ Ext.override(Ext.data.Model,{
 
         return associationData;
     }
+//    ,set:function(fieldName, newValue){
+//    	var me=this,
+//    	single = (typeof fieldName == 'string'),
+//    	associations     = me.associations.items,association,i,type,
+//        associationCount = associations.length;
+//    	if (single) {
+//            values = me._singleProp;
+//            values[fieldName] = newValue;
+//        } else {
+//            values = fieldName;
+//        }
+//        //for (name in values) {
+//        	
+//        //}
+//        var reader=me.getProxy().getReader();
+//        for (i = 0; i < associationCount; i++) {	
+//        	 association = associations[i];
+//        	 type = association.type;
+//        	 if (type == 'belongsTo' || type == 'hasOne') {
+//        	 	if(values[association.foreignKey] && me[association.instanceName] && values[association.foreignKey]!=me[association.instanceName].getId()){
+//        	 		console.log(values[association.foreignKey]);
+//        	 		console.log(me[association.instanceName].getId());
+//        	 		//console.log(me['get' + association.associatedName]);
+//        	 		// read: function(record, reader, associationData){
+//        	 		association.read(me,me.getProxy().getReader(),{
+//        	 			id:values[association.foreignKey]
+//        	 		});
+//        	 		
+////        			me[association.instanceName]={
+////        	 			id:values[association.foreignKey]
+////        	 		}
+//        		}
+//        	 }
+//        }
+//        
+//    	return this.callOverridden(arguments);
+//    }
 });
 
 Ext.override(Ext.data.writer.Writer, { 

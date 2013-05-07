@@ -70,7 +70,10 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
                         width:80,
                         text      : '选择功能',
                         handler:function(btn){
-                        	me.showFunTree(btn);
+                        	var fun_id_txt=btn.previousSibling();
+                        	var fun_text_txt=fun_id_txt.previousSibling();
+                        	me.showFunTree(btn,fun_id_txt,fun_text_txt);
+                        	
                         }
                     }]
             },{
@@ -110,9 +113,21 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
             handler: function() {
             	var form=this.up('form');
                 form.getForm().isValid();
+                //这个时候只会更新forginKey，而不会更新associationName的数据
                 form.getForm().updateRecord();
+                
+                //设置关联对象的值，否则传递到后台的时候只有fun_id,而没有{。。fun:{....}}
+                if(form.selectFun){
+                	form.getRecord().setFun(form.selectFun);
+                	delete form.selectFun;
+                }
+               
+                
+               // alert(form.getValues(true));
+               // alert(form.getForm().getRecord().getFun().get("id"));
 				form.getRecord().save({
 					success: function(record, operation) {
+						console.dir(form.getRecord().getFun());
 						if(form.action=="create"){
 							me.fireEvent("created",record);
 							form.action="update"
@@ -150,18 +165,7 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
             	this.up('form').action="create";
                 this.hide();
             }
-        }
-//        ,{
-//	    	action:'save',
-//            text: '保存',
-//            iconCls:'form-save-button',
-//            handler: function() {
-//                var values=this.up('form').getForm().getValues( );
-//				var newRecord=Ext.createModel("Leon.desktop.fun.Fun",values);
-//				newRecord.save();
-//            }
-//        }
-        ,{
+        },{
             text: '新建子功能',
             iconCls:'form-addChild-button',
             action:'createChild',
@@ -198,7 +202,8 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
        me.addEvents("created");
        me.callParent();
 	},
-	showFunTree:function(showTarget){
+	showFunTree:function(showTarget,fun_id_txt,fun_text_txt){
+		var me=this;
 		var tree=Ext.create('Leon.desktop.fun.FunTree',{
 //			region:'west',
 //			split: true,
@@ -207,6 +212,13 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
 			width:400,
 			height:500
 		});
+		tree.on("itemdblclick",function(view,record,index,e){
+			fun_id_txt.setValue(record.get("id"));
+			fun_text_txt.setValue(record.get("text"));
+			win.close();
+			
+			me.selectFun=record;
+		});
 		var win=Ext.create('Ext.Window',{
 			layout:'fit',
 			modal:true,
@@ -214,5 +226,6 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
 			items:tree
 		});
 		win.show(showTarget);
+		
 	}
 });

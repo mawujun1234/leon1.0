@@ -34,8 +34,13 @@ Ext.define('Leon.desktop.example.MenuPlugin', {
 //    			}
 //    		});
     	} else if(me.scripts){
-    		//var scripts=eval('(function(menuItem){'+me.scripts+'})(btn)');
-    		eval('('+me.scripts+')();');
+    		
+    		//eval('('+me.scripts+')();');
+    		var fun=eval('('+me.scripts+')');
+    		if((typeof fun)=='function'){
+    			//alert(1);
+    			fun();
+    		}
     	}
     }
 });

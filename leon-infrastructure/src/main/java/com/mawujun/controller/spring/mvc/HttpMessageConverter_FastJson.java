@@ -10,6 +10,8 @@ import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.hibernate.collection.spi.PersistentCollection;
 import org.hibernate.proxy.HibernateProxy;
@@ -34,6 +36,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.serializer.SimpleDateFormatSerializer;
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.alibaba.fastjson.serializer.ValueFilter;
+import com.jayway.jsonpath.JsonPath;
 import com.mawujun.repository.hibernate.HibernateUtils;
 import com.mawujun.repository.idEntity.IdEntity;
 import com.mawujun.utils.page.QueryResult;
@@ -177,16 +180,6 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 		
 		try {
 		if(object instanceof Map){
-//			SerializeWriter out = new SerializeWriter();
-//			JSONSerializer serializer = new JSONSerializer(out);     
-//			serializer.setDateFormat(datePattern);
-//			//SerializerFeature[] features = {SerializerFeature.UseISO8601DateFormat, SerializerFeature.UseSingleQuotes }; 
-//			serializer.config(SerializerFeature.WriteDateUseDateFormat,true);//SerializerFeature.WriteDateUseDateFormat
-//			serializer.config(SerializerFeature.UseSingleQuotes,true);//SerializerFeature.
-//			serializer.config(SerializerFeature.SkipTransientField,true);
-//			serializer.config(SerializerFeature.WriteEnumUsingToString,true);
-//			serializer.config(SerializerFeature.SortField,true);
-			
 			Map map=(Map)object;
 			if(!map.containsKey("success")){
 				map.put("success", true);
@@ -219,52 +212,6 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 				map.remove(filterPropertys);
 			}
 			
-//			if(enableHibernateLazyInitializerFilter){
-//				serializer.getValueFilters().add(new HibernateLazyInitializerFilter());
-//			}
-			
-//			if(map.containsKey(onlyIds)){
-//				String[] excludes=((String)map.get(onlyIds)).split(",");
-//				for(final String str:excludes){
-//					
-//					//final String str_final=str;
-//					ValueFilter filter = new ValueFilter() {		 
-//					    public Object process(Object source, String name, final Object value) {
-//					        if (name.equals(str) && value!=null && (value instanceof IdEntity)) {
-//					        	
-//					        	//现在只是把
-//					        	return new IdEntity(){
-//									@Override
-//									public void setId(Object id) {
-//										// TODO Auto-generated method stub
-//										
-//									}
-//									@Override
-//									public Object getId() {
-//										// TODO Auto-generated method stub
-////										IdEntity aa=((IdEntity)value);
-////										Object id=aa.getId();
-////										这里报异常，代理不能初始化的异常
-////										return id;
-//										//return "11";
-//										return HibernateUtils.getIdDirect((IdEntity)value);
-//									}
-//					        		
-//					        	};
-//					        	
-//					            //return ((IdEntity)value).getId();
-//					        } 
-//					        return value;
-//					    }
-//					};
-//					serializer.getValueFilters().add(filter);
-//				}
-//				map.remove(onlyIds);
-//			}
-			
-//			serializer.write(object);
-//			FileCopyUtils.copy(serializer.toString(), new OutputStreamWriter(outputMessage.getBody(), charset));
-//			return;
 		} else if(object instanceof QueryResult){
 			QueryResult page=(QueryResult)object;
 			ModelMap map=new ModelMap();
@@ -287,7 +234,11 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 		
 		//FileCopyUtils.copy(JSON.toJSONString(object,serializeConfig, SerializerFeature.PrettyFormat,SerializerFeature.UseSingleQuotes), new OutputStreamWriter(outputMessage.getBody(), charset));
 		serializer.write(object);
-		FileCopyUtils.copy(serializer.toString(), new OutputStreamWriter(outputMessage.getBody(), charset));
+		//System.out.println();
+		//fastjson在处理循环依赖的时候出现的问题，出现了jsonpath的内容
+		String jsonString=serializer.toString();
+		jsonString=replaceJsonPath(jsonString);
+		FileCopyUtils.copy(jsonString, new OutputStreamWriter(outputMessage.getBody(), charset));
 		
 		}catch(RuntimeException e){
 			logger.error(e.getMessage(),e);
@@ -297,6 +248,28 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 		}
 		
 
+	}
+	
+	Pattern pattern = Pattern.compile("\\{\"\\$ref\":.*\"\\}");  
+	public String replaceJsonPath(final String jsonString){
+        Matcher matcher = pattern.matcher(jsonString);
+        String result=jsonString;
+        while (matcher.find())
+        {
+        	//http://su1216.iteye.com/blog/1571083
+        	System.out.println("找到匹配的数据");
+        	String tmp = matcher.group(0);
+        	String jsonPath=tmp.substring(9, tmp.length()-2);
+        	//System.out.println(jsonPath);
+        	
+        	//System.out.println(tmp); 	
+        	Object bb=JsonPath.read(jsonString, jsonPath);
+        	
+        	result=matcher.replaceAll(bb.toString());
+        	//System.out.println(result);
+        	
+        }
+        return result;
 	}
 
 
