@@ -32,6 +32,12 @@ Ext.onReady(function(){
 		} else {
 			basicFoem.setValues({"parent_text":null}) ;
 		}
+		if(tree.getMenuId()=="default"){
+			form.disableItem4DefauleMenu();
+		} else {
+			form.enableItem4DefauleMenu();
+		}
+		
 		
 	});
 	var form=Ext.create('Leon.desktop.menu.MenuItemForm',{

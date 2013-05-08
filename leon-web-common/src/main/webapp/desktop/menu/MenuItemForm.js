@@ -96,7 +96,7 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
 	            //allowBlank: false,
 	            //tooltip: '请输入名称'
 	        },{
-	            fieldLabel: '菜单插件URL',
+	            fieldLabel: '菜单扩展js',
 	            name: 'pluginUrl',
 	            tooltip: "请输入pluginUrl"
 	        },{
@@ -109,6 +109,7 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
 	    ];
 	    me.buttons= [{
             text: '保存',
+            itemId:'save',
             iconCls:'form-save-button',
             handler: function() {
             	var form=this.up('form');
@@ -168,7 +169,7 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
         },{
             text: '新建子功能',
             iconCls:'form-addChild-button',
-            action:'createChild',
+            //itemId:'createChild',
             handler: function(bth) {
             	var parent=this.up('form').getRecord( );
             	this.up('form').getForm().reset();
@@ -225,7 +226,45 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
 			title:showTarget.getText(),
 			items:tree
 		});
-		win.show(showTarget);
-		
+		win.show(showTarget);	
+	},
+	//党是默认菜单的菜单项时，禁止一些元素的修改
+	disableItems:[],
+	disableItem4DefauleMenu:function(){
+		var me=this;
+		if(me.disableItems.length>0){
+			for(var i=0;i<me.disableItems.length;i++){
+				me.disableItems[i].disable();
+			}
+			return;
+		}
+		var fields=me.getForm().getFields( ) ;
+		var disableFieldObj={
+			code:true,
+			pluginUrl:true,
+			scripts:true
+		}
+		fields.each(function(item,index ,len){
+			if(!disableFieldObj[item.getName( )]){
+				item.disable();
+				me.disableItems.push(item);
+			}
+		});
+		var buttons=me.query("button");
+		for(var i=0;i<buttons.length;i++){
+			var item=buttons[i];
+			console.log(item.getItemId( ));
+			if(item.getItemId( )!="save"){
+				item.disable();
+				me.disableItems.push(item);
+			}
+		}
+	},
+	//恢复diable掉的组件
+	enableItem4DefauleMenu:function(){
+		for(var i=0;i<me.disableItems.length;i++){
+			me.disableItems[i].enable();
+		}
+		//me.disableItems.length=0;
 	}
 });

@@ -33,7 +33,7 @@ public class MenuItem extends UUIDEntity {
 	@AttrName(name="代码")
 	@Column(length=1000)
 	private String scripts;
-	@AttrName(name="icon")
+	@AttrName(name="图标")
 	@Column(length=40)
 	private String iconCls;
 	@Column(length=40)

@@ -29,31 +29,13 @@ public class MenuItemController {
 	@RequestMapping("/menuItem/queryChildren")
 	@ResponseBody
 	public List<MenuItem> queryChildren(String node,String menuId){
-//		WhereInfo whereinfo=WhereInfo.parse("parent.id", node);
-//		WhereInfo menuIdwhereinfo=WhereInfo.parse("menu.id", menuId);
-//		List<MenuItem> funes=menuItemService.query(whereinfo,menuIdwhereinfo);
-//		//System.out.println("==================结果输出来了"+funes.size());
-//		ModelMap map=new ModelMap();
-//		map.put("root", funes);
-		
-		Fun fun=new Fun();
-		fun.setId("fun1");
-		fun.setText("fun1");
-		
-		MenuItem item1=new MenuItem();
-		item1.setId("1");
-		item1.setText("1");
-		item1.setFun(fun);
-		
-		MenuItem item2=new MenuItem();
-		item2.setId("2");
-		item2.setText("2");
-		item2.setFun(fun);
-		List<MenuItem> funes=new ArrayList<MenuItem>();
-		funes.add(item1);
-		funes.add(item2);
-		
-		
+		WhereInfo whereinfo=WhereInfo.parse("parent.id", node);
+		WhereInfo menuIdwhereinfo=WhereInfo.parse("menu.id", menuId);
+		List<MenuItem> funes=menuItemService.query(whereinfo,menuIdwhereinfo);
+		//System.out.println("==================结果输出来了"+funes.size());
+		ModelMap map=new ModelMap();
+		map.put("root", funes);
+	
 		return funes;
 	}
 
