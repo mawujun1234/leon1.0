@@ -11,8 +11,10 @@ Ext.define('Leon.desktop.menu.MenuItemTree',{
        var me = this;
        var store = Ext.create('Ext.data.TreeStore', {
        		autoLoad:false,
+       		nodeParam:'id',
        		model:'Leon.desktop.menu.MenuItem',
 		    root: {
+		    	id:'default',
 		        expanded: true,
 		        text:'默认菜单'
 		    },

@@ -2,7 +2,8 @@ Ext.define("Leon.desktop.menu.Menu",{
 	extend:"Ext.data.Model",
 	fields:[
 		{name:'id',type:'auto'},
-		{name:'text',type:'string'}
+		{name:'text',type:'string'},
+		{name:'rootId',type:'string'}
 	],
 //	associations:[
 //		//{type:'hasMany',model:'Leon.desktop.fun.Fun',name : 'children'},不用，因为树形结构一般都是通过store来获取子节点的

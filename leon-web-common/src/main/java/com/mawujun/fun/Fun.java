@@ -42,6 +42,14 @@ public class Fun extends UUIDEntity{
 	@OneToMany(mappedBy="parent",fetch=FetchType.LAZY)
 	private List<Fun> children=new ArrayList<Fun>();
 	
+	public Fun(){
+		super();
+	}
+	public Fun(String id){
+		super();
+		this.id=id;
+	}
+	
 	public void addChild(Fun child) {
 		this.children.add(child);
 	}

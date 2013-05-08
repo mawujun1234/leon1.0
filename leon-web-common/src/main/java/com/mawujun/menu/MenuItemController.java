@@ -28,8 +28,8 @@ public class MenuItemController {
 	 */
 	@RequestMapping("/menuItem/queryChildren")
 	@ResponseBody
-	public List<MenuItem> queryChildren(String node,String menuId){
-		WhereInfo whereinfo=WhereInfo.parse("parent.id", node);
+	public List<MenuItem> queryChildren(String id,String menuId){
+		WhereInfo whereinfo=WhereInfo.parse("parent.id", id);
 		WhereInfo menuIdwhereinfo=WhereInfo.parse("menu.id", menuId);
 		List<MenuItem> funes=menuItemService.query(whereinfo,menuIdwhereinfo);
 		//System.out.println("==================结果输出来了"+funes.size());

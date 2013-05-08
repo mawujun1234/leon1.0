@@ -114,15 +114,15 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
             handler: function() {
             	var form=this.up('form');
                 form.getForm().isValid();
-                //这个时候只会更新forginKey，而不会更新associationName的数据
-                form.getForm().updateRecord();
+                
                 
                 //设置关联对象的值，否则传递到后台的时候只有fun_id,而没有{。。fun:{....}}
                 if(form.selectFun){
                 	form.getRecord().setFun(form.selectFun);
                 	delete form.selectFun;
                 }
-               
+               //这个时候只会更新forginKey，而不会更新associationName的数据
+                form.getForm().updateRecord();
                 
                // alert(form.getValues(true));
                // alert(form.getForm().getRecord().getFun().get("id"));
@@ -223,6 +223,7 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
 		var win=Ext.create('Ext.Window',{
 			layout:'fit',
 			modal:true,
+			constrainHeader:true,
 			title:showTarget.getText(),
 			items:tree
 		});
@@ -262,6 +263,7 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
 	},
 	//恢复diable掉的组件
 	enableItem4DefauleMenu:function(){
+		var me=this;
 		for(var i=0;i<me.disableItems.length;i++){
 			me.disableItems[i].enable();
 		}

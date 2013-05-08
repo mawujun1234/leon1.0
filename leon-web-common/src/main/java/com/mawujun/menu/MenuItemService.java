@@ -25,9 +25,13 @@ public class MenuItemService extends BaseService<MenuItem, String> {
 	}
 	
 	public void create(MenuItem entity) {
+		Object reportCode=null;
+		if(entity.getParent()!=null){
+			WhereInfo whereinfo=WhereInfo.parse("parent.id", entity.getParent().getId());
+			reportCode=menuItemRepository.queryMax("reportCode",whereinfo);
+		}
 		//获取父节点的reportcode
-		WhereInfo whereinfo=WhereInfo.parse("parent.id", entity.getParent().getId());
-		Object reportCode=menuItemRepository.queryMax("reportCode",whereinfo);
+		
 		String newReportCode=ReportCodeHelper.generate3((String)reportCode);
 		entity.setReportCode(newReportCode);
 		

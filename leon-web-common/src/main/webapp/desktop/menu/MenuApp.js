@@ -11,9 +11,35 @@ Ext.onReady(function(){
 	});
 	grid.on('itemclick',function(view,record,item,index){
 		//alert(tree.getMenuId());
+		//tree.getRootNode( ).set("text",record.get("text"));
+		//tree.getRootNode( ).set("id",record.get("id"));
+		
+		//注意这样是否会报错，如果不会报错，就完善文档
+		//var MenuItem= Ext.ModelManager.getModel('Leon.desktop.menu.MenuItem')
+		Leon.desktop.menu.MenuItem.load('default',{
+			action:'get',
+			success:function(record){
+				alert(record.get("text"));
+				var root=tree.setRootNode({
+					id:record.get("id"),
+					text:record.get("text"),
+					expanded:true
+				});
+				
+				tree.getStore().reload({node:tree.getRootNode( )});
+				//root.expand( );
+			}
+		});
+		
+		
 		tree.setMenuId(record.get("id"));
-		tree.getStore().reload();
-		tree.getRootNode( ).set("text",record.get("text"))
+		//tree.getStore().reload({node:tree.getRootNode( )});
+		
+		if(tree.getMenuId()=="default"){
+			form.disableItem4DefauleMenu();
+		} else {
+			form.enableItem4DefauleMenu();
+		}
 	});
 
 	var tree=Ext.create('Leon.desktop.menu.MenuItemTree',{
@@ -32,13 +58,7 @@ Ext.onReady(function(){
 		} else {
 			basicFoem.setValues({"parent_text":null}) ;
 		}
-		if(tree.getMenuId()=="default"){
-			form.disableItem4DefauleMenu();
-		} else {
-			form.enableItem4DefauleMenu();
-		}
-		
-		
+
 	});
 	var form=Ext.create('Leon.desktop.menu.MenuItemForm',{
 		region:'east',
