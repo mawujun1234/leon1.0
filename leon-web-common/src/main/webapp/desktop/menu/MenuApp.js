@@ -12,26 +12,19 @@ Ext.onReady(function(){
 	grid.on('itemclick',function(view,record,item,index){
 		//注意这样是否会报错，如果不会报错，就完善文档
 		//var MenuItem= Ext.ModelManager.getModel('Leon.desktop.menu.MenuItem')
-		Leon.desktop.menu.MenuItem.load(record.get('rootId'),{
-			action:'get',
-			success:function(record){
-				//console.dir(record.raw);
-				var obj=record.raw;
-				obj.expanded=true;
-				obj.menu_id=record.raw.menu.id;
-				//obj.fun_id=record.raw.fun.id;
-				//obj.fun_text=record.raw.fun.text;
-				var root=tree.setRootNode(obj);
-				root.setFun({id:record.raw.fun.id,text:record.raw.fun.text});
-				//这个又问题
-				//tree.setRootNode(record);
-				//root.set('menu_id',record.raw.menu.id);
-				
-				//tree.getStore().reload({node:tree.getRootNode( )});
-				//root.expand( );
+		Ext.Ajax.request({
+			url:Ext.ContextPath+'/menuItem/get',
+			method:'POST',
+			params:{id:record.get('rootId')},
+			success:function(response){
+				var obj=Ext.decode(response.responseText);
+				if(obj.success){
+					obj.root.expanded=true;
+					var record=Ext.createModel('Leon.desktop.menu.MenuItem',obj.root);
+					tree.setRootNode(record);
+				}
 			}
-		});
-		
+		});	
 		
 		tree.setMenuId(record.get("id"));
 		//tree.getStore().reload({node:tree.getRootNode( )});
@@ -53,9 +46,8 @@ Ext.onReady(function(){
 		basicFoem.loadRecord(record);
 		
 		//if(record.getId()!=tree.getRootNode().getId()){
-		console.dir(record.raw);
-		alert(record.get("fun_id"));前面的实例没有建好的原因
-		alert(record.getFun());这里报错
+		//alert(record.get("fun_id"));前面的实例没有建好的原因
+		//alert(record.getFun());这里报错
 			basicFoem.setValues({"fun_text":record.getFun().get("text")}) ;
 			var parent=tree.getStore().getNodeById(record.get("parent_id"));
 			if(parent){

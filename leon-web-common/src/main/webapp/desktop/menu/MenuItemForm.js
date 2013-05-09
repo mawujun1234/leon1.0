@@ -135,7 +135,7 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
 							me.fireEvent("created",record);
 							form.action="update"
 							
-							me.down("button[action=createChild]").show();
+							me.down("button[itemId=createChild]").show();
 						} else {
 							
 						}
@@ -171,7 +171,7 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
         },{
             text: '新建子功能',
             iconCls:'form-addChild-button',
-            //itemId:'createChild',
+            itemId:'createChild',
             handler: function(bth) {
             	var parent=this.up('form').getRecord( );
             	this.up('form').getForm().reset();

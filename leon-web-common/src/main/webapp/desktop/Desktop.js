@@ -60,15 +60,15 @@ Ext.define('Leon.desktop.Desktop', {
 //        	}}]
 //        });
         var menuItems=[{iconCls: 'menubar-index-button',xtype:'button',text:'桌面'},'-','-'];
-        menuItems.push(
-        {text:'测试',handler:function(){
-        		me.createWindow({
-        			//id:1111,
-        			title:'测试',
-        			url:'http://www.baidu.com'
-        		});
-        		
-        	}})
+//        menuItems.push(
+//        {text:'测试',handler:function(){
+//        		me.createWindow({
+//        			//id:1111,
+//        			title:'测试',
+//        			url:'http://www.baidu.com'
+//        		});
+//        		
+//        	}})
         
         me.returnMenuItem(menuItems,me.initMenus);
        

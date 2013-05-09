@@ -48,6 +48,7 @@ public class MenuItemController {
 	@RequestMapping("/menuItem/queryAll")
 	@ResponseBody
 	public List<MenuItem> queryAll(String menuId){		
+		//这里没有进行上下级的组装，所以界面上出现了3个菜单
 		WhereInfo menuIdwhereinfo=WhereInfo.parse("menu.id", menuId);
 		List<MenuItem> funes=menuItemService.query(menuIdwhereinfo);
 		return funes;
