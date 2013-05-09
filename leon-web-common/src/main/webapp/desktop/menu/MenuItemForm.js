@@ -113,7 +113,9 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
             iconCls:'form-save-button',
             handler: function() {
             	var form=this.up('form');
-                form.getForm().isValid();
+                if(!form.getForm().isValid()) {
+                	return;
+                }
                 
                 
                 //设置关联对象的值，否则传递到后台的时候只有fun_id,而没有{。。fun:{....}}
@@ -173,7 +175,8 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
             handler: function(bth) {
             	var parent=this.up('form').getRecord( );
             	this.up('form').getForm().reset();
-            	var newRecord=Ext.createModel("Leon.desktop.fun.Fun",{'parent_id':parent.get("id"),'parent_text':parent.get("text")});
+            	alert(parent.get("menu_id"));
+            	var newRecord=Ext.createModel("Leon.desktop.menu.MenuItem",{'parent_id':parent.get("id"),'parent_text':parent.get("text"),menu_id:parent.get("menu_id")});
             	this.up('form').getForm().setValues({'parent_id':parent.get("id"),'parent_text':parent.get("text")});
             	this.up('form').getForm().loadRecord(newRecord);
             	this.up('form').action="create";

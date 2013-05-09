@@ -76,7 +76,9 @@ Ext.define('Leon.desktop.fun.FunForm',{
             iconCls:'form-save-button',
             handler: function() {
             	var form=this.up('form');
-                form.getForm().isValid();
+                if(!form.getForm().isValid()) {
+                	return;
+                }
                 form.getForm().updateRecord();
 				form.getRecord().save({
 					success: function(record, operation) {

@@ -33,7 +33,7 @@ public class MenuItemController {
 		WhereInfo menuIdwhereinfo=WhereInfo.parse("menu.id", menuId);
 		List<MenuItem> funes=menuItemService.query(whereinfo,menuIdwhereinfo);
 		System.out.println("==================结果输出来了"+funes.size());
-		应该是HttpMessage转换的时候出的问题
+		//应该是HttpMessage转换的时候出的问题
 		ModelMap map=new ModelMap();
 		map.put("root", funes);
 	
