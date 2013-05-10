@@ -1,4 +1,5 @@
 Ext.Ajax.timeout=60000000;
+Ext.Ajax.defaultHeaders={ 'Accept':'application/json;'},
 Ext.Ajax.on({
 	requestexception:function(conn, response, options, eOpts ){
 		var status = response.status;

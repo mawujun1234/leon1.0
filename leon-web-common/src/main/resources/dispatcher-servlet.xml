@@ -143,7 +143,6 @@
 	  </property> 
 	</bean>
 	
-	<!-- 如果头部是application/json，那就转移到jackson2JsonView -->
 	<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
   		<property name="exceptionMappings"> 
              <props>     
@@ -152,7 +151,7 @@
          </property>     
         <property name="statusCodes">     
              <props>     
-                 <prop key="errors/500">503</prop>     
+                 <prop key="errors/500">500</prop>     
                  <prop key="errors/404">404</prop>  
                  <prop key="exceptionJsonView">503</prop>     
              </props>     
@@ -160,7 +159,7 @@
           <!-- 设置日志输出级别，不定义则默认不输出警告等错误日志信息 -->    
          <property name="warnLogCategory" value="WARN" />    
          <!-- 默认错误页面，当找不到上面mappings中指定的异常对应视图时，使用本默认配置 -->    
-         <property name="defaultErrorView" value="errors/500" />    
+         <property name="defaultErrorView" value="jackson2JsonView" />    
          <!-- 默认HTTP状态码 -->    
          <property name="defaultStatusCode" value="500" />  
    </bean> 
