@@ -143,21 +143,26 @@
 	  </property> 
 	</bean>
 	
-	<!-- 异常处理再整理下，看看，如何拦截这个异常，并显示异常信息，现在是显示不了 -->
+	<!-- 如果头部是application/json，那就转移到jackson2JsonView -->
 	<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
   		<property name="exceptionMappings"> 
              <props>     
-             	 <prop key="java.lang.Exception">errors/error</prop> 
-                 <prop key="java.lang.Exception">errors/error</prop>         
+             	 <prop key="java.lang.Exception">errors/500</prop>      
              </props>     
          </property>     
         <property name="statusCodes">     
              <props>     
-                 <prop key="errors/error">503</prop>     
+                 <prop key="errors/500">503</prop>     
                  <prop key="errors/404">404</prop>  
                  <prop key="exceptionJsonView">503</prop>     
              </props>     
          </property> 
+          <!-- 设置日志输出级别，不定义则默认不输出警告等错误日志信息 -->    
+         <property name="warnLogCategory" value="WARN" />    
+         <!-- 默认错误页面，当找不到上面mappings中指定的异常对应视图时，使用本默认配置 -->    
+         <property name="defaultErrorView" value="errors/500" />    
+         <!-- 默认HTTP状态码 -->    
+         <property name="defaultStatusCode" value="500" />  
    </bean> 
 
 	

@@ -79,6 +79,7 @@
   <logger name="com.ibatis.common.jdbc.SimpleDataSource" level="info"/>
   
   
+ 
   <root level="warn">
     <appender-ref ref="stdout"/>
     <appender-ref ref="file"/>
