@@ -3,7 +3,7 @@
 Ext.onReady(function(){
 	//alert(1);
 	Ext.Ajax.request({
-		url:'/menuItem/queryAll?menuId=default',
+		url:'/menuItem/query4Desktop?menuId=default',
 		success:function(response){
 			var obj=Ext.decode(response.responseText);
 			var desktop=Ext.create('Leon.desktop.Desktop',{

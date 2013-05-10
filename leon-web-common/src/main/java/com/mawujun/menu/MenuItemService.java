@@ -1,5 +1,9 @@
 package com.mawujun.menu;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -36,6 +40,13 @@ public class MenuItemService extends BaseService<MenuItem, String> {
 		entity.setReportCode(newReportCode);
 		
 		getRepository().create(entity);
+	}
+	
+	public List<Map<String,Object>> query4Desktop(String menuId) {
+		//根据mybatis去查询
+		Map params=new HashMap();
+		params.put("menu_id", menuId);
+		return getRepository().queryListByMybatis("query4Desktop", params);
 	}
 
 }

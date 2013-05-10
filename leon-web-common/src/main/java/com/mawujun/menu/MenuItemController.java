@@ -2,6 +2,7 @@ package com.mawujun.menu;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,7 +40,19 @@ public class MenuItemController {
 	
 		return funes;
 	}
-
+	/**
+	 * 一次性读取出所有的节点数据
+	 * @return
+	 */
+	@RequestMapping("/menuItem/query4Desktop")
+	@ResponseBody
+	public List<Map<String,Object>> query4Desktop(String menuId){		
+		//这里没有进行上下级的组装，所以界面上出现了3个菜单
+		//WhereInfo menuIdwhereinfo=WhereInfo.parse("menu.id", menuId);
+		//List<MenuItem> funes=menuItemService.query(menuIdwhereinfo);
+		List<Map<String,Object>> menuItems=menuItemService.query4Desktop(menuId);
+		return menuItems;
+	}
 	
 	/**
 	 * 一次性读取出所有的节点数据

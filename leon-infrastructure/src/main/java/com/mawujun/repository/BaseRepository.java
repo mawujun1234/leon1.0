@@ -387,6 +387,10 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 		pageRequest.setWheres(wheresNew);
 		return this.getMybatisRepository().selectPageRecord(getMybatisStataement(statement), pageRequest);	
 	}
+	
+	public List<Map<String,Object>> queryListByMybatis(final String statement,final Map params) {
+		return this.getMybatisRepository().selectList(statement,params);
+	}
 
 	
 	

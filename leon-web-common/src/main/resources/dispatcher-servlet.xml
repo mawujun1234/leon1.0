@@ -143,10 +143,11 @@
 	  </property> 
 	</bean>
 	
-	
+	<!-- 异常处理再整理下，看看，如何拦截这个异常，并显示异常信息，现在是显示不了 -->
 	<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
   		<property name="exceptionMappings"> 
              <props>     
+             	 <prop key="java.lang.Exception">errors/error</prop> 
                  <prop key="java.lang.Exception">errors/error</prop>         
              </props>     
          </property>     
