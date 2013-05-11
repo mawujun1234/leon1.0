@@ -100,6 +100,20 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 		}
 	}
 	/**
+	 * 完善statement，例如com.mawujun.desktop,把这个加上
+	 * @author mawujun email:mawujun1234@163.com qq:16064988
+	 * @param statement
+	 * @return
+	 */
+	protected String supplyNamespace(String statement){
+		//表明指定了名称空间
+		if(statement.indexOf('.')>0){
+			return statement;
+		} else {
+			return namespace+"."+statement;
+		}
+	}
+	/**
 	 * 初始化对象.
 	 * 使用load()方法得到的仅是对象Proxy, 在传到View层前需要进行初始化.
 	 * 如果传入entity, 则只初始化entity的直接属性,但不会初始化延迟加载的关联集合和属性.
@@ -326,22 +340,10 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 	protected QueryResult<T> queryPageByMybatis(final PageRequest pageRequest) {
 		WhereInfo[] wheresNew=changePropertyToColumn(pageRequest.getWheres());
 		pageRequest.setWheres(wheresNew);
-		return (QueryResult<T>)this.getMybatisRepository().selectPageObj(namespace+".queryPage", pageRequest);
+		return (QueryResult<T>)this.getMybatisRepository().selectPageObj(supplyNamespace("queryPage"), pageRequest);
 	}
 	
-	/**
-	 * 如果statement没有添加名称空间，现在把他加上
-	 * @param statement
-	 * @return
-	 */
-	protected String getMybatisStataement(String statement){
-		String newStatement=statement;
-		if(statement.indexOf('.')>0){//表示已经具有了名称空间
-		} else {	
-			newStatement=namespace+"."+statement;
-		}
-		return newStatement;
-	}
+
 	
 	/**
 	 * 指定自己的查询sql
@@ -351,7 +353,7 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 	protected QueryResult<T> queryPageByMybatis(final String sqlStatement,final PageRequest pageRequest) {
 		WhereInfo[] wheresNew=changePropertyToColumn(pageRequest.getWheres());
 		pageRequest.setWheres(wheresNew);
-		return (QueryResult<T>)this.getMybatisRepository().selectPageObj(getMybatisStataement(sqlStatement), pageRequest);
+		return (QueryResult<T>)this.getMybatisRepository().selectPageObj(supplyNamespace(sqlStatement), pageRequest);
 	}
 	
 	/**
@@ -363,7 +365,7 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 	public QueryResult<Map<String,Object>> queryPageMapByMybatis(final String sqlStatement,final PageRequest pageRequest) {
 		WhereInfo[] wheresNew=changePropertyToColumn(pageRequest.getWheres());
 		pageRequest.setWheres(wheresNew);
-		return this.getMybatisRepository().selectPage(getMybatisStataement(sqlStatement), pageRequest);
+		return this.getMybatisRepository().selectPage(supplyNamespace(sqlStatement), pageRequest);
 	}
 	
 	
@@ -378,25 +380,18 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 		WhereInfo[] wheresNew=changePropertyToColumn(pageRequest.getWheres());
 		pageRequest.setWheres(wheresNew);
 		
-		return this.getMybatisRepository().selectPageObj(getMybatisStataement(statement), pageRequest);
+		return this.getMybatisRepository().selectPageObj(supplyNamespace(statement), pageRequest);
 	}
 	
 	
 	public QueryResult<Record> queryPageRecordByMybatis(final String statement,final PageRequest pageRequest) {
 		WhereInfo[] wheresNew=changePropertyToColumn(pageRequest.getWheres());
 		pageRequest.setWheres(wheresNew);
-		return this.getMybatisRepository().selectPageRecord(getMybatisStataement(statement), pageRequest);	
+		return this.getMybatisRepository().selectPageRecord(supplyNamespace(statement), pageRequest);	
 	}
 	
 	public List<Map<String,Object>> queryListByMybatis(final String statement,final Map params) {
-		return this.getMybatisRepository().selectList(statement,params);
+		return this.getMybatisRepository().selectList(supplyNamespace(statement),params);
 	}
-
-	
-	
-	
-		//接着使用mybatis进行分页查询，可以返回,还没有测试
-		
-		//在example中实现书中的例子或运输货物的例子
 
 }

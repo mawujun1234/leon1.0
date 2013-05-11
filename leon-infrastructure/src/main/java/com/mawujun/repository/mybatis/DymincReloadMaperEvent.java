@@ -1,7 +1,9 @@
 package com.mawujun.repository.mybatis;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import org.apache.ibatis.logging.Log;
@@ -13,6 +15,7 @@ import net.contentobjects.jnotify.JNotifyListener;
 
 import com.mawujun.utils.FileUtils;
 import com.mawujun.utils.StringTokenizerUtils;
+import com.mawujun.utils.SystemUtils;
 
 //@Component
 public class DymincReloadMaperEvent extends Thread{
@@ -154,20 +157,56 @@ public class DymincReloadMaperEvent extends Thread{
 		String pathSeparator=System.getProperty("path.separator");
 		String[] library=StringTokenizerUtils.split(System.getProperty("java.library.path"), pathSeparator);
     	for(String lib:library){
-    		FileUtils.copyFileToDirectory(new File(this.getPath()+"jnotify.dll"), new File(lib));
-    		FileUtils.copyFileToDirectory(new File(this.getPath()+"jnotify_64bit.dll"), new File(lib));
-    		FileUtils.copyFileToDirectory(new File(this.getPath()+"libjnotify.jnilib"), new File(lib));
-    		FileUtils.copyFileToDirectory(new File(this.getPath()+"libjnotify.so"), new File(lib));
+//    		FileUtils.copyFileToDirectory(new File(this.getPath()+"jnotify.dll"), new File(lib));
+//    		FileUtils.copyFileToDirectory(new File(this.getPath()+"jnotify_64bit.dll"), new File(lib));
+//    		FileUtils.copyFileToDirectory(new File(this.getPath()+"libjnotify.jnilib"), new File(lib));
+//    		FileUtils.copyFileToDirectory(new File(this.getPath()+"libjnotify.so"), new File(lib));
+    		getPath("jnotify.dll",lib);
+    		getPath("jnotify_64bit.dll",lib);
+    		getPath("libjnotify.jnilib",lib);
+    		getPath("libjnotify.so",lib);
     		break;
     	}
 	}
 	/**
 	 * 获取项目类的根路径
 	 * @return
+	 * @throws IOException 
 	 */
-	public String getPath(){
-		return this.getClass().getResource("").getPath().replace("%20", " "); 
+	public String getPath(String fileName,String libPath) throws IOException {
+		InputStream in = this.getClass().getResourceAsStream(fileName);
+		ByteArrayOutputStream outStream = new ByteArrayOutputStream();  
+		byte[] data = new byte[1024];
+		int count = -1;
+		while ((count = in.read(data, 0, 1024)) != -1)
+			outStream.write(data, 0, count);
+
+		data = null;
+		File file=new File(libPath+SystemUtils.FILE_SEPARATOR+fileName);
+		FileUtils.writeByteArrayToFile(file, outStream.toByteArray());
+		//FileUtils.writeByteArrayToFile(new File("D:"+SystemUtils.FILE_SEPARATOR+fileName), outStream.toByteArray());
+
+		return file.getAbsolutePath();
 	}
+	
+//	public void copyDLLFile() throws IOException {
+//		String pathSeparator=System.getProperty("path.separator");
+//		String[] library=StringTokenizerUtils.split(System.getProperty("java.library.path"), pathSeparator);
+//    	for(String lib:library){
+//    		FileUtils.copyFileToDirectory(new File(this.getPath()+"jnotify.dll"), new File(lib));
+//    		FileUtils.copyFileToDirectory(new File(this.getPath()+"jnotify_64bit.dll"), new File(lib));
+//    		FileUtils.copyFileToDirectory(new File(this.getPath()+"libjnotify.jnilib"), new File(lib));
+//    		FileUtils.copyFileToDirectory(new File(this.getPath()+"libjnotify.so"), new File(lib));
+//    		break;
+//    	}
+//	}
+//	/**
+//	 * 获取项目类的根路径
+//	 * @return
+//	 */
+//	public String getPath(){
+//		return this.getClass().getResource("/com/mawujun/repository/mybatis").getPath().replace("%20", " "); 
+//	}
 	
 
 	class Listener implements JNotifyListener {

@@ -73,7 +73,7 @@
 				</property>
 				<property name="mapperLocations" >
 					<list>
-						<value >classpath:${jdbc.packagesToScan}/**/*_Mapper.xml</value>
+						<value >classpath:/**/*_${jdbc.dbName}_Mapper.xml</value>
 					</list>
 				</property>
 	</bean>
@@ -100,9 +100,11 @@
 		 
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" lazy-init="false" >
 			<property name="dataSource" ref="dataSource" />  
+			<!--
 			<property name="namingStrategy">
 				<bean class="com.mawujun.repository.hibernate.NamingStrategy"/>
 			</property>
+			-->
 			<property name="hibernateProperties">
 				<props>
 					<prop key="hibernate.dialect">${${jdbc.dbName}.hibernate.dialet}</prop>

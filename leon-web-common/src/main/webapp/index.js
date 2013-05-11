@@ -3,8 +3,9 @@
 Ext.onReady(function(){
 	//alert(1);
 	Ext.Ajax.request({
-		url:'/menuItem/query4Desktop?menuId=default',
-		//headers:{ 'Accept':'application/json;'},
+		//url:'/menuItem/query4Desktop?menuId=default',
+		url:'/menuItem/queryChildren?menuId=default&id=default',
+		headers:{ 'Accept':'application/json;'},
 		success:function(response){
 			var obj=Ext.decode(response.responseText);
 			var desktop=Ext.create('Leon.desktop.Desktop',{

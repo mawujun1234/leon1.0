@@ -6,9 +6,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com 承接各种项目 -->
 <!-- 注意文件名称为:Example_${DbName}_Mapper.xml-->
 <mapper namespace="com.mawujun.menu.MenuItem">
-	<select id="query4Desktop" resultMap="map" parameterType="map">
+	<select id="query4Desktop" resultType="com.mawujun.menu.MenuItem" parameterType="map">
     	SELECT *
-	    FROM t_MenuItem 
+	    FROM leon_MenuItem 
 		where menu_id=#{menu_id}  
 		order by reportCode
     </select>

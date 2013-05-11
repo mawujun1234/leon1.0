@@ -334,7 +334,7 @@ public class SpringMVCControllerTest {
 		this.mockMvc.perform(get("/test/testException.do").accept(MediaType.TEXT_HTML))
 		.andExpect(status().isServiceUnavailable())
 		//.andExpect(content().contentType("text/html"))
-	    .andExpect(forwardedUrl("/errors/error.jsp"));
+	    .andExpect(forwardedUrl("/errors/503.jsp"));
 	}
 	
 	@Test

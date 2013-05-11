@@ -78,5 +78,13 @@
   		<artifactId>leon-infrastructure</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
+  	
+  	<dependency>
+		<groupId>com.JNotify</groupId>
+		<artifactId>JNotify</artifactId>
+		<version>0.94</version>
+		<scope>system</scope>
+		<systemPath>${basedir}/lib/jnotify-0.94.jar</systemPath>
+	</dependency>
   </dependencies>
 </project>
