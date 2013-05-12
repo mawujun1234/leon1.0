@@ -175,7 +175,7 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
             handler: function(bth) {
             	var parent=this.up('form').getRecord( );
             	this.up('form').getForm().reset();
-            	alert(parent.get("menu_id"));
+            	//alert(parent.get("menu_id"));
             	var newRecord=Ext.createModel("Leon.desktop.menu.MenuItem",{'parent_id':parent.get("id"),'parent_text':parent.get("text"),menu_id:parent.get("menu_id")});
             	this.up('form').getForm().setValues({'parent_id':parent.get("id"),'parent_text':parent.get("text")});
             	this.up('form').getForm().loadRecord(newRecord);
