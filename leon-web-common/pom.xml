@@ -86,5 +86,14 @@
 		<scope>system</scope>
 		<systemPath>${basedir}/lib/jnotify-0.94.jar</systemPath>
 	</dependency>
+	
+	<dependency>
+	  <groupId>org.freemarker</groupId>
+	  <artifactId>freemarker</artifactId>
+	  <!-- Latest 2.3.x (not 2.4.x), at least 2.3.19 -->
+	  <version>2.3.19</version>
+	  <scope>system</scope>
+	  <systemPath>${basedir}/lib/freemarker.jar</systemPath>
+	</dependency>
   </dependencies>
 </project>

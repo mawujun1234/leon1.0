@@ -1,0 +1,8 @@
+1：有3种生成方式：generateByTable()，generateBySql()¶generateByClass()¶
+	http://code.google.com/p/rapid-framework/wiki/rapid_generator
+2：Generator为生成器引擎 ，指的是去读取模板文件
+	Generator g = getGenerator(templateRootDir);templateRootDir就是指定的模板文件夹和文件
+	GeneratorModel就是存放模版数据的，包括Map filePathModel;和Map templateModel;
+	通过GeneratorModelUtils.newFromClass(clazz);等方法从•JavaClass，Table.java对象，Sql.java对象等对象中读取相应的模板数据
+	
+	总的思路就是：准备模板文件，准备模板文件需要的模板数据，最后生成

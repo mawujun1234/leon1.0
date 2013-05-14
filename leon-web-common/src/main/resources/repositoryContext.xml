@@ -160,14 +160,20 @@
 	</beans>
 	
 	<beans profile="dev" >
+		<!--
 		<jdbc:initialize-database data-source="dataSource" enabled="#{systemProperties.INITIALIZE_DATABASE}"  ignore-failures="DROPS">
 		  <jdbc:script location="classpath:sql/initData.sql" encoding="UTF-8" />
 		</jdbc:initialize-database>
+		 -->
+		 <!-- 开发的时候只要初始化过一次就可以了，就不用再进行初始化了,如果是使用h2，那拷贝过去就可以了，不需要再进行初始化，如果是外部数据库，更加不需要重新进行初始化了 -->
+		 <jdbc:initialize-database data-source="dataSource" enabled="false" ignore-failures="DROPS">
+		 	<jdbc:script location="classpath:sql/initData.sql" encoding="UTF-8" />
+		 </jdbc:initialize-database>
 	</beans>
 	
 	<!-- unit test环境 -->
 	<beans profile="test">
-		 <!-- ,三行写完了datasource定义和初始化脚本。 -->
+		 <!-- 只有在测试的时候，才需要每次连接数据库的时候都进行初始化 -->
 		<jdbc:embedded-database id="dataSource" type="H2">
 			<!--<jdbc:script location="classpath:sql/test.sql" />
 			<jdbc:script location="classpath:sql/initData.sql" />-->
