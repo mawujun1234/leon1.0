@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.SequenceGenerator;
 
-import com.mawujun.annotation.AttrName;
+import com.mawujun.annotation.Label;
 
 /**
  * 要对Entity类进行改造。因为Oracle一般使用SEQUCENCE作为主键生成策略，而且每种Entity类使用一个独立的Sequence。
@@ -22,7 +22,7 @@ public class OracleAutoId implements IdEntity<Long> {
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="UserSequence")
 	@SequenceGenerator(name = "UserSequence", sequenceName = "SEQ_USER", allocationSize=20)
-	@AttrName(name="id")
+	@Label(name="id")
 	private Long id;
 
 	public void setId(Long id) {

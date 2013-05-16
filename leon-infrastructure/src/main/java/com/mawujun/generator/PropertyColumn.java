@@ -9,15 +9,17 @@ import java.util.List;
 import java.util.Map;
 
 public class PropertyColumn {
-	private String column;
-	private String property;
+	private String column;//列名
+	private String property;//属性名称
 	
-	private String basepackage;
+	private String basepackage;//包名
 	private String javaType;
 	private String javaTypeClassName;//其实不用定义这个属性，其实是可以直接写get方法，下同
 	private String jsType;
-	private Boolean isIdProperty=false;//是不是属于id的列
 	
+	//private String joinColumn;//在多对一关联的时候，的关联列名是什么
+	
+	private Boolean isIdProperty=false;//是不是属于id的列
 	private Boolean isComponentType=false;
 	private Boolean isAssociationType=false;
 	private Boolean isBaseType=false;
@@ -83,7 +85,12 @@ public class PropertyColumn {
 		System.out.println(javaType);
 		this.javaTypeClassName=javaType.substring(javaType.lastIndexOf('.')+1);
 		System.out.println(this.javaTypeClassName);
-		this.jsType=jsJavaMapper.get(clazz);//映射好后就是替换 自己写的类然后测试
+		if(jsJavaMapper.get(clazz)==null){
+			this.jsType="auto";
+		} else {
+			this.jsType=jsJavaMapper.get(clazz);//映射好后就是替换 自己写的类然后测试
+		}
+		
 		System.out.println(this.jsType);
 	}
 

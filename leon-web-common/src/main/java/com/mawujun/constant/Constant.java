@@ -12,7 +12,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.mawujun.annotation.AttrName;
+import com.mawujun.annotation.Label;
 import com.mawujun.repository.idEntity.IdEntity;
 
 /**
@@ -26,13 +26,13 @@ public class Constant implements IdEntity<String> {
 	
 	@Id
 	@Column(length=25)
-	@AttrName(name="编码")
+	@Label(name="编码")
 	private String id;
 	@Column(length=25)
-	@AttrName(name="名称")
+	@Label(name="名称")
 	private String text;
 	@Column(length=200)
-	@AttrName(name="备注")
+	@Label(name="备注")
 	private String remark;
 	
 	@ManyToOne

@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mawujun.fun.Fun;
 import com.mawujun.menu.Menu;
 
 import freemarker.template.TemplateException;
@@ -44,7 +45,7 @@ public class JavaEntityMetaDataServiceTest {
 	
 	@Test
 	public void generatorToString() throws TemplateException, IOException {
-		String aa=javaEntityMetaDataService.generatorToString(Menu.class, "${simpleClassName}.ftl");
+		String aa=javaEntityMetaDataService.generatorToString(Fun.class, "${simpleClassName}.ftl");
 		System.out.println(aa);
 	}
 }

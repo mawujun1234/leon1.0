@@ -8,7 +8,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
-import com.mawujun.annotation.AttrName;
+import com.mawujun.annotation.Label;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
 @Entity
@@ -21,16 +21,16 @@ public class ConstantItem extends UUIDEntity {
 	 */
 	private static final long serialVersionUID = 1L;
 	@Column(length=25)
-	@AttrName(name="编码")
+	@Label(name="编码")
 	private String code;//具体的值，例如0,1,2等这些代码
 	@Column(length=25)
-	@AttrName(name="名称")
+	@Label(name="名称")
 	private String text;//0,1等的名词，如有效，无效等
 	@Column(length=200)
-	@AttrName(name="备注")
+	@Label(name="备注")
 	private String remark;
 	
-	@AttrName(name="排序")
+	@Label(name="排序")
 	private int ordering;//排序
 	@ManyToOne
 	@JoinColumn(name="constant_id")

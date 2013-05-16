@@ -368,7 +368,15 @@ public class JavaEntityMetaDataService {
 		
 		
 		List<PropertyColumn> propertyColumns =new ArrayList<PropertyColumn>();
+		PropertyColumn idpropertyColumn=new PropertyColumn();
+		idpropertyColumn.setIsIdProperty(true);
+		idpropertyColumn.setProperty(classMetadata.getIdentifierPropertyName());
+		idpropertyColumn.setColumn(this.getPrimaryKeyColumn(clazz));
+		idpropertyColumn.setJavaType(classMetadata.getIdentifierType().getReturnedClass());
+		propertyColumns.add(idpropertyColumn);
+		
 		String[] propertyNames=classMetadata.getPropertyNames();
+		//classMetadata.getid
 		for (String propertyName : propertyNames) {
 			// 判断是否一对多的对像,移除
 			Type propertyType = classMetadata.getPropertyType(propertyName);
@@ -383,6 +391,7 @@ public class JavaEntityMetaDataService {
 				propertyColumn.setIsComponentType(true);
 				propertyColumn.setProperty(propertyName);
 				propertyColumn.setJavaType(propertyType.getReturnedClass());
+				propertyColumn.setColumn(classMetadata.getPropertyColumnNames(propertyName)[0]);
 
 				//String[] columnNames=classMetadata.getPropertyColumnNames(propertyName);
 				ComponentType aa=(ComponentType)propertyType;
@@ -403,19 +412,16 @@ public class JavaEntityMetaDataService {
 				propertyColumn.setIsAssociationType(true);
 				propertyColumn.setProperty(propertyName);
 				propertyColumn.setJavaType(propertyType.getReturnedClass());
+				propertyColumn.setColumn(classMetadata.getPropertyColumnNames(propertyName)[0]);
 
-				EntityType entityType= (EntityType)propertyType;
-				AbstractEntityPersister classMetadataEntity = (SingleTableEntityPersister) factory.getClassMetadata(propertyType.getReturnedClass());
-				PropertyColumn aa=propertyColumn.addEntityTypePropertyColumn(classMetadataEntity.getIdentifierPropertyName(),
-						classMetadata.getPropertyColumnNames(propertyName+"."+classMetadataEntity.getIdentifierPropertyName())[0],
-						entityType.getReturnedClass());
-				aa.setIsIdProperty(true);
-				
+//				EntityType entityType= (EntityType)propertyType;
 //				AbstractEntityPersister classMetadataEntity = (SingleTableEntityPersister) factory.getClassMetadata(propertyType.getReturnedClass());
 //				PropertyColumn aa=propertyColumn.addEntityTypePropertyColumn(classMetadataEntity.getIdentifierPropertyName(),
-//						classMetadataEntity.getIdentifierColumnNames()[0],
-//						classMetadataEntity.getIdentifierType().getReturnedClass().getName());
+//						classMetadata.getPropertyColumnNames(propertyName+"."+classMetadataEntity.getIdentifierPropertyName())[0],
+//						entityType.getReturnedClass());
 //				aa.setIsIdProperty(true);
+				
+
 				
 				propertyColumns.add(propertyColumn);
 			} else 	if(propertyType.isEntityType()){
@@ -434,6 +440,11 @@ public class JavaEntityMetaDataService {
 		
 		//对列进行排序，首先是基本类行，接着是组件，再接着是集合
 		List<PropertyColumn> newPropertyColumns =new ArrayList<PropertyColumn>();
+		for(PropertyColumn propertyColumn:propertyColumns){
+			if(propertyColumn.getIsIdProperty()){
+				newPropertyColumns.add(propertyColumn);
+			}
+		}
 		for(PropertyColumn propertyColumn:propertyColumns){
 			if(propertyColumn.getIsBaseType()){
 				newPropertyColumns.add(propertyColumn);
@@ -458,10 +469,11 @@ public class JavaEntityMetaDataService {
 		root.put("propertyColumns", newPropertyColumns);
 		List<PropertyColumn> baseTypePropertyColumns=new ArrayList<PropertyColumn>();
 		for(PropertyColumn propertyColumn:newPropertyColumns){
-			if(propertyColumn.getIsBaseType()){
+			if(propertyColumn.getIsBaseType() || propertyColumn.getIsIdProperty()){
 				baseTypePropertyColumns.add(propertyColumn);
 			}
 		}
+		//所有基础属性的 属性集合
 		root.put("baseTypePropertyColumns", baseTypePropertyColumns);
 		
 		return root;

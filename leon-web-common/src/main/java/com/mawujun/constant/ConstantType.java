@@ -8,7 +8,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.mawujun.annotation.AttrName;
+import com.mawujun.annotation.Label;
 import com.mawujun.repository.idEntity.AutoIdEntity;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
@@ -26,10 +26,10 @@ public class ConstantType extends UUIDEntity {
 	private static final long serialVersionUID = 1L;
 	
 	@Column(length=25)
-	@AttrName(name="名称")
+	@Label(name="名称")
 	private String text;
 	@Column(length=200)
-	@AttrName(name="备注")
+	@Label(name="备注")
 	private String remark;
 	
 	@OneToMany(mappedBy="constantType")

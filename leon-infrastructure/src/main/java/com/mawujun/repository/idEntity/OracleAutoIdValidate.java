@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.SequenceGenerator;
 
-import com.mawujun.annotation.AttrName;
+import com.mawujun.annotation.Label;
 import com.mawujun.repository.hibernate.validate.ValidateEntity;
 
 /**
@@ -23,7 +23,7 @@ public class OracleAutoIdValidate  extends ValidateEntity  implements IdEntity<L
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="UserSequence")
 	@SequenceGenerator(name = "UserSequence", sequenceName = "SEQ_USER", allocationSize=20)
-	@AttrName(name="id")
+	@Label(name="id")
 	private Long id;
 
 	public void setId(Long id) {

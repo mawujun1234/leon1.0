@@ -11,11 +11,11 @@ import java.lang.annotation.Target;
 
 /**
  * 使用方式
- * @AttrName(message='名称')，
+ * @Label(message='名称')，
  * 这样就可以从
  * private String name;
  * 
- * 默认的话就以字段的名称作为列明，例如如果没有定义@AttrName，那上面的返回的就是name
+ * 默认的话就以字段的名称作为列明，例如如果没有定义@Label，那上面的返回的就是name
  * @author mawujun
  *
  */
@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented  
 @Inherited
-public @interface AttrName {
+public @interface Label {
 	String id() default "";//指定从properties文件中获取数据的key,用来应对国际化，优先级比message高，党properties中有的时候，先显示properties中的neirong
 
 	//String message() default "{com.mawujun.annotation.message}";//默认的名称获取地址

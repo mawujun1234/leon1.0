@@ -5,7 +5,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
-import com.mawujun.annotation.AttrName;
+import com.mawujun.annotation.Label;
 import com.mawujun.repository.hibernate.validate.ValidateEntity;
 
 /**
@@ -24,7 +24,7 @@ public abstract class AutoIdEntity<ID> extends ValidateEntity implements IdEntit
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@org.hibernate.annotations.AccessType("property")
 	//@Access(AccessType.PROPERTY)
-	@AttrName(name="id")
+	@Label(name="id")
 	protected ID id;
 
 	

@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.mawujun.annotation.AttrName;
+import com.mawujun.annotation.Label;
 import com.mawujun.fun.Fun;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
@@ -24,16 +24,16 @@ public class MenuItem extends UUIDEntity {
 	private static final long serialVersionUID = 1L;
 	@Column(length=20)
 	private String code;//帮助记码
-	@AttrName(name="名称")
+	@Label(name="名称")
 	@Column(length=20)
 	private String text;
-	@AttrName(name="插件地址")
+	@Label(name="插件地址")
 	@Column(length=80)
 	private String pluginUrl;
-	@AttrName(name="代码")
+	@Label(name="代码")
 	@Column(length=1000)
 	private String scripts;
-	@AttrName(name="图标")
+	@Label(name="图标")
 	@Column(length=40)
 	private String iconCls;
 	@Column(length=40)
