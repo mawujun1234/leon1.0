@@ -1,7 +1,8 @@
 Ext.define('Leon.desktop.fun.FunTree',{
-	extend:'Ext.tree.Panel',
+	extend:'Leon.common.ux.LeonTree',
 	requires: [
-	     'Leon.desktop.fun.Fun'
+		'Leon.common.ux.LeonTree',
+	    'Leon.desktop.fun.Fun'
 	],
 	rootVisible: true,
 	initComponent: function () {

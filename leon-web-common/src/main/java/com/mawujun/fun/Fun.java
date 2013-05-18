@@ -11,11 +11,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.mawujun.annotation.Label;
+import com.mawujun.exten.TreeNode;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
 @Entity
 @Table(name="leon_Fun")
-public class Fun extends UUIDEntity{
+public class Fun extends TreeNode{
 	/**
 	 * 
 	 */

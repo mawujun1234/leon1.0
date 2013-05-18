@@ -15,12 +15,12 @@ Ext.onReady(function(){
 	tree.on('itemclick',function(view,record,item,index){
 		//alert(1);
 		form.getForm().loadRecord(record);
-		var parent=tree.getStore().getNodeById(record.get("parent_id"));
-		if(parent){
-			form.getForm().setValues({"parent_text":parent.get("text")}) ;
-		} else {
-			form.getForm().setValues({"parent_text":null}) ;
-		}
+//		var parent=tree.getStore().getNodeById(record.get("parent_id"));
+//		if(parent){
+//			form.getForm().setValues({"parent_text":parent.get("text")}) ;
+//		} else {
+//			form.getForm().setValues({"parent_text":null}) ;
+//		}
 		
 	});
 	
@@ -32,10 +32,10 @@ Ext.onReady(function(){
 		items:[tree,form]
 	});
 	
-	form.on("created",function(record){
-		var fun=tree.getSelectionModel().getLastSelected( ) ;
-		tree.getStore().load({node:fun});
-	});
+//	form.on("created",function(record){
+//		var fun=tree.getSelectionModel().getLastSelected( ) ;
+//		tree.getStore().load({node:fun});
+//	});
 	
 //	form.down("button[action=createChild]").on('click',function(btn){
 //		//btn.up('form').getForm().reset();

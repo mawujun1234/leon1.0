@@ -105,7 +105,7 @@ public class DataSourceProvider {
 			return DataSource.class.equals(iface);
 		}
 
-		@Override
+		//@Override
 		public Logger getParentLogger() throws SQLFeatureNotSupportedException {
 			// TODO Auto-generated method stub
 			return null;

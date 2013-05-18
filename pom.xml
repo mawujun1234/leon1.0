@@ -17,7 +17,6 @@
   <modules>
   	<module>leon-utils</module>
     <module>leon-infrastructure</module>    
-    <module>leon-constant</module>
     <!-- <module>leon-example</module> -->
     <module>leon-web-common</module>
   </modules>

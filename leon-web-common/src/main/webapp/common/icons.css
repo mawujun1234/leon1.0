@@ -28,3 +28,6 @@
 .form-reset-button { 
         background: url(../icons/arrow_redo.png) left top no-repeat !important; 
 }
+.form-reload-button { 
+        background: url(../icons/refresh.png) left top no-repeat !important; 
+}

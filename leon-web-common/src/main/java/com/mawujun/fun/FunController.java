@@ -30,13 +30,14 @@ public class FunController {
 	 */
 	@RequestMapping("/fun/queryChildren")
 	@ResponseBody
-	public List<Fun> queryChildren(String node){
+	public ModelMap queryChildren(String node){
 		WhereInfo whereinfo=WhereInfo.parse("parent.id", node);
 		List<Fun> funes=funService.query(whereinfo);
 		System.out.println("==================结果输出来了"+funes.size());
 		ModelMap map=new ModelMap();
 		map.put("root", funes);
-		return funes;
+		//map.put("filterPropertys", "checked");
+		return map;
 	}
 	/**
 	 * 一次性读取出所有的节点数据

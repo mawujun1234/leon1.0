@@ -53,7 +53,7 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 	final static Logger logger = LoggerFactory.getLogger(HttpMessageConverter_FastJson.class);   
 	
 	private String datePattern = "yyyy-MM-dd";//"yyyy-MM-dd HH:mm:ss"; 
-	private static final  String filterPropertys="filterPropertys";
+	private static final  String filterPropertys="filterPropertys";//以逗号分隔
 	//private static final  String onlyIds="onlyIds";
 	//是否过滤hibernate未初始化的数据
 	private boolean enableHibernateLazyInitializerFilter=true;
