@@ -1,8 +1,8 @@
 Ext.require('Leon.desktop.fun.FunTree');
 Ext.require('Leon.desktop.fun.FunForm');
-Ext.require('Leon.common.LeonTree');
+Ext.require('Leon.common.ux.BaseGrid');
 Ext.onReady(function(){
-	var store = Ext.create('Ext.data.TreeStore', {
+	var store = Ext.create('Ext.data.Store', {
        		autoLoad:false,
        		model:'Leon.desktop.fun.Fun',
 		    root: {
@@ -15,7 +15,7 @@ Ext.onReady(function(){
 		    	}
 		    }
 	});
-	var tree=Ext.create('Leon.common.LeonTree',{
+	var tree=Ext.create('Leon.common.ux.BaseGrid',{
 		region:'center',
 		//plugins:[{ptype:'treeexten'}],
 		split: true,

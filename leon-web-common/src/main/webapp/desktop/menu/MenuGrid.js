@@ -6,7 +6,12 @@ Ext.define('Leon.desktop.menu.MenuGrid',{
 	columnLines :true,
 	stripeRows:true,
 	viewConfig:{
-		stripeRows:true
+		stripeRows:true,
+		listeners:{
+			refresh:function(){
+				this.select(0);
+			}
+		}
 	},
 	//selType: 'cellmodel',
     plugins: [

@@ -121,7 +121,7 @@ Ext.override(Ext.data.Model,{
                 associatedRecord = me[association.instanceName];
                 // If we have a record, put it onto our list
                 if (associatedRecord ) {
-                	alert(associatedRecord.getId());
+                	//alert(associatedRecord.getId());
                 	if(me.get(association.foreignKey)!=associatedRecord.getId()){
                 		alert("数据不一致，请联系管理员!");
                 		throw new Error("association.instanceName的id和association.foreignKey的值不一致,请先进行处理！或者设置"+association.instanceName+"==null，或者更改foreignKey:" 

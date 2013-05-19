@@ -129,20 +129,8 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
                 }
                //这个时候只会更新forginKey，而不会更新associationName的数据
                 form.getForm().updateRecord();
-                
-               // alert(form.getValues(true));
-               // alert(form.getForm().getRecord().getFun().get("id"));
 				form.getRecord().save({
 					success: function(record, operation) {
-//						console.dir(form.getRecord().getFun());
-//						if(form.action=="create"){
-//							me.fireEvent("created",record);
-//							form.action="update"
-//							
-//							me.down("button[itemId=createChild]").show();
-//						} else {
-//							
-//						}
 					}
 				});
             }
