@@ -21,26 +21,15 @@ Ext.define("Leon.desktop.menu.MenuItem",{
 		{type:'belongsTo',model:'Leon.desktop.fun.Fun',associatedName:'Fun'},
 		{type:'belongsTo',model:'Leon.desktop.menu.Menu',associatedName:'Menu'},
 		{type:'belongsTo',model:'Leon.desktop.menu.MenuItem',associatedName:'Parent'}//,foreignKey:'parent_id',associationKey:'parent'
-	]
-	,proxy:{
-		actionMethods: { read: 'POST' },
-		timeout :600000,
-		headers:{ 'Accept':'application/json;'},
-		type:'ajax',
+	],
+	proxy:{
+		type:'bajax',
 		api:{
 			read:'/menuItem/queryChildren',
-			get : '/menuItem/get',
+			load : '/menuItem/get',
 			create:'/menuItem/create',
 			update:'/menuItem/update',
 			destroy:'/menuItem/destroy'
-		},
-		reader:{
-			type:'json',
-			root:'root'
-		}
-		,writer:{
-			type:'json'
 		}
 	}
-	
 });

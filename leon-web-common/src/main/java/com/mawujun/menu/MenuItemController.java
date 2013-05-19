@@ -74,7 +74,8 @@ public class MenuItemController {
 	
 	@RequestMapping("/menuItem/create")
 	@ResponseBody
-	public MenuItem create(@RequestBody MenuItem menuItem){		
+	public MenuItem create(@RequestBody MenuItem menuItem,String menuId){		
+		menuItem.setMenu(new Menu(menuId));
 		menuItemService.create(menuItem);
 		return menuItem;
 	}

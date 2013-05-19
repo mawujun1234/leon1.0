@@ -1,5 +1,5 @@
 Ext.define('Leon.desktop.menu.MenuItemTree',{
-	extend:'Ext.tree.Panel',
+	extend:'Leon.common.ux.BaseTree',
 	requires: [
 	     'Leon.desktop.menu.MenuItem'
 	],
@@ -9,6 +9,7 @@ Ext.define('Leon.desktop.menu.MenuItemTree',{
 	},
 	initComponent: function () {
        var me = this;
+       me.disabledAction=true;
        var store = Ext.create('Ext.data.TreeStore', {
        		autoLoad:false,
        		nodeParam:'id',

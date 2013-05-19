@@ -1,5 +1,7 @@
 Ext.require('Leon.desktop.fun.FunTree');
 Ext.require('Leon.desktop.fun.FunForm');
+//Ext.require('Leon.common.ux.BaseAjax');//這個必須要加的
+//Ext.require('Leon.common.ux.BaseTree');//這個必須要加的
 Ext.onReady(function(){
 	var tree=Ext.create('Leon.desktop.fun.FunTree',{
 		region:'west',
@@ -15,15 +17,7 @@ Ext.onReady(function(){
 	tree.on('itemclick',function(view,record,item,index){
 		//alert(1);
 		form.getForm().loadRecord(record);
-//		var parent=tree.getStore().getNodeById(record.get("parent_id"));
-//		if(parent){
-//			form.getForm().setValues({"parent_text":parent.get("text")}) ;
-//		} else {
-//			form.getForm().setValues({"parent_text":null}) ;
-//		}
-		
 	});
-	
 	
 	
 	
@@ -31,16 +25,5 @@ Ext.onReady(function(){
 		layout:'border',
 		items:[tree,form]
 	});
-	
-//	form.on("created",function(record){
-//		var fun=tree.getSelectionModel().getLastSelected( ) ;
-//		tree.getStore().load({node:fun});
-//	});
-	
-//	form.down("button[action=createChild]").on('click',function(btn){
-//		//btn.up('form').getForm().reset();
-//		form.getForm().reset();
-//		var fun=tree.getSelectionModel( ).getLastSelected( ) ;
-//		form.getForm().setValues({'parent_id':fun.get("id"),'parent_text':fun.get("text")});
-//	});
+
 });

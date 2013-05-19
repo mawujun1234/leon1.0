@@ -28,11 +28,13 @@ Ext.onReady(function(){
 		
 		tree.setMenuId(record.get("id"));
 		//tree.getStore().reload({node:tree.getRootNode( )});
-		
+		form.getForm().reset(false);
 		if(tree.getMenuId()=="default"){
-			form.disableItem4DefauleMenu();
+			form.setReadonlyItem4DefauleMenu(true);
+			tree.setDisableAction(true);
 		} else {
-			form.enableItem4DefauleMenu();
+			form.setReadonlyItem4DefauleMenu(false);
+			tree.setDisableAction(false);
 		}
 	});
 

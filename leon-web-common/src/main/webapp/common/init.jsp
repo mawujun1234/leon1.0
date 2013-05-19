@@ -6,6 +6,11 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/ext-4/bootstrap.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/ext-4/locale/ext-lang-zh_CN.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/common/common.js"></script>
+
+<script type="text/javascript" src="<%=request.getContextPath()%>/common/ux/BaseAjax.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/common/ux/BaseTree.js"></script>
+
+
     
 <style>
 
@@ -29,6 +34,7 @@ if(routeLength>0){
 //if
 Ext.ContextPath="<%=request.getContextPath()%>";//应用程序上下文
 Ext.QuickTips.init();
+
 
 Ext.ns('Leon');
 Ext.Loader.setConfig({

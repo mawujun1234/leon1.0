@@ -83,15 +83,15 @@ Ext.define('Leon.desktop.fun.FunForm',{
                 form.getForm().updateRecord();
 				form.getRecord().save({
 					success: function(record, operation) {
-						if(form.action=="create"){
-							//me.fireEvent("created",record);
-							//form.action="update"
-							
-							//me.down("button[action=createChild]").show();
-							
-						} else {
-							
-						}
+//						if(form.action=="create"){
+//							//me.fireEvent("created",record);
+//							//form.action="update"
+//							
+//							//me.down("button[action=createChild]").show();
+//							
+//						} else {
+//							
+//						}
 					}
 				});
             }

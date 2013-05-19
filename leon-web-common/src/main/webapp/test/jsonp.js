@@ -42,7 +42,7 @@ Ext.define("Order",{
 
 
 Ext.define("OrderLine",{
-	extend:"Ext.data.Model",
+	extend:"Leon.common.ux.BaseModel",
 	idProperty:'id',
 	fields:[
 		{name:'id',type:'int'},
@@ -56,7 +56,7 @@ Ext.define("OrderLine",{
 	,proxy:{
 		type:'ajax',
 		api:{
-			read:'OrderLine.js',
+			read:'OrderLine1.js',
 			load    : 'OrderLine.js',
 			create:'save.js',
 			update:'update.js',
@@ -75,16 +75,23 @@ Ext.define("OrderLine",{
 
 
 
-
+Ext.override(Ext.data.Model,{
+	load: function(id, config) {
+		alert(1);
+		config.action="load";
+		//this.callParent(id, config);
+		this.callOverridden(id, config);
+	}
+});
 
 Ext.onReady(function(){
 	
 		//var orderLine=null;
 	OrderLine.load(1,{
-		action:'load',
+		//action:'load',
 		success: function(record, operation) {
 			orderLine=record;
-			//alert(record.get('order_id'));//返回了1
+			alert(record.get('order_id'));//返回了1
 			orderLine=record;
 			//alert(orderLine.getOrder().getId());//弹出了11
 

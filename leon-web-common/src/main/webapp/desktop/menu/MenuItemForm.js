@@ -27,21 +27,23 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
 	initComponent: function () {
        var me = this;
       
-       me.items= [{
-	            fieldLabel: 'parent_id',
-	            //afterLabelTextTpl: me.required,
-	            name: 'parent_id',
-	            readOnly:true
-	            //allowBlank: false,
-	            //tooltip: 'Enter your first name'
-	        },{
-	            fieldLabel: '上级名称',
-	            //afterLabelTextTpl: me.required,
-	            name: 'parent_text',
-	            readOnly:true
-	            //allowBlank: false,
-	            //tooltip: 'Enter your first name'
-	        },{
+       me.items= [
+//       		{
+//	            fieldLabel: 'parent_id',
+//	            //afterLabelTextTpl: me.required,
+//	            name: 'parent_id',
+//	            readOnly:true
+//	            //allowBlank: false,
+//	            //tooltip: 'Enter your first name'
+//	        },{
+//	            fieldLabel: '上级名称',
+//	            //afterLabelTextTpl: me.required,
+//	            name: 'parent_text',
+//	            readOnly:true
+//	            //allowBlank: false,
+//	            //tooltip: 'Enter your first name'
+//	        },
+	        {
                 xtype: 'fieldcontainer',
                 fieldLabel: '所属功能',
                 combineErrors: true,
@@ -76,14 +78,16 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
                         	
                         }
                     }]
-            },{
-	            fieldLabel: 'id',
-	            //afterLabelTextTpl: me.required,
-	            readOnly:true,
-	            name: 'id'
-	            //allowBlank: false,
-	            //tooltip: 'Enter your first name'
-	        },{
+            },
+//            	{
+//	            fieldLabel: 'id',
+//	            //afterLabelTextTpl: me.required,
+//	            readOnly:true,
+//	            name: 'id'
+//	            //allowBlank: false,
+//	            //tooltip: 'Enter your first name'
+//	        },
+	        {
 	            fieldLabel: '名称',
 	            afterLabelTextTpl: me.required,
 	            name: 'text',
@@ -130,15 +134,15 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
                // alert(form.getForm().getRecord().getFun().get("id"));
 				form.getRecord().save({
 					success: function(record, operation) {
-						console.dir(form.getRecord().getFun());
-						if(form.action=="create"){
-							me.fireEvent("created",record);
-							form.action="update"
-							
-							me.down("button[itemId=createChild]").show();
-						} else {
-							
-						}
+//						console.dir(form.getRecord().getFun());
+//						if(form.action=="create"){
+//							me.fireEvent("created",record);
+//							form.action="update"
+//							
+//							me.down("button[itemId=createChild]").show();
+//						} else {
+//							
+//						}
 					}
 				});
             }
@@ -146,62 +150,64 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
             text: '重置',
             iconCls:'form-reset-button',
             handler: function() {
-            	var copyRcd=this.up('form').getRecord( );
-                this.up('form').getForm().reset(copyRcd);
+            	//var copyRcd=this.up('form').getRecord( );
+                this.up('form').getForm().reset(true);
             }
-        },{
-            text: '复制',
-            iconCls:'form-copy-button',
-            handler: function() {
-                //this.up('form').getForm().isValid();
-            	var copyRcd=this.up('form').getRecord( ).copy();
-            	copyRcd.set("id",null);
-            	this.up('form').copyRcd=copyRcd;
-            	this.nextSibling().show();
-            }
-        },{
-            text: '粘贴',
-            hidden:true,
-            iconCls:'form-paste-button',
-            handler: function() {
-            	this.up('form').getForm().loadRecord(this.up('form').copyRcd);
-            	this.up('form').action="create";
-                this.hide();
-            }
-        },{
-            text: '新建子功能',
-            iconCls:'form-addChild-button',
-            itemId:'createChild',
-            handler: function(bth) {
-            	var parent=this.up('form').getRecord( );
-            	this.up('form').getForm().reset();
-            	//alert(parent.get("menu_id"));
-            	var newRecord=Ext.createModel("Leon.desktop.menu.MenuItem",{'parent_id':parent.get("id"),'parent_text':parent.get("text"),menu_id:parent.get("menu_id")});
-            	this.up('form').getForm().setValues({'parent_id':parent.get("id"),'parent_text':parent.get("text")});
-            	this.up('form').getForm().loadRecord(newRecord);
-            	this.up('form').action="create";
-            	
-            	bth.hide();
-            }
-        },{
-            text: '删除',
-            iconCls:'form-delete-button',
-            handler: function() {
-
-            	var record= this.up('form').getRecord();
-            	var parent=record.parentNode;
-            	var index=parent.indexOf(record);
-            	if(record.hasChildNodes( )){
-            		Ext.Msg.alert("消息","请先删除子节点!");
-            		return;
-            	}
-                record.destroy({
-                	failure: function(record, operation) {
-                		parent.insertChild(index,record);
-                	}
-                });
-            }
-        }];
+        }
+//        ,{
+//            text: '复制',
+//            iconCls:'form-copy-button',
+//            handler: function() {
+//                //this.up('form').getForm().isValid();
+//            	var copyRcd=this.up('form').getRecord( ).copy();
+//            	copyRcd.set("id",null);
+//            	this.up('form').copyRcd=copyRcd;
+//            	this.nextSibling().show();
+//            }
+//        },{
+//            text: '粘贴',
+//            hidden:true,
+//            iconCls:'form-paste-button',
+//            handler: function() {
+//            	this.up('form').getForm().loadRecord(this.up('form').copyRcd);
+//            	this.up('form').action="create";
+//                this.hide();
+//            }
+//        },{
+//            text: '新建子功能',
+//            iconCls:'form-addChild-button',
+//            itemId:'createChild',
+//            handler: function(bth) {
+//            	var parent=this.up('form').getRecord( );
+//            	this.up('form').getForm().reset();
+//            	//alert(parent.get("menu_id"));
+//            	var newRecord=Ext.createModel("Leon.desktop.menu.MenuItem",{'parent_id':parent.get("id"),'parent_text':parent.get("text"),menu_id:parent.get("menu_id")});
+//            	this.up('form').getForm().setValues({'parent_id':parent.get("id"),'parent_text':parent.get("text")});
+//            	this.up('form').getForm().loadRecord(newRecord);
+//            	this.up('form').action="create";
+//            	
+//            	bth.hide();
+//            }
+//        },{
+//            text: '删除',
+//            iconCls:'form-delete-button',
+//            handler: function() {
+//
+//            	var record= this.up('form').getRecord();
+//            	var parent=record.parentNode;
+//            	var index=parent.indexOf(record);
+//            	if(record.hasChildNodes( )){
+//            		Ext.Msg.alert("消息","请先删除子节点!");
+//            		return;
+//            	}
+//                record.destroy({
+//                	failure: function(record, operation) {
+//                		parent.insertChild(index,record);
+//                	}
+//                });
+//            }
+//        }
+        ];
        
        me.addEvents("created");
        me.callParent();
@@ -213,6 +219,7 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
 //			split: true,
 //			collapsible: true,
 //			title:'功能树',
+			disabledAction:true,
 			width:400,
 			height:500
 		});
@@ -232,16 +239,11 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
 		});
 		win.show(showTarget);	
 	},
+	
 	//党是默认菜单的菜单项时，禁止一些元素的修改
 	disableItems:[],
-	disableItem4DefauleMenu:function(){
+	initdisableItems:function(){
 		var me=this;
-		if(me.disableItems.length>0){
-			for(var i=0;i<me.disableItems.length;i++){
-				me.disableItems[i].disable();
-			}
-			return;
-		}
 		var fields=me.getForm().getFields( ) ;
 		var disableFieldObj={
 			code:true,
@@ -250,26 +252,53 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
 		}
 		fields.each(function(item,index ,len){
 			if(!disableFieldObj[item.getName( )]){
-				item.disable();
+				//item.setReadOnly(true);
 				me.disableItems.push(item);
 			}
 		});
 		var buttons=me.query("button");
 		for(var i=0;i<buttons.length;i++){
 			var item=buttons[i];
-			console.log(item.getItemId( ));
 			if(item.getItemId( )!="save"){
-				item.disable();
+				//item.disable();
 				me.disableItems.push(item);
 			}
 		}
+		me.disableItems.readOnly=true;
 	},
-	//恢复diable掉的组件
-	enableItem4DefauleMenu:function(){
+	setReadonlyItem4DefauleMenu:function(bool){
 		var me=this;
-		for(var i=0;i<me.disableItems.length;i++){
-			me.disableItems[i].enable();
+		if(me.disableItems.length==0){
+			me.initdisableItems();
 		}
-		//me.disableItems.length=0;
+		if(!bool){
+			for(var i=0;i<me.disableItems.length;i++){
+				if(me.disableItems[i].isFormField){
+					me.disableItems[i].setReadOnly(false);//.enable();
+				} else {
+					me.disableItems[i].enable();
+				}
+				
+			}
+			return;
+		} else {
+			for(var i=0;i<me.disableItems.length;i++){
+				if(me.disableItems[i].isFormField){
+					me.disableItems[i].setReadOnly(true);//.enable();
+				} else {
+					me.disableItems[i].disable();
+				}
+				
+			}
+		}
+		
 	}
+//	//恢复diable掉的组件
+//	enableItem4DefauleMenu:function(){
+//		var me=this;
+//		for(var i=0;i<me.disableItems.length;i++){
+//			me.disableItems[i].enable();
+//		}
+//		//me.disableItems.length=0;
+//	}
 });

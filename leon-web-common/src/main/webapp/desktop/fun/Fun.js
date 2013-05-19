@@ -14,23 +14,33 @@ Ext.define("Leon.desktop.fun.Fun",{
 		{type:'belongsTo',model:'Leon.desktop.fun.Fun',associatedName:'Parent'}
 	]
 	,proxy:{
-		actionMethods: { read: 'POST' },
-		timeout :600000,
-		headers:{ 'Accept':'application/json;'},
-		type:'ajax',
+		type:'bajax',
 		api:{
 			read:'/fun/queryChildren',
-			get : '/fun/get',
+			load : '/fun/get',
 			create:'/fun/create',
 			update:'/fun/update',
 			destroy:'/fun/destroy'
-		},
-		reader:{
-			type:'json',
-			root:'root'
-		}
-		,writer:{
-			type:'json'
 		}
 	}
+//	,proxy:{
+//		actionMethods: { read: 'POST' },
+//		timeout :600000,
+//		headers:{ 'Accept':'application/json;'},
+//		type:'ajax',
+//		api:{
+//			read:'/fun/queryChildren',
+//			get : '/fun/get',
+//			create:'/fun/create',
+//			update:'/fun/update',
+//			destroy:'/fun/destroy'
+//		},
+//		reader:{
+//			type:'json',
+//			root:'root'
+//		}
+//		,writer:{
+//			type:'json'
+//		}
+//	}
 });

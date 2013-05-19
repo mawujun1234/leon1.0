@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Null;
 
 import com.mawujun.annotation.Label;
 import com.mawujun.fun.Fun;
@@ -41,7 +42,7 @@ public class MenuItem extends UUIDEntity {
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Menu menu;
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.EAGER,optional=true)
 	private Fun fun;
 	@ManyToOne(fetch=FetchType.LAZY)
 	private MenuItem parent;
