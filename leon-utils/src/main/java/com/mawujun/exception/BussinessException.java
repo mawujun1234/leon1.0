@@ -36,6 +36,10 @@ public class BussinessException extends RuntimeException {
     public BussinessException(ExceptionCode errorCode) {
 		this.errorCode = errorCode;
 	}
+    
+    public BussinessException(String message) {
+		this(message,DefaulExceptionCode.SYSTEM_EXCEPTION);
+	}
 
 	public BussinessException(String message, ExceptionCode errorCode) {
 		super(message);

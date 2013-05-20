@@ -2,15 +2,50 @@
  * 封装grid
  */
 Ext.define('Leon.common.ux.BaseGrid', {
-    extend: 'Ext.tree.Panel',
+    extend: 'Ext.grid.Panel',
     alias: 'widget.bgridpanel',
     columnLines:true,
+    
     viewConfig: {
+    	lockable:true,
         stripeRows: false
     },
+    model:null,//用来构建store，如果没有这个值，就得自己构建model
+    itemsPerPage:50,
     initComponent: function () {
-       var me = this;
-       var create = new Ext.Action({
+        var me = this;
+        if(me.model){
+        	me.store = Ext.create('Ext.data.Store', {
+	        	autoSync:true,
+	        	pageSize: me.itemsPerPage,
+		       	autoLoad:true,
+		       	model:me.model
+			});
+        }
+        me.bbar= {
+	        xtype: 'pagingtoolbar',
+	        store: me.store,   // same store GridPanel is using
+	        displayInfo: true
+	    };
+       
+		
+		me.initAction();
+		me.initPlugins();
+
+        me.callParent();
+    },
+    initPlugins:function(){
+    	var me=this;
+    	me.plugins= [
+	        Ext.create('Ext.grid.plugin.CellEditing', {
+	        	//pluginId: 'cellEditingPlugin',
+	            clicksToEdit: 2
+	        })
+	    ];
+    },
+    initAction:function(){
+    	var me=this;
+    	var create = new Ext.Action({
 		    text: '新增',
 		    disabled:me.disabledAction,
 		    handler: function(){
@@ -40,31 +75,8 @@ Ext.define('Leon.common.ux.BaseGrid', {
 		    	Ext.Msg.confirm("删除",'确定要删除吗?', function(btn, text){
 				    if (btn == 'yes'){
 				       var node=me.getSelectionModel( ).getLastSelected( );
-				       if(node.getId()==me.getRootNode().getId()){
-				       	Ext.Msg.alert("消息","根节点不能删除!");	
-				       	return;
-				       }
-				       var parent=node.parentNode;
-				        if(node&&node.hasChildNodes( ) &&　!me.cascadeDelete){
-				        	Ext.Msg.alert("消息","请先删除子节点!");
-		            		return;
-				        }else if(node){
-				        	node.destroy({
-//				        		success:function(){
-//				        			Ext.Msg.alert("消息","删除成功!");
-//		            				return;
-//				        		},
-				        		failure: function(record, operation) {
-				        			if(parent){
-				        				var index=parent.indexOf(node);
-		            					me.getStore().reload({node:parent});
-		            					//parent.insertChild(index,record);
-				        			}
-				        			Ext.Msg.alert("消息","删除失败!");
-		            				return;
-				        		}
-				        	});
-				        }
+
+				      
 				    }
 				});
 		        
@@ -72,50 +84,28 @@ Ext.define('Leon.common.ux.BaseGrid', {
 		    iconCls: 'form-delete-button'
 		});
 		var update = new Ext.Action({
-		    text: '保存',
+		    text: '保存（用于批量更新的时候）',
 		    disabled:me.disabledAction,
 		    handler: function(){
-		    	var node=me.getSelectionModel( ).getLastSelected( );
-				if(node.getId()==me.getRootNode().getId()){
-				    Ext.Msg.alert("消息","根节点不能修改!");	
-				    return;
-				}
-		    	
-		        Ext.Msg.prompt('修改', '请输入名称:', function(btn, text){
-				    if (btn == 'ok'){
-				    	//var node=me.getSelectionModel( ).getLastSelected( );
-				    	if(node.get(me.textField)==text){
-				    		return;
-				    	}
-				        node.set(me.textField,text);
-				        node.save({
-							success: function(record, operation) {
-								//child=record;
-								me.getStore().reload({node:parent});
-								parent.expand();
-							}
-						});
-				    }
-				});
+
 		    },
 		    iconCls: 'form-update-button'
 		});
 		
 		me.actions=[create,destroy,update];
 		me.tbar=me.actions;
-		me.tbar.push(reload);
+		//me.tbar.push(reload);
 		
 		var menu=Ext.create('Ext.menu.Menu', {
 		    //width: 100,
 		    //plain: true,
 		    //floating: false,  // usually you want this set to True (default)
 		    //renderTo: Ext.getBody(),  // usually rendered by it's containing component
-		    items: [create,destroy,update,copy,paste,reload]
+		    items: me.actions
 		});
 		me.on('itemcontextmenu',function(tree,record,item,index,e){
 			menu.showAt(e.getXY());
 			e.stopEvent();
 		});
-        me.callParent();
     }
 });

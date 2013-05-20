@@ -7,6 +7,7 @@ Ext.define('Leon.desktop.fun.FunTree',{
 	rootVisible: true,
 	initComponent: function () {
        var me = this;
+        me.callParent();
        var store = Ext.create('Ext.data.TreeStore', {
        		autoLoad:false,
        		model:'Leon.desktop.fun.Fun',
@@ -19,6 +20,6 @@ Ext.define('Leon.desktop.fun.FunTree',{
        me.store=store;
        
        
-       me.callParent();
+      
 	}
 });

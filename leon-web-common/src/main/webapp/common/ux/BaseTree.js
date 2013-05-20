@@ -9,8 +9,27 @@ Ext.define('Leon.common.ux.BaseTree', {
     cascadeDelete:false,//在删除的时候是否级联删除节点
     textField:'text',//传递到后台的时候，名称的默认树形
     disabledAction:false,//讲动作都禁止掉，不可使用
+    model:null,//用来构建store，如果没有这个值，就得自己构建model
     initComponent: function () {
-       var me = this;
+		var me = this;
+		me.initAction();
+		
+		if(me.model){
+        	me.store = Ext.create('Ext.data.TreeStore', {
+	       		autoLoad:false,
+	       		model:me.model,
+			    root: {
+			    	id:'root',
+			        expanded: true,
+			        text:'根节点'
+			    }
+			});
+        }
+
+		me.callParent();
+    },
+    initAction:function(){
+     	var me = this;
        var create = new Ext.Action({
 		    text: '新增',
 		    disabled:me.disabledAction,
@@ -143,20 +162,13 @@ Ext.define('Leon.common.ux.BaseTree', {
 		me.actions=[create,destroy,update,copy,paste];
 		me.tbar=me.actions;
 		me.tbar.push(reload);
-		
 		var menu=Ext.create('Ext.menu.Menu', {
-		    //width: 100,
-		    //plain: true,
-		    //floating: false,  // usually you want this set to True (default)
-		    //renderTo: Ext.getBody(),  // usually rendered by it's containing component
-		    items: [create,destroy,update,copy,paste,reload]
+		    items: me.actions
 		});
 		me.on('itemcontextmenu',function(tree,record,item,index,e){
 			menu.showAt(e.getXY());
 			e.stopEvent();
 		});
-
-		me.callParent();
     },
     setDisableAction:function(boool){
     	//让所有的菜单都不能使用

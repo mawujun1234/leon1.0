@@ -27,6 +27,7 @@ public class FunService extends BaseService<Fun, String> {
 		// TODO Auto-generated method stub
 		return funRepository;
 	}
+
 	@Override
 	public void delete(Fun entity) {
 		//判断是否具有子节点
