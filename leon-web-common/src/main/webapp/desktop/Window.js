@@ -50,8 +50,12 @@ Ext.define('Leon.desktop.Window', {
 		
 		me.on("render",function(win){
 			win.el.mask("正在加载...");
+//			me.getEl().on('click',function(){
+//				me.toFront();
+//			});
 			
 		});
+		
 //		this.items = [{        
 //			xtype : "component",         
 //			autoEl : {     
