@@ -45,7 +45,9 @@ Ext.define('Leon.desktop.menu.MenuGrid',{
        			handler:function(){
        				var menu=Ext.create('Leon.desktop.menu.Menu',{text:'新菜单'});
        				me.store.add(menu);
-       				me.getPlugin("cellEditingPlugin").startEditByPosition({column:0,row:me.store.getCount( ) -1});
+       				var edit=me.getPlugin("cellEditingPlugin");
+       				edit.cancelEdit();
+       				edit.startEditByPosition({column:0,row:me.store.getCount( ) -1});
        				//menu.beginEdit( );
        				
        			}	

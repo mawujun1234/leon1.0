@@ -9,14 +9,27 @@ Ext.onReady(function(){
 		//plugins:[{ptype:'treeexten'}],
 		model:'Leon.desktop.menu.Menu',
 		split: true,
+		autoSync:false,
 		//store:store,
 		collapsible: true,
+		selType :'cellmodel',
+		autoNextCellColIdx:0,
 		title:'菜单',
-		columns:[{dataIndex:'id',text:'222'},{dataIndex:'text',text:'111',editor: {
+		columns:[{dataIndex:'id',text:'222',editor: {
 	                xtype: 'textfield',
 	                allowBlank: false,
 	                selectOnFocus:true
-	            }}],
+	            }},{dataIndex:'text',text:'111',editor: {
+	                xtype: 'textfield',
+	                allowBlank: false,
+	                selectOnFocus:true
+	            }}
+//	            ,{dataIndex:'text',text:'333',editor: {
+//	                xtype: 'textfield',
+//	                allowBlank: false,
+//	                selectOnFocus:true
+//	            }}
+	            ],
 		width:400
 	});
 	

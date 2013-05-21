@@ -12,15 +12,22 @@ Ext.define('Leon.common.ux.BaseGrid', {
     },
     model:null,//用来构建store，如果没有这个值，就得自己构建model
     itemsPerPage:50,
+    editable:true,//是否启用自动编辑
+    autoSync:true,//是否自动同步，修改一个单元格就提交
+    autoNextCellEditing:true,//在使用编辑的时候，按回车键会自动触发下一个单元格
+    autoNextCellColIdx:0,//自动触发下一个单元格的时候，col开始的起始数
+    //autoNextCelRowIdx:0,//自动触发下一个单元格的时候，row开始的起始数
     initComponent: function () {
         var me = this;
         if(me.model){
         	me.store = Ext.create('Ext.data.Store', {
-	        	autoSync:true,
+	        	autoSync:me.autoSync,
+	        	remoteSort :true,
 	        	pageSize: me.itemsPerPage,
 		       	autoLoad:true,
 		       	model:me.model
 			});
+			me.getStore().getProxy().getWriter( ).a
         }
         me.bbar= {
 	        xtype: 'pagingtoolbar',
@@ -35,13 +42,45 @@ Ext.define('Leon.common.ux.BaseGrid', {
         me.callParent();
     },
     initPlugins:function(){
+    	//如果配置了autoSync，表示自动添加编辑组件
+    	if(!me.editable){
+    		return;
+    	}
     	var me=this;
-    	me.plugins= [
-	        Ext.create('Ext.grid.plugin.CellEditing', {
-	        	//pluginId: 'cellEditingPlugin',
+    	var cellediting=Ext.create('Ext.grid.plugin.CellEditing', {
+	        	pluginId: 'cellEditingPlugin',
 	            clicksToEdit: 2
-	        })
-	    ];
+	    });
+    	me.plugins= [cellediting];
+    	
+	    cellediting.on('edit',function(editor,e){
+	    	var grid =e.grid ;
+	    	//var record =e.record ;
+	    	//var field =e.field ;
+	    	//var value =e.value ;
+	    	//var row=e.row ;
+	    	//var column =e.column ;
+	    	var rowIdx=e.rowIdx;
+	    	var colIdx =e.colIdx ;
+	    	//alert(1);
+	    	
+	    	var colSize=grid.getHeader( ).items.getCount( );
+	    	var rowSize=grid.getStore().getCount();
+	    	//alert(colIdx+"-----"+colSize);
+	    	if(colIdx<colSize-1){
+	    		colIdx++;
+	    		editor.startEdit(rowIdx,colIdx);
+	    	} else if(rowIdx<rowSize-1){
+		    	rowIdx++;
+		    	colIdx=me.autoNextCellColIdx;
+		    	editor.startEdit(rowIdx,colIdx);
+	    	} else {
+	    		//alert(1);
+	    		//editor.startEdit(rowIdx,colIdx);
+	    		//editor.cancelEdit();
+	    	}
+	    	
+	    });
     },
     initAction:function(){
     	var me=this;
@@ -83,16 +122,20 @@ Ext.define('Leon.common.ux.BaseGrid', {
 		    },
 		    iconCls: 'form-delete-button'
 		});
-		var update = new Ext.Action({
-		    text: '保存（用于批量更新的时候）',
-		    disabled:me.disabledAction,
-		    handler: function(){
-
-		    },
-		    iconCls: 'form-update-button'
-		});
 		
-		me.actions=[create,destroy,update];
+		
+		me.actions=[create,destroy];
+		if(!me.autoSync){
+			var update = new Ext.Action({
+			    text: '保存',
+			    disabled:me.disabledAction,
+			    handler: function(){
+					me.getStore().sync();
+			    },
+			    iconCls: 'form-update-button'
+			});
+			me.actions.push(update);
+		}
 		me.tbar=me.actions;
 		//me.tbar.push(reload);
 		
