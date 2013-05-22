@@ -19,6 +19,7 @@ Ext.define('Leon.common.ux.BaseGrid', {
     //autoNextCelRowIdx:0,//自动触发下一个单元格的时候，row开始的起始数
     initComponent: function () {
         var me = this;
+        
         if(me.model){
         	me.store = Ext.create('Ext.data.Store', {
 	        	autoSync:me.autoSync,
@@ -42,11 +43,12 @@ Ext.define('Leon.common.ux.BaseGrid', {
         me.callParent();
     },
     initPlugins:function(){
+    	var me=this;
     	//如果配置了autoSync，表示自动添加编辑组件
     	if(!me.editable){
     		return;
     	}
-    	var me=this;
+
     	var cellediting=Ext.create('Ext.grid.plugin.CellEditing', {
 	        	pluginId: 'cellEditingPlugin',
 	            clicksToEdit: 2
@@ -62,12 +64,19 @@ Ext.define('Leon.common.ux.BaseGrid', {
 	    	//var column =e.column ;
 	    	var rowIdx=e.rowIdx;
 	    	var colIdx =e.colIdx ;
-	    	//alert(1);
-	    	
+
 	    	var colSize=grid.getHeader( ).items.getCount( );
 	    	var rowSize=grid.getStore().getCount();
+	    	//alert(colIdx+"-----"+position.column);
+	    	//alert(rowIdx+"-----"+position.row);
+	    	//如果通过点击到另外的单元格，久切换到另外的道远个，而不是自动跳到下一格
+	    	var position=me.getSelectionModel( ).getCurrentPosition( );
+	    	if(position.column!=colIdx || position.row!=rowIdx){
+	    		return;
+	    	}
 	    	//alert(colIdx+"-----"+colSize);
 	    	if(colIdx<colSize-1){
+	    		
 	    		colIdx++;
 	    		editor.startEdit(rowIdx,colIdx);
 	    	} else if(rowIdx<rowSize-1){
@@ -88,24 +97,30 @@ Ext.define('Leon.common.ux.BaseGrid', {
 		    text: '新增',
 		    disabled:me.disabledAction,
 		    handler: function(){
-		    	var parent=me.getSelectionModel( ).getLastSelected( );    	
-		    	var values={
-		    		'parent_id':parent.get("id")
-		    	};
-		    	values[me.textField]='新节点';
-		        var child=Ext.createModel(parent.self.getName(),values);
-		        //alert(Ext.encode(child.raw));
-		       //return;
-		        child.save({
-					success: function(record, operation) {
-						//child=record;
-						me.getStore().reload({node:parent});
-						parent.expand();
-					}
-				});
+		    	var modelName=me.model||me.getStore().getProxy( ).getModel().getName( );
 
+		        var model=Ext.createModel(modelName,{
+		        	id:''
+		        });
+		        me.getStore().insert(0, model);
+		        var cellediting=me.getPlugin("cellEditingPlugin");
+		        cellediting.startEditByPosition({
+		            row: 0, 
+		            column: me.autoNextCellColIdx
+		        });
 		    },
-		    iconCls: 'form-addChild-button'
+		    iconCls: 'form-add-button'
+		});
+		var update = new Ext.Action({
+		    text: '更新',
+		    disabled:me.disabledAction,
+		    handler: function(){
+				var position=me.getSelectionModel( ).getCurrentPosition( );
+				var cellediting=me.getPlugin("cellEditingPlugin");
+				//alert(cellediting);
+		        cellediting.startEditByPosition(position);
+		    },
+		    iconCls: 'form-update-button'
 		});
 		var destroy = new Ext.Action({
 		    text: '删除',
@@ -113,9 +128,8 @@ Ext.define('Leon.common.ux.BaseGrid', {
 		    handler: function(){
 		    	Ext.Msg.confirm("删除",'确定要删除吗?', function(btn, text){
 				    if (btn == 'yes'){
-				       var node=me.getSelectionModel( ).getLastSelected( );
-
-				      
+				        var records=me.getSelectionModel( ).getSelection( );//.getLastSelected( );
+						me.getStore().remove( records );
 				    }
 				});
 		        
@@ -124,7 +138,7 @@ Ext.define('Leon.common.ux.BaseGrid', {
 		});
 		
 		
-		me.actions=[create,destroy];
+		me.actions=[create,update,destroy];
 		if(!me.autoSync){
 			var update = new Ext.Action({
 			    text: '保存',
@@ -132,18 +146,14 @@ Ext.define('Leon.common.ux.BaseGrid', {
 			    handler: function(){
 					me.getStore().sync();
 			    },
-			    iconCls: 'form-update-button'
+			    iconCls: 'form-save-button'
 			});
 			me.actions.push(update);
 		}
-		me.tbar=me.actions;
+		//me.tbar=me.actions;
 		//me.tbar.push(reload);
 		
 		var menu=Ext.create('Ext.menu.Menu', {
-		    //width: 100,
-		    //plain: true,
-		    //floating: false,  // usually you want this set to True (default)
-		    //renderTo: Ext.getBody(),  // usually rendered by it's containing component
 		    items: me.actions
 		});
 		me.on('itemcontextmenu',function(tree,record,item,index,e){
