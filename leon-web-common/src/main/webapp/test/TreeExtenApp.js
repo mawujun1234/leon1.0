@@ -24,11 +24,6 @@ Ext.onReady(function(){
 	                allowBlank: false,
 	                selectOnFocus:true
 	            }}
-//	            ,{dataIndex:'text',text:'333',editor: {
-//	                xtype: 'textfield',
-//	                allowBlank: false,
-//	                selectOnFocus:true
-//	            }}
 	            ],
 		width:400
 	});

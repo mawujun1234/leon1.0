@@ -10,18 +10,19 @@ Ext.define('Leon.common.ux.BaseTree', {
     textField:'text',//传递到后台的时候，名称的默认树形
     disabledAction:false,//讲动作都禁止掉，不可使用
     model:null,//用来构建store，如果没有这个值，就得自己构建model
+    rootText:'根节点',
     initComponent: function () {
 		var me = this;
 		me.initAction();
 		
 		if(me.model){
         	me.store = Ext.create('Ext.data.TreeStore', {
-	       		autoLoad:false,
+	       		autoLoad:true,
 	       		model:me.model,
 			    root: {
 			    	id:'root',
 			        expanded: true,
-			        text:'根节点'
+			        text:me.rootText
 			    }
 			});
         }
@@ -31,7 +32,7 @@ Ext.define('Leon.common.ux.BaseTree', {
     initAction:function(){
      	var me = this;
        var create = new Ext.Action({
-		    text: '新增',
+		    text: '新增子节点',
 		    disabled:me.disabledAction,
 		    handler: function(){
 		    	var parent=me.getSelectionModel( ).getLastSelected( );    	
@@ -40,6 +41,33 @@ Ext.define('Leon.common.ux.BaseTree', {
 		    	};
 		    	values[me.textField]='新节点';
 		        var child=Ext.createModel(parent.self.getName(),values);
+		        //alert(Ext.encode(child.raw));
+		       //return;
+		        child.save({
+					success: function(record, operation) {
+						//child=record;
+						me.getStore().reload({node:parent});
+						parent.expand();
+					}
+				});
+
+		    },
+		    iconCls: 'form-addChild-button'
+		});
+		var createSibling = new Ext.Action({
+		    text: '新增兄弟节点',
+		    disabled:me.disabledAction,
+		    handler: function(){
+		    	var node=me.getSelectionModel( ).getLastSelected( );   
+		    	if(node.getId()==me.getRootNode().getId()){
+		    		return;
+		    	}
+		    	var parent=node.parentNode;
+		    	var values={
+		    		'parent_id':parent.get("id")
+		    	};
+		    	values[me.textField]='新节点';
+		        var child=Ext.createModel(node.self.getName(),values);
 		        //alert(Ext.encode(child.raw));
 		       //return;
 		        child.save({
@@ -159,9 +187,9 @@ Ext.define('Leon.common.ux.BaseTree', {
 		    },
 		    iconCls: 'form-reload-button'
 		});
-		me.actions=[create,destroy,update,copy,paste];
-		me.tbar=me.actions;
-		me.tbar.push(reload);
+		me.actions=[create,createSibling,destroy,update,copy,paste,reload];
+		//me.tbar=me.actions;
+		//me.actions.push(reload);
 		var menu=Ext.create('Ext.menu.Menu', {
 		    items: me.actions
 		});
