@@ -36,10 +36,10 @@ Ext.onReady(function(){
 //		}
 //	});
 
-	
 	var tree=Ext.create('Leon.common.ux.BaseTree',{
 		title:'菜单树',
-		model:"Leon.desktop.constant.Constant",
+		fields:['text','type'],
+		url:'/constantType/queryAll',
 		region:'center'
 	});
 	tree.on('itemclick',function(view,record,item,index){
@@ -51,6 +51,7 @@ Ext.onReady(function(){
 		model:'Leon.desktop.constant.Constant',
 		autoSync:false,
 		//store:store,
+		split:true,
 		collapsible: true,
 		selType :'cellmodel',
 		autoNextCellColIdx:0,

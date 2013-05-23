@@ -46,7 +46,7 @@ public class ConstantTypeController  {
 	 */
 	@RequestMapping("/constantType/queryAll")
 	@ResponseBody
-	public List<ConstantType> queryAll(){		
+	public List<ConstantType> queryAll(String id){		
 		return constantTypeService.queryAll();
 	}
 	@RequestMapping("/constantType/get")

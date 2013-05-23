@@ -174,13 +174,15 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 		serializer.config(SerializerFeature.SkipTransientField,true);
 		serializer.config(SerializerFeature.WriteEnumUsingToString,true);
 		serializer.config(SerializerFeature.SortField,true);
-
+		
+		HibernateLazyInitializerFilter hibernateFilter=new HibernateLazyInitializerFilter();
+		serializer.getValueFilters().add(hibernateFilter);
 		try {
 			
 		 if(object instanceof Map) {
 			Map map=(Map)object;
-			if((Boolean)map.get(ResultMap.enableHibernateLazyInitializerFilter)){
-				serializer.getValueFilters().add(new HibernateLazyInitializerFilter());
+			if(map.get(ResultMap.enableHibernateLazyInitializerFilter)!=null && (Boolean)map.get(ResultMap.enableHibernateLazyInitializerFilter)){
+				serializer.getValueFilters().remove(hibernateFilter);
 			}
 			if(!map.containsKey("success")){
 				map.put("success", true);
@@ -226,15 +228,15 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 			if(page.getFilterPropertys()!=null && !"".equals(page.getFilterPropertys())){
 				doFilterPropertys(map, serializer);
 			}
-			if(page.isEnableHibernateLazyInitializerFilter()){
-				serializer.getValueFilters().add(new HibernateLazyInitializerFilter());
+			if(!page.isEnableHibernateLazyInitializerFilter()){
+				serializer.getValueFilters().remove(hibernateFilter);
 			}
 		} else {
 			ModelMap map=new ModelMap();
 			map.put("root", object);
 			map.put("success", true);
 			object=map;
-			serializer.getValueFilters().add(new HibernateLazyInitializerFilter());
+			//serializer.getValueFilters().add(new HibernateLazyInitializerFilter());
 		
 		}
 		
