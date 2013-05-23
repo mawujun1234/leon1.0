@@ -64,6 +64,7 @@ public class SpringMVCController {
 		map.put("totalProperty", page.getTotalItems());	
 		return map;
 	}
+	
 	@RequestMapping("/test/queryPage1.do")
 	@ResponseBody
 	public QueryResult queryPage1(){
@@ -177,6 +178,21 @@ public class SpringMVCController {
 		ModelMap map=new ModelMap();
 		map.put("filterPropertys", "age,name");//过滤属性的设置
 		map.put("root", parent);
+		return map;
+	}
+	
+	@RequestMapping("/test/filterPropertyModelMap.do")
+	@ResponseBody
+	public ResultMap filterPropertyModelMap(){
+		Model parent=new Model();
+		parent.setId(1);
+		parent.setAge(11);
+		parent.setCreateDate(new Date());
+		parent.setName("parent");
+		
+		ResultMap map=new ResultMap();
+		map.setFilterPropertys("age,name");//过滤属性的设置
+		map.setRoot(parent);
 		return map;
 	}
 	

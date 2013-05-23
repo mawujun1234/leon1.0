@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Array;
 import java.nio.charset.Charset;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +54,7 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 	final static Logger logger = LoggerFactory.getLogger(HttpMessageConverter_FastJson.class);   
 	
 	private String datePattern = "yyyy-MM-dd";//"yyyy-MM-dd HH:mm:ss"; 
-	private static final  String filterPropertys="filterPropertys";//以逗号分隔
+	//private static final  String filterPropertys="filterPropertys";//以逗号分隔
 	//private static final  String onlyIds="onlyIds";
 	//是否过滤hibernate未初始化的数据
 	private boolean enableHibernateLazyInitializerFilter=true;
@@ -173,43 +174,40 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 		serializer.config(SerializerFeature.SkipTransientField,true);
 		serializer.config(SerializerFeature.WriteEnumUsingToString,true);
 		serializer.config(SerializerFeature.SortField,true);
-		
-		if(enableHibernateLazyInitializerFilter){
-			serializer.getValueFilters().add(new HibernateLazyInitializerFilter());
-		}
-		
+
 		try {
-		if(object instanceof Map){
+			
+		 if(object instanceof Map) {
 			Map map=(Map)object;
+			if((Boolean)map.get(ResultMap.enableHibernateLazyInitializerFilter)){
+				serializer.getValueFilters().add(new HibernateLazyInitializerFilter());
+			}
 			if(!map.containsKey("success")){
 				map.put("success", true);
 			}
-			if(map.containsKey(filterPropertys)){
-				String[] excludes=((String)map.get(filterPropertys)).split(",");
-//				应该是这里的问题，因为返回的是List
-//				SimplePropertyPreFilter filter = new SimplePropertyPreFilter(map.get("root").getClass() ); 
-//				for(String str:excludes){
-//					filter.getExcludes().add(str);
+			if(map.containsKey(ResultMap.filterPropertysName)){
+				doFilterPropertys(map, serializer);
+//				String[] excludes=((String)map.get(ResultMap.filterPropertysName)).split(",");
+//
+//				SimplePropertyPreFilter filter =null;
+//				if(map.get("root") instanceof List){
+//					if(((List)map.get("root")).size()>0){
+//						filter = new SimplePropertyPreFilter(((List)map.get("root")).get(0).getClass() ); 
+//						for(String str:excludes){
+//							filter.getExcludes().add(str);
+//						}
+//					}
+//					
+//				} else {
+//					filter = new SimplePropertyPreFilter(map.get("root").getClass() ); 
+//					for(String str:excludes){
+//						filter.getExcludes().add(str);
+//					}
 //				}
-				SimplePropertyPreFilter filter =null;
-				if(map.get("root") instanceof List){
-					if(((List)map.get("root")).size()>0){
-						filter = new SimplePropertyPreFilter(((List)map.get("root")).get(0).getClass() ); 
-						for(String str:excludes){
-							filter.getExcludes().add(str);
-						}
-					}
-					
-				} else {
-					filter = new SimplePropertyPreFilter(map.get("root").getClass() ); 
-					for(String str:excludes){
-						filter.getExcludes().add(str);
-					}
-				}
-				if(filter!=null){
-					serializer.getPropertyPreFilters().add((PropertyPreFilter) filter);
-				}
-				map.remove(filterPropertys);
+//				if(filter!=null){
+//					serializer.getPropertyPreFilters().add((PropertyPreFilter) filter);
+//				}
+//				map.remove(ResultMap.filterPropertysName);
 			}
 			
 		} else if(object instanceof QueryResult){
@@ -224,14 +222,23 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 			map.put("wheres", page.getWheres());
 			map.put("sorts", page.getSorts());
 			object=map;
+			
+			if(page.getFilterPropertys()!=null && !"".equals(page.getFilterPropertys())){
+				doFilterPropertys(map, serializer);
+			}
+			if(page.isEnableHibernateLazyInitializerFilter()){
+				serializer.getValueFilters().add(new HibernateLazyInitializerFilter());
+			}
 		} else {
 			ModelMap map=new ModelMap();
 			map.put("root", object);
 			map.put("success", true);
 			object=map;
+			serializer.getValueFilters().add(new HibernateLazyInitializerFilter());
 		
 		}
 		
+		doAllowSingle((ModelMap)object);
 		//FileCopyUtils.copy(JSON.toJSONString(object,serializeConfig, SerializerFeature.PrettyFormat,SerializerFeature.UseSingleQuotes), new OutputStreamWriter(outputMessage.getBody(), charset));
 		serializer.write(object);
 		//System.out.println();
@@ -248,6 +255,43 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 		}
 		
 
+	}
+	/**
+	 * 档root不是数组的时候就转换成数组
+	 * @author mawujun email:mawujun1234@163.com qq:16064988
+	 * @param map
+	 */
+	public void doAllowSingle(ModelMap map){
+		if(map.get(ResultMap.allowSingle)!=null && !(Boolean)map.get(ResultMap.allowSingle)){
+			Object root=map.get(ResultMap.root);
+			if(!(root instanceof Collection) && !(root.getClass().isArray())){
+				map.put(ResultMap.root, new Object[]{root});
+			}
+		}
+	}
+	
+	public void doFilterPropertys(Map map,JSONSerializer serializer){
+		String[] excludes=((String)map.get(ResultMap.filterPropertysName)).split(",");
+
+		SimplePropertyPreFilter filter =null;
+		if(map.get("root") instanceof List){
+			if(((List)map.get("root")).size()>0){
+				filter = new SimplePropertyPreFilter(((List)map.get("root")).get(0).getClass() ); 
+				for(String str:excludes){
+					filter.getExcludes().add(str);
+				}
+			}
+			
+		} else {
+			filter = new SimplePropertyPreFilter(map.get("root").getClass() ); 
+			for(String str:excludes){
+				filter.getExcludes().add(str);
+			}
+		}
+		if(filter!=null){
+			serializer.getPropertyPreFilters().add((PropertyPreFilter) filter);
+		}
+		map.remove(ResultMap.filterPropertysName);
 	}
 	//Pattern pattern = Pattern.compile("\\{\"\\$ref\":.*\"\\}");  
 	//这里的？很重要，否则由于贪婪匹配的原因会造成问题

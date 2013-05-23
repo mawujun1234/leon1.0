@@ -14,7 +14,6 @@ Ext.onReady(function(){
 		//var MenuItem= Ext.ModelManager.getModel('Leon.desktop.menu.MenuItem')
 		Ext.Ajax.request({
 			url:Ext.ContextPath+'/menuItem/get',
-			method:'POST',
 			params:{id:record.get('rootId')},
 			success:function(response){
 				var obj=Ext.decode(response.responseText);
