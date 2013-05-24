@@ -6,7 +6,10 @@ Ext.define("Leon.common.ux.BaseAjax",{
 	headers:{ 'Accept':'application/json;'},
 	reader:{
 			type:'json',
-			root:'root'
+			root:'root',
+			successProperty:'success',
+			totalProperty:'total'
+			
 	}
 	,writer:{
 		type:'json'

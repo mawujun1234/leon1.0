@@ -10,38 +10,47 @@ Ext.define('Leon.common.ux.BaseTree', {
     textField:'text',//传递到后台的时候，名称的默认树形
     disabledAction:false,//讲动作都禁止掉，不可使用
     model:null,//用来构建store，如果没有这个值，就得自己构建model
-    rootText:'根节点',
+    defaultRootText :'根节点',
     fields:null,
     url:null,//url和fields是同时出现，但和model属性是不能同时出现的
     initComponent: function () {
 		var me = this;
-		me.initAction();
+		
 		
 		if(me.model){
         	me.store = Ext.create('Ext.data.TreeStore', {
 	       		autoLoad:true,
+	       		nodeParam :'id',
 	       		model:me.model,
 			    root: {
 			    	//id:'root',
 			        expanded: true,
-			        text:me.rootText
+			        text:me.defaultRootText 
 			    }
 			});
-        } else if(me.fields){
-        	me.store=Ext.create('Ext.data.TreeStore',{
+			me.initAction();
+        } else if(me.url){
+        	//alert(me.fields);
+        	var cofig={
         		root: {
 			    	//id:'root',
 			        expanded: true,
-			        text:me.rootText
+			        text:me.defaultRootText 
 			    },
+			    nodeParam :'id',
         		autoLoad:true,
 				proxy:{
 					type:'bajax',
 					url:me.url
-				},
-				fields:me.fields
+				}
 				
-			})
+			};
+			if(me.fields){
+				cofig.fields=me.fields;
+				me.fields.length=0;
+			}
+        	me.store=Ext.create('Ext.data.TreeStore',cofig);
+			
         }
 
 		me.callParent();

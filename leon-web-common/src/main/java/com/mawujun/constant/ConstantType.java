@@ -62,7 +62,7 @@ public class ConstantType extends UUIDEntity {
 		this.text = text;
 	}
 
-	public static String getDiscriminator() {
+	public String getDiscriminator() {
 		return discriminator;
 	}
 

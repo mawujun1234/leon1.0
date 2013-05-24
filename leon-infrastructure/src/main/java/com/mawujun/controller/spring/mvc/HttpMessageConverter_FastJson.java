@@ -216,7 +216,7 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 			QueryResult page=(QueryResult)object;
 			ModelMap map=new ModelMap();
 			map.put("root", page.getResult());
-			map.put("totalProperty", page.getTotalItems());
+			map.put("total", page.getTotalItems());
 			map.put("start", page.getStart());
 			map.put("limit", page.getPageSize());
 			map.put("pageNo", page.getPageNo());

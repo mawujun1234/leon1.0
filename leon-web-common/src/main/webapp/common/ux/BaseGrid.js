@@ -13,7 +13,8 @@ Ext.define('Leon.common.ux.BaseGrid', {
     model:null,//用来构建store，如果没有这个值，就得自己构建model
     itemsPerPage:50,
     editable:true,//是否启用自动编辑
-    autoSync:true,//是否自动同步，修改一个单元格就提交
+    autoLoad:true,
+    autoSync:true,//是否自动同步，修改一个单元格就提交,否则的话，需要右键--》保存，并且如果有多个修改的话，会以数组的形式提交到后台的
     autoNextCellEditing:true,//在使用编辑的时候，按回车键会自动触发下一个单元格
     autoNextCellColIdx:0,//自动触发下一个单元格的时候，col开始的起始数
     //autoNextCelRowIdx:0,//自动触发下一个单元格的时候，row开始的起始数
@@ -21,14 +22,8 @@ Ext.define('Leon.common.ux.BaseGrid', {
         var me = this;
         
         if(me.model){
-        	me.store = Ext.create('Ext.data.Store', {
-	        	autoSync:me.autoSync,
-	        	remoteSort :true,
-	        	pageSize: me.itemsPerPage,
-		       	autoLoad:true,
-		       	model:me.model
-			});
-			me.getStore().getProxy().getWriter( ).a
+        	me.store=me.createStore(me.model);
+			//me.getStore().getProxy().getWriter( ).a
         }
         me.bbar= {
 	        xtype: 'pagingtoolbar',
@@ -41,6 +36,29 @@ Ext.define('Leon.common.ux.BaseGrid', {
 		me.initPlugins();
 
         me.callParent();
+    },
+    createStore:function(model){
+    	var me=this;
+    	var store = Ext.create('Ext.data.Store', {
+	        	autoSync:me.autoSync,
+	        	remoteSort :true,
+	        	pageSize: me.itemsPerPage,
+		       	autoLoad:me.autoLoad,
+		       	model:model
+		});
+		return store;
+    },
+    reconfigure:function(storeOrModel,columns) {
+    	var me=this;
+    	var tmpStore;
+    	if(store.isStore){
+    		//me.reconfigure(store,columns)
+    		tmpStore=storeOrModel;
+    	} else {
+    		tmpStore=me.createStore(storeOrModel);
+    	}
+    	me.reconfigure(tmpStore,columns);
+    	
     },
     initPlugins:function(){
     	var me=this;
@@ -156,9 +174,17 @@ Ext.define('Leon.common.ux.BaseGrid', {
 		var menu=Ext.create('Ext.menu.Menu', {
 		    items: me.actions
 		});
-		me.on('itemcontextmenu',function(tree,record,item,index,e){
+		me.on('itemcontextmenu',function(view,record,item,index,e){
 			menu.showAt(e.getXY());
 			e.stopEvent();
 		});
+		
+		me.on('containercontextmenu',function(view,e){
+			menu.showAt(e.getXY());
+			e.stopEvent();
+		});
+    },
+    getLastSelected:function(){
+    	this.getSelectionModel( ).getLastSelected( );
     }
 });

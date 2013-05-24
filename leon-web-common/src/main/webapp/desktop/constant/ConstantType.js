@@ -2,7 +2,7 @@ Ext.define("Leon.desktop.constant.ConstantType",{
 	extend:"Ext.data.Model",
 	fields:[
 		{name:'id',type:'auto'},
-		{name:'name',type:'string'},
+		{name:'text',type:'string'},
 		{name:'remark',type:'string'},
 		{name:'discriminator',type:'string'}
 	],
@@ -11,23 +11,13 @@ Ext.define("Leon.desktop.constant.ConstantType",{
 		//{type:'belongsTo',model:'Leon.desktop.fun.Fun',associatedName:'Parent'}
 	]
 	,proxy:{
-		actionMethods: { read: 'POST' },
-		timeout :600000,
-		headers:{ 'Accept':'application/json;'},
-		type:'ajax',
+		type:'bajax',
 		api:{
-			read:'/constantType/query',
+			read:'/constantType/queryAll',
 			get : '/constantType/get',
 			create:'/constantType/create',
 			update:'/constantType/update',
 			destroy:'/constantType/destroy'
-		},
-		reader:{
-			type:'json',
-			root:'root'
-		}
-		,writer:{
-			type:'json'
 		}
 	}
 });

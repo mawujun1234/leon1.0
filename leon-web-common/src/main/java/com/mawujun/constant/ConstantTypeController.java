@@ -1,6 +1,9 @@
 package com.mawujun.constant;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -44,9 +47,26 @@ public class ConstantTypeController  {
 	 * 一次性读取出所有的节点数据
 	 * @return
 	 */
+	@RequestMapping("/constantType/queryChildren")
+	@ResponseBody
+	public List<Map<String,String>> queryChildren(String id){	
+		List<Map<String,String>> list=new ArrayList<Map<String,String>>();
+		if("root".equalsIgnoreCase(id)){
+			List<ConstantType> types=constantTypeService.queryAll();
+			for(ConstantType type:types){
+				Map<String,String> map=new HashMap<String,String>();
+				map.put("id", type.getId());
+				map.put("text", type.getText());
+				map.put("discriminator", type.getDiscriminator());
+				map.put("remark", type.getRemark());
+				list.add(map);
+			}
+		}
+		return list;
+	}
 	@RequestMapping("/constantType/queryAll")
 	@ResponseBody
-	public List<ConstantType> queryAll(String id){		
+	public List<ConstantType> queryAll(String id){	
 		return constantTypeService.queryAll();
 	}
 	@RequestMapping("/constantType/get")
