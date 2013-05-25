@@ -42,6 +42,15 @@ Ext.define('Leon.common.ux.BaseTree', {
 				proxy:{
 					type:'bajax',
 					url:me.url
+					,reader:{//因为树会自己生成model，这个时候就有这个问题，不加就解析不了，可以通过   动态生成 模型，而不是通过树默认实现，哪应该就没有问题
+							type:'json',
+							root:'root',
+							successProperty:'success',
+							totalProperty:'total'	
+					}
+					,writer:{
+						type:'json'
+					}
 				}
 				
 			};
@@ -52,6 +61,13 @@ Ext.define('Leon.common.ux.BaseTree', {
         	me.store=Ext.create('Ext.data.TreeStore',cofig);
 			
         }
+        
+        this.on('beforeitemremove',function(nodeinter,node){
+        	if(node.isRoot( ) ){
+        		Ext.Msg.alert("消息","根节点不能删除!");
+        		return false;
+        	}
+        });
 
 		me.callParent();
     },
@@ -61,7 +77,7 @@ Ext.define('Leon.common.ux.BaseTree', {
 		    text: '新增子节点',
 		    disabled:me.disabledAction,
 		    handler: function(){
-		    	var parent=me.getSelectionModel( ).getLastSelected( );    	
+		    	var parent=me.getSelectionModel( ).getLastSelected( )||me.getRootNode( );    	
 		    	var values={
 		    		'parent_id':parent.get("id")
 		    	};
@@ -85,9 +101,10 @@ Ext.define('Leon.common.ux.BaseTree', {
 		    disabled:me.disabledAction,
 		    handler: function(){
 		    	var node=me.getSelectionModel( ).getLastSelected( );   
-		    	if(node.getId()==me.getRootNode().getId()){
-		    		return;
-		    	}
+		    	if(node.isRoot()){
+				       	Ext.Msg.alert("消息","不能在根节点上新增兄弟节点!");	
+				       	return;
+				}
 		    	var parent=node.parentNode;
 		    	var values={
 		    		'parent_id':parent.get("id")
@@ -111,18 +128,27 @@ Ext.define('Leon.common.ux.BaseTree', {
 		    text: '删除',
 		    disabled:me.disabledAction,
 		    handler: function(){
-		    	Ext.Msg.confirm("删除",'确定要删除吗?', function(btn, text){
-				    if (btn == 'yes'){
-				       var node=me.getSelectionModel( ).getLastSelected( );
-				       if(node.getId()==me.getRootNode().getId()){
+		    	var node=me.getSelectionModel( ).getLastSelected( );
+		    	if(!node){
+		    			Ext.Msg.alert("消息","请先选择节点");	
+				       	return;
+		    	}
+		        if(node.isRoot()){
 				       	Ext.Msg.alert("消息","根节点不能删除!");	
 				       	return;
-				       }
+				}
+				if(node&&node.hasChildNodes( ) &&　!me.cascadeDelete){
+				    Ext.Msg.alert("消息","请先删除子节点!");
+		            return;
+				}
+		    	Ext.Msg.confirm("删除",'确定要删除吗?', function(btn, text){
+				    if (btn == 'yes'){
+
 				       var parent=node.parentNode;
-				        if(node&&node.hasChildNodes( ) &&　!me.cascadeDelete){
-				        	Ext.Msg.alert("消息","请先删除子节点!");
-		            		return;
-				        }else if(node){
+//				        if(node&&node.hasChildNodes( ) &&　!me.cascadeDelete){
+//				        	Ext.Msg.alert("消息","请先删除子节点!");
+//		            		return;
+//				        }else if(node){
 				        	node.destroy({
 //				        		success:function(){
 //				        			Ext.Msg.alert("消息","删除成功!");
@@ -138,7 +164,7 @@ Ext.define('Leon.common.ux.BaseTree', {
 		            				return;
 				        		}
 				        	});
-				        }
+//				        }
 				    }
 				});
 		        
@@ -150,7 +176,7 @@ Ext.define('Leon.common.ux.BaseTree', {
 		    disabled:me.disabledAction,
 		    handler: function(){
 		    	var node=me.getSelectionModel( ).getLastSelected( );
-				if(node.getId()==me.getRootNode().getId()){
+				if(node.isRoot( )){
 				    Ext.Msg.alert("消息","根节点不能修改!");	
 				    return;
 				}
@@ -179,6 +205,10 @@ Ext.define('Leon.common.ux.BaseTree', {
 		    disabled:me.disabledAction,
 		    handler: function(){
 		        var node=me.getSelectionModel( ).getLastSelected( );
+		        if(node.isRoot()){
+				    Ext.Msg.alert("消息","不能复制根节点!");	
+				    return;
+				}
 		        var newnode=node.copy();
 		        newnode.set("id",null);
 		        me.copyNode=newnode;
@@ -191,6 +221,10 @@ Ext.define('Leon.common.ux.BaseTree', {
 		    disabled:me.disabledAction,
 		    handler: function(){
 		    	var parent=me.getSelectionModel( ).getLastSelected( );
+		    	if(!parent){
+				    Ext.Msg.alert("消息","请选择要粘贴到的父节点!");	
+				    return;
+				}
 		    	
 		        if(me.copyNode){
 		        	me.copyNode.set('parent_id',parent.get("id"));
@@ -205,11 +239,14 @@ Ext.define('Leon.common.ux.BaseTree', {
 		    iconCls: 'form-paste-button'
 		});
 		var reload = new Ext.Action({
-		    text: '重新加载',
+		    text: '刷新',
 		    handler: function(){
 		    	var parent=me.getSelectionModel( ).getLastSelected( );
-		    	
-		        me.getStore().reload({node:parent});
+		    	if(parent){
+		    		me.getStore().reload({node:parent});
+		    	} else {
+		    		me.getStore().reload();	
+		    	}      
 		    },
 		    iconCls: 'form-reload-button'
 		});
@@ -220,6 +257,11 @@ Ext.define('Leon.common.ux.BaseTree', {
 		    items: me.actions
 		});
 		me.on('itemcontextmenu',function(tree,record,item,index,e){
+			menu.showAt(e.getXY());
+			e.stopEvent();
+		});
+		
+		me.on('containercontextmenu',function(view,e){
 			menu.showAt(e.getXY());
 			e.stopEvent();
 		});

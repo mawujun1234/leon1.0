@@ -30,8 +30,8 @@ public class FunController {
 	 */
 	@RequestMapping("/fun/queryChildren")
 	@ResponseBody
-	public ModelMap queryChildren(String node){
-		WhereInfo whereinfo=WhereInfo.parse("parent.id", node);
+	public ModelMap queryChildren(String id){
+		WhereInfo whereinfo=WhereInfo.parse("parent.id", id);
 		List<Fun> funes=funService.query(whereinfo);
 		System.out.println("==================结果输出来了"+funes.size());
 		ModelMap map=new ModelMap();
