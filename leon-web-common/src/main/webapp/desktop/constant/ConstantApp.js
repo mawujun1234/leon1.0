@@ -7,8 +7,14 @@ Ext.onReady(function(){
 	var tree=Ext.create('Leon.common.ux.BaseTree',{
 		title:'菜单树',
 		//fields:['id','text','discriminator'],
-		url:'/constantType/queryChildren',
-		//model:'Leon.desktop.constant.ConstantType',
+		//url:'/constantType/queryChildren',
+		api:{
+			read:'/constantType/queryChildren',
+			load : '/constantType/get',
+			create:'/constantType/create',
+			update:'/constantType/update',
+			destroy:'/constantType/destroy'
+		},
 		region:'west',
 		split:true,
 		width:500

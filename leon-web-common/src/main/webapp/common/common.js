@@ -46,6 +46,22 @@ Ext.Ajax.on({
  * 添加了，createModel，专门用来创建具有关联关系的model实例
  */
 Ext.apply(Ext,{
+	defineModel:function(className, data){
+		if(!data.proxy){
+			var path=className.split('.').pop().toLowerCase();
+			data.proxy={
+				type:'bajax',
+				api:{
+					read:'/'+path+'/queryChildren',
+					load : '/'+path+'/get',
+					create:'/'+path+'/create',
+					update:'/'+path+'/update',
+					destroy:'/'+path+'/destroy'
+				}
+			}
+		}
+		return Ext.define(className, data);
+	},
 	 createModel:function(className,data){
 	 	if (typeof className !== 'string') {
 	                Ext.Error.raise({

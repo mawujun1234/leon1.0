@@ -30,6 +30,9 @@ Ext.define('Leon.common.ux.BaseTree', {
 			});
 			me.initAction();
         } else if(me.url){
+//        	if(!me.fields){
+//        		Ext.Msg.alert("消息","请配置fields属性");
+//        	}
         	//alert(me.fields);
         	var cofig={
         		root: {
@@ -60,6 +63,26 @@ Ext.define('Leon.common.ux.BaseTree', {
 			}
         	me.store=Ext.create('Ext.data.TreeStore',cofig);
 			
+        } else if(me.api){
+        	var fields=me.fields;
+        	if(!fields){
+        		fields=['id','text'];
+        	} else {
+        		me.fields.length=0;
+        	}
+        	
+        	var model=me.dynamicModel('Tree.TempleModel',fields,me.api);
+        	me.store = Ext.create('Ext.data.TreeStore', {
+	       		autoLoad:true,
+	       		nodeParam :'id',
+	       		model:model,
+			    root: {
+			    	//id:'root',
+			        expanded: true,
+			        text:me.defaultRootText 
+			    }
+			});
+			me.initAction();
         }
         
         this.on('beforeitemremove',function(nodeinter,node){
@@ -71,6 +94,17 @@ Ext.define('Leon.common.ux.BaseTree', {
 
 		me.callParent();
     },
+    dynamicModel:function(name, fields,api) {
+    	//http://www.sencha.com/forum/showthread.php?136362-Extjs-4-Dynamic-Model
+	    return Ext.define(name, {
+	        extend: 'Ext.data.Model',
+	        fields: fields
+	        ,proxy:{
+				type:'bajax',
+				api:api
+			}
+		});
+	},
     initAction:function(){
      	var me = this;
        var create = new Ext.Action({
