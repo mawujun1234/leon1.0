@@ -44,14 +44,14 @@ public class ConstantController {
 	 * 一次性读取出所有的节点数据
 	 * @return
 	 */
-	@RequestMapping("/constant/queryAll")
+	@RequestMapping("/constant/query")
 	@ResponseBody
-	public List<Constant> queryAll(){		
+	public List<Constant> query(){		
 		return constantService.queryAll();
 	}
-	@RequestMapping("/constant/get")
+	@RequestMapping("/constant/load")
 	@ResponseBody
-	public Constant get(String id){		
+	public Constant load(String id){		
 		return constantService.get(id);
 	}
 	

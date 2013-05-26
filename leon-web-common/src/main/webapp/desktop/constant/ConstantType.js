@@ -1,4 +1,4 @@
-Ext.define("Leon.desktop.constant.ConstantType",{
+Ext.defineModel("Leon.desktop.constant.ConstantType",{
 	extend:"Ext.data.Model",
 	fields:[
 		{name:'id',type:'auto'},
@@ -10,14 +10,14 @@ Ext.define("Leon.desktop.constant.ConstantType",{
 		{type:'hasMany',model:'Leon.desktop.constant.Constant',name : 'constants'}
 		//{type:'belongsTo',model:'Leon.desktop.fun.Fun',associatedName:'Parent'}
 	]
-	,proxy:{
-		type:'bajax',
-		api:{
-			read:'/constantType/queryAll',
-			get : '/constantType/get',
-			create:'/constantType/create',
-			update:'/constantType/update',
-			destroy:'/constantType/destroy'
-		}
-	}
+//	,proxy:{
+//		type:'bajax',
+//		api:{
+//			read:'/constantType/queryAll',
+//			get : '/constantType/get',
+//			create:'/constantType/create',
+//			update:'/constantType/update',
+//			destroy:'/constantType/destroy'
+//		}
+//	}
 });

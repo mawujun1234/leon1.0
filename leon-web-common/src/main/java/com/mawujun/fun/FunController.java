@@ -28,9 +28,9 @@ public class FunController {
 	 * 桌面程序中把菜单按权限读取出来
 	 * @return
 	 */
-	@RequestMapping("/fun/queryChildren")
+	@RequestMapping("/fun/query")
 	@ResponseBody
-	public ModelMap queryChildren(String id){
+	public ModelMap query(String id){
 		WhereInfo whereinfo=WhereInfo.parse("parent.id", id);
 		List<Fun> funes=funService.query(whereinfo);
 		System.out.println("==================结果输出来了"+funes.size());
@@ -48,9 +48,9 @@ public class FunController {
 	public List<Fun> queryAll(){		
 		return funService.queryAll();
 	}
-	@RequestMapping("/fun/get")
+	@RequestMapping("/fun/load")
 	@ResponseBody
-	public Fun get(String id){		
+	public Fun load(String id){		
 		return funService.get(id);
 	}
 	

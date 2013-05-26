@@ -27,9 +27,9 @@ public class MenuItemController {
 	 * 桌面程序中把菜单按权限读取出来
 	 * @return
 	 */
-	@RequestMapping("/menuItem/queryChildren")
+	@RequestMapping("/menuItem/query")
 	@ResponseBody
-	public List<MenuItem> queryChildren(String id,String menuId){
+	public List<MenuItem> query(String id,String menuId){
 		WhereInfo whereinfo=WhereInfo.parse("parent.id", id);
 		WhereInfo menuIdwhereinfo=WhereInfo.parse("menu.id", menuId);
 		List<MenuItem> funes=menuItemService.query(whereinfo,menuIdwhereinfo);
@@ -66,9 +66,9 @@ public class MenuItemController {
 		List<MenuItem> funes=menuItemService.query(menuIdwhereinfo);
 		return funes;
 	}
-	@RequestMapping("/menuItem/get")
+	@RequestMapping("/menuItem/load")
 	@ResponseBody
-	public MenuItem get(String id){		
+	public MenuItem load(String id){		
 		return menuItemService.get(id);
 	}
 	

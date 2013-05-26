@@ -35,6 +35,7 @@ Ext.define('Leon.common.ux.BaseGrid', {
 		me.initAction();
 		me.initPlugins();
 
+
         me.callParent();
     },
     createStore:function(model){
@@ -48,16 +49,30 @@ Ext.define('Leon.common.ux.BaseGrid', {
 		});
 		return store;
     },
+    /**
+     * 两种方式grid.reconfigure('Leon.desktop.constant.Constant'，columns);
+     * grid.reconfigure(store，columns);
+     * @param {} storeOrModel
+     * @param {} columns
+     */
     reconfigure:function(storeOrModel,columns) {
     	var me=this;
+    	//console.log(storeOrModel);
+    	//console.dir(columns);
+    	
     	var tmpStore;
-    	if(store.isStore){
+    	if(storeOrModel.isStore){
     		//me.reconfigure(store,columns)
     		tmpStore=storeOrModel;
     	} else {
     		tmpStore=me.createStore(storeOrModel);
     	}
-    	me.reconfigure(tmpStore,columns);
+    	//重新绑定分页工具栏
+		//this.pagingBar.bind(newStore);
+    	//console.dir(tmpStore);
+    	arguments[0]=tmpStore;
+    	me.callParent(arguments);
+    	//console.trace();
     	
     },
     initPlugins:function(){
@@ -185,6 +200,6 @@ Ext.define('Leon.common.ux.BaseGrid', {
 		});
     },
     getLastSelected:function(){
-    	this.getSelectionModel( ).getLastSelected( );
+    	return this.getSelectionModel( ).getLastSelected( );
     }
 });

@@ -47,11 +47,11 @@ public class ConstantTypeController  {
 	 * 一次性读取出所有的节点数据
 	 * @return
 	 */
-	@RequestMapping("/constantType/queryChildren")
+	@RequestMapping("/constantType/query")
 	@ResponseBody
-	public List<Map<String,String>> queryChildren(String id){	
+	public List<Map<String,String>> query(String id){	
 		List<Map<String,String>> list=new ArrayList<Map<String,String>>();
-		if("root".equalsIgnoreCase(id)){
+		if("root".equalsIgnoreCase(id) || id==null){
 			List<ConstantType> types=constantTypeService.queryAll();
 			for(ConstantType type:types){
 				Map<String,String> map=new HashMap<String,String>();
@@ -69,9 +69,9 @@ public class ConstantTypeController  {
 	public List<ConstantType> queryAll(String id){	
 		return constantTypeService.queryAll();
 	}
-	@RequestMapping("/constantType/get")
+	@RequestMapping("/constantType/load")
 	@ResponseBody
-	public ConstantType get(String id){		
+	public ConstantType load(String id){		
 		return constantTypeService.get(id);
 	}
 	

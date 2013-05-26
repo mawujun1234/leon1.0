@@ -1,4 +1,4 @@
-Ext.define("Leon.desktop.menu.MenuItem",{
+Ext.defineModel("Leon.desktop.menu.MenuItem",{
 	extend:"Ext.data.Model",
 	requires: [
 	     'Leon.desktop.fun.Fun'
@@ -21,15 +21,15 @@ Ext.define("Leon.desktop.menu.MenuItem",{
 		{type:'belongsTo',model:'Leon.desktop.fun.Fun',associatedName:'Fun'},
 		{type:'belongsTo',model:'Leon.desktop.menu.Menu',associatedName:'Menu'},
 		{type:'belongsTo',model:'Leon.desktop.menu.MenuItem',associatedName:'Parent'}//,foreignKey:'parent_id',associationKey:'parent'
-	],
-	proxy:{
-		type:'bajax',
-		api:{
-			read:'/menuItem/queryChildren',
-			load : '/menuItem/get',
-			create:'/menuItem/create',
-			update:'/menuItem/update',
-			destroy:'/menuItem/destroy'
-		}
-	}
+	]
+//	,proxy:{
+//		type:'bajax',
+//		api:{
+//			read:'/menuItem/queryChildren',
+//			load : '/menuItem/get',
+//			create:'/menuItem/create',
+//			update:'/menuItem/update',
+//			destroy:'/menuItem/destroy'
+//		}
+//	}
 });

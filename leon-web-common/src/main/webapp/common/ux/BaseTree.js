@@ -1,4 +1,20 @@
 /**
+ * 	var tree=Ext.create('Leon.common.ux.BaseTree',{
+		title:'菜单树',
+		//model:'ddddddd',
+		fields:['id','text','discriminator'],
+		//url:'/constantType/queryChildren',
+		api:{
+			read:'/constantType/queryChildren',
+			load : '/constantType/get',
+			create:'/constantType/create',
+			update:'/constantType/update',
+			destroy:'/constantType/destroy'
+		},
+		region:'west',
+		split:true,
+		width:500
+	});
  * 功能的扩展，添加自定义的怎，删，改
  * 添加右键菜单，增，删，改，并且增加工具栏，增，删，改。
  * 后台的类最好继承TreeNode类，这样就可以少写很多代码
@@ -7,12 +23,13 @@ Ext.define('Leon.common.ux.BaseTree', {
     extend: 'Ext.tree.Panel',
     alias: 'widget.btreepanel',
     cascadeDelete:false,//在删除的时候是否级联删除节点
-    textField:'text',//传递到后台的时候，名称的默认树形
+    displayField :'text',//传递到后台的时候，名称的默认树形
     disabledAction:false,//讲动作都禁止掉，不可使用
     model:null,//用来构建store，如果没有这个值，就得自己构建model
     defaultRootText :'根节点',
-    fields:null,
+    fields:null,//和api，url搭配的，也可以没有
     url:null,//url和fields是同时出现，但和model属性是不能同时出现的
+    api:null,
     initComponent: function () {
 		var me = this;
 		
@@ -43,7 +60,7 @@ Ext.define('Leon.common.ux.BaseTree', {
 			    nodeParam :'id',
         		autoLoad:true,
 				proxy:{
-					type:'bajax',
+					type:'ajax',
 					url:me.url
 					,reader:{//因为树会自己生成model，这个时候就有这个问题，不加就解析不了，可以通过   动态生成 模型，而不是通过树默认实现，哪应该就没有问题
 							type:'json',
@@ -59,7 +76,7 @@ Ext.define('Leon.common.ux.BaseTree', {
 			};
 			if(me.fields){
 				cofig.fields=me.fields;
-				me.fields.length=0;
+				delete  me.fields;
 			}
         	me.store=Ext.create('Ext.data.TreeStore',cofig);
 			
@@ -71,7 +88,7 @@ Ext.define('Leon.common.ux.BaseTree', {
         		me.fields.length=0;
         	}
         	
-        	var model=me.dynamicModel('Tree.TempleModel',fields,me.api);
+        	var model=me.dynamicModel('Tree.TempleModelaaa',fields,me.api);
         	me.store = Ext.create('Ext.data.TreeStore', {
 	       		autoLoad:true,
 	       		nodeParam :'id',
@@ -115,7 +132,7 @@ Ext.define('Leon.common.ux.BaseTree', {
 		    	var values={
 		    		'parent_id':parent.get("id")
 		    	};
-		    	values[me.textField]='新节点';
+		    	values[me.displayField]='新节点';
 		        var child=Ext.createModel(parent.self.getName(),values);
 		        //alert(Ext.encode(child.raw));
 		       //return;
@@ -143,7 +160,7 @@ Ext.define('Leon.common.ux.BaseTree', {
 		    	var values={
 		    		'parent_id':parent.get("id")
 		    	};
-		    	values[me.textField]='新节点';
+		    	values[me.displayField]='新节点';
 		        var child=Ext.createModel(node.self.getName(),values);
 		        //alert(Ext.encode(child.raw));
 		       //return;
@@ -218,10 +235,10 @@ Ext.define('Leon.common.ux.BaseTree', {
 		        Ext.Msg.prompt('修改', '请输入名称:', function(btn, text){
 				    if (btn == 'ok'){
 				    	//var node=me.getSelectionModel( ).getLastSelected( );
-				    	if(node.get(me.textField)==text){
+				    	if(node.get(me.displayField )==text){
 				    		return;
 				    	}
-				        node.set(me.textField,text);
+				        node.set(me.displayField,text);
 				        node.save({
 							success: function(record, operation) {
 								//child=record;
@@ -309,7 +326,7 @@ Ext.define('Leon.common.ux.BaseTree', {
     	} 	
     },
     getLastSelected:function(){
-    	this.getSelectionModel( ).getLastSelected( );
+    	return this.getSelectionModel( ).getLastSelected( );
     }
     
 });

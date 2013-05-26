@@ -41,14 +41,14 @@ public class ConstantItemController {
 	 * 一次性读取出所有的节点数据
 	 * @return
 	 */
-	@RequestMapping("/constantItem/queryAll")
+	@RequestMapping("/constantItem/query")
 	@ResponseBody
-	public List<ConstantItem> queryAll(){		
+	public List<ConstantItem> query(){		
 		return constantItemService.queryAll();
 	}
-	@RequestMapping("/constantItem/get")
+	@RequestMapping("/constantItem/load")
 	@ResponseBody
-	public ConstantItem get(String id){		
+	public ConstantItem load(String id){		
 		return constantItemService.get(id);
 	}
 	

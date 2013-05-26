@@ -48,12 +48,12 @@ Ext.Ajax.on({
 Ext.apply(Ext,{
 	defineModel:function(className, data){
 		if(!data.proxy){
-			var path=className.split('.').pop().toLowerCase();
+			var path=Ext.String.uncapitalize(className.split('.').pop());
 			data.proxy={
 				type:'bajax',
 				api:{
-					read:'/'+path+'/queryChildren',
-					load : '/'+path+'/get',
+					read:'/'+path+'/query',
+					load : '/'+path+'/load',
 					create:'/'+path+'/create',
 					update:'/'+path+'/update',
 					destroy:'/'+path+'/destroy'

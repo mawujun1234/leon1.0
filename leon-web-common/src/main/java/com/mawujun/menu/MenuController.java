@@ -85,14 +85,14 @@ public class MenuController {
 	 * 一次性读取出所有的节点数据
 	 * @return
 	 */
-	@RequestMapping("/menu/queryAll")
+	@RequestMapping("/menu/query")
 	@ResponseBody
-	public List<Menu> queryAll(){		
+	public List<Menu> query(){		
 		return menuService.queryAll();
 	}
-	@RequestMapping("/menu/get")
+	@RequestMapping("/menu/load")
 	@ResponseBody
-	public Menu get(String id){		
+	public Menu load(String id){		
 		return menuService.get(id);
 	}
 	
