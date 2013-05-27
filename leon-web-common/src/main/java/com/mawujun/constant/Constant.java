@@ -89,7 +89,7 @@ public class Constant implements IdEntity<String> {
 		this.text = text;
 	}
 
-	public static String getDiscriminator() {
+	public String getDiscriminator() {
 		return discriminator;
 	}
 

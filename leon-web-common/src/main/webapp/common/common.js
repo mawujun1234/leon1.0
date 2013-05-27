@@ -62,7 +62,7 @@ Ext.apply(Ext,{
 		}
 		return Ext.define(className, data);
 	},
-	 createModel:function(className,data){
+	createModel:function(className,data){
 	 	if (typeof className !== 'string') {
 	                Ext.Error.raise({
 	                    sourceClass: "Ext",

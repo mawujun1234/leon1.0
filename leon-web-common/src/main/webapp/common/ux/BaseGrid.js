@@ -52,8 +52,11 @@ Ext.define('Leon.common.ux.BaseGrid', {
     /**
      * 两种方式grid.reconfigure('Leon.desktop.constant.Constant'，columns);
      * grid.reconfigure(store，columns);
+     * 这个时候对原来的store进行监听的事件将会失效，所以这个时候要注意
+     * 
      * @param {} storeOrModel
      * @param {} columns
+     * @return 会返回新建立的store
      */
     reconfigure:function(storeOrModel,columns) {
     	var me=this;
@@ -73,6 +76,7 @@ Ext.define('Leon.common.ux.BaseGrid', {
     	arguments[0]=tmpStore;
     	me.callParent(arguments);
     	//console.trace();
+    	return tmpStore;
     	
     },
     initPlugins:function(){
@@ -133,7 +137,7 @@ Ext.define('Leon.common.ux.BaseGrid', {
 		    	var modelName=me.model||me.getStore().getProxy( ).getModel().getName( );
 
 		        var model=Ext.createModel(modelName,{
-		        	id:''
+		        	//id:''
 		        });
 		        me.getStore().insert(0, model);
 		        var cellediting=me.getPlugin("cellEditingPlugin");

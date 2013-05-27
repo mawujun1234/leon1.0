@@ -31,5 +31,5 @@ Ext.defineModel("Leon.desktop.constant.ConstantItem",{
 //		,writer:{
 //			type:'json'
 //		}
-	}
+//	}
 });

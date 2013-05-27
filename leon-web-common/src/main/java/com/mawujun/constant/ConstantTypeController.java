@@ -41,15 +41,19 @@ public class ConstantTypeController  {
 	private static final long serialVersionUID = 1L;
 	@Autowired
 	private ConstantTypeService constantTypeService;
+	@Autowired
+	private ConstantService constantService;
+	@Autowired
+	private ConstantItemService constantItemService;
 
 
 	/**
 	 * 一次性读取出所有的节点数据
 	 * @return
 	 */
-	@RequestMapping("/constantType/query")
+	@RequestMapping("/constantType/queryAll")
 	@ResponseBody
-	public List<Map<String,String>> query(String id){	
+	public List<Map<String,String>> queryAll(String id,String discriminator){	
 		List<Map<String,String>> list=new ArrayList<Map<String,String>>();
 		if("root".equalsIgnoreCase(id) || id==null){
 			List<ConstantType> types=constantTypeService.queryAll();
@@ -61,12 +65,35 @@ public class ConstantTypeController  {
 				map.put("remark", type.getRemark());
 				list.add(map);
 			}
+		} else if("ConstantType".equals(discriminator)){
+			WhereInfo whereinfo=WhereInfo.parse("constantType.id", id);
+			
+			List<Constant> types=constantService.query(whereinfo);
+			for(Constant constant:types){
+				Map<String,String> map=new HashMap<String,String>();
+				map.put("id", constant.getId());
+				map.put("text", constant.getText());
+				map.put("discriminator", constant.getDiscriminator());
+				map.put("remark", constant.getRemark());
+				list.add(map);
+			}
+		} else if("Constant".equals(discriminator)){
+			WhereInfo whereinfo=WhereInfo.parse("constant.id", id);
+			List<ConstantItem> types=constantItemService.query(whereinfo);
+			for(ConstantItem constant:types){
+				Map<String,String> map=new HashMap<String,String>();
+				map.put("id", constant.getId());
+				map.put("text", constant.getText());
+				map.put("discriminator", constant.getDiscriminator());
+				map.put("remark", constant.getRemark());
+				list.add(map);
+			}
 		}
 		return list;
 	}
-	@RequestMapping("/constantType/queryAll")
+	@RequestMapping("/constantType/query")
 	@ResponseBody
-	public List<ConstantType> queryAll(String id){	
+	public List<ConstantType> query(){	
 		return constantTypeService.queryAll();
 	}
 	@RequestMapping("/constantType/load")

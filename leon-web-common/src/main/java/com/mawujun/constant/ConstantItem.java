@@ -70,7 +70,7 @@ public class ConstantItem extends UUIDEntity {
 	public void setText(String text) {
 		this.text = text;
 	}
-	public static String getDiscriminator() {
+	public String getDiscriminator() {
 		return discriminator;
 	}
 
