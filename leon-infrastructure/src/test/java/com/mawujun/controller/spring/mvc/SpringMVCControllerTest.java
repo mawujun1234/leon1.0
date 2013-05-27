@@ -92,7 +92,7 @@ public class SpringMVCControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(true))
-		.andExpect(jsonPath("$.totalProperty").value(100))
+		.andExpect(jsonPath("$.total").value(100))
 		.andExpect(jsonPath("$..root[0].name").value("name0"));
 		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"message\":\"The title cannot be empty.\"}]}"));
 
@@ -104,7 +104,7 @@ public class SpringMVCControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(true))
-		.andExpect(jsonPath("$.totalProperty").value(100))
+		.andExpect(jsonPath("$.total").value(100))
 		.andExpect(jsonPath("$..root[0].name").value("name0"));
 		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"message\":\"The title cannot be empty.\"}]}"));
 
@@ -117,7 +117,7 @@ public class SpringMVCControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(true))
-		//.andExpect(jsonPath("$.totalProperty").value(1))//http://goessner.net/articles/JsonPath/
+		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
 		.andExpect(jsonPath("$..root.name").value("name"))
 		.andExpect(jsonPath("$..root.age").value("111"));
 		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"message\":\"The title cannot be empty.\"}]}"));
@@ -133,7 +133,7 @@ public class SpringMVCControllerTest {
 		.andExpect(content().encoding("ISO-8859-1"))
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(true))
-		//.andExpect(jsonPath("$.totalProperty").value(1))//http://goessner.net/articles/JsonPath/
+		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
 		.andExpect(jsonPath("$..root.name").value("parent"))
 		.andExpect(jsonPath("$..root.id").value(1))
 		.andExpect(jsonPath("$..root.createDate").value(formatter.format(new Date())))
@@ -151,7 +151,7 @@ public class SpringMVCControllerTest {
 		.andExpect(content().encoding("ISO-8859-1"))
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(true))
-		//.andExpect(jsonPath("$.totalProperty").value(1))//http://goessner.net/articles/JsonPath/
+		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
 		.andExpect(jsonPath("$..root.name").value("parent"))
 		.andExpect(jsonPath("$..root.id").value(1))
 		.andExpect(jsonPath("$..root.createDate").value(formatter.format(new Date())))
@@ -169,7 +169,7 @@ public class SpringMVCControllerTest {
 		.andExpect(content().encoding("ISO-8859-1"))
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(true))
-		//.andExpect(jsonPath("$.totalProperty").value(1))//http://goessner.net/articles/JsonPath/
+		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
 		.andExpect(jsonPath("$..root.name").value("parent"))
 		.andExpect(jsonPath("$..root.id").value(1))
 		.andExpect(jsonPath("$..root.createDate").value(formatter.format(new Date())))
@@ -183,7 +183,7 @@ public class SpringMVCControllerTest {
 		.andExpect(content().encoding("ISO-8859-1"))
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(true))
-		//.andExpect(jsonPath("$.totalProperty").value(1))//http://goessner.net/articles/JsonPath/
+		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
 		.andExpect(jsonPath("$..root.name").doesNotExist())
 		.andExpect(jsonPath("$..root.id").value(1))
 		.andExpect(jsonPath("$..root.createDate").value(formatter.format(new Date())))
@@ -197,7 +197,7 @@ public class SpringMVCControllerTest {
 		.andExpect(content().encoding("ISO-8859-1"))
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(true))
-		//.andExpect(jsonPath("$.totalProperty").value(1))//http://goessner.net/articles/JsonPath/
+		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
 		.andExpect(jsonPath("$..root[0].name").doesNotExist())
 		.andExpect(jsonPath("$..root[0].id").value(1))
 		.andExpect(jsonPath("$..root[0].createDate").value(formatter.format(new Date())))
@@ -215,7 +215,7 @@ public class SpringMVCControllerTest {
 		.andExpect(content().encoding("ISO-8859-1"))
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(true))
-		//.andExpect(jsonPath("$.totalProperty").value(1))//http://goessner.net/articles/JsonPath/
+		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
 		.andExpect(jsonPath("$..root.name").value("child"))
 		.andExpect(jsonPath("$..root.id").value(1))
 		.andExpect(jsonPath("$..root.createDate").value(formatter.format(new Date())))
@@ -236,7 +236,7 @@ public class SpringMVCControllerTest {
 		.andExpect(content().encoding("ISO-8859-1"))
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(true))
-		//.andExpect(jsonPath("$.totalProperty").value(1))//http://goessner.net/articles/JsonPath/
+		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
 		.andExpect(jsonPath("$..root.name").value("parent"))
 		.andExpect(jsonPath("$..root.id").value(1))
 		.andExpect(jsonPath("$..root.createDate").value("2012-11-11"))
@@ -254,7 +254,7 @@ public class SpringMVCControllerTest {
 		.andExpect(content().encoding("ISO-8859-1"))
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(true))
-		//.andExpect(jsonPath("$.totalProperty").value(1))//http://goessner.net/articles/JsonPath/
+		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
 		.andExpect(jsonPath("$..start").value(1))
 		.andExpect(jsonPath("$..limit").value(10))
 		.andExpect(jsonPath("$..wheres[0].property").value("name"))
@@ -277,7 +277,7 @@ public class SpringMVCControllerTest {
 		.andExpect(content().encoding("ISO-8859-1"))
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(true))
-		//.andExpect(jsonPath("$.totalProperty").value(1))//http://goessner.net/articles/JsonPath/
+		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
 		.andExpect(jsonPath("$..start").value(1))
 		.andExpect(jsonPath("$..limit").value(10))
 		.andExpect(jsonPath("$..wheres[0].property").value("name"))
@@ -310,7 +310,7 @@ public class SpringMVCControllerTest {
 		.andExpect(content().encoding("ISO-8859-1"))
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(true))
-		//.andExpect(jsonPath("$.totalProperty").value(1))//http://goessner.net/articles/JsonPath/
+		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
 		.andExpect(jsonPath("$..start").value(1))
 		.andExpect(jsonPath("$..limit").value(10))
 		.andExpect(jsonPath("$..wheres[0].property").value("name"))

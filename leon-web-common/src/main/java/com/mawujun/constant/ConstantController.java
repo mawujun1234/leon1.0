@@ -46,8 +46,9 @@ public class ConstantController {
 	 */
 	@RequestMapping("/constant/query")
 	@ResponseBody
-	public List<Constant> query(){		
-		return constantService.queryAll();
+	public List<Constant> query(String constanType_id){		
+		WhereInfo whereinfo=WhereInfo.parse("constantType.id", constanType_id);
+		return constantService.query(whereinfo);
 	}
 	@RequestMapping("/constant/load")
 	@ResponseBody
@@ -65,7 +66,7 @@ public class ConstantController {
 	@RequestMapping("/constant/update")
 	@ResponseBody
 	public Constant update(@RequestBody Constant constant){		
-		constantService.update(constant);
+		constantService.createOrUpdate(constant);
 		 return constant;
 	}
 	

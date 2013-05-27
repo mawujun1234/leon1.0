@@ -43,8 +43,9 @@ public class ConstantItemController {
 	 */
 	@RequestMapping("/constantItem/query")
 	@ResponseBody
-	public List<ConstantItem> query(){		
-		return constantItemService.queryAll();
+	public List<ConstantItem> query(String constan_id){	
+		WhereInfo whereinfo=WhereInfo.parse("constant.id", constan_id);
+		return constantItemService.query(whereinfo);
 	}
 	@RequestMapping("/constantItem/load")
 	@ResponseBody

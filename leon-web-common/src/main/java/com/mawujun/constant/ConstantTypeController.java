@@ -41,10 +41,15 @@ public class ConstantTypeController  {
 	private static final long serialVersionUID = 1L;
 	@Autowired
 	private ConstantTypeService constantTypeService;
+//	@Autowired
+//	private ConstantService constantService;
+//	@Autowired
+//	private ConstantItemService constantItemService;
+	
 	@Autowired
-	private ConstantService constantService;
+	private ConstantController constantController;
 	@Autowired
-	private ConstantItemService constantItemService;
+	private ConstantItemController constantItemController;
 
 
 	/**
@@ -56,7 +61,7 @@ public class ConstantTypeController  {
 	public List<Map<String,String>> queryAll(String id,String discriminator){	
 		List<Map<String,String>> list=new ArrayList<Map<String,String>>();
 		if("root".equalsIgnoreCase(id) || id==null){
-			List<ConstantType> types=constantTypeService.queryAll();
+			List<ConstantType> types=this.query();
 			for(ConstantType type:types){
 				Map<String,String> map=new HashMap<String,String>();
 				map.put("id", type.getId());
@@ -66,9 +71,9 @@ public class ConstantTypeController  {
 				list.add(map);
 			}
 		} else if("ConstantType".equals(discriminator)){
-			WhereInfo whereinfo=WhereInfo.parse("constantType.id", id);
+			//WhereInfo whereinfo=WhereInfo.parse("constantType.id", id);
 			
-			List<Constant> types=constantService.query(whereinfo);
+			List<Constant> types=constantController.query(id);//constantService.query(whereinfo);
 			for(Constant constant:types){
 				Map<String,String> map=new HashMap<String,String>();
 				map.put("id", constant.getId());
@@ -78,8 +83,8 @@ public class ConstantTypeController  {
 				list.add(map);
 			}
 		} else if("Constant".equals(discriminator)){
-			WhereInfo whereinfo=WhereInfo.parse("constant.id", id);
-			List<ConstantItem> types=constantItemService.query(whereinfo);
+			//WhereInfo whereinfo=WhereInfo.parse("constant.id", id);
+			List<ConstantItem> types=constantItemController.query(id);//.query(whereinfo);
 			for(ConstantItem constant:types){
 				Map<String,String> map=new HashMap<String,String>();
 				map.put("id", constant.getId());

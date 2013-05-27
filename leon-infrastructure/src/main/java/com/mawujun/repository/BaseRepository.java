@@ -144,6 +144,10 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 		hibernateDao.save(entity);
 		hibernateDao.flush();
 	}
+	public void createOrUpdate(T entity) {
+		hibernateDao.saveOrUpdate(entity);
+		hibernateDao.flush();
+	}
 
 	/**
 	 * 修改对象.把数据库中的实例就更新成 : 传入对象

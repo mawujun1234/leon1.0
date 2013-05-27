@@ -139,6 +139,7 @@ Ext.define('Leon.common.ux.BaseGrid', {
 		        var model=Ext.createModel(modelName,{
 		        	//id:''
 		        });
+		        model.phantom =true;
 		        me.getStore().insert(0, model);
 		        var cellediting=me.getPlugin("cellEditingPlugin");
 		        cellediting.startEditByPosition({

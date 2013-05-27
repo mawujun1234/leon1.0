@@ -24,14 +24,19 @@ Ext.onReady(function(){
 			constantTypeGrid.hide();
 			constantGrid.show();
 			constantItemGrid.hide();
+			constantGrid.getStore().getProxy().extraParams={constanType_id:record.getId()};
+			constantGrid.getStore().reload();
 		} else if(record.get("discriminator")=="Constant"){
 			constantTypeGrid.hide();
 			constantGrid.hide();
 			constantItemGrid.show();
+			constantItemGrid.getStore().getProxy().extraParams={constan_id:record.getId()};
+			constantItemGrid.getStore().reload();
 		} else {
 			constantTypeGrid.show();
 			constantGrid.hide();
 			constantItemGrid.hide();
+			constantTypeGrid.getStore().reload();
 		}
 	});
 
@@ -75,6 +80,11 @@ Ext.onReady(function(){
 		            }}
 		    	]
 		
+	});
+	constantGrid.getStore().on('add',function(store,records,index){
+		这里不行，报错
+		//records[0].set("constantType_id",tree.getLastSelected().getId());	
+		records[0].setConstantType({id:tree.getLastSelected().getId()});
 	});
 	
 	var constantItemGrid=Ext.create('Leon.common.ux.BaseGrid',{

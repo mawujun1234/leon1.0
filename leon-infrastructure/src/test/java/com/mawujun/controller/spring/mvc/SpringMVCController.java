@@ -61,7 +61,7 @@ public class SpringMVCController {
 		
 		ModelMap map=new ModelMap();
 		map.put("root", page.getResult());
-		map.put("totalProperty", page.getTotalItems());	
+		map.put("total", page.getTotalItems());	
 		return map;
 	}
 	
