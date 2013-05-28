@@ -1,7 +1,10 @@
 Ext.require('Leon.desktop.constant.Constant');
 Ext.require('Leon.desktop.constant.ConstantType');
-Ext.require('Leon.common.ux.BaseGrid');
 Ext.require('Leon.desktop.constant.ConstantItem');
+Ext.require('Leon.common.ux.BaseGrid');
+Ext.require('Leon.common.ux.BaseTree');
+Ext.require('Leon.common.ux.BaseAjax');
+Ext.require('Leon.common.ux.BaseBelongsTo');
 Ext.onReady(function(){
 
 	var tree=Ext.create('Leon.common.ux.BaseTree',{
@@ -84,8 +87,9 @@ Ext.onReady(function(){
 	});
 	constantGrid.getStore().on('add',function(store,records,index){
 		//这里不行，报错
-		//records[0].set("constantType_id",tree.getLastSelected().getId());	这种方案还要测试，还不行
-		records[0].setConstantType(tree.getLastSelected().getId());
+		records[0].set("constantType_id",tree.getLastSelected().getId());//	这种方案还要测试，还不行
+		//records[0].setConstantType(tree.getLastSelected().getId());
+		//records[0].setConstantType(tree.getLastSelected());
 	});
 	
 	var constantItemGrid=Ext.create('Leon.common.ux.BaseGrid',{

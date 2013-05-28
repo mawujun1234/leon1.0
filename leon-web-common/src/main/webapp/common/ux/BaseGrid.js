@@ -149,6 +149,7 @@ Ext.define('Leon.common.ux.BaseGrid', {
 		        });
 		        model.phantom =true;
 		        me.getStore().insert(0, model);
+		        //me.getStore().add(model);
 		        var cellediting=me.getPlugin("cellEditingPlugin");
 		        cellediting.startEditByPosition({
 		            row: 0, 

@@ -1,4 +1,5 @@
 Ext.defineModel("Leon.desktop.constant.Constant",{
+	requires:['Leon.common.ux.BaseBelongsTo'],
 	extend:"Ext.data.Model",
 	fields:[
 		{name:'id',type:'string'},
@@ -11,7 +12,8 @@ Ext.defineModel("Leon.desktop.constant.Constant",{
 	],
 	associations:[
 		{type:'hasMany',model:'Leon.desktop.constant.ConstantItem',name : 'constantItemes'},
-		{type:'belongsTo',model:'Leon.desktop.constant.ConstantType',associatedName:'ConstantType',associationKey:'constantType'}
+		{type:'bbelongsto',model:'Leon.desktop.constant.ConstantType',associatedName:'constantType'}
+		//{type:'belongsTo',model:'Leon.desktop.constant.ConstantType',associatedName:'ConstantType',associationKey:'constantType',foreignKey:"constantType_id"}
 	]
 //	,proxy:{
 //		type:'bajax',
