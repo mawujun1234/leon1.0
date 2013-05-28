@@ -66,7 +66,9 @@ public class ConstantController {
 	@RequestMapping("/constant/update")
 	@ResponseBody
 	public Constant update(@RequestBody Constant constant){		
+		System.out.println(constant.getConstantType().getId().length());
 		constantService.createOrUpdate(constant);
+		
 		 return constant;
 	}
 	

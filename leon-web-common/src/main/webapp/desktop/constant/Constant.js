@@ -11,7 +11,7 @@ Ext.defineModel("Leon.desktop.constant.Constant",{
 	],
 	associations:[
 		{type:'hasMany',model:'Leon.desktop.constant.ConstantItem',name : 'constantItemes'},
-		{type:'belongsTo',model:'Leon.desktop.fun.ConstantType',associatedName:'ConstantType'}
+		{type:'belongsTo',model:'Leon.desktop.constant.ConstantType',associatedName:'ConstantType',associationKey:'constantType'}
 	]
 //	,proxy:{
 //		type:'bajax',

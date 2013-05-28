@@ -33,6 +33,7 @@ public class ConstantType extends UUIDEntity {
 	private String remark;
 	
 	@OneToMany(mappedBy="constantType")
+	@Column(length=36)
 	private Set<Constant> constants;
 
 	@Transient

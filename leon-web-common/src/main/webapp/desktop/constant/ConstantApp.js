@@ -63,6 +63,7 @@ Ext.onReady(function(){
 		autoSync:false,
 		autoLoad:false,
 		flex: 1,
+		//selModel:Ext.create('Ext.selection.CellModel',{}),
 		hidden:true,
 		title:'常数',
 		columns:[{dataIndex:'id',text:'编码',editor: {
@@ -82,9 +83,9 @@ Ext.onReady(function(){
 		
 	});
 	constantGrid.getStore().on('add',function(store,records,index){
-		这里不行，报错
-		//records[0].set("constantType_id",tree.getLastSelected().getId());	
-		records[0].setConstantType({id:tree.getLastSelected().getId()});
+		//这里不行，报错
+		//records[0].set("constantType_id",tree.getLastSelected().getId());	这种方案还要测试，还不行
+		records[0].setConstantType(tree.getLastSelected().getId());
 	});
 	
 	var constantItemGrid=Ext.create('Leon.common.ux.BaseGrid',{

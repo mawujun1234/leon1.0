@@ -102,21 +102,29 @@ Ext.define('Leon.common.ux.BaseGrid', {
 	    	var rowIdx=e.rowIdx;
 	    	var colIdx =e.colIdx ;
 
-	    	var colSize=grid.getHeader( ).items.getCount( );
+	    	var colSize=grid.columns.length;
 	    	var rowSize=grid.getStore().getCount();
 	    	//alert(colIdx+"-----"+position.column);
 	    	//alert(rowIdx+"-----"+position.row);
 	    	//如果通过点击到另外的单元格，久切换到另外的道远个，而不是自动跳到下一格
 	    	var position=me.getSelectionModel( ).getCurrentPosition( );
-	    	if(position.column!=colIdx || position.row!=rowIdx){
-	    		return;
+	    	if(grid.getSelectionModel( ).self.getName( ) =='Ext.selection.CellModel' ) {
+	    		
+	    		if(position.column!=colIdx || position.row!=rowIdx){
+		    		return;
+		    	}
+	    	} else if (grid.getSelectionModel( ).self.getName( ) =='Ext.selection.RowModel'){
+	    		if(position.row!=rowIdx){
+		    		return;
+		    	}
 	    	}
+	    	
 	    	//alert(colIdx+"-----"+colSize);
-	    	if(colIdx<colSize-1){
+	    	if(colIdx<colSize){
 	    		
 	    		colIdx++;
 	    		editor.startEdit(rowIdx,colIdx);
-	    	} else if(rowIdx<rowSize-1){
+	    	} else if(rowIdx<rowSize){
 		    	rowIdx++;
 		    	colIdx=me.autoNextCellColIdx;
 		    	editor.startEdit(rowIdx,colIdx);

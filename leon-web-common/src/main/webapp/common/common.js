@@ -84,6 +84,7 @@ Ext.apply(Ext,{
  * 为了后台和前台的模型差异，做的补充
  */
 Ext.override(Ext.data.BelongsToAssociation, { 
+
     read: function(record, reader, associationData){
     	//this.callOverridden(record, reader, associationData);
     	record[this.instanceName] = reader.read([associationData]).records[0];
