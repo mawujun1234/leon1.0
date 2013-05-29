@@ -51,7 +51,13 @@ public class Constant extends UUIDEntity {
 	@Transient
 	public final static String discriminator="Constant";//用来区分是哪个级别的
 
-
+public Constant(){
+	super();
+}
+public Constant(String id){
+	super();
+	this.id=id;
+}
 
 
 	public String getRemark() {

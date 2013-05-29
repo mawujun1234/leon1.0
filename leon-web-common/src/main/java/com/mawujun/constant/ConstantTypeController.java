@@ -49,16 +49,20 @@ public class ConstantTypeController  {
 	@Autowired
 	private ConstantController constantController;
 	@Autowired
+	private ConstantService constantService;
+	@Autowired
 	private ConstantItemController constantItemController;
+	@Autowired
+	private ConstantItemService constantItemService;
 
 
 	/**
 	 * 一次性读取出所有的节点数据
 	 * @return
 	 */
-	@RequestMapping("/constantType/queryAll")
+	@RequestMapping("/constantType/queryNode")
 	@ResponseBody
-	public List<Map<String,String>> queryAll(String id,String discriminator){	
+	public List<Map<String,String>> queryNode(String id,String discriminator){	
 		List<Map<String,String>> list=new ArrayList<Map<String,String>>();
 		if("root".equalsIgnoreCase(id) || id==null){
 			List<ConstantType> types=this.query();
@@ -100,6 +104,18 @@ public class ConstantTypeController  {
 			}
 		}
 		return list;
+	}
+	@RequestMapping("/constantType/deleteNode")
+	@ResponseBody
+	public void deleteNode(String id,String discriminator){	
+		if("ConstantType".equals(discriminator)){
+			constantTypeService.delete(id);
+		} else if("Constant".equals(discriminator)){
+			constantService.delete(id);
+		}else if("ConstantItem".equals(discriminator)){
+			constantItemService.delete(id);
+		}
+		//return list;
 	}
 	@RequestMapping("/constantType/query")
 	@ResponseBody

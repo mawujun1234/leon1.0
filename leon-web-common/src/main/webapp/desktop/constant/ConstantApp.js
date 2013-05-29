@@ -11,7 +11,7 @@ Ext.onReady(function(){
 		defaultRootText:'常数管理',
 		//useArrows: true,
 		fields:['id','text','discriminator'],
-		url:'/constantType/queryAll',
+		url:'/constantType/queryNode',
 		//region:'west',
 		split:true,
 		flex: 0.8,
@@ -60,6 +60,62 @@ Ext.onReady(function(){
 		    iconCls: 'form-reload-button'
 	});
 	tree.addContextMenu(reload);
+	var destroy = new Ext.Action({
+		    text: '删除',
+		    handler: function(){
+		    	var me=tree;
+		    	var node=me.getSelectionModel( ).getLastSelected( );
+		    	if(!node){
+		    			Ext.Msg.alert("消息","请先选择节点");	
+				       	return;
+		    	}
+		        if(node.isRoot()){
+				       	Ext.Msg.alert("消息","根节点不能删除!");	
+				       	return;
+				}
+				if(node&&node.hasChildNodes( ) &&　!me.cascadeDelete){
+				    Ext.Msg.alert("消息","请先删除子节点!");
+		            return;
+				}
+		    	Ext.Msg.confirm("删除",'确定要删除吗?', function(btn, text){
+				    if (btn == 'yes'){
+
+				       var parent=node.parentNode;
+				       Ext.Ajax.request({
+				       	url:'/constantType/deleteNode',
+				       	params:{id:node.get('id'),discriminator:node.get('discriminator')},
+				       	success:function(){
+				       	
+				       	},
+				       	failure: function(record, operation) {
+				        			if(parent){
+				        				//var index=parent.indexOf(node);
+		            					me.getStore().reload({node:parent});
+		            					//parent.insertChild(index,record);
+				        			}
+				        			Ext.Msg.alert("消息","删除失败!");
+		            				return;
+				        }
+				       })
+
+				        	node.destroy({
+				        		failure: function(record, operation) {
+				        			if(parent){
+				        				var index=parent.indexOf(node);
+		            					me.getStore().reload({node:parent});
+		            					//parent.insertChild(index,record);
+				        			}
+				        			Ext.Msg.alert("消息","删除失败!");
+		            				return;
+				        		}
+				        	});
+//				        }
+				    }
+				});
+		    },
+		    iconCls: 'form-delete-button'
+	});
+	tree.addContextMenu(destroy);
 	
 //	 var createConstantType = new Ext.Action({
 //		text : '新增常数分类',

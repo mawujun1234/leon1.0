@@ -79,6 +79,7 @@ Ext.define('Leon.common.ux.BaseTree', {
 				delete  me.fields;
 			}
         	me.store=Ext.create('Ext.data.TreeStore',cofig);
+        	 
 			
         } else if(me.api){
         	var fields=me.fields;
@@ -198,15 +199,8 @@ Ext.define('Leon.common.ux.BaseTree', {
 				    if (btn == 'yes'){
 
 				       var parent=node.parentNode;
-//				        if(node&&node.hasChildNodes( ) &&　!me.cascadeDelete){
-//				        	Ext.Msg.alert("消息","请先删除子节点!");
-//		            		return;
-//				        }else if(node){
+
 				        	node.destroy({
-//				        		success:function(){
-//				        			Ext.Msg.alert("消息","删除成功!");
-//		            				return;
-//				        		},
 				        		failure: function(record, operation) {
 				        			if(parent){
 				        				var index=parent.indexOf(node);
