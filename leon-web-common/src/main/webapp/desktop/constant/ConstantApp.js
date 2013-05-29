@@ -4,7 +4,6 @@ Ext.require('Leon.desktop.constant.ConstantItem');
 Ext.require('Leon.common.ux.BaseGrid');
 Ext.require('Leon.common.ux.BaseTree');
 Ext.require('Leon.common.ux.BaseAjax');
-Ext.require('Leon.common.ux.BaseBelongsTo');
 Ext.onReady(function(){
 
 	var tree=Ext.create('Leon.common.ux.BaseTree',{

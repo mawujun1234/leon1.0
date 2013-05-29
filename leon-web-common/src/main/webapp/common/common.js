@@ -293,3 +293,52 @@ Ext.override(Ext.data.writer.Writer, {
         return data;
     } 
 });
+
+/**
+ * 覆盖原来的关联关系配置方式
+ */
+Ext.override(Ext.data.BelongsToAssociation, { 
+	constructor: function(config) {
+		this.callOverridden(arguments);
+
+        var me             = this,
+            ownerProto     = me.ownerModel.prototype,
+            associatedName = me.associatedName,
+            associatedNameCapitalize=Ext.String.capitalize(associatedName),
+            associatedNameUnCapitalize=Ext.String.uncapitalize(associatedName),
+            getterName     = me.getterName || 'get' + associatedNameCapitalize,
+            setterName     = me.setterName || 'set' + associatedNameCapitalize;
+
+        Ext.apply(me, {
+            name        : associatedName,
+            foreignKey  : config.foreignKey||associatedNameUnCapitalize + "_id",
+            instanceName: associatedName + 'BelongsToInstance',
+            associationKey:  config.associationKey||associatedNameUnCapitalize
+        });
+
+        //ownerProto[getterName] = me.createGetter();
+        //ownerProto[setterName] = me.createSetter();
+	}
+});
+Ext.override(Ext.data.association.HasOne, { 
+	constructor: function(config) {
+		this.callOverridden(arguments);
+
+        var me             = this,
+            ownerProto     = me.ownerModel.prototype,
+            associatedName = me.associatedName,
+            associatedNameCapitalize=Ext.String.capitalize(associatedName),
+            associatedNameUnCapitalize=Ext.String.uncapitalize(associatedName),
+            getterName     = me.getterName || 'get' + associatedNameCapitalize,
+            setterName     = me.setterName || 'set' + associatedNameCapitalize;
+
+        Ext.apply(me, {
+            name        : associatedName,
+            foreignKey  : config.foreignKey||associatedNameUnCapitalize + "_id",
+            instanceName: associatedName + 'HasOneInstance',
+            associationKey:  config.associationKey||associatedNameUnCapitalize
+        });
+        //ownerProto[getterName] = me.createGetter();
+        //ownerProto[setterName] = me.createSetter();
+	}
+});
