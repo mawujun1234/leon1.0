@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 /**
  * List compiled by mystix on the extjs.com forums.
@@ -27,12 +27,6 @@ Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
  * encoding fixed by Vili (17 Feb 2009)
  */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm);
-
-    if (Ext.Updater) {
-        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">Betöltés...</div>';
-    }
 
     if (Ext.Date) {
         Ext.Date.monthNames = ["Január", "Február", "Március", "Április", "Május", "Június", "Július", "Augusztus", "Szeptember", "Október", "November", "December"];
@@ -66,32 +60,13 @@ Ext.onReady(function() {
             return Ext.Date.dayNames[day].substring(0, 3);
         };
     }
-
-    if (Ext.MessageBox) {
-        Ext.MessageBox.buttonText = {
-            ok: "OK",
-            cancel: "Mégsem",
-            yes: "Igen",
-            no: "Nem"
-        };
-    }
-
-    if (exists('Ext.util.Format')) {
+    if (Ext.util && Ext.util.Format) {
         Ext.apply(Ext.util.Format, {
             thousandSeparator: '.',
             decimalSeparator: ',',
             currencySign: 'Ft',
             // Hungarian Forint
             dateFormat: 'Y m d'
-        });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.apply(Ext.form.field.VTypes, {
-            emailText: 'A mező email címet tartalmazhat, melynek formátuma "felhasználó@szolgáltató.hu"',
-            urlText: 'A mező webcímet tartalmazhat, melynek formátuma "http:/' + '/www.weboldal.hu"',
-            alphaText: 'A mező csak betűket és aláhúzást (_) tartalmazhat',
-            alphanumText: 'A mező csak betűket, számokat és aláhúzást (_) tartalmazhat'
         });
     }
 });
@@ -106,8 +81,8 @@ Ext.define("Ext.locale.hu.grid.plugin.DragDrop", {
     dragText: "{0} kiválasztott sor"
 });
 
-Ext.define("Ext.locale.hu.TabPanelItem", {
-    override: "Ext.TabPanelItem",
+Ext.define("Ext.locale.hu.tab.Tab", {
+    override: "Ext.tab.Tab",
     closeText: "Fül bezárása"
 });
 
@@ -119,7 +94,7 @@ Ext.define("Ext.locale.hu.form.field.Base", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.hu.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    msg: "Betöltés..."
+    loadingText: "Betöltés..."
 });
 
 Ext.define("Ext.locale.hu.picker.Date", {
@@ -129,8 +104,6 @@ Ext.define("Ext.locale.hu.picker.Date", {
     maxText: "A dátum későbbi a megengedettnél",
     disabledDaysText: "",
     disabledDatesText: "",
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: 'Köv. hónap (CTRL+Jobbra)',
     prevText: 'Előző hónap (CTRL+Balra)',
     monthYearText: 'Válassz hónapot (Évválasztás: CTRL+Fel/Le)',
@@ -193,6 +166,15 @@ Ext.define("Ext.locale.hu.form.field.ComboBox", {
         loadingText: "Betöltés..."
     });
 });
+
+Ext.define("Ext.locale.hu.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: 'A mező email címet tartalmazhat, melynek formátuma "felhasználó@szolgáltató.hu"',
+    urlText: 'A mező webcímet tartalmazhat, melynek formátuma "http:/' + '/www.weboldal.hu"',
+    alphaText: 'A mező csak betűket és aláhúzást (_) tartalmazhat',
+    alphanumText: 'A mező csak betűket, számokat és aláhúzást (_) tartalmazhat'
+});
+    
 
 Ext.define("Ext.locale.hu.form.field.HtmlEditor", {
     override: "Ext.form.field.HtmlEditor",
@@ -295,6 +277,16 @@ Ext.define("Ext.locale.hu.grid.PropertyColumnModel", {
     nameText: "Név",
     valueText: "Érték",
     dateFormat: "Y m j"
+});
+
+Ext.define("Ext.locale.hu.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "OK",
+        cancel: "Mégsem",
+        yes: "Igen",
+        no: "Nem"
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files

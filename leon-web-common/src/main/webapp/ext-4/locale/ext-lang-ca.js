@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 /**
  * Catalonian Translation by halkon_polako 6-12-2007
@@ -26,12 +26,6 @@ Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
  *     by halkon_polako 14-aug-2008
  */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm);
-
-    if (Ext.Updater) {
-        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">Carregant...</div>';
-    }
 
     if (Ext.Date) {
         Ext.Date.monthNames = ["Gener", "Febrer", "Mar&#231;", "Abril", "Maig", "Juny", "Juliol", "Agost", "Setembre", "Octubre", "Novembre", "Desembre"];
@@ -67,31 +61,14 @@ Ext.onReady(function() {
 
         Ext.Date.parseCodes.S.s = "(?:st|nd|rd|th)";
     }
-    if (Ext.MessageBox) {
-        Ext.MessageBox.buttonText = {
-            ok: "Acceptar",
-            cancel: "Cancel&#183;lar",
-            yes: "S&#237;",
-            no: "No"
-        };
-    }
 
-    if (exists('Ext.util.Format')) {
+    if (Ext.util && Ext.util.Format) {
         Ext.apply(Ext.util.Format, {
             thousandSeparator: '.',
             decimalSeparator: ',',
             currencySign: '\u20ac',
             // Spanish Euro
             dateFormat: 'd/m/Y'
-        });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.apply(Ext.form.field.VTypes, {
-            emailText: 'Aquest camp ha de ser una adre&#231;a de e-mail amb el format "user@example.com"',
-            urlText: 'Aquest camp ha de ser una URL amb el format "http:/' + '/www.example.com"',
-            alphaText: 'Aquest camp nom&#233;s pot contenir lletres i _',
-            alphanumText: 'Aquest camp nom&#233;s por contenir lletres, nombres i _'
         });
     }
 });
@@ -109,7 +86,7 @@ Ext.define("Ext.locale.ca.grid.plugin.DragDrop", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.ca.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    msg: "Carregant..."
+    loadingText: "Carregant..."
 });
 
 Ext.define("Ext.locale.ca.picker.Date", {
@@ -119,8 +96,6 @@ Ext.define("Ext.locale.ca.picker.Date", {
     maxText: "Aquesta data &#233;s posterior a la data m&#224;xima",
     disabledDaysText: "",
     disabledDatesText: "",
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: 'Mes Seg&#252;ent (Control+Fletxa Dreta)',
     prevText: 'Mes Anterior (Control+Fletxa Esquerra)',
     monthYearText: 'Seleccioni un mes (Control+Fletxa a Dalt o Abaix per canviar els anys)',
@@ -194,6 +169,14 @@ Ext.define("Ext.locale.ca.form.field.ComboBox", {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
         loadingText: "Carregant..."
     });
+});
+
+Ext.define("Ext.locale.ca.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: 'Aquest camp ha de ser una adre&#231;a de e-mail amb el format "user@example.com"',
+    urlText: 'Aquest camp ha de ser una URL amb el format "http:/' + '/www.example.com"',
+    alphaText: 'Aquest camp nom&#233;s pot contenir lletres i _',
+    alphanumText: 'Aquest camp nom&#233;s por contenir lletres, nombres i _'
 });
 
 Ext.define("Ext.locale.ca.form.field.HtmlEditor", {
@@ -314,6 +297,16 @@ Ext.define("Ext.locale.ca.form.CheckboxGroup", {
 Ext.define("Ext.locale.ca.form.RadioGroup", {
     override: "Ext.form.RadioGroup",
     blankText: "Ha de seleccionar un &#233;tem d\'aquest grup"
+});
+
+Ext.define("Ext.locale.ca.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "Acceptar",
+        cancel: "Cancel&#183;lar",
+        yes: "S&#237;",
+        no: "No"
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files

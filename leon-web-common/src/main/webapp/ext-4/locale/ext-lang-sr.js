@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 /**
  * Serbian Latin Translation
@@ -25,12 +25,6 @@ Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
  * 14 Sep 2007
  */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm);
-
-    if (Ext.Updater) {
-        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">Učitavam...</div>';
-    }
 
     if (Ext.Date) {
         Ext.Date.monthNames = ["Januar", "Februar", "Mart", "April", "Мај", "Jun", "Јul", "Avgust", "Septembar", "Oktobar", "Novembar", "Decembar"];
@@ -38,31 +32,13 @@ Ext.onReady(function() {
         Ext.Date.dayNames = ["Nedelja", "Ponedeljak", "Utorak", "Sreda", "Četvrtak", "Petak", "Subota"];
     }
 
-    if (Ext.MessageBox) {
-        Ext.MessageBox.buttonText = {
-            ok: "U redu",
-            cancel: "Odustani",
-            yes: "Da",
-            no: "Ne"
-        };
-    }
-
-    if (exists('Ext.util.Format')) {
+    if (Ext.util && Ext.util.Format) {
         Ext.apply(Ext.util.Format, {
             thousandSeparator: '.',
             decimalSeparator: ',',
             currencySign: '\u0414\u0438\u043d\u002e',
             // Serbian Dinar
             dateFormat: 'd.m.Y'
-        });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.apply(Ext.form.field.VTypes, {
-            emailText: 'Ovo polje prihavata e-mail adresu isključivo u obliku "korisnik@domen.com"',
-            urlText: 'Ovo polje prihavata URL adresu isključivo u obliku "http:/' + '/www.domen.com"',
-            alphaText: 'Ovo polje može sadržati isključivo slova i znak _',
-            alphanumText: 'Ovo polje može sadržati само slova, brojeve i znak _'
         });
     }
 });
@@ -77,8 +53,8 @@ Ext.define("Ext.locale.sr.grid.plugin.DragDrop", {
     dragText: "{0} izabranih redova"
 });
 
-Ext.define("Ext.locale.sr.TabPanelItem", {
-    override: "Ext.TabPanelItem",
+Ext.define("Ext.locale.sr.tab.Tab", {
+    override: "Ext.tab.Tab",
     closeText: "Zatvori оvu »karticu«"
 });
 
@@ -90,7 +66,7 @@ Ext.define("Ext.locale.sr.form.field.Base", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.sr.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    msg: "Učitavam..."
+    loadingText: "Učitavam..."
 });
 
 Ext.define("Ext.locale.sr.picker.Date", {
@@ -100,8 +76,6 @@ Ext.define("Ext.locale.sr.picker.Date", {
     maxText: "Datum је nakon najvećeg dozvoljenog datuma",
     disabledDaysText: "",
     disabledDatesText: "",
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: 'Sledeći mesec (Control+Desno)',
     prevText: 'Prethodni mesec (Control+Levo)',
     monthYearText: 'Izaberite mesec (Control+Gore/Dole za izbor godine)',
@@ -159,6 +133,14 @@ Ext.define("Ext.locale.sr.form.field.ComboBox", {
     });
 });
 
+Ext.define("Ext.locale.sr.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: 'Ovo polje prihavata e-mail adresu isključivo u obliku "korisnik@domen.com"',
+    urlText: 'Ovo polje prihavata URL adresu isključivo u obliku "http:/' + '/www.domen.com"',
+    alphaText: 'Ovo polje može sadržati isključivo slova i znak _',
+    alphanumText: 'Ovo polje može sadržati само slova, brojeve i znak _'
+});
+
 Ext.define("Ext.locale.sr.grid.header.Container", {
     override: "Ext.grid.header.Container",
     sortAscText: "Rastući redosled",
@@ -173,6 +155,16 @@ Ext.define("Ext.locale.sr.grid.PropertyColumnModel", {
     nameText: "Naziv",
     valueText: "Vrednost",
     dateFormat: "d.m.Y"
+});
+
+Ext.define("Ext.locale.sr.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "U redu",
+        cancel: "Odustani",
+        yes: "Da",
+        no: "Ne"
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files

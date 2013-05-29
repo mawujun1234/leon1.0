@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 /**
  * Romanian translations for ExtJS 2.1
@@ -29,12 +29,6 @@ Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
  * Changed by: Emil Cazamir, 2008-09-01
  */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm);
-
-    if (Ext.updater) {
-        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">Încărcare...</div>';
-    }
 
     if (Ext.Date) {
         Ext.Date.monthNames = ["Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie", "Iulie", "August", "Septembrie", "Octombrie", "Noiembrie", "Decembrie"];
@@ -69,31 +63,13 @@ Ext.onReady(function() {
         };
     }
 
-    if (Ext.MessageBox) {
-        Ext.MessageBox.buttonText = {
-            ok: "OK",
-            cancel: "Renunţă",
-            yes: "Da",
-            no: "Nu"
-        };
-    }
-
-    if (exists('Ext.util.Format')) {
+    if (Ext.util && Ext.util.Format) {
         Ext.apply(Ext.util.Format, {
             thousandSeparator: '.',
             decimalSeparator: ',',
             currencySign: 'Lei',
             // Romanian Lei
             dateFormat: 'd.m.Y'
-        });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.apply(Ext.form.field.VTypes, {
-            emailText: 'Acest câmp trebuie să conţină o adresă de e-mail în formatul "user@domeniu.com"',
-            urlText: 'Acest câmp trebuie să conţină o adresă URL în formatul "http:/' + '/www.domeniu.com"',
-            alphaText: 'Acest câmp trebuie să conţină doar litere şi _',
-            alphanumText: 'Acest câmp trebuie să conţină doar litere, cifre şi _'
         });
     }
 });
@@ -103,8 +79,8 @@ Ext.define("Ext.locale.ro.grid.plugin.DragDrop", {
     dragText: "{0} rând(uri) selectate"
 });
 
-Ext.define("Ext.locale.ro.TabPanelItem", {
-    override: "Ext.TabPanelItem",
+Ext.define("Ext.locale.ro.tab.Tab", {
+    override: "Ext.tab.Tab",
     closeText: "Închide acest tab"
 });
 
@@ -116,7 +92,7 @@ Ext.define("Ext.locale.ro.form.field.Base", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.ro.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    msg: "Încărcare..."
+    loadingText: "Încărcare..."
 });
 
 Ext.define("Ext.locale.ro.picker.Date", {
@@ -126,8 +102,6 @@ Ext.define("Ext.locale.ro.picker.Date", {
     maxText: "Această dată este ulterioară datei maxime",
     disabledDaysText: "",
     disabledDatesText: "",
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: 'Luna următoare (Control+Dreapta)',
     prevText: 'Luna precedentă (Control+Stânga)',
     monthYearText: 'Alege o lună (Control+Sus/Jos pentru a parcurge anii)',
@@ -189,6 +163,14 @@ Ext.define("Ext.locale.ro.form.field.ComboBox", {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
         loadingText: "Încărcare..."
     });
+});
+
+Ext.define("Ext.locale.ro.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: 'Acest câmp trebuie să conţină o adresă de e-mail în formatul "user@domeniu.com"',
+    urlText: 'Acest câmp trebuie să conţină o adresă URL în formatul "http:/' + '/www.domeniu.com"',
+    alphaText: 'Acest câmp trebuie să conţină doar litere şi _',
+    alphanumText: 'Acest câmp trebuie să conţină doar litere, cifre şi _'
 });
 
 Ext.define("Ext.locale.ro.form.field.HtmlEditor", {
@@ -292,6 +274,16 @@ Ext.define("Ext.locale.ro.grid.PropertyColumnModel", {
     nameText: "Nume",
     valueText: "Valoare",
     dateFormat: "d.m.Y"
+});
+
+Ext.define("Ext.locale.ro.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "OK",
+        cancel: "Renunţă",
+        yes: "Da",
+        no: "Nu"
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files

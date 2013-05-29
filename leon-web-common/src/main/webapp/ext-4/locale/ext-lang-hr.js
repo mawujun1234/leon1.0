@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 /**
  * Croatian translation
@@ -27,12 +27,6 @@ Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
  * 17 May 2008
  */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm);
-
-    if (Ext.Updater) {
-        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">Učitavanje...</div>';
-    }
 
     if (Ext.Date) {
         Ext.Date.monthNames = ["Siječanj", "Veljača", "Ožujak", "Travanj", "Svibanj", "Lipanj", "Srpanj", "Kolovoz", "Rujan", "Listopad", "Studeni", "Prosinac"];
@@ -67,31 +61,13 @@ Ext.onReady(function() {
         };
     }
 
-    if (Ext.MessageBox) {
-        Ext.MessageBox.buttonText = {
-            ok: "U redu",
-            cancel: "Odustani",
-            yes: "Da",
-            no: "Ne"
-        };
-    }
-
-    if (exists('Ext.util.Format')) {
+    if (Ext.util && Ext.util.Format) {
         Ext.apply(Ext.util.Format, {
             thousandSeparator: '.',
             decimalSeparator: ',',
             currencySign: 'kn',
             // Croation Kuna
             dateFormat: 'd.m.Y'
-        });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.apply(Ext.form.field.VTypes, {
-            emailText: 'Ovdje možete unijeti samo e-mail adresu u obliku "korisnik@domena.com"',
-            urlText: 'Ovdje možete unijeti samo URL u obliku "http:/' + '/www.domena.com"',
-            alphaText: 'Ovo polje može sadržavati samo slova i znak _',
-            alphanumText: 'Ovo polje može sadržavati samo slova, brojeve i znak _'
         });
     }
 });
@@ -106,8 +82,8 @@ Ext.define("Ext.locale.hr.grid.plugin.DragDrop", {
     dragText: "{0} odabranih redova"
 });
 
-Ext.define("Ext.locale.hr.TabPanelItem", {
-    override: "Ext.TabPanelItem",
+Ext.define("Ext.locale.hr.tab.Tab", {
+    override: "Ext.tab.Tab",
     closeText: "Zatvori ovaj tab"
 });
 
@@ -119,7 +95,7 @@ Ext.define("Ext.locale.hr.form.field.Base", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.hr.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    msg: "Učitavanje..."
+    loadingText: "Učitavanje..."
 });
 
 Ext.define("Ext.locale.hr.picker.Date", {
@@ -129,8 +105,6 @@ Ext.define("Ext.locale.hr.picker.Date", {
     maxText: "Taj datum je poslije najvećeg datuma",
     disabledDaysText: "",
     disabledDatesText: "",
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: 'Slijedeći mjesec (Control+Desno)',
     prevText: 'Prethodni mjesec (Control+Lijevo)',
     monthYearText: 'Odaberite mjesec (Control+Gore/Dolje za promjenu godine)',
@@ -191,6 +165,14 @@ Ext.define("Ext.locale.hr.form.field.ComboBox", {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
         loadingText: "Učitavanje..."
     });
+});
+
+Ext.define("Ext.locale.hr.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: 'Ovdje možete unijeti samo e-mail adresu u obliku "korisnik@domena.com"',
+    urlText: 'Ovdje možete unijeti samo URL u obliku "http:/' + '/www.domena.com"',
+    alphaText: 'Ovo polje može sadržavati samo slova i znak _',
+    alphanumText: 'Ovo polje može sadržavati samo slova, brojeve i znak _'
 });
 
 Ext.define("Ext.locale.hr.form.field.HtmlEditor", {
@@ -294,6 +276,16 @@ Ext.define("Ext.locale.hr.grid.PropertyColumnModel", {
     nameText: "Naziv",
     valueText: "Vrijednost",
     dateFormat: "d.m.Y"
+});
+
+Ext.define("Ext.locale.hr.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "U redu",
+        cancel: "Odustani",
+        yes: "Da",
+        no: "Ne"
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files

@@ -16,50 +16,26 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 /**
  * Slovenian translation by Matjaž (UTF-8 encoding)
  * 25 April 2007
  */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm);
-
-    if (Ext.Updater) {
-        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">Nalagam...</div>';
-    }
-
     if (Ext.Date) {
         Ext.Date.monthNames = ["Januar", "Februar", "Marec", "April", "Maj", "Junij", "Julij", "Avgust", "September", "Oktober", "November", "December"];
 
         Ext.Date.dayNames = ["Nedelja", "Ponedeljek", "Torek", "Sreda", "Četrtek", "Petek", "Sobota"];
     }
-    if (Ext.MessageBox) {
-        Ext.MessageBox.buttonText = {
-            ok: "V redu",
-            cancel: "Prekliči",
-            yes: "Da",
-            no: "Ne"
-        };
-    }
 
-    if (exists('Ext.util.Format')) {
+    if (Ext.util && Ext.util.Format) {
         Ext.apply(Ext.util.Format, {
             thousandSeparator: '.',
             decimalSeparator: ',',
             currencySign: '\u20ac',
             // Slovenian Euro
             dateFormat: 'd.m.Y'
-        });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.apply(Ext.form.field.VTypes, {
-            emailText: 'To polje je e-mail naslov formata "ime@domena.si"',
-            urlText: 'To polje je URL naslov formata "http:/' + '/www.domena.si"',
-            alphaText: 'To polje lahko vsebuje samo črke in _',
-            alphanumText: 'To polje lahko vsebuje samo črke, številke in _'
         });
     }
 });
@@ -74,8 +50,8 @@ Ext.define("Ext.locale.sl.grid.plugin.DragDrop", {
     dragText: "{0} izbranih vrstic"
 });
 
-Ext.define("Ext.locale.sl.TabPanelItem", {
-    override: "Ext.TabPanelItem",
+Ext.define("Ext.locale.sl.tab.Tab", {
+    override: "Ext.tab.Tab",
     closeText: "Zapri zavihek"
 });
 
@@ -87,7 +63,7 @@ Ext.define("Ext.locale.sl.form.field.Base", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.sl.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    msg: "Nalagam..."
+    loadingText: "Nalagam..."
 });
 
 Ext.define("Ext.locale.sl.picker.Date", {
@@ -97,8 +73,6 @@ Ext.define("Ext.locale.sl.picker.Date", {
     maxText: "Navedeni datum je za zgornjim datumom",
     disabledDaysText: "",
     disabledDatesText: "",
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: 'Naslednji mesec (Control+Desno)',
     prevText: 'Prejšnji mesec (Control+Levo)',
     monthYearText: 'Izberite mesec (Control+Gor/Dol za premik let)',
@@ -155,6 +129,14 @@ Ext.define("Ext.locale.sl.form.field.ComboBox", {
     });
 });
 
+Ext.define("Ext.locale.sl.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: 'To polje je e-mail naslov formata "ime@domena.si"',
+    urlText: 'To polje je URL naslov formata "http:/' + '/www.domena.si"',
+    alphaText: 'To polje lahko vsebuje samo črke in _',
+    alphanumText: 'To polje lahko vsebuje samo črke, številke in _'
+});
+
 Ext.define("Ext.locale.sl.grid.header.Container", {
     override: "Ext.grid.header.Container",
     sortAscText: "Sortiraj naraščajoče",
@@ -169,6 +151,16 @@ Ext.define("Ext.locale.sl.grid.PropertyColumnModel", {
     nameText: "Ime",
     valueText: "Vrednost",
     dateFormat: "j.m.Y"
+});
+
+Ext.define("Ext.locale.sl.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "V redu",
+        cancel: "Prekliči",
+        yes: "Da",
+        no: "Ne"
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files

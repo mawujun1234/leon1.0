@@ -16,19 +16,13 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 /**
  * Estonian Translations
  * By Rene Saarsoo (2012-05-28)
  */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm);
-
-    if (Ext.Updater) {
-        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">Laen...</div>';
-    }
 
     if (Ext.Date) {
         Ext.Date.monthNames = ["Jaanuar", "Veebruar", "Märts", "Aprill", "Mai", "Juuni", "Juuli", "August", "September", "Oktoober", "November", "Detsember"];
@@ -66,30 +60,12 @@ Ext.onReady(function() {
         };
     }
 
-    if (Ext.MessageBox) {
-        Ext.MessageBox.buttonText = {
-            ok: "OK",
-            cancel: "Katkesta",
-            yes: "Jah",
-            no: "Ei"
-        };
-    }
-
-    if (exists('Ext.util.Format')) {
+    if (Ext.util && Ext.util.Format) {
         Ext.apply(Ext.util.Format, {
             thousandSeparator: ' ',
             decimalSeparator: ',',
             currencySign: '\u20ac', // Euro
             dateFormat: 'd.m.Y'
-        });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.apply(Ext.form.field.VTypes, {
-            emailText: 'Selle välja sisuks peab olema e-posti aadress kujul "kasutaja@domeen.com"',
-            urlText: 'Selle välja sisuks peab olema veebiaadress kujul "http:/'+'/www.domeen.com"',
-            alphaText: 'See väli võib sisaldada vaid tähemärke ja alakriipsu',
-            alphanumText: 'See väli võib sisaldada vaid tähemärke, numbreid ja alakriipsu'
         });
     }
 });
@@ -107,7 +83,7 @@ Ext.define("Ext.locale.et.grid.plugin.DragDrop", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.et.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    msg: "Laen..."
+    loadingText: "Laen..."
 });
 
 Ext.define("Ext.locale.et.picker.Date", {
@@ -117,8 +93,6 @@ Ext.define("Ext.locale.et.picker.Date", {
     maxText: "See kuupäev on pärast määratud hiliseimat kuupäeva",
     disabledDaysText: "",
     disabledDatesText: "",
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: 'Järgmine kuu (Ctrl+Paremale)',
     prevText: 'Eelmine kuu (Ctrl+Vasakule)',
     monthYearText: 'Vali kuu (Ctrl+Üles/Alla aastate muutmiseks)',
@@ -189,6 +163,14 @@ Ext.define("Ext.locale.et.form.field.ComboBox", {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
         loadingText: "Laen..."
     });
+});
+
+Ext.define("Ext.locale.et.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: 'Selle välja sisuks peab olema e-posti aadress kujul "kasutaja@domeen.com"',
+    urlText: 'Selle välja sisuks peab olema veebiaadress kujul "http:/'+'/www.domeen.com"',
+    alphaText: 'See väli võib sisaldada vaid tähemärke ja alakriipsu',
+    alphanumText: 'See väli võib sisaldada vaid tähemärke, numbreid ja alakriipsu'
 });
 
 Ext.define("Ext.locale.et.form.field.HtmlEditor", {
@@ -313,6 +295,16 @@ Ext.define("Ext.locale.et.form.CheckboxGroup", {
 Ext.define("Ext.locale.et.form.RadioGroup", {
     override: "Ext.form.RadioGroup",
     blankText: "Vähemalt üks väli selles grupis peab olema valitud"
+});
+
+Ext.define("Ext.locale.et.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "OK",
+        cancel: "Katkesta",
+        yes: "Jah",
+        no: "Ei"
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files

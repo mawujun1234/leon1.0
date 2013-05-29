@@ -16,19 +16,13 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 /**
  * Latvian Translations
  * By salix 17 April 2007
  */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm);
-
-    if (Ext.Updater) {
-        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">Notiek ielāde...</div>';
-    }
 
     if (Ext.Date) {
         Ext.Date.monthNames = ["Janvāris", "Februāris", "Marts", "Aprīlis", "Maijs", "Jūnijs", "Jūlijs", "Augusts", "Septembris", "Oktobris", "Novembris", "Decembris"];
@@ -36,31 +30,13 @@ Ext.onReady(function() {
         Ext.Date.dayNames = ["Svētdiena", "Pirmdiena", "Otrdiena", "Trešdiena", "Ceturtdiena", "Piektdiena", "Sestdiena"];
     }
 
-    if (Ext.MessageBox) {
-        Ext.MessageBox.buttonText = {
-            ok: "Labi",
-            cancel: "Atcelt",
-            yes: "Jā",
-            no: "Nē"
-        };
-    }
-
-    if (exists('Ext.util.Format')) {
+    if (Ext.util && Ext.util.Format) {
         Ext.apply(Ext.util.Format, {
             thousandSeparator: '.',
             decimalSeparator: ',',
             currencySign: 'Ls',
             // Latvian Lati
             dateFormat: 'd.m.Y'
-        });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.apply(Ext.form.field.VTypes, {
-            emailText: 'Šajā laukā jāieraksta e-pasta adrese formātā "lietotās@domēns.lv"',
-            urlText: 'Šajā laukā jāieraksta URL formātā "http:/' + '/www.domēns.lv"',
-            alphaText: 'Šis lauks drīkst saturēt tikai burtus un _ zīmi',
-            alphanumText: 'Šis lauks drīkst saturēt tikai burtus, ciparus un _ zīmi'
         });
     }
 });
@@ -75,8 +51,8 @@ Ext.define("Ext.locale.lv.grid.plugin.DragDrop", {
     dragText: "{0} iezīmētu rindu"
 });
 
-Ext.define("Ext.locale.lv.TabPanelItem", {
-    override: "Ext.TabPanelItem",
+Ext.define("Ext.locale.lv.tab.Tab", {
+    override: "Ext.tab.Tab",
     closeText: "Aizver šo zīmni"
 });
 
@@ -88,7 +64,7 @@ Ext.define("Ext.locale.lv.form.field.Base", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.lv.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    msg: "Ielādē..."
+    loadingText: "Ielādē..."
 });
 
 Ext.define("Ext.locale.lv.picker.Date", {
@@ -98,8 +74,6 @@ Ext.define("Ext.locale.lv.picker.Date", {
     maxText: "Norādītais datums ir lielāks par maksimālo datumu",
     disabledDaysText: "",
     disabledDatesText: "",
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: 'Nākamais mēnesis (Control+pa labi)',
     prevText: 'Iepriekšējais mēnesis (Control+pa kreisi)',
     monthYearText: 'Mēneša izvēle (Control+uz augšu/uz leju lai pārslēgtu gadus)',
@@ -156,6 +130,14 @@ Ext.define("Ext.locale.lv.form.field.ComboBox", {
     });
 });
 
+Ext.define("Ext.locale.lv.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: 'Šajā laukā jāieraksta e-pasta adrese formātā "lietotās@domēns.lv"',
+    urlText: 'Šajā laukā jāieraksta URL formātā "http:/' + '/www.domēns.lv"',
+    alphaText: 'Šis lauks drīkst saturēt tikai burtus un _ zīmi',
+    alphanumText: 'Šis lauks drīkst saturēt tikai burtus, ciparus un _ zīmi'
+});
+
 Ext.define("Ext.locale.lv.grid.header.Container", {
     override: "Ext.grid.header.Container",
     sortAscText: "Kārtot pieaugošā secībā",
@@ -170,6 +152,16 @@ Ext.define("Ext.locale.lv.grid.PropertyColumnModel", {
     nameText: "Nosaukums",
     valueText: "Vērtība",
     dateFormat: "j.m.Y"
+});
+
+Ext.define("Ext.locale.lv.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "Labi",
+        cancel: "Atcelt",
+        yes: "Jā",
+        no: "Nē"
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files

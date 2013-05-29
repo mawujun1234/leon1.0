@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 /**
  * Ukrainian translations for ExtJS (UTF-8 encoding)
@@ -28,12 +28,6 @@ Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
  * 01.09.2009
  */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm);
-
-    if (Ext.Updater) {
-        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">Завантаження...</div>';
-    }
 
     if (Ext.Date) {
         Ext.Date.monthNames = ["Січень", "Лютий", "Березень", "Квітень", "Травень", "Червень", "Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень"];
@@ -41,31 +35,13 @@ Ext.onReady(function() {
         Ext.Date.dayNames = ["Неділя", "Понеділок", "Вівторок", "Середа", "Четвер", "П’ятниця", "Субота"];
     }
 
-    if (Ext.MessageBox) {
-        Ext.MessageBox.buttonText = {
-            ok: "OK",
-            cancel: "Відміна",
-            yes: "Так",
-            no: "Ні"
-        };
-    }
-
-    if (exists('Ext.util.Format')) {
+    if (Ext.util && Ext.util.Format) {
         Ext.apply(Ext.util.Format, {
             thousandSeparator: '.',
             decimalSeparator: ',',
             currencySign: '\u20b4',
             // Ukranian Hryvnia
             dateFormat: 'd.m.Y'
-        });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.apply(Ext.form.field.VTypes, {
-            emailText: 'Це поле повинно містити адресу електронної пошти у форматі "user@example.com"',
-            urlText: 'Це поле повинно містити URL у форматі "http:/' + '/www.example.com"',
-            alphaText: 'Це поле повинно містити виключно латинські літери та символ підкреслення "_"',
-            alphanumText: 'Це поле повинно містити виключно латинські літери, цифри та символ підкреслення "_"'
         });
     }
 });
@@ -80,8 +56,8 @@ Ext.define("Ext.locale.ukr.grid.plugin.DragDrop", {
     dragText: "{0} обраних рядків"
 });
 
-Ext.define("Ext.locale.ukr.TabPanelItem", {
-    override: "Ext.TabPanelItem",
+Ext.define("Ext.locale.ukr.tab.Tab", {
+    override: "Ext.tab.Tab",
     closeText: "Закрити цю вкладку"
 });
 
@@ -93,7 +69,7 @@ Ext.define("Ext.locale.ukr.form.field.Base", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.ukr.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    msg: "Завантаження..."
+    loadingText: "Завантаження..."
 });
 
 Ext.define("Ext.locale.ukr.picker.Date", {
@@ -103,8 +79,6 @@ Ext.define("Ext.locale.ukr.picker.Date", {
     maxText: "Ця дата більша за максимальну допустиму дату",
     disabledDaysText: "",
     disabledDatesText: "",
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: 'Наступний місяць (Control+Вправо)',
     prevText: 'Попередній місяць (Control+Вліво)',
     monthYearText: 'Вибір місяця (Control+Вверх/Вниз для вибору року)',
@@ -165,6 +139,14 @@ Ext.define("Ext.locale.ukr.form.field.ComboBox", {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
         loadingText: "Завантаження..."
     });
+});
+
+Ext.define("Ext.locale.ukr.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: 'Це поле повинно містити адресу електронної пошти у форматі "user@example.com"',
+    urlText: 'Це поле повинно містити URL у форматі "http:/' + '/www.example.com"',
+    alphaText: 'Це поле повинно містити виключно латинські літери та символ підкреслення "_"',
+    alphanumText: 'Це поле повинно містити виключно латинські літери, цифри та символ підкреслення "_"'
 });
 
 Ext.define("Ext.locale.ukr.form.field.HtmlEditor", {
@@ -261,6 +243,16 @@ Ext.define("Ext.locale.ukr.grid.PropertyColumnModel", {
     nameText: "Назва",
     valueText: "Значення",
     dateFormat: "j.m.Y"
+});
+
+Ext.define("Ext.locale.ukr.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "OK",
+        cancel: "Відміна",
+        yes: "Так",
+        no: "Ні"
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files

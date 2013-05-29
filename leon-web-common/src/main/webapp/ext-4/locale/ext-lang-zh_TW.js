@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 /**
  * Traditional Chinese translation
@@ -24,13 +24,7 @@ Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
  * 09 April 2007
  */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm),
-        parseCodes;
-
-    if (Ext.Updater) {
-        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">讀取中...</div>';
-    }
+    var parseCodes;
 
     if (Ext.Date) {
         Ext.Date.monthNames = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
@@ -52,31 +46,13 @@ Ext.onReady(function() {
         Ext.Date.parseCodes.a = Ext.Date.parseCodes.A = parseCodes;
     }
 
-    if (Ext.MessageBox) {
-        Ext.MessageBox.buttonText = {
-            ok: "確定",
-            cancel: "取消",
-            yes: "是",
-            no: "否"
-        };
-    }
-
-    if (exists('Ext.util.Format')) {
+    if (Ext.util && Ext.util.Format) {
         Ext.apply(Ext.util.Format, {
             thousandSeparator: ',',
             decimalSeparator: '.',
             currencySign: '\u00a5',
             // Chinese Yuan
             dateFormat: 'Y/m/d'
-        });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.apply(Ext.form.field.VTypes, {
-            emailText: '此欄位必須輸入像 "user@example.com" 之E-Mail格式',
-            urlText: '此欄位必須輸入像 "http:/' + '/www.example.com" 之網址格式',
-            alphaText: '此欄位僅能輸入半形英文字母及底線( _ )符號',
-            alphanumText: '此欄位僅能輸入半形英文字母、數字及底線( _ )符號'
         });
     }
 });
@@ -91,8 +67,8 @@ Ext.define("Ext.locale.zh_TW.grid.plugin.DragDrop", {
     dragText: "選擇了 {0} 行"
 });
 
-Ext.define("Ext.locale.zh_TW.TabPanelItem", {
-    override: "Ext.TabPanelItem",
+Ext.define("Ext.locale.zh_TW.tab.Tab", {
+    override: "Ext.tab.Tab",
     closeText: "關閉此標籤"
 });
 
@@ -104,7 +80,7 @@ Ext.define("Ext.locale.zh_TW.form.field.Base", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.zh_TW.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    msg: "讀取中..."
+    loadingText: "讀取中..."
 });
 
 Ext.define("Ext.locale.zh_TW.picker.Date", {
@@ -114,8 +90,6 @@ Ext.define("Ext.locale.zh_TW.picker.Date", {
     maxText: "日期必須小於最大容許日期",
     disabledDaysText: "",
     disabledDatesText: "",
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: "下個月 (Ctrl+右方向鍵)",
     prevText: "上個月 (Ctrl+左方向鍵)",
     monthYearText: "選擇月份 (Ctrl+上/下方向鍵選擇年份)",
@@ -184,6 +158,14 @@ Ext.define("Ext.locale.zh_TW.form.field.ComboBox", {
     });
 });
 
+Ext.define("Ext.locale.zh_TW.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: '此欄位必須輸入像 "user@example.com" 之E-Mail格式',
+    urlText: '此欄位必須輸入像 "http:/' + '/www.example.com" 之網址格式',
+    alphaText: '此欄位僅能輸入半形英文字母及底線( _ )符號',
+    alphanumText: '此欄位僅能輸入半形英文字母、數字及底線( _ )符號'
+});
+
 Ext.define("Ext.locale.zh_TW.grid.header.Container", {
     override: "Ext.grid.header.Container",
     sortAscText: "正向排序",
@@ -198,6 +180,16 @@ Ext.define("Ext.locale.zh_TW.grid.PropertyColumnModel", {
     nameText: "名稱",
     valueText: "數值",
     dateFormat: "Y/m/d"
+});
+
+Ext.define("Ext.locale.zh_TW.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "確定",
+        cancel: "取消",
+        yes: "是",
+        no: "否"
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files

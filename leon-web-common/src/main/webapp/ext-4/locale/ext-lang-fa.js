@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 /**
  * Farsi (Persian) translation
@@ -24,13 +24,6 @@ Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
  * 03-10-2007, 06:23 PM
  */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm);
-
-    if (Ext.Updater) {
-        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">در حال بارگذاری ...</div>';
-    }
-
     if (Ext.Date) {
         Ext.Date.monthNames = ["ژانویه", "فوریه", "مارس", "آپریل", "می", "ژوئن", "جولای", "آگوست", "سپتامبر", "اکتبر", "نوامبر", "دسامبر"];
 
@@ -61,22 +54,13 @@ Ext.onReady(function() {
         };
     }
 
-    if (exists('Ext.util.Format')) {
+    if (Ext.util && Ext.util.Format) {
         Ext.apply(Ext.util.Format, {
             thousandSeparator: '.',
             decimalSeparator: ',',
             currencySign: '\ufdfc',
             // Iranian Rial
             dateFormat: 'Y/m/d'
-        });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.apply(Ext.form.field.VTypes, {
-            emailText: 'مقدار این فیلد باید یک ایمیل با این فرمت باشد "user@example.com"',
-            urlText: 'مقدار این آدرس باید یک آدرس سایت با این فرمت باشد "http:/' + '/www.example.com"',
-            alphaText: 'مقدار این فیلد باید فقط از حروف الفبا و _ تشکیل شده باشد ',
-            alphanumText: 'مقدار این فیلد باید فقط از حروف الفبا، اعداد و _ تشکیل شده باشد'
         });
     }
 });
@@ -91,8 +75,8 @@ Ext.define("Ext.locale.fa.grid.plugin.DragDrop", {
     dragText: "{0} رکورد انتخاب شده"
 });
 
-Ext.define("Ext.locale.fa.TabPanelItem", {
-    override: "Ext.TabPanelItem",
+Ext.define("Ext.locale.fa.tab.Tab", {
+    override: "Ext.tab.Tab",
     closeText: "بستن"
 });
 
@@ -104,7 +88,7 @@ Ext.define("Ext.locale.fa.form.field.Base", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.fa.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    msg: "در حال بارگذاری ..."
+    loadingText: "در حال بارگذاری ..."
 });
 
 Ext.define("Ext.locale.fa.picker.Date", {
@@ -114,8 +98,6 @@ Ext.define("Ext.locale.fa.picker.Date", {
     maxText: "این تاریخ پس از محدوده مجاز است",
     disabledDaysText: "",
     disabledDatesText: "",
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: 'ماه بعد (Control + Right)',
     prevText: 'ماه قبل (Control+Left)',
     monthYearText: 'یک ماه را انتخاب کنید (Control+Up/Down برای انتقال در سال)',
@@ -176,6 +158,14 @@ Ext.define("Ext.locale.fa.form.field.ComboBox", {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
         loadingText: "در حال بارگذاری ..."
     });
+});
+
+Ext.define("Ext.locale.fa.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: 'مقدار این فیلد باید یک ایمیل با این فرمت باشد "user@example.com"',
+    urlText: 'مقدار این آدرس باید یک آدرس سایت با این فرمت باشد "http:/' + '/www.example.com"',
+    alphaText: 'مقدار این فیلد باید فقط از حروف الفبا و _ تشکیل شده باشد ',
+    alphanumText: 'مقدار این فیلد باید فقط از حروف الفبا، اعداد و _ تشکیل شده باشد'
 });
 
 Ext.define("Ext.locale.fa.form.field.HtmlEditor", {
@@ -272,6 +262,16 @@ Ext.define("Ext.locale.fa.grid.PropertyColumnModel", {
     nameText: "نام",
     valueText: "مقدار",
     dateFormat: "Y/m/d"
+});
+
+Ext.define("Ext.locale.fa.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "OK",
+        cancel: "Kanselleer",
+        yes: "Ja",
+        no: "Nee"
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files

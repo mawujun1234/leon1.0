@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 /**
  * List compiled by mystix on the extjs.com forums.
@@ -26,12 +26,6 @@ Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
  * created by Dawesi (2012) - modified from en_GB
  */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm);
-
-    if (Ext.Updater) {
-        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">Loading...</div>';
-    }
 
     if (Ext.Date) {
         Ext.Date.defaultDateFormat = "d/m/Y";
@@ -69,30 +63,12 @@ Ext.onReady(function() {
         Ext.Date.parseCodes.S.s = "(?:st|nd|rd|th)";
     }
 
-    if (Ext.MessageBox) {
-        Ext.MessageBox.buttonText = {
-            ok: "OK",
-            cancel: "Cancel",
-            yes: "Yes",
-            no: "No"
-        };
-    }
-
-    if (exists('Ext.util.Format')) {
+    if (Ext.util && Ext.util.Format) {
         Ext.apply(Ext.util.Format, {
             thousandSeparator: ',',
             decimalSeparator: '.',
             currencySign: '$',     // AU dollar
             dateFormat: 'd/m/Y'
-        });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.apply(Ext.form.field.VTypes, {
-            emailText: 'This field should be an e-mail address in the format "user@example.com"',
-            urlText: 'This field should be a URL in the format "http:/' + '/www.example.com"',
-            alphaText: 'This field should only contain letters and _',
-            alphanumText: 'This field should only contain letters, numbers and _'
         });
     }
 });
@@ -110,7 +86,7 @@ Ext.define("Ext.locale.en_AU.grid.plugin.DragDrop", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.en_AU.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    msg: "Loading..."
+    loadingText: "Loading..."
 });
 
 Ext.define("Ext.locale.en_AU.picker.Date", {
@@ -120,8 +96,6 @@ Ext.define("Ext.locale.en_AU.picker.Date", {
     maxText: "This date is after the maximum date",
     disabledDaysText: "",
     disabledDatesText: "",
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: 'Next Month (Control+Right)',
     prevText: 'Previous Month (Control+Left)',
     monthYearText: 'Choose a month (Control+Up/Down to move years)',
@@ -195,6 +169,14 @@ Ext.define("Ext.locale.en_AU.form.field.ComboBox", {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
         loadingText: "Loading..."
     });
+});
+
+Ext.define("Ext.locale.en_AU.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: 'This field should be an e-mail address in the format "user@example.com"',
+    urlText: 'This field should be a URL in the format "http:/' + '/www.example.com"',
+    alphaText: 'This field should only contain letters and _',
+    alphanumText: 'This field should only contain letters, numbers and _'
 });
 
 Ext.define("Ext.locale.en_AU.form.field.HtmlEditor", {
@@ -322,6 +304,16 @@ Ext.define("Ext.locale.en_AU.form.CheckboxGroup", {
 Ext.define("Ext.locale.en_AU.form.RadioGroup", {
     override: "Ext.form.RadioGroup",
     blankText: "You must select one item in this group"
+});
+
+Ext.define("Ext.locale.en_AU.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "OK",
+        cancel: "Cancel",
+        yes: "Yes",
+        no: "No"
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files

@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 /**
  * Portuguese/Portugal (pt_PT) Translation
@@ -24,12 +24,6 @@ Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
  * translated from ext-lang-en.js
  */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm);
-
-    if (Ext.Updater) {
-        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">A carregar...</div>';
-    }
 
     if (Ext.Date) {
         Ext.Date.monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
@@ -64,31 +58,13 @@ Ext.onReady(function() {
         };
     }
 
-    if (Ext.MessageBox) {
-        Ext.MessageBox.buttonText = {
-            ok: "OK",
-            cancel: "Cancelar",
-            yes: "Sim",
-            no: "Não"
-        };
-    }
-
-    if (exists('Ext.util.Format')) {
+    if (Ext.util && Ext.util.Format) {
         Ext.apply(Ext.util.Format, {
             thousandSeparator: '.',
             decimalSeparator: ',',
             currencySign: '\u20ac',
             // Portugese Euro
             dateFormat: 'Y/m/d'
-        });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.apply(Ext.form.field.VTypes, {
-            emailText: 'Este campo deve ser um endereç;o de email no formato "utilizador@dominio.com"',
-            urlText: 'Este campo deve ser um URL no formato "http:/' + '/www.dominio.com"',
-            alphaText: 'Este campo deve conter apenas letras e _',
-            alphanumText: 'Este campo deve conter apenas letras, números e _'
         });
     }
 });
@@ -103,7 +79,7 @@ Ext.define("Ext.locale.pt_PT.grid.plugin.DragDrop", {
     dragText: "{0} linha(s) seleccionada(s)"
 });
 
-Ext.define("Ext.locale.pt_PT.TabPanelItem", {
+Ext.define("Ext.locale.pt_PT.tab.Tab", {
     override: "Ext.TabPanelItem",
     closeText: "Fechar aba"
 });
@@ -111,7 +87,7 @@ Ext.define("Ext.locale.pt_PT.TabPanelItem", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.pt_PT.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    msg: "A carregar..."
+    loadingText: "A carregar..."
 });
 
 Ext.define("Ext.locale.pt_PT.picker.Date", {
@@ -121,8 +97,6 @@ Ext.define("Ext.locale.pt_PT.picker.Date", {
     maxText: "A data é posterior ao máximo definido",
     disabledDaysText: "",
     disabledDatesText: "",
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: 'Mês Seguinte (Control+Right)',
     prevText: 'Mês Anterior (Control+Left)',
     monthYearText: 'Escolha um mês (Control+Up/Down avaç;ar/recuar anos)',
@@ -189,6 +163,14 @@ Ext.define("Ext.locale.pt_PT.form.field.ComboBox", {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
         loadingText: "A Carregar..."
     });
+});
+
+Ext.define("Ext.locale.pt_PT.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: 'Este campo deve ser um endereç;o de email no formato "utilizador@dominio.com"',
+    urlText: 'Este campo deve ser um URL no formato "http:/' + '/www.dominio.com"',
+    alphaText: 'Este campo deve conter apenas letras e _',
+    alphanumText: 'Este campo deve conter apenas letras, números e _'
 });
 
 Ext.define("Ext.locale.pt_PT.form.field.HtmlEditor", {
@@ -297,6 +279,16 @@ Ext.define("Ext.locale.pt_PT.grid.PropertyColumnModel", {
     nameText: "Nome",
     valueText: "Valor",
     dateFormat: "Y/j/m"
+});
+
+Ext.define("Ext.locale.pt_PT.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "OK",
+        cancel: "Cancelar",
+        yes: "Sim",
+        no: "Não"
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files

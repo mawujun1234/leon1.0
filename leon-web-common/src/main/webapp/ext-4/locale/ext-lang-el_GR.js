@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 /**
  * Greek translation
@@ -30,12 +30,6 @@ Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
  * + added Ext.grid.GroupingFeature
  */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm);
-
-    if (Ext.Updater) {
-        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">Μεταφόρτωση δεδομένων...</div>';
-    }
 
     if (Ext.Date) {
         Ext.Date.monthNames = ["Ιανουάριος", "Φεβρουάριος", "Μάρτιος", "Απρίλιος", "Μάιος", "Ιούνιος", "Ιούλιος", "Αύγουστος", "Σεπτέμβριος", "Οκτώβριος", "Νοέμβριος", "Δεκέμβριος"];
@@ -68,31 +62,13 @@ Ext.onReady(function() {
         Ext.Date.dayNames = ["Κυριακή", "Δευτέρα", "Τρίτη", "Τετάρτη", "Πέμπτη", "Παρασκευή", "Σάββατο"];
     }
 
-    if (Ext.MessageBox) {
-        Ext.MessageBox.buttonText = {
-            ok: "OK",
-            cancel: "Άκυρο",
-            yes: "Ναι",
-            no: "Όχι"
-        };
-    }
-
-    if (exists('Ext.util.Format')) {
+    if (Ext.util && Ext.util.Format) {
         Ext.apply(Ext.util.Format, {
             thousandSeparator: '.',
             decimalSeparator: ',',
             currencySign: '\u20ac',
             // Greek Euro
             dateFormat: 'd/m/Y'
-        });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.apply(Ext.form.field.VTypes, {
-            emailText: 'Το πεδίο δέχεται μόνο διευθύνσεις Email σε μορφή "user@example.com"',
-            urlText: 'Το πεδίο δέχεται μόνο URL σε μορφή "http:/' + '/www.example.com"',
-            alphaText: 'Το πεδίο δέχεται μόνο χαρακτήρες και _',
-            alphanumText: 'Το πεδίο δέχεται μόνο χαρακτήρες, αριθμούς και _'
         });
     }
 });
@@ -107,8 +83,8 @@ Ext.define("Ext.locale.el_GR.grid.plugin.DragDrop", {
     dragText: "{0} Επιλεγμένες σειρές"
 });
 
-Ext.define("Ext.locale.el_GR.TabPanelItem", {
-    override: "Ext.TabPanelItem",
+Ext.define("Ext.locale.el_GR.tab.Tab", {
+    override: "Ext.tab.Tab",
     closeText: "Κλείστε το tab"
 });
 
@@ -120,7 +96,7 @@ Ext.define("Ext.locale.el_GR.form.field.Base", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.el_GR.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    msg: "Μεταφόρτωση δεδομένων..."
+    loadingText: "Μεταφόρτωση δεδομένων..."
 });
 
 Ext.define("Ext.locale.el_GR.picker.Date", {
@@ -130,8 +106,6 @@ Ext.define("Ext.locale.el_GR.picker.Date", {
     maxText: "Η Ημερομηνία είναι μεταγενέστερη από την νεότερη αποδεκτή",
     disabledDaysText: "",
     disabledDatesText: "",
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: 'Επόμενος Μήνας (Control+Δεξί Βέλος)',
     prevText: 'Προηγούμενος Μήνας (Control + Αριστερό Βέλος)',
     monthYearText: 'Επιλογή Μηνός (Control + Επάνω/Κάτω Βέλος για μεταβολή ετών)',
@@ -185,6 +159,14 @@ Ext.define("Ext.locale.el_GR.form.field.ComboBox", {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
         loadingText: "Μεταφόρτωση δεδομένων..."
     });
+});
+
+Ext.define("Ext.locale.el_GR.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: 'Το πεδίο δέχεται μόνο διευθύνσεις Email σε μορφή "user@example.com"',
+    urlText: 'Το πεδίο δέχεται μόνο URL σε μορφή "http:/' + '/www.example.com"',
+    alphaText: 'Το πεδίο δέχεται μόνο χαρακτήρες και _',
+    alphanumText: 'Το πεδίο δέχεται μόνο χαρακτήρες, αριθμούς και _'
 });
 
 Ext.define("Ext.locale.el_GR.form.field.HtmlEditor", {
@@ -288,6 +270,16 @@ Ext.define("Ext.locale.el_GR.grid.PropertyColumnModel", {
     nameText: "Όνομα",
     valueText: "Περιεχόμενο",
     dateFormat: "d/m/Y"
+});
+
+Ext.define("Ext.locale.el_GR.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "OK",
+        cancel: "Άκυρο",
+        yes: "Ναι",
+        no: "Όχι"
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files

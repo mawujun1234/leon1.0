@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 /**
  * Japanese translation
@@ -27,13 +27,7 @@ Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
  * By sakuro (30 Aug 2008)
  */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm),
-        parseCodes;
-
-    if (Ext.Updater) {
-        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">読み込み中...</div>';
-    }
+    var parseCodes;
 
     if (Ext.Date) {
         Ext.Date.monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
@@ -83,31 +77,13 @@ Ext.onReady(function() {
         Ext.Date.parseCodes.a = Ext.Date.parseCodes.A = parseCodes;
     }
 
-    if (Ext.MessageBox) {
-        Ext.MessageBox.buttonText = {
-            ok: "OK",
-            cancel: "キャンセル",
-            yes: "はい",
-            no: "いいえ"
-        };
-    }
-
-    if (exists('Ext.util.Format')) {
+    if (Ext.util && Ext.util.Format) {
         Ext.apply(Ext.util.Format, {
             thousandSeparator: ',',
             decimalSeparator: '.',
             currencySign: '\u00a5',
             // Japanese Yen
             dateFormat: 'Y/m/d'
-        });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.apply(Ext.form.field.VTypes, {
-            emailText: 'メールアドレスを"user@example.com"の形式で入力してください。',
-            urlText: 'URLを"http:/' + '/www.example.com"の形式で入力してください。',
-            alphaText: '半角英字と"_"のみです。',
-            alphanumText: '半角英数と"_"のみです。'
         });
     }
 });
@@ -125,7 +101,7 @@ Ext.define("Ext.locale.ja.grid.plugin.DragDrop", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.ja.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    msg: "読み込み中..."
+    loadingText: "読み込み中..."
 });
 
 Ext.define("Ext.locale.ja.picker.Date", {
@@ -135,8 +111,6 @@ Ext.define("Ext.locale.ja.picker.Date", {
     maxText: "選択した日付は最大値以上です。",
     disabledDaysText: "",
     disabledDatesText: "",
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: '次月へ (コントロール+右)',
     prevText: '前月へ (コントロール+左)',
     monthYearText: '月選択 (コントロール+上/下で年移動)',
@@ -209,6 +183,14 @@ Ext.define("Ext.locale.ja.form.field.ComboBox", {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
         loadingText: "読み込み中..."
     });
+});
+
+Ext.define("Ext.locale.ja.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: 'メールアドレスを"user@example.com"の形式で入力してください。',
+    urlText: 'URLを"http:/' + '/www.example.com"の形式で入力してください。',
+    alphaText: '半角英字と"_"のみです。',
+    alphanumText: '半角英数と"_"のみです。'
 });
 
 Ext.define("Ext.locale.ja.form.field.HtmlEditor", {
@@ -329,6 +311,16 @@ Ext.define("Ext.locale.ja.form.CheckboxGroup", {
 Ext.define("Ext.locale.ja.form.RadioGroup", {
     override: "Ext.form.RadioGroup",
     blankText: "このグループから１つのアイテムを選択しなければなりません。"
+});
+
+Ext.define("Ext.locale.ja.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "OK",
+        cancel: "キャンセル",
+        yes: "はい",
+        no: "いいえ"
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files

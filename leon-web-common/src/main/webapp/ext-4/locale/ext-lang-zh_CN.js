@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 /**
  * Simplified Chinese translation
@@ -27,13 +27,7 @@ Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
  * 2009-10-22 15:00:57
  */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm),
-        parseCodes;
-
-    if (Ext.Updater) {
-        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">加载中...</div>';
-    }
+    var parseCodes;
 
     if (Ext.Date) {
         Ext.Date.monthNames = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
@@ -55,32 +49,13 @@ Ext.onReady(function() {
         Ext.Date.parseCodes.a = Ext.Date.parseCodes.A = parseCodes;
     }
 
-    if (Ext.MessageBox) {
-        Ext.MessageBox.buttonText = {
-            ok: "确定",
-            cancel: "取消",
-            yes: "是",
-            no: "否"
-        };
-    }
-
-    if (exists('Ext.util.Format')) {
+    if (Ext.util && Ext.util.Format) {
         Ext.apply(Ext.util.Format, {
             thousandSeparator: ',',
             decimalSeparator: '.',
             currencySign: '\u00a5',
             // Chinese Yuan
             dateFormat: 'y年m月d日'
-        });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.apply(Ext.form.field.VTypes, {
-            emailText: '该输入项必须是电子邮件地址，格式如： "user@example.com"',
-            urlText: '该输入项必须是URL地址，格式如： "http:/' + '/www.example.com"',
-            alphaText: '该输入项只能包含半角字母和_',
-            //update
-            alphanumText: '该输入项只能包含半角字母,数字和_' //update
         });
     }
 });
@@ -95,8 +70,8 @@ Ext.define("Ext.locale.zh_CN.grid.plugin.DragDrop", {
     dragText: "选择了 {0} 行"
 });
 
-Ext.define("Ext.locale.zh_CN.TabPanelItem", {
-    override: "Ext.TabPanelItem",
+Ext.define("Ext.locale.zh_CN.tab.Tab", {
+    override: "Ext.tab.Tab",
     closeText: "关闭此标签"
 });
 
@@ -108,7 +83,7 @@ Ext.define("Ext.locale.zh_CN.form.field.Base", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.zh_CN.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    msg: "讀取中..."
+    loadingText: "讀取中..."
 });
 
 Ext.define("Ext.locale.zh_CN.picker.Date", {
@@ -120,8 +95,6 @@ Ext.define("Ext.locale.zh_CN.picker.Date", {
     //update
     disabledDaysText: "",
     disabledDatesText: "",
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: '下个月 (Ctrl+Right)',
     prevText: '上个月 (Ctrl+Left)',
     monthYearText: '选择一个月 (Control+Up/Down 来改变年份)',
@@ -194,6 +167,14 @@ Ext.define("Ext.locale.zh_CN.form.field.ComboBox", {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
         loadingText: "加载中..."
     });
+});
+
+Ext.define("Ext.locale.zh_CN.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: '该输入项必须是电子邮件地址，格式如： "user@example.com"',
+    urlText: '该输入项必须是URL地址，格式如： "http:/' + '/www.example.com"',
+    alphaText: '该输入项只能包含半角字母和_',
+    alphanumText: '该输入项只能包含半角字母,数字和_'
 });
 
 //add HTMLEditor's tips by andy_ghg
@@ -295,6 +276,16 @@ Ext.define("Ext.locale.zh_CN.grid.PropertyColumnModel", {
     nameText: "名称",
     valueText: "值",
     dateFormat: "y年m月d日"
+});
+
+Ext.define("Ext.locale.zh_CN.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "确定",
+        cancel: "取消",
+        yes: "是",
+        no: "否"
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files

@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 /**
  * Swedish translation (utf8-encoding)
@@ -25,12 +25,6 @@ Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
  * Changed by Cariad, 29 July 2007
  */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm);
-
-    if (Ext.Updater) {
-        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">Laddar...</div>';
-    }
 
     if (Ext.Date) {
         Ext.Date.monthNames = ["januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti", "september", "oktober", "november", "december"];
@@ -38,31 +32,13 @@ Ext.onReady(function() {
         Ext.Date.dayNames = ["söndag", "måndag", "tisdag", "onsdag", "torsdag", "fredag", "lördag"];
     }
 
-    if (Ext.MessageBox) {
-        Ext.MessageBox.buttonText = {
-            ok: "OK",
-            cancel: "Avbryt",
-            yes: "Ja",
-            no: "Nej"
-        };
-    }
-
-    if (exists('Ext.util.Format')) {
+   if (Ext.util && Ext.util.Format) {
         Ext.apply(Ext.util.Format, {
             thousandSeparator: '.',
             decimalSeparator: ',',
             currencySign: 'kr',
             // Swedish Krone
             dateFormat: 'Y-m-d'
-        });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.apply(Ext.form.field.VTypes, {
-            emailText: 'Detta fält ska innehålla en e-post adress i formatet "användare@domän.se"',
-            urlText: 'Detta fält ska innehålla en länk (URL) i formatet "http:/' + '/www.domän.se"',
-            alphaText: 'Detta fält får bara innehålla bokstäver och "_"',
-            alphanumText: 'Detta fält får bara innehålla bokstäver, nummer och "_"'
         });
     }
 });
@@ -77,8 +53,8 @@ Ext.define("Ext.locale.sv_SE.grid.plugin.DragDrop", {
     dragText: "{0} markerade rad(er)"
 });
 
-Ext.define("Ext.locale.sv_SE.TabPanelItem", {
-    override: "Ext.TabPanelItem",
+Ext.define("Ext.locale.sv_SE.tab.Tab", {
+    override: "Ext.tab.Tab",
     closeText: "Stäng denna flik"
 });
 
@@ -90,7 +66,7 @@ Ext.define("Ext.locale.sv_SE.form.field.Base", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.sv_SE.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    msg: "Laddar..."
+    loadingText: "Laddar..."
 });
 
 Ext.define("Ext.locale.sv_SE.picker.Date", {
@@ -100,8 +76,6 @@ Ext.define("Ext.locale.sv_SE.picker.Date", {
     maxText: "Detta datum inträffar efter det senast tillåtna",
     disabledDaysText: "",
     disabledDatesText: "",
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: 'Nästa månad (Ctrl + högerpil)',
     prevText: 'Föregående månad (Ctrl + vänsterpil)',
     monthYearText: 'Välj en månad (Ctrl + uppåtpil/neråtpil för att ändra årtal)',
@@ -158,6 +132,14 @@ Ext.define("Ext.locale.sv_SE.form.field.ComboBox", {
     });
 });
 
+Ext.define("Ext.locale.sv_SE.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: 'Detta fält ska innehålla en e-post adress i formatet "användare@domän.se"',
+    urlText: 'Detta fält ska innehålla en länk (URL) i formatet "http:/' + '/www.domän.se"',
+    alphaText: 'Detta fält får bara innehålla bokstäver och "_"',
+    alphanumText: 'Detta fält får bara innehålla bokstäver, nummer och "_"'
+});
+
 Ext.define("Ext.locale.sv_SE.grid.header.Container", {
     override: "Ext.grid.header.Container",
     sortAscText: "Sortera stigande",
@@ -172,6 +154,16 @@ Ext.define("Ext.locale.sv_SE.grid.PropertyColumnModel", {
     nameText: "Namn",
     valueText: "Värde",
     dateFormat: "Y-m-d"
+});
+
+Ext.define("Ext.locale.sv_SE.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "OK",
+        cancel: "Avbryt",
+        yes: "Ja",
+        no: "Nej"
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files

@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 /**
  * Serbian Cyrillic Translation
@@ -25,12 +25,6 @@ Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
  * 12 May 2007
  */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm);
-
-    if (Ext.Updater) {
-        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">Учитавам...</div>';
-    }
 
     if (Ext.Date) {
         Ext.Date.monthNames = ["Јануар", "Фебруар", "Март", "Април", "Мај", "Јун", "Јул", "Август", "Септембар", "Октобар", "Новембар", "Децембар"];
@@ -38,31 +32,13 @@ Ext.onReady(function() {
         Ext.Date.dayNames = ["Недеља", "Понедељак", "Уторак", "Среда", "Четвртак", "Петак", "Субота"];
     }
 
-    if (Ext.MessageBox) {
-        Ext.MessageBox.buttonText = {
-            ok: "У реду",
-            cancel: "Одустани",
-            yes: "Да",
-            no: "Не"
-        };
-    }
-
-    if (exists('Ext.util.Format')) {
+    if (Ext.util && Ext.util.Format) {
         Ext.apply(Ext.util.Format, {
             thousandSeparator: '.',
             decimalSeparator: ',',
             currencySign: '\u0414\u0438\u043d\u002e',
             // Serbian Dinar
             dateFormat: 'd.m.Y'
-        });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.apply(Ext.form.field.VTypes, {
-            emailText: 'Ово поље прихвата e-mail адресу искључиво у облику "korisnik@domen.com"',
-            urlText: 'Ово поље прихвата URL адресу искључиво у облику "http:/' + '/www.domen.com"',
-            alphaText: 'Ово поље може садржати искључиво слова и знак _',
-            alphanumText: 'Ово поље може садржати само слова, бројеве и знак _'
         });
     }
 });
@@ -77,8 +53,8 @@ Ext.define("Ext.locale.sr_RS.grid.plugin.DragDrop", {
     dragText: "{0} изабраних редова"
 });
 
-Ext.define("Ext.locale.sr_RS.TabPanelItem", {
-    override: "Ext.TabPanelItem",
+Ext.define("Ext.locale.sr_RS.tab.Tab", {
+    override: "Ext.tab.Tab",
     closeText: "Затвори ову »картицу«"
 });
 
@@ -90,7 +66,7 @@ Ext.define("Ext.locale.sr_RS.form.field.Base", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.sr_RS.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    msg: "Учитавам..."
+    loadingText: "Учитавам..."
 });
 
 Ext.define("Ext.locale.sr_RS.picker.Date", {
@@ -100,8 +76,6 @@ Ext.define("Ext.locale.sr_RS.picker.Date", {
     maxText: "Датум је након највећег дозвољеног датума",
     disabledDaysText: "",
     disabledDatesText: "",
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: 'Следећи месец (Control+Десно)',
     prevText: 'Претходни месец (Control+Лево)',
     monthYearText: 'Изаберите месец (Control+Горе/Доле за избор године)',
@@ -158,6 +132,14 @@ Ext.define("Ext.locale.sr_RS.form.field.ComboBox", {
     });
 });
 
+Ext.define("Ext.locale.sr_RS.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: 'Ово поље прихвата e-mail адресу искључиво у облику "korisnik@domen.com"',
+    urlText: 'Ово поље прихвата URL адресу искључиво у облику "http:/' + '/www.domen.com"',
+    alphaText: 'Ово поље може садржати искључиво слова и знак _',
+    alphanumText: 'Ово поље може садржати само слова, бројеве и знак _'
+});
+
 Ext.define("Ext.locale.sr_RS.grid.header.Container", {
     override: "Ext.grid.header.Container",
     sortAscText: "Растући редослед",
@@ -172,6 +154,16 @@ Ext.define("Ext.locale.sr_RS.grid.PropertyColumnModel", {
     nameText: "Назив",
     valueText: "Вредност",
     dateFormat: "d.m.Y"
+});
+
+Ext.define("Ext.locale.sr_RS.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "У реду",
+        cancel: "Одустани",
+        yes: "Да",
+        no: "Не"
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files

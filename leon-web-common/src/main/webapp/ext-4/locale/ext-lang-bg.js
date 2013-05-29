@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 /**
  * Bulgarian Translation
@@ -29,13 +29,7 @@ Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
  * (utf-8 encoding)
  */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm);
 
-    if (Ext.Updater) {
-        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">Зареждане...</div>';
-    }
-    
     if (Ext.Date) {
         Ext.Date.monthNames = ["Януари", "Февруари", "Март", "Април", "Май", "Юни", "Юли", "Август", "Септември", "Октомври", "Ноември", "Декември"];
 
@@ -56,31 +50,14 @@ Ext.onReady(function() {
 
         Ext.Date.dayNames = ["Неделя", "Понеделник", "Вторник", "Сряда", "Четвъртък", "Петък", "Събота"];
     }
-    if (Ext.MessageBox) {
-        Ext.MessageBox.buttonText = {
-            ok: "OK",
-            cancel: "Отмени",
-            yes: "Да",
-            no: "Не"
-        };
-    }
 
-    if (exists('Ext.util.Format')) {
+    if (Ext.util && Ext.util.Format) {
         Ext.apply(Ext.util.Format, {
             thousandSeparator: '.',
             decimalSeparator: ',',
             currencySign: '\u043b\u0432',
             // Bulgarian Leva
             dateFormat: 'd.m.Y'
-        });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.apply(Ext.form.field.VTypes, {
-            emailText: 'Това поле трябва да бъде емейл във формат "user@example.com"',
-            urlText: 'Това поле трябва да бъде URL във формат "http:/' + '/www.example.com"',
-            alphaText: 'Това поле трябва да съдържа само букви и _',
-            alphanumText: 'Това поле трябва да съдържа само букви, цифри и _'
         });
     }
 });
@@ -95,8 +72,8 @@ Ext.define("Ext.locale.bg.grid.plugin.DragDrop", {
     dragText: "{0} избрани колони"
 });
 
-Ext.define("Ext.locale.bg.TabPanelItem", {
-    override: "Ext.TabPanelItem",
+Ext.define("Ext.locale.bg.tab.Tab", {
+    override: "Ext.tab.Tab",
     closeText: "Затвори таб"
 });
 
@@ -108,7 +85,7 @@ Ext.define("Ext.locale.bg.form.field.Base", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.bg.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    msg: "Зареждане..."
+    loadingText: "Зареждане..."
 });
 
 Ext.define("Ext.locale.bg.picker.Date", {
@@ -118,8 +95,6 @@ Ext.define("Ext.locale.bg.picker.Date", {
     maxText: "Тази дата е след максималната",
     disabledDaysText: "",
     disabledDatesText: "",
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: 'Следващ месец (Control+Right)',
     prevText: 'Предишен месец (Control+Left)',
     monthYearText: 'Избери месец (Control+Up/Down за преместване по години)',
@@ -181,6 +156,14 @@ Ext.define("Ext.locale.bg.form.field.ComboBox", {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
         loadingText: "Зареждане..."
     });
+});
+
+Ext.define("Ext.locale.bg.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: 'Това поле трябва да бъде емейл във формат "user@example.com"',
+    urlText: 'Това поле трябва да бъде URL във формат "http:/' + '/www.example.com"',
+    alphaText: 'Това поле трябва да съдържа само букви и _',
+    alphanumText: 'Това поле трябва да съдържа само букви, цифри и _'
 });
 
 Ext.define("Ext.locale.bg.form.field.HtmlEditor", {
@@ -277,6 +260,16 @@ Ext.define("Ext.locale.bg.grid.PropertyColumnModel", {
     nameText: "Име",
     valueText: "Стойност",
     dateFormat: "d.m.Y"
+});
+
+Ext.define("Ext.locale.bg.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "OK",
+        cancel: "Отмени",
+        yes: "Да",
+        no: "Не"
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files

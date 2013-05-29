@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 /**
  * German translation
@@ -26,9 +26,7 @@ Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
  * 2010-Mar-10 update by Volker Grabsch
  */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm);
-
+    
     if (Ext.Date) {
         Ext.Date.monthNames = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
         
@@ -63,23 +61,8 @@ Ext.onReady(function() {
             return Ext.Date.dayNames[day].substring(0, 3);
         };
     }
-    if (Ext.MessageBox) {
-        Ext.MessageBox.buttonText = {
-            ok: "OK",
-            cancel: "Abbrechen",
-            yes: "Ja",
-            no: "Nein"
-        };
 
-        // As of 4.0.4, setting the buttonText above does not take effect properly. This should be removable in 4.1.0
-        // (see issue EXTJSIV-3909)
-        Ext.MessageBox.msgButtons['ok'].text = Ext.MessageBox.buttonText.ok;
-        Ext.MessageBox.msgButtons['cancel'].text = Ext.MessageBox.buttonText.cancel;
-        Ext.MessageBox.msgButtons['yes'].text = Ext.MessageBox.buttonText.yes;
-        Ext.MessageBox.msgButtons['no'].text = Ext.MessageBox.buttonText.no;
-    }
-
-    if (exists('Ext.util.Format')) {
+    if (Ext.util && Ext.util.Format) {
         Ext.util.Format.__number = Ext.util.Format.number;
         Ext.util.Format.number = function(v, format) {
             return Ext.util.Format.__number(v, format || "0.000,00/i");
@@ -91,15 +74,6 @@ Ext.onReady(function() {
             currencySign: '\u20ac',
             // German Euro
             dateFormat: 'd.m.Y'
-        });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.apply(Ext.form.field.VTypes, {
-            emailText: 'Dieses Feld sollte eine E-Mail-Adresse enthalten. Format: "user@example.com"',
-            urlText: 'Dieses Feld sollte eine URL enthalten. Format: "http:/' + '/www.example.com"',
-            alphaText: 'Dieses Feld darf nur Buchstaben enthalten und _',
-            alphanumText: 'Dieses Feld darf nur Buchstaben und Zahlen enthalten und _'
         });
     }
 });
@@ -114,8 +88,8 @@ Ext.define("Ext.locale.de.grid.plugin.DragDrop", {
     dragText: "{0} Zeile(n) ausgewählt"
 });
 
-Ext.define("Ext.locale.de.TabPanelItem", {
-    override: "Ext.TabPanelItem",
+Ext.define("Ext.locale.de.tab.Tab", {
+    override: "Ext.tab.Tab",
     closeText: "Diesen Tab schließen"
 });
 
@@ -131,7 +105,7 @@ Ext.define("Ext.locale.de.form.field.Base", {
 
 Ext.define("Ext.locale.de.LoadMask", {
     override: "Ext.LoadMask",
-    msg: "Lade Daten..."
+    loadingText: "Lade Daten..."
 });
 
 Ext.define("Ext.locale.de.view.AbstractView", {
@@ -146,8 +120,6 @@ Ext.define("Ext.locale.de.picker.Date", {
     maxText: "Dieses Datum liegt nach dem letztmöglichen Datum",
     disabledDaysText: "",
     disabledDatesText: "",
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: "Nächster Monat (Strg/Control + Rechts)",
     prevText: "Vorheriger Monat (Strg/Control + Links)",
     monthYearText: "Monat auswählen (Strg/Control + Hoch/Runter, um ein Jahr auszuwählen)",
@@ -211,6 +183,14 @@ Ext.define("Ext.locale.de.form.field.ComboBox", {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
         loadingText: "Lade Daten ..."
     });
+});
+
+Ext.define("Ext.locale.de.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: 'Dieses Feld sollte eine E-Mail-Adresse enthalten. Format: "user@example.com"',
+    urlText: 'Dieses Feld sollte eine URL enthalten. Format: "http:/' + '/www.example.com"',
+    alphaText: 'Dieses Feld darf nur Buchstaben enthalten und _',
+    alphanumText: 'Dieses Feld darf nur Buchstaben und Zahlen enthalten und _'
 });
 
 Ext.define("Ext.locale.de.form.field.HtmlEditor", {
@@ -348,6 +328,16 @@ Ext.define("Ext.locale.de.form.CheckboxGroup", {
 Ext.define("Ext.locale.de.form.RadioGroup", {
     override: "Ext.form.RadioGroup",
     blankText: "Du mußt einen Eintrag aus der Gruppe auswählen"
+});
+
+Ext.define("Ext.locale.de.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "OK",
+        cancel: "Abbrechen",
+        yes: "Ja",
+        no: "Nein"
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files

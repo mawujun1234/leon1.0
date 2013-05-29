@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 /**
  *
@@ -25,12 +25,6 @@ Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
  *
  */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm);
-
-    if (Ext.Updater) {
-        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">Lastar...</div>';
-    }
 
     if (Ext.Date) {
         Ext.Date.monthNames = ["Januar", "Februar", "Mars", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Desember"];
@@ -65,31 +59,13 @@ Ext.onReady(function() {
         };
     }
 
-    if (Ext.MessageBox) {
-        Ext.MessageBox.buttonText = {
-            ok: "OK",
-            cancel: "Avbryt",
-            yes: "Ja",
-            no: "Nei"
-        };
-    }
-
-    if (exists('Ext.util.Format')) {
+    if (Ext.util && Ext.util.Format) {
         Ext.apply(Ext.util.Format, {
             thousandSeparator: '.',
             decimalSeparator: ',',
             currencySign: 'kr',
             // Norwegian Krone
             dateFormat: 'd.m.Y'
-        });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.apply(Ext.form.field.VTypes, {
-            emailText: 'Dette feltet skal vere ei epost adresse på formatet "bruker@domene.no"',
-            urlText: 'Dette feltet skal vere ein link (URL) på formatet "http:/' + '/www.domene.no"',
-            alphaText: 'Dette feltet skal berre innehalde bokstavar og _',
-            alphanumText: 'Dette feltet skal berre innehalde bokstavar, tal og _'
         });
     }
 });
@@ -104,8 +80,8 @@ Ext.define("Ext.locale.no_NN.grid.plugin.DragDrop", {
     dragText: "{0} markert(e) rad(er)"
 });
 
-Ext.define("Ext.locale.no_NN.TabPanelItem", {
-    override: "Ext.TabPanelItem",
+Ext.define("Ext.locale.no_NN.tab.Tab", {
+    override: "Ext.tab.Tab",
     closeText: "Lukk denne fana"
 });
 
@@ -117,7 +93,7 @@ Ext.define("Ext.locale.no_NN.form.field.Base", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.no_NN.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    msg: "Lastar..."
+    loadingText: "Lastar..."
 });
 
 Ext.define("Ext.locale.no_NN.picker.Date", {
@@ -127,8 +103,6 @@ Ext.define("Ext.locale.no_NN.picker.Date", {
     maxText: "Denne datoen er etter seinaste tillatne dato",
     disabledDaysText: "",
     disabledDatesText: "",
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: 'Neste månad (Control+Pil Høgre)',
     prevText: 'Førre månad (Control+Pil Venstre)',
     monthYearText: 'Velj ein månad (Control+Pil Opp/Ned for å skifte år)',
@@ -190,6 +164,14 @@ Ext.define("Ext.locale.no_NN.form.field.ComboBox", {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
         loadingText: "Lastar..."
     });
+});
+
+Ext.define("Ext.locale.no_NN.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: 'Dette feltet skal vere ei epost adresse på formatet "bruker@domene.no"',
+    urlText: 'Dette feltet skal vere ein link (URL) på formatet "http:/' + '/www.domene.no"',
+    alphaText: 'Dette feltet skal berre innehalde bokstavar og _',
+    alphanumText: 'Dette feltet skal berre innehalde bokstavar, tal og _'
 });
 
 Ext.define("Ext.locale.no_NN.form.field.HtmlEditor", {
@@ -293,6 +275,16 @@ Ext.define("Ext.locale.no_NN.grid.PropertyColumnModel", {
     nameText: "Namn",
     valueText: "Verdi",
     dateFormat: "d.m.Y"
+});
+
+Ext.define("Ext.locale.no_NN.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "OK",
+        cancel: "Avbryt",
+        yes: "Ja",
+        no: "Nei"
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files

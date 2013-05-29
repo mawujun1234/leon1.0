@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 /**
  * Korean Translations By nicetip
@@ -24,43 +24,20 @@ Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
  * Modify by techbug / 25 February 2008
  */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm);
-
-    if (Ext.Updater) {
-        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">로딩중...</div>';
-    }
 
     if (Ext.Date) {
         Ext.Date.monthNames = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
 
         Ext.Date.dayNames = ["일", "월", "화", "수", "목", "금", "토"];
     }
-    if (Ext.MessageBox) {
-        Ext.MessageBox.buttonText = {
-            ok: "확인",
-            cancel: "취소",
-            yes: "예",
-            no: "아니오"
-        };
-    }
 
-    if (exists('Ext.util.Format')) {
+    if (Ext.util && Ext.util.Format) {
         Ext.apply(Ext.util.Format, {
             thousandSeparator: ',',
             decimalSeparator: '.',
             currencySign: '\u20a9',
             // Korean Won
             dateFormat: 'm/d/Y'
-        });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.apply(Ext.form.field.VTypes, {
-            emailText: '이메일 주소 형식에 맞게 입력해야합니다. (예: "user@example.com")',
-            urlText: 'URL 형식에 맞게 입력해야합니다. (예: "http:/' + '/www.example.com")',
-            alphaText: '영문, 밑줄(_)만 입력할 수 있습니다.',
-            alphanumText: '영문, 숫자, 밑줄(_)만 입력할 수 있습니다.'
         });
     }
 });
@@ -75,8 +52,8 @@ Ext.define("Ext.locale.ko.grid.plugin.DragDrop", {
     dragText: "{0} 개가 선택되었습니다."
 });
 
-Ext.define("Ext.locale.ko.TabPanelItem", {
-    override: "Ext.TabPanelItem",
+Ext.define("Ext.locale.ko.tab.Tab", {
+    override: "Ext.tab.Tab",
     closeText: "닫기"
 });
 
@@ -88,7 +65,7 @@ Ext.define("Ext.locale.ko.form.field.Base", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.ko.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    msg: "로딩중..."
+    loadingText: "로딩중..."
 });
 
 Ext.define("Ext.locale.ko.picker.Date", {
@@ -98,8 +75,6 @@ Ext.define("Ext.locale.ko.picker.Date", {
     maxText: "최대 날짜범위를 넘었습니다.",
     disabledDaysText: "",
     disabledDatesText: "",
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: '다음달(컨트롤키+오른쪽 화살표)',
     prevText: '이전달 (컨트롤키+왼족 화살표)',
     monthYearText: '월을 선택해주세요. (컨트롤키+위/아래 화살표)',
@@ -160,6 +135,14 @@ Ext.define("Ext.locale.ko.form.field.ComboBox", {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
         loadingText: "로딩중..."
     });
+});
+
+Ext.define("Ext.locale.ko.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: '이메일 주소 형식에 맞게 입력해야합니다. (예: "user@example.com")',
+    urlText: 'URL 형식에 맞게 입력해야합니다. (예: "http:/' + '/www.example.com")',
+    alphaText: '영문, 밑줄(_)만 입력할 수 있습니다.',
+    alphanumText: '영문, 숫자, 밑줄(_)만 입력할 수 있습니다.'
 });
 
 Ext.define("Ext.locale.ko.form.field.HtmlEditor", {
@@ -264,6 +247,16 @@ Ext.define("Ext.locale.ko.grid.PropertyColumnModel", {
     nameText: "항목",
     valueText: "값",
     dateFormat: "m/j/Y"
+});
+
+Ext.define("Ext.locale.ko.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "확인",
+        cancel: "취소",
+        yes: "예",
+        no: "아니오"
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files

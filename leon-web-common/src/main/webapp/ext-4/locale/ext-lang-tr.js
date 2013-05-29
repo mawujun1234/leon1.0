@@ -16,15 +16,9 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm);
-
-    if (Ext.Updater) {
-        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">Yükleniyor ...</div>';
-    }
 
     if (Ext.Date) {
         Ext.Date.monthNames = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
@@ -61,16 +55,7 @@ Ext.onReady(function() {
         };
     }
 
-    if (Ext.MessageBox) {
-        Ext.MessageBox.buttonText = {
-            ok: "Tamam",
-            cancel: "İptal",
-            yes: "Evet",
-            no: "Hayır"
-        };
-    }
-
-    if (exists('Ext.util.Format')) {
+    if (Ext.util && Ext.util.Format) {
         Ext.apply(Ext.util.Format, {
             thousandSeparator: '.',
             decimalSeparator: ',',
@@ -78,13 +63,6 @@ Ext.onReady(function() {
             // Turkish Lira
             dateFormat: 'd/m/Y'
         });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.form.field.VTypes["emailText"] = 'Bu alan "user@example.com" şeklinde elektronik posta formatında olmalıdır';
-        Ext.form.field.VTypes["urlText"] = 'Bu alan "http://www.example.com" şeklinde URL adres formatında olmalıdır';
-        Ext.form.field.VTypes["alphaText"] = 'Bu alan sadece harf ve _ içermeli';
-        Ext.form.field.VTypes["alphanumText"] = 'Bu alan sadece harf, sayı ve _ içermeli';
     }
 });
 
@@ -98,8 +76,8 @@ Ext.define("Ext.locale.tr.grid.Grid", {
     ddText: "Seçili satır sayısı : {0}"
 });
 
-Ext.define("Ext.locale.tr.TabPanelItem", {
-    override: "Ext.TabPanelItem",
+Ext.define("Ext.locale.tr.tab.Tab", {
+    override: "Ext.tab.Tab",
     closeText: "Sekmeyi kapat"
 });
 
@@ -111,7 +89,7 @@ Ext.define("Ext.locale.tr.form.field.Base", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.tr.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    msg: "Yükleniyor ..."
+    loadingText: "Yükleniyor ..."
 });
 
 Ext.define("Ext.locale.tr.picker.Date", {
@@ -121,8 +99,6 @@ Ext.define("Ext.locale.tr.picker.Date", {
     maxText: "Bu tarih izin verilen en büyük tarihten daha sonra",
     disabledDaysText: "",
     disabledDatesText: "",
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: 'Gelecek Ay (Control+Right)',
     prevText: 'Önceki Ay (Control+Left)',
     monthYearText: 'Bir ay seçiniz (Yılı artırmak/azaltmak için Control+Up/Down)',
@@ -184,6 +160,14 @@ Ext.define("Ext.locale.tr.form.field.ComboBox", {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
         loadingText: "Yükleniyor ..."
     });
+});
+
+Ext.define("Ext.locale.tr.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: 'Bu alan "user@example.com" şeklinde elektronik posta formatında olmalıdır',
+    urlText: 'Bu alan "http://www.example.com" şeklinde URL adres formatında olmalıdır',
+    alphaText: 'Bu alan sadece harf ve _ içermeli',
+    alphanumText: 'Bu alan sadece harf, sayı ve _ içermeli'
 });
 
 Ext.define("Ext.locale.tr.form.field.HtmlEditor", {
@@ -287,6 +271,16 @@ Ext.define("Ext.locale.tr.grid.PropertyColumnModel", {
     nameText: "Ad",
     valueText: "Değer",
     dateFormat: "d/m/Y"
+});
+
+Ext.define("Ext.locale.tr.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "Tamam",
+        cancel: "İptal",
+        yes: "Evet",
+        no: "Hayır"
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files

@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 /**
  * France (Canadian) translation
@@ -24,12 +24,6 @@ Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
  * 04-08-2007, 03:07 AM
  */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm);
-
-    if (Ext.Updater) {
-        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">En cours de chargement...</div>';
-    }
 
     if (Ext.Date) {
         Ext.Date.shortMonthNames = ["Janv", "Févr", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"];
@@ -45,7 +39,6 @@ Ext.onReady(function() {
             "Janv": 0,
             "Février": 1,
             "Févr": 1,
-            "Mars": 2,
             "Mars": 2,
             "Avril": 3,
             "Avr": 3,
@@ -74,31 +67,14 @@ Ext.onReady(function() {
             return Ext.Date.dayNames[day].substring(0, 3);
         };
     }
-    if (Ext.MessageBox) {
-        Ext.MessageBox.buttonText = {
-            ok: "OK",
-            cancel: "Annuler",
-            yes: "Oui",
-            no: "Non"
-        };
-    }
 
-    if (exists('Ext.util.Format')) {
+    if (Ext.util && Ext.util.Format) {
         Ext.apply(Ext.util.Format, {
             thousandSeparator: '.',
             decimalSeparator: ',',
             currencySign: '$',
             // Canadian Dollar
             dateFormat: 'd/m/Y'
-        });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.apply(Ext.form.field.VTypes, {
-            emailText: 'Ce champ doit contenir un courriel et doit être sous ce format: "usager@example.com"',
-            urlText: 'Ce champ doit contenir une URL sous le format suivant: "http:/' + '/www.example.com"',
-            alphaText: 'Ce champ ne peut contenir que des lettres et le caractère souligné (_)',
-            alphanumText: 'Ce champ ne peut contenir que des caractères alphanumériques ainsi que le caractère souligné (_)'
         });
     }
 });
@@ -113,8 +89,8 @@ Ext.define("Ext.locale.fr_CA.grid.plugin.DragDrop", {
     dragText: "{0} ligne(s) sélectionné(s)"
 });
 
-Ext.define("Ext.locale.fr_CA.TabPanelItem", {
-    override: "Ext.TabPanelItem",
+Ext.define("Ext.locale.fr_CA.tab.Tab", {
+    override: "Ext.tab.Tab",
     closeText: "Fermer cette onglet"
 });
 
@@ -126,7 +102,7 @@ Ext.define("Ext.locale.fr_CA.form.field.Base", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.fr_CA.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    msg: "En cours de chargement..."
+    loadingText: "En cours de chargement..."
 });
 
 Ext.define("Ext.locale.fr_CA.picker.Date", {
@@ -136,8 +112,6 @@ Ext.define("Ext.locale.fr_CA.picker.Date", {
     maxText: "Cette date est plus grande que la date maximum",
     disabledDaysText: "",
     disabledDatesText: "",
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: 'Prochain mois (CTRL+Fléche droite)',
     prevText: 'Mois précédent (CTRL+Fléche gauche)',
     monthYearText: 'Choissisez un mois (CTRL+Fléche haut ou bas pour changer d\'année.)',
@@ -171,7 +145,8 @@ Ext.define("Ext.locale.fr_CA.form.field.Number", {
     override: "Ext.form.field.Number",
     minText: "La valeur minimum de ce champ doit être de {0}",
     maxText: "La valeur maximum de ce champ doit être de {0}",
-    nanText: "{0} n'est pas un nombre valide"
+    nanText: "{0} n'est pas un nombre valide",
+    negativeText: "La valeur de ce champ ne peut être négative"    
 });
 
 Ext.define("Ext.locale.fr_CA.form.field.File", { 
@@ -198,6 +173,14 @@ Ext.define("Ext.locale.fr_CA.form.field.ComboBox", {
     });
 });
 
+Ext.define("Ext.locale.fr_CA.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: 'Ce champ doit contenir un courriel et doit être sous ce format: "usager@example.com"',
+    urlText: 'Ce champ doit contenir une URL sous le format suivant: "http:/' + '/www.example.com"',
+    alphaText: 'Ce champ ne peut contenir que des lettres et le caractère souligné (_)',
+    alphanumText: 'Ce champ ne peut contenir que des caractères alphanumériques ainsi que le caractère souligné (_)'
+});
+
 Ext.define("Ext.locale.fr_CA.grid.header.Container", {
     override: "Ext.grid.header.Container",
     sortAscText: "Tri ascendant",
@@ -212,6 +195,16 @@ Ext.define("Ext.locale.fr_CA.grid.PropertyColumnModel", {
     nameText: "Propriété",
     valueText: "Valeur",
     dateFormat: "d/m/Y"
+});
+
+Ext.define("Ext.locale.fr_CA.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "OK",
+        cancel: "Annuler",
+        yes: "Oui",
+        no: "Non"
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files

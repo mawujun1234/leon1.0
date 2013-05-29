@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 /**
  * List compiled by mystix on the extjs.com forums.
@@ -27,12 +27,6 @@ Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
  * updated to 2.2 by Condor (8 Aug 2008)
  */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm);
-
-    if (Ext.Updater) {
-        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">Bezig met laden...</div>';
-    }
 
     if (Ext.Date) {
         Ext.Date.monthNames = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
@@ -76,31 +70,13 @@ Ext.onReady(function() {
         Ext.Date.parseCodes.S.s = "(?:ste|e)";
     }
 
-    if (Ext.MessageBox) {
-        Ext.MessageBox.buttonText = {
-            ok: 'OK',
-            cancel: 'Annuleren',
-            yes: 'Ja',
-            no: 'Nee'
-        };
-    }
-
-    if (exists('Ext.util.Format')) {
+    if (Ext.util && Ext.util.Format) {
         Ext.apply(Ext.util.Format, {
             thousandSeparator: '.',
             decimalSeparator: ',',
             currencySign: '\u20ac',
             // Dutch Euro
             dateFormat: 'j-m-Y'
-        });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.apply(Ext.form.field.VTypes, {
-            emailText: 'Dit veld moet een e-mail adres bevatten in het formaat "gebruiker@domein.nl"',
-            urlText: 'Dit veld moet een URL bevatten in het formaat "http:/' + '/www.domein.nl"',
-            alphaText: 'Dit veld mag alleen letters en _ bevatten',
-            alphanumText: 'Dit veld mag alleen letters, cijfers en _ bevatten'
         });
     }
 });
@@ -118,7 +94,7 @@ Ext.define("Ext.locale.nl.grid.plugin.DragDrop", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.nl.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    msg: 'Bezig met laden...'
+    loadingText: 'Bezig met laden...'
 });
 
 Ext.define("Ext.locale.nl.picker.Date", {
@@ -128,8 +104,6 @@ Ext.define("Ext.locale.nl.picker.Date", {
     maxText: 'Deze datum is later dan de maximale datum',
     disabledDaysText: '',
     disabledDatesText: '',
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: 'Volgende maand (Ctrl+rechts)',
     prevText: 'Vorige maand (Ctrl+links)',
     monthYearText: 'Kies een maand (Ctrl+omhoog/omlaag volgend/vorig jaar)',
@@ -198,6 +172,14 @@ Ext.define("Ext.locale.nl.form.field.ComboBox", {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
         loadingText: 'Bezig met laden...'
     });
+});
+
+Ext.define("Ext.locale.nl.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: 'Dit veld moet een e-mail adres bevatten in het formaat "gebruiker@domein.nl"',
+    urlText: 'Dit veld moet een URL bevatten in het formaat "http:/' + '/www.domein.nl"',
+    alphaText: 'Dit veld mag alleen letters en _ bevatten',
+    alphanumText: 'Dit veld mag alleen letters, cijfers en _ bevatten'
 });
 
 Ext.define("Ext.locale.nl.form.field.HtmlEditor", {
@@ -318,6 +300,16 @@ Ext.define("Ext.locale.nl.form.CheckboxGroup", {
 Ext.define("Ext.locale.nl.form.RadioGroup", {
     override: "Ext.form.RadioGroup",
     blankText: 'Selecteer een element in deze groep'
+});
+
+Ext.define("Ext.locale.nl.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: 'OK',
+        cancel: 'Annuleren',
+        yes: 'Ja',
+        no: 'Nee'
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files

@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 /**
  * List compiled by mystix on the extjs.com forums.
@@ -26,44 +26,47 @@ Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
  * 12-April-2007 04:06PM
  */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm);
-
-    if (Ext.Updater) {
-        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">Đang tải...</div>';
-    }
 
     if (Ext.Date) {
         Ext.Date.monthNames = ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"];
 
         Ext.Date.dayNames = ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"];
-    }
-
-    if (Ext.MessageBox) {
-        Ext.MessageBox.buttonText = {
-            ok: "Đồng ý",
-            cancel: "Hủy bỏ",
-            yes: "Có",
-            no: "Không"
+        
+        Ext.Date.monthNumbers = {
+            "Tháng 1": 0,
+            "Tháng 2": 1,
+            "Tháng 3": 2,
+            "Tháng 4": 3,
+            "Tháng 5": 4,
+            "Tháng 6": 5,
+            "Tháng 7": 6,
+            "Tháng 8": 7,
+            "Tháng 9": 8,
+            "Tháng 10": 9,
+            "Tháng 11": 10,
+            "Tháng 12": 11,
         };
+        
+        Ext.Date.getShortMonthName = function(month){
+            return Ext.Date.monthNames[month];
+        };
+        
+        Ext.Date.getMonthNumber = function(name){
+            return Ext.Date.monthNumbers[name];    
+        };
+        
+        Ext.Date.getShortDayName = function(day) {
+            return Ext.Date.dayNames[day];
+        }
     }
 
-    if (exists('Ext.util.Format')) {
+    if (Ext.util && Ext.util.Format) {
         Ext.apply(Ext.util.Format, {
             thousandSeparator: '.',
             decimalSeparator: ',',
             currencySign: '\u20ab',
             // Vietnamese Dong
             dateFormat: 'd/m/Y'
-        });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.apply(Ext.form.field.VTypes, {
-            emailText: 'Giá trị của ô này phải là một địa chỉ email có dạng như "ten@abc.com"',
-            urlText: 'Giá trị của ô này phải là một địa chỉ web(URL) hợp lệ, có dạng như "http:/' + '/www.example.com"',
-            alphaText: 'Ô này chỉ được nhập các kí tự và gạch dưới(_)',
-            alphanumText: 'Ô này chỉ được nhập các kí tự, số và gạch dưới(_)'
         });
     }
 });
@@ -78,8 +81,8 @@ Ext.define("Ext.locale.vn.grid.plugin.DragDrop", {
     dragText: "{0} dòng được chọn"
 });
 
-Ext.define("Ext.locale.vn.TabPanelItem", {
-    override: "Ext.TabPanelItem",
+Ext.define("Ext.locale.vn.tab.Tab", {
+    override: "Ext.tab.Tab",
     closeText: "Đóng thẻ này"
 });
 
@@ -91,7 +94,7 @@ Ext.define("Ext.locale.vn.form.field.Base", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.vn.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    msg: "Đang tải..."
+    loadingText: "Đang tải..."
 });
 
 Ext.define("Ext.locale.vn.picker.Date", {
@@ -101,8 +104,6 @@ Ext.define("Ext.locale.vn.picker.Date", {
     maxText: "Ngày này lớn hơn ngày lớn nhất",
     disabledDaysText: "",
     disabledDatesText: "",
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: 'Tháng sau (Control+Right)',
     prevText: 'Tháng trước (Control+Left)',
     monthYearText: 'Chọn một tháng (Control+Up/Down để thay đổi năm)',
@@ -158,6 +159,14 @@ Ext.define("Ext.locale.vn.form.field.ComboBox", {
     });
 });
 
+Ext.define("Ext.locale.vn.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: 'Giá trị của ô này phải là một địa chỉ email có dạng như "ten@abc.com"',
+    urlText: 'Giá trị của ô này phải là một địa chỉ web(URL) hợp lệ, có dạng như "http:/' + '/www.example.com"',
+    alphaText: 'Ô này chỉ được nhập các kí tự và gạch dưới(_)',
+    alphanumText: 'Ô này chỉ được nhập các kí tự, số và gạch dưới(_)'
+});
+
 Ext.define("Ext.locale.vn.grid.header.Container", {
     override: "Ext.grid.header.Container",
     sortAscText: "Tăng dần",
@@ -172,6 +181,16 @@ Ext.define("Ext.locale.vn.grid.PropertyColumnModel", {
     nameText: "Tên",
     valueText: "Giá trị",
     dateFormat: "j/m/Y"
+});
+
+Ext.define("Ext.locale.vn.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "Đồng ý",
+        cancel: "Hủy bỏ",
+        yes: "Có",
+        no: "Không"
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files

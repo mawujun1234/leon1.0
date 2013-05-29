@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 /**
  * List compiled by mystix on the extjs.com forums.
@@ -26,44 +26,20 @@ Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
  * by Thys Meintjes (20 July 2007)
  */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm);
 
-    if (Ext.Updater) {
-        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">Besig om te laai...</div>';
-    } /* Ext single string translations */
-
-    /* Javascript month and days translations */
     if (Ext.Date) {
         Ext.Date.monthNames = ["Januarie", "Februarie", "Maart", "April", "Mei", "Junie", "Julie", "Augustus", "September", "Oktober", "November", "Desember"];
 
         Ext.Date.dayNames = ["Sondag", "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrydag", "Saterdag"];
-    } /* Ext components translations */
-    if (Ext.MessageBox) {
-        Ext.MessageBox.buttonText = {
-            ok: "OK",
-            cancel: "Kanselleer",
-            yes: "Ja",
-            no: "Nee"
-        };
     }
 
-    if (exists('Ext.util.Format')) {
+    if (Ext.util && Ext.util.Format) {
         Ext.apply(Ext.util.Format, {
             thousandSeparator: '.',
             decimalSeparator: ',',
             currencySign: 'R',
             // Sith Efrikan Rand
             dateFormat: 'd-m-Y'
-        });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.apply(Ext.form.field.VTypes, {
-            emailText: "Hierdie veld moet 'n e-pos adres wees met die formaat 'gebruiker@domein.za'",
-            urlText: "Hierdie veld moet 'n URL wees me die formaat 'http:/'+'/www.domein.za'",
-            alphaText: 'Die veld mag alleenlik letters en _ bevat',
-            alphanumText: 'Die veld mag alleenlik letters, syfers en _ bevat'
         });
     }
 });
@@ -78,8 +54,8 @@ Ext.define("Ext.locale.af.grid.plugin.DragDrop", {
     dragText: "{0} geselekteerde ry(e)"
 });
 
-Ext.define("Ext.locale.af.TabPanelItem", {
-    override: "Ext.TabPanelItem",
+Ext.define("Ext.locale.af.tab.Tab", {
+    override: "Ext.tab.Tab",
     closeText: "Maak die oortjie toe"
 });
 
@@ -91,7 +67,7 @@ Ext.define("Ext.locale.af.form.field.Base", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.af.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    msg: "Besig om te laai..."
+    loadingText: "Besig om te laai..."
 });
 
 Ext.define("Ext.locale.af.picker.Date", {
@@ -101,8 +77,6 @@ Ext.define("Ext.locale.af.picker.Date", {
     maxText: "Hierdie dataum is later as die maximum datum",
     disabledDaysText: "",
     disabledDatesText: "",
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: 'Volgende Maand (Beheer+Regs)',
     prevText: 'Vorige Maand (Beheer+Links)',
     monthYearText: "Kies 'n maand (Beheer+Op/Af volgende/vorige jaar)",
@@ -160,6 +134,14 @@ Ext.define("Ext.locale.af.form.field.ComboBox", {
     });
 });
 
+Ext.define("Ext.locale.af.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: "Hierdie veld moet 'n e-pos adres wees met die formaat 'gebruiker@domein.za'",
+    urlText: "Hierdie veld moet 'n URL wees me die formaat 'http:/'+'/www.domein.za'",
+    alphaText: 'Die veld mag alleenlik letters en _ bevat',
+    alphanumText: 'Die veld mag alleenlik letters, syfers en _ bevat'
+});
+
 Ext.define("Ext.locale.af.grid.header.Container", {
     override: "Ext.grid.header.Container",
     sortAscText: "Sorteer Oplopend",
@@ -174,6 +156,16 @@ Ext.define("Ext.locale.af.grid.PropertyColumnModel", {
     nameText: "Naam",
     valueText: "Waarde",
     dateFormat: "Y-m-j"
+});
+
+Ext.define("Ext.locale.af.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "OK",
+        cancel: "Kanselleer",
+        yes: "Ja",
+        no: "Nee"
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files

@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 /**
  * List compiled by KillerNay on the extjs.com forums.
@@ -25,12 +25,6 @@ Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
  * Thailand Translations
  */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm);
-
-    if (Ext.Updater) {
-        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">ยกร“ร…ร‘ยงรขรร…ลฝ...</div>';
-    }
 
     if (Ext.Date) {
         Ext.Date.monthNames = ["รยกรร’โฌร", "ยกรรลธร’ร“ลธร‘ยนลพรฌ", "รร•ยนร’โฌร", "ร รรร’รยน", "ลธรรร€ร’โฌร", "รร”ยถรยนร’รยน", "ยกรยกยฏร’โฌร", "รร”ยงรร’โฌร", "ยกร‘ยนรร’รยน", "ยตรร…ร’โฌร", "ลธรรลกร”ยกร’รยน", "ลพร‘ยนรร’โฌร"];
@@ -64,31 +58,14 @@ Ext.onReady(function() {
             return Ext.Date.dayNames[day].substring(0, 3);
         };
     }
-    if (Ext.MessageBox) {
-        Ext.MessageBox.buttonText = {
-            ok: "ยตยกร…ยง",
-            cancel: "รยกร ร…ร”ยก",
-            yes: "รฃยชรจ",
-            no: "รครรจรฃยชรจ"
-        };
-    }
 
-    if (exists('Ext.util.Format')) {
+    if (Ext.util && Ext.util.Format) {
         Ext.apply(Ext.util.Format, {
             thousandSeparator: '.',
             decimalSeparator: ',',
             currencySign: '\u0e3f',
             // Thai Baht
             dateFormat: 'm/d/Y'
-        });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.apply(Ext.form.field.VTypes, {
-            emailText: 'This field should be an e-mail address in the format "user@example.com"',
-            urlText: 'This field should be a URL in the format "http:/' + '/www.example.com"',
-            alphaText: 'This field should only contain letters and _',
-            alphanumText: 'This field should only contain letters, numbers and _'
         });
     }
 });
@@ -103,8 +80,8 @@ Ext.define("Ext.locale.th.grid.plugin.DragDrop", {
     dragText: "{0} ร ร…ร—รยกรกร…รฉรยทร‘รฉยงรรลฝรกยถร"
 });
 
-Ext.define("Ext.locale.th.TabPanelItem", {
-    override: "Ext.TabPanelItem",
+Ext.define("Ext.locale.th.tab.Tab", {
+    override: "Ext.tab.Tab",
     closeText: "ยปร”ลฝรกยทรงยบยนร•รฉ"
 });
 
@@ -116,7 +93,7 @@ Ext.define("Ext.locale.th.form.field.Base", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.th.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    msg: "ยกร“ร…ร‘ยงรขรร…ลฝ..."
+    loadingText: "ยกร“ร…ร‘ยงรขรร…ลฝ..."
 });
 
 Ext.define("Ext.locale.th.picker.Date", {
@@ -126,8 +103,6 @@ Ext.define("Ext.locale.th.picker.Date", {
     maxText: "This date is after the maximum date",
     disabledDaysText: "",
     disabledDatesText: "",
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: 'ร ลฝร—รยนยถร‘ลฝรคยป (Control+Right)',
     prevText: 'ร ลฝร—รยนยกรจรยนรยนรฉร’ (Control+Left)',
     monthYearText: 'ร ร…ร—รยกร ลฝร—รยน (Control+Up/Down to move years)',
@@ -189,6 +164,14 @@ Ext.define("Ext.locale.th.form.field.ComboBox", {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
         loadingText: "ยกร“ร…ร‘ยงรขรร…ลฝ..."
     });
+});
+
+Ext.define("Ext.locale.th.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: 'This field should be an e-mail address in the format "user@example.com"',
+    urlText: 'This field should be a URL in the format "http:/' + '/www.example.com"',
+    alphaText: 'This field should only contain letters and _',
+    alphanumText: 'This field should only contain letters, numbers and _'
 });
 
 Ext.define("Ext.locale.th.form.field.HtmlEditor", {
@@ -292,6 +275,16 @@ Ext.define("Ext.locale.th.grid.PropertyColumnModel", {
     nameText: "Name",
     valueText: "Value",
     dateFormat: "m/j/Y"
+});
+
+Ext.define("Ext.locale.th.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "ยตยกร…ยง",
+        cancel: "รยกร ร…ร”ยก",
+        yes: "รฃยชรจ",
+        no: "รครรจรฃยชรจ"
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files

@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 /**
  * Portuguese/Brazil Translation by Weber Souza
@@ -27,43 +27,20 @@ Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
  * 31 January 2008
  */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm);
-
-    if (Ext.Updater) {
-        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">Carregando...</div>';
-    }
 
     if (Ext.Date) {
         Ext.Date.monthNames = ["Janeiro", "Fevereiro", "Mar&ccedil;o", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
         Ext.Date.dayNames = ["Domingo", "Segunda", "Ter&ccedil;a", "Quarta", "Quinta", "Sexta", "S&aacute;bado"];
     }
-    if (Ext.MessageBox) {
-        Ext.MessageBox.buttonText = {
-            ok: "OK",
-            cancel: "Cancelar",
-            yes: "Sim",
-            no: "N&atilde;o"
-        };
-    }
 
-    if (exists('Ext.util.Format')) {
+    if (Ext.util && Ext.util.Format) {
         Ext.apply(Ext.util.Format, {
             thousandSeparator: '.',
             decimalSeparator: ',',
             currencySign: '\u20ac',
             // Portugese Euro
             dateFormat: 'd/m/Y'
-        });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.apply(Ext.form.field.VTypes, {
-            emailText: 'Este campo deve ser um endere&ccedil;o de e-mail v&aacute;lido, no formato "utilizador@dominio.com"',
-            urlText: 'Este campo deve ser um URL no formato "http:/' + '/www.dominio.com"',
-            alphaText: 'Este campo deve conter apenas letras e _',
-            alphanumText: 'Este campo deve conter apenas letras, n&uacute;meros e _'
         });
     }
 });
@@ -78,8 +55,8 @@ Ext.define("Ext.locale.pt.grid.plugin.DragDrop", {
     dragText: "{0} linha(s) seleccionada(s)"
 });
 
-Ext.define("Ext.locale.pt.TabPanelItem", {
-    override: "Ext.TabPanelItem",
+Ext.define("Ext.locale.pt.tab.Tab", {
+    override: "Ext.tab.Tab",
     closeText: "Fechar"
 });
 
@@ -91,7 +68,7 @@ Ext.define("Ext.locale.pt.form.field.Base", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.pt.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    msg: "Carregando..."
+    loadingText: "Carregando..."
 });
 
 Ext.define("Ext.locale.pt.picker.Date", {
@@ -101,8 +78,6 @@ Ext.define("Ext.locale.pt.picker.Date", {
     maxText: "Esta data &eacute; posterior &agrave; maior data",
     disabledDaysText: "",
     disabledDatesText: "",
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: 'Pr&oacute;ximo M&ecirc;s (Control+Direita)',
     prevText: 'M&ecirc;s Anterior (Control+Esquerda)',
     monthYearText: 'Escolha um M&ecirc;s (Control+Cima/Baixo para mover entre os anos)',
@@ -163,6 +138,14 @@ Ext.define("Ext.locale.pt.form.field.ComboBox", {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
         loadingText: "Carregando..."
     });
+});
+
+Ext.define("Ext.locale.pt.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: 'Este campo deve ser um endere&ccedil;o de e-mail v&aacute;lido, no formato "utilizador@dominio.com"',
+    urlText: 'Este campo deve ser um URL no formato "http:/' + '/www.dominio.com"',
+    alphaText: 'Este campo deve conter apenas letras e _',
+    alphanumText: 'Este campo deve conter apenas letras, n&uacute;meros e _'
 });
 
 Ext.define("Ext.locale.pt.form.field.HtmlEditor", {
@@ -259,6 +242,16 @@ Ext.define("Ext.locale.pt.grid.PropertyColumnModel", {
     nameText: "Nome",
     valueText: "Valor",
     dateFormat: "d/m/Y"
+});
+
+Ext.define("Ext.locale.pt.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "OK",
+        cancel: "Cancelar",
+        yes: "Sim",
+        no: "N&atilde;o"
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files

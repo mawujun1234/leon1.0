@@ -16,19 +16,13 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 /**
  * Greek (Old Version) Translations by Vagelis
  * 03-June-2007
  */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm);
-
-    if (Ext.Updater) {
-        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">Öüñôùóç...</div>';
-    }
 
     if (Ext.Date) {
         Ext.Date.monthNames = ["ÉáíïõÜñéïò", "ÖåâñïõÜñéïò", "ÌÜñôéïò", "Áðñßëéïò", "ÌÜéïò", "Éïýíéïò", "Éïýëéïò", "Áýãïõóôïò", "ÓåðôÝìâñéïò", "Ïêôþâñéïò", "ÍïÝìâñéïò", "ÄåêÝìâñéïò"];
@@ -36,31 +30,13 @@ Ext.onReady(function() {
         Ext.Date.dayNames = ["ÊõñéáêÞ", "ÄåõôÝñá", "Ôñßôç", "ÔåôÜñôç", "ÐÝìðôç", "ÐáñáóêåõÞ", "ÓÜââáôï"];
     }
 
-    if (Ext.MessageBox) {
-        Ext.MessageBox.buttonText = {
-            ok: "ÅíôÜîåé",
-            cancel: "Áêýñùóç",
-            yes: "Íáé",
-            no: "¼÷é"
-        };
-    }
-
-    if (exists('Ext.util.Format')) {
+    if (Ext.util && Ext.util.Format) {
         Ext.apply(Ext.util.Format, {
             thousandSeparator: '.',
             decimalSeparator: ',',
             currencySign: '\u20ac',
             // Greek Euro
             dateFormat: 'ì/ç/Å'
-        });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.apply(Ext.form.field.VTypes, {
-            emailText: 'Áõôü ôï ðåäßï ðñÝðåé íá åßíáé e-mail address ôçò ìïñöÞò "user@example.com"',
-            urlText: 'Áõôü ôï ðåäßï ðñÝðåé íá åßíáé ìéá äéåýèõíóç URL ôçò ìïñöÞò "http:/' + '/www.example.com"',
-            alphaText: 'Áõôü ôï ðåäßï ðñÝðåé íá ðåñéÝ÷åé ãñÜììáôá êáé _',
-            alphanumText: 'Áõôü ôï ðåäßï ðñÝðåé íá ðåñéÝ÷åé ãñÜììáôá, áñéèìïýò êáé _'
         });
     }
 });
@@ -75,8 +51,8 @@ Ext.define("Ext.locale.gr.grid.plugin.DragDrop", {
     dragText: "{0} åðéëåãìÝíç(åò) ãñáììÞ(Ýò)"
 });
 
-Ext.define("Ext.locale.gr.TabPanelItem", {
-    override: "Ext.TabPanelItem",
+Ext.define("Ext.locale.gr.tab.Tab", {
+    override: "Ext.tab.Tab",
     closeText: "Êëåßóôå áõôÞ ôçí êáñôÝëá"
 });
 
@@ -88,7 +64,7 @@ Ext.define("Ext.locale.gr.form.field.Base", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.gr.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    msg: "Öüñôùóç..."
+    loadingText: "Öüñôùóç..."
 });
 
 Ext.define("Ext.locale.gr.picker.Date", {
@@ -98,8 +74,6 @@ Ext.define("Ext.locale.gr.picker.Date", {
     maxText: "Ç çìåñïìçíßá áõôÞ åßíáé ìåôÜ ôçí ìåãáëýôåñç çìåñïìçíßá",
     disabledDaysText: "",
     disabledDatesText: "",
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: 'Åðüìåíïò ÌÞíáò (Control+Right)',
     prevText: 'Ðñïçãïýìåíïò ÌÞíáò (Control+Left)',
     monthYearText: 'ÅðéëÝîôå ÌÞíá (Control+Up/Down ãéá ìåôáêßíçóç óôá Ýôç)',
@@ -155,6 +129,14 @@ Ext.define("Ext.locale.gr.form.field.ComboBox", {
     });
 });
 
+Ext.define("Ext.locale.gr.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: 'Áõôü ôï ðåäßï ðñÝðåé íá åßíáé e-mail address ôçò ìïñöÞò "user@example.com"',
+    urlText: 'Áõôü ôï ðåäßï ðñÝðåé íá åßíáé ìéá äéåýèõíóç URL ôçò ìïñöÞò "http:/' + '/www.example.com"',
+    alphaText: 'Áõôü ôï ðåäßï ðñÝðåé íá ðåñéÝ÷åé ãñÜììáôá êáé _',
+    alphanumText: 'Áõôü ôï ðåäßï ðñÝðåé íá ðåñéÝ÷åé ãñÜììáôá, áñéèìïýò êáé _'
+});
+
 Ext.define("Ext.locale.gr.grid.header.Container", {
     override: "Ext.grid.header.Container",
     sortAscText: "Áýîïõóá Ôáîéíüìçóç",
@@ -169,6 +151,16 @@ Ext.define("Ext.locale.gr.grid.PropertyColumnModel", {
     nameText: "¼íïìá",
     valueText: "ÔéìÞ",
     dateFormat: "ì/ç/Å"
+});
+
+Ext.define("Ext.locale.gr.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "ÅíôÜîåé",
+        cancel: "Áêýñùóç",
+        yes: "Íáé",
+        no: "¼÷é"
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files

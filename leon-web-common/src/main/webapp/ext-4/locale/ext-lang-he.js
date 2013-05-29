@@ -16,19 +16,13 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-03-11 22:33:40 (aed16176e68b5e8aa1433452b12805c0ad913836)
+Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 */
 /**
  * Hebrew Translations
  * By spartacus (from forums) 06-12-2007
  */
 Ext.onReady(function() {
-    var cm = Ext.ClassManager,
-        exists = Ext.Function.bind(cm.get, cm);
-
-    if (Ext.Updater) {
-        Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">...טוען</div>';
-    }
 
     if (Ext.Date) {
         Ext.Date.monthNames = ["ינואר", "פברואר", "מרץ", "אפריל", "מאי", "יוני", "יולי", "אוגוסט", "ספטמבר", "אוקטובר", "נובמבר", "דצמבר"];
@@ -63,31 +57,13 @@ Ext.onReady(function() {
         };
     }
 
-    if (Ext.MessageBox) {
-        Ext.MessageBox.buttonText = {
-            ok: "אישור",
-            cancel: "ביטול",
-            yes: "כן",
-            no: "לא"
-        };
-    }
-
-    if (exists('Ext.util.Format')) {
+    if (Ext.util && Ext.util.Format) {
         Ext.apply(Ext.util.Format, {
             thousandSeparator: '.',
             decimalSeparator: ',',
             currencySign: '\u20aa',
             // Iraeli Shekel
             dateFormat: 'd/m/Y'
-        });
-    }
-
-    if (exists('Ext.form.field.VTypes')) {
-        Ext.apply(Ext.form.field.VTypes, {
-            emailText: '"user@example.com" שדה זה צריך להיות כתובת דואר אלקטרוני בפורמט',
-            urlText: '"http:/' + '/www.example.com" שדה זה צריך להיות כתובת אינטרנט בפורמט',
-            alphaText: '_שדה זה יכול להכיל רק אותיות ו',
-            alphanumText: '_שדה זה יכול להכיל רק אותיות, מספרים ו'
         });
     }
 });
@@ -102,8 +78,8 @@ Ext.define("Ext.locale.he.grid.plugin.DragDrop", {
     dragText: "שורות נבחרות {0}"
 });
 
-Ext.define("Ext.locale.he.TabPanelItem", {
-    override: "Ext.TabPanelItem",
+Ext.define("Ext.locale.he.tab.Tab", {
+    override: "Ext.tab.Tab",
     closeText: "סגור לשונית"
 });
 
@@ -115,7 +91,7 @@ Ext.define("Ext.locale.he.form.field.Base", {
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.he.view.AbstractView", {
     override: "Ext.view.AbstractView",
-    msg: "...טוען"
+    loadingText: "...טוען"
 });
 
 Ext.define("Ext.locale.he.picker.Date", {
@@ -125,8 +101,6 @@ Ext.define("Ext.locale.he.picker.Date", {
     maxText: ".תאריך זה חל לאחר התאריך הסופי שנקבע",
     disabledDaysText: "",
     disabledDatesText: "",
-    monthNames: Ext.Date.monthNames,
-    dayNames: Ext.Date.dayNames,
     nextText: '(Control+Right) החודש הבא',
     prevText: '(Control+Left) החודש הקודם',
     monthYearText: '(לבחירת שנה Control+Up/Down) בחר חודש',
@@ -188,6 +162,14 @@ Ext.define("Ext.locale.he.form.field.ComboBox", {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
         loadingText: "...טוען"
     });
+});
+
+Ext.define("Ext.locale.he.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+    emailText: '"user@example.com" שדה זה צריך להיות כתובת דואר אלקטרוני בפורמט',
+    urlText: '"http:/' + '/www.example.com" שדה זה צריך להיות כתובת אינטרנט בפורמט',
+    alphaText: '_שדה זה יכול להכיל רק אותיות ו',
+    alphanumText: '_שדה זה יכול להכיל רק אותיות, מספרים ו'
 });
 
 Ext.define("Ext.locale.he.form.field.HtmlEditor", {
@@ -291,6 +273,16 @@ Ext.define("Ext.locale.he.grid.PropertyColumnModel", {
     nameText: "שם",
     valueText: "ערך",
     dateFormat: "m/j/Y"
+});
+
+Ext.define("Ext.locale.he.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "אישור",
+        cancel: "ביטול",
+        yes: "כן",
+        no: "לא"
+    }    
 });
 
 // This is needed until we can refactor all of the locales into individual files
