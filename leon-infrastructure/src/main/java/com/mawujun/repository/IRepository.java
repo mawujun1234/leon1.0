@@ -18,7 +18,7 @@ public interface IRepository<T, ID extends Serializable> {
 	public T get(Serializable id);
 	
 	
-	public int saveBatch(final T... entitys);
+	public int createBatch(final T... entitys);
 	public int saveBatch(final Collection<T> entities);
 	public int deleteBatch(final T... entitys);
 	public int deleteBatch(final Collection<T> entities);

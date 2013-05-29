@@ -14,6 +14,7 @@ import javax.persistence.Transient;
 
 import com.mawujun.annotation.Label;
 import com.mawujun.repository.idEntity.IdEntity;
+import com.mawujun.repository.idEntity.UUIDEntity;
 
 /**
  * 常数类，下面有CodeItem
@@ -22,12 +23,16 @@ import com.mawujun.repository.idEntity.IdEntity;
  */
 @Entity
 @Table(name="leon_Constant")
-public class Constant implements IdEntity<String> {
+public class Constant extends UUIDEntity {
 	
-	@Id
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Column(length=25)
 	@Label(name="编码")
-	private String id;
+	private String code;
 	@Column(length=25)
 	@Label(name="名称")
 	private String text;
@@ -46,15 +51,7 @@ public class Constant implements IdEntity<String> {
 	@Transient
 	public final static String discriminator="Constant";//用来区分是哪个级别的
 
-	public String getId() {
-		// TODO Auto-generated method stub
-		return this.id;
-	}
 
-	public void setId(String id) {
-		// TODO Auto-generated method stub
-		this.id=id;
-	}
 
 
 	public String getRemark() {
@@ -91,6 +88,14 @@ public class Constant implements IdEntity<String> {
 
 	public String getDiscriminator() {
 		return discriminator;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 

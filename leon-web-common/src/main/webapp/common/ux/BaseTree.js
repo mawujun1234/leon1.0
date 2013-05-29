@@ -147,6 +147,7 @@ Ext.define('Leon.common.ux.BaseTree', {
 		    },
 		    iconCls: 'form-addChild-button'
 		});
+		me.addContextMenu(create);
 		var createSibling = new Ext.Action({
 		    text: '新增兄弟节点',
 		    disabled:me.disabledAction,
@@ -175,6 +176,7 @@ Ext.define('Leon.common.ux.BaseTree', {
 		    },
 		    iconCls: 'form-addChild-button'
 		});
+		me.addContextMenu(createSibling);
 		var destroy = new Ext.Action({
 		    text: '删除',
 		    disabled:me.disabledAction,
@@ -222,6 +224,7 @@ Ext.define('Leon.common.ux.BaseTree', {
 		    },
 		    iconCls: 'form-delete-button'
 		});
+		me.addContextMenu(destroy);
 		var update = new Ext.Action({
 		    text: '修改',
 		    disabled:me.disabledAction,
@@ -251,6 +254,7 @@ Ext.define('Leon.common.ux.BaseTree', {
 		    },
 		    iconCls: 'form-update-button'
 		});
+		me.addContextMenu(update);
 		var copy = new Ext.Action({
 		    text: '复制',
 		    disabled:me.disabledAction,
@@ -267,6 +271,7 @@ Ext.define('Leon.common.ux.BaseTree', {
 		    },
 		    iconCls: 'form-copy-button'
 		});
+		me.addContextMenu(copy);
 		var paste = new Ext.Action({
 		    text: '粘贴',
 		    disabled:me.disabledAction,
@@ -289,6 +294,7 @@ Ext.define('Leon.common.ux.BaseTree', {
 		    },
 		    iconCls: 'form-paste-button'
 		});
+		me.addContextMenu(paste);
 		var reload = new Ext.Action({
 		    text: '刷新',
 		    handler: function(){
@@ -301,21 +307,60 @@ Ext.define('Leon.common.ux.BaseTree', {
 		    },
 		    iconCls: 'form-reload-button'
 		});
-		me.actions=[create,createSibling,destroy,update,copy,paste,reload];
-		//me.tbar=me.actions;
-		//me.actions.push(reload);
-		var menu=Ext.create('Ext.menu.Menu', {
-		    items: me.actions
-		});
-		me.on('itemcontextmenu',function(tree,record,item,index,e){
-			menu.showAt(e.getXY());
-			e.stopEvent();
-		});
+		me.addContextMenu(reload);
 		
-		me.on('containercontextmenu',function(view,e){
-			menu.showAt(e.getXY());
-			e.stopEvent();
-		});
+//		me.actions=[create,createSibling,destroy,update,copy,paste,reload];
+//		//me.tbar=me.actions;
+//		//me.actions.push(reload);
+//		var menu=Ext.create('Ext.menu.Menu', {
+//		    items: me.actions
+//		});
+//		me.on('itemcontextmenu',function(tree,record,item,index,e){
+//			menu.showAt(e.getXY());
+//			e.stopEvent();
+//		});
+//		
+//		me.on('containercontextmenu',function(view,e){
+//			menu.showAt(e.getXY());
+//			e.stopEvent();
+//		});
+    },
+    afterContextMenuShow:function(tree,record,item,index,e){
+
+    },
+    addContextMenu:function(action){
+    	if(!action){
+    		return;
+    	}
+    	var me=this;
+    	var menu=me.contextMenu;
+    	if(!menu){
+    		me.contextMenu=Ext.create('Ext.menu.Menu', {
+			    items:[]
+			});
+			menu=me.contextMenu;
+			me.on('itemcontextmenu',function(tree,record,item,index,e){
+				menu.showAt(e.getXY());
+				e.stopEvent();
+				me.afterContextMenuShow(tree,record,item,index,e);
+			});
+			
+			me.on('containercontextmenu',function(view,e){
+				//menu.showAt(e.getXY());
+				e.stopEvent();
+			});
+    	} else if(!me.hasListener("itemcontextmenu")|| me.hasListener("containercontextmenu")){
+    		me.on('itemcontextmenu',function(tree,record,item,index,e){
+				menu.showAt(e.getXY());
+				e.stopEvent();
+			});
+			
+			me.on('containercontextmenu',function(view,e){
+				menu.showAt(e.getXY());
+				e.stopEvent();
+			});
+    	}
+    	me.contextMenu.add(action);
     },
     setDisableAction:function(boool){
     	//让所有的菜单都不能使用

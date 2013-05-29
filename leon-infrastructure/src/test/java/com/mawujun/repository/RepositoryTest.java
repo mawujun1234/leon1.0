@@ -184,7 +184,7 @@ public class RepositoryTest extends DbunitBaseRepositoryTest {
 			entity.setEmail("1@163.com");
 			entitys[i]=entity;
 		}
-		repository.saveBatch(entitys);
+		repository.createBatch(entitys);
 		tx.commit();
 		assertEquals(13,dbConn.getRowCount(EntityTest_TableName));
 	}

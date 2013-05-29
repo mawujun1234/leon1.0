@@ -66,7 +66,8 @@ public class MappingJackson2JsonView_Custom extends MappingJackson2JsonView {
 				}
 				map.put("message",detailMsg);
 			} else {
-				map.put("message", exception.getMessage());
+				//map.put("message", exception.getMessage());
+				map.put("message", "后台发生系统异常，请联系管理员或重试!");
 			}
 			model=map;
 			//exception.printStackTrace();

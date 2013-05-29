@@ -34,18 +34,128 @@ Ext.onReady(function(){
 			constantItemGrid.show();
 			constantItemGrid.getStore().getProxy().extraParams={constan_id:record.getId()};
 			constantItemGrid.getStore().reload();
-		} else {
+		}  else if(record.get("discriminator")=="ConstantItem"){
+//			constantTypeGrid.hide();
+//			constantGrid.hide();
+//			constantItemGrid.show();
+//			constantItemGrid.getStore().getProxy().extraParams={constan_id:record.getId()};
+//			constantItemGrid.getStore().reload();
+		}else {
 			constantTypeGrid.show();
 			constantGrid.hide();
 			constantItemGrid.hide();
 			constantTypeGrid.getStore().reload();
 		}
 	});
+	var reload = new Ext.Action({
+		    text: '刷新',
+		    handler: function(){
+		    	var parent=tree.getSelectionModel( ).getLastSelected( );
+		    	if(parent){
+		    		tree.getStore().reload({node:parent});
+		    	} else {
+		    		tree.getStore().reload();	
+		    	}      
+		    },
+		    iconCls: 'form-reload-button'
+	});
+	tree.addContextMenu(reload);
+	
+//	 var createConstantType = new Ext.Action({
+//		text : '新增常数分类',
+//		handler : function() {
+//			var parent = tree.getSelectionModel().getLastSelected()|| tree.getRootNode();
+//			var values = {
+//				'text' : '新常数分类'
+//			};
+//			var child = Ext.createModel('Leon.desktop.constant.ConstantType', values);
+//
+//			child.save({
+//				success : function(record, operation) {
+//									// child=record;
+//					tree.getStore().reload({
+//						node : parent
+//					});
+//					parent.expand();
+//				}
+//			});
+//
+//		},
+//		iconCls : 'form-addChild-button'
+//	});
+//	tree.addContextMenu(createConstantType);
+//	
+//	var createConstant = new Ext.Action({
+//		text : '新增常数',
+//		handler : function() {
+//			var parent = tree.getSelectionModel().getLastSelected()|| tree.getRootNode();
+//			var values = {
+//				'text' : '新常数'
+//			};
+//			var child = Ext.createModel('Leon.desktop.constant.Constant', values);
+//			child.setConstantType(parent);
+//			child.save({
+//				success : function(record, operation) {
+//									// child=record;
+//					tree.getStore().reload({
+//						node : parent
+//					});
+//					parent.expand();
+//				}
+//			});
+//
+//		},
+//		iconCls : 'form-addChild-button'
+//	});
+//	tree.addContextMenu(createConstant);
+//	var createConstantItem = new Ext.Action({
+//		text : '新增常数项',
+//		handler : function() {
+//			var parent = tree.getSelectionModel().getLastSelected()|| tree.getRootNode();
+//			var values = {
+//				'text' : '新常数项'
+//			};
+//			var child = Ext.createModel('Leon.desktop.constant.ConstantItem', values);
+//			child.setConstant(parent);
+//			child.save({
+//				success : function(record, operation) {
+//									// child=record;
+//					tree.getStore().reload({
+//						node : parent
+//					});
+//					parent.expand();
+//				}
+//			});
+//
+//		},
+//		iconCls : 'form-addChild-button'
+//	});
+//	tree.addContextMenu(createConstantItem);
+//	tree.afterContextMenuShow=function(tree,record,item,index,e){
+//		if(record.get("discriminator")=="ConstantType") {
+//			createConstantType.disable();
+//			createConstant.enable();
+//			createConstantItem.disable();
+//		} else if(record.get("discriminator")=="Constant"){
+//			createConstantType.disable();
+//			createConstant.disable();
+//			createConstantItem.enable();
+//		} else if(record.get("discriminator")=="ConstantItem"){
+//			createConstantType.disable();
+//			createConstant.disable();
+//			createConstantItem.enable();
+//		} else {
+//			createConstantType.enable();
+//			createConstant.disable();
+//			createConstantItem.disable();
+//		}
+//	};
 
 	var constantTypeGrid=Ext.create('Leon.common.ux.BaseGrid',{
 		model:'Leon.desktop.constant.ConstantType',
 		autoSync:false,
 		autoLoad:false,
+		//autoInitAction:false,
 		flex: 1,
 		title:'常数分类',
 		columns:[{dataIndex:'text',text:'名称',editor: {
@@ -64,11 +174,12 @@ Ext.onReady(function(){
 		model:'Leon.desktop.constant.Constant',
 		autoSync:false,
 		autoLoad:false,
+		//autoInitAction:false,
 		flex: 1,
 		//selModel:Ext.create('Ext.selection.CellModel',{}),
 		hidden:true,
 		title:'常数',
-		columns:[{dataIndex:'id',text:'编码',editor: {
+		columns:[{dataIndex:'code',text:'编码',editor: {
 		                xtype: 'textfield',
 		                allowBlank: true,
 		                selectOnFocus:true
@@ -86,8 +197,8 @@ Ext.onReady(function(){
 	});
 	constantGrid.getStore().on('add',function(store,records,index){
 		//这里不行，报错
-		records[0].set("constantType_id",tree.getLastSelected().getId());//	这种方案还要测试，还不行
-		//records[0].setConstantType(tree.getLastSelected().getId());
+		//records[0].set("constantType_id",tree.getLastSelected().getId());//	这种方案还要测试，还不行
+		records[0].setConstantType(tree.getLastSelected().getId());
 		//records[0].setConstantType(tree.getLastSelected());
 	});
 	
@@ -95,10 +206,11 @@ Ext.onReady(function(){
 		model:'Leon.desktop.constant.ConstantItem',
 		autoSync:false,
 		autoLoad:false,
+		//autoInitAction:false,
 		flex: 1,
 		hidden:true,
 		title:'常数项',
-		columns:[{dataIndex:'id',text:'编码',editor: {
+		columns:[{dataIndex:'code',text:'编码',editor: {
 		                xtype: 'textfield',
 		                allowBlank: true,
 		                selectOnFocus:true
@@ -117,6 +229,12 @@ Ext.onReady(function(){
 		            }}
 		    	]
 		
+	});
+	constantItemGrid.getStore().on('add',function(store,records,index){
+		//这里不行，报错
+		//records[0].set("constantType_id",tree.getLastSelected().getId());//	这种方案还要测试，还不行
+		records[0].setConstant(tree.getLastSelected().getId());
+		//records[0].setConstantType(tree.getLastSelected());
 	});
 
 	

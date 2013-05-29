@@ -141,11 +141,13 @@ Ext.override(Ext.data.Model,{
                 // If we have a record, put it onto our list
                 if (associatedRecord ) {
                 	//alert(associatedRecord.getId());
-                	if(me.get(association.foreignKey)!=associatedRecord.getId()){
+                	if(me.get(association.foreignKey) && me.get(association.foreignKey)!=associatedRecord.getId()){
                 		alert("数据不一致，请联系管理员!");
                 		throw new Error("association.instanceName的id和association.foreignKey的值不一致,请先进行处理！或者设置"+association.instanceName+"==null，或者更改foreignKey:" 
                 		+association.foreignKey+"，即重新加载关联对象的数据getter({reload:true})或者调用setter方法，更新关联对象");
 
+                	} else if(!me.get(association.foreignKey)){
+                		me.set(association.foreignKey,associatedRecord.getId());
                 	}
                     associationData[associationKey] = associatedRecord.getData();
                 } else {
@@ -294,51 +296,55 @@ Ext.override(Ext.data.writer.Writer, {
     } 
 });
 
-/**
- * 覆盖原来的关联关系配置方式
- */
-Ext.override(Ext.data.BelongsToAssociation, { 
-	constructor: function(config) {
-		this.callOverridden(arguments);
-
-        var me             = this,
-            ownerProto     = me.ownerModel.prototype,
-            associatedName = me.associatedName,
-            associatedNameCapitalize=Ext.String.capitalize(associatedName),
-            associatedNameUnCapitalize=Ext.String.uncapitalize(associatedName),
-            getterName     = me.getterName || 'get' + associatedNameCapitalize,
-            setterName     = me.setterName || 'set' + associatedNameCapitalize;
-
-        Ext.apply(me, {
-            name        : associatedName,
-            foreignKey  : config.foreignKey||associatedNameUnCapitalize + "_id",
-            instanceName: associatedName + 'BelongsToInstance',
-            associationKey:  config.associationKey||associatedNameUnCapitalize
-        });
-
-        //ownerProto[getterName] = me.createGetter();
-        //ownerProto[setterName] = me.createSetter();
-	}
-});
-Ext.override(Ext.data.association.HasOne, { 
-	constructor: function(config) {
-		this.callOverridden(arguments);
-
-        var me             = this,
-            ownerProto     = me.ownerModel.prototype,
-            associatedName = me.associatedName,
-            associatedNameCapitalize=Ext.String.capitalize(associatedName),
-            associatedNameUnCapitalize=Ext.String.uncapitalize(associatedName),
-            getterName     = me.getterName || 'get' + associatedNameCapitalize,
-            setterName     = me.setterName || 'set' + associatedNameCapitalize;
-
-        Ext.apply(me, {
-            name        : associatedName,
-            foreignKey  : config.foreignKey||associatedNameUnCapitalize + "_id",
-            instanceName: associatedName + 'HasOneInstance',
-            associationKey:  config.associationKey||associatedNameUnCapitalize
-        });
-        //ownerProto[getterName] = me.createGetter();
-        //ownerProto[setterName] = me.createSetter();
-	}
-});
+///**
+// * 覆盖原来的关联关系配置方式
+// */
+//Ext.override(Ext.data.BelongsToAssociation, { 
+//	constructor: function(config) {
+//		this.callOverridden(arguments);
+//
+//        var me             = this,
+//            ownerProto     = me.ownerModel.prototype,
+//            associatedName = me.associatedName,
+//            associatedNameCapitalize=Ext.String.capitalize(associatedName),
+//            associatedNameUnCapitalize=Ext.String.uncapitalize(associatedName),
+//            getterName     = config.getterName || 'get' + associatedNameCapitalize,
+//            setterName     = config.setterName || 'set' + associatedNameCapitalize;
+//
+//        Ext.apply(me, {
+//            name        : associatedName,
+//            foreignKey  : config.foreignKey||associatedNameUnCapitalize + "_id",
+//            instanceName: associatedName + 'BelongsToInstance',
+//            associationKey:  config.associationKey||associatedNameUnCapitalize
+//        });
+//
+//        var orginalgetterName='get' + associatedName;
+//        var orginalsetterName='set' + associatedName;
+//        ownerProto[getterName] = ownerProto[orginalgetterName];
+//        ownerProto[setterName] = ownerProto[orginalsetterName];
+//        delete ownerProto[orginalgetterName];
+//        delete ownerProto[orginalsetterName];
+//	}
+//});
+//Ext.override(Ext.data.association.HasOne, { 
+//	constructor: function(config) {
+//		this.callOverridden(arguments);
+//
+//        var me             = this,
+//            ownerProto     = me.ownerModel.prototype,
+//            associatedName = me.associatedName,
+//            associatedNameCapitalize=Ext.String.capitalize(associatedName),
+//            associatedNameUnCapitalize=Ext.String.uncapitalize(associatedName),
+//            getterName     = me.getterName || 'get' + associatedNameCapitalize,
+//            setterName     = me.setterName || 'set' + associatedNameCapitalize;
+//
+//        Ext.apply(me, {
+//            name        : associatedName,
+//            foreignKey  : config.foreignKey||associatedNameUnCapitalize + "_id",
+//            instanceName: associatedName + 'HasOneInstance',
+//            associationKey:  config.associationKey||associatedNameUnCapitalize
+//        });
+//        //ownerProto[getterName] = me.createGetter();
+//        //ownerProto[setterName] = me.createSetter();
+//	}
+//});

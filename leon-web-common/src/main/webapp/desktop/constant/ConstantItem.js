@@ -4,13 +4,14 @@ Ext.defineModel("Leon.desktop.constant.ConstantItem",{
 		{name:'id',type:'string'},
 		{name:'code',type:'string'},
 		{name:'text',type:'string'},
+		{name:'ordering',type:'int'},
 		{name:'remark',type:'string'},
 		{name:'discriminator',type:'string'},
 
 		{name:'constant_id',type:'string'}
 	],
 	associations:[
-		{type:'belongsTo',model:'Leon.desktop.fun.Constant',associatedName:'Constant'}
+		{type:'belongsTo',model:'Leon.desktop.constant.Constant',associatedName:'Constant',associationKey:'constant',foreignKey:"constant_id"}
 	]
 //	,proxy:{
 //		actionMethods: { read: 'POST' },

@@ -191,7 +191,7 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 	}
 	
 
-	public int saveBatch(T... entitys) {
+	public int createBatch(T... entitys) {
 		// TODO Auto-generated method stub
 		int i=hibernateDao.saveBatch(entitys);
 		hibernateDao.flush();

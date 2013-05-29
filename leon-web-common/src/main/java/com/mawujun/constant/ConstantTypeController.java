@@ -68,6 +68,7 @@ public class ConstantTypeController  {
 				map.put("text", type.getText());
 				map.put("discriminator", type.getDiscriminator());
 				map.put("remark", type.getRemark());
+				map.put("icon", "/icons/application_view_icons.png");
 				list.add(map);
 			}
 		} else if("ConstantType".equals(discriminator)){
@@ -77,9 +78,11 @@ public class ConstantTypeController  {
 			for(Constant constant:types){
 				Map<String,String> map=new HashMap<String,String>();
 				map.put("id", constant.getId());
+				map.put("code", constant.getCode());
 				map.put("text", constant.getText());
 				map.put("discriminator", constant.getDiscriminator());
 				map.put("remark", constant.getRemark());
+				map.put("icon", "/icons/award_star_bronze_2.png");
 				list.add(map);
 			}
 		} else if("Constant".equals(discriminator)){
@@ -91,6 +94,8 @@ public class ConstantTypeController  {
 				map.put("text", constant.getText());
 				map.put("discriminator", constant.getDiscriminator());
 				map.put("remark", constant.getRemark());
+				map.put("leaf", "true");
+				map.put("icon", "/icons/information.png");
 				list.add(map);
 			}
 		}
@@ -109,22 +114,22 @@ public class ConstantTypeController  {
 	
 	@RequestMapping("/constantType/create")
 	@ResponseBody
-	public ConstantType create(@RequestBody ConstantType constantType){		
-		constantTypeService.create(constantType);
+	public ConstantType[] create(@RequestBody ConstantType[] constantType){		
+		constantTypeService.createBatch(constantType);
 		return constantType;
 	}
 	
 	@RequestMapping("/constantType/update")
 	@ResponseBody
-	public ConstantType update(@RequestBody ConstantType constantType){		
-		constantTypeService.update(constantType);
+	public ConstantType[] update(@RequestBody ConstantType[] constantType){		
+		constantTypeService.updateBatch(constantType);
 		 return constantType;
 	}
 	
 	@RequestMapping("/constantType/destroy")
 	@ResponseBody
-	public ConstantType destroy(@RequestBody ConstantType constantType){		
-		constantTypeService.delete(constantType);
+	public ConstantType[] destroy(@RequestBody ConstantType[] constantType){		
+		constantTypeService.deleteBatch(constantType);
 		return constantType;
 	}
 

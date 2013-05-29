@@ -343,7 +343,7 @@ public class SpringMVCControllerTest {
 		.andExpect(status().isServiceUnavailable())
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(false))
-		.andExpect(jsonPath("$.message").value("显示信息错误"));
+		.andExpect(jsonPath("$.message").value("后台发生系统异常，请联系管理员或重试!"));
 	}
 	@Test
 	public void testBussinessExceptionReturnJson() throws Exception {

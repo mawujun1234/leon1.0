@@ -127,6 +127,7 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 							Array.set(array, i, o);
 							i++;
 						}
+						return array;
 					} else {
 						return null;
 					}

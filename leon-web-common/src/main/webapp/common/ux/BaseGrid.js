@@ -15,9 +15,10 @@ Ext.define('Leon.common.ux.BaseGrid', {
     editable:true,//是否启用自动编辑
     autoLoad:true,
     autoSync:true,//是否自动同步，修改一个单元格就提交,否则的话，需要右键--》保存，并且如果有多个修改的话，会以数组的形式提交到后台的
-    autoNextCellEditing:true,//在使用编辑的时候，按回车键会自动触发下一个单元格
+    autoNextCellEditing:false,//在使用编辑的时候，按回车键会自动触发下一个单元格
     autoNextCellColIdx:0,//自动触发下一个单元格的时候，col开始的起始数
     //autoNextCelRowIdx:0,//自动触发下一个单元格的时候，row开始的起始数
+    autoInitAction:true,
     initComponent: function () {
         var me = this;
         
@@ -31,8 +32,10 @@ Ext.define('Leon.common.ux.BaseGrid', {
 	        displayInfo: true
 	    };
        
+		if(me.autoInitAction){
+			me.initAction();
+		}
 		
-		me.initAction();
 		me.initPlugins();
 
 
@@ -147,7 +150,7 @@ Ext.define('Leon.common.ux.BaseGrid', {
 		        var model=Ext.createModel(modelName,{
 		        	//id:''
 		        });
-		        model.phantom =true;
+		        //model.phantom =true;
 		        me.getStore().insert(0, model);
 		        //me.getStore().add(model);
 		        var cellediting=me.getPlugin("cellEditingPlugin");
@@ -177,6 +180,12 @@ Ext.define('Leon.common.ux.BaseGrid', {
 				    if (btn == 'yes'){
 				        var records=me.getSelectionModel( ).getSelection( );//.getLastSelected( );
 						me.getStore().remove( records );
+						me.getStore().sync({
+							failure:function(){
+								//Ext.Msg.alert("消息","后台发生错误!");
+								me.getStore().reload();
+							}
+						});
 				    }
 				});
 		        
@@ -191,7 +200,12 @@ Ext.define('Leon.common.ux.BaseGrid', {
 			    text: '保存',
 			    disabled:me.disabledAction,
 			    handler: function(){
-					me.getStore().sync();
+					me.getStore().sync({
+						failure:function(){
+							//Ext.Msg.alert("消息","后台发生错误!");
+							me.getStore().reload();
+						}
+					});
 			    },
 			    iconCls: 'form-save-button'
 			});

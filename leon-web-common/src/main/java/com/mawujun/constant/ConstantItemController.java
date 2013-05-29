@@ -55,22 +55,23 @@ public class ConstantItemController {
 	
 	@RequestMapping("/constantItem/create")
 	@ResponseBody
-	public ConstantItem create(@RequestBody ConstantItem constantItem){		
-		constantItemService.create(constantItem);
+	public ConstantItem[] create(@RequestBody ConstantItem[] constantItem){	
+		constantItemService.createBatch(constantItem);
+		//constantItemServic.(constantItem);
 		return constantItem;
 	}
 	
 	@RequestMapping("/constantItem/update")
 	@ResponseBody
-	public ConstantItem update(@RequestBody ConstantItem constantItem){		
-		constantItemService.update(constantItem);
-		 return constantItem;
+	public ConstantItem[] update(@RequestBody ConstantItem[] constantItem){		
+		constantItemService.updateBatch(constantItem);
+		return constantItem;
 	}
 	
 	@RequestMapping("/constantItem/destroy")
 	@ResponseBody
-	public ConstantItem destroy(@RequestBody ConstantItem constantItem){		
-		constantItemService.delete(constantItem);
+	public ConstantItem[] destroy(@RequestBody ConstantItem[] constantItem){		
+		constantItemService.deleteBatch(constantItem);
 		return constantItem;
 	}
 	

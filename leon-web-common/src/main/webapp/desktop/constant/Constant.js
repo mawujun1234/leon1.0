@@ -2,6 +2,7 @@ Ext.defineModel("Leon.desktop.constant.Constant",{
 	extend:"Ext.data.Model",
 	fields:[
 		{name:'id',type:'string'},
+		{name:'code',type:'string'},
 		{name:'text',type:'string'},
 		{name:'remark',type:'string'},
 		{name:'discriminator',type:'string'},
@@ -11,8 +12,8 @@ Ext.defineModel("Leon.desktop.constant.Constant",{
 	],
 	associations:[
 		{type:'hasMany',model:'Leon.desktop.constant.ConstantItem',name : 'constantItemes'},
-		{type:'belongsTo',model:'Leon.desktop.constant.ConstantType',associatedName:'constantType'}
-		//{type:'belongsTo',model:'Leon.desktop.constant.ConstantType',associatedName:'ConstantType',associationKey:'constantType',foreignKey:"constantType_id"}
+		//{type:'belongsTo',model:'Leon.desktop.constant.ConstantType',associatedName:'constantType'}
+		{type:'belongsTo',model:'Leon.desktop.constant.ConstantType',associatedName:'ConstantType',associationKey:'constantType',foreignKey:"constantType_id"}
 	]
 //	,proxy:{
 //		type:'bajax',

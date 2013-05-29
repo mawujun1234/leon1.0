@@ -58,24 +58,24 @@ public class ConstantController {
 	
 	@RequestMapping("/constant/create")
 	@ResponseBody
-	public Constant create(@RequestBody Constant constant){		
-		constantService.create(constant);
+	public Constant[] create(@RequestBody Constant[] constant){		
+		constantService.createBatch(constant);
 		return constant;
 	}
 	
 	@RequestMapping("/constant/update")
 	@ResponseBody
-	public Constant update(@RequestBody Constant constant){		
-		System.out.println(constant.getConstantType().getId().length());
-		constantService.createOrUpdate(constant);
-		
-		 return constant;
+	public Constant[] update(@RequestBody Constant[] constant){		
+		//System.out.println(constant.getConstantType().getId().length());
+		//constantService.createOrUpdate(constant);
+		constantService.updateBatch(constant);
+		return constant;
 	}
 	
 	@RequestMapping("/constant/destroy")
 	@ResponseBody
-	public Constant destroy(@RequestBody Constant constant){		
-		constantService.delete(constant);
+	public Constant[] destroy(@RequestBody Constant[] constant){		
+		constantService.deleteBatch(constant);
 		return constant;
 	}
 	
