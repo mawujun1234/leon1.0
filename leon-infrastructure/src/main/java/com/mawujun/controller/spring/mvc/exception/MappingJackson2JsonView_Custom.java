@@ -37,23 +37,22 @@ public class MappingJackson2JsonView_Custom extends MappingJackson2JsonView {
 			Exception exception=(Exception)model.get(SimpleMappingExceptionResolver.DEFAULT_EXCEPTION_ATTRIBUTE);
 			Map<String,Object> map=new  HashMap<String, Object>();
 			map.put("success", false);
-			map.put("detailMsg", exception.getMessage());
-			
+
 			if(exception instanceof BussinessException){
-				ExceptionCode errorCode=((BussinessException) exception).getErrorCode();
-				String key = errorCode.getClass().getSimpleName() + "." + errorCode;
-				try {
-					map.put("message", bundle.getString(key));
-				} catch(MissingResourceException e){
-					map.put("message",exception.getMessage());
+				if( exception.getMessage()!=null){
+					map.put("message", exception.getMessage());
+				} else {
+					ExceptionCode errorCode=((BussinessException) exception).getErrorCode();
+					String key = errorCode.getClass().getSimpleName() + "." + errorCode;
+					try {
+						map.put("message", bundle.getString(key));
+					} catch(MissingResourceException e){
+						map.put("message",exception.getMessage());
+					}
 				}
-//				if( bundle.getString(key)==null){
-//					map.put("message",exception.getMessage());
-//				} else {
-//					map.put("message", bundle.getString(key));
-//				}
-				//response.setStatus(200);
 				
+				
+
 				//还要监听验证异常，从hibernate后台抛出来的
 			} else if(exception instanceof ConstraintViolationException ){
 				ConstraintViolationException ex=(ConstraintViolationException)exception;
@@ -66,6 +65,7 @@ public class MappingJackson2JsonView_Custom extends MappingJackson2JsonView {
 				}
 				map.put("message",detailMsg);
 			} else {
+				
 				//map.put("message", exception.getMessage());
 				map.put("message", "后台发生系统异常，请联系管理员或重试!");
 			}

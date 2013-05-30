@@ -174,7 +174,8 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 		serializer.config(SerializerFeature.UseSingleQuotes,true);//SerializerFeature.
 		serializer.config(SerializerFeature.SkipTransientField,true);
 		serializer.config(SerializerFeature.WriteEnumUsingToString,true);
-		serializer.config(SerializerFeature.SortField,true);
+		//serializer.config(SerializerFeature.WriteMapNullValue,true);
+		//serializer.config(SerializerFeature.SortField,true);
 		
 		HibernateLazyInitializerFilter hibernateFilter=new HibernateLazyInitializerFilter();
 		serializer.getValueFilters().add(hibernateFilter);

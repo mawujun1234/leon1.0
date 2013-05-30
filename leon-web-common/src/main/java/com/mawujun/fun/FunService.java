@@ -48,6 +48,10 @@ public class FunService extends BaseService<Fun, String> {
 	}
 	
 	public void create(Fun entity) {
+		Fun parent=getRepository().get(entity.getParent().getId());
+		if(parent.getFunEnum()==FunEnum.fun){
+			throw new BussinessException("功能不能增加下级节点");
+		}
 		//获取父节点的reportcode
 		WhereInfo whereinfo=WhereInfo.parse("parent.id", entity.getParent().getId());
 		Object reportCode=funRepository.queryMax("reportCode",whereinfo);
@@ -59,13 +63,13 @@ public class FunService extends BaseService<Fun, String> {
 		//获取对应的父菜单
 		WhereInfo whereinfoItem=WhereInfo.parse("fun.id", entity.getParent().getId());
 		WhereInfo whereinfoItem1=WhereInfo.parse("menu.id", "default");
-		MenuItem parent=menuItemRepository.queryUnique(whereinfoItem,whereinfoItem1);
+		MenuItem menuparent=menuItemRepository.queryUnique(whereinfoItem,whereinfoItem1);
 		
 		MenuItem menuitem=new MenuItem();
 		menuitem.setText(entity.getText());
 		menuitem.setReportCode(entity.getReportCode());
 		menuitem.setFun(entity);
-		menuitem.setParent(parent);
+		menuitem.setParent(menuparent);
 		menuitem.setMenu(new Menu("default"));
 		menuItemRepository.create(menuitem);
 	}

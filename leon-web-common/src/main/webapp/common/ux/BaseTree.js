@@ -199,8 +199,17 @@ Ext.define('Leon.common.ux.BaseTree', {
 		    },
 		    iconCls: 'form-copy-button'
 		});
-		//me.addAction(copy);
 		actions.push(copy);
+		var cut = new Ext.Action({
+		    text: '剪切',
+		    disabled:me.disabledAction,
+		    handler: function(){
+		       me.onCut();
+		        
+		    },
+		    iconCls: 'form-cut-button'
+		});
+		actions.push(cut);
 		var paste = new Ext.Action({
 		    text: '粘贴',
 		    disabled:me.disabledAction,
@@ -337,25 +346,68 @@ Ext.define('Leon.common.ux.BaseTree', {
 		newnode.set("id",null);
 		me.copyNode=newnode;
     },
+    onCut:function(){
+    	var me=this;
+    	var node=node||me.getSelectionModel( ).getLastSelected( );
+		if(node.isRoot()){
+			Ext.Msg.alert("消息","不能复制根节点!");	
+			return;
+		}
+		//var newnode=node.copy();
+		//newnode.set("id",null);
+		//me.copyNode=newnode;
+		me.copyNode=node;
+		me.copyNode.cut=true;
+    },
     onPaste:function(parentNode){
+    	var me=this;
     	var parent=parent||me.getSelectionModel( ).getLastSelected( );
 		if(!parent){
 			Ext.Msg.alert("消息","请选择要粘贴到的父节点!");	
 			return;
 		}
 		if(!me.copyNode){
-			Ext.Msg.alert("消息","请先复制节点!");	
+			Ext.Msg.alert("消息","请先复制/剪切节点!");	
 			return;
 		}
 		    	
-		if(me.copyNode){
+		if(!me.copyNode.cut){
 		    me.copyNode.set('parent_id',parent.get("id"));
 		    me.copyNode.save({
-			success: function(record, operation) {
-				me.getStore().reload({node:parent});
-				parent.expand();
+				success: function(record, operation) {
+					me.getStore().reload({node:parent});
+					parent.expand();
 				}
 			});
+		} else {
+			//alert(1);
+			var orginalParent=me.copyNode.parentNode;
+			if(orginalParent==null){
+				orginalParent=me.getRootNode();
+				//me.getRootNode().removeChild(me.copyNode,false);
+			} else {
+				//me.copyNode.parentNode.removeChild(me.copyNode,false);
+				//orginalParent=
+			}
+			
+			me.copyNode.set('parent_id',parent.get("id"));
+			me.copyNode.setParent(parent);
+			
+			if(me.copyNode.hasChildNodes( ) ){
+				me.copyNode.removeAll();
+				me.copyNode.collapse();
+				me.copyNode.leaf=false;
+			}
+			orginalParent.removeChild(me.copyNode,false);
+			parent.appendChild(me.copyNode);
+			me.copyNode.save({
+				success: function(record, operation) {
+					me.getStore().reload({node:parent,success:function(){
+					//	me.getStore().reload({node:orginalParent});
+					}});
+				}
+			});
+			delete me.copyNode.cut;
 		}
     },
     onReload:function(node){

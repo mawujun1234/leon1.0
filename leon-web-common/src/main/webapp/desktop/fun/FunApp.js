@@ -13,18 +13,28 @@ Ext.onReady(function(){
 	tree.removeAction(0);
 	var createModule = new Ext.Action({
 		    text: '新增模块',
-		    handler: function(){	
-		    	me.onCreate({text:'新模块','funEunm':'module'});
+		    handler: function(){
+		    	var parent=tree.getSelectionModel( ).getLastSelected( )||tree.getRootNode( );    
+				if(parent.get("funEnum")=="fun"){
+					Ext.Msg.alert("消息","功能不能增加下级节点!");
+					return;
+				}
+		    	tree.onCreate({text:'新模块','funEnum':'module'});
 		    },
-		    iconCls: 'form-save-button'
+		    iconCls: 'fun-module-iconCls'
 	});
     tree.addAction(createModule,0);
     var createFun = new Ext.Action({
 		text: '新增功能',
 		handler: function(){
-		    me.onCreate({text:'新功能','funEunm':'fun'});
+			var parent=tree.getSelectionModel( ).getLastSelected( )||tree.getRootNode( );    
+			if(parent.get("funEnum")=="fun"){
+				Ext.Msg.alert("消息","功能不能增加下级节点!");
+				return;
+			}
+		    tree.onCreate({text:'新功能','funEnum':'fun'});
 		},
-		iconCls: 'form-save-button'
+		iconCls: 'fun-fun-iconCls'
 	});
     tree.addAction(createFun,1);
 

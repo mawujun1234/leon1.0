@@ -106,11 +106,30 @@ public class Fun extends TreeNode{
 	public void setHelpContent(String helpContent) {
 		this.helpContent = helpContent;
 	}
-	public String getFunEnum() {
-		return funEnum.toString();
+	public FunEnum getFunEnum() {
+		return funEnum;
 	}
 	public void setFunEnum(String funEnum) {
 		this.funEnum = FunEnum.valueOf(funEnum);
+	}
+	public void setFunEnum(FunEnum funEnum) {
+		this.funEnum = funEnum;
+	}
+	
+	public String getIconCls() {
+		//System.out.println(funEnum);
+		if(FunEnum.module==funEnum){
+			return "fun-module-iconCls";
+		} else if(FunEnum.fun==funEnum){
+			return "fun-fun-iconCls";
+		}
+		return null;
+	}
+	public boolean isLeaf() {
+		 if(FunEnum.fun==funEnum){
+			return true;
+		}
+		 return false;
 	}
 
 }

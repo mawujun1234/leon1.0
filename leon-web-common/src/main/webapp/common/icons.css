@@ -22,6 +22,9 @@
 .form-copy-button { 
         background: url(../icons/page_copy.png) left top no-repeat !important; 
 }
+.form-cut-button { 
+        background: url(../icons/cut.png) left top no-repeat !important; 
+}
 .form-paste-button { 
         background: url(../icons/page_paste.png) left top no-repeat !important; 
 }
@@ -30,4 +33,10 @@
 }
 .form-reload-button { 
         background: url(../icons/refresh.png) left top no-repeat !important; 
+}
+.fun-module-iconCls { 
+        background: url(../icons/brick.png) left top no-repeat !important; 
+}
+.fun-fun-iconCls { 
+        background: url(../icons/function.png) left top no-repeat !important; 
 }

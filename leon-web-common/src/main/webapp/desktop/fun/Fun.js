@@ -9,6 +9,7 @@ Ext.defineModel("Leon.desktop.fun.Fun",{
 		{name:'reportCode',type:'string'},
 		{name:'helpContent',type:'string'},
 		{name:'funEnum',type:'string'},
+		{name:'iconCls',type:'string'},
 		{name:'parent_id',type:'auto'}
 	],
 	associations:[

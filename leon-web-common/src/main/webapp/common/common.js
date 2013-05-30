@@ -142,7 +142,7 @@ Ext.override(Ext.data.Model,{
                 if (associatedRecord ) {
                 	//alert(associatedRecord.getId());
                 	if(me.get(association.foreignKey) && me.get(association.foreignKey)!=associatedRecord.getId()){
-                		alert("数据不一致，请联系管理员!");
+                		alert("数据不一致，请联系管理员!"+association.foreignKey+":"+me.get(association.foreignKey)+","+associationKey+":"+associatedRecord.getId());
                 		throw new Error("association.instanceName的id和association.foreignKey的值不一致,请先进行处理！或者设置"+association.instanceName+"==null，或者更改foreignKey:" 
                 		+association.foreignKey+"，即重新加载关联对象的数据getter({reload:true})或者调用setter方法，更新关联对象");
 
