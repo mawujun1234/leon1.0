@@ -64,13 +64,13 @@ Ext.define('Leon.desktop.fun.FunForm',{
 	            name: 'url',
 	            tooltip: "请输入url"
 	        }
-//	        ,{
-//	        	xtype:'checkboxfield',
-//                fieldLabel  : '创建菜单',
-//                name      : 'isCreateMenu',
-//                inputValue: '2',
-//                checked   : true
-//            }
+	        ,{
+	        	xtype:'checkboxfield',
+                fieldLabel  : '创建菜单',
+                name      : 'isCreateMenu',
+                inputValue: '2',
+                checked   : true
+            }
 	    ];
 	    me.buttons= [{
             text: '更新',
@@ -83,15 +83,7 @@ Ext.define('Leon.desktop.fun.FunForm',{
                 form.getForm().updateRecord();
 				form.getRecord().save({
 					success: function(record, operation) {
-//						if(form.action=="create"){
-//							//me.fireEvent("created",record);
-//							//form.action="update"
-//							
-//							//me.down("button[action=createChild]").show();
-//							
-//						} else {
-//							
-//						}
+
 					}
 				});
             }
@@ -102,71 +94,7 @@ Ext.define('Leon.desktop.fun.FunForm',{
             	//var copyRcd=this.up('form').getRecord( );
                 this.up('form').getForm().reset(true);
             }
-        }
-//        ,{
-//            text: '复制',
-//            iconCls:'form-copy-button',
-//            handler: function() {
-//                //this.up('form').getForm().isValid();
-//            	var copyRcd=this.up('form').getRecord( ).copy();
-//            	copyRcd.set("id",null);
-//            	this.up('form').copyRcd=copyRcd;
-//            	this.nextSibling().show();
-//            }
-//        },{
-//            text: '粘贴',
-//            hidden:true,
-//            iconCls:'form-paste-button',
-//            handler: function() {
-//            	this.up('form').getForm().loadRecord(this.up('form').copyRcd);
-//            	this.up('form').action="create";
-//                this.hide();
-//            }
-//        }
-////        ,{
-////	    	action:'save',
-////            text: '保存',
-////            iconCls:'form-save-button',
-////            handler: function() {
-////                var values=this.up('form').getForm().getValues( );
-////				var newRecord=Ext.createModel("Leon.desktop.fun.Fun",values);
-////				newRecord.save();
-////            }
-////        }
-//        ,{
-//            text: '新建子功能',
-//            iconCls:'form-addChild-button',
-//            action:'createChild',
-//            handler: function(bth) {
-//            	var parent=this.up('form').getRecord( );
-//            	this.up('form').getForm().reset();
-//            	var newRecord=Ext.createModel("Leon.desktop.fun.Fun",{'parent_id':parent.get("id"),'parent_text':parent.get("text")});
-//            	this.up('form').getForm().setValues({'parent_id':parent.get("id"),'parent_text':parent.get("text")});
-//            	this.up('form').getForm().loadRecord(newRecord);
-//            	this.up('form').action="create";
-//            	
-//            	bth.hide();
-//            }
-//        },{
-//            text: '删除',
-//            iconCls:'form-delete-button',
-//            handler: function() {
-//
-//            	var record= this.up('form').getRecord();
-//            	var parent=record.parentNode;
-//            	var index=parent.indexOf(record);
-//            	if(record.hasChildNodes( )){
-//            		Ext.Msg.alert("消息","请先删除子节点!");
-//            		return;
-//            	}
-//                record.destroy({
-//                	failure: function(record, operation) {
-//                		parent.insertChild(index,record);
-//                	}
-//                });
-//            }
-//        }
-        ];
+        }];
        
         me.addEvents("created");
        me.callParent();

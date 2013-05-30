@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -37,6 +39,9 @@ public class Fun extends TreeNode{
 	@Label(name="帮助")
 	@Column(length=100)
 	private String helpContent;//存放的是html内容的地址
+	
+	@Enumerated(EnumType.STRING)
+	private FunEnum funEnum;//是模块还是功能
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Fun parent;
@@ -100,6 +105,12 @@ public class Fun extends TreeNode{
 
 	public void setHelpContent(String helpContent) {
 		this.helpContent = helpContent;
+	}
+	public String getFunEnum() {
+		return funEnum.toString();
+	}
+	public void setFunEnum(String funEnum) {
+		this.funEnum = FunEnum.valueOf(funEnum);
 	}
 
 }

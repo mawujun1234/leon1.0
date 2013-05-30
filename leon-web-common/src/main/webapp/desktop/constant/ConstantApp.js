@@ -50,16 +50,11 @@ Ext.onReady(function(){
 	var reload = new Ext.Action({
 		    text: '刷新',
 		    handler: function(){
-		    	var parent=tree.getSelectionModel( ).getLastSelected( );
-		    	if(parent){
-		    		tree.getStore().reload({node:parent});
-		    	} else {
-		    		tree.getStore().reload();	
-		    	}      
+		    	tree.onReload();
 		    },
 		    iconCls: 'form-reload-button'
 	});
-	tree.addContextMenu(reload);
+	tree.addAction(reload);
 	var destroy = new Ext.Action({
 		    text: '删除',
 		    handler: function(){
@@ -98,7 +93,7 @@ Ext.onReady(function(){
 				        }
 				       })
 
-				        	node.destroy({
+				       node.destroy({
 				        		failure: function(record, operation) {
 				        			if(parent){
 				        				var index=parent.indexOf(node);
@@ -108,14 +103,13 @@ Ext.onReady(function(){
 				        			Ext.Msg.alert("消息","删除失败!");
 		            				return;
 				        		}
-				        	});
-//				        }
+				        });
 				    }
 				});
 		    },
 		    iconCls: 'form-delete-button'
 	});
-	tree.addContextMenu(destroy);
+	tree.addAction(destroy);
 	
 //	 var createConstantType = new Ext.Action({
 //		text : '新增常数分类',
@@ -139,7 +133,7 @@ Ext.onReady(function(){
 //		},
 //		iconCls : 'form-addChild-button'
 //	});
-//	tree.addContextMenu(createConstantType);
+//	tree.addAction(createConstantType);
 //	
 //	var createConstant = new Ext.Action({
 //		text : '新增常数',
@@ -163,7 +157,7 @@ Ext.onReady(function(){
 //		},
 //		iconCls : 'form-addChild-button'
 //	});
-//	tree.addContextMenu(createConstant);
+//	tree.addAction(createConstant);
 //	var createConstantItem = new Ext.Action({
 //		text : '新增常数项',
 //		handler : function() {
@@ -186,8 +180,8 @@ Ext.onReady(function(){
 //		},
 //		iconCls : 'form-addChild-button'
 //	});
-//	tree.addContextMenu(createConstantItem);
-//	tree.afterContextMenuShow=function(tree,record,item,index,e){
+//	tree.addAction(createConstantItem);
+//	tree.onAfterContextMenuShow=function(tree,record,item,index,e){
 //		if(record.get("discriminator")=="ConstantType") {
 //			createConstantType.disable();
 //			createConstant.enable();

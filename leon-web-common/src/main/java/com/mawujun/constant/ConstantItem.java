@@ -37,7 +37,7 @@ public class ConstantItem extends UUIDEntity {
 	private Constant constant;
 	
 	@Transient
-	public final static String discriminator="ConstantItem";//用来区分是哪个级别的
+	public final static String discriminator=ConstantEnum.ConstantItem.toString();//用来区分是哪个级别的
 	
 	public String getCode() {
 		return code;

@@ -18,7 +18,8 @@ Ext.define('Leon.common.ux.BaseGrid', {
     autoNextCellEditing:false,//在使用编辑的时候，按回车键会自动触发下一个单元格
     autoNextCellColIdx:0,//自动触发下一个单元格的时候，col开始的起始数
     //autoNextCelRowIdx:0,//自动触发下一个单元格的时候，row开始的起始数
-    autoInitAction:true,
+    autoInitSimpleAction:true,
+    autoShowSimpleActionToTbar:true,
     initComponent: function () {
         var me = this;
         
@@ -32,11 +33,11 @@ Ext.define('Leon.common.ux.BaseGrid', {
 	        displayInfo: true
 	    };
        
-		if(me.autoInitAction){
-			me.initAction();
+		if(me.autoInitSimpleAction){
+			me.initSimpleAction();
 		}
 		
-		me.initPlugins();
+		me.initAutoNextCellEditing();
 
 
         me.callParent();
@@ -82,7 +83,7 @@ Ext.define('Leon.common.ux.BaseGrid', {
     	return tmpStore;
     	
     },
-    initPlugins:function(){
+    initAutoNextCellEditing:function(){
     	var me=this;
     	//如果配置了autoSync，表示自动添加编辑组件
     	if(!me.editable){
@@ -139,93 +140,153 @@ Ext.define('Leon.common.ux.BaseGrid', {
 	    	
 	    });
     },
-    initAction:function(){
+    initSimpleAction:function(){
     	var me=this;
     	var create = new Ext.Action({
 		    text: '新增',
 		    disabled:me.disabledAction,
 		    handler: function(){
-		    	var modelName=me.model||me.getStore().getProxy( ).getModel().getName( );
-
-		        var model=Ext.createModel(modelName,{
-		        	//id:''
-		        });
-		        //model.phantom =true;
-		        me.getStore().insert(0, model);
-		        //me.getStore().add(model);
-		        var cellediting=me.getPlugin("cellEditingPlugin");
-		        cellediting.startEditByPosition({
-		            row: 0, 
-		            column: me.autoNextCellColIdx
-		        });
+		    	me.onCreate();
 		    },
 		    iconCls: 'form-add-button'
 		});
+		me.addAction(create);
 		var update = new Ext.Action({
 		    text: '更新',
 		    disabled:me.disabledAction,
 		    handler: function(){
-				var position=me.getSelectionModel( ).getCurrentPosition( );
-				var cellediting=me.getPlugin("cellEditingPlugin");
-				//alert(cellediting);
-		        cellediting.startEditByPosition(position);
+				me.onUpdate();
 		    },
 		    iconCls: 'form-update-button'
 		});
+		me.addAction(update);
 		var destroy = new Ext.Action({
 		    text: '删除',
 		    disabled:me.disabledAction,
 		    handler: function(){
-		    	Ext.Msg.confirm("删除",'确定要删除吗?', function(btn, text){
-				    if (btn == 'yes'){
-				        var records=me.getSelectionModel( ).getSelection( );//.getLastSelected( );
-						me.getStore().remove( records );
-						me.getStore().sync({
-							failure:function(){
-								//Ext.Msg.alert("消息","后台发生错误!");
-								me.getStore().reload();
-							}
-						});
-				    }
-				});
+		    	me.onDestroy();
 		        
 		    },
 		    iconCls: 'form-delete-button'
 		});
-		
-		
-		me.actions=[create,update,destroy];
+		me.addAction(destroy);
+
 		if(!me.autoSync){
-			var update = new Ext.Action({
+			var sync = new Ext.Action({
 			    text: '保存',
 			    disabled:me.disabledAction,
 			    handler: function(){
-					me.getStore().sync({
-						failure:function(){
-							//Ext.Msg.alert("消息","后台发生错误!");
-							me.getStore().reload();
-						}
-					});
+					me.onSync();
 			    },
 			    iconCls: 'form-save-button'
 			});
-			me.actions.push(update);
+			me.addAction(sync);
 		}
-		//me.tbar=me.actions;
-		//me.tbar.push(reload);
-		
-		var menu=Ext.create('Ext.menu.Menu', {
-		    items: me.actions
+    },
+    onCreate:function(){
+    	var me=this;
+    	var modelName=me.model||me.getStore().getProxy( ).getModel().getName( );
+
+		var model=Ext.createModel(modelName,{
+		        	//id:''
 		});
-		me.on('itemcontextmenu',function(view,record,item,index,e){
-			menu.showAt(e.getXY());
-			e.stopEvent();
+		model.phantom =true;
+		me.getStore().insert(0, model);
+		        //me.getStore().add(model);
+		var cellediting=me.getPlugin("cellEditingPlugin");
+		cellediting.startEditByPosition({
+		     row: 0, 
+		     column: me.autoNextCellColIdx
 		});
-		
-		me.on('containercontextmenu',function(view,e){
-			menu.showAt(e.getXY());
-			e.stopEvent();
+    },
+    onUpdate:function(){
+    	var me=this;
+    	var position=me.getSelectionModel( ).getCurrentPosition( );
+		var cellediting=me.getPlugin("cellEditingPlugin");
+		cellediting.startEditByPosition(position);
+    },
+    onDestroy:function(){
+    	var me=this;
+    	Ext.Msg.confirm("删除",'确定要删除吗?', function(btn, text){
+			if (btn == 'yes'){
+				var records=me.getSelectionModel( ).getSelection( );//.getLastSelected( );
+				me.getStore().remove( records );
+				me.getStore().sync({
+					failure:function(){
+						me.getStore().reload();
+					}
+				});
+			}
 		});
+    },
+    onSync:function(){
+    	var me=this;
+    	me.getStore().sync({
+			failure:function(){
+				me.getStore().reload();
+			}
+		});
+    },
+    onAfterContextMenuShow:function(view,record,item,index,e){
+
+    },
+    addAction:function(action,index){
+    	if(!action){
+    		return;
+    	}
+    	var me=this;
+    	var menu=me.contextMenu;
+    	if(!menu){
+    		me.contextMenu=Ext.create('Ext.menu.Menu', {
+			    items:[]
+			});
+			menu=me.contextMenu;
+			me.on('itemcontextmenu',function(tree,record,item,index,e){
+				menu.showAt(e.getXY());
+				e.stopEvent();
+				me.onAfterContextMenuShow(tree,record,item,index,e);
+			});
+			
+			me.on('containercontextmenu',function(view,e){
+				//menu.showAt(e.getXY());
+				e.stopEvent();
+			});
+    	} else if(!me.hasListener("itemcontextmenu")|| me.hasListener("containercontextmenu")){
+    		me.on('itemcontextmenu',function(tree,record,item,index,e){
+				menu.showAt(e.getXY());
+				e.stopEvent();
+			});
+			
+			me.on('containercontextmenu',function(view,e){
+				menu.showAt(e.getXY());
+				e.stopEvent();
+			});
+    	}
+    	if(index){
+    		me.contextMenu.insert(index,action);
+    	} else {
+    		me.contextMenu.add(action);
+    	}
+    	
+//    	if(me.autoShowSimpleActionToTbar){
+//    		var tbar=me.getDockedItems('toolbar[dock="top"]');
+//    		
+//    		if(!tbar || tbar.length==0){
+//    			//me.tbar=Ext.create('Ext.toolbar.Toolbar');
+//    			me.addDocked({
+//			        xtype: 'toolbar',
+//			        dock: 'top',
+//			        items: []
+//			    });
+//    			tbar=me.getDockedItems('toolbar[dock="top"]');
+//    		}
+//    		if(index){
+//	    		tbar[0].insert(index,action);
+//	    	} else {
+//	    		tbar[0].add(action);
+//	    	}
+//			
+//		}
     },
     getLastSelected:function(){
     	return this.getSelectionModel( ).getLastSelected( );

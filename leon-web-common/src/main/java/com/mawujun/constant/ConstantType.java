@@ -37,9 +37,8 @@ public class ConstantType extends UUIDEntity {
 	private Set<Constant> constants;
 
 	@Transient 
-	public final static String discriminator="ConstantType";//用来区分是哪个级别的
-	这里建立枚举，同时把功能管理分为模块和功能两部分，功能包括jsp，曾，删，改，查按钮，
-	在树和grid上同时增加一个配置参数，这个配置参数是把菜单配置在右键，工具栏还是同时存在
+	public final static String discriminator=ConstantEnum.ConstantType.toString();//用来区分是哪个级别的
+
 
 	public String getRemark() {
 		return remark;

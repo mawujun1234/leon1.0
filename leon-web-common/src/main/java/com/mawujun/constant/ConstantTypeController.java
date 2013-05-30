@@ -75,7 +75,7 @@ public class ConstantTypeController  {
 				map.put("icon", "/icons/application_view_icons.png");
 				list.add(map);
 			}
-		} else if("ConstantType".equals(discriminator)){
+		} else if(ConstantEnum.ConstantType.toString().equals(discriminator)){
 			//WhereInfo whereinfo=WhereInfo.parse("constantType.id", id);
 			
 			List<Constant> types=constantController.query(id);//constantService.query(whereinfo);
@@ -89,7 +89,7 @@ public class ConstantTypeController  {
 				map.put("icon", "/icons/award_star_bronze_2.png");
 				list.add(map);
 			}
-		} else if("Constant".equals(discriminator)){
+		} else if(ConstantEnum.Constant.toString().equals(discriminator)){
 			//WhereInfo whereinfo=WhereInfo.parse("constant.id", id);
 			List<ConstantItem> types=constantItemController.query(id);//.query(whereinfo);
 			for(ConstantItem constant:types){
@@ -108,11 +108,11 @@ public class ConstantTypeController  {
 	@RequestMapping("/constantType/deleteNode")
 	@ResponseBody
 	public void deleteNode(String id,String discriminator){	
-		if("ConstantType".equals(discriminator)){
+		if(ConstantEnum.ConstantType.toString().equals(discriminator)){
 			constantTypeService.delete(id);
-		} else if("Constant".equals(discriminator)){
+		} else if(ConstantEnum.Constant.toString().equals(discriminator)){
 			constantService.delete(id);
-		}else if("ConstantItem".equals(discriminator)){
+		}else if(ConstantEnum.ConstantItem.toString().equals(discriminator)){
 			constantItemService.delete(id);
 		}
 		//return list;
