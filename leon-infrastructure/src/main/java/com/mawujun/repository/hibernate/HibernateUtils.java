@@ -17,7 +17,7 @@ public class HibernateUtils {
 	    return entity.getId();
 	}
 	
-	public void initLazyProperty(Object proxy) {
+	public static void initLazyProperty(Object proxy) {
 		Hibernate.initialize(proxy);
 	}
 }

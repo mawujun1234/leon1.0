@@ -42,15 +42,18 @@ public class FunService extends BaseService<Fun, String> {
 		WhereInfo whereinfoItem=WhereInfo.parse("fun.id", entity.getId());
 		WhereInfo whereinfoItem1=WhereInfo.parse("menu.id", Menu.default_id);
 		List<MenuItem> menuItems= menuItemRepository.query(whereinfoItem,whereinfoItem1);
-		if(menuItems!=null && menuItems.size()>0){
+		if(menuItems!=null && menuItems.size()>1){
 			StringBuilder builder=new StringBuilder();
 			for(MenuItem menuItem:menuItems){
 				builder.append(menuItem.getMenu().getText()+":"+menuItem.getText()+";");
 			}
 			throw new BussinessException("有菜单挂钩，不能删除。<br/>"+builder);
+		} else if(menuItems.size()==1){
+			menuItemRepository.delete(menuItems.get(0));
 		}
 		//MenuItem menuItem=menuItemRepository.queryUnique(whereinfoItem,whereinfoItem1);
 		//menuItemRepository.deleteBatch(whereinfoItem,whereinfoItem1);
+		
 		
 		super.delete(entity);
 		

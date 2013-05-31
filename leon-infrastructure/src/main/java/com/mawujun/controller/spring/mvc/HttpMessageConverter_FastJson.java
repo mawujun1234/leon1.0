@@ -363,7 +363,10 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 	        	
 	            //return ((IdEntity)value).getId();
 	        } else if(value instanceof PersistentCollection) {
-	        	
+	        	PersistentCollection aa=(PersistentCollection)value;
+	        	if(aa.wasInitialized()){
+	        		return aa;
+	        	}
 	        	return null;
 	        }
 	        return value;
