@@ -129,6 +129,7 @@ Ext.define('Leon.common.ux.BaseTree', {
      	var actions=[];
        var create = new Ext.Action({
 		    text: '新增子节点',
+		    itemId:'create',
 		    disabled:me.disabledAction,
 		    handler: function(){
 		    	var values={
@@ -171,6 +172,7 @@ Ext.define('Leon.common.ux.BaseTree', {
 //		me.addAction(createSibling);
 		var destroy = new Ext.Action({
 		    text: '删除',
+		    itemId:'destroy',
 		    disabled:me.disabledAction,
 		    handler: function(){
 		    	me.onDestroy();    
@@ -181,6 +183,7 @@ Ext.define('Leon.common.ux.BaseTree', {
 		actions.push(destroy)
 		var update = new Ext.Action({
 		    text: '修改',
+		    itemId:'update',
 		    disabled:me.disabledAction,
 		    handler: function(){
 		    	me.onUpdate();
@@ -192,6 +195,7 @@ Ext.define('Leon.common.ux.BaseTree', {
 		actions.push(update);
 		var copy = new Ext.Action({
 		    text: '复制',
+		    itemId:'copy',
 		    disabled:me.disabledAction,
 		    handler: function(){
 		       me.onCopy();
@@ -202,6 +206,7 @@ Ext.define('Leon.common.ux.BaseTree', {
 		actions.push(copy);
 		var cut = new Ext.Action({
 		    text: '剪切',
+		    itemId:'cut',
 		    disabled:me.disabledAction,
 		    handler: function(){
 		       me.onCut();
@@ -212,6 +217,7 @@ Ext.define('Leon.common.ux.BaseTree', {
 		actions.push(cut);
 		var paste = new Ext.Action({
 		    text: '粘贴',
+		    itemId:'paste',
 		    disabled:me.disabledAction,
 		    handler: function(){
 		    	me.onPaste();
@@ -222,6 +228,7 @@ Ext.define('Leon.common.ux.BaseTree', {
 		actions.push(paste);
 		var reload = new Ext.Action({
 		    text: '刷新',
+		    itemId:'reload',
 		    handler: function(){
 		    	me.onReload();
 		    },
@@ -231,7 +238,10 @@ Ext.define('Leon.common.ux.BaseTree', {
 		actions.push(reload);
 		
 		if(me.autoShowSimpleActionToTbar){
-			me.tbar=actions;
+			me.tbar={
+				itemId:'action_toolbar',
+				items:actions
+			};
 		}
 		var menu=Ext.create('Ext.menu.Menu', {
 			    items: actions
@@ -401,6 +411,7 @@ Ext.define('Leon.common.ux.BaseTree', {
 			orginalParent.removeChild(me.copyNode,false);
 			parent.appendChild(me.copyNode);
 			me.copyNode.save({
+				params:{isUpdateParent:true,oldParent_id:orginalParent.get("id")},
 				success: function(record, operation) {
 					me.getStore().reload({node:parent,success:function(){
 					//	me.getStore().reload({node:orginalParent});
@@ -419,10 +430,10 @@ Ext.define('Leon.common.ux.BaseTree', {
 		    me.getStore().reload();	
 		}      
     },
-    onAfterContextMenuShow:function(tree,record,item,index,e){
-
-    },
-    actions:new Ext.util.MixedCollection(),
+//    onAfterContextMenuShow:function(tree,record,item,index,e){
+//
+//    },
+   // actions:new Ext.util.MixedCollection(),
     addAction:function(action,index){
 //    	if(!this.rendered){
 //    		return;
@@ -440,7 +451,7 @@ Ext.define('Leon.common.ux.BaseTree', {
 			me.on('itemcontextmenu',function(tree,record,item,index,e){
 				menu.showAt(e.getXY());
 				e.stopEvent();
-				me.onAfterContextMenuShow(tree,record,item,index,e);
+				//me.onAfterContextMenuShow(tree,record,item,index,e);
 			});
 			
 			me.on('containercontextmenu',function(view,e){
@@ -459,7 +470,7 @@ Ext.define('Leon.common.ux.BaseTree', {
     	}
     	
     	if(me.autoShowSimpleActionToTbar){//alert(me.tbar);
-    		var tbar=me.getDockedItems('toolbar[dock="top"]')[0];
+    		var tbar=me.getActionTbar();
     		if(tbar){		
     			if(index==0 || index){
 		    		tbar.insert(index,action);
@@ -468,44 +479,117 @@ Ext.define('Leon.common.ux.BaseTree', {
 		    	}
 		    	tbar.doComponentLayout();
     		} 
-    		
-//    		var tbar=me.getDockedItems('toolbar[dock="top"]');
-//    		//alert(1);
-//    		if(!tbar || tbar.length==0){
-//    			//me.tbar=Ext.create('Ext.toolbar.Toolbar');
-//    			me.addDocked({
-//			        xtype: 'toolbar',
-//			        dock: 'top',
-//			        items: []
-//			    });
-//    			tbar=me.getDockedItems('toolbar[dock="top"]');
-//    		}
-//    		if(index){
-//	    		tbar[0].insert(index,action);
-//	    	} else {
-//	    		tbar[0].add(action);
-//	    	}
 			
 		}
     },
-    removeAction:function(index){
+    removeActionAt:function(index){
     	this.contextMenu.items.removeAt(index);
-    	var tbar=this.getDockedItems('toolbar[dock="top"]');
+    	var tbar=this.getActionTbar();
     	tbar[0].items.removeAt(index);
+    },
+    /**
+     * 就是action的itemId，例如有：create,update,destroy,copy,cut,paste,reload等等
+     * @param {} itemIds
+     */
+    removeAction:function(itemIds){
+    	if(!Ext.isIterable(itemIds)){
+    		itemIds=[itemIds];
+    	}
+    	
+    	var items=this.contextMenu.items;
+    	items.each(function(item ,index,len ){
+    		for(var j=0;j<itemIds.length;j++){
+    			if(item.getItemId( )==itemIds[j]){
+    				items.removeAt(index);
+    				break;
+    			}
+    		}
+    	});
+    	var tbar=this.getActionTbar();
+    	items=tbar.items;
+    	items.each(function(item ,index,len ){
+    		for(var j=0;j<itemIds.length;j++){
+    			if(item.getItemId( )==itemIds[j]){
+    				items.removeAt(index);
+    				break;
+    			}
+    		}
+    	});
+    },
+     /**
+     * 就是action的itemId，例如有：create,update,destroy,copy,cut,paste,reload等等
+     * @param {} itemIds
+     */
+    disableAction:function(itemIds){
+    	if(!Ext.isIterable(itemIds)){
+    		itemIds=[itemIds];
+    	}
+    	
+    	var items=this.contextMenu.items;
+    	items.each(function(item ,index,len ){
+    		for(var j=0;j<itemIds.length;j++){
+    			if(item.getItemId( )==itemIds[j]){
+    				item.disable();
+    				break;
+    			}
+    		}
+    	});
+    	var tbar=this.getActionTbar();//this.getDockedItems('toolbar[itemId="action_toolbar"]')[0];
+    	if(!tbar){
+    		return;
+    	}
+    	items=tbar.items;
+    	items.each(function(item ,index,len ){
+    		for(var j=0;j<itemIds.length;j++){
+    			if(item.getItemId( )==itemIds[j]){
+    				item.disable();
+    				break;
+    			}
+    		}
+    	});
+    },
+    /**
+     * 就是action的itemId，例如有：create,update,destroy,copy,cut,paste,reload等等
+     * @param {} itemIds
+     */
+    enableAction:function(itemIds){
+    	if(!Ext.isIterable(itemIds)){
+    		itemIds=[itemIds];
+    	}
+    	
+    	var items=this.contextMenu.items;
+    	items.each(function(item ,index,len ){
+    		for(var j=0;j<itemIds.length;j++){
+    			if(item.getItemId( )==itemIds[j]){
+    				item.disable();
+    				break;
+    			}
+    		}
+    	});
+    	var tbar=this.getActionTbar();
+    	items=tbar.items;
+    	items.each(function(item ,index,len ){
+    		for(var j=0;j<itemIds.length;j++){
+    			if(item.getItemId( )==itemIds[j]){
+    				item.disable();
+    				break;
+    			}
+    		}
+    	});
     },
     getContextMenu:function(){
     	return this.contextMenu;
     },
+    actionTbar:null,
+    getActionTbar:function(){
+    	if(!this.actionTbar){
+    		this.actionTbar=this.getDockedItems('toolbar[itemId="action_toolbar"]')[0];
+    	}
+    	
+    	return this.actionTbar
+    },
     getContextMenuItems:function(){
     	return this.contextMenu.items;
-    },
-    setDisableAction:function(boool){
-    	//让所有的菜单都不能使用
-    	var me=this,actions=me.actions;
-    	console.dir(actions);
-    	for(var i=0;i<actions.length;i++){
-    		actions[i].setDisabled(boool);
-    	} 	
     },
     getLastSelected:function(){
     	return this.getSelectionModel( ).getLastSelected( );

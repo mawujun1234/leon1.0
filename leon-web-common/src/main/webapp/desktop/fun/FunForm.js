@@ -64,13 +64,13 @@ Ext.define('Leon.desktop.fun.FunForm',{
 	            name: 'url',
 	            tooltip: "请输入url"
 	        }
-	        ,{
-	        	xtype:'checkboxfield',
-                fieldLabel  : '创建菜单',
-                name      : 'isCreateMenu',
-                inputValue: '2',
-                checked   : true
-            }
+//	        ,{
+//	        	xtype:'checkboxfield',
+//                fieldLabel  : '创建菜单',
+//                name      : 'isCreateMenu',
+//                inputValue: '2',
+//                checked   : true
+//            }
 	    ];
 	    me.buttons= [{
             text: '更新',

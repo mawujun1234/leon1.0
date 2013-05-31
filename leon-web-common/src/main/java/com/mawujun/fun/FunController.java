@@ -63,8 +63,8 @@ public class FunController {
 	
 	@RequestMapping("/fun/update")
 	@ResponseBody
-	public Fun update(@RequestBody Fun fun){		
-		 funService.update(fun);
+	public Fun update(@RequestBody Fun fun,Boolean isUpdateParent,String oldParent_id){		
+		 funService.update(fun,isUpdateParent,oldParent_id);
 		 return fun;
 	}
 	

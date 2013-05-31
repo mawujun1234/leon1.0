@@ -10,6 +10,9 @@ Ext.define('Leon.desktop.Desktop', {
 	border:false,
 	initMenus:'',//初始化时，传递过来的菜单，根据这菜单数据生成菜单
 	
+	xTickSize: 1,
+    yTickSize: 1,
+    
 	windows:null,
 	lastActiveWindow:null,
     initComponent: function () {
@@ -77,7 +80,9 @@ Ext.define('Leon.desktop.Desktop', {
         });
        
         var taskbar=Ext.create('Leon.desktop.Taskbar',{
-        	
+        	style:{
+               'z-index': 99999999
+            }
         });
         me.tbar=menubar;
         me.bbar=taskbar;
@@ -243,31 +248,49 @@ Ext.define('Leon.desktop.Desktop', {
 	        ,scope: me
 	    });
 	
-//	    win.on({
-//	        afterrender: function () {
-//	            win.dd.xTickSize = me.xTickSize;
-//	            win.dd.yTickSize = me.yTickSize;
-//	
-//	            if (win.resizer) {
-//	                win.resizer.widthIncrement = me.xTickSize;
-//	                win.resizer.heightIncrement = me.yTickSize;
-//	            }
-//	        },
-//	        single: true
-//	    });
-	
-	    // replace normal window close w/fadeOut animation:
-	    win.doClose = function ()  {
-	        win.doClose = Ext.emptyFn; // dblclick can call again...
-	        win.el.disableShadow();
-	        win.el.fadeOut({
-	            listeners: {
-	                afteranimate: function () {
-	                    win.destroy();
-	                }
-	            }
-	        });
-	    };
+		win.on({
+            boxready: function () {
+                win.dd.xTickSize = me.xTickSize;
+                win.dd.yTickSize = me.yTickSize;
+
+                if (win.resizer) {
+                    win.resizer.widthIncrement = me.xTickSize;
+                    win.resizer.heightIncrement = me.yTickSize;
+                }
+            },
+            single: true
+        });
+
+        // replace normal window close w/fadeOut animation:
+        win.doClose = function ()  {
+            win.doClose = Ext.emptyFn; // dblclick can call again...
+            win.el.disableShadow();
+            win.el.fadeOut({
+                listeners: {
+                    afteranimate: function () {
+                        win.destroy();
+                    }
+                }
+            });
+        };
+    },
+    /**
+     * 设置当改变大小的时候，变化的步长
+     * @param {} xTickSize
+     * @param {} yTickSize
+     */
+    setTickSize: function(xTickSize, yTickSize) {
+        var me = this,
+            xt = me.xTickSize = xTickSize,
+            yt = me.yTickSize = (arguments.length > 1) ? yTickSize : xt;
+
+        me.windows.each(function(win) {
+            var dd = win.dd, resizer = win.resizer;
+            dd.xTickSize = xt;
+            dd.yTickSize = yt;
+            resizer.widthIncrement = xt;
+            resizer.heightIncrement = yt;
+        });
     },
     updateActiveWindow: function () {
         var me = this, activeWindow = me.getActiveWindow(), last = me.lastActiveWindow;

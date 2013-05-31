@@ -13,7 +13,7 @@ Ext.onReady(function(){
 		//注意这样是否会报错，如果不会报错，就完善文档
 		//var MenuItem= Ext.ModelManager.getModel('Leon.desktop.menu.MenuItem')
 		Ext.Ajax.request({
-			url:Ext.ContextPath+'/menuItem/get',
+			url:Ext.ContextPath+'/menuItem/load',
 			params:{id:record.get('rootId')},
 			success:function(response){
 				var obj=Ext.decode(response.responseText);
@@ -30,10 +30,10 @@ Ext.onReady(function(){
 		form.getForm().reset(false);
 		if(tree.getMenuId()=="default"){
 			form.setReadonlyItem4DefauleMenu(true);
-			tree.setDisableAction(true);
+			//tree.setDisableAction(true);
 		} else {
 			form.setReadonlyItem4DefauleMenu(false);
-			tree.setDisableAction(false);
+			//tree.setDisableAction(false);
 		}
 	});
 

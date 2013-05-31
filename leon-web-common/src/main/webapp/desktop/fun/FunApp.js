@@ -10,7 +10,9 @@ Ext.onReady(function(){
 		title:'功能树',
 		width:400
 	});
-	tree.removeAction(0);
+	//tree.removeActionAt(0);
+	//tree.removeAction("create");
+	tree.disableAction("create");
 	var createModule = new Ext.Action({
 		    text: '新增模块',
 		    handler: function(){
@@ -21,7 +23,7 @@ Ext.onReady(function(){
 				}
 		    	tree.onCreate({text:'新模块','funEnum':'module'});
 		    },
-		    iconCls: 'fun-module-iconCls'
+		    iconCls: 'fun-module-add'
 	});
     tree.addAction(createModule,0);
     var createFun = new Ext.Action({
@@ -34,7 +36,7 @@ Ext.onReady(function(){
 			}
 		    tree.onCreate({text:'新功能','funEnum':'fun'});
 		},
-		iconCls: 'fun-fun-iconCls'
+		iconCls: 'fun-fun-add'
 	});
     tree.addAction(createFun,1);
 

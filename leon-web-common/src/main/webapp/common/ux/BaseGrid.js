@@ -142,26 +142,32 @@ Ext.define('Leon.common.ux.BaseGrid', {
     },
     initSimpleAction:function(){
     	var me=this;
+    	var actions=[];
     	var create = new Ext.Action({
 		    text: '新增',
+		    itemId:'create',
 		    disabled:me.disabledAction,
 		    handler: function(){
 		    	me.onCreate();
 		    },
 		    iconCls: 'form-add-button'
 		});
-		me.addAction(create);
+		//me.addAction(create);
+		actions.push(create);
 		var update = new Ext.Action({
 		    text: '更新',
+		    itemId:'update',
 		    disabled:me.disabledAction,
 		    handler: function(){
 				me.onUpdate();
 		    },
 		    iconCls: 'form-update-button'
 		});
-		me.addAction(update);
+		//me.addAction(update);
+		actions.push(update);
 		var destroy = new Ext.Action({
 		    text: '删除',
+		    itemId:'destroy',
 		    disabled:me.disabledAction,
 		    handler: function(){
 		    	me.onDestroy();
@@ -169,19 +175,42 @@ Ext.define('Leon.common.ux.BaseGrid', {
 		    },
 		    iconCls: 'form-delete-button'
 		});
-		me.addAction(destroy);
+		//me.addAction(destroy);
+		actions.push(destroy);
 
 		if(!me.autoSync){
 			var sync = new Ext.Action({
 			    text: '保存',
+			    itemId:'save',
 			    disabled:me.disabledAction,
 			    handler: function(){
 					me.onSync();
 			    },
 			    iconCls: 'form-save-button'
 			});
-			me.addAction(sync);
+			//me.addAction(sync);
+			actions.push(sync);
 		}
+		
+		if(me.autoShowSimpleActionToTbar){
+			me.tbar={
+				itemId:'action_toolbar',
+				items:actions
+			};
+		}
+		var menu=Ext.create('Ext.menu.Menu', {
+			    items: actions
+		});	
+		me.on('itemcontextmenu',function(tree,record,item,index,e){
+			menu.showAt(e.getXY());
+			e.stopEvent();
+		});
+		
+		me.on('containercontextmenu',function(view,e){
+			menu.showAt(e.getXY());
+			e.stopEvent();
+		});
+		me.contextMenu=menu;
     },
     onCreate:function(){
     	var me=this;
@@ -231,7 +260,7 @@ Ext.define('Leon.common.ux.BaseGrid', {
 
     },
     addAction:function(action,index){
-    	if(!action){
+    	    	if(!action){
     		return;
     	}
     	var me=this;
@@ -251,42 +280,135 @@ Ext.define('Leon.common.ux.BaseGrid', {
 				//menu.showAt(e.getXY());
 				e.stopEvent();
 			});
-    	} else if(!me.hasListener("itemcontextmenu")|| me.hasListener("containercontextmenu")){
-    		me.on('itemcontextmenu',function(tree,record,item,index,e){
-				menu.showAt(e.getXY());
-				e.stopEvent();
-			});
-			
-			me.on('containercontextmenu',function(view,e){
-				menu.showAt(e.getXY());
-				e.stopEvent();
-			});
-    	}
-    	if(index){
+    	} 
+
+    	if(index==0 || index){//alert(index);
     		me.contextMenu.insert(index,action);
+    		me.contextMenu.doLayout();
+    		//actions.insert(index,action);
     	} else {
     		me.contextMenu.add(action);
+    		//actions.add(action);
     	}
     	
-//    	if(me.autoShowSimpleActionToTbar){
-//    		var tbar=me.getDockedItems('toolbar[dock="top"]');
-//    		
-//    		if(!tbar || tbar.length==0){
-//    			//me.tbar=Ext.create('Ext.toolbar.Toolbar');
-//    			me.addDocked({
-//			        xtype: 'toolbar',
-//			        dock: 'top',
-//			        items: []
-//			    });
-//    			tbar=me.getDockedItems('toolbar[dock="top"]');
-//    		}
-//    		if(index){
-//	    		tbar[0].insert(index,action);
-//	    	} else {
-//	    		tbar[0].add(action);
-//	    	}
-//			
-//		}
+    	if(me.autoShowSimpleActionToTbar){//alert(me.tbar);
+    		var tbar=me.getActionTbar();
+    		if(tbar){		
+    			if(index==0 || index){
+		    		tbar.insert(index,action);
+		    	} else {//alert(me.tbar.items.getCount());
+		    		tbar.add(action);
+		    	}
+		    	tbar.doComponentLayout();
+    		} 
+			
+		}
+    },
+    removeActionAt:function(index){
+    	this.contextMenu.items.removeAt(index);
+    	var tbar=this.getActionTbar();
+    	tbar[0].items.removeAt(index);
+    },
+    /**
+     * 就是action的itemId，例如有：create,update,destroy,copy,cut,paste,reload等等
+     * @param {} itemIds
+     */
+    removeAction:function(itemIds){
+    	if(!Ext.isIterable(itemIds)){
+    		itemIds=[itemIds];
+    	}
+    	
+    	var items=this.contextMenu.items;
+    	items.each(function(item ,index,len ){
+    		for(var j=0;j<itemIds.length;j++){
+    			if(item.getItemId( )==itemIds[j]){
+    				items.removeAt(index);
+    				break;
+    			}
+    		}
+    	});
+    	var tbar=this.getActionTbar();//this.getDockedItems('toolbar[itemId="action_toolbar"]')[0];
+    	items=tbar.items;
+    	items.each(function(item ,index,len ){
+    		for(var j=0;j<itemIds.length;j++){
+    			if(item.getItemId( )==itemIds[j]){
+    				items.removeAt(index);
+    				break;
+    			}
+    		}
+    	});
+    },
+     /**
+     * 就是action的itemId，例如有：create,update,destroy,copy,cut,paste,reload等等
+     * @param {} itemIds
+     */
+    disableAction:function(itemIds){
+    	if(!Ext.isIterable(itemIds)){
+    		itemIds=[itemIds];
+    	}
+    	
+    	var items=this.contextMenu.items;
+    	items.each(function(item ,index,len ){
+    		for(var j=0;j<itemIds.length;j++){
+    			if(item.getItemId( )==itemIds[j]){
+    				item.disable();
+    				break;
+    			}
+    		}
+    	});
+    	var tbar=this.getActionTbar();//this.getDockedItems('toolbar[itemId="action_toolbar"]')[0];
+    	items=tbar.items;
+    	items.each(function(item ,index,len ){
+    		for(var j=0;j<itemIds.length;j++){
+    			if(item.getItemId( )==itemIds[j]){
+    				item.disable();
+    				break;
+    			}
+    		}
+    	});
+    },
+    /**
+     * 就是action的itemId，例如有：create,update,destroy,copy,cut,paste,reload等等
+     * @param {} itemIds
+     */
+    enableAction:function(itemIds){
+    	if(!Ext.isIterable(itemIds)){
+    		itemIds=[itemIds];
+    	}
+    	
+    	var items=this.contextMenu.items;
+    	items.each(function(item ,index,len ){
+    		for(var j=0;j<itemIds.length;j++){
+    			if(item.getItemId( )==itemIds[j]){
+    				item.disable();
+    				break;
+    			}
+    		}
+    	});
+    	var tbar=this.getActionTbar();//this.getDockedItems('toolbar[itemId="action_toolbar"]')[0];
+    	items=tbar.items;
+    	items.each(function(item ,index,len ){
+    		for(var j=0;j<itemIds.length;j++){
+    			if(item.getItemId( )==itemIds[j]){
+    				item.disable();
+    				break;
+    			}
+    		}
+    	});
+    },
+    getContextMenu:function(){
+    	return this.contextMenu;
+    },
+    actionTbar:null,
+    getActionTbar:function(){
+    	if(!this.actionTbar){
+    		this.actionTbar=this.getDockedItems('toolbar[itemId="action_toolbar"]')[0];
+    	}
+    	
+    	return this.actionTbar
+    },
+    getContextMenuItems:function(){
+    	return this.contextMenu.items;
     },
     getLastSelected:function(){
     	return this.getSelectionModel( ).getLastSelected( );

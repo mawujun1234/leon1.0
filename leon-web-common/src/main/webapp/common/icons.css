@@ -35,8 +35,14 @@
         background: url(../icons/refresh.png) left top no-repeat !important; 
 }
 .fun-module-iconCls { 
-        background: url(../icons/brick.png) left top no-repeat !important; 
+        background: url(../icons/package.png) left top no-repeat !important; 
 }
 .fun-fun-iconCls { 
         background: url(../icons/function.png) left top no-repeat !important; 
+}
+.fun-module-add { 
+        background: url(../icons/package_add.png) left top no-repeat !important; 
+}
+.fun-fun-add { 
+        background: url(../icons/function_add.png) left top no-repeat !important; 
 }

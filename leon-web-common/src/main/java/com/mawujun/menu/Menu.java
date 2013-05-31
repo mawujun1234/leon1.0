@@ -10,6 +10,7 @@ import com.mawujun.repository.idEntity.UUIDEntity;
 @Entity
 @Table(name="leon_menu")
 public class Menu  extends UUIDEntity{
+	public final static String default_id="default";
 	/**
 	 * 
 	 */

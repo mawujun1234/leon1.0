@@ -175,6 +175,9 @@ public class DymincReloadMaperEvent extends Thread{
 	 */
 	public String getPath(String fileName,String libPath) throws IOException {
 		InputStream in = this.getClass().getResourceAsStream(fileName);
+		if(in==null){
+			return null;
+		}
 		ByteArrayOutputStream outStream = new ByteArrayOutputStream();  
 		byte[] data = new byte[1024];
 		int count = -1;

@@ -656,6 +656,12 @@ public class HibernateDao<T, ID extends Serializable>{
 		int totalCount = countCriteriaResult(criteria);
 		return totalCount;
 	}
+	/**
+	 * 返回第一个对象
+	 * @author mawujun email:mawujun1234@163.com qq:16064988
+	 * @param whereInfos
+	 * @return
+	 */
 	public T queryUnique(WhereInfo... whereInfos) {
 		List<T> list=query(whereInfos);
 		if(list!=null && list.size()!=0){
