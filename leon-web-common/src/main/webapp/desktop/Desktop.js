@@ -62,17 +62,8 @@ Ext.define('Leon.desktop.Desktop', {
 //        		
 //        	}}]
 //        });
-        var menuItems=[{iconCls: 'menubar-index-button',xtype:'button',text:'桌面'},'-','-'];
-//        menuItems.push(
-//        {text:'测试',handler:function(){
-//        		me.createWindow({
-//        			//id:1111,
-//        			title:'测试',
-//        			url:'http://www.baidu.com'
-//        		});
-//        		
-//        	}})
         
+        var menuItems=[{iconCls: 'menubar-index-button',xtype:'button',text:'桌面'},'-','-'];
         me.returnMenuItem(menuItems,me.initMenus);
        
         var menubar=Ext.create('Leon.desktop.Menubar',{
@@ -104,21 +95,22 @@ Ext.define('Leon.desktop.Desktop', {
         	for(var i=0;i<initMenus.length;i++){
         		var model=initMenus[i];
         		//alert(model.url);
-        		var menu={
+        		var button={
         			text:model.text,
         			link_url:model.url,
         			pluginUrl:model.pluginUrl,
         			scripts:model.scripts,
-        			iconCls:model.iconCls
+        			iconCls:model.iconCls,
+        			arrowAlign:'right'
         		};
         		
         		if(model.children && model.children.length>0){
-        			menu.menu={items:[]};
-        			me.returnMenuItem(menu.menu.items, model.children);
+        			button.menu={items:[]};
+        			me.returnMenuItem(button.menu.items, model.children);
         		} else {
-        			menu.plugins=[{ptype:'menuplugin',pluginUrl:menu.pluginUrl,scripts:menu.scripts}];
+        			button.plugins=[{ptype:'menuplugin',pluginUrl:button.pluginUrl,scripts:button.scripts}];
         			//alert(menu.url+"===");
-	        		menu.handler=function(btn){
+	        		button.handler=function(btn){
 		        		me.createWindow({
 		        			title:btn.text,
 		        			url:btn.link_url,
@@ -126,7 +118,7 @@ Ext.define('Leon.desktop.Desktop', {
 		        		});
 	        		}
         		}
-        		menuItems.push(menu);
+        		menuItems.push(button);
         	}
         }
         return menuItems;
