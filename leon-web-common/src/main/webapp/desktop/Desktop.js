@@ -100,8 +100,8 @@ Ext.define('Leon.desktop.Desktop', {
         			link_url:model.url,
         			pluginUrl:model.pluginUrl,
         			scripts:model.scripts,
-        			iconCls:model.iconCls,
-        			arrowAlign:'right'
+        			iconCls:model.iconCls
+        			,arrowAlign:'right'
         		};
         		
         		if(model.children && model.children.length>0){
