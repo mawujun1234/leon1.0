@@ -1,0 +1,16 @@
+Ext.defineModel("Leon.desktop.user.User",{
+	extend:"Ext.data.Model",
+	fields:[
+		{name:'id',type:'auto'},
+		{name:'loginName',type:'string'},
+		{name:'password',type:'string'},
+		{name:'name',type:'string'},
+		{name:'isDeleted',type:'boolean'},
+		{name:'deletedDate',type:'date'},
+		{name:'isEnable',type:'boolean'},
+		{name:'isLocked',type:'boolean'},
+		{name:'createDate',type:'date'},
+		{name:'expireDate',type:'date'},
+		{name:'lastLoginDate',type:'date'}
+	]
+});

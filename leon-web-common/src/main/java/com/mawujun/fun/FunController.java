@@ -75,9 +75,9 @@ public class FunController {
 		return fun;
 	}
 	
-	@RequestMapping("/fun/get/{id}")
+	@RequestMapping("/fun/load/{id}")
 	@ResponseBody
-	public Fun getByReset(@PathVariable String id){		
+	public Fun loadByReset(@PathVariable String id){		
 		return funService.get(id);
 	}
 	
