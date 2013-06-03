@@ -13,7 +13,7 @@ Ext.define('Leon.common.ux.BaseGrid', {
     model:null,//用来构建store，如果没有这个值，就得自己构建model
     itemsPerPage:50,
     editable:true,//是否启用自动编辑
-    autoLoad:true,
+    autoLoadData:true,
     autoSync:true,//是否自动同步，修改一个单元格就提交,否则的话，需要右键--》保存，并且如果有多个修改的话，会以数组的形式提交到后台的
     autoNextCellEditing:false,//在使用编辑的时候，按回车键会自动触发下一个单元格
     autoNextCellColIdx:0,//自动触发下一个单元格的时候，col开始的起始数
@@ -48,9 +48,11 @@ Ext.define('Leon.common.ux.BaseGrid', {
 	        	autoSync:me.autoSync,
 	        	remoteSort :true,
 	        	pageSize: me.itemsPerPage,
-		       	autoLoad:me.autoLoad,
+		       	autoLoad:me.autoLoadData,
 		       	model:model
 		});
+		delete me.autoLoadData;
+		delete me.autoSync;
 		return store;
     },
     /**
@@ -192,6 +194,18 @@ Ext.define('Leon.common.ux.BaseGrid', {
 			actions.push(sync);
 		}
 		
+		var reload = new Ext.Action({
+		    text: '刷新',
+		    itemId:'reload',
+		    disabled:me.disabledAction,
+		    handler: function(){
+		    	me.onReload();
+		        
+		    },
+		    iconCls: 'form-reload-button'
+		});
+		actions.push(reload);
+		
 		if(me.autoShowSimpleActionToTbar){
 			me.tbar={
 				itemId:'action_toolbar',
@@ -255,6 +269,9 @@ Ext.define('Leon.common.ux.BaseGrid', {
 				me.getStore().reload();
 			}
 		});
+    },
+    onReload:function(){
+    	this.getStore().reload();
     },
     onAfterContextMenuShow:function(view,record,item,index,e){
 

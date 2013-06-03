@@ -1,43 +1,102 @@
-Ext.require('Leon.desktop.menu.MenuItemTree');
-Ext.require('Leon.desktop.menu.MenuItemForm');
-Ext.require('Leon.desktop.menu.MenuGrid');
+Ext.require('Leon.desktop.user.User');
+Ext.require('Leon.common.ux.BaseGrid');
+Ext.require('Leon.desktop.user.UserForm');
 Ext.onReady(function(){
+//	var grid=Ext.create('Ext.grid.Panel',{
+//		//model:'Leon.desktop.user.User',
+//		region:'west',
+//		split:true,
+//		autoSync:false,
+//		//autoLoad:true,
+//		store:Ext.create('Ext.data.Store', {
+//	        	//autoSync:me.autoSync,
+//	        	remoteSort :true,
+//	        	//pageSize: me.itemsPerPage,
+//		       	//autoLoad:me.autoLoad,
+//		       	//model:'Leon.desktop.user.User',
+//	        	fields :['id','text'],
+//		       	 proxy: {
+//			         type: 'ajax',
+//			         url: '/menu/query',
+//			         reader: {
+//			             type: 'json',
+//			             root: 'root'
+//			         }
+//			     },
+//			     autoLoad: true
+//		}),
+//		//autoInitAction:false,
+//		flex: 1,
+//		title:'用户管理',
+//		columns:[{dataIndex:'loginName',text:'登陆名'},
+//			{dataIndex:'password',text:'密码'},
+//	         {dataIndex:'name',text:'姓名'},
+//	         {dataIndex:'isDeleted',text:'是否删除'},
+//	         {dataIndex:'deletedDate',text:'删除日期'},
+//	         {dataIndex:'isEnable',text:'是否可用'},
+//	         {dataIndex:'isEnable',text:'是否锁定'},
+//	         {dataIndex:'createDate',text:'创建日期'},
+//	         {dataIndex:'expireDate',text:'过期日期'},
+//	         {dataIndex:'lastLoginDate',text:'最后登陆时间'}
+//	    ]
+//		
+//	});
 	var grid=Ext.create('Leon.common.ux.BaseGrid',{
 		model:'Leon.desktop.user.User',
 		region:'west',
+		split:true,
 		autoSync:false,
-		autoLoad:false,
+		//autoLoad:true,
 		//autoInitAction:false,
 		flex: 1,
-		title:'用户管理',
-		columns:[{dataIndex:'loginName',text:'登陆名称'},
-			{dataIndex:'password',text:'密码',flex:1},
-	         {dataIndex:'name',text:'姓名',flex:1},
-	         {dataIndex:'isDeleted',text:'是否删除',flex:1},
-	         {dataIndex:'deletedDate',text:'删除日期',flex:1},
-	         {dataIndex:'isEnable',text:'是否可用',flex:1},
-	         {dataIndex:'isEnable',text:'是否锁定',flex:1},
-	         {dataIndex:'createDate',text:'创建日期',flex:1},
-	         {dataIndex:'expireDate',text:'过期日期',flex:1},
-	         {dataIndex:'lastLoginDate',text:'最后登陆时间',flex:1}
+		//title:'用户管理',
+		columns:[{dataIndex:'loginName',text:'登陆名'},
+			{dataIndex:'password',text:'密码'},
+	         {dataIndex:'name',text:'姓名'},
+	         {dataIndex:'deleted',text:'是否删除'},
+	         {dataIndex:'deletedDate',text:'删除日期'},
+	         {dataIndex:'enable',text:'是否可用'},
+	         {dataIndex:'locked',text:'是否锁定'},
+	         {dataIndex:'createDate',text:'创建日期',xtype: 'datecolumn',   format:'Y-m-d'},
+	         {dataIndex:'expireDate',text:'过期日期'},
+	         {dataIndex:'lastLoginDate',text:'最后登陆时间'}
 	    ]
 		
 	});
+	var form=Ext.create('Leon.desktop.user.UserForm',{});
+	var win=Ext.create('Ext.Window',{
+			layout:'fit',
+			modal:true,
+			items:[form],
+			listeners:{
+				close:function(panel){
+					grid.getStore().reload();
+				}
+			}
+	});
+	
 	//重载新增的功能，不从表格里面新增
-	grid.onCreate()=function(){
-		alert('建立一个form进行新增。');
+	grid.onCreate=function(){
+		//alert('建立一个form进行新增。');
+		var modal=Ext.createModel('Leon.desktop.user.User',{enable:true});
+		
+		form.getForm().loadRecord(modal);
+		
+		win.show();
+	}
+	grid.onUpdate=function(){
+		var modal=grid.getLastSelected();
+		form.getForm().loadRecord(modal);
+		win.show();
 	}
 	
-	
+	//var form=Ext.create('Leon.desktop.user.UserForm',{title:'用户表单'});
 	var tabPanel=Ext.create('Ext.tab.Panel', {
 		region:'center',
+		split:true,
 	    activeTab: 0,
 	    items: [
-	        {
-	            title: '基本信息',
-	            bodyPadding: 10,
-	            html : 'A simple tab'
-	        },
+	       //form,
 	        {
 	            title: '角色',
 	            html : '分两块，左边是未选择的角色，右边是选择了的角色'

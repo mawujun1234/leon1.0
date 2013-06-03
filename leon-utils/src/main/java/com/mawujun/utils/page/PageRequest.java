@@ -38,7 +38,7 @@ public class PageRequest {
 	protected SortInfo[] sorts;//=new ArrayList<SortInfo>();
 	
 	boolean starFlag=false;//用来判断当start和limit都设置了之后，才进行初始化pageNo和pageSize的值
-	protected int start = 1;
+	protected int start = 0;
 
 	public PageRequest() {
 	}
@@ -62,8 +62,8 @@ public class PageRequest {
 	 * @param start
 	 */
 	public void setStart(Integer start) {
-		if (start==null || start < 1) {
-			this.start = 1;
+		if (start==null || start < 0) {
+			this.start = 0;
 			return;
 		}
 		if(starFlag==false){
@@ -125,13 +125,13 @@ public class PageRequest {
 	 * @param limit 每页显示的行数
 	 */
 	public void setStratAndLimit(final Integer start,final Integer limit) {
-		if(start==null || limit==null || start<1 || limit<1){
+		if(start==null || limit==null || start<0 || limit<1){
 			return;
 		}
 		//设置页面条数
 		this.setPageSize(limit);
 		//如果没有设置start，那就是从第一页开始
-		if(start==null || start < 1){
+		if(start==null || start < 0){
 			this.pageNo = 1;
 			return;
 		}
@@ -259,7 +259,7 @@ public class PageRequest {
 	 * 根据pageNo和pageSize计算当前页第一条记录在总结果集中的位置, 序号从1开始.
 	 */
 	public int getStart() {
-		return ((pageNo - 1) * pageSize)+1;
+		return ((pageNo - 1) * pageSize);
 	}
 
 	/**

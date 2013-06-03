@@ -1,6 +1,7 @@
 package com.mawujun.user;
 
-import java.sql.Date;
+
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,11 +25,11 @@ public class User extends UUIDEntity{
 	@Column(length=20)
 	private String name;
 	
-	private boolean isDeleted;
+	private boolean deleted;
 	private Date deletedDate;
 	
-	private boolean isEnable;
-	private boolean isLocked;
+	private boolean enable;
+	private boolean locked;
 	
 	@Column(updatable=false)
 	private Date createDate;
@@ -55,16 +56,16 @@ public class User extends UUIDEntity{
 	}
 
 	public boolean isEnable() {
-		return isEnable;
+		return enable;
 	}
 	public void setEnable(boolean isEnable) {
-		this.isEnable = isEnable;
+		this.enable = isEnable;
 	}
 	public boolean isLocked() {
-		return isLocked;
+		return locked;
 	}
 	public void setLocked(boolean isLocked) {
-		this.isLocked = isLocked;
+		this.locked = isLocked;
 	}
 	public Date getCreateDate() {
 		return createDate;
@@ -85,10 +86,10 @@ public class User extends UUIDEntity{
 		this.lastLoginDate = lastLoginDate;
 	}
 	public boolean isDeleted() {
-		return isDeleted;
+		return deleted;
 	}
 	public void setDeleted(boolean isDeleted) {
-		this.isDeleted = isDeleted;
+		this.deleted = isDeleted;
 	}
 	public Date getDeletedDate() {
 		return deletedDate;
