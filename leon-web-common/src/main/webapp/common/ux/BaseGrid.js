@@ -41,6 +41,8 @@ Ext.define('Leon.common.ux.BaseGrid', {
 
 
         me.callParent();
+        delete me.autoLoadData;
+		delete me.autoSync;
     },
     createStore:function(model){
     	var me=this;
@@ -51,8 +53,7 @@ Ext.define('Leon.common.ux.BaseGrid', {
 		       	autoLoad:me.autoLoadData,
 		       	model:model
 		});
-		delete me.autoLoadData;
-		delete me.autoSync;
+		
 		return store;
     },
     /**

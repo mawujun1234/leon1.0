@@ -684,6 +684,11 @@ public class HibernateDao<T, ID extends Serializable>{
 		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
 		for(WhereInfo whereInfo:whereInfos){
 			AssertUtils.notNull(whereInfo.getOp());
+			//当property是关联对象的属性的时候，而且不是id
+			if("constant.code".equalsIgnoreCase(whereInfo.getProperty())){ 这里转换成通用的形式
+				criteria.createCriteria("constant").add( Restrictions.eq("code", whereInfo.getValue()));
+				continue;
+			}
 			Type type=classMetadata.getPropertyType(whereInfo.getProperty());
 			Criterion criterion = null;
 			switch(whereInfo.getOp()){

@@ -204,7 +204,7 @@ Ext.onReady(function(){
 	var constantTypeGrid=Ext.create('Leon.common.ux.BaseGrid',{
 		model:'Leon.desktop.constant.ConstantType',
 		autoSync:false,
-		autoLoad:false,
+		autoLoadData:false,
 		//autoInitAction:false,
 		flex: 1,
 		title:'常数分类',
@@ -223,7 +223,7 @@ Ext.onReady(function(){
 	var constantGrid=Ext.create('Leon.common.ux.BaseGrid',{
 		model:'Leon.desktop.constant.Constant',
 		autoSync:false,
-		autoLoad:false,
+		autoLoadData:false,
 		//autoInitAction:false,
 		flex: 1,
 		//selModel:Ext.create('Ext.selection.CellModel',{}),
@@ -255,7 +255,7 @@ Ext.onReady(function(){
 	var constantItemGrid=Ext.create('Leon.common.ux.BaseGrid',{
 		model:'Leon.desktop.constant.ConstantItem',
 		autoSync:false,
-		autoLoad:false,
+		autoLoadData:false,
 		//autoInitAction:false,
 		flex: 1,
 		hidden:true,

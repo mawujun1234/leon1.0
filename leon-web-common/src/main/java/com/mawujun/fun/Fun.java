@@ -3,6 +3,8 @@ package com.mawujun.fun;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -42,6 +44,9 @@ public class Fun extends TreeNode{
 	private String helpContent;//存放的是html内容的地址
 	
 	@Embedded
+	@AttributeOverrides( {
+         @AttributeOverride(name="code", column = @Column(name="bussinessType") )
+	})
 	private BussinessType bussinessType;//业务类型
 	
 	@Enumerated(EnumType.STRING)

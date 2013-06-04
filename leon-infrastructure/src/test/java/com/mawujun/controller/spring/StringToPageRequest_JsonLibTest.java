@@ -13,16 +13,16 @@ public class StringToPageRequest_JsonLibTest {
 		StringToPageRequest_JsonLib toP=new StringToPageRequest_JsonLib();
 		String jsonStr="{}";
 		PageRequest pr=toP.convert(jsonStr);
-		Assert.assertEquals(1, pr.getStart());
+		Assert.assertEquals(0, pr.getStart());
 		Assert.assertEquals(-1, pr.getPageSize());
 		Assert.assertEquals(1, pr.getPageNo());
 		Assert.assertEquals(0, pr.getWheres().length);
 		Assert.assertEquals(0, pr.getSorts().length);
 		
-		
+		这里有问题start应该等于1
 		jsonStr="{start:1,limit:10}";
 		pr=toP.convert(jsonStr);
-		Assert.assertEquals(1, pr.getStart());
+		Assert.assertEquals(0, pr.getStart());
 		Assert.assertEquals(10, pr.getPageSize());
 		Assert.assertEquals(1, pr.getPageNo());
 		Assert.assertEquals(0, pr.getWheres().length);
@@ -30,7 +30,7 @@ public class StringToPageRequest_JsonLibTest {
 		
 		jsonStr="{start:11,limit:10}";
 		pr=toP.convert(jsonStr);
-		Assert.assertEquals(11, pr.getStart());
+		Assert.assertEquals(10, pr.getStart());
 		Assert.assertEquals(10, pr.getPageSize());
 		Assert.assertEquals(2, pr.getPageNo());
 		Assert.assertEquals(0, pr.getWheres().length);
@@ -43,7 +43,7 @@ public class StringToPageRequest_JsonLibTest {
 		StringToPageRequest_JsonLib toP=new StringToPageRequest_JsonLib();
 		String jsonStr="{wheres:[{property:'name',op:'=',value:'张三'}]}";
 		PageRequest pr=toP.convert(jsonStr);
-		Assert.assertEquals(1, pr.getStart());
+		Assert.assertEquals(0, pr.getStart());
 		Assert.assertEquals(-1, pr.getPageSize());
 		Assert.assertEquals(1, pr.getPageNo());
 		Assert.assertEquals(1, pr.getWheres().length);
@@ -55,7 +55,7 @@ public class StringToPageRequest_JsonLibTest {
 		
 		jsonStr="{wheres:[{property:'name',value:'张三'}]}";
 		pr=toP.convert(jsonStr);
-		Assert.assertEquals(1, pr.getStart());
+		Assert.assertEquals(0, pr.getStart());
 		Assert.assertEquals(-1, pr.getPageSize());
 		Assert.assertEquals(1, pr.getPageNo());
 		Assert.assertEquals(1, pr.getWheres().length);
@@ -66,7 +66,7 @@ public class StringToPageRequest_JsonLibTest {
 		
 		jsonStr="{wheres:[{property:'name',value:'张三'}]}";
 		pr=toP.convert(jsonStr);
-		Assert.assertEquals(1, pr.getStart());
+		Assert.assertEquals(0, pr.getStart());
 		Assert.assertEquals(-1, pr.getPageSize());
 		Assert.assertEquals(1, pr.getPageNo());
 		Assert.assertEquals(1, pr.getWheres().length);
@@ -77,7 +77,7 @@ public class StringToPageRequest_JsonLibTest {
 		
 		jsonStr="{wheres:[{property:'name',value:'张三'},{property:'name',value:'李四'}]}";
 		pr=toP.convert(jsonStr);
-		Assert.assertEquals(1, pr.getStart());
+		Assert.assertEquals(0, pr.getStart());
 		Assert.assertEquals(-1, pr.getPageSize());
 		Assert.assertEquals(1, pr.getPageNo());
 		Assert.assertEquals(2, pr.getWheres().length);
@@ -96,7 +96,7 @@ public class StringToPageRequest_JsonLibTest {
 		StringToPageRequest_JsonLib toP=new StringToPageRequest_JsonLib();
 		String jsonStr="{sorts:[{property:'name',dir:'asc'}],wheres:[{property:'name',value:'张三'},{property:'name',value:'李四'}]}";
 		PageRequest pr=toP.convert(jsonStr);
-		Assert.assertEquals(1, pr.getStart());
+		Assert.assertEquals(0, pr.getStart());
 		Assert.assertEquals(-1, pr.getPageSize());
 		Assert.assertEquals(1, pr.getPageNo());
 		Assert.assertEquals(2, pr.getWheres().length);

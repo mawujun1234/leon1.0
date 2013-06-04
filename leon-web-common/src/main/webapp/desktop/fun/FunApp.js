@@ -1,5 +1,6 @@
 Ext.require('Leon.desktop.fun.FunTree');
 Ext.require('Leon.desktop.fun.FunForm');
+Ext.require('Leon.common.ux.ConstantCombo');
 //Ext.require('Leon.common.ux.BaseAjax');//這個必須要加的
 //Ext.require('Leon.common.ux.BaseTree');//這個必須要加的
 Ext.onReady(function(){

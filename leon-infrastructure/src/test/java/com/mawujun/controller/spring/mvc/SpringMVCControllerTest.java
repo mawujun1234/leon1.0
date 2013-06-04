@@ -249,13 +249,13 @@ public class SpringMVCControllerTest {
 	@Test
 	public void bindPageRequestByJosn() throws Exception {//.content("{name:'parent',id:1,createDate:"+((new Date()).toString()+",age:11}")
 		this.mockMvc.perform(get("/test/bindPageRequestByJosn.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
-				.content("{start:1,limit:10,wheres:[{key:'name_like',value:'ma'},{property:'age',op:'LT',value:10}],sorts:[{property:'name',direction:'ASC'},{property:'age',direction:'DESC'}]}").contentType(MediaType.APPLICATION_JSON))
+				.content("{start:0,limit:10,wheres:[{key:'name_like',value:'ma'},{property:'age',op:'LT',value:10}],sorts:[{property:'name',direction:'ASC'},{property:'age',direction:'DESC'}]}").contentType(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk())
 		.andExpect(content().encoding("ISO-8859-1"))
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(true))
 		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
-		.andExpect(jsonPath("$..start").value(1))
+		.andExpect(jsonPath("$..start").value(0))
 		.andExpect(jsonPath("$..limit").value(10))
 		.andExpect(jsonPath("$..wheres[0].property").value("name"))
 		.andExpect(jsonPath("$..wheres[0].value").value("%ma%"))
@@ -272,13 +272,13 @@ public class SpringMVCControllerTest {
 	@Test
 	public void bindPageRequestByConverter() throws Exception {//.content("{name:'parent',id:1,createDate:"+((new Date()).toString()+",age:11}")
 		this.mockMvc.perform(get("/test/bindPageRequestByConverter.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
-				.param("pageRequest", "{start:1,limit:10,wheres:[{key:'name_like',value:'ma'},{property:'age',op:'LT',value:10}],sorts:[{property:'name',direction:'ASC'},{property:'age',direction:'DESC'}]}").contentType(MediaType.TEXT_HTML))
+				.param("pageRequest", "{start:0,limit:10,wheres:[{key:'name_like',value:'ma'},{property:'age',op:'LT',value:10}],sorts:[{property:'name',direction:'ASC'},{property:'age',direction:'DESC'}]}").contentType(MediaType.TEXT_HTML))
 		.andExpect(status().isOk())
 		.andExpect(content().encoding("ISO-8859-1"))
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(true))
 		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
-		.andExpect(jsonPath("$..start").value(1))
+		.andExpect(jsonPath("$..start").value(0))
 		.andExpect(jsonPath("$..limit").value(10))
 		.andExpect(jsonPath("$..wheres[0].property").value("name"))
 		.andExpect(jsonPath("$..wheres[0].value").value("%ma%"))
@@ -295,7 +295,7 @@ public class SpringMVCControllerTest {
 	@Test
 	public void bindPageRequestNormal() throws Exception {//.content("{name:'parent',id:1,createDate:"+((new Date()).toString()+",age:11}")
 		this.mockMvc.perform(get("/test/bindPageRequestNormal.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
-				.param("start", "1").param("limit", "10")
+				.param("start", "0").param("limit", "10")
 				.param("wheres[0].key", "name_like")
 				.param("wheres[0].value", "ma")
 				.param("wheres[1].property", "age")
@@ -311,7 +311,7 @@ public class SpringMVCControllerTest {
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(true))
 		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
-		.andExpect(jsonPath("$..start").value(1))
+		.andExpect(jsonPath("$..start").value(0))
 		.andExpect(jsonPath("$..limit").value(10))
 		.andExpect(jsonPath("$..wheres[0].property").value("name"))
 		.andExpect(jsonPath("$..wheres[0].value").value("%ma%"))

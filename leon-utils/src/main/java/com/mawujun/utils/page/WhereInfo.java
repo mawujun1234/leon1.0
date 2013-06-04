@@ -352,6 +352,8 @@ public class WhereInfo  implements Serializable{
 		this.op = op;
 	}
 	
+	//public boolean is
+	
 	
 
 
