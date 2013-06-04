@@ -24,6 +24,7 @@ Ext.define('Leon.common.ux.BaseTree', {
     alias: 'widget.btreepanel',
     cascadeDelete:false,//在删除的时候是否级联删除节点
     displayField :'text',//传递到后台的时候，名称的默认树形
+    rootVisible:false,
     disabledAction:false,//讲动作都禁止掉，不可使用
     model:null,//用来构建store，如果没有这个值，就得自己构建model
     defaultRootText :'根节点',
@@ -265,7 +266,7 @@ Ext.define('Leon.common.ux.BaseTree', {
 //		    'parent_id':parent.get("id")
 //		};
     	//values=values||{'parent_id':parent.get("id")};
-    	values=Ext.applyIf(values,{'parent_id':parent.get("id")});
+    	values=Ext.applyIf(values,{'parent_id':parent.get("id")});//alert(values['parent_id']);
 		//values[me.displayField]='新节点';
 		var child=values.isModel?values:Ext.createModel(parent.self.getName(),values);
 		child.save({

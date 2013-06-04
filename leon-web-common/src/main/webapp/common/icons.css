@@ -46,3 +46,15 @@
 .fun-fun-add { 
         background: url(../icons/function_add.png) left top no-repeat !important; 
 }
+.role-role-iconCls { 
+        background: url(../icons/group.png) left top no-repeat !important; 
+}
+.role-add-iconCls { 
+        background: url(../icons/group_add.png) left top no-repeat !important; 
+}
+.role-category-iconCls { 
+        background: url(../icons/package.png) left top no-repeat !important; 
+}
+.role-category-add { 
+        background: url(../icons/package_add.png) left top no-repeat !important; 
+}

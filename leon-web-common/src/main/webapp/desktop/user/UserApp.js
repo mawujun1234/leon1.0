@@ -2,45 +2,6 @@ Ext.require('Leon.desktop.user.User');
 Ext.require('Leon.common.ux.BaseGrid');
 Ext.require('Leon.desktop.user.UserForm');
 Ext.onReady(function(){
-//	var grid=Ext.create('Ext.grid.Panel',{
-//		//model:'Leon.desktop.user.User',
-//		region:'west',
-//		split:true,
-//		autoSync:false,
-//		//autoLoad:true,
-//		store:Ext.create('Ext.data.Store', {
-//	        	//autoSync:me.autoSync,
-//	        	remoteSort :true,
-//	        	//pageSize: me.itemsPerPage,
-//		       	//autoLoad:me.autoLoad,
-//		       	//model:'Leon.desktop.user.User',
-//	        	fields :['id','text'],
-//		       	 proxy: {
-//			         type: 'ajax',
-//			         url: '/menu/query',
-//			         reader: {
-//			             type: 'json',
-//			             root: 'root'
-//			         }
-//			     },
-//			     autoLoad: true
-//		}),
-//		//autoInitAction:false,
-//		flex: 1,
-//		title:'用户管理',
-//		columns:[{dataIndex:'loginName',text:'登陆名'},
-//			{dataIndex:'password',text:'密码'},
-//	         {dataIndex:'name',text:'姓名'},
-//	         {dataIndex:'isDeleted',text:'是否删除'},
-//	         {dataIndex:'deletedDate',text:'删除日期'},
-//	         {dataIndex:'isEnable',text:'是否可用'},
-//	         {dataIndex:'isEnable',text:'是否锁定'},
-//	         {dataIndex:'createDate',text:'创建日期'},
-//	         {dataIndex:'expireDate',text:'过期日期'},
-//	         {dataIndex:'lastLoginDate',text:'最后登陆时间'}
-//	    ]
-//		
-//	});
 	var grid=Ext.create('Leon.common.ux.BaseGrid',{
 		model:'Leon.desktop.user.User',
 		region:'west',
@@ -105,8 +66,7 @@ Ext.onReady(function(){
 	            title: '权限',
 	            html : '功能树，如果是从角色上继承过来的，就灰色显示不能再进行修改了，否则就可以修改，并且添加一个不显示角色权限的按钮，只要不勾，哪就只显示直接授权在用户上的功能'
 	        }
-	    ],
-	    renderTo : Ext.getBody()
+	    ]
 	});
 
 	var viewPort=Ext.create('Ext.container.Viewport',{
