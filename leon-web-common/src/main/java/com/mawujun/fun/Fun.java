@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -39,6 +40,9 @@ public class Fun extends TreeNode{
 	@Label(name="帮助")
 	@Column(length=100)
 	private String helpContent;//存放的是html内容的地址
+	
+	@Embedded
+	private BussinessType bussinessType;//业务类型
 	
 	@Enumerated(EnumType.STRING)
 	private FunEnum funEnum;//是模块还是功能
@@ -130,6 +134,12 @@ public class Fun extends TreeNode{
 			return true;
 		}
 		 return false;
+	}
+	public BussinessType getBussinessType() {
+		return bussinessType;
+	}
+	public void setBussinessType(BussinessType bussinessType) {
+		this.bussinessType = bussinessType;
 	}
 
 }
