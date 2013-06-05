@@ -35,7 +35,7 @@ Ext.define('Leon.common.ux.BaseTree', {
     initComponent: function () {
 		var me = this;
 		//me.callParent();
-		
+
 		if(me.model){
         	me.store = Ext.create('Ext.data.TreeStore', {
 	       		autoLoad:true,
@@ -91,7 +91,7 @@ Ext.define('Leon.common.ux.BaseTree', {
         		me.fields.length=0;
         	}
         	
-        	var model=me.dynamicModel('Tree.TempleModelaaa',fields,me.api);
+        	var model=me.dynamicModel('Tree.TempleModel'+Ext.id(),fields,me.api);
         	me.store = Ext.create('Ext.data.TreeStore', {
 	       		autoLoad:true,
 	       		nodeParam :'id',

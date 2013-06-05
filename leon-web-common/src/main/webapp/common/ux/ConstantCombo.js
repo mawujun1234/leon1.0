@@ -2,12 +2,13 @@ Ext.define('Leon.common.ux.ConstantCombo', {
 	extend:'Ext.form.ComboBox',
 	alias: ['widget.constantcombo'],
 	 
-	code:null,//Constant的code
+	code:null,//Constant的code,必填
 	selectFirst:true,//默认选择第一行,还有一个问题就是，如果store已经加载了，在点击下拉的时候，不再去加载，封装掉
 	
-	queryMode: 'remote',
+	queryMode: 'local',
     displayField: 'text',
     valueField: 'code',
+    
 	initComponent: function () {
 		var me=this;
 		var myStore = Ext.create('Ext.data.Store', {
@@ -27,6 +28,15 @@ Ext.define('Leon.common.ux.ConstantCombo', {
 		     },
 		     autoLoad: true
 		 });
+		 if(me.selectFirst){
+		 	myStore.on('load',function(){
+		 		if(myStore.getCount( ) >0){
+		 			var r=myStore.getAt(0);
+		 			me.select( r );
+		 		}
+		 		
+		 	});
+		 }
 		 me.store=myStore;
 		 me.callParent();
 	}
