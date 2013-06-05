@@ -51,6 +51,7 @@ public class ConstantItemController {
 	@ResponseBody
 	public List<ConstantItem> queryByCode(String code){	
 		WhereInfo whereinfo=WhereInfo.parse("constant.code", code);
+		//WhereInfo whereinfo1=WhereInfo.parse("constant.id", "402881e53f0f187d013f0f1f2bd00000");
 		return constantItemService.query(whereinfo);
 	}
 	@RequestMapping("/constantItem/load")

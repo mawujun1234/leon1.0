@@ -91,6 +91,12 @@ public class WhereInfo  implements Serializable{
 
 		return filters.toArray(new WhereInfo[filters.size()]);
 	}
+	public static WhereInfo parse(final String property,String op,final String value) {
+		return parse(property+"_"+op,value);
+	}
+	public static WhereInfo parse(String property, Operation operation, Object value) {
+		return new WhereInfo(property,operation,value);
+	}
 	/**
 	 * searchParams中key的格式为FIELDNAME_OPERATOR
 	 * 当使用isNull和isnotnull的时候最好value带入任意一个值，系统会自动忽略掉这个值的

@@ -253,6 +253,13 @@ public class SpringMVCController {
 		QueryResult aa=new QueryResult(pageRequest);
 		return aa;
 	}
+	
+	/**
+	 * 使用的是ServletRequestDataBinder进行绑定，
+	 * @author mawujun email:mawujun1234@163.com qq:16064988
+	 * @param pageRequest
+	 * @return
+	 */
 	//http://www.iteye.com/topic/1122793?page=3#2385378
 	@RequestMapping("/test/bindPageRequestNormal.do")
 	@ResponseBody

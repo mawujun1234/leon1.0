@@ -128,6 +128,7 @@ public class PageRequest {
 		if(start==null || limit==null || start<0 || limit<1){
 			return;
 		}
+
 		//设置页面条数
 		this.setPageSize(limit);
 		//如果没有设置start，那就是从第一页开始
@@ -137,12 +138,18 @@ public class PageRequest {
 		}
 		//开始计算pageNo。看getFirst()
 		this.pageNo=start/limit+1;
+		
+		this.start=start;
+		this.starFlag=true;
 	}
 
 	/**
 	 * 获得每页的记录数量, 默认为-1,表示不分页.
 	 */
 	public int getPageSize() {
+		return pageSize;
+	}
+	public Integer getLimit() {
 		return pageSize;
 	}
 
@@ -259,6 +266,9 @@ public class PageRequest {
 	 * 根据pageNo和pageSize计算当前页第一条记录在总结果集中的位置, 序号从1开始.
 	 */
 	public int getStart() {
+		if(starFlag){
+			return this.start;
+		}
 		return ((pageNo - 1) * pageSize);
 	}
 

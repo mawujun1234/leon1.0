@@ -3,7 +3,7 @@ package com.mawujun.controller.spring;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.mawujun.controller.spring.JsonStringToPageRequest_FastJson;
+import com.mawujun.controller.spring.mvc.JsonStringToPageRequest_FastJson;
 import com.mawujun.utils.page.PageRequest;
 
 //@RunWith(SpringJUnit4ClassRunner.class)
@@ -27,10 +27,10 @@ public class JsonStringToPageRequest_FastJsonTest {
 		Assert.assertEquals(1, pr.getPageNo());
 		Assert.assertNull(pr.getWheres());
 		Assert.assertNull( pr.getSorts());
-		这里有问题start应该等于11
+		//这里有问题start应该等于11
 		jsonStr="{start:11,limit:10}";
 		pr=toP.convert(jsonStr);
-		Assert.assertEquals(10, pr.getStart());
+		Assert.assertEquals(11, pr.getStart());
 		Assert.assertEquals(10, pr.getPageSize());
 		Assert.assertEquals(2, pr.getPageNo());
 		Assert.assertNull(pr.getWheres());

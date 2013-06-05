@@ -3,7 +3,7 @@ Ext.define('Leon.common.ux.ConstantCombo', {
 	alias: ['widget.constantcombo'],
 	 
 	code:null,//Constant的code
-	selectFirst:true,//默认选择第一行
+	selectFirst:true,//默认选择第一行,还有一个问题就是，如果store已经加载了，在点击下拉的时候，不再去加载，封装掉
 	
 	queryMode: 'remote',
     displayField: 'text',

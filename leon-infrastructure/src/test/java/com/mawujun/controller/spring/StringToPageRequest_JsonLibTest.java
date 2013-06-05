@@ -19,10 +19,10 @@ public class StringToPageRequest_JsonLibTest {
 		Assert.assertEquals(0, pr.getWheres().length);
 		Assert.assertEquals(0, pr.getSorts().length);
 		
-		这里有问题start应该等于1
+		//这里有问题start应该等于1
 		jsonStr="{start:1,limit:10}";
 		pr=toP.convert(jsonStr);
-		Assert.assertEquals(0, pr.getStart());
+		Assert.assertEquals(1, pr.getStart());
 		Assert.assertEquals(10, pr.getPageSize());
 		Assert.assertEquals(1, pr.getPageNo());
 		Assert.assertEquals(0, pr.getWheres().length);
@@ -30,7 +30,7 @@ public class StringToPageRequest_JsonLibTest {
 		
 		jsonStr="{start:11,limit:10}";
 		pr=toP.convert(jsonStr);
-		Assert.assertEquals(10, pr.getStart());
+		Assert.assertEquals(11, pr.getStart());
 		Assert.assertEquals(10, pr.getPageSize());
 		Assert.assertEquals(2, pr.getPageNo());
 		Assert.assertEquals(0, pr.getWheres().length);
