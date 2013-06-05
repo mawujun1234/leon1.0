@@ -1,4 +1,29 @@
-
+function ConstantItemProxy(code,name){
+	this.code=code;
+	this.name=name;
+}
+Ext.data.Types.CONSTANT = {
+    convert: function(v, data) {
+    	//console.log(this.name);
+    	//console.log(data[this.name]);
+    	 if (!v) {
+            return null;
+         }
+         if (v instanceof ConstantItemProxy) {
+             return v;
+         }
+         if(Ext.isPrimitive( v )){
+         	return new ConstantItemProxy(v, null);
+         } else {
+         	return new ConstantItemProxy(v.code, v.name);
+         }
+        return null;
+    },
+    sortType: function(v) {
+        return v.code;  // When sorting, order by latitude
+    },
+    type: 'constant'
+};
 
 Ext.Ajax.timeout=60000000;
 Ext.Ajax.defaultHeaders={ 'Accept':'application/json;'},

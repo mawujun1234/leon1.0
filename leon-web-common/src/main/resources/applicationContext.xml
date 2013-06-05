@@ -16,9 +16,9 @@
 
 	
 
-	<!-- -->
+	<!--
 	<bean id="springContextHolder" class="com.mawujun.controller.spring.SpringContextHolder" lazy-init="false" ></bean>
-	 
+	  -->
 	 
 
 	 

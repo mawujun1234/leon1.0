@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.util.StringUtils;
+
 import com.mawujun.annotation.Label;
 import com.mawujun.exten.TreeNode;
 import com.mawujun.repository.idEntity.UUIDEntity;
@@ -119,7 +121,9 @@ public class Fun extends TreeNode{
 		return funEnum;
 	}
 	public void setFunEnum(String funEnum) {
-		this.funEnum = FunEnum.valueOf(funEnum);
+		if(StringUtils.hasText(funEnum)){
+			this.funEnum = FunEnum.valueOf(funEnum);
+		}		
 	}
 	public void setFunEnum(FunEnum funEnum) {
 		this.funEnum = funEnum;

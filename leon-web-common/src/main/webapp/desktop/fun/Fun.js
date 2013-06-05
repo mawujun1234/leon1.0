@@ -1,3 +1,5 @@
+
+
 //Ext.define("Leon.desktop.fun.Fun",{
 Ext.defineModel("Leon.desktop.fun.Fun",{
 	extend:"Ext.data.Model",
@@ -10,7 +12,7 @@ Ext.defineModel("Leon.desktop.fun.Fun",{
 		{name:'helpContent',type:'string'},
 		{name:'funEnum',type:'string'},
 		{name:'iconCls',type:'string'},
-		{name:'bussinessType',type:'string'},
+		{name:'bussinessType',type:'constant'},//Ext.data.Types.Constant
 		{name:'parent_id',type:'auto'}
 	],
 	associations:[
