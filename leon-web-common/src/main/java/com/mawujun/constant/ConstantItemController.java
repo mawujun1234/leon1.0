@@ -52,9 +52,10 @@ public class ConstantItemController {
 		WhereInfo whereinfo=WhereInfo.parse("constant.code", code);
 		//WhereInfo whereinfo1=WhereInfo.parse("constant.id", "402881e53f0f187d013f0f1f2bd00000");
 		List<ConstantItem> list=constantItemService.query(whereinfo);
-//		for(ConstantItem item:list){
-//			item.setConstant(null);
-//		}
+		//这样写是为了解决 fastjson生成jsonpath的问题
+		for(ConstantItem item:list){
+			item.setConstant(null);
+		}
 		return list;
 	}
 	@RequestMapping("/constantItem/load")

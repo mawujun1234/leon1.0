@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.ClassUtils;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Hibernate;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Query;
@@ -693,9 +694,11 @@ public class HibernateDao<T, ID extends Serializable>{
 					Criteria tempCriteria=criteria;
 					for(int i=0;i<properties.length-1;i++){
 						tempCriteria=tempCriteria.createCriteria(properties[i]);
+						
 					}
 					WhereInfo tempWhereInfo=WhereInfo.parse(properties[properties.length-1], whereInfo.getOp(),whereInfo.getValue());
 					tempCriteria.add(returnCriterion(classMetadata,tempWhereInfo));
+					
 					continue;
 				} else {
 					criteria.add(returnCriterion(classMetadata,whereInfo));

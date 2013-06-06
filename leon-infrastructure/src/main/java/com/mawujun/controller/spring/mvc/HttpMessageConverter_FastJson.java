@@ -321,7 +321,7 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
         String result=jsonString;
         while (matcher.find())
         {
-        	当后台返回的时候有问题，测试 业务类型的时候有问题
+        	//当后台返回的时候有问题，测试 业务类型的时候有问题
         	//http://su1216.iteye.com/blog/1571083
         	//System.out.println("找到匹配的数据");
         	//System.out.println(jsonString);
