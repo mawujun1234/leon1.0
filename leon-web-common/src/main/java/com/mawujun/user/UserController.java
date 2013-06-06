@@ -22,7 +22,6 @@ import com.mawujun.utils.page.WhereInfo;
  *
  */
 @Controller
-@Transactional
 public class UserController {
 	@Autowired
 	private UserService userService;

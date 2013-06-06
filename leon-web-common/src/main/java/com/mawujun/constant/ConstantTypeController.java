@@ -33,7 +33,6 @@ import com.mawujun.utils.page.WhereInfo;
  *
  */
 @Controller
-@Transactional
 public class ConstantTypeController  {
 	/**
 	 * 

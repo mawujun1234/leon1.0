@@ -30,6 +30,7 @@ Ext.define('Leon.common.ux.ConstantCombo', {
 		 });
 		 if(me.selectFirst){
 		 	myStore.on('load',function(){
+		 		//alert(myStore.getCount( ));
 		 		if(myStore.getCount( ) >0){
 		 			var r=myStore.getAt(0);
 		 			me.select( r );

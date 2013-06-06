@@ -2,6 +2,7 @@ package com.mawujun.constant;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -32,7 +33,7 @@ public class ConstantItem extends UUIDEntity {
 	
 	@Label(name="排序")
 	private int ordering;//排序
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="constant_id")
 	private Constant constant;
 	

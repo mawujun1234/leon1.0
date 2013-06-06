@@ -1,29 +1,3 @@
-function ConstantItemProxy(code,name){
-	this.code=code;
-	this.name=name;
-}
-Ext.data.Types.CONSTANT = {
-    convert: function(v, data) {
-    	//console.log(this.name);
-    	//console.log(data[this.name]);
-    	 if (!v) {
-            return null;
-         }
-         if (v instanceof ConstantItemProxy) {
-             return v;
-         }
-         if(Ext.isPrimitive( v )){
-         	return new ConstantItemProxy(v, null);
-         } else {
-         	return new ConstantItemProxy(v.code, v.name);
-         }
-        return null;
-    },
-    sortType: function(v) {
-        return v.code;  // When sorting, order by latitude
-    },
-    type: 'constant'
-};
 
 Ext.Ajax.timeout=60000000;
 Ext.Ajax.defaultHeaders={ 'Accept':'application/json;'},
@@ -263,43 +237,6 @@ Ext.override(Ext.data.Model,{
 
         return associationData;
     }
-//    ,set:function(fieldName, newValue){
-//    	var me=this,
-//    	single = (typeof fieldName == 'string'),
-//    	associations     = me.associations.items,association,i,type,
-//        associationCount = associations.length;
-//    	if (single) {
-//            values = me._singleProp;
-//            values[fieldName] = newValue;
-//        } else {
-//            values = fieldName;
-//        }
-//        //for (name in values) {
-//        	
-//        //}
-//        var reader=me.getProxy().getReader();
-//        for (i = 0; i < associationCount; i++) {	
-//        	 association = associations[i];
-//        	 type = association.type;
-//        	 if (type == 'belongsTo' || type == 'hasOne') {
-//        	 	if(values[association.foreignKey] && me[association.instanceName] && values[association.foreignKey]!=me[association.instanceName].getId()){
-//        	 		console.log(values[association.foreignKey]);
-//        	 		console.log(me[association.instanceName].getId());
-//        	 		//console.log(me['get' + association.associatedName]);
-//        	 		// read: function(record, reader, associationData){
-//        	 		association.read(me,me.getProxy().getReader(),{
-//        	 			id:values[association.foreignKey]
-//        	 		});
-//        	 		
-////        			me[association.instanceName]={
-////        	 			id:values[association.foreignKey]
-////        	 		}
-//        		}
-//        	 }
-//        }
-//        
-//    	return this.callOverridden(arguments);
-//    }
 });
 
 Ext.override(Ext.data.writer.Writer, { 
@@ -321,55 +258,57 @@ Ext.override(Ext.data.writer.Writer, {
     } 
 });
 
-///**
-// * 覆盖原来的关联关系配置方式
-// */
-//Ext.override(Ext.data.BelongsToAssociation, { 
-//	constructor: function(config) {
-//		this.callOverridden(arguments);
-//
-//        var me             = this,
-//            ownerProto     = me.ownerModel.prototype,
-//            associatedName = me.associatedName,
-//            associatedNameCapitalize=Ext.String.capitalize(associatedName),
-//            associatedNameUnCapitalize=Ext.String.uncapitalize(associatedName),
-//            getterName     = config.getterName || 'get' + associatedNameCapitalize,
-//            setterName     = config.setterName || 'set' + associatedNameCapitalize;
-//
-//        Ext.apply(me, {
-//            name        : associatedName,
-//            foreignKey  : config.foreignKey||associatedNameUnCapitalize + "_id",
-//            instanceName: associatedName + 'BelongsToInstance',
-//            associationKey:  config.associationKey||associatedNameUnCapitalize
-//        });
-//
-//        var orginalgetterName='get' + associatedName;
-//        var orginalsetterName='set' + associatedName;
-//        ownerProto[getterName] = ownerProto[orginalgetterName];
-//        ownerProto[setterName] = ownerProto[orginalsetterName];
-//        delete ownerProto[orginalgetterName];
-//        delete ownerProto[orginalsetterName];
-//	}
-//});
-//Ext.override(Ext.data.association.HasOne, { 
-//	constructor: function(config) {
-//		this.callOverridden(arguments);
-//
-//        var me             = this,
-//            ownerProto     = me.ownerModel.prototype,
-//            associatedName = me.associatedName,
-//            associatedNameCapitalize=Ext.String.capitalize(associatedName),
-//            associatedNameUnCapitalize=Ext.String.uncapitalize(associatedName),
-//            getterName     = me.getterName || 'get' + associatedNameCapitalize,
-//            setterName     = me.setterName || 'set' + associatedNameCapitalize;
-//
-//        Ext.apply(me, {
-//            name        : associatedName,
-//            foreignKey  : config.foreignKey||associatedNameUnCapitalize + "_id",
-//            instanceName: associatedName + 'HasOneInstance',
-//            associationKey:  config.associationKey||associatedNameUnCapitalize
-//        });
-//        //ownerProto[getterName] = me.createGetter();
-//        //ownerProto[setterName] = me.createSetter();
-//	}
-//});
+//=================自定义类型
+function ConstantItemProxy(code,name){
+	this.code=code;
+	this.name=name;
+	this.toString=function(){
+		return this.name;
+	}
+	//这个方法很重要，用来返回唯一值得，自定义类型都要实现这个方法
+	this.getId=function(){
+		return this.code;
+	}
+}
+Ext.data.Types.CONSTANT = {
+    convert: function(v, data) {
+    	//console.log(this.name);
+    	//console.log(data[this.name]);
+    	//return 'BUH';
+    	 if (!v) {
+            return null;
+         }
+         //console.log("============"+1);
+         if (v instanceof ConstantItemProxy) {
+             return v;
+         }
+         //console.log(2);
+         if(Ext.isPrimitive( v )){//在调用set('',value)的时候走的路径
+         	//console.log(3);
+         	return new ConstantItemProxy(v, null);
+         } else {
+         	//console.log(4);
+         	return new ConstantItemProxy(v.code, v.name);
+         }
+        // console.log(5);
+        return null;
+    },
+    sortType: function(v) {
+        return v.code;  // When sorting, order by latitude
+    },
+    type: 'constant'
+};
+//为了解决自定义数据类型的时候，比较两个值是否一致的情况，例如Form的combox和Record的自定类型字段比较的时候用到
+//例如：ConstantItemProxy和ConstantCombobox进行整合的时候，和自定义类型的getId方法对应的
+Ext.override(Ext.data.Model, { 
+    isEqual: function(a, b) {
+        // instanceof is ~10 times faster then Ext.isDate. Values here will not be cross-document objects
+        if (a instanceof Date && b instanceof Date) {
+            return a.getTime() === b.getTime();
+        }
+        if(b instanceof Object){
+        	return a==b.getId();
+        }
+        return a === b;
+    }
+});

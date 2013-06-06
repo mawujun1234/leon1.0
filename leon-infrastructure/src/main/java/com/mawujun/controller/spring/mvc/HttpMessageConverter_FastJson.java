@@ -189,6 +189,9 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 			if(!map.containsKey("success")){
 				map.put("success", true);
 			}
+			if(!map.containsKey("total")){
+				map.put("total", 1);
+			}
 			if(map.containsKey(ResultMap.filterPropertysName)){
 				doFilterPropertys(map, serializer);
 //				String[] excludes=((String)map.get(ResultMap.filterPropertysName)).split(",");
@@ -237,6 +240,17 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 			ModelMap map=new ModelMap();
 			map.put("root", object);
 			map.put("success", true);
+			if(object instanceof Collection){
+				map.put("total", ((Collection)object).size());
+			} else {
+				Class c=object.getClass();
+				if(c.isArray()){
+					map.put("total", ((Object[])object).length);
+				} else {
+					map.put("total",1);
+				}
+
+			}
 			object=map;
 			//serializer.getValueFilters().add(new HibernateLazyInitializerFilter());
 		
@@ -307,6 +321,7 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
         String result=jsonString;
         while (matcher.find())
         {
+        	当后台返回的时候有问题，测试 业务类型的时候有问题
         	//http://su1216.iteye.com/blog/1571083
         	//System.out.println("找到匹配的数据");
         	//System.out.println(jsonString);

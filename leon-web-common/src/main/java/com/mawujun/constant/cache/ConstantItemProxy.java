@@ -26,7 +26,7 @@ public abstract class ConstantItemProxy  {
 
 	//获取这个状态的名称是什么
 	public String getName() {
-		1：缓存这块，还没有做好:2：常数类在前台展示的时候变成了Object的问题也没有解决，
+		//1：缓存这块，还没有做好:2：常数类在前台展示的时候变成了Object的问题也没有解决，
 		//this.typeClass+"===="+this.code是缓存的key
 		if(ConstantCacheHolder.get(this.constantCode,this.code)==null){
 			return null;

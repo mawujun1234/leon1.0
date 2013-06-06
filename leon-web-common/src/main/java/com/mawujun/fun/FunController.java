@@ -19,7 +19,7 @@ import com.mawujun.utils.page.WhereInfo;
  *
  */
 @Controller
-@Transactional
+//@Transactional
 public class FunController {
 	@Autowired
 	private FunService funService;

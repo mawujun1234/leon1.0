@@ -34,12 +34,12 @@ public class MenuItemController {
 		WhereInfo whereinfo=WhereInfo.parse("parent.id", id);
 		WhereInfo menuIdwhereinfo=WhereInfo.parse("menu.id", menuId);
 		List<MenuItem> funes=menuItemService.query(whereinfo,menuIdwhereinfo);
-		for(MenuItem item:funes){
-			HibernateUtils.initLazyProperty(item.getChildren());
-			for(MenuItem aa:item.getChildren()){
-				System.out.println(aa.getText());
-			}
-		}
+//		for(MenuItem item:funes){
+//			HibernateUtils.initLazyProperty(item.getChildren());
+//			for(MenuItem aa:item.getChildren()){
+//				System.out.println(aa.getText());
+//			}
+//		}
 		System.out.println("==================结果输出来了"+funes.size());
 		//应该是HttpMessage转换的时候出的问题
 		ModelMap map=new ModelMap();

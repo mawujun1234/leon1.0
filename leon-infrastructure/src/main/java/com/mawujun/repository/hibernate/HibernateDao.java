@@ -648,6 +648,7 @@ public class HibernateDao<T, ID extends Serializable>{
 	public List<T> query(WhereInfo... whereInfos) {
 		Criteria criteria = getSession().createCriteria(entityClass);
 		whereInfo2Criterion(criteria,whereInfos);
+		
 		return criteria.list();
 	}
 	public int queryCount(WhereInfo... whereInfos) {
@@ -678,6 +679,7 @@ public class HibernateDao<T, ID extends Serializable>{
 	}
 	
 	private void whereInfo2Criterion(Criteria criteria,WhereInfo... whereInfos) {
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);    //设置ENTITY级的DISTINCT模式，根实体
 		if(whereInfos==null || whereInfos.length==0){
 			return;
 		}

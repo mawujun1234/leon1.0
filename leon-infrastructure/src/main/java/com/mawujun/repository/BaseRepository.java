@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mawujun.exception.BussinessException;
 import com.mawujun.exception.DefaulExceptionCode;
@@ -58,6 +59,7 @@ import com.mawujun.utils.page.WhereInfo;
  * @param <T>
  * @param <ID>
  */
+@Transactional
 public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializable> implements IRepository<T, ID> {
 	
 	

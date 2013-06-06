@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 
 import com.mawujun.annotation.Label;
 import com.mawujun.repository.idEntity.IdEntity;
@@ -31,7 +32,7 @@ public class Constant extends UUIDEntity {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Column(length=25)
+	@Column(length=25,unique=true)
 	@Label(name="编码")
 	private String code;
 	@Column(length=25)
@@ -45,7 +46,7 @@ public class Constant extends UUIDEntity {
 	@JoinColumn(name="constantType_id")
 	private ConstantType constantType;
 	
-	@OneToMany(mappedBy="constant")
+	@OneToMany(mappedBy="constant",fetch=FetchType.EAGER)
 	@OrderBy("ordering")
 	private Set<ConstantItem> constantItemes;
 	

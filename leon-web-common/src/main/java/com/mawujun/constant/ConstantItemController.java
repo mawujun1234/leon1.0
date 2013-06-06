@@ -30,7 +30,6 @@ import com.mawujun.utils.page.WhereInfo;
  *
  */
 @Controller
-@Transactional
 public class ConstantItemController {
 
 	@Autowired
@@ -52,7 +51,11 @@ public class ConstantItemController {
 	public List<ConstantItem> queryByCode(String code){	
 		WhereInfo whereinfo=WhereInfo.parse("constant.code", code);
 		//WhereInfo whereinfo1=WhereInfo.parse("constant.id", "402881e53f0f187d013f0f1f2bd00000");
-		return constantItemService.query(whereinfo);
+		List<ConstantItem> list=constantItemService.query(whereinfo);
+//		for(ConstantItem item:list){
+//			item.setConstant(null);
+//		}
+		return list;
 	}
 	@RequestMapping("/constantItem/load")
 	@ResponseBody

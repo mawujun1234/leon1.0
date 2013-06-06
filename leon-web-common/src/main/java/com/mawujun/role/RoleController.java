@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mawujun.utils.page.WhereInfo;
 
 @Controller
-@Transactional
 public class RoleController {
 	
 	@Autowired

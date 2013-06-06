@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mawujun.fun.Fun;
 
 @Controller
-@Transactional(propagation=Propagation.REQUIRED)
 public class MenuController {
 
 	@Autowired
