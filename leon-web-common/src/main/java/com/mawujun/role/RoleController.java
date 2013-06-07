@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mawujun.fun.Fun;
+import com.mawujun.fun.FunService;
 import com.mawujun.utils.page.WhereInfo;
 
 @Controller
@@ -72,6 +74,23 @@ public class RoleController {
 	public Role destroy(@RequestBody Role role){		
 		roleService.delete(role);
 		return role;
+	}
+	
+	@Autowired
+	private FunService funService;
+	@RequestMapping("/role/queryFun")
+	@ResponseBody
+	public ModelMap queryFun(String id){
+		WhereInfo whereinfo=WhereInfo.parse("parent.id", id);
+		List<Fun> funes=funService.query(whereinfo);
+		for(Fun fun:funes){
+			fun.setChecked(true);
+		}
+		//System.out.println("==================结果输出来了"+funes.size());
+		ModelMap map=new ModelMap();
+		map.put("root", funes);
+		//map.put("filterPropertys", "checked");
+		return map;
 	}
 
 }
