@@ -116,6 +116,7 @@
 					<prop key="hibernate.max_fetch_depth">${hibernate.max_fetch_depth}</prop>
 					<prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size}</prop>
 					<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+					<prop key="hibernate.archive.autodetection">class</prop>
 				</props>
 			</property>
 			<property name="packagesToScan">

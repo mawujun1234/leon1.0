@@ -40,7 +40,7 @@ public class FunController {
 		return map;
 	}
 	/**
-	 * 一次性读取出所有的节点数据
+	 * 一次性读取出所有的节点数据,构建出了整棵树
 	 * @return
 	 */
 	@RequestMapping("/fun/queryAll")

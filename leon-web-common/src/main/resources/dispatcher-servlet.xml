@@ -40,7 +40,6 @@
 <!--  
 <mvc:annotation-driven />
 -->
-
 <!-- 参数绑定，请求体数据绑定，响应体数据返回 -->
 <bean
 	class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">

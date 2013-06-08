@@ -18,23 +18,23 @@ import com.mawujun.utils.help.ReportCodeHelper;
 import com.mawujun.utils.page.WhereInfo;
 
 @Service
-public class FunService extends BaseService<Fun, String> {
-	@Autowired
-	private FunRepository funRepository;
+public class FunService extends BaseRepository<Fun, String> {
+//	@Autowired
+//	private FunRepository funRepository;
 	@Autowired
 	private MenuItemRepository menuItemRepository;
 	
-	@Override
-	public BaseRepository<Fun, String> getRepository() {
-		// TODO Auto-generated method stub
-		return funRepository;
-	}
+//	@Override
+//	public BaseRepository<Fun, String> getRepository() {
+//		// TODO Auto-generated method stub
+//		return funRepository;
+//	}
 
 	@Override
 	public void delete(Fun entity) {
 		//判断是否具有子节点
 		WhereInfo whereinfo=WhereInfo.parse("parent.id", entity.getId());
-		int childs=this.getRepository().queryCount(whereinfo);
+		int childs=this.queryCount(whereinfo);
 		if(childs>0){
 			throw new BussinessException("存在子节点，不能删除。",WebCommonExceptionCode3.EXISTS_CHILDREN);
 		}
@@ -63,12 +63,12 @@ public class FunService extends BaseService<Fun, String> {
 	public String getMaxReportCode(String parent_id){
 		//获取父节点的reportcode
 		WhereInfo whereinfo=WhereInfo.parse("parent.id", parent_id);
-		Object reportCode=funRepository.queryMax("reportCode",whereinfo);
+		Object reportCode=this.queryMax("reportCode",whereinfo);
 		String newReportCode=ReportCodeHelper.generate3((String)reportCode);
 		return newReportCode;
 	}
 	public void create(Fun entity) {
-		Fun parent=getRepository().get(entity.getParent().getId());
+		Fun parent=this.get(entity.getParent().getId());
 		if(parent.getFunEnum()==FunEnum.fun){
 			throw new BussinessException("功能不能增加下级节点");
 		}
@@ -78,7 +78,7 @@ public class FunService extends BaseService<Fun, String> {
 //		String newReportCode=ReportCodeHelper.generate3((String)reportCode);
 		entity.setReportCode(getMaxReportCode(entity.getParent().getId()));
 		
-		getRepository().create(entity);
+		this.create(entity);
 		
 		//获取对应的父菜单,获取第一个匹配的菜单
 		WhereInfo whereinfoItem=WhereInfo.parse("fun.id", entity.getParent().getId());
@@ -124,6 +124,23 @@ public class FunService extends BaseService<Fun, String> {
 		
 	}
 	
-	
+	/**
+	 * 构建出整颗树
+	 */
+	public List<Fun> queryAll() {
+		WhereInfo whereinfo=WhereInfo.parse("parent.id", "root");
+		List<Fun> funes=this.query(whereinfo);
+		recursionFun(funes);
+		return funes;
+	}
+	private void recursionFun( List<Fun> funes){
+		for(Fun fun:funes){
+			this.initLazyProperty(fun.getChildren());
+			if(fun.getChildren().size()>0){
+				recursionFun(fun.getChildren());
+			}
+		}
+		
+	}
 
 }

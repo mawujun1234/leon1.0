@@ -78,19 +78,36 @@ public class RoleController {
 	
 	@Autowired
 	private FunService funService;
-	@RequestMapping("/role/queryFun")
+	@Autowired
+	private RoleFunAssociationService roleFunAssociationService;
+	
+//	@RequestMapping("/role/queryFun")
+//	@ResponseBody
+//	public List<RoleFunAssociation> queryFun(String id){
+////		WhereInfo whereinfo=WhereInfo.parse("parent.id", id);
+////		List<Fun> funes=funService.query(whereinfo);
+////		for(Fun fun:funes){
+////			fun.setChecked(true);
+////		}
+////		//System.out.println("==================结果输出来了"+funes.size());
+////		ModelMap map=new ModelMap();
+////		map.put("root", funes);
+////		//map.put("filterPropertys", "checked");
+////		return map;
+//		
+//		WhereInfo whereinfo=WhereInfo.parse("roleId", id);
+//		List<RoleFunAssociation> funes=roleFunAssociationService.query(whereinfo);
+//		return funes;
+//	}
+	
+	
+	@RequestMapping("/roleFunAssociation/query")
 	@ResponseBody
-	public ModelMap queryFun(String id){
-		WhereInfo whereinfo=WhereInfo.parse("parent.id", id);
-		List<Fun> funes=funService.query(whereinfo);
-		for(Fun fun:funes){
-			fun.setChecked(true);
-		}
-		//System.out.println("==================结果输出来了"+funes.size());
-		ModelMap map=new ModelMap();
-		map.put("root", funes);
-		//map.put("filterPropertys", "checked");
-		return map;
+	public List<RoleFunAssociation> queryRoleFun(String id){
+		d
+		WhereInfo whereinfo=WhereInfo.parse("roleId", id);
+		List<RoleFunAssociation> funes=roleFunAssociationService.query(whereinfo);
+		return funes;
 	}
 
 }

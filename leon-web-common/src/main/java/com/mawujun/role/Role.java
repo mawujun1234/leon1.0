@@ -29,6 +29,9 @@ public class Role extends TreeNode {
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Role parent;
 	
+//	@OneToMany(mappedBy="role",fetch=FetchType.LAZY)
+//	private List<RoleFunAssociation> roleFunAssociations;
+	
 	public String getName() {
 		return name;
 	}

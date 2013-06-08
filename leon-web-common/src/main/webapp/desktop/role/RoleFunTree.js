@@ -14,9 +14,11 @@ Ext.define('Leon.desktop.role.RoleFunTree',{
 			    },
 			    nodeParam :'id',
         		autoLoad:true,
+        		//fields:
+        		model:'Leon.desktop.role.RoleFunAssociation',
 				proxy:{
 					type:'ajax',
-					url:'/role/queryFun',
+					url:'/fun/queryAll',
 					reader:{//因为树会自己生成model，这个时候就有这个问题，不加就解析不了，可以通过   动态生成 模型，而不是通过树默认实现，哪应该就没有问题
 							type:'json',
 							root:'root',
@@ -31,14 +33,16 @@ Ext.define('Leon.desktop.role.RoleFunTree',{
 		};
 		me.store=Ext.create('Ext.data.TreeStore',cofig);
 		
+		
+		
 		var comboStore= Ext.create('Ext.data.Store', {
 			fields: ['id', 'name'],
 			data : [
-				{"id":"public", "name":"公有"},
-				{"id":"private", "name":"私有"},
-				{"id":"deny", "name":"拒绝"}
+				{"id":"publicP", "name":"公有"},
+				{"id":"privateP", "name":"私有"}
 			]
 		});
+		
 		me.columns=[{
 			xtype:'treecolumn',dataIndex:'text',text:'名称'
 		},{

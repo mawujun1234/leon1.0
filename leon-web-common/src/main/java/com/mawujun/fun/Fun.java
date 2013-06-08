@@ -19,7 +19,6 @@ import org.springframework.util.StringUtils;
 
 import com.mawujun.annotation.Label;
 import com.mawujun.exten.TreeNode;
-import com.mawujun.repository.idEntity.UUIDEntity;
 
 @Entity
 @Table(name="leon_Fun")
@@ -58,6 +57,9 @@ public class Fun extends TreeNode{
 	private Fun parent;
 	@OneToMany(mappedBy="parent",fetch=FetchType.LAZY)
 	private List<Fun> children=new ArrayList<Fun>();
+	
+//	@OneToMany(mappedBy="fun",fetch=FetchType.LAZY)
+//	private List<RoleFunAssociation> roleFunAssociations;
 	
 	public Fun(){
 		super();

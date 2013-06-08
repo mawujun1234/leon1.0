@@ -23,7 +23,6 @@
 	        <filtering>true</filtering>
 	      </resource>
 	    </resources>
-  
   	  <plugins>	
 			<plugin>
 	    		<groupId>org.apache.tomcat.maven</groupId>
@@ -34,7 +33,7 @@
 	                 <path>/</path>
 	                 <uriEncoding>utf-8</uriEncoding>
 	                 <contextReloadable>true</contextReloadable>
-	                 <backgroundProcessorDelay>2</backgroundProcessorDelay> 
+	                 <!-- <backgroundProcessorDelay>2</backgroundProcessorDelay>  -->
 	                 <!-- http://blog.csdn.net/jbgtwang/article/details/7696908 <warSourceDirectory>${project.build.directory}/WebContent</warSourceDirectory>      -->         
 	              </configuration>
 	    	</plugin>
