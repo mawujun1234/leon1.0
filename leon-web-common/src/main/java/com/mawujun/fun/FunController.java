@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mawujun.controller.spring.mvc.ResultMap;
 import com.mawujun.utils.page.WhereInfo;
 
 /**
@@ -45,8 +46,18 @@ public class FunController {
 	 */
 	@RequestMapping("/fun/queryAll")
 	@ResponseBody
-	public List<Fun> queryAll(){		
-		return funService.queryAll();
+	public ModelMap queryAll(){	
+//		ResultMap resultMap=new ResultMap();
+//		resultMap.setRootName("children");
+//		resultMap.setRoot(funService.queryAll());
+//		resultMap.setFilterPropertys("parent");
+//		return resultMap;
+		
+		ModelMap resultMap=new ModelMap();
+		resultMap.put("children", funService.queryAll());
+		resultMap.put(ResultMap.filterPropertysName, "parent");
+		return resultMap;
+		
 	}
 	@RequestMapping("/fun/load")
 	@ResponseBody

@@ -103,10 +103,8 @@ public class RoleController {
 	
 	@RequestMapping("/roleFunAssociation/query")
 	@ResponseBody
-	public List<RoleFunAssociation> queryRoleFun(String id){
-		d
-		WhereInfo whereinfo=WhereInfo.parse("roleId", id);
-		List<RoleFunAssociation> funes=roleFunAssociationService.query(whereinfo);
+	public List<RoleFunAssociation> queryRoleFun(String roleId){
+		List<RoleFunAssociation> funes=roleFunAssociationService.query(roleId);
 		return funes;
 	}
 

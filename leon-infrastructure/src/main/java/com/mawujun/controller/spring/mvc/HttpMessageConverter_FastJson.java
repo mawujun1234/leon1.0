@@ -194,27 +194,6 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 			}
 			if(map.containsKey(ResultMap.filterPropertysName)){
 				doFilterPropertys(map, serializer);
-//				String[] excludes=((String)map.get(ResultMap.filterPropertysName)).split(",");
-//
-//				SimplePropertyPreFilter filter =null;
-//				if(map.get("root") instanceof List){
-//					if(((List)map.get("root")).size()>0){
-//						filter = new SimplePropertyPreFilter(((List)map.get("root")).get(0).getClass() ); 
-//						for(String str:excludes){
-//							filter.getExcludes().add(str);
-//						}
-//					}
-//					
-//				} else {
-//					filter = new SimplePropertyPreFilter(map.get("root").getClass() ); 
-//					for(String str:excludes){
-//						filter.getExcludes().add(str);
-//					}
-//				}
-//				if(filter!=null){
-//					serializer.getPropertyPreFilters().add((PropertyPreFilter) filter);
-//				}
-//				map.remove(ResultMap.filterPropertysName);
 			}
 			
 		} else if(object instanceof QueryResult){

@@ -14,14 +14,18 @@ Ext.define('Leon.desktop.role.RoleFunTree',{
 			    },
 			    nodeParam :'id',
         		autoLoad:true,
-        		//fields:
-        		model:'Leon.desktop.role.RoleFunAssociation',
+        		fields:[
+	        		{name:'id',type:'string'},
+					{name:'text',type:'string'},
+					{name:'permissionType',type:'string'}
+        		],
+        		//model:'Leon.desktop.role.RoleFunAssociation',
 				proxy:{
 					type:'ajax',
 					url:'/fun/queryAll',
 					reader:{//因为树会自己生成model，这个时候就有这个问题，不加就解析不了，可以通过   动态生成 模型，而不是通过树默认实现，哪应该就没有问题
 							type:'json',
-							root:'root',
+							root:'children',
 							successProperty:'success',
 							totalProperty:'total'	
 					}
