@@ -24,10 +24,10 @@ import com.mawujun.utils.page.WhereInfo;
 /**
  * 过滤，日期格式等设置http://hi.baidu.com/ien_leo/item/d1601c4d1a44b23dfa8960d5
  * @author mawujun
- *
+ * 这里测试   所有自动包装的可能
  */
-@Controller
-public class SpringMVCController {
+//@Controller
+public class CopyOfSpringMVCController {
 	
 	private QueryResult<Map<String,String>> getQueryResult(){
 		QueryResult<Map<String,String>> page=new QueryResult<Map<String,String>>();
@@ -49,7 +49,7 @@ public class SpringMVCController {
 	@RequestMapping("/test/queryPage.do")
 	@ResponseBody
 	public ModelMap queryPage(){		
-		
+		ToJsonConfigHolder.setAutoWrap(false);
 		QueryResult<Map<String,String>> page=getQueryResult();
 		
 		ModelMap map=new ModelMap();
@@ -58,10 +58,21 @@ public class SpringMVCController {
 		return map;
 	}
 	
+	@RequestMapping("/test/queryPageAutoWarp.do")
+	@ResponseBody
+	public List queryPageAutoWarp(){		
+		QueryResult<Map<String,String>> page=getQueryResult();
+//		
+//		ModelMap map=new ModelMap();
+//		map.put("root", page.getResult());
+//		map.put("total", page.getTotalItems());	
+//		return map;
+		return page.getResult();
+	}
+	
 	@RequestMapping("/test/queryPage1.do")
 	@ResponseBody
 	public QueryResult queryPage1(){
-		ToJsonConfigHolder.setAutoWrap(false);
 		QueryResult<Map<String,String>> page=new QueryResult<Map<String,String>>();
 		page.setStratAndLimit(1, 10);
 		
@@ -80,7 +91,6 @@ public class SpringMVCController {
 	@RequestMapping("/test/queryMap.do")
 	@ResponseBody
 	public Map queryMap(){
-		ToJsonConfigHolder.setAutoWrap(false);
 		Map<String,String> map=new HashMap<String,String>();
 		map.put("name", "name");
 		map.put("age", "111");
@@ -126,7 +136,6 @@ public class SpringMVCController {
 		child1.setParent(parent);
 		parent.addChilden(child1);
 
-		ToJsonConfigHolder.setFilterPropertys("parent");
 		return parent;
 	}
 	/**
@@ -136,7 +145,6 @@ public class SpringMVCController {
 	@RequestMapping("/test/queryCycleList.do")
 	@ResponseBody
 	public List<Model> queryCycleList(){
-		
 		Model parent=new Model();
 		parent.setId(1);
 		parent.setAge(11);
@@ -160,14 +168,12 @@ public class SpringMVCController {
 		List<Model> list=new ArrayList<Model>();
 		list.add(parent);
 
-		ToJsonConfigHolder.setFilterPropertys("parent");
 		return list;
 	}
 	
 	@RequestMapping("/test/filterProperty.do")
 	@ResponseBody
 	public ModelMap filterProperty(){
-		
 		Model parent=new Model();
 		parent.setId(1);
 		parent.setAge(11);
@@ -175,27 +181,8 @@ public class SpringMVCController {
 		parent.setName("parent");
 		
 		ModelMap map=new ModelMap();
-		//map.put("filterPropertys", "age,name");//过滤属性的设置
+		map.put("filterPropertys", "age,name");//过滤属性的设置
 		map.put("root", parent);
-		ToJsonConfigHolder.setFilterPropertys("age,name",Model.class);
-		return map;
-	}
-	@RequestMapping("/test/filterPropertyList.do")
-	@ResponseBody
-	public ModelMap filterPropertyList(){
-		//还没有测试root是List的情况
-		Model parent=new Model();
-		parent.setId(1);
-		parent.setAge(11);
-		parent.setCreateDate(new Date());
-		parent.setName("parent");
-		List<Model> list=new ArrayList<Model>();
-		list.add(parent);
-		
-		ModelMap map=new ModelMap();
-		//map.put("filterPropertys", "age,name");//过滤属性的设置
-		map.put("root", list);
-		ToJsonConfigHolder.setFilterPropertys("age,name",Model.class);
 		return map;
 	}
 	
@@ -214,7 +201,23 @@ public class SpringMVCController {
 		return map;
 	}
 	
-
+	@RequestMapping("/test/filterPropertyList.do")
+	@ResponseBody
+	public ModelMap filterPropertyList(){
+		//还没有测试root是List的情况
+		Model parent=new Model();
+		parent.setId(1);
+		parent.setAge(11);
+		parent.setCreateDate(new Date());
+		parent.setName("parent");
+		List<Model> list=new ArrayList<Model>();
+		list.add(parent);
+		
+		ModelMap map=new ModelMap();
+		map.put("filterPropertys", "age,name");//过滤属性的设置
+		map.put("root", list);
+		return map;
+	}
 	@RequestMapping("/test/filterOnlyId.do")
 	@ResponseBody
 	public ModelMap filterOnlyId(){

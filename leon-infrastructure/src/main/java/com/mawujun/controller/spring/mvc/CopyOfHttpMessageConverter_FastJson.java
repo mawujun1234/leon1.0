@@ -48,28 +48,28 @@ import com.mawujun.utils.page.QueryResult;
  * @author mawujun
  *
  */
-public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<Object> {
+public class CopyOfHttpMessageConverter_FastJson extends AbstractHttpMessageConverter<Object> {
 	
 	public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
-	final static Logger logger = LoggerFactory.getLogger(HttpMessageConverter_FastJson.class);   
+	final static Logger logger = LoggerFactory.getLogger(CopyOfHttpMessageConverter_FastJson.class);   
 	
 	private String datePattern = "yyyy-MM-dd";//"yyyy-MM-dd HH:mm:ss"; 
 	//private static final  String filterPropertys="filterPropertys";//以逗号分隔
 	//private static final  String onlyIds="onlyIds";
 	//是否过滤hibernate未初始化的数据
-	//private boolean enableHibernateLazyInitializerFilter=true;
+	private boolean enableHibernateLazyInitializerFilter=true;
 	
 
 
 	//List<String> datePatterns=new ArrayList<String>();
 	 private static SerializeConfig serializeConfig = new SerializeConfig();     
 	 static {         
-		
+		 //循环引用的配置
 		 serializeConfig.setAsmEnable(false);    
 		 
 	 } 
 	
-	public HttpMessageConverter_FastJson() {
+	public CopyOfHttpMessageConverter_FastJson() {
 		super(new MediaType("application", "json", DEFAULT_CHARSET));
 
 		serializeConfig.put(Date.class, new SimpleDateFormatSerializer(datePattern));  
@@ -158,7 +158,6 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 	}
 
 
-	 
 	@Override
 	protected void writeInternal(Object object, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
 		if (object == null) {
@@ -178,93 +177,79 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 		serializer.config(SerializerFeature.WriteEnumUsingToString,true);
 		//serializer.config(SerializerFeature.WriteMapNullValue,true);
 		//serializer.config(SerializerFeature.SortField,true);
-		 //关闭循环引用的配置
-		serializer.config(SerializerFeature.DisableCircularReferenceDetect, ToJsonConfigHolder.getDisableCircularReferenceDetect());
-		
 		
 		HibernateLazyInitializerFilter hibernateFilter=new HibernateLazyInitializerFilter();
 		serializer.getValueFilters().add(hibernateFilter);
-		doFilterPropertys(object, serializer);
-		
 		try {
-			if(!ToJsonConfigHolder.getAutoWrap()){
-				
-				serializer.write(object);
-				String jsonString=serializer.toString();
-				
-				
-				if(object instanceof ModelMap){
-					System.out.println(jsonString);
-				}
-				jsonString=replaceJsonPath(jsonString);
-				
-				FileCopyUtils.copy(jsonString, new OutputStreamWriter(outputMessage.getBody(), charset));
-				return;
+			
+		 if(object instanceof Map) {
+			Map map=(Map)object;
+			if(map.get(ResultMap.enableHibernateLazyInitializerFilter)!=null && (Boolean)map.get(ResultMap.enableHibernateLazyInitializerFilter)){
+				serializer.getValueFilters().remove(hibernateFilter);
+			}
+			if(!map.containsKey("success")){
+				map.put("success", true);
+			}
+			if(!map.containsKey("total")){
+				map.put("total", 1);
+			}
+			if(map.containsKey(ResultMap.filterPropertysName)){
+				doFilterPropertys(map, serializer);
 			}
 			
+		} else if(object instanceof QueryResult){
+			QueryResult page=(QueryResult)object;
+			ModelMap map=new ModelMap();
+			map.put("root", page.getResult());
+			map.put("total", page.getTotalItems());
+			map.put("start", page.getStart());
+			map.put("limit", page.getPageSize());
+			map.put("pageNo", page.getPageNo());
+			map.put("success", true);
+			map.put("wheres", page.getWheres());
+			map.put("sorts", page.getSorts());
+			object=map;
 			
+			if(page.getFilterPropertys()!=null && !"".equals(page.getFilterPropertys())){
+				doFilterPropertys(map, serializer);
+			}
+			if(!page.isEnableHibernateLazyInitializerFilter()){
+				serializer.getValueFilters().remove(hibernateFilter);
+			}
+		} else {
+			ModelMap map=new ModelMap();
+			map.put("root", object);
+			map.put("success", true);
+			if(object instanceof Collection){
+				map.put("total", ((Collection)object).size());
+			} else {
+				Class c=object.getClass();
+				if(c.isArray()){
+					map.put("total", ((Object[])object).length);
+				} else {
+					map.put("total",1);
+				}
 
-//		if(object instanceof QueryResult){
-//			QueryResult page=(QueryResult)object;
-//			ModelMap map=new ModelMap();
-//			map.put(ToJsonConfigHolder.getRootName(), page.getResult());
-//			map.put(ToJsonConfigHolder.getTotalName(), page.getTotalItems());
-//			map.put(ToJsonConfigHolder.getStartName(), page.getStart());
-//			map.put(ToJsonConfigHolder.getLimitName(), page.getPageSize());
-//			map.put(ToJsonConfigHolder.getPageNoName(), page.getPageNo());
-//			map.put(ToJsonConfigHolder.getSuccessName(), true);
-//			map.put("wheres", page.getWheres());
-//			map.put("sorts", page.getSorts());
-//			object=map;
-//			
-//			if(page.getFilterPropertys()!=null && !"".equals(page.getFilterPropertys())){
-//				doFilterPropertys(map, serializer);
-//			}
-//			if(!page.isEnableHibernateLazyInitializerFilter()){
-//				serializer.getValueFilters().remove(hibernateFilter);
-//			}
-//		} else {
-//			ModelMap map=new ModelMap();
-//			map.put(ToJsonConfigHolder.getRootName(), object);
-//			map.put(ToJsonConfigHolder.getSuccessName(), true);
-//			if(object instanceof Collection){
-//				map.put(ToJsonConfigHolder.getTotalName(), ((Collection)object).size());
-//			} else {
-//				Class c=object.getClass();
-//				if(c.isArray()){
-//					map.put(ToJsonConfigHolder.getTotalName(), ((Object[])object).length);
-//				} else {
-//					map.put(ToJsonConfigHolder.getTotalName(),1);
-//				}
-//
-//			}
-//			if(!ToJsonConfigHolder.getEnableHibernateLazyInitializerFilter()){
-//				serializer.getValueFilters().remove(hibernateFilter);
-//			}
-//			
-//			doFilterPropertys(map, serializer);
-//			
-//			object=map;
-//			//serializer.getValueFilters().add(new HibernateLazyInitializerFilter());
-//		
-//		}
-//		
-//		 //////这个没有做，类型转换有问题
-//		///////////////////////////doAllowSingle((ModelMap)object);
-//		
-//		//FileCopyUtils.copy(JSON.toJSONString(object,serializeConfig, SerializerFeature.PrettyFormat,SerializerFeature.UseSingleQuotes), new OutputStreamWriter(outputMessage.getBody(), charset));
-//		serializer.write(object);
-//		String jsonString=serializer.toString();
-//		if(!ToJsonConfigHolder.getDisableCircularReferenceDetect()){
-//			jsonString=replaceJsonPath(jsonString);
-//		}
-//		FileCopyUtils.copy(jsonString, new OutputStreamWriter(outputMessage.getBody(), charset));
+			}
+			object=map;
+			//serializer.getValueFilters().add(new HibernateLazyInitializerFilter());
+		
+		}
+		
+		doAllowSingle((ModelMap)object);
+		//FileCopyUtils.copy(JSON.toJSONString(object,serializeConfig, SerializerFeature.PrettyFormat,SerializerFeature.UseSingleQuotes), new OutputStreamWriter(outputMessage.getBody(), charset));
+		serializer.write(object);
+		//System.out.println();
+		//fastjson在处理循环依赖的时候出现的问题，出现了jsonpath的内容
+		String jsonString=serializer.toString();
+		jsonString=replaceJsonPath(jsonString);
+		FileCopyUtils.copy(jsonString, new OutputStreamWriter(outputMessage.getBody(), charset));
 		
 		}catch(RuntimeException e){
 			logger.error(e.getMessage(),e);
-			e.printStackTrace();
-			throw e;
 			
+			throw e;
+			//e.printStackTrace();
 		}
 		
 
@@ -283,45 +268,28 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 		}
 	}
 	
-	public void doFilterPropertys(Object root ,JSONSerializer serializer) {
-		if(ToJsonConfigHolder.getFilterPropertys()==null || "".equals(ToJsonConfigHolder.getFilterPropertys())){
-			return;
-		}
-		
-		String[] excludes=ToJsonConfigHolder.getFilterPropertys().split(",");//((String)map.get(ResultMap.filterPropertysName)).split(",");
-		//为定义了的类进行属性过滤
-		if(ToJsonConfigHolder.getFilterClass()!=null&& ToJsonConfigHolder.getFilterClass().length>0){
-			for(Class clazz:ToJsonConfigHolder.getFilterClass()){
-				SimplePropertyPreFilter filter = new SimplePropertyPreFilter(clazz); 
+	public void doFilterPropertys(Map map,JSONSerializer serializer){
+		String[] excludes=((String)map.get(ResultMap.filterPropertysName)).split(",");
+
+		SimplePropertyPreFilter filter =null;
+		if(map.get("root") instanceof List){
+			if(((List)map.get("root")).size()>0){
+				filter = new SimplePropertyPreFilter(((List)map.get("root")).get(0).getClass() ); 
 				for(String str:excludes){
 					filter.getExcludes().add(str);
 				}
-				if(filter!=null){
-					serializer.getPropertyPreFilters().add((PropertyPreFilter) filter);
-				}
 			}
+			
 		} else {
-			SimplePropertyPreFilter filter =null;
-			//自己进行判断
-			if(root instanceof List){
-				if(((List)root).size()>0){
-					filter = new SimplePropertyPreFilter(((List)root).get(0).getClass() ); 
-					for(String str:excludes){
-						filter.getExcludes().add(str);
-					}
-				}
-				
-			} else {
-				filter = new SimplePropertyPreFilter(root.getClass() ); 
-				for(String str:excludes){
-					filter.getExcludes().add(str);
-				}
-			}
-			if(filter!=null){
-				serializer.getPropertyPreFilters().add((PropertyPreFilter) filter);
+			filter = new SimplePropertyPreFilter(map.get("root").getClass() ); 
+			for(String str:excludes){
+				filter.getExcludes().add(str);
 			}
 		}
-		
+		if(filter!=null){
+			serializer.getPropertyPreFilters().add((PropertyPreFilter) filter);
+		}
+		map.remove(ResultMap.filterPropertysName);
 	}
 	//Pattern pattern = Pattern.compile("\\{\"\\$ref\":.*\"\\}");  
 	//这里的？很重要，否则由于贪婪匹配的原因会造成问题
@@ -329,9 +297,6 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 	String patStr="\\{\"\\$ref\":.*?\"\\}";
 	Pattern pattern = Pattern.compile(patStr);  
 	public String replaceJsonPath(final String jsonString){
-		if(ToJsonConfigHolder.getDisableCircularReferenceDetect()){
-			return jsonString;
-		}
         Matcher matcher = pattern.matcher(jsonString);
         String result=jsonString;
         while (matcher.find())
@@ -403,5 +368,15 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 	    }
 	}
 	
+	public boolean isEnableHibernateLazyInitializerFilter() {
+		return enableHibernateLazyInitializerFilter;
+	}
+
+
+	public void setEnableHibernateLazyInitializerFilter(
+			boolean enableHibernateLazyInitializerFilter) {
+		this.enableHibernateLazyInitializerFilter = enableHibernateLazyInitializerFilter;
+	}
+
 
 }
