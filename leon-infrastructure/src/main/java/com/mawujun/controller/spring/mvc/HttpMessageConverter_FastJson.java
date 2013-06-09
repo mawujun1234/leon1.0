@@ -170,7 +170,7 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 		
 		SerializeWriter out = new SerializeWriter();
 		JSONSerializer serializer = new JSONSerializer(out);     
-		serializer.setDateFormat(datePattern);
+		serializer.setDateFormat(ToJsonConfigHolder.getDatePattern());
 		//SerializerFeature[] features = {SerializerFeature.UseISO8601DateFormat, SerializerFeature.UseSingleQuotes }; 
 		serializer.config(SerializerFeature.WriteDateUseDateFormat,true);//SerializerFeature.WriteDateUseDateFormat
 		serializer.config(SerializerFeature.UseSingleQuotes,true);//SerializerFeature.
@@ -181,9 +181,11 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 		 //关闭循环引用的配置
 		serializer.config(SerializerFeature.DisableCircularReferenceDetect, ToJsonConfigHolder.getDisableCircularReferenceDetect());
 		
-		
-		HibernateLazyInitializerFilter hibernateFilter=new HibernateLazyInitializerFilter();
-		serializer.getValueFilters().add(hibernateFilter);
+		if(ToJsonConfigHolder.getEnableHibernateLazyInitializerFilter()){
+			HibernateLazyInitializerFilter hibernateFilter=new HibernateLazyInitializerFilter();
+			serializer.getValueFilters().add(hibernateFilter);
+		}
+
 		doFilterPropertys(object, serializer);
 		
 		try {
@@ -192,10 +194,10 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 				serializer.write(object);
 				String jsonString=serializer.toString();
 				
-				
-				if(object instanceof ModelMap){
-					System.out.println(jsonString);
-				}
+//				
+//				if(object instanceof ModelMap){
+//					System.out.println(jsonString);
+//				}
 				jsonString=replaceJsonPath(jsonString);
 				
 				FileCopyUtils.copy(jsonString, new OutputStreamWriter(outputMessage.getBody(), charset));
@@ -204,84 +206,56 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 			
 			
 
-//		if(object instanceof QueryResult){
-//			QueryResult page=(QueryResult)object;
-//			ModelMap map=new ModelMap();
-//			map.put(ToJsonConfigHolder.getRootName(), page.getResult());
-//			map.put(ToJsonConfigHolder.getTotalName(), page.getTotalItems());
-//			map.put(ToJsonConfigHolder.getStartName(), page.getStart());
-//			map.put(ToJsonConfigHolder.getLimitName(), page.getPageSize());
-//			map.put(ToJsonConfigHolder.getPageNoName(), page.getPageNo());
-//			map.put(ToJsonConfigHolder.getSuccessName(), true);
-//			map.put("wheres", page.getWheres());
-//			map.put("sorts", page.getSorts());
-//			object=map;
-//			
-//			if(page.getFilterPropertys()!=null && !"".equals(page.getFilterPropertys())){
-//				doFilterPropertys(map, serializer);
-//			}
-//			if(!page.isEnableHibernateLazyInitializerFilter()){
-//				serializer.getValueFilters().remove(hibernateFilter);
-//			}
-//		} else {
-//			ModelMap map=new ModelMap();
-//			map.put(ToJsonConfigHolder.getRootName(), object);
-//			map.put(ToJsonConfigHolder.getSuccessName(), true);
-//			if(object instanceof Collection){
-//				map.put(ToJsonConfigHolder.getTotalName(), ((Collection)object).size());
-//			} else {
-//				Class c=object.getClass();
-//				if(c.isArray()){
-//					map.put(ToJsonConfigHolder.getTotalName(), ((Object[])object).length);
-//				} else {
-//					map.put(ToJsonConfigHolder.getTotalName(),1);
-//				}
-//
-//			}
-//			if(!ToJsonConfigHolder.getEnableHibernateLazyInitializerFilter()){
-//				serializer.getValueFilters().remove(hibernateFilter);
-//			}
-//			
-//			doFilterPropertys(map, serializer);
-//			
-//			object=map;
-//			//serializer.getValueFilters().add(new HibernateLazyInitializerFilter());
-//		
-//		}
-//		
-//		 //////这个没有做，类型转换有问题
-//		///////////////////////////doAllowSingle((ModelMap)object);
-//		
-//		//FileCopyUtils.copy(JSON.toJSONString(object,serializeConfig, SerializerFeature.PrettyFormat,SerializerFeature.UseSingleQuotes), new OutputStreamWriter(outputMessage.getBody(), charset));
-//		serializer.write(object);
-//		String jsonString=serializer.toString();
-//		if(!ToJsonConfigHolder.getDisableCircularReferenceDetect()){
-//			jsonString=replaceJsonPath(jsonString);
-//		}
-//		FileCopyUtils.copy(jsonString, new OutputStreamWriter(outputMessage.getBody(), charset));
+		if(object instanceof QueryResult){
+			QueryResult page=(QueryResult)object;
+			ModelMap map=new ModelMap();
+			map.put(ToJsonConfigHolder.getRootName(), page.getResult());
+			map.put(ToJsonConfigHolder.getTotalName(), page.getTotalItems());
+			map.put(ToJsonConfigHolder.getStartName(), page.getStart());
+			map.put(ToJsonConfigHolder.getLimitName(), page.getPageSize());
+			map.put(ToJsonConfigHolder.getPageNoName(), page.getPageNo());
+			map.put(ToJsonConfigHolder.getSuccessName(), true);
+			map.put("wheres", page.getWheres());
+			map.put("sorts", page.getSorts());
+			object=map;
+
+		} else {
+			ModelMap map=new ModelMap();
+			map.put(ToJsonConfigHolder.getRootName(), object);
+			map.put(ToJsonConfigHolder.getSuccessName(), true);
+			if(object instanceof Collection){
+				map.put(ToJsonConfigHolder.getTotalName(), ((Collection)object).size());
+			} else {
+				Class c=object.getClass();
+				if(c.isArray()){
+					map.put(ToJsonConfigHolder.getTotalName(), ((Object[])object).length);
+				} else {
+					map.put(ToJsonConfigHolder.getTotalName(),1);
+				}
+
+			}
+			object=map;
+		}
+		
+		//FileCopyUtils.copy(JSON.toJSONString(object,serializeConfig, SerializerFeature.PrettyFormat,SerializerFeature.UseSingleQuotes), new OutputStreamWriter(outputMessage.getBody(), charset));
+		serializer.write(object);
+		String jsonString=serializer.toString();
+		jsonString=replaceJsonPath(jsonString);
+		
+		FileCopyUtils.copy(jsonString, new OutputStreamWriter(outputMessage.getBody(), charset));
 		
 		}catch(RuntimeException e){
 			logger.error(e.getMessage(),e);
 			e.printStackTrace();
 			throw e;
 			
+		} finally {
+			ToJsonConfigHolder.remove();
 		}
 		
 
 	}
-	/**
-	 * 档root不是数组的时候就转换成数组
-	 * @author mawujun email:mawujun1234@163.com qq:16064988
-	 * @param map
-	 */
-	public void doAllowSingle(ModelMap map){
-		if(map.get(ResultMap.allowSingle)!=null && !(Boolean)map.get(ResultMap.allowSingle)){
-			Object root=map.get(ResultMap.root);
-			if(!(root instanceof Collection) && !(root.getClass().isArray())){
-				map.put(ResultMap.root, new Object[]{root});
-			}
-		}
-	}
+
 	
 	public void doFilterPropertys(Object root ,JSONSerializer serializer) {
 		if(ToJsonConfigHolder.getFilterPropertys()==null || "".equals(ToJsonConfigHolder.getFilterPropertys())){

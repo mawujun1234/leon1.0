@@ -33,19 +33,16 @@ public class MenuItemController {
 	public List<MenuItem> query(String id,String menuId){
 		WhereInfo whereinfo=WhereInfo.parse("parent.id", id);
 		WhereInfo menuIdwhereinfo=WhereInfo.parse("menu.id", menuId);
-		List<MenuItem> funes=menuItemService.query(whereinfo,menuIdwhereinfo);
+		List<MenuItem> menuItems=menuItemService.query(whereinfo,menuIdwhereinfo);
 //		for(MenuItem item:funes){
 //			HibernateUtils.initLazyProperty(item.getChildren());
 //			for(MenuItem aa:item.getChildren()){
 //				System.out.println(aa.getText());
 //			}
 //		}
-		System.out.println("==================结果输出来了"+funes.size());
-		//应该是HttpMessage转换的时候出的问题
-		ModelMap map=new ModelMap();
-		map.put("root", funes);
+
 	
-		return funes;
+		return menuItems;
 	}
 	/**
 	 * 一次性读取出所有的节点数据

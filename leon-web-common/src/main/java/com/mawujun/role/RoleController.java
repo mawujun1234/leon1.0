@@ -25,20 +25,16 @@ public class RoleController {
 	 */
 	@RequestMapping("/role/query")
 	@ResponseBody
-	public ModelMap query(String id) {
-		List<Role> funes=null;
+	public List<Role> query(String id) {
+		List<Role> roles=null;
 		if(!"root".equals(id)){
 			WhereInfo whereinfo=WhereInfo.parse("parent.id", id);
-			funes=roleService.query(whereinfo);
+			roles=roleService.query(whereinfo);
 		} else {
-			funes=roleService.query();
+			roles=roleService.query();
 		}
-		
-		//System.out.println("==================结果输出来了"+funes.size());
-		ModelMap map=new ModelMap();
-		map.put("root", funes);
-		//map.put("filterPropertys", "checked");
-		return map;
+
+		return roles;
 	}
 	/**
 	 * 一次性读取出所有的节点数据

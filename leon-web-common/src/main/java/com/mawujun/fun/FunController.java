@@ -4,14 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.mawujun.controller.spring.mvc.ResultMap;
+import com.mawujun.controller.spring.mvc.ToJsonConfigHolder;
 import com.mawujun.utils.page.WhereInfo;
 
 /**
@@ -31,14 +29,14 @@ public class FunController {
 	 */
 	@RequestMapping("/fun/query")
 	@ResponseBody
-	public ModelMap query(String id){
+	public List<Fun> query(String id){
 		WhereInfo whereinfo=WhereInfo.parse("parent.id", id);
 		List<Fun> funes=funService.query(whereinfo);
-		//System.out.println("==================结果输出来了"+funes.size());
-		ModelMap map=new ModelMap();
-		map.put("root", funes);
-		//map.put("filterPropertys", "checked");
-		return map;
+//		//System.out.println("==================结果输出来了"+funes.size());
+//		ModelMap map=new ModelMap();
+//		map.put("root", funes);
+//		//map.put("filterPropertys", "checked");
+		return funes;
 	}
 	/**
 	 * 一次性读取出所有的节点数据,构建出了整棵树
@@ -46,17 +44,16 @@ public class FunController {
 	 */
 	@RequestMapping("/fun/queryAll")
 	@ResponseBody
-	public ModelMap queryAll(){	
-//		ResultMap resultMap=new ResultMap();
-//		resultMap.setRootName("children");
-//		resultMap.setRoot(funService.queryAll());
-//		resultMap.setFilterPropertys("parent");
+	public List<Fun> queryAll(){	
+	
+//		ModelMap resultMap=new ModelMap();
+//		resultMap.put("children", funService.queryAll());
+//		resultMap.put(ResultMap.filterPropertysName, "parent");
 //		return resultMap;
 		
-		ModelMap resultMap=new ModelMap();
-		resultMap.put("children", funService.queryAll());
-		resultMap.put(ResultMap.filterPropertysName, "parent");
-		return resultMap;
+		ToJsonConfigHolder.setFilterPropertys("parent");
+		ToJsonConfigHolder.setRootName("children");
+		return funService.queryAll();
 		
 	}
 	@RequestMapping("/fun/load")

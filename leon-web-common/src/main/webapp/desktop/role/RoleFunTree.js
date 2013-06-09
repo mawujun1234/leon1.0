@@ -3,7 +3,12 @@ Ext.define('Leon.desktop.role.RoleFunTree',{
 //	requires: [
 //	    //'Leon.desktop.fun.Fun'
 //	],
-	rootVisible: true,
+	rootVisible: false,
+//	columnLines:true,
+//	viewConfig: {
+//    	//lockable:true,
+//        stripeRows: false
+//    },
 	initComponent: function () {
 		var me=this;
 		var cofig={
@@ -48,9 +53,16 @@ Ext.define('Leon.desktop.role.RoleFunTree',{
 		});
 		
 		me.columns=[{
-			xtype:'treecolumn',dataIndex:'text',text:'名称'
+			xtype:'treecolumn',dataIndex:'text',text:'名称',width: 200
 		},{
-			dataIndex:'id',text:'权限',editor:{
+                xtype: 'checkcolumn',
+                header: '选择',
+                dataIndex: 'done',
+                width: 55,
+                stopSelection: false,
+                menuDisabled: true
+        },{
+				dataIndex:'id',text:'权限',editor:{
 				xtype:'combo',
 				store:comboStore ,
 			    queryMode: 'local',
@@ -71,7 +83,7 @@ Ext.define('Leon.desktop.role.RoleFunTree',{
 			ptype:'cellediting',
 			clicksToEdit :1,
 			listeners:{
-				beforeedit:function(e){
+				beforeedit:function(e){return true;
 					//if(e.record.isRoot()){ return false;}
 				}
 			}

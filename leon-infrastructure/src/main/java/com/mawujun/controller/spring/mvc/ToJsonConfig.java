@@ -1,7 +1,6 @@
 package com.mawujun.controller.spring.mvc;
 
 public class ToJsonConfig {
-
 	public transient Boolean autoWrap=true;//自动封装为某种格式
 	
 	public transient String filterPropertysName="filterPropertys";
@@ -13,8 +12,12 @@ public class ToJsonConfig {
 	public transient String pageNoName="page";
 	
 	public transient String filterPropertys=null;
+	public transient Class[] filterClass=null;
 	public transient Boolean enableHibernateLazyInitializerFilter=true;
-	public transient Boolean allowSingle=true;//判断是否允许
+	
+	//关闭fastjson的循环引用处理
+	public transient Boolean disableCircularReferenceDetect=true;
+	public transient String datePattern="yyyy-MM-dd";
 	
 	
 	
@@ -36,6 +39,10 @@ public class ToJsonConfig {
 	public void setFilterPropertys(String filterPropertys) {
 		this.filterPropertys = filterPropertys;
 	}
+	public void setFilterPropertys(String filterPropertys,Class... clazz) {
+		this.filterPropertys = filterPropertys;
+		this.filterClass=clazz;
+	}
 	public Boolean getEnableHibernateLazyInitializerFilter() {
 		return enableHibernateLazyInitializerFilter;
 	}
@@ -43,12 +50,7 @@ public class ToJsonConfig {
 			Boolean enableHibernateLazyInitializerFilter) {
 		this.enableHibernateLazyInitializerFilter = enableHibernateLazyInitializerFilter;
 	}
-	public Boolean getAllowSingle() {
-		return allowSingle;
-	}
-	public void setAllowSingle(Boolean allowSingle) {
-		this.allowSingle = allowSingle;
-	}
+
 	public String getSuccessName() {
 		return successName;
 	}
@@ -85,6 +87,24 @@ public class ToJsonConfig {
 	public void setAutoWrap(Boolean autoWrap) {
 		this.autoWrap = autoWrap;
 	}
+	public Boolean getDisableCircularReferenceDetect() {
+		return disableCircularReferenceDetect;
+	}
+	public void setDisableCircularReferenceDetect(
+			Boolean disableCircularReferenceDetect) {
+		this.disableCircularReferenceDetect = disableCircularReferenceDetect;
+	}
+	public Class[] getFilterClass() {
+		return filterClass;
+	}
+	public void setFilterClass(Class[] filterClass) {
+		this.filterClass = filterClass;
+	}
+	public String getDatePattern() {
+		return datePattern;
+	}
+	public void setDatePattern(String datePattern) {
+		this.datePattern = datePattern;
+	}
 	
-
 }

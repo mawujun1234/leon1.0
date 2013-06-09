@@ -35,7 +35,6 @@ Ext.define('Leon.common.ux.BaseTree', {
     initComponent: function () {
 		var me = this;
 		//me.callParent();
-
 		if(me.model){
         	me.store = Ext.create('Ext.data.TreeStore', {
 	       		autoLoad:true,

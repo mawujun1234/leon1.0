@@ -16,8 +16,8 @@ public class QueryResult<T> extends PageRequest implements Iterable<T> {
 	protected List<T> result = null;
 	protected int totalItems = -1;
 	
-	private transient String filterPropertys;
-	private transient boolean enableHibernateLazyInitializerFilter=true;
+	//private transient String filterPropertys;
+	//private transient boolean enableHibernateLazyInitializerFilter=true;
 
 	public QueryResult() {
 	}
@@ -169,20 +169,4 @@ public class QueryResult<T> extends PageRequest implements Iterable<T> {
 		return result;
 	}
 
-	public String getFilterPropertys() {
-		return filterPropertys;
-	}
-
-	public void setFilterPropertys(String filterPropertys) {
-		this.filterPropertys = filterPropertys;
-	}
-
-	public boolean isEnableHibernateLazyInitializerFilter() {
-		return enableHibernateLazyInitializerFilter;
-	}
-
-	public void setEnableHibernateLazyInitializerFilter(
-			boolean enableHibernateLazyInitializerFilter) {
-		this.enableHibernateLazyInitializerFilter = enableHibernateLazyInitializerFilter;
-	}
 }

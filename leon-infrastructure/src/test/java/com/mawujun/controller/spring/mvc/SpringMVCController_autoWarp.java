@@ -26,8 +26,8 @@ import com.mawujun.utils.page.WhereInfo;
  * @author mawujun
  * 这里测试   所有自动包装的可能
  */
-//@Controller
-public class CopyOfSpringMVCController {
+@Controller
+public class SpringMVCController_autoWarp {
 	
 	private QueryResult<Map<String,String>> getQueryResult(){
 		QueryResult<Map<String,String>> page=new QueryResult<Map<String,String>>();
@@ -42,27 +42,15 @@ public class CopyOfSpringMVCController {
 			list.add(map);
 		}
 		page.setResult(list);
-		page.setTotalItems(100);
+		page.setTotalItems(9);
 		return page;
 	}
 	
-	@RequestMapping("/test/queryPage.do")
+	@RequestMapping("/autoWarp/queryPage.do")
 	@ResponseBody
-	public ModelMap queryPage(){		
-		ToJsonConfigHolder.setAutoWrap(false);
+	public List<Map<String,String>> queryPage(){		
 		QueryResult<Map<String,String>> page=getQueryResult();
 		
-		ModelMap map=new ModelMap();
-		map.put("root", page.getResult());
-		map.put("total", page.getTotalItems());	
-		return map;
-	}
-	
-	@RequestMapping("/test/queryPageAutoWarp.do")
-	@ResponseBody
-	public List queryPageAutoWarp(){		
-		QueryResult<Map<String,String>> page=getQueryResult();
-//		
 //		ModelMap map=new ModelMap();
 //		map.put("root", page.getResult());
 //		map.put("total", page.getTotalItems());	
@@ -70,7 +58,8 @@ public class CopyOfSpringMVCController {
 		return page.getResult();
 	}
 	
-	@RequestMapping("/test/queryPage1.do")
+	
+	@RequestMapping("/autoWarp/queryPage1.do")
 	@ResponseBody
 	public QueryResult queryPage1(){
 		QueryResult<Map<String,String>> page=new QueryResult<Map<String,String>>();
@@ -88,7 +77,7 @@ public class CopyOfSpringMVCController {
 		page.setTotalItems(100);	
 		return page;
 	}
-	@RequestMapping("/test/queryMap.do")
+	@RequestMapping("/autoWarp/queryMap.do")
 	@ResponseBody
 	public Map queryMap(){
 		Map<String,String> map=new HashMap<String,String>();
@@ -98,7 +87,7 @@ public class CopyOfSpringMVCController {
 		
 		return map;
 	}
-	@RequestMapping("/test/queryModel.do")
+	@RequestMapping("/autoWarp/queryModel.do")
 	@ResponseBody
 	public Model queryModel(){
 		Model parent=new Model();
@@ -113,7 +102,7 @@ public class CopyOfSpringMVCController {
 	 * 死循环默认会解决掉
 	 * @return
 	 */
-	@RequestMapping("/test/queryCycle.do")
+	@RequestMapping("/autoWarp/queryCycle.do")
 	@ResponseBody
 	public Model queryCycle(){
 		Model parent=new Model();
@@ -135,14 +124,14 @@ public class CopyOfSpringMVCController {
 		child1.setName("child1");
 		child1.setParent(parent);
 		parent.addChilden(child1);
-
+		ToJsonConfigHolder.setFilterPropertys("parent");
 		return parent;
 	}
 	/**
 	 * 死循环默认会解决掉
 	 * @return
 	 */
-	@RequestMapping("/test/queryCycleList.do")
+	@RequestMapping("/autoWarp/queryCycleList.do")
 	@ResponseBody
 	public List<Model> queryCycleList(){
 		Model parent=new Model();
@@ -167,43 +156,84 @@ public class CopyOfSpringMVCController {
 		
 		List<Model> list=new ArrayList<Model>();
 		list.add(parent);
-
+		ToJsonConfigHolder.setFilterPropertys("parent");
 		return list;
 	}
 	
-	@RequestMapping("/test/filterProperty.do")
+	/**
+	 * 死循环默认会解决掉
+	 * @return
+	 */
+	@RequestMapping("/autoWarp/queryCycleList_rootName.do")
 	@ResponseBody
-	public ModelMap filterProperty(){
+	public List<Model> queryCycleList_rootName(){
 		Model parent=new Model();
 		parent.setId(1);
 		parent.setAge(11);
 		parent.setCreateDate(new Date());
 		parent.setName("parent");
+		
+		Model child=new Model();
+		child.setId(1);
+		child.setAge(11);
+		child.setName("child");
+		child.setParent(parent);
+		parent.addChilden(child);
+		
+		Model child1=new Model();
+		child1.setId(2);
+		child1.setAge(22);
+		child1.setName("child1");
+		child1.setParent(parent);
+		parent.addChilden(child1);
+		
+		List<Model> list=new ArrayList<Model>();
+		list.add(parent);
+		ToJsonConfigHolder.setFilterPropertys("parent");
+		ToJsonConfigHolder.setRootName("children");
+		return list;
+	}
+	
+	@RequestMapping("/autoWarp/filterProperty.do")
+	@ResponseBody
+	public Model filterProperty(){
+		Model parent=new Model();
+		parent.setId(1);
+		parent.setAge(11);
+		parent.setCreateDate(new Date());
+		parent.setName("parent");
+		
+//		ModelMap map=new ModelMap();
+//		map.put("filterPropertys", "age,name");//过滤属性的设置
+//		map.put("root", parent);
+		ToJsonConfigHolder.setFilterPropertys("age,name");
+		return parent;
+	}
+	
+	@RequestMapping("/autoWarp/filterPropertyModelMap.do")
+	@ResponseBody
+	public ModelMap filterPropertyModelMap(){
+//		Model parent=new Model();
+//		parent.setId(1);
+//		parent.setAge(11);
+//		parent.setCreateDate(new Date());
+//		parent.setName("parent");
+//		
+//		ResultMap map=new ResultMap();
+//		map.setFilterPropertys("age,name");//过滤属性的设置
+//		map.setRoot(parent);
 		
 		ModelMap map=new ModelMap();
-		map.put("filterPropertys", "age,name");//过滤属性的设置
-		map.put("root", parent);
+		map.put("id", 1);
+		map.put("age", 11);
+		map.put("createDate", new Date());
+		map.put("name", "parent");
 		return map;
 	}
 	
-	@RequestMapping("/test/filterPropertyModelMap.do")
+	@RequestMapping("/autoWarp/filterPropertyList.do")
 	@ResponseBody
-	public ResultMap filterPropertyModelMap(){
-		Model parent=new Model();
-		parent.setId(1);
-		parent.setAge(11);
-		parent.setCreateDate(new Date());
-		parent.setName("parent");
-		
-		ResultMap map=new ResultMap();
-		map.setFilterPropertys("age,name");//过滤属性的设置
-		map.setRoot(parent);
-		return map;
-	}
-	
-	@RequestMapping("/test/filterPropertyList.do")
-	@ResponseBody
-	public ModelMap filterPropertyList(){
+	public List<Model> filterPropertyList(){
 		//还没有测试root是List的情况
 		Model parent=new Model();
 		parent.setId(1);
@@ -213,12 +243,14 @@ public class CopyOfSpringMVCController {
 		List<Model> list=new ArrayList<Model>();
 		list.add(parent);
 		
-		ModelMap map=new ModelMap();
-		map.put("filterPropertys", "age,name");//过滤属性的设置
-		map.put("root", list);
-		return map;
+//		ModelMap map=new ModelMap();
+//		map.put("filterPropertys", "age,name");//过滤属性的设置
+//		map.put("root", list);
+		
+		ToJsonConfigHolder.setFilterPropertys("age,name");
+		return list;
 	}
-	@RequestMapping("/test/filterOnlyId.do")
+	@RequestMapping("/autoWarp/filterOnlyId.do")
 	@ResponseBody
 	public ModelMap filterOnlyId(){
 		Model parent=new Model();
@@ -240,19 +272,19 @@ public class CopyOfSpringMVCController {
 		return map;
 	}
 	
-	@RequestMapping("/test/bindModel.do")
+	@RequestMapping("/autoWarp/bindModel.do")
 	@ResponseBody
 	public Model bindModel(@RequestBody Model model){
 		return model;
 	}
 	
-	@RequestMapping("/test/bindPageRequestByJosn.do")
+	@RequestMapping("/autoWarp/bindPageRequestByJosn.do")
 	@ResponseBody
 	public QueryResult bindPageRequestByJosn(@RequestBody PageRequest pageRequest){
 		QueryResult aa=new QueryResult(pageRequest);
 		return aa;
 	}
-	@RequestMapping("/test/bindPageRequestByConverter.do")
+	@RequestMapping("/autoWarp/bindPageRequestByConverter.do")
 	@ResponseBody
 	public QueryResult bindPageRequestByConverter(@RequestParam("pageRequest")PageRequest pageRequest){
 		QueryResult aa=new QueryResult(pageRequest);
@@ -266,7 +298,7 @@ public class CopyOfSpringMVCController {
 	 * @return
 	 */
 	//http://www.iteye.com/topic/1122793?page=3#2385378
-	@RequestMapping("/test/bindPageRequestNormal.do")
+	@RequestMapping("/autoWarp/bindPageRequestNormal.do")
 	@ResponseBody
 	public QueryResult bindPageRequestNormal(PageRequest pageRequest){
 		//pageRequest.setWheres(wheres);
@@ -280,15 +312,15 @@ public class CopyOfSpringMVCController {
 		return aa;
 	}
 	
-	@RequestMapping("/test/testException.do")
+	@RequestMapping("/autoWarp/testException.do")
 	public void testException() throws Exception{
 		throw new Exception("显示信息错误");
 	}
-	@RequestMapping("/test/testBussinessException.do")
+	@RequestMapping("/autoWarp/testBussinessException.do")
 	public void testBussinessException() throws Exception{
 		throw new BussinessException(DefaulExceptionCode.SYSTEM_EXCEPTION);
 	}
-	@RequestMapping("/test/testConstraintViolationException.do")
+	@RequestMapping("/autoWarp/testConstraintViolationException.do")
 	public void testConstraintViolationException() throws Exception{
 		EntityTest entity1=new EntityTest();
 		entity1.setFirstName("ma");

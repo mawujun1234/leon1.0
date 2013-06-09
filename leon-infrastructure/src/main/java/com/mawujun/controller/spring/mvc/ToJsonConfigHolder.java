@@ -7,10 +7,14 @@ package com.mawujun.controller.spring.mvc;
  */
 public class ToJsonConfigHolder {
 	
-	protected static ThreadLocal<Config> threadLocal = new ThreadLocal<Config>(){
-		protected Config initialValue() {
-			return new Config();
+	protected static ThreadLocal<ToJsonConfig> threadLocal = new ThreadLocal<ToJsonConfig>(){
+		protected ToJsonConfig initialValue() {
+			return new ToJsonConfig();
 			
+		}
+		protected void afterExecute(Runnable r, Throwable t) {  
+			ToJsonConfigHolder.remove();  
+		      //logger.debug("clear thread context");  
 		}
 	};
 
@@ -24,7 +28,7 @@ public class ToJsonConfigHolder {
 	
 	public static void reset(){
 		threadLocal.remove();
-		threadLocal.set(new Config());
+		threadLocal.set(new ToJsonConfig());
 	}
 	public static void remove() {
 		threadLocal.remove();
@@ -81,19 +85,6 @@ public class ToJsonConfigHolder {
 		
 		threadLocal.get().setEnableHibernateLazyInitializerFilter(enableHibernateLazyInitializerFilter);
 	}
-
-
-	public static Boolean getAllowSingle() {
-		
-		return threadLocal.get().getAllowSingle();
-	}
-
-
-	public static void setAllowSingle(Boolean allowSingle) {
-		
-		threadLocal.get().setAllowSingle(allowSingle);
-	}
-
 
 	public static String getRootName() {
 		
@@ -173,7 +164,16 @@ public class ToJsonConfigHolder {
 	
 	
 	
-	
+	public static String getDatePattern() {
+		return threadLocal.get().getDatePattern();
+	}
+	/**
+	 * 设置日期的格式，默认是yyyy-MM-dd
+	 * @param datePattern
+	 */
+	public static void setDatePattern(String datePattern) {
+		threadLocal.get().setDatePattern(datePattern);
+	}
 	
 	public static Boolean getDisableCircularReferenceDetect() {
 		
@@ -186,115 +186,116 @@ public class ToJsonConfigHolder {
 	}
 	
 	
-	private static class Config {
-		public transient Boolean autoWrap=true;//自动封装为某种格式
-		
-		public transient String filterPropertysName="filterPropertys";
-		public transient String rootName="root";
-		public transient String successName="success";
-		public transient String totalName="total";
-		public transient String startName="start";
-		public transient String limitName="limit";
-		public transient String pageNoName="page";
-		
-		public transient String filterPropertys=null;
-		public transient Class[] filterClass=null;
-		public transient Boolean enableHibernateLazyInitializerFilter=true;
-		public transient Boolean allowSingle=true;//判断是否允许
-		
-		//关闭fastjson的循环引用处理
-		public transient Boolean disableCircularReferenceDetect=true;
-		
-		
-		
-		public String getFilterPropertysName() {
-			return filterPropertysName;
-		}
-		public void setFilterPropertysName(String filterPropertysName) {
-			this.filterPropertysName = filterPropertysName;
-		}
-		public String getRootName() {
-			return rootName;
-		}
-		public void setRootName(String rootName) {
-			this.rootName = rootName;
-		}
-		public String getFilterPropertys() {
-			return filterPropertys;
-		}
-		public void setFilterPropertys(String filterPropertys) {
-			this.filterPropertys = filterPropertys;
-		}
-		public void setFilterPropertys(String filterPropertys,Class... clazz) {
-			this.filterPropertys = filterPropertys;
-			this.filterClass=clazz;
-		}
-		public Boolean getEnableHibernateLazyInitializerFilter() {
-			return enableHibernateLazyInitializerFilter;
-		}
-		public void setEnableHibernateLazyInitializerFilter(
-				Boolean enableHibernateLazyInitializerFilter) {
-			this.enableHibernateLazyInitializerFilter = enableHibernateLazyInitializerFilter;
-		}
-		public Boolean getAllowSingle() {
-			return allowSingle;
-		}
-		public void setAllowSingle(Boolean allowSingle) {
-			this.allowSingle = allowSingle;
-		}
-		public String getSuccessName() {
-			return successName;
-		}
-		public void setSuccessName(String successName) {
-			this.successName = successName;
-		}
-		public String getTotalName() {
-			return totalName;
-		}
-		public void setTotalName(String totalName) {
-			this.totalName = totalName;
-		}
-		public String getStartName() {
-			return startName;
-		}
-		public void setStartName(String startName) {
-			this.startName = startName;
-		}
-		public String getLimitName() {
-			return limitName;
-		}
-		public void setLimitName(String limitName) {
-			this.limitName = limitName;
-		}
-		public String getPageNoName() {
-			return pageNoName;
-		}
-		public void setPageNoName(String pageNoName) {
-			this.pageNoName = pageNoName;
-		}
-		public Boolean getAutoWrap() {
-			return autoWrap;
-		}
-		public void setAutoWrap(Boolean autoWrap) {
-			this.autoWrap = autoWrap;
-		}
-		public Boolean getDisableCircularReferenceDetect() {
-			return disableCircularReferenceDetect;
-		}
-		public void setDisableCircularReferenceDetect(
-				Boolean disableCircularReferenceDetect) {
-			this.disableCircularReferenceDetect = disableCircularReferenceDetect;
-		}
-		public Class[] getFilterClass() {
-			return filterClass;
-		}
-		public void setFilterClass(Class[] filterClass) {
-			this.filterClass = filterClass;
-		}
-		
-		
-		
-	}
-	
+//	private static class Config {
+//		public transient Boolean autoWrap=true;//自动封装为某种格式
+//		
+//		public transient String filterPropertysName="filterPropertys";
+//		public transient String rootName="root";
+//		public transient String successName="success";
+//		public transient String totalName="total";
+//		public transient String startName="start";
+//		public transient String limitName="limit";
+//		public transient String pageNoName="page";
+//		
+//		public transient String filterPropertys=null;
+//		public transient Class[] filterClass=null;
+//		public transient Boolean enableHibernateLazyInitializerFilter=true;
+//		
+//		//关闭fastjson的循环引用处理
+//		public transient Boolean disableCircularReferenceDetect=true;
+//		public transient String datePattern="yyyy-MM-dd";
+//		
+//		
+//		
+//		public String getFilterPropertysName() {
+//			return filterPropertysName;
+//		}
+//		public void setFilterPropertysName(String filterPropertysName) {
+//			this.filterPropertysName = filterPropertysName;
+//		}
+//		public String getRootName() {
+//			return rootName;
+//		}
+//		public void setRootName(String rootName) {
+//			this.rootName = rootName;
+//		}
+//		public String getFilterPropertys() {
+//			return filterPropertys;
+//		}
+//		public void setFilterPropertys(String filterPropertys) {
+//			this.filterPropertys = filterPropertys;
+//		}
+//		public void setFilterPropertys(String filterPropertys,Class... clazz) {
+//			this.filterPropertys = filterPropertys;
+//			this.filterClass=clazz;
+//		}
+//		public Boolean getEnableHibernateLazyInitializerFilter() {
+//			return enableHibernateLazyInitializerFilter;
+//		}
+//		public void setEnableHibernateLazyInitializerFilter(
+//				Boolean enableHibernateLazyInitializerFilter) {
+//			this.enableHibernateLazyInitializerFilter = enableHibernateLazyInitializerFilter;
+//		}
+//
+//		public String getSuccessName() {
+//			return successName;
+//		}
+//		public void setSuccessName(String successName) {
+//			this.successName = successName;
+//		}
+//		public String getTotalName() {
+//			return totalName;
+//		}
+//		public void setTotalName(String totalName) {
+//			this.totalName = totalName;
+//		}
+//		public String getStartName() {
+//			return startName;
+//		}
+//		public void setStartName(String startName) {
+//			this.startName = startName;
+//		}
+//		public String getLimitName() {
+//			return limitName;
+//		}
+//		public void setLimitName(String limitName) {
+//			this.limitName = limitName;
+//		}
+//		public String getPageNoName() {
+//			return pageNoName;
+//		}
+//		public void setPageNoName(String pageNoName) {
+//			this.pageNoName = pageNoName;
+//		}
+//		public Boolean getAutoWrap() {
+//			return autoWrap;
+//		}
+//		public void setAutoWrap(Boolean autoWrap) {
+//			this.autoWrap = autoWrap;
+//		}
+//		public Boolean getDisableCircularReferenceDetect() {
+//			return disableCircularReferenceDetect;
+//		}
+//		public void setDisableCircularReferenceDetect(
+//				Boolean disableCircularReferenceDetect) {
+//			this.disableCircularReferenceDetect = disableCircularReferenceDetect;
+//		}
+//		public Class[] getFilterClass() {
+//			return filterClass;
+//		}
+//		public void setFilterClass(Class[] filterClass) {
+//			this.filterClass = filterClass;
+//		}
+//		public String getDatePattern() {
+//			return datePattern;
+//		}
+//		public void setDatePattern(String datePattern) {
+//			this.datePattern = datePattern;
+//		}
+//		
+//		
+//		
+//	}
+//	
 
 }
