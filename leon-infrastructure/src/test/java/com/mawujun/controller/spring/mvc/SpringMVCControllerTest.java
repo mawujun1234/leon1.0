@@ -352,4 +352,22 @@ public class SpringMVCControllerTest {
 		.andExpect(jsonPath("$.message").value("email字段不是一个合法的电子邮件地址:11;"));
 	}
 	
+	@Test
+	public void testExtProperties() throws Exception{
+		this.mockMvc.perform(get("/test/testExtProperties.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
+		//.andExpect(status().isServiceUnavailable())
+		.andExpect(content().contentType("application/json"))
+		.andExpect(jsonPath("$.11").value(11))
+		.andExpect(jsonPath("$.aa").value("aaaa"));
+	}
+	
+	@Test
+	public void testExtProperties1() throws Exception{
+		this.mockMvc.perform(get("/test/testExtProperties1.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
+		//.andExpect(status().isServiceUnavailable())
+		.andExpect(content().contentType("application/json"))
+		.andExpect(jsonPath("$.name").value("1111"))
+		.andExpect(jsonPath("$.aa").value("aaaa"));
+	}
+	
 }

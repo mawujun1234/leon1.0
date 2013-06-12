@@ -1,5 +1,8 @@
 package com.mawujun.controller.spring.mvc;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 在前台往后台返回数据的时候，的配置文件
  * @author mawujun email:mawujun1234@163.com qq:16064988
@@ -183,6 +186,21 @@ public class ToJsonConfigHolder {
 			Boolean disableCircularReferenceDetect) {
 		
 		threadLocal.get().setDisableCircularReferenceDetect(disableCircularReferenceDetect);
+	}
+	
+	public static Map getExtProperties() {
+		return threadLocal.get().getExtProperties();
+	}
+	/**
+	 * 判断是否有额外的属性
+	 * @param key
+	 * @param value
+	 */
+	public static boolean hasExtProperty() {
+		return threadLocal.get().hasExtProperty();
+	}
+	public static void addProperty(Object key,Object value) {
+		threadLocal.get().addProperty(key, value);
 	}
 	
 	

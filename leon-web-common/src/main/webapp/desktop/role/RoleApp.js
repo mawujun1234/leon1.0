@@ -47,7 +47,60 @@ Ext.onReady(function(){
 	});
     tree.addAction(createFun,1);
     
+    var roleId="";
+    tree.on('itemclick',function(view,record,item,index){
+    	if(record.get("roleEnum")!='role'){
+    		tabPanel.mask();
+    		return;
+    	}
+    	tabPanel.unmask();
+    	roleId=record.get('id');
+    	Ext.Ajax.request({
+    		url:'/roleFunAssociation/query',
+    		method:'POST',
+    		params:{roleId:roleId},
+    		success:function(response){
+    			//console.log(response.responseText);
+    			var obj=Ext.decode(response.responseText);
+    			//alert(obj.root);
+    			roleFunTree.checkingFunes(obj.root);
+    		}   		
+    	});
+    });
+   
+    
 	var roleFunTree=Ext.create('Leon.desktop.role.RoleFunTree',{title:'选择功能'});
+	roleFunTree.on('checkchange',function(node,checked){
+//    	var model=Ext.createModel('Leon.desktop.role.RoleFunAssociation',{
+//    		roleId:roleId,
+//    		funId:node.getId(),
+//    		permissionType:'public'
+//    	});
+    	var url='/roleFunAssociation/create';
+    	var params={};
+    	if(!checked){
+    		url='/roleFunAssociation/destroy';
+    		params={
+    			id:node.roleAssociationId
+    		};
+    		//alert('删除还没有做');
+    	} else {
+    		params ={
+	    		roleId:roleId,
+	    		funId:node.getId(),
+	    		permissionType:'publicP'
+	    	}
+    	}
+     	Ext.Ajax.request({
+    		url:url,
+    		method:'POST',
+    		params :params,
+    		success:function(response){
+    			var obj=Ext.encode(response.responseText);
+    			
+    		}   		
+    	});
+    });
 
 	var tabPanel=Ext.create('Ext.tab.Panel', {
 		region:'center',

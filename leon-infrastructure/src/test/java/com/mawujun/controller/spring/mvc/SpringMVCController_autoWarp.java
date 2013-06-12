@@ -1,11 +1,17 @@
 package com.mawujun.controller.spring.mvc;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Test;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -328,4 +334,25 @@ public class SpringMVCController_autoWarp {
 		entity1.setEmail("11");
 		ValidatorUtils.validate(entity1);
 	}
+	
+	@RequestMapping("/autoWarp/testExtProperties.do")
+	@ResponseBody
+	public HashMap testExtProperties(){
+		ToJsonConfigHolder.setAutoWrap(false);
+		ToJsonConfigHolder.addProperty("aa", "aaaa");
+		HashMap bb= new HashMap();
+		bb.put("11", 11);
+		return bb;
+	}
+	
+	@RequestMapping("/autoWarp/testExtProperties1.do")
+	@ResponseBody
+	public Model testExtProperties1(){
+		ToJsonConfigHolder.setAutoWrap(false);
+		ToJsonConfigHolder.addProperty("aa", "aaaa");
+		Model model=new Model();
+		model.setName("1111");
+		return model;
+	}
+
 }

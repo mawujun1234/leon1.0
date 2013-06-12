@@ -157,16 +157,9 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 
 	}
 
-
-	 
-	@Override
-	protected void writeInternal(Object object, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
-		if (object == null) {
-			return;
-		}
+	public JSONSerializer getJSONSerializer(Object object){
 		//JSONObject result=JSONObjectUtils.toJson(t);
-		MediaType contentType = outputMessage.getHeaders().getContentType();
-		Charset charset = contentType.getCharSet() != null ? contentType.getCharSet() : DEFAULT_CHARSET;
+		
 		
 		SerializeWriter out = new SerializeWriter();
 		JSONSerializer serializer = new JSONSerializer(out);     
@@ -187,17 +180,30 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 		}
 
 		doFilterPropertys(object, serializer);
+		return serializer;
+	}
+
+	 
+	@Override
+	protected void writeInternal(Object object, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
+		if (object == null) {
+			return;
+		}
+		MediaType contentType = outputMessage.getHeaders().getContentType();
+		Charset charset = contentType.getCharSet() != null ? contentType.getCharSet() : DEFAULT_CHARSET;
+		JSONSerializer serializer=getJSONSerializer(object);
 		
 		try {
 			if(!ToJsonConfigHolder.getAutoWrap()){
-				
+				if(object instanceof Map){
+					doExtProperties((Map)object);
+				}		
 				serializer.write(object);
 				String jsonString=serializer.toString();
-				
-//				
-//				if(object instanceof ModelMap){
-//					System.out.println(jsonString);
-//				}
+				if(!(object instanceof Map)){
+					jsonString=doExtProperties(jsonString);
+				}
+	
 				jsonString=replaceJsonPath(jsonString);
 				
 				FileCopyUtils.copy(jsonString, new OutputStreamWriter(outputMessage.getBody(), charset));
@@ -205,10 +211,10 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 			}
 			
 			
-
+		ModelMap map=new ModelMap();
 		if(object instanceof QueryResult){
 			QueryResult page=(QueryResult)object;
-			ModelMap map=new ModelMap();
+			//ModelMap map=new ModelMap();
 			map.put(ToJsonConfigHolder.getRootName(), page.getResult());
 			map.put(ToJsonConfigHolder.getTotalName(), page.getTotalItems());
 			map.put(ToJsonConfigHolder.getStartName(), page.getStart());
@@ -217,10 +223,10 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 			map.put(ToJsonConfigHolder.getSuccessName(), true);
 			map.put("wheres", page.getWheres());
 			map.put("sorts", page.getSorts());
-			object=map;
+			//object=map;
 
 		} else {
-			ModelMap map=new ModelMap();
+			
 			map.put(ToJsonConfigHolder.getRootName(), object);
 			map.put(ToJsonConfigHolder.getSuccessName(), true);
 			if(object instanceof Collection){
@@ -234,11 +240,11 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 				}
 
 			}
-			object=map;
+			//object=map;
 		}
 		
-		//FileCopyUtils.copy(JSON.toJSONString(object,serializeConfig, SerializerFeature.PrettyFormat,SerializerFeature.UseSingleQuotes), new OutputStreamWriter(outputMessage.getBody(), charset));
-		serializer.write(object);
+		
+		serializer.write(map);
 		String jsonString=serializer.toString();
 		jsonString=replaceJsonPath(jsonString);
 		
@@ -249,11 +255,45 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 			e.printStackTrace();
 			throw e;
 			
-		} finally {
+		}  finally {
 			ToJsonConfigHolder.remove();
 		}
 		
 
+	}
+	
+	/**
+	 * 处理额外的属性
+	 */
+	public void doExtProperties(Map obj){
+		if(ToJsonConfigHolder.hasExtProperty()){
+			//if(obj instanceof Map){
+			obj.putAll(ToJsonConfigHolder.getExtProperties());
+			//}
+		}
+	}
+	/**
+	 * 处理额外的属性
+	 * @throws Exception 
+	 */
+	public String doExtProperties(String jsonString) throws RuntimeException{
+		
+		char lastChar=jsonString.charAt(jsonString.length()-1);
+		if(ToJsonConfigHolder.hasExtProperty()){
+			if(lastChar=='}'){
+				//serializer.c
+				Map object=ToJsonConfigHolder.getExtProperties();
+				JSONSerializer serializer=getJSONSerializer(object);
+				serializer.write(object);
+				String jsonStr=serializer.toString();
+				jsonStr=jsonStr.substring(1,jsonStr.length()-1);
+				return jsonString.substring(0, jsonString.length()-1)+","+jsonStr+"}";
+			} else {
+				throw new RuntimeException("只有转化为json对象的才能添加额外属性，数组类的对象不能添加额外属性!");
+			}
+		} else {
+			return jsonString;
+		}
 	}
 
 	

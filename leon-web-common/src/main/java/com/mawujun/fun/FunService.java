@@ -135,6 +135,9 @@ public class FunService extends BaseRepository<Fun, String> {
 	}
 	private void recursionFun( List<Fun> funes){
 		for(Fun fun:funes){
+			if(fun.isFun()){
+				fun.setChecked(false);
+			}
 			//fun.setExpanded(true);
 			this.initLazyProperty(fun.getChildren());
 			if(fun.getChildren().size()>0){

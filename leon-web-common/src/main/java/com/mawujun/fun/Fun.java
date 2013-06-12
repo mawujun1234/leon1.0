@@ -146,6 +146,14 @@ public class Fun extends TreeNode{
 		}
 		 return false;
 	}
+	public boolean isFun() {
+		if(FunEnum.module==funEnum){
+			return false;
+		} else if(FunEnum.fun==funEnum){
+			return true;
+		}
+		return false;
+	}
 	public BussinessType getBussinessType() {
 		return bussinessType;
 	}

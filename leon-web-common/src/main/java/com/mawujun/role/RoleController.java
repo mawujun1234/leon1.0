@@ -1,5 +1,6 @@
 package com.mawujun.role;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,5 +104,28 @@ public class RoleController {
 		List<RoleFunAssociation> funes=roleFunAssociationService.query(roleId);
 		return funes;
 	}
+	
+	@RequestMapping("/roleFunAssociation/create")
+	@ResponseBody
+	public RoleFunAssociation create(RoleFunAssociation roleFunAssociation){
+		roleFunAssociation.setCreateDate(new Date());
+		roleFunAssociationService.create(roleFunAssociation);
+		return roleFunAssociation;
+	}
+	
+	@RequestMapping("/roleFunAssociation/update")
+	@ResponseBody
+	public RoleFunAssociation update(RoleFunAssociation roleFunAssociation){
+		roleFunAssociationService.update(roleFunAssociation);
+		return roleFunAssociation;
+	}
+	
+	@RequestMapping("/roleFunAssociation/destroy")
+	@ResponseBody
+	public RoleFunAssociation destroy(RoleFunAssociation roleFunAssociation){
+		roleFunAssociationService.delete(roleFunAssociation);
+		return roleFunAssociation;
+	}
+
 
 }

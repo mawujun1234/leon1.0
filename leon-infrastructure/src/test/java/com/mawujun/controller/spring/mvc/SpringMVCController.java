@@ -310,4 +310,24 @@ public class SpringMVCController {
 		entity1.setEmail("11");
 		ValidatorUtils.validate(entity1);
 	}
+	
+	@RequestMapping("/test/testExtProperties.do")
+	@ResponseBody
+	public HashMap testExtProperties(){
+		ToJsonConfigHolder.setAutoWrap(false);
+		ToJsonConfigHolder.addProperty("aa", "aaaa");
+		HashMap bb= new HashMap();
+		bb.put("11", 11);
+		return bb;
+	}
+	
+	@RequestMapping("/test/testExtProperties1.do")
+	@ResponseBody
+	public Model testExtProperties1(){
+		ToJsonConfigHolder.setAutoWrap(false);
+		ToJsonConfigHolder.addProperty("aa", "aaaa");
+		Model model=new Model();
+		model.setName("1111");
+		return model;
+	}
 }

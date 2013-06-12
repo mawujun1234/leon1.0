@@ -1,5 +1,8 @@
 package com.mawujun.controller.spring.mvc;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ToJsonConfig {
 	public transient Boolean autoWrap=true;//自动封装为某种格式
 	
@@ -18,6 +21,9 @@ public class ToJsonConfig {
 	//关闭fastjson的循环引用处理
 	public transient Boolean disableCircularReferenceDetect=true;
 	public transient String datePattern="yyyy-MM-dd";
+	
+	//添加额外的属性
+	public transient Map extProperties;
 	
 	
 	
@@ -105,6 +111,27 @@ public class ToJsonConfig {
 	}
 	public void setDatePattern(String datePattern) {
 		this.datePattern = datePattern;
+	}
+	public Map getExtProperties() {
+		return extProperties;
+	}
+	/**
+	 * 判断是否有额外的属性
+	 * @param key
+	 * @param value
+	 */
+	public boolean hasExtProperty() {
+		if(this.extProperties!=null && this.extProperties.size()>0){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	public void addProperty(Object key,Object value) {
+		if(this.extProperties==null) {
+			this.extProperties=new HashMap();
+		}
+		this.extProperties.put(key, value);
 	}
 	
 }

@@ -13,12 +13,13 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.mawujun.exten.TreeNode;
+import com.mawujun.repository.idEntity.UUIDEntity;
 
 
 
 @Entity
 @Table(name = "leon_Role_Fun")
-public class RoleFunAssociation extends TreeNode{
+public class RoleFunAssociation extends UUIDEntity{
 
 	/**
 	 * 
@@ -36,8 +37,8 @@ public class RoleFunAssociation extends TreeNode{
 	//@Column()
 	private Date createDate;
 	
-	@Transient
-	private List<RoleFunAssociation> children=new ArrayList<RoleFunAssociation>();
+//	@Transient
+//	private List<RoleFunAssociation> children=new ArrayList<RoleFunAssociation>();
 	
 
 
@@ -86,17 +87,17 @@ public class RoleFunAssociation extends TreeNode{
 		this.funId = funId;
 	}
 
-	public List<RoleFunAssociation> getChildren() {
-		return children;
-	}
-
-	public void setChildren(List<RoleFunAssociation> children) {
-		this.children = children;
-	}
-	
-	public void addChildren(RoleFunAssociation child) {
-		this.children.add(child);
-	}
+//	public List<RoleFunAssociation> getChildren() {
+//		return children;
+//	}
+//
+//	public void setChildren(List<RoleFunAssociation> children) {
+//		this.children = children;
+//	}
+//	
+//	public void addChildren(RoleFunAssociation child) {
+//		this.children.add(child);
+//	}
 
 
 
