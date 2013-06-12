@@ -22,7 +22,8 @@ Ext.define('Leon.desktop.role.RoleFunTree',{
         		fields:[
 	        		{name:'id',type:'string'},
 					{name:'text',type:'string'},
-					{name:'funEnum',type:'string'}
+					{name:'funEnum',type:'string'},
+					{name:'permissionType',type:'string'}
         		],
 //        		model:'Leon.desktop.role.RoleFunAssociation',
 				proxy:{
@@ -55,19 +56,36 @@ Ext.define('Leon.desktop.role.RoleFunTree',{
 		me.columns=[{
 			xtype:'treecolumn',dataIndex:'text',text:'名称',width: 200
 		},{
-			dataIndex:'id',text:'权限属性',
+			dataIndex:'permissionType',text:'权限属性',
 			editor:{
 				xtype:'combo',
 				store:comboStore ,
+				editable:false,
 				queryMode: 'local',
 				displayField: 'name',
-				valueField: 'id'
+				valueField: 'id',
+				listeners:{
+					"select":function(combo,records){
+						var node=me.getSelectionModel().getLastSelected();
+						var params=node.roleAssociation;
+						params.permissionType=records[0].getId();
+						Ext.Ajax.request({
+				    		url:'/roleFunAssociation/update',
+				    		method:'POST',
+				    		params :params,
+				    		success:function(response){
+				    			var obj=Ext.encode(response.responseText);
+				    			//node.set('permissionType',params.permissionType);
+				    			
+				    		}   		
+				    	});
+					}
+				}
 			},
 			renderer: function(val,metaData,record ,rowIndex ,colIndex ,store ){
                 var index = comboStore.findExact('id',val); 
                 if (index != -1){
                     rs = comboStore.getAt(index).data; 
-                    console.dir(rs);
                     return rs.name; 
                 }
             }
@@ -91,9 +109,6 @@ Ext.define('Leon.desktop.role.RoleFunTree',{
 	 * @param {} checkedFunes
 	 */
 	checkingFunes:function(checkedFunes){
-		//使用treestore的data，或者treedate来获取所有节点，然后获取到里面的所有功能。
-		//http://blog.csdn.net/zdb330906531/article/details/6668826
-		hjhj
 		var funs=this.funs;
 		if(!funs){
 			funs=[];
@@ -104,20 +119,18 @@ Ext.define('Leon.desktop.role.RoleFunTree',{
 		//console.log(checkedFunes);
 		for(var i=0;i<funs.length;i++){
 			//console.log(funs.length);
+			funs[i].set('checked',false);
 			for(var j=0;j<checkedFunes.length;j++){
 				if(funs[i].getId()==checkedFunes[j].funId){
-					funs[i].roleAssociationId=checkedFunes[j].id;
+					//funs[i].roleAssociationId=checkedFunes[j].id;
+					funs[i].roleAssociation=checkedFunes[j];
 					funs[i].set('checked',true);
-					//设置UI状态为未选中状态  
-				     // funs[i].getUI().toggleCheck(false);  
-				      //设置节点属性为未选中状态  
-				      //funs[i].attributes.checked=false;  
+					funs[i].set('permissionType',checkedFunes[j].permissionType);
 				}
 			}
 		}
 	},
-	findAllFunes:function(funs,node){
-		
+	findAllFunes:function(funs,node){	
 		var me=this;
 		if(node.hasChildNodes( )){
 			var children=node.childNodes;

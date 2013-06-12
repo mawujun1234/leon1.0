@@ -78,13 +78,16 @@ Ext.onReady(function(){
 //    	});
     	var url='/roleFunAssociation/create';
     	var params={};
+    	var isDestroy=false;
     	if(!checked){
+    		isDestroy=true;
     		url='/roleFunAssociation/destroy';
     		params={
-    			id:node.roleAssociationId
+    			id:node.roleAssociation.id
     		};
     		//alert('删除还没有做');
     	} else {
+    		
     		params ={
 	    		roleId:roleId,
 	    		funId:node.getId(),
@@ -96,8 +99,14 @@ Ext.onReady(function(){
     		method:'POST',
     		params :params,
     		success:function(response){
-    			var obj=Ext.encode(response.responseText);
-    			
+    			var obj=Ext.decode(response.responseText);
+    			node.set('permissionType',params.permissionType);
+    			if(isDestroy){
+    				node.roleAssociation=null;
+    			} else {
+    				node.roleAssociation=obj.root;
+    			}
+    			//alert(node.roleAssociation);
     		}   		
     	});
     });
