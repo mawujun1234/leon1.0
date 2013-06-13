@@ -129,7 +129,12 @@ Ext.onReady(function(){
 	            html : '功能树，如果是从角色上继承过来的，就灰色显示不能再进行修改了，否则就可以修改，并且添加一个不显示角色权限的按钮，只要不勾，哪就只显示直接授权在用户上的功能'
 	        }
 	       
-	    ]
+	    ],
+	    listeners:{
+	    	render:function(tabPanel){
+	    		tabPanel.mask();
+	    	}
+	    }
 	});
 
 	var viewPort=Ext.create('Ext.container.Viewport',{

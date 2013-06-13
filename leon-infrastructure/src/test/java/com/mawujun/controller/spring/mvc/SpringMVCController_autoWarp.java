@@ -258,7 +258,7 @@ public class SpringMVCController_autoWarp {
 	}
 	@RequestMapping("/autoWarp/filterOnlyId.do")
 	@ResponseBody
-	public ModelMap filterOnlyId(){
+	public Model filterOnlyId(){
 		Model parent=new Model();
 		parent.setId(2);
 		parent.setAge(22);
@@ -272,10 +272,10 @@ public class SpringMVCController_autoWarp {
 		child.setName("child");
 		child.setParent(parent);
 		
-		ModelMap map=new ModelMap();
-		map.put("onlyIds", "parent");//parent属性只获取id
-		map.put("root", child);
-		return map;
+//		ModelMap map=new ModelMap();
+//		map.put("onlyIds", "parent");//parent属性只获取id
+//		map.put("root", child);
+		return child;
 	}
 	
 	@RequestMapping("/autoWarp/bindModel.do")

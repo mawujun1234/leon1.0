@@ -20,6 +20,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
+	<style type="text/css">
+	
+	 .greenColor{
+	 	border:1px solid red;
+	 }
+	 .yellowColor{
+	 	border:1px solid red;
+	 }
+	</style>
 	
 	<%@include file="../../common/init.jsp" %>
 	<script type="text/javascript" src="RoleApp.js"></script>

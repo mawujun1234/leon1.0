@@ -93,7 +93,7 @@ public class SpringMVCController_autoWarp_Test {
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(true))
 		.andExpect(jsonPath("$.total").value(9))
-		.andExpect(jsonPath("$..root[0].name").value("name0"));
+		.andExpect(jsonPath("$.root[0].name").value("name0"));
 		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"message\":\"The title cannot be empty.\"}]}"));
 
 
@@ -106,7 +106,7 @@ public class SpringMVCController_autoWarp_Test {
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(true))
 		.andExpect(jsonPath("$.total").value(100))
-		.andExpect(jsonPath("$..root[0].name").value("name0"));
+		.andExpect(jsonPath("$.root[0].name").value("name0"));
 		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"message\":\"The title cannot be empty.\"}]}"));
 
 
@@ -152,10 +152,10 @@ public class SpringMVCController_autoWarp_Test {
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(true))
 		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
-		.andExpect(jsonPath("$..root.name").value("parent"))
-		.andExpect(jsonPath("$..root.id").value(1))
-		.andExpect(jsonPath("$..root.createDate").value(formatter.format(new Date())))
-		.andExpect(jsonPath("$..root.age").value(11));
+		.andExpect(jsonPath("$.root.name").value("parent"))
+		.andExpect(jsonPath("$.root.id").value(1))
+		.andExpect(jsonPath("$.root.createDate").value(formatter.format(new Date())))
+		.andExpect(jsonPath("$.root.age").value(11));
 		//.andExpect(content().string("{\"age\":11,\"childen\":[{\"age\":11,\"id\":1,\"name\":\"child\"},{\"age\":22,\"id\":2,\"name\":\"child1\"}],\"createDate\":1358225425226,\"id\":1,\"name\":\"parent\"}"));
 	}
 	/**
@@ -202,10 +202,10 @@ public class SpringMVCController_autoWarp_Test {
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(true))
 		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
-		.andExpect(jsonPath("$..root.name").doesNotExist())
-		.andExpect(jsonPath("$..root.id").value(1))
-		.andExpect(jsonPath("$..root.createDate").value(formatter.format(new Date())))
-		.andExpect(jsonPath("$..root.age").doesNotExist());
+		.andExpect(jsonPath("$.root.name").doesNotExist())
+		.andExpect(jsonPath("$.root.id").value(1))
+		.andExpect(jsonPath("$.root.createDate").value(formatter.format(new Date())))
+		.andExpect(jsonPath("$.root.age").doesNotExist());
 		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"message\":\"The title cannot be empty.\"}]}"));
 	}
 	@Test
@@ -216,10 +216,10 @@ public class SpringMVCController_autoWarp_Test {
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(true))
 		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
-		.andExpect(jsonPath("$..root[0].name").doesNotExist())
-		.andExpect(jsonPath("$..root[0].id").value(1))
-		.andExpect(jsonPath("$..root[0].createDate").value(formatter.format(new Date())))
-		.andExpect(jsonPath("$..root[0].age").doesNotExist());
+		.andExpect(jsonPath("$.root[0].name").doesNotExist())
+		.andExpect(jsonPath("$.root[0].id").value(1))
+		.andExpect(jsonPath("$.root[0].createDate").value(formatter.format(new Date())))
+		.andExpect(jsonPath("$.root[0].age").doesNotExist());
 		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"message\":\"The title cannot be empty.\"}]}"));
 	}
 	/**
@@ -234,10 +234,10 @@ public class SpringMVCController_autoWarp_Test {
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(true))
 		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
-		.andExpect(jsonPath("$..root.name").value("child"))
-		.andExpect(jsonPath("$..root.id").value(1))
-		.andExpect(jsonPath("$..root.createDate").value(formatter.format(new Date())))
-		.andExpect(jsonPath("$..root.parent.id").value(2));
+		.andExpect(jsonPath("$.root.name").value("child"))
+		.andExpect(jsonPath("$.root.id").value(1))
+		.andExpect(jsonPath("$.root.createDate").value(formatter.format(new Date())))
+		.andExpect(jsonPath("$.root.parent.id").value(2));
 		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"message\":\"The title cannot be empty.\"}]}"));
 	}
 	
@@ -255,11 +255,11 @@ public class SpringMVCController_autoWarp_Test {
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(true))
 		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
-		.andExpect(jsonPath("$..root.name").value("parent"))
-		.andExpect(jsonPath("$..root.id").value(1))
-		.andExpect(jsonPath("$..root.createDate").value("2012-11-11"))
-		.andExpect(jsonPath("$..root.age").value(11))
-		.andExpect(jsonPath("$..root.childen[0].name").value("childrens"));
+		.andExpect(jsonPath("$.root.name").value("parent"))
+		.andExpect(jsonPath("$.root.id").value(1))
+		.andExpect(jsonPath("$.root.createDate").value("2012-11-11"))
+		.andExpect(jsonPath("$.root.age").value(11))
+		.andExpect(jsonPath("$.root.childen[0].name").value("childrens"));
 		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"message\":\"The title cannot be empty.\"}]}"));
 	}
 
@@ -273,18 +273,18 @@ public class SpringMVCController_autoWarp_Test {
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(true))
 		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
-		.andExpect(jsonPath("$..start").value(0))
-		.andExpect(jsonPath("$..limit").value(10))
-		.andExpect(jsonPath("$..wheres[0].property").value("name"))
-		.andExpect(jsonPath("$..wheres[0].value").value("%ma%"))
-		.andExpect(jsonPath("$..wheres[0].op").value("LIKE"))
-		.andExpect(jsonPath("$..wheres[1].property").value("age"))
-		.andExpect(jsonPath("$..wheres[1].value").value("10"))
-		.andExpect(jsonPath("$..wheres[1].op").value("LT"))
-		.andExpect(jsonPath("$..sorts[0].property").value("name"))
-		.andExpect(jsonPath("$..sorts[0].direction").value("ASC"))
-		.andExpect(jsonPath("$..sorts[1].property").value("age"))
-		.andExpect(jsonPath("$..sorts[1].direction").value("DESC"));
+		.andExpect(jsonPath("$.start").value(0))
+		.andExpect(jsonPath("$.limit").value(10))
+		.andExpect(jsonPath("$.wheres[0].property").value("name"))
+		.andExpect(jsonPath("$.wheres[0].value").value("%ma%"))
+		.andExpect(jsonPath("$.wheres[0].op").value("LIKE"))
+		.andExpect(jsonPath("$.wheres[1].property").value("age"))
+		.andExpect(jsonPath("$.wheres[1].value").value("10"))
+		.andExpect(jsonPath("$.wheres[1].op").value("LT"))
+		.andExpect(jsonPath("$.sorts[0].property").value("name"))
+		.andExpect(jsonPath("$.sorts[0].direction").value("ASC"))
+		.andExpect(jsonPath("$.sorts[1].property").value("age"))
+		.andExpect(jsonPath("$.sorts[1].direction").value("DESC"));
 	}
 	
 	@Test
@@ -296,18 +296,18 @@ public class SpringMVCController_autoWarp_Test {
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(true))
 		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
-		.andExpect(jsonPath("$..start").value(0))
-		.andExpect(jsonPath("$..limit").value(10))
-		.andExpect(jsonPath("$..wheres[0].property").value("name"))
-		.andExpect(jsonPath("$..wheres[0].value").value("%ma%"))
-		.andExpect(jsonPath("$..wheres[0].op").value("LIKE"))
-		.andExpect(jsonPath("$..wheres[1].property").value("age"))
-		.andExpect(jsonPath("$..wheres[1].value").value("10"))
-		.andExpect(jsonPath("$..wheres[1].op").value("LT"))
-		.andExpect(jsonPath("$..sorts[0].property").value("name"))
-		.andExpect(jsonPath("$..sorts[0].direction").value("ASC"))
-		.andExpect(jsonPath("$..sorts[1].property").value("age"))
-		.andExpect(jsonPath("$..sorts[1].direction").value("DESC"));
+		.andExpect(jsonPath("$.start").value(0))
+		.andExpect(jsonPath("$.limit").value(10))
+		.andExpect(jsonPath("$.wheres[0].property").value("name"))
+		.andExpect(jsonPath("$.wheres[0].value").value("%ma%"))
+		.andExpect(jsonPath("$.wheres[0].op").value("LIKE"))
+		.andExpect(jsonPath("$.wheres[1].property").value("age"))
+		.andExpect(jsonPath("$.wheres[1].value").value("10"))
+		.andExpect(jsonPath("$.wheres[1].op").value("LT"))
+		.andExpect(jsonPath("$.sorts[0].property").value("name"))
+		.andExpect(jsonPath("$.sorts[0].direction").value("ASC"))
+		.andExpect(jsonPath("$.sorts[1].property").value("age"))
+		.andExpect(jsonPath("$.sorts[1].direction").value("DESC"));
 	}
 	//http://www.iteye.com/topic/1122793?page=3#2385378
 	@Test
@@ -329,18 +329,18 @@ public class SpringMVCController_autoWarp_Test {
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(true))
 		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
-		.andExpect(jsonPath("$..start").value(0))
-		.andExpect(jsonPath("$..limit").value(10))
-		.andExpect(jsonPath("$..wheres[0].property").value("name"))
-		.andExpect(jsonPath("$..wheres[0].value").value("%ma%"))
-		.andExpect(jsonPath("$..wheres[0].op").value("LIKE"))
-		.andExpect(jsonPath("$..wheres[1].property").value("age"))
-		.andExpect(jsonPath("$..wheres[1].value").value("10"))
-		.andExpect(jsonPath("$..wheres[1].op").value("LT"))
-		.andExpect(jsonPath("$..sorts[0].property").value("name"))
-		.andExpect(jsonPath("$..sorts[0].direction").value("ASC"))
-		.andExpect(jsonPath("$..sorts[1].property").value("age"))
-		.andExpect(jsonPath("$..sorts[1].direction").value("DESC"));
+		.andExpect(jsonPath("$.start").value(0))
+		.andExpect(jsonPath("$.limit").value(10))
+		.andExpect(jsonPath("$.wheres[0].property").value("name"))
+		.andExpect(jsonPath("$.wheres[0].value").value("%ma%"))
+		.andExpect(jsonPath("$.wheres[0].op").value("LIKE"))
+		.andExpect(jsonPath("$.wheres[1].property").value("age"))
+		.andExpect(jsonPath("$.wheres[1].value").value("10"))
+		.andExpect(jsonPath("$.wheres[1].op").value("LT"))
+		.andExpect(jsonPath("$.sorts[0].property").value("name"))
+		.andExpect(jsonPath("$.sorts[0].direction").value("ASC"))
+		.andExpect(jsonPath("$.sorts[1].property").value("age"))
+		.andExpect(jsonPath("$.sorts[1].direction").value("DESC"));
 	}
 	
 	/**
