@@ -1,6 +1,7 @@
 Ext.require('Leon.desktop.role.Role');
 Ext.require('Leon.common.ux.BaseGrid');
 Ext.require('Leon.desktop.role.RoleFunTree');
+Ext.require('Leon.desktop.role.RoleRoleGrid');
 Ext.onReady(function(){
 	
 	var tree=Ext.create('Leon.common.ux.BaseTree',{
@@ -110,12 +111,16 @@ Ext.onReady(function(){
     		}   		
     	});
     });
+    
+    var roleRole=Ext.create('Leon.desktop.role.RoleRoleGrid',{
+    	title:'角色关系'
+    });
 
 	var tabPanel=Ext.create('Ext.tab.Panel', {
 		region:'center',
 		split:true,
 	    activeTab: 0,
-	    items: [roleFunTree,
+	    items: [roleFunTree,roleRole,
 	     	{
 	            title: '权限',
 	            html : '功能树，如果是从角色上继承过来的，就灰色显示不能再进行修改了，否则就可以修改，并且添加一个不显示角色权限的按钮，只要不勾，哪就只显示直接授权在用户上的功能'

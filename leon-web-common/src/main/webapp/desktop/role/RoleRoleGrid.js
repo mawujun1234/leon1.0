@@ -1,7 +1,7 @@
 Ext.define('Leon.desktop.role.RoleRoleGrid',{
 	extend:'Ext.grid.Panel',
 	requires: [
-	     
+	     'Leon.desktop.role.RoleRole'
 	],
 	columnLines :true,
 	stripeRows:true,
@@ -24,17 +24,11 @@ Ext.define('Leon.desktop.role.RoleRoleGrid',{
        var me = this;
        me.columns=[
 	        //{ text: 'id',  dataIndex: 'id' },
-	        { text: '名称', dataIndex: 'text', flex: 1 ,
-	        	editor: {
-	                xtype: 'textfield',
-	                allowBlank: false,
-	                selectOnFocus:true
-	            }
-	        }
+	        { text: '名称', dataIndex: 'text', flex: 1 }
        ];
        me.store=Ext.create('Ext.data.Store',{
        		autoSync:true,
-       		model: 'Leon.desktop.menu.Menu',
+       		model: 'Leon.desktop.role.RoleRole',
        		autoLoad:true
        });
        
