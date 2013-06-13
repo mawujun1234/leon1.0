@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
-import com.mawujun.controller.spring.mvc.HttpMessageConverter_FastJson;
+import com.mawujun.controller.spring.mvc.MappingFastJson2HttpMessageConverter;
 import com.mawujun.exception.BussinessException;
 import com.mawujun.exception.ExceptionCode;
 

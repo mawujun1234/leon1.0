@@ -67,7 +67,7 @@
 				<property name="writeAcceptCharset" value="false" />
 			</bean>
 			<bean id="jsonHttpMessageConverter"
-				class="com.mawujun.controller.spring.mvc.HttpMessageConverter_FastJson" /><!-- 在循环引用和属性过滤上设置更方便 -->
+				class="com.mawujun.controller.spring.mvc.MappingFastJson2HttpMessageConverter" /><!-- 在循环引用和属性过滤上设置更方便 -->
 			<!-- <bean id="jsonHttpMessageConverter"
 				class="com.mawujun.controller.spring.HttpMessageConverter_JsonLib" />
 			<bean id="jsonHttpMessageConverter" class="com.mawujun.controller.spring.MappingJackson2HttpMessageConverter" 

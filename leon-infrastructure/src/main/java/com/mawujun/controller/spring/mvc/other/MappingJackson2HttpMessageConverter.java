@@ -1,4 +1,4 @@
-package com.mawujun.controller.spring.mvc;
+package com.mawujun.controller.spring.mvc.other;
 
 import java.io.IOException;
 import java.lang.reflect.Type;

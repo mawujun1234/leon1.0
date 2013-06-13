@@ -48,10 +48,10 @@ import com.mawujun.utils.page.QueryResult;
  * @author mawujun
  *
  */
-public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<Object> {
+public class MappingFastJson2HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
 	
 	public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
-	final static Logger logger = LoggerFactory.getLogger(HttpMessageConverter_FastJson.class);   
+	final static Logger logger = LoggerFactory.getLogger(MappingFastJson2HttpMessageConverter.class);   
 	
 	private String datePattern = "yyyy-MM-dd";//"yyyy-MM-dd HH:mm:ss"; 
 	//private static final  String filterPropertys="filterPropertys";//以逗号分隔
@@ -69,7 +69,7 @@ public class HttpMessageConverter_FastJson extends AbstractHttpMessageConverter<
 		 
 	 } 
 	
-	public HttpMessageConverter_FastJson() {
+	public MappingFastJson2HttpMessageConverter() {
 		super(new MediaType("application", "json", DEFAULT_CHARSET));
 
 		serializeConfig.put(Date.class, new SimpleDateFormatSerializer(datePattern));  

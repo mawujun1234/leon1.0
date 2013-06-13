@@ -3,7 +3,7 @@ package com.mawujun.controller.spring;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.mawujun.controller.spring.mvc.StringToPageRequest_JsonLib;
+import com.mawujun.controller.spring.mvc.other.StringToPageRequest_JsonLib;
 import com.mawujun.utils.page.PageRequest;
 
 //@RunWith(SpringJUnit4ClassRunner.class)

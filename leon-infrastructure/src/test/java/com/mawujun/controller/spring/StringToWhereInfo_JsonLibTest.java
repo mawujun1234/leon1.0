@@ -3,7 +3,7 @@ package com.mawujun.controller.spring;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.mawujun.controller.spring.mvc.StringToWhereInfo_JsonLib;
+import com.mawujun.controller.spring.mvc.other.StringToWhereInfo_JsonLib;
 import com.mawujun.utils.page.WhereInfo;
 
 public class StringToWhereInfo_JsonLibTest {
