@@ -32,6 +32,7 @@ Ext.define('Leon.common.ux.BaseTree', {
     url:null,//url和fields是同时出现，但和model属性是不能同时出现的
     api:null,
     autoShowSimpleActionToTbar:true,
+    autoInitSimpleAction:true,//初始化增，删改等按钮
     initComponent: function () {
 		var me = this;
 		//me.callParent();
@@ -125,6 +126,9 @@ Ext.define('Leon.common.ux.BaseTree', {
 		});
 	},
     initSimpleAction:function(){
+    	if(!this.autoInitSimpleAction){
+    		return ;
+    	}
      	var me = this;
      	var actions=[];
        var create = new Ext.Action({

@@ -1,4 +1,4 @@
-Ext.defineModel("Leon.desktop.role.RoleFunAssociation",{
+Ext.defineModel("Leon.desktop.role.RoleFun",{
 	extend:"Ext.data.Model",
 	fields:[
 		{name:'id',type:'string'},

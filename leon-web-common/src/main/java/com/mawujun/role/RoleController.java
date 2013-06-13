@@ -73,59 +73,5 @@ public class RoleController {
 		return role;
 	}
 	
-	@Autowired
-	private FunService funService;
-	@Autowired
-	private RoleFunAssociationService roleFunAssociationService;
 	
-//	@RequestMapping("/role/queryFun")
-//	@ResponseBody
-//	public List<RoleFunAssociation> queryFun(String id){
-////		WhereInfo whereinfo=WhereInfo.parse("parent.id", id);
-////		List<Fun> funes=funService.query(whereinfo);
-////		for(Fun fun:funes){
-////			fun.setChecked(true);
-////		}
-////		//System.out.println("==================结果输出来了"+funes.size());
-////		ModelMap map=new ModelMap();
-////		map.put("root", funes);
-////		//map.put("filterPropertys", "checked");
-////		return map;
-//		
-//		WhereInfo whereinfo=WhereInfo.parse("roleId", id);
-//		List<RoleFunAssociation> funes=roleFunAssociationService.query(whereinfo);
-//		return funes;
-//	}
-	
-	
-	@RequestMapping("/roleFunAssociation/query")
-	@ResponseBody
-	public List<RoleFunAssociation> queryRoleFun(String roleId){
-		List<RoleFunAssociation> funes=roleFunAssociationService.query(roleId);
-		return funes;
-	}
-	
-	@RequestMapping("/roleFunAssociation/create")
-	@ResponseBody
-	public RoleFunAssociation create(RoleFunAssociation roleFunAssociation){
-		roleFunAssociation.setCreateDate(new Date());
-		roleFunAssociationService.create(roleFunAssociation);
-		return roleFunAssociation;
-	}
-	
-	@RequestMapping("/roleFunAssociation/update")
-	@ResponseBody
-	public RoleFunAssociation update(RoleFunAssociation roleFunAssociation){
-		roleFunAssociationService.update(roleFunAssociation);
-		return roleFunAssociation;
-	}
-	
-	@RequestMapping("/roleFunAssociation/destroy")
-	@ResponseBody
-	public RoleFunAssociation destroy(RoleFunAssociation roleFunAssociation){
-		roleFunAssociationService.delete(roleFunAssociation);
-		return roleFunAssociation;
-	}
-
-
 }

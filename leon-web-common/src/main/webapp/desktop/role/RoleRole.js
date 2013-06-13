@@ -1,7 +1,7 @@
 Ext.defineModel("Leon.desktop.role.RoleRole",{
 	extend:"Ext.data.Model",
 	fields:[
-		{name:'id',type:'string'},
+		{name:'id',type:'auto'},
 		{name:'roleRoleEnum',type:'string'},//role的名称
 		{name:'createDate',type:'date'},
 		{name:'current_id',type:'string'},

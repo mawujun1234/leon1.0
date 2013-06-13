@@ -24,26 +24,65 @@ Ext.define('Leon.desktop.role.RoleRoleGrid',{
        var me = this;
        me.columns=[
 	        //{ text: 'id',  dataIndex: 'id' },
-	        { text: '名称', dataIndex: 'text', flex: 1 }
+	        { text: '名称', dataIndex: 'text', flex: 1 },
+	        { text: '关系', dataIndex: 'roleRoleEnum', flex: 1 }
        ];
        me.store=Ext.create('Ext.data.Store',{
-       		autoSync:true,
+       		autoSync:false,
        		model: 'Leon.desktop.role.RoleRole',
-       		autoLoad:true
+       		autoLoad:false
        });
        
        var tbar=Ext.create('Ext.toolbar.Toolbar', {
        		items:[{
-       			text:'新增',
+       			text:'新增父角色',
        			iconCls:'form-add-button ',
        			handler:function(){
-       				var menu=Ext.create('Leon.desktop.menu.Menu',{text:'新菜单'});
-       				me.store.add(menu);
-       				var edit=me.getPlugin("cellEditingPlugin");
-       				edit.cancelEdit();
-       				edit.startEditByPosition({column:0,row:me.store.getCount( ) -1});
-       				//menu.beginEdit( );
-       				
+       				var tree=Ext.create('Leon.common.ux.BaseTree',{
+						defaultRootText:'角色选择',
+						width:300,
+						height:200,
+						rootVisible:false,
+						displayField :'name',
+						model:'Leon.desktop.role.Role',
+						autoInitSimpleAction:false,
+						modal:true
+						//url:'/role/query'
+						//region:'west'
+						//split:true,
+						//flex: 0.8
+						,listeners:{
+							itemdblclick:function( tree, record, item, index, e, eOpts ){
+								if(record.get('roleEnum')=='roleCategory'){
+									return;
+								}
+								tree.mask("正在新增....");
+								var roleRole=Ext.createModel('Leon.desktop.role.RoleRole',{
+									roleRoleEnum:'inherit',
+									//current:{id:me.currentRole.getId()},
+									//other:{id:record.getId()}
+									current_id:me.currentRole.getId(),
+									other_id:record.getId()
+								});
+								roleRole.save({
+									success: function(record, operation) {
+										me.getStore().reload({currentId:me.currentRole.getId()});
+										
+									},
+									callback :function(){
+										tree.unmask();
+									}
+								});
+							}
+						}
+				   });
+       				var win=Ext.create('Ext.Window',{
+       					layout:'fit',
+       					title:'选择角色',
+       					items:[tree]
+       					
+       				});
+       				win.show();
        			}	
        		},{
        			text:'删除',
@@ -51,16 +90,18 @@ Ext.define('Leon.desktop.role.RoleRoleGrid',{
        			handler:function(){
        				var model=me.getSelectionModel( ).getLastSelected( ) ;
        				if(model){
-       					if(model.get("id")=="default"){
-       						Ext.Msg.alert("消息","默认菜单不能删除");
-       						return;
-       					}
+//       					if(model.get("id")=="default"){
+//       						Ext.Msg.alert("消息","默认菜单不能删除");
+//       						return;
+//       					}
        					model.destroy();
        				}
        			}	
        		}]
        });
        me.tbar=tbar;
+       
+
        me.callParent();
 	}
 });

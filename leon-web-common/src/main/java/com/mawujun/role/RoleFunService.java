@@ -1,25 +1,23 @@
 package com.mawujun.role;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.utils.page.WhereInfo;
 
 @Service
-public class RoleFunAssociationService extends BaseRepository<RoleFunAssociation, String> {
+public class RoleFunService extends BaseRepository<RoleFun, String> {
 	@Autowired
 	private FunService funService;
-	public List<RoleFunAssociation> query(String roleId){
+	public List<RoleFun> query(String roleId){
 		//List<Fun> funs=funService.queryAll();
 		
 		WhereInfo whereinfo=WhereInfo.parse("roleId", roleId);
-		List<RoleFunAssociation> selectedFuns=this.query(whereinfo);
+		List<RoleFun> selectedFuns=this.query(whereinfo);
 		return selectedFuns;
 //		List<RoleFunAssociation>  result=recursionRoleFun(funs,selectedFuns,roleId);
 //		return result;

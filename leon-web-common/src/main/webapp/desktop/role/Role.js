@@ -3,7 +3,7 @@ Ext.defineModel("Leon.desktop.role.Role",{
 	fields:[
 		{name:'id',type:'string'},
 		{name:'name',type:'string'},
-		{name:'roleEnum',type:'string'},
+		{name:'roleEnum',type:'string',useNull:true},
 		{name:'description',type:'string'},
 		{name:'parent_id',type:'string'}
 	],

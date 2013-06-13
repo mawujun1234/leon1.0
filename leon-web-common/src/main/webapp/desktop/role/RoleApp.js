@@ -54,10 +54,10 @@ Ext.onReady(function(){
     		tabPanel.mask();
     		return;
     	}
-    	tabPanel.unmask();
+    	
     	roleId=record.get('id');
     	Ext.Ajax.request({
-    		url:'/roleFunAssociation/query',
+    		url:'/roleFun/query',
     		method:'POST',
     		params:{roleId:roleId},
     		success:function(response){
@@ -65,8 +65,11 @@ Ext.onReady(function(){
     			var obj=Ext.decode(response.responseText);
     			//alert(obj.root);
     			roleFunTree.checkingFunes(obj.root);
+    			tabPanel.unmask();
     		}   		
     	});
+    	roleRoleGrid.currentRole=record;
+    	roleRoleGrid.getStore().load({params:{currentId:record.getId()}});
     });
    
     
@@ -77,12 +80,12 @@ Ext.onReady(function(){
 //    		funId:node.getId(),
 //    		permissionType:'public'
 //    	});
-    	var url='/roleFunAssociation/create';
+    	var url='/roleFun/create';
     	var params={};
     	var isDestroy=false;
     	if(!checked){
     		isDestroy=true;
-    		url='/roleFunAssociation/destroy';
+    		url='/roleFun/destroy';
     		params={
     			id:node.roleAssociation.id
     		};
@@ -112,15 +115,16 @@ Ext.onReady(function(){
     	});
     });
     
-    var roleRole=Ext.create('Leon.desktop.role.RoleRoleGrid',{
-    	title:'角色关系'
+    var roleRoleGrid=Ext.create('Leon.desktop.role.RoleRoleGrid',{
+    	title:'角色关系',
+    	currentRole:null
     });
 
 	var tabPanel=Ext.create('Ext.tab.Panel', {
 		region:'center',
 		split:true,
 	    activeTab: 0,
-	    items: [roleFunTree,roleRole,
+	    items: [roleFunTree,roleRoleGrid,
 	     	{
 	            title: '权限',
 	            html : '功能树，如果是从角色上继承过来的，就灰色显示不能再进行修改了，否则就可以修改，并且添加一个不显示角色权限的按钮，只要不勾，哪就只显示直接授权在用户上的功能'

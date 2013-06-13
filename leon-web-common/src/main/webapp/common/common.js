@@ -306,7 +306,7 @@ Ext.override(Ext.data.Model, {
         if (a instanceof Date && b instanceof Date) {
             return a.getTime() === b.getTime();
         }
-        if(b instanceof Object){
+        if(b instanceof Object && b.getId){
         	return a==b.getId();
         }
         return a === b;

@@ -19,7 +19,7 @@ import com.mawujun.repository.idEntity.UUIDEntity;
 
 @Entity
 @Table(name = "leon_Role_Fun")
-public class RoleFunAssociation extends UUIDEntity{
+public class RoleFun extends UUIDEntity{
 
 	/**
 	 * 

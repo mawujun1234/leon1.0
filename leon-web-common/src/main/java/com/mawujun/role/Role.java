@@ -24,6 +24,7 @@ public class Role extends TreeNode {
 	private String description;
 	
 	@Enumerated(EnumType.STRING)
+	@Column(length=10,nullable=false)
 	private RoleEnum roleEnum;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
