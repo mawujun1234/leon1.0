@@ -22,11 +22,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	-->
 	<style type="text/css">
 	
-	 .greenColor{
-	 	border:1px solid red;
+	 .greenColor td{
+	 	background-color: #76EE00;
+	 	//border-bottom:1px solid #FFFF00;
 	 }
-	 .yellowColor{
-	 	border:1px solid red;
+	 .yellowColor td{
+	 	background-color: #FFFF00;
+	 	//border-bottom:1px solid #FFFF00;
 	 }
 	</style>
 	

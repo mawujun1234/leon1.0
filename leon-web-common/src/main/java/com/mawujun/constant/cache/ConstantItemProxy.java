@@ -3,6 +3,8 @@ package com.mawujun.constant.cache;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
+import com.mawujun.cache.ConstantCacheHolder;
+
 /**
  * 常数值，这个只是显示的，真正的常数值是CodeItem
  * Constant，ConstantType，CodeItem是真正的实体类，用于常数的增，删，改，查

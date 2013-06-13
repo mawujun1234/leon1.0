@@ -55,16 +55,7 @@ Ext.define('Leon.desktop.role.RoleFunTree',{
 		});
 		
 		me.columns=[{
-			xtype:'treecolumn',dataIndex:'text',text:'名称',width: 200,
-			renderer: function(val,metaData,record ,rowIndex ,colIndex ,store ){
-//                if(record.get('permissionType')=='publicP'){
-//                		metaData.style = 'background-color: #76EE00;' 
-//                } else if(record.get('permissionType')=='privateP'){
-//                		metaData.style = 'background-color: #FFFF00;'
-//                }
-                
-                return val; 
-            }
+			xtype:'treecolumn',dataIndex:'text',text:'名称',width: 200
 		},{
 			dataIndex:'permissionType',text:'权限属性',
 			editor:{
@@ -96,38 +87,33 @@ Ext.define('Leon.desktop.role.RoleFunTree',{
                 var index = comboStore.findExact('id',val); 
                 if (index != -1){
                 	
-                	if(record.get('permissionType')=='publicP'){
-                		metaData.style = 'background-color: #76EE00;' 
-                	} else if(record.get('permissionType')=='privateP'){
-                		metaData.style = 'background-color: #FFFF00;'
-                	}
+//                	if(record.get('permissionType')=='publicP'){
+//                		metaData.style = 'background-color: #76EE00;' 
+//                	} else if(record.get('permissionType')=='privateP'){
+//                		metaData.style = 'background-color: #FFFF00;'
+//                	}
                 	var data=comboStore.getAt(index).data;
                     return data.name; 
                 }
             }
 		},{
-			dataIndex:'id',text:'权限来源',
-			renderer: function(val,metaData,record ,rowIndex ,colIndex ,store ){
-//                if(record.get('permissionType')=='publicP'){
-//                		metaData.style = 'background-color: #76EE00;' 
-//                } else if(record.get('permissionType')=='privateP'){
-//                		metaData.style = 'background-color: #FFFF00;'
-//                }
-                
-                return val; 
-            }
+			dataIndex:'id',text:'权限来源'
+//			renderer: function(val,metaData,record ,rowIndex ,colIndex ,store ){
+//                
+//                return val; 
+//            }
 		}];
 		
 		me.viewConfig= {
 		    getRowClass: function(record, rowIndex, rowParams, store){
-//		    	if(record.get('permissionType')=='publicP'){
-//                		//metaData.style = 'background-color: #76EE00;' 
-//		    		return "greenColor";
-//                } else if(record.get('permissionType')=='privateP'){
-//                	return "greenColor";
-//                }
+		    	if(record.get('permissionType')=='publicP'){
+                		//metaData.style = 'background-color: #76EE00;' 
+		    		return "greenColor";
+                } else if(record.get('permissionType')=='privateP'){
+                	return "yellowColor";
+                }
 		        //return record.get("valid") ? "row-valid" : "row-error";
-		        return "greenColor";
+		        //return "greenColor";
 		    }
 		}
 		

@@ -1,6 +1,8 @@
-package com.mawujun.constant.cache;
+package com.mawujun.cache;
 
 import com.mawujun.constant.ConstantItem;
+import com.mawujun.constant.cache.IConstantCache;
+import com.mawujun.constant.cache.SingleAppConstantCache;
 
 
 
