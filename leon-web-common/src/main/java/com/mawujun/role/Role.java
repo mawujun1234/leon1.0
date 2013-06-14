@@ -1,5 +1,6 @@
 package com.mawujun.role;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -37,10 +38,17 @@ public class Role extends TreeNode {
 //	private List<RoleFunAssociation> roleFunAssociations;
 	
 	@OneToMany(mappedBy="current",fetch=FetchType.LAZY)
-	private List<RoleRole> currents;
+	private List<RoleRole> currents=new ArrayList<RoleRole>();
 	
 	@OneToMany(mappedBy="other",fetch=FetchType.LAZY)
-	private List<RoleRole> others;
+	private List<RoleRole> others=new ArrayList<RoleRole>();
+	
+	public Role(){
+		
+	}
+	public Role(String id){
+		this.id=id;
+	}
 	
 	public String getName() {
 		return name;
@@ -98,6 +106,40 @@ public class Role extends TreeNode {
 	public void setOthers(List<RoleRole> others) {
 		this.others = others;
 	}
-	
+	/**
+	 * 判断参数节点是否是当前节点的祖先节点了
+	 * @author mawujun 16064988@qq.com 
+	 * @param parent
+	 * @return
+	 */
+	public boolean hasAncestor(Role parent){
+		for(RoleRole roleRole:this.others) {
+			if(roleRole.getChild().getId().equals(parent.getId())){
+				return true;
+			} else {
+				return roleRole.getChild().hasAncestor(parent);
+			}
+		}
+		return false;
+	}
+	/**
+	 * 判断参数节点是否是当前节点的子孙节点了
+	 * @author mawujun 16064988@qq.com 
+	 * @param parent
+	 * @return
+	 */
+	public boolean hasChild(Role child){
+		if(this.getId().equals(child.getId())){
+			return true;
+		}
+		for(RoleRole roleRole:this.currents) {
+			if(roleRole.getChild().getId().equals(child.getId())){
+				return true;
+			} else {
+				return roleRole.getChild().hasChild(child);
+			}
+		}
+		return false;
+	}
 
 }

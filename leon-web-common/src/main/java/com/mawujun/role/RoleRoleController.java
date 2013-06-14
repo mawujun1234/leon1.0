@@ -36,10 +36,16 @@ public class RoleRoleController {
 	
 	@RequestMapping("/roleRole/create")
 	@ResponseBody
-	public RoleRole create(@RequestBody RoleRole roleRole){		
+	public RoleRole.Id  create(String currentId,String otherId,String roleRoleEnum){	
+		//RoleRole.Id id=new RoleRole.Id(currentId,otherId,roleRoleEnum);
+		//roleRole.setId(id);
+		RoleRole roleRole=new RoleRole();
+		roleRole.setCurrent(new Role(currentId));
+		roleRole.setOther(new Role(otherId));
+		roleRole.setRoleRoleEnum(roleRoleEnum);
 		roleRole.setCreateDate(new Date());
 		roleRoleService.create(roleRole);
-		return roleRole;
+		return roleRole.getId();
 	}
 	
 //	@RequestMapping("/roleRole/update")

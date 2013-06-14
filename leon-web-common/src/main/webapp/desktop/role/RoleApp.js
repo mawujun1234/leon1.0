@@ -9,6 +9,7 @@ Ext.onReady(function(){
 		defaultRootText:'角色管理',
 		//useArrows: true,
 		displayField :'name',
+		rootVisible:false,
 		model:'Leon.desktop.role.Role',
 		region:'west',
 		split:true,
@@ -69,9 +70,9 @@ Ext.onReady(function(){
     		}   		
     	});
     	roleInheritGrid.currentRole=record;
-    	roleInheritGrid.getStore().load({params:{currentId:record.getId(),roleRoleEnum:'inherit'}});
+    	roleInheritGrid.getStore().load({params:{otherId:record.getId(),roleRoleEnum:'inherit'}});
     	roleMutexGrid.currentRole=record;
-    	roleMutexGrid.getStore().load({params:{currentId:record.getId(),roleRoleEnum:'mutex'}});
+    	roleMutexGrid.getStore().load({params:{otherId:record.getId(),roleRoleEnum:'mutex'}});
     });
    
     

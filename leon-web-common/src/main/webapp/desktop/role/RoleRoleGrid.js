@@ -1,7 +1,7 @@
 Ext.define('Leon.desktop.role.RoleRoleGrid',{
 	extend:'Ext.grid.Panel',
 	requires: [
-	     'Leon.desktop.role.RoleRole'
+	     //'Leon.desktop.role.RoleRole'
 	],
 	columnLines :true,
 	stripeRows:true,
@@ -61,22 +61,34 @@ Ext.define('Leon.desktop.role.RoleRoleGrid',{
 									return;
 								}
 								tree.mask("正在新增....");
-								var roleRole=Ext.createModel('Leon.desktop.role.RoleRole',{
-									roleRoleEnum:me.roleRoleEnum,
-									//current:{id:me.currentRole.getId()},
-									//other:{id:record.getId()}
-									current_id:me.currentRole.getId(),
-									other_id:record.getId()
-								});
-								roleRole.save({
-									success: function(record, operation) {
-										me.getStore().reload();
-										
-									},
-									callback :function(){
+								Ext.Ajax.request({
+		       						url:'/roleRole/create',
+		       						params:{currentId:record.getId(),otherId:me.currentRole.getId(),roleRoleEnum:me.roleRoleEnum},
+		       						//jsonData:{id:{currentId:me.currentRole.getId(),otherId:model.getId()}},
+		       						method:'POST',
+		       						success:function(response){
+		       							me.getStore().reload();
+		       						},
+		       						callback :function(){
 										tree.unmask();
 									}
-								});
+		       					});
+//								var roleRole=Ext.createModel('Leon.desktop.role.RoleRole',{
+//									roleRoleEnum:me.roleRoleEnum,
+//									//current:{id:me.currentRole.getId()},
+//									//other:{id:record.getId()}
+//									current_id:me.currentRole.getId(),
+//									other_id:record.getId()
+//								});
+//								roleRole.save({
+//									success: function(record, operation) {
+//										me.getStore().reload();
+//										
+//									},
+//									callback :function(){
+//										tree.unmask();
+//									}
+//								});
 							}
 						}
 				   });
@@ -102,7 +114,7 @@ Ext.define('Leon.desktop.role.RoleRoleGrid',{
 //       					}
        					Ext.Ajax.request({
        						url:'/roleRole/destroy',
-       						params:{currentId:me.currentRole.getId(),otherId:model.getId(),roleRoleEnum:me.roleRoleEnum},
+       						params:{otherId:me.currentRole.getId(),currentId:model.getId(),roleRoleEnum:me.roleRoleEnum},
        						//jsonData:{id:{currentId:me.currentRole.getId(),otherId:model.getId()}},
        						method:'POST',
        						success:function(response){

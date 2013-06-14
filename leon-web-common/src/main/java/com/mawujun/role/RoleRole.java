@@ -66,6 +66,14 @@ public class RoleRole implements IdEntity<RoleRole.Id> {
 	public Role getCurrent() {
 		return current;
 	}
+	/**
+	 * 等同于getCurrent
+	 * @author mawujun 16064988@qq.com  
+	 * @return
+	 */
+	public Role getParent() {
+		return getCurrent();
+	}
 
 	public void setCurrent(Role current) {
 		this.current = current;
@@ -75,6 +83,14 @@ public class RoleRole implements IdEntity<RoleRole.Id> {
 
 	public Role getOther() {
 		return other;
+	}
+	/**
+	 * 等同于getOther
+	 * @author mawujun 16064988@qq.com 
+	 * @return
+	 */
+	public Role getChild() {
+		return getOther();
 	}
 
 	public void setOther(Role other) {

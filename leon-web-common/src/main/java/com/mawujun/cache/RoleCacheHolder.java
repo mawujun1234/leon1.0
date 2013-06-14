@@ -46,4 +46,18 @@ public class RoleCacheHolder {
 		RoleCacheHolder.get(roleRole.getCurrent().getId()).getCurrents().remove(roleRole);
 		RoleCacheHolder.get(roleRole.getCurrent().getId()).getOthers().remove(roleRole);
 	}
+	public static int size(){
+		return roles.size();
+	}
+	
+	/**
+	 * 判断两个角色是否为祖先，即是否形成了循环
+	 * @author mawujun mawujun1234@163.com 
+	 * @return
+	 */
+	public static boolean hasChild(Role parent_p,Role child_p){
+		Role parent=get(parent_p.getId());
+		Role child=get(child_p.getId());
+		return parent.hasChild(child);
+	}
 }

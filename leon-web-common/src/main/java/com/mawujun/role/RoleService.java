@@ -40,9 +40,9 @@ public class RoleService extends BaseRepository<Role, String> {
 		RoleCacheHolder.get(entity.getId()).setName(entity.getName());
 	}
 	
-	public List<Map<String,Object>> queryByRole(String currentId,String roleRoleEnum){
+	public List<Map<String,Object>> queryByRole(String otherId,String roleRoleEnum){
 		Map<String,String> params=new HashMap<String,String>();
-		params.put("currentId", currentId);
+		params.put("otherId", otherId);
 		params.put("roleRoleEnum", roleRoleEnum);
 		return super.queryList("queryByRole", params);
 		
@@ -52,6 +52,8 @@ public class RoleService extends BaseRepository<Role, String> {
 		List<Role> roles=super.queryAll();
 		for(Role role:roles){
 			if(role.getRoleEnum()==RoleEnum.role){
+				super.initLazyProperty(role.getCurrents());
+				super.initLazyProperty(role.getOthers());
 				RoleCacheHolder.add(role);
 				//System.out.println(role.getName()+"============================");
 			}	

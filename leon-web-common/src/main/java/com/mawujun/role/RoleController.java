@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mawujun.cache.RoleCacheHolder;
 import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;
 import com.mawujun.utils.page.WhereInfo;
@@ -55,8 +56,12 @@ public class RoleController {
 	
 	@RequestMapping("/role/create")
 	@ResponseBody
-	public Role create(@RequestBody Role role){		
+	public Role create(@RequestBody Role role){	
+		if(role.getParent()!=null&&"root".equals(role.getParent().getId())){
+			role.setParent(null);
+		}
 		roleService.create(role);
+		//int i=RoleCacheHolder.size();
 		return role;
 	}
 	
@@ -77,12 +82,12 @@ public class RoleController {
 	
 	@RequestMapping("/role/queryByRole")
 	@ResponseBody
-	public List<Map<String,Object>> queryByRole(String currentId,String roleRoleEnum) {
+	public List<Map<String,Object>> queryByRole(String otherId,String roleRoleEnum) {
 		List<Map<String,Object>> roles=null;
 
 //		WhereInfo whereinfo=WhereInfo.parse("current.id", currentId);
 //		WhereInfo whereinfo1=WhereInfo.parse("current.id", roleRoleEnum);
-		roles=roleService.queryByRole(currentId,roleRoleEnum);
+		roles=roleService.queryByRole(otherId,roleRoleEnum);
 
 		return roles;
 	}
