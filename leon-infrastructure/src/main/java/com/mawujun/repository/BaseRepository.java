@@ -396,8 +396,15 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 		return this.getMybatisRepository().selectPageRecord(supplyNamespace(statement), pageRequest);	
 	}
 	
-	public List<Map<String,Object>> queryListByMybatis(final String statement,final Map params) {
+//	public List<Map<String,Object>> queryListByMybatis(final String statement,final Map params) {
+//		return this.getMybatisRepository().selectList(supplyNamespace(statement),params);
+//	}
+//	
+	public List<Map<String,Object>> queryList(final String statement,final Map params) {
 		return this.getMybatisRepository().selectList(supplyNamespace(statement),params);
+	}
+	public List<T> queryListT(final String statement,final Map params) {
+		return (List<T>)this.getMybatisRepository().selectList(supplyNamespace(statement),params);
 	}
 
 }

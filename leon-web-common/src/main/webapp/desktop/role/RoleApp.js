@@ -68,18 +68,15 @@ Ext.onReady(function(){
     			tabPanel.unmask();
     		}   		
     	});
-    	roleRoleGrid.currentRole=record;
-    	roleRoleGrid.getStore().load({params:{currentId:record.getId()}});
+    	roleInheritGrid.currentRole=record;
+    	roleInheritGrid.getStore().load({params:{currentId:record.getId(),roleRoleEnum:'inherit'}});
+    	roleMutexGrid.currentRole=record;
+    	roleMutexGrid.getStore().load({params:{currentId:record.getId(),roleRoleEnum:'mutex'}});
     });
    
     
-	var roleFunTree=Ext.create('Leon.desktop.role.RoleFunTree',{title:'选择功能'});
+	var roleFunTree=Ext.create('Leon.desktop.role.RoleFunTree',{title:'权限'});
 	roleFunTree.on('checkchange',function(node,checked){
-//    	var model=Ext.createModel('Leon.desktop.role.RoleFunAssociation',{
-//    		roleId:roleId,
-//    		funId:node.getId(),
-//    		permissionType:'public'
-//    	});
     	var url='/roleFun/create';
     	var params={};
     	var isDestroy=false;
@@ -115,8 +112,14 @@ Ext.onReady(function(){
     	});
     });
     
-    var roleRoleGrid=Ext.create('Leon.desktop.role.RoleRoleGrid',{
-    	title:'角色关系',
+    var roleInheritGrid=Ext.create('Leon.desktop.role.RoleRoleGrid',{
+    	title:'继承角色',
+    	roleRoleEnum:'inherit',
+    	currentRole:null
+    });
+    var roleMutexGrid=Ext.create('Leon.desktop.role.RoleRoleGrid',{
+    	title:'互斥角色',
+    	roleRoleEnum:'mutex',
     	currentRole:null
     });
 
@@ -124,21 +127,7 @@ Ext.onReady(function(){
 		region:'center',
 		split:true,
 	    activeTab: 0,
-	    items: [roleFunTree,roleRoleGrid,
-	     	{
-	            title: '权限',
-	            html : '功能树，如果是从角色上继承过来的，就灰色显示不能再进行修改了，否则就可以修改，并且添加一个不显示角色权限的按钮，只要不勾，哪就只显示直接授权在用户上的功能'
-	        },
-	        {
-	            title: '继承角色',
-	            html : '注意有公有，私有权限'
-	        },
-	         {
-	            title: '互斥角色',
-	            html : '功能树，如果是从角色上继承过来的，就灰色显示不能再进行修改了，否则就可以修改，并且添加一个不显示角色权限的按钮，只要不勾，哪就只显示直接授权在用户上的功能'
-	        }
-	       
-	    ],
+	    items: [roleFunTree,roleInheritGrid,roleMutexGrid],
 	    listeners:{
 	    	render:function(tabPanel){
 	    		tabPanel.mask();

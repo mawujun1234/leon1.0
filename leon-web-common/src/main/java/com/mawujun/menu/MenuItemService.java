@@ -46,7 +46,7 @@ public class MenuItemService extends BaseService<MenuItem, String> {
 		//根据mybatis去查询
 		Map params=new HashMap();
 		params.put("menu_id", menuId);
-		return getRepository().queryListByMybatis("query4Desktop", params);
+		return getRepository().queryList("query4Desktop", params);
 	}
 
 }

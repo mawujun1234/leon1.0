@@ -173,7 +173,7 @@ Ext.define('Leon.common.ux.BaseGrid', {
 		    itemId:'destroy',
 		    disabled:me.disabledAction,
 		    handler: function(){
-		    	me.onDestroy();
+		    	me.onDelete();
 		        
 		    },
 		    iconCls: 'form-delete-button'
@@ -249,7 +249,7 @@ Ext.define('Leon.common.ux.BaseGrid', {
 		var cellediting=me.getPlugin("cellEditingPlugin");
 		cellediting.startEditByPosition(position);
     },
-    onDestroy:function(){
+    onDelete:function(){
     	var me=this;
     	Ext.Msg.confirm("删除",'确定要删除吗?', function(btn, text){
 			if (btn == 'yes'){

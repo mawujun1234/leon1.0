@@ -51,8 +51,9 @@ public class RoleRoleController {
 	
 	@RequestMapping("/roleRole/destroy")
 	@ResponseBody
-	public RoleRole destroy(@RequestBody RoleRole roleRole){		
-		roleRoleService.delete(roleRole);
-		return roleRole;
+	public void destroy(String currentId,String otherId,String roleRoleEnum){	
+		RoleRole.Id id=new RoleRole.Id(currentId,otherId,roleRoleEnum);
+		roleRoleService.delete(id);
+		//return roleRole;
 	}
 }

@@ -179,7 +179,7 @@ Ext.define('Leon.common.ux.BaseTree', {
 		    itemId:'destroy',
 		    disabled:me.disabledAction,
 		    handler: function(){
-		    	me.onDestroy();    
+		    	me.onDelete();    
 		    },
 		    iconCls: 'form-delete-button'
 		});
@@ -317,7 +317,7 @@ Ext.define('Leon.common.ux.BaseTree', {
 		    	
 		
     },
-    onDestroy:function(node){
+    onDelete:function(node){
     	var me=this;
     	var node=node||me.getSelectionModel( ).getLastSelected( );
 		if(!node){

@@ -1,5 +1,9 @@
 package com.mawujun.role;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 
 import com.mawujun.repository.BaseRepository;
@@ -15,6 +19,14 @@ public class RoleService extends BaseRepository<Role, String> {
 		} else {
 			super.update(entity);
 		}
+	}
+	
+	public List<Map<String,Object>> queryByRole(String currentId,String roleRoleEnum){
+		Map<String,String> params=new HashMap<String,String>();
+		params.put("currentId", currentId);
+		params.put("roleRoleEnum", roleRoleEnum);
+		return super.queryList("queryByRole", params);
+		
 	}
 
 }

@@ -340,16 +340,16 @@ public class HibernateDao<T, ID extends Serializable>{
 	 */
 	public void delete(final Serializable id) {
 		AssertUtils.notNull(id, "id不能为空");
-		//delete(get(id));
-		String hql="delete " + this.entityClass.getName()+ " obj where id=?";
-		Query query = this.getSession().createQuery(hql);
-		query.setParameter(0, id);
-		query.executeUpdate();
-		//清空缓存
-		//AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
-		Object t=this.getSession().load(entityClass, id);
-		this.getSession().evict(t);
-		logger.debug("delete entity {},id is {}", entityClass.getSimpleName(), id);
+		delete(load(id));
+//		String hql="delete " + this.entityClass.getName()+ " obj where id=?";
+//		Query query = this.getSession().createQuery(hql);
+//		query.setParameter(0, id);
+//		query.executeUpdate();
+//		//清空缓存
+//		//AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
+//		Object t=this.getSession().load(entityClass, id);
+//		this.getSession().evict(t);
+//		logger.debug("delete entity {},id is {}", entityClass.getSimpleName(), id);
 	}
 	
 	/**

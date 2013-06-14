@@ -2,6 +2,7 @@ package com.mawujun.role;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -73,5 +74,17 @@ public class RoleController {
 		return role;
 	}
 	
+	
+	@RequestMapping("/role/queryByRole")
+	@ResponseBody
+	public List<Map<String,Object>> queryByRole(String currentId,String roleRoleEnum) {
+		List<Map<String,Object>> roles=null;
+
+//		WhereInfo whereinfo=WhereInfo.parse("current.id", currentId);
+//		WhereInfo whereinfo1=WhereInfo.parse("current.id", roleRoleEnum);
+		roles=roleService.queryByRole(currentId,roleRoleEnum);
+
+		return roles;
+	}
 	
 }
