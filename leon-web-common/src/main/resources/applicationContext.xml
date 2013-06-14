@@ -19,7 +19,7 @@
 	<!---->
 	<bean id="springContextHolder" class="com.mawujun.controller.spring.SpringContextHolder" lazy-init="false" ></bean>
 	  
-	 
+	<bean id="roleCacheHolder" class="com.mawujun.cache.RoleCacheHolder" lazy-init="false" init-method="initialize" depends-on="roleService" ></bean>
 
 	 
 

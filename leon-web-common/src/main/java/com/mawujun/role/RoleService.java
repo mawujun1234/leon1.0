@@ -1,15 +1,33 @@
 package com.mawujun.role;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.mawujun.cache.RoleCacheHolder;
 import com.mawujun.repository.BaseRepository;
 
 @Service
 public class RoleService extends BaseRepository<Role, String> {
+	public Role get(Serializable id) {
+		Role role=RoleCacheHolder.get(id);
+		if(role!=null){
+			return role;
+		}
+		return super.get(id);
+	}
+	public void create(Role entity) {
+		super.create(entity);
+		RoleCacheHolder.add(entity);
+	}
+	
+	public void delete(Role entity) {
+		super.delete(entity);
+		RoleCacheHolder.remove(entity);
+	}
 
 
 	public void update(Role entity,Boolean isUpdateParent,String oldParent_id) {	
@@ -19,6 +37,7 @@ public class RoleService extends BaseRepository<Role, String> {
 		} else {
 			super.update(entity);
 		}
+		RoleCacheHolder.get(entity.getId()).setName(entity.getName());
 	}
 	
 	public List<Map<String,Object>> queryByRole(String currentId,String roleRoleEnum){
@@ -29,4 +48,13 @@ public class RoleService extends BaseRepository<Role, String> {
 		
 	}
 
+	public void initCache(){
+		List<Role> roles=super.queryAll();
+		for(Role role:roles){
+			if(role.getRoleEnum()==RoleEnum.role){
+				RoleCacheHolder.add(role);
+				//System.out.println(role.getName()+"============================");
+			}	
+		}
+	}
 }

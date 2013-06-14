@@ -1,11 +1,14 @@
 package com.mawujun.role;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.mawujun.exten.TreeNode;
@@ -32,6 +35,12 @@ public class Role extends TreeNode {
 	
 //	@OneToMany(mappedBy="role",fetch=FetchType.LAZY)
 //	private List<RoleFunAssociation> roleFunAssociations;
+	
+	@OneToMany(mappedBy="current",fetch=FetchType.LAZY)
+	private List<RoleRole> currents;
+	
+	@OneToMany(mappedBy="other",fetch=FetchType.LAZY)
+	private List<RoleRole> others;
 	
 	public String getName() {
 		return name;
@@ -76,6 +85,18 @@ public class Role extends TreeNode {
 	}
 	public void setParent(Role parent) {
 		this.parent = parent;
+	}
+	public List<RoleRole> getCurrents() {
+		return currents;
+	}
+	public void setCurrents(List<RoleRole> currents) {
+		this.currents = currents;
+	}
+	public List<RoleRole> getOthers() {
+		return others;
+	}
+	public void setOthers(List<RoleRole> others) {
+		this.others = others;
 	}
 	
 

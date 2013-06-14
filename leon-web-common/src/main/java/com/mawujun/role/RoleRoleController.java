@@ -28,11 +28,11 @@ public class RoleRoleController {
 		return roles;
 	}
 
-	@RequestMapping("/roleRole/load")
-	@ResponseBody
-	public RoleRole load(String id){		
-		return roleRoleService.get(id);
-	}
+//	@RequestMapping("/roleRole/load")
+//	@ResponseBody
+//	public RoleRole load(String id){		
+//		return roleRoleService.get(id);
+//	}
 	
 	@RequestMapping("/roleRole/create")
 	@ResponseBody
@@ -42,12 +42,12 @@ public class RoleRoleController {
 		return roleRole;
 	}
 	
-	@RequestMapping("/roleRole/update")
-	@ResponseBody
-	public RoleRole update(@RequestBody RoleRole roleRole){		
-		 roleRoleService.update(roleRole);
-		 return roleRole;
-	}
+//	@RequestMapping("/roleRole/update")
+//	@ResponseBody
+//	public RoleRole update(@RequestBody RoleRole roleRole){		
+//		 roleRoleService.update(roleRole);
+//		 return roleRole;
+//	}
 	
 	@RequestMapping("/roleRole/destroy")
 	@ResponseBody
