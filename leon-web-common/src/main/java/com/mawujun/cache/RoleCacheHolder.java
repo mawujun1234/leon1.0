@@ -52,12 +52,24 @@ public class RoleCacheHolder {
 	
 	/**
 	 * 判断两个角色是否为祖先，即是否形成了循环
-	 * @author mawujun mawujun1234@163.com 
+	 * @author mawujun 16064988@163.com 
 	 * @return
 	 */
 	public static boolean hasChild(Role parent_p,Role child_p){
 		Role parent=get(parent_p.getId());
 		Role child=get(child_p.getId());
 		return parent.hasChild(child);
+	}
+	/**
+	 * 
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param current
+	 * @param other
+	 * @return
+	 */
+	public static boolean hasMutex(Role current_p,Role other_p){
+		Role parent=get(current_p.getId());
+		Role child=get(other_p.getId());
+		
 	}
 }

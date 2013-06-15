@@ -37,9 +37,11 @@ public class Role extends TreeNode {
 //	@OneToMany(mappedBy="role",fetch=FetchType.LAZY)
 //	private List<RoleFunAssociation> roleFunAssociations;
 	
+	//所对应的都是父角色或者是护斥的角色
 	@OneToMany(mappedBy="current",fetch=FetchType.LAZY)
 	private List<RoleRole> currents=new ArrayList<RoleRole>();
 	
+	//所对应的都是子角色或者是护斥的角色
 	@OneToMany(mappedBy="other",fetch=FetchType.LAZY)
 	private List<RoleRole> others=new ArrayList<RoleRole>();
 	
@@ -113,11 +115,16 @@ public class Role extends TreeNode {
 	 * @return
 	 */
 	public boolean hasAncestor(Role parent){
+		if(this.getId().equals(parent.getId())){
+			return true;
+		}
 		for(RoleRole roleRole:this.others) {
-			if(roleRole.getChild().getId().equals(parent.getId())){
-				return true;
-			} else {
-				return roleRole.getChild().hasAncestor(parent);
+			if(roleRole.getRoleRoleEnum()==RoleRoleEnum.inherit){
+				if(roleRole.getParent().getId().equals(parent.getId())){
+					return true;
+				} else {
+					return roleRole.getParent().hasChild(parent);
+				}
 			}
 		}
 		return false;
@@ -133,13 +140,29 @@ public class Role extends TreeNode {
 			return true;
 		}
 		for(RoleRole roleRole:this.currents) {
-			if(roleRole.getChild().getId().equals(child.getId())){
-				return true;
-			} else {
-				return roleRole.getChild().hasChild(child);
+			if(roleRole.getRoleRoleEnum()==RoleRoleEnum.inherit){
+				if(roleRole.getChild().getId().equals(child.getId())){
+					return true;
+				} else {
+					return roleRole.getChild().hasChild(child);
+				}
 			}
+			
 		}
 		return false;
+	}
+	
+	public boolean hasMutex(Role mutex){
+		for(RoleRole roleRole:this.currents) {
+			if(roleRole.getRoleRoleEnum()==RoleRoleEnum.mutex){
+				if(roleRole.getOther().getId().equals(mutex.getId())){
+					return true;
+				} else {
+					return roleRole.getChild().hasChild(mutex);
+				}
+			}
+			
+		}
 	}
 
 }
