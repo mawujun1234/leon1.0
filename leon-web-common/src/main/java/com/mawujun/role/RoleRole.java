@@ -17,8 +17,8 @@ import com.mawujun.repository.idEntity.IdEntity;
 
 /**
  */
-@Entity
-@Table(name="leon_role_role")
+//@Entity
+//@Table(name="leon_role_role")
 public class RoleRole implements IdEntity<RoleRole.Id> {
 
 	/**
@@ -78,7 +78,7 @@ public class RoleRole implements IdEntity<RoleRole.Id> {
 	public void setCurrent(Role current) {
 		this.current = current;
 		this.id.currentId = current.getId();
-		current.getCurrents().add(this);
+		//current.getCurrents().add(this);
 	}
 
 	public Role getOther() {
@@ -96,7 +96,7 @@ public class RoleRole implements IdEntity<RoleRole.Id> {
 	public void setOther(Role other) {
 		this.other = other;
 		this.id.otherId = other.getId();
-		other.getOthers().add(this);
+		//other.getOthers().add(this);
 	}
 
 	public RoleRoleEnum getRoleRoleEnum() {

@@ -9,10 +9,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.mawujun.exten.TreeNode;
+import com.mawujun.fun.Fun;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
 
@@ -25,80 +28,100 @@ public class RoleFun extends UUIDEntity{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	@Transient
-	private String text;//role的名称
-	@Column(name = "role_id")
-	protected String roleId;
-	@Column(name = "fun_id")
-	protected String funId;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	private Role role;
+	@ManyToOne(fetch=FetchType.LAZY)
+	private Fun fun;
 	@Column(length=10)
 	@Enumerated(EnumType.STRING)
-	private PermissionTypeEnum permissionType;
-	//@Column()
+	private PermissionEnum permissionEnum;
 	private Date createDate;
 	
-//	@Transient
-//	private List<RoleFunAssociation> children=new ArrayList<RoleFunAssociation>();
-	
-
-
-
-	public PermissionTypeEnum getPermissionType() {
-		return permissionType;
+	public Role getRole() {
+		return role;
 	}
-
-	public void setPermissionType(PermissionTypeEnum permissionType) {
-		this.permissionType = permissionType;
+	public void setRole(Role role) {
+		this.role = role;
 	}
-	
-	public void setPermissionType(String permissionType) {
-		this.permissionType = PermissionTypeEnum.valueOf(permissionType);
+	public Fun getFun() {
+		return fun;
 	}
-
+	public void setFun(Fun fun) {
+		this.fun = fun;
+	}
+	public PermissionEnum getPermissionEnum() {
+		return permissionEnum;
+	}
+	public void setPermissionEnum(PermissionEnum permissionEnum) {
+		this.permissionEnum = permissionEnum;
+	}
 	public Date getCreateDate() {
 		return createDate;
 	}
-
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
-
-	public String getRoleId() {
-		return roleId;
-	}
-
-	public void setRoleId(String roleId) {
-		this.roleId = roleId;
-	}
-
-	public String getFunId() {
-		return funId;
-	}
-
-	public void setFunId(String funId) {
-		this.funId = funId;
-	}
-
-//	public List<RoleFunAssociation> getChildren() {
-//		return children;
+	
+//	@Transient
+//	private String text;//role的名称
+//	@Column(name = "role_id")
+//	protected String roleId;
+//	@Column(name = "fun_id")
+//	protected String funId;
+//	@Column(length=10)
+//	@Enumerated(EnumType.STRING)
+//	private PermissionEnum permissionEnum;
+//	private Date createDate;
+//	
+////	@Transient
+////	private List<RoleFunAssociation> children=new ArrayList<RoleFunAssociation>();
+//	
+//
+//
+//
+//	public PermissionEnum getPermissionEnum() {
+//		return permissionEnum;
 //	}
 //
-//	public void setChildren(List<RoleFunAssociation> children) {
-//		this.children = children;
+//	public void setPermissionEnum(PermissionEnum permissionType) {
+//		this.permissionEnum = permissionType;
 //	}
 //	
-//	public void addChildren(RoleFunAssociation child) {
-//		this.children.add(child);
+//	public void setPermissionEnum(String permissionType) {
+//		this.permissionEnum = PermissionEnum.valueOf(permissionType);
 //	}
-
-
+//
+//	public Date getCreateDate() {
+//		return createDate;
+//	}
+//
+//	public void setCreateDate(Date createDate) {
+//		this.createDate = createDate;
+//	}
+//
+//	public String getText() {
+//		return text;
+//	}
+//
+//	public void setText(String text) {
+//		this.text = text;
+//	}
+//
+//	public String getRoleId() {
+//		return roleId;
+//	}
+//
+//	public void setRoleId(String roleId) {
+//		this.roleId = roleId;
+//	}
+//
+//	public String getFunId() {
+//		return funId;
+//	}
+//
+//	public void setFunId(String funId) {
+//		this.funId = funId;
+//	}
 
 }

@@ -9,6 +9,7 @@ import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -317,9 +318,11 @@ public class MappingFastJson2HttpMessageConverter extends AbstractHttpMessageCon
 		} else {
 			SimplePropertyPreFilter filter =null;
 			//自己进行判断
-			if(root instanceof List){
-				if(((List)root).size()>0){
-					filter = new SimplePropertyPreFilter(((List)root).get(0).getClass() ); 
+			if(root instanceof Collection){
+				if(((Collection)root).size()>0){
+					Iterator iterator=((Collection)root).iterator();
+					Object obj=iterator.next();
+					filter = new SimplePropertyPreFilter(obj.getClass() ); 
 					for(String str:excludes){
 						filter.getExcludes().add(str);
 					}

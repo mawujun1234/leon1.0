@@ -15,8 +15,9 @@ public class RoleFunService extends BaseRepository<RoleFun, String> {
 	private FunService funService;
 	public List<RoleFun> query(String roleId){
 		//List<Fun> funs=funService.queryAll();
+		//h还要读出父类的权限
 		
-		WhereInfo whereinfo=WhereInfo.parse("roleId", roleId);
+		WhereInfo whereinfo=WhereInfo.parse("role.id", roleId);
 		List<RoleFun> selectedFuns=this.query(whereinfo);
 		return selectedFuns;
 //		List<RoleFunAssociation>  result=recursionRoleFun(funs,selectedFuns,roleId);

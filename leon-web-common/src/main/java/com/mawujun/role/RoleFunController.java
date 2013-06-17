@@ -1,7 +1,10 @@
 package com.mawujun.role;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,8 +42,15 @@ public class RoleFunController {
 	
 	@RequestMapping("/roleFun/query")
 	@ResponseBody
-	public List<RoleFun> queryRoleFun(String roleId){
-		List<RoleFun> funes=roleFunService.query(roleId);
+	public List<Map<String,Object>>  queryRoleFun(String roleId){
+		List<RoleFun> roleFunes=roleFunService.query(roleId);
+		List<Map<String,Object>> funes=new ArrayList<Map<String,Object>>();
+		for (RoleFun roleFun:roleFunes){
+			Map<String,Object> map=new HashMap<String,Object>();
+			map.put("funId", roleFun.getFun().getId());
+			System.out.println(roleFun.getPermissionEnum());
+			map.put("permissionEnum", roleFun.getPermissionEnum().toString());
+		}
 		return funes;
 	}
 	

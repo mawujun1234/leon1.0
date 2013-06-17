@@ -2,6 +2,8 @@ package com.mawujun.repository.idEntity;
 
 import java.io.Serializable;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -33,18 +35,43 @@ public abstract class UUIDEntity  implements IdEntity<String>,Serializable{
 	//@GenericGenerator(name = "idGenerator", strategy = "com.mawujun.model.UUIDGenerator")
 	//@GeneratedValue(generator="idGenerator")
 	@Column(length=36,updatable=false,unique=true)
-	//@Access(AccessType.PROPERTY)
-	//@org.hibernate.annotations.AccessType("property")
+	@Access(AccessType.PROPERTY)
+	@org.hibernate.annotations.AccessType("property")
 	@Label(name="id")
 	protected String id;
 
-	//@org.hibernate.annotations.AccessType("field")
+	@org.hibernate.annotations.AccessType("property")
 	public String getId() {
 		return id;
 	}
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UUIDEntity other = (UUIDEntity) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 	
 	

@@ -24,7 +24,7 @@ Ext.define('Leon.desktop.role.RoleFunTree',{
 	        		{name:'id',type:'string'},
 					{name:'text',type:'string'},
 					{name:'funEnum',type:'string'},
-					{name:'permissionType',type:'string'}
+					{name:'permissionEnum',type:'string'}
         		],
 //        		model:'Leon.desktop.role.RoleFunAssociation',
 				proxy:{
@@ -49,15 +49,16 @@ Ext.define('Leon.desktop.role.RoleFunTree',{
 		var comboStore= Ext.create('Ext.data.Store', {
 			fields: ['id', 'name'],
 			data : [
-				{"id":"publicP", "name":"公有"},
-				{"id":"privateP", "name":"私有"}
+				{"id":"PUBLIC", "name":"公有"},
+				{"id":"PRIVATE", "name":"私有"},
+				{"id":"DENY", "name":"拒绝"}
 			]
 		});
 		
 		me.columns=[{
 			xtype:'treecolumn',dataIndex:'text',text:'名称',width: 200
 		},{
-			dataIndex:'permissionType',text:'权限属性',
+			dataIndex:'permissionEnum',text:'权限属性',
 			editor:{
 				xtype:'combo',
 				store:comboStore ,
@@ -69,14 +70,14 @@ Ext.define('Leon.desktop.role.RoleFunTree',{
 					"select":function(combo,records){
 						var node=me.getSelectionModel().getLastSelected();
 						var params=node.roleAssociation;
-						params.permissionType=records[0].getId();
+						params.permissionEnum=records[0].getId();
 						Ext.Ajax.request({
 				    		url:'/roleFunAssociation/update',
 				    		method:'POST',
 				    		params :params,
 				    		success:function(response){
 				    			var obj=Ext.encode(response.responseText);
-				    			//node.set('permissionType',params.permissionType);
+				    			//node.set('permissionEnum',params.permissionEnum);
 				    			
 				    		}   		
 				    	});
@@ -87,9 +88,9 @@ Ext.define('Leon.desktop.role.RoleFunTree',{
                 var index = comboStore.findExact('id',val); 
                 if (index != -1){
                 	
-//                	if(record.get('permissionType')=='publicP'){
+//                	if(record.get('permissionEnum')=='PUBLIC'){
 //                		metaData.style = 'background-color: #76EE00;' 
-//                	} else if(record.get('permissionType')=='privateP'){
+//                	} else if(record.get('permissionEnum')=='PRIVATE'){
 //                		metaData.style = 'background-color: #FFFF00;'
 //                	}
                 	var data=comboStore.getAt(index).data;
@@ -106,14 +107,12 @@ Ext.define('Leon.desktop.role.RoleFunTree',{
 		
 		me.viewConfig= {
 		    getRowClass: function(record, rowIndex, rowParams, store){
-		    	if(record.get('permissionType')=='publicP'){
+		    	if(record.get('permissionEnum')=='PUBLIC'){
                 		//metaData.style = 'background-color: #76EE00;' 
 		    		return "greenColor";
-                } else if(record.get('permissionType')=='privateP'){
+                } else if(record.get('permissionEnum')=='PRIVATE'){
                 	return "yellowColor";
                 }
-		        //return record.get("valid") ? "row-valid" : "row-error";
-		        //return "greenColor";
 		    }
 		}
 		
@@ -149,7 +148,7 @@ Ext.define('Leon.desktop.role.RoleFunTree',{
 					//funs[i].roleAssociationId=checkedFunes[j].id;
 					funs[i].roleAssociation=checkedFunes[j];
 					funs[i].set('checked',true);
-					funs[i].set('permissionType',checkedFunes[j].permissionType);
+					funs[i].set('permissionEnum',checkedFunes[j].permissionEnum);
 				}
 			}
 		}

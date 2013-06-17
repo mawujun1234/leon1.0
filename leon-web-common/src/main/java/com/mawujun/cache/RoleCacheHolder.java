@@ -38,14 +38,14 @@ public class RoleCacheHolder {
 		return roles.get(id);
 	}
 	
-	public static void add(RoleRole roleRole){
-		roleRole.setCurrent(RoleCacheHolder.get(roleRole.getCurrent().getId()));
-		roleRole.setOther(RoleCacheHolder.get(roleRole.getOther().getId()));
-	}
-	public static void remove(RoleRole roleRole){
-		RoleCacheHolder.get(roleRole.getCurrent().getId()).getCurrents().remove(roleRole);
-		RoleCacheHolder.get(roleRole.getCurrent().getId()).getOthers().remove(roleRole);
-	}
+//	public static void add(RoleRole roleRole){
+//		roleRole.setCurrent(RoleCacheHolder.get(roleRole.getCurrent().getId()));
+//		roleRole.setOther(RoleCacheHolder.get(roleRole.getOther().getId()));
+//	}
+//	public static void remove(RoleRole roleRole){
+//		RoleCacheHolder.get(roleRole.getCurrent().getId()).getCurrents().remove(roleRole);
+//		RoleCacheHolder.get(roleRole.getCurrent().getId()).getOthers().remove(roleRole);
+//	}
 	public static int size(){
 		return roles.size();
 	}
@@ -58,18 +58,18 @@ public class RoleCacheHolder {
 	public static boolean hasChild(Role parent_p,Role child_p){
 		Role parent=get(parent_p.getId());
 		Role child=get(child_p.getId());
-		return parent.hasChild(child);
+		return parent.isChild(child);
 	}
-	/**
-	 * 
-	 * @author mawujun email:16064988@163.com qq:16064988
-	 * @param current
-	 * @param other
-	 * @return
-	 */
-	public static boolean hasMutex(Role current_p,Role other_p){
-		Role parent=get(current_p.getId());
-		Role child=get(other_p.getId());
-		
-	}
+//	/**
+//	 * 
+//	 * @author mawujun email:16064988@163.com qq:16064988
+//	 * @param current
+//	 * @param other
+//	 * @return
+//	 */
+//	public static boolean hasMutex(Role current_p,Role other_p){
+//		Role parent=get(current_p.getId());
+//		Role child=get(other_p.getId());
+//		
+//	}
 }

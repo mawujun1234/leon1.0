@@ -30,7 +30,7 @@ Ext.onReady(function(){
 					Ext.Msg.alert("消息","角色不能增加下级节点!");
 					return;
 				}
-		    	tree.onCreate({name:'新目录','roleEnum':'roleCategory'});
+		    	tree.onCreate({name:'新目录','roleEnum':'roleCategory',category_id:parent.getId()});
 		    },
 		    iconCls: 'role-category-add'
 	});
@@ -43,7 +43,7 @@ Ext.onReady(function(){
 				Ext.Msg.alert("消息","功能不能增加下级节点!");
 				return;
 			}
-		    tree.onCreate({name:'新角色','roleEnum':'role'});
+		    tree.onCreate({name:'新角色','roleEnum':'role',category_id:parent.getId()});
 		},
 		iconCls: 'role-add-iconCls'
 	});
@@ -70,9 +70,9 @@ Ext.onReady(function(){
     		}   		
     	});
     	roleInheritGrid.currentRole=record;
-    	roleInheritGrid.getStore().load({params:{otherId:record.getId(),roleRoleEnum:'inherit'}});
+    	roleInheritGrid.getStore().load({params:{childId:record.getId(),roleRoleEnum:'inherit'}});
     	roleMutexGrid.currentRole=record;
-    	roleMutexGrid.getStore().load({params:{otherId:record.getId(),roleRoleEnum:'mutex'}});
+    	roleMutexGrid.getStore().load({params:{ownId:record.getId(),roleRoleEnum:'mutex'}});
     });
    
     

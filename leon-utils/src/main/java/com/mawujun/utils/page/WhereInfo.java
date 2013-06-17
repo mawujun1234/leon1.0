@@ -73,6 +73,7 @@ public class WhereInfo  implements Serializable{
 	}
 	/**
 	 * searchParams中key的格式为FIELDNAME_OPERATOR
+	 * WhereInfo whereinfo=WhereInfo.parse("category.id_isNull", "11");
 	 * 当使用isNull和isnotnull的时候最好value带入任意一个值，系统会自动忽略掉这个值的，而且map也不能放入null
 	 * 对in和between操作符，多个值时使用逗号分开：1,2,3,4,key="id_in",value="1,2,3,4";
 	 */
@@ -99,6 +100,7 @@ public class WhereInfo  implements Serializable{
 	}
 	/**
 	 * searchParams中key的格式为FIELDNAME_OPERATOR
+	 * WhereInfo whereinfo=WhereInfo.parse("category.id_isNull", "11");
 	 * 当使用isNull和isnotnull的时候最好value带入任意一个值，系统会自动忽略掉这个值的
 	 * 对in和between操作符，多个值时使用逗号分开：1,2,3,4,key="id_in",value="1,2,3,4";
 	 * @param value 是字符串

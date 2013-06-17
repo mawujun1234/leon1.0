@@ -13,13 +13,6 @@ Ext.define('Leon.desktop.role.RoleRoleGrid',{
 			}
 		}
 	},
-//	//selType: 'cellmodel',
-//    plugins: [
-//        Ext.create('Ext.grid.plugin.CellEditing', {
-//        	pluginId: 'cellEditingPlugin',
-//            clicksToEdit: 2
-//        })
-//    ],
 	initComponent: function () {
        var me = this;
        me.columns=[
@@ -27,13 +20,20 @@ Ext.define('Leon.desktop.role.RoleRoleGrid',{
 	        { text: '名称', dataIndex: 'name', flex: 1 },
 	        { text: '描述', dataIndex: 'description', flex: 1 }
        ];
+       
+       var url="";
+	   if(me.roleRoleEnum=="inherit"){
+			url="/role/queryParent";
+		} else {
+			url="/role/queryMutex";
+	   }
        me.store=Ext.create('Ext.data.Store',{
        		autoSync:false,
        		model: 'Leon.desktop.role.Role',
        		autoLoad:false,
        		proxy:{
        			type:'bajax',
-       			url:'/role/queryByRole'
+       			url:url
        		}
        });
        
@@ -50,20 +50,24 @@ Ext.define('Leon.desktop.role.RoleRoleGrid',{
 						displayField :'name',
 						model:'Leon.desktop.role.Role',
 						autoInitSimpleAction:false
-						
-						//url:'/role/query'
-						//region:'west'
-						//split:true,
-						//flex: 0.8
 						,listeners:{
 							itemdblclick:function( tree, record, item, index, e, eOpts ){
 								if(record.get('roleEnum')=='roleCategory'){
 									return;
 								}
+								var params={};
+								var url="";
+								if(me.roleRoleEnum=="inherit"){
+									url="/role/addParent";
+									params={parentId:record.getId(),childId:me.currentRole.getId()};
+								} else {
+									url="/role/addMutex";
+									params={ownId:me.currentRole.getId(),mutexId:record.getId()};
+								}
 								tree.mask("正在新增....");
 								Ext.Ajax.request({
-		       						url:'/roleRole/create',
-		       						params:{currentId:record.getId(),otherId:me.currentRole.getId(),roleRoleEnum:me.roleRoleEnum},
+		       						url:url,
+		       						params:params,
 		       						//jsonData:{id:{currentId:me.currentRole.getId(),otherId:model.getId()}},
 		       						method:'POST',
 		       						success:function(response){
@@ -73,22 +77,6 @@ Ext.define('Leon.desktop.role.RoleRoleGrid',{
 										tree.unmask();
 									}
 		       					});
-//								var roleRole=Ext.createModel('Leon.desktop.role.RoleRole',{
-//									roleRoleEnum:me.roleRoleEnum,
-//									//current:{id:me.currentRole.getId()},
-//									//other:{id:record.getId()}
-//									current_id:me.currentRole.getId(),
-//									other_id:record.getId()
-//								});
-//								roleRole.save({
-//									success: function(record, operation) {
-//										me.getStore().reload();
-//										
-//									},
-//									callback :function(){
-//										tree.unmask();
-//									}
-//								});
 							}
 						}
 				   });
@@ -106,22 +94,24 @@ Ext.define('Leon.desktop.role.RoleRoleGrid',{
        			text:'删除',
        			iconCls:'form-delete-button ',
        			handler:function(){
-       				var model=me.getSelectionModel( ).getLastSelected( ) ;
-       				if(model){
-//       					if(model.get("id")=="default"){
-//       						Ext.Msg.alert("消息","默认菜单不能删除");
-//       						return;
-//       					}
+       				var record=me.getSelectionModel( ).getLastSelected( ) ;
+       				if(record){
+       					var url="";
+						if(me.roleRoleEnum=="inherit"){
+							url="/role/removeParent";
+							params={parentId:record.getId(),childId:me.currentRole.getId()};
+						} else {
+							url="/role/removeMutex";
+							params={ownId:me.currentRole.getId(),mutexId:record.getId()};
+						}
        					Ext.Ajax.request({
-       						url:'/roleRole/destroy',
-       						params:{otherId:me.currentRole.getId(),currentId:model.getId(),roleRoleEnum:me.roleRoleEnum},
-       						//jsonData:{id:{currentId:me.currentRole.getId(),otherId:model.getId()}},
+       						url:url,
+       						params:params,
        						method:'POST',
        						success:function(response){
        							me.getStore().reload();
        						}
        					});
-       					//model.destroy();
        				}
        			}	
        		}]

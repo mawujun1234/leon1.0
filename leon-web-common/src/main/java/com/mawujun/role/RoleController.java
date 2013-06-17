@@ -3,6 +3,7 @@ package com.mawujun.role;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.cache.RoleCacheHolder;
+import com.mawujun.controller.spring.mvc.ToJsonConfigHolder;
 import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;
 import com.mawujun.utils.page.WhereInfo;
@@ -31,10 +33,11 @@ public class RoleController {
 	public List<Role> query(String id) {
 		List<Role> roles=null;
 		if(!"root".equals(id)){
-			WhereInfo whereinfo=WhereInfo.parse("parent.id", id);
+			WhereInfo whereinfo=WhereInfo.parse("category.id", id);
 			roles=roleService.query(whereinfo);
 		} else {
-			roles=roleService.query();
+			WhereInfo whereinfo=WhereInfo.parse("category.id_isNull", "11");
+			roles=roleService.query(whereinfo);
 		}
 
 		return roles;
@@ -57,8 +60,8 @@ public class RoleController {
 	@RequestMapping("/role/create")
 	@ResponseBody
 	public Role create(@RequestBody Role role){	
-		if(role.getParent()!=null&&"root".equals(role.getParent().getId())){
-			role.setParent(null);
+		if(role.getCategory()!=null&&"root".equals(role.getCategory().getId())){
+			role.setCategory(null);
 		}
 		roleService.create(role);
 		//int i=RoleCacheHolder.size();
@@ -79,16 +82,44 @@ public class RoleController {
 		return role;
 	}
 	
-	
-	@RequestMapping("/role/queryByRole")
+	@RequestMapping("/role/addParent")
 	@ResponseBody
-	public List<Map<String,Object>> queryByRole(String otherId,String roleRoleEnum) {
-		List<Map<String,Object>> roles=null;
-
-//		WhereInfo whereinfo=WhereInfo.parse("current.id", currentId);
-//		WhereInfo whereinfo1=WhereInfo.parse("current.id", roleRoleEnum);
-		roles=roleService.queryByRole(otherId,roleRoleEnum);
-
+	public void addParent(String parentId,String childId){	
+		roleService.addParent(parentId, childId);
+	}
+	
+	@RequestMapping("/role/addMutex")
+	@ResponseBody
+	public void addMutex(String ownId,String mutexId){	
+		roleService.addMutex(ownId, mutexId);
+	}
+	
+	@RequestMapping("/role/removeParent")
+	@ResponseBody
+	public void removeParent(String parentId,String childId){	
+		roleService.removeParent(parentId, childId);
+	}
+	
+	@RequestMapping("/role/removeMutex")
+	@ResponseBody
+	public void removeMutex(String ownId,String mutexId){	
+		roleService.removeMutex(ownId, mutexId);
+	}
+	
+	@RequestMapping("/role/queryParent")
+	@ResponseBody
+	public Set<Role> queryParent(String childId) {
+		Set<Role> roles=null;
+		roles=roleService.queryParent(childId);
+		ToJsonConfigHolder.setFilterPropertys("parents,children,mutex,funes");
+		return roles;
+	}
+	@RequestMapping("/role/queryMutex")
+	@ResponseBody
+	public Set<Role> queryMutex(String ownId) {
+		Set<Role> roles=null;
+		roles=roleService.queryMutex(ownId);
+		ToJsonConfigHolder.setFilterPropertys("parents,children,mutex,funes");
 		return roles;
 	}
 	

@@ -5,9 +5,9 @@ Ext.defineModel("Leon.desktop.role.Role",{
 		{name:'name',type:'string'},
 		{name:'roleEnum',type:'string',useNull:true},
 		{name:'description',type:'string'},
-		{name:'parent_id',type:'string'}
+		{name:'category_id',type:'string'}
 	],
 	associations:[
-		{type:'belongsTo',model:'Leon.desktop.role.Role',associatedName:'Parent'}
+		{type:'belongsTo',model:'Leon.desktop.role.Role',associatedName:'Category'}
 	]
 });
