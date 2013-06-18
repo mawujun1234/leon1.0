@@ -35,12 +35,12 @@ public abstract class UUIDEntity  implements IdEntity<String>,Serializable{
 	//@GenericGenerator(name = "idGenerator", strategy = "com.mawujun.model.UUIDGenerator")
 	//@GeneratedValue(generator="idGenerator")
 	@Column(length=36,updatable=false,unique=true)
-	@Access(AccessType.PROPERTY)
+	//@Access(AccessType.PROPERTY)
 	@org.hibernate.annotations.AccessType("property")
 	@Label(name="id")
 	protected String id;
 
-	@org.hibernate.annotations.AccessType("property")
+	//@org.hibernate.annotations.AccessType("property")
 	public String getId() {
 		return id;
 	}

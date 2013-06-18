@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;
 
 @Controller
@@ -48,26 +49,35 @@ public class RoleFunController {
 		for (RoleFun roleFun:roleFunes){
 			Map<String,Object> map=new HashMap<String,Object>();
 			map.put("funId", roleFun.getFun().getId());
-			System.out.println(roleFun.getPermissionEnum());
+			System.out.println(map.get("funId"));
 			map.put("permissionEnum", roleFun.getPermissionEnum().toString());
+			funes.add(map);
 		}
 		return funes;
 	}
 	
 	@RequestMapping("/roleFun/create")
 	@ResponseBody
-	public RoleFun create(RoleFun roleFun){
+	public RoleFun create(String roleId,String funId,String permissionEnum){
+		RoleFun roleFun=new RoleFun();
+		roleFun.setRole(new Role(roleId));
+		roleFun.setFun(new Fun(funId));
+		roleFun.setPermissionEnum(permissionEnum);
 		roleFun.setCreateDate(new Date());
 		roleFunService.create(roleFun);
 		return roleFun;
 	}
 	
-	@RequestMapping("/roleFun/update")
-	@ResponseBody
-	public RoleFun update(RoleFun roleFun){
-		roleFunService.update(roleFun);
-		return roleFun;
-	}
+//	@RequestMapping("/roleFun/update")
+//	@ResponseBody
+//	public RoleFun update(String roleId,String funId,String permissionEnum){
+//		RoleFun roleFun=new RoleFun();
+//		roleFun.setRole(new Role(roleId));
+//		roleFun.setFun(new Fun(funId));
+//		roleFun.setPermissionEnum(permissionEnum);
+//		roleFunService.update(roleFun);
+//		return roleFun;
+//	}
 	
 	@RequestMapping("/roleFun/destroy")
 	@ResponseBody

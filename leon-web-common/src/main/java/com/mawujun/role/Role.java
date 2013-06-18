@@ -272,6 +272,13 @@ public class Role extends TreeNode {
 	public List<RoleFun> getFunes() {
 		return funes;
 	}
+	public List<RoleFun> findFunesAll() {
+		for(Role parent:this.getParents()){
+			计算权限的规则
+			this.getFunes().addAll(parent.findFunesAll());
+		}
+		return funes;
+	}
 	public void setFunes(List<RoleFun> funes) {
 		this.funes = funes;
 	}

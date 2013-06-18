@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mawujun.cache.RoleCacheHolder;
 import com.mawujun.fun.FunService;
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.utils.page.WhereInfo;
@@ -16,12 +17,14 @@ public class RoleFunService extends BaseRepository<RoleFun, String> {
 	public List<RoleFun> query(String roleId){
 		//List<Fun> funs=funService.queryAll();
 		//h还要读出父类的权限
+		Role role=RoleCacheHolder.get(roleId);
+		List<RoleFun> roleFuns=role.findFunesAll();
 		
-		WhereInfo whereinfo=WhereInfo.parse("role.id", roleId);
-		List<RoleFun> selectedFuns=this.query(whereinfo);
-		return selectedFuns;
-//		List<RoleFunAssociation>  result=recursionRoleFun(funs,selectedFuns,roleId);
-//		return result;
+		return roleFuns;
+		
+//		WhereInfo whereinfo=WhereInfo.parse("role.id", roleId);
+//		List<RoleFun> selectedFuns=this.query(whereinfo);
+//		return selectedFuns;
 	}
 //	private List<RoleFunAssociation> recursionRoleFun( List<Fun> funs,List<RoleFunAssociation> selectedFuns,String roleId){
 //		List<RoleFunAssociation> results=new ArrayList<RoleFunAssociation>();

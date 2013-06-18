@@ -105,16 +105,16 @@ Ext.define('Leon.desktop.role.RoleFunTree',{
 //            }
 		}];
 		
-		me.viewConfig= {
-		    getRowClass: function(record, rowIndex, rowParams, store){
-		    	if(record.get('permissionEnum')=='PUBLIC'){
-                		//metaData.style = 'background-color: #76EE00;' 
-		    		return "greenColor";
-                } else if(record.get('permissionEnum')=='PRIVATE'){
-                	return "yellowColor";
-                }
-		    }
-		}
+//		me.viewConfig= {
+//		    getRowClass: function(record, rowIndex, rowParams, store){
+//		    	if(record.get('permissionEnum')=='PUBLIC'){
+//                		//metaData.style = 'background-color: #76EE00;' 
+//		    		return "greenColor";
+//                } else if(record.get('permissionEnum')=='PRIVATE'){
+//                	return "yellowColor";
+//                }
+//		    }
+//		}
 		
 		me.plugins=[{
 			ptype:'cellediting',
@@ -143,6 +143,7 @@ Ext.define('Leon.desktop.role.RoleFunTree',{
 		for(var i=0;i<funs.length;i++){
 			//console.log(funs.length);
 			funs[i].set('checked',false);
+			funs[i].set('permissionEnum',null);
 			for(var j=0;j<checkedFunes.length;j++){
 				if(funs[i].getId()==checkedFunes[j].funId){
 					//funs[i].roleAssociationId=checkedFunes[j].id;

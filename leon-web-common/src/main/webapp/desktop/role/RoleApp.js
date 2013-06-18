@@ -93,7 +93,7 @@ Ext.onReady(function(){
     		params ={
 	    		roleId:roleId,
 	    		funId:node.getId(),
-	    		permissionType:'publicP'
+	    		permissionEnum:'PUBLIC'
 	    	}
     	}
      	Ext.Ajax.request({
@@ -102,7 +102,7 @@ Ext.onReady(function(){
     		params :params,
     		success:function(response){
     			var obj=Ext.decode(response.responseText);
-    			node.set('permissionType',params.permissionType);
+    			node.set('permissionEnum',params.permissionEnum);
     			if(isDestroy){
     				node.roleAssociation=null;
     			} else {

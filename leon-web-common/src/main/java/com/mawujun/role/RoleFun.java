@@ -1,20 +1,15 @@
 package com.mawujun.role;
 
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-import com.mawujun.exten.TreeNode;
 import com.mawujun.fun.Fun;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
@@ -29,9 +24,9 @@ public class RoleFun extends UUIDEntity{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	private Role role;
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	private Fun fun;
 	@Column(length=10)
 	@Enumerated(EnumType.STRING)
@@ -55,6 +50,9 @@ public class RoleFun extends UUIDEntity{
 	}
 	public void setPermissionEnum(PermissionEnum permissionEnum) {
 		this.permissionEnum = permissionEnum;
+	}
+	public void setPermissionEnum(String permissionEnum) {
+		this.permissionEnum = PermissionEnum.valueOf(permissionEnum);
 	}
 	public Date getCreateDate() {
 		return createDate;
