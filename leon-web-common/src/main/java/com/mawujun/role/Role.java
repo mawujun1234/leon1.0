@@ -1,8 +1,10 @@
 package com.mawujun.role;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -18,6 +20,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.mawujun.cache.RoleCacheHolder;
 import com.mawujun.exten.TreeNode;
 import com.mawujun.fun.Fun;
 
@@ -272,12 +275,79 @@ public class Role extends TreeNode {
 	public List<RoleFun> getFunes() {
 		return funes;
 	}
-	public List<RoleFun> findFunesAll() {
-		for(Role parent:this.getParents()){
-			计算权限的规则
-			this.getFunes().addAll(parent.findFunesAll());
+	public List<RoleFun> geetFunes() {
+		List<RoleFun> funes=this.getFunes();
+		List<RoleFun> parentFunes= this.callAncestorAccessDecision(0);
+
+		//计算上下级的权限策略
+		for(RoleFun roleFunParent:parentFunes){
+			//只有子角色不存在的角色才可以添加进来，因为使用了覆盖
+			if(!funes.contains(roleFunParent)){
+				funes.add(roleFunParent);
+			}
 		}
+		
 		return funes;
+		
+	}
+	private ArrayList<RoleFun> geetAllFunnes(){
+		ArrayList<RoleFun> parentFunes=new ArrayList<RoleFun>();
+		parentFunes.addAll(this.getFunes());
+		for(Role parent:this.getParents()){
+			parentFunes.addAll(parent.geetAllFunnes());
+		}
+		return parentFunes;
+		
+	}
+	private List<RoleFun> callAncestorAccessDecision() {
+		
+		
+		//按权限id的不同进行归类
+		Map<String,ArrayList<RoleFun>> map=new HashMap<String,ArrayList<RoleFun>>();
+		for(Role parent:this.getParents()){
+			ArrayList<RoleFun> parentFunes=parent.geetAllFunnes();
+//			//会进行递归
+//			parentFunes.addAll(parent.geetAllFunnes());
+			//直接父角色拥有的所有的功能
+			map.put(parent.getId(), parentFunes);
+		}
+		
+//		for(RoleFun roleFunParent:parentFunes){
+//			if(!map.containsKey(roleFunParent.getFun().getId())){
+//				map.put(roleFunParent.getFun().getId(), new ArrayList<RoleFun>());
+//			} 
+//			map.get(roleFunParent.getFun().getId()).add(roleFunParent);
+//		}
+
+		// 计算直接父角色的兄弟节点的 权限计算方式
+		List<RoleFun> parentFunesResult = new ArrayList<RoleFun>();
+		//只有直接上级才会去进行计算
+		//if(level==0){
+			//有一个允许就允许
+			if (RoleCacheHolder.getAccessDecisionEnum() == AccessDecisionEnum.AffirmativeBased) {
+				calAffirmativeBased(map);
+			}
+//		} else {
+//			parentFunesResult=parentFunes;
+//		}
+//		
+		
+		return parentFunesResult;
+
+	}
+	
+	/**
+	 * 有一个允许就允许
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param map
+	 * @return
+	 */
+	private List<RoleFun> calAffirmativeBased(Map<String,ArrayList<RoleFun>> map) {
+		List<RoleFun> aa=new ArrayList<RoleFun>();
+		for(map){
+			
+		}
+		
 	}
 	public void setFunes(List<RoleFun> funes) {
 		this.funes = funes;

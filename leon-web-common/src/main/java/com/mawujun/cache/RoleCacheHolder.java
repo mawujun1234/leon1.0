@@ -5,6 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.mawujun.controller.spring.SpringContextHolder;
 import com.mawujun.role.Role;
+import com.mawujun.role.AccessDecisionEnum;
 import com.mawujun.role.RoleRole;
 import com.mawujun.role.RoleService;
 
@@ -60,6 +61,13 @@ public class RoleCacheHolder {
 		Role child=get(child_p.getId());
 		return parent.isChild(child);
 	}
+	/**
+	 * 用来获取权限的计算策略
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 */
+	public static AccessDecisionEnum getAccessDecisionEnum(){
+		return AccessDecisionEnum.AffirmativeBased;
+	}
 //	/**
 //	 * 
 //	 * @author mawujun email:16064988@163.com qq:16064988
@@ -72,4 +80,6 @@ public class RoleCacheHolder {
 //		Role child=get(other_p.getId());
 //		
 //	}
+	
+	
 }
