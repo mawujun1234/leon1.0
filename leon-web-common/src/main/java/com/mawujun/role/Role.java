@@ -276,79 +276,124 @@ public class Role extends TreeNode {
 		return funes;
 	}
 	public List<RoleFun> geetFunes() {
-		List<RoleFun> funes=this.getFunes();
-		List<RoleFun> parentFunes= this.callAncestorAccessDecision(0);
-
-		//计算上下级的权限策略
-		for(RoleFun roleFunParent:parentFunes){
-			//只有子角色不存在的角色才可以添加进来，因为使用了覆盖
-			if(!funes.contains(roleFunParent)){
-				funes.add(roleFunParent);
+		//首先获取父角色的权限,如果有多个父角色就要先进行父角色的 冲突处理
+		Map<String,ArrayList<RoleFun>> map=new HashMap<String,ArrayList<RoleFun>>();
+		if(this.getParents().size()>1){
+			for(Role parent:this.getParents()){
+				List<RoleFun> parentFunes=parent.geetFunes();
+				for(RoleFun roleFunParent:parentFunes){
+					if (!map.containsKey(roleFunParent.getFun().getId())) {
+						map.put(roleFunParent.getFun().getId(),new ArrayList<RoleFun>());
+					}
+					map.get(roleFunParent.getFun().getId()).add(roleFunParent);
+				}
+			}
+			
+			//进行父角色的权限冲突处理
+			if (RoleCacheHolder.getAccessDecisionEnum() == AccessDecisionEnum.AffirmativeBased) {
+				calAffirmativeBased(map);
 			}
 		}
+		
+		//接着进行子角色和父角色的权限的覆盖和，继承
+		
+		
+		
+		
+//		List<RoleFun> funes=this.getFunes();
+//		List<RoleFun> parentFunes= this.callAncestorAccessDecision(0);
+//
+//		//计算上下级的权限策略
+//		for(RoleFun roleFunParent:parentFunes){
+//			//只有子角色不存在的角色才可以添加进来，因为使用了覆盖
+//			if(!funes.contains(roleFunParent)){
+//				funes.add(roleFunParent);
+//			}
+//		}
 		
 		return funes;
 		
 	}
-	private ArrayList<RoleFun> geetAllFunnes(){
-		ArrayList<RoleFun> parentFunes=new ArrayList<RoleFun>();
-		parentFunes.addAll(this.getFunes());
-		for(Role parent:this.getParents()){
-			parentFunes.addAll(parent.geetAllFunnes());
-		}
-		return parentFunes;
-		
-	}
-	private List<RoleFun> callAncestorAccessDecision() {
-		
-		
-		//按权限id的不同进行归类
-		Map<String,ArrayList<RoleFun>> map=new HashMap<String,ArrayList<RoleFun>>();
-		for(Role parent:this.getParents()){
-			ArrayList<RoleFun> parentFunes=parent.geetAllFunnes();
-//			//会进行递归
-//			parentFunes.addAll(parent.geetAllFunnes());
-			//直接父角色拥有的所有的功能
-			map.put(parent.getId(), parentFunes);
-		}
-		
-//		for(RoleFun roleFunParent:parentFunes){
-//			if(!map.containsKey(roleFunParent.getFun().getId())){
-//				map.put(roleFunParent.getFun().getId(), new ArrayList<RoleFun>());
-//			} 
-//			map.get(roleFunParent.getFun().getId()).add(roleFunParent);
-//		}
 
-		// 计算直接父角色的兄弟节点的 权限计算方式
-		List<RoleFun> parentFunesResult = new ArrayList<RoleFun>();
-		//只有直接上级才会去进行计算
-		//if(level==0){
-			//有一个允许就允许
-			if (RoleCacheHolder.getAccessDecisionEnum() == AccessDecisionEnum.AffirmativeBased) {
-				calAffirmativeBased(map);
+	private List<RoleFunVo> calAffirmativeBased(Map<String,ArrayList<RoleFun>> map) {
+		//对于某个功能来说 只要有一个角色是公有权限，那这个功能就要返回
+		//如果都是拒绝的话，那就要返回拒绝，新建一个RoleFunVO，里面有funId，权限类型：PUBLIC,DENY，还有这个功能从哪个角色来的lIST<Role>
+		List<RoleFunVo> aa=new ArrayList<RoleFunVo>();
+		for(String key:map.keySet()){
+			RoleFunVo roleFunVo=new RoleFunVo();
+			//默认的权限类型是PRIVATE
+			aa.add(roleFunVo);
+			for(RoleFun roleFun:map.get(key)){
+				if(roleFun.getPermissionEnum()==PermissionEnum.PUBLIC){
+					//设置权限类型为PULIC
+				} else if(roleFun.getPermissionEnum()==PermissionEnum.DENY){
+					
+				}
 			}
-//		} else {
-//			parentFunesResult=parentFunes;
-//		}
-//		
-		
-		return parentFunesResult;
-
+		}
 	}
 	
-	/**
-	 * 有一个允许就允许
-	 * @author mawujun email:16064988@163.com qq:16064988
-	 * @param map
-	 * @return
-	 */
-	private List<RoleFun> calAffirmativeBased(Map<String,ArrayList<RoleFun>> map) {
-		List<RoleFun> aa=new ArrayList<RoleFun>();
-		for(map){
-			
-		}
-		
-	}
+//	private ArrayList<RoleFun> geetAllFunnes(){
+//		
+//		
+//		ArrayList<RoleFun> parentFunes=new ArrayList<RoleFun>();
+//		parentFunes.addAll(this.getFunes());
+//		for(Role parent:this.getParents()){
+//			parentFunes.addAll(parent.geetAllFunnes());
+//		}
+//		return parentFunes;
+//		
+//	}
+//	private List<RoleFun> callAncestorAccessDecision() {
+//		
+//		
+//		//按权限id的不同进行归类
+//		Map<String,ArrayList<RoleFun>> map=new HashMap<String,ArrayList<RoleFun>>();
+//		for(Role parent:this.getParents()){
+//			ArrayList<RoleFun> parentFunes=parent.geetAllFunnes();
+////			//会进行递归
+////			parentFunes.addAll(parent.geetAllFunnes());
+//			//直接父角色拥有的所有的功能
+//			map.put(parent.getId(), parentFunes);
+//		}
+//		
+////		for(RoleFun roleFunParent:parentFunes){
+////			if(!map.containsKey(roleFunParent.getFun().getId())){
+////				map.put(roleFunParent.getFun().getId(), new ArrayList<RoleFun>());
+////			} 
+////			map.get(roleFunParent.getFun().getId()).add(roleFunParent);
+////		}
+//
+//		// 计算直接父角色的兄弟节点的 权限计算方式
+//		List<RoleFun> parentFunesResult = new ArrayList<RoleFun>();
+//		//只有直接上级才会去进行计算
+//		//if(level==0){
+//			//有一个允许就允许
+//			if (RoleCacheHolder.getAccessDecisionEnum() == AccessDecisionEnum.AffirmativeBased) {
+//				calAffirmativeBased(map);
+//			}
+////		} else {
+////			parentFunesResult=parentFunes;
+////		}
+////		
+//		
+//		return parentFunesResult;
+//
+//	}
+//	
+//	/**
+//	 * 有一个允许就允许
+//	 * @author mawujun email:16064988@163.com qq:16064988
+//	 * @param map
+//	 * @return
+//	 */
+//	private List<RoleFun> calAffirmativeBased(Map<String,ArrayList<RoleFun>> map) {
+//		List<RoleFun> aa=new ArrayList<RoleFun>();
+//		for(map){
+//			
+//		}
+//		
+//	}
 	public void setFunes(List<RoleFun> funes) {
 		this.funes = funes;
 	}
