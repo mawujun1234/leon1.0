@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -275,28 +276,63 @@ public class Role extends TreeNode {
 	public List<RoleFun> getFunes() {
 		return funes;
 	}
-	public List<RoleFun> geetFunes() {
+	public List<FunRoleVO> geetFunes() {
 		//首先获取父角色的权限,如果有多个父角色就要先进行父角色的 冲突处理
+		List<FunRoleVO> funRoleVOs_parent=new ArrayList<FunRoleVO>();
 		Map<String,ArrayList<RoleFun>> map=new HashMap<String,ArrayList<RoleFun>>();
-		if(this.getParents().size()>1){
+		if(this.getParents().size()>0){
 			for(Role parent:this.getParents()){
-				List<RoleFun> parentFunes=parent.geetFunes();
-				for(RoleFun roleFunParent:parentFunes){
-					if (!map.containsKey(roleFunParent.getFun().getId())) {
-						map.put(roleFunParent.getFun().getId(),new ArrayList<RoleFun>());
+				List<FunRoleVO> parentFunes=parent.geetFunes();
+				for(FunRoleVO funRoleVO:parentFunes){
+					if (!map.containsKey(funRoleVO.getFunId())) {
+						map.put(funRoleVO.getFunId(),new ArrayList<RoleFun>());
 					}
-					map.get(roleFunParent.getFun().getId()).add(roleFunParent);
+					RoleFun aa=new RoleFun();
+					aa.setFun(new Fun(funRoleVO.getFunId()));
+					aa.setRole(parent);//只有两层的，到时候来源
+					aa.setPermissionEnum(funRoleVO.getPermissionEnum());
+					
+					map.get(funRoleVO.getFunId()).add(aa);
 				}
 			}
 			
 			//进行父角色的权限冲突处理
 			if (RoleCacheHolder.getAccessDecisionEnum() == AccessDecisionEnum.AffirmativeBased) {
-				calAffirmativeBased(map);
+				funRoleVOs_parent= calAffirmativeBased(map);
 			}
 		}
 		
 		//接着进行子角色和父角色的权限的覆盖和，继承
+//		Set<String> nowFunIds=new HashSet<String>();
+//		for(RoleFun roleFun:getFunes()){
+//			nowFunIds.add(roleFun.getFun().getId());
+//		}
+		Map<String,Integer> nowFunIds_parent=new HashMap<String,Integer>();
+		int aaaaIndex=0;
+		for(FunRoleVO funRoleVO_parent:funRoleVOs_parent){
+			nowFunIds_parent.put(funRoleVO_parent.getFunId(), aaaaIndex);
+			aaaaIndex++;
+		}
+		List<FunRoleVO> funRoleVOs=new ArrayList<FunRoleVO>();
+		//boolean haveSame=false;
+		for(RoleFun roleFun:getFunes()){
+			String funId=roleFun.getFun().getId();
+			FunRoleVO roleFunVo=new FunRoleVO();
+			roleFunVo.setFunId(funId);
+			roleFunVo.setPermissionEnum(roleFun.getPermissionEnum());
+			roleFunVo.addRoles(roleFun.getRole());
+			
+			if(nowFunIds_parent.containsKey(funId)){
+				//roleFunVo.addRoles(funRoleVOs_parent.get(nowFunIds_parent.get(funId)).getRoles())
+				nowFunIds_parent.remove(roleFun.getFun().getId());
+			}
+			funRoleVOs.add(roleFunVo);
+		}
+		for(Entry<String,Integer> entry:nowFunIds_parent.entrySet()){
+			funRoleVOs.add(funRoleVOs_parent.get(entry.getValue()));
+		}
 		
+		return funRoleVOs;
 		
 		
 		
@@ -311,26 +347,38 @@ public class Role extends TreeNode {
 //			}
 //		}
 		
-		return funes;
+//		return funes;
 		
 	}
 
-	private List<RoleFunVo> calAffirmativeBased(Map<String,ArrayList<RoleFun>> map) {
+	/**
+	 * 有一个允许就允许
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param map
+	 * @return
+	 */
+	private List<FunRoleVO> calAffirmativeBased(Map<String,ArrayList<RoleFun>> map) {
 		//对于某个功能来说 只要有一个角色是公有权限，那这个功能就要返回
 		//如果都是拒绝的话，那就要返回拒绝，新建一个RoleFunVO，里面有funId，权限类型：PUBLIC,DENY，还有这个功能从哪个角色来的lIST<Role>
-		List<RoleFunVo> aa=new ArrayList<RoleFunVo>();
+		List<FunRoleVO> funRoleVOs=new ArrayList<FunRoleVO>();
 		for(String key:map.keySet()){
-			RoleFunVo roleFunVo=new RoleFunVo();
+			FunRoleVO roleFunVo=new FunRoleVO();
+			roleFunVo.setFunId(key);
 			//默认的权限类型是PRIVATE
-			aa.add(roleFunVo);
+			roleFunVo.setPRIVATE();
 			for(RoleFun roleFun:map.get(key)){
 				if(roleFun.getPermissionEnum()==PermissionEnum.PUBLIC){
 					//设置权限类型为PULIC
+					roleFunVo.setPUBLIC();
+					roleFunVo.addRoles(roleFun.getRole());
+					//break;
 				} else if(roleFun.getPermissionEnum()==PermissionEnum.DENY){
-					
+					roleFunVo.setDENY();
 				}
 			}
+			funRoleVOs.add(roleFunVo);
 		}
+		return funRoleVOs;
 	}
 	
 //	private ArrayList<RoleFun> geetAllFunnes(){
