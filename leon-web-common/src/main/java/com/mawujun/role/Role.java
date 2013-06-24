@@ -279,20 +279,16 @@ public class Role extends TreeNode {
 	public List<FunRoleVO> geetFunes() {
 		//首先获取父角色的权限,如果有多个父角色就要先进行父角色的 冲突处理
 		List<FunRoleVO> funRoleVOs_parent=new ArrayList<FunRoleVO>();
-		Map<String,ArrayList<RoleFun>> map=new HashMap<String,ArrayList<RoleFun>>();
+		Map<String,ArrayList<FunRoleVO>> map=new HashMap<String,ArrayList<FunRoleVO>>();
 		if(this.getParents().size()>0){
 			for(Role parent:this.getParents()){
 				List<FunRoleVO> parentFunes=parent.geetFunes();
 				for(FunRoleVO funRoleVO:parentFunes){
 					if (!map.containsKey(funRoleVO.getFunId())) {
-						map.put(funRoleVO.getFunId(),new ArrayList<RoleFun>());
+						map.put(funRoleVO.getFunId(),new ArrayList<FunRoleVO>());
 					}
-					RoleFun aa=new RoleFun();
-					aa.setFun(new Fun(funRoleVO.getFunId()));
-					aa.setRole(parent);//只有两层的，到时候来源
-					aa.setPermissionEnum(funRoleVO.getPermissionEnum());
-					
-					map.get(funRoleVO.getFunId()).add(aa);
+
+					map.get(funRoleVO.getFunId()).add(funRoleVO);
 				}
 			}
 			
@@ -302,11 +298,6 @@ public class Role extends TreeNode {
 			}
 		}
 		
-		//接着进行子角色和父角色的权限的覆盖和，继承
-//		Set<String> nowFunIds=new HashSet<String>();
-//		for(RoleFun roleFun:getFunes()){
-//			nowFunIds.add(roleFun.getFun().getId());
-//		}
 		Map<String,Integer> nowFunIds_parent=new HashMap<String,Integer>();
 		int aaaaIndex=0;
 		for(FunRoleVO funRoleVO_parent:funRoleVOs_parent){
@@ -320,34 +311,31 @@ public class Role extends TreeNode {
 			FunRoleVO roleFunVo=new FunRoleVO();
 			roleFunVo.setFunId(funId);
 			roleFunVo.setPermissionEnum(roleFun.getPermissionEnum());
-			roleFunVo.addRoles(roleFun.getRole());
+			
+			RoleVO roleVO=new RoleVO();
+			roleVO.setId(roleFun.getRole().getId());
+			roleVO.setName(roleFun.getRole().getName());
+			roleVO.setPermissionEnum(roleFun.getPermissionEnum());
+			roleVO.setSelf(true);
+			roleFunVo.addRoles(roleVO);
 			
 			if(nowFunIds_parent.containsKey(funId)){
 				//roleFunVo.addRoles(funRoleVOs_parent.get(nowFunIds_parent.get(funId)).getRoles())
+				//把父节点的的角色加进来
+				roleFunVo.getRoles().addAll(0,funRoleVOs_parent.get(nowFunIds_parent.get(funId)).getRoles());
 				nowFunIds_parent.remove(roleFun.getFun().getId());
 			}
 			funRoleVOs.add(roleFunVo);
 		}
+		//把父节点的加进来
 		for(Entry<String,Integer> entry:nowFunIds_parent.entrySet()){
+			//这里判断这个权限是否是继承过来的，加一个字段？？？？？？？？？？？？？？？？？
+			
+			
 			funRoleVOs.add(funRoleVOs_parent.get(entry.getValue()));
 		}
 		
 		return funRoleVOs;
-		
-		
-		
-//		List<RoleFun> funes=this.getFunes();
-//		List<RoleFun> parentFunes= this.callAncestorAccessDecision(0);
-//
-//		//计算上下级的权限策略
-//		for(RoleFun roleFunParent:parentFunes){
-//			//只有子角色不存在的角色才可以添加进来，因为使用了覆盖
-//			if(!funes.contains(roleFunParent)){
-//				funes.add(roleFunParent);
-//			}
-//		}
-		
-//		return funes;
 		
 	}
 
@@ -357,26 +345,53 @@ public class Role extends TreeNode {
 	 * @param map
 	 * @return
 	 */
-	private List<FunRoleVO> calAffirmativeBased(Map<String,ArrayList<RoleFun>> map) {
+	private List<FunRoleVO> calAffirmativeBased(Map<String,ArrayList<FunRoleVO>> map) {
 		//对于某个功能来说 只要有一个角色是公有权限，那这个功能就要返回
 		//如果都是拒绝的话，那就要返回拒绝，新建一个RoleFunVO，里面有funId，权限类型：PUBLIC,DENY，还有这个功能从哪个角色来的lIST<Role>
 		List<FunRoleVO> funRoleVOs=new ArrayList<FunRoleVO>();
-		for(String key:map.keySet()){
+		for(String funId:map.keySet()){
 			FunRoleVO roleFunVo=new FunRoleVO();
-			roleFunVo.setFunId(key);
+			roleFunVo.setFunId(funId);
 			//默认的权限类型是PRIVATE
 			roleFunVo.setPRIVATE();
-			for(RoleFun roleFun:map.get(key)){
-				if(roleFun.getPermissionEnum()==PermissionEnum.PUBLIC){
-					//设置权限类型为PULIC
-					roleFunVo.setPUBLIC();
-					roleFunVo.addRoles(roleFun.getRole());
-					//break;
-				} else if(roleFun.getPermissionEnum()==PermissionEnum.DENY){
-					roleFunVo.setDENY();
+			boolean ispublic=false;
+			boolean isDeny=false;
+			for(FunRoleVO roleFunVO_temp:map.get(funId)){
+				if(roleFunVO_temp.getPermissionEnum()==PermissionEnum.PUBLIC){
+					ispublic=true;
+
+//					RoleVO roleVO=new RoleVO();
+//					roleVO.setId(roleFun.getId());
+//					roleVO.setName(roleFun.getName());
+//					roleVO.setPermissionEnum(roleFun.getPermissionEnum());
+//					roleVO.setSelf(false);
+//					roleFunVo.addRoles(roleVO);
+					//如果权限是私有的话，就不继承过来
+					//这里角色的权限有冲突怎么办？？？？？？？？？？？？？？？？？
+					roleFunVo.getRoles().addAll(0, roleFunVO_temp.getRoles());
+				} else if(roleFunVO_temp.getPermissionEnum()==PermissionEnum.DENY){
+					isDeny=true;
+					
+//					RoleVO roleVO=new RoleVO();
+//					roleVO.setId(roleFun.getRole().getId());
+//					roleVO.setName(roleFun.getRole().getName());
+//					roleVO.setPermissionEnum(roleFun.getPermissionEnum());
+//					roleVO.setSelf(false);
+//					roleFunVo.addRoles(roleVO);
+					//如果权限是私有的话，就不继承过来
+					roleFunVo.getRoles().addAll(0, roleFunVO_temp.getRoles());
 				}
+				
 			}
-			funRoleVOs.add(roleFunVo);
+			if(ispublic){
+				roleFunVo.setPUBLIC();
+				funRoleVOs.add(roleFunVo);
+			} else if(isDeny){
+				roleFunVo.setDENY();
+				funRoleVOs.add(roleFunVo);
+			}
+			
+			
 		}
 		return funRoleVOs;
 	}
