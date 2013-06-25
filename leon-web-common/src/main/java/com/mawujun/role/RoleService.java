@@ -40,6 +40,7 @@ public class RoleService extends BaseRepository<Role, String> {
 		} else {
 			super.update(entity);
 		}
+		
 		RoleCacheHolder.get(entity.getId()).setName(entity.getName());
 	}
 	

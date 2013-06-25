@@ -32,37 +32,28 @@
 	                 <port>8083</port>
 	                 <path>/</path>
 	                 <uriEncoding>utf-8</uriEncoding>
-	                 <contextReloadable>true</contextReloadable>
-	                 <!-- <backgroundProcessorDelay>2</backgroundProcessorDelay>  -->
+	                 <contextReloadable>false</contextReloadable>
+	                 <!--<backgroundProcessorDelay>0</backgroundProcessorDelay>   -->
 	                 <!-- http://blog.csdn.net/jbgtwang/article/details/7696908 <warSourceDirectory>${project.build.directory}/WebContent</warSourceDirectory>      -->         
 	              </configuration>
 	    	</plugin>
 	    	
-	    	<plugin>
-	    		<groupId>org.apache.tomcat.maven</groupId>
-	    		<artifactId>tomcat7-maven-plugin</artifactId>
-	    		<version>2.1</version>
-	    		<configuration>
-	                 <port>8083</port>
-	                 <path>/</path>
-	                 <!--<protocol>org.apache.coyote.http11.Http11NioProtocol</protocol> -->
-	                 <uriEncoding>utf-8</uriEncoding>
-	                 <!-- <contextReloadable>true</contextReloadable>
-	                 <backgroundProcessorDelay>2</backgroundProcessorDelay> -->
-	                 <!-- <warSourceDirectory>${project.build.directory}/WebContent</warSourceDirectory>      -->   
-	              </configuration>
-	    	</plugin>
 	    	
-	    	<plugin>
-	    		<groupId>org.eclipse.jetty</groupId>
-	    		<artifactId>jetty-maven-plugin</artifactId>
-	    		<version>9.0.0.RC1</version>
-	    		<configuration>
-					<!-- 每隔一段时间扫描项目是否更新  -->
-					<scanIntervalSeconds>0</scanIntervalSeconds>
-				</configuration>
-	    	</plugin>
 
+	    	<plugin>
+	    		<groupId>org.zeroturnaround</groupId>
+	    		<artifactId>jrebel-maven-plugin</artifactId>
+	    		<version>1.1.5</version>
+	    		<executions>  
+	                <execution>  
+	                    <id>generate-rebel-xml</id>  
+	                    <phase>process-resources</phase>  
+	                    <goals>  
+	                        <goal>generate</goal>  
+	                    </goals>  
+	                </execution>  
+	            </executions>  
+	    	</plugin>
   	  </plugins> 
   </build>
   <dependencies>
