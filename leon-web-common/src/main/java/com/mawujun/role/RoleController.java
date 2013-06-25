@@ -39,7 +39,6 @@ public class RoleController {
 			WhereInfo whereinfo=WhereInfo.parse("category.id_isNull", "11");
 			roles=roleService.query(whereinfo);
 		}
-
 		return roles;
 	}
 	/**
