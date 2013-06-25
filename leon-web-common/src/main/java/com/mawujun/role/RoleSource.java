@@ -1,12 +1,12 @@
 package com.mawujun.role;
 
-public class RoleVO {
+public class RoleSource {
 	private String id;
 	private String name;
 	private PermissionEnum permissionEnum;
 	private boolean isSelf=false;
 	
-//	public static RoleVO getInstance(){
+//	public static RoleSource getInstance(){
 //		
 //	}
 	public String getId() {

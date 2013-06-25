@@ -14,17 +14,27 @@ import com.mawujun.utils.page.WhereInfo;
 public class RoleFunService extends BaseRepository<RoleFun, String> {
 	@Autowired
 	private FunService funService;
-	public List<RoleFun> query(String roleId){
+	public List<FunRoleVO> query(String roleId){
 		//List<Fun> funs=funService.queryAll();
 		//h还要读出父类的权限
 		Role role=RoleCacheHolder.get(roleId);
-		List<RoleFun> roleFuns=role.findFunesAll();
+		List<FunRoleVO> roleFuns=role.geetFunes();
 		
 		return roleFuns;
 		
 //		WhereInfo whereinfo=WhereInfo.parse("role.id", roleId);
 //		List<RoleFun> selectedFuns=this.query(whereinfo);
 //		return selectedFuns;
+	}
+	
+	public void create(RoleFun roleFun) {
+		RoleCacheHolder.add(roleFun);
+		super.create(roleFun);
+	}
+	public void delete(String roleId,String funId) {
+		Role role=RoleCacheHolder.get(roleId);
+		RoleFun roleFun=role.removeFun(funId);
+		super.delete(roleFun);
 	}
 //	private List<RoleFunAssociation> recursionRoleFun( List<Fun> funs,List<RoleFunAssociation> selectedFuns,String roleId){
 //		List<RoleFunAssociation> results=new ArrayList<RoleFunAssociation>();

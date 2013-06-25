@@ -1,12 +1,14 @@
 package com.mawujun.role;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FunRoleVO {
 
 	private String funId;
 	private PermissionEnum permissionEnum; 
-	private List<RoleVO> roles;
+	//权限的来源角色
+	private List<RoleSource> roleSources=new ArrayList<RoleSource>();
 	public String getFunId() {
 		return funId;
 	}
@@ -28,13 +30,13 @@ public class FunRoleVO {
 	public void setDENY() {
 		this.permissionEnum = PermissionEnum.DENY;
 	}
-	public List<RoleVO> getRoles() {
-		return roles;
+	public List<RoleSource> getRoleSources() {
+		return roleSources;
 	}
-	public void setRoles(List<RoleVO> roles) {
-		this.roles = roles;
+	public void setRoleSources(List<RoleSource> roles) {
+		this.roleSources = roles;
 	}
-	public void addRoles(RoleVO role) {
-		this.roles.add(0, role);//.add(role);
+	public void addRoleSource(RoleSource role) {
+		this.roleSources.add( role);//.add(role);
 	}
 }

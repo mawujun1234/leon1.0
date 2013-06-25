@@ -3,7 +3,7 @@ package com.mawujun.controller.spring.mvc;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ToJsonConfig {
+class ToJsonConfig {
 	public transient Boolean autoWrap=true;//自动封装为某种格式
 	
 	public transient String filterPropertysName="filterPropertys";

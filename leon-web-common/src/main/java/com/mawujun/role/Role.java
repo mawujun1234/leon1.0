@@ -276,6 +276,11 @@ public class Role extends TreeNode {
 	public List<RoleFun> getFunes() {
 		return funes;
 	}
+	/**
+	 * 获取经过计算后的权限
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @return
+	 */
 	public List<FunRoleVO> geetFunes() {
 		//首先获取父角色的权限,如果有多个父角色就要先进行父角色的 冲突处理
 		List<FunRoleVO> funRoleVOs_parent=new ArrayList<FunRoleVO>();
@@ -312,17 +317,17 @@ public class Role extends TreeNode {
 			roleFunVo.setFunId(funId);
 			roleFunVo.setPermissionEnum(roleFun.getPermissionEnum());
 			
-			RoleVO roleVO=new RoleVO();
+			RoleSource roleVO=new RoleSource();
 			roleVO.setId(roleFun.getRole().getId());
 			roleVO.setName(roleFun.getRole().getName());
 			roleVO.setPermissionEnum(roleFun.getPermissionEnum());
 			roleVO.setSelf(true);
-			roleFunVo.addRoles(roleVO);
+			roleFunVo.addRoleSource(roleVO);
 			
 			if(nowFunIds_parent.containsKey(funId)){
 				//roleFunVo.addRoles(funRoleVOs_parent.get(nowFunIds_parent.get(funId)).getRoles())
 				//把父节点的的角色加进来
-				roleFunVo.getRoles().addAll(0,funRoleVOs_parent.get(nowFunIds_parent.get(funId)).getRoles());
+				roleFunVo.getRoleSources().addAll(funRoleVOs_parent.get(nowFunIds_parent.get(funId)).getRoleSources());
 				nowFunIds_parent.remove(roleFun.getFun().getId());
 			}
 			funRoleVOs.add(roleFunVo);
@@ -330,8 +335,6 @@ public class Role extends TreeNode {
 		//把父节点的加进来
 		for(Entry<String,Integer> entry:nowFunIds_parent.entrySet()){
 			//这里判断这个权限是否是继承过来的，加一个字段？？？？？？？？？？？？？？？？？
-			
-			
 			funRoleVOs.add(funRoleVOs_parent.get(entry.getValue()));
 		}
 		
@@ -350,6 +353,7 @@ public class Role extends TreeNode {
 		//如果都是拒绝的话，那就要返回拒绝，新建一个RoleFunVO，里面有funId，权限类型：PUBLIC,DENY，还有这个功能从哪个角色来的lIST<Role>
 		List<FunRoleVO> funRoleVOs=new ArrayList<FunRoleVO>();
 		for(String funId:map.keySet()){
+			//经过计算后的权限存放
 			FunRoleVO roleFunVo=new FunRoleVO();
 			roleFunVo.setFunId(funId);
 			//默认的权限类型是PRIVATE
@@ -359,27 +363,13 @@ public class Role extends TreeNode {
 			for(FunRoleVO roleFunVO_temp:map.get(funId)){
 				if(roleFunVO_temp.getPermissionEnum()==PermissionEnum.PUBLIC){
 					ispublic=true;
-
-//					RoleVO roleVO=new RoleVO();
-//					roleVO.setId(roleFun.getId());
-//					roleVO.setName(roleFun.getName());
-//					roleVO.setPermissionEnum(roleFun.getPermissionEnum());
-//					roleVO.setSelf(false);
-//					roleFunVo.addRoles(roleVO);
 					//如果权限是私有的话，就不继承过来
 					//这里角色的权限有冲突怎么办？？？？？？？？？？？？？？？？？
-					roleFunVo.getRoles().addAll(0, roleFunVO_temp.getRoles());
+					roleFunVo.getRoleSources().addAll( roleFunVO_temp.getRoleSources());
 				} else if(roleFunVO_temp.getPermissionEnum()==PermissionEnum.DENY){
 					isDeny=true;
-					
-//					RoleVO roleVO=new RoleVO();
-//					roleVO.setId(roleFun.getRole().getId());
-//					roleVO.setName(roleFun.getRole().getName());
-//					roleVO.setPermissionEnum(roleFun.getPermissionEnum());
-//					roleVO.setSelf(false);
-//					roleFunVo.addRoles(roleVO);
 					//如果权限是私有的话，就不继承过来
-					roleFunVo.getRoles().addAll(0, roleFunVO_temp.getRoles());
+					roleFunVo.getRoleSources().addAll( roleFunVO_temp.getRoleSources());
 				}
 				
 			}
@@ -396,67 +386,6 @@ public class Role extends TreeNode {
 		return funRoleVOs;
 	}
 	
-//	private ArrayList<RoleFun> geetAllFunnes(){
-//		
-//		
-//		ArrayList<RoleFun> parentFunes=new ArrayList<RoleFun>();
-//		parentFunes.addAll(this.getFunes());
-//		for(Role parent:this.getParents()){
-//			parentFunes.addAll(parent.geetAllFunnes());
-//		}
-//		return parentFunes;
-//		
-//	}
-//	private List<RoleFun> callAncestorAccessDecision() {
-//		
-//		
-//		//按权限id的不同进行归类
-//		Map<String,ArrayList<RoleFun>> map=new HashMap<String,ArrayList<RoleFun>>();
-//		for(Role parent:this.getParents()){
-//			ArrayList<RoleFun> parentFunes=parent.geetAllFunnes();
-////			//会进行递归
-////			parentFunes.addAll(parent.geetAllFunnes());
-//			//直接父角色拥有的所有的功能
-//			map.put(parent.getId(), parentFunes);
-//		}
-//		
-////		for(RoleFun roleFunParent:parentFunes){
-////			if(!map.containsKey(roleFunParent.getFun().getId())){
-////				map.put(roleFunParent.getFun().getId(), new ArrayList<RoleFun>());
-////			} 
-////			map.get(roleFunParent.getFun().getId()).add(roleFunParent);
-////		}
-//
-//		// 计算直接父角色的兄弟节点的 权限计算方式
-//		List<RoleFun> parentFunesResult = new ArrayList<RoleFun>();
-//		//只有直接上级才会去进行计算
-//		//if(level==0){
-//			//有一个允许就允许
-//			if (RoleCacheHolder.getAccessDecisionEnum() == AccessDecisionEnum.AffirmativeBased) {
-//				calAffirmativeBased(map);
-//			}
-////		} else {
-////			parentFunesResult=parentFunes;
-////		}
-////		
-//		
-//		return parentFunesResult;
-//
-//	}
-//	
-//	/**
-//	 * 有一个允许就允许
-//	 * @author mawujun email:16064988@163.com qq:16064988
-//	 * @param map
-//	 * @return
-//	 */
-//	private List<RoleFun> calAffirmativeBased(Map<String,ArrayList<RoleFun>> map) {
-//		List<RoleFun> aa=new ArrayList<RoleFun>();
-//		for(map){
-//			
-//		}
-//		
-//	}
 	public void setFunes(List<RoleFun> funes) {
 		this.funes = funes;
 	}
@@ -466,13 +395,13 @@ public class Role extends TreeNode {
 	}
 	
 	public void removeFun(RoleFun rolefun) {
-		this.funes.add(rolefun);
+		this.funes.remove(rolefun);
 	}
 	
-	public void removeFun(Fun fun) {
+	public RoleFun removeFun(Fun fun) {
 		RoleFun aa=null;
 		for(RoleFun rolefun:this.funes){
-			if(rolefun.getId().equals(fun.getId())){
+			if(rolefun.getFun().getId().equals(fun.getId())){
 				aa=rolefun;
 				break;
 			}
@@ -480,6 +409,20 @@ public class Role extends TreeNode {
 		if(aa!=null){
 			this.funes.remove(aa);
 		}
+		return aa;
+	}
+	public RoleFun removeFun(String funId) {
+		RoleFun aa=null;
+		for(RoleFun rolefun:this.funes){
+			if(rolefun.getFun().getId().equals(funId)){
+				aa=rolefun;
+				break;
+			}
+		}
+		if(aa!=null){
+			this.funes.remove(aa);
+		}
+		return aa;
 	}
 
 }

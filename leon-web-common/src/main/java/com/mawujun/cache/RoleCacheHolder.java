@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.mawujun.controller.spring.SpringContextHolder;
 import com.mawujun.role.Role;
 import com.mawujun.role.AccessDecisionEnum;
+import com.mawujun.role.RoleFun;
 import com.mawujun.role.RoleRole;
 import com.mawujun.role.RoleService;
 
@@ -39,14 +40,13 @@ public class RoleCacheHolder {
 		return roles.get(id);
 	}
 	
-//	public static void add(RoleRole roleRole){
-//		roleRole.setCurrent(RoleCacheHolder.get(roleRole.getCurrent().getId()));
-//		roleRole.setOther(RoleCacheHolder.get(roleRole.getOther().getId()));
-//	}
-//	public static void remove(RoleRole roleRole){
-//		RoleCacheHolder.get(roleRole.getCurrent().getId()).getCurrents().remove(roleRole);
-//		RoleCacheHolder.get(roleRole.getCurrent().getId()).getOthers().remove(roleRole);
-//	}
+	public static void add(RoleFun roleFun){
+		roleFun.setRole(RoleCacheHolder.get(roleFun.getRole().getId()));
+	}
+	public static void remove(RoleFun roleFun){
+		RoleCacheHolder.get(roleFun.getRole().getId()).removeFun(roleFun);
+		//RoleCacheHolder.get(roleRole.getCurrent().getId()).getOthers().remove(roleRole);
+	}
 	public static int size(){
 		return roles.size();
 	}

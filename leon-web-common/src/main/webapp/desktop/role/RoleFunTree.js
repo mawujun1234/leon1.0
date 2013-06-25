@@ -24,7 +24,8 @@ Ext.define('Leon.desktop.role.RoleFunTree',{
 	        		{name:'id',type:'string'},
 					{name:'text',type:'string'},
 					{name:'funEnum',type:'string'},
-					{name:'permissionEnum',type:'string'}
+					{name:'permissionEnum',type:'string'},
+					{name:'roleSources',type:'string'}
         		],
 //        		model:'Leon.desktop.role.RoleFunAssociation',
 				proxy:{
@@ -98,7 +99,7 @@ Ext.define('Leon.desktop.role.RoleFunTree',{
                 }
             }
 		},{
-			dataIndex:'id',text:'权限来源'
+			dataIndex:'roleSources',text:'权限来源',flex:1
 //			renderer: function(val,metaData,record ,rowIndex ,colIndex ,store ){
 //                
 //                return val; 
@@ -144,12 +145,14 @@ Ext.define('Leon.desktop.role.RoleFunTree',{
 			//console.log(funs.length);
 			funs[i].set('checked',false);
 			funs[i].set('permissionEnum',null);
+			funs[i].set('roleSources',null);
 			for(var j=0;j<checkedFunes.length;j++){
 				if(funs[i].getId()==checkedFunes[j].funId){
 					//funs[i].roleAssociationId=checkedFunes[j].id;
 					funs[i].roleAssociation=checkedFunes[j];
 					funs[i].set('checked',true);
 					funs[i].set('permissionEnum',checkedFunes[j].permissionEnum);
+					funs[i].set('roleSources',checkedFunes[j].roleSources);
 				}
 			}
 		}

@@ -85,7 +85,8 @@ Ext.onReady(function(){
     		isDestroy=true;
     		url='/roleFun/destroy';
     		params={
-    			id:node.roleAssociation.id
+    			roleId:roleId,
+	    		funId:node.getId()
     		};
     		//alert('删除还没有做');
     	} else {
