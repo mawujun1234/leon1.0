@@ -77,11 +77,12 @@ Ext.define('Leon.desktop.role.RoleFunTree',{
 				valueField: 'id',
 				listeners:{
 					"select":function(combo,records){
+						//dfgdf.
 						var node=me.getSelectionModel().getLastSelected();
-						var params=node.roleAssociation;
+						var params={roleId:me.roleId,funId:node.get("id")};
 						params.permissionEnum=records[0].getId();
 						Ext.Ajax.request({
-				    		url:'/roleFunAssociation/update',
+				    		url:'/roleFun/update',
 				    		method:'POST',
 				    		params :params,
 				    		success:function(response){
@@ -159,6 +160,7 @@ Ext.define('Leon.desktop.role.RoleFunTree',{
 			funs[i].set('checked',false);
 			funs[i].set('permissionEnum',null);
 			funs[i].set('roleSources',null);
+			funs[i].set('fromParent',false);
 			for(var j=0;j<checkedFunes.length;j++){
 				if(funs[i].getId()==checkedFunes[j].funId){
 					//funs[i].roleAssociationId=checkedFunes[j].id;

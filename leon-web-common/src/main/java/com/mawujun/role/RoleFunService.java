@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.mawujun.cache.RoleCacheHolder;
 import com.mawujun.exception.BussinessException;
+import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository.idEntity.UUIDGenerator;
@@ -50,6 +51,22 @@ public class RoleFunService extends BaseRepository<RoleFun, String> {
 		super.delete(roleFun);
 		role.removeFun(roleFun);
 		return roleFun;
+	}
+	public RoleFun update(String roleId,String funId,String permissionEnum) {
+		Role role=RoleCacheHolder.get(roleId);
+		RoleFun roleFun=role.getFun(funId);
+		if(roleFun==null){
+			roleFun=new RoleFun();
+			roleFun.setRole(new Role(roleId));
+			roleFun.setFun(new Fun(funId));
+			roleFun.setPermissionEnum(permissionEnum);
+			this.create(roleFun);
+		} else {
+			roleFun.setPermissionEnum(permissionEnum);
+			super.update(roleFun);
+		}
+		return roleFun;
+		
 	}
 //	private List<RoleFunAssociation> recursionRoleFun( List<Fun> funs,List<RoleFunAssociation> selectedFuns,String roleId){
 //		List<RoleFunAssociation> results=new ArrayList<RoleFunAssociation>();

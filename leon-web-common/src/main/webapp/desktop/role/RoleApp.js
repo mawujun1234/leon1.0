@@ -66,6 +66,7 @@ Ext.onReady(function(){
     			var obj=Ext.decode(response.responseText);
     			//alert(obj.root);
     			roleFunTree.checkingFunes(obj.root);
+    			roleFunTree.roleId=roleId;
     			tabPanel.unmask();
     		}   		
     	});

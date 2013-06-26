@@ -82,22 +82,21 @@ public class RoleFunController {
 		return roleFun;
 	}
 	
-//	@RequestMapping("/roleFun/update")
-//	@ResponseBody
-//	public RoleFun update(String roleId,String funId,String permissionEnum){
-//		RoleFun roleFun=new RoleFun();
-//		roleFun.setRole(new Role(roleId));
-//		roleFun.setFun(new Fun(funId));
-//		roleFun.setPermissionEnum(permissionEnum);
-//		roleFunService.update(roleFun);
-//		return roleFun;
-//	}
+	@RequestMapping("/roleFun/update")
+	@ResponseBody
+	public RoleFun update(String roleId,String funId,String permissionEnum){
+		
+		RoleFun roleFun=roleFunService.update( roleId, funId, permissionEnum);
+		ToJsonConfigHolder.setFilterPropertys("role,fun");
+		return roleFun;
+	}
 	
 	@RequestMapping("/roleFun/destroy")
 	@ResponseBody
 	public RoleFun destroy(String roleId,String funId){
 		RoleFun roleFun=roleFunService.delete(roleId,funId);
 		ToJsonConfigHolder.setFilterPropertys("role,fun");
+		
 		return roleFun;
 	}
 
