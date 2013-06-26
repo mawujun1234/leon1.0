@@ -4,7 +4,7 @@ public class RoleSource {
 	private String id;
 	private String name;
 	private PermissionEnum permissionEnum;
-	private boolean isSelf=false;
+	
 	
 //	public static RoleSource getInstance(){
 //		
@@ -26,12 +26,6 @@ public class RoleSource {
 	}
 	public void setPermissionEnum(PermissionEnum permissionEnum) {
 		this.permissionEnum = permissionEnum;
-	}
-	public boolean isSelf() {
-		return isSelf;
-	}
-	public void setSelf(boolean isSelf) {
-		this.isSelf = isSelf;
 	}
 
 }

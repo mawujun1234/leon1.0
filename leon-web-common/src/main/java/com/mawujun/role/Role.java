@@ -76,7 +76,7 @@ public class Role extends TreeNode {
 	
 	//拥有的权限
 	@OneToMany(mappedBy="role",fetch=FetchType.LAZY)
-	private List<RoleFun> funes=new ArrayList<RoleFun>();
+	private Set<RoleFun> funes=new HashSet<RoleFun>();
 	
 	public Role(){
 		
@@ -273,7 +273,7 @@ public class Role extends TreeNode {
 		}
 		return false;
 	}
-	public List<RoleFun> getFunes() {
+	public Set<RoleFun> getFunes() {
 		return funes;
 	}
 	/**
@@ -316,12 +316,12 @@ public class Role extends TreeNode {
 			FunRoleVO roleFunVo=new FunRoleVO();
 			roleFunVo.setFunId(funId);
 			roleFunVo.setPermissionEnum(roleFun.getPermissionEnum());
+			roleFunVo.setFromParent(false);
 			
 			RoleSource roleVO=new RoleSource();
 			roleVO.setId(roleFun.getRole().getId());
 			roleVO.setName(roleFun.getRole().getName());
 			roleVO.setPermissionEnum(roleFun.getPermissionEnum());
-			roleVO.setSelf(true);
 			roleFunVo.addRoleSource(roleVO);
 			
 			if(nowFunIds_parent.containsKey(funId)){
@@ -358,6 +358,7 @@ public class Role extends TreeNode {
 			roleFunVo.setFunId(funId);
 			//默认的权限类型是PRIVATE
 			roleFunVo.setPRIVATE();
+			roleFunVo.setFromParent(true);
 			boolean ispublic=false;
 			boolean isDeny=false;
 			for(FunRoleVO roleFunVO_temp:map.get(funId)){
@@ -386,7 +387,7 @@ public class Role extends TreeNode {
 		return funRoleVOs;
 	}
 	
-	public void setFunes(List<RoleFun> funes) {
+	public void setFunes(Set<RoleFun> funes) {
 		this.funes = funes;
 	}
 	
@@ -411,7 +412,7 @@ public class Role extends TreeNode {
 		}
 		return aa;
 	}
-	public RoleFun removeFun(String funId) {
+	public RoleFun getFun(String funId) {
 		RoleFun aa=null;
 		for(RoleFun rolefun:this.funes){
 			if(rolefun.getFun().getId().equals(funId)){
@@ -419,9 +420,7 @@ public class Role extends TreeNode {
 				break;
 			}
 		}
-		if(aa!=null){
-			this.funes.remove(aa);
-		}
+		
 		return aa;
 	}
 

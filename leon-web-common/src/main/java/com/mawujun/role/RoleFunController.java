@@ -60,6 +60,7 @@ public class RoleFunController {
 				buffer.append(",");
 			}
 			map.put("roleSources", buffer);
+			map.put("fromParent", roleFun.isFromParent());
 			
 			funes.add(map);
 		}
@@ -69,13 +70,13 @@ public class RoleFunController {
 	@RequestMapping("/roleFun/create")
 	@ResponseBody
 	public RoleFun create(String roleId,String funId,String permissionEnum){
-		继承的权限如何覆盖和取消。
-		父角色的权限不能取消，当修改权限属性的时候，如果发现时父权限，就新建一个权限
+		//继承的权限如何覆盖和取消。
+		//父角色的权限不能取消，当修改权限属性的时候，如果发现时父权限，就新建一个权限
 		RoleFun roleFun=new RoleFun();
 		roleFun.setRole(new Role(roleId));
 		roleFun.setFun(new Fun(funId));
 		roleFun.setPermissionEnum(permissionEnum);
-		roleFun.setCreateDate(new Date());
+		
 		roleFunService.create(roleFun);
 		ToJsonConfigHolder.setFilterPropertys("role,fun");
 		return roleFun;
@@ -94,9 +95,10 @@ public class RoleFunController {
 	
 	@RequestMapping("/roleFun/destroy")
 	@ResponseBody
-	public String destroy(String roleId,String funId){
-		roleFunService.delete(roleId,funId);
-		return roleId;
+	public RoleFun destroy(String roleId,String funId){
+		RoleFun roleFun=roleFunService.delete(roleId,funId);
+		ToJsonConfigHolder.setFilterPropertys("role,fun");
+		return roleFun;
 	}
 
 

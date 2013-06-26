@@ -41,7 +41,9 @@ public class RoleCacheHolder {
 	}
 	
 	public static void add(RoleFun roleFun){
-		roleFun.setRole(RoleCacheHolder.get(roleFun.getRole().getId()));
+		Role role=RoleCacheHolder.get(roleFun.getRole().getId());
+		roleFun.setRole(role);
+		role.addFun(roleFun);
 	}
 	public static void remove(RoleFun roleFun){
 		RoleCacheHolder.get(roleFun.getRole().getId()).removeFun(roleFun);

@@ -236,7 +236,7 @@
     <dependency>
     	<groupId>org.hibernate</groupId>
     	<artifactId>hibernate-core</artifactId>
-    	<version>4.1.9.Final</version>
+    	<version>4.2.2.Final</version>
     </dependency>
     <dependency>
     	<groupId>org.mybatis</groupId>
@@ -353,7 +353,7 @@
     <dependency>
     	<groupId>org.hibernate</groupId>
     	<artifactId>hibernate-validator</artifactId>
-    	<version>5.0.0.Final</version>
+    	<version>5.0.1.Final</version>
     	<exclusions>
     		<exclusion>
 				 <artifactId>javax.el-api</artifactId>		

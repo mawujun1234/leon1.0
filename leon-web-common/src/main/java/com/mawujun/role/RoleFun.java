@@ -3,12 +3,15 @@ package com.mawujun.role;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.executable.ValidateOnExecution;
 
 import com.mawujun.fun.Fun;
 import com.mawujun.repository.idEntity.UUIDEntity;
@@ -24,13 +27,18 @@ public class RoleFun extends UUIDEntity{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.REFRESH)
 	private Role role;
-	@ManyToOne
+	
+	@ManyToOne(cascade=CascadeType.REFRESH)
 	private Fun fun;
+	
 	@Column(length=10)
 	@Enumerated(EnumType.STRING)
 	private PermissionEnum permissionEnum;
+	
+	@Column(updatable=false)
+	@NotNull
 	private Date createDate;
 	
 	public Role getRole() {
@@ -61,65 +69,6 @@ public class RoleFun extends UUIDEntity{
 		this.createDate = createDate;
 	}
 	
-//	@Transient
-//	private String text;//role的名称
-//	@Column(name = "role_id")
-//	protected String roleId;
-//	@Column(name = "fun_id")
-//	protected String funId;
-//	@Column(length=10)
-//	@Enumerated(EnumType.STRING)
-//	private PermissionEnum permissionEnum;
-//	private Date createDate;
-//	
-////	@Transient
-////	private List<RoleFunAssociation> children=new ArrayList<RoleFunAssociation>();
-//	
-//
-//
-//
-//	public PermissionEnum getPermissionEnum() {
-//		return permissionEnum;
-//	}
-//
-//	public void setPermissionEnum(PermissionEnum permissionType) {
-//		this.permissionEnum = permissionType;
-//	}
-//	
-//	public void setPermissionEnum(String permissionType) {
-//		this.permissionEnum = PermissionEnum.valueOf(permissionType);
-//	}
-//
-//	public Date getCreateDate() {
-//		return createDate;
-//	}
-//
-//	public void setCreateDate(Date createDate) {
-//		this.createDate = createDate;
-//	}
-//
-//	public String getText() {
-//		return text;
-//	}
-//
-//	public void setText(String text) {
-//		this.text = text;
-//	}
-//
-//	public String getRoleId() {
-//		return roleId;
-//	}
-//
-//	public void setRoleId(String roleId) {
-//		this.roleId = roleId;
-//	}
-//
-//	public String getFunId() {
-//		return funId;
-//	}
-//
-//	public void setFunId(String funId) {
-//		this.funId = funId;
-//	}
+
 
 }

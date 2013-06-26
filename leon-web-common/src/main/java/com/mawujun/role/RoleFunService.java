@@ -1,13 +1,16 @@
 package com.mawujun.role;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mawujun.cache.RoleCacheHolder;
+import com.mawujun.exception.BussinessException;
 import com.mawujun.fun.FunService;
 import com.mawujun.repository.BaseRepository;
+import com.mawujun.repository.idEntity.UUIDGenerator;
 import com.mawujun.utils.page.WhereInfo;
 
 @Service
@@ -28,13 +31,25 @@ public class RoleFunService extends BaseRepository<RoleFun, String> {
 	}
 	
 	public void create(RoleFun roleFun) {
+		//System.out.println(RoleCacheHolder.get(roleFun.getRole().getId()).getFunes().size()+"===============================前");
+		roleFun.setCreateDate(new Date());
+		//super.create(roleFun);
+		roleFun.setId(UUIDGenerator.generate());
+		super.getMybatisRepository().insert("com.mawujun.role.Role.insertRoleFun", roleFun);
+		
 		RoleCacheHolder.add(roleFun);
-		super.create(roleFun);
+		//System.out.println(RoleCacheHolder.get(roleFun.getRole().getId()).getFunes().size()+"===============================后");
 	}
-	public void delete(String roleId,String funId) {
+	public RoleFun delete(String roleId,String funId) {
 		Role role=RoleCacheHolder.get(roleId);
-		RoleFun roleFun=role.removeFun(funId);
+		RoleFun roleFun=role.getFun(funId);
+
+		if(roleFun==null){
+			throw new BussinessException("该功能是从父角色上继承过来，不能修改!");
+		}
 		super.delete(roleFun);
+		role.removeFun(roleFun);
+		return roleFun;
 	}
 //	private List<RoleFunAssociation> recursionRoleFun( List<Fun> funs,List<RoleFunAssociation> selectedFuns,String roleId){
 //		List<RoleFunAssociation> results=new ArrayList<RoleFunAssociation>();

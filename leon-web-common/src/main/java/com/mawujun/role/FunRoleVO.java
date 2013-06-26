@@ -7,6 +7,8 @@ public class FunRoleVO {
 
 	private String funId;
 	private PermissionEnum permissionEnum; 
+	//是不是当前角色的权限
+	private boolean fromParent=false;
 	//权限的来源角色
 	private List<RoleSource> roleSources=new ArrayList<RoleSource>();
 	public String getFunId() {
@@ -39,4 +41,12 @@ public class FunRoleVO {
 	public void addRoleSource(RoleSource role) {
 		this.roleSources.add( role);//.add(role);
 	}
+	public boolean isFromParent() {
+		return fromParent;
+	}
+	public void setFromParent(boolean fromParent) {
+		this.fromParent = fromParent;
+	}
+
+
 }

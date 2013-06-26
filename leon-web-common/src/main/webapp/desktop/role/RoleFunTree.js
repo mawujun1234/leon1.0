@@ -25,7 +25,8 @@ Ext.define('Leon.desktop.role.RoleFunTree',{
 					{name:'text',type:'string'},
 					{name:'funEnum',type:'string'},
 					{name:'permissionEnum',type:'string'},
-					{name:'roleSources',type:'string'}
+					{name:'roleSources',type:'string'},
+					{name:'fromParent',type:'boolean',defaultValue:false}
         		],
 //        		model:'Leon.desktop.role.RoleFunAssociation',
 				proxy:{
@@ -58,6 +59,13 @@ Ext.define('Leon.desktop.role.RoleFunTree',{
 		
 		me.columns=[{
 			xtype:'treecolumn',dataIndex:'text',text:'名称',width: 200
+			,renderer:function(val,metaData,record ,rowIndex ,colIndex ,store){
+				//console.log(record.get("fromParent"));
+				if(record.get("fromParent")){
+					metaData.style = 'color: #777;'
+				}
+				return val;
+			}
 		},{
 			dataIndex:'permissionEnum',text:'权限属性',
 			editor:{
@@ -119,12 +127,17 @@ Ext.define('Leon.desktop.role.RoleFunTree',{
 		
 		me.plugins=[{
 			ptype:'cellediting',
-			clicksToEdit :1,
-			listeners:{
-				beforeedit:function(e){return true;
-					//if(e.record.isRoot()){ return false;}
-				}
-			}
+			clicksToEdit :1
+//			listeners:{
+//				beforeedit:function(editor,e){
+//					var record=e.record;
+//					var fromParent=record.get("fromParent");
+//					var field=e.field;
+//					alert(field);
+//					return false;
+//					//if(e.record.isRoot()){ return false;}
+//				}
+//			}
 		}];
 		me.callParent();
 	},
@@ -150,6 +163,7 @@ Ext.define('Leon.desktop.role.RoleFunTree',{
 				if(funs[i].getId()==checkedFunes[j].funId){
 					//funs[i].roleAssociationId=checkedFunes[j].id;
 					funs[i].roleAssociation=checkedFunes[j];
+					funs[i].set('fromParent',checkedFunes[j].fromParent);
 					funs[i].set('checked',true);
 					funs[i].set('permissionEnum',checkedFunes[j].permissionEnum);
 					funs[i].set('roleSources',checkedFunes[j].roleSources);

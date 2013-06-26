@@ -13,4 +13,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		order by a.id
     </select>
 	<!-- select语句的生成结束=============================================================================================== -->
+	
+	<insert id="insertRoleFun"  parameterType="com.mawujun.role.RoleFun">
+		insert into leon_role_fun(id,role_id,fun_id,permissionEnum,createDate) VALUES(#{id},#{role.id},#{fun.id},#{permissionEnum},#{createDate});
+	</insert>
 </mapper>

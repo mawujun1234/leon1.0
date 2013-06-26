@@ -78,6 +78,19 @@ Ext.onReady(function(){
     
 	var roleFunTree=Ext.create('Leon.desktop.role.RoleFunTree',{title:'权限'});
 	roleFunTree.on('checkchange',function(node,checked){
+		var fromParent=node.get("fromParent");
+		//alert(fromParent+"这里要给出提示，是否要覆盖父角色的权限。");
+		if(fromParent){
+		  var r=confirm("确定要覆盖父角色的权限设置吗?")
+		  if (r==true) {
+		    checked=true;	
+		  } else{
+		    //checked=false;
+		  	return;
+		  }
+
+		  
+		}
     	var url='/roleFun/create';
     	var params={};
     	var isDestroy=false;
@@ -104,6 +117,11 @@ Ext.onReady(function(){
     		success:function(response){
     			var obj=Ext.decode(response.responseText);
     			node.set('permissionEnum',params.permissionEnum);
+    			
+    			if(fromParent && !isDestroy){
+					node.set('checked',true);
+					node.set('fromParent',false);
+				}
     			if(isDestroy){
     				node.roleAssociation=null;
     			} else {
