@@ -80,39 +80,6 @@ public class RoleController {
 		roleService.delete(role);
 		return role;
 	}
-	
-	@RequestMapping("/role/addParent")
-	@ResponseBody
-	public void addParent(String parentId,String childId){	
-		roleService.addParent(parentId, childId);
-	}
-	
-	@RequestMapping("/role/addMutex")
-	@ResponseBody
-	public void addMutex(String ownId,String mutexId){	
-		roleService.addMutex(ownId, mutexId);
-	}
-	
-	@RequestMapping("/role/removeParent")
-	@ResponseBody
-	public void removeParent(String parentId,String childId){	
-		roleService.removeParent(parentId, childId);
-	}
-	
-	@RequestMapping("/role/removeMutex")
-	@ResponseBody
-	public void removeMutex(String ownId,String mutexId){	
-		roleService.removeMutex(ownId, mutexId);
-	}
-	
-	@RequestMapping("/role/queryParent")
-	@ResponseBody
-	public Set<Role> queryParent(String childId) {
-		Set<Role> roles=null;
-		roles=roleService.queryParent(childId);
-		ToJsonConfigHolder.setFilterPropertys("parents,children,mutex,funes");
-		return roles;
-	}
 	@RequestMapping("/role/queryMutex")
 	@ResponseBody
 	public Set<Role> queryMutex(String ownId) {
@@ -121,5 +88,43 @@ public class RoleController {
 		ToJsonConfigHolder.setFilterPropertys("parents,children,mutex,funes");
 		return roles;
 	}
+	
+	@RequestMapping("/role/addMutex")
+	@ResponseBody
+	public void addMutex(String ownId,String mutexId){	
+		roleService.addMutex(ownId, mutexId);
+	}
+	
+	@RequestMapping("/role/removeMutex")
+	@ResponseBody
+	public void removeMutex(String ownId,String mutexId){	
+		roleService.removeMutex(ownId, mutexId);
+	}
+	
+//	@RequestMapping("/role/addParent")
+//	@ResponseBody
+//	public void addParent(String parentId,String childId){	
+//		roleService.addParent(parentId, childId);
+//	}
+//	
+//
+//	
+//	@RequestMapping("/role/removeParent")
+//	@ResponseBody
+//	public void removeParent(String parentId,String childId){	
+//		roleService.removeParent(parentId, childId);
+//	}
+//	
+//	
+//	
+//	@RequestMapping("/role/queryParent")
+//	@ResponseBody
+//	public Set<Role> queryParent(String childId) {
+//		Set<Role> roles=null;
+//		roles=roleService.queryParent(childId);
+//		ToJsonConfigHolder.setFilterPropertys("parents,children,mutex,funes");
+//		return roles;
+//	}
+	
 	
 }

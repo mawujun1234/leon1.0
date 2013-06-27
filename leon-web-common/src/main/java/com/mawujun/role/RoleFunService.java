@@ -2,6 +2,7 @@ package com.mawujun.role;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,11 +19,11 @@ import com.mawujun.utils.page.WhereInfo;
 public class RoleFunService extends BaseRepository<RoleFun, String> {
 	@Autowired
 	private FunService funService;
-	public List<FunRoleVO> query(String roleId){
+	public Set<RoleFun> query(String roleId){
 		//List<Fun> funs=funService.queryAll();
 		//h还要读出父类的权限
 		Role role=RoleCacheHolder.get(roleId);
-		List<FunRoleVO> roleFuns=role.geetFunes();
+		Set<RoleFun> roleFuns=role.getFunes();
 		
 		return roleFuns;
 		

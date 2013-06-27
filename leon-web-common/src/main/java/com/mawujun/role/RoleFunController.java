@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,22 +46,22 @@ public class RoleFunController {
 	@RequestMapping("/roleFun/query")
 	@ResponseBody
 	public List<Map<String,Object>>  queryRoleFun(String roleId){
-		List<FunRoleVO> roleFunes=roleFunService.query(roleId);
+		Set<RoleFun> roleFunes=roleFunService.query(roleId);
 		List<Map<String,Object>> funes=new ArrayList<Map<String,Object>>();
 		
-		for (FunRoleVO roleFun:roleFunes){
+		for (RoleFun roleFun:roleFunes){
 			Map<String,Object> map=new HashMap<String,Object>();
-			map.put("funId", roleFun.getFunId());
-			//System.out.println(map.get("funId"));
-			map.put("permissionEnum", roleFun.getPermissionEnum().toString());
-			//来源还没有做
-			StringBuffer buffer=new StringBuffer("");
-			for(RoleSource roleSource:roleFun.getRoleSources()){
-				buffer.append(roleSource.getName());
-				buffer.append(",");
-			}
-			map.put("roleSources", buffer);
-			map.put("fromParent", roleFun.isFromParent());
+			map.put("funId", roleFun.getFun().getId());
+
+//			map.put("permissionEnum", roleFun.getPermissionEnum().toString());
+//			//来源还没有做
+//			StringBuffer buffer=new StringBuffer("");
+//			for(RoleSource roleSource:roleFun.getRoleSources()){
+//				buffer.append(roleSource.getName());
+//				buffer.append(",");
+//			}
+//			map.put("roleSources", buffer);
+//			map.put("fromParent", roleFun.isFromParent());
 			
 			funes.add(map);
 		}

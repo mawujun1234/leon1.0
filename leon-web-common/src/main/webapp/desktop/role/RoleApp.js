@@ -70,8 +70,8 @@ Ext.onReady(function(){
     			tabPanel.unmask();
     		}   		
     	});
-    	roleInheritGrid.currentRole=record;
-    	roleInheritGrid.getStore().load({params:{childId:record.getId(),roleRoleEnum:'inherit'}});
+    	//roleInheritGrid.currentRole=record;
+    	//roleInheritGrid.getStore().load({params:{childId:record.getId(),roleRoleEnum:'inherit'}});
     	roleMutexGrid.currentRole=record;
     	roleMutexGrid.getStore().load({params:{ownId:record.getId(),roleRoleEnum:'mutex'}});
     });
@@ -133,11 +133,11 @@ Ext.onReady(function(){
     	});
     });
     
-    var roleInheritGrid=Ext.create('Leon.desktop.role.RoleRoleGrid',{
-    	title:'继承角色',
-    	roleRoleEnum:'inherit',
-    	currentRole:null
-    });
+//    var roleInheritGrid=Ext.create('Leon.desktop.role.RoleRoleGrid',{
+//    	title:'继承角色',
+//    	roleRoleEnum:'inherit',
+//    	currentRole:null
+//    });
     var roleMutexGrid=Ext.create('Leon.desktop.role.RoleRoleGrid',{
     	title:'互斥角色',
     	roleRoleEnum:'mutex',
@@ -148,7 +148,7 @@ Ext.onReady(function(){
 		region:'center',
 		split:true,
 	    activeTab: 0,
-	    items: [roleFunTree,roleInheritGrid,roleMutexGrid],
+	    items: [roleFunTree,roleMutexGrid],
 	    listeners:{
 	    	render:function(tabPanel){
 	    		tabPanel.mask();
