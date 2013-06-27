@@ -35,9 +35,9 @@ public class RoleFunService extends BaseRepository<RoleFun, String> {
 	public void create(RoleFun roleFun) {
 		//System.out.println(RoleCacheHolder.get(roleFun.getRole().getId()).getFunes().size()+"===============================前");
 		roleFun.setCreateDate(new Date());
-		//super.create(roleFun);
-		roleFun.setId(UUIDGenerator.generate());
-		super.getMybatisRepository().insert("com.mawujun.role.Role.insertRoleFun", roleFun);
+		super.create(roleFun);
+		//roleFun.setId(UUIDGenerator.generate());
+		//super.getMybatisRepository().insert("com.mawujun.role.Role.insertRoleFun", roleFun);
 		
 		RoleCacheHolder.add(roleFun);
 		//System.out.println(RoleCacheHolder.get(roleFun.getRole().getId()).getFunes().size()+"===============================后");

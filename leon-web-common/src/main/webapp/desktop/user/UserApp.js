@@ -51,6 +51,28 @@ Ext.onReady(function(){
 		win.show();
 	}
 	
+	var selectedRoleTree=Ext.create('Leon.common.ux.BaseTree',{
+		url:'/role/query',
+		fields:['id','name'],
+		rootVisible: false,
+		flex:1,
+		displayField:'name'
+		,dockedItems: [{
+	        xtype: 'toolbar',
+	        dock: 'right',
+	        items: [{
+	            text: '添加'
+	        }]
+	    }]
+	});
+	var roleTree=Ext.create('Leon.common.ux.BaseTree',{
+		url:'/role/query',
+		fields:['id','name'],
+		rootVisible: false,
+		flex:1,
+		displayField:'name'
+	});
+	
 	//var form=Ext.create('Leon.desktop.user.UserForm',{title:'用户表单'});
 	var tabPanel=Ext.create('Ext.tab.Panel', {
 		region:'center',
@@ -59,8 +81,9 @@ Ext.onReady(function(){
 	    items: [
 	       //form,
 	        {
-	            title: '角色',
-	            html : '分两块，左边是未选择的角色，右边是选择了的角色'
+	           title: '选择角色',
+	           layout:{type:'hbox',align: 'stretch'},
+	           items:[selectedRoleTree,roleTree]
 	        },
 	        {
 	            title: '权限',
@@ -68,6 +91,8 @@ Ext.onReady(function(){
 	        }
 	    ]
 	});
+	
+	
 
 	var viewPort=Ext.create('Ext.container.Viewport',{
 		layout:'border',
