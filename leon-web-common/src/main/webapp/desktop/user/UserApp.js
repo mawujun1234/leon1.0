@@ -60,9 +60,9 @@ Ext.onReady(function(){
 		,dockedItems: [{
 	        xtype: 'toolbar',
 	        dock: 'right',
-	        items: [{
+	        items: [{xtype:'tbspacer',flex:1},{
 	            text: '添加'
-	        }]
+	        },{xtype:'tbspacer',flex:1}]
 	    }]
 	});
 	var roleTree=Ext.create('Leon.common.ux.BaseTree',{
@@ -79,7 +79,6 @@ Ext.onReady(function(){
 		split:true,
 	    activeTab: 0,
 	    items: [
-	       //form,
 	        {
 	           title: '选择角色',
 	           layout:{type:'hbox',align: 'stretch'},

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
+import com.mawujun.role.Role;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 import com.mawujun.utils.page.WhereInfo;
@@ -25,6 +26,8 @@ import com.mawujun.utils.page.WhereInfo;
 public class UserController {
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private UserRoleService userRoleService;
 
 	/**
 	 * 桌面程序中把菜单按权限读取出来
@@ -74,6 +77,31 @@ public class UserController {
 		userService.update(user);
 		//userService.delete(user);
 		return user;
+	}
+	
+	@RequestMapping("/user/queryRole")
+	@ResponseBody
+	public List<Role> queryRole(String roleId){	
+		List<Role> roles=userRoleService.queryRole(roleId);
+		//userService.delete(user);
+		return roles;
+	}
+	@RequestMapping("/user/addRole")
+	@ResponseBody
+	public UserRole addRole(@RequestBody UserRolePK userRolePK){	
+		 UserRole userRole=new  UserRole();
+		 userRole.setId(userRolePK);
+		 userRole.setCreateDate(new Date());
+		userRoleService.create(userRole);
+		//userService.delete(user);
+		return userRole;
+	}
+	@RequestMapping("/user/removeRole")
+	@ResponseBody
+	public UserRolePK removeRole(@RequestBody UserRolePK userRolePK){		 
+		userRoleService.delete(userRolePK);
+		//userService.delete(user);
+		return userRolePK;
 	}
 
 }
