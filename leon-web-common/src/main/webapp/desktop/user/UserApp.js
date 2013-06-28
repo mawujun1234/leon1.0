@@ -61,7 +61,11 @@ Ext.onReady(function(){
 	        xtype: 'toolbar',
 	        dock: 'right',
 	        items: [{xtype:'tbspacer',flex:1},{
-	            text: '添加'
+	        	icon:'/icons/arrow.png',
+	            text: ''
+	        },{
+	        	icon:'/icons/arrow_180.png',
+	            text: ''
 	        },{xtype:'tbspacer',flex:1}]
 	    }]
 	});
