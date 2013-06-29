@@ -81,14 +81,14 @@ public class UserController {
 	
 	@RequestMapping("/user/queryRole")
 	@ResponseBody
-	public List<Role> queryRole(String roleId){	
-		List<Role> roles=userRoleService.queryRole(roleId);
+	public List<Role> queryRole(String userId){	
+		List<Role> roles=userRoleService.queryRole(userId);
 		//userService.delete(user);
 		return roles;
 	}
 	@RequestMapping("/user/addRole")
 	@ResponseBody
-	public UserRole addRole(@RequestBody UserRolePK userRolePK){	
+	public UserRole addRole(UserRolePK userRolePK){	
 		 UserRole userRole=new  UserRole();
 		 userRole.setId(userRolePK);
 		 userRole.setCreateDate(new Date());

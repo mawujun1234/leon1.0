@@ -30,6 +30,7 @@ Ext.define('Leon.common.ux.BaseTree', {
     defaultRootText :'根节点',
     fields:null,//和api，url搭配的，也可以没有
     url:null,//url和fields是同时出现，但和model属性是不能同时出现的
+    autoLoad:false,
     api:null,
     autoShowSimpleActionToTbar:true,
     autoInitSimpleAction:true,//初始化增，删改等按钮
@@ -38,29 +39,26 @@ Ext.define('Leon.common.ux.BaseTree', {
 		//me.callParent();
 		if(me.model){
         	me.store = Ext.create('Ext.data.TreeStore', {
-	       		autoLoad:true,
+	       		autoLoad:me.autoLoad,
 	       		nodeParam :'id',
 	       		model:me.model,
 			    root: {
 			    	//id:'root',
-			        expanded: true,
+			        expanded: me.autoLoad,
 			        text:me.defaultRootText 
 			    }
 			});
 			me.initSimpleAction();
         } else if(me.url){
-//        	if(!me.fields){
-//        		Ext.Msg.alert("消息","请配置fields属性");
-//        	}
-        	//alert(me.fields);
+
         	var cofig={
         		root: {
 			    	//id:'root',
-			        expanded: true,
+			        expanded: me.autoLoad,
 			        text:me.defaultRootText 
 			    },
 			    nodeParam :'id',
-        		autoLoad:true,
+        		autoLoad:me.autoLoad,
 				proxy:{
 					type:'ajax',
 					url:me.url
@@ -93,12 +91,12 @@ Ext.define('Leon.common.ux.BaseTree', {
         	
         	var model=me.dynamicModel('Tree.TempleModel'+Ext.id(),fields,me.api);
         	me.store = Ext.create('Ext.data.TreeStore', {
-	       		autoLoad:true,
+	       		autoLoad:me.autoLoad,
 	       		nodeParam :'id',
 	       		model:model,
 			    root: {
 			    	//id:'root',
-			        expanded: true,
+			        expanded: me.autoLoad,
 			        text:me.defaultRootText 
 			    }
 			});

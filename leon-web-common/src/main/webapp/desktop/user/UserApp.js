@@ -50,22 +50,48 @@ Ext.onReady(function(){
 		form.getForm().loadRecord(modal);
 		win.show();
 	}
+	grid.on("itemclick",function(grid, record, item, index, e, eOpts ){
+		tabPanel.getEl().unmask();
+	});
 	
 	var selectedRoleTree=Ext.create('Leon.common.ux.BaseTree',{
-		url:'/role/query',
+		url:'/user/queryRole',
+		autoLoad:false,
 		fields:['id','name'],
 		rootVisible: false,
 		flex:1,
+		
 		displayField:'name'
 		,dockedItems: [{
 	        xtype: 'toolbar',
 	        dock: 'right',
-	        items: [{xtype:'tbspacer',flex:1},{
-	        	icon:'/icons/arrow.png',
-	            text: ''
-	        },{
+	        items: [{xtype:'tbspacer',flex:1},{//选择角色
 	        	icon:'/icons/arrow_180.png',
-	            text: ''
+	            text: '',
+	            handler:function(){
+	            	var selectRoleNode=roleTree.getLastSelected();
+	            	if(selectRoleNode && selectRoleNode.isLeaf()){
+	            		var user=grid.getLastSelected();
+	            		var params={
+	            			userId:user.getId(),
+	            			roleId:selectRoleNode.getId()
+	            		};
+	            		Ext.Ajax.request({
+	            			url:'/user/addRole',
+	            			method:'POST',
+	            			params:params,
+	            			success:function(){
+	            				//roleTree.
+	            			}
+	            		});
+	            	}
+	            }
+	        },{
+	        	icon:'/icons/arrow.png',
+	            text: '',
+	            handler:function(){//去掉角色
+	            
+	            }
 	        },{xtype:'tbspacer',flex:1}]
 	    }]
 	});
@@ -81,6 +107,7 @@ Ext.onReady(function(){
 	var tabPanel=Ext.create('Ext.tab.Panel', {
 		region:'center',
 		split:true,
+		mask:true,
 	    activeTab: 0,
 	    items: [
 	        {
@@ -92,7 +119,12 @@ Ext.onReady(function(){
 	            title: '权限',
 	            html : '功能树，如果是从角色上继承过来的，就灰色显示不能再进行修改了，否则就可以修改，并且添加一个不显示角色权限的按钮，只要不勾，哪就只显示直接授权在用户上的功能'
 	        }
-	    ]
+	    ],
+	    listeners:{
+	    	render:function(tabPanel){
+	    		tabPanel.getEl().mask();
+	    	}
+	    }
 	});
 	
 	
