@@ -117,6 +117,8 @@
 					<prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size}</prop>
 					<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
 					<prop key="hibernate.archive.autodetection">class</prop>
+					<prop key="hibernate.cache.use_second_level_cache">false</prop>  
+
 				</props>
 			</property>
 			<property name="packagesToScan">

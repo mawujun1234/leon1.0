@@ -30,7 +30,7 @@ Ext.define('Leon.common.ux.BaseTree', {
     defaultRootText :'根节点',
     fields:null,//和api，url搭配的，也可以没有
     url:null,//url和fields是同时出现，但和model属性是不能同时出现的
-    autoLoad:false,
+    //autoLoad:true,
     api:null,
     autoShowSimpleActionToTbar:true,
     autoInitSimpleAction:true,//初始化增，删改等按钮

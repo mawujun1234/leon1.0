@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- mawujun qq:16064988 e-mail:16064988@qq.com 承接各种项目 -->
+<!-- 注意文件名称为:Example_${DbName}_Mapper.xml-->
+<mapper namespace="com.mawujun.role.Role">
+	<select id="queryRole" resultType="String" parameterType="String">
+    	SELECT a.role_id
+	    FROM leon_user_role a
+		where a.user_id=#{user_id}
+
+    </select>
+	<!-- select语句的生成结束=============================================================================================== -->
+</mapper>

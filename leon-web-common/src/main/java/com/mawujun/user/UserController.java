@@ -2,6 +2,7 @@ package com.mawujun.user;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
+import com.mawujun.controller.spring.mvc.ToJsonConfigHolder;
 import com.mawujun.role.Role;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
@@ -81,8 +83,9 @@ public class UserController {
 	
 	@RequestMapping("/user/queryRole")
 	@ResponseBody
-	public List<Role> queryRole(String userId){	
-		List<Role> roles=userRoleService.queryRole(userId);
+	public List<Map<String,Object>> queryRole(String userId){	
+		List<Map<String,Object>> roles=userRoleService.queryRole(userId);
+		ToJsonConfigHolder.setRootName("children");
 		//userService.delete(user);
 		return roles;
 	}
@@ -91,14 +94,13 @@ public class UserController {
 	public UserRole addRole(UserRolePK userRolePK){	
 		 UserRole userRole=new  UserRole();
 		 userRole.setId(userRolePK);
-		 userRole.setCreateDate(new Date());
 		userRoleService.create(userRole);
 		//userService.delete(user);
 		return userRole;
 	}
 	@RequestMapping("/user/removeRole")
 	@ResponseBody
-	public UserRolePK removeRole(@RequestBody UserRolePK userRolePK){		 
+	public UserRolePK removeRole(UserRolePK userRolePK){		 
 		userRoleService.delete(userRolePK);
 		//userService.delete(user);
 		return userRolePK;

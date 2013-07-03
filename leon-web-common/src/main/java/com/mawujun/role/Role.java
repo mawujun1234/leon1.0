@@ -113,6 +113,19 @@ public class Role extends TreeNode {
 		}
 		 return false;
 	}
+	/**
+	 * 获取所有的父级目录
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @return
+	 */
+	public List<Role> findCategories() {
+		List<Role> pcategory=new ArrayList<Role>();
+		if(this.getCategory()!=null){
+			pcategory.add(this.getCategory());
+			pcategory.addAll(this.getCategory().findCategories());
+		}
+		return pcategory;
+	}
 	public Role getCategory() {
 		return category;
 	}

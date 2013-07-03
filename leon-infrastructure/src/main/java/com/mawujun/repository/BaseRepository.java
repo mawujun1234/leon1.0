@@ -407,4 +407,8 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 		return (List<T>)this.getMybatisRepository().selectList(supplyNamespace(statement),params);
 	}
 
+	public HibernateDao<T, ID> getHibernateDao() {
+		return hibernateDao;
+	}
+
 }

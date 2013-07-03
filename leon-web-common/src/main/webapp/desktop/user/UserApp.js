@@ -52,15 +52,36 @@ Ext.onReady(function(){
 	}
 	grid.on("itemclick",function(grid, record, item, index, e, eOpts ){
 		tabPanel.getEl().unmask();
+		selectedRoleTree.getStore().load({params:{userId:record.getId()}});
+		
 	});
 	
-	var selectedRoleTree=Ext.create('Leon.common.ux.BaseTree',{
-		url:'/user/queryRole',
-		autoLoad:false,
+	var selectedRoleTree=Ext.create('Ext.tree.Panel',{		
 		fields:['id','name'],
 		rootVisible: false,
 		flex:1,
-		
+		store:{
+        		root: {
+			        expanded: true,
+			        name:'根节点' 
+			    },
+			    nodeParam :'id',
+        		autoLoad:false,
+				proxy:{
+					type:'ajax',
+					url:'/user/queryRole'
+					,reader:{//因为树会自己生成model，这个时候就有这个问题，不加就解析不了，可以通过   动态生成 模型，而不是通过树默认实现，哪应该就没有问题
+							type:'json',
+							root:'children',
+							successProperty:'success',
+							totalProperty:'total'	
+					}
+					,writer:{
+						type:'json'
+					}
+				}
+				
+		},
 		displayField:'name'
 		,dockedItems: [{
 	        xtype: 'toolbar',
@@ -81,16 +102,35 @@ Ext.onReady(function(){
 	            			method:'POST',
 	            			params:params,
 	            			success:function(){
-	            				//roleTree.
+	            				selectedRoleTree.getStore().load({params:{userId:user.getId()}});
 	            			}
 	            		});
+	            	} else {
+	            		Ext.Msg.alert('消息',"目录不能移动，请选择角色!");
 	            	}
 	            }
 	        },{
 	        	icon:'/icons/arrow.png',
 	            text: '',
 	            handler:function(){//去掉角色
-	            
+	            	var selectRoleNode=selectedRoleTree.getSelectionModel( ).getLastSelected();
+	            	if(selectRoleNode && selectRoleNode.isLeaf()){
+	            		var user=grid.getLastSelected();
+	            		var params={
+	            			userId:user.getId(),
+	            			roleId:selectRoleNode.getId()
+	            		};
+	            		Ext.Ajax.request({
+	            			url:'/user/removeRole',
+	            			method:'POST',
+	            			params:params,
+	            			success:function(){
+	            				selectRoleNode.remove(true);
+	            			}
+	            		});
+	            	} else {
+	            		Ext.Msg.alert('消息',"目录不能移动，请选择角色!");
+	            	}
 	            }
 	        },{xtype:'tbspacer',flex:1}]
 	    }]
