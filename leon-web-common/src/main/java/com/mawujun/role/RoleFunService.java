@@ -19,11 +19,18 @@ import com.mawujun.utils.page.WhereInfo;
 public class RoleFunService extends BaseRepository<RoleFun, String> {
 	@Autowired
 	private FunService funService;
+	@Autowired
+	private RoleService roleService;
+	
 	public Set<RoleFun> query(String roleId){
 		//List<Fun> funs=funService.queryAll();
 		//h还要读出父类的权限
-		Role role=RoleCacheHolder.get(roleId);
+		Role role=roleService.get(roleId);
 		Set<RoleFun> roleFuns=role.getFunes();
+		
+		for (RoleFun roleFun:roleFuns){
+			System.out.println(roleFun.getId());
+		}
 		
 		return roleFuns;
 		
@@ -36,14 +43,14 @@ public class RoleFunService extends BaseRepository<RoleFun, String> {
 		//System.out.println(RoleCacheHolder.get(roleFun.getRole().getId()).getFunes().size()+"===============================前");
 		roleFun.setCreateDate(new Date());
 		super.create(roleFun);
-		//roleFun.setId(UUIDGenerator.generate());
-		//super.getMybatisRepository().insert("com.mawujun.role.Role.insertRoleFun", roleFun);
+
+		Role role=roleService.get(roleFun.getRole().getId());
+		role.addFun(roleFun);
 		
-		RoleCacheHolder.add(roleFun);
-		//System.out.println(RoleCacheHolder.get(roleFun.getRole().getId()).getFunes().size()+"===============================后");
+		//RoleCacheHolder.add(roleFun);
 	}
 	public RoleFun delete(String roleId,String funId) {
-		Role role=RoleCacheHolder.get(roleId);
+		Role role=roleService.get(roleId);
 		RoleFun roleFun=role.getFun(funId);
 
 		if(roleFun==null){
@@ -54,7 +61,7 @@ public class RoleFunService extends BaseRepository<RoleFun, String> {
 		return roleFun;
 	}
 	public RoleFun update(String roleId,String funId,String permissionEnum) {
-		Role role=RoleCacheHolder.get(roleId);
+		Role role=roleService.get(roleId);
 		RoleFun roleFun=role.getFun(funId);
 		if(roleFun==null){
 			roleFun=new RoleFun();

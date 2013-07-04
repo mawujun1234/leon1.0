@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mawujun.cache.FunCacheHolder;
+import com.mawujun.cache.RoleCacheHolder;
 import com.mawujun.exception.BussinessException;
 import com.mawujun.exception.WebCommonExceptionCode3;
 import com.mawujun.menu.Menu;
@@ -13,6 +15,8 @@ import com.mawujun.menu.MenuItemRepository;
 import com.mawujun.menu.MenuItemService;
 import com.mawujun.menu.MenuService;
 import com.mawujun.repository.BaseRepository;
+import com.mawujun.role.Role;
+import com.mawujun.role.RoleEnum;
 import com.mawujun.service.BaseService;
 import com.mawujun.utils.help.ReportCodeHelper;
 import com.mawujun.utils.page.WhereInfo;
@@ -147,4 +151,13 @@ public class FunService extends BaseRepository<Fun, String> {
 		
 	}
 
+	public void initCache(){
+		List<Fun> funes=super.queryAll();//super.query(whereinfo);
+		for(Fun fun:funes){
+			//if(fun.getFunEnum()==FunEnum.fun){
+				super.initLazyProperty(fun.getParent());
+				super.initLazyProperty(fun.getChildren());
+			//}	
+		}
+	}
 }

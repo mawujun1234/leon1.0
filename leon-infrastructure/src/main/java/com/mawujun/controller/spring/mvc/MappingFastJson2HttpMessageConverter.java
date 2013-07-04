@@ -298,9 +298,21 @@ public class MappingFastJson2HttpMessageConverter extends AbstractHttpMessageCon
 	}
 
 	
+	
 	public void doFilterPropertys(Object root ,JSONSerializer serializer) {
 		if(ToJsonConfigHolder.getFilterPropertys()==null || "".equals(ToJsonConfigHolder.getFilterPropertys())){
 			return;
+		}
+		
+		if((root instanceof HibernateProxy) ){
+			return;
+		}
+		//
+		if(root  instanceof PersistentCollection){
+			PersistentCollection aa=(PersistentCollection)root;
+        	if(!aa.wasInitialized()){
+        		return;
+        	}
 		}
 		
 		String[] excludes=ToJsonConfigHolder.getFilterPropertys().split(",");//((String)map.get(ResultMap.filterPropertysName)).split(",");
@@ -318,7 +330,8 @@ public class MappingFastJson2HttpMessageConverter extends AbstractHttpMessageCon
 		} else {
 			SimplePropertyPreFilter filter =null;
 			//自己进行判断
-			if(root instanceof Collection){
+			if(root instanceof Collection ){
+				
 				if(((Collection)root).size()>0){
 					Iterator iterator=((Collection)root).iterator();
 					Object obj=iterator.next();

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import com.mawujun.controller.spring.mvc.ToJsonConfigHolder;
+import com.mawujun.fun.Fun;
 import com.mawujun.role.Role;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
@@ -104,6 +105,12 @@ public class UserController {
 		userRoleService.delete(userRolePK);
 		//userService.delete(user);
 		return userRolePK;
+	}
+	
+	@RequestMapping("/user/queryFun")
+	@ResponseBody
+	public List<Fun> queryFun(String userId){		 
+		return userRoleService.queryFun(userId); 
 	}
 
 }

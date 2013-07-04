@@ -3,6 +3,7 @@ package com.mawujun.role;
 
 import java.util.Date;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +14,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.executable.ValidateOnExecution;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import com.mawujun.fun.Fun;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
@@ -20,6 +24,8 @@ import com.mawujun.repository.idEntity.UUIDEntity;
 
 @Entity
 @Table(name = "leon_Role_Fun")
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)  
 public class RoleFun extends UUIDEntity{
 
 	/**

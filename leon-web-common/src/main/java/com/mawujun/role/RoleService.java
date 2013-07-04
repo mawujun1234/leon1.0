@@ -16,20 +16,18 @@ import com.mawujun.utils.page.WhereInfo;
 @Service
 public class RoleService extends BaseRepository<Role, String> {
 	public Role get(Serializable id) {
-		Role role=RoleCacheHolder.get(id);
-		if(role!=null){
-			return role;
-		}
+		//Role role=RoleCacheHolder.get(id);
+//		if(role!=null){
+//			return role;
+//		}
 		return super.get(id);
 	}
 	public void create(Role entity) {
 		super.create(entity);
-		RoleCacheHolder.add(entity);
 	}
 	
 	public void delete(Role entity) {
 		super.delete(entity);
-		RoleCacheHolder.remove(entity);
 	}
 
 
@@ -41,12 +39,13 @@ public class RoleService extends BaseRepository<Role, String> {
 			super.update(entity);
 		}
 		
-		RoleCacheHolder.get(entity.getId()).setName(entity.getName());
+		this.get(entity.getId()).setName(entity.getName());
 	}
 	
 	
 	public Set<Role> queryMutex(String ownId) {
-		Role own=RoleCacheHolder.get(ownId);
+		Role own=this.get(ownId);
+		super.initLazyProperty(own.getMutex());
 		return own.getMutex();
 	}
 	
@@ -55,8 +54,8 @@ public class RoleService extends BaseRepository<Role, String> {
 			throw new BussinessException("不能设置自己为自己的互斥角色");
 		}
 
-		Role own=RoleCacheHolder.get(ownId);
-		Role mutex=RoleCacheHolder.get(mutexId);
+		Role own=this.get(ownId);
+		Role mutex=this.get(mutexId);
 //		//如果已经存在互斥关系的话，那也不能添加继承关系了
 //		if(own.isInherit(mutex)){
 //			throw new BussinessException("存在继承关系的两个角色不能设为互斥角色!");
@@ -67,24 +66,32 @@ public class RoleService extends BaseRepository<Role, String> {
 		super.update(mutex);
 	}
 	public void removeMutex(String ownId,String mutexId) {
-		Role own=RoleCacheHolder.get(ownId);
-		Role mutex=RoleCacheHolder.get(mutexId);
+		Role own=this.get(ownId);
+		Role mutex=this.get(mutexId);
 		own.removeMutex(mutex);
 		mutex.removeMutex(own);
 		super.update(own);
+		super.update(mutex);
 	}
 	public void initCache(){
 		//WhereInfo whereinfo=WhereInfo.parse("roleEnum", RoleEnum.role);
 		List<Role> roles=super.queryAll();//super.query(whereinfo);
 		for(Role role:roles){
-			if(role.getRoleEnum()==RoleEnum.role){
+			//if(role.getRoleEnum()==RoleEnum.role){
 				//super.initLazyProperty(role.getParents());
 				//super.initLazyProperty(role.getChildren());
 				super.initLazyProperty(role.getMutex());
+//				role.getMutex().size();
+//				for (Role roleFun:role.getMutex()){
+//					System.out.println(roleFun.getId());
+//				}
+				
 				super.initLazyProperty(role.getFunes());
-				RoleCacheHolder.add(role);
-				//System.out.println(role.getName()+"============================");
-			}	
+//				for (RoleFun roleFun:role.getFunes()){
+//					System.out.println(roleFun.getId());
+//				}
+
+			//}	
 		}
 	}
 	

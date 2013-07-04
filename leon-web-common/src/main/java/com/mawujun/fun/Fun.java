@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
+import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -15,13 +17,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.util.StringUtils;
 
 import com.mawujun.annotation.Label;
 import com.mawujun.exten.TreeNode;
+import com.mawujun.role.Role;
 
 @Entity
 @Table(name="leon_Fun")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)  
 public class Fun extends TreeNode{
 	/**
 	 * 
@@ -53,9 +59,12 @@ public class Fun extends TreeNode{
 	@Enumerated(EnumType.STRING)
 	private FunEnum funEnum;//是模块还是功能
 	
+	
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Fun parent;
-	@OneToMany(mappedBy="parent",fetch=FetchType.LAZY)
+	
+	@OneToMany(mappedBy="parent",fetch=FetchType.LAZY,cascade=CascadeType.REFRESH)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)  
 	private List<Fun> children=new ArrayList<Fun>();
 	
 //	@OneToMany(mappedBy="fun",fetch=FetchType.LAZY)
@@ -104,6 +113,32 @@ public class Fun extends TreeNode{
 		this.children = children;
 	}
 
+	/**
+	 * 获取所有的父级
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @return
+	 */
+	public List<Fun> findAncestors() {
+		List<Fun> pcategory=new ArrayList<Fun>();
+		if(this.getParent()!=null){
+			pcategory.add(this.getParent());
+			pcategory.addAll(this.getParent().findAncestors());
+		}
+		return pcategory;
+	}
+	public List<Fun> findSiblings() {
+		List<Fun> children=new ArrayList<Fun>();
+		List<Fun> allCHild=this.getParent().getChildren();
+		for(Fun fun:allCHild){
+			if(fun.getId().equals(this.getId())){
+				continue;
+			} else {
+				children.add(fun);
+			}
+		}
+		return children;
+	}
+	
 	public Fun getParent() {
 		return parent;
 	}

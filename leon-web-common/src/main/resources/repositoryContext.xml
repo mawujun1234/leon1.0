@@ -117,10 +117,43 @@
 					<prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size}</prop>
 					<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
 					<prop key="hibernate.archive.autodetection">class</prop>
-					<prop key="hibernate.cache.use_second_level_cache">false</prop>  
+					
+					
+					<!-- 开启二级缓存 
+					http://www.doc88.com/p-242838708827.html http://www.tuliangcheng.cn/?p=35
+					http://zhou137520.iteye.com/blog/1611623-->  
+					<!--1：无论何时，当你给save()、update()或 saveOrUpdate()方法传递一个对象时，
+					或使用load()、 get()、list()、iterate() 或scroll()方法获得一个对象时, 该对象都将被加入到Session的内部缓存中。-->
+			      <prop key="hibernate.cache.use_second_level_cache">true</prop>  
+			      <!-- 启动"查询缓存"如果想缓存使用findall()、list()、Iterator()、createCriteria()、createQuery()等方法获得的数据结果集,必须配置此项-->  
+			      <prop key="hibernate.cache.use_query_cache">false</prop>  
+			       
+			      <!-- 二级缓存区域名的前缀 -->  
+			      <!--<prop key="hibernate.cache.region_prefix">test</prop>-->  
+			      <!-- 高速缓存提供程序 -->  
+			      <prop key="hibernate.cache.region.factory_class">  
+			         org.hibernate.cache.ehcache.EhCacheRegionFactory   
+			      </prop>  
+			      <!-- Hibernate4以后都封装到org.hibernate.cache.ehcache.EhCacheRegionFactory -->  
+			      <!-- 指定缓存配置文件位置 -->  
+			      <!-- <prop key="hibernate.cache.provider_configuration_file_resource_path">  
+			         ehcache.xml   
+			      </prop> -->  
+			      <!-- 强制Hibernate以更人性化的格式将数据存入二级缓存 -->  
+			      <prop key="hibernate.cache.use_structured_entries">true</prop>  
+			  
+			      <!-- Hibernate将收集有助于性能调节的统计数据 -->  
+			      <prop key="hibernate.generate_statistics">true</prop>  
+			 
 
 				</props>
 			</property>
+			 <!-- 2.配置缓存策略  
+            <property name="entityCacheStrategies">  
+                <props>  
+                    <prop key="com.easitech.domain.Permission">nonstrict-read-write,fixedRegion</prop>  
+                </props>  
+            </property>  --> 
 			<property name="packagesToScan">
 				<list>
 			        <value>${jdbc.packagesToScan}</value>

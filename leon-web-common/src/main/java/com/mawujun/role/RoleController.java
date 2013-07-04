@@ -85,6 +85,7 @@ public class RoleController {
 	public Set<Role> queryMutex(String ownId) {
 		Set<Role> roles=null;
 		roles=roleService.queryMutex(ownId);
+		roles.size();
 		ToJsonConfigHolder.setFilterPropertys("parents,children,mutex,funes");
 		return roles;
 	}

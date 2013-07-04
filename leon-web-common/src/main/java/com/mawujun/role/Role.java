@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,12 +22,19 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import com.mawujun.cache.RoleCacheHolder;
 import com.mawujun.exten.TreeNode;
 import com.mawujun.fun.Fun;
 
 @Entity
 @Table(name="leon_Role")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)  
 public class Role extends TreeNode {
 
 	/**
@@ -56,16 +64,20 @@ public class Role extends TreeNode {
 //	@ManyToMany(cascade=CascadeType.REFRESH,mappedBy="parents")
 //	Set<Role> children=new HashSet<Role>();
 	
-	@ManyToMany(cascade = CascadeType.REFRESH) 
+	@ManyToMany(cascade = CascadeType.REMOVE)
+	@Fetch(FetchMode.SUBSELECT)
 	@JoinTable(
 			name = "leon_role_mutex",
 			inverseJoinColumns = @JoinColumn(name = "own_id"), 
 			joinColumns = @JoinColumn(name = "mutex_id")
 	) 
+	@Cache(usage= CacheConcurrencyStrategy.READ_WRITE)
 	Set<Role> mutex=new HashSet<Role>();
 	
 	//拥有的权限
-	@OneToMany(mappedBy="role",fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="role",fetch=FetchType.LAZY,cascade=CascadeType.REMOVE)
+	//@Fetch(FetchMode.SELECT)
+	@Cache(usage= CacheConcurrencyStrategy.READ_WRITE)
 	private Set<RoleFun> funes=new HashSet<RoleFun>();
 	
 	public Role(){
