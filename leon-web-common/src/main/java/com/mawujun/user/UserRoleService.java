@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -103,14 +104,46 @@ public class UserRoleService extends BaseRepository<UserRole, UserRolePK> {
 	public List<Fun> queryFun(String userId){	
 		List<Object> roleIds = super.getMybatisRepository().selectListObj("queryFun", userId);
 		// 组装出role树
-		List<Fun> funes = new ArrayList<Fun>();
-		for (Object funId : funes) {
-			funes.add(funService.get(funId.toString()));
+		Map<String,Fun> parentKeys=new HashMap<String,Fun>();
+		List<Fun> rootFuns = new ArrayList<Fun>();
+		for (Object funId : roleIds) {
+			//funes.add(funService.get(funId.toString()));
+			Fun leaf=funService.get(funId.toString());
+			Fun fun=new Fun();
+			加上来源角色和把功能去掉根节点。
+			BeanUtils.copyProperties(leaf, fun, new String[]{"children","parent"});
+			if(leaf.getParent()!=null){
+				List<Fun> ancestores=leaf.findAncestors();
+				int i=0;
+				for(Fun ancestor:ancestores){
+					Fun ancestorNew=null;
+					if(parentKeys.containsKey(ancestor.getId())){
+						ancestorNew=parentKeys.get(ancestor.getId());
+					} else {
+						ancestorNew=new Fun();
+						BeanUtils.copyProperties(ancestor, ancestorNew, new String[]{"children","parent"});
+						ancestorNew.setExpanded(true);
+						parentKeys.put(ancestorNew.getId(), ancestorNew);
+					}
+					if(i==0){
+						ancestorNew.addChild(fun);
+					} else {
+						ancestorNew.addChild(parentKeys.get(ancestores.get(i-1).getId()));
+					}
+					i++;
+					if(i==ancestores.size() && !rootFuns.contains(ancestorNew)){
+						if(ancestorNew.getId().equals("root")){
+							ancestorNew.setId("1111");
+						}
+						rootFuns.add(ancestorNew);
+					}
+				}
+			} else {
+				rootFuns.add(fun);
+			}
+			
 		}
-		//构建出功能树
-		
-		sd
-		return null;
+		return rootFuns;
 	}
 	
 }

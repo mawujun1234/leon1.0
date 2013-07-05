@@ -109,7 +109,8 @@ public class UserController {
 	
 	@RequestMapping("/user/queryFun")
 	@ResponseBody
-	public List<Fun> queryFun(String userId){		 
+	public List<Fun> queryFun(String userId){	
+		ToJsonConfigHolder.setRootName("children");
 		return userRoleService.queryFun(userId); 
 	}
 

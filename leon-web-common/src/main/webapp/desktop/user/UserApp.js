@@ -53,6 +53,7 @@ Ext.onReady(function(){
 	grid.on("itemclick",function(grid, record, item, index, e, eOpts ){
 		tabPanel.getEl().unmask();
 		selectedRoleTree.getStore().load({params:{userId:record.getId()}});
+		funTree.getStore().load({params:{userId:record.getId()}});
 		
 	});
 	
@@ -142,6 +143,15 @@ Ext.onReady(function(){
 		flex:1,
 		displayField:'name'
 	});
+	var funTree=Ext.create('Leon.common.ux.BaseTree',{
+		url:'/user/queryFun',
+		fields:['id','text'],
+		defaultRootName:'children',
+		rootVisible: false,
+		//flex:1,
+		title:'拥有的权限',
+		displayField:'text'
+	});
 	
 	//var form=Ext.create('Leon.desktop.user.UserForm',{title:'用户表单'});
 	var tabPanel=Ext.create('Ext.tab.Panel', {
@@ -155,10 +165,7 @@ Ext.onReady(function(){
 	           layout:{type:'hbox',align: 'stretch'},
 	           items:[selectedRoleTree,roleTree]
 	        },
-	        {
-	            title: '权限',
-	            html : '功能树，如果是从角色上继承过来的，就灰色显示不能再进行修改了，否则就可以修改，并且添加一个不显示角色权限的按钮，只要不勾，哪就只显示直接授权在用户上的功能'
-	        }
+	        funTree
 	    ],
 	    listeners:{
 	    	render:function(tabPanel){

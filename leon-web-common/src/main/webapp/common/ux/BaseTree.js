@@ -28,6 +28,7 @@ Ext.define('Leon.common.ux.BaseTree', {
     disabledAction:false,//讲动作都禁止掉，不可使用
     model:null,//用来构建store，如果没有这个值，就得自己构建model
     defaultRootText :'根节点',
+    defaultRootName :'root',
     fields:null,//和api，url搭配的，也可以没有
     url:null,//url和fields是同时出现，但和model属性是不能同时出现的
     //autoLoad:true,
@@ -64,7 +65,7 @@ Ext.define('Leon.common.ux.BaseTree', {
 					url:me.url
 					,reader:{//因为树会自己生成model，这个时候就有这个问题，不加就解析不了，可以通过   动态生成 模型，而不是通过树默认实现，哪应该就没有问题
 							type:'json',
-							root:'root',
+							root:me.defaultRootName,
 							successProperty:'success',
 							totalProperty:'total'	
 					}
