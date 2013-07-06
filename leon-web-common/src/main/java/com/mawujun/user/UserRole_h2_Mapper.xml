@@ -13,8 +13,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     </select>
 	<!-- select语句的生成结束=============================================================================================== -->
 	
-	<select id="queryFun" resultType="String" parameterType="String">
-    	SELECT distinct  b.fun_ID 
+	<select id="queryFun" resultType="map" parameterType="String">
+    	SELECT distinct  b.fun_id ,a.role_id
 	    FROM leon_user_role a,leon_role_fun b
 		where a.role_id=b.role_id and a.user_id=#{user_id}
     </select>

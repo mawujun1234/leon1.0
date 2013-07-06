@@ -16,6 +16,7 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -49,6 +50,9 @@ public class Fun extends TreeNode{
 	@Label(name="帮助")
 	@Column(length=100)
 	private String helpContent;//存放的是html内容的地址
+	
+	@Transient
+	private String roleNames;
 	
 	@Embedded
 	@AttributeOverrides( {
@@ -194,6 +198,18 @@ public class Fun extends TreeNode{
 	}
 	public void setBussinessType(BussinessType bussinessType) {
 		this.bussinessType = bussinessType;
+	}
+	public String getRoleNames() {
+		return roleNames;
+	}
+	public void addRoleName(String roleNames) {
+		if(this.roleNames==null){
+			this.roleNames="";
+			this.roleNames+=roleNames;
+		} else {
+			this.roleNames+=","+roleNames;
+		}
+		
 	}
 
 }

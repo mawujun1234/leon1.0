@@ -10,20 +10,23 @@ Ext.onReady(function(){
 		width:200
 	});
 	grid.on('itemclick',function(view,record,item,index){
-		//注意这样是否会报错，如果不会报错，就完善文档
-		//var MenuItem= Ext.ModelManager.getModel('Leon.desktop.menu.MenuItem')
-		Ext.Ajax.request({
-			url:Ext.ContextPath+'/menuItem/load',
-			params:{id:record.get('rootId')},
-			success:function(response){
-				var obj=Ext.decode(response.responseText);
-				if(obj.success){
-					obj.root.expanded=true;
-					var record=Ext.createModel('Leon.desktop.menu.MenuItem',obj.root);
-					tree.setRootNode(record);
-				}
-			}
-		});	
+//		//注意这样是否会报错，如果不会报错，就完善文档
+//		//var MenuItem= Ext.ModelManager.getModel('Leon.desktop.menu.MenuItem')
+//		Ext.Ajax.request({
+//			url:Ext.ContextPath+'/menuItem/load',
+//			params:{id:record.get('rootId')},
+//			success:function(response){
+//				var obj=Ext.decode(response.responseText);
+//				if(obj.success){
+//					obj.root.expanded=true;
+//					var record=Ext.createModel('Leon.desktop.menu.MenuItem',obj.root);
+//					tree.setRootNode(record);
+//				}
+//			}
+//		});	
+		var rootNode=tree.getRootNode();
+		rootNode.set('text',record.get("text"));
+		rootNode.commit();
 		
 		tree.setMenuId(record.get("id"));
 		//tree.getStore().reload({node:tree.getRootNode( )});
@@ -35,6 +38,7 @@ Ext.onReady(function(){
 			form.setReadonlyItem4DefauleMenu(false);
 			//tree.setDisableAction(false);
 		}
+		tree.getStore().reload({node:tree.getRootNode( )});
 	});
 
 	var tree=Ext.create('Leon.desktop.menu.MenuItemTree',{

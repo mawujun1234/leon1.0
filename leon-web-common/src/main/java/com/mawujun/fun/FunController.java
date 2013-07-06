@@ -31,6 +31,9 @@ public class FunController {
 	@ResponseBody
 	public List<Fun> query(String id){
 		WhereInfo whereinfo=WhereInfo.parse("parent.id", id);
+		if("root".equals(id)){
+			whereinfo=WhereInfo.parse("parent.id_isNull", id);
+		}
 		List<Fun> funes=funService.query(whereinfo);
 //		//System.out.println("==================结果输出来了"+funes.size());
 //		ModelMap map=new ModelMap();

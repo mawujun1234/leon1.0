@@ -102,16 +102,26 @@ public class UserRoleService extends BaseRepository<UserRole, UserRolePK> {
 	 * @return
 	 */
 	public List<Fun> queryFun(String userId){	
-		List<Object> roleIds = super.getMybatisRepository().selectListObj("queryFun", userId);
+		List<Map<String,Object>> funIdRoleIds = super.getMybatisRepository().selectList("queryFun", userId);
 		// 组装出role树
 		Map<String,Fun> parentKeys=new HashMap<String,Fun>();
 		List<Fun> rootFuns = new ArrayList<Fun>();
-		for (Object funId : roleIds) {
+		for (Map<String,Object> funMap : funIdRoleIds) {
 			//funes.add(funService.get(funId.toString()));
-			Fun leaf=funService.get(funId.toString());
+			
+			
+			String role_id=funMap.get("ROLE_ID").toString();
+			Fun leaf=funService.get(funMap.get("FUN_ID").toString());
+			
+			if(parentKeys.get(leaf.getId()) !=null){//表示这个功能能已经添加过了
+				Fun fun=parentKeys.get(leaf.getId());
+				fun.addRoleName(roleService.get(role_id).getName());
+				continue;
+			}
 			Fun fun=new Fun();
-			加上来源角色和把功能去掉根节点。
 			BeanUtils.copyProperties(leaf, fun, new String[]{"children","parent"});
+			fun.addRoleName(roleService.get(role_id).getName());
+			
 			if(leaf.getParent()!=null){
 				List<Fun> ancestores=leaf.findAncestors();
 				int i=0;
@@ -124,22 +134,27 @@ public class UserRoleService extends BaseRepository<UserRole, UserRolePK> {
 						BeanUtils.copyProperties(ancestor, ancestorNew, new String[]{"children","parent"});
 						ancestorNew.setExpanded(true);
 						parentKeys.put(ancestorNew.getId(), ancestorNew);
+						if(ancestorNew.isLeaf()){
+							ancestorNew.addRoleName(roleService.get(role_id).getName());
+						}
 					}
 					if(i==0){
+						
 						ancestorNew.addChild(fun);
 					} else {
 						ancestorNew.addChild(parentKeys.get(ancestores.get(i-1).getId()));
 					}
 					i++;
 					if(i==ancestores.size() && !rootFuns.contains(ancestorNew)){
-						if(ancestorNew.getId().equals("root")){
-							ancestorNew.setId("1111");
-						}
+						//添加从哪个角色来
+						//ancestorNew.addRoleName(roleService.get(role_id).getName());
 						rootFuns.add(ancestorNew);
 					}
 				}
 			} else {
+				
 				rootFuns.add(fun);
+				parentKeys.put(fun.getId(), fun);
 			}
 			
 		}

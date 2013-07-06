@@ -10,6 +10,7 @@ Ext.onReady(function(){
 		title:'常数管理',
 		defaultRootText:'常数管理',
 		//useArrows: true,
+		rootVisible: false,
 		fields:['id','text','discriminator'],
 		url:'/constantType/queryNode',
 		//region:'west',

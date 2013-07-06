@@ -132,7 +132,7 @@ public class FunService extends BaseRepository<Fun, String> {
 	 * 构建出整颗树
 	 */
 	public List<Fun> queryAll() {
-		WhereInfo whereinfo=WhereInfo.parse("parent.id", "root");
+		WhereInfo whereinfo=WhereInfo.parse("parent.id_isnull", "root");
 		List<Fun> funes=this.query(whereinfo);
 		recursionFun(funes);
 		return funes;

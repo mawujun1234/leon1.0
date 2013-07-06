@@ -145,12 +145,18 @@ Ext.onReady(function(){
 	});
 	var funTree=Ext.create('Leon.common.ux.BaseTree',{
 		url:'/user/queryFun',
-		fields:['id','text'],
+		fields:['id','text',"roleNames"],
 		defaultRootName:'children',
 		rootVisible: false,
 		//flex:1,
 		title:'拥有的权限',
 		displayField:'text'
+		,columns:[{
+			xtype:'treecolumn',dataIndex:'text',text:'名称',flex:8
+			
+		},{
+			dataIndex:'roleNames',text:'权限来源',flex:2
+		}]
 	});
 	
 	//var form=Ext.create('Leon.desktop.user.UserForm',{title:'用户表单'});

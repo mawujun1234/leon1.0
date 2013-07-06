@@ -4,7 +4,7 @@ Ext.define('Leon.desktop.fun.FunTree',{
 		'Leon.common.ux.BaseTree',
 	    'Leon.desktop.fun.Fun'
 	],
-	rootVisible: true,
+	rootVisible: false,
 	initComponent: function () {
        var me = this;
        
