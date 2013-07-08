@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
-import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -17,15 +16,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.util.StringUtils;
 
 import com.mawujun.annotation.Label;
 import com.mawujun.exten.TreeNode;
-import com.mawujun.role.Role;
 
 @Entity
 @Table(name="leon_Fun")
@@ -38,7 +36,7 @@ public class Fun extends TreeNode{
 	
 	@Label(name="助记码")
 	@Column(length=20)
-	@Length(max=20)
+	@Size(max=20)
 	private String code;//助记码
 	@Column(length=20)
 	@Label(name="名称")

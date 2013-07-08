@@ -118,6 +118,9 @@
 					<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
 					<prop key="hibernate.archive.autodetection">class</prop>
 					
+					<prop key="hibernate.validator.apply_to_ddl">true</prop>
+					<prop key="hibernate.validator.autoregister_listeners">true</prop>
+					
 					
 					<!-- 开启二级缓存 
 					http://www.doc88.com/p-242838708827.html http://www.tuliangcheng.cn/?p=35
