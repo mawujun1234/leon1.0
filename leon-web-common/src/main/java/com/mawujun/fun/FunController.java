@@ -67,15 +67,7 @@ public class FunController {
 	
 	@RequestMapping("/fun/create")
 	@ResponseBody
-	public Fun create(@RequestBody Fun fun){		
-//		把bussinesType的字符串绑定到Fun的bussniessType的时候报错，是否在Fun中就直接使用bussinessType的字符串作为常数的类型，
-//		然后要获取常数项名称的话，再建立一个方法，并且从缓存中获取
-//		
-//		在extjs中新建一个hasEmbedded的关联类，看看能不能读取到数据，这个方法可能不行
-//		
-//		自定义字段，这个可能更好
-		
-		
+	public Fun create(@RequestBody Fun fun){				
 		funService.create(fun);
 		return fun;
 	}

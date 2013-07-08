@@ -31,20 +31,15 @@ public class MenuService extends BaseService<Menu, String> {
 	
 	public void create(Menu entity) {
 		super.create(entity);
-		
-//		//获取对应的父菜单
-//		WhereInfo whereinfoItem=WhereInfo.parse("fun.id", entity.getParent().getId());
-//		WhereInfo whereinfoItem1=WhereInfo.parse("menu.id", "default");
-//		MenuItem parent=menuItemRepository.queryUnique(whereinfoItem,whereinfoItem1);
-		
-		MenuItem menuitem=new MenuItem();
-		menuitem.setText(entity.getText());
-		menuitem.setFun(new Fun("root"));
-		//menuitem.setParent(parent);
-		menuitem.setMenu(entity);
-		menuItemService.create(menuitem);
-		
-		entity.setRootId(menuitem.getId());
+
+//		MenuItem menuitem=new MenuItem();
+//		menuitem.setText(entity.getText());
+//		menuitem.setFun(new Fun("root"));
+//		//menuitem.setParent(parent);
+//		menuitem.setMenu(entity);
+//		menuItemService.create(menuitem);
+//		
+		//entity.setRootId(menuitem.getId());
 		menuRepository.update(entity);
 	}
 	

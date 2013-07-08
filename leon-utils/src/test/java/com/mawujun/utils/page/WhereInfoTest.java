@@ -50,10 +50,22 @@ public class WhereInfoTest {
 		assertEquals("is null", isNull.getOpSymbol());
 		assertEquals("age", isNull.getProperty());
 		
+		WhereInfo isNull1=WhereInfo.parse("age_isNull",null);
+		assertNull(isNull1.getValue());
+		assertEquals("is null", isNull1.getOpSymbol());
+		assertEquals("age", isNull1.getProperty());
+		
+		WhereInfo isNull2=WhereInfo.parse("age",null);
+		assertNull(isNull2.getValue());
+		assertEquals("is null", isNull2.getOpSymbol());
+		assertEquals("age", isNull2.getProperty());
+		
 		WhereInfo _isnotNull=WhereInfo.parse("age_isnotNull", "111222");
 		assertEquals("111222",_isnotNull.getValue());
 		assertEquals("is not null", _isnotNull.getOpSymbol());
 		assertEquals("age", _isnotNull.getProperty());
+		
+		
 		
 		WhereInfo like=WhereInfo.parse("name_like", "ma");
 		assertEquals("%ma%",like.getValue());

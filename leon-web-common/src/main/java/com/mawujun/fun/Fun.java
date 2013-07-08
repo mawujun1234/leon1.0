@@ -20,6 +20,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.util.StringUtils;
 
 import com.mawujun.annotation.Label;
@@ -37,6 +38,7 @@ public class Fun extends TreeNode{
 	
 	@Label(name="助记码")
 	@Column(length=20)
+	@Length(max=20)
 	private String code;//助记码
 	@Column(length=20)
 	@Label(name="名称")

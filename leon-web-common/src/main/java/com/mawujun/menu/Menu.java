@@ -18,8 +18,8 @@ public class Menu  extends UUIDEntity{
 	@Label(name="名称")
 	@Column(length=20)
 	private String text;
-	@Column(length=36)
-	private String rootId;//菜单的根菜单项的id
+//	@Column(length=36)
+//	private String rootId;//菜单的根菜单项的id
 	public Menu(){
 		super();
 	}
@@ -35,10 +35,10 @@ public class Menu  extends UUIDEntity{
 	public void setText(String text) {
 		this.text = text;
 	}
-	public String getRootId() {
-		return rootId;
-	}
-	public void setRootId(String rootId) {
-		this.rootId = rootId;
-	}
+//	public String getRootId() {
+//		return rootId;
+//	}
+//	public void setRootId(String rootId) {
+//		this.rootId = rootId;
+//	}
 }

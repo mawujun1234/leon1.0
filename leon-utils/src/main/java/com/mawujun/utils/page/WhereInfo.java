@@ -101,14 +101,15 @@ public class WhereInfo  implements Serializable{
 	/**
 	 * searchParams中key的格式为FIELDNAME_OPERATOR
 	 * WhereInfo whereinfo=WhereInfo.parse("category.id_isNull", "11");
+	 * 或者WhereInfo whereinfo=WhereInfo.parse("category.id", null);和上面的道理是一样的
 	 * 当使用isNull和isnotnull的时候最好value带入任意一个值，系统会自动忽略掉这个值的
 	 * 对in和between操作符，多个值时使用逗号分开：1,2,3,4,key="id_in",value="1,2,3,4";
 	 * @param value 是字符串
 	 */
 	public static WhereInfo parse(final String key,final String value) {
-		if (StringUtils.isBlank(value)) {
-			return null;
-		}
+//		if (StringUtils.isBlank(value)) {
+//			return null;
+//		}
 		
 //		int last=key.lastIndexOf('_');
 //		if(last==-1){
@@ -149,11 +150,14 @@ public class WhereInfo  implements Serializable{
 	
 	private static Object[] parseKeyValue(String key,String value){
 		int last=key.lastIndexOf('_');
-		if(last==-1){
+		if(last==-1 && value!=null){
 			//默认是等于号
 			key=key+"_eq";
 			last=key.lastIndexOf('_');
 			//throw new IllegalArgumentException(key + " is not a valid whereinfo name");
+		} else if(last==-1 && value==null){
+			key=key+"_isnull";
+			last=key.lastIndexOf('_');
 		}
 		
 		Object[] names = new Object[3];//.split(key, "_");

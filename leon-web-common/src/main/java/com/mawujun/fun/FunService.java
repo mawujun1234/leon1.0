@@ -26,7 +26,7 @@ public class FunService extends BaseRepository<Fun, String> {
 //	@Autowired
 //	private FunRepository funRepository;
 	@Autowired
-	private MenuItemRepository menuItemRepository;
+	private MenuItemService menuItemService;
 	
 //	@Override
 //	public BaseRepository<Fun, String> getRepository() {
@@ -45,7 +45,7 @@ public class FunService extends BaseRepository<Fun, String> {
 		
 		WhereInfo whereinfoItem=WhereInfo.parse("fun.id", entity.getId());
 		WhereInfo whereinfoItem1=WhereInfo.parse("menu.id", Menu.default_id);
-		List<MenuItem> menuItems= menuItemRepository.query(whereinfoItem,whereinfoItem1);
+		List<MenuItem> menuItems= menuItemService.query(whereinfoItem,whereinfoItem1);
 		if(menuItems!=null && menuItems.size()>1){
 			StringBuilder builder=new StringBuilder();
 			for(MenuItem menuItem:menuItems){
@@ -53,7 +53,7 @@ public class FunService extends BaseRepository<Fun, String> {
 			}
 			throw new BussinessException("有菜单挂钩，不能删除。<br/>"+builder);
 		} else if(menuItems.size()==1){
-			menuItemRepository.delete(menuItems.get(0));
+			menuItemService.delete(menuItems.get(0));
 		}
 		//MenuItem menuItem=menuItemRepository.queryUnique(whereinfoItem,whereinfoItem1);
 		//menuItemRepository.deleteBatch(whereinfoItem,whereinfoItem1);
@@ -72,30 +72,20 @@ public class FunService extends BaseRepository<Fun, String> {
 		return newReportCode;
 	}
 	public void create(Fun entity) {
-		Fun parent=this.get(entity.getParent().getId());
-		if(parent.getFunEnum()==FunEnum.fun){
+		Fun parent=entity.getParent()==null?null:this.get(entity.getParent().getId());
+		if(parent!=null && parent.getFunEnum()==FunEnum.fun){
 			throw new BussinessException("功能不能增加下级节点");
 		}
+		entity.setParent(parent);
 //		//获取父节点的reportcode
 //		WhereInfo whereinfo=WhereInfo.parse("parent.id", entity.getParent().getId());
 //		Object reportCode=funRepository.queryMax("reportCode",whereinfo);
 //		String newReportCode=ReportCodeHelper.generate3((String)reportCode);
-		entity.setReportCode(getMaxReportCode(entity.getParent().getId()));
+		entity.setReportCode(getMaxReportCode(entity.getParent()==null?null:entity.getParent().getId()));
 		
-		this.create(entity);
+		super.create(entity);
 		
-		//获取对应的父菜单,获取第一个匹配的菜单
-		WhereInfo whereinfoItem=WhereInfo.parse("fun.id", entity.getParent().getId());
-		WhereInfo whereinfoItem1=WhereInfo.parse("menu.id", Menu.default_id);
-		MenuItem menuparent=menuItemRepository.queryUnique(whereinfoItem,whereinfoItem1);
-		
-		MenuItem menuitem=new MenuItem();
-		menuitem.setText(entity.getText());
-		menuitem.setReportCode(entity.getReportCode());
-		menuitem.setFun(entity);
-		menuitem.setParent(menuparent);
-		menuitem.setMenu(new Menu(Menu.default_id));
-		menuItemRepository.create(menuitem);
+		menuItemService.create(entity);
 	}
 	
 	public void update(Fun entity,Boolean isUpdateParent,String oldParent_id) {	
@@ -106,23 +96,23 @@ public class FunService extends BaseRepository<Fun, String> {
 			 //首先获取在菜单树种，原来所挂的父菜单项
 			WhereInfo whereinfoItem=WhereInfo.parse("fun.id", entity.getParent().getId());
 			WhereInfo whereinfoItem1=WhereInfo.parse("menu.id", Menu.default_id);
-			MenuItem parent_menuItem=menuItemRepository.queryUnique(whereinfoItem,whereinfoItem1);
+			MenuItem parent_menuItem=menuItemService.queryUnique(whereinfoItem,whereinfoItem1);
 			
 			WhereInfo whereinfoItem11=WhereInfo.parse("fun.id", entity.getId());
 			WhereInfo whereinfoItem111=WhereInfo.parse("menu.id", Menu.default_id);
-			MenuItem menuItem=menuItemRepository.queryUnique(whereinfoItem11,whereinfoItem111);
+			MenuItem menuItem=menuItemService.queryUnique(whereinfoItem11,whereinfoItem111);
 			menuItem.setParent(parent_menuItem);
-			menuItemRepository.update(menuItem);
+			menuItemService.update(menuItem);
 			
 		} else {
 			super.update(entity);
 			
 			WhereInfo whereinfoItem=WhereInfo.parse("fun.id", entity.getId());
 			WhereInfo whereinfoItem1=WhereInfo.parse("menu.id", Menu.default_id);
-			MenuItem menuItem=menuItemRepository.queryUnique(whereinfoItem,whereinfoItem1);
+			MenuItem menuItem=menuItemService.queryUnique(whereinfoItem,whereinfoItem1);
 			menuItem.setText(entity.getText());
 			menuItem.setReportCode(entity.getReportCode());
-			menuItemRepository.update(menuItem);
+			menuItemService.update(menuItem);
 		}
 		
 		
