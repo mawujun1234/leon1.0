@@ -244,6 +244,7 @@ Ext.define('Leon.common.ux.BaseTree', {
 			me.tbar={
 				itemId:'action_toolbar',
 				items:actions
+				,autoScroll:true
 			};
 		}
 		var menu=Ext.create('Ext.menu.Menu', {

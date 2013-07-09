@@ -1,3 +1,4 @@
+Ext.require('Ext.ux.IFrame');
 Ext.define('Leon.desktop.Desktop', {
 	//extend: 'Ext.container.Viewport',
 	extend: 'Ext.panel.Panel',
@@ -216,7 +217,16 @@ Ext.define('Leon.desktop.Desktop', {
 			win=Ext.create('Leon.desktop.Window',cfg);
 			me.configWindow(win,cfg);
 
-			win.show();
+			if(me.lastXy){
+				win.showAt(me.lastXy[0]+20,me.lastXy[1]+20);
+			} else {
+				win.show();
+			}
+			win.on("show",function(win){
+				me.lastXy=win.getPosition( );
+				//console.dir(me.lastXy);
+			});
+			
 			return win;
 		}
 

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mawujun.exception.BussinessException;
 import com.mawujun.fun.Fun;
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.service.BaseService;
@@ -52,6 +53,21 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 		menuitem.setParent(menuparent);
 		menuitem.setMenu(new Menu(Menu.default_id));
 		super.create(menuitem);
+	}
+	
+	public void delete(Fun fun) {
+		WhereInfo whereinfoItem=WhereInfo.parse("fun.id", fun.getId());
+		WhereInfo whereinfoItem1=WhereInfo.parse("menu.id", Menu.default_id);
+		List<MenuItem> menuItems= this.query(whereinfoItem,whereinfoItem1);
+		if(menuItems!=null && menuItems.size()>1){
+			StringBuilder builder=new StringBuilder();
+			for(MenuItem menuItem:menuItems){
+				builder.append(menuItem.getMenu().getText()+":"+menuItem.getText()+";");
+			}
+			throw new BussinessException("有菜单挂钩，不能删除。<br/>"+builder);
+		} else if(menuItems.size()==1){
+			this.delete(menuItems.get(0));
+		}
 	}
 	
 	public List<Map<String,Object>> query4Desktop(String menuId) {

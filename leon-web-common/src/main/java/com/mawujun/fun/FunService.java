@@ -2,6 +2,7 @@ package com.mawujun.fun;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,29 +38,29 @@ public class FunService extends BaseRepository<Fun, String> {
 	@Override
 	public void delete(Fun entity) {
 		//判断是否具有子节点
-		WhereInfo whereinfo=WhereInfo.parse("parent.id", entity.getId());
-		int childs=this.queryCount(whereinfo);
+		//WhereInfo whereinfo=WhereInfo.parse("parent.id", entity.getId());
+		//int childs=this.queryCount(whereinfo);
+		Fun fun=this.get(entity.getId());//Fun缓存了
+		int childs=fun.getChildren().size();
 		if(childs>0){
 			throw new BussinessException("存在子节点，不能删除。",WebCommonExceptionCode3.EXISTS_CHILDREN);
 		}
 		
-		WhereInfo whereinfoItem=WhereInfo.parse("fun.id", entity.getId());
-		WhereInfo whereinfoItem1=WhereInfo.parse("menu.id", Menu.default_id);
-		List<MenuItem> menuItems= menuItemService.query(whereinfoItem,whereinfoItem1);
-		if(menuItems!=null && menuItems.size()>1){
-			StringBuilder builder=new StringBuilder();
-			for(MenuItem menuItem:menuItems){
-				builder.append(menuItem.getMenu().getText()+":"+menuItem.getText()+";");
-			}
-			throw new BussinessException("有菜单挂钩，不能删除。<br/>"+builder);
-		} else if(menuItems.size()==1){
-			menuItemService.delete(menuItems.get(0));
-		}
-		//MenuItem menuItem=menuItemRepository.queryUnique(whereinfoItem,whereinfoItem1);
-		//menuItemRepository.deleteBatch(whereinfoItem,whereinfoItem1);
+//		WhereInfo whereinfoItem=WhereInfo.parse("fun.id", fun.getId());
+//		WhereInfo whereinfoItem1=WhereInfo.parse("menu.id", Menu.default_id);
+//		List<MenuItem> menuItems= menuItemService.query(whereinfoItem,whereinfoItem1);
+//		if(menuItems!=null && menuItems.size()>1){
+//			StringBuilder builder=new StringBuilder();
+//			for(MenuItem menuItem:menuItems){
+//				builder.append(menuItem.getMenu().getText()+":"+menuItem.getText()+";");
+//			}
+//			throw new BussinessException("有菜单挂钩，不能删除。<br/>"+builder);
+//		} else if(menuItems.size()==1){
+//			menuItemService.delete(menuItems.get(0));
+//		}
+		menuItemService.delete(fun);
 		
-		
-		super.delete(entity);
+		super.delete(fun);
 		
 		
 	}
@@ -86,25 +87,33 @@ public class FunService extends BaseRepository<Fun, String> {
 		super.create(entity);
 		
 		menuItemService.create(entity);
+		parent.addChild(entity);
 	}
-	
+	/**
+	 * 
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param entity
+	 * @param isUpdateParent 表示更改父节点 暂时注释掉了
+	 * @param oldParent_id
+	 */
 	public void update(Fun entity,Boolean isUpdateParent,String oldParent_id) {	
-		if(isUpdateParent!=null && isUpdateParent==true){
-			entity.setReportCode(getMaxReportCode(entity.getParent().getId()));
-			super.update(entity);
-			
-			 //首先获取在菜单树种，原来所挂的父菜单项
-			WhereInfo whereinfoItem=WhereInfo.parse("fun.id", entity.getParent().getId());
-			WhereInfo whereinfoItem1=WhereInfo.parse("menu.id", Menu.default_id);
-			MenuItem parent_menuItem=menuItemService.queryUnique(whereinfoItem,whereinfoItem1);
-			
-			WhereInfo whereinfoItem11=WhereInfo.parse("fun.id", entity.getId());
-			WhereInfo whereinfoItem111=WhereInfo.parse("menu.id", Menu.default_id);
-			MenuItem menuItem=menuItemService.queryUnique(whereinfoItem11,whereinfoItem111);
-			menuItem.setParent(parent_menuItem);
-			menuItemService.update(menuItem);
-			
-		} else {
+
+//		if(isUpdateParent!=null && isUpdateParent==true){
+//			entity.setReportCode(getMaxReportCode(entity.getParent().getId()));
+//			super.update(entity);
+//			
+//			 //首先获取在菜单树种，原来所挂的父菜单项
+//			WhereInfo whereinfoItem=WhereInfo.parse("fun.id", entity.getParent().getId());
+//			WhereInfo whereinfoItem1=WhereInfo.parse("menu.id", Menu.default_id);
+//			MenuItem parent_menuItem=menuItemService.queryUnique(whereinfoItem,whereinfoItem1);
+//			
+//			WhereInfo whereinfoItem11=WhereInfo.parse("fun.id", entity.getId());
+//			WhereInfo whereinfoItem111=WhereInfo.parse("menu.id", Menu.default_id);
+//			MenuItem menuItem=menuItemService.queryUnique(whereinfoItem11,whereinfoItem111);
+//			menuItem.setParent(parent_menuItem);
+//			menuItemService.update(menuItem);
+//			
+//		} else {
 			super.update(entity);
 			
 			WhereInfo whereinfoItem=WhereInfo.parse("fun.id", entity.getId());
@@ -113,7 +122,7 @@ public class FunService extends BaseRepository<Fun, String> {
 			menuItem.setText(entity.getText());
 			menuItem.setReportCode(entity.getReportCode());
 			menuItemService.update(menuItem);
-		}
+//		}
 		
 		
 	}
@@ -122,7 +131,7 @@ public class FunService extends BaseRepository<Fun, String> {
 	 * 构建出整颗树
 	 */
 	public List<Fun> queryAll() {
-		WhereInfo whereinfo=WhereInfo.parse("parent.id_isnull", "root");
+		WhereInfo whereinfo=WhereInfo.parse("parent.id_isnull", null);
 		List<Fun> funes=this.query(whereinfo);
 		recursionFun(funes);
 		return funes;
