@@ -4,7 +4,7 @@ Ext.onReady(function(){
 	//alert(1);
 	Ext.Ajax.request({
 		//url:'/menuItem/query4Desktop?menuId=default',
-		url:'/menuItem/query?menuId=default&id=default',
+		url:'/menuItem/query4Desktop?menuId=default',
 		headers:{ 'Accept':'application/json;'},
 		success:function(response){
 			var obj=Ext.decode(response.responseText);

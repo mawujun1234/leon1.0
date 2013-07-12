@@ -11,12 +11,16 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Null;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import com.mawujun.annotation.Label;
 import com.mawujun.fun.Fun;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
 @Entity
 @Table(name="leon_menuItem")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)  
 public class MenuItem extends UUIDEntity {
 
 	/**
@@ -47,6 +51,7 @@ public class MenuItem extends UUIDEntity {
 	@ManyToOne(fetch=FetchType.LAZY)
 	private MenuItem parent;
 	@OneToMany(mappedBy="parent",fetch=FetchType.LAZY)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)  
 	private List<MenuItem> children=new ArrayList<MenuItem>();
 	
 	public void addChild(MenuItem child) {

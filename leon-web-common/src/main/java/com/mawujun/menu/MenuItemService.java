@@ -32,6 +32,8 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 		String newReportCode=ReportCodeHelper.generate3((String)reportCode);
 		entity.setReportCode(newReportCode);
 		
+		entity.setParent(entity.getParent()==null?null:this.get(entity.getParent().getId()));
+		
 		super.create(entity);
 	}
 	/**
@@ -65,16 +67,30 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 				builder.append(menuItem.getMenu().getText()+":"+menuItem.getText()+";");
 			}
 			throw new BussinessException("有菜单挂钩，不能删除。<br/>"+builder);
-		} else if(menuItems.size()==1){
+		} else if(menuItems.size()==1){	
 			this.delete(menuItems.get(0));
 		}
 	}
 	
-	public List<Map<String,Object>> query4Desktop(String menuId) {
+	public List<MenuItem> query4Desktop(String menuId) {
 		//根据mybatis去查询
 		Map params=new HashMap();
 		params.put("menu_id", menuId);
-		return super.queryList("query4Desktop", params);
+		//https://github.com/DozerMapper/dozer
+		在这里就直接转换成桌面需要用的格式，具有menu，和items等数据
+		
+		return (List<MenuItem>)super.queryListT("query4Desktop", params);
+	}
+	
+	public void initCache(){
+		List<MenuItem> menuItems=super.queryAll();//super.query(whereinfo);
+		for(MenuItem menuItem:menuItems){
+			//if(fun.getFunEnum()==FunEnum.fun){
+			super.initLazyProperty(menuItem.getMenu());
+			super.initLazyProperty(menuItem.getParent());
+			super.initLazyProperty(menuItem.getChildren());
+			//}	
+		}
 	}
 
 }

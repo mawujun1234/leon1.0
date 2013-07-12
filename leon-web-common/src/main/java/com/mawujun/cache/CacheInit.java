@@ -2,6 +2,7 @@ package com.mawujun.cache;
 
 import com.mawujun.controller.spring.SpringContextHolder;
 import com.mawujun.fun.FunService;
+import com.mawujun.menu.MenuItemService;
 import com.mawujun.role.RoleService;
 
 public class CacheInit {
@@ -13,5 +14,8 @@ public class CacheInit {
 		
 		FunService funService=(FunService)SpringContextHolder.getBean(FunService.class);
 		funService.initCache();
+		
+		MenuItemService menuItemService=(MenuItemService)SpringContextHolder.getBean(MenuItemService.class);
+		menuItemService.initCache();
 	}
 }

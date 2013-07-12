@@ -9,7 +9,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<select id="query4Desktop" resultType="com.mawujun.menu.MenuItem" parameterType="map">
     	SELECT *
 	    FROM leon_MenuItem 
-		where menu_id=#{menu_id}  
+		where menu_id=#{menu_id}  and fun_id is not null
 		order by reportCode
     </select>
 	<!-- select语句的生成结束=============================================================================================== -->

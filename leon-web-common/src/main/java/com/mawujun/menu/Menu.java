@@ -4,11 +4,15 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import com.mawujun.annotation.Label;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
 @Entity
 @Table(name="leon_menu")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)  
 public class Menu  extends UUIDEntity{
 	public final static String default_id="default";
 	/**

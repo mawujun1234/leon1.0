@@ -50,11 +50,11 @@ public class MenuItemController {
 	 */
 	@RequestMapping("/menuItem/query4Desktop")
 	@ResponseBody
-	public List<Map<String,Object>> query4Desktop(String menuId){		
+	public List<MenuItem> query4Desktop(String menuId){		
 		//这里没有进行上下级的组装，所以界面上出现了3个菜单
 		//WhereInfo menuIdwhereinfo=WhereInfo.parse("menu.id", menuId);
 		//List<MenuItem> funes=menuItemService.query(menuIdwhereinfo);
-		List<Map<String,Object>> menuItems=menuItemService.query4Desktop(menuId);
+		List<MenuItem> menuItems=menuItemService.query4Desktop(menuId);
 		return menuItems;
 	}
 	
