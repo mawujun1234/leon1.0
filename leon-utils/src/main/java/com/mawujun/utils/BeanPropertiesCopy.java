@@ -34,7 +34,7 @@ import com.google.common.collect.Lists;
  * 
  * @author calvin
  */
-public abstract class BeanMapper {
+public abstract class BeanPropertiesCopy {
 
 	/**
 	 * 持有Dozer单例, 避免重复创建DozerMapper消耗资源.
@@ -45,14 +45,14 @@ public abstract class BeanMapper {
 	 * 基于Dozer转换对象的类型.
 	 * 主要用于对象之间进行拷贝
 	 */
-	public static <T> T map(Object source, Class<T> destinationClass) {
+	public static <T> T copy(Object source, Class<T> destinationClass) {
 		return dozer.map(source, destinationClass);
 	}
 
 	/**
 	 * 基于Dozer转换Collection中对象的类型.
 	 */
-	public static <T> List<T> mapList(Collection sourceList, Class<T> destinationClass) {
+	public static <T> List<T> copyList(Collection sourceList, Class<T> destinationClass) {
 		List<T> destinationList = Lists.newArrayList();
 		for (Object sourceObject : sourceList) {
 			T destinationObject = dozer.map(sourceObject, destinationClass);

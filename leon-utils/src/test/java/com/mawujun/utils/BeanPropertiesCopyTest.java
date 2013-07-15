@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import org.dozer.Mapping;
 import org.junit.Test;
@@ -13,9 +14,23 @@ import org.junit.Test;
  * 并且能完美解决循环依赖问题。
  * 使用@Mapping能解决属性名不匹配的情况.
  */
-public class BeanMapperTest {
+public class BeanPropertiesCopyTest {
 
-	
+	@Test  
+	 public void testBeanToMap() throws Exception {
+		 
+		//ProductDTO productDTO = new ProductDTO();
+		
+		//ProductDTO->Product
+		Product product = new Product();
+		product.setProductName("car");
+		
+
+		Map aa=BeanPropertiesCopy.copy(product, Map.class);
+		
+		assertEquals("car", aa.get("productName"));
+		//assertEquals((Double)1000d, product.getPrice());
+	 }
 
 	 @Test  
 	 public void testCopyExcludeNull() throws Exception {
@@ -27,42 +42,42 @@ public class BeanMapperTest {
 		product.setProductName("car");
 		
 
-		BeanMapper.copyExcludeNull(productDTO, product);
+		BeanPropertiesCopy.copyExcludeNull(productDTO, product);
 		
 		assertEquals("car", product.getProductName());
 		//assertEquals((Double)1000d, product.getPrice());
 	 }
 	 @Test
 	 public void testconvertToObject(){
-		 String sdf=(String)BeanMapper.convert("sdf", String.class);
+		 String sdf=(String)BeanPropertiesCopy.convert("sdf", String.class);
 		 assertEquals("sdf", sdf);
-		 Integer integer=(Integer)BeanMapper.convert(new BigDecimal(10.125), Integer.class);
+		 Integer integer=(Integer)BeanPropertiesCopy.convert(new BigDecimal(10.125), Integer.class);
 		 assertEquals(new Integer(10), integer);
 		 //Integer.parseInt("10.125");
-		 Integer integer1=(Integer)BeanMapper.convert("10.125", Integer.class);
+		 Integer integer1=(Integer)BeanPropertiesCopy.convert("10.125", Integer.class);
 		 assertEquals(new Integer(0), integer1);//
-		 Integer integer2=(Integer)BeanMapper.convert(new BigDecimal(10.125), Integer.class);
+		 Integer integer2=(Integer)BeanPropertiesCopy.convert(new BigDecimal(10.125), Integer.class);
 		 assertEquals(new Integer(10), integer2);//
 		 
 		 
 		 
 		 
 		 
-		 Double doubl=(Double)BeanMapper.convert(new BigDecimal(10.125), Double.class);
+		 Double doubl=(Double)BeanPropertiesCopy.convert(new BigDecimal(10.125), Double.class);
 		 assertEquals(new Double(10.125), doubl); 
-		 Double doubl1=(Double)BeanMapper.convert("10.125", Double.class);
+		 Double doubl1=(Double)BeanPropertiesCopy.convert("10.125", Double.class);
 		 assertEquals(new Double(10.125), doubl1);
 		 
-		 BigDecimal bigDecimal=(BigDecimal)BeanMapper.convert(10.125, BigDecimal.class);
+		 BigDecimal bigDecimal=(BigDecimal)BeanPropertiesCopy.convert(10.125, BigDecimal.class);
 		 assertEquals(new BigDecimal(10.125), bigDecimal);
-		 BigDecimal bigDecimal1=(BigDecimal)BeanMapper.convert("10.125", BigDecimal.class);
+		 BigDecimal bigDecimal1=(BigDecimal)BeanPropertiesCopy.convert("10.125", BigDecimal.class);
 		 assertEquals(new BigDecimal(10.125), bigDecimal1);
 	 }
 	 
 	 @Test
 	 public void testconvertToArray(){
 		 String[] strArray={"1","2","3"};
-		 Object obj=BeanMapper.convert(strArray, Integer.class);
+		 Object obj=BeanPropertiesCopy.convert(strArray, Integer.class);
 		 assertEquals(new Integer(1), ((Object[])obj)[0]);
 		 assertEquals(new Integer(2), ((Object[])obj)[1]);
 		 assertEquals(new Integer(3), ((Object[])obj)[2]);	 
@@ -85,7 +100,7 @@ public class BeanMapperTest {
 		productDTO.setParts(new PartDTO[] { partDTO });
 
 		//ProductDTO->Product
-		Product product = BeanMapper.map(productDTO, Product.class);
+		Product product = BeanPropertiesCopy.copy(productDTO, Product.class);
 
 		assertEquals("car", product.getProductName());
 		//原来的字符串被Map成Double。
@@ -96,7 +111,7 @@ public class BeanMapperTest {
 		assertEquals("car", product.getParts().get(0).getProduct().getProductName());
 
 		//再反向从Product->ProductDTO
-		ProductDTO productDTO2 = BeanMapper.map(product, ProductDTO.class);
+		ProductDTO productDTO2 = BeanPropertiesCopy.copy(product, ProductDTO.class);
 		assertEquals("car", productDTO2.getName());
 		assertEquals("200.0", productDTO2.getPrice());
 		assertEquals("door", productDTO2.getParts()[0].getName());
@@ -122,7 +137,7 @@ public class BeanMapperTest {
 		product.setProductName("horse");
 		product.setWeight(new Double(20));
 
-		BeanMapper.copy(productDTO, product);
+		BeanPropertiesCopy.copy(productDTO, product);
 
 		//原来的horse，被替换成car
 		assertEquals("car", product.getProductName());

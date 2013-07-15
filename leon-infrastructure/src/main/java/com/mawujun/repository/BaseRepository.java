@@ -406,7 +406,13 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 	public List<T> queryListT(final String statement,final Map params) {
 		return (List<T>)this.getMybatisRepository().selectList(supplyNamespace(statement),params);
 	}
+	public List<T> queryListT(final String statement,final Object params) {
+		return (List<T>)this.getMybatisRepository().selectList(supplyNamespace(statement),params);
+	}
 
+	public List<Object> queryList(final String statement,final Object params) {
+		return this.getMybatisRepository().selectListObj(supplyNamespace(statement),params);
+	}
 	public HibernateDao<T, ID> getHibernateDao() {
 		return hibernateDao;
 	}

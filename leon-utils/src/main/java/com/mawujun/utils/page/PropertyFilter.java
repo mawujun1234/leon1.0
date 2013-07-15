@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.util.WebUtils;
 
 import com.mawujun.utils.AssertUtils;
-import com.mawujun.utils.BeanMapper;
+import com.mawujun.utils.BeanPropertiesCopy;
 import com.mawujun.utils.StringUtils;
 
 
@@ -81,7 +81,7 @@ public class PropertyFilter {
 		AssertUtils.isTrue(StringUtils.isNotBlank(propertyNameStr), "filter名称" + filterName + "没有按规则编写,无法得到属性名称.");
 		propertyNames = StringUtils.splitByWholeSeparator(propertyNameStr, PropertyFilter.OR_SEPARATOR);
 
-		this.matchValue = BeanMapper.convert(value, propertyClass);
+		this.matchValue = BeanPropertiesCopy.convert(value, propertyClass);
 	}
 
 	/**

@@ -88,5 +88,13 @@
 	  <scope>system</scope>
 	  <systemPath>${basedir}/lib/freemarker.jar</systemPath>
 	</dependency>
+	
+	<dependency>
+		<groupId>log4jdbc4-1.2.jar</groupId>
+		<artifactId>log4jdbc3</artifactId>
+		<version>1.2.1</version>
+		<scope>system</scope>
+		<systemPath>${basedir}/lib/log4jdbc4-1.2.jar</systemPath>
+	</dependency>
   </dependencies>
 </project>

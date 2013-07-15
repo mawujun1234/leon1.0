@@ -1,9 +1,11 @@
 package com.mawujun.menu;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -13,6 +15,7 @@ import com.mawujun.exception.BussinessException;
 import com.mawujun.fun.Fun;
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.service.BaseService;
+import com.mawujun.utils.BeanPropertiesCopy;
 import com.mawujun.utils.help.ReportCodeHelper;
 import com.mawujun.utils.page.WhereInfo;
 
@@ -73,12 +76,75 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 	}
 	
 	public List<MenuItem> query4Desktop(String menuId) {
-		//根据mybatis去查询
-		Map params=new HashMap();
-		params.put("menu_id", menuId);
-		//https://github.com/DozerMapper/dozer
-		在这里就直接转换成桌面需要用的格式，具有menu，和items等数据
 		
+		//https://github.com/DozerMapper/dozer
+		//在这里就直接转换成桌面需要用的格式，具有menu，和items等数据
+		//dozer 可以把对象拷贝为map。过滤属性
+		
+		//BeanMapper.convert(value, MenuItemVO.class);
+		
+		
+		List<Object> funIdRoleIds = super.queryList("query4Desktop", menuId);
+		// 组装出role树
+		Map<String,MenuItemVO> parentKeys=new HashMap<String,MenuItemVO>();
+		List<MenuItemVO> rootFuns = new ArrayList<MenuItemVO>();
+		for (Object menuItemIdObj: funIdRoleIds) {
+			String menuItemId=(String)menuItemIdObj;
+			//funes.add(funService.get(funId.toString()));
+			
+			
+			//String role_id=funMap.get("ROLE_ID").toString();
+			MenuItem leaf=this.get(menuItemId);
+			
+			if(parentKeys.get(leaf.getId()) !=null){//表示这个功能能已经添加过了
+				Fun fun=parentKeys.get(leaf.getId());
+				fun.addRoleName(roleService.get(role_id).getName());
+				continue;
+			}
+			Fun fun=new Fun();
+			BeanUtils.copyProperties(leaf, fun, new String[]{"children","parent"});
+			fun.addRoleName(roleService.get(role_id).getName());
+			
+			if(leaf.getParent()!=null){
+				List<Fun> ancestores=leaf.findAncestors();
+				int i=0;
+				for(Fun ancestor:ancestores){
+					Fun ancestorNew=null;
+					if(parentKeys.containsKey(ancestor.getId())){
+						ancestorNew=parentKeys.get(ancestor.getId());
+					} else {
+						ancestorNew=new Fun();
+						BeanUtils.copyProperties(ancestor, ancestorNew, new String[]{"children","parent"});
+						ancestorNew.setExpanded(true);
+						parentKeys.put(ancestorNew.getId(), ancestorNew);
+						if(ancestorNew.isLeaf()){
+							ancestorNew.addRoleName(roleService.get(role_id).getName());
+						}
+					}
+					if(i==0){
+						
+						ancestorNew.addChild(fun);
+					} else {
+						ancestorNew.addChild(parentKeys.get(ancestores.get(i-1).getId()));
+					}
+					i++;
+					if(i==ancestores.size() && !rootFuns.contains(ancestorNew)){
+						//添加从哪个角色来
+						//ancestorNew.addRoleName(roleService.get(role_id).getName());
+						rootFuns.add(ancestorNew);
+					}
+				}
+			} else {
+				
+				rootFuns.add(fun);
+				parentKeys.put(fun.getId(), fun);
+			}
+			
+		}
+		
+		//根据mybatis去查询
+				Map params=new HashMap();
+				params.put("menu_id", menuId);
 		return (List<MenuItem>)super.queryListT("query4Desktop", params);
 	}
 	

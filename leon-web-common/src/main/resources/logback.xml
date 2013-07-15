@@ -41,33 +41,25 @@
     </encoder>
   </appender>
   
-  <logger name="jdbc.connection" additivity="false" level="FATAL">
-    <appender-ref ref="connection"/>
-  </logger>
+
   
  
   <logger name="org.hibernate.engine.query" level="debug"/>
   <logger name="org.hibernate.SQL" level="debug"/>
-  <logger name="jdbc.audit" additivity="false" level="INFO">
-    <appender-ref ref="jdbc"/>
-  </logger>
-  <logger name="jdbc.sqlonly" additivity="false" level="DEBUG">
-    <appender-ref ref="sql"/>
-  </logger>
   
-  <logger name="jdbc.resultset" additivity="false" level="OFF"/>
-    <logger name="org.hibernate.cache" level="debug"/>
-  <logger name="jdbc.sqltiming" additivity="false" level="DEBUG">
-    <appender-ref ref="sqltiming"/>
-  </logger>
+  
+ 
+  <logger name="org.hibernate.cache" level="debug"/>
+  
   <logger name="org.hibernate.jdbc" level="debug"/>
   <logger name="org.hibernate" level="debug"/>
   <logger name="org.hibernate.transaction" level="debug"/>
   <logger name="org.hibernate.type" level="debug"/>
   <logger name="org.hibernate.tool.hbm2ddl" level="debug"/>
-    <logger name="org.hibernate.pretty" level="debug"/>
+  <logger name="org.hibernate.pretty" level="debug"/>
   
   
+  <!--
   <logger name="com.ibatis" level="DEBUG">
   	<appender-ref ref="stdout" />  
   </logger>
@@ -77,9 +69,23 @@
   <logger name="java.sql.Connection" level="DEBUG"/>
   <logger name="java.sql.PreparedStatement" level="DEBUG"/>
   <logger name="com.ibatis.common.jdbc.SimpleDataSource" level="info"/>
+  -->
   
+  <!-- log4jdbc-->
+  <logger name="jdbc.connection" additivity="false" level="OFF">
+    <appender-ref ref="connection"/>
+  </logger>
+  <logger name="jdbc.sqltiming" additivity="false" level="OFF">
+    <appender-ref ref="sqltiming"/>
+  </logger>
+  <logger name="jdbc.audit" additivity="false" level="OFF">
+    <appender-ref ref="jdbc"/>
+  </logger>
+  <logger name="jdbc.sqlonly" additivity="false" level="DEBUG">
+    <appender-ref ref="sql"/>
+  </logger>
+   <logger name="jdbc.resultset" additivity="false" level="OFF"/>
   
- 
   <root level="warn">
     <appender-ref ref="stdout"/>
     <appender-ref ref="file"/>

@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mawujun.utils.AssertUtils;
-import com.mawujun.utils.BeanMapper;
+import com.mawujun.utils.BeanPropertiesCopy;
 import com.mawujun.utils.ReflectionUtils;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
@@ -303,8 +303,8 @@ public class HibernateDao<T, ID extends Serializable>{
 			 if(whereInfo.getOp().equals(Operation.BETWEEN)){
 				 Type type=classMetadata.getPropertyType(whereInfo.getProperty());
 				 
-				 query.setParameter(whereInfo.getPropertyTrans()+"0",  BeanMapper.convert(((Object[])whereInfo.getValue())[0],type.getReturnedClass()));
-				 query.setParameter(whereInfo.getPropertyTrans()+"1",  BeanMapper.convert(((Object[])whereInfo.getValue())[1],type.getReturnedClass()));
+				 query.setParameter(whereInfo.getPropertyTrans()+"0",  BeanPropertiesCopy.convert(((Object[])whereInfo.getValue())[0],type.getReturnedClass()));
+				 query.setParameter(whereInfo.getPropertyTrans()+"1",  BeanPropertiesCopy.convert(((Object[])whereInfo.getValue())[1],type.getReturnedClass()));
 			} else if(whereInfo.getOp().equals(Operation.IN)){
 
 //				Type type=classMetadata.getPropertyType(whereInfo.getProperty());
@@ -313,12 +313,12 @@ public class HibernateDao<T, ID extends Serializable>{
 //				for(int i=0;i<old.length;i++){
 //					aaa[i]= BeanMapper.convert(old[i], type.getReturnedClass());
 //				}
-				Object obj1=BeanMapper.convert((String[])whereInfo.getValue(), Integer.class);
+				Object obj1=BeanPropertiesCopy.convert((String[])whereInfo.getValue(), Integer.class);
 				query.setParameterList(whereInfo.getPropertyTrans(),(Object[])obj1);
 			}else {	
 				Type type=classMetadata.getPropertyType(whereInfo.getProperty());
 				//ClassUtils.isPrimitiveOrWrapper(type)
-				query.setParameter(whereInfo.getPropertyTrans(), BeanMapper.convert(whereInfo.getValue(), type.getReturnedClass()));
+				query.setParameter(whereInfo.getPropertyTrans(), BeanPropertiesCopy.convert(whereInfo.getValue(), type.getReturnedClass()));
 			}
 			 
 		}
@@ -778,7 +778,7 @@ public class HibernateDao<T, ID extends Serializable>{
 		Criterion criterion = null;
 		switch(whereInfo.getOp()){
 		case EQ:
-			criterion = Restrictions.eq(whereInfo.getPropertyToDefault(), BeanMapper.convert(whereInfo.getValue(), type.getReturnedClass()));
+			criterion = Restrictions.eq(whereInfo.getPropertyToDefault(), BeanPropertiesCopy.convert(whereInfo.getValue(), type.getReturnedClass()));
 			break;
 		case LIKE:
 			criterion = Restrictions.like(whereInfo.getPropertyToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.ANYWHERE);
@@ -799,16 +799,16 @@ public class HibernateDao<T, ID extends Serializable>{
 			criterion = Restrictions.ilike(whereInfo.getPropertyToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.END);
 			break;
 		case LE:
-			criterion = Restrictions.le(whereInfo.getPropertyToDefault(), BeanMapper.convert(whereInfo.getValue(), type.getReturnedClass()));
+			criterion = Restrictions.le(whereInfo.getPropertyToDefault(), BeanPropertiesCopy.convert(whereInfo.getValue(), type.getReturnedClass()));
 			break;
 		case LT:
-			criterion = Restrictions.lt(whereInfo.getPropertyToDefault(), BeanMapper.convert(whereInfo.getValue(), type.getReturnedClass()));
+			criterion = Restrictions.lt(whereInfo.getPropertyToDefault(), BeanPropertiesCopy.convert(whereInfo.getValue(), type.getReturnedClass()));
 			break;
 		case GE:
-			criterion = Restrictions.ge(whereInfo.getPropertyToDefault(), BeanMapper.convert(whereInfo.getValue(), type.getReturnedClass()));
+			criterion = Restrictions.ge(whereInfo.getPropertyToDefault(), BeanPropertiesCopy.convert(whereInfo.getValue(), type.getReturnedClass()));
 			break;
 		case GT:
-			criterion = Restrictions.gt(whereInfo.getPropertyToDefault(), BeanMapper.convert(whereInfo.getValue(), type.getReturnedClass()));
+			criterion = Restrictions.gt(whereInfo.getPropertyToDefault(), BeanPropertiesCopy.convert(whereInfo.getValue(), type.getReturnedClass()));
 			break;
 		case ISNULL:
 			criterion =Restrictions.isNull(whereInfo.getPropertyToDefault());
@@ -817,14 +817,14 @@ public class HibernateDao<T, ID extends Serializable>{
 			criterion =Restrictions.isNotNull(whereInfo.getPropertyToDefault());
 			break;
 		case BETWEEN:
-			criterion =Restrictions.between(whereInfo.getPropertyToDefault(),  BeanMapper.convert(((Object[])whereInfo.getValue())[0], type.getReturnedClass()), 
-					BeanMapper.convert(((Object[])whereInfo.getValue())[1], type.getReturnedClass()));
+			criterion =Restrictions.between(whereInfo.getPropertyToDefault(),  BeanPropertiesCopy.convert(((Object[])whereInfo.getValue())[0], type.getReturnedClass()), 
+					BeanPropertiesCopy.convert(((Object[])whereInfo.getValue())[1], type.getReturnedClass()));
 			break;
 		case IN:
 			Object[] old=(Object[])whereInfo.getValue();
 			Object[] aaa=new Object[old.length];
 			for(int i=0;i<old.length;i++){
-				aaa[i]= BeanMapper.convert(old[i], type.getReturnedClass());
+				aaa[i]= BeanPropertiesCopy.convert(old[i], type.getReturnedClass());
 			}
 			criterion =Restrictions.in(whereInfo.getPropertyToDefault(), (Object[])whereInfo.getValue());
 			break;
