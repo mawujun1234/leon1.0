@@ -11,6 +11,7 @@ Ext.defineModel("Leon.desktop.menu.MenuItem",{
 		{name:'scripts',type:'string'},
 		{name:'iconCls',type:'string'},
 		{name:'reportCode',type:'string'},
+		{name:'isAutoCreate',type:'boolean'},
 		{name:'url',type:'string'}//是从功能里面来的
 		,{name:'fun_id',type:'auto'}
 		,{name:'menu_id',type:'auto'}

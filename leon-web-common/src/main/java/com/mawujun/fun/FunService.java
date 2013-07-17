@@ -84,9 +84,10 @@ public class FunService extends BaseRepository<Fun, String> {
 //		String newReportCode=ReportCodeHelper.generate3((String)reportCode);
 		entity.setReportCode(getMaxReportCode(entity.getParent()==null?null:entity.getParent().getId()));
 		
-		super.create(entity);
-		
 		menuItemService.create(entity);
+		
+		super.create(entity);
+
 		parent.addChild(entity);
 	}
 	/**

@@ -25,6 +25,7 @@ class ToJsonConfig {
 	//添加额外的属性
 	public transient Map extProperties;
 	
+	public transient Boolean writeMapNullValue=true;//是否输出为null的内容
 	
 	
 	public String getFilterPropertysName() {
@@ -132,6 +133,12 @@ class ToJsonConfig {
 			this.extProperties=new HashMap();
 		}
 		this.extProperties.put(key, value);
+	}
+	public Boolean getWriteMapNullValue() {
+		return writeMapNullValue;
+	}
+	public void setWriteMapNullValue(Boolean writeMapNullValue) {
+		this.writeMapNullValue = writeMapNullValue;
 	}
 	
 }

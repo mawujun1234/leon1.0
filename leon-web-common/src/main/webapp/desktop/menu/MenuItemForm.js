@@ -207,7 +207,7 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
 //			split: true,
 //			collapsible: true,
 //			title:'功能树',
-			disabledAction:true,
+			autoInitSimpleAction:false,
 			width:400,
 			height:500
 		});

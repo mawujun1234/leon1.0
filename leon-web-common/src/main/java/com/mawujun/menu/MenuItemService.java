@@ -39,6 +39,13 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 		
 		super.create(entity);
 	}
+	public void delete(MenuItem entity) {
+		MenuItem item=this.get(entity.getId());
+		if(item.isAutoCreate()){
+			throw new BussinessException("不能删除自动创建的菜单项。<br/>");
+		}
+		super.delete(item);
+	}
 	/**
 	 * 在默认菜单上创建菜单项
 	 * @author mawujun 16064988@qq.com 
@@ -58,13 +65,25 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 		menuitem.setParent(menuparent);
 		menuitem.setMenu(new Menu(Menu.default_id));
 		super.create(menuitem);
+		fun.setMenuItemId(menuitem.getId());
 	}
 	
+	public void update(Fun fun) {
+//		WhereInfo whereinfoItem=WhereInfo.parse("fun.id", entity.getId());
+//		WhereInfo whereinfoItem1=WhereInfo.parse("menu.id", Menu.default_id);
+//		MenuItem menuItem=menuItemService.queryUnique(whereinfoItem,whereinfoItem1);
+//		menuItem.setText(entity.getText());
+//		menuItem.setReportCode(entity.getReportCode());
+		MenuItem menuItem=this.get(fun.getMenuItemId());
+		menuItem.setText(fun.getText());
+		menuItem.setReportCode(fun.getReportCode());
+		super.update(menuItem);
+	}
 	public void delete(Fun fun) {
 		WhereInfo whereinfoItem=WhereInfo.parse("fun.id", fun.getId());
 		WhereInfo whereinfoItem1=WhereInfo.parse("menu.id", Menu.default_id);
 		List<MenuItem> menuItems= this.query(whereinfoItem,whereinfoItem1);
-		if(menuItems!=null && menuItems.size()>1){
+		if(menuItems!=null && menuItems.size()>0){
 			StringBuilder builder=new StringBuilder();
 			for(MenuItem menuItem:menuItems){
 				builder.append(menuItem.getMenu().getText()+":"+menuItem.getText()+";");
@@ -75,7 +94,7 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 		}
 	}
 	
-	public List<MenuItem> query4Desktop(String menuId) {
+	public List<MenuItemVO> query4Desktop(String menuId) {
 		
 		//https://github.com/DozerMapper/dozer
 		//在这里就直接转换成桌面需要用的格式，具有menu，和items等数据
@@ -84,68 +103,58 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 		//BeanMapper.convert(value, MenuItemVO.class);
 		
 		
-		List<Object> funIdRoleIds = super.queryList("query4Desktop", menuId);
+		List<Object> menuItemLeaf = super.queryList("query4Desktop", menuId);
 		// 组装出role树
 		Map<String,MenuItemVO> parentKeys=new HashMap<String,MenuItemVO>();
-		List<MenuItemVO> rootFuns = new ArrayList<MenuItemVO>();
-		for (Object menuItemIdObj: funIdRoleIds) {
+		List<MenuItemVO> menuItems = new ArrayList<MenuItemVO>();
+		for (Object menuItemIdObj: menuItemLeaf) {
 			String menuItemId=(String)menuItemIdObj;
-			//funes.add(funService.get(funId.toString()));
-			
-			
-			//String role_id=funMap.get("ROLE_ID").toString();
+
 			MenuItem leaf=this.get(menuItemId);
 			
-			if(parentKeys.get(leaf.getId()) !=null){//表示这个功能能已经添加过了
-				Fun fun=parentKeys.get(leaf.getId());
-				fun.addRoleName(roleService.get(role_id).getName());
+			if(parentKeys.get(menuItemId) !=null){//表示这个功能能已经添加过了
 				continue;
 			}
-			Fun fun=new Fun();
-			BeanUtils.copyProperties(leaf, fun, new String[]{"children","parent"});
-			fun.addRoleName(roleService.get(role_id).getName());
+			//MenuItemVO fun=parentKeys.get(leaf.getId());
+			MenuItemVO vo=BeanPropertiesCopy.copy(leaf, MenuItemVO.class);
+			//fun.addItems(vo);
 			
 			if(leaf.getParent()!=null){
-				List<Fun> ancestores=leaf.findAncestors();
+				List<MenuItem> ancestores=leaf.findAncestors();
 				int i=0;
-				for(Fun ancestor:ancestores){
-					Fun ancestorNew=null;
+				for(MenuItem ancestor:ancestores){
+					MenuItemVO ancestorNew=null;
 					if(parentKeys.containsKey(ancestor.getId())){
 						ancestorNew=parentKeys.get(ancestor.getId());
 					} else {
-						ancestorNew=new Fun();
-						BeanUtils.copyProperties(ancestor, ancestorNew, new String[]{"children","parent"});
-						ancestorNew.setExpanded(true);
+						ancestorNew=new MenuItemVO();
+						BeanPropertiesCopy.copy(ancestor, ancestorNew);
 						parentKeys.put(ancestorNew.getId(), ancestorNew);
-						if(ancestorNew.isLeaf()){
-							ancestorNew.addRoleName(roleService.get(role_id).getName());
-						}
 					}
 					if(i==0){
 						
-						ancestorNew.addChild(fun);
+						ancestorNew.addItems(vo);
 					} else {
-						ancestorNew.addChild(parentKeys.get(ancestores.get(i-1).getId()));
+						ancestorNew.addItems(parentKeys.get(ancestores.get(i-1).getId()));
 					}
 					i++;
-					if(i==ancestores.size() && !rootFuns.contains(ancestorNew)){
-						//添加从哪个角色来
-						//ancestorNew.addRoleName(roleService.get(role_id).getName());
-						rootFuns.add(ancestorNew);
+					if(i==ancestores.size() && !menuItems.contains(ancestorNew)){
+						menuItems.add(ancestorNew);
 					}
 				}
 			} else {
 				
-				rootFuns.add(fun);
-				parentKeys.put(fun.getId(), fun);
+				menuItems.add(vo);
+				parentKeys.put(vo.getId(), vo);
 			}
 			
 		}
+		return menuItems;
 		
-		//根据mybatis去查询
-				Map params=new HashMap();
-				params.put("menu_id", menuId);
-		return (List<MenuItem>)super.queryListT("query4Desktop", params);
+//		//根据mybatis去查询
+//				Map params=new HashMap();
+//				params.put("menu_id", menuId);
+//		return (List<MenuItem>)super.queryListT("query4Desktop", params);
 	}
 	
 	public void initCache(){

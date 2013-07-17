@@ -11,8 +11,9 @@ public class MenuItemVO {
 	private String scripts;
 	private String iconCls;
 	private String url;
+	//private String handler="function(){me.onMenuItemClick();}";
 	
-	private MenuVO menu;
+	private MenuVO menu=null;
 
 	public String getId() {
 		return id;
@@ -71,6 +72,9 @@ public class MenuItemVO {
 	}
 
 	public MenuVO getMenu() {
+		if(menu!=null && menu.getItems()==null){
+			return null;
+		}
 		return menu;
 	}
 
@@ -83,6 +87,14 @@ public class MenuItemVO {
 		}
 		this.menu.addItems(items);
 	}
+
+//	public String getHandler() {
+//		return handler;
+//	}
+//
+//	public void setHandler(String handler) {
+//		this.handler = handler;
+//	}
 	
 }
 /**

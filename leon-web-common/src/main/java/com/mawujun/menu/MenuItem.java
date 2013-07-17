@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
 import org.hibernate.annotations.Cache;
@@ -45,6 +46,7 @@ public class MenuItem extends UUIDEntity {
 	private String reportCode;//等级关系代码
 	
 	@ManyToOne(fetch=FetchType.LAZY)
+	@NotNull
 	private Menu menu;
 	@ManyToOne(fetch=FetchType.EAGER,optional=true)
 	private Fun fun;
@@ -144,6 +146,25 @@ public class MenuItem extends UUIDEntity {
 
 	public void setParent(MenuItem parent) {
 		this.parent = parent;
+	}
+	public List<MenuItem> findAncestors() {
+		List<MenuItem> pcategory=new ArrayList<MenuItem>();
+		if(this.getParent()!=null){
+			pcategory.add(this.getParent());
+			pcategory.addAll(this.getParent().findAncestors());
+		}
+		return pcategory;
+	}
+	public boolean isAutoCreate(){
+		if(this.getFun()==null){
+			return false;
+		} else {
+			if(this.getId().equals(this.getFun().getMenuItemId())){
+				return true;
+			} else {
+				return false;
+			}
+		}
 	}
 
 }

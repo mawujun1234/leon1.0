@@ -38,13 +38,20 @@ Ext.onReady(function(){
 			form.setReadonlyItem4DefauleMenu(false);
 			//tree.setDisableAction(false);
 		}
-		tree.getStore().reload({node:tree.getRootNode( )});
+		
+		tree.getStore().getProxy().extraParams={menuId:record.get("id")};
+//		if(record.get("id")=='default'){
+//			tree.disableAction('update','destroy','');
+//		}
+		tree.getStore().load({node:tree.getRootNode( )});
 	});
 
 	var tree=Ext.create('Leon.desktop.menu.MenuItemTree',{
 		title:'菜单树',
 		region:'center'
 	});
+	tree.getStore().getProxy().extraParams={menuId:'default'};
+	tree.getStore().load({node:tree.getRootNode( )});
 	tree.on('itemclick',function(view,record,item,index){
 		//alert(1);
 		var basicFoem=form.getForm();
@@ -69,7 +76,7 @@ Ext.onReady(function(){
 		split: true,
 		collapsible: true,
 		title:'表单',
-		width:520
+		width:460
 	});
 	
 	

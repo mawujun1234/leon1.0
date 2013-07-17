@@ -202,6 +202,22 @@ public class ToJsonConfigHolder {
 	public static void addProperty(Object key,Object value) {
 		threadLocal.get().addProperty(key, value);
 	}
+	/**
+	 * 
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @return
+	 */
+	public static Boolean getWriteMapNullValue() {
+		return threadLocal.get().getWriteMapNullValue();
+	}
+	/**
+	 * 是否要把null转换，false：不转换，true转换
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param writeMapNullValue
+	 */
+	public static void setWriteMapNullValue(Boolean writeMapNullValue) {
+		threadLocal.get().setWriteMapNullValue(writeMapNullValue);
+	}
 	
 	
 //	private static class Config {

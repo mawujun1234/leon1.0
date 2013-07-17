@@ -65,7 +65,10 @@ Ext.define('Leon.desktop.Desktop', {
 //        });
         
         var menuItems=[{iconCls: 'menubar-index-button',xtype:'button',text:'桌面'},'-','-'];
-        me.returnMenuItem(menuItems,me.initMenus);
+        //me.returnMenuItem(menuItems,me.initMenus);
+        
+        me.initMenuItemEvent(me.initMenus);
+        menuItems=menuItems.concat(me.initMenus);
        
         var menubar=Ext.create('Leon.desktop.Menubar',{
         	items:menuItems
@@ -86,9 +89,33 @@ Ext.define('Leon.desktop.Desktop', {
         me.callParent();
         window.desktop=me;
     },
+
+	initMenuItemEvent:function(initMenus){
+		var me=this;
+		for(var i=0;i<initMenus.length;i++){
+        		var model=initMenus[i];
+
+        		model.link_url=model.url;
+        		delete model.url;
+        		
+        		if(model.menu && model.menu.items && model.menu.items.length>0){
+        			me.initMenuItemEvent(model.menu.items);
+        		} else {
+        			model.plugins=[{ptype:'menuplugin',pluginUrl:model.pluginUrl,scripts:model.scripts}];
+        			//alert(menu.url+"===");
+	        		model.handler=function(btn){
+		        		me.createWindow({
+		        			title:btn.text,
+		        			url:btn.link_url,
+		        			iconCls:btn.iconCls
+		        		});
+	        		}
+        		}
+        	}
+	},
     /**
-     * 返回菜单的组件形式
-     */
+	 * 返回菜单的组件形式
+	 */
     returnMenuItem:function(menuItems,initMenus){
     	var me=this;
     	//var initMenus=model.children;

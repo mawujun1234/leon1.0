@@ -31,21 +31,22 @@ Ext.define('Leon.common.ux.BaseTree', {
     defaultRootName :'root',
     fields:null,//和api，url搭配的，也可以没有
     url:null,//url和fields是同时出现，但和model属性是不能同时出现的
-    //autoLoad:true,
+    autoLoadData:true,//自动加载数据
+    autoRootExpanded:true,
     api:null,
-    autoShowSimpleActionToTbar:true,
+    autoShowSimpleActionToTbar:true,//是否把按钮添加到工具栏
     autoInitSimpleAction:true,//初始化增，删改等按钮
     initComponent: function () {
 		var me = this;
 		//me.callParent();
 		if(me.model){
         	me.store = Ext.create('Ext.data.TreeStore', {
-	       		autoLoad:me.autoLoad,
+	       		autoLoad:me.autoLoadData,
 	       		nodeParam :'id',
 	       		model:me.model,
 			    root: {
 			    	//id:'root',
-			        expanded: me.autoLoad,
+			        expanded: me.autoRootExpanded,
 			        text:me.defaultRootText 
 			    }
 			});
@@ -55,11 +56,11 @@ Ext.define('Leon.common.ux.BaseTree', {
         	var cofig={
         		root: {
 			    	//id:'root',
-			        expanded: me.autoLoad,
+			        expanded: me.autoRootExpanded,
 			        text:me.defaultRootText 
 			    },
 			    nodeParam :'id',
-        		autoLoad:me.autoLoad,
+        		autoLoad:me.autoLoadData,
 				proxy:{
 					type:'ajax',
 					url:me.url
@@ -92,12 +93,12 @@ Ext.define('Leon.common.ux.BaseTree', {
         	
         	var model=me.dynamicModel('Tree.TempleModel'+Ext.id(),fields,me.api);
         	me.store = Ext.create('Ext.data.TreeStore', {
-	       		autoLoad:me.autoLoad,
+	       		autoLoad:me.autoLoadData,
 	       		nodeParam :'id',
 	       		model:model,
 			    root: {
 			    	//id:'root',
-			        expanded: me.autoLoad,
+			        expanded: me.autoRootExpanded,
 			        text:me.defaultRootText 
 			    }
 			});
@@ -111,6 +112,36 @@ Ext.define('Leon.common.ux.BaseTree', {
         	}
         });
        
+        me.addEvents(
+        	/**
+        	 * @param parentNode 父节点
+        	 * @param values oncreate方法的参数
+        	 */
+        	'beforeCreate',
+        	/**
+        	 * @param node 当前节点
+        	 * @param values oncreate方法的参数
+        	 */
+        	'beforeDelete',
+        	/**
+        	 * @param node 当前节点
+        	 * @param values oncreate方法的参数
+        	 */
+        	'beforeUpdate',
+        	/**
+        	 * @param node 当前节点
+        	 */
+        	'beforeCopy',
+        	/**
+        	 * @param node 当前节点
+        	 */
+        	'beforeCut',
+        	/**
+        	 * @param parentNode 新的父节点
+        	 * @param copyNode 被复制的节点
+        	 */
+        	'beforePaste'
+        );
 		me.callParent();
     },
     dynamicModel:function(name, fields,api) {
@@ -130,22 +161,19 @@ Ext.define('Leon.common.ux.BaseTree', {
     	}
      	var me = this;
      	var actions=[];
+     	
        var create = new Ext.Action({
 		    text: '新增子节点',
 		    itemId:'create',
 		    disabled:me.disabledAction,
 		    handler: function(){
-		    	var values={
-		    		'parent_id':parent.get("id")
-				};
-				values[me.displayField]='新节点';
-		    	me.onCreate(values);
-
+		    	me.onCreate();
 		    },
 		    iconCls: 'form-addChild-button'
 		});
 		//me.addAction(create);
 		actions.push(create);
+		
 //		var createSibling = new Ext.Action({
 //		    text: '新增兄弟节点',
 //		    disabled:me.disabledAction,
@@ -264,14 +292,24 @@ Ext.define('Leon.common.ux.BaseTree', {
     },
     onCreate:function(values){
     	var me=this;
-    	var parent=me.getSelectionModel( ).getLastSelected( )||me.getRootNode( );    	
-//		var values={
-//		    'parent_id':parent.get("id")
-//		};
-    	//values=values||{'parent_id':parent.get("id")};
-    	values=Ext.applyIf(values,{'parent_id':parent.get("id")});//alert(values['parent_id']);
+    	
+    	//alert(arguments.length);
+    	//alert(arguments[0].menu_id);
+    	//alert(values.menu_id);
+    	values=values||{};
+    	var parent=me.getSelectionModel( ).getLastSelected( )||me.getRootNode( );    
+    	if(me.fireEvent('beforeCreate',parent,values)===false){
+    		return;
+    	}
+		var initValue={
+		    'parent_id':parent.get("id")
+		};
+    	initValue[me.displayField]='新节点';
+
+    	values=Ext.applyIf(values,initValue);//alert(values['parent_id']);
 		//values[me.displayField]='新节点';
 		var child=values.isModel?values:Ext.createModel(parent.self.getName(),values);
+		//alert(values.menu_id);
 		child.save({
 			success: function(record, operation) {
 						// child=record;
@@ -283,6 +321,9 @@ Ext.define('Leon.common.ux.BaseTree', {
     onUpdate:function(values){
     	var me=this;
     	var node=me.getSelectionModel( ).getLastSelected( );
+    	if(me.fireEvent('beforeUpdate',parent,values)===false){
+    		return;
+    	}
 //		if(node.isRoot( )){
 //			Ext.Msg.alert("消息","根节点不能修改!");	
 //			return;
@@ -320,6 +361,9 @@ Ext.define('Leon.common.ux.BaseTree', {
     onDelete:function(node){
     	var me=this;
     	var node=node||me.getSelectionModel( ).getLastSelected( );
+    	if(me.fireEvent('beforeDelete',node)===false){
+    		return;
+    	}
 		if(!node){
 		    Ext.Msg.alert("消息","请先选择节点");	
 			return;
@@ -352,6 +396,9 @@ Ext.define('Leon.common.ux.BaseTree', {
     onCopy:function(node){
     	var me=this;
     	var node=node||me.getSelectionModel( ).getLastSelected( );
+    	if(me.fireEvent('beforeCopy',node)===false){
+    		return;
+    	}
 		if(node.isRoot()){
 			Ext.Msg.alert("消息","不能复制根节点!");	
 			return;
@@ -363,6 +410,9 @@ Ext.define('Leon.common.ux.BaseTree', {
     onCut:function(){
     	var me=this;
     	var node=node||me.getSelectionModel( ).getLastSelected( );
+    	if(me.fireEvent('beforeCut',node)===false){
+    		return;
+    	}
 		if(node.isRoot()){
 			Ext.Msg.alert("消息","不能复制根节点!");	
 			return;
@@ -375,7 +425,10 @@ Ext.define('Leon.common.ux.BaseTree', {
     },
     onPaste:function(parentNode){
     	var me=this;
-    	var parent=parent||me.getSelectionModel( ).getLastSelected( );
+    	var parent=parentNode||me.getSelectionModel( ).getLastSelected( );
+    	if(me.fireEvent('beforePaste',parent,me.copyNode)===false){
+    		return;
+    	}
 		if(!parent){
 			Ext.Msg.alert("消息","请选择要粘贴到的父节点!");	
 			return;

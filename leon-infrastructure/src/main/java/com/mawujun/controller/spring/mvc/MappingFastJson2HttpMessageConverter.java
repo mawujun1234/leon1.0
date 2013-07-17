@@ -170,7 +170,7 @@ public class MappingFastJson2HttpMessageConverter extends AbstractHttpMessageCon
 		serializer.config(SerializerFeature.UseSingleQuotes,true);//SerializerFeature.
 		serializer.config(SerializerFeature.SkipTransientField,true);
 		serializer.config(SerializerFeature.WriteEnumUsingToString,true);
-		//serializer.config(SerializerFeature.WriteMapNullValue,true);
+		serializer.config(SerializerFeature.WriteMapNullValue,ToJsonConfigHolder.getWriteMapNullValue());
 		//serializer.config(SerializerFeature.SortField,true);
 		 //关闭循环引用的配置
 		serializer.config(SerializerFeature.DisableCircularReferenceDetect, ToJsonConfigHolder.getDisableCircularReferenceDetect());

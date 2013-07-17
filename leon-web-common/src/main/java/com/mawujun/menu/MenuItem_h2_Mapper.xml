@@ -6,11 +6,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com 承接各种项目 -->
 <!-- 注意文件名称为:Example_${DbName}_Mapper.xml-->
 <mapper namespace="com.mawujun.menu.MenuItem">
-	<select id="query4Desktop" resultType="com.mawujun.menu.MenuItem" parameterType="map">
-    	SELECT *
+	<select id="query4Desktop" resultType="String" >
+    	SELECT distinct id
 	    FROM leon_MenuItem 
 		where menu_id=#{menu_id}  and fun_id is not null
-		order by reportCode
+		
     </select>
 	<!-- select语句的生成结束=============================================================================================== -->
 </mapper>
