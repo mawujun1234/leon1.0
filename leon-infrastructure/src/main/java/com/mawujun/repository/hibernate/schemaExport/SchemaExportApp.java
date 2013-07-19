@@ -5,6 +5,8 @@ import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 
+import com.mawujun.utils.FileUtils;
+
 public class SchemaExportApp {
 	 public static void main(String[] args) {   
 		 //Configuration configuration=new AnnotationConfiguration();   
@@ -26,10 +28,12 @@ public class SchemaExportApp {
 
 		 System.out.println("==============================================="+System.getProperty("user.dir"));	
 		 String path=System.getProperty("user.dir");//SchemaExportApp.class.getResource("/").getPath();
-		 path=path+"/src/sql/"+profile+".sql";
+		 //path=path+"/src/sql/"+profile+".sql";
+		 path=path+FileUtils.FILE_SEPARATOR+"src"+FileUtils.FILE_SEPARATOR+"sql"+FileUtils.FILE_SEPARATOR+profile+".sql";
 		 System.out.println(path);
 		 
 		 Configuration configuration =localSessionFactoryBean.getConfiguration();// new Configuration();  
+		 //configuration.
 	     SchemaExport schemaExport=new SchemaExport(configuration);   
 	     schemaExport.setDelimiter(";");
 	     schemaExport.setFormat(true);
