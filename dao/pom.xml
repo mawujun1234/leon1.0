@@ -18,7 +18,11 @@
   
 
   <dependencies>
-
+<dependency>
+	<groupId>org.nutz</groupId>
+	<artifactId>nutz</artifactId>
+	<version>1.b.44</version>
+</dependency>
   </dependencies>
   
   
