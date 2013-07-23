@@ -1,22 +1,23 @@
 package com.mawujun.utils.page.sql;
 
+import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.nutz.dao.entity.Entity;
 import org.nutz.dao.jdbc.ValueAdaptor;
 import org.nutz.dao.sql.Pojo;
 
 public interface PItem {
-	/**
-	 * 设置所属的 POJO 对象
-	 * 
-	 * @param pojo
-	 *            所属的 POJO 对象
-	 */
-	void setPojo(Pojo pojo);
-
-	/**
-	 * @return 获得所属的 POJO 语句
-	 */
-	Pojo getPojo();
+//	/**
+//	 * 设置所属的 POJO 对象
+//	 * 
+//	 * @param pojo
+//	 *            所属的 POJO 对象
+//	 */
+//	void setPojo(Pojo pojo);
+//
+//	/**
+//	 * @return 获得所属的 POJO 语句
+//	 */
+//	Pojo getPojo();
 
 	/**
 	 * 将当前的语句组成元素输出，以便组成 PreparedStatement 语句
@@ -26,7 +27,7 @@ public interface PItem {
 	 * @param sb
 	 *            文本缓冲
 	 */
-	void joinSql(Entity<?> en, StringBuilder sb);
+	void joinSql(AbstractEntityPersister classMetadata, StringBuilder sb);
 
 	/**
 	 * 根据自身的元素内容，为适配器数组填充适配器
@@ -39,7 +40,7 @@ public interface PItem {
 	 *            开始下标
 	 * @return 结束后，下一项开始的下标
 	 */
-	int joinAdaptor(Entity<?> en, ValueAdaptor[] adaptors, int off);
+	int joinAdaptor(AbstractEntityPersister classMetadata, ValueAdaptor[] adaptors, int off);
 
 	/**
 	 * 根据自身的元素内容，为参数数组填充参数
@@ -54,7 +55,7 @@ public interface PItem {
 	 *            开始下标
 	 * @return 结束后，下一项开始的下标
 	 */
-	int joinParams(Entity<?> en, Object obj, Object[] params, int off);
+	int joinParams(AbstractEntityPersister classMetadata, Object obj, Object[] params, int off);
 
 	/**
 	 * @param en
@@ -62,12 +63,11 @@ public interface PItem {
 	 * 
 	 * @return 本语句元素所包含的参数数目
 	 */
-	int paramCount(Entity<?> en);
+	int paramCount(AbstractEntityPersister classMetadata);
 
 	/**
 	 * @return 当前语句组成元素的日志打印字符串
 	 */
 	String toString();
-	
-	protected String _fmtcolnm(Entity<?> en, String name);
+
 }

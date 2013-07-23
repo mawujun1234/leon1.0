@@ -32,6 +32,7 @@ public class SqlExpressionGroup implements SqlExpression {// extends AbstractPIt
 	public SqlExpressionGroup() {
 		exps = new ArrayList<SqlExpression>(); // 默认就是10个，能放5个条件，够了吧
 		top = true;
+		
 	}
 
 	public SqlExpressionGroup and(String name, String op, Object value) {

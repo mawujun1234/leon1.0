@@ -217,7 +217,7 @@ public class HibernateDao<T, ID extends Serializable>{
 			}
 			i++;
 		}
-		
+
 		query.setParameter("id", classMetadata.getIdentifier(entity));
 		query.setParameter(propertyNames[versionIndex], propertyValues[versionIndex]);
 		query.executeUpdate();
