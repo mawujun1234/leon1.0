@@ -8,9 +8,11 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -101,6 +103,213 @@ public class ReflectionUtils {
 		}
 		return false;
 	}
+	/**
+	 * 判断当前类型是否为数组
+	 * 
+	 * @return true of false
+	 */
+	public static boolean isArray(Object obj) {
+		return obj.getClass().isArray();
+	}
+	/**
+	 * 判断当前类型是否为容器，包括 Map，Collection, 以及数组
+	 * 
+	 * @return true of false
+	 */
+	public static boolean isContainer(Object obj) {
+		return isColl(obj) || isMap(obj);
+	}
+	/**
+	 * @return 当前类型是否是数组或者集合
+	 */
+	public static boolean isColl(Object obj) {
+		return isArray(obj) || isCollection(obj);
+	}
+	/**
+	 * 判断当前类型是否为 Map
+	 * 
+	 * @return true of false
+	 */
+	public static boolean isMap(Object obj) {
+		return isOf(obj,Map.class);
+	}
+	/**
+	 * 判断当前类型是否为 Collection
+	 * 
+	 * @return true of false
+	 */
+	public static boolean isCollection(Object obj) {
+		return isOf(obj,Collection.class);
+	}
+	/**
+	 * @param type
+	 *            类型或接口名
+	 * @return 当前对象是否为一个类型的子类，或者一个接口的实现类
+	 */
+	public static boolean isOf(Object obj,Class<?> type) {
+		return type.isAssignableFrom(obj.getClass());
+	}
+	
+	/**
+	 * 判断当前对象是否为一个类型。精确匹配，即使是父类和接口，也不相等
+	 * 
+	 * @param type
+	 *            类型
+	 * @return 是否相等
+	 */
+	public static boolean is(Object obj,Class<?> type) {
+		return null != type && obj.getClass() == type;
+	}
+	
+	
+	/**
+	 * @return 当前对象是否为字符串
+	 */
+	public static boolean isString(Object obj) {
+		return is(obj,String.class);
+	}
+
+	/**
+	 * @return 当前对象是否为CharSequence的子类
+	 */
+	public static boolean isStringLike(Object obj) {
+		return CharSequence.class.isAssignableFrom(obj.getClass());
+	}
+
+	/**
+	 * @return 当前对象是否为字符
+	 */
+	public static boolean isChar(Object obj) {
+		return is(obj,char.class) || is(obj,Character.class);
+	}
+
+	/**
+	 * @return 当前对象是否为枚举
+	 */
+	public static boolean isEnum(Object obj) {
+		return obj.getClass().isEnum();
+	}
+
+	/**
+	 * @return 当前对象是否为布尔
+	 */
+	public static boolean isBoolean(Object obj) {
+		return is(obj,boolean.class) || is(obj,Boolean.class);
+	}
+
+	/**
+	 * @return 当前对象是否为浮点
+	 */
+	public static boolean isFloat(Object obj) {
+		return is(obj,float.class) || is(obj,Float.class);
+	}
+
+	/**
+	 * @return 当前对象是否为双精度浮点
+	 */
+	public static boolean isDouble(Object obj) {
+		return is(obj,double.class) || is(obj,Double.class);
+	}
+
+	/**
+	 * @return 当前对象是否为整型
+	 */
+	public static boolean isInt(Object obj) {
+		return is(obj,int.class) || is(obj,Integer.class);
+	}
+
+	/**
+	 * @return 当前对象是否为整数（包括 int, long, short, byte）
+	 */
+	public static boolean isIntLike(Object obj) {
+		return isInt(obj) || isLong(obj) || isShort(obj) || isByte(obj) || is(obj,BigDecimal.class);
+	}
+
+	/**
+	 * @return 当前类型是不是接口
+	 */
+	public static boolean isInterface(Object obj) {
+		return null == obj ? null : obj.getClass().isInterface();
+	}
+
+	/**
+	 * @return 当前对象是否为小数 (float, dobule)
+	 */
+	public static boolean isDecimal(Object obj) {
+		return isFloat(obj) || isDouble(obj);
+	}
+
+	/**
+	 * @return 当前对象是否为长整型
+	 */
+	public static boolean isLong(Object obj) {
+		return is(obj,long.class) || is(obj,Long.class);
+	}
+
+	/**
+	 * @return 当前对象是否为短整型
+	 */
+	public static boolean isShort(Object obj) {
+		return is(obj,short.class) || is(obj,Short.class);
+	}
+
+	/**
+	 * @return 当前对象是否为字节型
+	 */
+	public static boolean isByte(Object obj) {
+		return is(obj,byte.class) || is(obj,Byte.class);
+	}
+
+	/**
+	 * @return 当前对象是否在表示日期或时间
+	 */
+	public static boolean isDateTimeLike(Object obj) {
+		Class klass=obj.getClass();
+		return Calendar.class.isAssignableFrom(klass)
+				|| java.util.Date.class.isAssignableFrom(klass)
+				|| java.sql.Date.class.isAssignableFrom(klass)
+				|| java.sql.Time.class.isAssignableFrom(klass);
+	}
+	/**
+	 * 如果不是容器，也不是 POJO，那么它必然是个 Obj
+	 * 
+	 * @return true or false
+	 */
+	public static boolean isObj(Object obj) {
+		return isContainer(obj) || isPojo(obj);
+	}
+	/**
+	 * 判断当前类型是否为POJO。 除了下面的类型，其他均为 POJO
+	 * <ul>
+	 * <li>原生以及所有包裹类
+	 * <li>类字符串
+	 * <li>类日期
+	 * <li>非容器
+	 * </ul>
+	 * 
+	 * @return true or false
+	 */
+	public static boolean isPojo(Object obj) {
+		Class klass=obj.getClass();
+		if (klass.isPrimitive() || isEnum(obj))
+			return false;
+
+		if (isStringLike(obj) || isDateTimeLike(obj))
+			return false;
+
+		if (isPrimitiveNumber(obj) || isBoolean(obj) || isChar(obj))
+			return false;
+
+		return !isContainer(obj);
+	}
+	/**
+	 * @return 当前对象是否为原生的数字类型 （即不包括 boolean 和 char）
+	 */
+	public static boolean isPrimitiveNumber(Object obj) {
+		return isInt(obj) || isLong(obj) || isFloat(obj) || isDouble(obj) || isByte(obj) || isShort(obj);
+	}
+
+
 	/**
 	 * 判断value实例是不是clz类型，具有继承关系的检查能力，即使value是clz的子类也会返回true
 	 * @param clz

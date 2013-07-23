@@ -1,9 +1,7 @@
 package com.mawujun.utils.page.sql;
 
-import org.nutz.dao.entity.Entity;
-import org.nutz.dao.impl.sql.pojo.NoParamsPItem;
 
-public class OrderByItem extends NoParamsPItem {
+public class OrderByItem  {//extends NoParamsPItem
 
 	private String name;
 
@@ -14,7 +12,7 @@ public class OrderByItem extends NoParamsPItem {
 		this.by = by;
 	}
 
-	public void joinSql(Entity<?> en, StringBuilder sb) {
-		sb.append(_fmtcolnm(en, name)).append(' ').append(by);
-	}
+//	public void joinSql(Entity<?> en, StringBuilder sb) {
+//		sb.append(_fmtcolnm(en, name)).append(' ').append(by);
+//	}
 }

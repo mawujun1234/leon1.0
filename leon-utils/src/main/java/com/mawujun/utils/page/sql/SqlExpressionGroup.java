@@ -1,29 +1,29 @@
 package com.mawujun.utils.page.sql;
 
-import static org.nutz.dao.util.cri.Exps.eq;
-import static org.nutz.dao.util.cri.Exps.gt;
-import static org.nutz.dao.util.cri.Exps.gte;
-import static org.nutz.dao.util.cri.Exps.inInt;
-import static org.nutz.dao.util.cri.Exps.inLong;
-import static org.nutz.dao.util.cri.Exps.inStr;
-import static org.nutz.dao.util.cri.Exps.inSql;
-import static org.nutz.dao.util.cri.Exps.isNull;
-import static org.nutz.dao.util.cri.Exps.like;
-import static org.nutz.dao.util.cri.Exps.lt;
-import static org.nutz.dao.util.cri.Exps.lte;
+import static com.mawujun.utils.page.sql.Exps.eq;
+import static com.mawujun.utils.page.sql.Exps.gt;
+import static com.mawujun.utils.page.sql.Exps.gte;
+import static com.mawujun.utils.page.sql.Exps.inInt;
+import static com.mawujun.utils.page.sql.Exps.inLong;
+import static com.mawujun.utils.page.sql.Exps.inStr;
+import static com.mawujun.utils.page.sql.Exps.inSql;
+import static com.mawujun.utils.page.sql.Exps.isNull;
+import static com.mawujun.utils.page.sql.Exps.like;
+import static com.mawujun.utils.page.sql.Exps.lt;
+import static com.mawujun.utils.page.sql.Exps.lte;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.nutz.dao.entity.Entity;
-import org.nutz.dao.impl.sql.pojo.AbstractPItem;
-import org.nutz.dao.jdbc.ValueAdaptor;
-import org.nutz.dao.sql.Pojo;
+import org.hibernate.HibernateException;
+import org.hibernate.type.Type;
+
+
 
 /**
  * 组合一组表达式，只能增加，不能减少
  */
-public class SqlExpressionGroup extends AbstractPItem implements SqlExpression {
+public class SqlExpressionGroup implements SqlExpression {// extends AbstractPItem
 
 	private List<SqlExpression> exps;
 
@@ -220,56 +220,58 @@ public class SqlExpressionGroup extends AbstractPItem implements SqlExpression {
 		return or(like(name, value, ignoreCase).not());
 	}
 
-	@Override
-	public void setPojo(Pojo pojo) {
-		super.setPojo(pojo);
-		for (SqlExpression exp : exps)
-			exp.setPojo(pojo);
-	}
+//	@Override
+//	public void setPojo(Pojo pojo) {
+//		super.setPojo(pojo);
+//		for (SqlExpression exp : exps)
+//			exp.setPojo(pojo);
+//	}
+	
+
 
 	private SqlExpressionGroup _add(SqlExpression exp) {
 		if (null != exp) {
 			exps.add(exp);
-			exp.setPojo(pojo);
+			//exp.setPojo(pojo);
 			if (exp instanceof SqlExpressionGroup)
 				((SqlExpressionGroup) exp).top = false;
 		}
 		return this;
 	}
 
-	public void joinSql(Entity<?> en, StringBuilder sb) {
-		if (!exps.isEmpty()) {
-			if (top) {
-				sb.append(" WHERE ");
-				for (SqlExpression exp : exps)
-					exp.joinSql(en, sb);
-			} else {
-				sb.append('(');
-				for (SqlExpression exp : exps)
-					exp.joinSql(en, sb);
-				sb.append(')');
-			}
-		}
-	}
-
-	public int joinAdaptor(Entity<?> en, ValueAdaptor[] adaptors, int off) {
-		for (SqlExpression exp : exps)
-			off = exp.joinAdaptor(en, adaptors, off);
-		return off;
-	}
-
-	public int joinParams(Entity<?> en, Object obj, Object[] params, int off) {
-		for (SqlExpression exp : exps)
-			off = exp.joinParams(en, obj, params, off);
-		return off;
-	}
-
-	public int paramCount(Entity<?> en) {
-		int re = 0;
-		for (SqlExpression exp : exps)
-			re += exp.paramCount(en);
-		return re;
-	}
+//	public void joinSql(Entity<?> en, StringBuilder sb) {
+//		if (!exps.isEmpty()) {
+//			if (top) {
+//				sb.append(" WHERE ");
+//				for (SqlExpression exp : exps)
+//					exp.joinSql(en, sb);
+//			} else {
+//				sb.append('(');
+//				for (SqlExpression exp : exps)
+//					exp.joinSql(en, sb);
+//				sb.append(')');
+//			}
+//		}
+//	}
+//
+//	public int joinAdaptor(Entity<?> en, ValueAdaptor[] adaptors, int off) {
+//		for (SqlExpression exp : exps)
+//			off = exp.joinAdaptor(en, adaptors, off);
+//		return off;
+//	}
+//
+//	public int joinParams(Entity<?> en, Object obj, Object[] params, int off) {
+//		for (SqlExpression exp : exps)
+//			off = exp.joinParams(en, obj, params, off);
+//		return off;
+//	}
+//
+//	public int paramCount(Entity<?> en) {
+//		int re = 0;
+//		for (SqlExpression exp : exps)
+//			re += exp.paramCount(en);
+//		return re;
+//	}
 
 	public SqlExpression setNot(boolean not) {
 		return this;
@@ -281,5 +283,13 @@ public class SqlExpressionGroup extends AbstractPItem implements SqlExpression {
 
 	public List<SqlExpression> cloneExps() {
 		return new ArrayList<SqlExpression>(exps);
+	}
+
+	public boolean isTop() {
+		return top;
+	}
+
+	public void setTop(boolean top) {
+		this.top = top;
 	}
 }

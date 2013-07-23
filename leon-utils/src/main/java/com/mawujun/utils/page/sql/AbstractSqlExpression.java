@@ -24,21 +24,21 @@ public abstract class AbstractSqlExpression implements SqlExpression {
 		return this;
 	}
 
-	/**
-	 * 获取某个属性对应的
-	 * @author mawujun email:16064988@163.com qq:16064988
-	 * @param classMetadata
-	 * @return
-	 */
-	protected String _fmtcol(AbstractEntityPersister classMetadata) {
-		String[] columns=classMetadata.getPropertyColumnNames(name);
-
-		if(columns==null){
-			return null;
-		} else{
-			return columns[0];
-		}
-	}
+//	/**
+//	 * 获取某个属性对应的
+//	 * @author mawujun email:16064988@163.com qq:16064988
+//	 * @param classMetadata
+//	 * @return
+//	 */
+//	protected String _fmtcol(AbstractEntityPersister classMetadata) {
+//		String[] columns=classMetadata.getPropertyColumnNames(name);
+//
+//		if(columns==null){
+//			return null;
+//		} else{
+//			return columns[0];
+//		}
+//	}
 
 //	protected MappingField _field(Entity<?> en) {
 //		en = _en(en);

@@ -1,6 +1,13 @@
 package com.mawujun.utils.page.sql;
 
+import java.lang.reflect.Array;
 import java.util.Collection;
+import java.util.Iterator;
+
+import com.mawujun.utils.BeanPropertiesCopy;
+import com.mawujun.utils.ReflectionUtils;
+import com.mawujun.utils.StringUtils;
+
 
 
 /**
@@ -63,7 +70,7 @@ public abstract class Exps {
 	}
 
 	public static SqlExpression create(String name, String op, Object value) {
-		op = Strings.trim(op.toUpperCase());
+		op = StringUtils.trim(op.toUpperCase());
 
 		// NULL
 		if (null == value) {
@@ -74,7 +81,7 @@ public abstract class Exps {
 			}
 			// !!!
 			else {
-				throw Lang.makeThrow("null can only use 'IS' or 'NOT IS'");
+				throw new RuntimeException("null can only use 'IS' or 'NOT IS'");
 			}
 			return re.setNot(op.startsWith("NOT") || op.endsWith("NOT"));
 		}
@@ -84,14 +91,14 @@ public abstract class Exps {
 			SqlExpression re;
 			// 数组
 			if (type.isArray()) {
-				re = _evalRange((Mirror<?>) Mirror.me(type.getComponentType()), name, value);
+				re = _evalRange(name, value);
 			}
 			// 集合
 			else if (Collection.class.isAssignableFrom(type)) {
-				Object first = Lang.first(value);
+				Object first = first(value);
 				if (null == first)
 					return null;
-				re = _evalRange((Mirror<?>) Mirror.me(first), name, value);
+				re = _evalRange(name, value);
 			}
 			// Sql Range
 			else {
@@ -124,14 +131,40 @@ public abstract class Exps {
 		return new SimpleExpression(name, op, value);
 	}
 
-	private static SqlExpression _evalRange(Mirror<?> mirror, String name, Object value) {
-		if (mirror.isInt())
-			return inInt(name, Castors.me().castTo(value, int[].class));
+	private static SqlExpression _evalRange(String name, Object value) {
+		if (ReflectionUtils.isInt(value))
+			//return inInt(name, Castors.me().castTo(value, int[].class));
+			return inInt(name, BeanPropertiesCopy.copy(value, int[].class));
 
-		else if (mirror.isLong())
-			return inLong(name, Castors.me().castTo(value, long[].class));
+		else if (ReflectionUtils.isLong(value))
+			//return inLong(name, Castors.me().castTo(value, long[].class));
+			return inLong(name, BeanPropertiesCopy.copy(value, long[].class));
 
-		return inStr(name, Castors.me().castTo(value, String[].class));
+		//return inStr(name, Castors.me().castTo(value, String[].class));
+		return inStr(name, BeanPropertiesCopy.copy(value, String[].class));
+	}
+	
+
+	/**
+	 * 如果是数组或集合取得第一个对象。 否则返回自身
+	 * 
+	 * @param obj
+	 *            任意对象
+	 * @return 第一个代表对象
+	 */
+	private static Object first(Object obj) {
+		if (null == obj)
+			return obj;
+
+		if (obj instanceof Collection<?>) {
+			Iterator<?> it = ((Collection<?>) obj).iterator();
+			return it.hasNext() ? it.next() : null;
+		}
+
+		if (obj.getClass().isArray())
+			return Array.getLength(obj) > 0 ? Array.get(obj, 0) : null;
+
+		return obj;
 	}
 
 }

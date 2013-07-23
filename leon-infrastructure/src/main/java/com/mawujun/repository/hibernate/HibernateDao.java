@@ -287,6 +287,7 @@ public class HibernateDao<T, ID extends Serializable>{
 				if(flagInt!=0 && !isiFirst){
 					builder.append(",");
 				}
+				
 				query.setParameter(propertyNames[flagInt], o);
 				isiFirst=false;
 			}
@@ -707,74 +708,12 @@ public class HibernateDao<T, ID extends Serializable>{
 				criteria.add(returnCriterion(classMetadata,whereInfo));
 			}
 			
-//			if("constant.code".equalsIgnoreCase(whereInfo.getProperty())){ 这里转换成通用的形式
-//				criteria.createCriteria("constant").add( Restrictions.eq("code", whereInfo.getValue()));
-//				continue;
-//			}
-			///=========
-//			Type type=classMetadata.getPropertyType(whereInfo.getProperty());
-//			Criterion criterion = null;
-//			switch(whereInfo.getOp()){
-//			case EQ:
-//				criterion = Restrictions.eq(whereInfo.getPropertyToDefault(), BeanMapper.convert(whereInfo.getValue(), type.getReturnedClass()));
-//				break;
-//			case LIKE:
-//				criterion = Restrictions.like(whereInfo.getPropertyToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.ANYWHERE);
-//				break;
-//			case LIKESTART:
-//				criterion = Restrictions.like(whereInfo.getPropertyToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.START);
-//				break;
-//			case LIKEEND:
-//				criterion = Restrictions.like(whereInfo.getPropertyToDefault(),(String) whereInfo.getValueToDefault(), MatchMode.END);
-//				break;
-//			case ILIKE:
-//				criterion = Restrictions.ilike(whereInfo.getPropertyToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.ANYWHERE);
-//				break;
-//			case ILIKESTART:
-//				criterion = Restrictions.ilike(whereInfo.getPropertyToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.START);
-//				break;
-//			case ILIKEEND:
-//				criterion = Restrictions.ilike(whereInfo.getPropertyToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.END);
-//				break;
-//			case LE:
-//				criterion = Restrictions.le(whereInfo.getPropertyToDefault(), BeanMapper.convert(whereInfo.getValue(), type.getReturnedClass()));
-//				break;
-//			case LT:
-//				criterion = Restrictions.lt(whereInfo.getPropertyToDefault(), BeanMapper.convert(whereInfo.getValue(), type.getReturnedClass()));
-//				break;
-//			case GE:
-//				criterion = Restrictions.ge(whereInfo.getPropertyToDefault(), BeanMapper.convert(whereInfo.getValue(), type.getReturnedClass()));
-//				break;
-//			case GT:
-//				criterion = Restrictions.gt(whereInfo.getPropertyToDefault(), BeanMapper.convert(whereInfo.getValue(), type.getReturnedClass()));
-//				break;
-//			case ISNULL:
-//				criterion =Restrictions.isNull(whereInfo.getPropertyToDefault());
-//				break;
-//			case ISNOTNULL:
-//				criterion =Restrictions.isNotNull(whereInfo.getPropertyToDefault());
-//				break;
-//			case BETWEEN:
-//				criterion =Restrictions.between(whereInfo.getPropertyToDefault(),  BeanMapper.convert(((Object[])whereInfo.getValue())[0], type.getReturnedClass()), 
-//						BeanMapper.convert(((Object[])whereInfo.getValue())[1], type.getReturnedClass()));
-//				break;
-//			case IN:
-//				Object[] old=(Object[])whereInfo.getValue();
-//				Object[] aaa=new Object[old.length];
-//				for(int i=0;i<old.length;i++){
-//					aaa[i]= BeanMapper.convert(old[i], type.getReturnedClass());
-//				}
-//				criterion =Restrictions.in(whereInfo.getPropertyToDefault(), (Object[])whereInfo.getValue());
-//				break;
-//			default:
-//				break;
-//			}
-//			//criterionList.add(criterion);
-//			criteria.add(criterion);
+
 		}
 	}
 	private Criterion returnCriterion(AbstractEntityPersister classMetadata,WhereInfo whereInfo) {
 		Type type=classMetadata.getPropertyType(whereInfo.getProperty());
+		//type.get
 		Criterion criterion = null;
 		switch(whereInfo.getOp()){
 		case EQ:

@@ -44,6 +44,7 @@ public abstract class BeanPropertiesCopy {
 	/**
 	 * 基于Dozer转换对象的类型.
 	 * 主要用于对象之间进行拷贝
+	 * Long[] aa=BeanPropertiesCopy.copy(value, long[].class)
 	 */
 	public static <T> T copy(Object source, Class<T> destinationClass) {
 		return dozer.map(source, destinationClass);

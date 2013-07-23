@@ -25,30 +25,30 @@ public class Like extends AbstractSqlExpression {
 		super(name);
 	}
 
-	public void joinSql(Entity<?> en, StringBuilder sb) {
-		String colName = _fmtcol(en);
-		if (not)
-			sb.append(" NOT ");
-		if (ignoreCase)
-			sb.append("LOWER(").append(colName).append(") LIKE LOWER(?)");
-		else
-			sb.append(colName).append(" LIKE ?");
-
-	}
-
-	public int joinAdaptor(Entity<?> en, ValueAdaptor[] adaptors, int off) {
-		adaptors[off++] = Jdbcs.Adaptor.asString;
-		return off;
-	}
-
-	public int joinParams(Entity<?> en, Object obj, Object[] params, int off) {
-		params[off++] = (null == left ? "" : left) + value + (null == right ? "" : right);
-		return off;
-	}
-
-	public int paramCount(Entity<?> en) {
-		return 1;
-	}
+//	public void joinSql(Entity<?> en, StringBuilder sb) {
+//		String colName = _fmtcol(en);
+//		if (not)
+//			sb.append(" NOT ");
+//		if (ignoreCase)
+//			sb.append("LOWER(").append(colName).append(") LIKE LOWER(?)");
+//		else
+//			sb.append(colName).append(" LIKE ?");
+//
+//	}
+//
+//	public int joinAdaptor(Entity<?> en, ValueAdaptor[] adaptors, int off) {
+//		adaptors[off++] = Jdbcs.Adaptor.asString;
+//		return off;
+//	}
+//
+//	public int joinParams(Entity<?> en, Object obj, Object[] params, int off) {
+//		params[off++] = (null == left ? "" : left) + value + (null == right ? "" : right);
+//		return off;
+//	}
+//
+//	public int paramCount(Entity<?> en) {
+//		return 1;
+//	}
 
 	public Like left(String left) {
 		this.left = left;
@@ -64,5 +64,12 @@ public class Like extends AbstractSqlExpression {
 		this.ignoreCase = ignoreCase;
 		return this;
 	}
+
+//	@Override
+//	public void setPojo(Pojo pojo) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+
 
 }

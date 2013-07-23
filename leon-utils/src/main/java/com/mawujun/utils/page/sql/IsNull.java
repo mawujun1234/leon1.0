@@ -9,12 +9,12 @@ public class IsNull extends NoParamsSqlExpression {
 		this.not = false;
 	}
 
-	public void joinSql(Entity<?> en, StringBuilder sb) {
+/*	public void joinSql(Entity<?> en, StringBuilder sb) {
 		sb.append(_fmtcol(en));
 		sb.append(" IS ");
 		if (not)
 			sb.append("NOT ");
 		sb.append("NULL ");
-	}
+	}*/
 
 }
