@@ -1,6 +1,19 @@
 package com.mawujun.repository.page.sql;
 
+import static com.mawujun.repository.page.sql.Exps.eq;
+import static com.mawujun.repository.page.sql.Exps.gt;
+import static com.mawujun.repository.page.sql.Exps.gte;
+import static com.mawujun.repository.page.sql.Exps.inInt;
+import static com.mawujun.repository.page.sql.Exps.inLong;
+import static com.mawujun.repository.page.sql.Exps.inSql;
+import static com.mawujun.repository.page.sql.Exps.inStr;
+import static com.mawujun.repository.page.sql.Exps.isNull;
+import static com.mawujun.repository.page.sql.Exps.like;
+import static com.mawujun.repository.page.sql.Exps.lt;
+import static com.mawujun.repository.page.sql.Exps.lte;
+
 import java.util.Collections;
+
 
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.hql.internal.ast.ASTQueryTranslatorFactory;
@@ -14,7 +27,7 @@ import com.mawujun.utils.ReflectionUtils;
 
 
 
-
+BaseRepository中根据 Cnd进行查询。还有就是增，删，改，把WhereInfo的改成Cnd的
 /**
  * 用来存放where和orderby的数据
  * @author mawujun email:16064988@163.com qq:16064988
@@ -85,12 +98,196 @@ public class Cnd implements PItem{
 		return orNot(Cnd.exp(name, op, value));
 	}
 	//==================================
-	往这里加上 addEQ等方法
 	
+	public Cnd andIsNull(String name) {
+		this.getWhere().andIsNull(name);
+		return this;
+	}
+
+	public Cnd andNotIsNull(String name) {
+		this.getWhere().andNotIsNull(name);
+		return this;
+	}
 	
+	public Cnd andEquals(String name, Object val) {
+		if (null == val)
+			return andIsNull(name);
+		this.getWhere().andEquals(name, val);
+		return this;
+	}
+
+	public Cnd andNotEquals(String name, Object val) {
+		if (null == val)
+			return andNotIsNull(name);
+		this.getWhere().andNotEquals(name, val);
+		return this;
+
+	}
 	
+	public Cnd andGT(String name, long val) {
+		this.getWhere().andGT(name, val);
+		return this;
+	}
+
+	public Cnd andGTE(String name, long val) {
+		this.getWhere().andGTE(name, val);
+		return this;
+	}
+
+	public Cnd andLT(String name, long val) {
+		this.getWhere().andLT(name, val);
+		return this;
+	}
+
+	public Cnd andLTE(String name, long val) {
+		this.getWhere().andLTE(name, val);
+		return this;
+	}
 	
+	public Cnd andIn(String name, long... ids) {
+		this.getWhere().andIn(name, ids);
+		return this;
+	}
+
+	public Cnd andInInt(String name, int... ids) {
+		this.getWhere().andInIntArray(name, ids);
+		return this;
+	}
+
+	public Cnd andIn(String name, String... names) {
+		this.getWhere().andIn(name, names);
+		return this;
+	}
+
+	public Cnd andInByHql(String name, String subSql, Object... args) {
+		this.getWhere().andInBySql(name, subSql,args);
+		return this;
+	}
+
+	public Cnd andNotInByHql(String name, String subSql, Object... args) {
+		this.getWhere().andNotInBySql(name,subSql, args);
+		return this;
+	}
+
+	public Cnd andNotIn(String name, long... ids) {
+		this.getWhere().andNotIn(name, ids);
+		return this;
+	}
+
+	public Cnd andNotInInt(String name, int... ids) {
+		this.getWhere().andNotIn(name, ids);
+		return this;
+	}
+
+	public Cnd andNotIn(String name, String... names) {
+		this.getWhere().andNotIn(name, names);
+		return this;
+	}
+
+	public Cnd andLike(String name, String value) {
+		this.getWhere().andLike(name, value);
+		return this;
+	}
+
+	public Cnd andNotLike(String name, String value) {
+		this.getWhere().andNotLike(name, value);
+		return this;
+	}
+
+	public Cnd andLike(String name, String value, boolean ignoreCase) {
+		this.getWhere().andLike(name, value,ignoreCase);
+		return this;
+	}
+
+	public Cnd andNotLike(String name, String value, boolean ignoreCase) {
+		this.getWhere().andNotLike(name, value,ignoreCase);
+		return this;
+	}
 	
+	public Cnd orEquals(String name, Object val) {
+		this.getWhere().orEquals(name, val);
+		return this;
+	}
+
+	public Cnd orNotEquals(String name, Object val) {
+		this.getWhere().orNotEquals(name, val);
+		return this;
+
+	}
+
+	public Cnd orIsNull(String name) {
+		this.getWhere().orIsNull(name);
+		return this;
+	}
+
+	public Cnd orNotIsNull(String name) {
+		this.getWhere().orNotIsNull(name);
+		return this;
+	}
+
+	public Cnd orGT(String name, long val) {
+		return or(gt(name, val));
+	}
+
+	public Cnd orGTE(String name, long val) {
+		return or(gte(name, val));
+	}
+
+	public Cnd orLT(String name, long val) {
+		return or(lt(name, val));
+	}
+
+	public Cnd orLTE(String name, long val) {
+		return or(lte(name, val));
+	}
+
+	public Cnd orIn(String name, long... ids) {
+		return or(inLong(name, ids));
+	}
+
+	public Cnd orIn(String name, int... ids) {
+		return or(inInt(name, ids));
+	}
+
+	public Cnd orIn(String name, String... names) {
+		return or(inStr(name, names));
+	}
+
+	public Cnd orInBySql(String name, String subSql, Object... args) {
+		return or(inSql(name, subSql, args));
+	}
+
+	public Cnd orNotInBySql(String name, String subSql, Object... args) {
+		return or(inSql(name, subSql, args).not());
+	}
+
+	public Cnd orNotIn(String name, long... ids) {
+		return or(inLong(name, ids).not());
+	}
+
+	public Cnd orNotIn(String name, int... ids) {
+		return or(inInt(name, ids).not());
+	}
+
+	public Cnd orNotIn(String name, String... names) {
+		return or(inStr(name, names).not());
+	}
+
+	public Cnd orLike(String name, String value) {
+		return or(like(name, value));
+	}
+
+	public Cnd orNotLike(String name, String value) {
+		return or(like(name, value).not());
+	}
+
+	public Cnd orLike(String name, String value, boolean ignoreCase) {
+		return or(like(name, value, ignoreCase));
+	}
+
+	public Cnd orNotLike(String name, String value, boolean ignoreCase) {
+		return or(like(name, value, ignoreCase).not());
+	}
 	
 	
 	
