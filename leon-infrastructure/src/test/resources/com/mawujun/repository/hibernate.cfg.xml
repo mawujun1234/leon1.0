@@ -16,7 +16,7 @@
         <property name="connection.pool_size">5</property>
 
         <!-- SQL dialect -->
-        <property name="dialect">${hibernate.dialect}</property>
+        <property name="dialect">com.mawujun.repository.hibernate.MyH2Dialect</property>
 
         <!-- Enable Hibernate's automatic session context management -->
         <property name="current_session_context_class">thread</property>
@@ -29,8 +29,10 @@
 
         <!-- Drop and re-create the database schema on startup -->
         <property name="hbm2ddl.auto">update</property>
+        <property name="use_cross_join">false</property>
 
         <mapping class="com.mawujun.repository.EntityTest"/>
+        <mapping class="com.mawujun.repository.Parent"/>
 
     </session-factory>
 

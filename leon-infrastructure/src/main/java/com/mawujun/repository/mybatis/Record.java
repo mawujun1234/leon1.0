@@ -150,7 +150,7 @@ public class Record extends LinkedHashMap<String, Object> {
 		return dataParser.parseDate(getValue(i));
 	}
 	public static Record toRecord(Object obj){
-		return BeanPropertiesCopy.copy(obj, Record.class);
+		return BeanPropertiesCopy.copyOrCast(obj, Record.class);
 	}
 //
 //	

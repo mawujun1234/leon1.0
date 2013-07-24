@@ -1,4 +1,4 @@
-package com.mawujun.utils.page.sql;
+package com.mawujun.repository.page.sql;
 
 import java.lang.reflect.Array;
 import java.util.Collection;
@@ -76,14 +76,16 @@ public abstract class Exps {
 		if (null == value) {
 			SqlExpression re;
 			// IS NULL
-			if ("=".equals(op) || "IS".equals(op) || "NOT IS".equals(op) || "IS NOT".equals(op)) {
+			if ("=".equals(op) || "IS".equals(op) || "NOT IS".equals(op) || "IS NOT".equals(op)
+					|| "IS NOT NULL".equals(op) || "IS NULL".equals(op)) {
 				re = isNull(name);
 			}
 			// !!!
 			else {
 				throw new RuntimeException("null can only use 'IS' or 'NOT IS'");
 			}
-			return re.setNot(op.startsWith("NOT") || op.endsWith("NOT"));
+			//return re.setNot(op.startsWith("NOT") || op.endsWith("NOT") || op.contains("NOT"));
+			return re.setNot(op.contains("NOT"));
 		}
 		// IN
 		else if ("IN".equals(op) || "NOT IN".equals(op)) {
@@ -126,6 +128,9 @@ public abstract class Exps {
 		// !=
 		else if ("!=".equals(op) || "<>".equals(op)) {// TODO 检查一下,原本是&&, 明显永远成立
 			return eq(name, value).setNot(true);
+		} else if("IS NOT NULL".equals(op) || "IS NULL".equals(op)){
+			SqlExpression re = isNull(name);
+			return re.setNot(op.contains("NOT"));
 		}
 		// Others
 		return new SimpleExpression(name, op, value);
@@ -134,14 +139,14 @@ public abstract class Exps {
 	private static SqlExpression _evalRange(String name, Object value) {
 		if (ReflectionUtils.isInt(value))
 			//return inInt(name, Castors.me().castTo(value, int[].class));
-			return inInt(name, BeanPropertiesCopy.copy(value, int[].class));
+			return inInt(name, BeanPropertiesCopy.copyOrCast(value, int[].class));
 
 		else if (ReflectionUtils.isLong(value))
 			//return inLong(name, Castors.me().castTo(value, long[].class));
-			return inLong(name, BeanPropertiesCopy.copy(value, long[].class));
+			return inLong(name, BeanPropertiesCopy.copyOrCast(value, long[].class));
 
 		//return inStr(name, Castors.me().castTo(value, String[].class));
-		return inStr(name, BeanPropertiesCopy.copy(value, String[].class));
+		return inStr(name, BeanPropertiesCopy.copyOrCast(value, String[].class));
 	}
 	
 

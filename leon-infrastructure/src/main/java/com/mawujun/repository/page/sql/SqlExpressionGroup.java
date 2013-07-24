@@ -1,21 +1,22 @@
-package com.mawujun.utils.page.sql;
+package com.mawujun.repository.page.sql;
 
-import static com.mawujun.utils.page.sql.Exps.eq;
-import static com.mawujun.utils.page.sql.Exps.gt;
-import static com.mawujun.utils.page.sql.Exps.gte;
-import static com.mawujun.utils.page.sql.Exps.inInt;
-import static com.mawujun.utils.page.sql.Exps.inLong;
-import static com.mawujun.utils.page.sql.Exps.inStr;
-import static com.mawujun.utils.page.sql.Exps.inSql;
-import static com.mawujun.utils.page.sql.Exps.isNull;
-import static com.mawujun.utils.page.sql.Exps.like;
-import static com.mawujun.utils.page.sql.Exps.lt;
-import static com.mawujun.utils.page.sql.Exps.lte;
+import static com.mawujun.repository.page.sql.Exps.eq;
+import static com.mawujun.repository.page.sql.Exps.gt;
+import static com.mawujun.repository.page.sql.Exps.gte;
+import static com.mawujun.repository.page.sql.Exps.inInt;
+import static com.mawujun.repository.page.sql.Exps.inLong;
+import static com.mawujun.repository.page.sql.Exps.inSql;
+import static com.mawujun.repository.page.sql.Exps.inStr;
+import static com.mawujun.repository.page.sql.Exps.isNull;
+import static com.mawujun.repository.page.sql.Exps.like;
+import static com.mawujun.repository.page.sql.Exps.lt;
+import static com.mawujun.repository.page.sql.Exps.lte;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.HibernateException;
+import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.hibernate.type.Type;
 
 
@@ -240,39 +241,54 @@ public class SqlExpressionGroup implements SqlExpression {// extends AbstractPIt
 		return this;
 	}
 
-//	public void joinSql(Entity<?> en, StringBuilder sb) {
+//	public void joinSql(AbstractEntityPersister classMetadata, StringBuilder sb) {
 //		if (!exps.isEmpty()) {
 //			if (top) {
 //				sb.append(" WHERE ");
 //				for (SqlExpression exp : exps)
-//					exp.joinSql(en, sb);
+//					exp.joinSql(classMetadata, sb);
 //			} else {
 //				sb.append('(');
 //				for (SqlExpression exp : exps)
-//					exp.joinSql(en, sb);
+//					exp.joinSql(classMetadata, sb);
 //				sb.append(')');
 //			}
 //		}
 //	}
-//
-//	public int joinAdaptor(Entity<?> en, ValueAdaptor[] adaptors, int off) {
+	
+	public void joinHql(AbstractEntityPersister classMetadata, StringBuilder sb) {
+		if (!exps.isEmpty()) {
+			if (top) {
+				sb.append(" WHERE ");
+				for (SqlExpression exp : exps)
+					exp.joinHql(classMetadata, sb);
+			} else {
+				sb.append('(');
+				for (SqlExpression exp : exps)
+					exp.joinHql(classMetadata, sb);
+				sb.append(')');
+			}
+		}
+	}
+
+//	public int joinAdaptor(AbstractEntityPersister classMetadata, ValueAdaptor[] adaptors, int off) {
 //		for (SqlExpression exp : exps)
 //			off = exp.joinAdaptor(en, adaptors, off);
 //		return off;
 //	}
 //
-//	public int joinParams(Entity<?> en, Object obj, Object[] params, int off) {
-//		for (SqlExpression exp : exps)
-//			off = exp.joinParams(en, obj, params, off);
-//		return off;
-//	}
-//
-//	public int paramCount(Entity<?> en) {
-//		int re = 0;
-//		for (SqlExpression exp : exps)
-//			re += exp.paramCount(en);
-//		return re;
-//	}
+	public int joinParams(AbstractEntityPersister classMetadata, Object obj, Object[] params, int off) {
+		for (SqlExpression exp : exps)
+			off = exp.joinParams(classMetadata, obj, params, off);
+		return off;
+	}
+
+	public int paramCount(AbstractEntityPersister classMetadata) {
+		int re = 0;
+		for (SqlExpression exp : exps)
+			re += exp.paramCount(classMetadata);
+		return re;
+	}
 
 	public SqlExpression setNot(boolean not) {
 		return this;

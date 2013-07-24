@@ -46,7 +46,14 @@ public abstract class BeanPropertiesCopy {
 	 * 主要用于对象之间进行拷贝
 	 * Long[] aa=BeanPropertiesCopy.copy(value, long[].class)
 	 */
-	public static <T> T copy(Object source, Class<T> destinationClass) {
+	public static <T> T copyOrCast(Object source, Class<T> destinationClass) {
+		Class fromType=source.getClass();
+		if (fromType == destinationClass || destinationClass == null || fromType == null)
+			return (T) source;
+		if (fromType.getName().equals(destinationClass.getName()))
+			return (T) source;
+		if (destinationClass.isAssignableFrom(fromType))
+			return (T) source;
 		return dozer.map(source, destinationClass);
 	}
 
@@ -64,7 +71,7 @@ public abstract class BeanPropertiesCopy {
 	/**
 	 * 基于Dozer将对象A的值拷贝到对象B中.
 	 */
-	public static void copy(Object source, Object destinationObject) {
+	public static void copyOrCast(Object source, Object destinationObject) {
 		//dozer.
 		dozer.map(source, destinationObject);
 	}

@@ -1,6 +1,9 @@
 package com.mawujun.repository;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -14,16 +17,17 @@ public class EntityTest extends AutoIdEntity<Integer> {
 	private String firstName;
 	private String lastName;
 	private Integer age;
-	public Integer getAge() {
-		return age;
-	}
-	public void setAge(Integer age) {
-		this.age = age;
-	}
 	@Email
 	private String email;
 	@Version
 	private int version;
+	
+	@Embedded
+	private Address address;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	private Parent parent;
+	
 	
 	public String getEmail() {
 		return email;
@@ -48,6 +52,25 @@ public class EntityTest extends AutoIdEntity<Integer> {
 	}
 	public void setVersion(int version) {
 		this.version = version;
+	}
+	
+	public Integer getAge() {
+		return age;
+	}
+	public void setAge(Integer age) {
+		this.age = age;
+	}
+	public Address getAddress() {
+		return address;
+	}
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+	public Parent getParent() {
+		return parent;
+	}
+	public void setParent(Parent parent) {
+		this.parent = parent;
 	}
 
 }

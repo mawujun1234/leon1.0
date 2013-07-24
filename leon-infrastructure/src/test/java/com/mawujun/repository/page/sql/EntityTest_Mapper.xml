@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mawujun.repository.EntityTest">
+
+	<select id="queryPage" resultType="com.mawujun.repository.EntityTest" parameterType="map" databaseId="h2" >
+    	SELECT *
+	    FROM t_EntityTest 
+		<where>
+			<if test="wheres!=null">
+        	<foreach collection="wheres" index="index" item="item" separator=" and ">
+        	<choose>
+        		<when test="@Ognl@isInOp(item.op)">
+        			${item.property} in 
+        			<foreach item="item1" index="index" collection="item.value"  open="(" separator="," close=")">
+                   		${item1}
+           			 </foreach>      			
+        		</when>
+        		<when test="@Ognl@isBetweenOp(item.op)">
+        		${item.property} between 
+        		<foreach item="item1" index="index" collection="item.value"  open="" separator=" and " close="">
+        			${item1}
+        		</foreach>
+        		</when>
+        		<otherwise>
+        			${item.property} ${item.op} #{item.value}
+        		</otherwise>	
+			</choose>
+			</foreach>
+			</if>
+        </where>
+    </select>
+	
+</mapper>

@@ -15,6 +15,17 @@ import org.junit.Test;
  * 使用@Mapping能解决属性名不匹配的情况.
  */
 public class BeanPropertiesCopyTest {
+	
+	@Test  
+	 public void copyOrCast() throws Exception {
+		
+		
+		Integer bb= BeanPropertiesCopy.copyOrCast(1, Integer.class);
+		assertEquals((Integer)1, bb);
+		
+		String aa= BeanPropertiesCopy.copyOrCast("aa", String.class);
+		assertEquals("aa", aa);
+	}
 
 	@Test  
 	 public void testBeanToMap() throws Exception {
@@ -26,7 +37,7 @@ public class BeanPropertiesCopyTest {
 		product.setProductName("car");
 		
 
-		Map aa=BeanPropertiesCopy.copy(product, Map.class);
+		Map aa=BeanPropertiesCopy.copyOrCast(product, Map.class);
 		
 		assertEquals("car", aa.get("productName"));
 		//assertEquals((Double)1000d, product.getPrice());
@@ -100,7 +111,7 @@ public class BeanPropertiesCopyTest {
 		productDTO.setParts(new PartDTO[] { partDTO });
 
 		//ProductDTO->Product
-		Product product = BeanPropertiesCopy.copy(productDTO, Product.class);
+		Product product = BeanPropertiesCopy.copyOrCast(productDTO, Product.class);
 
 		assertEquals("car", product.getProductName());
 		//原来的字符串被Map成Double。
@@ -111,7 +122,7 @@ public class BeanPropertiesCopyTest {
 		assertEquals("car", product.getParts().get(0).getProduct().getProductName());
 
 		//再反向从Product->ProductDTO
-		ProductDTO productDTO2 = BeanPropertiesCopy.copy(product, ProductDTO.class);
+		ProductDTO productDTO2 = BeanPropertiesCopy.copyOrCast(product, ProductDTO.class);
 		assertEquals("car", productDTO2.getName());
 		assertEquals("200.0", productDTO2.getPrice());
 		assertEquals("door", productDTO2.getParts()[0].getName());
@@ -137,7 +148,7 @@ public class BeanPropertiesCopyTest {
 		product.setProductName("horse");
 		product.setWeight(new Double(20));
 
-		BeanPropertiesCopy.copy(productDTO, product);
+		BeanPropertiesCopy.copyOrCast(productDTO, product);
 
 		//原来的horse，被替换成car
 		assertEquals("car", product.getProductName());

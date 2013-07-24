@@ -116,7 +116,7 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 				continue;
 			}
 			//MenuItemVO fun=parentKeys.get(leaf.getId());
-			MenuItemVO vo=BeanPropertiesCopy.copy(leaf, MenuItemVO.class);
+			MenuItemVO vo=BeanPropertiesCopy.copyOrCast(leaf, MenuItemVO.class);
 			//fun.addItems(vo);
 			
 			if(leaf.getParent()!=null){
@@ -128,7 +128,7 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 						ancestorNew=parentKeys.get(ancestor.getId());
 					} else {
 						ancestorNew=new MenuItemVO();
-						BeanPropertiesCopy.copy(ancestor, ancestorNew);
+						BeanPropertiesCopy.copyOrCast(ancestor, ancestorNew);
 						parentKeys.put(ancestorNew.getId(), ancestorNew);
 					}
 					if(i==0){
