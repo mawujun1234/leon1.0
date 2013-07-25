@@ -397,7 +397,7 @@ public class RepositoryTest extends DbunitBaseRepositoryTest {
 		Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
 		EntityTest entity=new EntityTest();
 		entity.setEmail("1111@11.com");
-		kkkkk
+		
 		//WhereInfo where=WhereInfo.parse("age_in", "20,30,40");
 		repository.updateIgnoreNull(entity, Cnd.where().andIn("age", 20,30,40));
 		tx.commit();
@@ -505,6 +505,49 @@ public class RepositoryTest extends DbunitBaseRepositoryTest {
 		tx.commit();
 		assertEquals(2,entitys.getTotalItems());
 		assertEquals(1,entitys.getTotalPages());
+	}
+	
+	@Test
+	public void testQueryCnd() {
+		Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
+		Cnd cnd=Cnd.where().andGT("age", 20).andLike("firstName", "admin").andIn("lastName", "123","1234");
+		
+		List<EntityTest> entitys=repository.query(cnd);
+		tx.commit();
+		assertEquals(2,entitys.size());
+		//assertEquals(1,entitys.getTotalPages());
+	}
+	@Test
+	public void testQueryCountCnd() {
+		Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
+		Cnd cnd=Cnd.where().andGT("age", 20).andLike("firstName", "admin").andIn("lastName", "123","1234");
+		
+		int counts=repository.queryCount(cnd);
+		tx.commit();
+		assertEquals(2,counts);
+		//assertEquals(1,entitys.getTotalPages());
+	}
+	
+	@Test
+	public void testQueryUniqueCnd() {
+		Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
+		Cnd cnd=Cnd.where().and("id","=", 1);//.andLike("firstName", "admin").andIn("lastName", "123","1234");
+		
+		EntityTest entitys=repository.queryUnique(cnd);
+		tx.commit();
+		assertEquals((Integer)1,entitys.getId());
+		//assertEquals(1,entitys.getTotalPages());
+	}
+	
+	@Test
+	public void testQueryMaxCnd() {
+		Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
+		Cnd cnd=Cnd.where().andIn("id", 1,2,3);//.andLike("firstName", "admin").andIn("lastName", "123","1234");
+		
+		Object entitys=repository.queryMax("id",cnd);
+		tx.commit();
+		assertEquals((Integer)3,entitys);
+		//assertEquals(1,entitys.getTotalPages());
 	}
 	
 	@Test

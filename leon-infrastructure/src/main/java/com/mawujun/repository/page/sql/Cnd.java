@@ -27,11 +27,12 @@ import com.mawujun.utils.ReflectionUtils;
 
 
 /**
- * DAO 是使用一个好呢，还是继承好，还有就是如何接收前台的参数，BaseRepository中根据 Cnd进行查询。还有就是增，删，改，把WhereInfo的改成Cnd的
- * 建立一个独立的DAO，他用来快速访问
+ * 参数类型转换还没有在Pitem的子类中做过
+ * BaseRepository中根据 Cnd进行查询。还有就是增，删，改，把WhereInfo的改成Cnd的
+ * 还有就是如何接收前台的参数，
+ * DAO 是使用一个好呢，还是继承好，建立一个独立的DAO，他用来快速访问
  * 用来存放where和orderby的数据
  * 
- * updateIgnoreNull和deleteBatch(Cnd cnd)还没有测试
  * @author mawujun email:16064988@163.com qq:16064988
  *
  */

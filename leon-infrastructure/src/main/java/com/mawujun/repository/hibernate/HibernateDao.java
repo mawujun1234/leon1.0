@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mawujun.repository.page.sql.Cnd;
+import com.mawujun.utils.ArrayUtils;
 import com.mawujun.utils.AssertUtils;
 import com.mawujun.utils.BeanPropertiesCopy;
 import com.mawujun.utils.ReflectionUtils;
@@ -193,6 +194,45 @@ public class HibernateDao<T, ID extends Serializable>{
 		return builder;
 	}
 	/**
+	 * 使用占位符,第一个参数是更新的语句，不带where信息，第二个参数是 参数值
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param entity
+	 * @return
+	 */
+	private Object[] getUpdateProp_position(final T entity){
+		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
+		
+		String[] propertyNames=classMetadata.getPropertyNames();
+		Object[] propertyValues=classMetadata.getPropertyValues(entity);
+		int versionIndex=classMetadata.getVersionProperty();
+		
+		List<Object> params=new ArrayList<Object>();
+		StringBuilder builder=null;
+		if(versionIndex!=-66){//如果有version字段就更新他
+			builder=new StringBuilder("update versioned  " + this.entityClass.getName()+ " obj set ");
+		} else {
+			builder=new StringBuilder("update  " + this.entityClass.getName()+ " obj set ");
+		}
+		
+		int i=0;
+		boolean isiFirst=true;//判断是不是第一个set
+		for(Object o :propertyValues ){
+			if(versionIndex!=-66 && versionIndex==i){
+				continue;
+			}
+			if(o!=null){
+				if(i!=0 && !isiFirst){
+					builder.append(",");
+				}
+				builder.append(" obj."+propertyNames[i]+"=?");
+				params.add(o);
+				isiFirst=false;
+			}
+			i++;
+		}
+		return new Object[]{builder,params};
+	}
+	/**
 	 * 动态更新，对有值的字段进行更新，即如果字段=null，那就不进行更新
 	 * @param entity
 	 */
@@ -248,7 +288,7 @@ public class HibernateDao<T, ID extends Serializable>{
 			query.setByte(position, (Byte) val);
 		} else if (ReflectionUtils.isShort(val)) {
 			query.setShort(position, (Short) val);
-		} else if (ReflectionUtils.isShort(val)) {
+		} else if (ReflectionUtils.isInt(val)) {
 			query.setInteger(position, (Integer) val);
 		} else if (ReflectionUtils.isLong(val)) {
 			query.setLong(position, (Long) val);
@@ -271,12 +311,27 @@ public class HibernateDao<T, ID extends Serializable>{
 		}
 	}
 	
-	protected void setParamsByCnd(Query query,Cnd cnd,AbstractEntityPersister classMetadata) {	
+	/**
+	 * 注意
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param query
+	 * @param cnd
+	 * @param classMetadata
+	 * @param otherParams 这里的参数比Cnd的参数要再前面
+	 */
+	protected void setParamsByCnd(Query query,Cnd cnd,AbstractEntityPersister classMetadata,Object... otherParams) {
+		int position=0;
+		if(otherParams!=null && otherParams.length>0){
+			for(Object o:otherParams){
+				setParams(query,position,o);
+				position++;
+			}
+		}
 		Object[] params = new Object[cnd.paramCount(classMetadata)];
 		int paramsCount = cnd.joinParams(classMetadata, null, params, 0);
 
 		for (int i = 0; i < params.length; i++) {
-			setParams(query,i,params[i]);
+			setParams(query,position+i,params[i]);
 		}
 	}
 	
@@ -285,7 +340,11 @@ public class HibernateDao<T, ID extends Serializable>{
 	 * @param entity
 	 */
 	public void updateIgnoreNull(final T entity,Cnd cnd) {
-		StringBuilder builder=getUpdateProp(entity);
+		Object[] objs=getUpdateProp_position(entity);
+		StringBuilder builder=(StringBuilder)objs[0];
+		List<Object> params11111=(List<Object>)objs[1];
+		
+		//StringBuilder builder=getUpdateProp(entity);
 		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
 //		String[] propertyNames=classMetadata.getPropertyNames();
 //		Object[] propertyValues=classMetadata.getPropertyValues(entity);
@@ -298,7 +357,17 @@ public class HibernateDao<T, ID extends Serializable>{
 		cnd.joinHql(classMetadata, builder);
 		Query query = this.getSession().createQuery(builder.toString());
 		
-		setParamsByCnd(query,cnd,classMetadata);
+		setParamsByCnd(query,cnd,classMetadata,params11111.toArray(new Object[params11111.size()]));
+//		Object[] params = new Object[cnd.paramCount(classMetadata)];
+//		cnd.joinParams(classMetadata, null, params, 0);
+//		for(Object o:params){
+//			params11111.add(o);
+//		}
+//		params=params11111.toArray(new Object[params11111.size()]);
+//
+//		for (int i = 0; i < params.length; i++) {
+//			setParams(query,i,params[i]);
+//		}
 		
 		query.executeUpdate();
 		
@@ -723,17 +792,57 @@ public class HibernateDao<T, ID extends Serializable>{
 		Criteria criteria = getSession().createCriteria(entityClass);
 		return criteria.list();
 	}
-	public List<T> query(WhereInfo... whereInfos) {
+	public List<T> query(boolean uniqueResult,WhereInfo... whereInfos) {
 		Criteria criteria = getSession().createCriteria(entityClass);
+		if(uniqueResult){
+			criteria.setFirstResult(0);
+			criteria.setMaxResults(1);
+		}
 		whereInfo2Criterion(criteria,whereInfos);
 		
 		return criteria.list();
+	}
+	public List<T> query(Cnd cnd,boolean uniqueResult) {
+		StringBuilder builder=new StringBuilder("from " + this.entityClass.getName()+ "  ");
+		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
+		cnd.joinHql(classMetadata, builder);
+		
+
+		Object[] params = new Object[cnd.paramCount(classMetadata)];
+		int paramsCount = cnd.joinParams(classMetadata, null, params, 0);
+		
+		Session session = this.getSession();
+		Query query = session.createQuery(builder.toString());
+		if(uniqueResult){
+			query.setFirstResult(0);
+			query.setMaxResults(1);
+		}
+		
+		setParamsByCnd(query,cnd,classMetadata);
+		return query.list();
+
 	}
 	public int queryCount(WhereInfo... whereInfos) {
 		Criteria criteria = getSession().createCriteria(entityClass);
 		whereInfo2Criterion(criteria,whereInfos);
 		int totalCount = countCriteriaResult(criteria);
 		return totalCount;
+	}
+	public int queryCount(Cnd cnd) {
+		StringBuilder builder=new StringBuilder("select count(*) from " + this.entityClass.getName()+ "  ");
+		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
+		cnd.joinHql(classMetadata, builder);
+		
+
+		Object[] params = new Object[cnd.paramCount(classMetadata)];
+		int paramsCount = cnd.joinParams(classMetadata, null, params, 0);
+		
+		Session session = this.getSession();
+		Query query = session.createQuery(builder.toString());
+		
+		setParamsByCnd(query,cnd,classMetadata);
+		query.setResultTransformer(CriteriaSpecification.ROOT_ENTITY);
+		return ((Long)query.uniqueResult()).intValue();
 	}
 	/**
 	 * 返回第一个对象
@@ -742,7 +851,21 @@ public class HibernateDao<T, ID extends Serializable>{
 	 * @return
 	 */
 	public T queryUnique(WhereInfo... whereInfos) {
-		List<T> list=query(whereInfos);
+		List<T> list=query(true,whereInfos);
+		if(list!=null && list.size()!=0){
+			return list.get(0);
+		}
+		return null;
+	}
+	
+	/**
+	 * 返回第一个对象
+	 * @author mawujun email:mawujun1234@163.com qq:16064988
+	 * @param whereInfos
+	 * @return
+	 */
+	public T queryUnique(Cnd cnd) {
+		List<T> list=query(cnd,true);
 		if(list!=null && list.size()!=0){
 			return list.get(0);
 		}
@@ -754,6 +877,23 @@ public class HibernateDao<T, ID extends Serializable>{
 		criteria.setProjection(Projections.projectionList().add( Projections.max(property)));
 		whereInfo2Criterion(criteria,whereInfos);
 		return criteria.uniqueResult();
+	}
+	
+	public Object queryMax(String property,Cnd cnd) {
+		StringBuilder builder=new StringBuilder("select max("+property+") from " + this.entityClass.getName()+ "  ");
+		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
+		cnd.joinHql(classMetadata, builder);
+		
+
+		Object[] params = new Object[cnd.paramCount(classMetadata)];
+		int paramsCount = cnd.joinParams(classMetadata, null, params, 0);
+		
+		Session session = this.getSession();
+		Query query = session.createQuery(builder.toString());
+		
+		setParamsByCnd(query,cnd,classMetadata);
+		query.setResultTransformer(CriteriaSpecification.ROOT_ENTITY);
+		return query.uniqueResult();
 	}
 	
 	private void whereInfo2Criterion(Criteria criteria,WhereInfo... whereInfos) {

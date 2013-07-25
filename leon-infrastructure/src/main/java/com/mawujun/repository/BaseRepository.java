@@ -263,7 +263,7 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 		return hibernateDao.queryAll();
 	}
 	public List<T> query(WhereInfo... whereInfos) {
-		return hibernateDao.query(whereInfos);
+		return hibernateDao.query(false,whereInfos);
 	}
 	public int queryCount(WhereInfo... whereInfos) {
 		return hibernateDao.queryCount(whereInfos);
@@ -277,8 +277,25 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 	public List<T> queryByExample(T t) {
 		return hibernateDao.queryByExample(t);
 	}
+	//=============================
+	
+	public List<T> query(Cnd cnd) {
+		return hibernateDao.query(cnd,false);
+	}
+	public int queryCount(Cnd cnd) {
+		return hibernateDao.queryCount(cnd);
+	}
+	public T queryUnique(Cnd cnd) {
+		return hibernateDao.queryUnique(cnd);
+	}
+	public Object queryMax(String property,Cnd cnd) {
+		return hibernateDao.queryMax(property,cnd);
+	}
+	//=============================
 	
 	
+	
+	dfdfg
 	
 	public QueryResult<T> queryPage(final PageRequest pageRequest) {
 		return hibernateDao.queryPage(pageRequest);
