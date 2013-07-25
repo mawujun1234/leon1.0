@@ -28,7 +28,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.mawujun.mybatis.MybatisUtil;
-import com.mawujun.repository.page.sql.Cnd;
+import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.test.DbunitBaseRepositoryTest;
 import com.mawujun.utils.FileUtils;
 import com.mawujun.utils.hibernate.HibernateUtil;

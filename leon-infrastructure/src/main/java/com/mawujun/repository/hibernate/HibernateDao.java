@@ -30,7 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.mawujun.repository.page.sql.Cnd;
+import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.utils.ArrayUtils;
 import com.mawujun.utils.AssertUtils;
 import com.mawujun.utils.BeanPropertiesCopy;

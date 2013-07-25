@@ -1,4 +1,4 @@
-package com.mawujun.repository.page.sql;
+package com.mawujun.repository.cnd;
 
 import org.hibernate.persister.entity.AbstractEntityPersister;
 

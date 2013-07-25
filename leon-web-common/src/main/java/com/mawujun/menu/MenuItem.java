@@ -41,7 +41,7 @@ public class MenuItem extends UUIDEntity {
 	private String scripts;
 	@Label(name="图标")
 	@Column(length=40)
-	private String iconCls;
+	private String iconCls="menu_category";
 	@Column(length=40)
 	private String reportCode;//等级关系代码
 	

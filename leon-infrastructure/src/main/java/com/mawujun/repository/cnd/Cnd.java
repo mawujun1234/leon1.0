@@ -1,4 +1,4 @@
-package com.mawujun.repository.page.sql;
+package com.mawujun.repository.cnd;
 
 //import static com.mawujun.repository.page.sql.Exps.gt;
 //import static com.mawujun.repository.page.sql.Exps.gte;

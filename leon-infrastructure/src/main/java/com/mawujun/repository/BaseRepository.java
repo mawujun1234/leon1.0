@@ -17,12 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mawujun.exception.BussinessException;
 import com.mawujun.exception.DefaulExceptionCode;
 import com.mawujun.exception.PaymentCode;
+import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.repository.hibernate.HibernateDao;
 import com.mawujun.repository.hibernate.NamingStrategy;
 import com.mawujun.repository.idEntity.IdEntity;
 import com.mawujun.repository.mybatis.MybatisRepository;
 import com.mawujun.repository.mybatis.Record;
-import com.mawujun.repository.page.sql.Cnd;
 import com.mawujun.utils.ReflectionUtils;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
@@ -295,8 +295,7 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 	
 	
 	
-	dfdfg
-	
+
 	public QueryResult<T> queryPage(final PageRequest pageRequest) {
 		return hibernateDao.queryPage(pageRequest);
 	}

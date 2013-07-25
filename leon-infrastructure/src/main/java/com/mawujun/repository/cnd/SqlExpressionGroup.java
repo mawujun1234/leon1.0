@@ -1,16 +1,16 @@
-package com.mawujun.repository.page.sql;
+package com.mawujun.repository.cnd;
 
-import static com.mawujun.repository.page.sql.Exps.eq;
-import static com.mawujun.repository.page.sql.Exps.gt;
-import static com.mawujun.repository.page.sql.Exps.gte;
-import static com.mawujun.repository.page.sql.Exps.inInt;
-import static com.mawujun.repository.page.sql.Exps.inLong;
-import static com.mawujun.repository.page.sql.Exps.inSql;
-import static com.mawujun.repository.page.sql.Exps.inStr;
-import static com.mawujun.repository.page.sql.Exps.isNull;
-import static com.mawujun.repository.page.sql.Exps.like;
-import static com.mawujun.repository.page.sql.Exps.lt;
-import static com.mawujun.repository.page.sql.Exps.lte;
+import static com.mawujun.repository.cnd.Exps.eq;
+import static com.mawujun.repository.cnd.Exps.gt;
+import static com.mawujun.repository.cnd.Exps.gte;
+import static com.mawujun.repository.cnd.Exps.inInt;
+import static com.mawujun.repository.cnd.Exps.inLong;
+import static com.mawujun.repository.cnd.Exps.inSql;
+import static com.mawujun.repository.cnd.Exps.inStr;
+import static com.mawujun.repository.cnd.Exps.isNull;
+import static com.mawujun.repository.cnd.Exps.like;
+import static com.mawujun.repository.cnd.Exps.lt;
+import static com.mawujun.repository.cnd.Exps.lte;
 
 import java.util.ArrayList;
 import java.util.List;

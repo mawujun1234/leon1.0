@@ -1,3 +1,6 @@
+.menu_category { 
+        background: url(../icons/box.png) left top no-repeat !important; 
+}
 .menuBar-index-button { 
         background: url(../icons/house.png) left top no-repeat !important; 
 }

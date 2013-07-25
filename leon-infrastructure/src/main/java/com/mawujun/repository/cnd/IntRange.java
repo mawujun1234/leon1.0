@@ -1,4 +1,4 @@
-package com.mawujun.repository.page.sql;
+package com.mawujun.repository.cnd;
 
 public class IntRange extends NumberRange {
 
