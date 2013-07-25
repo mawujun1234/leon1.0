@@ -28,6 +28,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.mawujun.mybatis.MybatisUtil;
+import com.mawujun.repository.page.sql.Cnd;
 import com.mawujun.test.DbunitBaseRepositoryTest;
 import com.mawujun.utils.FileUtils;
 import com.mawujun.utils.hibernate.HibernateUtil;
@@ -307,6 +308,23 @@ public class RepositoryTest extends DbunitBaseRepositoryTest {
 		
 		//ClassUtils.isPrimitiveOrWrapper(type)
 	}
+	
+	@Test
+	public void testBatchDeletCnd() throws SQLException, DataSetException {
+		//fail("Not yet implemented");
+		//在这里测试所有的where条件，构成的sql而不单单是=,>,<这些二元操作符，还有in等这些
+		//WhereInfo whereinfo=WhereInfo.parse("age_in", "20,30");
+		
+		
+		Transaction tx = sessionFactory.getCurrentSession().beginTransaction();
+		repository.deleteBatch(Cnd.where().andIn("age", 20,30));
+		tx.commit();
+		
+		ITable table =dbConn.createTable(EntityTest_TableName);
+		assertEquals(1,table.getRowCount());
+		
+		//ClassUtils.isPrimitiveOrWrapper(type)
+	}
 
 	@Test
 	public void testUpdateDynamic() throws DataSetException, SQLException{
@@ -318,7 +336,7 @@ public class RepositoryTest extends DbunitBaseRepositoryTest {
 		entity.setId(1);
 		entity.setVersion(1);
 		entity.setFirstName("update1New");
-		repository.updateDynamic(entity);
+		repository.updateIgnoreNull(entity);
 		tx.commit();
 		
 		
@@ -339,7 +357,7 @@ public class RepositoryTest extends DbunitBaseRepositoryTest {
 		entity.setId(1);
 		entity.setVersion(1);
 		entity.setFirstName("update1New");
-		repository.updateDynamic(entity);
+		repository.updateIgnoreNull(entity);
 		
 		EntityTest entity1=repository.get(1);
 		assertEquals("update1New",entity1.getFirstName());
@@ -361,7 +379,27 @@ public class RepositoryTest extends DbunitBaseRepositoryTest {
 		entity.setEmail("1111@11.com");
 		
 		WhereInfo where=WhereInfo.parse("age_in", "20,30,40");
-		repository.updateDynamic(entity, where);
+		repository.updateIgnoreNull(entity, where);
+		tx.commit();
+		
+		ITable table =dbConn.createTable(EntityTest_TableName);
+		assertEquals(3,table.getRowCount());
+		
+		for(int i=0;i<table.getRowCount();i++){
+			assertEquals("1111@11.com",table.getValue(i, "email"));
+		}
+	}
+	
+	@Test
+	public void testUpdateDynamicCnd() throws DataSetException, SQLException{
+		//fail("Not yet implemented");
+		
+		Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
+		EntityTest entity=new EntityTest();
+		entity.setEmail("1111@11.com");
+		kkkkk
+		//WhereInfo where=WhereInfo.parse("age_in", "20,30,40");
+		repository.updateIgnoreNull(entity, Cnd.where().andIn("age", 20,30,40));
 		tx.commit();
 		
 		ITable table =dbConn.createTable(EntityTest_TableName);

@@ -1,19 +1,16 @@
 package com.mawujun.repository.page.sql;
 
-import static com.mawujun.repository.page.sql.Exps.eq;
-import static com.mawujun.repository.page.sql.Exps.gt;
-import static com.mawujun.repository.page.sql.Exps.gte;
-import static com.mawujun.repository.page.sql.Exps.inInt;
-import static com.mawujun.repository.page.sql.Exps.inLong;
-import static com.mawujun.repository.page.sql.Exps.inSql;
-import static com.mawujun.repository.page.sql.Exps.inStr;
-import static com.mawujun.repository.page.sql.Exps.isNull;
-import static com.mawujun.repository.page.sql.Exps.like;
-import static com.mawujun.repository.page.sql.Exps.lt;
-import static com.mawujun.repository.page.sql.Exps.lte;
+//import static com.mawujun.repository.page.sql.Exps.gt;
+//import static com.mawujun.repository.page.sql.Exps.gte;
+//import static com.mawujun.repository.page.sql.Exps.inInt;
+//import static com.mawujun.repository.page.sql.Exps.inLong;
+//import static com.mawujun.repository.page.sql.Exps.inSql;
+//import static com.mawujun.repository.page.sql.Exps.inStr;
+//import static com.mawujun.repository.page.sql.Exps.like;
+//import static com.mawujun.repository.page.sql.Exps.lt;
+//import static com.mawujun.repository.page.sql.Exps.lte;
 
 import java.util.Collections;
-
 
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.hql.internal.ast.ASTQueryTranslatorFactory;
@@ -27,9 +24,14 @@ import com.mawujun.utils.ReflectionUtils;
 
 
 
-BaseRepository中根据 Cnd进行查询。还有就是增，删，改，把WhereInfo的改成Cnd的
+
+
 /**
+ * DAO 是使用一个好呢，还是继承好，还有就是如何接收前台的参数，BaseRepository中根据 Cnd进行查询。还有就是增，删，改，把WhereInfo的改成Cnd的
+ * 建立一个独立的DAO，他用来快速访问
  * 用来存放where和orderby的数据
+ * 
+ * updateIgnoreNull和deleteBatch(Cnd cnd)还没有测试
  * @author mawujun email:16064988@163.com qq:16064988
  *
  */
@@ -226,72 +228,97 @@ public class Cnd implements PItem{
 	}
 
 	public Cnd orGT(String name, long val) {
-		return or(gt(name, val));
+		this.getWhere().orGT(name,val);
+		return this;
 	}
 
 	public Cnd orGTE(String name, long val) {
-		return or(gte(name, val));
+		this.getWhere().orGTE(name,val);
+		return this;
 	}
 
 	public Cnd orLT(String name, long val) {
-		return or(lt(name, val));
+		this.getWhere().orLT(name,val);
+		return this;
 	}
 
 	public Cnd orLTE(String name, long val) {
-		return or(lte(name, val));
+		this.getWhere().orLTE(name,val);
+		return this;
 	}
 
 	public Cnd orIn(String name, long... ids) {
-		return or(inLong(name, ids));
+		this.getWhere().orIn(name,ids);
+		return this;
 	}
 
 	public Cnd orIn(String name, int... ids) {
-		return or(inInt(name, ids));
+		this.getWhere().orIn(name,ids);
+		return this;
 	}
 
 	public Cnd orIn(String name, String... names) {
-		return or(inStr(name, names));
+		this.getWhere().orIn(name,names);
+		return this;
 	}
 
 	public Cnd orInBySql(String name, String subSql, Object... args) {
-		return or(inSql(name, subSql, args));
+		this.getWhere().orInBySql(name,subSql,args);
+		return this;
 	}
 
 	public Cnd orNotInBySql(String name, String subSql, Object... args) {
-		return or(inSql(name, subSql, args).not());
+		this.getWhere().orNotInBySql(name,subSql,args);
+		return this;
 	}
 
 	public Cnd orNotIn(String name, long... ids) {
-		return or(inLong(name, ids).not());
+		this.getWhere().orNotIn(name,ids);
+		return this;
 	}
 
 	public Cnd orNotIn(String name, int... ids) {
-		return or(inInt(name, ids).not());
+		this.getWhere().orNotIn(name,ids);
+		return this;
 	}
 
 	public Cnd orNotIn(String name, String... names) {
-		return or(inStr(name, names).not());
+		this.getWhere().orNotIn(name,names);
+		return this;
 	}
 
 	public Cnd orLike(String name, String value) {
-		return or(like(name, value));
+		this.getWhere().orLike(name,value);
+		return this;
 	}
 
 	public Cnd orNotLike(String name, String value) {
-		return or(like(name, value).not());
+		this.getWhere().orNotLike(name,value);
+		return this;
 	}
 
 	public Cnd orLike(String name, String value, boolean ignoreCase) {
-		return or(like(name, value, ignoreCase));
+		this.getWhere().orLike(name,value,ignoreCase);
+		return this;
 	}
 
 	public Cnd orNotLike(String name, String value, boolean ignoreCase) {
-		return or(like(name, value, ignoreCase).not());
+		this.getWhere().orNotLike(name,value,ignoreCase);
+		return this;
 	}
 	
 	
 	
-	
+
+	public Cnd asc(String name) {
+		orderBy.asc(name);
+		return this;
+	}
+
+	public Cnd desc(String name) {
+		orderBy.desc(name);
+		return this;
+	}
 	
 	
 	
@@ -321,8 +348,10 @@ public class Cnd implements PItem{
 	@Override
 	public void joinHql(AbstractEntityPersister classMetadata, StringBuilder sb) {
 		// TODO Auto-generated method stub
+		
+		//sb.append("from "+classMetadata.getEntityName());
 		where.joinHql(classMetadata, sb);
-		//orderBy.joinSql(classMetadata, sb);
+		orderBy.joinHql(classMetadata, sb);
 	}
 
 	@Override
@@ -376,7 +405,7 @@ public class Cnd implements PItem{
 	public String toHql(AbstractEntityPersister classMetadata) {
 		Object[] params = new Object[this.paramCount(classMetadata)];
 		int i = where.joinParams(classMetadata, null, params, 0);
-		//orderBy.joinParams(classMetadata, null, params, i);
+
 
 		StringBuilder sb = new StringBuilder("from "+classMetadata.getEntityName());
 		//StringBuilder sb = new StringBuilder();
@@ -419,6 +448,7 @@ public class Cnd implements PItem{
 //		return ES_FLD_VAL.escape(s);
 		return s;
 	}
+	
 	
 
 }

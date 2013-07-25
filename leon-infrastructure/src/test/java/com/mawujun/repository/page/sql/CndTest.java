@@ -32,6 +32,7 @@ import com.mawujun.repository.EntityTest;
 import com.mawujun.test.DbunitBaseRepositoryTest;
 import com.mawujun.utils.FileUtils;
 import com.mawujun.utils.hibernate.HibernateUtil;
+import com.mawujun.utils.page.WhereInfo;
 
 public class CndTest  extends DbunitBaseRepositoryTest {
 	private String EntityTest_TableName="t_EntityTest";
@@ -40,6 +41,8 @@ public class CndTest  extends DbunitBaseRepositoryTest {
 	private static SqlSessionFactory sqlSessionFactory;
 	
 	private static class EntityTestRepository extends BaseRepository<EntityTest,Integer> {
+
+
 		
 	}
 	
@@ -443,6 +446,23 @@ public class CndTest  extends DbunitBaseRepositoryTest {
 
 		Cnd cnd1=Cnd.where().andNotLike("firstName","E1",false).orNotLike("firstName","E1",false);;
 		assertEquals("from com.mawujun.repository.EntityTest WHERE  NOT firstName LIKE '%E1%' OR  NOT firstName LIKE '%E1%'",cnd1.toHql(classMetadata));
+		
+	}
+	
+	@Test
+	public void asc() {
+		AbstractEntityPersister classMetadata=(AbstractEntityPersister)sessionFactory.getClassMetadata(EntityTest.class);
+		Cnd cnd0=Cnd.where().andNotLike("firstName","E1",true).orNotLike("firstName","E1",true).asc("firstName");
+		assertEquals("from com.mawujun.repository.EntityTest WHERE  NOT LOWER(firstName) LIKE LOWER('%E1%') OR  NOT LOWER(firstName) LIKE LOWER('%E1%') ORDER BY firstName ASC  ",cnd0.toHql(classMetadata));
+
+	}
+	
+	@Test
+	public void desc() {
+		AbstractEntityPersister classMetadata=(AbstractEntityPersister)sessionFactory.getClassMetadata(EntityTest.class);
+		Cnd cnd0=Cnd.where().andNotLike("firstName","E1",true).orNotLike("firstName","E1",true).desc("firstName");;
+		assertEquals("from com.mawujun.repository.EntityTest WHERE  NOT LOWER(firstName) LIKE LOWER('%E1%') OR  NOT LOWER(firstName) LIKE LOWER('%E1%') ORDER BY firstName DESC  ",cnd0.toHql(classMetadata));
+
 		
 	}
 

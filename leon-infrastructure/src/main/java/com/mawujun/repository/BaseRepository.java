@@ -22,6 +22,7 @@ import com.mawujun.repository.hibernate.NamingStrategy;
 import com.mawujun.repository.idEntity.IdEntity;
 import com.mawujun.repository.mybatis.MybatisRepository;
 import com.mawujun.repository.mybatis.Record;
+import com.mawujun.repository.page.sql.Cnd;
 import com.mawujun.utils.ReflectionUtils;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
@@ -60,7 +61,7 @@ import com.mawujun.utils.page.WhereInfo;
  * @param <ID>
  */
 @Transactional
-public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializable> implements IRepository<T, ID> {
+public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializable> {// implements IRepository<T, ID>
 	
 	
 
@@ -169,15 +170,23 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 	/**
 	 * 根据传递进来的entity，哪些字段有值，不是null就更新到数据库
 	 */
-	public void updateDynamic(T entity) {
-		hibernateDao.updateDynamic(entity);
+	public void updateIgnoreNull(T entity) {
+		hibernateDao.updateIgnoreNull(entity);
 		hibernateDao.flush();
 	}
 	/**
 	 * 将符合where条件的，所有记录的值都更新成entity中拥有的键值对，忽略version和id字段
 	 */
-	public void updateDynamic(T entity,WhereInfo... wheres) {
-		hibernateDao.updateDynamic(entity,wheres);
+	public void updateIgnoreNull(T entity,WhereInfo... wheres) {
+		hibernateDao.updateIgnoreNull(entity,wheres);
+		hibernateDao.flush();
+	}
+	
+	/**
+	 * 将符合where条件的，所有记录的值都更新成entity中拥有的键值对，忽略version和id字段
+	 */
+	public void updateIgnoreNull(T entity,Cnd cnd) {
+		hibernateDao.updateIgnoreNull(entity,cnd);
 		hibernateDao.flush();
 	}
 
@@ -220,6 +229,10 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 	}
 	public int deleteBatch(WhereInfo... wheres){
 		return hibernateDao.deleteBatch(wheres);
+	}
+	
+	public int deleteBatch(Cnd cnd){
+		return hibernateDao.deleteBatch(cnd);
 	}
 
 	public int updateBatch(T... entitys) {

@@ -1,14 +1,13 @@
 package com.mawujun.repository.hibernate;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.ClassUtils;
 import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
 import org.hibernate.Hibernate;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Query;
@@ -27,19 +26,19 @@ import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.hibernate.transform.ResultTransformer;
 import org.hibernate.type.Type;
-import org.hibernate.type.descriptor.java.AbstractTypeDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.mawujun.repository.page.sql.Cnd;
 import com.mawujun.utils.AssertUtils;
 import com.mawujun.utils.BeanPropertiesCopy;
 import com.mawujun.utils.ReflectionUtils;
+import com.mawujun.utils.page.Operation;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 import com.mawujun.utils.page.SortInfo;
 import com.mawujun.utils.page.WhereInfo;
-import com.mawujun.utils.page.Operation;
 
 
 public class HibernateDao<T, ID extends Serializable>{
@@ -163,13 +162,7 @@ public class HibernateDao<T, ID extends Serializable>{
 		this.getSession().update(entity);
 	}
 
-	/**
-	 * 动态更新，对有值的字段进行更新，即如果字段=null，那就不进行更新
-	 * @param entity
-	 */
-	public void updateDynamic(final T entity) {
-		AssertUtils.notNull(entity, "entity不能为空");
-		
+	private StringBuilder getUpdateProp(final T entity){
 		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
 		
 		String[] propertyNames=classMetadata.getPropertyNames();
@@ -197,6 +190,24 @@ public class HibernateDao<T, ID extends Serializable>{
 			}
 			i++;
 		}
+		return builder;
+	}
+	/**
+	 * 动态更新，对有值的字段进行更新，即如果字段=null，那就不进行更新
+	 * @param entity
+	 */
+	public void updateIgnoreNull(final T entity) {
+		AssertUtils.notNull(entity, "entity不能为空");
+
+		
+		StringBuilder builder=getUpdateProp(entity);
+		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
+		String[] propertyNames=classMetadata.getPropertyNames();
+		Object[] propertyValues=classMetadata.getPropertyValues(entity);
+		int versionIndex=classMetadata.getVersionProperty();
+		int i=0;
+		boolean isiFirst=true;//判断是不是第一个set
+		
 		//id要循环的
 		builder.append(" where id=:id");
 		builder.append(" and "+propertyNames[versionIndex]+"=:version");
@@ -228,40 +239,85 @@ public class HibernateDao<T, ID extends Serializable>{
 		
 	}
 	
+	protected void setParams(Query query,int position,Object val) {		
+		if (ReflectionUtils.isString(val)) {
+			query.setString(position, (String) val);
+		} else if (ReflectionUtils.isChar(val)) {
+			query.setString(position, ((Character) val) + "");
+		} else if (ReflectionUtils.isByte(val)) {
+			query.setByte(position, (Byte) val);
+		} else if (ReflectionUtils.isShort(val)) {
+			query.setShort(position, (Short) val);
+		} else if (ReflectionUtils.isShort(val)) {
+			query.setInteger(position, (Integer) val);
+		} else if (ReflectionUtils.isLong(val)) {
+			query.setLong(position, (Long) val);
+		} else if (ReflectionUtils.isFloat(val)) {
+			query.setFloat(position, (Float) val);
+		} else if (ReflectionUtils.isDouble(val)) {
+			query.setDouble(position, (Double) val);
+		} else if (ReflectionUtils.isBigDecimal(val)) {
+			query.setBigDecimal(position, (BigDecimal) val);
+		} else if (ReflectionUtils.isOf(val, java.sql.Date.class)) {
+			query.setDate(position, (java.sql.Date) val);
+		} else if (ReflectionUtils.isOf(val, java.util.Date.class)) {
+			query.setDate(position, (java.util.Date) val);
+		} else if (val.getClass().isArray() && val.getClass().getComponentType() == byte.class) {
+			query.setBinary(position,(byte[]) val);
+		} else if (val.getClass().isEnum()) {
+			query.setString(position, val.toString());
+		} else {
+			throw new RuntimeException("不支持的值类型！" + val.getClass().getName());
+		}
+	}
+	
+	protected void setParamsByCnd(Query query,Cnd cnd,AbstractEntityPersister classMetadata) {	
+		Object[] params = new Object[cnd.paramCount(classMetadata)];
+		int paramsCount = cnd.joinParams(classMetadata, null, params, 0);
+
+		for (int i = 0; i < params.length; i++) {
+			setParams(query,i,params[i]);
+		}
+	}
+	
 	/**
 	 * 动态更新，对有值的字段进行更新，即如果字段=null，那就不进行更新
 	 * @param entity
 	 */
-	public void updateDynamic(final T entity,WhereInfo... wheres) {
+	public void updateIgnoreNull(final T entity,Cnd cnd) {
+		StringBuilder builder=getUpdateProp(entity);
+		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
+//		String[] propertyNames=classMetadata.getPropertyNames();
+//		Object[] propertyValues=classMetadata.getPropertyValues(entity);
+//		int versionIndex=classMetadata.getVersionProperty();
+//
+//		boolean isiFirst=true;//判断是不是第一个set
+		
+
+		//返回了带where的条件
+		cnd.joinHql(classMetadata, builder);
+		Query query = this.getSession().createQuery(builder.toString());
+		
+		setParamsByCnd(query,cnd,classMetadata);
+		
+		query.executeUpdate();
+		
+	}
+	/**
+	 * 动态更新，对有值的字段进行更新，即如果字段=null，那就不进行更新
+	 * @param entity
+	 */
+	public void updateIgnoreNull(final T entity,WhereInfo... wheres) {
 		AssertUtils.notNull(entity, "entity不能为空");
 		
+		StringBuilder builder=getUpdateProp(entity);
 		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
-		
 		String[] propertyNames=classMetadata.getPropertyNames();
 		Object[] propertyValues=classMetadata.getPropertyValues(entity);
 		int versionIndex=classMetadata.getVersionProperty();
-		StringBuilder builder=null;
-		if(versionIndex!=-66){//如果有version字段就更新他
-			builder=new StringBuilder("update versioned  " + this.entityClass.getName()+ " obj set ");
-		} else {
-			builder=new StringBuilder(" update  " + this.entityClass.getName()+ " obj set ");
-		}
-		
-		int flagInt=0;
+		int i=0;
 		boolean isiFirst=true;//判断是不是第一个set
-		for(Object o :propertyValues ){
-			if(versionIndex!=-66 && versionIndex==flagInt){
-				continue;
-			}
-			if(o!=null){
-				if(flagInt!=0 && !isiFirst){
-					builder.append(",");
-				}
-				builder.append(" obj."+propertyNames[flagInt]+"=:"+propertyNames[flagInt]);
-				isiFirst=false;
-			}
-			flagInt++;
-		}
+		
 		
 		builder.append(" where ");
 		for(WhereInfo whereInfo:wheres){
@@ -277,21 +333,21 @@ public class HibernateDao<T, ID extends Serializable>{
 		
 		
 		Query query = this.getSession().createQuery(builder.toString());
-		flagInt=0;
+		i=0;
 		isiFirst=true;
 		for(Object o :propertyValues ){
-			if(versionIndex!=-66 && versionIndex==flagInt){
+			if(versionIndex!=-66 && versionIndex==i){
 				continue;
 			}
 			if(o!=null){
-				if(flagInt!=0 && !isiFirst){
+				if(i!=0 && !isiFirst){
 					builder.append(",");
 				}
 				
-				query.setParameter(propertyNames[flagInt], o);
+				query.setParameter(propertyNames[i], o);
 				isiFirst=false;
 			}
-			flagInt++;
+			i++;
 		}
 		setParamsByWhereInfo(query,classMetadata,wheres);
 		
@@ -491,6 +547,26 @@ public class HibernateDao<T, ID extends Serializable>{
 		Query query = this.getSession().createQuery(builder.toString());
 		this.getSession().clear();
 		return query.executeUpdate();
+	}
+	
+	public int deleteBatch(Cnd cnd){
+		StringBuilder builder=new StringBuilder("delete from " + this.entityClass.getName()+ "  ");
+		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
+		cnd.joinHql(classMetadata, builder);
+		
+
+		Object[] params = new Object[cnd.paramCount(classMetadata)];
+		int paramsCount = cnd.joinParams(classMetadata, null, params, 0);
+		
+		Session session = this.getSession();
+		Query query = session.createQuery(builder.toString());
+		
+		setParamsByCnd(query,cnd,classMetadata);
+		
+		int rr=query.executeUpdate();
+		session.clear();
+		return rr;
+		
 	}
 	public int deleteBatch(WhereInfo... wheres){
 		if(cancelExecute(wheres)){

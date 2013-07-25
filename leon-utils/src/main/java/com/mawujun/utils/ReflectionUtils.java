@@ -224,6 +224,10 @@ public class ReflectionUtils {
 	public static boolean isIntLike(Object obj) {
 		return isInt(obj) || isLong(obj) || isShort(obj) || isByte(obj) || is(obj,BigDecimal.class);
 	}
+	
+	public static boolean isBigDecimal(Object obj) {
+		return is(obj,BigDecimal.class);
+	}
 
 	/**
 	 * @return 当前类型是不是接口
