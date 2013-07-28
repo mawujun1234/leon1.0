@@ -71,6 +71,18 @@ Ext.onReady(function(){
 		
 
 	});
+	
+	var createModule = new Ext.Action({
+		    text: '新增菜单',
+		    handler: function(){
+		    	var parent=tree.getLastSelected();
+		    	
+		    	showFunTree(parent);
+		    },
+		    iconCls: 'fun-module-add'
+	});
+    tree.addAction(createModule,0);
+    
 	var form=Ext.create('Leon.desktop.menu.MenuItemForm',{
 		region:'east',
 		split: true,
@@ -91,5 +103,39 @@ Ext.onReady(function(){
 		var fun=tree.getSelectionModel().getLastSelected( ) ;
 		tree.getStore().load({node:fun});
 	});
+	
+	function showFunTree(parent){
+		var me=this;
+		var tree=Ext.create('Leon.desktop.fun.FunTree',{
+			autoInitSimpleAction:false,
+			width:400,
+			height:500
+		});
+		tree.on("itemdblclick",function(view,record,index,e){
+			//fun_id_txt.setValue(record.get("id"));
+			//fun_text_txt.setValue(record.get("text"));
+			if(record.get("funEnum")=="module"){
+				Ext.Msg.alert("消息","请选择功能节点!");
+				return;
+			}
+			Ext.Ajax.request({
+				url:'/menuItem/createByFun',
+				method:'POST',
+				params:{funId:record.getId(),parentId:parent?parent.getId():null},
+				success:function(response){
+					
+				}
+			});
+			win.close();
+		});
+		var win=Ext.create('Ext.Window',{
+			layout:'fit',
+			modal:true,
+			constrainHeader:true,
+			title:'新增菜单',
+			items:tree
+		});
+		win.show();	
+	}
 	
 });

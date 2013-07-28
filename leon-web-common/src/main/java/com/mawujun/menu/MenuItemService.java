@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mawujun.exception.BussinessException;
 import com.mawujun.fun.Fun;
+import com.mawujun.fun.FunService;
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.service.BaseService;
 import com.mawujun.utils.BeanPropertiesCopy;
@@ -22,6 +23,8 @@ import com.mawujun.utils.page.WhereInfo;
 @Service
 @Transactional(propagation=Propagation.REQUIRED)
 public class MenuItemService extends BaseRepository<MenuItem, String> {
+	@Autowired
+	private FunService funService;
 
 	
 	public void create(MenuItem entity) {
@@ -46,6 +49,22 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 		}
 		super.delete(item);
 	}
+	public MenuItem create(String funId,String parentId) {
+		Fun fun=funService.get(funId);
+		MenuItem parent=this.get(parentId);
+		
+		MenuItem menuitem = new MenuItem();
+		menuitem.setText(fun.getText());
+		//menuitem.setReportCode(fun.getReportCode());
+		menuitem.setFun(fun);
+		menuitem.setParent(parent);
+		menuitem.setMenu(parent.getMenu());
+		menuitem.setIconCls(fun.getIconCls());
+		
+		super.create(menuitem);
+		
+		return null;
+	}
 	/**
 	 * 在默认菜单上创建菜单项
 	 * @author mawujun 16064988@qq.com 
@@ -64,6 +83,8 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 		menuitem.setFun(fun);
 		menuitem.setParent(menuparent);
 		menuitem.setMenu(new Menu(Menu.default_id));
+		menuitem.setIconCls(fun.getIconCls());
+		
 		super.create(menuitem);
 		fun.setMenuItemId(menuitem.getId());
 	}

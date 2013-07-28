@@ -203,10 +203,6 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
 	showFunTree:function(showTarget,fun_id_txt,fun_text_txt){
 		var me=this;
 		var tree=Ext.create('Leon.desktop.fun.FunTree',{
-//			region:'west',
-//			split: true,
-//			collapsible: true,
-//			title:'功能树',
 			autoInitSimpleAction:false,
 			width:400,
 			height:500

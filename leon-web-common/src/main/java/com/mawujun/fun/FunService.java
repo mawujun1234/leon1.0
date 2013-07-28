@@ -16,6 +16,7 @@ import com.mawujun.menu.MenuItemRepository;
 import com.mawujun.menu.MenuItemService;
 import com.mawujun.menu.MenuService;
 import com.mawujun.repository.BaseRepository;
+import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.role.Role;
 import com.mawujun.role.RoleEnum;
 import com.mawujun.service.BaseService;
@@ -46,19 +47,12 @@ public class FunService extends BaseRepository<Fun, String> {
 			throw new BussinessException("存在子节点，不能删除。",WebCommonExceptionCode3.EXISTS_CHILDREN);
 		}
 		
-//		WhereInfo whereinfoItem=WhereInfo.parse("fun.id", fun.getId());
-//		WhereInfo whereinfoItem1=WhereInfo.parse("menu.id", Menu.default_id);
-//		List<MenuItem> menuItems= menuItemService.query(whereinfoItem,whereinfoItem1);
-//		if(menuItems!=null && menuItems.size()>1){
-//			StringBuilder builder=new StringBuilder();
-//			for(MenuItem menuItem:menuItems){
-//				builder.append(menuItem.getMenu().getText()+":"+menuItem.getText()+";");
-//			}
-//			throw new BussinessException("有菜单挂钩，不能删除。<br/>"+builder);
-//		} else if(menuItems.size()==1){
-//			menuItemService.delete(menuItems.get(0));
-//		}
-		menuItemService.delete(fun);
+
+		//menuItemService.delete(fun);
+		int menuItemCount=menuItemService.queryCount(Cnd.where().andEquals("fun.id", entity.getId()));
+		if(menuItemCount>0){
+			throw new BussinessException("有菜单挂钩，不能删除。",WebCommonExceptionCode3.EXISTS_CHILDREN);
+		}
 		
 		super.delete(fun);
 		
@@ -78,13 +72,10 @@ public class FunService extends BaseRepository<Fun, String> {
 			throw new BussinessException("功能不能增加下级节点");
 		}
 		entity.setParent(parent);
-//		//获取父节点的reportcode
-//		WhereInfo whereinfo=WhereInfo.parse("parent.id", entity.getParent().getId());
-//		Object reportCode=funRepository.queryMax("reportCode",whereinfo);
-//		String newReportCode=ReportCodeHelper.generate3((String)reportCode);
+
 		entity.setReportCode(getMaxReportCode(entity.getParent()==null?null:entity.getParent().getId()));
 		
-		menuItemService.create(entity);
+		//menuItemService.create(entity);
 		
 		super.create(entity);
 
@@ -122,7 +113,7 @@ public class FunService extends BaseRepository<Fun, String> {
 			MenuItem menuItem=menuItemService.queryUnique(whereinfoItem,whereinfoItem1);
 			menuItem.setText(entity.getText());
 			menuItem.setReportCode(entity.getReportCode());
-			menuItemService.update(menuItem);
+			//menuItemService.update(menuItem);
 //		}
 		
 		
