@@ -56,19 +56,15 @@ Ext.onReady(function(){
 		//alert(1);
 		var basicFoem=form.getForm();
 		basicFoem.loadRecord(record);
-		
-		//if(record.getId()!=tree.getRootNode().getId()){
-		//alert(record.get("fun_id"));前面的实例没有建好的原因
-		//alert(record.getFun());这里报错
-			basicFoem.setValues({"fun_text":record.getFun().get("text")}) ;
-			var parent=tree.getStore().getNodeById(record.get("parent_id"));
-			if(parent){
-				basicFoem.setValues({"parent_text":parent.get("text")}) ;
-			} else {
-				basicFoem.setValues({"parent_text":null}) ;
-			}
-		//} 
-		
+
+		//basicFoem.setValues({"iconCls":record.getFun().get("text")}) ;
+		basicFoem.setValues({"fun_text":record.getFun().get("text")}) ;
+		var parent=tree.getStore().getNodeById(record.get("parent_id"));
+		if(parent){
+			basicFoem.setValues({"parent_text":parent.get("text")}) ;
+		} else {
+			basicFoem.setValues({"parent_text":null}) ;
+		}
 
 	});
 	
@@ -77,7 +73,7 @@ Ext.onReady(function(){
 		    handler: function(){
 		    	var parent=tree.getLastSelected();
 		    	
-		    	showFunTree(parent);
+		    	showFunTree(parent,tree);
 		    },
 		    iconCls: 'fun-module-add'
 	});
@@ -104,7 +100,7 @@ Ext.onReady(function(){
 		tree.getStore().load({node:fun});
 	});
 	
-	function showFunTree(parent){
+	function showFunTree(parent,menuTree){
 		var me=this;
 		var tree=Ext.create('Leon.desktop.fun.FunTree',{
 			autoInitSimpleAction:false,
@@ -123,7 +119,7 @@ Ext.onReady(function(){
 				method:'POST',
 				params:{funId:record.getId(),parentId:parent?parent.getId():null},
 				success:function(response){
-					
+					menuTree.getStore().reload({node:parent});
 				}
 			});
 			win.close();

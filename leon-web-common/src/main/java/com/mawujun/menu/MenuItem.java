@@ -50,9 +50,9 @@ public class MenuItem extends UUIDEntity {
 	private Menu menu;
 	@ManyToOne(fetch=FetchType.EAGER,optional=true)
 	private Fun fun;
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	private MenuItem parent;
-	@OneToMany(mappedBy="parent",fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="parent",fetch=FetchType.EAGER)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)  
 	private List<MenuItem> children=new ArrayList<MenuItem>();
 	
@@ -155,16 +155,23 @@ public class MenuItem extends UUIDEntity {
 		}
 		return pcategory;
 	}
-	public boolean isAutoCreate(){
-		if(this.getFun()==null){
-			return false;
-		} else {
-			if(this.getId().equals(this.getFun().getMenuItemId())){
-				return true;
-			} else {
-				return false;
-			}
+	public boolean isLeaf() {
+		if(this.children==null || this.children.size()==0){
+			return true;
 		}
+		return false;
 	}
+	
+//	public boolean isAutoCreate(){
+//		if(this.getFun()==null){
+//			return false;
+//		} else {
+//			if(this.getId().equals(this.getFun().getMenuItemId())){
+//				return true;
+//			} else {
+//				return false;
+//			}
+//		}
+//	}
 
 }

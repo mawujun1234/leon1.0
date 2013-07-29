@@ -66,8 +66,8 @@ public class SpringMVCControllerTest {
 		assertNotNull(wac);
 		this.mockMvc = webAppContextSetup(this.wac).build();
 		//这句话在正式库是不用加的
-		//ToJsonConfigHolder.reset();
-		//ToJsonConfigHolder.setAutoWrap(false);
+		//JsonConfigHolder.reset();
+		//JsonConfigHolder.setAutoWrap(false);
 	}
 	@Ignore
 	@Test

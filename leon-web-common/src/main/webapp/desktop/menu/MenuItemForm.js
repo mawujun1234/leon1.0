@@ -79,6 +79,38 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
                         }
                     }]
             },
+            {
+                xtype: 'fieldcontainer',
+                fieldLabel: '图标',
+                combineErrors: true,
+                msgTarget : 'side',
+                layout: 'hbox',
+                defaults: {
+                    flex: 1,
+                    hideLabel: true
+                },
+                items: [{
+                        xtype     : 'button',
+                        flex:0,
+                        width:80,
+                        iconCls:'icons_003_16',
+                        text      : '选择图标',
+                        handler:function(btn){
+                        	还没有做，晚上回去做。
+                        }
+                    },{
+                        xtype     : 'hidden',
+                        name      : 'iconCls',
+                        flex:0,
+                        fieldLabel: '图标Cls',
+                        listeners:{
+                        	change:function(field, newValue, oldValue, eOpts){
+                        		var iconButton=field.previousSibling();
+                        		iconButton.setIconCls(newValue );
+                        	}
+                        }
+                    }]
+            },
 //            	{
 //	            fieldLabel: 'id',
 //	            //afterLabelTextTpl: me.required,

@@ -1,21 +1,16 @@
 package com.mawujun.menu;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.mawujun.controller.spring.mvc.ToJsonConfigHolder;
-import com.mawujun.fun.Fun;
-import com.mawujun.repository.hibernate.HibernateUtils;
+import com.mawujun.controller.spring.mvc.JsonConfigHolder;
 import com.mawujun.utils.page.WhereInfo;
 
 @Controller
@@ -36,6 +31,7 @@ public class MenuItemController {
 		WhereInfo menuIdwhereinfo=WhereInfo.parse("menu.id", menuId);
 		List<MenuItem> menuItems=menuItemService.query(whereinfo,menuIdwhereinfo);
 
+		JsonConfigHolder.setFilterPropertys("parent,children",MenuItem.class);
 		return menuItems;
 	}
 	/**
@@ -47,7 +43,7 @@ public class MenuItemController {
 	public List<MenuItemVO> query4Desktop(String menuId){		
 
 		List<MenuItemVO> menuItems=menuItemService.query4Desktop(menuId);
-		ToJsonConfigHolder.setWriteMapNullValue(false);
+		JsonConfigHolder.setWriteMapNullValue(false);
 		return menuItems;
 	}
 	

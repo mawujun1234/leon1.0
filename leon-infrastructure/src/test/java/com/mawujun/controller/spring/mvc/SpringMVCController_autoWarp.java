@@ -130,7 +130,7 @@ public class SpringMVCController_autoWarp {
 		child1.setName("child1");
 		child1.setParent(parent);
 		parent.addChilden(child1);
-		ToJsonConfigHolder.setFilterPropertys("parent");
+		JsonConfigHolder.setFilterPropertys("parent");
 		return parent;
 	}
 	/**
@@ -162,7 +162,7 @@ public class SpringMVCController_autoWarp {
 		
 		List<Model> list=new ArrayList<Model>();
 		list.add(parent);
-		ToJsonConfigHolder.setFilterPropertys("parent");
+		JsonConfigHolder.setFilterPropertys("parent");
 		return list;
 	}
 	
@@ -195,8 +195,8 @@ public class SpringMVCController_autoWarp {
 		
 		List<Model> list=new ArrayList<Model>();
 		list.add(parent);
-		ToJsonConfigHolder.setFilterPropertys("parent");
-		ToJsonConfigHolder.setRootName("children");
+		JsonConfigHolder.setFilterPropertys("parent");
+		JsonConfigHolder.setRootName("children");
 		return list;
 	}
 	
@@ -212,7 +212,7 @@ public class SpringMVCController_autoWarp {
 //		ModelMap map=new ModelMap();
 //		map.put("filterPropertys", "age,name");//过滤属性的设置
 //		map.put("root", parent);
-		ToJsonConfigHolder.setFilterPropertys("age,name");
+		JsonConfigHolder.setFilterPropertys("age,name");
 		return parent;
 	}
 	
@@ -253,7 +253,7 @@ public class SpringMVCController_autoWarp {
 //		map.put("filterPropertys", "age,name");//过滤属性的设置
 //		map.put("root", list);
 		
-		ToJsonConfigHolder.setFilterPropertys("age,name");
+		JsonConfigHolder.setFilterPropertys("age,name");
 		return list;
 	}
 	@RequestMapping("/autoWarp/filterOnlyId.do")
@@ -338,8 +338,8 @@ public class SpringMVCController_autoWarp {
 	@RequestMapping("/autoWarp/testExtProperties.do")
 	@ResponseBody
 	public HashMap testExtProperties(){
-		ToJsonConfigHolder.setAutoWrap(false);
-		ToJsonConfigHolder.addProperty("aa", "aaaa");
+		JsonConfigHolder.setAutoWrap(false);
+		JsonConfigHolder.addProperty("aa", "aaaa");
 		HashMap bb= new HashMap();
 		bb.put("11", 11);
 		return bb;
@@ -348,8 +348,8 @@ public class SpringMVCController_autoWarp {
 	@RequestMapping("/autoWarp/testExtProperties1.do")
 	@ResponseBody
 	public Model testExtProperties1(){
-		ToJsonConfigHolder.setAutoWrap(false);
-		ToJsonConfigHolder.addProperty("aa", "aaaa");
+		JsonConfigHolder.setAutoWrap(false);
+		JsonConfigHolder.addProperty("aa", "aaaa");
 		Model model=new Model();
 		model.setName("1111");
 		return model;

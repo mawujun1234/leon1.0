@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.cache.RoleCacheHolder;
-import com.mawujun.controller.spring.mvc.ToJsonConfigHolder;
+import com.mawujun.controller.spring.mvc.JsonConfigHolder;
 import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;
 import com.mawujun.utils.page.WhereInfo;
@@ -86,7 +86,7 @@ public class RoleController {
 		Set<Role> roles=null;
 		roles=roleService.queryMutex(ownId);
 		roles.size();
-		ToJsonConfigHolder.setFilterPropertys("parents,children,mutex,funes");
+		JsonConfigHolder.setFilterPropertys("parents,children,mutex,funes");
 		return roles;
 	}
 	
@@ -123,7 +123,7 @@ public class RoleController {
 //	public Set<Role> queryParent(String childId) {
 //		Set<Role> roles=null;
 //		roles=roleService.queryParent(childId);
-//		ToJsonConfigHolder.setFilterPropertys("parents,children,mutex,funes");
+//		JsonConfigHolder.setFilterPropertys("parents,children,mutex,funes");
 //		return roles;
 //	}
 	

@@ -5,17 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mawujun.exception.BussinessException;
 import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;
 import com.mawujun.repository.BaseRepository;
-import com.mawujun.service.BaseService;
 import com.mawujun.utils.BeanPropertiesCopy;
 import com.mawujun.utils.help.ReportCodeHelper;
 import com.mawujun.utils.page.WhereInfo;
@@ -44,12 +41,13 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 	}
 	public void delete(MenuItem entity) {
 		MenuItem item=this.get(entity.getId());
-		if(item.isAutoCreate()){
-			throw new BussinessException("不能删除自动创建的菜单项。<br/>");
-		}
+//		if(item.isAutoCreate()){
+//			throw new BussinessException("不能删除自动创建的菜单项。<br/>");
+//		}
 		super.delete(item);
 	}
 	public MenuItem create(String funId,String parentId) {
+		//throw new BussinessException("c测试");
 		Fun fun=funService.get(funId);
 		MenuItem parent=this.get(parentId);
 		
@@ -62,58 +60,59 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 		menuitem.setIconCls(fun.getIconCls());
 		
 		super.create(menuitem);
+		parent.addChild(menuitem);
 		
 		return null;
 	}
-	/**
-	 * 在默认菜单上创建菜单项
-	 * @author mawujun 16064988@qq.com 
-	 * @param fun
-	 */
-	public void create(Fun fun) {
-		//新建功能的时候同时建立菜单，还没有做
-		// 获取对应的父菜单,获取第一个匹配的菜单
-		WhereInfo whereinfoItem = WhereInfo.parse("fun.id", fun.getParent()==null?null:fun.getParent().getId());
-		WhereInfo whereinfoItem1 = WhereInfo.parse("menu.id", Menu.default_id);
-		MenuItem menuparent = this.queryUnique(whereinfoItem,whereinfoItem1);
-
-		MenuItem menuitem = new MenuItem();
-		menuitem.setText(fun.getText());
-		menuitem.setReportCode(fun.getReportCode());
-		menuitem.setFun(fun);
-		menuitem.setParent(menuparent);
-		menuitem.setMenu(new Menu(Menu.default_id));
-		menuitem.setIconCls(fun.getIconCls());
-		
-		super.create(menuitem);
-		fun.setMenuItemId(menuitem.getId());
-	}
-	
-	public void update(Fun fun) {
-//		WhereInfo whereinfoItem=WhereInfo.parse("fun.id", entity.getId());
+//	/**
+//	 * 在默认菜单上创建菜单项
+//	 * @author mawujun 16064988@qq.com 
+//	 * @param fun
+//	 */
+//	public void create(Fun fun) {
+//		//新建功能的时候同时建立菜单，还没有做
+//		// 获取对应的父菜单,获取第一个匹配的菜单
+//		WhereInfo whereinfoItem = WhereInfo.parse("fun.id", fun.getParent()==null?null:fun.getParent().getId());
+//		WhereInfo whereinfoItem1 = WhereInfo.parse("menu.id", Menu.default_id);
+//		MenuItem menuparent = this.queryUnique(whereinfoItem,whereinfoItem1);
+//
+//		MenuItem menuitem = new MenuItem();
+//		menuitem.setText(fun.getText());
+//		menuitem.setReportCode(fun.getReportCode());
+//		menuitem.setFun(fun);
+//		menuitem.setParent(menuparent);
+//		menuitem.setMenu(new Menu(Menu.default_id));
+//		menuitem.setIconCls(fun.getIconCls());
+//		
+//		super.create(menuitem);
+//		fun.setMenuItemId(menuitem.getId());
+//	}
+//	
+//	public void update(Fun fun) {
+////		WhereInfo whereinfoItem=WhereInfo.parse("fun.id", entity.getId());
+////		WhereInfo whereinfoItem1=WhereInfo.parse("menu.id", Menu.default_id);
+////		MenuItem menuItem=menuItemService.queryUnique(whereinfoItem,whereinfoItem1);
+////		menuItem.setText(entity.getText());
+////		menuItem.setReportCode(entity.getReportCode());
+//		MenuItem menuItem=this.get(fun.getMenuItemId());
+//		menuItem.setText(fun.getText());
+//		menuItem.setReportCode(fun.getReportCode());
+//		super.update(menuItem);
+//	}
+//	public void delete(Fun fun) {
+//		WhereInfo whereinfoItem=WhereInfo.parse("fun.id", fun.getId());
 //		WhereInfo whereinfoItem1=WhereInfo.parse("menu.id", Menu.default_id);
-//		MenuItem menuItem=menuItemService.queryUnique(whereinfoItem,whereinfoItem1);
-//		menuItem.setText(entity.getText());
-//		menuItem.setReportCode(entity.getReportCode());
-		MenuItem menuItem=this.get(fun.getMenuItemId());
-		menuItem.setText(fun.getText());
-		menuItem.setReportCode(fun.getReportCode());
-		super.update(menuItem);
-	}
-	public void delete(Fun fun) {
-		WhereInfo whereinfoItem=WhereInfo.parse("fun.id", fun.getId());
-		WhereInfo whereinfoItem1=WhereInfo.parse("menu.id", Menu.default_id);
-		List<MenuItem> menuItems= this.query(whereinfoItem,whereinfoItem1);
-		if(menuItems!=null && menuItems.size()>0){
-			StringBuilder builder=new StringBuilder();
-			for(MenuItem menuItem:menuItems){
-				builder.append(menuItem.getMenu().getText()+":"+menuItem.getText()+";");
-			}
-			throw new BussinessException("有菜单挂钩，不能删除。<br/>"+builder);
-		} else if(menuItems.size()==1){	
-			this.delete(menuItems.get(0));
-		}
-	}
+//		List<MenuItem> menuItems= this.query(whereinfoItem,whereinfoItem1);
+//		if(menuItems!=null && menuItems.size()>0){
+//			StringBuilder builder=new StringBuilder();
+//			for(MenuItem menuItem:menuItems){
+//				builder.append(menuItem.getMenu().getText()+":"+menuItem.getText()+";");
+//			}
+//			throw new BussinessException("有菜单挂钩，不能删除。<br/>"+builder);
+//		} else if(menuItems.size()==1){	
+//			this.delete(menuItems.get(0));
+//		}
+//	}
 	
 	public List<MenuItemVO> query4Desktop(String menuId) {
 		
@@ -184,6 +183,7 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 			//if(fun.getFunEnum()==FunEnum.fun){
 			super.initLazyProperty(menuItem.getMenu());
 			super.initLazyProperty(menuItem.getParent());
+			menuItem.getChildren().size();
 			super.initLazyProperty(menuItem.getChildren());
 			//}	
 		}

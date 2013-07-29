@@ -49,7 +49,7 @@ public class SpringMVCController {
 	@RequestMapping("/test/queryPage.do")
 	@ResponseBody
 	public ModelMap queryPage(){		
-		ToJsonConfigHolder.setAutoWrap(false);
+		JsonConfigHolder.setAutoWrap(false);
 		QueryResult<Map<String,String>> page=getQueryResult();
 		
 		ModelMap map=new ModelMap();
@@ -61,7 +61,7 @@ public class SpringMVCController {
 	@RequestMapping("/test/queryPage1.do")
 	@ResponseBody
 	public QueryResult queryPage1(){
-		ToJsonConfigHolder.setAutoWrap(false);
+		JsonConfigHolder.setAutoWrap(false);
 		QueryResult<Map<String,String>> page=new QueryResult<Map<String,String>>();
 		page.setStratAndLimit(1, 10);
 		
@@ -80,7 +80,7 @@ public class SpringMVCController {
 	@RequestMapping("/test/queryMap.do")
 	@ResponseBody
 	public Map queryMap(){
-		ToJsonConfigHolder.setAutoWrap(false);
+		JsonConfigHolder.setAutoWrap(false);
 		Map<String,String> map=new HashMap<String,String>();
 		map.put("name", "name");
 		map.put("age", "111");
@@ -91,7 +91,7 @@ public class SpringMVCController {
 	@RequestMapping("/test/queryModel.do")
 	@ResponseBody
 	public Model queryModel(){
-		ToJsonConfigHolder.setAutoWrap(false);
+		JsonConfigHolder.setAutoWrap(false);
 		Model parent=new Model();
 		parent.setId(1);
 		parent.setAge(11);
@@ -107,7 +107,7 @@ public class SpringMVCController {
 	@RequestMapping("/test/queryCycle.do")
 	@ResponseBody
 	public Model queryCycle(){
-		ToJsonConfigHolder.setAutoWrap(false);
+		JsonConfigHolder.setAutoWrap(false);
 		Model parent=new Model();
 		parent.setId(1);
 		parent.setAge(11);
@@ -128,7 +128,7 @@ public class SpringMVCController {
 		child1.setParent(parent);
 		parent.addChilden(child1);
 
-		ToJsonConfigHolder.setFilterPropertys("parent");
+		JsonConfigHolder.setFilterPropertys("parent");
 		return parent;
 	}
 	/**
@@ -138,7 +138,7 @@ public class SpringMVCController {
 	@RequestMapping("/test/queryCycleList.do")
 	@ResponseBody
 	public List<Model> queryCycleList(){
-		ToJsonConfigHolder.setAutoWrap(false);
+		JsonConfigHolder.setAutoWrap(false);
 		Model parent=new Model();
 		parent.setId(1);
 		parent.setAge(11);
@@ -162,14 +162,14 @@ public class SpringMVCController {
 		List<Model> list=new ArrayList<Model>();
 		list.add(parent);
 
-		ToJsonConfigHolder.setFilterPropertys("parent");
+		JsonConfigHolder.setFilterPropertys("parent");
 		return list;
 	}
 	
 	@RequestMapping("/test/filterProperty.do")
 	@ResponseBody
 	public ModelMap filterProperty(){
-		ToJsonConfigHolder.setAutoWrap(false);
+		JsonConfigHolder.setAutoWrap(false);
 		Model parent=new Model();
 		parent.setId(1);
 		parent.setAge(11);
@@ -179,13 +179,13 @@ public class SpringMVCController {
 		ModelMap map=new ModelMap();
 		//map.put("filterPropertys", "age,name");//过滤属性的设置
 		map.put("root", parent);
-		ToJsonConfigHolder.setFilterPropertys("age,name",Model.class);
+		JsonConfigHolder.setFilterPropertys("age,name",Model.class);
 		return map;
 	}
 	@RequestMapping("/test/filterPropertyList.do")
 	@ResponseBody
 	public ModelMap filterPropertyList(){
-		ToJsonConfigHolder.setAutoWrap(false);
+		JsonConfigHolder.setAutoWrap(false);
 		//还没有测试root是List的情况
 		Model parent=new Model();
 		parent.setId(1);
@@ -198,14 +198,14 @@ public class SpringMVCController {
 		ModelMap map=new ModelMap();
 		//map.put("filterPropertys", "age,name");//过滤属性的设置
 		map.put("root", list);
-		ToJsonConfigHolder.setFilterPropertys("age,name",Model.class);
+		JsonConfigHolder.setFilterPropertys("age,name",Model.class);
 		return map;
 	}
 	
 	@RequestMapping("/test/filterPropertyModelMap.do")
 	@ResponseBody
 	public ModelMap filterPropertyModelMap(){
-		ToJsonConfigHolder.setAutoWrap(false);
+		JsonConfigHolder.setAutoWrap(false);
 //		Model parent=new Model();
 //		parent.setId(1);
 //		parent.setAge(11);
@@ -228,7 +228,7 @@ public class SpringMVCController {
 	@RequestMapping("/test/filterOnlyId.do")
 	@ResponseBody
 	public ModelMap filterOnlyId(){
-		ToJsonConfigHolder.setAutoWrap(false);
+		JsonConfigHolder.setAutoWrap(false);
 		Model parent=new Model();
 		parent.setId(2);
 		parent.setAge(22);
@@ -251,21 +251,21 @@ public class SpringMVCController {
 	@RequestMapping("/test/bindModel.do")
 	@ResponseBody
 	public Model bindModel(@RequestBody Model model){
-		ToJsonConfigHolder.setAutoWrap(false);
+		JsonConfigHolder.setAutoWrap(false);
 		return model;
 	}
 	
 	@RequestMapping("/test/bindPageRequestByJosn.do")
 	@ResponseBody
 	public QueryResult bindPageRequestByJosn(@RequestBody PageRequest pageRequest){
-		ToJsonConfigHolder.setAutoWrap(false);
+		JsonConfigHolder.setAutoWrap(false);
 		QueryResult aa=new QueryResult(pageRequest);
 		return aa;
 	}
 	@RequestMapping("/test/bindPageRequestByConverter.do")
 	@ResponseBody
 	public QueryResult bindPageRequestByConverter(@RequestParam("pageRequest")PageRequest pageRequest){
-		ToJsonConfigHolder.setAutoWrap(false);
+		JsonConfigHolder.setAutoWrap(false);
 		QueryResult aa=new QueryResult(pageRequest);
 		return aa;
 	}
@@ -280,7 +280,7 @@ public class SpringMVCController {
 	@RequestMapping("/test/bindPageRequestNormal.do")
 	@ResponseBody
 	public QueryResult bindPageRequestNormal(PageRequest pageRequest){
-		ToJsonConfigHolder.setAutoWrap(false);
+		JsonConfigHolder.setAutoWrap(false);
 		//pageRequest.setWheres(wheres);
 		QueryResult aa=new QueryResult(pageRequest);
 //		http://blog.csdn.net/idilent/article/details/1845227
@@ -294,7 +294,7 @@ public class SpringMVCController {
 	
 	@RequestMapping("/test/testException.do")
 	public void testException() throws Exception{
-		ToJsonConfigHolder.setAutoWrap(false);
+		JsonConfigHolder.setAutoWrap(false);
 		throw new Exception("显示信息错误");
 	}
 	@RequestMapping("/test/testBussinessException.do")
@@ -303,7 +303,7 @@ public class SpringMVCController {
 	}
 	@RequestMapping("/test/testConstraintViolationException.do")
 	public void testConstraintViolationException() throws Exception{
-		ToJsonConfigHolder.setAutoWrap(false);
+		JsonConfigHolder.setAutoWrap(false);
 		EntityTest entity1=new EntityTest();
 		entity1.setFirstName("ma");
 		entity1.setLastName("wujun");
@@ -314,8 +314,8 @@ public class SpringMVCController {
 	@RequestMapping("/test/testExtProperties.do")
 	@ResponseBody
 	public HashMap testExtProperties(){
-		ToJsonConfigHolder.setAutoWrap(false);
-		ToJsonConfigHolder.addProperty("aa", "aaaa");
+		JsonConfigHolder.setAutoWrap(false);
+		JsonConfigHolder.addProperty("aa", "aaaa");
 		HashMap bb= new HashMap();
 		bb.put("11", 11);
 		return bb;
@@ -324,8 +324,8 @@ public class SpringMVCController {
 	@RequestMapping("/test/testExtProperties1.do")
 	@ResponseBody
 	public Model testExtProperties1(){
-		ToJsonConfigHolder.setAutoWrap(false);
-		ToJsonConfigHolder.addProperty("aa", "aaaa");
+		JsonConfigHolder.setAutoWrap(false);
+		JsonConfigHolder.addProperty("aa", "aaaa");
 		Model model=new Model();
 		model.setName("1111");
 		return model;

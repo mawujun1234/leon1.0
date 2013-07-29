@@ -65,7 +65,7 @@ public class SpringMVCController_autoWarp_Test {
 	public void setup() {
 		assertNotNull(wac);
 		this.mockMvc = webAppContextSetup(this.wac).build();
-		//ToJsonConfigHolder.reset();
+		//JsonConfigHolder.reset();
 	}
 	@Ignore
 	@Test

@@ -51,8 +51,8 @@ public class Fun extends TreeNode{
 	@Column(length=100)
 	private String helpContent;//存放的是html内容的地址
 	
-	@Column(length=36)
-	private String menuItemId;//当创建Fun时，自动创建MenuItem的时候，自动创建的menuItem的id
+//	@Column(length=36)
+//	private String menuItemId;//当创建Fun时，自动创建MenuItem的时候，自动创建的menuItem的id
 	
 	@Transient
 	private String roleNames;
@@ -214,11 +214,11 @@ public class Fun extends TreeNode{
 		}
 		
 	}
-	public String getMenuItemId() {
-		return menuItemId;
-	}
-	public void setMenuItemId(String menuItemId) {
-		this.menuItemId = menuItemId;
-	}
+//	public String getMenuItemId() {
+//		return menuItemId;
+//	}
+//	public void setMenuItemId(String menuItemId) {
+//		this.menuItemId = menuItemId;
+//	}
 
 }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.mawujun.controller.spring.mvc.ToJsonConfigHolder;
+import com.mawujun.controller.spring.mvc.JsonConfigHolder;
 import com.mawujun.utils.page.WhereInfo;
 
 /**
@@ -54,8 +54,8 @@ public class FunController {
 //		resultMap.put(ResultMap.filterPropertysName, "parent");
 //		return resultMap;
 		
-		ToJsonConfigHolder.setFilterPropertys("parent");
-		ToJsonConfigHolder.setRootName("children");
+		JsonConfigHolder.setFilterPropertys("parent");
+		JsonConfigHolder.setRootName("children");
 		return funService.queryAll();
 		
 	}

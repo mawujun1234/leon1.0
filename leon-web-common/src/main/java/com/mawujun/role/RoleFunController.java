@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.mawujun.controller.spring.mvc.ToJsonConfigHolder;
+import com.mawujun.controller.spring.mvc.JsonConfigHolder;
 import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;
 
@@ -79,7 +79,7 @@ public class RoleFunController {
 		roleFun.setPermissionEnum(permissionEnum);
 		
 		roleFunService.create(roleFun);
-		ToJsonConfigHolder.setFilterPropertys("role,fun");
+		JsonConfigHolder.setFilterPropertys("role,fun");
 		return roleFun;
 	}
 	
@@ -88,7 +88,7 @@ public class RoleFunController {
 	public RoleFun update(String roleId,String funId,String permissionEnum){
 		
 		RoleFun roleFun=roleFunService.update( roleId, funId, permissionEnum);
-		ToJsonConfigHolder.setFilterPropertys("role,fun");
+		JsonConfigHolder.setFilterPropertys("role,fun");
 		return roleFun;
 	}
 	
@@ -96,7 +96,7 @@ public class RoleFunController {
 	@ResponseBody
 	public RoleFun destroy(String roleId,String funId){
 		RoleFun roleFun=roleFunService.delete(roleId,funId);
-		ToJsonConfigHolder.setFilterPropertys("role,fun");
+		JsonConfigHolder.setFilterPropertys("role,fun");
 		
 		return roleFun;
 	}

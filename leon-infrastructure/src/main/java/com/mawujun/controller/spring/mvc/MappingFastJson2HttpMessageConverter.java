@@ -164,18 +164,18 @@ public class MappingFastJson2HttpMessageConverter extends AbstractHttpMessageCon
 		
 		SerializeWriter out = new SerializeWriter();
 		JSONSerializer serializer = new JSONSerializer(out);     
-		serializer.setDateFormat(ToJsonConfigHolder.getDatePattern());
+		serializer.setDateFormat(JsonConfigHolder.getDatePattern());
 		//SerializerFeature[] features = {SerializerFeature.UseISO8601DateFormat, SerializerFeature.UseSingleQuotes }; 
 		serializer.config(SerializerFeature.WriteDateUseDateFormat,true);//SerializerFeature.WriteDateUseDateFormat
 		serializer.config(SerializerFeature.UseSingleQuotes,true);//SerializerFeature.
 		serializer.config(SerializerFeature.SkipTransientField,true);
 		serializer.config(SerializerFeature.WriteEnumUsingToString,true);
-		serializer.config(SerializerFeature.WriteMapNullValue,ToJsonConfigHolder.getWriteMapNullValue());
+		serializer.config(SerializerFeature.WriteMapNullValue,JsonConfigHolder.getWriteMapNullValue());
 		//serializer.config(SerializerFeature.SortField,true);
 		 //关闭循环引用的配置
-		serializer.config(SerializerFeature.DisableCircularReferenceDetect, ToJsonConfigHolder.getDisableCircularReferenceDetect());
+		serializer.config(SerializerFeature.DisableCircularReferenceDetect, JsonConfigHolder.getDisableCircularReferenceDetect());
 		
-		if(ToJsonConfigHolder.getEnableHibernateLazyInitializerFilter()){
+		if(JsonConfigHolder.getEnableHibernateLazyInitializerFilter()){
 			HibernateLazyInitializerFilter hibernateFilter=new HibernateLazyInitializerFilter();
 			serializer.getValueFilters().add(hibernateFilter);
 		}
@@ -195,7 +195,7 @@ public class MappingFastJson2HttpMessageConverter extends AbstractHttpMessageCon
 		JSONSerializer serializer=getJSONSerializer(object);
 		
 		try {
-			if(!ToJsonConfigHolder.getAutoWrap()){
+			if(!JsonConfigHolder.getAutoWrap()){
 				if(object instanceof Map){
 					doExtProperties((Map)object);
 				}		
@@ -216,28 +216,28 @@ public class MappingFastJson2HttpMessageConverter extends AbstractHttpMessageCon
 		if(object instanceof QueryResult){
 			QueryResult page=(QueryResult)object;
 			//ModelMap map=new ModelMap();
-			map.put(ToJsonConfigHolder.getRootName(), page.getResult());
-			map.put(ToJsonConfigHolder.getTotalName(), page.getTotalItems());
-			map.put(ToJsonConfigHolder.getStartName(), page.getStart());
-			map.put(ToJsonConfigHolder.getLimitName(), page.getPageSize());
-			map.put(ToJsonConfigHolder.getPageNoName(), page.getPageNo());
-			map.put(ToJsonConfigHolder.getSuccessName(), true);
+			map.put(JsonConfigHolder.getRootName(), page.getResult());
+			map.put(JsonConfigHolder.getTotalName(), page.getTotalItems());
+			map.put(JsonConfigHolder.getStartName(), page.getStart());
+			map.put(JsonConfigHolder.getLimitName(), page.getPageSize());
+			map.put(JsonConfigHolder.getPageNoName(), page.getPageNo());
+			map.put(JsonConfigHolder.getSuccessName(), true);
 			map.put("wheres", page.getWheres());
 			map.put("sorts", page.getSorts());
 			//object=map;
 
 		} else {
 			
-			map.put(ToJsonConfigHolder.getRootName(), object);
-			map.put(ToJsonConfigHolder.getSuccessName(), true);
+			map.put(JsonConfigHolder.getRootName(), object);
+			map.put(JsonConfigHolder.getSuccessName(), true);
 			if(object instanceof Collection){
-				map.put(ToJsonConfigHolder.getTotalName(), ((Collection)object).size());
+				map.put(JsonConfigHolder.getTotalName(), ((Collection)object).size());
 			} else {
 				Class c=object.getClass();
 				if(c.isArray()){
-					map.put(ToJsonConfigHolder.getTotalName(), ((Object[])object).length);
+					map.put(JsonConfigHolder.getTotalName(), ((Object[])object).length);
 				} else {
-					map.put(ToJsonConfigHolder.getTotalName(),1);
+					map.put(JsonConfigHolder.getTotalName(),1);
 				}
 
 			}
@@ -257,7 +257,7 @@ public class MappingFastJson2HttpMessageConverter extends AbstractHttpMessageCon
 			throw e;
 			
 		}  finally {
-			ToJsonConfigHolder.remove();
+			JsonConfigHolder.remove();
 		}
 		
 
@@ -267,9 +267,9 @@ public class MappingFastJson2HttpMessageConverter extends AbstractHttpMessageCon
 	 * 处理额外的属性
 	 */
 	public void doExtProperties(Map obj){
-		if(ToJsonConfigHolder.hasExtProperty()){
+		if(JsonConfigHolder.hasExtProperty()){
 			//if(obj instanceof Map){
-			obj.putAll(ToJsonConfigHolder.getExtProperties());
+			obj.putAll(JsonConfigHolder.getExtProperties());
 			//}
 		}
 	}
@@ -280,10 +280,10 @@ public class MappingFastJson2HttpMessageConverter extends AbstractHttpMessageCon
 	public String doExtProperties(String jsonString) throws RuntimeException{
 		
 		char lastChar=jsonString.charAt(jsonString.length()-1);
-		if(ToJsonConfigHolder.hasExtProperty()){
+		if(JsonConfigHolder.hasExtProperty()){
 			if(lastChar=='}'){
 				//serializer.c
-				Map object=ToJsonConfigHolder.getExtProperties();
+				Map object=JsonConfigHolder.getExtProperties();
 				JSONSerializer serializer=getJSONSerializer(object);
 				serializer.write(object);
 				String jsonStr=serializer.toString();
@@ -300,7 +300,7 @@ public class MappingFastJson2HttpMessageConverter extends AbstractHttpMessageCon
 	
 	
 	public void doFilterPropertys(Object root ,JSONSerializer serializer) {
-		if(ToJsonConfigHolder.getFilterPropertys()==null || "".equals(ToJsonConfigHolder.getFilterPropertys())){
+		if(JsonConfigHolder.getFilterPropertys()==null || "".equals(JsonConfigHolder.getFilterPropertys())){
 			return;
 		}
 		
@@ -315,10 +315,10 @@ public class MappingFastJson2HttpMessageConverter extends AbstractHttpMessageCon
         	}
 		}
 		
-		String[] excludes=ToJsonConfigHolder.getFilterPropertys().split(",");//((String)map.get(ResultMap.filterPropertysName)).split(",");
+		String[] excludes=JsonConfigHolder.getFilterPropertys().split(",");//((String)map.get(ResultMap.filterPropertysName)).split(",");
 		//为定义了的类进行属性过滤
-		if(ToJsonConfigHolder.getFilterClass()!=null&& ToJsonConfigHolder.getFilterClass().length>0){
-			for(Class clazz:ToJsonConfigHolder.getFilterClass()){
+		if(JsonConfigHolder.getFilterClass()!=null&& JsonConfigHolder.getFilterClass().length>0){
+			for(Class clazz:JsonConfigHolder.getFilterClass()){
 				SimplePropertyPreFilter filter = new SimplePropertyPreFilter(clazz); 
 				for(String str:excludes){
 					filter.getExcludes().add(str);
@@ -359,7 +359,7 @@ public class MappingFastJson2HttpMessageConverter extends AbstractHttpMessageCon
 	String patStr="\\{\"\\$ref\":.*?\"\\}";
 	Pattern pattern = Pattern.compile(patStr);  
 	public String replaceJsonPath(final String jsonString){
-		if(ToJsonConfigHolder.getDisableCircularReferenceDetect()){
+		if(JsonConfigHolder.getDisableCircularReferenceDetect()){
 			return jsonString;
 		}
         Matcher matcher = pattern.matcher(jsonString);

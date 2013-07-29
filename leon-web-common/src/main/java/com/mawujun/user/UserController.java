@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
-import com.mawujun.controller.spring.mvc.ToJsonConfigHolder;
+import com.mawujun.controller.spring.mvc.JsonConfigHolder;
 import com.mawujun.fun.Fun;
 import com.mawujun.role.Role;
 import com.mawujun.utils.page.PageRequest;
@@ -86,7 +86,7 @@ public class UserController {
 	@ResponseBody
 	public List<Map<String,Object>> queryRole(String userId){	
 		List<Map<String,Object>> roles=userRoleService.queryRole(userId);
-		ToJsonConfigHolder.setRootName("children");
+		JsonConfigHolder.setRootName("children");
 		//userService.delete(user);
 		return roles;
 	}
@@ -110,7 +110,7 @@ public class UserController {
 	@RequestMapping("/user/queryFun")
 	@ResponseBody
 	public List<Fun> queryFun(String userId){	
-		ToJsonConfigHolder.setRootName("children");
+		JsonConfigHolder.setRootName("children");
 		return userRoleService.queryFun(userId); 
 	}
 
