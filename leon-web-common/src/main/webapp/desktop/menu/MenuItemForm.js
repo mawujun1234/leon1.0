@@ -1,3 +1,4 @@
+Ext.require('Leon.common.IconWindow');
 Ext.define('Leon.desktop.menu.MenuItemForm',{
 	extend:'Ext.form.Panel',
 	requires: [
@@ -26,7 +27,7 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
     },
 	initComponent: function () {
        var me = this;
-      
+
        me.items= [
 //       		{
 //	            fieldLabel: 'parent_id',
@@ -93,10 +94,20 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
                         xtype     : 'button',
                         flex:0,
                         width:80,
-                        iconCls:'icons_003_16',
+                        //iconCls:'icons_003_16',
                         text      : '选择图标',
-                        handler:function(btn){
-                        	还没有做，晚上回去做。
+                        handler:function(iconButton){
+
+                        	var win=Ext.create('Leon.common.IconWindow',{
+                        		listeners:{
+                        			itemdblclick:function(win,record){
+                        				iconButton.setIconCls(record.get("iconCls") );
+                        				iconButton.nextSibling().setValue(record.get("iconCls"));
+                        				win.close();
+                        			}
+                        		}
+                        	});
+                        	win.show();
                         }
                     },{
                         xtype     : 'hidden',
@@ -281,34 +292,34 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
 			}
 		}
 		me.disableItems.readOnly=true;
-	},
-	setReadonlyItem4DefauleMenu:function(bool){
-		var me=this;
-		if(me.disableItems.length==0){
-			me.initdisableItems();
-		}
-		if(!bool){
-			for(var i=0;i<me.disableItems.length;i++){
-				if(me.disableItems[i].isFormField){
-					me.disableItems[i].setReadOnly(false);//.enable();
-				} else {
-					me.disableItems[i].enable();
-				}
-				
-			}
-			return;
-		} else {
-			for(var i=0;i<me.disableItems.length;i++){
-				if(me.disableItems[i].isFormField){
-					me.disableItems[i].setReadOnly(true);//.enable();
-				} else {
-					me.disableItems[i].disable();
-				}
-				
-			}
-		}
-		
 	}
+//	setReadonlyItem4DefauleMenu:function(bool){
+//		var me=this;
+//		if(me.disableItems.length==0){
+//			me.initdisableItems();
+//		}
+//		if(!bool){
+//			for(var i=0;i<me.disableItems.length;i++){
+//				if(me.disableItems[i].isFormField){
+//					me.disableItems[i].setReadOnly(false);//.enable();
+//				} else {
+//					me.disableItems[i].enable();
+//				}
+//				
+//			}
+//			return;
+//		} else {
+//			for(var i=0;i<me.disableItems.length;i++){
+//				if(me.disableItems[i].isFormField){
+//					me.disableItems[i].setReadOnly(true);//.enable();
+//				} else {
+//					me.disableItems[i].disable();
+//				}
+//				
+//			}
+//		}
+//		
+//	}
 //	//恢复diable掉的组件
 //	enableItem4DefauleMenu:function(){
 //		var me=this;

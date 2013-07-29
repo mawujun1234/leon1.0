@@ -212,6 +212,18 @@ public class MappingFastJson2HttpMessageConverter extends AbstractHttpMessageCon
 			}
 			
 			
+		
+//		//当直接用map，并且自己来组装返回格式的时候
+//		if(object instanceof Map ){
+//			if(((Map)object).containsKey(JsonConfigHolder.getRootName())){
+//				serializer.write(object);
+//				String jsonString=serializer.toString();
+//				jsonString=replaceJsonPath(jsonString);
+//				
+//				FileCopyUtils.copy(jsonString, new OutputStreamWriter(outputMessage.getBody(), charset));
+//				return;
+//			}
+//		}
 		ModelMap map=new ModelMap();
 		if(object instanceof QueryResult){
 			QueryResult page=(QueryResult)object;

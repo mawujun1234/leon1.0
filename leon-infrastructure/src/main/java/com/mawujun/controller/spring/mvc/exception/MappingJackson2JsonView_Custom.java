@@ -73,6 +73,7 @@ public class MappingJackson2JsonView_Custom extends MappingJackson2JsonView {
 			//exception.printStackTrace();
 			logger.debug(exception.getMessage(),exception);
 		}
+		Object value = filterModel(model);
 		//正常情况的 视图解析
 		super.renderMergedOutputModel(model, request, response);
 	}

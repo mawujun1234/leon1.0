@@ -31,13 +31,13 @@ Ext.onReady(function(){
 		tree.setMenuId(record.get("id"));
 		//tree.getStore().reload({node:tree.getRootNode( )});
 		form.getForm().reset(false);
-		if(tree.getMenuId()=="default"){
-			form.setReadonlyItem4DefauleMenu(true);
-			//tree.setDisableAction(true);
-		} else {
-			form.setReadonlyItem4DefauleMenu(false);
-			//tree.setDisableAction(false);
-		}
+//		if(tree.getMenuId()=="default"){
+//			form.setReadonlyItem4DefauleMenu(true);
+//			//tree.setDisableAction(true);
+//		} else {
+//			form.setReadonlyItem4DefauleMenu(false);
+//			//tree.setDisableAction(false);
+//		}
 		
 		tree.getStore().getProxy().extraParams={menuId:record.get("id")};
 //		if(record.get("id")=='default'){

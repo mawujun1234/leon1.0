@@ -1,0 +1,67 @@
+/**
+ * 当双击选的的时候，会触发事件itemdblclick，表示选择
+ */
+Ext.define('Leon.common.IconWindow', {
+    extend: 'Ext.window.Window',
+    pagesize:66,
+    width:500,
+    height:320,
+    title:'选择图标',
+    modal:true,
+    initComponent: function () {
+        var me = this;
+        var store=Ext.create('Ext.data.Store', {
+        	autoLoad:true,
+        	pageSize:me.pagesize,
+		    fields: ['iconCls','src','name'],
+		    proxy:{
+		    	type: 'ajax',
+        		url : '/icon/query',
+        		headers:{ 'Accept':'application/json;'},
+        		extraParams:{limit:me.pagesize},
+        		reader:{
+					type:'json',
+					root:'root',
+					successProperty:'success',
+					totalProperty:'total'		
+				}
+		    }
+		});
+		
+
+		me.id= 'images-view';
+		var view=Ext.create('Ext.view.View', {
+		    store: store,
+		    //tpl: imageTpl,
+		    tpl: [
+                '<tpl for=".">',
+                    '<div class="thumb-wrap" >',
+                        '<div class="thumb"><img src="{src}" title="{name:htmlEncode}"></div>',
+                        '<span class="x-editable"></span>',
+                    '</div>',
+                '</tpl>',
+                '<div class="x-clear"></div>'
+            ],
+		    trackOver: true,
+            overItemCls: 'x-item-over',
+		    itemSelector: 'div.thumb-wrap',
+		    emptyText: 'No images available',
+		    listeners: {
+                itemdblclick: function(dv, record ){
+                    //alert(record.get('src'));
+                    me.fireEvent('itemdblclick',me,record);
+                }
+            }
+		});
+		this.items=[view];
+		me.dockedItems= [{
+	        xtype: 'pagingtoolbar',
+	        store: store,   // same store GridPanel is using
+	        dock: 'bottom',
+	        displayInfo: true
+	    }];
+	    me.addEvents('itemdblclick');
+		 me.callParent();
+    }
+    
+})
