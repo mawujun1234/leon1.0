@@ -130,14 +130,13 @@
       <!-- 根据MediaType进行返回视图的选择 -->
 	  <property name="defaultViews">
 		<list>
-			<bean id="jackson2JsonView" class="com.mawujun.controller.spring.mvc.exception.MappingJackson2JsonView_Custom">
+		    <bean id="jsonView" class="com.mawujun.controller.spring.mvc.MappingFastjson2JsonView">
 			</bean>
-          <bean class="org.springframework.web.servlet.view.xml.MarshallingView" >  
-            <property name="marshaller">  
-                <bean class="org.springframework.oxm.xstream.XStreamMarshaller"/>  
-            </property>  
-          </bean>  
-             
+            <bean class="org.springframework.web.servlet.view.xml.MarshallingView" >  
+                <property name="marshaller">  
+                	<bean class="org.springframework.oxm.xstream.XStreamMarshaller"/>  
+            	</property>  
+            </bean>   
 		 </list>
 	  </property> 
 	</bean>
@@ -158,7 +157,7 @@
           <!-- 设置日志输出级别，不定义则默认不输出警告等错误日志信息 -->    
          <property name="warnLogCategory" value="WARN" />    
          <!-- 默认错误页面，当找不到上面mappings中指定的异常对应视图时，使用本默认配置 -->    
-         <property name="defaultErrorView" value="jackson2JsonView" />    
+         <property name="defaultErrorView" value="jsonView" />    
          <!-- 默认HTTP状态码 -->    
          <property name="defaultStatusCode" value="500" />  
    </bean> 

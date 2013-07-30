@@ -60,6 +60,7 @@ Ext.onReady(function(){
 	var selectedRoleTree=Ext.create('Ext.tree.Panel',{		
 		fields:['id','name'],
 		rootVisible: false,
+		title:'拥有的角色',
 		flex:1,
 		store:{
         		root: {
@@ -140,6 +141,7 @@ Ext.onReady(function(){
 		url:'/role/query',
 		fields:['id','name'],
 		rootVisible: false,
+		title:'未选择的角色',
 		flex:1,
 		displayField:'name'
 	});

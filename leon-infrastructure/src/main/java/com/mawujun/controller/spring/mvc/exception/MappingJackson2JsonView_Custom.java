@@ -26,6 +26,7 @@ import com.mawujun.exception.ExceptionCode;
  * @author mawujun
  *
  */
+@Deprecated
 public class MappingJackson2JsonView_Custom extends MappingJackson2JsonView {
 	final static Logger logger = LoggerFactory.getLogger(MappingJackson2JsonView_Custom.class);   
 	ResourceBundle bundle = ResourceBundle.getBundle("com.mawujun.exception.exceptions");
@@ -73,7 +74,7 @@ public class MappingJackson2JsonView_Custom extends MappingJackson2JsonView {
 			//exception.printStackTrace();
 			logger.debug(exception.getMessage(),exception);
 		}
-		Object value = filterModel(model);
+		
 		//正常情况的 视图解析
 		super.renderMergedOutputModel(model, request, response);
 	}

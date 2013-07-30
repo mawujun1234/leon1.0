@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.mawujun.controller.spring.mvc.JsonConfigHolder;
 import com.mawujun.utils.FileUtils;
@@ -21,19 +22,19 @@ import com.mawujun.utils.FileUtils;
 public class IconController {
 
 	File[] files;
-	public File[] getFiles(){
+	public File[] getFiles(String path){
 		if(this.files!=null){
 			return this.files;
 		}
-		String path="E:\\eclipse\\workspace\\leon\\leon-web-common\\src\\main\\webapp\\icons";
+		//String path="E:\\eclipse\\workspace\\leon\\leon-web-common\\src\\main\\webapp\\icons";
 		Collection<File> pngs=FileUtils.listFiles(new File(path), new String[]{"png","gif"}, true);
 		
 		this.files=pngs.toArray(new File[pngs.size()]);
 		return files;
 	}
-	sdfsdf
+	
 	/**
-	 * MappingJackson2JsonView_Custom还没有写好，在没有填写@RequestBody的时候，只填写了headers:{ 'Accept':'application/json;'},
+	 * 
 	 * 的时候
 	 * @author mawujun 16064988@qq.com 
 	 * @param request
@@ -42,14 +43,14 @@ public class IconController {
 	 * @return
 	 */
 	@RequestMapping("/icon/query")
-	@ResponseBody
+	//@ResponseBody
 	public Map<String,Object> query(HttpServletRequest request,int start,int limit){
-		//String path=this.getClass().getResource("").getPath()+"/icons";
-		//request.get
+
 		//String path=request.getServletContext().getContextPath();
+		String basePath = request.getSession().getServletContext().getRealPath("/icons/");
 		String contextPath=request.getContextPath();
 		
-		File[] files= getFiles();
+		File[] files= getFiles(basePath);
 		int size=(start+limit)>files.length?files.length:(start+limit);
 		List<Map<String,String>> result=new ArrayList<Map<String,String>>();
 		for(;start<size;start++){
@@ -62,6 +63,8 @@ public class IconController {
 		Map<String,Object> map=new HashMap<String,Object>();
 		map.put("root", result);
 		map.put("total", files.length);
+		
+		
 		JsonConfigHolder.setAutoWrap(false);
 		return map;
 	}
