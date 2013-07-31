@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 public enum ParameterValueEnum {
-	STRING("String"),NUMBER("Number"),REGULAR("Regular"),BOOLEAN("Boolean"),ARRAY("Array"),RANGE("Range"),//这几个都是写死的
-	SQL("sql"),//使用sql读取出数据
+	STRING("字符串"),NUMBER("数字"),EXPRESSION("表达式"),BOOLEAN("布尔值"),ARRAY("数组"),RANGE("范围"),//这几个都是写死的
+	SQL("sql查询"),//使用sql读取出数据
 	JAVA("java类");//使用java类去读取数据
 	
 	private String name;
@@ -48,7 +48,7 @@ public enum ParameterValueEnum {
 			return new ShowModelEnum[]{ShowModelEnum.TEXTBOX};
 		} else if(this==ParameterValueEnum.NUMBER){
 			return new ShowModelEnum[]{ShowModelEnum.NUMBERBOX};
-		}else if(this==ParameterValueEnum.REGULAR){
+		}else if(this==ParameterValueEnum.EXPRESSION){
 			return new ShowModelEnum[]{ShowModelEnum.TEXTBOX};
 		}else if(this==ParameterValueEnum.BOOLEAN){
 			return new ShowModelEnum[]{ShowModelEnum.COMBOBOX,ShowModelEnum.CHECKBOX,ShowModelEnum.RADIOBOX};

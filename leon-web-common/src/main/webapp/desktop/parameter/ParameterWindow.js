@@ -56,11 +56,17 @@ Ext.define('Leon.desktop.parameter.ParameterWindow', {
 		            parameterForm.updateRecord();
 		            //me.record=parameterForm.getRecord();
 		            var valueEnem=me.record.get("valueEnum");
-		            if(valueEnem=='STRING' || valueEnem=='NUMBER'|| valueEnem=='REGULAR'|| valueEnem=='BOOLEAN'|| valueEnem=='SQL'|| valueEnem=='JAVA'){
+		            if(valueEnem=='STRING' || valueEnem=='NUMBER' || valueEnem=='BOOLEAN'){
 		            	layout.setActiveItem(1);
 		            	var form=layout.getActiveItem();	
 		            	form.loadRecord(me.record);
-		            	在使用REGULAR，sql和java的时候，需要填入一个值，这个值是必填的。使用boolean的时候要填入Y或N
+		            	form.hideContent();
+		            	//在使用REGULAR，sql和java的时候，需要填入一个值，这个值是必填的。使用boolean的时候要填入Y或N
+		            } else if(valueEnem=='EXPRESSION'|| valueEnem=='SQL'|| valueEnem=='JAVA'){
+		            	layout.setActiveItem(1);
+		            	var form=layout.getActiveItem();	
+		            	form.showContent();
+		            	form.loadRecord(me.record);
 		            }
 		        }
 		    }]
@@ -71,10 +77,7 @@ Ext.define('Leon.desktop.parameter.ParameterWindow', {
 	    		handler:function(){
 	    			var layout = me.getLayout();
 		            var form=layout.getActiveItem();
-		            var defaultValue=form.getForm( ).findField("defaultValue").getValue();
-		            if(defaultValue){
-		            	me.record.set('defaultValue',defaultValue);
-		            }
+		            form.updateRecord();
 	    			me.getLayout().setActiveItem(0);
 	    		}
 	    	},'->',{
@@ -82,10 +85,11 @@ Ext.define('Leon.desktop.parameter.ParameterWindow', {
 		        handler: function(){
 		            var layout = me.getLayout();
 		            var form=layout.getActiveItem();
-		            var defaultValue=form.getForm( ).findField("defaultValue").getValue();
-		            if(defaultValue){
-		            	me.record.set('defaultValue',defaultValue);
-		            }
+//		            var defaultValue=form.getForm( ).findField("defaultValue").getValue();
+//		            if(defaultValue){
+//		            	me.record.set('defaultValue',defaultValue);
+//		            }
+		            form.updateRecord();
 		            if(me.createNew){
 		            	me.record.phantom=true;
 		            }
