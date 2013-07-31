@@ -44,7 +44,12 @@ Ext.define('Leon.desktop.parameter.ParameterForm', {
             		var showModel=combo.nextSibling();
             		showModel.clearValue( );
             		showModel.getStore().removeAll();
-            		showModel.getStore().load({params:{valueEnum:newValue}});
+            		showModel.getStore().load({params:{valueEnum:newValue},callback:function(){
+            			var record=combo.up('form').getRecord();
+            			if(record.get("valueEnum")==newValue){
+            				showModel.setValue(record.get("showModel"));
+            			}
+            		}});
             	}
             }
         },{
@@ -66,8 +71,8 @@ Ext.define('Leon.desktop.parameter.ParameterForm', {
             	}
             })
         },{
-            fieldLabel: 'desc',
-            name: '描述'
+            fieldLabel: '描述',
+            name: 'desc'
         }],
 	initComponent:function(){
 		this.callParent();

@@ -24,13 +24,17 @@ Ext.define('Leon.desktop.parameter.ParameterGrid',{
        var me = this;
       me.columns=[
 	        { text: 'id',  dataIndex: 'id' },
-	        { text: '名称', dataIndex: 'text', flex: 1
+	        { text: '名称', dataIndex: 'name', flex: 1
 	        },
 	        { text: '描述', dataIndex: 'desc', flex: 1 
 	        },
-	        { text: '展现方式', dataIndex: 'showModel', flex: 1 
+//	        { text: '展现方式', dataIndex: 'showModel', flex: 1 
+//	        },
+	        { text: '展现方式', dataIndex: 'showModelName', flex: 1 
 	        },
-	        { text: '值类型', dataIndex: 'valueEnum', flex: 1 
+//	        { text: '值类型', dataIndex: 'valueEnum', flex: 1 
+//	        },
+	        { text: '值类型', dataIndex: 'valueEnumName', flex: 1 
 	        },
 	        { text: '默认值', dataIndex: 'defaultValue', flex: 1
 	        },
@@ -48,13 +52,21 @@ Ext.define('Leon.desktop.parameter.ParameterGrid',{
        			text:'新增',
        			iconCls:'form-add-button ',
        			handler:function(){
-//       				var menu=Ext.create('Leon.desktop.menu.Menu',{text:'新菜单'});
-//       				me.store.add(menu);
-//       				var edit=me.getPlugin("cellEditingPlugin");
-//       				edit.cancelEdit();
-//       				edit.startEditByPosition({column:0,row:me.store.getCount( ) -1});
-//       				//menu.beginEdit( );
 					var win=Ext.create('Leon.desktop.parameter.ParameterWindow');
+					win.show();
+       				
+       			}	
+       		},{
+       			text:'更新',
+       			iconCls:'form-update-button ',
+       			handler:function(){
+       				var record=me.getSelectionModel( ).getLastSelected( );
+       				if(!record){
+       					return;
+       				}
+					var win=Ext.create('Leon.desktop.parameter.ParameterWindow',{
+						record:record
+					});
 					win.show();
        				
        			}	
@@ -62,14 +74,22 @@ Ext.define('Leon.desktop.parameter.ParameterGrid',{
        			text:'删除',
        			iconCls:'form-delete-button ',
        			handler:function(){
-       				var model=me.getSelectionModel( ).getLastSelected( ) ;
-       				if(model){
-       					if(model.get("id")=="default"){
-       						Ext.Msg.alert("消息","默认菜单不能删除");
-       						return;
+       				Ext.Msg.confirm("消息","确定要删除吗?",function(btn){alert(btn);
+       					if(btn=='yes'){
+       						var model=me.getSelectionModel( ).getLastSelected( ) ;
+		       				if(model){
+		       					model.destroy();
+		       				}
        					}
-       					model.destroy();
-       				}
+       				});
+//       				var model=me.getSelectionModel( ).getLastSelected( ) ;
+//       				if(model){
+//       					if(model.get("id")=="default"){
+//       						Ext.Msg.alert("消息","默认菜单不能删除");
+//       						return;
+//       					}
+//       					model.destroy();
+//       				}
        			}	
        		}]
        });

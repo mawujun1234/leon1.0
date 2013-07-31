@@ -22,7 +22,7 @@ import com.mawujun.repository.idEntity.IdEntity;
 //    name="parameterType",
 //    discriminatorType=DiscriminatorType.STRING
 //)
-public abstract class Parameter  implements IdEntity<String>,Serializable{
+public class Parameter  implements IdEntity<String>,Serializable{
 	
 	/**
 	 * 
@@ -86,6 +86,9 @@ public abstract class Parameter  implements IdEntity<String>,Serializable{
 		return showModel;
 	}
 
+	public String getShowModelName() {
+		return showModel==null?null:showModel.getName();
+	}
 	public void setShowModel(ShowModelEnum showModel) {
 		this.showModel = showModel;
 	}
@@ -100,6 +103,9 @@ public abstract class Parameter  implements IdEntity<String>,Serializable{
 
 	public ParameterValueEnum getValueEnum() {
 		return valueEnum;
+	}
+	public String getValueEnumName() {
+		return valueEnum==null?null:valueEnum.getName();
 	}
 
 	public void setValueEnum(ParameterValueEnum valueEnum) {
