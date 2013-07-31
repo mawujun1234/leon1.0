@@ -1,3 +1,10 @@
+/**
+ * 使用方法
+ * ,proxy:{
+				type:'bajax',
+				api:api
+			}
+ */
 Ext.define("Leon.common.ux.BaseAjax",{
 	extend:"Ext.data.proxy.Ajax",
 	alias: 'proxy.bajax',

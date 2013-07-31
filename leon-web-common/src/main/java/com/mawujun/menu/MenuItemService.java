@@ -22,6 +22,9 @@ import com.mawujun.utils.page.WhereInfo;
 public class MenuItemService extends BaseRepository<MenuItem, String> {
 	@Autowired
 	private FunService funService;
+	
+	@Autowired
+	private MenuService menuService;
 
 	
 	public void create(MenuItem entity) {
@@ -46,7 +49,7 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 //		}
 		super.delete(item);
 	}
-	public MenuItem create(String funId,String parentId) {
+	public MenuItem create(String funId,String parentId,String menuId) {
 		//throw new BussinessException("c测试");
 		Fun fun=funService.get(funId);
 		MenuItem parent=this.get(parentId);
@@ -56,11 +59,14 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 		//menuitem.setReportCode(fun.getReportCode());
 		menuitem.setFun(fun);
 		menuitem.setParent(parent);
-		menuitem.setMenu(parent.getMenu());
+		menuitem.setMenu(parent==null?menuService.get(menuId):parent.getMenu());
 		menuitem.setIconCls(fun.getIconCls());
 		
 		super.create(menuitem);
-		parent.addChild(menuitem);
+
+		if(parent!=null){
+			parent.addChild(menuitem);
+		}
 		
 		return null;
 	}

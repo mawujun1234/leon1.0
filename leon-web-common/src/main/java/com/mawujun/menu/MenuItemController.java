@@ -75,9 +75,9 @@ public class MenuItemController {
 	
 	@RequestMapping("/menuItem/createByFun")
 	@ResponseBody
-	public MenuItem create(String funId,String parentId){		
+	public MenuItem create(String funId,String parentId,String menuId){		
 		
-		MenuItem menuItem=menuItemService.create(funId,parentId);
+		MenuItem menuItem=menuItemService.create(funId,parentId,menuId);
 		return menuItem;
 	}
 	

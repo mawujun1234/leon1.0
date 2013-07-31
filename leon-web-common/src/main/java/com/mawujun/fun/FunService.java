@@ -79,7 +79,10 @@ public class FunService extends BaseRepository<Fun, String> {
 		
 		super.create(entity);
 
-		parent.addChild(entity);
+
+		if(parent!=null){
+			parent.addChild(entity);
+		}
 	}
 	/**
 	 * 
@@ -107,13 +110,13 @@ public class FunService extends BaseRepository<Fun, String> {
 //			
 //		} else {
 			super.update(entity);
-			
-			WhereInfo whereinfoItem=WhereInfo.parse("fun.id", entity.getId());
-			WhereInfo whereinfoItem1=WhereInfo.parse("menu.id", Menu.default_id);
-			MenuItem menuItem=menuItemService.queryUnique(whereinfoItem,whereinfoItem1);
-			menuItem.setText(entity.getText());
-			menuItem.setReportCode(entity.getReportCode());
-			//menuItemService.update(menuItem);
+//			
+//			WhereInfo whereinfoItem=WhereInfo.parse("fun.id", entity.getId());
+//			WhereInfo whereinfoItem1=WhereInfo.parse("menu.id", Menu.default_id);
+//			MenuItem menuItem=menuItemService.queryUnique(whereinfoItem,whereinfoItem1);
+//			menuItem.setText(entity.getText());
+//			menuItem.setReportCode(entity.getReportCode());
+//			//menuItemService.update(menuItem);
 //		}
 		
 		
