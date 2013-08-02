@@ -5,7 +5,7 @@ Ext.define('Leon.common.IconWindow', {
     extend: 'Ext.window.Window',
     pagesize:66,
     width:500,
-    height:320,
+    height:350,
     title:'选择图标',
     modal:true,
     initComponent: function () {
@@ -18,6 +18,7 @@ Ext.define('Leon.common.IconWindow', {
 		    	type: 'ajax',
         		url : '/icon/query',
         		headers:{ 'Accept':'application/json;'},
+        		actionMethods: { read: 'POST' },
         		extraParams:{limit:me.pagesize},
         		reader:{
 					type:'json',
@@ -60,6 +61,17 @@ Ext.define('Leon.common.IconWindow', {
 	        dock: 'bottom',
 	        displayInfo: true
 	    }];
+	    
+	    me.tbar= [
+	    	{xtype:'textfield'},
+			{ xtype: 'button', text: '查询' ,
+				handler:function(btn){
+					var name=btn.previousSibling('textfield').getValue();
+					store.getProxy( ).extraParams={name:name};
+					store.load();
+				}
+			}
+		]
 	    me.addEvents('itemdblclick');
 		 me.callParent();
     }

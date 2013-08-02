@@ -1,6 +1,7 @@
 package com.mawujun.icon;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -9,7 +10,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.filefilter.FileFileFilter;
+import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.apache.commons.io.filefilter.IOFileFilter;
+import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,16 +27,22 @@ import com.mawujun.utils.FileUtils;
 @Controller
 public class IconController {
 
-	File[] files;
-	public File[] getFiles(String path){
-		if(this.files!=null){
-			return this.files;
+//	File[] files;
+	public File[] getFiles(String path,String name){
+
+		Collection<File> pngs=null;
+		if(StringUtils.hasText(name)){
+			IOFileFilter fileFilter = new WildcardFileFilter("*"+name+"*.png");
+			IOFileFilter fileFilter1 = new WildcardFileFilter("*"+name+"*.gif");
+			
+			pngs=FileUtils.listFiles(new File(path), FileFilterUtils.or(fileFilter,fileFilter1),FileFilterUtils.fileFileFilter());
+			
+		} else {
+			pngs=FileUtils.listFiles(new File(path), new String[]{"png","gif"}, true);
 		}
-		//String path="E:\\eclipse\\workspace\\leon\\leon-web-common\\src\\main\\webapp\\icons";
-		Collection<File> pngs=FileUtils.listFiles(new File(path), new String[]{"png","gif"}, true);
-		
-		this.files=pngs.toArray(new File[pngs.size()]);
-		return files;
+
+		//this.files=pngs.toArray(new File[pngs.size()]);
+		return pngs.toArray(new File[pngs.size()]);
 	}
 	
 	/**
@@ -44,13 +56,13 @@ public class IconController {
 	 */
 	@RequestMapping("/icon/query")
 	//@ResponseBody
-	public Map<String,Object> query(HttpServletRequest request,int start,int limit){
+	public Map<String,Object> query(HttpServletRequest request,int start,int limit,String name){
 
 		//String path=request.getServletContext().getContextPath();
 		String basePath = request.getSession().getServletContext().getRealPath("/icons/");
 		String contextPath=request.getContextPath();
 		
-		File[] files= getFiles(basePath);
+		File[] files= getFiles(basePath,name);
 		int size=(start+limit)>files.length?files.length:(start+limit);
 		List<Map<String,String>> result=new ArrayList<Map<String,String>>();
 		for(;start<size;start++){
