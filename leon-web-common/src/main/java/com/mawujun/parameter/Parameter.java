@@ -11,6 +11,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.util.StringUtils;
 
 import com.mawujun.repository.idEntity.IdEntity;
 
@@ -119,6 +120,20 @@ public class Parameter  implements IdEntity<String>,Serializable{
 
 	public String getTargets() {
 		return targets;
+	}
+	
+	public String getTargetNames() {
+		if(!StringUtils.hasText(this.targets)){
+			return null;
+		}
+		String temp=this.targets.substring(1, this.targets.length()-1);
+		String tempArray[]=temp.split(",");
+		StringBuilder builder=new StringBuilder();
+		for(String str:tempArray){
+			builder.append(",");
+			builder.append(SubjectType.valueOf(str.replace('"', ' ').trim()).getName());
+		}
+		return builder.toString().substring(1);
 	}
 
 	public void setTargets(String targets) {

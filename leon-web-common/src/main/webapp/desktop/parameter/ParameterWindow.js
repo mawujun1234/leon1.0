@@ -39,7 +39,11 @@ Ext.define('Leon.desktop.parameter.ParameterWindow', {
 		            }
 		            //根据不同的值类型，显示不同的panel，并且根据不同的值把值设置到record里面。
 		            parameterForm.updateRecord();
-		            me.record.set("targets",Ext.encode(parameterForm.getForm().findField("checkboxgroup_targets").getValue( ).checkbox_targets));
+		            var targets_t=parameterForm.getForm().findField("checkboxgroup_targets").getValue( ).checkbox_targets;
+		            if(!(targets_t instanceof Array)){
+		            	targets_t=[targets_t];
+		            }
+		            me.record.set("targets",Ext.encode(targets_t));
 
 		            var valueEnum=me.record.get("valueEnum");
 		            if(valueEnum=='STRING' || valueEnum=='NUMBER' || valueEnum=='BOOLEAN'  || valueEnum=='DATE'|| valueEnum=='TIME' ){

@@ -24,21 +24,21 @@ Ext.define('Leon.desktop.parameter.ParameterGrid',{
        var me = this;
       me.columns=[
 	        { text: 'id',  dataIndex: 'id' },
-	        { text: '名称', dataIndex: 'name', flex: 1
+	        { text: '名称', dataIndex: 'name', width: 100
 	        },
-	        { text: '描述', dataIndex: 'desc', flex: 1 
+	        { text: '描述', dataIndex: 'desc', width: 150 
 	        },
 //	        { text: '展现方式', dataIndex: 'showModel', flex: 1 
 //	        },
-	        { text: '展现方式', dataIndex: 'showModelName', flex: 1 
+	        { text: '展现方式', dataIndex: 'showModelName', width: 80 
 	        },
 //	        { text: '值类型', dataIndex: 'valueEnum', flex: 1 
 //	        },
-	        { text: '值类型', dataIndex: 'valueEnumName', flex: 1 
+	        { text: '值类型', dataIndex: 'valueEnumName', width: 80 
 	        },
-	        { text: '使用次数', dataIndex: 'useCount', flex: 1 
+	        { text: '使用次数', dataIndex: 'useCount', width: 60 
 	        },
-	        { text: '默认值', dataIndex: 'defaultValue', flex: 1
+	        { text: '目标', dataIndex: 'targetNames', width: 150
 	        },
 	        { text: '内容数据', dataIndex: 'content', flex: 1
 	        }
