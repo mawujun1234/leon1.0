@@ -4,7 +4,7 @@ import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Iterator;
 
-import com.mawujun.utils.BeanPropertiesCopy;
+import com.mawujun.utils.BeanUtils;
 import com.mawujun.utils.ReflectionUtils;
 import com.mawujun.utils.StringUtils;
 
@@ -139,14 +139,14 @@ public abstract class Exps {
 	private static SqlExpression _evalRange(String name, Object value) {
 		if (ReflectionUtils.isInt(value))
 			//return inInt(name, Castors.me().castTo(value, int[].class));
-			return inInt(name, BeanPropertiesCopy.copyOrCast(value, int[].class));
+			return inInt(name, BeanUtils.copyOrCast(value, int[].class));
 
 		else if (ReflectionUtils.isLong(value))
 			//return inLong(name, Castors.me().castTo(value, long[].class));
-			return inLong(name, BeanPropertiesCopy.copyOrCast(value, long[].class));
+			return inLong(name, BeanUtils.copyOrCast(value, long[].class));
 
 		//return inStr(name, Castors.me().castTo(value, String[].class));
-		return inStr(name, BeanPropertiesCopy.copyOrCast(value, String[].class));
+		return inStr(name, BeanUtils.copyOrCast(value, String[].class));
 	}
 	
 

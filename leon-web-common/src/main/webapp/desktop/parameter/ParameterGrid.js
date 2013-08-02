@@ -13,13 +13,13 @@ Ext.define('Leon.desktop.parameter.ParameterGrid',{
 			}
 		}
 	},
-	//selType: 'cellmodel',
-    plugins: [
-        Ext.create('Ext.grid.plugin.CellEditing', {
-        	pluginId: 'cellEditingPlugin',
-            clicksToEdit: 2
-        })
-    ],
+//	//selType: 'cellmodel',
+//    plugins: [
+//        Ext.create('Ext.grid.plugin.CellEditing', {
+//        	pluginId: 'cellEditingPlugin',
+//            clicksToEdit: 2
+//        })
+//    ],
 	initComponent: function () {
        var me = this;
       me.columns=[
@@ -35,6 +35,8 @@ Ext.define('Leon.desktop.parameter.ParameterGrid',{
 //	        { text: '值类型', dataIndex: 'valueEnum', flex: 1 
 //	        },
 	        { text: '值类型', dataIndex: 'valueEnumName', flex: 1 
+	        },
+	        { text: '使用次数', dataIndex: 'useCount', flex: 1 
 	        },
 	        { text: '默认值', dataIndex: 'defaultValue', flex: 1
 	        },
@@ -53,6 +55,7 @@ Ext.define('Leon.desktop.parameter.ParameterGrid',{
        			iconCls:'form-add-button ',
        			handler:function(){
 					var win=Ext.create('Leon.desktop.parameter.ParameterWindow');
+					win.parameterGrid=me;
 					win.show();
        				
        			}	
@@ -74,11 +77,12 @@ Ext.define('Leon.desktop.parameter.ParameterGrid',{
        			text:'删除',
        			iconCls:'form-delete-button ',
        			handler:function(){
-       				Ext.Msg.confirm("消息","确定要删除吗?",function(btn){alert(btn);
+       				Ext.Msg.confirm("消息","确定要删除吗?",function(btn){
        					if(btn=='yes'){
        						var model=me.getSelectionModel( ).getLastSelected( ) ;
 		       				if(model){
-		       					model.destroy();
+		       					me.getStore().remove(model);
+		       					//model.destroy();
 		       				}
        					}
        				});

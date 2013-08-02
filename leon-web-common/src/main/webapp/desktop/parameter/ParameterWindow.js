@@ -2,7 +2,8 @@ Ext.define('Leon.desktop.parameter.ParameterWindow', {
     extend: 'Ext.window.Window',
     requires:[
     	'Leon.desktop.parameter.ParameterForm',
-    	'Leon.desktop.parameter.SimpleForm'
+    	'Leon.desktop.parameter.SimpleForm',
+    	'Leon.desktop.parameter.GridForm'
     ],
 	//type : 'IframeWindow',
 	url : '',//iframe链接的地址
@@ -21,28 +22,12 @@ Ext.define('Leon.desktop.parameter.ParameterWindow', {
 	closeAction:'close',
 	//title:'测试1',
 	
-	width: 300,
-    height: 200,
+	width: 330,
+    height: 280,
     layout: 'card',
     record:null,
 	initComponent:function(){
 		var me=this;
-//		me.bbar=['上一步','->',{
-//	        text: '下一步',
-//	        handler: function(){
-//	            var layout = me.getLayout();
-//	            //根据不同的值类型，显示不同的panel，并且根据不同的值把值设置到record里面。
-//	            parameterForm.updateRecord();
-//	            var record=parameterForm.getRecord();
-//	            if(record.get("valueEnum")=='STRING'){
-//	            	layout.setActiveItem(1);
-//	            	var form=layout.getActiveItem();
-//	            	
-//	            }
-//	            
-//	            //active = main.items.indexOf(layout.getActiveItem());
-//	        }
-//	    }];
 		
 	    var parameterForm=Ext.create('Leon.desktop.parameter.ParameterForm',{
 	    	bbar:['->',{
@@ -54,22 +39,35 @@ Ext.define('Leon.desktop.parameter.ParameterWindow', {
 		            }
 		            //根据不同的值类型，显示不同的panel，并且根据不同的值把值设置到record里面。
 		            parameterForm.updateRecord();
-		            //me.record=parameterForm.getRecord();
-		            var valueEnem=me.record.get("valueEnum");
-		            if(valueEnem=='STRING' || valueEnem=='NUMBER' || valueEnem=='BOOLEAN'){
+		            me.record.set("targets",Ext.encode(parameterForm.getForm().findField("checkboxgroup_targets").getValue( ).checkbox_targets));
+
+		            var valueEnum=me.record.get("valueEnum");
+		            if(valueEnum=='STRING' || valueEnum=='NUMBER' || valueEnum=='BOOLEAN'  || valueEnum=='DATE'|| valueEnum=='TIME' ){
 		            	layout.setActiveItem(1);
 		            	var form=layout.getActiveItem();	
 		            	form.loadRecord(me.record);
 		            	form.hideContent();
-		            	//在使用REGULAR，sql和java的时候，需要填入一个值，这个值是必填的。使用boolean的时候要填入Y或N
-		            } else if(valueEnem=='EXPRESSION'|| valueEnem=='SQL'|| valueEnem=='JAVA'){
-		            	layout.setActiveItem(1);
-		            	var form=layout.getActiveItem();	
-		            	form.showContent();
-		            	form.loadRecord(me.record);
+		            	
+//		            } else if(valueEnum=='SQL'|| valueEnum=='JAVA'){
+//		            	layout.setActiveItem(1);
+//		            	var form=layout.getActiveItem();	
+//		            	form.showContent();
+//		            	form.loadRecord(me.record);
+		            } else if(valueEnum=='ARRAY'){
+		            	layout.setActiveItem(2);
+		            	var form=layout.getActiveItem();
+		            	if(!me.creaetNew && me.record.get("content")){
+		            		form.getStore().loadData(Ext.decode(me.record.get("content")));
+		            	}
+		            	
+		            } else {
+		            	alert("请他情况还没有做，请稍后!");
 		            }
 		        }
 		    }]
+	    });
+	    parameterForm.on("targetsItemsReady",function(form,checkboxgroup_targets){
+	    	form.getForm().setValues({"checkbox_targets":Ext.decode(me.record.get('targets'))});
 	    });
 	    var simpleForm=Ext.create('Leon.desktop.parameter.SimpleForm',{
 	    	bbar:[{
@@ -85,11 +83,60 @@ Ext.define('Leon.desktop.parameter.ParameterWindow', {
 		        handler: function(){
 		            var layout = me.getLayout();
 		            var form=layout.getActiveItem();
-//		            var defaultValue=form.getForm( ).findField("defaultValue").getValue();
-//		            if(defaultValue){
-//		            	me.record.set('defaultValue',defaultValue);
-//		            }
+
 		            form.updateRecord();
+
+		            if(me.createNew){
+		            	me.record.phantom=true;
+		            }
+		            if(me.record.get('valueEnum')=='BOOLEAN'){
+		            	me.record.set("content",'[{key:"Y",name:"是"},{key:"N",name:"否"}]');
+		            }
+
+		            me.record.save({
+						success: function(record, operation) {
+							me.close();
+							if(me.createNew){
+								me.parameterGrid.getStore().reload();
+							}
+						}
+					});
+		            
+		        }
+		    }]
+	    });
+	    
+	    var gridForm=Ext.create('Leon.desktop.parameter.GridForm',{
+	    	bbar:[{
+	    		text:'上一步',
+	    		handler:function(){
+	    			var layout = me.getLayout();
+		            var form=layout.getActiveItem();
+		            //form.updateRecord();
+	    			me.getLayout().setActiveItem(0);
+	    		}
+	    	},'->',{
+		        text: '完成',
+		        handler: function(){
+		            var layout = me.getLayout();
+		            var form=layout.getActiveItem();
+		            var records=form.getStore().getRange();
+		            var content="[";
+		            for(var i=0;i<records.length;i++){
+		            	if(!records[i].get("key") || !records[i].get("name")){
+		            		Ext.Msg.alert("消息","第"+i+"行情输入数据!");
+		            		return;
+		            	}
+		            	content=content+Ext.encode(records[i].getData());
+		            	if(i!=records.length-1){
+		            		content+=","
+		            	}
+		            }
+		            content=content+"]";
+		            if(content){
+		            	me.record.set('content',content);
+		            }
+		            //form.updateRecord();
 		            if(me.createNew){
 		            	me.record.phantom=true;
 		            }
@@ -98,23 +145,33 @@ Ext.define('Leon.desktop.parameter.ParameterWindow', {
 		            me.record.save({
 						success: function(record, operation) {
 							me.close();
+							if(me.createNew){
+								me.parameterGrid.getStore().reload();
+							}
 						}
 					});
 		            
 		        }
 		    }]
 	    });
+	    
+	    
 	    if(!me.record){
 	    	me.createNew=true;
 	    	me.record=Ext.create('Leon.desktop.parameter.Parameter');
+	    	parameterForm.loadRecord(me.record);
 	    } else {
 	    	me.createNew=false;
+	    	parameterForm.loadRecord(me.record);
+	    	//alert(Ext.decode(me.record.get('targets')));
+	    	
+	    	
 	    }
 	   
 	    //me.record.phantom=true;
-	    parameterForm.loadRecord(me.record);
+	   
 
-	    this.items=[parameterForm,simpleForm];
+	    this.items=[parameterForm,simpleForm,gridForm];
 		this.callParent();
 		
 	},

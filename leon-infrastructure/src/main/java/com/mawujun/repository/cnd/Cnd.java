@@ -18,7 +18,7 @@ import org.hibernate.hql.spi.QueryTranslator;
 import org.hibernate.hql.spi.QueryTranslatorFactory;
 import org.hibernate.persister.entity.AbstractEntityPersister;
 
-import com.mawujun.utils.BeanPropertiesCopy;
+import com.mawujun.utils.BeanUtils;
 import com.mawujun.utils.ReflectionUtils;
 
 
@@ -430,7 +430,7 @@ public class Cnd implements PItem{
 		else if (isNotNeedQuote(v))
 			return escapeFieldValue(v.toString());
 		else
-			return new StringBuilder("'").append(escapeFieldValue(BeanPropertiesCopy.copyOrCast(v, String.class))).append('\'');
+			return new StringBuilder("'").append(escapeFieldValue(BeanUtils.copyOrCast(v, String.class))).append('\'');
 	}
 	public  boolean isNotNeedQuote(Object v) {
 		

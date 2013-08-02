@@ -1,7 +1,5 @@
 package com.mawujun.parameter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.mawujun.repository.cnd.Cnd;
 
 @Controller
 public class ParameterController {
@@ -39,6 +39,15 @@ public class ParameterController {
 	@ResponseBody
 	public List<Parameter> query(){		
 		return parameterService.queryAll();
+	}
+	/**
+	 * 一次性读取出所有的节点数据
+	 * @return
+	 */
+	@RequestMapping("/parameter/queryBysubjectType")
+	@ResponseBody
+	public List<Parameter> queryBysubjectType(String subjectType){		
+		return parameterService.query(Cnd.where().andLike("targets", subjectType));
 	}
 	@RequestMapping("/parameter/load")
 	@ResponseBody

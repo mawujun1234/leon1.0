@@ -81,6 +81,70 @@ Ext.apply(Ext,{
 
 	 }
 });
+
+
+Ext.override(Ext.form.Panel, { 
+       getValues: function(asString, dirtyOnly, includeEmptyText, useDataValues,comboboxUserArray) {
+       		return this.getForm().getValues(asString, dirtyOnly, includeEmptyText, useDataValues,comboboxUserArray);
+       }
+});
+/**
+ * checkboxgroup 设置为永远返回数组
+ */
+Ext.override(Ext.form.Basic, { 
+       getValues: function(asString, dirtyOnly, includeEmptyText, useDataValues,comboboxUserArray) {
+        var values  = {},
+            fields  = this.getFields().items,
+            f,
+            fLen    = fields.length,
+            isArray = Ext.isArray,
+            field, data, val, bucket, name;
+
+        for (f = 0; f < fLen; f++) {
+            field = fields[f];
+
+            if (!dirtyOnly || field.isDirty()) {
+                data = field[useDataValues ? 'getModelData' : 'getSubmitData'](includeEmptyText);
+
+                if (Ext.isObject(data)) {
+                    for (name in data) {
+                        if (data.hasOwnProperty(name)) {
+                            val = data[name];
+
+                            if (includeEmptyText && val === '') {
+                                val = field.emptyText || '';
+                            }
+
+                            if (values.hasOwnProperty(name)) {
+                                bucket = values[name];
+
+                                if (!isArray(bucket)) {
+                                    bucket = values[name] = [bucket];
+                                }
+
+                                if (isArray(val)) {
+                                    values[name] = bucket.concat(val);
+                                } else {
+                                    bucket.push(val);
+                                }
+                            } else if(field.getXType( )=='checkboxfield' && comboboxUserArray){//这个else是我加的
+  								values[name] = [val];
+               				} else {
+                                values[name] = val;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (asString) {
+            values = Ext.Object.toQueryString(values);
+        }
+        return values;
+    }
+});
+
 /**
  * 为了后台和前台的模型差异，做的补充
  */

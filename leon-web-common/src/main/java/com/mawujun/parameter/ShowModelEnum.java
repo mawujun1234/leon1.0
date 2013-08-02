@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public enum ShowModelEnum {
-	COMBOBOX("下拉框"),CHECKBOX("复选框"),RADIOBOX("单选框"),TEXTBOX("文本框"),NUMBERBOX("数字框"),RANGENUMBERBOX("数字范围");
+	COMBOBOX("下拉框"),CHECKBOXGROUP("复选框"),RADIOGROUP("单选框"),TEXTFIELD("文本框"),NUMBERFIELD("数字框"),DATEFIELD("日期框"),TIMEFIELD("时间框");//,RANGENUMBERBOX("数字范围");
 	
 	private String name;
 	ShowModelEnum(String name){

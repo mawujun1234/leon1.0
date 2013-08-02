@@ -20,10 +20,10 @@ public class BeanPropertiesCopyTest {
 	 public void copyOrCast() throws Exception {
 		
 		
-		Integer bb= BeanPropertiesCopy.copyOrCast(1, Integer.class);
+		Integer bb= BeanUtils.copyOrCast(1, Integer.class);
 		assertEquals((Integer)1, bb);
 		
-		String aa= BeanPropertiesCopy.copyOrCast("aa", String.class);
+		String aa= BeanUtils.copyOrCast("aa", String.class);
 		assertEquals("aa", aa);
 	}
 
@@ -37,7 +37,7 @@ public class BeanPropertiesCopyTest {
 		product.setProductName("car");
 		
 
-		Map aa=BeanPropertiesCopy.copyOrCast(product, Map.class);
+		Map aa=BeanUtils.copyOrCast(product, Map.class);
 		
 		assertEquals("car", aa.get("productName"));
 		//assertEquals((Double)1000d, product.getPrice());
@@ -53,42 +53,42 @@ public class BeanPropertiesCopyTest {
 		product.setProductName("car");
 		
 
-		BeanPropertiesCopy.copyExcludeNull(productDTO, product);
+		BeanUtils.copyExcludeNull(productDTO, product);
 		
 		assertEquals("car", product.getProductName());
 		//assertEquals((Double)1000d, product.getPrice());
 	 }
 	 @Test
 	 public void testconvertToObject(){
-		 String sdf=(String)BeanPropertiesCopy.convert("sdf", String.class);
+		 String sdf=(String)BeanUtils.convert("sdf", String.class);
 		 assertEquals("sdf", sdf);
-		 Integer integer=(Integer)BeanPropertiesCopy.convert(new BigDecimal(10.125), Integer.class);
+		 Integer integer=(Integer)BeanUtils.convert(new BigDecimal(10.125), Integer.class);
 		 assertEquals(new Integer(10), integer);
 		 //Integer.parseInt("10.125");
-		 Integer integer1=(Integer)BeanPropertiesCopy.convert("10.125", Integer.class);
+		 Integer integer1=(Integer)BeanUtils.convert("10.125", Integer.class);
 		 assertEquals(new Integer(0), integer1);//
-		 Integer integer2=(Integer)BeanPropertiesCopy.convert(new BigDecimal(10.125), Integer.class);
+		 Integer integer2=(Integer)BeanUtils.convert(new BigDecimal(10.125), Integer.class);
 		 assertEquals(new Integer(10), integer2);//
 		 
 		 
 		 
 		 
 		 
-		 Double doubl=(Double)BeanPropertiesCopy.convert(new BigDecimal(10.125), Double.class);
+		 Double doubl=(Double)BeanUtils.convert(new BigDecimal(10.125), Double.class);
 		 assertEquals(new Double(10.125), doubl); 
-		 Double doubl1=(Double)BeanPropertiesCopy.convert("10.125", Double.class);
+		 Double doubl1=(Double)BeanUtils.convert("10.125", Double.class);
 		 assertEquals(new Double(10.125), doubl1);
 		 
-		 BigDecimal bigDecimal=(BigDecimal)BeanPropertiesCopy.convert(10.125, BigDecimal.class);
+		 BigDecimal bigDecimal=(BigDecimal)BeanUtils.convert(10.125, BigDecimal.class);
 		 assertEquals(new BigDecimal(10.125), bigDecimal);
-		 BigDecimal bigDecimal1=(BigDecimal)BeanPropertiesCopy.convert("10.125", BigDecimal.class);
+		 BigDecimal bigDecimal1=(BigDecimal)BeanUtils.convert("10.125", BigDecimal.class);
 		 assertEquals(new BigDecimal(10.125), bigDecimal1);
 	 }
 	 
 	 @Test
 	 public void testconvertToArray(){
 		 String[] strArray={"1","2","3"};
-		 Object obj=BeanPropertiesCopy.convert(strArray, Integer.class);
+		 Object obj=BeanUtils.convert(strArray, Integer.class);
 		 assertEquals(new Integer(1), ((Object[])obj)[0]);
 		 assertEquals(new Integer(2), ((Object[])obj)[1]);
 		 assertEquals(new Integer(3), ((Object[])obj)[2]);	 
@@ -111,7 +111,7 @@ public class BeanPropertiesCopyTest {
 		productDTO.setParts(new PartDTO[] { partDTO });
 
 		//ProductDTO->Product
-		Product product = BeanPropertiesCopy.copyOrCast(productDTO, Product.class);
+		Product product = BeanUtils.copyOrCast(productDTO, Product.class);
 
 		assertEquals("car", product.getProductName());
 		//原来的字符串被Map成Double。
@@ -122,7 +122,7 @@ public class BeanPropertiesCopyTest {
 		assertEquals("car", product.getParts().get(0).getProduct().getProductName());
 
 		//再反向从Product->ProductDTO
-		ProductDTO productDTO2 = BeanPropertiesCopy.copyOrCast(product, ProductDTO.class);
+		ProductDTO productDTO2 = BeanUtils.copyOrCast(product, ProductDTO.class);
 		assertEquals("car", productDTO2.getName());
 		assertEquals("200.0", productDTO2.getPrice());
 		assertEquals("door", productDTO2.getParts()[0].getName());
@@ -148,7 +148,7 @@ public class BeanPropertiesCopyTest {
 		product.setProductName("horse");
 		product.setWeight(new Double(20));
 
-		BeanPropertiesCopy.copyOrCast(productDTO, product);
+		BeanUtils.copyOrCast(productDTO, product);
 
 		//原来的horse，被替换成car
 		assertEquals("car", product.getProductName());

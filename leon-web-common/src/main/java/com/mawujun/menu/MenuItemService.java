@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;
 import com.mawujun.repository.BaseRepository;
-import com.mawujun.utils.BeanPropertiesCopy;
+import com.mawujun.utils.BeanUtils;
 import com.mawujun.utils.help.ReportCodeHelper;
 import com.mawujun.utils.page.WhereInfo;
 
@@ -142,7 +142,7 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 				continue;
 			}
 			//MenuItemVO fun=parentKeys.get(leaf.getId());
-			MenuItemVO vo=BeanPropertiesCopy.copyOrCast(leaf, MenuItemVO.class);
+			MenuItemVO vo=BeanUtils.copyOrCast(leaf, MenuItemVO.class);
 			//fun.addItems(vo);
 			
 			if(leaf.getParent()!=null){
@@ -154,7 +154,7 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 						ancestorNew=parentKeys.get(ancestor.getId());
 					} else {
 						ancestorNew=new MenuItemVO();
-						BeanPropertiesCopy.copyOrCast(ancestor, ancestorNew);
+						BeanUtils.copyOrCast(ancestor, ancestorNew);
 						parentKeys.put(ancestorNew.getId(), ancestorNew);
 					}
 					if(i==0){

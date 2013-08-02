@@ -8,7 +8,7 @@ import java.util.Set;
 
 import org.apache.ibatis.type.Alias;
 
-import com.mawujun.utils.BeanPropertiesCopy;
+import com.mawujun.utils.BeanUtils;
 
 /**
  * 因为不能新建一个类，代码中写死了，所以使用继承
@@ -150,7 +150,7 @@ public class Record extends LinkedHashMap<String, Object> {
 		return dataParser.parseDate(getValue(i));
 	}
 	public static Record toRecord(Object obj){
-		return BeanPropertiesCopy.copyOrCast(obj, Record.class);
+		return BeanUtils.copyOrCast(obj, Record.class);
 	}
 //
 //	

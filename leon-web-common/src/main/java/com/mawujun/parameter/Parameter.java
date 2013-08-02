@@ -3,25 +3,20 @@ package com.mawujun.parameter;
 import java.io.Serializable;
 
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.mawujun.repository.idEntity.IdEntity;
 
 @Entity
 @Table(name="leon_Parameter")
-//@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
-//@DiscriminatorColumn(
-//    name="parameterType",
-//    discriminatorType=DiscriminatorType.STRING
-//)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE) 
 public class Parameter  implements IdEntity<String>,Serializable{
 	
 	/**
@@ -52,6 +47,8 @@ public class Parameter  implements IdEntity<String>,Serializable{
 	
 	@Column(length=200)
 	private String content;
+	@Column(length=50)
+	private String targets;//应用的主体
 	
 
 	@Override
@@ -118,6 +115,14 @@ public class Parameter  implements IdEntity<String>,Serializable{
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public String getTargets() {
+		return targets;
+	}
+
+	public void setTargets(String targets) {
+		this.targets = targets;
 	}
 
 }

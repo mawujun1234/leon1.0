@@ -71,10 +71,42 @@ Ext.define('Leon.desktop.parameter.ParameterForm', {
             	}
             })
         },{
+		    xtype      : 'checkboxgroup',
+		    name:'checkboxgroup_targets',
+		    columns: 3,
+		    //width:100*params.content.length,
+		    afterLabelTextTpl: '<span class="icons_help" data-qtip="作用的目标">&nbsp;&nbsp;&nbsp;&nbsp;</span>',
+		    fieldLabel :"目标",
+		    items: []
+		},{
             fieldLabel: '描述',
             name: 'desc'
         }],
 	initComponent:function(){
+		var me=this;
+		me.addEvents("targetsItemsReady");
+		Ext.Ajax.request({
+            	url:'/parametersubject/querySubjectType',
+            	method:'POST',
+            	//params:{subjectId:me.subjectId,subjectType:me.subjectType},
+            	success:function(response){
+            		var obj=Ext.decode(response.responseText);
+            		var values=obj.root;
+            		var items=[];
+            		for(var i=0;i<values.length;i++){
+						items.push( {
+			                boxLabel  :values[i].name,
+			                name      : 'checkbox_targets',
+			                checked:true,
+			                inputValue:values[i].key
+			            });
+					}
+					var checkboxgroup_targets=me.getForm().findField("checkboxgroup_targets");
+            		checkboxgroup_targets.add(items);
+            		//form.getForm().findField("55").setValue()
+            		me.fireEvent("targetsItemsReady",me,checkboxgroup_targets);
+            	}
+            });
 		this.callParent();
 	}
 });

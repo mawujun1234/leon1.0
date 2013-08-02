@@ -34,7 +34,7 @@ import com.google.common.collect.Lists;
  * 
  * @author calvin
  */
-public abstract class BeanPropertiesCopy {
+public abstract class BeanUtils {
 
 	/**
 	 * 持有Dozer单例, 避免重复创建DozerMapper消耗资源.
@@ -44,7 +44,8 @@ public abstract class BeanPropertiesCopy {
 	/**
 	 * 基于Dozer转换对象的类型.
 	 * 主要用于对象之间进行拷贝
-	 * Long[] aa=BeanPropertiesCopy.copy(value, long[].class)
+	 * 
+	 * Long[] aa=BeanUtils.copy(value, long[].class)value也是数组对象
 	 */
 	public static <T> T copyOrCast(Object source, Class<T> destinationClass) {
 		Class fromType=source.getClass();
