@@ -43,13 +43,17 @@ public class Parameter  implements IdEntity<String>,Serializable{
 	@Column(length=200)
 	@Enumerated(EnumType.STRING)
 	private ParameterValueEnum valueEnum;
-	@Column(length=50)
-	private String defaultValue;
+//	@Column(length=50)
+//	private String defaultValue;
 	
 	@Column(length=200)
 	private String content;
 	@Column(length=50)
 	private String subjects;//应用的主体
+	
+	private Integer sort=0;
+	@Column(length=150)
+	private String validation;
 	
 
 	@Override
@@ -91,13 +95,7 @@ public class Parameter  implements IdEntity<String>,Serializable{
 		this.showModel = showModel;
 	}
 
-	public String getDefaultValue() {
-		return defaultValue;
-	}
 
-	public void setDefaultValue(String defaultValue) {
-		this.defaultValue = defaultValue;
-	}
 
 	public ParameterValueEnum getValueEnum() {
 		return valueEnum;
@@ -139,5 +137,22 @@ public class Parameter  implements IdEntity<String>,Serializable{
 	public void setSubjects(String targets) {
 		this.subjects = targets;
 	}
+
+	public Integer getSort() {
+		return sort;
+	}
+
+	public void setSort(Integer sort) {
+		this.sort = sort;
+	}
+
+	public String getValidation() {
+		return validation;
+	}
+
+	public void setValidation(String validation) {
+		this.validation = validation;
+	}
+
 
 }

@@ -297,6 +297,9 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 	public T queryUnique(Cnd cnd) {
 		return hibernateDao.queryUnique(cnd);
 	}
+	public <M> M queryUnique(Cnd cnd,Class<M> classM) {
+		return hibernateDao.queryUnique(cnd, classM);
+	}
 	public Object queryMax(String property,Cnd cnd) {
 		return hibernateDao.queryMax(property,cnd);
 	}

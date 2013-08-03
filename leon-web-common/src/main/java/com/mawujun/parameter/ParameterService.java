@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.mawujun.exception.BussinessException;
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository.cnd.Cnd;
+import com.mawujun.utils.BeanUtils;
 
 @Service
 public class ParameterService extends BaseRepository<Parameter, String> {
@@ -45,8 +46,13 @@ public class ParameterService extends BaseRepository<Parameter, String> {
 				throw new BussinessException("查询主体<"+SubjectType.valueOf(newSubject_temp).getName()+">已经设置过参数，所以不能去除!");
 			}
 		}
-		
-		super.update(entity);
+		//判断值类型有没有变化
+		Parameter paramm=this.get(entity.getId());
+		if(list.size()>0 && paramm.getValueEnum()!=entity.getValueEnum()){
+			throw new BussinessException("值类型不能更新，因为已经被使用了!");
+		}
+		BeanUtils.copyOrCast(entity, paramm);
+		super.update(paramm);
 	}
 
 }

@@ -8,10 +8,10 @@ Ext.defineModel("Leon.desktop.parameter.Parameter",{
 		{name:'showModelName',type:'string'},
 		{name:'valueEnum',type:'string'},
 		{name:'valueEnumName',type:'string'},
-		{name:'defaultValue',type:'string'},
 		{name:'content',type:'string'},
 		{name:'subjects',type:'string'},
 		{name:'subjectNames',type:'string'},
-		{name:'useCount',type:'int'}//引用的次数
+		{name:'sort',type:'int'},//引用的次数
+		{name:'vaidation',type:'string'}
 	]	
 });

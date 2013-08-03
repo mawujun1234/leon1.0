@@ -945,6 +945,91 @@ public class HibernateDao<T, ID extends Serializable>{
 		return null;
 	}
 	
+	public <M> M queryUnique(Cnd cnd,Class<M> classM) {
+		cnd.setSqlType(SqlType.SELECT);
+		StringBuilder builder=new StringBuilder();
+		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
+		cnd.joinHql(classMetadata, builder);
+		
+
+		Object[] params = new Object[cnd.paramCount(classMetadata)];
+		int paramsCount = cnd.joinParams(classMetadata, null, params, 0);
+		
+		Session session = this.getSession();
+		Query query = session.createQuery(builder.toString());
+		
+		setParamsByCnd(query,cnd,classMetadata);
+
+		Object obj= query.uniqueResult();//.list().;
+		if(classM.isAssignableFrom(obj.getClass())){
+			return (M)obj;
+		}
+		if(!obj.getClass().isArray() && ReflectionUtils.isBaseType(classM)){
+			M m=(M) BeanUtils.convert(obj, classM);
+			return m;
+		} else {
+			List<String> names = cnd.getSelectItems().getNames();
+			try {
+				if(classM.isAssignableFrom(Map.class)){
+					classM=(Class<M>) HashMap.class;
+					M m=classM.newInstance();
+					for(int i=0;i<names.size();i++){
+						((Map)m).put(names.get(i), ((Object[])obj)[i]);
+					}
+					return m;
+				} else {
+					M m = classM.newInstance();
+					for (int i = 0; i < names.size(); i++) {
+						ReflectionUtils.setFieldValue(m, names.get(i), ((Object[])obj)[i]);
+					}
+					return m;
+				}
+				
+			} catch (Exception e) {
+				throw BussinessException.wrap(e);
+			}
+		}
+//		List<String> names=cnd.getSelectItems().getNames();
+//		
+//		try{
+//			if(classM.isAssignableFrom(Map.class)){
+//				classM=(Class<M>) HashMap.class;
+//				for(Object[] objs:list){
+//					M m=classM.newInstance();
+//					
+//					for(int i=0;i<names.size();i++){
+//						((Map)m).put(names.get(i), objs[i]);
+//					}
+//					result.add(m);
+//				}
+//			} else if(ReflectionUtils.isBaseType(classM)){
+//				if(names.size()==1){
+//					for(Object objs:list){
+//						M m=(M) BeanUtils.convert(objs, classM);
+//						result.add(m);
+//					}
+//				} else {
+//					for(Object[] objs:list){
+//						M m=(M) BeanUtils.convert(objs[0], classM);
+//						result.add(m);
+//					}
+//				}
+//				
+//			} else {
+//				for(Object[] objs:list){
+//					M m=classM.newInstance();
+//					for(int i=0;i<names.size();i++){
+//						ReflectionUtils.setFieldValue(m, names.get(i), objs[i]);
+//					}
+//					result.add(m);
+//				}
+//			}
+//		} catch(Exception e) {
+//			throw  BussinessException.wrap(e);
+//		}
+//		return null;
+	}
+	
 	public Object queryMax(String property,WhereInfo... whereInfos) {
 		Criteria criteria = getSession().createCriteria(entityClass);
 		criteria.setProjection(Projections.projectionList().add( Projections.max(property)));

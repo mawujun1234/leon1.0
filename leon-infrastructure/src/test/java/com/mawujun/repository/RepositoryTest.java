@@ -585,6 +585,38 @@ public class RepositoryTest extends DbunitBaseRepositoryTest {
 	}
 	
 	@Test
+	public void queryUniqueCnd_M() {
+		Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
+		Cnd cnd=Cnd.where().and("id","=", 1);//.andLike("firstName", "admin").andIn("lastName", "123","1234");
+		
+		EntityTest entitys=repository.queryUnique(cnd,EntityTest.class);
+		tx.commit();
+		assertEquals((Integer)1,entitys.getId());
+		//assertEquals(1,entitys.getTotalPages());
+	}
+	
+	@Test
+	public void queryUniqueCnd_BaseType() {
+		Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
+		Cnd cnd=Cnd.where().and("id","=", 1).addSelect("id");//.andLike("firstName", "admin").andIn("lastName", "123","1234");
+		
+		Integer entitys=repository.queryUnique(cnd,Integer.class);
+		tx.commit();
+		assertEquals((Integer)1,entitys);
+		//assertEquals(1,entitys.getTotalPages());
+	}
+	@Test
+	public void queryUniqueCnd_Map() {
+		Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
+		Cnd cnd=Cnd.where().and("id","=", 1).addSelect("id","firstName");//.andLike("firstName", "admin").andIn("lastName", "123","1234");
+		
+		Map entitys=repository.queryUnique(cnd,Map.class);
+		tx.commit();
+		assertEquals((Integer)1,entitys.get("id"));
+	}
+	
+	
+	@Test
 	public void testQueryMaxCnd() {
 		Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
 		Cnd cnd=Cnd.select().andIn("id", 1,2,3);//.andLike("firstName", "admin").andIn("lastName", "123","1234");

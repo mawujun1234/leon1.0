@@ -16,7 +16,7 @@ Ext.define('Leon.desktop.parameter.ParameterUtils', {
             	params:{subjectType:me.subjectType},
             	success:function(response){
             		var obj=Ext.decode(response.responseText);
-            		var form=me.createForm(Ext.decode(response.responseText).root);
+            		var form=me.createForm(obj.root);
             		//me.setFormValues();
             		
             		fun(form);
@@ -115,16 +115,20 @@ Ext.define('Leon.desktop.parameter.ParameterUtils', {
          	var me=this;
          	var showModel=params.showModel.toLowerCase();
          	if(showModel=='textfield'){
+         		//alert(params.validations);
          		var field={
          			fieldLabel:params.name,
          			name:params.id,
          			afterLabelTextTpl: me.getQuickTip(params.desc),
          			xtype:'textfield'
          		};
+         		if(params.validations){
+         			field=Ext.apply(field,Ext.decode(params.validations));
+         		}
          		return field;
          	} else if(showModel=='combobox'){
          		//alert(typeof params.content);
-         		params.content=Ext.decode(params.content);
+         		params.content=params.content?Ext.decode(params.content):"";
          		var field={
          			fieldLabel:params.name,
          			name:params.id,
@@ -183,6 +187,9 @@ Ext.define('Leon.desktop.parameter.ParameterUtils', {
          			afterLabelTextTpl: me.getQuickTip(params.desc),
          			xtype:'numberfield'
          		};
+         		if(params.validations){
+         			field=Ext.apply(field,Ext.decode(params.validations));
+         		}
          		return field;
          	}else if(showModel=='datefield'){
          		var field={

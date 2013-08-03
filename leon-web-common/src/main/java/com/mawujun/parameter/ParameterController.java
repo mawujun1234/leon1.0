@@ -38,7 +38,7 @@ public class ParameterController {
 	@RequestMapping("/parameter/query")
 	@ResponseBody
 	public List<Parameter> query(){		
-		return parameterService.queryAll();
+		return parameterService.query(Cnd.where().asc("sort"));
 	}
 	/**
 	 * 一次性读取出所有的节点数据
@@ -47,7 +47,7 @@ public class ParameterController {
 	@RequestMapping("/parameter/queryBysubjectType")
 	@ResponseBody
 	public List<Parameter> queryBysubjectType(String subjectType){		
-		return parameterService.query(Cnd.select().andLike("targets", subjectType));
+		return parameterService.query(Cnd.select().andLike("subjects", subjectType).asc("sort"));
 	}
 	@RequestMapping("/parameter/load")
 	@ResponseBody

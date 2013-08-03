@@ -50,13 +50,7 @@ Ext.define('Leon.desktop.parameter.ParameterWindow', {
 		            	layout.setActiveItem(1);
 		            	var form=layout.getActiveItem();	
 		            	form.loadRecord(me.record);
-		            	form.hideContent();
-		            	
-//		            } else if(valueEnum=='SQL'|| valueEnum=='JAVA'){
-//		            	layout.setActiveItem(1);
-//		            	var form=layout.getActiveItem();	
-//		            	form.showContent();
-//		            	form.loadRecord(me.record);
+		            	form.setValueEnum(valueEnum,me.record.get('vaidation'));
 		            } else if(valueEnum=='ARRAY'){
 		            	layout.setActiveItem(2);
 		            	var form=layout.getActiveItem();
@@ -93,7 +87,13 @@ Ext.define('Leon.desktop.parameter.ParameterWindow', {
 
 		            form.updateRecord();
 		            //me.getLayout().getLayoutItems( )[0].updateRecord();;
+		            //getValues( [asString], [dirtyOnly], [includeEmptyText], [useDataValues] )
+		            var simpleValues=form.getValues(false,false,false);
+		            //console.log(simpleValues);
+		            delete simpleValues.content;
+		            me.record.set('vaidation',Ext.encode(simpleValues));
 
+		            //return;
 		            if(me.createNew){
 		            	me.record.phantom=true;
 		            }

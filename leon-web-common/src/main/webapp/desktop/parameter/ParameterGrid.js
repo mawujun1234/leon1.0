@@ -14,12 +14,12 @@ Ext.define('Leon.desktop.parameter.ParameterGrid',{
 		}
 	},
 //	//selType: 'cellmodel',
-//    plugins: [
-//        Ext.create('Ext.grid.plugin.CellEditing', {
-//        	pluginId: 'cellEditingPlugin',
-//            clicksToEdit: 2
-//        })
-//    ],
+    plugins: [
+        Ext.create('Ext.grid.plugin.CellEditing', {
+        	//pluginId: 'cellEditingPlugin',
+            clicksToEdit: 1
+        })
+    ],
 	initComponent: function () {
        var me = this;
        function formatQtip(data,metadata){   
@@ -40,7 +40,10 @@ Ext.define('Leon.desktop.parameter.ParameterGrid',{
 //	        },
 	        { text: '值类型', dataIndex: 'valueEnumName', width: 80 
 	        },
-	        { text: '使用次数', dataIndex: 'useCount', width: 60
+	        { text: '排序', dataIndex: 'sort', width: 60,editor:{
+	        		xtype:'numberfield',allowDecimals:false,allowBlank:false,selectOnFocus:true
+	        		
+	        	}
 	        },
 	        { text: '目标', dataIndex: 'subjectNames', width: 150,renderer:formatQtip
 	        },
@@ -93,6 +96,13 @@ Ext.define('Leon.desktop.parameter.ParameterGrid',{
        			}	
        		}]
        });
+       
+       me.on('edit', function(editor, e) {
+		    // commit the changes right after editing finished
+		    e.record.commit();
+		    e.record.save();
+	   });
+	   
        me.tbar=tbar;
        me.callParent();
 	}

@@ -1,9 +1,5 @@
 package com.mawujun.parameter;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.stereotype.Service;
 
 import com.mawujun.repository.BaseRepository;
@@ -21,6 +17,11 @@ public class ParameterSubjectService extends
 			super.create(ps);
 		}
 		return parametersubjects.length;
+	}
+	public String getParameterValue(String subjectId,SubjectType subjectType,String parameterId){
+		return this.queryUnique(Cnd.select().andEquals("subjectId", subjectId).andEquals("subjectType", subjectType)
+				.andEquals("parameterId", parameterId).addSelect("parameterValue"),String.class);
+		
 	}
 	
 //	public  Map<String,String> query(String subjectId,String subjectType){
