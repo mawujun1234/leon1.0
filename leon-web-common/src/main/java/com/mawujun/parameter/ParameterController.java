@@ -47,7 +47,7 @@ public class ParameterController {
 	@RequestMapping("/parameter/queryBysubjectType")
 	@ResponseBody
 	public List<Parameter> queryBysubjectType(String subjectType){		
-		return parameterService.query(Cnd.where().andLike("targets", subjectType));
+		return parameterService.query(Cnd.select().andLike("targets", subjectType));
 	}
 	@RequestMapping("/parameter/load")
 	@ResponseBody

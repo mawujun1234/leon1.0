@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mawujun.exception.BussinessException;
 import com.mawujun.exception.DefaulExceptionCode;
-import com.mawujun.exception.PaymentCode;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.repository.hibernate.HibernateDao;
 import com.mawujun.repository.hibernate.NamingStrategy;
@@ -281,6 +280,16 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 	
 	public List<T> query(Cnd cnd) {
 		return hibernateDao.query(cnd,false);
+	}
+	/**
+	 * 
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param cnd
+	 * @param classT要返回的数据类型
+	 * @return
+	 */
+	public <M> List<M> query(Cnd cnd,Class<M> classT) {
+		return hibernateDao.query(cnd,classT);
 	}
 	public int queryCount(Cnd cnd) {
 		return hibernateDao.queryCount(cnd);

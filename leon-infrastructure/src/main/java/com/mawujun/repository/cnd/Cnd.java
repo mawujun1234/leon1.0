@@ -41,9 +41,18 @@ public class Cnd implements PItem{
 
 	private OrderBySet orderBy;
 	
+	private SelectItems selectItems;
+	
+	private SqlType sqlType;
+	
 	public Cnd() {
 		where = new SqlExpressionGroup();
 		orderBy = new OrderBySet();
+		selectItems=new SelectItems();
+	}
+	public Cnd(SqlType sqlType) {
+		this();
+		this.sqlType=sqlType;
 	}
 	
 	public static SqlExpression exp(String name, String op, Object value) {
@@ -55,11 +64,31 @@ public class Cnd implements PItem{
 	public static SqlExpressionGroup exps(SqlExpression exp) {
 		return new SqlExpressionGroup().and(exp);
 	}
-	
-
+	/**
+	 * Cnd.select().addSelect("id","name").distinct().andEquals("name", "1");
+	 * Cnd.where()只提供where语句
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @return
+	 */
 	public static Cnd where() {
 		return new Cnd();
 	}
+	/**
+	 * Cnd.select().addSelect("id","name").distinct().andEquals("name", "1");
+	 * Cnd.select()设置SqlType为SELECT
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @return
+	 */
+	public static Cnd select() {
+		return new Cnd(SqlType.SELECT);
+	}
+	public static Cnd delete() {
+		return new Cnd(SqlType.DELETE);
+	}
+	public static Cnd update() {
+		return new Cnd(SqlType.DELETE);
+	}
+	//===============================================
 	
 	public SqlExpressionGroup getWhere() {
 		return where;
@@ -100,7 +129,6 @@ public class Cnd implements PItem{
 	public Cnd orNot(String name, String op, Object value) {
 		return orNot(Cnd.exp(name, op, value));
 	}
-	//==================================
 	
 	public Cnd andIsNull(String name) {
 		this.getWhere().andIsNull(name);
@@ -310,7 +338,7 @@ public class Cnd implements PItem{
 	
 	
 	
-
+//================================================
 	public Cnd asc(String name) {
 		orderBy.asc(name);
 		return this;
@@ -321,8 +349,27 @@ public class Cnd implements PItem{
 		return this;
 	}
 	
-	
-	
+///////////////////////////////////////////////////	
+	/**
+	 * Cnd.select().addSelect("id","name").distinct().andEquals("name", "1");
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param names
+	 * @return
+	 */
+	public Cnd addSelect(String... names) {
+		selectItems.addNames(names);
+		return this;
+	}
+	/**
+	 * Cnd.select().addSelect("id","name").distinct().andEquals("name", "1");
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @return
+	 */
+	public Cnd distinct() {
+		
+		selectItems.setDistinct(true);
+		return this;
+	}
 	
 	
 	
@@ -351,6 +398,15 @@ public class Cnd implements PItem{
 		// TODO Auto-generated method stub
 		
 		//sb.append("from "+classMetadata.getEntityName());
+		if(this.getSqlType()==SqlType.SELECT){
+			selectItems.joinHql(classMetadata, sb);
+			sb.append("from "+classMetadata.getEntityName());
+		} else if(this.getSqlType()==SqlType.DELETE){
+			sb.append("delete from "+classMetadata.getEntityName());
+		} else if(this.getSqlType()==SqlType.UPDATE){
+			//sb.append("delete from "+classMetadata.getEntityName());
+		}
+	
 		where.joinHql(classMetadata, sb);
 		orderBy.joinHql(classMetadata, sb);
 	}
@@ -402,14 +458,19 @@ public class Cnd implements PItem{
 	    return null;
 	}
 
-	
+	/**
+	 * 完整的sql，不带有占位符
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param classMetadata
+	 * @return
+	 */
 	public String toHql(AbstractEntityPersister classMetadata) {
 		Object[] params = new Object[this.paramCount(classMetadata)];
 		int i = where.joinParams(classMetadata, null, params, 0);
 
 
-		StringBuilder sb = new StringBuilder("from "+classMetadata.getEntityName());
-		//StringBuilder sb = new StringBuilder();
+		//StringBuilder sb = new StringBuilder("from "+classMetadata.getEntityName());
+		StringBuilder sb = new StringBuilder();
 		this.joinHql(classMetadata, sb);
 		String[] ss = sb.toString().split("[?]");
 
@@ -448,6 +509,15 @@ public class Cnd implements PItem{
 //			return null;
 //		return ES_FLD_VAL.escape(s);
 		return s;
+	}
+	public SqlType getSqlType() {
+		return sqlType;
+	}
+	public void setSqlType(SqlType sqlType) {
+		this.sqlType = sqlType;
+	}
+	public SelectItems getSelectItems() {
+		return selectItems;
 	}
 	
 	

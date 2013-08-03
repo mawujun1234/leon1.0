@@ -3,7 +3,7 @@ Ext.define('Leon.desktop.parameter.ParameterUtils', {
 		 subjectType:'SYSTEM',
 		 subjectId:'SYSTEM',
 		 form:null,
-         getFormItems: function(subjectType,fun) { 
+         getForm: function(subjectType,fun) { 
          	if(!subjectType){
          		Ext.Msg.alert("消息","subjectType参数不能为空");
          		return;
@@ -17,15 +17,30 @@ Ext.define('Leon.desktop.parameter.ParameterUtils', {
             	success:function(response){
             		var obj=Ext.decode(response.responseText);
             		var form=me.createForm(Ext.decode(response.responseText).root);
-            		me.setFormValues(form);
+            		//me.setFormValues();
             		
             		fun(form);
             		
             	}
             });
          } , 
-         setFormValues:function(form){
+         /**
+          * 必须嗲用，设置主体的id
+          * @param {} subjectId
+          */
+         setSubjectId:function(subjectId){
+	         	//this.form.findField('subjectId').setValue(subjectId);
+         	this.subjectId=subjectId;
+         	this.setFormValues();
+	     },
+         setFormValues:function(){
          	var me=this;
+         	if(!me.subjectId){
+         		return;
+         	}
+         	
+         	var form=me.form;
+
          	Ext.Ajax.request({
             	url:'/parametersubject/query',
             	method:'POST',
@@ -34,15 +49,13 @@ Ext.define('Leon.desktop.parameter.ParameterUtils', {
             		var obj=Ext.decode(response.responseText);
             		var values=obj.root;
             		//values[55]=['33'];
+            		form.getForm().reset();
             		form.getForm().setValues(values);
             		//form.getForm().findField("55").setValue()
             	}
             });
          },
-         setSubjectId:function(subjectId){
-	         	//this.form.findField('subjectId').setValue(subjectId);
-         	this.subjectId=subjectId;
-	     },
+         
          createForm:function(parames){
          	var me=this;
          	var items=[];

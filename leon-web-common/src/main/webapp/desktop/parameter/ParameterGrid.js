@@ -22,6 +22,10 @@ Ext.define('Leon.desktop.parameter.ParameterGrid',{
 //    ],
 	initComponent: function () {
        var me = this;
+       function formatQtip(data,metadata){   
+		    metadata.tdAttr = "data-qtip='" + data + "'";
+		    return data;    
+	  }  
       me.columns=[
 	        { text: 'id',  dataIndex: 'id' },
 	        { text: '名称', dataIndex: 'name', width: 100
@@ -36,15 +40,15 @@ Ext.define('Leon.desktop.parameter.ParameterGrid',{
 //	        },
 	        { text: '值类型', dataIndex: 'valueEnumName', width: 80 
 	        },
-	        { text: '使用次数', dataIndex: 'useCount', width: 60 
+	        { text: '使用次数', dataIndex: 'useCount', width: 60
 	        },
-	        { text: '目标', dataIndex: 'targetNames', width: 150
+	        { text: '目标', dataIndex: 'subjectNames', width: 150,renderer:formatQtip
 	        },
-	        { text: '内容数据', dataIndex: 'content', flex: 1
+	        { text: '内容数据', dataIndex: 'content', flex: 1,renderer:formatQtip
 	        }
        ];
        me.store=Ext.create('Ext.data.Store',{
-       		autoSync:true,
+       		autoSync:false,
        		model: 'Leon.desktop.parameter.Parameter',
        		autoLoad:true
        });
@@ -81,19 +85,11 @@ Ext.define('Leon.desktop.parameter.ParameterGrid',{
        					if(btn=='yes'){
        						var model=me.getSelectionModel( ).getLastSelected( ) ;
 		       				if(model){
-		       					me.getStore().remove(model);
-		       					//model.destroy();
+		       					//me.getStore().remove(model);
+		       					model.destroy();
 		       				}
        					}
        				});
-//       				var model=me.getSelectionModel( ).getLastSelected( ) ;
-//       				if(model){
-//       					if(model.get("id")=="default"){
-//       						Ext.Msg.alert("消息","默认菜单不能删除");
-//       						return;
-//       					}
-//       					model.destroy();
-//       				}
        			}	
        		}]
        });

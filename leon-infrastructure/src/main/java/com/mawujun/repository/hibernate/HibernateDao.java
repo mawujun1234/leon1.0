@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,8 +31,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.mawujun.exception.BussinessException;
 import com.mawujun.repository.cnd.Cnd;
-import com.mawujun.utils.ArrayUtils;
+import com.mawujun.repository.cnd.SqlType;
 import com.mawujun.utils.AssertUtils;
 import com.mawujun.utils.BeanUtils;
 import com.mawujun.utils.ReflectionUtils;
@@ -340,6 +342,7 @@ public class HibernateDao<T, ID extends Serializable>{
 	 * @param entity
 	 */
 	public void updateIgnoreNull(final T entity,Cnd cnd) {
+		cnd.setSqlType(SqlType.UPDATE);
 		Object[] objs=getUpdateProp_position(entity);
 		StringBuilder builder=(StringBuilder)objs[0];
 		List<Object> params11111=(List<Object>)objs[1];
@@ -619,7 +622,8 @@ public class HibernateDao<T, ID extends Serializable>{
 	}
 	
 	public int deleteBatch(Cnd cnd){
-		StringBuilder builder=new StringBuilder("delete from " + this.entityClass.getName()+ "  ");
+		cnd.setSqlType(SqlType.DELETE);
+		StringBuilder builder=new StringBuilder();
 		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
 		cnd.joinHql(classMetadata, builder);
 		
@@ -802,8 +806,16 @@ public class HibernateDao<T, ID extends Serializable>{
 		
 		return criteria.list();
 	}
+	/**
+	 * 
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param cnd
+	 * @param uniqueResult 值返回唯一的一个值，否则返回所有数据
+	 * @return
+	 */
 	public List<T> query(Cnd cnd,boolean uniqueResult) {
-		StringBuilder builder=new StringBuilder("from " + this.entityClass.getName()+ "  ");
+		cnd.setSqlType(SqlType.SELECT);
+		StringBuilder builder=new StringBuilder();
 		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
 		cnd.joinHql(classMetadata, builder);
 		
@@ -822,6 +834,66 @@ public class HibernateDao<T, ID extends Serializable>{
 		return query.list();
 
 	}
+	public <M> List<M> query(Cnd cnd,Class<M> classM) {
+		cnd.setSqlType(SqlType.SELECT);
+		StringBuilder builder=new StringBuilder();
+		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
+		cnd.joinHql(classMetadata, builder);
+		
+
+		Object[] params = new Object[cnd.paramCount(classMetadata)];
+		int paramsCount = cnd.joinParams(classMetadata, null, params, 0);
+		
+		Session session = this.getSession();
+		Query query = session.createQuery(builder.toString());
+		
+		setParamsByCnd(query,cnd,classMetadata);
+		List<Object[]> list= query.list();
+		List<String> names=cnd.getSelectItems().getNames();
+
+		List<M> result=new ArrayList<M>();
+		try{
+			if(classM.isAssignableFrom(Map.class)){
+				classM=(Class<M>) HashMap.class;
+				for(Object[] objs:list){
+					M m=classM.newInstance();
+					
+					for(int i=0;i<names.size();i++){
+						((Map)m).put(names.get(i), objs[i]);
+					}
+					result.add(m);
+				}
+			} else if(ReflectionUtils.isBaseType(classM)){
+				if(names.size()==1){
+					for(Object objs:list){
+						M m=(M) BeanUtils.convert(objs, classM);
+						result.add(m);
+					}
+				} else {
+					for(Object[] objs:list){
+						M m=(M) BeanUtils.convert(objs[0], classM);
+						result.add(m);
+					}
+				}
+				
+			} else {
+				for(Object[] objs:list){
+					M m=classM.newInstance();
+					for(int i=0;i<names.size();i++){
+						ReflectionUtils.setFieldValue(m, names.get(i), objs[i]);
+					}
+					result.add(m);
+				}
+			}
+		} catch(Exception e) {
+			throw  BussinessException.wrap(e);
+		}
+		
+		
+		return result;
+
+	}
+	
 	public int queryCount(WhereInfo... whereInfos) {
 		Criteria criteria = getSession().createCriteria(entityClass);
 		whereInfo2Criterion(criteria,whereInfos);
@@ -829,7 +901,8 @@ public class HibernateDao<T, ID extends Serializable>{
 		return totalCount;
 	}
 	public int queryCount(Cnd cnd) {
-		StringBuilder builder=new StringBuilder("select count(*) from " + this.entityClass.getName()+ "  ");
+		cnd.setSqlType(SqlType.SELECT);
+		StringBuilder builder=new StringBuilder("select count(*)   ");
 		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
 		cnd.joinHql(classMetadata, builder);
 		
@@ -880,7 +953,7 @@ public class HibernateDao<T, ID extends Serializable>{
 	}
 	
 	public Object queryMax(String property,Cnd cnd) {
-		StringBuilder builder=new StringBuilder("select max("+property+") from " + this.entityClass.getName()+ "  ");
+		StringBuilder builder=new StringBuilder("select max("+property+") ");
 		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
 		cnd.joinHql(classMetadata, builder);
 		

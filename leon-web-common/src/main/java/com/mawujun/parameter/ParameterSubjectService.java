@@ -15,7 +15,7 @@ public class ParameterSubjectService extends
 
 	public int create(ParameterSubject[] parametersubjects){
 		//删除该主体的所有参数
-		super.deleteBatch(Cnd.where().andEquals("subjectId", parametersubjects[0].getSubjectId()).andEquals("subjectType", parametersubjects[0].getSubjectType()));
+		super.deleteBatch(Cnd.select().andEquals("subjectId", parametersubjects[0].getSubjectId()).andEquals("subjectType", parametersubjects[0].getSubjectType()));
 		//再进行保存
 		for(ParameterSubject ps:parametersubjects){
 			super.create(ps);

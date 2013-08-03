@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.ConstraintViolationException;
 
@@ -317,7 +318,7 @@ public class RepositoryTest extends DbunitBaseRepositoryTest {
 		
 		
 		Transaction tx = sessionFactory.getCurrentSession().beginTransaction();
-		repository.deleteBatch(Cnd.where().andIn("age", 20,30));
+		repository.deleteBatch(Cnd.select().andIn("age", 20,30));
 		tx.commit();
 		
 		ITable table =dbConn.createTable(EntityTest_TableName);
@@ -399,7 +400,7 @@ public class RepositoryTest extends DbunitBaseRepositoryTest {
 		entity.setEmail("1111@11.com");
 		
 		//WhereInfo where=WhereInfo.parse("age_in", "20,30,40");
-		repository.updateIgnoreNull(entity, Cnd.where().andIn("age", 20,30,40));
+		repository.updateIgnoreNull(entity, Cnd.select().andIn("age", 20,30,40));
 		tx.commit();
 		
 		ITable table =dbConn.createTable(EntityTest_TableName);
@@ -510,7 +511,7 @@ public class RepositoryTest extends DbunitBaseRepositoryTest {
 	@Test
 	public void testQueryCnd() {
 		Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
-		Cnd cnd=Cnd.where().andGT("age", 20).andLike("firstName", "admin").andIn("lastName", "123","1234");
+		Cnd cnd=Cnd.select().andGT("age", 20).andLike("firstName", "admin").andIn("lastName", "123","1234");
 		
 		List<EntityTest> entitys=repository.query(cnd);
 		tx.commit();
@@ -518,9 +519,53 @@ public class RepositoryTest extends DbunitBaseRepositoryTest {
 		//assertEquals(1,entitys.getTotalPages());
 	}
 	@Test
+	public void testQueryCnd_Map() {
+		Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
+		Cnd cnd=Cnd.select().andGT("age", 20).andLike("firstName", "admin").andIn("lastName", "123","1234").addSelect("age","firstName").asc("age");
+		
+		List<Map> entitys=repository.query(cnd,Map.class);
+		tx.commit();
+		
+		assertEquals(2,entitys.size());
+		assertEquals(true,entitys.get(0) instanceof Map);
+		assertEquals(30,entitys.get(0).get("age"));
+		assertEquals(40,entitys.get(1).get("age"));
+		//assertEquals(1,entitys.getTotalPages());
+	}
+	@Test
+	public void testQueryCnd_M() {
+		Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
+		Cnd cnd=Cnd.select().andGT("age", 20).andLike("firstName", "admin").andIn("lastName", "123","1234").addSelect("age","firstName").asc("age");
+		
+		List<EntityTest> entitys=repository.query(cnd,EntityTest.class);
+		tx.commit();
+		
+		assertEquals(2,entitys.size());
+		assertEquals(true,entitys.get(0) instanceof EntityTest);
+		assertEquals((Integer)30,entitys.get(0).getAge());
+		assertEquals((Integer)40,entitys.get(1).getAge());
+		//assertEquals(1,entitys.getTotalPages());
+	}
+	
+	@Test
+	public void testQueryCnd_BaseType() {
+		Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
+		Cnd cnd=Cnd.select().andGT("age", 20).andLike("firstName", "admin").andIn("lastName", "123","1234").addSelect("firstName").asc("age");
+		
+		List<String> entitys=repository.query(cnd,String.class);
+		tx.commit();
+		
+		assertEquals(2,entitys.size());
+		assertEquals(true,entitys.get(0) instanceof String);
+		//assertEquals((Integer)30,entitys.get(0).getAge());
+		//assertEquals((Integer)40,entitys.get(1).getAge());
+		//assertEquals(1,entitys.getTotalPages());
+	}
+	
+	@Test
 	public void testQueryCountCnd() {
 		Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
-		Cnd cnd=Cnd.where().andGT("age", 20).andLike("firstName", "admin").andIn("lastName", "123","1234");
+		Cnd cnd=Cnd.select().andGT("age", 20).andLike("firstName", "admin").andIn("lastName", "123","1234");
 		
 		int counts=repository.queryCount(cnd);
 		tx.commit();
@@ -542,7 +587,7 @@ public class RepositoryTest extends DbunitBaseRepositoryTest {
 	@Test
 	public void testQueryMaxCnd() {
 		Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
-		Cnd cnd=Cnd.where().andIn("id", 1,2,3);//.andLike("firstName", "admin").andIn("lastName", "123","1234");
+		Cnd cnd=Cnd.select().andIn("id", 1,2,3);//.andLike("firstName", "admin").andIn("lastName", "123","1234");
 		
 		Object entitys=repository.queryMax("id",cnd);
 		tx.commit();

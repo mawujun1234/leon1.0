@@ -39,11 +39,11 @@ Ext.define('Leon.desktop.parameter.ParameterWindow', {
 		            }
 		            //根据不同的值类型，显示不同的panel，并且根据不同的值把值设置到record里面。
 		            parameterForm.updateRecord();
-		            var targets_t=parameterForm.getForm().findField("checkboxgroup_targets").getValue( ).checkbox_targets;
-		            if(!(targets_t instanceof Array)){
-		            	targets_t=[targets_t];
+		            var subjects_t=parameterForm.getForm().findField("checkboxgroup_subjects").getValue( ).checkbox_subjects;
+		            if(!(subjects_t instanceof Array)){
+		            	subjects_t=[subjects_t];
 		            }
-		            me.record.set("targets",Ext.encode(targets_t));
+		            me.record.set("subjects",Ext.encode(subjects_t));
 
 		            var valueEnum=me.record.get("valueEnum");
 		            if(valueEnum=='STRING' || valueEnum=='NUMBER' || valueEnum=='BOOLEAN'  || valueEnum=='DATE'|| valueEnum=='TIME' ){
@@ -70,8 +70,11 @@ Ext.define('Leon.desktop.parameter.ParameterWindow', {
 		        }
 		    }]
 	    });
-	    parameterForm.on("targetsItemsReady",function(form,checkboxgroup_targets){
-	    	form.getForm().setValues({"checkbox_targets":Ext.decode(me.record.get('targets'))});
+	    parameterForm.on("subjectsItemsReady",function(form,checkboxgroup_subjects){
+	    	if(me.record.get('subjects')){
+	    		form.getForm().setValues({"checkbox_subjects":Ext.decode(me.record.get('subjects'))});
+	    	}
+	    	
 	    });
 	    var simpleForm=Ext.create('Leon.desktop.parameter.SimpleForm',{
 	    	bbar:[{
@@ -89,6 +92,7 @@ Ext.define('Leon.desktop.parameter.ParameterWindow', {
 		            var form=layout.getActiveItem();
 
 		            form.updateRecord();
+		            //me.getLayout().getLayoutItems( )[0].updateRecord();;
 
 		            if(me.createNew){
 		            	me.record.phantom=true;
@@ -116,7 +120,7 @@ Ext.define('Leon.desktop.parameter.ParameterWindow', {
 	    		handler:function(){
 	    			var layout = me.getLayout();
 		            var form=layout.getActiveItem();
-		            //form.updateRecord();
+		            form.updateRecord();
 	    			me.getLayout().setActiveItem(0);
 	    		}
 	    	},'->',{
@@ -167,7 +171,7 @@ Ext.define('Leon.desktop.parameter.ParameterWindow', {
 	    } else {
 	    	me.createNew=false;
 	    	parameterForm.loadRecord(me.record);
-	    	//alert(Ext.decode(me.record.get('targets')));
+	    	//alert(Ext.decode(me.record.get('subjects')));
 	    	
 	    	
 	    }

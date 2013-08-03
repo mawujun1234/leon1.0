@@ -44,7 +44,7 @@ public class ParameterSubjectController {
 	@ResponseBody
 	public Map<String,Object> query(String subjectId,String subjectType){		
 		//把参数行列转换后，显示在form里
-		List<ParameterSubject> pses=parametersubjectService.query(Cnd.where().andEquals("subjectId", subjectId).andEquals("subjectType", subjectType));
+		List<ParameterSubject> pses=parametersubjectService.query(Cnd.select().andEquals("subjectId", subjectId).andEquals("subjectType", subjectType));
 		HashMap<String,Object> result=new HashMap<String,Object>();
 		for(ParameterSubject ps:pses){
 			//如果是数组的话，就转换成字符串

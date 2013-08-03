@@ -1,6 +1,7 @@
 Ext.require('Leon.desktop.user.User');
 Ext.require('Leon.common.ux.BaseGrid');
 Ext.require('Leon.desktop.user.UserForm');
+Ext.require('Leon.desktop.parameter.ParameterUtils');
 Ext.onReady(function(){
 	var grid=Ext.create('Leon.common.ux.BaseGrid',{
 		model:'Leon.desktop.user.User',
@@ -54,7 +55,8 @@ Ext.onReady(function(){
 		tabPanel.getEl().unmask();
 		selectedRoleTree.getStore().load({params:{userId:record.getId()}});
 		funTree.getStore().load({params:{userId:record.getId()}});
-		
+		//获取该用户的参数
+		utils.setSubjectId(record.getId());
 	});
 	
 	var selectedRoleTree=Ext.create('Ext.tree.Panel',{		
@@ -161,6 +163,9 @@ Ext.onReady(function(){
 		}]
 	});
 	
+	
+	
+	
 	//var form=Ext.create('Leon.desktop.user.UserForm',{title:'用户表单'});
 	var tabPanel=Ext.create('Ext.tab.Panel', {
 		region:'center',
@@ -182,6 +187,12 @@ Ext.onReady(function(){
 	    }
 	});
 	
+	//参数设置
+	var utils=new Leon.desktop.parameter.ParameterUtils();
+	utils.getForm('USER',function(paramform){
+		paramform.setTitle("参数设置");
+		tabPanel.add(paramform);
+	});
 	
 
 	var viewPort=Ext.create('Ext.container.Viewport',{

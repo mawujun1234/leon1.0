@@ -49,7 +49,7 @@ public class FunService extends BaseRepository<Fun, String> {
 		
 
 		//menuItemService.delete(fun);
-		int menuItemCount=menuItemService.queryCount(Cnd.where().andEquals("fun.id", entity.getId()));
+		int menuItemCount=menuItemService.queryCount(Cnd.select().andEquals("fun.id", entity.getId()));
 		if(menuItemCount>0){
 			throw new BussinessException("有菜单挂钩，不能删除。",WebCommonExceptionCode3.EXISTS_CHILDREN);
 		}

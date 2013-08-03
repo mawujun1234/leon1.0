@@ -49,7 +49,7 @@ public class Parameter  implements IdEntity<String>,Serializable{
 	@Column(length=200)
 	private String content;
 	@Column(length=50)
-	private String targets;//应用的主体
+	private String subjects;//应用的主体
 	
 
 	@Override
@@ -118,15 +118,15 @@ public class Parameter  implements IdEntity<String>,Serializable{
 		this.content = content;
 	}
 
-	public String getTargets() {
-		return targets;
+	public String getSubjects() {
+		return subjects;
 	}
 	
-	public String getTargetNames() {
-		if(!StringUtils.hasText(this.targets)){
+	public String getSubjectNames() {
+		if(!StringUtils.hasText(this.subjects)){
 			return null;
 		}
-		String temp=this.targets.substring(1, this.targets.length()-1);
+		String temp=this.subjects.substring(1, this.subjects.length()-1);
 		String tempArray[]=temp.split(",");
 		StringBuilder builder=new StringBuilder();
 		for(String str:tempArray){
@@ -136,8 +136,8 @@ public class Parameter  implements IdEntity<String>,Serializable{
 		return builder.toString().substring(1);
 	}
 
-	public void setTargets(String targets) {
-		this.targets = targets;
+	public void setSubjects(String targets) {
+		this.subjects = targets;
 	}
 
 }

@@ -2,6 +2,7 @@ Ext.require('Leon.desktop.role.Role');
 Ext.require('Leon.common.ux.BaseGrid');
 Ext.require('Leon.desktop.role.RoleFunTree');
 Ext.require('Leon.desktop.role.RoleRoleGrid');
+Ext.require('Leon.desktop.parameter.ParameterUtils');
 Ext.onReady(function(){
 	
 	var tree=Ext.create('Leon.common.ux.BaseTree',{
@@ -74,6 +75,8 @@ Ext.onReady(function(){
     	//roleInheritGrid.getStore().load({params:{childId:record.getId(),roleRoleEnum:'inherit'}});
     	roleMutexGrid.currentRole=record;
     	roleMutexGrid.getStore().load({params:{ownId:record.getId(),roleRoleEnum:'mutex'}});
+    	
+    	utils.setSubjectId(record.getId());
     });
    
     
@@ -154,6 +157,12 @@ Ext.onReady(function(){
 	    		tabPanel.mask();
 	    	}
 	    }
+	});
+	//参数设置
+	var utils=new Leon.desktop.parameter.ParameterUtils();
+	utils.getForm('ROLE',function(paramform){
+		paramform.setTitle("参数设置");
+		tabPanel.add(paramform);
 	});
 
 	var viewPort=Ext.create('Ext.container.Viewport',{
