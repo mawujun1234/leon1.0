@@ -129,7 +129,8 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 		//BeanMapper.convert(value, MenuItemVO.class);
 		
 		
-		List<Object> menuItemLeaf = super.queryList("query4Desktop", menuId);
+		//List<Object> menuItemLeaf = super.queryListObj("query4Desktop", menuId);
+		List<String> menuItemLeaf = super.queryList("query4Desktop", menuId,String.class);
 		// 组装出role树
 		Map<String,MenuItemVO> parentKeys=new HashMap<String,MenuItemVO>();
 		List<MenuItemVO> menuItems = new ArrayList<MenuItemVO>();

@@ -1,7 +1,8 @@
 Ext.define('Leon.desktop.parameter.ParameterGrid',{
 	extend:'Ext.grid.Panel',
 	requires: [
-	     'Leon.desktop.parameter.Parameter'
+	     'Leon.desktop.parameter.Parameter',
+	     'Leon.desktop.parameter.ParameterSubjectGrid'
 	],
 	columnLines :true,
 	stripeRows:true,
@@ -93,6 +94,23 @@ Ext.define('Leon.desktop.parameter.ParameterGrid',{
 		       				}
        					}
        				});
+       			}	
+       		},{
+       			text:'相关主体',
+       			iconCls:'icons_account_balances ',
+       			handler:function(){
+       				var record=me.getSelectionModel( ).getLastSelected( );
+					var grid=Ext.create('Leon.desktop.parameter.ParameterSubjectGrid',{
+						parameterId:record.get("id")
+					});
+					var win=Ext.create('Ext.Window',{
+						layout:'fit',
+						width:500,
+						height:300,
+						items:[grid]
+					});
+					win.show();
+       				
        			}	
        		}]
        });

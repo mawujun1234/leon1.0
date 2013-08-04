@@ -1,7 +1,12 @@
 package com.mawujun.parameter;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 
+import com.mawujun.exception.BussinessException;
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository.cnd.Cnd;
 
@@ -22,6 +27,20 @@ public class ParameterSubjectService extends
 		return this.queryUnique(Cnd.select().andEquals("subjectId", subjectId).andEquals("subjectType", subjectType)
 				.andEquals("parameterId", parameterId).addSelect("parameterValue"),String.class);
 		
+	}
+	public List<ParameterSubjectVO> querySubject(String parameterId,String subjectType){
+		Map<String,String> params=new HashMap<String,String>();
+		params.put("parameterId", parameterId);
+		params.put("subjectType", subjectType);
+		if(SubjectType.SYSTEM.toString().equals(subjectType)){
+			//return this.query(Cnd.select().andEquals("parameterId", parameterId).andEquals("subjectType", subjectType));
+			return this.queryList("query_SYSTEM", params,ParameterSubjectVO.class);
+		} else if(SubjectType.USER.toString().equals(subjectType)){
+			return this.queryList("query_USER", params,ParameterSubjectVO.class);
+		} else {
+			throw new BussinessException("还没有做!!");
+		}
+		//return null;
 	}
 	
 //	public  Map<String,String> query(String subjectId,String subjectType){

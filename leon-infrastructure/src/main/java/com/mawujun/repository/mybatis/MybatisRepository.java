@@ -261,6 +261,19 @@ public class MybatisRepository  {
 		List<Object> result=getSqlSession().selectList(statement,params);	
 		return result;
 	}
+	
+	public <M> List<M> selectList(String statement, Object params,Class<M> classM)  {	
+		if(params==null){
+			return this.selectListObj(statement,classM);
+		}
+		List<M> result=getSqlSession().selectList(statement,params);	
+		return result;
+	}
+	public <M> List<M> selectListObj(String statement,Class<M> classM)  {	
+		List<M> result=getSqlSession().selectList(statement);	
+		return result;
+	}
+	
 	public List<Object> selectListObj(String statement)  {	
 		List<Object> result=getSqlSession().selectList(statement);	
 		return result;

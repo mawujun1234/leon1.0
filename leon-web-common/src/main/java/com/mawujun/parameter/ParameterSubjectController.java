@@ -63,6 +63,17 @@ public class ParameterSubjectController {
 		}
 		return result;
 	}
+	
+	/**
+	 * 一次性读取出所有的节点数据
+	 * @return
+	 */
+	@RequestMapping("/parametersubject/querySubject")
+	@ResponseBody
+	public List<ParameterSubjectVO> querySubject(String parameterId,String subjectType){
+		//return parametersubjectService.query(Cnd.select().andEquals("parameterId", parameterId).andEquals("subjectType", subjectType));
+		return parametersubjectService.querySubject(parameterId, subjectType);
+	}
 //	@RequestMapping("/parametersubject/load")
 //	@ResponseBody
 //	public ParameterSubject load(String id){		
