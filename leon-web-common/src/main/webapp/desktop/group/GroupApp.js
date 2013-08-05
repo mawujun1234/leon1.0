@@ -6,6 +6,7 @@ Ext.onReady(function(){
 	});
 	tree.on('itemclick',function(view,record,item,index){
     	tabPanel.unmask();
+    	userGroupGrid.setGroupId(record.get('id'));
     	
 //    	roleId=record.get('id');
 //    	Ext.Ajax.request({
@@ -29,16 +30,16 @@ Ext.onReady(function(){
 //    	utils.setSubjectId(record.getId());
     });
 	
+    var userGroupGrid=Ext.create('Leon.desktop.group.GroupUserGrid',{
+    	
+    });
 	var tabPanel=Ext.create('Ext.tab.Panel', {
 		region:'center',
 		split:true,
 		mask:true,
 	    activeTab: 0,
 	    items: [
-	        {
-	           title: '用户',
-	           html:"11111"
-	        },
+	       userGroupGrid,
 	         {
 	           title: '角色',
 	           html:"11111"

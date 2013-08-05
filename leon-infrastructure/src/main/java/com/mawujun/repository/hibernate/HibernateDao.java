@@ -78,6 +78,9 @@ public class HibernateDao<T, ID extends Serializable>{
 	public void setEntityClass(Class<T> entityClass){
 		this.entityClass=entityClass;
 	}
+	public Class<T> getEntityClass(){
+		return this.entityClass;
+	}
 	
 	/**
 	 * 取得当前Session.
@@ -394,11 +397,11 @@ public class HibernateDao<T, ID extends Serializable>{
 		builder.append(" where ");
 		for(WhereInfo whereInfo:wheres){
 			if(whereInfo.getOp().equals(Operation.BETWEEN)){
-				builder.append(" obj."+whereInfo.getProperty()+" "+whereInfo.getOp()+":"+whereInfo.getPropertyTrans()+0+" and :"+whereInfo.getPropertyTrans()+1);
+				builder.append(" obj."+whereInfo.getProp()+" "+whereInfo.getOp()+":"+whereInfo.getPropTrans()+0+" and :"+whereInfo.getPropTrans()+1);
 			} else if(whereInfo.getOp().equals(Operation.IN)){
-				builder.append(" obj."+whereInfo.getProperty()+" in (:"+whereInfo.getPropertyTrans()+")");
+				builder.append(" obj."+whereInfo.getProp()+" in (:"+whereInfo.getPropTrans()+")");
 			}else {
-				builder.append(" obj."+whereInfo.getProperty()+whereInfo.getOp()+":"+whereInfo.getPropertyTrans());
+				builder.append(" obj."+whereInfo.getProp()+whereInfo.getOp()+":"+whereInfo.getPropTrans());
 			}
 			
 		}
@@ -430,10 +433,10 @@ public class HibernateDao<T, ID extends Serializable>{
 	private void setParamsByWhereInfo(Query query,AbstractEntityPersister classMetadata,WhereInfo... wheres){
 		for(WhereInfo whereInfo:wheres){
 			 if(whereInfo.getOp().equals(Operation.BETWEEN)){
-				 Type type=classMetadata.getPropertyType(whereInfo.getProperty());
+				 Type type=classMetadata.getPropertyType(whereInfo.getProp());
 				 
-				 query.setParameter(whereInfo.getPropertyTrans()+"0",  BeanUtils.convert(((Object[])whereInfo.getValue())[0],type.getReturnedClass()));
-				 query.setParameter(whereInfo.getPropertyTrans()+"1",  BeanUtils.convert(((Object[])whereInfo.getValue())[1],type.getReturnedClass()));
+				 query.setParameter(whereInfo.getPropTrans()+"0",  BeanUtils.convert(((Object[])whereInfo.getValue())[0],type.getReturnedClass()));
+				 query.setParameter(whereInfo.getPropTrans()+"1",  BeanUtils.convert(((Object[])whereInfo.getValue())[1],type.getReturnedClass()));
 			} else if(whereInfo.getOp().equals(Operation.IN)){
 
 //				Type type=classMetadata.getPropertyType(whereInfo.getProperty());
@@ -443,11 +446,11 @@ public class HibernateDao<T, ID extends Serializable>{
 //					aaa[i]= BeanMapper.convert(old[i], type.getReturnedClass());
 //				}
 				Object obj1=BeanUtils.convert((String[])whereInfo.getValue(), Integer.class);
-				query.setParameterList(whereInfo.getPropertyTrans(),(Object[])obj1);
+				query.setParameterList(whereInfo.getPropTrans(),(Object[])obj1);
 			}else {	
-				Type type=classMetadata.getPropertyType(whereInfo.getProperty());
+				Type type=classMetadata.getPropertyType(whereInfo.getProp());
 				//ClassUtils.isPrimitiveOrWrapper(type)
-				query.setParameter(whereInfo.getPropertyTrans(), BeanUtils.convert(whereInfo.getValue(), type.getReturnedClass()));
+				query.setParameter(whereInfo.getPropTrans(), BeanUtils.convert(whereInfo.getValue(), type.getReturnedClass()));
 			}
 			 
 		}
@@ -649,11 +652,11 @@ public class HibernateDao<T, ID extends Serializable>{
 		String hql="delete from "+this.entityClass.getName() +" obj where 1=1 ";
 		for(WhereInfo whereInfo:wheres){
 			if(whereInfo.getOp().equals(Operation.BETWEEN)){
-				hql=hql+" and obj."+whereInfo.getProperty()+" "+whereInfo.getOp()+":"+whereInfo.getPropertyTrans()+0+" and :"+whereInfo.getPropertyTrans()+1;
+				hql=hql+" and obj."+whereInfo.getProp()+" "+whereInfo.getOp()+":"+whereInfo.getPropTrans()+0+" and :"+whereInfo.getPropTrans()+1;
 			} else if(whereInfo.getOp().equals(Operation.IN)){
-				hql=hql+" and obj."+whereInfo.getProperty()+" in (:"+whereInfo.getPropertyTrans()+")";
+				hql=hql+" and obj."+whereInfo.getProp()+" in (:"+whereInfo.getPropTrans()+")";
 			}else {
-				hql=hql+" and obj."+whereInfo.getProperty()+whereInfo.getOp()+":"+whereInfo.getPropertyTrans();
+				hql=hql+" and obj."+whereInfo.getProp()+whereInfo.getOp()+":"+whereInfo.getPropTrans();
 			}
 			
 		}
@@ -1063,7 +1066,7 @@ public class HibernateDao<T, ID extends Serializable>{
 		for(WhereInfo whereInfo:whereInfos){
 			AssertUtils.notNull(whereInfo.getOp());
 			//当property是关联对象的属性的时候，而且不是关联id
-			String[] properties=whereInfo.getProperty().split("\\.");
+			String[] properties=whereInfo.getProp().split("\\.");
 			if(properties.length>1){
 				if(!"id".equalsIgnoreCase(properties[properties.length-1])){
 					Criteria tempCriteria=criteria;
@@ -1086,51 +1089,51 @@ public class HibernateDao<T, ID extends Serializable>{
 		}
 	}
 	private Criterion returnCriterion(AbstractEntityPersister classMetadata,WhereInfo whereInfo) {
-		Type type=classMetadata.getPropertyType(whereInfo.getProperty());
+		Type type=classMetadata.getPropertyType(whereInfo.getProp());
 		//type.get
 		Criterion criterion = null;
 		switch(whereInfo.getOp()){
 		case EQ:
-			criterion = Restrictions.eq(whereInfo.getPropertyToDefault(), BeanUtils.convert(whereInfo.getValue(), type.getReturnedClass()));
+			criterion = Restrictions.eq(whereInfo.getPropToDefault(), BeanUtils.convert(whereInfo.getValue(), type.getReturnedClass()));
 			break;
 		case LIKE:
-			criterion = Restrictions.like(whereInfo.getPropertyToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.ANYWHERE);
+			criterion = Restrictions.like(whereInfo.getPropToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.ANYWHERE);
 			break;
 		case LIKESTART:
-			criterion = Restrictions.like(whereInfo.getPropertyToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.START);
+			criterion = Restrictions.like(whereInfo.getPropToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.START);
 			break;
 		case LIKEEND:
-			criterion = Restrictions.like(whereInfo.getPropertyToDefault(),(String) whereInfo.getValueToDefault(), MatchMode.END);
+			criterion = Restrictions.like(whereInfo.getPropToDefault(),(String) whereInfo.getValueToDefault(), MatchMode.END);
 			break;
 		case ILIKE:
-			criterion = Restrictions.ilike(whereInfo.getPropertyToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.ANYWHERE);
+			criterion = Restrictions.ilike(whereInfo.getPropToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.ANYWHERE);
 			break;
 		case ILIKESTART:
-			criterion = Restrictions.ilike(whereInfo.getPropertyToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.START);
+			criterion = Restrictions.ilike(whereInfo.getPropToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.START);
 			break;
 		case ILIKEEND:
-			criterion = Restrictions.ilike(whereInfo.getPropertyToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.END);
+			criterion = Restrictions.ilike(whereInfo.getPropToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.END);
 			break;
 		case LE:
-			criterion = Restrictions.le(whereInfo.getPropertyToDefault(), BeanUtils.convert(whereInfo.getValue(), type.getReturnedClass()));
+			criterion = Restrictions.le(whereInfo.getPropToDefault(), BeanUtils.convert(whereInfo.getValue(), type.getReturnedClass()));
 			break;
 		case LT:
-			criterion = Restrictions.lt(whereInfo.getPropertyToDefault(), BeanUtils.convert(whereInfo.getValue(), type.getReturnedClass()));
+			criterion = Restrictions.lt(whereInfo.getPropToDefault(), BeanUtils.convert(whereInfo.getValue(), type.getReturnedClass()));
 			break;
 		case GE:
-			criterion = Restrictions.ge(whereInfo.getPropertyToDefault(), BeanUtils.convert(whereInfo.getValue(), type.getReturnedClass()));
+			criterion = Restrictions.ge(whereInfo.getPropToDefault(), BeanUtils.convert(whereInfo.getValue(), type.getReturnedClass()));
 			break;
 		case GT:
-			criterion = Restrictions.gt(whereInfo.getPropertyToDefault(), BeanUtils.convert(whereInfo.getValue(), type.getReturnedClass()));
+			criterion = Restrictions.gt(whereInfo.getPropToDefault(), BeanUtils.convert(whereInfo.getValue(), type.getReturnedClass()));
 			break;
 		case ISNULL:
-			criterion =Restrictions.isNull(whereInfo.getPropertyToDefault());
+			criterion =Restrictions.isNull(whereInfo.getPropToDefault());
 			break;
 		case ISNOTNULL:
-			criterion =Restrictions.isNotNull(whereInfo.getPropertyToDefault());
+			criterion =Restrictions.isNotNull(whereInfo.getPropToDefault());
 			break;
 		case BETWEEN:
-			criterion =Restrictions.between(whereInfo.getPropertyToDefault(),  BeanUtils.convert(((Object[])whereInfo.getValue())[0], type.getReturnedClass()), 
+			criterion =Restrictions.between(whereInfo.getPropToDefault(),  BeanUtils.convert(((Object[])whereInfo.getValue())[0], type.getReturnedClass()), 
 					BeanUtils.convert(((Object[])whereInfo.getValue())[1], type.getReturnedClass()));
 			break;
 		case IN:
@@ -1139,7 +1142,7 @@ public class HibernateDao<T, ID extends Serializable>{
 			for(int i=0;i<old.length;i++){
 				aaa[i]= BeanUtils.convert(old[i], type.getReturnedClass());
 			}
-			criterion =Restrictions.in(whereInfo.getPropertyToDefault(), (Object[])whereInfo.getValue());
+			criterion =Restrictions.in(whereInfo.getPropToDefault(), (Object[])whereInfo.getValue());
 			break;
 		default:
 			break;
@@ -1239,10 +1242,10 @@ public class HibernateDao<T, ID extends Serializable>{
 		//设置排序
 		if(pageRequest.hasSort()){
 			for(SortInfo sortInfo:pageRequest.getSorts()){
-				if(SortInfo.ASC.equalsIgnoreCase(sortInfo.getDirection())){
-					criteria.addOrder(Order.asc(sortInfo.getProperty()));
+				if(SortInfo.ASC.equalsIgnoreCase(sortInfo.getDir())){
+					criteria.addOrder(Order.asc(sortInfo.getProp()));
 				} else {
-					criteria.addOrder(Order.desc(sortInfo.getProperty()));
+					criteria.addOrder(Order.desc(sortInfo.getProp()));
 				}
 				
 			}

@@ -19,16 +19,16 @@ public class SortInfo implements Serializable{
 	public static final String ASC = "asc";
 	public static final String DESC = "desc";
 	
-	private String property;
-	private String direction;
+	private String prop;
+	private String dir;
 	
 	public SortInfo() {
 	}
 	
 	public SortInfo(String property, String direction) {
 		super();
-		this.property = property;
-		this.direction = direction;
+		this.prop = property;
+		this.dir = direction;
 	}
 
 
@@ -37,31 +37,31 @@ public class SortInfo implements Serializable{
 	 * 如果没有设置 默认是升序
 	 * @return
 	 */
-	public String getDirection() {
-		if(StringUtils.hasText(this.direction)){
-			return direction;
+	public String getDir() {
+		if(StringUtils.hasText(this.dir)){
+			return dir;
 		} else {
 			return SortInfo.ASC;
 		}
 		
 	}
 
-	public void setDirection(String dir) {
-		this.direction = dir;
-	}
 	public void setDir(String dir) {
-		this.direction = dir;
+		this.dir = dir;
 	}
+//	public void setDir(String dir) {
+//		this.dir = dir;
+//	}
 
 	
-	public String getProperty() {
-		return property;
+	public String getProp() {
+		return prop;
 	}
+//	public void setProp(String prop) {
+//		this.prop = prop;
+//	}
 	public void setProp(String prop) {
-		this.property = prop;
-	}
-	public void setProperty(String prop) {
-		this.property = prop;
+		this.prop = prop;
 	}
 
 }

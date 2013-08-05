@@ -13,7 +13,7 @@ import com.mawujun.utils.StringUtils;
 public class WhereInfo  implements Serializable{
 	//public static WhereOperationEnum whereOperation;
 	
-	protected void setDefaultValue(String default_value) {
+	protected void setDefaultValue(Object default_value) {
 		this.default_value = default_value;
 	}
 	/**
@@ -21,10 +21,10 @@ public class WhereInfo  implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private String property;//属性名称，例如name，password
+	private String prop;//属性名称，例如name，password
 	private Operation op;  //operation具体的操作，例如=，>,like等
 	private Object value;//具体的值，可能是字符串，也可能是字符串数组
-	private String default_value;//默认的值
+	private Object default_value;//默认的值
 	
 	private String key;//和property是等效的，这个只是简化的写法name_like,b把property和op结合在一起写了
 	
@@ -40,7 +40,7 @@ public class WhereInfo  implements Serializable{
 
 	public WhereInfo(String property, Operation operation, Object value) {
 		super();
-		this.property=property;
+		this.prop=property;
 		this.op = operation;
 		if(this.op==null){
 			this.op=Operation.EQ;
@@ -92,8 +92,9 @@ public class WhereInfo  implements Serializable{
 
 		return filters.toArray(new WhereInfo[filters.size()]);
 	}
-	public static WhereInfo parse(final String property,String op,final String value) {
-		return parse(property+"_"+op,value);
+	public static WhereInfo parse(final String property,String op,final Object value) {
+		//return parse(property+"_"+op,value);
+		return new WhereInfo(property,Operation.getOperation(op),value);
 	}
 	public static WhereInfo parse(String property, Operation operation, Object value) {
 		return new WhereInfo(property,operation,value);
@@ -106,7 +107,7 @@ public class WhereInfo  implements Serializable{
 	 * 对in和between操作符，多个值时使用逗号分开：1,2,3,4,key="id_in",value="1,2,3,4";
 	 * @param value 是字符串
 	 */
-	public static WhereInfo parse(final String key,final String value) {
+	public static WhereInfo parse(final String key,final Object value) {
 //		if (StringUtils.isBlank(value)) {
 //			return null;
 //		}
@@ -148,7 +149,7 @@ public class WhereInfo  implements Serializable{
 		return filter;
 	}
 	
-	private static Object[] parseKeyValue(String key,String value){
+	private static Object[] parseKeyValue(String key,Object value){
 		int last=key.lastIndexOf('_');
 		if(last==-1 && value!=null){
 			//默认是等于号
@@ -194,7 +195,7 @@ public class WhereInfo  implements Serializable{
 		
 		if(flag_temp){
 			Object[] result=parseKeyValue(this.key,this.value.toString());
-			this.property=result[0].toString();
+			this.prop=result[0].toString();
 			this.op=(Operation)result[1];
 			this.value=result[2];
 		}
@@ -205,7 +206,7 @@ public class WhereInfo  implements Serializable{
 		this.value=value;
 		if(flag_temp){
 			Object[] result=parseKeyValue(this.key,this.value.toString());
-			this.property=result[0].toString();
+			this.prop=result[0].toString();
 			this.op=(Operation)result[1];
 			this.value=result[2];
 		}
@@ -219,22 +220,22 @@ public class WhereInfo  implements Serializable{
 		
 	}
 	
-	public String getKey() {
-		return key;
-	}
+//	public String getKey() {
+//		return key;
+//	}
 	
 	/**
 	 * 获取前台设置的属性，用于hibernte
 	 * @return
 	 */
-	public String getPropertyToDefault() {
-		return property;
+	public String getPropToDefault() {
+		return prop;
 	}
 	/**
 	 * 这是经过处理过后的属性，主要是在like的时候，用来区分大小写
 	 * @return
 	 */
-	public String getProperty() {
+	public String getProp() {
 //		//在通过反射直接在字段上设置的时候，而不是通过setKey进行设置的时候进行重新格式化
 //		if(!flag_temp && this.key!=null){
 //			this.setKey(key);
@@ -245,28 +246,28 @@ public class WhereInfo  implements Serializable{
 		}
 		switch(op){
 		case LIKE:
-			return property;
+			return prop;
 		case LIKESTART:
-			return property;
+			return prop;
 		case LIKEEND:
-			return property;
+			return prop;
 		case ILIKE:
-			return "lower("+property+")";
+			return "lower("+prop+")";
 		case ILIKESTART:
-			return "lower("+property+")";
+			return "lower("+prop+")";
 		case ILIKEEND:
-			return "lower("+property+")";
+			return "lower("+prop+")";
 		default:
 			break;
 		}
-		return property;
+		return prop;
 	}
 	/**
 	 * 把parent.id转换成parent_id
 	 * @return
 	 */
-	public String getPropertyTrans() {
-		return getProperty().replaceAll(".", "_");
+	public String getPropTrans() {
+		return getProp().replaceAll(".", "_");
 	}
 	
 	/**
@@ -334,8 +335,8 @@ public class WhereInfo  implements Serializable{
 		}
 		return value;
 	}
-	public void setProperty(String prop) {
-		this.property = prop;
+	public void setProp(String prop) {
+		this.prop = prop;
 	}
 	
 	/**
@@ -345,9 +346,9 @@ public class WhereInfo  implements Serializable{
 	public void setOp(String op) {
 		if(op==null || "".equals(op)){
 			op="=";
-		} else if(Operation.getWhereOperationBySymbol(op)==null){
+		} else if(Operation.getOperation(op)==null){
 			//
-			Operation oper=Operation.getWhereOperation(op);
+			Operation oper=Operation.getOperation(op);
 			if(oper==null){
 				throw new RuntimeException("操作符不对,请在WhereOperation类上查找");
 			} else {
@@ -355,7 +356,7 @@ public class WhereInfo  implements Serializable{
 				return;
 			}
 		}
-		this.op = Operation.getWhereOperationBySymbol(op);
+		this.op = Operation.getOperation(op);
 	}
 	public void setOpByEnum(Operation op) {
 		this.op = op;

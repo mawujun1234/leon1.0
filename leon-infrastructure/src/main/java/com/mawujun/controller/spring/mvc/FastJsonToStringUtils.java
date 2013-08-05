@@ -79,8 +79,8 @@ public class FastJsonToStringUtils {
 			map.put(JsonConfigHolder.getLimitName(), page.getPageSize());
 			map.put(JsonConfigHolder.getPageNoName(), page.getPageNo());
 			map.put(JsonConfigHolder.getSuccessName(), true);
-			map.put("wheres", page.getWheres());
-			map.put("sorts", page.getSorts());
+			//map.put("wheres", page.getWheres());
+			//map.put("sorts", page.getSorts());
 			//object=map;
 
 		} else {

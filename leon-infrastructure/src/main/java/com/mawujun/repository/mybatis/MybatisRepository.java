@@ -241,6 +241,30 @@ public class MybatisRepository  {
 		return page;
 	}
 	
+	public <M> QueryResult<M> selectPage(String statement, PageRequest pageRequest,Class<M> classM) {		
+		QueryResult<M> page = new QueryResult<M>(pageRequest);
+		Map params=prepareCountAndDynicSortSql(statement,pageRequest);
+		
+		if(page.isCountTotal()) {
+			createCountMapperstatement(statement);
+		}
+		this.getSql(statement, params);
+		if(page.isCountTotal()) {
+			int totalCount=this.getSqlSession().selectOne(statement+"_count", params);
+			
+			page.setTotalItems(totalCount);
+			List<M> result=getSqlSession().selectList(statement,params,new RowBounds(pageRequest.getStart(),pageRequest.getPageSize()));	
+			page.setResult(result);
+		} else {
+			List<M> result=getSqlSession().selectList(statement,params);	
+			page.setResult(result);
+			page.setTotalItems(result.size());
+			page.setPageNo(1);
+			page.setPageSize(result.size());
+		}
+		return page;
+	}
+	
 	
 	public List<Map<String,Object>> selectList(String statement, Object params)  {	
 		if(params==null){

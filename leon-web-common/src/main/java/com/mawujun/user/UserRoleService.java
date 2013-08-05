@@ -10,13 +10,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mawujun.cache.RoleCacheHolder;
 import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.role.Role;
 import com.mawujun.role.RoleService;
-import com.mawujun.utils.page.WhereInfo;
 
 @Service
 public class UserRoleService extends BaseRepository<UserRole, UserRolePK> {

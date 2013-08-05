@@ -23,7 +23,7 @@ public class StringToWhereInfo_JsonLib implements Converter<String, WhereInfo[]>
 				info.setOp(whereJson.getString("op"));
 			}
 			if(whereJson.containsKey("property")){
-				info.setProperty(whereJson.getString("property"));
+				info.setProp(whereJson.getString("property"));
 			}
 			if(whereJson.containsKey("value")){
 				info.setValue(whereJson.getString("value"));

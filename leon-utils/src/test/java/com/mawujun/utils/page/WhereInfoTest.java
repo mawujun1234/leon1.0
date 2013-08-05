@@ -13,95 +13,95 @@ public class WhereInfoTest {
 		WhereInfo eq=WhereInfo.parse("name_eq", "mawujun");
 		assertEquals("mawujun", eq.getValue());
 		assertEquals("=", eq.getOpSymbol());
-		assertEquals("name", eq.getProperty());
+		assertEquals("name", eq.getProp());
 		
 		WhereInfo eq1=WhereInfo.parse("name", "mawujun");
 		assertEquals("mawujun", eq1.getValue());
 		assertEquals("=", eq1.getOpSymbol());
-		assertEquals("name", eq1.getProperty());
+		assertEquals("name", eq1.getProp());
 		
 		WhereInfo eq2=WhereInfo.parse("parent.id", "mawujun");
 		assertEquals("mawujun", eq2.getValue());
 		assertEquals("=", eq2.getOpSymbol());
-		assertEquals("parent.id", eq2.getProperty());
+		assertEquals("parent.id", eq2.getProp());
 		
 		WhereInfo LT=WhereInfo.parse("age_LT", "10");
 		assertEquals("10", LT.getValue());
 		assertEquals("<", LT.getOpSymbol());
-		assertEquals("age", LT.getProperty());
+		assertEquals("age", LT.getProp());
 		
 		WhereInfo GT=WhereInfo.parse("age_GT", "10");
 		assertEquals("10", GT.getValue());
 		assertEquals(">", GT.getOpSymbol());
-		assertEquals("age", GT.getProperty());
+		assertEquals("age", GT.getProp());
 		
 		WhereInfo LE=WhereInfo.parse("age_LE", "10");
 		assertEquals("10", LE.getValue());
 		assertEquals("<=", LE.getOpSymbol());
-		assertEquals("age", LE.getProperty());
+		assertEquals("age", LE.getProp());
 		
 		WhereInfo gE=WhereInfo.parse("age_gE", "10");
 		assertEquals("10", gE.getValue());
 		assertEquals(">=", gE.getOpSymbol());
-		assertEquals("age", gE.getProperty());
+		assertEquals("age", gE.getProp());
 		
 		WhereInfo isNull=WhereInfo.parse("age_isNull", "111");
 		assertEquals("111",isNull.getValue());
 		assertEquals("is null", isNull.getOpSymbol());
-		assertEquals("age", isNull.getProperty());
+		assertEquals("age", isNull.getProp());
 		
 		WhereInfo isNull1=WhereInfo.parse("age_isNull",null);
 		assertNull(isNull1.getValue());
 		assertEquals("is null", isNull1.getOpSymbol());
-		assertEquals("age", isNull1.getProperty());
+		assertEquals("age", isNull1.getProp());
 		
 		WhereInfo isNull2=WhereInfo.parse("age",null);
 		assertNull(isNull2.getValue());
 		assertEquals("is null", isNull2.getOpSymbol());
-		assertEquals("age", isNull2.getProperty());
+		assertEquals("age", isNull2.getProp());
 		
 		WhereInfo _isnotNull=WhereInfo.parse("age_isnotNull", "111222");
 		assertEquals("111222",_isnotNull.getValue());
 		assertEquals("is not null", _isnotNull.getOpSymbol());
-		assertEquals("age", _isnotNull.getProperty());
+		assertEquals("age", _isnotNull.getProp());
 		
 		
 		
 		WhereInfo like=WhereInfo.parse("name_like", "ma");
 		assertEquals("%ma%",like.getValue());
 		assertEquals("like", like.getOpSymbol());
-		assertEquals("name", like.getProperty());
+		assertEquals("name", like.getProp());
 		
 		WhereInfo likestart=WhereInfo.parse("name_likestart", "ma");
 		assertEquals("ma%",likestart.getValue());
 		assertEquals("like", likestart.getOpSymbol());
-		assertEquals("name", likestart.getProperty());
+		assertEquals("name", likestart.getProp());
 		
 		WhereInfo likeend=WhereInfo.parse("name_likeend", "ma");
 		assertEquals("%ma",likeend.getValue());
 		assertEquals("like", likeend.getOpSymbol());
-		assertEquals("name", likeend.getProperty());
+		assertEquals("name", likeend.getProp());
 		
 		WhereInfo ilike=WhereInfo.parse("name_ilike", "Ma");
 		assertEquals("%ma%",ilike.getValue());
 		assertEquals("like", ilike.getOpSymbol());
-		assertEquals("lower(name)", ilike.getProperty());
+		assertEquals("lower(name)", ilike.getProp());
 		
 		WhereInfo ilikestart=WhereInfo.parse("name_ilikestart", "MA");
 		assertEquals("ma%",ilikestart.getValue());
 		assertEquals("like", ilikestart.getOpSymbol());
-		assertEquals("lower(name)", ilikestart.getProperty());
+		assertEquals("lower(name)", ilikestart.getProp());
 		
 		WhereInfo ilikeend=WhereInfo.parse("name_ilikeend", "mA");
 		assertEquals("%ma",ilikeend.getValue());
 		assertEquals("like", ilikeend.getOpSymbol());
-		assertEquals("lower(name)", ilikeend.getProperty());
+		assertEquals("lower(name)", ilikeend.getProp());
 
 		WhereInfo between=WhereInfo.parse("name_between", "1,10");
 		assertEquals("1",((Object[])between.getValue())[0]);
 		assertEquals("10",((Object[])between.getValue())[1]);
 		assertEquals("between", between.getOpSymbol());
-		assertEquals("name", between.getProperty());
+		assertEquals("name", between.getProp());
 		
 		
 		WhereInfo in=WhereInfo.parse("name_in", "1,10,11");
@@ -109,25 +109,25 @@ public class WhereInfoTest {
 		assertEquals("10",((Object[])in.getValue())[1]);
 		assertEquals("11",((Object[])in.getValue())[2]);
 		assertEquals("in", in.getOpSymbol());
-		assertEquals("name", in.getProperty());
+		assertEquals("name", in.getProp());
 		
 		WhereInfo in1=WhereInfo.parse("name_in", "1,");
 		assertEquals("1",((Object[])in1.getValue())[0]);
 		assertEquals("in", in1.getOpSymbol());
-		assertEquals("name", in1.getProperty());
+		assertEquals("name", in1.getProp());
 		
 		WhereInfo in2=WhereInfo.parse("name_in", "1");
 		assertEquals("1",((Object[])in2.getValue())[0]);
 		assertEquals("in", in2.getOpSymbol());
-		assertEquals("name", in2.getProperty());
+		assertEquals("name", in2.getProp());
 		
 		
 		WhereInfo in3=WhereInfo.parse("name_in", ",1");
 		assertEquals("",((Object[])in3.getValue())[0]);
 		assertEquals("1",((Object[])in3.getValue())[1]);
 		assertEquals("in", in3.getOpSymbol());
-		assertEquals("name", in3.getProperty());
-		assertEquals("name", in3.getProperty());
+		assertEquals("name", in3.getProp());
+		assertEquals("name", in3.getProp());
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
@@ -153,12 +153,12 @@ public class WhereInfoTest {
 		assertEquals(6, whereInfos.size());
 		assertEquals("%ma%",whereInfos.get("name_like").getValue());
 		assertEquals("like",whereInfos.get("name_like").getOpSymbol());
-		assertEquals("name",whereInfos.get("name_like").getProperty());
+		assertEquals("name",whereInfos.get("name_like").getProp());
 		
 		assertEquals("1",((Object[])whereInfos.get("age_between").getValue())[0]);
 		assertEquals("10",((Object[])whereInfos.get("age_between").getValue())[1]);
 		assertEquals("between",whereInfos.get("age_between").getOpSymbol());
-		assertEquals("age",whereInfos.get("age_between").getProperty());
+		assertEquals("age",whereInfos.get("age_between").getProp());
 		
 		assertEquals("1",((Object[])whereInfos.get("id_in").getValue())[0]);
 		assertEquals("2",((Object[])whereInfos.get("id_in").getValue())[1]);
@@ -166,19 +166,19 @@ public class WhereInfoTest {
 		assertEquals("4",((Object[])whereInfos.get("id_in").getValue())[3]);
 		assertEquals("5",((Object[])whereInfos.get("id_in").getValue())[4]);
 		assertEquals("in",whereInfos.get("id_in").getOpSymbol());
-		assertEquals("id",whereInfos.get("id_in").getProperty());
+		assertEquals("id",whereInfos.get("id_in").getProp());
 		
 		assertEquals("sdfsdf",whereInfos.get("height_isnull").getValue());
 		assertEquals("is null",whereInfos.get("height_isnull").getOpSymbol());
-		assertEquals("height",whereInfos.get("height_isnull").getProperty());
+		assertEquals("height",whereInfos.get("height_isnull").getProp());
 		
 		assertEquals("sdfsdf",whereInfos.get("weight_isnotnull").getValue());
 		assertEquals("is not null",whereInfos.get("weight_isnotnull").getOpSymbol());
-		assertEquals("weight",whereInfos.get("weight_isnotnull").getProperty());
+		assertEquals("weight",whereInfos.get("weight_isnotnull").getProp());
 		
 		assertEquals("1000",whereInfos.get("income_le").getValue());
 		assertEquals("<=",whereInfos.get("income_le").getOpSymbol());
-		assertEquals("income",whereInfos.get("income_le").getProperty());
+		assertEquals("income",whereInfos.get("income_le").getProp());
 	}
 	
 	@Test
@@ -188,7 +188,7 @@ public class WhereInfoTest {
 		eq.setValue("mawujun");
 		assertEquals("mawujun", eq.getValue());
 		assertEquals("=", eq.getOpSymbol());
-		assertEquals("name", eq.getProperty());
+		assertEquals("name", eq.getProp());
 		
 		//WhereInfo LT=WhereInfo.parse("age_LT", "10");
 		WhereInfo LT=new WhereInfo();
@@ -196,7 +196,7 @@ public class WhereInfoTest {
 		LT.setValue("10");
 		assertEquals("10", LT.getValue());
 		assertEquals("<", LT.getOpSymbol());
-		assertEquals("age", LT.getProperty());
+		assertEquals("age", LT.getProp());
 		
 		//WhereInfo GT=WhereInfo.parse("age_GT", "10");
 		WhereInfo GT=new WhereInfo();
@@ -204,7 +204,7 @@ public class WhereInfoTest {
 		GT.setValue("10");
 		assertEquals("10", GT.getValue());
 		assertEquals(">", GT.getOpSymbol());
-		assertEquals("age", GT.getProperty());
+		assertEquals("age", GT.getProp());
 		
 		//WhereInfo LE=WhereInfo.parse("age_LE", "10");
 		WhereInfo LE=new WhereInfo();
@@ -212,7 +212,7 @@ public class WhereInfoTest {
 		LE.setValue("10");
 		assertEquals("10", LE.getValue());
 		assertEquals("<=", LE.getOpSymbol());
-		assertEquals("age", LE.getProperty());
+		assertEquals("age", LE.getProp());
 		
 		//WhereInfo gE=WhereInfo.parse("age_gE", "10");
 		WhereInfo gE=new WhereInfo();
@@ -220,7 +220,7 @@ public class WhereInfoTest {
 		gE.setValue("10");
 		assertEquals("10", gE.getValue());
 		assertEquals(">=", gE.getOpSymbol());
-		assertEquals("age", gE.getProperty());
+		assertEquals("age", gE.getProp());
 		
 		//WhereInfo isNull=WhereInfo.parse("age_isNull", "111");
 		WhereInfo isNull=new WhereInfo();
@@ -228,7 +228,7 @@ public class WhereInfoTest {
 		isNull.setValue("111");
 		assertEquals("111",isNull.getValue());
 		assertEquals("is null", isNull.getOpSymbol());
-		assertEquals("age", isNull.getProperty());
+		assertEquals("age", isNull.getProp());
 		
 		//WhereInfo _isnotNull=WhereInfo.parse("age_isnotNull", "111222");
 		WhereInfo _isnotNull=new WhereInfo();
@@ -236,7 +236,7 @@ public class WhereInfoTest {
 		_isnotNull.setValue("111222");
 		assertEquals("111222",_isnotNull.getValue());
 		assertEquals("is not null", _isnotNull.getOpSymbol());
-		assertEquals("age", _isnotNull.getProperty());
+		assertEquals("age", _isnotNull.getProp());
 		
 		//WhereInfo like=WhereInfo.parse("name_like", "ma");
 		WhereInfo like=new WhereInfo();
@@ -244,7 +244,7 @@ public class WhereInfoTest {
 		like.setValue("ma");
 		assertEquals("%ma%",like.getValue());
 		assertEquals("like", like.getOpSymbol());
-		assertEquals("name", like.getProperty());
+		assertEquals("name", like.getProp());
 		
 		//WhereInfo likestart=WhereInfo.parse("name_likestart", "ma");
 		WhereInfo likestart=new WhereInfo();
@@ -252,7 +252,7 @@ public class WhereInfoTest {
 		likestart.setValue("ma");
 		assertEquals("ma%",likestart.getValue());
 		assertEquals("like", likestart.getOpSymbol());
-		assertEquals("name", likestart.getProperty());
+		assertEquals("name", likestart.getProp());
 		
 		//WhereInfo likeend=WhereInfo.parse("name_likeend", "ma");
 		WhereInfo likeend=new WhereInfo();
@@ -260,7 +260,7 @@ public class WhereInfoTest {
 		likeend.setValue("ma");
 		assertEquals("%ma",likeend.getValue());
 		assertEquals("like", likeend.getOpSymbol());
-		assertEquals("name", likeend.getProperty());
+		assertEquals("name", likeend.getProp());
 		
 		//WhereInfo ilike=WhereInfo.parse("name_ilike", "Ma");
 		WhereInfo ilike=new WhereInfo();
@@ -268,7 +268,7 @@ public class WhereInfoTest {
 		ilike.setValue("Ma");
 		assertEquals("%ma%",ilike.getValue());
 		assertEquals("like", ilike.getOpSymbol());
-		assertEquals("lower(name)", ilike.getProperty());
+		assertEquals("lower(name)", ilike.getProp());
 		
 		//WhereInfo ilikestart=WhereInfo.parse("name_ilikestart", "MA");
 		WhereInfo ilikestart=new WhereInfo();
@@ -276,7 +276,7 @@ public class WhereInfoTest {
 		ilikestart.setValue("MA");
 		assertEquals("ma%",ilikestart.getValue());
 		assertEquals("like", ilikestart.getOpSymbol());
-		assertEquals("lower(name)", ilikestart.getProperty());
+		assertEquals("lower(name)", ilikestart.getProp());
 		
 		//WhereInfo ilikeend=WhereInfo.parse("name_ilikeend", "mA");
 		WhereInfo ilikeend=new WhereInfo();
@@ -284,7 +284,7 @@ public class WhereInfoTest {
 		ilikeend.setValue("mA");
 		assertEquals("%ma",ilikeend.getValue());
 		assertEquals("like", ilikeend.getOpSymbol());
-		assertEquals("lower(name)", ilikeend.getProperty());
+		assertEquals("lower(name)", ilikeend.getProp());
 
 		//WhereInfo between=WhereInfo.parse("name_between", "1,10");
 		WhereInfo between=new WhereInfo();
@@ -293,7 +293,7 @@ public class WhereInfoTest {
 		assertEquals("1",((Object[])between.getValue())[0]);
 		assertEquals("10",((Object[])between.getValue())[1]);
 		assertEquals("between", between.getOpSymbol());
-		assertEquals("name", between.getProperty());
+		assertEquals("name", between.getProp());
 		
 		
 		//WhereInfo in=WhereInfo.parse("name_in", "1,10,11");
@@ -304,7 +304,7 @@ public class WhereInfoTest {
 		assertEquals("10",((Object[])in.getValue())[1]);
 		assertEquals("11",((Object[])in.getValue())[2]);
 		assertEquals("in", in.getOpSymbol());
-		assertEquals("name", in.getProperty());
+		assertEquals("name", in.getProp());
 		
 		//WhereInfo in1=WhereInfo.parse("name_in", "1,");
 		WhereInfo in1=new WhereInfo();
@@ -312,7 +312,7 @@ public class WhereInfoTest {
 		in1.setValue("1,");
 		assertEquals("1",((Object[])in1.getValue())[0]);
 		assertEquals("in", in1.getOpSymbol());
-		assertEquals("name", in1.getProperty());
+		assertEquals("name", in1.getProp());
 		
 		//WhereInfo in2=WhereInfo.parse("name_in", "1");
 		WhereInfo in2=new WhereInfo();
@@ -320,7 +320,7 @@ public class WhereInfoTest {
 		in2.setValue("1");
 		assertEquals("1",((Object[])in2.getValue())[0]);
 		assertEquals("in", in2.getOpSymbol());
-		assertEquals("name", in2.getProperty());
+		assertEquals("name", in2.getProp());
 		
 		
 		//WhereInfo in3=WhereInfo.parse("name_in", ",1");
@@ -330,8 +330,8 @@ public class WhereInfoTest {
 		assertEquals("",((Object[])in3.getValue())[0]);
 		assertEquals("1",((Object[])in3.getValue())[1]);
 		assertEquals("in", in3.getOpSymbol());
-		assertEquals("name", in3.getProperty());
-		assertEquals("name", in3.getProperty());
+		assertEquals("name", in3.getProp());
+		assertEquals("name", in3.getProp());
 	}
 	
 }

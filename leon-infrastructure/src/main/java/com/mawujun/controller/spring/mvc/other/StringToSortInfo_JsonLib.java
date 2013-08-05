@@ -25,10 +25,10 @@ public class StringToSortInfo_JsonLib  implements Converter<String, SortInfo[]> 
 			SortInfo info=new SortInfo();	
 			JSONObject sortJson=sorts.getJSONObject(i);
 			if(sortJson.containsKey("property")){
-				info.setProperty(sortJson.getString("property"));
+				info.setProp(sortJson.getString("property"));
 			}
 			if(sortJson.containsKey("direction")){
-				info.setDirection(sortJson.getString("direction"));
+				info.setDir(sortJson.getString("direction"));
 			}
 
 			list.add(info);

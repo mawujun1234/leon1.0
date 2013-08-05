@@ -638,8 +638,9 @@ public class RepositoryTest extends DbunitBaseRepositoryTest {
 		PageRequest page=new PageRequest();
 		page.setWheres(whereinfo,whereinfo1,whereinfo2,whereinfo3);
 		page.setStratAndLimit(1, 10);
+		page.setSqlId("queryPage");
 		
-		QueryResult<EntityTest> entitys=repository.queryPageByMybatis(page);
+		QueryResult<EntityTest> entitys=repository.queryPageMybatis(page);
 		//tx.commit();
 		assertEquals(1,entitys.getTotalItems());
 		assertEquals(1,entitys.getTotalPages());
@@ -657,7 +658,7 @@ public class RepositoryTest extends DbunitBaseRepositoryTest {
 		page.setWheres(whereinfo,whereinfo1,whereinfo2,whereinfo3);
 		page.setStratAndLimit(1, 10);
 		//主要测试getMybatisStataement方法会不会自动组装com.mawujun.repository.EntityTest.queryPage
-		QueryResult<EntityTest> entitys=repository.queryPageByMybatis("queryPage",page);
+		QueryResult<EntityTest> entitys=repository.queryPageMybatis("queryPage",page);
 		//tx.commit();
 		assertEquals(1,entitys.getTotalItems());
 		assertEquals(1,entitys.getTotalPages());

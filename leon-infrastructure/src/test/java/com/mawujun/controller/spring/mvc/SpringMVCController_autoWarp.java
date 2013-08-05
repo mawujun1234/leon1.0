@@ -313,7 +313,7 @@ public class SpringMVCController_autoWarp {
 //			http://blog.csdn.net/idilent/article/details/1800262
 //		添加sortInfo的测试
 		for(WhereInfo where:aa.getWheres()){
-			where.getProperty();
+			where.getProp();
 		}
 		return aa;
 	}

@@ -41,19 +41,19 @@ public class JsonStringToPageRequest_FastJsonTest {
 	@Test
 	public void test1(){
 		JsonStringToPageRequest_FastJson toP=new JsonStringToPageRequest_FastJson();
-		String jsonStr="{wheres:[{property:'name',op:'EQ',value:'张三'}]}";
+		String jsonStr="{wheres:[{prop:'name',op:'EQ',value:'张三'}]}";
 		PageRequest pr=toP.convert(jsonStr);
 		Assert.assertEquals(0, pr.getStart());
 		Assert.assertEquals(-1, pr.getPageSize());
 		Assert.assertEquals(1, pr.getPageNo());
 		Assert.assertEquals(1, pr.getWheres().length);
 		Assert.assertNull( pr.getSorts());
-		Assert.assertEquals("name", pr.getWheres()[0].getProperty());
+		Assert.assertEquals("name", pr.getWheres()[0].getProp());
 		Assert.assertEquals("=", pr.getWheres()[0].getOpSymbol().toString());
 		Assert.assertEquals("张三", pr.getWheres()[0].getValue());
 		
 		
-		jsonStr="{wheres:[{property:'name',value:'张三'}]}";
+		jsonStr="{wheres:[{prop:'name',value:'张三'}]}";
 		pr=toP.convert(jsonStr);
 		Assert.assertEquals(0, pr.getStart());
 		Assert.assertEquals(-1, pr.getPageSize());
@@ -61,33 +61,33 @@ public class JsonStringToPageRequest_FastJsonTest {
 		Assert.assertEquals(1, pr.getWheres().length);
 		//Assert.assertEquals(0, pr.getSorts().length);
 		Assert.assertNull( pr.getSorts());
-		Assert.assertEquals("name", pr.getWheres()[0].getProperty());
+		Assert.assertEquals("name", pr.getWheres()[0].getProp());
 		Assert.assertEquals("=", pr.getWheres()[0].getOpSymbol());
 		Assert.assertEquals("张三", pr.getWheres()[0].getValue());
 		
-		jsonStr="{wheres:[{property:'name',value:'张三'}]}";
+		jsonStr="{wheres:[{prop:'name',value:'张三'}]}";
 		pr=toP.convert(jsonStr);
 		Assert.assertEquals(0, pr.getStart());
 		Assert.assertEquals(-1, pr.getPageSize());
 		Assert.assertEquals(1, pr.getPageNo());
 		Assert.assertEquals(1, pr.getWheres().length);
 		Assert.assertNull( pr.getSorts());
-		Assert.assertEquals("name", pr.getWheres()[0].getProperty());
+		Assert.assertEquals("name", pr.getWheres()[0].getProp());
 		Assert.assertEquals("=", pr.getWheres()[0].getOpSymbol());
 		Assert.assertEquals("张三", pr.getWheres()[0].getValue());
 		
-		jsonStr="{wheres:[{property:'name',value:'张三'},{property:'name',value:'李四'}]}";
+		jsonStr="{wheres:[{prop:'name',value:'张三'},{prop:'name',value:'李四'}]}";
 		pr=toP.convert(jsonStr);
 		Assert.assertEquals(0, pr.getStart());
 		Assert.assertEquals(-1, pr.getPageSize());
 		Assert.assertEquals(1, pr.getPageNo());
 		Assert.assertEquals(2, pr.getWheres().length);
 		Assert.assertNull( pr.getSorts());
-		Assert.assertEquals("name", pr.getWheres()[0].getProperty());
+		Assert.assertEquals("name", pr.getWheres()[0].getProp());
 		Assert.assertEquals("=", pr.getWheres()[0].getOpSymbol());
 		Assert.assertEquals("张三", pr.getWheres()[0].getValue());
 		
-		Assert.assertEquals("name", pr.getWheres()[1].getProperty());
+		Assert.assertEquals("name", pr.getWheres()[1].getProp());
 		Assert.assertEquals("=", pr.getWheres()[1].getOpSymbol());
 		Assert.assertEquals("李四", pr.getWheres()[1].getValue());
 	}
@@ -95,15 +95,15 @@ public class JsonStringToPageRequest_FastJsonTest {
 	@Test
 	public void test2(){
 		JsonStringToPageRequest_FastJson toP=new JsonStringToPageRequest_FastJson();
-		String jsonStr="{sorts:[{property:'name',dir:'asc'}],wheres:[{property:'name',value:'张三'},{property:'name',value:'李四'}]}";
+		String jsonStr="{sorts:[{prop:'name',dir:'asc'}],wheres:[{prop:'name',value:'张三'},{prop:'name',value:'李四'}]}";
 		PageRequest pr=toP.convert(jsonStr);
 		Assert.assertEquals(0, pr.getStart());
 		Assert.assertEquals(-1, pr.getPageSize());
 		Assert.assertEquals(1, pr.getPageNo());
 		Assert.assertEquals(2, pr.getWheres().length);
 		Assert.assertEquals(1, pr.getSorts().length);
-		Assert.assertEquals("name", pr.getSorts()[0].getProperty());
-		Assert.assertEquals("asc", pr.getSorts()[0].getDirection());
+		Assert.assertEquals("name", pr.getSorts()[0].getProp());
+		Assert.assertEquals("asc", pr.getSorts()[0].getDir());
 	}
 
 }

@@ -48,7 +48,7 @@ public class StringToPageRequest_JsonLibTest {
 		Assert.assertEquals(1, pr.getPageNo());
 		Assert.assertEquals(1, pr.getWheres().length);
 		Assert.assertEquals(0, pr.getSorts().length);
-		Assert.assertEquals("name", pr.getWheres()[0].getProperty());
+		Assert.assertEquals("name", pr.getWheres()[0].getProp());
 		Assert.assertEquals("=", pr.getWheres()[0].getOp().toString());
 		Assert.assertEquals("张三", pr.getWheres()[0].getValue());
 		
@@ -60,7 +60,7 @@ public class StringToPageRequest_JsonLibTest {
 		Assert.assertEquals(1, pr.getPageNo());
 		Assert.assertEquals(1, pr.getWheres().length);
 		Assert.assertEquals(0, pr.getSorts().length);
-		Assert.assertEquals("name", pr.getWheres()[0].getProperty());
+		Assert.assertEquals("name", pr.getWheres()[0].getProp());
 		Assert.assertEquals("=", pr.getWheres()[0].getOp().toString());
 		Assert.assertEquals("张三", pr.getWheres()[0].getValue());
 		
@@ -71,7 +71,7 @@ public class StringToPageRequest_JsonLibTest {
 		Assert.assertEquals(1, pr.getPageNo());
 		Assert.assertEquals(1, pr.getWheres().length);
 		Assert.assertEquals(0, pr.getSorts().length);
-		Assert.assertEquals("name", pr.getWheres()[0].getProperty());
+		Assert.assertEquals("name", pr.getWheres()[0].getProp());
 		Assert.assertEquals("=", pr.getWheres()[0].getOp().toString());
 		Assert.assertEquals("张三", pr.getWheres()[0].getValue());
 		
@@ -82,11 +82,11 @@ public class StringToPageRequest_JsonLibTest {
 		Assert.assertEquals(1, pr.getPageNo());
 		Assert.assertEquals(2, pr.getWheres().length);
 		Assert.assertEquals(0, pr.getSorts().length);
-		Assert.assertEquals("name", pr.getWheres()[0].getProperty());
+		Assert.assertEquals("name", pr.getWheres()[0].getProp());
 		Assert.assertEquals("=", pr.getWheres()[0].getOp().toString());
 		Assert.assertEquals("张三", pr.getWheres()[0].getValue());
 		
-		Assert.assertEquals("name", pr.getWheres()[1].getProperty());
+		Assert.assertEquals("name", pr.getWheres()[1].getProp());
 		Assert.assertEquals("=", pr.getWheres()[1].getOp().toString());
 		Assert.assertEquals("李四", pr.getWheres()[1].getValue());
 	}
@@ -101,8 +101,8 @@ public class StringToPageRequest_JsonLibTest {
 		Assert.assertEquals(1, pr.getPageNo());
 		Assert.assertEquals(2, pr.getWheres().length);
 		Assert.assertEquals(1, pr.getSorts().length);
-		Assert.assertEquals("name", pr.getSorts()[0].getProperty());
-		Assert.assertEquals("asc", pr.getSorts()[0].getDirection());
+		Assert.assertEquals("name", pr.getSorts()[0].getProp());
+		Assert.assertEquals("asc", pr.getSorts()[0].getDir());
 	}
 
 }

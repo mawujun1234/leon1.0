@@ -152,8 +152,7 @@ public class MappingFastJson2HttpMessageConverter extends AbstractHttpMessageCon
 			
 		} catch (Exception ex) {
 			logger.debug(ex.getMessage());
-			throw new HttpMessageNotReadableException("解析json字符串出错: "
-					+ ex.getMessage(), ex);
+			throw new HttpMessageNotReadableException("解析json字符串出错: "+ ex.getMessage(), ex);
 		}
 
 	}

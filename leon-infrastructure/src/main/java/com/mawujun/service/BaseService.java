@@ -74,7 +74,7 @@ public abstract class BaseService<T extends IdEntity<ID>, ID extends Serializabl
 		if(pageRequest.getSqlId()==null || "".equals(pageRequest.getSqlId().trim())){
 			throw new BussinessException(DefaulExceptionCode.SYSTEM_MYBATIS_STATEMENT_CAN_NOT_NULL);
 		}
-		return getRepository().queryPageMapByMybatis(pageRequest.getSqlId(), pageRequest);
+		return getRepository().queryPageMapBybatis(pageRequest.getSqlId(), pageRequest);
 	}
 	/**
 	 * 主要用于一些简单的查询，减少service出现太多的对dao的简单调用的方法，在前台直接往pageRequest中setSqlId()
@@ -88,16 +88,16 @@ public abstract class BaseService<T extends IdEntity<ID>, ID extends Serializabl
 		}
 		return getRepository().queryPageRecordByMybatis(pageRequest.getSqlId(), pageRequest);
 	}
-	/**
-	 * 主要用于一些简单的查询，减少service出现太多的对dao的简单调用的方法，在前台直接往pageRequest中setSqlId()
-	 * 来确定sql的语句。所以http请求参数中必须添加sqlId参数
-	 * @param pageRequest
-	 * @return
-	 */
-	public QueryResult<Object> queryPageObjByMybatis(final PageRequest pageRequest)  {
-		if(pageRequest.getSqlId()==null || "".equals(pageRequest.getSqlId().trim())){
-			throw new BussinessException(DefaulExceptionCode.SYSTEM_MYBATIS_STATEMENT_CAN_NOT_NULL);
-		}
-		return getRepository().queryPageObjByMybatis(pageRequest.getSqlId(), pageRequest);
-	}
+//	/**
+//	 * 主要用于一些简单的查询，减少service出现太多的对dao的简单调用的方法，在前台直接往pageRequest中setSqlId()
+//	 * 来确定sql的语句。所以http请求参数中必须添加sqlId参数
+//	 * @param pageRequest
+//	 * @return
+//	 */
+//	public QueryResult<Object> queryPageObjByMybatis(final PageRequest pageRequest)  {
+//		if(pageRequest.getSqlId()==null || "".equals(pageRequest.getSqlId().trim())){
+//			throw new BussinessException(DefaulExceptionCode.SYSTEM_MYBATIS_STATEMENT_CAN_NOT_NULL);
+//		}
+//		return getRepository().queryPageObjByMybatis(pageRequest.getSqlId(), pageRequest);
+//	}
 }

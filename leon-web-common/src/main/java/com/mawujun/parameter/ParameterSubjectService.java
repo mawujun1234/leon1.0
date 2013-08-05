@@ -1,14 +1,13 @@
 package com.mawujun.parameter;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
 import com.mawujun.exception.BussinessException;
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository.cnd.Cnd;
+import com.mawujun.repository.mybatis.Params;
 
 @Service
 public class ParameterSubjectService extends
@@ -29,9 +28,11 @@ public class ParameterSubjectService extends
 		
 	}
 	public List<ParameterSubjectVO> querySubject(String parameterId,String subjectType){
-		Map<String,String> params=new HashMap<String,String>();
-		params.put("parameterId", parameterId);
-		params.put("subjectType", subjectType);
+//		Map<String,String> params=new HashMap<String,String>();
+//		params.put("parameterId", parameterId);
+//		params.put("subjectType", subjectType);
+		
+		Params params=Params.init().put("parameterId", parameterId).put("subjectType", subjectType);
 		if(SubjectType.SYSTEM.toString().equals(subjectType)){
 			//return this.query(Cnd.select().andEquals("parameterId", parameterId).andEquals("subjectType", subjectType));
 			return this.queryList("query_SYSTEM", params,ParameterSubjectVO.class);

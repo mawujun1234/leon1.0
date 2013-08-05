@@ -77,7 +77,8 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 		Class<T> entityClass = ReflectionUtils.getSuperClassGenricType(getClass());
 		hibernateDao=new HibernateDao<T,ID>(entityClass);
 		mybatisRepository=new MybatisRepository();
-		namespace=entityClass.getName();
+		//namespace=entityClass.getName();
+		namespace=entityClass.getPackage().getName();
 	}
 	
 	public void setEntityClass(Class<T> entityClass) {
@@ -318,30 +319,35 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 	 * @param wheres
 	 * @return
 	 */
-	protected WhereInfo[] changePropertyToColumn(WhereInfo[] wheres){
+	protected void changePropertyToColumn(PageRequest pageRequest){
+		if(pageRequest.isSqlModel()){
+			return;
+		}
+		WhereInfo[] wheres=pageRequest.getWheres();
 		if(wheres==null || wheres.length==0){
-			return wheres;
+			return;
 		}
 		//如果是以列的方式做为查询条件的话，就直接返回
-		if(wheres[0].getPropertyToDefault().startsWith(NamingStrategy.columnPrefix)){
-			return wheres;
+		if(wheres[0].getPropToDefault().startsWith(NamingStrategy.columnPrefix)){
+			return;
 		}
 		WhereInfo[] wheresNew=new WhereInfo[wheres.length];
 		int i=0;
 		AbstractEntityPersister classMetadata = (AbstractEntityPersister)hibernateDao.getClassMetadata();
 		for(WhereInfo whereInfo:wheres){
-			String[] columns=classMetadata.getPropertyColumnNames(whereInfo.getPropertyToDefault());
+			String[] columns=classMetadata.getPropertyColumnNames(whereInfo.getPropToDefault());
 
 			if(columns==null){
 				//throw new BussinessException(whereInfo.getPropertyToDefault()+"不存在这个查询属性");
-				throw new BussinessException(DefaulExceptionCode.SYSTEM_PROPERTY_IS_NOT_EXISTS).set("propertyName", whereInfo.getPropertyToDefault());
+				throw new BussinessException(DefaulExceptionCode.SYSTEM_PROPERTY_IS_NOT_EXISTS).set("propertyName", whereInfo.getPropToDefault());
 			}
 	
-			whereInfo.setProperty(columns[0]);
+			whereInfo.setProp(columns[0]);
 			wheresNew[i]=whereInfo;
 			i++;
 		}
-		return wheresNew;
+		pageRequest.setWheres(wheresNew);
+		//return wheresNew;
 	}
 	/**
 	 * 把WhereInfo中面向数据库表的表示方法，转换成列的名称,例如 org_id--->org.id,c_name-->name，这个要看转化规则
@@ -353,7 +359,7 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 			return wheres;
 		}
 		//如果是以属性的方式做为查询条件的话，就直接返回
-		if(!wheres[0].getPropertyToDefault().startsWith(NamingStrategy.columnPrefix)){
+		if(!wheres[0].getPropToDefault().startsWith(NamingStrategy.columnPrefix)){
 			return wheres;
 		}
 		WhereInfo[] wheresNew=new WhereInfo[wheres.length];
@@ -367,8 +373,8 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 				if (!isCollection) {
 					String[] propertyColumnNames = classMetadata.getPropertyColumnNames(propertyName);
 					for (String tempColumnName : propertyColumnNames) {
-						if (whereInfo.getPropertyToDefault().equals(tempColumnName)) {
-							whereInfo.setProperty(propertyName);
+						if (whereInfo.getPropToDefault().equals(tempColumnName)) {
+							whereInfo.setProp(propertyName);
 						}
 					}
 				}
@@ -380,14 +386,33 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 	}
 	
 	/**
-	 * 默认调用的是：实体类的全限定类名+".queryPage"
+	 * 默认调用的是
 	 * @param pageRequest
 	 * @return
 	 */
-	protected QueryResult<T> queryPageByMybatis(final PageRequest pageRequest) {
-		WhereInfo[] wheresNew=changePropertyToColumn(pageRequest.getWheres());
-		pageRequest.setWheres(wheresNew);
-		return (QueryResult<T>)this.getMybatisRepository().selectPageObj(supplyNamespace("queryPage"), pageRequest);
+	public QueryResult<T> queryPageMybatis(final PageRequest pageRequest) {
+		if(pageRequest.getSqlId()==null || "".equals(pageRequest.getSqlId())){
+			throw new BussinessException("sqlId必须设置");
+		}
+//		WhereInfo[] wheresNew=changePropertyToColumn(pageRequest.getWheres());
+//		pageRequest.setWheres(wheresNew);
+		changePropertyToColumn(pageRequest);
+		
+		return this.getMybatisRepository().selectPage(supplyNamespace(pageRequest.getSqlId()), pageRequest,hibernateDao.getEntityClass());
+	}
+	
+	/**
+	 * 默认调用的是
+	 * @param pageRequest
+	 * @return
+	 */
+	public <M> QueryResult<M> queryPageMybatis(final PageRequest pageRequest,Class<M> classM) {
+		if(pageRequest.getSqlId()==null || "".equals(pageRequest.getSqlId())){
+			throw new BussinessException("sqlId必须设置");
+		}
+		changePropertyToColumn(pageRequest);
+		
+		return this.getMybatisRepository().selectPage(supplyNamespace(pageRequest.getSqlId()), pageRequest,classM);
 	}
 	
 
@@ -397,10 +422,11 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 	 * @param pageRequest
 	 * @return
 	 */
-	protected QueryResult<T> queryPageByMybatis(final String sqlStatement,final PageRequest pageRequest) {
-		WhereInfo[] wheresNew=changePropertyToColumn(pageRequest.getWheres());
-		pageRequest.setWheres(wheresNew);
-		return (QueryResult<T>)this.getMybatisRepository().selectPageObj(supplyNamespace(sqlStatement), pageRequest);
+	public QueryResult<T> queryPageMybatis(final String sqlStatement,final PageRequest pageRequest) {
+//		WhereInfo[] wheresNew=changePropertyToColumn(pageRequest.getWheres());
+//		pageRequest.setWheres(wheresNew);
+		changePropertyToColumn(pageRequest);
+		return this.getMybatisRepository().selectPage(supplyNamespace(sqlStatement), pageRequest,hibernateDao.getEntityClass());
 	}
 	
 	/**
@@ -409,31 +435,35 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 	 * @param pageRequest
 	 * @return
 	 */
-	public QueryResult<Map<String,Object>> queryPageMapByMybatis(final String sqlStatement,final PageRequest pageRequest) {
-		WhereInfo[] wheresNew=changePropertyToColumn(pageRequest.getWheres());
-		pageRequest.setWheres(wheresNew);
+	public QueryResult<Map<String,Object>> queryPageMapBybatis(final String sqlStatement,final PageRequest pageRequest) {
+//		WhereInfo[] wheresNew=changePropertyToColumn(pageRequest.getWheres());
+//		pageRequest.setWheres(wheresNew);
+		changePropertyToColumn(pageRequest);
+		
 		return this.getMybatisRepository().selectPage(supplyNamespace(sqlStatement), pageRequest);
 	}
 	
 	
 	
-	/**
-	 *  返回的是实体对象的结果
-	 * @param statement
-	 * @param pageRequest
-	 * @return
-	 */
-	public QueryResult<Object> queryPageObjByMybatis(final String statement,final PageRequest pageRequest) {
-		WhereInfo[] wheresNew=changePropertyToColumn(pageRequest.getWheres());
-		pageRequest.setWheres(wheresNew);
-		
-		return this.getMybatisRepository().selectPageObj(supplyNamespace(statement), pageRequest);
-	}
-	
+//	/**
+//	 *  返回的是实体对象的结果
+//	 * @param statement
+//	 * @param pageRequest
+//	 * @return
+//	 */
+//	public QueryResult<Object> queryPageObjByMybatis(final String statement,final PageRequest pageRequest) {
+////		WhereInfo[] wheresNew=changePropertyToColumn(pageRequest.getWheres());
+////		pageRequest.setWheres(wheresNew);
+//		changePropertyToColumn(pageRequest);
+//		
+//		return this.getMybatisRepository().selectPage(supplyNamespace(statement), pageRequest);
+//	}
+//	
 	
 	public QueryResult<Record> queryPageRecordByMybatis(final String statement,final PageRequest pageRequest) {
-		WhereInfo[] wheresNew=changePropertyToColumn(pageRequest.getWheres());
-		pageRequest.setWheres(wheresNew);
+//		WhereInfo[] wheresNew=changePropertyToColumn(pageRequest.getWheres());
+//		pageRequest.setWheres(wheresNew);
+		changePropertyToColumn(pageRequest);
 		return this.getMybatisRepository().selectPageRecord(supplyNamespace(statement), pageRequest);	
 	}
 	
@@ -444,16 +474,32 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 	public List<Map<String,Object>> queryList(final String statement,final Map params) {
 		return this.getMybatisRepository().selectList(supplyNamespace(statement),params);
 	}
+	/**
+	 * 主要用于数组的参数的时候，例如 name in (...)的时候，而且只有那么这么一个参数
+	 * 只是省略了数组参数的构造
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param statement
+	 * @param params
+	 * @return
+	 */
 	public List<Map<String,Object>> queryList(final String statement,Object... params) {
 		return this.getMybatisRepository().selectList(supplyNamespace(statement),params);
 	}
-	public List<T> queryListT(final String statement,final Map params) {
-		return (List<T>)this.getMybatisRepository().selectList(supplyNamespace(statement),params);
+	public List<T> queryListT(final String statement,final Map<String,Object> params) {
+		return this.getMybatisRepository().selectList(supplyNamespace(statement),params,hibernateDao.getEntityClass());
 	}
 	public List<T> queryListT(final String statement,final Object params) {
-		return (List<T>)this.getMybatisRepository().selectList(supplyNamespace(statement),params);
+		return this.getMybatisRepository().selectList(supplyNamespace(statement),params,hibernateDao.getEntityClass());
 	}
 
+	/**
+	 * 
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param statement
+	 * @param params 可以是map，bean等各种参数类型
+	 * @param classM
+	 * @return
+	 */
 	public <M> List<M> queryList(String statement, Object params,Class<M> classM)  {
 		return this.getMybatisRepository().selectList(supplyNamespace(statement),params,classM);
 	}

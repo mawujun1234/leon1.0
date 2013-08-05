@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- mawujun qq:16064988 e-mail:16064988@qq.com  -->
+<!-- 注意文件名称为:Example_${DbName}_Mapper.xml-->
+<mapper namespace="com.mawujun.group">
+	<select id="queryUser" resultType="com.mawujun.user.User" parameterType="String">
+    	SELECT a.*
+	    FROM leon_user a,leon_user_group b
+		where a.id=b.user_id and b.group_id=#{group_id}
+		<if  test="name!=null">
+			and a.name like #{name}
+		</if>
+    </select>
+	
+</mapper>

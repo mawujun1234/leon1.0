@@ -5,7 +5,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com 承接各种项目 -->
 <!-- 注意文件名称为:Example_${DbName}_Mapper.xml-->
-<mapper namespace="com.mawujun.parameter.ParameterSubject">
+<mapper namespace="com.mawujun.parameter">
 	<select id="query_SYSTEM" resultType="com.mawujun.parameter.ParameterSubjectVO" >
     	select '系统' as subjectName,a.* from leon_parameter_subject a where parameterId=#{parameterId} and subjectType=#{subjectType}
     </select>

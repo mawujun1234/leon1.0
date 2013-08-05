@@ -12,8 +12,9 @@ Ext.onReady(function(){
 		//autoInitAction:false,
 		flex: 1,
 		//title:'用户管理',
-		columns:[{dataIndex:'loginName',text:'登陆名'},
-			{dataIndex:'password',text:'密码'},
+		columns:[
+			 {dataIndex:'loginName',text:'登陆名'},
+			 {dataIndex:'password',text:'密码'},
 	         {dataIndex:'name',text:'姓名'},
 	         {dataIndex:'deleted',text:'是否删除'},
 	         {dataIndex:'deletedDate',text:'删除日期'},

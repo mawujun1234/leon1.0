@@ -41,17 +41,18 @@ public enum Operation {
 	     return  this.symbol;
 	}
 	
-	public static Operation getWhereOperationBySymbol(String symbol){
+//	public static Operation getWhereOperationBySymbol(String symbol){
+//		for (Operation whereOp : Operation.values()) {
+//			if(whereOp.getSymbol().equalsIgnoreCase(symbol)){
+//				return whereOp;
+//			}
+//		}
+//		return null;
+//	}
+	public static Operation getOperation(String symbolOrName){
 		for (Operation whereOp : Operation.values()) {
-			if(whereOp.getSymbol().equalsIgnoreCase(symbol)){
-				return whereOp;
-			}
-		}
-		return null;
-	}
-	public static Operation getWhereOperation(String symbol){
-		for (Operation whereOp : Operation.values()) {
-			if(whereOp.name().equalsIgnoreCase(symbol)){
+			//if(whereOp.name().equalsIgnoreCase(symbol)){
+			if(whereOp.symbol.equalsIgnoreCase(symbolOrName) || whereOp.name().equalsIgnoreCase(symbolOrName)){
 				return whereOp;
 			}
 		}

@@ -49,7 +49,7 @@ public class StringToPageRequest_JsonLib implements Converter<String, PageReques
 					info.setOp(whereJson.getString("op"));
 				}
 				if(whereJson.containsKey("property")){
-					info.setProperty(whereJson.getString("property"));
+					info.setProp(whereJson.getString("property"));
 				}
 				if(whereJson.containsKey("value")){
 					info.setValue(whereJson.getString("value"));
@@ -67,10 +67,10 @@ public class StringToPageRequest_JsonLib implements Converter<String, PageReques
 				SortInfo info=new SortInfo();	
 				JSONObject sortJson=sorts.getJSONObject(i);
 				if(sortJson.containsKey("property")){
-					info.setProperty(sortJson.getString("property"));
+					info.setProp(sortJson.getString("property"));
 				}
 				if(sortJson.containsKey("direction")){
-					info.setDirection(sortJson.getString("direction"));
+					info.setDir(sortJson.getString("direction"));
 				}
 				//pageRequest.addSorts(info);
 				sortsList.add(info);

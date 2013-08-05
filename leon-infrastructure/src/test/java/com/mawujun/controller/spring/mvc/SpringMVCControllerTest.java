@@ -242,45 +242,45 @@ public class SpringMVCControllerTest {
 	@Test
 	public void bindPageRequestByJosn() throws Exception {//.content("{name:'parent',id:1,createDate:"+((new Date()).toString()+",age:11}")
 		this.mockMvc.perform(get("/test/bindPageRequestByJosn.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
-				.content("{start:0,limit:10,wheres:[{key:'name_like',value:'ma'},{property:'age',op:'LT',value:10}],sorts:[{property:'name',direction:'ASC'},{property:'age',direction:'DESC'}]}").contentType(MediaType.APPLICATION_JSON))
+				.content("{start:0,limit:10,wheres:[{key:'name_like',value:'ma'},{prop:'age',op:'LT',value:10}],sorts:[{prop:'name',dir:'ASC'},{prop:'age',dir:'DESC'}]}").contentType(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk())
 		.andExpect(content().encoding("ISO-8859-1"))
 		.andExpect(content().contentType("application/json"))
 		//.andExpect(jsonPath("$.success").value(true))
 		.andExpect(jsonPath("$.start").value(0))
 		.andExpect(jsonPath("$.limit").value(10))
-		.andExpect(jsonPath("$.wheres[0].property").value("name"))
+		.andExpect(jsonPath("$.wheres[0].prop").value("name"))
 		.andExpect(jsonPath("$.wheres[0].value").value("%ma%"))
 		.andExpect(jsonPath("$.wheres[0].op").value("LIKE"))
-		.andExpect(jsonPath("$.wheres[1].property").value("age"))
+		.andExpect(jsonPath("$.wheres[1].prop").value("age"))
 		.andExpect(jsonPath("$.wheres[1].value").value("10"))
 		.andExpect(jsonPath("$.wheres[1].op").value("LT"))
-		.andExpect(jsonPath("$.sorts[0].property").value("name"))
-		.andExpect(jsonPath("$.sorts[0].direction").value("ASC"))
-		.andExpect(jsonPath("$.sorts[1].property").value("age"))
-		.andExpect(jsonPath("$.sorts[1].direction").value("DESC"));
+		.andExpect(jsonPath("$.sorts[0].prop").value("name"))
+		.andExpect(jsonPath("$.sorts[0].dir").value("ASC"))
+		.andExpect(jsonPath("$.sorts[1].prop").value("age"))
+		.andExpect(jsonPath("$.sorts[1].dir").value("DESC"));
 	}
 	
 	@Test
 	public void bindPageRequestByConverter() throws Exception {//.content("{name:'parent',id:1,createDate:"+((new Date()).toString()+",age:11}")
 		this.mockMvc.perform(get("/test/bindPageRequestByConverter.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
-				.param("pageRequest", "{start:0,limit:10,wheres:[{key:'name_like',value:'ma'},{property:'age',op:'LT',value:10}],sorts:[{property:'name',direction:'ASC'},{property:'age',direction:'DESC'}]}").contentType(MediaType.TEXT_HTML))
+				.param("pageRequest", "{start:0,limit:10,wheres:[{key:'name_like',value:'ma'},{prop:'age',op:'LT',value:10}],sorts:[{prop:'name',dir:'ASC'},{prop:'age',dir:'DESC'}]}").contentType(MediaType.TEXT_HTML))
 		.andExpect(status().isOk())
 		.andExpect(content().encoding("ISO-8859-1"))
 		.andExpect(content().contentType("application/json"))
 		//.andExpect(jsonPath("$.success").value(true))
 		.andExpect(jsonPath("$.start").value(0))
 		.andExpect(jsonPath("$.limit").value(10))
-		.andExpect(jsonPath("$.wheres[0].property").value("name"))
+		.andExpect(jsonPath("$.wheres[0].prop").value("name"))
 		.andExpect(jsonPath("$.wheres[0].value").value("%ma%"))
 		.andExpect(jsonPath("$.wheres[0].op").value("LIKE"))
-		.andExpect(jsonPath("$.wheres[1].property").value("age"))
+		.andExpect(jsonPath("$.wheres[1].prop").value("age"))
 		.andExpect(jsonPath("$.wheres[1].value").value("10"))
 		.andExpect(jsonPath("$.wheres[1].op").value("LT"))
-		.andExpect(jsonPath("$.sorts[0].property").value("name"))
-		.andExpect(jsonPath("$.sorts[0].direction").value("ASC"))
-		.andExpect(jsonPath("$.sorts[1].property").value("age"))
-		.andExpect(jsonPath("$.sorts[1].direction").value("DESC"));
+		.andExpect(jsonPath("$.sorts[0].prop").value("name"))
+		.andExpect(jsonPath("$.sorts[0].dir").value("ASC"))
+		.andExpect(jsonPath("$.sorts[1].prop").value("age"))
+		.andExpect(jsonPath("$.sorts[1].dir").value("DESC"));
 	}
 //	//http://www.iteye.com/topic/1122793?page=3#2385378
 	@Test
@@ -289,11 +289,11 @@ public class SpringMVCControllerTest {
 				.param("start", "0").param("limit", "10")
 				.param("wheres[0].key", "name_like")
 				.param("wheres[0].value", "ma")
-				.param("wheres[1].property", "age")
+				.param("wheres[1].prop", "age")
 				.param("wheres[1].op", "LT")
 				.param("wheres[1].value", "10")
-				.param("sorts[0].property", "name")
-				.param("sorts[0].direction", "ASC")
+				.param("sorts[0].prop", "name")
+				.param("sorts[0].dir", "ASC")
 				.param("sorts[1].prop", "age")
 				.param("sorts[1].dir", "DESC")
 				.contentType(MediaType.TEXT_HTML))
@@ -303,16 +303,16 @@ public class SpringMVCControllerTest {
 		//.andExpect(jsonPath("$.success").value(true))
 		.andExpect(jsonPath("$.start").value(0))
 		.andExpect(jsonPath("$.limit").value(10))
-		.andExpect(jsonPath("$.wheres[0].property").value("name"))
+		.andExpect(jsonPath("$.wheres[0].prop").value("name"))
 		.andExpect(jsonPath("$.wheres[0].value").value("%ma%"))
 		.andExpect(jsonPath("$.wheres[0].op").value("LIKE"))
-		.andExpect(jsonPath("$.wheres[1].property").value("age"))
+		.andExpect(jsonPath("$.wheres[1].prop").value("age"))
 		.andExpect(jsonPath("$.wheres[1].value").value("10"))
 		.andExpect(jsonPath("$.wheres[1].op").value("LT"))
-		.andExpect(jsonPath("$.sorts[0].property").value("name"))
-		.andExpect(jsonPath("$.sorts[0].direction").value("ASC"))
-		.andExpect(jsonPath("$.sorts[1].property").value("age"))
-		.andExpect(jsonPath("$.sorts[1].direction").value("DESC"));
+		.andExpect(jsonPath("$.sorts[0].prop").value("name"))
+		.andExpect(jsonPath("$.sorts[0].dir").value("ASC"))
+		.andExpect(jsonPath("$.sorts[1].prop").value("age"))
+		.andExpect(jsonPath("$.sorts[1].dir").value("DESC"));
 	}
 	
 	/**

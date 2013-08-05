@@ -26,8 +26,8 @@ public class PageRequest {
 	//这个优先级较高，如果设置了这个值，传递到后台的话，就使用这个值作为参数
 	//mybatis时候用的较多
 	protected Map  params;//具体的参数形式，可能是Map也可能是Bean
-	
 	protected String sqlId;//mybatis中的statement名称，可以在前台指定，这样后台dao就不需要再写了。
+	protected boolean isSqlModel;//是否使用sql的模式
 	
 //	//主要是自动查询，通过修改前台的参数形式来传递
 //	protected List<WhereInfo> wheres=new ArrayList<WhereInfo>();
@@ -44,17 +44,17 @@ public class PageRequest {
 	}
 
 	
-	public static PageRequest initByStratAndLimit(final Integer start,final Integer limit) {
+	public static PageRequest init(final Integer start,final Integer limit) {
 		PageRequest page=new PageRequest();
 		page.setStratAndLimit(start, limit);
 		return page;
 	}
 	
-	public static PageRequest initByPageNoAndPageSize(final Integer start,final Integer limit) {
-		PageRequest page=new PageRequest();
-		page.setStratAndLimit(start, limit);
-		return page;
-	}
+//	public static PageRequest initByPageNoAndPageSize(final Integer start,final Integer limit) {
+//		PageRequest page=new PageRequest();
+//		page.setStratAndLimit(start, limit);
+//		return page;
+//	}
 
 
 	/**
@@ -309,7 +309,7 @@ public class PageRequest {
 		}
 		if(this.getWheres()!=null){
 			for(WhereInfo whereInfo:this.getWheres()){
-				params.put(whereInfo.getProperty(), whereInfo.getValue());
+				params.put(whereInfo.getProp(), whereInfo.getValue());
 			}
 			params.put("wheres", this.getWheres());
 		}
@@ -344,7 +344,7 @@ public class PageRequest {
 			}
 			StringBuilder builder=new StringBuilder();
 			for(SortInfo sortInfo:this.sorts){
-				builder.append(","+sortInfo.getProperty()+" "+sortInfo.getDirection());
+				builder.append(","+sortInfo.getProp()+" "+sortInfo.getDir());
 			}
 			return builder.toString().substring(1);
 			
@@ -395,11 +395,28 @@ public class PageRequest {
 //	public void setWheres(WhereInfo[] wheres) {
 //		this.wheres=wheres;
 //	}
-	public void addWheres(WhereInfo whereInfo) {
+	public PageRequest addWhere(WhereInfo whereInfo) {
 		if(this.wheres==null){
 			this.wheres=new WhereInfo[0];
 		}
 		this.wheres=ArrayUtils.add(this.wheres, whereInfo);
+		return this;
+	}
+	public PageRequest addWhere(String prop,String op,Object value) {
+		if(this.wheres==null){
+			this.wheres=new WhereInfo[0];
+		}
+		WhereInfo whereInfo=WhereInfo.parse(prop, op, value);
+		this.wheres=ArrayUtils.add(this.wheres, whereInfo);
+		return this;
+	}
+	public PageRequest addWhere(String prop,Object value) {
+		if(this.wheres==null){
+			this.wheres=new WhereInfo[0];
+		}
+		WhereInfo whereInfo=WhereInfo.parse(prop, "=", value);
+		this.wheres=ArrayUtils.add(this.wheres, whereInfo);
+		return this;
 	}
 
 
@@ -411,6 +428,28 @@ public class PageRequest {
 	public void setSorts(SortInfo[] sorts) {
 		this.sorts=sorts;
 	}
+	public PageRequest addSort(String prop,String dir) {
+		if(this.sorts==null){
+			this.sorts=new SortInfo[0];
+		}
+		this.sorts=ArrayUtils.add(this.sorts, new SortInfo(prop,dir));
+		return this;
+	}
+	public PageRequest asc(String prop) {
+		if(this.sorts==null){
+			this.sorts=new SortInfo[0];
+		}
+		this.sorts=ArrayUtils.add(this.sorts, new SortInfo(prop,"asc"));
+		return this;
+	}
+	public PageRequest desc(String prop) {
+		if(this.sorts==null){
+			this.sorts=new SortInfo[0];
+		}
+		this.sorts=ArrayUtils.add(this.sorts, new SortInfo(prop,"desc"));
+		return this;
+	}
+	
 
 
 	public String getSqlId() {
@@ -418,8 +457,28 @@ public class PageRequest {
 	}
 
 
-	public void setSqlId(String sqlId) {
+	public PageRequest setSqlId(String sqlId) {
 		this.sqlId = sqlId;
+		return this.setSqlModel(true);
+	}
+
+	/**
+	 * 
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @return true表示使用sql模式，false使用面向对象的写法
+	 */
+	public boolean isSqlModel() {
+		return isSqlModel;
+	}
+
+	/**
+	 * 
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @return true表示使用sql模式，false使用面向对象的写法
+	 */
+	public PageRequest setSqlModel(boolean isSqlModel) {
+		this.isSqlModel = isSqlModel;
+		return this;
 	}
 
 	
