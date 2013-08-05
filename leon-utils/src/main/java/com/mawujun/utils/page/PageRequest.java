@@ -403,6 +403,9 @@ public class PageRequest {
 		return this;
 	}
 	public PageRequest addWhere(String prop,String op,Object value) {
+		if(value==null || "".equals(value)){
+			return this;
+		}
 		if(this.wheres==null){
 			this.wheres=new WhereInfo[0];
 		}

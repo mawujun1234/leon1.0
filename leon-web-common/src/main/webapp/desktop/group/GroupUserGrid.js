@@ -1,7 +1,9 @@
 Ext.define('Leon.desktop.group.GroupUserGrid',{
 	extend:'Ext.grid.Panel',
 	requires: [
-	     'Leon.desktop.group.Group'
+	     'Leon.desktop.group.Group',
+	     'Leon.desktop.user.User',
+	     'Leon.desktop.user.UserQueryGrid'
 	],
 	columnLines :true,
 	title:'用户',
@@ -46,8 +48,8 @@ Ext.define('Leon.desktop.group.GroupUserGrid',{
         me.store=e=Ext.create('Ext.data.Store',{
        		autoSync:false,
        		pageSize:50,
-       		fields:['userId','userName'],
-       		//model: 'Leon.desktop.group.Group',
+       		//fields:['userId','userName'],
+       		model: 'Leon.desktop.group.Group',
        		autoLoad:false,
        		proxy:{
 		    	type: 'ajax',
@@ -72,8 +74,26 @@ Ext.define('Leon.desktop.group.GroupUserGrid',{
        			text:'新增',
        			iconCls:'form-add-button ',
        			handler:function(){
-					var win=Ext.create('Leon.desktop.parameter.ParameterWindow');
-					win.parameterGrid=me;
+					var userQueryGrid=Ext.create('Leon.desktop.user.UserQueryGrid');
+					var win=Ext.create('Ext.window.Window',{
+						width:550,
+						height:300,
+						modal:true,
+						title:'查询用户',
+						layout:'fit',
+						items:[userQueryGrid]
+					});
+					userQueryGrid.on("itemdblclick",function(grid,user,item,index){
+						Ext.Ajax.request({
+							url:'/group/addUser',
+							params:{userId:user.get("id"),groupId:me.getGroupId()},
+							method:'POST',
+							success:function(){
+								me.getStore().reload();
+							}
+						});
+					});
+					//win.parameterGrid=me;
 					win.show();
        				
        			}	

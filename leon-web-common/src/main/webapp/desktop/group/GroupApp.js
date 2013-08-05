@@ -1,4 +1,5 @@
-Ext.require('Leon.desktop.group.GroupTree')
+Ext.require('Leon.desktop.group.GroupTree');
+
 Ext.onReady(function(){
 	var tree=Ext.create('Leon.desktop.group.GroupTree',{
 		region:'west',
@@ -7,6 +8,7 @@ Ext.onReady(function(){
 	tree.on('itemclick',function(view,record,item,index){
     	tabPanel.unmask();
     	userGroupGrid.setGroupId(record.get('id'));
+    	userGroupGrid.getStore().load({params:{groupId:record.get('id')}});
     	
 //    	roleId=record.get('id');
 //    	Ext.Ajax.request({
