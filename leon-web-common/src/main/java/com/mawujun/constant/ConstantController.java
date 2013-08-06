@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.annotation.Label;
+import com.mawujun.controller.spring.mvc.JsonConfigHolder;
 import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;
 import com.mawujun.repository.idEntity.AutoIdEntity;
@@ -47,6 +48,7 @@ public class ConstantController {
 	@ResponseBody
 	public List<Constant> query(String constanType_id){		
 		WhereInfo whereinfo=WhereInfo.parse("constantType.id", constanType_id);
+		JsonConfigHolder.setFilterPropertys("constantType,constantItemes",Constant.class);
 		return constantService.query(whereinfo);
 	}
 	@RequestMapping("/constant/load")

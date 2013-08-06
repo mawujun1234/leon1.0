@@ -265,50 +265,50 @@ public class RepositoryTest extends DbunitBaseRepositoryTest {
 		ITable table =dbConn.createTable(EntityTest_TableName);
 		assertEquals(0,table.getRowCount());
 	}
-	@Test
-	public void testBatchDeleteWhereInfoNormal() throws SQLException, DataSetException {
-		//fail("Not yet implemented");
-		//在这里测试所有的where条件，构成的sql而不单单是=,>,<这些二元操作符，还有in等这些
-		WhereInfo whereinfo=WhereInfo.parse("age_gt", "20");
-		Transaction tx = sessionFactory.getCurrentSession().beginTransaction();
-		repository.deleteBatch(whereinfo);
-		tx.commit();
-		
-		ITable table =dbConn.createTable(EntityTest_TableName);
-		assertEquals(1,table.getRowCount());
-		assertEquals("admin1",table.getValue(0, "firstName"));
-		assertEquals("123",table.getValue(0, "lastName"));
-		assertEquals("admin1@163.com",table.getValue(0, "email"));
-		assertEquals(20,table.getValue(0, "age"));
-	}
-	
-	@Test
-	public void testBatchDeleteWhereInfoBetween() throws SQLException, DataSetException {
-		//fail("Not yet implemented");
-		//在这里测试所有的where条件，构成的sql而不单单是=,>,<这些二元操作符，还有in等这些
-		WhereInfo whereinfo=WhereInfo.parse("age_between", "20,30");
-		Transaction tx = sessionFactory.getCurrentSession().beginTransaction();
-		repository.deleteBatch(whereinfo);
-		tx.commit();
-		
-		ITable table =dbConn.createTable(EntityTest_TableName);
-		assertEquals(1,table.getRowCount());
-	}
-	
-	@Test
-	public void testBatchDeleteWhereInfoIn() throws SQLException, DataSetException {
-		//fail("Not yet implemented");
-		//在这里测试所有的where条件，构成的sql而不单单是=,>,<这些二元操作符，还有in等这些
-		WhereInfo whereinfo=WhereInfo.parse("age_in", "20,30");
-		Transaction tx = sessionFactory.getCurrentSession().beginTransaction();
-		repository.deleteBatch(whereinfo);
-		tx.commit();
-		
-		ITable table =dbConn.createTable(EntityTest_TableName);
-		assertEquals(1,table.getRowCount());
-		
-		//ClassUtils.isPrimitiveOrWrapper(type)
-	}
+//	@Test
+//	public void testBatchDeleteWhereInfoNormal() throws SQLException, DataSetException {
+//		//fail("Not yet implemented");
+//		//在这里测试所有的where条件，构成的sql而不单单是=,>,<这些二元操作符，还有in等这些
+//		WhereInfo whereinfo=new WhereInfo("age",">","20");//WhereInfo.parse("age_gt", "20");
+//		Transaction tx = sessionFactory.getCurrentSession().beginTransaction();
+//		repository.deleteBatch(whereinfo);
+//		tx.commit();
+//		
+//		ITable table =dbConn.createTable(EntityTest_TableName);
+//		assertEquals(1,table.getRowCount());
+//		assertEquals("admin1",table.getValue(0, "firstName"));
+//		assertEquals("123",table.getValue(0, "lastName"));
+//		assertEquals("admin1@163.com",table.getValue(0, "email"));
+//		assertEquals(20,table.getValue(0, "age"));
+//	}
+//	
+//	@Test
+//	public void testBatchDeleteWhereInfoBetween() throws SQLException, DataSetException {
+//		//fail("Not yet implemented");
+//		//在这里测试所有的where条件，构成的sql而不单单是=,>,<这些二元操作符，还有in等这些
+//		WhereInfo whereinfo=new WhereInfo("age","between",new String[]{"20","30"});//WhereInfo.parse("age_between", "20,30");
+//		Transaction tx = sessionFactory.getCurrentSession().beginTransaction();
+//		repository.deleteBatch(whereinfo);
+//		tx.commit();
+//		
+//		ITable table =dbConn.createTable(EntityTest_TableName);
+//		assertEquals(1,table.getRowCount());
+//	}
+//	
+//	@Test
+//	public void testBatchDeleteWhereInfoIn() throws SQLException, DataSetException {
+//		//fail("Not yet implemented");
+//		//在这里测试所有的where条件，构成的sql而不单单是=,>,<这些二元操作符，还有in等这些
+//		WhereInfo whereinfo=new WhereInfo("age","in",new String[]{"20","30"});//WhereInfo.parse("age_in", "20,30");
+//		Transaction tx = sessionFactory.getCurrentSession().beginTransaction();
+//		repository.deleteBatch(whereinfo);
+//		tx.commit();
+//		
+//		ITable table =dbConn.createTable(EntityTest_TableName);
+//		assertEquals(1,table.getRowCount());
+//		
+//		//ClassUtils.isPrimitiveOrWrapper(type)
+//	}
 	
 	@Test
 	public void testBatchDeletCnd() throws SQLException, DataSetException {
@@ -371,25 +371,25 @@ public class RepositoryTest extends DbunitBaseRepositoryTest {
 		assertEquals("123",table1.getValue(0, "lastName"));
 		assertEquals("admin1@163.com",table1.getValue(0, "email"));
 	}
-	@Test
-	public void testUpdateDynamicWhereInfo() throws DataSetException, SQLException{
-		//fail("Not yet implemented");
-		
-		Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
-		EntityTest entity=new EntityTest();
-		entity.setEmail("1111@11.com");
-		
-		WhereInfo where=WhereInfo.parse("age_in", "20,30,40");
-		repository.updateIgnoreNull(entity, where);
-		tx.commit();
-		
-		ITable table =dbConn.createTable(EntityTest_TableName);
-		assertEquals(3,table.getRowCount());
-		
-		for(int i=0;i<table.getRowCount();i++){
-			assertEquals("1111@11.com",table.getValue(i, "email"));
-		}
-	}
+//	@Test
+//	public void testUpdateDynamicWhereInfo() throws DataSetException, SQLException{
+//		//fail("Not yet implemented");
+//		
+//		Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
+//		EntityTest entity=new EntityTest();
+//		entity.setEmail("1111@11.com");
+//		
+//		WhereInfo where=new WhereInfo("age","in","20,30,40");//WhereInfo.parse("age_in", "20,30,40");
+//		repository.updateIgnoreNull(entity, where);
+//		tx.commit();
+//		
+//		ITable table =dbConn.createTable(EntityTest_TableName);
+//		assertEquals(3,table.getRowCount());
+//		
+//		for(int i=0;i<table.getRowCount();i++){
+//			assertEquals("1111@11.com",table.getValue(i, "email"));
+//		}
+//	}
 	
 	@Test
 	public void testUpdateDynamicCnd() throws DataSetException, SQLException{
@@ -495,9 +495,9 @@ public class RepositoryTest extends DbunitBaseRepositoryTest {
 	@Test
 	public void testQueryPage() {
 		Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
-		WhereInfo whereinfo=WhereInfo.parse("age_gt", "20");
-		WhereInfo whereinfo1=WhereInfo.parse("firstName_like", "admin");
-		WhereInfo whereinfo2=WhereInfo.parse("lastName_in", "123,1234");
+		WhereInfo whereinfo=new WhereInfo("age",">","20");//WhereInfo.parse("age_gt", "20");
+		WhereInfo whereinfo1=new WhereInfo("firstName","like","admin");//WhereInfo.parse("firstName_like", "admin");
+		WhereInfo whereinfo2=new WhereInfo("lastName","in",new String[]{"123","1234"});//WhereInfo.parse("lastName_in", "123","1234");
 		PageRequest page=new PageRequest();
 		page.setWheres(whereinfo,whereinfo1,whereinfo2);
 		page.setStratAndLimit(1, 10);
@@ -631,10 +631,10 @@ public class RepositoryTest extends DbunitBaseRepositoryTest {
 	public void testQueryPageByMybatis() {
 		//Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
 		
-		WhereInfo whereinfo=WhereInfo.parse("age_gt", "20");
-		WhereInfo whereinfo1=WhereInfo.parse("firstName_like", "admin");
-		WhereInfo whereinfo2=WhereInfo.parse("lastName_in", "123,1234");
-		WhereInfo whereinfo3=WhereInfo.parse("id_between", "1,2");
+		WhereInfo whereinfo=new WhereInfo("age",">","20");//WhereInfo.parse("age_gt", "20");
+		WhereInfo whereinfo1=new WhereInfo("firstName","like","admin");//WhereInfo.parse("firstName_like", "admin");
+		WhereInfo whereinfo2=new WhereInfo("lastName","in",new String[]{"123","1234"});//WhereInfo.parse("lastName_in", "123","1234");
+		WhereInfo whereinfo3=new WhereInfo("id","between",new String[]{"1","2"});//WhereInfo.parse("id_between", "1","2");
 		PageRequest page=new PageRequest();
 		page.setWheres(whereinfo,whereinfo1,whereinfo2,whereinfo3);
 		page.setStratAndLimit(1, 10);
@@ -650,10 +650,10 @@ public class RepositoryTest extends DbunitBaseRepositoryTest {
 	public void testQueryPageByMybatis1() {
 		//Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
 		
-		WhereInfo whereinfo=WhereInfo.parse("age_gt", "20");
-		WhereInfo whereinfo1=WhereInfo.parse("firstName_like", "admin");
-		WhereInfo whereinfo2=WhereInfo.parse("lastName_in", "123,1234");
-		WhereInfo whereinfo3=WhereInfo.parse("id_between", "1,2");
+		WhereInfo whereinfo=new WhereInfo("age",">","20");//;WhereInfo.parse("age_gt", "20");
+		WhereInfo whereinfo1=new WhereInfo("firstName","like","admin");//WhereInfo.parse("firstName_like", "admin");
+		WhereInfo whereinfo2=new WhereInfo("lastName","in",new String[]{"123","1234"});//WhereInfo.parse("lastName_in", "123","1234");
+		WhereInfo whereinfo3=new WhereInfo("id","between",new String[]{"1","2"});//WhereInfo.parse("id_between", "1","2");
 		PageRequest page=new PageRequest();
 		page.setWheres(whereinfo,whereinfo1,whereinfo2,whereinfo3);
 		page.setStratAndLimit(1, 10);

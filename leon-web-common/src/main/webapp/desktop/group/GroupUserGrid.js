@@ -49,7 +49,7 @@ Ext.define('Leon.desktop.group.GroupUserGrid',{
        		autoSync:false,
        		pageSize:50,
        		//fields:['userId','userName'],
-       		model: 'Leon.desktop.group.Group',
+       		model: 'Leon.desktop.user.User',
        		autoLoad:false,
        		proxy:{
 		    	type: 'ajax',
@@ -105,8 +105,14 @@ Ext.define('Leon.desktop.group.GroupUserGrid',{
        					if(btn=='yes'){
        						var model=me.getSelectionModel( ).getLastSelected( ) ;
 		       				if(model){
-		       					//me.getStore().remove(model);
-		       					model.destroy();
+		       					Ext.Ajax.request({
+									url:'/group/removeUser',
+									params:{userId:model.get("id"),groupId:me.getGroupId()},
+									method:'POST',
+									success:function(){
+										me.getStore().reload();
+									}
+								});
 		       				}
        					}
        				});

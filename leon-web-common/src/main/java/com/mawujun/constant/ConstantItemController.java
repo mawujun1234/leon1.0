@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mawujun.annotation.Label;
 import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;
+import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.repository.idEntity.AutoIdEntity;
 import com.mawujun.repository.idEntity.UUIDEntity;
 import com.mawujun.utils.page.WhereInfo;
@@ -43,15 +44,15 @@ public class ConstantItemController {
 	@RequestMapping("/constantItem/query")
 	@ResponseBody
 	public List<ConstantItem> query(String constan_id){	
-		WhereInfo whereinfo=WhereInfo.parse("constant.id", constan_id);
-		return constantItemService.query(whereinfo);
+		//WhereInfo whereinfo=WhereInfo.parse("constant.id", constan_id);
+		return constantItemService.query(Cnd.select().andEquals("constant.id", constan_id));
 	}
 	@RequestMapping("/constantItem/queryByCode")
 	@ResponseBody
 	public List<ConstantItem> queryByCode(String code){	
-		WhereInfo whereinfo=WhereInfo.parse("constant.code", code);
+		//WhereInfo whereinfo=WhereInfo.parse("constant.code", code);
 		//WhereInfo whereinfo1=WhereInfo.parse("constant.id", "402881e53f0f187d013f0f1f2bd00000");
-		List<ConstantItem> list=constantItemService.query(whereinfo);
+		List<ConstantItem> list=constantItemService.query(Cnd.select().andEquals("constant.code", code));
 		//这样写是为了解决 fastjson生成jsonpath的问题
 		for(ConstantItem item:list){
 			item.setConstant(null);

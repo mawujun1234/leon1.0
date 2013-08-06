@@ -23,6 +23,7 @@ Ext.onReady(function(){
 		}
 	});
 	tree.on("itemclick",function(view,record){
+		constantItemGrid.getEl().unmask();
 		if(record.get("discriminator")=="ConstantType") {
 			constantTypeGrid.hide();
 			constantGrid.show();
@@ -41,6 +42,7 @@ Ext.onReady(function(){
 //			constantItemGrid.show();
 //			constantItemGrid.getStore().getProxy().extraParams={constan_id:record.getId()};
 //			constantItemGrid.getStore().reload();
+			constantItemGrid.getEl().mask();
 		}else {
 			constantTypeGrid.show();
 			constantGrid.hide();

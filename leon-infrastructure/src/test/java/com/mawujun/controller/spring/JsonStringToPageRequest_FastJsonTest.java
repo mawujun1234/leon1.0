@@ -41,7 +41,7 @@ public class JsonStringToPageRequest_FastJsonTest {
 	@Test
 	public void test1(){
 		JsonStringToPageRequest_FastJson toP=new JsonStringToPageRequest_FastJson();
-		String jsonStr="{wheres:[{prop:'name',op:'EQ',value:'张三'}]}";
+		String jsonStr="{wheres:[{prop:'name',op:'=',value:'张三'}]}";
 		PageRequest pr=toP.convert(jsonStr);
 		Assert.assertEquals(0, pr.getStart());
 		Assert.assertEquals(-1, pr.getPageSize());
@@ -49,7 +49,7 @@ public class JsonStringToPageRequest_FastJsonTest {
 		Assert.assertEquals(1, pr.getWheres().length);
 		Assert.assertNull( pr.getSorts());
 		Assert.assertEquals("name", pr.getWheres()[0].getProp());
-		Assert.assertEquals("=", pr.getWheres()[0].getOpSymbol().toString());
+		Assert.assertEquals("=", pr.getWheres()[0].getOp().toString());
 		Assert.assertEquals("张三", pr.getWheres()[0].getValue());
 		
 		
@@ -62,7 +62,7 @@ public class JsonStringToPageRequest_FastJsonTest {
 		//Assert.assertEquals(0, pr.getSorts().length);
 		Assert.assertNull( pr.getSorts());
 		Assert.assertEquals("name", pr.getWheres()[0].getProp());
-		Assert.assertEquals("=", pr.getWheres()[0].getOpSymbol());
+		Assert.assertEquals("=", pr.getWheres()[0].getOp());
 		Assert.assertEquals("张三", pr.getWheres()[0].getValue());
 		
 		jsonStr="{wheres:[{prop:'name',value:'张三'}]}";
@@ -73,7 +73,7 @@ public class JsonStringToPageRequest_FastJsonTest {
 		Assert.assertEquals(1, pr.getWheres().length);
 		Assert.assertNull( pr.getSorts());
 		Assert.assertEquals("name", pr.getWheres()[0].getProp());
-		Assert.assertEquals("=", pr.getWheres()[0].getOpSymbol());
+		Assert.assertEquals("=", pr.getWheres()[0].getOp());
 		Assert.assertEquals("张三", pr.getWheres()[0].getValue());
 		
 		jsonStr="{wheres:[{prop:'name',value:'张三'},{prop:'name',value:'李四'}]}";
@@ -84,11 +84,11 @@ public class JsonStringToPageRequest_FastJsonTest {
 		Assert.assertEquals(2, pr.getWheres().length);
 		Assert.assertNull( pr.getSorts());
 		Assert.assertEquals("name", pr.getWheres()[0].getProp());
-		Assert.assertEquals("=", pr.getWheres()[0].getOpSymbol());
+		Assert.assertEquals("=", pr.getWheres()[0].getOp());
 		Assert.assertEquals("张三", pr.getWheres()[0].getValue());
 		
 		Assert.assertEquals("name", pr.getWheres()[1].getProp());
-		Assert.assertEquals("=", pr.getWheres()[1].getOpSymbol());
+		Assert.assertEquals("=", pr.getWheres()[1].getOp());
 		Assert.assertEquals("李四", pr.getWheres()[1].getValue());
 	}
 	

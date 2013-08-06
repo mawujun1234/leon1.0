@@ -297,6 +297,8 @@ Ext.define('Leon.common.ux.BaseTree', {
     	//alert(arguments[0].menu_id);
     	//alert(values.menu_id);
     	values=values||{};
+//    	alert(me.getSelectionModel( ).getLastSelected( ));
+//    	return;
     	var parent=me.getSelectionModel( ).getLastSelected( )||me.getRootNode( );    
     	if(me.fireEvent('beforeCreate',parent,values)===false){
     		return;

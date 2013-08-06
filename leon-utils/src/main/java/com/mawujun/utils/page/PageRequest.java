@@ -413,6 +413,22 @@ public class PageRequest {
 		this.wheres=ArrayUtils.add(this.wheres, whereInfo);
 		return this;
 	}
+	public PageRequest addLikeWhere(String prop,Object value) {
+		return addLikeWhere(prop, value,MatchMode.ANYWHERE,true);
+	}
+	public PageRequest addLikeWhere(String prop,Object value,MatchMode matchModel,boolean ignoreCase) {
+		if(value==null ){
+			return this;
+		}
+		if(this.wheres==null){
+			this.wheres=new WhereInfo[0];
+		}
+		WhereInfo whereInfo=WhereInfo.parse(prop, "like", value);
+		whereInfo.setMatchModel(matchModel);
+		whereInfo.setIgnoreCase(ignoreCase);
+		this.wheres=ArrayUtils.add(this.wheres, whereInfo);
+		return this;
+	}
 	public PageRequest addWhere(String prop,Object value) {
 		if(this.wheres==null){
 			this.wheres=new WhereInfo[0];

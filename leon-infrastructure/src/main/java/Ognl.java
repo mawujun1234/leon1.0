@@ -58,6 +58,14 @@ public class Ognl {
 		return "in".equalsIgnoreCase(o);
 	}
 	/**
+	 * 是否是in操作符
+	 * @param o
+	 * @return
+	 */
+	public static boolean isLikeOp(String o) {
+		return "like".equalsIgnoreCase(o);
+	}
+	/**
 	 * 是否是between操作符
 	 * @param o
 	 * @return

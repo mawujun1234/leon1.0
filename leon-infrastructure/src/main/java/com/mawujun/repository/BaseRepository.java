@@ -177,11 +177,11 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 	/**
 	 * 将符合where条件的，所有记录的值都更新成entity中拥有的键值对，忽略version和id字段
 	 */
-	public void updateIgnoreNull(T entity,WhereInfo... wheres) {
-		hibernateDao.updateIgnoreNull(entity,wheres);
-		hibernateDao.flush();
-	}
-	
+//	public void updateIgnoreNull(T entity,WhereInfo... wheres) {
+//		hibernateDao.updateIgnoreNull(entity,wheres);
+//		hibernateDao.flush();
+//	}
+//	
 	/**
 	 * 将符合where条件的，所有记录的值都更新成entity中拥有的键值对，忽略version和id字段
 	 */
@@ -227,9 +227,9 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 		// TODO Auto-generated method stub
 		return hibernateDao.deleteAll();
 	}
-	public int deleteBatch(WhereInfo... wheres){
-		return hibernateDao.deleteBatch(wheres);
-	}
+//	public int deleteBatch(WhereInfo... wheres){
+//		return hibernateDao.deleteBatch(wheres);
+//	}
 	
 	public int deleteBatch(Cnd cnd){
 		return hibernateDao.deleteBatch(cnd);
@@ -328,18 +328,18 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 			return;
 		}
 		//如果是以列的方式做为查询条件的话，就直接返回
-		if(wheres[0].getPropToDefault().startsWith(NamingStrategy.columnPrefix)){
+		if(wheres[0].getProp().startsWith(NamingStrategy.columnPrefix)){
 			return;
 		}
 		WhereInfo[] wheresNew=new WhereInfo[wheres.length];
 		int i=0;
 		AbstractEntityPersister classMetadata = (AbstractEntityPersister)hibernateDao.getClassMetadata();
 		for(WhereInfo whereInfo:wheres){
-			String[] columns=classMetadata.getPropertyColumnNames(whereInfo.getPropToDefault());
+			String[] columns=classMetadata.getPropertyColumnNames(whereInfo.getProp());
 
 			if(columns==null){
 				//throw new BussinessException(whereInfo.getPropertyToDefault()+"不存在这个查询属性");
-				throw new BussinessException(DefaulExceptionCode.SYSTEM_PROPERTY_IS_NOT_EXISTS).set("propertyName", whereInfo.getPropToDefault());
+				throw new BussinessException(DefaulExceptionCode.SYSTEM_PROPERTY_IS_NOT_EXISTS).set("propertyName", whereInfo.getProp());
 			}
 	
 			whereInfo.setProp(columns[0]);
@@ -359,7 +359,7 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 			return wheres;
 		}
 		//如果是以属性的方式做为查询条件的话，就直接返回
-		if(!wheres[0].getPropToDefault().startsWith(NamingStrategy.columnPrefix)){
+		if(!wheres[0].getProp().startsWith(NamingStrategy.columnPrefix)){
 			return wheres;
 		}
 		WhereInfo[] wheresNew=new WhereInfo[wheres.length];
@@ -373,7 +373,7 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 				if (!isCollection) {
 					String[] propertyColumnNames = classMetadata.getPropertyColumnNames(propertyName);
 					for (String tempColumnName : propertyColumnNames) {
-						if (whereInfo.getPropToDefault().equals(tempColumnName)) {
+						if (whereInfo.getProp().equals(tempColumnName)) {
 							whereInfo.setProp(propertyName);
 						}
 					}

@@ -50,6 +50,11 @@ public class JsonConfigHolder {
 		
 		return threadLocal.get().getFilterPropertys();
 	}
+	/**
+	 * 制定为哪些类进行属性过滤 JsonConfigHolder.setFilterPropertys("parent,children")
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param filterPropertys
+	 */
 	public static void setFilterPropertys(String filterPropertys) {
 		
 		threadLocal.get().setFilterPropertys(filterPropertys);

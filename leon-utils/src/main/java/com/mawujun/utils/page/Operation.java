@@ -6,6 +6,7 @@ package com.mawujun.utils.page;
  * @author mawujun
  *
  */
+@Deprecated
 public enum Operation {
 	//还有其他的，请看Restrictions
 	EQ("="), LT("<"), GT(">"), LE("<="), GE(">="),ISNULL("is null"),ISNOTNULL("is not null"),

@@ -30,6 +30,7 @@
         <!-- Drop and re-create the database schema on startup -->
         <property name="hbm2ddl.auto">update</property>
         <property name="use_cross_join">false</property>
+        
 
         <mapping class="com.mawujun.repository.EntityTest"/>
         <mapping class="com.mawujun.repository.Parent"/>

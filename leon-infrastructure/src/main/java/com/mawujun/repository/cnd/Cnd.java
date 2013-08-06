@@ -79,8 +79,8 @@ public class Cnd implements PItem{
 	 * @author mawujun email:16064988@163.com qq:16064988
 	 * @return
 	 */
-	public static Cnd select(String... names) {
-		Cnd cnd=new Cnd(SqlType.SELECT).addSelect(names);
+	public static Cnd select() {
+		Cnd cnd=new Cnd(SqlType.SELECT).addSelect();
 		
 		return cnd;
 	}

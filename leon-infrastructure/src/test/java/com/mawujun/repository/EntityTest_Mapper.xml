@@ -24,6 +24,17 @@
         			${item1}
         		</foreach>
         		</when>
+        		<when test="@Ognl@isLikeOp(item.op)">
+        			<if test="item.matchModel==ANYWHERE">
+        				${item.prop} like '%${item.value}%'  
+        			</if>
+        			<if test="item.matchModel==START">
+        				${item.prop} like '%${item.value}'  
+        			</if>
+        			<if test="item.matchModel==END">
+        				${item.prop} like '${item.value}%'  
+        			</if>	  			
+        		</when>
         		<otherwise>
         			${item.prop} ${item.op} #{item.value}
         		</otherwise>	

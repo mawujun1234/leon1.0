@@ -86,7 +86,7 @@ public class GroupController {
 	@ResponseBody
 	public QueryResult<User> queryUser(String groupId,String userName,Integer start,Integer limit){	
 		PageRequest pageRqeust=PageRequest.init(start, limit).setSqlModel(true).setSqlId("queryUser")
-				.addWhere("group_id",groupId).addWhere("name", "like", userName);
+				.addWhere("group_id",groupId).addLikeWhere("name",  userName);
 		QueryResult<User> users=userGroupService.queryPageMybatis(pageRqeust,User.class);
 		//JsonConfigHolder.setRootName("children");
 		//userService.delete(user);

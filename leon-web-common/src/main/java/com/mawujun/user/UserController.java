@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mawujun.controller.spring.mvc.JsonConfigHolder;
 import com.mawujun.fun.Fun;
 import com.mawujun.role.Role;
+import com.mawujun.utils.page.MatchMode;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 import com.mawujun.utils.page.WhereInfo;
@@ -38,9 +39,14 @@ public class UserController {
 	 */
 	@RequestMapping("/user/query")
 	@ResponseBody
-	public QueryResult<User> query(PageRequest pageRequest){
-		QueryResult<User>  result=userService.queryPage(pageRequest);
-		return result;
+	public QueryResult<User> query(Integer start,Integer limit,String userName){
+//		QueryResult<User>  result=userService.queryPage(pageRequest);
+//		return result;
+		PageRequest pageRqeust=PageRequest.init(start, limit).setSqlModel(false).addLikeWhere("name", userName,MatchMode.ANYWHERE,true);
+		QueryResult<User> users=userService.queryPage(pageRqeust);
+		//JsonConfigHolder.setRootName("children");
+		//userService.delete(user);
+		return users;
 	}
 	/**
 	 * 一次性读取出所有的节点数据

@@ -644,55 +644,55 @@ public class HibernateDao<T, ID extends Serializable>{
 		return rr;
 		
 	}
-	public int deleteBatch(WhereInfo... wheres){
-		if(cancelExecute(wheres)){
-			return 0;
-		}
-		
-		String hql="delete from "+this.entityClass.getName() +" obj where 1=1 ";
-		for(WhereInfo whereInfo:wheres){
-			if(whereInfo.getOp().equals(Operation.BETWEEN)){
-				hql=hql+" and obj."+whereInfo.getProp()+" "+whereInfo.getOp()+":"+whereInfo.getPropTrans()+0+" and :"+whereInfo.getPropTrans()+1;
-			} else if(whereInfo.getOp().equals(Operation.IN)){
-				hql=hql+" and obj."+whereInfo.getProp()+" in (:"+whereInfo.getPropTrans()+")";
-			}else {
-				hql=hql+" and obj."+whereInfo.getProp()+whereInfo.getOp()+":"+whereInfo.getPropTrans();
-			}
-			
-		}
-		
-		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
-		
-		 Session session = this.getSession();
-		 Query query = session.createQuery(hql);
-		 setParamsByWhereInfo(query,classMetadata,wheres);
-//		 for(WhereInfo whereInfo:wheres){
-//			 if(whereInfo.getOp().equals(WhereOperationEnum.BETWEEN)){
-//				 Type type=classMetadata.getPropertyType(whereInfo.getProperty());
-//				 
-//				 query.setParameter(whereInfo.getProperty()+"0",  BeanMapper.convertToObject(((Object[])whereInfo.getValue())[0],type.getReturnedClass()));
-//				 query.setParameter(whereInfo.getProperty()+"1",  BeanMapper.convertToObject(((Object[])whereInfo.getValue())[1],type.getReturnedClass()));
-//			} else if(whereInfo.getOp().equals(WhereOperationEnum.IN)){
-//
-//				Type type=classMetadata.getPropertyType(whereInfo.getProperty());
-//				Object[] old=(Object[])whereInfo.getValue();
-//				Object[] aaa=new Object[old.length];
-//				for(int i=0;i<old.length;i++){
-//					aaa[i]= BeanMapper.convertToObject(old[i], type.getReturnedClass());
-//				}
-//				query.setParameterList(whereInfo.getProperty(),aaa);
-//			}else {	
-//				Type type=classMetadata.getPropertyType(whereInfo.getProperty());
-//				//ClassUtils.isPrimitiveOrWrapper(type)
-//				query.setParameter(whereInfo.getProperty(), BeanMapper.convertToObject(whereInfo.getValue(), type.getReturnedClass()));
-//			}
-//			 
+//	public int deleteBatch(WhereInfo... wheres){
+//		if(cancelExecute(wheres)){
+//			return 0;
 //		}
-		 
-		 int rr=query.executeUpdate();
-		 session.clear();
-		 return rr;
-	}
+//		
+//		String hql="delete from "+this.entityClass.getName() +" obj where 1=1 ";
+//		for(WhereInfo whereInfo:wheres){
+//			if(whereInfo.getOp().equalsIgnoreCase("between")){
+//				hql=hql+" and obj."+whereInfo.getProp()+" "+whereInfo.getOp()+":"+whereInfo.getPropTrans()+0+" and :"+whereInfo.getPropTrans()+1;
+//			} else if(whereInfo.getOp().equals("in")){
+//				hql=hql+" and obj."+whereInfo.getProp()+" in (:"+whereInfo.getPropTrans()+")";
+//			}else {
+//				hql=hql+" and obj."+whereInfo.getProp()+whereInfo.getOp()+":"+whereInfo.getPropTrans();
+//			}
+//			
+//		}
+//		
+//		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
+//		
+//		 Session session = this.getSession();
+//		 Query query = session.createQuery(hql);
+//		 setParamsByWhereInfo(query,classMetadata,wheres);
+////		 for(WhereInfo whereInfo:wheres){
+////			 if(whereInfo.getOp().equals(WhereOperationEnum.BETWEEN)){
+////				 Type type=classMetadata.getPropertyType(whereInfo.getProperty());
+////				 
+////				 query.setParameter(whereInfo.getProperty()+"0",  BeanMapper.convertToObject(((Object[])whereInfo.getValue())[0],type.getReturnedClass()));
+////				 query.setParameter(whereInfo.getProperty()+"1",  BeanMapper.convertToObject(((Object[])whereInfo.getValue())[1],type.getReturnedClass()));
+////			} else if(whereInfo.getOp().equals(WhereOperationEnum.IN)){
+////
+////				Type type=classMetadata.getPropertyType(whereInfo.getProperty());
+////				Object[] old=(Object[])whereInfo.getValue();
+////				Object[] aaa=new Object[old.length];
+////				for(int i=0;i<old.length;i++){
+////					aaa[i]= BeanMapper.convertToObject(old[i], type.getReturnedClass());
+////				}
+////				query.setParameterList(whereInfo.getProperty(),aaa);
+////			}else {	
+////				Type type=classMetadata.getPropertyType(whereInfo.getProperty());
+////				//ClassUtils.isPrimitiveOrWrapper(type)
+////				query.setParameter(whereInfo.getProperty(), BeanMapper.convertToObject(whereInfo.getValue(), type.getReturnedClass()));
+////			}
+////			 
+////		}
+//		 
+//		 int rr=query.executeUpdate();
+//		 session.clear();
+//		 return rr;
+//	}
 	
 	public int updateBatch(final T... entities){
 		if(cancelExecute(entities)){
@@ -1092,61 +1092,134 @@ public class HibernateDao<T, ID extends Serializable>{
 		Type type=classMetadata.getPropertyType(whereInfo.getProp());
 		//type.get
 		Criterion criterion = null;
-		switch(whereInfo.getOp()){
-		case EQ:
-			criterion = Restrictions.eq(whereInfo.getPropToDefault(), BeanUtils.convert(whereInfo.getValue(), type.getReturnedClass()));
-			break;
-		case LIKE:
-			criterion = Restrictions.like(whereInfo.getPropToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.ANYWHERE);
-			break;
-		case LIKESTART:
-			criterion = Restrictions.like(whereInfo.getPropToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.START);
-			break;
-		case LIKEEND:
-			criterion = Restrictions.like(whereInfo.getPropToDefault(),(String) whereInfo.getValueToDefault(), MatchMode.END);
-			break;
-		case ILIKE:
-			criterion = Restrictions.ilike(whereInfo.getPropToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.ANYWHERE);
-			break;
-		case ILIKESTART:
-			criterion = Restrictions.ilike(whereInfo.getPropToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.START);
-			break;
-		case ILIKEEND:
-			criterion = Restrictions.ilike(whereInfo.getPropToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.END);
-			break;
-		case LE:
-			criterion = Restrictions.le(whereInfo.getPropToDefault(), BeanUtils.convert(whereInfo.getValue(), type.getReturnedClass()));
-			break;
-		case LT:
-			criterion = Restrictions.lt(whereInfo.getPropToDefault(), BeanUtils.convert(whereInfo.getValue(), type.getReturnedClass()));
-			break;
-		case GE:
-			criterion = Restrictions.ge(whereInfo.getPropToDefault(), BeanUtils.convert(whereInfo.getValue(), type.getReturnedClass()));
-			break;
-		case GT:
-			criterion = Restrictions.gt(whereInfo.getPropToDefault(), BeanUtils.convert(whereInfo.getValue(), type.getReturnedClass()));
-			break;
-		case ISNULL:
-			criterion =Restrictions.isNull(whereInfo.getPropToDefault());
-			break;
-		case ISNOTNULL:
-			criterion =Restrictions.isNotNull(whereInfo.getPropToDefault());
-			break;
-		case BETWEEN:
-			criterion =Restrictions.between(whereInfo.getPropToDefault(),  BeanUtils.convert(((Object[])whereInfo.getValue())[0], type.getReturnedClass()), 
+		if("=".equals(whereInfo.getOp())){
+			criterion = Restrictions.eq(whereInfo.getProp(), BeanUtils.convert(whereInfo.getValue(), type.getReturnedClass()));
+			
+		} else if("<".equals(whereInfo.getOp())){
+			criterion = Restrictions.lt(whereInfo.getProp(), BeanUtils.convert(whereInfo.getValue(), type.getReturnedClass()));
+			
+		} else if(">".equals(whereInfo.getOp())){
+			criterion = Restrictions.gt(whereInfo.getProp(), BeanUtils.convert(whereInfo.getValue(), type.getReturnedClass()));
+			
+		} else if("<=".equals(whereInfo.getOp())){
+			criterion = Restrictions.le(whereInfo.getProp(), BeanUtils.convert(whereInfo.getValue(), type.getReturnedClass()));
+			
+		} else if(">=".equals(whereInfo.getOp())){
+			criterion = Restrictions.ge(whereInfo.getProp(), BeanUtils.convert(whereInfo.getValue(), type.getReturnedClass()));
+			
+		} else if("is".equalsIgnoreCase(whereInfo.getOp())){
+			if(whereInfo.isNot()){
+				criterion =Restrictions.isNotNull(whereInfo.getProp());
+				
+			} else {
+				criterion =Restrictions.isNull(whereInfo.getProp());
+				
+			}
+		} else if("!=".equals(whereInfo.getOp()) || "<>".equals(whereInfo.getOp())){
+			criterion = Restrictions.ne(whereInfo.getProp(), BeanUtils.convert(whereInfo.getValue(), type.getReturnedClass()));
+			
+		} else if("like".equalsIgnoreCase(whereInfo.getOp())){
+			if(whereInfo.isIgnoreCase()){
+				if(whereInfo.getMatchModel()==com.mawujun.utils.page.MatchMode.EXACT){
+					criterion = Restrictions.ilike(whereInfo.getProp(), (String)whereInfo.getValue(), MatchMode.EXACT);
+					
+				} else if(whereInfo.getMatchModel()==com.mawujun.utils.page.MatchMode.START){
+					criterion = Restrictions.ilike(whereInfo.getProp(), (String)whereInfo.getValue(), MatchMode.START);
+					
+				} else if(whereInfo.getMatchModel()==com.mawujun.utils.page.MatchMode.END){
+					criterion = Restrictions.ilike(whereInfo.getProp(), (String)whereInfo.getValue(), MatchMode.END);
+					
+				} else {
+					criterion = Restrictions.ilike(whereInfo.getProp(), (String)whereInfo.getValue(), MatchMode.ANYWHERE);
+					
+				}
+			} else {
+				if(whereInfo.getMatchModel()==com.mawujun.utils.page.MatchMode.EXACT){
+					criterion = Restrictions.like(whereInfo.getProp(), (String)whereInfo.getValue(), MatchMode.EXACT);
+					
+				} else if(whereInfo.getMatchModel()==com.mawujun.utils.page.MatchMode.START){
+					criterion = Restrictions.like(whereInfo.getProp(), (String)whereInfo.getValue(), MatchMode.START);
+					
+				} else if(whereInfo.getMatchModel()==com.mawujun.utils.page.MatchMode.END){
+					criterion = Restrictions.like(whereInfo.getProp(), (String)whereInfo.getValue(), MatchMode.END);
+					
+				} else {
+					criterion = Restrictions.like(whereInfo.getProp(), (String)whereInfo.getValue(), MatchMode.ANYWHERE);
+					
+				}
+			}
+			
+		} else if("between".equalsIgnoreCase(whereInfo.getOp())){			
+			criterion =Restrictions.between(whereInfo.getProp(),  BeanUtils.convert(((Object[])whereInfo.getValue())[0], type.getReturnedClass()), 
 					BeanUtils.convert(((Object[])whereInfo.getValue())[1], type.getReturnedClass()));
-			break;
-		case IN:
+			
+		} else if("in".equalsIgnoreCase(whereInfo.getOp())){
 			Object[] old=(Object[])whereInfo.getValue();
 			Object[] aaa=new Object[old.length];
 			for(int i=0;i<old.length;i++){
 				aaa[i]= BeanUtils.convert(old[i], type.getReturnedClass());
 			}
-			criterion =Restrictions.in(whereInfo.getPropToDefault(), (Object[])whereInfo.getValue());
-			break;
-		default:
-			break;
+			criterion =Restrictions.in(whereInfo.getProp(), (Object[])whereInfo.getValue());
+			
+		} else{
+			throw new BussinessException("操作符还不支持");
 		}
+		
+//		switch(whereInfo.getOp()){
+//		case EQ:
+//			criterion = Restrictions.eq(whereInfo.getPropToDefault(), BeanUtils.convert(whereInfo.getValue(), type.getReturnedClass()));
+//			break;
+//		case LIKE:
+//			criterion = Restrictions.like(whereInfo.getPropToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.ANYWHERE);
+//			break;
+//		case LIKESTART:
+//			criterion = Restrictions.like(whereInfo.getPropToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.START);
+//			break;
+//		case LIKEEND:
+//			criterion = Restrictions.like(whereInfo.getPropToDefault(),(String) whereInfo.getValueToDefault(), MatchMode.END);
+//			break;
+//		case ILIKE:
+//			criterion = Restrictions.ilike(whereInfo.getPropToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.ANYWHERE);
+//			break;
+//		case ILIKESTART:
+//			criterion = Restrictions.ilike(whereInfo.getPropToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.START);
+//			break;
+//		case ILIKEEND:
+//			criterion = Restrictions.ilike(whereInfo.getPropToDefault(), (String)whereInfo.getValueToDefault(), MatchMode.END);
+//			break;
+//		case LE:
+//			criterion = Restrictions.le(whereInfo.getPropToDefault(), BeanUtils.convert(whereInfo.getValue(), type.getReturnedClass()));
+//			break;
+//		case LT:
+//			criterion = Restrictions.lt(whereInfo.getPropToDefault(), BeanUtils.convert(whereInfo.getValue(), type.getReturnedClass()));
+//			break;
+//		case GE:
+//			criterion = Restrictions.ge(whereInfo.getPropToDefault(), BeanUtils.convert(whereInfo.getValue(), type.getReturnedClass()));
+//			break;
+//		case GT:
+//			criterion = Restrictions.gt(whereInfo.getPropToDefault(), BeanUtils.convert(whereInfo.getValue(), type.getReturnedClass()));
+//			break;
+//		case ISNULL:
+//			criterion =Restrictions.isNull(whereInfo.getPropToDefault());
+//			break;
+//		case ISNOTNULL:
+//			criterion =Restrictions.isNotNull(whereInfo.getPropToDefault());
+//			break;
+//		case BETWEEN:
+//			criterion =Restrictions.between(whereInfo.getPropToDefault(),  BeanUtils.convert(((Object[])whereInfo.getValue())[0], type.getReturnedClass()), 
+//					BeanUtils.convert(((Object[])whereInfo.getValue())[1], type.getReturnedClass()));
+//			break;
+//		case IN:
+//			Object[] old=(Object[])whereInfo.getValue();
+//			Object[] aaa=new Object[old.length];
+//			for(int i=0;i<old.length;i++){
+//				aaa[i]= BeanUtils.convert(old[i], type.getReturnedClass());
+//			}
+//			criterion =Restrictions.in(whereInfo.getPropToDefault(), (Object[])whereInfo.getValue());
+//			break;
+//		default:
+//			break;
+//		}
 		return criterion;
 	}
 	
