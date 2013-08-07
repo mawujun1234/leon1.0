@@ -1,4 +1,4 @@
-Ext.define('Leon.desktop.group.GroupUserGrid',{
+Ext.define('Leon.desktop.user.UserSelectGrid',{
 	extend:'Ext.grid.Panel',
 	requires: [
 	     'Leon.desktop.group.Group',
@@ -8,6 +8,7 @@ Ext.define('Leon.desktop.group.GroupUserGrid',{
 	columnLines :true,
 	title:'用户',
 	stripeRows:true,
+	url:'',
 	viewConfig:{
 		stripeRows:true,
 		listeners:{
@@ -53,7 +54,7 @@ Ext.define('Leon.desktop.group.GroupUserGrid',{
        		autoLoad:false,
        		proxy:{
 		    	type: 'ajax',
-        		url : '/group/queryUser',
+        		url : me.url,
         		headers:{ 'Accept':'application/json;'},
         		actionMethods: { read: 'POST' },
         		extraParams:{limit:50},
@@ -84,14 +85,8 @@ Ext.define('Leon.desktop.group.GroupUserGrid',{
 						items:[userQueryGrid]
 					});
 					userQueryGrid.on("itemdblclick",function(grid,user,item,index){
-						Ext.Ajax.request({
-							url:'/group/addUser',
-							params:{userId:user.get("id"),groupId:me.getGroupId()},
-							method:'POST',
-							success:function(){
-								me.getStore().reload();
-							}
-						});
+						me.fireEvent("addUser",me,user);
+						
 					});
 					//win.parameterGrid=me;
 					win.show();
@@ -103,16 +98,10 @@ Ext.define('Leon.desktop.group.GroupUserGrid',{
        			handler:function(){
        				Ext.Msg.confirm("消息","确定要删除吗?",function(btn){
        					if(btn=='yes'){
-       						var model=me.getSelectionModel( ).getLastSelected( ) ;
-		       				if(model){
-		       					Ext.Ajax.request({
-									url:'/group/removeUser',
-									params:{userId:model.get("id"),groupId:me.getGroupId()},
-									method:'POST',
-									success:function(){
-										me.getStore().reload();
-									}
-								});
+       						var user=me.getSelectionModel( ).getLastSelected( ) ;
+       						
+		       				if(user){
+		       					me.fireEvent("removeUser",me,user);
 		       				}
        					}
        				});
@@ -127,7 +116,7 @@ Ext.define('Leon.desktop.group.GroupUserGrid',{
        		}]
        });
        me.tbar=tbar;
-       
+       me.addEvents("addUser","removeUser");
        me.dockedItems= [{
 	        xtype: 'pagingtoolbar',
 	        store: me.store,  
@@ -136,5 +125,8 @@ Ext.define('Leon.desktop.group.GroupUserGrid',{
 	   }];
        
        me.callParent();
+	},
+	reloadSelected:function(params){
+		this.getStore().load({params:params});
 	}
 });

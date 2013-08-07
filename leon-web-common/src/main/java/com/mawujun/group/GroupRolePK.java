@@ -6,22 +6,21 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable 
-public class UserGroupPK  implements Serializable{
+public class GroupRolePK  implements Serializable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	@Column(length=36,name="user_id")
-	private String userId;
+	@Column(length=36,name="role_id")
+	private String roleId;
 	@Column(length=36,name="group_id")
 	private String groupId;
-	
-	public String getUserId() {
-		return userId;
+	public String getRoleId() {
+		return roleId;
 	}
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setRoleId(String roleId) {
+		this.roleId = roleId;
 	}
 	public String getGroupId() {
 		return groupId;
@@ -29,5 +28,7 @@ public class UserGroupPK  implements Serializable{
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
 	}
+	
+
 
 }

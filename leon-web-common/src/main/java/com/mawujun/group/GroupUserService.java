@@ -11,7 +11,7 @@ import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.user.User;
 
 @Service
-public class UserGroupService extends BaseRepository<UserGroup, UserGroupPK> {
+public class GroupUserService extends BaseRepository<GroupUser, GroupUserPK> {
 
 //	public List<User> queryUser(String groupId,String userName){
 //		Map<String,String> params=new HashMap<String,String>();

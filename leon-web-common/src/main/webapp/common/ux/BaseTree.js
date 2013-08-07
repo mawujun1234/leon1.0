@@ -127,7 +127,7 @@ Ext.define('Leon.common.ux.BaseTree', {
         	 * @param node 当前节点
         	 * @param values oncreate方法的参数
         	 */
-        	'beforeUpdate',
+        	'beforeRename',
         	/**
         	 * @param node 当前节点
         	 */
@@ -163,13 +163,13 @@ Ext.define('Leon.common.ux.BaseTree', {
      	var actions=[];
      	
        var create = new Ext.Action({
-		    text: '新增子节点',
+		    text: '子节点',
 		    itemId:'create',
 		    disabled:me.disabledAction,
 		    handler: function(){
 		    	me.onCreate();
 		    },
-		    iconCls: 'form-addChild-button'
+		    iconCls: 'form-add-button'
 		});
 		//me.addAction(create);
 		actions.push(create);
@@ -212,18 +212,18 @@ Ext.define('Leon.common.ux.BaseTree', {
 		});
 		//me.addAction(destroy);
 		actions.push(destroy)
-		var update = new Ext.Action({
-		    text: '修改',
-		    itemId:'update',
+		var rename = new Ext.Action({
+		    text: '重命名',
+		    itemId:'rename',
 		    disabled:me.disabledAction,
 		    handler: function(){
-		    	me.onUpdate();
+		    	me.onRename();
 				
 		    },
 		    iconCls: 'form-update-button'
 		});
-		//me.addAction(update);
-		actions.push(update);
+		//me.addAction(rename);
+		actions.push(rename);
 		var copy = new Ext.Action({
 		    text: '复制',
 		    itemId:'copy',
@@ -320,10 +320,10 @@ Ext.define('Leon.common.ux.BaseTree', {
 			}
 		});
     },
-    onUpdate:function(values){
+    onRename:function(values){
     	var me=this;
     	var node=me.getSelectionModel( ).getLastSelected( );
-    	if(me.fireEvent('beforeUpdate',parent,values)===false){
+    	if(me.fireEvent('beforeRename',parent,values)===false){
     		return;
     	}
 //		if(node.isRoot( )){
@@ -547,7 +547,7 @@ Ext.define('Leon.common.ux.BaseTree', {
     	tbar[0].items.removeAt(index);
     },
     /**
-     * 就是action的itemId，例如有：create,update,destroy,copy,cut,paste,reload等等
+     * 就是action的itemId，例如有：create,rename,destroy,copy,cut,paste,reload等等
      * @param {} itemIds
      */
     removeAction:function(itemIds){
@@ -576,7 +576,7 @@ Ext.define('Leon.common.ux.BaseTree', {
     	});
     },
      /**
-     * 就是action的itemId，例如有：create,update,destroy,copy,cut,paste,reload等等
+     * 就是action的itemId，例如有：create,rename,destroy,copy,cut,paste,reload等等
      * @param {} itemIds
      */
     disableAction:function(itemIds){
@@ -608,7 +608,7 @@ Ext.define('Leon.common.ux.BaseTree', {
     	});
     },
     /**
-     * 就是action的itemId，例如有：create,update,destroy,copy,cut,paste,reload等等
+     * 就是action的itemId，例如有：create,rename,destroy,copy,cut,paste,reload等等
      * @param {} itemIds
      */
     enableAction:function(itemIds){

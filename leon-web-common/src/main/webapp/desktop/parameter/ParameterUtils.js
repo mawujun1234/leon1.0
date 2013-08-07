@@ -1,7 +1,7 @@
 Ext.define('Leon.desktop.parameter.ParameterUtils', {
 	//statics: {  
-		 subjectType:'SYSTEM',
-		 subjectId:'SYSTEM',
+		 subjectType:null,
+		 subjectId:null,
 		 form:null,
          getForm: function(subjectType,fun) { 
          	if(!subjectType){

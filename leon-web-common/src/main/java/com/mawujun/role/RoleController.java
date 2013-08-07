@@ -36,7 +36,7 @@ public class RoleController {
 			WhereInfo whereinfo=WhereInfo.parse("category.id", id);
 			roles=roleService.query(whereinfo);
 		} else {
-			WhereInfo whereinfo=WhereInfo.parse("category.id_isNull", "11");
+			WhereInfo whereinfo=WhereInfo.parse("category.id","is", "11");
 			roles=roleService.query(whereinfo);
 		}
 		return roles;

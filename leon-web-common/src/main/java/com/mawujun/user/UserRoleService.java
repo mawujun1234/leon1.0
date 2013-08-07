@@ -27,7 +27,7 @@ public class UserRoleService extends BaseRepository<UserRole, UserRolePK> {
 		////String hql="select b.id.roleId from UserRole b where b.id.userId=?";
 		//List<UserRole> userRoles=super.query(WhereInfo.parse("id.userId", userId));
 		
-		List<Object> roleIds=super.getMybatisRepository().selectListObj("queryRole", userId);
+		List<Object> roleIds=super.queryList("queryRole", userId);//.selectListObj("queryRole", userId);
 		//组装出role树
 		List<Role> roles=new ArrayList<Role>();
 		for(Object roleId:roleIds){

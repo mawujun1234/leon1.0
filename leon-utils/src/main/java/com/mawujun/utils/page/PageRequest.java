@@ -482,7 +482,7 @@ public class PageRequest {
 	}
 
 	/**
-	 * 
+	 * true表示select和where填写的字段名称是数据库列的米过程，否则应该填写实体类的名称
 	 * @author mawujun email:16064988@163.com qq:16064988
 	 * @return true表示使用sql模式，false使用面向对象的写法
 	 */
@@ -491,7 +491,7 @@ public class PageRequest {
 	}
 
 	/**
-	 * 
+	 * true表示select和where填写的字段名称是数据库列的米过程，否则应该填写实体类的名称
 	 * @author mawujun email:16064988@163.com qq:16064988
 	 * @return true表示使用sql模式，false使用面向对象的写法
 	 */

@@ -3,6 +3,7 @@ package com.mawujun.group;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.controller.spring.mvc.JsonConfigHolder;
 import com.mawujun.repository.cnd.Cnd;
+import com.mawujun.repository.mybatis.Params;
+import com.mawujun.role.Role;
 import com.mawujun.user.User;
 import com.mawujun.user.UserRole;
 import com.mawujun.user.UserRolePK;
@@ -22,7 +25,9 @@ public class GroupController {
 	@Autowired
 	private GroupService groupService;
 	@Autowired
-	private UserGroupService userGroupService;
+	private GroupUserService userGroupService;
+	@Autowired
+	private GroupRoleService groupRoleService;
 	/**
 	 * 一次性读取出所有的节点数据
 	 * @return
@@ -67,8 +72,8 @@ public class GroupController {
 	
 	@RequestMapping("/group/addUser")
 	@ResponseBody
-	public UserGroupPK addUser(UserGroupPK userGroupPK){	
-		 UserGroup userGroup=new  UserGroup();
+	public GroupUserPK addUser(GroupUserPK userGroupPK){	
+		 GroupUser userGroup=new  GroupUser();
 		 userGroup.setId(userGroupPK);
 		 userGroupService.create(userGroup);
 		//userService.delete(user);
@@ -76,7 +81,7 @@ public class GroupController {
 	}
 	@RequestMapping("/group/removeUser")
 	@ResponseBody
-	public UserGroupPK removeUser(UserGroupPK userGroupPK){		 
+	public GroupUserPK removeUser(GroupUserPK userGroupPK){		 
 		userGroupService.delete(userGroupPK);
 		//userService.delete(user);
 		return userGroupPK;
@@ -88,8 +93,36 @@ public class GroupController {
 		PageRequest pageRqeust=PageRequest.init(start, limit).setSqlModel(true).setSqlId("queryUser")
 				.addWhere("group_id",groupId).addLikeWhere("name",  userName);
 		QueryResult<User> users=userGroupService.queryPageMybatis(pageRqeust,User.class);
-		//JsonConfigHolder.setRootName("children");
-		//userService.delete(user);
 		return users;
+	}
+	
+	
+	
+	@RequestMapping("/group/addRole")
+	@ResponseBody
+	public GroupRolePK addRole(GroupRolePK groupRolePK){	
+		GroupRole groupRole=new  GroupRole();
+		groupRole.setId(groupRolePK);
+		groupRoleService.create(groupRole);
+		//userService.delete(user);
+		return groupRolePK;
+	}
+	@RequestMapping("/group/removeRole")
+	@ResponseBody
+	public GroupRolePK removeRole(GroupRolePK groupRolePK){		 
+		groupRoleService.delete(groupRolePK);;
+		return groupRolePK;
+	}
+	
+	@RequestMapping("/group/queryRole")
+	@ResponseBody
+	public List<Role> queryRole(String groupId,Integer start,Integer limit){	
+//		PageRequest pageRqeust=PageRequest.init(start, limit).setSqlModel(true).setSqlId("queryRole")
+//				.addWhere("group_id",groupId);
+//		QueryResult<Role> roles=userGroupService.queryPageMybatis(pageRqeust,Role.class);
+		List<Role> roles=userGroupService.queryList("queryRole", Params.init().add("group_id", groupId), Role.class);
+		JsonConfigHolder.setFilterPropertys("mutex,funes,category",Role.class);
+		JsonConfigHolder.setRootName("children");
+		return roles;
 	}
 }
