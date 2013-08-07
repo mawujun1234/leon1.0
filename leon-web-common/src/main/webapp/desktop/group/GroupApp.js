@@ -14,26 +14,6 @@ Ext.onReady(function(){
     	roleSelectedTree.reloadSelected({groupId:record.getId()});
     	//获取该用户的参数
 		utils.setSubjectId(record.getId());
-//    	roleId=record.get('id');
-//    	Ext.Ajax.request({
-//    		url:'/roleFun/query',
-//    		method:'POST',
-//    		params:{roleId:roleId},
-//    		success:function(response){
-//    			//console.log(response.responseText);
-//    			var obj=Ext.decode(response.responseText);
-//    			//alert(obj.root);
-//    			roleFunTree.checkingFunes(obj.root);
-//    			roleFunTree.roleId=roleId;
-//    			tabPanel.unmask();
-//    		}   		
-//    	});
-//    	//roleInheritGrid.currentRole=record;
-//    	//roleInheritGrid.getStore().load({params:{childId:record.getId(),roleRoleEnum:'inherit'}});
-//    	roleMutexGrid.currentRole=record;
-//    	roleMutexGrid.getStore().load({params:{ownId:record.getId(),roleRoleEnum:'mutex'}});
-//    	
-//    	utils.setSubjectId(record.getId());
     });
 	
     var userGroupGrid=Ext.create('Leon.desktop.user.UserSelectGrid',{
