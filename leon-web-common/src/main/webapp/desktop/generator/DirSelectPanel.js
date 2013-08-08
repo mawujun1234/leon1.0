@@ -35,7 +35,7 @@ Ext.define('Leon.desktop.generator.DirSelectPanel',{
 		};
 		me.store=Ext.create('Ext.data.TreeStore',cofig);
         me.tbar=[{
-       		text:'新建',
+       		text:'新建目录',
        		handler:function(){
        			var parent=me.getSelectionModel( ).getLastSelected( );
        			if(!parent){
@@ -60,6 +60,16 @@ Ext.define('Leon.desktop.generator.DirSelectPanel',{
 				});
 
        		}
+       },{
+       	text:'刷新',
+       	handler:function(){
+	    	var parent=me.getSelectionModel( ).getLastSelected( )||me.getRootNode();
+			if(parent){
+			    me.getStore().reload({node:parent});
+			} else {
+			    me.getStore().reload();	
+			}     
+       	}
        }]
        me.callParent();
 	}

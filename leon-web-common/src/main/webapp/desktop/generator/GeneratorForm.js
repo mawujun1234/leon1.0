@@ -32,13 +32,31 @@ Ext.define('Leon.desktop.generator.GeneratorForm',{
                     }, {
                         fieldLabel: '主体名称',
                         labelWidth: 100,
+                        width:400,
                         name: 'subjectName',
                         allowBlank: false
                     },{
                     	xtype:'button',
                     	text:'选择主体',
-                    	handler:function(){
-                    		
+                    	handler:function(btn){
+                    		var panel=null;
+                    		if('ddd'=='ddd'){
+                    			panel=Ext.create('Leon.desktop.generator.DDDSelectGrid',{
+                    				
+                    			});
+                    		}
+                    		panel.on('itemdblclick',function(grid, record, item, index){
+                    			btn.previousSibling().setValue(record.get("className"));
+                    		});
+                    		var win=Ext.create('Ext.Window',{
+                    			layout:'fit',
+                    			title:'选择领域类',
+                    			modal:true,
+                    			width:370,
+                    			height:400,
+                    			items:[panel]
+                    		});
+                    		win.show();
                     	}
                     }]
                 },{
@@ -52,6 +70,7 @@ Ext.define('Leon.desktop.generator.GeneratorForm',{
                     items: [{
                         fieldLabel: 'js保存目录',
                         name: 'jsDir',
+                        width:300,
                         allowBlank: false
                     },{
                     	xtype:'button',
@@ -80,6 +99,7 @@ Ext.define('Leon.desktop.generator.GeneratorForm',{
                     }, {
                         fieldLabel: 'java保存目录',
                         labelWidth: 100,
+                        width:300,
                         name: 'javaDir'
                     },{
                     	xtype:'button',

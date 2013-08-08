@@ -5,8 +5,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,10 +17,14 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
+import org.hibernate.metadata.ClassMetadata;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.controller.spring.mvc.JsonConfigHolder;
+import com.mawujun.utils.StringUtils;
 import com.mawujun.utils.SystemUtils;
 
 @Controller
@@ -55,14 +62,19 @@ public class GeneratorController {
 		return result;//new ArrayList<Map<String,String>>();
 		
 	}
+	
+	public String getJavaRootPath(HttpServletRequest request){
+		String basePath = request.getSession().getServletContext().getRealPath("");
+		return basePath+SystemUtils.FILE_SEPARATOR+".."+SystemUtils.FILE_SEPARATOR+"java";
+	}
 	@RequestMapping("/generator/listJavaDir")
 	public List<Map<String,String>> listJavaDir(HttpServletRequest request,String id) throws IOException{
 		//String path=Test.class.getResource("/").getPath()+"。。/../";
-		String basePath = request.getSession().getServletContext().getRealPath("");
+		String basePath =null;
 		if(id!=null && !"root".equals(id)){
 			basePath=id;
 		} else {
-			basePath=basePath+SystemUtils.FILE_SEPARATOR+".."+SystemUtils.FILE_SEPARATOR+"java";
+			basePath=getJavaRootPath(request);
 		}
 		File directory=new File(basePath);
 		//Collection<File> files=FileUtils.listFilesAndDirs(directory, TrueFileFilter.TRUE, DirectoryFileFilter.INSTANCE);
@@ -91,72 +103,59 @@ public class GeneratorController {
 		
 	}
 	@RequestMapping("/generator/createDirectory")
-	public boolean createDirectory(String parentId,String text) throws IOException{
-		String[] paths=text.split("/");
-		d
-		File directory=new File(parentId+SystemUtils.FILE_SEPARATOR+text);
-		boolean bool=directory.createNewFile();
+	@ResponseBody
+	public boolean createDirectory(HttpServletRequest request,String parentId,String text) throws IOException{
+		//String[] paths=text.split("/");
+		String basePath =null;
+		if(parentId!=null && !"root".equals(parentId)){
+			basePath=parentId;
+		} else {
+			basePath=getJavaRootPath(request);
+		}
+		
+		File directory=new File(basePath+SystemUtils.FILE_SEPARATOR+text);
+		boolean bool=directory.mkdirs();
 		return bool;
 	}
 	
-//	@Autowired
-//	JavaEntityMetaDataService javaEntityMetaDataService;
-//	
-//	private static List<Map<String,Object>> packageClass=null;
-//	
-//	@RequestMapping("/codeGenerator/listAllClass.do")
-//	@ResponseBody
-//	public ExtjsJsonResult queryPage(String id,String node) {
+	@Autowired
+	JavaEntityMetaDataService javaEntityMetaDataService;
+	
+	private List<Map<String,Object>> packageClass=null;
+	
+	@RequestMapping("/generator/listAllClass")
+	@ResponseBody
+	public List<Map<String,Object>> listAllClass(String id,String node) {
 //		
 //		if(StringUtils.hasLength(id) && !"root".equals(id)){
 //			for(Map<String,Object> map:packageClass){
 //				if(map.get("id").equals(id)){
-//					 return ExtjsJsonResult.initResult(map.get("children"));
+//					 return map.get("children");
 //				}
 //			}
 //		}
-//
-//		
-//		Map<String,ClassMetadata> queryResult=javaEntityMetaDataService.getSessionFactory().getAllClassMetadata();
-//		List<Map<String,Object>> result=new ArrayList<Map<String,Object>>();
-//		Set<String> contain=new HashSet<String>();
-//		for(Entry<String,ClassMetadata> entry:queryResult.entrySet()){
-//			
-//			String packageName=entry.getKey().substring(0,entry.getKey().lastIndexOf('.'));
-//			
-//			
-//			Map<String,Object> childrenNode=new HashMap<String,Object>();
-//			childrenNode.put("id",entry.getKey().substring(entry.getKey().lastIndexOf('.')+1));
-//			childrenNode.put("text",entry.getKey().substring(entry.getKey().lastIndexOf('.')+1));
+
+		
+		Map<String,ClassMetadata> queryResult=javaEntityMetaDataService.getSessionFactory().getAllClassMetadata();
+		List<Map<String,Object>> result=new ArrayList<Map<String,Object>>();
+		//Set<String> contain=new HashSet<String>();
+		for(Entry<String,ClassMetadata> entry:queryResult.entrySet()){
+			
+			String packageName=entry.getKey().substring(0,entry.getKey().lastIndexOf('.'));
+			
+			
+			Map<String,Object> childrenNode=new HashMap<String,Object>();
+			//childrenNode.put("id",entry.getKey());
+			childrenNode.put("text",entry.getKey().substring(entry.getKey().lastIndexOf('.')+1));
 //			childrenNode.put("leaf", true);
 //			childrenNode.put("type", "entity");
-//			childrenNode.put("className", entry.getKey());
-//			if(contain.contains(packageName)){
-//				Map<String,Object> packageNode=null;
-//				for(Map<String,Object> map:result){
-//					if(map.get("text").equals(packageName)){
-//						packageNode=map;
-//						break;
-//					}
-//				}
-//				((List<Map<String,Object>>)packageNode.get("children")).add(childrenNode);
-//				//packageNode.put("children", childrenNode)
-//			} else {
-//				Map<String,Object> packageNode=new HashMap<String,Object>();
-//				packageNode.put("id",packageName);
-//				packageNode.put("text",packageName);
-//				packageNode.put("leaf", false);
-//				
-//				List<Map<String,Object>> children=new ArrayList<Map<String,Object>>();
-//				children.add(childrenNode);
-//				packageNode.put("children", children);
-//				result.add(packageNode);
-//			}	
-//			contain.add(packageName);
-//		}
-//		packageClass=result;
-//		return ExtjsJsonResult.initResult(result);
-//	}
+			childrenNode.put("className", entry.getKey());
+			result.add(childrenNode);
+
+		}
+		packageClass=result;
+		return result;
+	}
 //	//类型和具体的模板文件的对应关系
 //	HashMap<String,String> ftlMapper=new HashMap<String,String>();
 //	{
