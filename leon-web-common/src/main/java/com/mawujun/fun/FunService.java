@@ -73,7 +73,7 @@ public class FunService extends BaseRepository<Fun, String> {
 		}
 		entity.setParent(parent);
 
-		entity.setReportCode(getMaxReportCode(entity.getParent()==null?null:entity.getParent().getId()));
+		//entity.setReportCode(getMaxReportCode(entity.getParent()==null?null:entity.getParent().getId()));
 		
 		//menuItemService.create(entity);
 		

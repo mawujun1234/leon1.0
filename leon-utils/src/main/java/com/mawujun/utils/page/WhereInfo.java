@@ -110,8 +110,20 @@ public class WhereInfo  implements Serializable{
 		//return parse(property+"_"+op,value);
 		return new WhereInfo(property,op,value);
 	}
+	/**
+	 * 如果value-==null, property is noll,否则就是property=value
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param property
+	 * @param value
+	 * @return
+	 */
 	public static WhereInfo parse(final String property,final Object value) {
-		return new WhereInfo(property,"=",value);
+		if(value==null){
+			return new WhereInfo(property,"is",null);
+		} else {
+			return new WhereInfo(property,"=",value);
+		}
+		
 	}
 //	public static WhereInfo parse(String property, Operation operation, Object value) {
 //		return new WhereInfo(property,operation,value);

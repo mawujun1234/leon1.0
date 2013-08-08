@@ -1,9 +1,104 @@
 package com.mawujun.generator;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
+import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.mawujun.controller.spring.mvc.JsonConfigHolder;
+import com.mawujun.utils.SystemUtils;
 
 @Controller
 public class GeneratorController {
+	@RequestMapping("/generator/listJsDir")
+	public List<Map<String,String>> getAppDir(HttpServletRequest request,String id) throws IOException{
+		//String path=Test.class.getResource("/").getPath()+"。。/../";
+		String basePath = request.getSession().getServletContext().getRealPath("");
+		if(id!=null && !"root".equals(id)){
+			basePath=id;
+		}
+		File directory=new File(basePath);
+		//Collection<File> files=FileUtils.listFilesAndDirs(directory, TrueFileFilter.TRUE, DirectoryFileFilter.INSTANCE);
+		
+		File[] files=directory.listFiles();
+		List<Map<String,String>> result=new ArrayList<Map<String,String>>();
+		List<Map<String,String>> fileResult=new ArrayList<Map<String,String>>();
+		for(File file:files){
+			Map<String,String> map=new HashMap<String,String>();
+			map.put("id", file.getPath());
+			map.put("text", file.getName());
+			if(!file.isDirectory()){
+				map.put("iconCls", "icons_23");
+				map.put("leaf", "true");
+				map.put("isFile", "true");
+				fileResult.add(map);
+			} else {
+				map.put("isFile", "false");
+				result.add(map);
+			}
+			
+		}
+		result.addAll(fileResult);
+		JsonConfigHolder.setRootName("children");
+		return result;//new ArrayList<Map<String,String>>();
+		
+	}
+	@RequestMapping("/generator/listJavaDir")
+	public List<Map<String,String>> listJavaDir(HttpServletRequest request,String id) throws IOException{
+		//String path=Test.class.getResource("/").getPath()+"。。/../";
+		String basePath = request.getSession().getServletContext().getRealPath("");
+		if(id!=null && !"root".equals(id)){
+			basePath=id;
+		} else {
+			basePath=basePath+SystemUtils.FILE_SEPARATOR+".."+SystemUtils.FILE_SEPARATOR+"java";
+		}
+		File directory=new File(basePath);
+		//Collection<File> files=FileUtils.listFilesAndDirs(directory, TrueFileFilter.TRUE, DirectoryFileFilter.INSTANCE);
+		
+		File[] files=directory.listFiles();
+		List<Map<String,String>> result=new ArrayList<Map<String,String>>();
+		List<Map<String,String>> fileResult=new ArrayList<Map<String,String>>();
+		for(File file:files){
+			Map<String,String> map=new HashMap<String,String>();
+			map.put("id", file.getPath());
+			map.put("text", file.getName());
+			if(!file.isDirectory()){
+				map.put("iconCls", "icons_23");
+				map.put("leaf", "true");
+				map.put("isFile", "true");
+				fileResult.add(map);
+			} else {
+				map.put("isFile", "false");
+				result.add(map);
+			}
+			
+		}
+		result.addAll(fileResult);
+		JsonConfigHolder.setRootName("children");
+		return result;//new ArrayList<Map<String,String>>();
+		
+	}
+	@RequestMapping("/generator/createDirectory")
+	public boolean createDirectory(String parentId,String text) throws IOException{
+		String[] paths=text.split("/");
+		d
+		File directory=new File(parentId+SystemUtils.FILE_SEPARATOR+text);
+		boolean bool=directory.createNewFile();
+		return bool;
+	}
+	
 //	@Autowired
 //	JavaEntityMetaDataService javaEntityMetaDataService;
 //	

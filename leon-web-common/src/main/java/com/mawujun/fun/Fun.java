@@ -44,9 +44,9 @@ public class Fun extends TreeNode{
 	@Column(length=80)
 	@Label(name="地址")
 	private String url;
-	//private String iconCls;
-	@Column(length=40)
-	private String reportCode;//等级关系代码
+//	//private String iconCls;
+//	@Column(length=40)
+//	private String reportCode;//等级关系代码
 	@Label(name="帮助")
 	@Column(length=100)
 	private String helpContent;//存放的是html内容的地址
@@ -101,12 +101,7 @@ public class Fun extends TreeNode{
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	public String getReportCode() {
-		return reportCode;
-	}
-	public void setReportCode(String reportCode) {
-		this.reportCode = reportCode;
-	}
+
 	public String getCode() {
 		return code;
 	}
