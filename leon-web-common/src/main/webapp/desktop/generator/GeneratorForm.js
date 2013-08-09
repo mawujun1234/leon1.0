@@ -29,7 +29,17 @@ Ext.define('Leon.desktop.generator.GeneratorForm',{
                         store:Ext.create('Ext.data.Store',{
                         	fields:["key","name"],
                         	data:[{key:'DDD',name:'领域类'},{key:'SQL',name:'sql语句'},{key:'TABLE',name:'数据库表'}]
-                        })
+                        }),
+                        listeners:{
+                        	change:function(combobox,newValue,oldValue){
+                        		var comp=me.getComponent("javaAndjsDir");
+                        		if(newValue=='DDD'){
+                        			comp.disable();
+                        		} else{
+                        			comp.enable();
+                        		}
+                        	}
+                        }
                     }, {
                         fieldLabel: '主体名称',
                         labelWidth: 100,
@@ -42,7 +52,7 @@ Ext.define('Leon.desktop.generator.GeneratorForm',{
                     	handler:function(btn){
                     		var combobox=btn.previousSibling("[xtype=combobox][name=subjectType]")
                     		var panel=null;
-                    		//alert(combobox.getValue());
+
                     		if('DDD'==combobox.getValue()){
                     			panel=Ext.create('Leon.desktop.generator.DDDSelectGrid',{
                     				
@@ -65,6 +75,8 @@ Ext.define('Leon.desktop.generator.GeneratorForm',{
                 },{
                     xtype: 'container',
                     layout: 'hbox',
+                    itemId:'javaAndjsDir',
+                    disabled:true,
                     defaultType: 'textfield',
                     defaults: {
 				        labelAlign: 'right'
