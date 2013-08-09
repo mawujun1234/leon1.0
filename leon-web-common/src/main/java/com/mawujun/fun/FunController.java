@@ -35,10 +35,6 @@ public class FunController {
 			whereinfo=WhereInfo.parse("parent.id", "is",null);
 		}
 		List<Fun> funes=funService.query(whereinfo);
-//		//System.out.println("==================结果输出来了"+funes.size());
-//		ModelMap map=new ModelMap();
-//		map.put("root", funes);
-//		//map.put("filterPropertys", "checked");
 		return funes;
 	}
 	/**

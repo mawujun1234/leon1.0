@@ -46,8 +46,11 @@ Ext.define('Leon.desktop.generator.DDDSelectGrid',{
        	text:'查询',
        	handler:function(btn){
        		var text=btn.previousSibling().getValue();
-       		if(text){.z这个过滤还没有做好
-       			me.store.filter("text", /\.User$/);
+       		if(text){//.z这个过滤还没有做好
+       			var reg=new RegExp("user", "gi");
+       			me.store.filter("text", reg);
+       		} else {
+       			me.store.clearFilter();
        		}
        	}
        }]

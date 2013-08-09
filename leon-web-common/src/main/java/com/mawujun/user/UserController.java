@@ -34,18 +34,20 @@ public class UserController {
 	private UserRoleService userRoleService;
 
 	/**
-	 * 桌面程序中把菜单按权限读取出来
+	 * 这是基于分页的几种写法
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param start
+	 * @param limit
+	 * @param userName
 	 * @return
 	 */
 	@RequestMapping("/user/query")
 	@ResponseBody
 	public QueryResult<User> query(Integer start,Integer limit,String userName){
-//		QueryResult<User>  result=userService.queryPage(pageRequest);
-//		return result;
+
 		PageRequest pageRqeust=PageRequest.init(start, limit).setSqlModel(false).addLikeWhere("name", userName,MatchMode.ANYWHERE,true);
 		QueryResult<User> users=userService.queryPage(pageRqeust);
 		//JsonConfigHolder.setRootName("children");
-		//userService.delete(user);
 		return users;
 	}
 	/**

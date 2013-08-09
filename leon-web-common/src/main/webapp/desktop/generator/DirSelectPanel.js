@@ -44,7 +44,7 @@ Ext.define('Leon.desktop.generator.DirSelectPanel',{
        				parent=me.getRootNode();
        			}
        			
-       			Ext.Msg.prompt('请输入路径', '例：newName或<br>com/mawujun/newName', function(btn, text){
+       			Ext.Msg.prompt('请输入路径', '例：newName或<br>com.mawujun.newName', function(btn, text){
 					if (btn == 'ok'){
 						Ext.Ajax.request({
 		       				url:'/generator/createDirectory',

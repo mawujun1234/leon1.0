@@ -7,7 +7,6 @@ import java.io.Writer;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -23,7 +22,6 @@ import org.hibernate.id.SequenceGenerator;
 import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.hibernate.persister.entity.SingleTableEntityPersister;
 import org.hibernate.type.ComponentType;
-import org.hibernate.type.EntityType;
 import org.hibernate.type.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +29,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Service;
 
-import com.mawujun.generator.util.FreemarkerHelper;
 import com.mawujun.repository.idEntity.UUIDGenerator;
 import com.mawujun.utils.StringUtils;
 
@@ -307,22 +304,32 @@ public class JavaEntityMetaDataService {
 		return clazz.getPackage().getName();
 	}
 	
-	public Map prepareFilePathDate(Class clazz){
+	public SubjectRoot prepareFilePathDate(Class clazz){
 		SessionFactory factory = this.getSessionFactory();
 		AbstractEntityPersister classMetadata = (SingleTableEntityPersister) factory.getClassMetadata(clazz);
 		
 		
-		Map root =new HashMap();
-		//oot.put("user", "aaaaaaaaaaaaaaaaaa");
-		//javaEntityMetaDataService.getPrimaryKeyProperty(clazz);
-		//javaEntityMetaDataService.get
-		root.put("dbName", dbName);
-		root.put("tableName", this.getDbTableName(clazz));
-		root.put("simpleClassName", clazz.getSimpleName());
-		root.put("basepackage", clazz.getPackage().getName());
-		root.put("idType", classMetadata.getIdentifierType().getReturnedClass().getSimpleName());
-		root.put("idColumnName", this.getPrimaryKeyColumn(clazz));
-		root.put("idPropertyName", classMetadata.getIdentifierPropertyName());
+//		Map root =new HashMap();
+//		//oot.put("user", "aaaaaaaaaaaaaaaaaa");
+//		//javaEntityMetaDataService.getPrimaryKeyProperty(clazz);
+//		//javaEntityMetaDataService.get
+//		root.put("dbName", dbName);
+//		root.put("tableName", this.getDbTableName(clazz));
+//		root.put("simpleClassName", clazz.getSimpleName());
+//		root.put("basepackage", clazz.getPackage().getName());
+//		root.put("idType", classMetadata.getIdentifierType().getReturnedClass().getSimpleName());
+//		root.put("idColumnName", this.getPrimaryKeyColumn(clazz));
+//		root.put("idPropertyName", classMetadata.getIdentifierPropertyName());
+		
+		SubjectRoot root=new SubjectRoot();
+
+		root.setDbName(dbName);
+		root.setTableName(this.getDbTableName(clazz));
+		root.setSimpleClassName(clazz.getSimpleName());
+		root.setBasepackage(clazz.getPackage().getName());
+		root.setIdType(classMetadata.getIdentifierType().getReturnedClass().getSimpleName());
+		root.setIdColumnName(this.getPrimaryKeyColumn(clazz));
+		root.setIdPropertyName(classMetadata.getIdentifierPropertyName());
 		return root;
 	}
 	
@@ -332,40 +339,59 @@ public class JavaEntityMetaDataService {
 	 * @param clazz
 	 * @return
 	 */
-	public Map prepareDate(Class clazz){
+	public SubjectRoot prepareDate(Class clazz){
 		SessionFactory factory = this.getSessionFactory();
 		AbstractEntityPersister classMetadata = (SingleTableEntityPersister) factory.getClassMetadata(clazz);
 		
 		
-		Map root =new HashMap();
-		//oot.put("user", "aaaaaaaaaaaaaaaaaa");
-		//javaEntityMetaDataService.getPrimaryKeyProperty(clazz);
-		//javaEntityMetaDataService.get
+		//Map root =new HashMap();
+//		root.put("dbName", dbName);
+//		root.put("tableName", this.getDbTableName(clazz));
+//		root.put("simpleClassName", clazz.getSimpleName());
+//		root.put("basepackage", clazz.getPackage().getName());
+//		root.put("idType", classMetadata.getIdentifierType().getReturnedClass().getSimpleName());
+//		root.put("idColumnName", this.getPrimaryKeyColumn(clazz));
+//		root.put("idPropertyName", classMetadata.getIdentifierPropertyName());
+//
+//		if(classMetadata.getIdentifierGenerator() instanceof IdentityGenerator){
+//			root.put("idGeneratorStrategy", "identity");
+//		} else if(classMetadata.getIdentifierGenerator() instanceof UUIDGenerator
+//			|| classMetadata.getIdentifierGenerator() instanceof AbstractUUIDGenerator){
+//			root.put("idGeneratorStrategy", "uuid");
+//		} else if(classMetadata.getIdentifierGenerator() instanceof SequenceGenerator){
+//			root.put("idGeneratorStrategy", "sequence");
+//			SequenceGenerator aa=(SequenceGenerator)classMetadata.getIdentifierGenerator();
+//			root.put("sequenceName", aa.getSequenceName());
+//		}  else if(classMetadata.getIdentifierGenerator() instanceof GUIDGenerator){//
+//			//采用数据库底层的guid算法机制，对应MYSQL的uuid()函数，SQL 
+//			//Server的newid()函数，ORACLE的rawtohex(sys_guid())函数等
+//			root.put("idGeneratorStrategy", "guid");
+//		}
 		
-		
-		root.put("dbName", dbName);
-		root.put("tableName", this.getDbTableName(clazz));
-		root.put("simpleClassName", clazz.getSimpleName());
-		root.put("basepackage", clazz.getPackage().getName());
-		root.put("idType", classMetadata.getIdentifierType().getReturnedClass().getSimpleName());
-		root.put("idColumnName", this.getPrimaryKeyColumn(clazz));
-		root.put("idPropertyName", classMetadata.getIdentifierPropertyName());
+		SubjectRoot root=new SubjectRoot();
+
+		root.setDbName(dbName);
+		root.setTableName(this.getDbTableName(clazz));
+		root.setSimpleClassName(clazz.getSimpleName());
+		root.setBasepackage(clazz.getPackage().getName());
+		root.setIdType(classMetadata.getIdentifierType().getReturnedClass().getSimpleName());
+		root.setIdColumnName(this.getPrimaryKeyColumn(clazz));
+		root.setIdPropertyName(classMetadata.getIdentifierPropertyName());
 
 		if(classMetadata.getIdentifierGenerator() instanceof IdentityGenerator){
-			root.put("idGeneratorStrategy", "identity");
+			root.setIdGeneratorStrategy("identity");
 		} else if(classMetadata.getIdentifierGenerator() instanceof UUIDGenerator
 			|| classMetadata.getIdentifierGenerator() instanceof AbstractUUIDGenerator){
-			root.put("idGeneratorStrategy", "uuid");
+			root.setIdGeneratorStrategy("uuid");
 		} else if(classMetadata.getIdentifierGenerator() instanceof SequenceGenerator){
-			root.put("idGeneratorStrategy", "sequence");
+			root.setIdGeneratorStrategy("sequence");
 			SequenceGenerator aa=(SequenceGenerator)classMetadata.getIdentifierGenerator();
-			root.put("sequenceName", aa.getSequenceName());
+			root.setSequenceName(aa.getSequenceName());
 		}  else if(classMetadata.getIdentifierGenerator() instanceof GUIDGenerator){//
 			//采用数据库底层的guid算法机制，对应MYSQL的uuid()函数，SQL 
 			//Server的newid()函数，ORACLE的rawtohex(sys_guid())函数等
-			root.put("idGeneratorStrategy", "guid");
+			root.setIdGeneratorStrategy("guid");
 		}
-		
 		
 		List<PropertyColumn> propertyColumns =new ArrayList<PropertyColumn>();
 		PropertyColumn idpropertyColumn=new PropertyColumn();
@@ -385,7 +411,7 @@ public class JavaEntityMetaDataService {
 			}
 			//如果是组件怎么办,把组件中的列映射为主对象的列
 			if(propertyType.isComponentType()){
-				root.put("hasResultMap", true);
+				root.setHasResultMap(true);
 				
 				PropertyColumn propertyColumn=new PropertyColumn();
 				propertyColumn.setIsComponentType(true);
@@ -404,8 +430,8 @@ public class JavaEntityMetaDataService {
 				}
 
 				propertyColumns.add(propertyColumn);
-			} else if(propertyType.isAssociationType()){
-				root.put("hasResultMap", true);
+			} else if(propertyType.isAssociationType()){//如果是关联的话 就获取关联属性
+				root.setHasResultMap(true);
 				
 				//如果是关联怎么办
 				PropertyColumn propertyColumn=new PropertyColumn();
@@ -466,7 +492,8 @@ public class JavaEntityMetaDataService {
 			}
 		}
 		
-		root.put("propertyColumns", newPropertyColumns);
+		//root.put("propertyColumns", newPropertyColumns);
+		root.setPropertyColumns(newPropertyColumns);
 		List<PropertyColumn> baseTypePropertyColumns=new ArrayList<PropertyColumn>();
 		for(PropertyColumn propertyColumn:newPropertyColumns){
 			if(propertyColumn.getIsBaseType() || propertyColumn.getIsIdProperty()){
@@ -474,7 +501,8 @@ public class JavaEntityMetaDataService {
 			}
 		}
 		//所有基础属性的 属性集合
-		root.put("baseTypePropertyColumns", baseTypePropertyColumns);
+		//root.put("baseTypePropertyColumns", baseTypePropertyColumns);
+		root.setBaseTypePropertyColumns(baseTypePropertyColumns);
 		
 		return root;
 	}
@@ -530,23 +558,26 @@ public class JavaEntityMetaDataService {
 		
 		cfg.setObjectWrapper(new DefaultObjectWrapper());
 	}
-	
+//	
+//	/**
+//	 * 
+//	 * @param clazz 要
+//	 * @param ftl 模板文件在的地方
+//	 * @throws ClassNotFoundException 
+//	 * @throws TemplateException
+//	 * @throws IOException
+//	 */
+//	public  String generatorToString(String className,String ftl,String jsPackage) throws ClassNotFoundException, TemplateException, IOException  {
+//		Class clazz=Class.forName(className);
+//		return generatorToString(clazz, ftl,jsPackage);
+//	}
 	/**
-	 * 
-	 * @param clazz 要
-	 * @param ftl 模板文件在的地方
-	 * @throws ClassNotFoundException 
-	 * @throws TemplateException
-	 * @throws IOException
-	 */
-	public  String generatorToString(String className,String ftl) throws ClassNotFoundException, TemplateException, IOException  {
-		Class clazz=Class.forName(className);
-		return generatorToString(clazz, ftl);
-	}
-	/**
-	 * 
-	 * @param clazz 要
-	 * @param ftl 模板文件在的地方
+	 * jsPackagel，默认是class的Leon.uncapitalize(simpleClassName)
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param clazz
+	 * @param ftl
+	 * @param 
+	 * @return
 	 * @throws TemplateException
 	 * @throws IOException
 	 */
@@ -564,7 +595,14 @@ public class JavaEntityMetaDataService {
 		//templete.setEncoding("UTF-8");
 		//templete.setOutputEncoding("UTF-8");
 		/* 创建数据模型 */
-		Map root =this.prepareDate(clazz);
+		SubjectRoot root =this.prepareDate(clazz);
+//		if(jsPackage==null){
+//			jsPackage=getJsPackage(clazz);
+//		} else {
+//			root.setJsPackage(jsPackage);
+//		}
+		
+		
 		/* 将模板和数据模型合并 */
 		//Writer out = new OutputStreamWriter(System.out);
 		Writer out = new StringWriter();
@@ -573,6 +611,10 @@ public class JavaEntityMetaDataService {
 		out.flush();
 		return out.toString();
 	}
+	private String getJsPackage(Class clazz){
+		return "Leon."+StringUtils.uncapitalize(clazz.getSimpleName());
+	}
+
 	
 	
 	public  void generator(String className,String ftl,Writer writer) throws ClassNotFoundException, TemplateException, IOException  {
@@ -589,7 +631,7 @@ public class JavaEntityMetaDataService {
 	 * @throws IOException
 	 */
 	public  String generatorFileName(Class clazz,String ftl) throws ClassNotFoundException, TemplateException, IOException  {
-		Map root =this.prepareFilePathDate(clazz);
+		SubjectRoot root =this.prepareFilePathDate(clazz);
 		
 		String fileName=FreemarkerHelper.processTemplateString(ftl,root, cfg);
 		return fileName;
@@ -598,6 +640,9 @@ public class JavaEntityMetaDataService {
 		Class clazz=Class.forName(className);
 		return generatorFileName(clazz,ftl);
 	}
+//	public  void generator(Class clazz,String ftl,Writer writer) throws TemplateException, IOException  {
+//		generator( clazz, ftl,null, writer);
+//	}
 	/**
 	 * 
 	 * @param clazz 要
@@ -619,7 +664,12 @@ public class JavaEntityMetaDataService {
 		//templete.setEncoding("UTF-8");
 		//templete.setOutputEncoding("UTF-8");
 		/* 创建数据模型 */
-		Map root =this.prepareDate(clazz);
+		SubjectRoot root =this.prepareDate(clazz);
+//		if(jsPackage!=null){
+//			root.setJsPackage(jsPackage);	
+//		} else {
+//			root.setJsPackage(getJsPackage(clazz));
+//		}
 		
 //		String fileName=FreemarkerHelper.processTemplateString(ftl,root, new Configuration());
 //		String filePath=basePath+SystemUtils.FILE_SEPARATOR+fileName;

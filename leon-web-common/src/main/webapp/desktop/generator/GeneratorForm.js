@@ -25,9 +25,10 @@ Ext.define('Leon.desktop.generator.GeneratorForm',{
                         xtype:"combobox",
                         displayField:'name',
                         valueField:'key',
+                        value:'DDD',
                         store:Ext.create('Ext.data.Store',{
                         	fields:["key","name"],
-                        	data:[{key:'ddd',name:'领域类'},{key:'sql',name:'sql语句'},{key:'table',name:'数据库表'}]
+                        	data:[{key:'DDD',name:'领域类'},{key:'SQL',name:'sql语句'},{key:'TABLE',name:'数据库表'}]
                         })
                     }, {
                         fieldLabel: '主体名称',
@@ -39,8 +40,10 @@ Ext.define('Leon.desktop.generator.GeneratorForm',{
                     	xtype:'button',
                     	text:'选择主体',
                     	handler:function(btn){
+                    		var combobox=btn.previousSibling("[xtype=combobox][name=subjectType]")
                     		var panel=null;
-                    		if('ddd'=='ddd'){
+                    		//alert(combobox.getValue());
+                    		if('DDD'==combobox.getValue()){
                     			panel=Ext.create('Leon.desktop.generator.DDDSelectGrid',{
                     				
                     			});
@@ -50,7 +53,7 @@ Ext.define('Leon.desktop.generator.GeneratorForm',{
                     		});
                     		var win=Ext.create('Ext.Window',{
                     			layout:'fit',
-                    			title:'选择领域类',
+                    			title:'选择主体',
                     			modal:true,
                     			width:370,
                     			height:400,
@@ -97,7 +100,7 @@ Ext.define('Leon.desktop.generator.GeneratorForm',{
                     		win.show();
                     	}
                     }, {
-                        fieldLabel: 'java保存目录',
+                        fieldLabel: 'java包名',
                         labelWidth: 100,
                         width:300,
                         name: 'javaDir'

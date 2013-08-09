@@ -3,20 +3,13 @@ package com.mawujun.generator;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.DirectoryFileFilter;
-import org.apache.commons.io.filefilter.FileFilterUtils;
-import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.hibernate.metadata.ClassMetadata;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.controller.spring.mvc.JsonConfigHolder;
-import com.mawujun.utils.StringUtils;
 import com.mawujun.utils.SystemUtils;
 
 @Controller
@@ -106,6 +98,7 @@ public class GeneratorController {
 	@ResponseBody
 	public boolean createDirectory(HttpServletRequest request,String parentId,String text) throws IOException{
 		//String[] paths=text.split("/");
+		text=text.replaceAll(".", SystemUtils.FILE_SEPARATOR);
 		String basePath =null;
 		if(parentId!=null && !"root".equals(parentId)){
 			basePath=parentId;

@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.security.auth.Subject;
+
 import org.apache.commons.lang.NullArgumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -103,7 +105,8 @@ public class GeneratorService {
 		/* 获取或创建模板 */
 		Template templete = cfg.getTemplate(ftl);
 		/* 创建数据模型 */
-		Map root =javaEntityMetaDataService.prepareDate(clazz);
+		//Map root =javaEntityMetaDataService.prepareDate(clazz);
+		SubjectRoot root =javaEntityMetaDataService.prepareDate(clazz);
 		/* 将模板和数据模型合并 */
 		//Writer out = new OutputStreamWriter(System.out);
 		Writer out = new StringWriter();
