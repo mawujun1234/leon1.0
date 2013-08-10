@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mawujun.controller.spring.mvc.JsonConfigHolder;
 import com.mawujun.utils.SystemUtils;
 
+import freemarker.template.TemplateException;
+
 @Controller
 public class GeneratorController {
 	@RequestMapping("/generator/listJsDir")
@@ -149,38 +151,27 @@ public class GeneratorController {
 		packageClass=result;
 		return result;
 	}
-//	//类型和具体的模板文件的对应关系
-//	HashMap<String,String> ftlMapper=new HashMap<String,String>();
-//	{
-//		ftlMapper.put("Controller", "${simpleClassName}Controller.ftl");
-//		ftlMapper.put("Service", "${simpleClassName}Service.ftl");
-//		ftlMapper.put("MapperXML", "${simpleClassName}_${dbName}_Mapper.ftl");
-//		ftlMapper.put("Extjs_Model", "${simpleClassName}.ftl");
-//	}
-//	@RequestMapping("/codeGenerator/generator.do")
-//	@ResponseBody
-//	public String generator(String className, String type) {
-//		String writer=null;
-//		try {
-//			writer=javaEntityMetaDataService.generatorToString(className,ftlMapper.get(type));	
-//		} catch (ClassNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			return ExtjsJsonResult.initErrorResult("没有找到这个类");
-//		} catch (TemplateException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			return ExtjsJsonResult.initErrorResult("模板文件出错");
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			return ExtjsJsonResult.initErrorResult("读取模板文件出错");
-//		}
-//		String str=writer.toString();
-//		//str= str.replaceAll( "\r\n", " <br/> ");
-//		//str= str.replaceAll( "\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
-//		return str;
-//	}
+	//类型和具体的模板文件的对应关系,之后写到配置文件当中去，这样就可以进行修改了
+	HashMap<String,String> ftlMapper=new HashMap<String,String>();
+	{
+		ftlMapper.put("Controller", "${simpleClassName}Controller.java.ftl");
+		ftlMapper.put("Service", "${simpleClassName}Service.java.ftl");
+		ftlMapper.put("MapperXML", "${simpleClassName}_${dbName}_Mapper.xml.ftl");
+		ftlMapper.put("Extjs_Model", "${simpleClassName}.js.ftl");
+	}
+	@RequestMapping("/generator/generatorStr")
+	@ResponseBody
+	public String generatorStr(String className, String type) throws ClassNotFoundException, TemplateException, IOException {
+		String writer=null;
+
+		writer=javaEntityMetaDataService.generatorToString(className,ftlMapper.get(type));	
+		
+		String str=writer.toString();
+		//str= str.replaceAll( "\r\n", " <br/> ");
+		//str= str.replaceAll( "\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
+		JsonConfigHolder.setAutoWrap(false);
+		return str;
+	}
 //	
 //	@RequestMapping("/codeGenerator/exportFile.do")
 //	@ResponseBody

@@ -558,19 +558,19 @@ public class JavaEntityMetaDataService {
 		
 		cfg.setObjectWrapper(new DefaultObjectWrapper());
 	}
-//	
-//	/**
-//	 * 
-//	 * @param clazz 要
-//	 * @param ftl 模板文件在的地方
-//	 * @throws ClassNotFoundException 
-//	 * @throws TemplateException
-//	 * @throws IOException
-//	 */
-//	public  String generatorToString(String className,String ftl,String jsPackage) throws ClassNotFoundException, TemplateException, IOException  {
-//		Class clazz=Class.forName(className);
-//		return generatorToString(clazz, ftl,jsPackage);
-//	}
+	
+	/**
+	 * 
+	 * @param clazz 要
+	 * @param ftl 模板文件在的地方
+	 * @throws ClassNotFoundException 
+	 * @throws TemplateException
+	 * @throws IOException
+	 */
+	public  String generatorToString(String className,String ftl) throws ClassNotFoundException, TemplateException, IOException  {
+		Class clazz=Class.forName(className);
+		return generatorToString(clazz, ftl);
+	}
 	/**
 	 * jsPackagel，默认是class的Leon.uncapitalize(simpleClassName)
 	 * @author mawujun email:16064988@163.com qq:16064988
