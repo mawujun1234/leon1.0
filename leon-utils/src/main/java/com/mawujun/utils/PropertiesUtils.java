@@ -335,14 +335,16 @@ public class PropertiesUtils {
 	public void load(InputStream inStream) throws IOException {
 		p.load(inStream);
 	}
-	/**
+	/**PropertiesUtils utils=PropertiesUtils.load("templates/templates.properties");
 	 * 从classpath根目录下搜寻
-	 * @param fileName
+	 * @param filePath
 	 * @throws IOException
 	 */
-	public void load(String fileName) throws IOException {
-		InputStream in = this.getClass().getClassLoader().getResourceAsStream(fileName);
-		p.load(in);
+	public static PropertiesUtils load(String filePath) throws IOException {
+		InputStream in = PropertiesUtils.class.getClassLoader().getResourceAsStream(filePath);
+		PropertiesUtils utils=new PropertiesUtils();
+		utils.load(in);
+		return utils;
 	}
 
 	public void loadFromXML(InputStream in) throws IOException,
@@ -362,10 +364,6 @@ public class PropertiesUtils {
 		return p.remove(key);
 	}
 
-	/** @deprecated */
-	public void save(OutputStream out, String comments) {
-		p.save(out, comments);
-	}
 
 	public int size() {
 		return p.size();

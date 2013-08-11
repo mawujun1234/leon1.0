@@ -86,8 +86,8 @@ public class IntegrationTest  extends DbunitBaseRepositoryTest{
 	 */
 	@Test
 	public void test() throws IOException{
-		PropertiesUtils aa=new PropertiesUtils();
-		aa.load("com/mawujun/integration/dialet_config.propertites");
+		PropertiesUtils aa=PropertiesUtils.load("dialet_config.propertites");//new PropertiesUtils();
+		//aa.load("dialet_config.propertites");
 		assertNotNull(dbName);
 		assertNotNull(mybatisDialet);
 		assertNotNull(hibernateDialet);

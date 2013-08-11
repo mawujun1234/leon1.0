@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.controller.spring.mvc.JsonConfigHolder;
+import com.mawujun.utils.PropertiesUtils;
 import com.mawujun.utils.SystemUtils;
 
 import freemarker.template.TemplateException;
@@ -151,20 +152,22 @@ public class GeneratorController {
 		packageClass=result;
 		return result;
 	}
-	//类型和具体的模板文件的对应关系,之后写到配置文件当中去，这样就可以进行修改了
-	HashMap<String,String> ftlMapper=new HashMap<String,String>();
-	{
-		ftlMapper.put("Controller", "${simpleClassName}Controller.java.ftl");
-		ftlMapper.put("Service", "${simpleClassName}Service.java.ftl");
-		ftlMapper.put("MapperXML", "${simpleClassName}_${dbName}_Mapper.xml.ftl");
-		ftlMapper.put("Extjs_Model", "${simpleClassName}.js.ftl");
-	}
+//	//类型和具体的模板文件的对应关系,之后写到配置文件当中去，这样就可以进行修改了
+//	HashMap<String,String> ftlMapper=new HashMap<String,String>();
+//	{
+//		ftlMapper.put("Controller", "${simpleClassName}Controller.java.ftl");
+//		ftlMapper.put("Service", "Controller${simpleClassName}Service.java.ftl");
+//		ftlMapper.put("MapperXML", "${simpleClassName}_${dbName}_Mapper.xml.ftl");
+//		ftlMapper.put("Extjs_Model", "${simpleClassName}.js.ftl");
+//	}
 	@RequestMapping("/generator/generatorStr")
 	@ResponseBody
 	public String generatorStr(String className, String type) throws ClassNotFoundException, TemplateException, IOException {
+		PropertiesUtils utils=PropertiesUtils.load("templates/templates.properties");
+		
 		String writer=null;
 
-		writer=javaEntityMetaDataService.generatorToString(className,ftlMapper.get(type));	
+		writer=javaEntityMetaDataService.generatorToString(className,utils.getProperty(type));	
 		
 		String str=writer.toString();
 		//str= str.replaceAll( "\r\n", " <br/> ");

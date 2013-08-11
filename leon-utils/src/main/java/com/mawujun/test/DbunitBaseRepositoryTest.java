@@ -17,9 +17,9 @@ public class DbunitBaseRepositoryTest {
 	protected static IDatabaseConnection dbConn;
 	public  static void initHibernate(String pfile) {
 		try {
-			PropertiesUtils aa=new PropertiesUtils();
-			aa.load(pfile);//加载配置文件中的数据源链接信息
-			;
+			PropertiesUtils aa=PropertiesUtils.load(pfile);//new PropertiesUtils();
+			//aa.load(pfile);//加载配置文件中的数据源链接信息
+			//;
 
 			//本例使用postgresql数据库 
 			Class.forName(aa.getProperty("hibernate.connection.driver_class"));

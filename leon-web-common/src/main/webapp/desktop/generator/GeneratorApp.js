@@ -17,11 +17,11 @@ Ext.onReady(function(){
 	            items: [
 	                {
 	                    boxLabel  : '分页',
-	                    name      : 'topping',
+	                    name      : 'showPager',
 	                    inputValue: '1'
 	                }, {
 	                    boxLabel  : '树形',
-	                    name      : 'topping',
+	                    name      : 'showTree',
 	                    inputValue: '2',
 	                    checked   : true
 	                }
