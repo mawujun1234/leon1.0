@@ -318,6 +318,66 @@ Ext.onReady(function(){
         	}]
         });
         
+        //还有是否可编辑，是否分页，是否添加增，删，改方法，是否添加查询工具栏
+        var Extjs_GridPanel=Ext.create('Ext.panel.Panel',{
+        	title:'Grid生成',
+        	layout:'fit',
+        	tbar:['生成Grid方式:',{
+	                    boxLabel  : '创建',
+	                    xtype:'radio',
+	                    name      : 'createGridModel',//是使用Ext.create创建一个Form，还是使用Ext.define定义一个model
+	                    inputValue: 'create'
+	                },{
+	                    boxLabel  : '定义',
+	                    name      : 'createGridModel',
+	                    margin:'0 0 0 10',
+	                    xtype:'radio'
+	                   ,inputValue: 'define'
+	                   ,checked   : true
+	                },'-',
+	            {
+	            
+	            },
+	        {
+	        	text:'生成',
+	        	iconCls:'icons_search_button_green',
+	        	margin:'0 0 0 20',
+	        	handler:function(btn){
+	        		var createFormModel=btn.previousSibling("[name=createFormModel]"); 
+	        		Ext.Ajax.request({
+	        			url:'/generator/generatorStr',
+	        			params:{
+	        				className:form.getSubjectName(),
+	        				type:'Extjs_Grid',
+	        				createFormModel:createFormModel.getGroupValue()
+	        			},
+	        			success:function(response){
+	        				//var obj=Ext.decode(response.responseText);
+	        				Extjs_FormPanel.items.getAt(0).setValue(response.responseText);
+	        			}
+	        		
+	        		});
+	        	
+	        	}
+	        },{
+	        	text:'导出',
+	        	iconCls:'icons_table_export',
+	        	margin:'0 0 0 20',
+	        	handler:function(btn){
+	        		var createFormModel=btn.previousSibling("[name=createFormModel]"); 
+	        		var params={
+	        				className:form.getSubjectName(),
+	        				type:'Extjs_Grid',
+	        				createFormModel:createFormModel.getGroupValue()
+	        			}
+	        		window.location.href=Ext.ContextPath+"/generator/saveFile?"+Ext.urlEncode(params);
+	        	}
+	        }],
+        	items:[{
+        		xtype:'textarea'
+        	}]
+        });
+        
         var tabpanel={
             xtype:'tabpanel',
             region:'center',
