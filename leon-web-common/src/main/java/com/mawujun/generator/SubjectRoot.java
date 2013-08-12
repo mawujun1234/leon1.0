@@ -1,7 +1,9 @@
 package com.mawujun.generator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SubjectRoot {
 	private String dbName;
@@ -15,7 +17,10 @@ public class SubjectRoot {
 	private String sequenceName;
 	private boolean hasResultMap;//是组件关联的时候
 	
-	private String jsPackage;//用于用表生成的时候指定的
+	//private String jsPackage;//用于用表生成的时候指定的
+	private Map<Object,Object> extenConfig=new HashMap<Object,Object>();
+	
+	
 
 	
 	List<PropertyColumn> propertyColumns=new ArrayList<PropertyColumn>();
@@ -93,13 +98,23 @@ public class SubjectRoot {
 			List<PropertyColumn> baseTypePropertyColumns) {
 		this.baseTypePropertyColumns = baseTypePropertyColumns;
 	}
-	public String getJsPackage() {
-//		if(jsPackage==null){
-//			return "Leon"+StringUtils.uncapitalize(simpleClassName);
-//		}
-		return jsPackage;
+	public Map<Object, Object> getExtenConfig() {
+		return extenConfig;
 	}
-	public void setJsPackage(String jsPackage) {
-		this.jsPackage = jsPackage;
+	public void setExtenConfig(Map<Object, Object> extenConfig) {
+		this.extenConfig = extenConfig;
 	}
+	public void addExtenConfig(Object key, Object value) {
+		this.extenConfig.put(key, value);
+	}
+	
+//	public String getJsPackage() {
+////		if(jsPackage==null){
+////			return "Leon"+StringUtils.uncapitalize(simpleClassName);
+////		}
+//		return jsPackage;
+//	}
+//	public void setJsPackage(String jsPackage) {
+//		this.jsPackage = jsPackage;
+//	}
 }

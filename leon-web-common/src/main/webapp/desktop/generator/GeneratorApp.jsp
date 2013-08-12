@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     
     <title>代码生成器管理</title>
-    <base href="">
+    <meta http-equiv="Content-type" content="text/html; charset=UTF-8">
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">

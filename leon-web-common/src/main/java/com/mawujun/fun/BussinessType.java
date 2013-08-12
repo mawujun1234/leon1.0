@@ -6,7 +6,7 @@ import com.mawujun.constant.cache.ConstantItemProxy;
 
 /**
  * 业务类型，用于权限判断
- * @author mawujun email:mawujun1234@163.com qq:16064988
+ * @author mawujun email:16064988@qq.com qq:16064988
  *
  */
 @Embeddable

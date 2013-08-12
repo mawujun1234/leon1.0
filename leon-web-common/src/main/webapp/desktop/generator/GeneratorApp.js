@@ -6,43 +6,58 @@ Ext.onReady(function(){
 	});
 	
 	var controllerPanel=Ext.create('Ext.panel.Panel',{
-        	title:"Controller配置",
-
+        	title:"Controller生成",
         	layout:'fit',
         	tbar:[{
-	            xtype: 'checkboxgroup',
-	            labelWidth:50,
-	            fieldLabel: '生成选项',
-	            //defaultType: 'checkboxfield',
-	            items: [
-	                {
+	                    boxLabel  : '普通',
+	                    xtype:'radio',
+	                    name      : 'showModel',
+	                    inputValue: 'normal',
+	                    checked   : true
+	                },{
 	                    boxLabel  : '分页',
-	                    name      : 'showPager',
-	                    inputValue: '1'
+	                    name      : 'showModel',
+	                    margin:'0 0 0 10',
+	                    xtype:'radio'
+	                   ,inputValue: 'page'
 	                }, {
 	                    boxLabel  : '树形',
-	                    name      : 'showTree',
-	                    inputValue: '2',
-	                    checked   : true
-	                }
-	            ]
-	        },{
-	        	text:'预览',
-	        	margin:'0 0 0 120',
+	                    xtype:'radio',
+	                    name      : 'showModel',
+	                    inputValue: 'tree'
+	                },
+	        {
+	        	text:'生成',
+	        	iconCls:'icons_search_button_green',
+	        	margin:'0 0 0 20',
 	        	handler:function(btn){
+	        		var showModel=btn.previousSibling("[name=showModel],[checked=true]"); 
 	        		Ext.Ajax.request({
 	        			url:'/generator/generatorStr',
 	        			params:{
-	        				className:"com.mawujun.fun.Fun",
-	        				type:'Controller'
+	        				className:form.getSubjectName(),
+	        				type:'Controller',
+	        				showModel:showModel.getGroupValue( )
 	        			},
 	        			success:function(response){
-	        				//var obj=Ext.decode(response.responseText);
 	        				controllerPanel.items.getAt(0).setValue(response.responseText);
 	        			}
 	        		
 	        		});
 	        	
+	        	}
+	        },{
+	        	text:'导出',
+	        	iconCls:'icons_table_export',
+	        	margin:'0 0 0 20',
+	        	handler:function(btn){
+	        		var showModel=btn.previousSibling("[name=showModel],[checked=true]"); 
+	        		var params={
+	        				className:form.getSubjectName(),
+	        				type:'Controller',
+	        				showModel:showModel.getGroupValue( )
+	        		}
+	        		window.location.href=Ext.ContextPath+"/generator/saveFile?"+Ext.urlEncode(params);
 	        	}
 	        }],
         	items:[{
@@ -51,42 +66,48 @@ Ext.onReady(function(){
         });
         
         var servicePanel=Ext.create('Ext.panel.Panel',{
-        	title:"Service配置",
-
+        	title:"Service生成",
         	layout:'fit',
-        	tbar:[{
-	            xtype: 'checkboxgroup',
-	            labelWidth:50,
-	            fieldLabel: '重载方法',
-	            //defaultType: 'checkboxfield',
-	            items: [
-	                {
+        	tbar:['重载方法:',
+        		{
 	                    boxLabel  : '增',
-	                    name      : 'topping',
+	                    xtype:'checkbox',
+	                    name      : 'create',
 	                    inputValue: '1'
 	                }, {
 	                    boxLabel  : '删',
-	                    name      : 'topping',
+	                    xtype:'checkbox',
+	                    name      : 'destroy',
 	                    inputValue: '2'
 	                }, {
 	                    boxLabel  : '改',
-	                    name      : 'topping',
+	                    xtype:'checkbox',
+	                    name      : 'update',
 	                    inputValue: '2'
-	                }, {
-	                    boxLabel  : '查',
-	                    name      : 'topping',
-	                    inputValue: '2'
-	                }
-	            ]
-	        },{
-	        	text:'预览',
-	        	margin:'0 0 0 120',
+	                }//, {
+	                 //   boxLabel  : '查',
+	                 //   xtype:'checkbox',
+	               //     name      : 'query',
+	                //    inputValue: '2'
+	               // }
+	        ,{
+	        	text:'生成',
+	        	iconCls:'icons_search_button_green',
+	        	margin:'0 0 0 20',
 	        	handler:function(btn){
+	        		var create=btn.previousSibling("[name=create]"); 
+	        		var destroy=btn.previousSibling("[name=destroy]"); 
+	        		var update=btn.previousSibling("[name=update]"); 
+	        		//var query=btn.previousSibling("[name=query]"); 
 	        		Ext.Ajax.request({
 	        			url:'/generator/generatorStr',
 	        			params:{
-	        				className:"com.mawujun.fun.Fun",
-	        				type:'Service'
+	        				className:form.getSubjectName(),
+	        				type:'Service',
+	        				create:create.getValue(),
+	        				destroy:destroy.getValue(),
+	        				update:update.getValue()
+	        				//query:query.getValue()
 	        			},
 	        			success:function(response){
 	        				//var obj=Ext.decode(response.responseText);
@@ -95,6 +116,201 @@ Ext.onReady(function(){
 	        		
 	        		});
 	        	
+	        	}
+	        },{
+	        	text:'导出',
+	        	iconCls:'icons_table_export',
+	        	margin:'0 0 0 20',
+	        	handler:function(btn){
+	        		var create=btn.previousSibling("[name=create]"); 
+	        		var destroy=btn.previousSibling("[name=destroy]"); 
+	        		var update=btn.previousSibling("[name=update]"); 
+	        		var params={
+	        				className:form.getSubjectName(),
+	        				type:'Service',
+	        				create:create.getValue(),
+	        				destroy:destroy.getValue(),
+	        				update:update.getValue()
+	        				//query:query.getValue()
+	        			}
+	        		window.location.href=Ext.ContextPath+"/generator/saveFile?"+Ext.urlEncode(params);
+	        	}
+	        }],
+        	items:[{
+        		xtype:'textarea'
+        	}]
+        });
+        //xml文件模板
+         var mapperXMLPanel=Ext.create('Ext.panel.Panel',{
+        	title:"xml文件模板生成",
+        	layout:'fit',
+        	tbar:['重载方法:',
+        		{
+	                boxLabel  : '增',
+	                xtype:'checkbox',
+	                name      : 'create',
+	                inputValue: '1'
+	            }, {
+	                boxLabel  : '删',
+	                xtype:'checkbox',
+	                name      : 'destroy',
+	                inputValue: '2'
+	            }, {
+	                boxLabel  : '改',
+	                xtype:'checkbox',
+	                name      : 'update',
+	                inputValue: '2'
+	            }, {
+	                boxLabel  : '查',
+	                xtype:'checkbox',
+	                name      : 'query',
+	                inputValue: '2'
+	            }
+	        ,{
+	        	text:'生成',
+	        	iconCls:'icons_search_button_green',
+	        	margin:'0 0 0 20',
+	        	handler:function(btn){
+	        		var create=btn.previousSibling("[name=create]"); 
+	        		var destroy=btn.previousSibling("[name=destroy]"); 
+	        		var update=btn.previousSibling("[name=update]"); 
+	        		var query=btn.previousSibling("[name=query]"); 
+	        		Ext.Ajax.request({
+	        			url:'/generator/generatorStr',
+	        			params:{
+	        				className:form.getSubjectName(),
+	        				type:'MapperXML',
+	        				create:create.getValue(),
+	        				destroy:destroy.getValue(),
+	        				update:update.getValue(),
+	        				query:query.getValue()
+	        			},
+	        			success:function(response){
+	        				//var obj=Ext.decode(response.responseText);
+	        				mapperXMLPanel.items.getAt(0).setValue(response.responseText);
+	        			}
+	        		
+	        		});
+	        	
+	        	}
+	        },{
+	        	text:'导出',
+	        	iconCls:'icons_table_export',
+	        	margin:'0 0 0 20',
+	        	handler:function(btn){
+	        		var create=btn.previousSibling("[name=create]"); 
+	        		var destroy=btn.previousSibling("[name=destroy]"); 
+	        		var update=btn.previousSibling("[name=update]"); 
+	        		var query=btn.previousSibling("[name=query]"); 
+	        		var params={
+	        				className:form.getSubjectName(),
+	        				type:'MapperXML',
+	        				create:create.getValue(),
+	        				destroy:destroy.getValue(),
+	        				update:update.getValue(),
+	        				query:query.getValue()
+	        			}
+	        		window.location.href=Ext.ContextPath+"/generator/saveFile?"+Ext.urlEncode(params);
+	        	}
+	        }],
+        	items:[{
+        		xtype:'textarea'
+        	}]
+        });
+        
+        var Extjs_ModelPanel=Ext.create('Ext.panel.Panel',{
+        	title:"Extjs的model生成",
+        	layout:'fit',
+        	tbar:[
+	        {
+	        	text:'生成',
+	        	iconCls:'icons_search_button_green',
+	        	margin:'0 0 0 20',
+	        	handler:function(btn){
+	        		Ext.Ajax.request({
+	        			url:'/generator/generatorStr',
+	        			params:{
+	        				className:form.getSubjectName(),
+	        				type:'Extjs_Model'
+	        			},
+	        			success:function(response){
+	        				//var obj=Ext.decode(response.responseText);
+	        				Extjs_ModelPanel.items.getAt(0).setValue(response.responseText);
+	        			}
+	        		
+	        		});
+	        	
+	        	}
+	        },{
+	        	text:'导出',
+	        	iconCls:'icons_table_export',
+	        	margin:'0 0 0 20',
+	        	handler:function(btn){
+	        		
+	        		var params={
+	        				className:form.getSubjectName(),
+	        				type:'Extjs_Model'
+	        			}
+	        		window.location.href=Ext.ContextPath+"/generator/saveFile?"+Ext.urlEncode(params);
+	        	}
+	        }],
+        	items:[{
+        		xtype:'textarea'
+        	}]
+        });
+        
+        var Extjs_FormPanel=Ext.create('Ext.panel.Panel',{
+        	title:'Form生成',
+        	layout:'fit',
+        	tbar:['生成form方式:',{
+	                    boxLabel  : '创建',
+	                    xtype:'radio',
+	                    name      : 'createFormModel',//是使用Ext.create创建一个Form，还是使用Ext.define定义一个model
+	                    inputValue: 'create'
+	                },{
+	                    boxLabel  : '定义',
+	                    name      : 'createFormModel',
+	                    margin:'0 0 0 10',
+	                    xtype:'radio'
+	                   ,inputValue: 'define'
+	                   ,checked   : true
+	                },'-',
+	            {
+	            
+	            },
+	        {
+	        	text:'生成',
+	        	iconCls:'icons_search_button_green',
+	        	margin:'0 0 0 20',
+	        	handler:function(btn){
+	        		var createFormModel=btn.previousSibling("[name=createFormModel]"); 
+	        		Ext.Ajax.request({
+	        			url:'/generator/generatorStr',
+	        			params:{
+	        				className:form.getSubjectName(),
+	        				type:'Extjs_Form',
+	        				createFormModel:createFormModel.getGroupValue()
+	        			},
+	        			success:function(response){
+	        				//var obj=Ext.decode(response.responseText);
+	        				Extjs_FormPanel.items.getAt(0).setValue(response.responseText);
+	        			}
+	        		
+	        		});
+	        	
+	        	}
+	        },{
+	        	text:'导出',
+	        	iconCls:'icons_table_export',
+	        	margin:'0 0 0 20',
+	        	handler:function(btn){
+	        		var createFormModel=btn.previousSibling("[name=createFormModel]"); 
+	        		var params={
+	        				className:form.getSubjectName(),
+	        				type:'Extjs_Form',
+	        				createFormModel:createFormModel.getGroupValue()
+	        			}
+	        		window.location.href=Ext.ContextPath+"/generator/saveFile?"+Ext.urlEncode(params);
 	        	}
 	        }],
         	items:[{
@@ -111,8 +327,8 @@ Ext.onReady(function(){
                 bodyPadding: 10
             },
             
-            items:[controllerPanel,servicePanel,{
-                title:'DDD配置',
+            items:[controllerPanel,servicePanel,mapperXMLPanel,Extjs_ModelPanel,Extjs_FormPanel,{
+                title:'Tree生成',//生成普通树，还是继承基础树
                 defaults: {
                     width: 230
                 },
@@ -124,19 +340,7 @@ Ext.onReady(function(){
                     value: ''
                 }]
             },{
-                title:'Form配置',
-                defaults: {
-                    width: 230
-                },
-                defaultType: 'textfield',
-
-                items: [{
-                    fieldLabel: '模板地址',
-                    name: 'formLocal',
-                    value: ''
-                }]
-            },{
-                title:'grid配置',
+                title:'grid生成',
                 defaults: {
                     width: 230
                 },
@@ -148,7 +352,7 @@ Ext.onReady(function(){
                     value: ''
                 }]
             },{
-                title:'combobox配置',
+                title:'combobox生成',
                 defaults: {
                     width: 230
                 },

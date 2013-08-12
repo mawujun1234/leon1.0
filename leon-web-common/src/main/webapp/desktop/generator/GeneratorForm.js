@@ -147,5 +147,9 @@ Ext.define('Leon.desktop.generator.GeneratorForm',{
         
         me.callParent();
         
+	},
+	getSubjectName:function(){
+		var field=this.getForm().findField("subjectName");
+		return field.getValue();
 	}
 });

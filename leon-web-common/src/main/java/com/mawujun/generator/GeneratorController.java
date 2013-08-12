@@ -2,6 +2,7 @@ package com.mawujun.generator;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.metadata.ClassMetadata;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -135,11 +137,9 @@ public class GeneratorController {
 		Map<String,ClassMetadata> queryResult=javaEntityMetaDataService.getSessionFactory().getAllClassMetadata();
 		List<Map<String,Object>> result=new ArrayList<Map<String,Object>>();
 		//Set<String> contain=new HashSet<String>();
-		for(Entry<String,ClassMetadata> entry:queryResult.entrySet()){
-			
+		for(Entry<String,ClassMetadata> entry:queryResult.entrySet()){		
 			String packageName=entry.getKey().substring(0,entry.getKey().lastIndexOf('.'));
-			
-			
+
 			Map<String,Object> childrenNode=new HashMap<String,Object>();
 			//childrenNode.put("id",entry.getKey());
 			childrenNode.put("text",entry.getKey().substring(entry.getKey().lastIndexOf('.')+1));
@@ -162,12 +162,22 @@ public class GeneratorController {
 //	}
 	@RequestMapping("/generator/generatorStr")
 	@ResponseBody
-	public String generatorStr(String className, String type) throws ClassNotFoundException, TemplateException, IOException {
+	public String generatorStr(HttpServletRequest request,String className, String type) throws ClassNotFoundException, TemplateException, IOException {
 		PropertiesUtils utils=PropertiesUtils.load("templates/templates.properties");
 		
 		String writer=null;
+		
+		Map<String, String[]> map=request.getParameterMap();
+		Map<Object,Object> extenConfig=new HashMap<Object,Object>();
+		for(String key:map.keySet()){
+			if(map.get(key).length==1){
+				extenConfig.put(key, map.get(key)[0]);
+			} else {
+				extenConfig.put(key, map.get(key));
+			}
+		}
 
-		writer=javaEntityMetaDataService.generatorToString(className,utils.getProperty(type));	
+		writer=javaEntityMetaDataService.generatorToString(className,utils.getProperty(type),extenConfig);	
 		
 		String str=writer.toString();
 		//str= str.replaceAll( "\r\n", " <br/> ");
@@ -175,22 +185,37 @@ public class GeneratorController {
 		JsonConfigHolder.setAutoWrap(false);
 		return str;
 	}
-//	
-//	@RequestMapping("/codeGenerator/exportFile.do")
-//	@ResponseBody
-//	public void exportFile(String className, String type,HttpServletResponse response) throws IOException, ClassNotFoundException, TemplateException {
-//		String fileName=javaEntityMetaDataService.generatorFileName(className, ftlMapper.get(type));
-//		fileName=fileName.substring(0,fileName.lastIndexOf('.'))+".java";
-//		fileName = new String((fileName).getBytes("UTF-8"),"ISO8859_1");    
-//		response.setContentType("application/html;charset=utf-8");
-//		response.addHeader("Content-Disposition","attachment;filename="+fileName);  
+	
+	@RequestMapping("/generator/saveFile")
+	@ResponseBody
+	public void exportFile(HttpServletRequest request,String className, String type,HttpServletResponse response) throws IOException, ClassNotFoundException, TemplateException {
+		PropertiesUtils utils=PropertiesUtils.load("templates/templates.properties");
+		Map<String, String[]> map=request.getParameterMap();
+		Map<Object,Object> extenConfig=new HashMap<Object,Object>();
+		for(String key:map.keySet()){
+			if(map.get(key).length==1){
+				extenConfig.put(key, map.get(key)[0]);
+			} else {
+				extenConfig.put(key, map.get(key));
+			}
+		}
+		Writer writer=response.getWriter();
+		
+		String fileName=javaEntityMetaDataService.generatorFileName(className, (String)utils.get(type));
+		fileName=fileName.substring(0,fileName.lastIndexOf('.'));
+		fileName = new String((fileName).getBytes("UTF-8"),"ISO8859_1");    
+		response.setContentType("application/html;charset=utf-8");
+		response.addHeader("Content-Disposition","attachment;filename="+fileName);  
+		
+		javaEntityMetaDataService.generator(className,(String)utils.get(type),extenConfig,writer);	
+		writer.close();
 //
 //		// 将数据输出到Servlet输出流中。
 //		//ServletOutputStream sos = response.getOutputStream();
 //		Writer writer=response.getWriter();
 //		javaEntityMetaDataService.generator(className,ftlMapper.get(type),writer);	
 //		writer.close();
-//		
-//	}
+		
+	}
 
 }

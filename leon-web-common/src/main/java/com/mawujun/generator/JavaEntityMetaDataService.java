@@ -19,9 +19,13 @@ import org.hibernate.id.AbstractUUIDGenerator;
 import org.hibernate.id.GUIDGenerator;
 import org.hibernate.id.IdentityGenerator;
 import org.hibernate.id.SequenceGenerator;
+import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.hibernate.persister.entity.SingleTableEntityPersister;
+import org.hibernate.type.BagType;
+import org.hibernate.type.CollectionType;
 import org.hibernate.type.ComponentType;
+import org.hibernate.type.EntityType;
 import org.hibernate.type.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +33,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Service;
 
+import com.mawujun.constant.cache.ConstantItemProxy;
 import com.mawujun.repository.idEntity.UUIDGenerator;
 import com.mawujun.utils.StringUtils;
 
@@ -407,14 +412,38 @@ public class JavaEntityMetaDataService {
 			// 判断是否一对多的对像,移除
 			Type propertyType = classMetadata.getPropertyType(propertyName);
 			if (propertyType.isCollectionType()) {
-				continue;
-			}
-			//如果是组件怎么办,把组件中的列映射为主对象的列
-			if(propertyType.isComponentType()){
+				root.setHasResultMap(true);
+				
+				//如果是关联怎么办
+				PropertyColumn propertyColumn=new PropertyColumn();
+				propertyColumn.setIsCollectionType(true);
+				propertyColumn.setProperty(propertyName);
+				propertyColumn.setJavaType(propertyType.getReturnedClass());
+				//propertyColumn.setColumn(classMetadata.getPropertyColumnNames(propertyName)[0]);
+
+				CollectionType collectionType= (CollectionType)propertyType;
+				//AbstractEntityPersister classMetadataEntity = (SingleTableEntityPersister) factory.getClassMetadata(propertyType.getReturnedClass());
+				CollectionMetadata  collectionMetadata =factory.getCollectionMetadata(collectionType.getRole());
+				propertyColumn.setJavaType(collectionMetadata.getElementType().getReturnedClass());
+				
+//				PropertyColumn aa=propertyColumn.addEntityTypePropertyColumn(classMetadataEntity.getIdentifierPropertyName(),
+//						classMetadata.getPropertyColumnNames(propertyName+"."+classMetadataEntity.getIdentifierPropertyName())[0],
+//						entityType.getReturnedClass());
+//				aa.setIsIdProperty(true);
+				
+
+				
+				propertyColumns.add(propertyColumn);
+				//continue;
+			} else if(propertyType.isComponentType()){//如果是组件怎么办,把组件中的列映射为主对象的列
 				root.setHasResultMap(true);
 				
 				PropertyColumn propertyColumn=new PropertyColumn();
 				propertyColumn.setIsComponentType(true);
+				if(ConstantItemProxy.class.isAssignableFrom(propertyType.getReturnedClass())){
+					//propertyColumn.setIsComponentType(false);
+					propertyColumn.setIsConstantType(true);
+				}
 				propertyColumn.setProperty(propertyName);
 				propertyColumn.setJavaType(propertyType.getReturnedClass());
 				propertyColumn.setColumn(classMetadata.getPropertyColumnNames(propertyName)[0]);
@@ -440,19 +469,19 @@ public class JavaEntityMetaDataService {
 				propertyColumn.setJavaType(propertyType.getReturnedClass());
 				propertyColumn.setColumn(classMetadata.getPropertyColumnNames(propertyName)[0]);
 
-//				EntityType entityType= (EntityType)propertyType;
-//				AbstractEntityPersister classMetadataEntity = (SingleTableEntityPersister) factory.getClassMetadata(propertyType.getReturnedClass());
-//				PropertyColumn aa=propertyColumn.addEntityTypePropertyColumn(classMetadataEntity.getIdentifierPropertyName(),
-//						classMetadata.getPropertyColumnNames(propertyName+"."+classMetadataEntity.getIdentifierPropertyName())[0],
-//						entityType.getReturnedClass());
-//				aa.setIsIdProperty(true);
+				EntityType entityType= (EntityType)propertyType;
+				AbstractEntityPersister classMetadataEntity = (SingleTableEntityPersister) factory.getClassMetadata(propertyType.getReturnedClass());
+				PropertyColumn aa=propertyColumn.addEntityTypePropertyColumn(classMetadataEntity.getIdentifierPropertyName(),
+						classMetadata.getPropertyColumnNames(propertyName+"."+classMetadataEntity.getIdentifierPropertyName())[0],
+						entityType.getReturnedClass());
+				aa.setIsIdProperty(true);
 				
 
 				
 				propertyColumns.add(propertyColumn);
 			} else 	if(propertyType.isEntityType()){
 				//
-				System.out.println("isEntityType===================");
+				//System.out.println("isEntityType===================");
 			} else {
 				//否则就直接加进去
 				PropertyColumn propertyColumn=new PropertyColumn();
@@ -534,12 +563,13 @@ public class JavaEntityMetaDataService {
 		}
 		cfg = new Configuration();
 		cfg.setEncoding(Locale.CHINA, "UTF-8");
+		//cfg.setEncoding(Locale.CHINA, "UTF-8");
 		
 		//循环出 所有包含ftl的文件夹
 		Set<String> list=new HashSet<String>();
 		List<TemplateLoader> templateLoaders=new ArrayList<TemplateLoader>();
 		for(Resource res:reses){
-			System.out.println(res.getURI().getPath());
+			//System.out.println(res.getURI().getPath());
 			//System.out.println(res.getURL().getPath());
 			String path=res.getURI().getPath().substring(0,res.getURI().getPath().lastIndexOf('/'));//SystemUtils.FILE_SEPARATOR
 			if(!list.contains(path)){
@@ -567,9 +597,9 @@ public class JavaEntityMetaDataService {
 	 * @throws TemplateException
 	 * @throws IOException
 	 */
-	public  String generatorToString(String className,String ftl) throws ClassNotFoundException, TemplateException, IOException  {
+	public  String generatorToString(String className,String ftl,Map extenConfig) throws ClassNotFoundException, TemplateException, IOException  {
 		Class clazz=Class.forName(className);
-		return generatorToString(clazz, ftl);
+		return generatorToString(clazz, ftl,extenConfig);
 	}
 	/**
 	 * jsPackagel，默认是class的Leon.uncapitalize(simpleClassName)
@@ -581,7 +611,7 @@ public class JavaEntityMetaDataService {
 	 * @throws TemplateException
 	 * @throws IOException
 	 */
-	public  String generatorToString(Class clazz,String ftl) throws TemplateException, IOException {
+	public  String generatorToString(Class clazz,String ftl,Map extenConfig) throws TemplateException, IOException {
 		if(!StringUtils.hasLength(ftl)) {
 			throw new NullArgumentException("模板文件名称不能为null");
 		}
@@ -596,11 +626,10 @@ public class JavaEntityMetaDataService {
 		//templete.setOutputEncoding("UTF-8");
 		/* 创建数据模型 */
 		SubjectRoot root =this.prepareDate(clazz);
-//		if(jsPackage==null){
-//			jsPackage=getJsPackage(clazz);
-//		} else {
-//			root.setJsPackage(jsPackage);
-//		}
+		if(extenConfig!=null){
+			root.setExtenConfig(extenConfig);
+		}
+		
 		
 		
 		/* 将模板和数据模型合并 */
@@ -617,9 +646,9 @@ public class JavaEntityMetaDataService {
 
 	
 	
-	public  void generator(String className,String ftl,Writer writer) throws ClassNotFoundException, TemplateException, IOException  {
+	public  void generator(String className,String ftl,Map extenConfig,Writer writer) throws ClassNotFoundException, TemplateException, IOException  {
 		Class clazz=Class.forName(className);
-		generator(clazz,ftl, writer);
+		generator(clazz,ftl,extenConfig, writer);
 	}
 	/**
 	 * 根据字符串产生名称
@@ -650,7 +679,7 @@ public class JavaEntityMetaDataService {
 	 * @throws TemplateException
 	 * @throws IOException
 	 */
-	public  void generator(Class clazz,String ftl,Writer writer) throws TemplateException, IOException {
+	public  void generator(Class clazz,String ftl,Map extenConfig,Writer writer) throws TemplateException, IOException {
 		if(!StringUtils.hasLength(ftl)) {
 			throw new NullArgumentException("模板文件名称不能为null");
 		}
@@ -665,6 +694,10 @@ public class JavaEntityMetaDataService {
 		//templete.setOutputEncoding("UTF-8");
 		/* 创建数据模型 */
 		SubjectRoot root =this.prepareDate(clazz);
+		if(extenConfig!=null){
+			root.setExtenConfig(extenConfig);
+		}
+		
 //		if(jsPackage!=null){
 //			root.setJsPackage(jsPackage);	
 //		} else {

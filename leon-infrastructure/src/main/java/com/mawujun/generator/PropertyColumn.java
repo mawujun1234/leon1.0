@@ -24,6 +24,7 @@ public class PropertyColumn {
 	private Boolean isAssociationType=false;
 	private Boolean isBaseType=false;
 	private Boolean isCollectionType=false;
+	private Boolean isConstantType=false;//判断是不是常数
 	
 	List<PropertyColumn> propertyColumns=new ArrayList<PropertyColumn>();
 	
@@ -82,16 +83,16 @@ public class PropertyColumn {
 	public void setJavaType(Class clazz) {
 		this.javaType = clazz.getName();
 		this.basepackage=clazz.getPackage().getName();
-		System.out.println(javaType);
+		//System.out.println(javaType);
 		this.javaTypeClassName=javaType.substring(javaType.lastIndexOf('.')+1);
-		System.out.println(this.javaTypeClassName);
+		//System.out.println(this.javaTypeClassName);
 		if(jsJavaMapper.get(clazz)==null){
 			this.jsType="auto";
 		} else {
 			this.jsType=jsJavaMapper.get(clazz);//映射好后就是替换 自己写的类然后测试
 		}
 		
-		System.out.println(this.jsType);
+		//System.out.println(this.jsType);
 	}
 
 	public Boolean getIsComponentType() {
@@ -195,6 +196,14 @@ public class PropertyColumn {
 
 	public void setBasepackage(String basepackage) {
 		this.basepackage = basepackage;
+	}
+
+	public Boolean getIsConstantType() {
+		return isConstantType;
+	}
+
+	public void setIsConstantType(Boolean isConstantType) {
+		this.isConstantType = isConstantType;
 	}
 	
 }
