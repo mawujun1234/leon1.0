@@ -319,6 +319,7 @@ Ext.onReady(function(){
         });
         
         //还有是否可编辑，是否分页，是否添加增，删，改方法，是否添加查询工具栏
+        //可编辑的时候，列的形式特别是日期形式和combobox形式的时候怎么写的
         var Extjs_GridPanel=Ext.create('Ext.panel.Panel',{
         	title:'Grid生成',
         	layout:'fit',
@@ -336,24 +337,30 @@ Ext.onReady(function(){
 	                   ,checked   : true
 	                },'-',
 	            {
-	            
-	            },
+	                boxLabel  : '是否可编辑',
+	                xtype:'checkbox',
+	                name      : 'editble',
+	                inputValue: '2'
+	            },'-',
 	        {
 	        	text:'生成',
 	        	iconCls:'icons_search_button_green',
 	        	margin:'0 0 0 20',
 	        	handler:function(btn){
-	        		var createFormModel=btn.previousSibling("[name=createFormModel]"); 
+	        		var createGridModel=btn.previousSibling("[name=createGridModel]");
+	        		var editble=btn.previousSibling("[name=editble]");
 	        		Ext.Ajax.request({
 	        			url:'/generator/generatorStr',
 	        			params:{
 	        				className:form.getSubjectName(),
 	        				type:'Extjs_Grid',
-	        				createFormModel:createFormModel.getGroupValue()
+	        				createGridModel:createGridModel.getGroupValue(),
+	        				editble:editble.getValue()
+	        				
 	        			},
 	        			success:function(response){
 	        				//var obj=Ext.decode(response.responseText);
-	        				Extjs_FormPanel.items.getAt(0).setValue(response.responseText);
+	        				Extjs_GridPanel.items.getAt(0).setValue(response.responseText);
 	        			}
 	        		
 	        		});
@@ -364,11 +371,11 @@ Ext.onReady(function(){
 	        	iconCls:'icons_table_export',
 	        	margin:'0 0 0 20',
 	        	handler:function(btn){
-	        		var createFormModel=btn.previousSibling("[name=createFormModel]"); 
+	        		var createGridModel=btn.previousSibling("[name=createGridModel]"); 
 	        		var params={
 	        				className:form.getSubjectName(),
 	        				type:'Extjs_Grid',
-	        				createFormModel:createFormModel.getGroupValue()
+	        				createGridModel:createGridModel.getGroupValue()
 	        			}
 	        		window.location.href=Ext.ContextPath+"/generator/saveFile?"+Ext.urlEncode(params);
 	        	}
@@ -387,7 +394,7 @@ Ext.onReady(function(){
                 bodyPadding: 10
             },
             
-            items:[controllerPanel,servicePanel,mapperXMLPanel,Extjs_ModelPanel,Extjs_FormPanel,{
+            items:[controllerPanel,servicePanel,mapperXMLPanel,Extjs_ModelPanel,Extjs_FormPanel,Extjs_GridPanel,{
                 title:'Tree生成',//生成普通树，还是继承基础树
                 defaults: {
                     width: 230
@@ -397,18 +404,6 @@ Ext.onReady(function(){
                 items: [{
                     fieldLabel: '模板地址',
                     name: 'dddLocal',
-                    value: ''
-                }]
-            },{
-                title:'grid生成',
-                defaults: {
-                    width: 230
-                },
-                defaultType: 'textfield',
-
-                items: [{
-                    fieldLabel: '模板地址',
-                    name: 'gridLocal',
                     value: ''
                 }]
             },{
