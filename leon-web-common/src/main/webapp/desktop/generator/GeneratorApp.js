@@ -1,8 +1,65 @@
 Ext.require('Leon.desktop.generator.GeneratorForm');
+Ext.require('Leon.desktop.generator.DDDSelectGrid');
+Ext.require('Leon.desktop.generator.PropertyConfig');
 Ext.onReady(function(){
 	var form=Ext.create('Leon.desktop.generator.GeneratorForm',{
 		region:'north',
 		height:70
+	});
+	
+	var propertyConfigGrid=Ext.create('Ext.grid.Panel',{
+		title:'主体配置',
+		columnLines:true,
+		columns:[{
+			text: '列名',  dataIndex:'property'
+		},{
+			text: '名称',  dataIndex:'label',
+			editor:{
+				 xtype: 'textfield'
+			}
+		},{
+			text: '展现方式',  dataIndex:'showModel',
+			editor:{
+				 xtype: 'combobox',
+				 store: [
+                        ['textfield','textfield'],
+                        ['numberfield','numberfield'],
+                        ['datefield','datefield'],
+                        ['checkcolumn','checkcolumn'],
+                        ['combobox','combobox']
+                 ]
+			}
+		}],
+		plugins:[Ext.create('Ext.grid.plugin.CellEditing', {
+	        pluginId: 'cellEditingPlugin',
+	        clicksToEdit: 1
+	    })],
+		store:Ext.create('Ext.data.Store',{
+			autoSync:false,
+		    pageSize:50,
+		    autoLoad:false,
+		    model:'Leon.desktop.generator.PropertyConfig',
+		    proxy:{
+				type: 'ajax',
+		        url : '/generator/getSubjectProperties',
+		        headers:{ 'Accept':'application/json;'},
+		        actionMethods: { read: 'POST' },
+		        extraParams:{limit:50},
+		        reader:{
+					type:'json',
+					root:'root',
+					successProperty:'success',
+					totalProperty:'total'		
+				}
+			}
+		}),
+		tbar:[{
+			text:'查询',
+			handler:function(){
+				var subjectName=form.getSubjectName();
+				propertyConfigGrid.getStore().load({params:{subjectName:subjectName}});
+			}
+		}]
 	});
 	
 	var controllerPanel=Ext.create('Ext.panel.Panel',{
@@ -336,26 +393,54 @@ Ext.onReady(function(){
 	                   ,inputValue: 'define'
 	                   ,checked   : true
 	                },'-',
+	           
+	            {
+	                boxLabel  : '是否分页',
+	                xtype:'checkbox',
+	                name      : 'pageable',
+	                checked:true,
+	                inputValue: '2'
+	            },'-',
+	            {
+	                boxLabel  : '使用model',
+	                xtype:'checkbox',
+	                name      : 'userModel',
+	                checked:true,
+	                inputValue: '2'
+	            },'-',
 	            {
 	                boxLabel  : '是否可编辑',
 	                xtype:'checkbox',
-	                name      : 'editble',
+	                name      : 'editable',
 	                inputValue: '2'
 	            },'-',
+	            {
+	            	text:'列配置',
+	            	handler:function(){
+	            	
+	            	}
+	            },
+	            '单元格编辑还是行编辑',
+	            '增删改查方法',
+	            '查询条件框生成',
 	        {
 	        	text:'生成',
 	        	iconCls:'icons_search_button_green',
 	        	margin:'0 0 0 20',
 	        	handler:function(btn){
 	        		var createGridModel=btn.previousSibling("[name=createGridModel]");
-	        		var editble=btn.previousSibling("[name=editble]");
+	        		var editable=btn.previousSibling("[name=editable]");
+	        		var userModel=btn.previousSibling("[name=userModel]");
+	        		var pageable=btn.previousSibling("[name=pageable]");
 	        		Ext.Ajax.request({
 	        			url:'/generator/generatorStr',
 	        			params:{
 	        				className:form.getSubjectName(),
 	        				type:'Extjs_Grid',
 	        				createGridModel:createGridModel.getGroupValue(),
-	        				editble:editble.getValue()
+	        				editable:editable.getValue(),
+	        				userModel:userModel.getValue(),
+	        				pageable:pageable.getValue()
 	        				
 	        			},
 	        			success:function(response){
@@ -391,10 +476,10 @@ Ext.onReady(function(){
             plain:true,
             activeTab: 0,
             defaults:{
-                bodyPadding: 10
+                //bodyPadding: 10
             },
             
-            items:[controllerPanel,servicePanel,mapperXMLPanel,Extjs_ModelPanel,Extjs_FormPanel,Extjs_GridPanel,{
+            items:[propertyConfigGrid,controllerPanel,servicePanel,mapperXMLPanel,Extjs_ModelPanel,Extjs_FormPanel,Extjs_GridPanel,{
                 title:'Tree生成',//生成普通树，还是继承基础树
                 defaults: {
                     width: 230

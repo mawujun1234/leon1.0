@@ -21,3 +21,94 @@
 	}
 
 </#macro>
+
+<#-- 生成Grid的列 -->
+<#macro generateGridColumns editable>
+	<#list propertyColumns as propertyColumn>
+      <#if propertyColumn.isBaseType==true ||  propertyColumn.isIdProperty==true>
+		<#if propertyColumn.jsType=='date'>
+		{dataIndex:'${propertyColumn.property}',text:'${propertyColumn.property}',xtype: 'datecolumn',   format:'Y-m-d'
+		<#if editable=="true">
+			,editor: {
+                xtype: 'textfield',
+                allowBlank: true
+            }
+		</#if>
+		}
+		<#if propertyColumn_has_next>,</#if>
+		<#elseif propertyColumn.jsType=='int' || propertyColumn.jsType=='float'>
+		{dataIndex:'${propertyColumn.property}',text:'${propertyColumn.property}',xtype: 'numbercolumn', format:'0.00'
+		<#if editable=="true">
+			,editor: {
+                xtype: 'numberfield',
+                allowBlank: true
+            }
+		</#if>
+		}
+		<#if propertyColumn_has_next>,</#if>
+		<#else>
+		{dataIndex:'${propertyColumn.property}',text:'${propertyColumn.property}'
+		<#if editable=="true">
+			,editor: {
+                xtype: 'textfield',
+                allowBlank: true
+            }
+		</#if>
+		}
+		<#if propertyColumn_has_next>,</#if>
+		</#if>
+	  <#elseif propertyColumn.isConstantType==true>
+		{dataIndex:'${propertyColumn.property}',text:'${propertyColumn.property}'
+		<#if editable=="true">
+			,editor: {
+                xtype: 'textfield',
+                allowBlank: true
+            }
+		</#if>
+		}
+		<#if propertyColumn_has_next>,</#if>
+	  <#elseif propertyColumn.isAssociationType==true>
+		{dataIndex:'${propertyColumn.property}',text:'${propertyColumn.property}'
+		<#if editable=="true">
+			,editor: {
+                xtype: 'textfield',
+                allowBlank: true
+            }
+		</#if>
+		}
+		<#if propertyColumn_has_next>,</#if>
+	  </#if>
+	 </#list>   
+</#macro>
+
+<#macro generateGridStore userModel extjsClassName>
+<#if userModel=="true">
+Ext.create('Ext.data.Store',{
+	autoSync:false,
+    pageSize:50,
+    model: '${extjsClassName}',
+    autoLoad:false
+ })
+<#else>
+Ext.create('Ext.data.Store',{
+	autoSync:false,
+    pageSize:50,
+    autoLoad:false,
+    proxy:{
+		type: 'ajax',
+        url : '/group/queryUser',
+        headers:{ 'Accept':'application/json;'},
+        actionMethods: { read: 'POST' },
+        extraParams:{limit:50},
+        reader:{
+			type:'json',
+			root:'root',
+			successProperty:'success',
+			totalProperty:'total'		
+		}
+	}
+ })
+</#if>
+
+
+</#macro>

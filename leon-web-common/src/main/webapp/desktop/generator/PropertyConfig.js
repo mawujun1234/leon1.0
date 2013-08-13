@@ -1,0 +1,11 @@
+Ext.defineModel("Leon.desktop.generator.PropertyConfig",{
+	extend:"Ext.data.Model",
+	idProperty:'id',
+	fields:[
+		{name:'id',type:'string'},
+		{name:'label',type:'string'},
+		{name:'property',type:'string'},
+		{name:'showModel',type:'string'},
+		{name:'subjectName',type:'string'}
+	]
+});

@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.controller.spring.mvc.JsonConfigHolder;
+import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.utils.PropertiesUtils;
+import com.mawujun.utils.ReflectionUtils;
 import com.mawujun.utils.SystemUtils;
 
 import freemarker.template.TemplateException;
@@ -118,6 +120,8 @@ public class GeneratorController {
 	
 	@Autowired
 	JavaEntityMetaDataService javaEntityMetaDataService;
+	@Autowired
+	PropertyConfigService propertyConfigService;
 	
 	private List<Map<String,Object>> packageClass=null;
 	
@@ -152,6 +156,35 @@ public class GeneratorController {
 		packageClass=result;
 		return result;
 	}
+	
+	
+	@RequestMapping("/generator/getSubjectProperties")
+	@ResponseBody
+	public List<PropertyConfig> getSubjectProperties(String subjectName) throws ClassNotFoundException{
+		List<PropertyConfig> list=propertyConfigService.query(Cnd.select().andEquals("subjectName", subjectName));
+		
+		if(list==null || list.size()==0){
+			PropertiesUtils utils=PropertiesUtils.load("templates/templates.properties");
+			SubjectRoot root=javaEntityMetaDataService.prepareDate(subjectName);
+			
+			List<PropertyConfig> result=new ArrayList<PropertyConfig>();
+			for(PropertyColumn pc:root.getPropertyColumns()){
+				PropertyConfig config=new PropertyConfig();
+				config.setSubjectName(subjectName);
+				config.setProperty(pc.getProperty());
+				config.setLabel(pc.getProperty());
+				result.add(config);
+			}
+			propertyConfigService.saveBatch(result);
+			return result;
+		} else {
+			return list;
+		}
+		
+		
+		
+	}
+	
 //	//类型和具体的模板文件的对应关系,之后写到配置文件当中去，这样就可以进行修改了
 //	HashMap<String,String> ftlMapper=new HashMap<String,String>();
 //	{

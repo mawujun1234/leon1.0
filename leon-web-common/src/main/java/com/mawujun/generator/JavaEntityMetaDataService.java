@@ -312,20 +312,7 @@ public class JavaEntityMetaDataService {
 	public SubjectRoot prepareFilePathDate(Class clazz){
 		SessionFactory factory = this.getSessionFactory();
 		AbstractEntityPersister classMetadata = (SingleTableEntityPersister) factory.getClassMetadata(clazz);
-		
-		
-//		Map root =new HashMap();
-//		//oot.put("user", "aaaaaaaaaaaaaaaaaa");
-//		//javaEntityMetaDataService.getPrimaryKeyProperty(clazz);
-//		//javaEntityMetaDataService.get
-//		root.put("dbName", dbName);
-//		root.put("tableName", this.getDbTableName(clazz));
-//		root.put("simpleClassName", clazz.getSimpleName());
-//		root.put("basepackage", clazz.getPackage().getName());
-//		root.put("idType", classMetadata.getIdentifierType().getReturnedClass().getSimpleName());
-//		root.put("idColumnName", this.getPrimaryKeyColumn(clazz));
-//		root.put("idPropertyName", classMetadata.getIdentifierPropertyName());
-		
+
 		SubjectRoot root=new SubjectRoot();
 
 		root.setDbName(dbName);
@@ -338,6 +325,10 @@ public class JavaEntityMetaDataService {
 		return root;
 	}
 	
+	public SubjectRoot prepareDate(String className) throws ClassNotFoundException{
+		Class clazz=Class.forName(className);
+		return prepareDate(clazz);
+	}
 	/**
 	 * 准备模板需要的数据
 	 * @author mawujun email:mawujun1234@163.com qq:16064988
@@ -347,31 +338,6 @@ public class JavaEntityMetaDataService {
 	public SubjectRoot prepareDate(Class clazz){
 		SessionFactory factory = this.getSessionFactory();
 		AbstractEntityPersister classMetadata = (SingleTableEntityPersister) factory.getClassMetadata(clazz);
-		
-		
-		//Map root =new HashMap();
-//		root.put("dbName", dbName);
-//		root.put("tableName", this.getDbTableName(clazz));
-//		root.put("simpleClassName", clazz.getSimpleName());
-//		root.put("basepackage", clazz.getPackage().getName());
-//		root.put("idType", classMetadata.getIdentifierType().getReturnedClass().getSimpleName());
-//		root.put("idColumnName", this.getPrimaryKeyColumn(clazz));
-//		root.put("idPropertyName", classMetadata.getIdentifierPropertyName());
-//
-//		if(classMetadata.getIdentifierGenerator() instanceof IdentityGenerator){
-//			root.put("idGeneratorStrategy", "identity");
-//		} else if(classMetadata.getIdentifierGenerator() instanceof UUIDGenerator
-//			|| classMetadata.getIdentifierGenerator() instanceof AbstractUUIDGenerator){
-//			root.put("idGeneratorStrategy", "uuid");
-//		} else if(classMetadata.getIdentifierGenerator() instanceof SequenceGenerator){
-//			root.put("idGeneratorStrategy", "sequence");
-//			SequenceGenerator aa=(SequenceGenerator)classMetadata.getIdentifierGenerator();
-//			root.put("sequenceName", aa.getSequenceName());
-//		}  else if(classMetadata.getIdentifierGenerator() instanceof GUIDGenerator){//
-//			//采用数据库底层的guid算法机制，对应MYSQL的uuid()函数，SQL 
-//			//Server的newid()函数，ORACLE的rawtohex(sys_guid())函数等
-//			root.put("idGeneratorStrategy", "guid");
-//		}
 		
 		SubjectRoot root=new SubjectRoot();
 
@@ -479,7 +445,7 @@ public class JavaEntityMetaDataService {
 
 				
 				propertyColumns.add(propertyColumn);
-			} else 	if(propertyType.isEntityType()){
+			} else 	if(propertyType.isEntityType()) {
 				//
 				//System.out.println("isEntityType===================");
 			} else {

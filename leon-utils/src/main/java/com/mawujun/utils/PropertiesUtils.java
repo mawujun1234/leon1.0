@@ -13,6 +13,8 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import com.mawujun.exception.BussinessException;
+
 /**
  * Properties的操作的工具类,为Properties提供一个代理增加相关工具方法如 getRequiredString(),getInt(),getBoolean()等方法
  * 并可以通过systemPropertiesMode属性指定是否搜索System.getProperty()及System.getenv()来查找值.
@@ -340,10 +342,16 @@ public class PropertiesUtils {
 	 * @param filePath
 	 * @throws IOException
 	 */
-	public static PropertiesUtils load(String filePath) throws IOException {
+	public static PropertiesUtils load(String filePath)  {
 		InputStream in = PropertiesUtils.class.getClassLoader().getResourceAsStream(filePath);
 		PropertiesUtils utils=new PropertiesUtils();
-		utils.load(in);
+		try {
+			utils.load(in);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new BussinessException("加载properties文件失败");
+		}
 		return utils;
 	}
 
