@@ -24,59 +24,110 @@
 
 <#-- 生成Grid的列 -->
 <#macro generateGridColumns editable>
-	<#list propertyColumns as propertyColumn>
+	<#list propertyColumns as propertyColumn>	
       <#if propertyColumn.isBaseType==true ||  propertyColumn.isIdProperty==true>
 		<#if propertyColumn.jsType=='date'>
 		{dataIndex:'${propertyColumn.property}',text:'${propertyColumn.property}',xtype: 'datecolumn',   format:'Y-m-d'
 		<#if editable=="true">
+			,renderer: Ext.util.Format.dateRenderer('Y-m-d'),
 			,editor: {
-                xtype: 'textfield',
+                xtype: 'datefield',
+                format: 'Y-m-d',
                 allowBlank: true
             }
 		</#if>
-		}
-		<#if propertyColumn_has_next>,</#if>
+		}<#if propertyColumn_has_next>,</#if>
 		<#elseif propertyColumn.jsType=='int' || propertyColumn.jsType=='float'>
 		{dataIndex:'${propertyColumn.property}',text:'${propertyColumn.property}',xtype: 'numbercolumn', format:'0.00'
 		<#if editable=="true">
 			,editor: {
                 xtype: 'numberfield',
+                selectOnFocus:true,
                 allowBlank: true
             }
 		</#if>
-		}
-		<#if propertyColumn_has_next>,</#if>
+		}<#if propertyColumn_has_next>,</#if>
 		<#else>
 		{dataIndex:'${propertyColumn.property}',text:'${propertyColumn.property}'
 		<#if editable=="true">
+		<#if (propertyColumn.showModel!"")=='checkcolumn'>
+			,xtype: 'checkcolumn'
+			,stopSelection: false
+		<#elseif (propertyColumn.showModel!"")=='combobox'>
+			editor: new Ext.form.field.ComboBox({
+                typeAhead: true,
+                triggerAction: 'all',
+                queryMode: 'remote',
+		    	displayField: 'name',
+		    	valueField: 'key',
+                store: Ext.create('Ext.data.Store', {
+			    	fields: ['key', 'name'], 
+				    proxy:{
+				    	type:'ajax',
+				    	url:'......',
+				    	reader:{
+				    		type:'json',
+				    		totalProperty:'total',
+				    		root:'root'
+				    	}
+				    }
+				})
+            })
+		<#else>
 			,editor: {
-                xtype: 'textfield',
-                allowBlank: true
-            }
+	            xtype: 'textfield',
+	            selectOnFocus:true
+	            allowBlank: true
+	        }
+		</#if>	
 		</#if>
-		}
-		<#if propertyColumn_has_next>,</#if>
+		}<#if propertyColumn_has_next>,</#if>
 		</#if>
 	  <#elseif propertyColumn.isConstantType==true>
+	  {dataIndex:'${propertyColumn.property}',text:'${propertyColumn.property}'
+	  <#if editable=="true">
+	  	,editor:{
+	        xtype:'constantcombo',
+            fieldLabel:'${propertyColumn.property}',
+            name: '${propertyColumn.property}',
+			code:'请补充完整'
+        }<#if propertyColumn_has_next>,</#if>
+	  </#if>
+	  <#else>
 		{dataIndex:'${propertyColumn.property}',text:'${propertyColumn.property}'
 		<#if editable=="true">
+		<#if (propertyColumn.showModel!"")=='checkcolumn'>
+			,xtype: 'checkcolumn'
+			,stopSelection: false
+		<#elseif (propertyColumn.showModel!"")=='combobox'>
+			,editor: new Ext.form.field.ComboBox({
+                typeAhead: true,
+                triggerAction: 'all',
+                queryMode: 'remote',
+		    	displayField: 'name',
+		    	valueField: 'key',
+                store: Ext.create('Ext.data.Store', {
+			    	fields: ['key', 'name'], 
+				    proxy:{
+				    	type:'ajax',
+				    	url:'......',
+				    	reader:{
+				    		type:'json',
+				    		totalProperty:'total',
+				    		root:'root'
+				    	}
+				    }
+				})
+            })
+		<#else>
 			,editor: {
-                xtype: 'textfield',
-                allowBlank: true
-            }
+	            xtype: 'textfield',
+	            selectOnFocus:true
+	            allowBlank: true
+	        }
 		</#if>
-		}
-		<#if propertyColumn_has_next>,</#if>
-	  <#elseif propertyColumn.isAssociationType==true>
-		{dataIndex:'${propertyColumn.property}',text:'${propertyColumn.property}'
-		<#if editable=="true">
-			,editor: {
-                xtype: 'textfield',
-                allowBlank: true
-            }
 		</#if>
-		}
-		<#if propertyColumn_has_next>,</#if>
+		}<#if propertyColumn_has_next>,</#if>
 	  </#if>
 	 </#list>   
 </#macro>
@@ -109,6 +160,4 @@ Ext.create('Ext.data.Store',{
 	}
  })
 </#if>
-
-
 </#macro>

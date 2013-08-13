@@ -4,7 +4,12 @@ Ext.require('Leon.desktop.generator.PropertyConfig');
 Ext.onReady(function(){
 	var form=Ext.create('Leon.desktop.generator.GeneratorForm',{
 		region:'north',
-		height:70
+		height:70,
+		listeners:{
+			selected:function(record){
+				tabpanel.unmask();
+			}
+		}
 	});
 	
 	var propertyConfigGrid=Ext.create('Ext.grid.Panel',{
@@ -15,7 +20,9 @@ Ext.onReady(function(){
 		},{
 			text: '名称',  dataIndex:'label',
 			editor:{
-				 xtype: 'textfield'
+				
+				 xtype: 'textfield',
+				 selectOnFocus:true
 			}
 		},{
 			text: '展现方式',  dataIndex:'showModel',
@@ -35,23 +42,23 @@ Ext.onReady(function(){
 	        clicksToEdit: 1
 	    })],
 		store:Ext.create('Ext.data.Store',{
-			autoSync:false,
+			autoSync:true,
 		    pageSize:50,
 		    autoLoad:false,
-		    model:'Leon.desktop.generator.PropertyConfig',
-		    proxy:{
-				type: 'ajax',
-		        url : '/generator/getSubjectProperties',
-		        headers:{ 'Accept':'application/json;'},
-		        actionMethods: { read: 'POST' },
-		        extraParams:{limit:50},
-		        reader:{
-					type:'json',
-					root:'root',
-					successProperty:'success',
-					totalProperty:'total'		
-				}
-			}
+		    model:'Leon.desktop.generator.PropertyConfig'
+//		    proxy:{
+//				type: 'ajax',
+//		        url : '/generator/getSubjectProperties',
+//		        headers:{ 'Accept':'application/json;'},
+//		        actionMethods: { read: 'POST' },
+//		        extraParams:{limit:50},
+//		        reader:{
+//					type:'json',
+//					root:'root',
+//					successProperty:'success',
+//					totalProperty:'total'		
+//				}
+//			}
 		}),
 		tbar:[{
 			text:'查询',
@@ -417,7 +424,7 @@ Ext.onReady(function(){
 	            {
 	            	text:'列配置',
 	            	handler:function(){
-	            	
+	            		tabpanel.setActiveTab(0);
 	            	}
 	            },
 	            '单元格编辑还是行编辑',
@@ -470,8 +477,8 @@ Ext.onReady(function(){
         	}]
         });
         
-        var tabpanel={
-            xtype:'tabpanel',
+        var tabpanel=Ext.create('Ext.tab.Panel',{
+            //xtype:'tabpanel',
             region:'center',
             plain:true,
             activeTab: 0,
@@ -503,8 +510,13 @@ Ext.onReady(function(){
                     name: 'comboboxLocal',
                     value: ''
                 }]
-            }]
-        }
+            }],
+            listeners:{
+		    	render:function(tabpanel){
+		    		tabpanel.mask();
+		    	}
+		    }
+        });
         
 	
 	var viewPort=Ext.create('Ext.container.Viewport',{

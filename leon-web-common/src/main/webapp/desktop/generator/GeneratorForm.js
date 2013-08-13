@@ -60,6 +60,7 @@ Ext.define('Leon.desktop.generator.GeneratorForm',{
                     		}
                     		panel.on('itemdblclick',function(grid, record, item, index){
                     			btn.previousSibling().setValue(record.get("className"));
+                    			me.fireEvent("selected",record);
                     		});
                     		var win=Ext.create('Ext.Window',{
                     			layout:'fit',
@@ -144,7 +145,7 @@ Ext.define('Leon.desktop.generator.GeneratorForm',{
                 }];
         
         
-        
+        me.addEvents("selected");
         me.callParent();
         
 	},

@@ -58,23 +58,39 @@ Ext.define('Leon.${module}.${simpleClassName}Form',{
 			code:'请补充完整'
         }<#if propertyColumn_has_next>,</#if>
 	  <#elseif propertyColumn.isAssociationType==true>
-		{
-		    fieldLabel: '${propertyColumn.property}',
+	  <#if (propertyColumn.showModel!"")=='combobox'>
+	  {
+	  		fieldLabel: '${propertyColumn.property}',
 		    name: '${propertyColumn.property}',
-		    displayField: 'name',
-		    valueField: 'abbr',
-		    queryMode: 'local',
-		    store:Ext.create('Ext.data.Store', {
-			    fields: ['abbr', 'name'],
-			    data : [
-			        {"abbr":"AL", "name":"Alabama"},
-			        {"abbr":"AK", "name":"Alaska"},
-			        {"abbr":"AZ", "name":"Arizona"}
-			        //...
-			    ]
-			})
-		    
-		}<#if propertyColumn_has_next>,</#if>
+			,store: new Ext.form.field.ComboBox({
+                typeAhead: true,
+                triggerAction: 'all',
+                queryMode: 'remote',
+		    	displayField: 'name',
+		    	valueField: 'key',
+                store: Ext.create('Ext.data.Store', {
+			    	fields: ['key', 'name'], 
+				    proxy:{
+				    	type:'ajax',
+				    	url:'......',
+				    	reader:{
+				    		type:'json',
+				    		totalProperty:'total',
+				    		root:'root'
+				    	}
+				    }
+				})
+            })
+         }<#if propertyColumn_has_next>,</#if>
+		<#else>
+		{
+	        fieldLabel: '${propertyColumn.property}',
+	        //afterLabelTextTpl: me.required,
+	        name: '${propertyColumn.property}',
+	        xtype:'textfield',
+	        allowBlank: false
+	   	}<#if propertyColumn_has_next>,</#if>
+		</#if>
 	  </#if>
 	  </#list>   
 	  ];   

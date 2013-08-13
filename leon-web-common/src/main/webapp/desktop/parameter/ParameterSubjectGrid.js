@@ -35,7 +35,7 @@ Ext.define('Leon.desktop.parameter.ParameterSubjectGrid',{
 	        },
 	        { text: '参数值', dataIndex: 'parameterValue', flex:1 }
        ];
-        me.store=e=Ext.create('Ext.data.Store',{
+        me.store=Ext.create('Ext.data.Store',{
        		autoSync:false,
        		pageSize:50,
        		fields:['subjectId','subjectName','subjectType','parameterId','parameterValue'],
@@ -62,8 +62,7 @@ Ext.define('Leon.desktop.parameter.ParameterSubjectGrid',{
 		    displayField: 'name',
 		    valueField: 'key',
 		    store:Ext.create('Ext.data.Store', {
-		    	fields: ['key', 'name'],
-			    
+		    	fields: ['key', 'name'], 
 			    proxy:{
 			    	type:'ajax',
 			    	url:'/parametersubject/querySubjectType',

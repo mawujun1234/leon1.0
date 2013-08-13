@@ -28,6 +28,11 @@ public class PropertyColumn {
 	
 	List<PropertyColumn> propertyColumns=new ArrayList<PropertyColumn>();
 	
+	//前段展示的时候的标签名字
+	private String label;
+	//展现方式，是下拉框，数字矿还是文本框
+	private String showModel;
+	
 	private static Map<Class,String> jsJavaMapper=new HashMap<Class,String>();
 	static {
 		jsJavaMapper.put(String.class, "string");
@@ -204,6 +209,22 @@ public class PropertyColumn {
 
 	public void setIsConstantType(Boolean isConstantType) {
 		this.isConstantType = isConstantType;
+	}
+
+	public String getShowModel() {
+		return showModel;
+	}
+
+	public void setShowModel(String showModel) {
+		this.showModel = showModel;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
 	}
 	
 }

@@ -34,6 +34,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Service;
 
 import com.mawujun.constant.cache.ConstantItemProxy;
+import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.repository.idEntity.UUIDGenerator;
 import com.mawujun.utils.StringUtils;
 
@@ -56,6 +57,8 @@ public class JavaEntityMetaDataService {
 	protected SessionFactory sessionFactory;
 	@Value("${jdbc.dbName}") 
 	protected String dbName;
+	@Autowired
+	PropertyConfigService propertyConfigService;
 
 	@Autowired
 	protected void setSessionFactory(final SessionFactory sessionFactory) {
@@ -487,10 +490,23 @@ public class JavaEntityMetaDataService {
 			}
 		}
 		
+		
+		List<PropertyConfig> list=propertyConfigService.query(Cnd.select().andEquals("subjectName", clazz.getName()));
+		
 		//root.put("propertyColumns", newPropertyColumns);
 		root.setPropertyColumns(newPropertyColumns);
 		List<PropertyColumn> baseTypePropertyColumns=new ArrayList<PropertyColumn>();
 		for(PropertyColumn propertyColumn:newPropertyColumns){
+			//添加展示方式
+			if(list!=null && list.size()>0){
+				for(PropertyConfig propertyConfig:list){
+					if(propertyConfig.getProperty().equals(propertyColumn.getProperty())){
+						propertyColumn.setLabel(propertyConfig.getLabel());
+						propertyColumn.setShowModel(propertyConfig.getShowModel());
+					}
+				}
+			}
+			
 			if(propertyColumn.getIsBaseType() || propertyColumn.getIsIdProperty()){
 				baseTypePropertyColumns.add(propertyColumn);
 			}
