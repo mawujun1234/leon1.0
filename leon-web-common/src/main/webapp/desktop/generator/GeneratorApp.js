@@ -427,8 +427,18 @@ Ext.onReady(function(){
 	            		tabpanel.setActiveTab(0);
 	            	}
 	            },
-	            '单元格编辑还是行编辑',
-	            '增删改查方法',
+	            {
+	                boxLabel  : '行编辑',
+	                xtype:'checkbox',
+	                name      : 'rowediting',
+	                inputValue: '2'
+	            },'-',
+				{
+	                boxLabel  : '增删改方法',
+	                xtype:'checkbox',
+	                name      : 'createDelUpd',
+	                inputValue: '2'
+	            },'-',
 	            '查询条件框生成',
 	        {
 	        	text:'生成',
@@ -439,6 +449,8 @@ Ext.onReady(function(){
 	        		var editable=btn.previousSibling("[name=editable]");
 	        		var userModel=btn.previousSibling("[name=userModel]");
 	        		var pageable=btn.previousSibling("[name=pageable]");
+	        		var rowediting=btn.previousSibling("[name=rowediting]");
+	        		var createDelUpd=btn.previousSibling("[name=createDelUpd]");
 	        		Ext.Ajax.request({
 	        			url:'/generator/generatorStr',
 	        			params:{
@@ -447,7 +459,9 @@ Ext.onReady(function(){
 	        				createGridModel:createGridModel.getGroupValue(),
 	        				editable:editable.getValue(),
 	        				userModel:userModel.getValue(),
-	        				pageable:pageable.getValue()
+	        				pageable:pageable.getValue(),
+	        				rowediting:rowediting.getValue(),
+	        				createDelUpd:createDelUpd.getValue()
 	        				
 	        			},
 	        			success:function(response){

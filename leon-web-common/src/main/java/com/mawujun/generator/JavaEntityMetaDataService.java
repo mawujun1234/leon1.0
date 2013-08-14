@@ -547,6 +547,7 @@ public class JavaEntityMetaDataService {
 		cfg.setEncoding(Locale.CHINA, "UTF-8");
 		//cfg.setEncoding(Locale.CHINA, "UTF-8");
 		
+		
 		//循环出 所有包含ftl的文件夹
 		Set<String> list=new HashSet<String>();
 		List<TemplateLoader> templateLoaders=new ArrayList<TemplateLoader>();

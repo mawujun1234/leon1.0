@@ -22,8 +22,7 @@ Ext.define('Leon.common.ux.BaseGrid', {
     autoInitSimpleAction:true,
     autoShowSimpleActionToTbar:true,
     initComponent: function () {
-        var me = this;
-        
+        var me = this;      
         if(me.model){
         	me.store=me.createStore(me.model);
 			//me.getStore().getProxy().getWriter( ).a

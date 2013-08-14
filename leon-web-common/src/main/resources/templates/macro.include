@@ -21,13 +21,12 @@
 	}
 
 </#macro>
-
 <#-- 生成Grid的列 -->
 <#macro generateGridColumns editable>
 	<#list propertyColumns as propertyColumn>	
       <#if propertyColumn.isBaseType==true ||  propertyColumn.isIdProperty==true>
 		<#if propertyColumn.jsType=='date'>
-		{dataIndex:'${propertyColumn.property}',text:'${propertyColumn.property}',xtype: 'datecolumn',   format:'Y-m-d'
+		{dataIndex:'${propertyColumn.property}',text:'${propertyColumn.label!propertyColumn.property}',xtype: 'datecolumn',   format:'Y-m-d'
 		<#if editable=="true">
 			,renderer: Ext.util.Format.dateRenderer('Y-m-d'),
 			,editor: {
@@ -38,7 +37,7 @@
 		</#if>
 		}<#if propertyColumn_has_next>,</#if>
 		<#elseif propertyColumn.jsType=='int' || propertyColumn.jsType=='float'>
-		{dataIndex:'${propertyColumn.property}',text:'${propertyColumn.property}',xtype: 'numbercolumn', format:'0.00'
+		{dataIndex:'${propertyColumn.property}',text:'${propertyColumn.label!propertyColumn.property}',xtype: 'numbercolumn', format:'0.00'
 		<#if editable=="true">
 			,editor: {
                 xtype: 'numberfield',
@@ -48,7 +47,7 @@
 		</#if>
 		}<#if propertyColumn_has_next>,</#if>
 		<#else>
-		{dataIndex:'${propertyColumn.property}',text:'${propertyColumn.property}'
+		{dataIndex:'${propertyColumn.property}',text:'${propertyColumn.label!propertyColumn.property}'
 		<#if editable=="true">
 		<#if (propertyColumn.showModel!"")=='checkcolumn'>
 			,xtype: 'checkcolumn'
@@ -84,7 +83,7 @@
 		}<#if propertyColumn_has_next>,</#if>
 		</#if>
 	  <#elseif propertyColumn.isConstantType==true>
-	  {dataIndex:'${propertyColumn.property}',text:'${propertyColumn.property}'
+	  {dataIndex:'${propertyColumn.property}',text:'${propertyColumn.label!propertyColumn.property}'
 	  <#if editable=="true">
 	  	,editor:{
 	        xtype:'constantcombo',
@@ -94,7 +93,7 @@
         }<#if propertyColumn_has_next>,</#if>
 	  </#if>
 	  <#else>
-		{dataIndex:'${propertyColumn.property}',text:'${propertyColumn.property}'
+		{dataIndex:'${propertyColumn.property}',text:'${propertyColumn.label!propertyColumn.property}'
 		<#if editable=="true">
 		<#if (propertyColumn.showModel!"")=='checkcolumn'>
 			,xtype: 'checkcolumn'
@@ -131,7 +130,6 @@
 	  </#if>
 	 </#list>   
 </#macro>
-
 <#macro generateGridStore userModel extjsClassName>
 <#if userModel=="true">
 Ext.create('Ext.data.Store',{
@@ -139,7 +137,7 @@ Ext.create('Ext.data.Store',{
     pageSize:50,
     model: '${extjsClassName}',
     autoLoad:false
- })
+})
 <#else>
 Ext.create('Ext.data.Store',{
 	autoSync:false,
@@ -158,6 +156,68 @@ Ext.create('Ext.data.Store',{
 			totalProperty:'total'		
 		}
 	}
- })
+})
 </#if>
+</#macro>
+<#macro generateGridCreateDelUpd>
+[{
+  	text: '新增',
+	itemId:'create',
+	disabled:me.disabledAction,
+	handler: function(){
+		var me=grid;
+    	var modelName=me.model||me.getStore().getProxy( ).getModel().getName( );
+
+		var model=Ext.createModel(modelName,{
+		        	//id:''
+		});
+		model.phantom =true;
+		me.getStore().insert(0, model);
+		        //me.getStore().add(model);
+		var cellediting=me.getPlugin("cellEditingPlugin");
+		cellediting.startEditByPosition({
+		     row: 0, 
+		     column: me.autoNextCellColIdx
+		});
+	},
+	iconCls: 'form-add-button'
+},{
+	text: '更新',
+	itemId:'update',
+	disabled:me.disabledAction,
+	handler: function(){
+		var me=grid;
+    	var position=me.getSelectionModel( ).getCurrentPosition( );
+		var cellediting=me.getPlugin("cellEditingPlugin");
+		cellediting.startEditByPosition(position);
+	},
+	iconCls: 'form-update-button'
+},{
+	text: '删除',
+	itemId:'destroy',
+	disabled:me.disabledAction,
+	handler: function(){
+		var me=grid;
+    	Ext.Msg.confirm("删除",'确定要删除吗?', function(btn, text){
+			if (btn == 'yes'){
+				var records=me.getSelectionModel( ).getSelection( );//.getLastSelected( );
+				me.getStore().remove( records );
+				me.getStore().sync({
+					failure:function(){
+						me.getStore().reload();
+					}
+				});
+			}
+		});
+	},
+	iconCls: 'form-delete-button'
+},{
+	text: '刷新',
+	itemId:'reload',
+	disabled:me.disabledAction,
+	handler: function(){
+		grid.getStore().reload();
+	},
+	iconCls: 'form-reload-button'
+}]
 </#macro>

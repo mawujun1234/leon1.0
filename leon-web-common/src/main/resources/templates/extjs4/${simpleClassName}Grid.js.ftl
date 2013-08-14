@@ -1,7 +1,7 @@
 <#import "/macro.include" as my/>  
 <#assign simpleClassNameFirstLower = simpleClassName?uncap_first> 
 <#-- //所在模块-->
-<#assign module = basepackage?substring(basepackage?last_index_of(".")+1)> 
+<#assign module = basepackage?substring(basepackage?last_index_of(".")+1)>
 <#if extenConfig.createGridModel=="define">
 Ext.define('Leon.${module}.${simpleClassName}Grid',{
 	extend:'Ext.grid.Panel',
@@ -19,11 +19,20 @@ Ext.define('Leon.${module}.${simpleClassName}Grid',{
 		}
 	},
 	<#if  extenConfig.editable=="true">
-	plugins:[
+	<#if  extenConfig.rowediting=="true">
+    plugins:[
+    	Ext.create('Ext.grid.plugin.RowEditing', {
+	        clicksToMoveEditor: 1,
+	        autoCancel: false
+	    })
+    ],
+    <#else>
+    plugins:[
         Ext.create('Ext.grid.plugin.CellEditing', {
             clicksToEdit: 1
         })
     ],
+    </#if>
 	</#if>
 	initComponent: function () {
       var me = this;
@@ -42,6 +51,9 @@ Ext.define('Leon.${module}.${simpleClassName}Grid',{
 	        displayInfo: true
 	  }];
 	  </#if>
+	  <#if extenConfig.createDelUpd="true">
+	  me.tbar=<@my.generateGridCreateDelUpd/>;
+	  </#if>
        
       me.callParent();
 	}
@@ -53,6 +65,22 @@ Ext.create('Ext.grid.Panel', {
     columns: [
     <@my.generateGridColumns editable=extenConfig.editable/>   
     ],
+    <#if  extenConfig.editable=="true">
+	<#if  extenConfig.rowediting=="true">
+    plugins:[
+    	Ext.create('Ext.grid.plugin.RowEditing', {
+	        clicksToMoveEditor: 1,
+	        autoCancel: false
+	    })
+    ],
+    <#else>
+    plugins:[
+        Ext.create('Ext.grid.plugin.CellEditing', {
+            clicksToEdit: 1
+        })
+    ],
+    </#if>
+	</#if>
 	store:<@my.generateGridStore userModel=extenConfig.userModel extjsClassName='Leon.'+module+'.'+simpleClassName/> 
 	<#if extenConfig.pageable="true">
     ,dockedItems= [{
@@ -61,6 +89,9 @@ Ext.create('Ext.grid.Panel', {
 	    dock: 'bottom',
 	    displayInfo: true
 	}]
+	</#if>
+	<#if extenConfig.createDelUpd="true">
+	,tbar:<@my.generateGridCreateDelUpd/>
 	</#if>
 
 });

@@ -28,14 +28,14 @@ Ext.define('Leon.${module}.${simpleClassName}Form',{
       <#if propertyColumn.isBaseType==true ||  propertyColumn.isIdProperty==true>
 		<#if propertyColumn.jsType=='date'>
 		{
-            fieldLabel: '${propertyColumn.property}',
+            fieldLabel: '${propertyColumn.label!propertyColumn.property}',
             name: '${propertyColumn.property}',
             xtype: 'datefield',
             format: 'Y-m-d'
         }<#if propertyColumn_has_next>,</#if>
 		<#elseif propertyColumn.jsType=='int' || propertyColumn.jsType=='float'>
 		{
-	        fieldLabel: '${propertyColumn.property}',
+	        fieldLabel: '${propertyColumn.label!propertyColumn.property}',
 	        //afterLabelTextTpl: me.required,
 	        name: '${propertyColumn.property}',
 	        xtype:'numberfield',
@@ -43,7 +43,7 @@ Ext.define('Leon.${module}.${simpleClassName}Form',{
 	    }<#if propertyColumn_has_next>,</#if>
 		<#else>
 		{
-	        fieldLabel: '${propertyColumn.property}',
+	        fieldLabel: '${propertyColumn.label!propertyColumn.property}',
 	        //afterLabelTextTpl: me.required,
 	        name: '${propertyColumn.property}',
 	        xtype:'textfield',
@@ -53,14 +53,14 @@ Ext.define('Leon.${module}.${simpleClassName}Form',{
 	  <#elseif propertyColumn.isConstantType==true>
 		{
 	        xtype:'constantcombo',
-            fieldLabel:'${propertyColumn.property}',
+            fieldLabel:'${propertyColumn.label!propertyColumn.property}',
             name: '${propertyColumn.property}',
 			code:'请补充完整'
         }<#if propertyColumn_has_next>,</#if>
 	  <#elseif propertyColumn.isAssociationType==true>
 	  <#if (propertyColumn.showModel!"")=='combobox'>
 	  {
-	  		fieldLabel: '${propertyColumn.property}',
+	  		fieldLabel: '${propertyColumn.label!propertyColumn.property}',
 		    name: '${propertyColumn.property}',
 			,store: new Ext.form.field.ComboBox({
                 typeAhead: true,
@@ -84,7 +84,7 @@ Ext.define('Leon.${module}.${simpleClassName}Form',{
          }<#if propertyColumn_has_next>,</#if>
 		<#else>
 		{
-	        fieldLabel: '${propertyColumn.property}',
+	        fieldLabel: '${propertyColumn.label!propertyColumn.property}',
 	        //afterLabelTextTpl: me.required,
 	        name: '${propertyColumn.property}',
 	        xtype:'textfield',
