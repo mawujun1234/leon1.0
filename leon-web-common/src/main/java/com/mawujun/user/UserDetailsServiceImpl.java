@@ -11,7 +11,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username)
 			throws UsernameNotFoundException {
 		
-		SessionUser aa=new SessionUser();
+		UserDetailsImpl aa=new UserDetailsImpl();
 		// TODO Auto-generated method stub
 		return aa;
 	}
