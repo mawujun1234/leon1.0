@@ -30,10 +30,13 @@
 	  -->
 	  <beans:constructor-arg> 
 	  	<beans:list>  
+	  		<filter-chain pattern="/**/*.js" filters="none"></filter-chain>
 	  		<filter-chain pattern="/icons/**" filters="none"></filter-chain>
 	  		<filter-chain pattern="/common/**" filters="none"></filter-chain>
 	  		<filter-chain pattern="/ext-4/**" filters="none"></filter-chain>
 	  		<filter-chain pattern="/login.jsp" filters="none"></filter-chain>
+	  		<filter-chain pattern="/j_spring_security_check" filters="none"></filter-chain>
+	  		http://mark.koli.ch/2010/07/spring-3-and-spring-security-setting-your-own-custom-j-spring-security-check-filter-processes-url.html
             <filter-chain pattern="/**" filters="
 	           securityContextPersistenceFilterWithASCTrue,
 	           usernamePasswordAuthenticationFilter,
