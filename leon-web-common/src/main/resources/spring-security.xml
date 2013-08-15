@@ -35,8 +35,10 @@
 	  		<filter-chain pattern="/common/**" filters="none"></filter-chain>
 	  		<filter-chain pattern="/ext-4/**" filters="none"></filter-chain>
 	  		<filter-chain pattern="/login.jsp" filters="none"></filter-chain>
-	  		<filter-chain pattern="/j_spring_security_check" filters="none"></filter-chain>
-	  		http://mark.koli.ch/2010/07/spring-3-and-spring-security-setting-your-own-custom-j-spring-security-check-filter-processes-url.html
+	  		<filter-chain pattern="/loginFailure.jsp" filters="none"></filter-chain>
+	  		<filter-chain pattern="/accessDeny.jsp" filters="none"></filter-chain>
+	  		<!-- <filter-chain pattern="/j_spring_security_check" filters="none"></filter-chain> -->
+	  		<!-- http://mark.koli.ch/2010/07/spring-3-and-spring-security-setting-your-own-custom-j-spring-security-check-filter-processes-url.html -->
             <filter-chain pattern="/**" filters="
 	           securityContextPersistenceFilterWithASCTrue,
 	           usernamePasswordAuthenticationFilter,
@@ -50,9 +52,23 @@
 		<beans:property name="forceEagerSessionCreation" value="true"></beans:property>
 	</beans:bean>
 	<beans:bean class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter" name="usernamePasswordAuthenticationFilter">
-		<beans:property name="filterProcessesUrl" value="/login.jsp"></beans:property>
+		<beans:property name="filterProcessesUrl" value="/j_spring_security_check"></beans:property><!-- 认证地址 -->
 		<beans:property name="authenticationManager" ref="myAuthenticationManager"></beans:property>
 		<beans:property name="postOnly" value="false"></beans:property>
+		<beans:property name="authenticationSuccessHandler">
+			<beans:bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler">
+				<beans:property name="defaultTargetUrl" value="/index.jsp"></beans:property>
+			</beans:bean>
+		</beans:property>
+		<beans:property name="authenticationFailureHandler">
+			<beans:bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+				<beans:property name="defaultFailureUrl" value="/loginFailure.jsp"></beans:property>
+				<beans:property name="redirectStrategy">
+					<beans:bean class="com.mawujun.user.login.AjaxRedirectStrategy">
+					</beans:bean>
+				</beans:property>	
+			</beans:bean>
+		</beans:property>
 	</beans:bean>
 	<beans:bean class="org.springframework.security.web.access.ExceptionTranslationFilter" name="exceptionTranslationFilter">
 		<beans:property name="authenticationEntryPoint">
@@ -60,11 +76,16 @@
 				<beans:property name="loginFormUrl" value="/login.jsp"></beans:property><!-- 没有认证的时候，跳转 -->
 			</beans:bean>
 		</beans:property>
+		<beans:property name="accessDeniedHandler">
+			<beans:bean class="org.springframework.security.web.access.AccessDeniedHandlerImpl">
+				<beans:property name="errorPage" value="/accessDeny.jsp"></beans:property>
+			</beans:bean>
+		</beans:property>
 	</beans:bean>
 	<beans:bean class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor" name="filterSecurityInterceptor">
 		<beans:property name="authenticationManager" ref="myAuthenticationManager"></beans:property>
 		<beans:property name="accessDecisionManager">
-			<beans:bean class="org.springframework.security.access.vote.AffirmativeBased">
+			<beans:bean class="com.mawujun.user.login.AffirmativeBasedImpl">
 				<beans:property name="decisionVoters">
 					<beans:list>
 						<beans:bean class="org.springframework.security.access.vote.RoleVoter"></beans:bean>
@@ -73,7 +94,7 @@
 			</beans:bean>
 		</beans:property>
 		<beans:property name="securityMetadataSource"><!-- 实现了角色资源的对应关系 -->
-			<beans:bean class="com.mawujun.user.FilterInvocationSecurityMetadataSourceImpl">
+			<beans:bean class="com.mawujun.user.login.FilterInvocationSecurityMetadataSourceImpl">
 				
 			</beans:bean>
 		</beans:property>
@@ -82,15 +103,15 @@
     <!-- 实现了UserDetailsService的Bean -->  
     <authentication-manager alias="myAuthenticationManager">  
         <authentication-provider user-service-ref="myUserDetailServiceImpl">  
-            <!-- 登入 密码  采用MD5加密 -->  
+            <!-- 登入 密码  采用MD5加密 
             <password-encoder hash="md5" ref="passwordEncoder">  
-            </password-encoder>  
+            </password-encoder>   --> 
         </authentication-provider>  
     </authentication-manager>  
     
     <!-- 获取用户登入角色信息 -->  
     <beans:bean id="myUserDetailServiceImpl"  
-        class="com.mawujun.user.UserDetailsServiceImpl">  
+        class="com.mawujun.user.login.UserDetailsServiceImpl">  
         <beans:property name="userService" ref="userService"></beans:property>  
     </beans:bean>  
   

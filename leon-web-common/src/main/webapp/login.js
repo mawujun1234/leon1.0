@@ -1,9 +1,9 @@
 Ext.onReady(function(){
 	var form=new Ext.form.Panel({
-		url: '/j_spring_security_check',
+		url: Ext.ContextPath+'/j_spring_security_check',
 		frame:true,
 		margin:'0 0 0 0',
-		method:'POST',
+		standardSubmit:true,
 		items: [{
 			xtype:'textfield',
 	        fieldLabel: '用户名',

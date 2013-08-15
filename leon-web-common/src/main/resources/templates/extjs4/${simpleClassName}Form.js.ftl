@@ -99,6 +99,7 @@ Ext.define('Leon.${module}.${simpleClassName}Form',{
             text: '保存',
             iconCls:'form-save-button',
             formBind: true,
+            //jsonSubmit:true
             handler: function() {
             	var form=this.up('form');
                 if(!form.getForm().isValid()) {

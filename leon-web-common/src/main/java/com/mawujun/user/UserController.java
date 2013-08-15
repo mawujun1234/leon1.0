@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import com.mawujun.controller.spring.mvc.JsonConfigHolder;
+import com.mawujun.exception.BussinessException;
 import com.mawujun.fun.Fun;
 import com.mawujun.role.Role;
 import com.mawujun.utils.page.MatchMode;
@@ -83,6 +84,9 @@ public class UserController {
 	@RequestMapping("/user/destroy")
 	@ResponseBody
 	public User destroy(@RequestBody User user){	
+		if(user.isAdmin()){
+			throw new BussinessException("管理员账号不能删除!");
+		}
 		user.setDeleted(true);
 		user.setDeletedDate(new Date());
 		userService.update(user);

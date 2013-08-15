@@ -23,6 +23,12 @@ public class UserRoleService extends BaseRepository<UserRole, UserRolePK> {
 	@Autowired
 	private FunService funService;
 	
+	/**
+	 * 查询出所有的Role并且构建出Role的整棵树
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param userId
+	 * @return
+	 */
 	public List<Map<String,Object>> queryRole(String userId){
 		////String hql="select b.id.roleId from UserRole b where b.id.userId=?";
 		//List<UserRole> userRoles=super.query(WhereInfo.parse("id.userId", userId));

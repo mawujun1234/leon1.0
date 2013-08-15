@@ -1,4 +1,6 @@
-package com.mawujun.user;
+package com.mawujun.user.login;
+
+import java.util.List;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -6,6 +8,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.mawujun.exception.BussinessException;
 import com.mawujun.repository.cnd.Cnd;
+import com.mawujun.user.User;
+import com.mawujun.user.UserService;
 
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -14,13 +18,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username)
 			throws UsernameNotFoundException {
 		User user=userService.queryUnique(Cnd.select().andEquals("loginName", username));
-		if(user==null){
+		if(user==null || user.isDeleted()){
 			throw new BussinessException("用户不存在");
 		}
 		UserDetailsImpl aa=new UserDetailsImpl();
-		aa.setPassword(user.getPassword());
-		aa.setUserName(aa.getUsername());
-		// TODO Auto-generated method stub
+		aa.setUser(user);
+		List<String> roleIds=userService.queryRoleId(user.getId());
+		aa.setRoles(roleIds);
 		return aa;
 	}
 	

@@ -1,4 +1,4 @@
-package com.mawujun.user;
+package com.mawujun.user.login;
 
 import java.util.ArrayList;
 import java.util.Collection;

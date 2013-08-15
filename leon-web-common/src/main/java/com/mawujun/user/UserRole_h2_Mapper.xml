@@ -10,6 +10,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	SELECT a.role_id
 	    FROM leon_user_role a
 		where a.user_id=#{user_id}
+		union all
+		SELECT b.role_ID  FROM LEON_GROUP_USER  a,LEON_GROUP_ROLE  b
+		where a.group_id=b.group_id and a.user_id=#{user_id}
     </select>
 	<!-- select语句的生成结束=============================================================================================== -->
 	

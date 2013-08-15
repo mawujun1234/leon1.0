@@ -2,12 +2,15 @@ package com.mawujun.user;
 
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.mawujun.repository.idEntity.UUIDEntity;
+import com.mawujun.role.Role;
 
 @Entity
 @Table(name="leon_User")
@@ -36,6 +39,9 @@ public class User extends UUIDEntity{
 	private Date expireDate;
 	private Date lastLoginDate;
 	
+//	@Transient
+//	private Set<Role> roles;
+	
 	public String getLoginName() {
 		return loginName;
 	}
@@ -57,6 +63,9 @@ public class User extends UUIDEntity{
 
 	public boolean isEnable() {
 		return enable;
+	}
+	public boolean isAdmin() {
+		return "admin".equalsIgnoreCase(loginName);
 	}
 	public void setEnable(boolean isEnable) {
 		this.enable = isEnable;
@@ -97,6 +106,4 @@ public class User extends UUIDEntity{
 	public void setDeletedDate(Date deletedDate) {
 		this.deletedDate = deletedDate;
 	}
-
-
 }
