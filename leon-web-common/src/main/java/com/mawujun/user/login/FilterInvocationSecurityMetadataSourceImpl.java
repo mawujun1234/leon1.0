@@ -38,7 +38,7 @@ public class FilterInvocationSecurityMetadataSourceImpl implements
 	@Override
 	public Collection<ConfigAttribute> getAttributes(Object object)
 			throws IllegalArgumentException {
-		放到这里来初始化
+		放到这里来初始化，还可以换下过滤器的顺序 放到application的后面试试
 		Set<ConfigAttribute> allAttributes = new HashSet<ConfigAttribute>();
 
 		
