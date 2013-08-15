@@ -16,20 +16,29 @@ import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.util.RequestMatcher;
 
+import com.mawujun.role.RoleService;
+
 public class FilterInvocationSecurityMetadataSourceImpl implements
 		FilterInvocationSecurityMetadataSource {
-	 private static Map<String, Collection<ConfigAttribute>> resourceMap = new HashMap<String, Collection<ConfigAttribute>>();   
+	
+	private RoleService roleService;
+	
+	 private static Map<String, Collection<ConfigAttribute>> resourceMap = new HashMap<String, Collection<ConfigAttribute>>();  
+	 
 	 
 	 public FilterInvocationSecurityMetadataSourceImpl(){
-		 ConfigAttribute configAttribute =    new SecurityConfig("ROLE_aaa");  
-			
-		 List<ConfigAttribute> list=new ArrayList<ConfigAttribute>();
-			list.add(configAttribute);
-			resourceMap.put("/index.jsp", list);  
+		 
+//		 
+//		 ConfigAttribute configAttribute =    new SecurityConfig("ROLE_aaa");  
+//			
+//		 List<ConfigAttribute> list=new ArrayList<ConfigAttribute>();
+//			list.add(configAttribute);
+//			resourceMap.put("/index.jsp", list);  
 	 }
 	@Override
 	public Collection<ConfigAttribute> getAttributes(Object object)
 			throws IllegalArgumentException {
+		放到这里来初始化
 		Set<ConfigAttribute> allAttributes = new HashSet<ConfigAttribute>();
 
 		
@@ -40,13 +49,22 @@ public class FilterInvocationSecurityMetadataSourceImpl implements
 
 	@Override
 	public Collection<ConfigAttribute> getAllConfigAttributes() {
-		Set<ConfigAttribute> allAttributes = new HashSet<ConfigAttribute>();
-
-//        for (Map.Entry<RequestMatcher, Collection<ConfigAttribute>> entry : requestMap.entrySet()) {
-//            allAttributes.addAll(entry.getValue());
-//        }
+//		Set<ConfigAttribute> allAttributes = new HashSet<ConfigAttribute>();
+//
+////        for (Map.Entry<RequestMatcher, Collection<ConfigAttribute>> entry : requestMap.entrySet()) {
+////            allAttributes.addAll(entry.getValue());
+////        }
+//		
+//		allAttributes.add(resourceMap.get("/index.jsp").iterator().next());  
 		
-		allAttributes.add(resourceMap.get("/index.jsp").iterator().next());  
+		List<Map<String,Object>> funRoles=roleService.queryList("queryFun");
+		 for(Map<String,Object> map:funRoles){
+			ConfigAttribute configAttribute =    new SecurityConfig(map.get("role_id").toString());  
+				
+			List<ConfigAttribute> list=new ArrayList<ConfigAttribute>();
+			list.add(configAttribute);
+			resourceMap.put(map.get("url").toString(), list);  
+		 }
 		
         return allAttributes;
 	}
@@ -55,6 +73,12 @@ public class FilterInvocationSecurityMetadataSourceImpl implements
 	public boolean supports(Class<?> clazz) {
 		// TODO Auto-generated method stub
 		 return FilterInvocation.class.isAssignableFrom(clazz);
+	}
+	public RoleService getRoleService() {
+		return roleService;
+	}
+	public void setRoleService(RoleService roleService) {
+		this.roleService = roleService;
 	}
 
 }

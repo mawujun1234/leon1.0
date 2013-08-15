@@ -12,6 +12,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		where a.id=b.current_id and b.other_id=#{otherId} and b.roleRoleEnum=#{roleRoleEnum}
 		order by a.id
     </select>
-	<!-- select语句的生成结束=============================================================================================== -->
+	
+	<!--用于FilterInvocationSecurityMetadataSourceImpl-->
+	<select id="queryFun" resultType="map">
+    	SELECT a.url,b.role_Id
+	    FROM leon_Fun a,leon_Role_Fun b
+		where a.id=b.fun_id
+		order by a.id
+    </select>
 
 </mapper>

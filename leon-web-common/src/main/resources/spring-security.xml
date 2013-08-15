@@ -95,10 +95,12 @@
 		</beans:property>
 		<beans:property name="securityMetadataSource"><!-- 实现了角色资源的对应关系 -->
 			<beans:bean class="com.mawujun.user.login.FilterInvocationSecurityMetadataSourceImpl">
-				
+				<beans:property name="roleService" ref="roleService"></beans:property>
 			</beans:bean>
 		</beans:property>
 	</beans:bean>
+	
+	<!-- DefaultWebInvocationPrivilegeEvaluator页面标签的权限 -->
 	
     <!-- 实现了UserDetailsService的Bean -->  
     <authentication-manager alias="myAuthenticationManager">  
