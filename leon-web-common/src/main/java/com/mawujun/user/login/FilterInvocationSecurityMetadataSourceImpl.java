@@ -38,35 +38,39 @@ public class FilterInvocationSecurityMetadataSourceImpl implements
 	@Override
 	public Collection<ConfigAttribute> getAttributes(Object object)
 			throws IllegalArgumentException {
-		放到这里来初始化，还可以换下过滤器的顺序 放到application的后面试试
+		//放到这里来初始化，还可以换下过滤器的顺序 放到application的后面试试
 		Set<ConfigAttribute> allAttributes = new HashSet<ConfigAttribute>();
 
 		
-		allAttributes.add(resourceMap.get("/index.jsp").iterator().next());  
+		//allAttributes.add(resourceMap.get("/index.jsp").iterator().next());  
 		
          return allAttributes;
 	}
 
 	@Override
 	public Collection<ConfigAttribute> getAllConfigAttributes() {
-//		Set<ConfigAttribute> allAttributes = new HashSet<ConfigAttribute>();
-//
-////        for (Map.Entry<RequestMatcher, Collection<ConfigAttribute>> entry : requestMap.entrySet()) {
-////            allAttributes.addAll(entry.getValue());
-////        }
+		Set<ConfigAttribute> allAttributes = new HashSet<ConfigAttribute>();
+
+//        for (Map.Entry<RequestMatcher, Collection<ConfigAttribute>> entry : requestMap.entrySet()) {
+//            allAttributes.addAll(entry.getValue());
+//        }
 //		
 //		allAttributes.add(resourceMap.get("/index.jsp").iterator().next());  
 		
+		initResourceMap();
+		
+        return allAttributes;
+	}
+	
+	public void initResourceMap(){
 		List<Map<String,Object>> funRoles=roleService.queryList("queryFun");
 		 for(Map<String,Object> map:funRoles){
-			ConfigAttribute configAttribute =    new SecurityConfig(map.get("role_id").toString());  
+			ConfigAttribute configAttribute =    new SecurityConfig(map.get("ROLE_ID").toString());  
 				
 			List<ConfigAttribute> list=new ArrayList<ConfigAttribute>();
 			list.add(configAttribute);
-			resourceMap.put(map.get("url").toString(), list);  
+			resourceMap.put(map.get("URL").toString(), list);  
 		 }
-		
-        return allAttributes;
 	}
 
 	@Override

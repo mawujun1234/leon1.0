@@ -69,6 +69,13 @@ Ext.define('Leon.desktop.Desktop', {
         
         me.initMenuItemEvent(me.initMenus);
         menuItems=menuItems.concat(me.initMenus);
+        menuItems.push('->','-',{
+        	text:'退出',
+        	iconCls:'icons_door_out',
+        	handler:function(){
+        		location.href="/logout";
+        	}
+        });
        
         var menubar=Ext.create('Leon.desktop.Menubar',{
         	items:menuItems

@@ -13,7 +13,7 @@
     <http pattern="/icons/**" security="none" />  
     <http pattern="/common/**" security="none" />  
     <http pattern="/ext-4/**" security="none" />  
-    <http pattern="/login.jsp" security="none" />  http://zhoualine.iteye.com/blog/1755233 http://www.360doc.com/content/13/0516/12/10825198_285813940.shtml
+    <http pattern="/login.jsp" security="none" />  http://zhoualine.iteye.com/blog/1755233http://blog.csdn.net/shadowsick/article/details/8576449#
     --> 
 
     <!-- 这个id要和web.xml中的配置一样，否则会爆No bean named 'springSecurityFilterChain' is defined的异常 -->
@@ -55,12 +55,12 @@
 		<beans:property name="filterProcessesUrl" value="/j_spring_security_check"></beans:property><!-- 认证地址 -->
 		<beans:property name="authenticationManager" ref="myAuthenticationManager"></beans:property>
 		<beans:property name="postOnly" value="false"></beans:property>
-		<beans:property name="authenticationSuccessHandler">
+		<beans:property name="authenticationSuccessHandler"><!-- 认证成功的时候跳转-->
 			<beans:bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler">
 				<beans:property name="defaultTargetUrl" value="/index.jsp"></beans:property>
 			</beans:bean>
 		</beans:property>
-		<beans:property name="authenticationFailureHandler">
+		<beans:property name="authenticationFailureHandler"><!-- 认证失败的时候跳转-->
 			<beans:bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
 				<beans:property name="defaultFailureUrl" value="/loginFailure.jsp"></beans:property>
 				<beans:property name="redirectStrategy">
@@ -70,27 +70,30 @@
 			</beans:bean>
 		</beans:property>
 	</beans:bean>
+	<!-- 异常处理过滤器 --> 
 	<beans:bean class="org.springframework.security.web.access.ExceptionTranslationFilter" name="exceptionTranslationFilter">
 		<beans:property name="authenticationEntryPoint">
 			<beans:bean class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
 				<beans:property name="loginFormUrl" value="/login.jsp"></beans:property><!-- 没有认证的时候，跳转 -->
 			</beans:bean>
 		</beans:property>
-		<beans:property name="accessDeniedHandler">
+		<beans:property name="accessDeniedHandler"><!--访问局拒绝的时候跳转-->
 			<beans:bean class="org.springframework.security.web.access.AccessDeniedHandlerImpl">
 				<beans:property name="errorPage" value="/accessDeny.jsp"></beans:property>
 			</beans:bean>
 		</beans:property>
 	</beans:bean>
+	<!-- 自定义认证管理,资源,权限  -->  
 	<beans:bean class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor" name="filterSecurityInterceptor">
 		<beans:property name="authenticationManager" ref="myAuthenticationManager"></beans:property>
 		<beans:property name="accessDecisionManager">
 			<beans:bean class="com.mawujun.user.login.AffirmativeBasedImpl">
+				<!--取消了投票器，因为这里没有实现反向授权-->	
 				<beans:property name="decisionVoters">
 					<beans:list>
 						<beans:bean class="org.springframework.security.access.vote.RoleVoter"></beans:bean>
 					</beans:list>
-				</beans:property>			
+				</beans:property>		
 			</beans:bean>
 		</beans:property>
 		<beans:property name="securityMetadataSource"><!-- 实现了角色资源的对应关系 -->
@@ -99,6 +102,8 @@
 			</beans:bean>
 		</beans:property>
 	</beans:bean>
+	
+
 	
 	<!-- DefaultWebInvocationPrivilegeEvaluator页面标签的权限 -->
 	
@@ -111,7 +116,7 @@
         </authentication-provider>  
     </authentication-manager>  
     
-    <!-- 获取用户登入角色信息 -->  
+    <!-- 自定义UserDetailsService认证  -->   
     <beans:bean id="myUserDetailServiceImpl"  
         class="com.mawujun.user.login.UserDetailsServiceImpl">  
         <beans:property name="userService" ref="userService"></beans:property>  
