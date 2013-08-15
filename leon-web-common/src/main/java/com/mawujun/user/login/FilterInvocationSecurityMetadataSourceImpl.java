@@ -38,27 +38,42 @@ public class FilterInvocationSecurityMetadataSourceImpl implements
 	@Override
 	public Collection<ConfigAttribute> getAttributes(Object object)
 			throws IllegalArgumentException {
-		//放到这里来初始化，还可以换下过滤器的顺序 放到application的后面试试
-		Set<ConfigAttribute> allAttributes = new HashSet<ConfigAttribute>();
-
-		
-		//allAttributes.add(resourceMap.get("/index.jsp").iterator().next());  
-		
-         return allAttributes;
+		 final HttpServletRequest request = ((FilterInvocation) object).getRequest();
+	        for (Map.Entry<String, Collection<ConfigAttribute>> entry : resourceMap.entrySet()) {
+	        	//RequestMatcher这里把本来是调用这个的matches方法
+//	            if (entry.getKey().matches(request)) {
+//	                return entry.getValue();
+//	            }
+	        	if(entry.getKey().equals(getRequestPath(request))){
+	        		return entry.getValue();
+	        	}
+	        }
+	        return null;
+	        
 	}
 
+	private String getRequestPath(HttpServletRequest request) {
+        String url = request.getServletPath();
+
+        if (request.getPathInfo() != null) {
+            url += request.getPathInfo();
+        }
+
+        url = url.toLowerCase();
+
+        return url;
+    }
+	
 	@Override
 	public Collection<ConfigAttribute> getAllConfigAttributes() {
-		Set<ConfigAttribute> allAttributes = new HashSet<ConfigAttribute>();
-
-//        for (Map.Entry<RequestMatcher, Collection<ConfigAttribute>> entry : requestMap.entrySet()) {
-//            allAttributes.addAll(entry.getValue());
-//        }
-//		
-//		allAttributes.add(resourceMap.get("/index.jsp").iterator().next());  
-		
 		initResourceMap();
 		
+		Set<ConfigAttribute> allAttributes = new HashSet<ConfigAttribute>();
+
+        for (Map.Entry<String, Collection<ConfigAttribute>> entry : resourceMap.entrySet()) {
+            allAttributes.addAll(entry.getValue());
+        }
+
         return allAttributes;
 	}
 	
@@ -72,6 +87,7 @@ public class FilterInvocationSecurityMetadataSourceImpl implements
 			resourceMap.put(map.get("URL").toString(), list);  
 		 }
 	}
+	
 
 	@Override
 	public boolean supports(Class<?> clazz) {
