@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.hibernate.persister.entity.AbstractEntityPersister;
 
-public class SelectItems {
+public class SelectItems  implements SqlExpression{
 
 	private List<String> names=new ArrayList<String>();
 	
@@ -46,6 +46,25 @@ public class SelectItems {
 
 	public void setDistinct(boolean isDistinct) {
 		this.isDistinct = isDistinct;
+	}
+
+	@Override
+	public int joinParams(AbstractEntityPersister classMetadata, Object obj,
+			Object[] params, int off) {
+		// TODO Auto-generated method stub
+		return off;
+	}
+
+	@Override
+	public int paramCount(AbstractEntityPersister classMetadata) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public SqlExpression setNot(boolean not) {
+		// TODO Auto-generated method stub
+		return this;
 	}
 
 }

@@ -13,7 +13,7 @@
     <http pattern="/icons/**" security="none" />  
     <http pattern="/common/**" security="none" />  
     <http pattern="/ext-4/**" security="none" />  
-    <http pattern="/login.jsp" security="none" />  http://zhoualine.iteye.com/blog/1755233http://blog.csdn.net/shadowsick/article/details/8576449#
+    <http pattern="/login.jsp" security="none" />  http://zhoualine.iteye.com/blog/1755233   http://blog.csdn.net/shadowsick/article/details/8576449#
     --> 
 
     <!-- 这个id要和web.xml中的配置一样，否则会爆No bean named 'springSecurityFilterChain' is defined的异常 -->
@@ -41,6 +41,7 @@
 	  		<!-- http://mark.koli.ch/2010/07/spring-3-and-spring-security-setting-your-own-custom-j-spring-security-check-filter-processes-url.html -->
             <filter-chain pattern="/**" filters="
 	           securityContextPersistenceFilterWithASCTrue,
+	           logoutFilter,
 	           usernamePasswordAuthenticationFilter,
 	           exceptionTranslationFilter,
 	           filterSecurityInterceptor" />
@@ -83,15 +84,18 @@
 			</beans:bean>
 		</beans:property>
 	</beans:bean>
-	<!-- 自定义认证管理,资源,权限  -->  
-	<beans:bean class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor" name="filterSecurityInterceptor">
+	<!-- 自定义认证管理,资源,权限   
+	<beans:bean class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor" name="filterSecurityInterceptor"> -->
+	<beans:bean class="com.mawujun.user.login.FilterSecurityInterceptorImpl" name="filterSecurityInterceptor">
 		<beans:property name="authenticationManager" ref="myAuthenticationManager"></beans:property>
 		<beans:property name="accessDecisionManager">
 			<beans:bean class="com.mawujun.user.login.AffirmativeBasedImpl">
 				<!--取消了投票器，因为这里没有实现反向授权-->	
 				<beans:property name="decisionVoters">
 					<beans:list>
-						<beans:bean class="org.springframework.security.access.vote.RoleVoter"></beans:bean>
+						<beans:bean class="org.springframework.security.access.vote.RoleVoter">
+							<beans:property name="rolePrefix" value=""></beans:property>
+						</beans:bean>
 					</beans:list>
 				</beans:property>		
 			</beans:bean>
@@ -101,7 +105,26 @@
 				<beans:property name="roleService" ref="roleService"></beans:property>
 			</beans:bean>
 		</beans:property>
+		<!-- 当某个资源被访问时，发现没有 授予他时，是拒绝还是允许-->
+		<beans:property name="rejectPublicInvocations" value="false"></beans:property>
 	</beans:bean>
+	
+	<!-- 注销过滤器 -->
+	<beans:bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
+		<beans:constructor-arg value="/login.jsp" />
+		<beans:constructor-arg>
+			<beans:array>
+				<beans:bean id="logoutHandler" class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler">
+				</beans:bean>
+				<!--<beans:ref bean="logoutHandler" />
+				<ref bean="rememberMeServices" />-->
+			</beans:array>
+		</beans:constructor-arg>
+		<beans:property name="filterProcessesUrl" value="/j_spring_security_logout" />
+	</beans:bean>
+
+	<!-- 注销监听器  -->
+	
 	
 
 	

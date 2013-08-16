@@ -277,7 +277,7 @@ Ext.define('Leon.common.ux.BaseGrid', {
     onAfterContextMenuShow:function(view,record,item,index,e){
 
     },
-    addAction:function(action,index){
+    addAction:function(index,action){
     	    	if(!action){
     		return;
     	}

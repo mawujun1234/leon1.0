@@ -35,7 +35,7 @@ Ext.onReady(function(){
 		    },
 		    iconCls: 'role-category-add'
 	});
-    tree.addAction(createModule,0);
+    tree.addAction(0,createModule);
     var createFun = new Ext.Action({
 		text: '新增角色',
 		handler: function(){
@@ -48,7 +48,7 @@ Ext.onReady(function(){
 		},
 		iconCls: 'role-add-iconCls'
 	});
-    tree.addAction(createFun,1);
+    tree.addAction(1,createFun);
     
     var roleId="";
     tree.on('itemclick',function(view,record,item,index){

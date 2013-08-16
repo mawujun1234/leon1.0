@@ -73,7 +73,7 @@ Ext.define('Leon.desktop.Desktop', {
         	text:'退出',
         	iconCls:'icons_door_out',
         	handler:function(){
-        		location.href="/logout";
+        		location.href="/j_spring_security_logout";
         	}
         });
        

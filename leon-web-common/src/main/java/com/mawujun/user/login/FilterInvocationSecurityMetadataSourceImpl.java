@@ -17,6 +17,7 @@ import org.springframework.security.web.access.intercept.FilterInvocationSecurit
 import org.springframework.security.web.util.RequestMatcher;
 
 import com.mawujun.role.RoleService;
+import com.mawujun.utils.StringUtils;
 
 public class FilterInvocationSecurityMetadataSourceImpl implements
 		FilterInvocationSecurityMetadataSource {
@@ -80,6 +81,9 @@ public class FilterInvocationSecurityMetadataSourceImpl implements
 	public void initResourceMap(){
 		List<Map<String,Object>> funRoles=roleService.queryList("queryFun");
 		 for(Map<String,Object> map:funRoles){
+			 if(!StringUtils.hasLength(map.get("URL").toString())){
+				 continue;
+			 }
 			ConfigAttribute configAttribute =    new SecurityConfig(map.get("ROLE_ID").toString());  
 				
 			List<ConfigAttribute> list=new ArrayList<ConfigAttribute>();

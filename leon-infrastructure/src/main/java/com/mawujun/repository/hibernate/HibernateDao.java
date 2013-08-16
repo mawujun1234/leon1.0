@@ -159,6 +159,32 @@ public class HibernateDao<T, ID extends Serializable>{
 		logger.debug("save entity: {}", entity);
 	}
 	/**
+	 * 通过Cnd。update().set(...)。andEquals();来指定更新的字段和条件
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param cnd
+	 */
+	public void update(Cnd cnd) {
+		if(cnd.getSqlType()!=SqlType.UPDATE ){
+			throw new BussinessException("SqlType不对");
+		}
+		if(cnd.getUpdateItems()==null){
+			throw new BussinessException("没有设置更新字段，请先设置了");
+		}
+		cnd.setSqlType(SqlType.UPDATE);
+		
+		
+		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
+		
+		StringBuilder builder=new StringBuilder();
+		cnd.joinHql(classMetadata, builder);
+		Query query = this.getSession().createQuery(builder.toString());
+		
+		setParamsByCnd(query,cnd,classMetadata);
+
+		query.executeUpdate();
+		
+	}
+	/**
 	 * 修改对象.把数据库中的实例就更新成 : 传入对象
 	 * 如果每个属性没有填的话，将会变成null，即使你本来不想改
 	 * http://sishuok.com/forum/blogPost/list/2477.html
@@ -301,7 +327,9 @@ public class HibernateDao<T, ID extends Serializable>{
 			query.setFloat(position, (Float) val);
 		} else if (ReflectionUtils.isDouble(val)) {
 			query.setDouble(position, (Double) val);
-		} else if (ReflectionUtils.isBigDecimal(val)) {
+		} else if (ReflectionUtils.isBoolean(val)) {
+			query.setBoolean(position, ((Boolean) val));
+		}else if (ReflectionUtils.isBigDecimal(val)) {
 			query.setBigDecimal(position, (BigDecimal) val);
 		} else if (ReflectionUtils.isOf(val, java.sql.Date.class)) {
 			query.setDate(position, (java.sql.Date) val);
@@ -346,6 +374,12 @@ public class HibernateDao<T, ID extends Serializable>{
 	 */
 	public void updateIgnoreNull(final T entity,Cnd cnd) {
 		cnd.setSqlType(SqlType.UPDATE);
+		//updateItems.size()>0防止用T进行更新的时候出现hql重复
+		if(cnd.getUpdateItems()!=null){
+			cnd.getUpdateItems().clearSets();
+		}
+		
+		
 		Object[] objs=getUpdateProp_position(entity);
 		StringBuilder builder=(StringBuilder)objs[0];
 		List<Object> params11111=(List<Object>)objs[1];
@@ -623,7 +657,12 @@ public class HibernateDao<T, ID extends Serializable>{
 		this.getSession().clear();
 		return query.executeUpdate();
 	}
-	
+	/**
+	 * 注意，使用Cnd的地方表示删除的是BaseRopository中泛型指定的类。
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param cnd
+	 * @return
+	 */
 	public int deleteBatch(Cnd cnd){
 		cnd.setSqlType(SqlType.DELETE);
 		StringBuilder builder=new StringBuilder();

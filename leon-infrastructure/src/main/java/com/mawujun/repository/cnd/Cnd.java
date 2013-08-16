@@ -43,12 +43,15 @@ public class Cnd implements PItem{
 	
 	private SelectItems selectItems;
 	
+	private UpdateItems updateItems;
+	
 	private SqlType sqlType;
 	
 	public Cnd() {
 		where = new SqlExpressionGroup();
 		orderBy = new OrderBySet();
 		selectItems=new SelectItems();
+		updateItems=new UpdateItems();
 	}
 	public Cnd(SqlType sqlType) {
 		this();
@@ -88,7 +91,7 @@ public class Cnd implements PItem{
 		return new Cnd(SqlType.DELETE);
 	}
 	public static Cnd update() {
-		return new Cnd(SqlType.DELETE);
+		return new Cnd(SqlType.UPDATE);
 	}
 	//===============================================
 	
@@ -374,6 +377,14 @@ public class Cnd implements PItem{
 	}
 	
 	
+	///////////////////////删除的字段
+	
+	public Cnd set(String fieldName,Object value) {
+		this.updateItems.set(fieldName, value);
+		return this;
+	}
+	//删除的字段用的
+	
 	
 	
 	
@@ -405,8 +416,16 @@ public class Cnd implements PItem{
 			sb.append("from "+classMetadata.getEntityName());
 		} else if(this.getSqlType()==SqlType.DELETE){
 			sb.append("delete from "+classMetadata.getEntityName());
-		} else if(this.getSqlType()==SqlType.UPDATE){
+		} else if(this.getSqlType()==SqlType.UPDATE && updateItems.size()>0){//updateItems.size()>0防止用T进行更新的时候出现hql重复
 			//sb.append("delete from "+classMetadata.getEntityName());
+			int versionIndex=classMetadata.getVersionProperty();
+			if(versionIndex!=-66){//如果有version字段就更新他
+				sb.append("update versioned  " + classMetadata.getEntityName()+ " set ");
+			} else {
+				sb.append("update  " + classMetadata.getEntityName()+ " set ");
+			}
+			updateItems.joinHql(classMetadata, sb);
+			
 		}
 	
 		where.joinHql(classMetadata, sb);
@@ -416,12 +435,20 @@ public class Cnd implements PItem{
 	@Override
 	public int joinParams(AbstractEntityPersister classMetadata, Object obj,
 			Object[] params, int off) {
+		 if(this.getSqlType()==SqlType.UPDATE){
+			 off=updateItems.joinParams(classMetadata, obj, params, off);
+		 }
 		return where.joinParams(classMetadata, obj, params, off);
 	}
 
 	@Override
 	public int paramCount(AbstractEntityPersister classMetadata) {
-		return where.paramCount(classMetadata);
+		int count=0;
+		 if(this.getSqlType()==SqlType.UPDATE){
+			 count=updateItems.paramCount(classMetadata);
+		 }
+		 count+=where.paramCount(classMetadata);
+		return count;
 	}
 	
 //	public String toSql(AbstractEntityPersister classMetadata) {
@@ -512,14 +539,33 @@ public class Cnd implements PItem{
 //		return ES_FLD_VAL.escape(s);
 		return s;
 	}
+	/**
+	 * 获取语句的类型，是delete，select还是update等等
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param sqlType
+	 */
 	public SqlType getSqlType() {
 		return sqlType;
 	}
+	/**
+	 * 更改语句的类型，是delete，select还是update等等
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param sqlType
+	 */
 	public void setSqlType(SqlType sqlType) {
 		this.sqlType = sqlType;
 	}
 	public SelectItems getSelectItems() {
 		return selectItems;
+	}
+	public UpdateItems getUpdateItems() {
+		if(updateItems==null){
+			return null;
+		}
+		if(updateItems.size()==0){
+			return null;
+		}
+		return updateItems;
 	}
 	
 	

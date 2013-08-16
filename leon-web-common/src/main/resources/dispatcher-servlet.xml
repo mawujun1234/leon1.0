@@ -75,7 +75,7 @@
 	<property name="messageConverters">
 		<list>
 			<bean id="stringHttpMessageConverter"
-				class="org.springframework.http.converter.StringHttpMessageConverter">
+				class="com.mawujun.controller.spring.mvc.StringHttpMessageConverterImpl">
 				<constructor-arg value="UTF-8">
 					
 				</constructor-arg>

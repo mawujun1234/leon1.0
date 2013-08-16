@@ -83,15 +83,27 @@ public class UserController {
 	
 	@RequestMapping("/user/destroy")
 	@ResponseBody
-	public User destroy(@RequestBody User user){	
+	public User destroy(@RequestBody User user,Boolean physicsDel){	
 		if(user.isAdmin()){
 			throw new BussinessException("管理员账号不能删除!");
+		}
+		if(physicsDel!=null && physicsDel){
+			userService.delete(user);
+			return user;
 		}
 		user.setDeleted(true);
 		user.setDeletedDate(new Date());
 		userService.update(user);
 		//userService.delete(user);
 		return user;
+	}
+	
+	@RequestMapping("/user/recover")
+	@ResponseBody
+	public String recover(String id){		
+		 userService.recover(id);
+		 return id;
+		 //return "{success:true}";
 	}
 	
 	@RequestMapping("/user/queryRole")

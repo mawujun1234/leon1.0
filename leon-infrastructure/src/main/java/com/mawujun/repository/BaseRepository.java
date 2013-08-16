@@ -161,6 +161,11 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 		hibernateDao.update(entity);
 		hibernateDao.flush();
 	}
+	
+	public void update(Cnd cnd) {
+		hibernateDao.update(cnd);
+		hibernateDao.flush();
+	}
 
 	public void delete(T entity) {
 		// TODO Auto-generated method stub
@@ -230,7 +235,12 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 //	public int deleteBatch(WhereInfo... wheres){
 //		return hibernateDao.deleteBatch(wheres);
 //	}
-	
+	/**
+	 * 注意，使用Cnd的地方表示删除的是BaseRopository中泛型指定的类。
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param cnd
+	 * @return
+	 */
 	public int deleteBatch(Cnd cnd){
 		return hibernateDao.deleteBatch(cnd);
 	}
@@ -471,14 +481,17 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 //		return this.getMybatisRepository().selectList(supplyNamespace(statement),params);
 //	}
 //	
-	public List<Object> queryList(final String statement,final Object params) {
+	public List<Object> queryListObject(final String statement,final Object params) {
 		return this.getMybatisRepository().selectListObj(supplyNamespace(statement),params);
+	}
+	public List<Map<String,Object>> queryList(final String statement,final Object params) {
+		return this.getMybatisRepository().selectList(supplyNamespace(statement),params);
 	}
 	public List<Map<String,Object>> queryList(final String statement,final Map params) {
 		return this.getMybatisRepository().selectList(supplyNamespace(statement),params);
 	}
 	/**
-	 * 主要用于数组的参数的时候，例如 name in (...)的时候，而且只有那么这么一个参数
+	 * 主要用于数组的参数的时候，例如 name in (...)的时候，而且只有那么这么一个参数,mybatis在接收的时候接收到的是array
 	 * 只是省略了数组参数的构造
 	 * @author mawujun email:16064988@163.com qq:16064988
 	 * @param statement

@@ -1,6 +1,7 @@
 Ext.require('Leon.desktop.user.User');
 Ext.require('Leon.common.ux.BaseGrid');
 Ext.require('Leon.desktop.user.UserForm');
+Ext.require('Leon.desktop.role.RoleSelectPanel');
 Ext.require('Leon.desktop.parameter.ParameterUtils');
 Ext.onReady(function(){
 	var grid=Ext.create('Leon.common.ux.BaseGrid',{
@@ -26,6 +27,48 @@ Ext.onReady(function(){
 	    ]
 		
 	});
+	
+	var physicsDel = new Ext.Action({
+		    text: '物理删除',
+		    iconCls: 'icons_list-remove',
+		    handler: function(){
+		    	Ext.Msg.confirm("删除",'确定要删除吗?物理删除后，将不可恢复!', function(btn, text){
+					if (btn == 'yes'){
+						var user=grid.getLastSelected( );//.getLastSelected( );
+						user.destroy({
+							params:{physicsDel:true},
+							success:function(){
+								grid.getStore().reload();
+							}
+						});
+					}
+				});
+		    }
+	});
+	grid.addAction(3,physicsDel);
+	
+	var recover = new Ext.Action({
+		    text: '恢复',
+		    iconCls: 'icons_arrow-step-over',
+		    handler: function(){
+		    	Ext.Msg.confirm("删除",'恢复被逻辑删除的用户，确定要恢复吗?', function(btn, text){
+					if (btn == 'yes'){
+						var user=grid.getLastSelected( );//.getLastSelected( );
+						Ext.Ajax.request({
+							url:'/user/recover',
+							params:{id:user.getId()},
+							success:function(){
+								grid.getStore().reload();
+							}
+						});
+						
+					}
+				});
+		    }
+	});
+	grid.addAction(3,recover);
+	
+	
 	var form=Ext.create('Leon.desktop.user.UserForm',{});
 	var win=Ext.create('Ext.Window',{
 			layout:'fit',
