@@ -83,5 +83,30 @@ public class UserDetailsImpl implements UserDetails {
 		this.user = user;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((this.getUsername() == null) ? 0 : this.getUsername().hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UserDetailsImpl other = (UserDetailsImpl) obj;
+		if (this.getUsername() == null) {
+			if (other.getUsername() != null)
+				return false;
+		} else if (!this.getUsername().equals(other.getUsername()))
+			return false;
+		return true;
+	}
+
 	
 }

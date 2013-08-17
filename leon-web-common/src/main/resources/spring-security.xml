@@ -37,12 +37,15 @@
 	  		<filter-chain pattern="/login.jsp" filters="none"></filter-chain>
 	  		<filter-chain pattern="/loginFailure.jsp" filters="none"></filter-chain>
 	  		<filter-chain pattern="/accessDeny.jsp" filters="none"></filter-chain>
+	  		<filter-chain pattern="/timeout.jsp" filters="none"></filter-chain>
 	  		<!-- <filter-chain pattern="/j_spring_security_check" filters="none"></filter-chain> -->
 	  		<!-- http://mark.koli.ch/2010/07/spring-3-and-spring-security-setting-your-own-custom-j-spring-security-check-filter-processes-url.html -->
             <filter-chain pattern="/**" filters="
+               concurrentSessionFilter,
 	           securityContextPersistenceFilterWithASCTrue,
 	           logoutFilter,
 	           usernamePasswordAuthenticationFilter,
+	           sessionManagementFilter,
 	           exceptionTranslationFilter,
 	           filterSecurityInterceptor" />
         </beans:list>
@@ -50,8 +53,19 @@
 	</beans:bean>
 	
 	<beans:bean class="org.springframework.security.web.context.SecurityContextPersistenceFilter" name="securityContextPersistenceFilterWithASCTrue">
-		<beans:property name="forceEagerSessionCreation" value="true"></beans:property>
+		<!--true在过滤器开始之前保证session是可用的，默认是false -->
+		<beans:property name="forceEagerSessionCreation" value="false"></beans:property>
+		<!-- 安全上下文存放的地方 -->
+		<beans:property name="securityContextRepository"  ref="securityContextRepository" />
 	</beans:bean>
+	<!-- 生成HttpSessionSecurityContextRepository ，它会把安全上下文保存为一个HttpSession的属性
+	可选的是，你可以提供一个SecurityContextRepository接口的 null实现，这就可以防止安全上下文被保存，即使一个session已经在请求期间被创建了。-->  
+    <beans:bean id="securityContextRepository"   class="org.springframework.security.web.context.HttpSessionSecurityContextRepository">  
+        <beans:property name="allowSessionCreation" value="true" />  
+        <beans:property name="disableUrlRewriting" value="false" />  
+    </beans:bean>  
+	
+	
 	<beans:bean class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter" name="usernamePasswordAuthenticationFilter">
 		<beans:property name="filterProcessesUrl" value="/j_spring_security_check"></beans:property><!-- 认证地址 -->
 		<beans:property name="authenticationManager" ref="myAuthenticationManager"></beans:property>
@@ -70,6 +84,8 @@
 				</beans:property>	
 			</beans:bean>
 		</beans:property>
+		<!-- session的并发控制 ，往SessionRegistry中注册会话信息，到时候可以供给concurrentSessionFilter判断是否已经过期，就可以跳转到过期页面了-->
+		<beans:property name="sessionAuthenticationStrategy" ref="concurrentSessionControlStrategy"></beans:property>
 	</beans:bean>
 	<!-- 异常处理过滤器 --> 
 	<beans:bean class="org.springframework.security.web.access.ExceptionTranslationFilter" name="exceptionTranslationFilter">
@@ -103,6 +119,13 @@
 		<beans:property name="securityMetadataSource"><!-- 实现了角色资源的对应关系 -->
 			<beans:bean class="com.mawujun.user.login.FilterInvocationSecurityMetadataSourceImpl">
 				<beans:property name="roleService" ref="roleService"></beans:property>
+				<!-- 必须要认证过才能访问的URL配置，roleService中获取的资源就表示认证后还不一定可以昂问，也就是说roleService的内容必须认证才能访问，但认证后不一定能访问roleService中返回的内容
+				 这些地址之外的就表示无论谁都可以访问。-->
+				<beans:property name="needAuthenticationUrls">
+					<beans:list>
+						<beans:value>/**</beans:value>
+					</beans:list>
+				</beans:property>
 			</beans:bean>
 		</beans:property>
 		<!-- 当某个资源被访问时，发现没有 授予他时，是拒绝还是允许-->
@@ -114,17 +137,45 @@
 		<beans:constructor-arg value="/login.jsp" />
 		<beans:constructor-arg>
 			<beans:array>
-				<beans:bean id="logoutHandler" class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler">
-				</beans:bean>
-				<!--<beans:ref bean="logoutHandler" />
+				<!-- 注销监听器  -->
+				<beans:ref bean="logoutHandler" />	
+				<!--注入rememberMeServices属性是为了安全退出的时候把记住密码的状态也删除了
 				<ref bean="rememberMeServices" />-->
 			</beans:array>
 		</beans:constructor-arg>
 		<beans:property name="filterProcessesUrl" value="/j_spring_security_logout" />
 	</beans:bean>
-
 	<!-- 注销监听器  -->
+	<beans:bean id="logoutHandler" class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler"></beans:bean>
+
 	
+	<!-- SESSION固化保护,以及并发控制 -->
+	<beans:bean id="sessionManagementFilter" class="org.springframework.security.web.session.SessionManagementFilter">
+		<beans:constructor-arg name="securityContextRepository" ref="securityContextRepository" />
+		<beans:property name="sessionAuthenticationStrategy" ref="concurrentSessionControlStrategy" />
+	</beans:bean>
+
+	<!-- SESSION并发数量等配置 -->
+	<beans:bean id="concurrentSessionControlStrategy" class="org.springframework.security.web.authentication.session.ConcurrentSessionControlStrategy">
+		<beans:constructor-arg name="sessionRegistry">
+			<beans:ref bean="sessionRegistry" />	
+		</beans:constructor-arg>
+		<!-- 要求UserDetailsImpl实现hashCode和equals方法，来获取到唯一的对象 -->
+		<beans:property name="maximumSessions" value="1" /><!-- 控制同个账号登录的次数，-1表示没有限制 -->
+		<beans:property name="exceptionIfMaximumExceeded" value="false" /><!-- 表示将前面已经存在的用户强制过期，true表示后来的用户登录不了 -->
+	</beans:bean>
+	<beans:bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />
+	<!-- 过期会话的处理工作 -->
+	<beans:bean id="concurrentSessionFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">
+		<beans:property name="sessionRegistry" ref="sessionRegistry" />
+		<!-- 这里的过期主要用于强制过期的时候，如果是web服务器过期是不会走这条线的。或者是同个账号不能同时登陆的时候，强制用户失效后再进行访问的时候跳转的页面 -->
+		<beans:property name="expiredUrl" value="/timeout.jsp" />
+		<beans:property name="logoutHandlers">
+			<beans:list>
+				<beans:ref bean="logoutHandler" />
+			</beans:list>
+		</beans:property>
+	</beans:bean>
 	
 
 	

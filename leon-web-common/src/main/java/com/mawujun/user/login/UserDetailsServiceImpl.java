@@ -24,6 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		UserDetailsImpl aa=new UserDetailsImpl();
 		aa.setUser(user);
 		List<String> roleIds=userService.queryRoleId(user.getId());
+		roleIds.add("Authentication");
 		aa.setRoles(roleIds);
 		return aa;
 	}

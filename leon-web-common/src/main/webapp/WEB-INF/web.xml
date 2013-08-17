@@ -18,6 +18,11 @@
 	  <filter-name>springSecurityFilterChain</filter-name>
 	  <url-pattern>/*</url-pattern>
 	</filter-mapping>
+    <listener>
+    	<listener-class>
+			org.springframework.security.web.session.HttpSessionEventPublisher
+         </listener-class>
+    </listener>
 
    
     <filter>
@@ -118,6 +123,10 @@
 	<listener>  
 		<listener-class>ch.qos.logback.ext.spring.web.LogbackConfigListener</listener-class>  
 	</listener> 
+	
+	<session-config>
+	  <session-timeout>30</session-timeout>
+	</session-config>
 
  <!-- 
     <context-param>

@@ -14,6 +14,7 @@ import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
+import org.springframework.security.web.util.AntPathRequestMatcher;
 import org.springframework.security.web.util.RequestMatcher;
 
 import com.mawujun.role.RoleService;
@@ -24,46 +25,31 @@ public class FilterInvocationSecurityMetadataSourceImpl implements
 	
 	private RoleService roleService;
 	
-	 private static Map<String, Collection<ConfigAttribute>> resourceMap = new HashMap<String, Collection<ConfigAttribute>>();  
+	private List<String> needAuthenticationUrls;
+	
+	 private static Map<RequestMatcher, Collection<ConfigAttribute>> resourceMap = new HashMap<RequestMatcher, Collection<ConfigAttribute>>();  
 	 
 	 
 	 public FilterInvocationSecurityMetadataSourceImpl(){
-		 
-//		 
-//		 ConfigAttribute configAttribute =    new SecurityConfig("ROLE_aaa");  
-//			
-//		 List<ConfigAttribute> list=new ArrayList<ConfigAttribute>();
-//			list.add(configAttribute);
-//			resourceMap.put("/index.jsp", list);  
+
 	 }
 	@Override
 	public Collection<ConfigAttribute> getAttributes(Object object)
 			throws IllegalArgumentException {
 		 final HttpServletRequest request = ((FilterInvocation) object).getRequest();
-	        for (Map.Entry<String, Collection<ConfigAttribute>> entry : resourceMap.entrySet()) {
+	        for (Map.Entry<RequestMatcher, Collection<ConfigAttribute>> entry : resourceMap.entrySet()) {
 	        	//RequestMatcher这里把本来是调用这个的matches方法
-//	            if (entry.getKey().matches(request)) {
-//	                return entry.getValue();
-//	            }
-	        	if(entry.getKey().equals(getRequestPath(request))){
-	        		return entry.getValue();
-	        	}
+	            if (entry.getKey().matches(request)) {
+	                return entry.getValue();
+	            }
+//	        	if(entry.getKey().equals(getRequestPath(request))){
+//	        		return entry.getValue();
+//	        	}
 	        }
 	        return null;
 	        
 	}
 
-	private String getRequestPath(HttpServletRequest request) {
-        String url = request.getServletPath();
-
-        if (request.getPathInfo() != null) {
-            url += request.getPathInfo();
-        }
-
-        url = url.toLowerCase();
-
-        return url;
-    }
 	
 	@Override
 	public Collection<ConfigAttribute> getAllConfigAttributes() {
@@ -71,7 +57,7 @@ public class FilterInvocationSecurityMetadataSourceImpl implements
 		
 		Set<ConfigAttribute> allAttributes = new HashSet<ConfigAttribute>();
 
-        for (Map.Entry<String, Collection<ConfigAttribute>> entry : resourceMap.entrySet()) {
+        for (Map.Entry<RequestMatcher, Collection<ConfigAttribute>> entry : resourceMap.entrySet()) {
             allAttributes.addAll(entry.getValue());
         }
 
@@ -84,12 +70,30 @@ public class FilterInvocationSecurityMetadataSourceImpl implements
 			 if(!StringUtils.hasLength(map.get("URL").toString())){
 				 continue;
 			 }
-			ConfigAttribute configAttribute =    new SecurityConfig(map.get("ROLE_ID").toString());  
-				
-			List<ConfigAttribute> list=new ArrayList<ConfigAttribute>();
-			list.add(configAttribute);
-			resourceMap.put(map.get("URL").toString(), list);  
+			 AntPathRequestMatcher matcher=new AntPathRequestMatcher(map.get("URL").toString());
+			 ConfigAttribute configAttribute =    new SecurityConfig(map.get("ROLE_ID").toString());  
+			 if(resourceMap.containsKey(matcher)){
+				 resourceMap.get(matcher).add(configAttribute);
+			 } else{
+				List<ConfigAttribute> list=new ArrayList<ConfigAttribute>();
+				list.add(configAttribute);
+				resourceMap.put(matcher, list);  
+			 }
+			
 		 }
+		 
+		 //添加必须认证才能访问的url
+		 if(needAuthenticationUrls!=null && needAuthenticationUrls.size()>0){
+			 for(String url:needAuthenticationUrls){
+				//添加所有的路径，都必须是认证过的才能访问
+				//Authentication只是作为一个标识符，可以让beforeInvocation中不范虎null	
+				ConfigAttribute configAttribute =    new SecurityConfig("Authentication"); 
+				List<ConfigAttribute> list=new ArrayList<ConfigAttribute>();
+				list.add(configAttribute);
+				resourceMap.put(new AntPathRequestMatcher(url), list);  
+			 }
+		 }
+		
 	}
 	
 
@@ -103,6 +107,12 @@ public class FilterInvocationSecurityMetadataSourceImpl implements
 	}
 	public void setRoleService(RoleService roleService) {
 		this.roleService = roleService;
+	}
+	public List<String> getNeedAuthenticationUrls() {
+		return needAuthenticationUrls;
+	}
+	public void setNeedAuthenticationUrls(List<String> needAuthenticationUrls) {
+		this.needAuthenticationUrls = needAuthenticationUrls;
 	}
 
 }
