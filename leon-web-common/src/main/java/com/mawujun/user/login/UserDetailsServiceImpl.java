@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import com.mawujun.exception.BussinessException;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.user.User;
 import com.mawujun.user.UserService;
@@ -19,7 +18,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 			throws UsernameNotFoundException {
 		User user=userService.queryUnique(Cnd.select().andEquals("loginName", username));
 		if(user==null || user.isDeleted()){
-			throw new BussinessException("用户不存在");
+			throw new UsernameNotFoundException("用户不存在");
 		}
 		UserDetailsImpl aa=new UserDetailsImpl();
 		aa.setUser(user);

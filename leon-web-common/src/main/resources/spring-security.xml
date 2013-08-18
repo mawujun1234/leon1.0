@@ -3,7 +3,7 @@
     xmlns:beans="http://www.springframework.org/schema/beans"   
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
 	xsi:schemaLocation="http://www.springframework.org/schema/beans   
-	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd    
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd    
 	http://www.springframework.org/schema/security   
 	http://www.springframework.org/schema/security/spring-security-3.1.xsd">  
     <!-- 
@@ -45,13 +45,14 @@
 	           securityContextPersistenceFilterWithASCTrue,
 	           logoutFilter,
 	           usernamePasswordAuthenticationFilter,
+	           
 	           sessionManagementFilter,
 	           exceptionTranslationFilter,
 	           filterSecurityInterceptor" />
         </beans:list>
        </beans:constructor-arg>
 	</beans:bean>
-	
+	<!-- ======================================华丽的分割线==============================================-->
 	<beans:bean class="org.springframework.security.web.context.SecurityContextPersistenceFilter" name="securityContextPersistenceFilterWithASCTrue">
 		<!--true在过滤器开始之前保证session是可用的，默认是false -->
 		<beans:property name="forceEagerSessionCreation" value="false"></beans:property>
@@ -64,18 +65,20 @@
         <beans:property name="allowSessionCreation" value="true" />  
         <beans:property name="disableUrlRewriting" value="false" />  
     </beans:bean>  
-	
+	<!-- ======================================华丽的分割线==============================================-->
 	
 	<beans:bean class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter" name="usernamePasswordAuthenticationFilter">
 		<beans:property name="filterProcessesUrl" value="/j_spring_security_check"></beans:property><!-- 认证地址 -->
 		<beans:property name="authenticationManager" ref="myAuthenticationManager"></beans:property>
 		<beans:property name="postOnly" value="false"></beans:property>
 		<beans:property name="authenticationSuccessHandler"><!-- 认证成功的时候跳转-->
-			<beans:bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler">
+			<!-- <beans:bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler"> -->
+			<beans:bean class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
 				<beans:property name="defaultTargetUrl" value="/index.jsp"></beans:property>
+				<beans:property name="requestCache" ref="httpSessionRequestCache"></beans:property>
 			</beans:bean>
 		</beans:property>
-		<beans:property name="authenticationFailureHandler"><!-- 认证失败的时候跳转-->
+		<beans:property name="authenticationFailureHandler"><!-- 认证失败的时候跳转，还有ExceptionMappingAuthenticationFailureHandler根据不同的异常跳转到不同的也页面-->
 			<beans:bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
 				<beans:property name="defaultFailureUrl" value="/loginFailure.jsp"></beans:property>
 				<beans:property name="redirectStrategy">
@@ -87,19 +90,44 @@
 		<!-- session的并发控制 ，往SessionRegistry中注册会话信息，到时候可以供给concurrentSessionFilter判断是否已经过期，就可以跳转到过期页面了-->
 		<beans:property name="sessionAuthenticationStrategy" ref="concurrentSessionControlStrategy"></beans:property>
 	</beans:bean>
+	<!-- 实现了UserDetailsService的Bean -->  
+    <authentication-manager alias="myAuthenticationManager">  
+        <authentication-provider user-service-ref="myUserDetailServiceImpl">  
+            <!-- 登入 密码  采用MD5加密 
+            <password-encoder hash="md5" ref="passwordEncoder">  
+            </password-encoder>   --> 
+        </authentication-provider>  
+    </authentication-manager>  
+    
+    <!-- 自定义UserDetailsService认证  -->   
+    <beans:bean id="myUserDetailServiceImpl"  
+        class="com.mawujun.user.login.UserDetailsServiceImpl">  
+        <beans:property name="userService" ref="userService"></beans:property>  
+    </beans:bean>  
+  
+    <!-- 用户的密码加密或解密 -->  
+    <beans:bean id="passwordEncoder"  
+		class="org.springframework.security.authentication.encoding.Md5PasswordEncoder" />  
+	<!-- ======================================华丽的分割线==============================================-->
 	<!-- 异常处理过滤器 --> 
 	<beans:bean class="org.springframework.security.web.access.ExceptionTranslationFilter" name="exceptionTranslationFilter">
-		<beans:property name="authenticationEntryPoint">
-			<beans:bean class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
-				<beans:property name="loginFormUrl" value="/login.jsp"></beans:property><!-- 没有认证的时候，跳转 -->
-			</beans:bean>
-		</beans:property>
+		<beans:constructor-arg>
+				<!--以构造函数的形式出现了 <beans:property name="authenticationEntryPoint"> -->
+					<beans:bean class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+						<beans:property name="loginFormUrl" value="/login.jsp"></beans:property><!-- 没有认证的时候，跳转 -->
+					</beans:bean>
+				<!-- </beans:property> -->
+		</beans:constructor-arg>
+		<!-- 当访问拒绝或会话超期的时候（注意不包括会话失效），记录这次访问的请求，等重新登录后，就会返回这个请求，通过RequestCacheAwareFilter -->
+		<beans:constructor-arg ref="httpSessionRequestCache"></beans:constructor-arg>
+		
 		<beans:property name="accessDeniedHandler"><!--访问局拒绝的时候跳转-->
 			<beans:bean class="org.springframework.security.web.access.AccessDeniedHandlerImpl">
 				<beans:property name="errorPage" value="/accessDeny.jsp"></beans:property>
 			</beans:bean>
 		</beans:property>
 	</beans:bean>
+	<!-- ======================================华丽的分割线==============================================-->
 	<!-- 自定义认证管理,资源,权限   
 	<beans:bean class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor" name="filterSecurityInterceptor"> -->
 	<beans:bean class="com.mawujun.user.login.FilterSecurityInterceptorImpl" name="filterSecurityInterceptor">
@@ -121,6 +149,7 @@
 				<beans:property name="roleService" ref="roleService"></beans:property>
 				<!-- 必须要认证过才能访问的URL配置，roleService中获取的资源就表示认证后还不一定可以昂问，也就是说roleService的内容必须认证才能访问，但认证后不一定能访问roleService中返回的内容
 				 这些地址之外的就表示无论谁都可以访问。-->
+				 <!-- 这里还可以扩展/download/**这些内容必须是谁可以访问的，也可以做成在页面上动态配置 -->
 				<beans:property name="needAuthenticationUrls">
 					<beans:list>
 						<beans:value>/**</beans:value>
@@ -128,10 +157,11 @@
 				</beans:property>
 			</beans:bean>
 		</beans:property>
-		<!-- 当某个资源被访问时，发现没有 授予他时，是拒绝还是允许-->
+		<!-- 当某个资源被访问时，发现没有 授予角色时，也就是还没有进行分配的时候，是拒绝还是允许-->
 		<beans:property name="rejectPublicInvocations" value="false"></beans:property>
 	</beans:bean>
 	
+	<!-- ======================================华丽的分割线==============================================-->
 	<!-- 注销过滤器 -->
 	<beans:bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
 		<beans:constructor-arg value="/login.jsp" />
@@ -145,10 +175,10 @@
 		</beans:constructor-arg>
 		<beans:property name="filterProcessesUrl" value="/j_spring_security_logout" />
 	</beans:bean>
-	<!-- 注销监听器  -->
+	<!-- 注销监听器,多个地方引用了  -->
 	<beans:bean id="logoutHandler" class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler"></beans:bean>
 
-	
+	<!-- ======================================华丽的分割线==============================================-->	
 	<!-- SESSION固化保护,以及并发控制 -->
 	<beans:bean id="sessionManagementFilter" class="org.springframework.security.web.session.SessionManagementFilter">
 		<beans:constructor-arg name="securityContextRepository" ref="securityContextRepository" />
@@ -167,36 +197,36 @@
 	<beans:bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />
 	<!-- 过期会话的处理工作 -->
 	<beans:bean id="concurrentSessionFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">
-		<beans:property name="sessionRegistry" ref="sessionRegistry" />
+		<beans:constructor-arg ref="sessionRegistry">			
+		</beans:constructor-arg>
 		<!-- 这里的过期主要用于强制过期的时候，如果是web服务器过期是不会走这条线的。或者是同个账号不能同时登陆的时候，强制用户失效后再进行访问的时候跳转的页面 -->
 		<beans:property name="expiredUrl" value="/timeout.jsp" />
 		<beans:property name="logoutHandlers">
 			<beans:list>
 				<beans:ref bean="logoutHandler" />
+				<!-- 这个要在 exceptionIfMaximumExceeded=false的时候配置，或者拥有强制用户失效（不是过期）-->
+				<beans:bean class="com.mawujun.user.login.SavedRequestConcurrentSessionLogoutHandler">
+					<beans:constructor-arg ref="httpSessionRequestCache"></beans:constructor-arg>
+				</beans:bean>
 			</beans:list>
 		</beans:property>
+	</beans:bean>
+	<!-- ======================================华丽的分割线==============================================-->
+	<!-- 用于用户登录成功后，重新恢复因为登录被打断的请求,
+	简单点说就是出现了AuthenticationException、AccessDeniedException两类异常 重新恢复：
+	<beans:bean name="requestCacheAwareFilter" class="org.springframework.security.web.savedrequest.RequestCacheAwareFilter">
+		<beans:constructor-arg ref="httpSessionRequestCache">
+		</beans:constructor-arg>
+	</beans:bean> 不需要这儿过滤器，
+	1：只需要在UsernamePasswordAuthenticationFilter设置authenticationSuccessHandler为SavedRequestAwareAuthenticationSuccessHandler
+	2： 设置ExceptionTranslationFilter的httpSessionRequestCache-->
+	<!-- 存储上次请求的URL-->
+	<beans:bean name="httpSessionRequestCache" class="org.springframework.security.web.savedrequest.HttpSessionRequestCache">
 	</beans:bean>
 	
 
 	
 	<!-- DefaultWebInvocationPrivilegeEvaluator页面标签的权限 -->
 	
-    <!-- 实现了UserDetailsService的Bean -->  
-    <authentication-manager alias="myAuthenticationManager">  
-        <authentication-provider user-service-ref="myUserDetailServiceImpl">  
-            <!-- 登入 密码  采用MD5加密 
-            <password-encoder hash="md5" ref="passwordEncoder">  
-            </password-encoder>   --> 
-        </authentication-provider>  
-    </authentication-manager>  
     
-    <!-- 自定义UserDetailsService认证  -->   
-    <beans:bean id="myUserDetailServiceImpl"  
-        class="com.mawujun.user.login.UserDetailsServiceImpl">  
-        <beans:property name="userService" ref="userService"></beans:property>  
-    </beans:bean>  
-  
-    <!-- 用户的密码加密或解密 -->  
-    <beans:bean id="passwordEncoder"  
-		class="org.springframework.security.authentication.encoding.Md5PasswordEncoder" />  
 </beans:beans> 
