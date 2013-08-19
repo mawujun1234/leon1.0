@@ -79,17 +79,19 @@
 			</beans:bean>
 		</beans:property>
 		<beans:property name="authenticationFailureHandler"><!-- 认证失败的时候跳转，还有ExceptionMappingAuthenticationFailureHandler根据不同的异常跳转到不同的也页面-->
-			<beans:bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+			<!--  <beans:bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">-->
+			<beans:bean class="com.mawujun.user.login.ContentNavigationAuthenticationFailureHandler">
 				<beans:property name="defaultFailureUrl" value="/loginFailure.jsp"></beans:property>
-				<beans:property name="redirectStrategy">
-					<beans:bean class="com.mawujun.user.login.AjaxRedirectStrategy">
-					</beans:bean>
+				<beans:property name="redirectStrategy" ref="redirectStrategy">
 				</beans:property>	
+				<!-- 是否使用forword来转发请求 ，使用forword的话，就可以再前台获取到请求数据和异常信息，默认是false
+				<beans:property name="useForward" value="false"></beans:property>-->
 			</beans:bean>
 		</beans:property>
 		<!-- session的并发控制 ，往SessionRegistry中注册会话信息，到时候可以供给concurrentSessionFilter判断是否已经过期，就可以跳转到过期页面了-->
 		<beans:property name="sessionAuthenticationStrategy" ref="concurrentSessionControlStrategy"></beans:property>
 	</beans:bean>
+	<beans:bean name="redirectStrategy" class="com.mawujun.user.login.ContentNavigationDefaultRedirectStrategy"></beans:bean>
 	<!-- 实现了UserDetailsService的Bean -->  
     <authentication-manager alias="myAuthenticationManager">  
         <authentication-provider user-service-ref="myUserDetailServiceImpl">  
@@ -112,17 +114,18 @@
 	<!-- 异常处理过滤器 --> 
 	<beans:bean class="org.springframework.security.web.access.ExceptionTranslationFilter" name="exceptionTranslationFilter">
 		<beans:constructor-arg>
-				<!--以构造函数的形式出现了 <beans:property name="authenticationEntryPoint"> -->
-					<beans:bean class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
-						<beans:property name="loginFormUrl" value="/login.jsp"></beans:property><!-- 没有认证的时候，跳转 -->
-					</beans:bean>
-				<!-- </beans:property> -->
+			<!--
+			<beans:bean class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">-->
+			<beans:bean class="com.mawujun.user.login.ContentNavigationLoginUrlAuthenticationEntryPoint">
+				<beans:property name="loginFormUrl" value="/login.jsp"></beans:property><!-- 没有认证的时候，跳转 -->
+			</beans:bean>
 		</beans:constructor-arg>
 		<!-- 当访问拒绝或会话超期的时候（注意不包括会话失效），记录这次访问的请求，等重新登录后，就会返回这个请求，通过RequestCacheAwareFilter -->
 		<beans:constructor-arg ref="httpSessionRequestCache"></beans:constructor-arg>
 		
-		<beans:property name="accessDeniedHandler"><!--访问局拒绝的时候跳转-->
-			<beans:bean class="org.springframework.security.web.access.AccessDeniedHandlerImpl">
+		<beans:property name="accessDeniedHandler"><!--访问局拒绝的时候跳转
+			<beans:bean class="org.springframework.security.web.access.AccessDeniedHandlerImpl">-->
+			<beans:bean class="com.mawujun.user.login.ContentNavigationAccessDeniedHandlerImpl">
 				<beans:property name="errorPage" value="/accessDeny.jsp"></beans:property>
 			</beans:bean>
 		</beans:property>
@@ -201,6 +204,7 @@
 		</beans:constructor-arg>
 		<!-- 这里的过期主要用于强制过期的时候，如果是web服务器过期是不会走这条线的。或者是同个账号不能同时登陆的时候，强制用户失效后再进行访问的时候跳转的页面 -->
 		<beans:property name="expiredUrl" value="/timeout.jsp" />
+		<beans:property name="redirectStrategy" ref="redirectStrategy"></beans:property>
 		<beans:property name="logoutHandlers">
 			<beans:list>
 				<beans:ref bean="logoutHandler" />

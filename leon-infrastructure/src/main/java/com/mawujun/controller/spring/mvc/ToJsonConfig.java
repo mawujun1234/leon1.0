@@ -13,10 +13,12 @@ class ToJsonConfig {
 	public transient String startName="start";
 	public transient String limitName="limit";
 	public transient String pageNoName="page";
+	public transient String msgName="msg";
 	
 	public transient String filterPropertys=null;
 	public transient Class[] filterClass=null;
 	public transient Boolean enableHibernateLazyInitializerFilter=true;
+	public transient String msg=null;
 	
 	//关闭fastjson的循环引用处理
 	public transient Boolean disableCircularReferenceDetect=true;
@@ -139,6 +141,21 @@ class ToJsonConfig {
 	}
 	public void setWriteMapNullValue(Boolean writeMapNullValue) {
 		this.writeMapNullValue = writeMapNullValue;
+	}
+	public String getMsgName() {
+		return msgName;
+	}
+	public void setMsgName(String msgName) {
+		this.msgName = msgName;
+	}
+	public void setExtProperties(Map extProperties) {
+		this.extProperties = extProperties;
+	}
+	public String getMsg() {
+		return msg;
+	}
+	public void setMsg(String msg) {
+		this.msg = msg;
 	}
 	
 }

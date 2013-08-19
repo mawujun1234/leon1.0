@@ -100,6 +100,9 @@ public class FastJsonToStringUtils {
 			}
 			//object=map;
 		}
+		if(JsonConfigHolder.getMsg()!=null){
+			map.put(JsonConfigHolder.getMsgName(), JsonConfigHolder.getMsg());
+		}
 		
 		
 		serializer.write(map);

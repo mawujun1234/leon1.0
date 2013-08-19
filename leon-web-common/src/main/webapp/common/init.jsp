@@ -9,7 +9,7 @@
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/common/ux/BaseAjax.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/common/ux/BaseTree.js"></script>
-
+<script type="text/javascript" src="<%=request.getContextPath()%>/LoginWin.js"></script>
 
     
 <style>

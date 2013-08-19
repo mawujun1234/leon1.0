@@ -6,6 +6,23 @@ Ext.Ajax.on({
 		var status = response.status;
  		var text = response.responseText;
  		switch (status) {
+ 			case 401 :
+ 				//表示Unauthorized 
+ 				var loginForm=Ext.create('Leon.LoginWin',{
+ 					modal:true,
+ 					standardSubmit:false,
+ 					success:function(form, action){
+ 						loginForm.close();
+ 					},
+ 					failure:function(form, action){
+ 						Ext.MessageBox.alert("错误", "用户名或密码错误!" );
+ 					}
+ 				});
+				loginForm.show();
+				break;
+			case 403 :
+				//表示没有权限
+				Ext.MessageBox.alert("错误", "没有权限访问!" );
 			case 404 :
 				top.Ext.MessageBox.alert("错误", "加载数据时发生错误:请求url不可用");
 				break;
@@ -28,7 +45,7 @@ Ext.Ajax.on({
 				var data = Ext.decode(text);
 				if (data && data.success==false) {
 					//top.Ext.MessageBox.alert("错误", "加载数据时发生错误<br/>错误码:"+ status + "<br/>错误信息:" + data.message);
-					top.Ext.MessageBox.alert("错误", "错误信息:" + data.message);
+					top.Ext.MessageBox.alert("错误", "错误信息:" + data.msg);
 				} else {
 					top.Ext.MessageBox.alert("错误", "错误信息:" + text);
 				}

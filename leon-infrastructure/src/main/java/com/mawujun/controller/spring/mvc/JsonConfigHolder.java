@@ -223,6 +223,18 @@ public class JsonConfigHolder {
 		threadLocal.get().setWriteMapNullValue(writeMapNullValue);
 	}
 	
+	public static String getMsgName() {
+		return threadLocal.get().getMsgName();
+	}
+	public static void setMsgName(String msgName) {
+		threadLocal.get().setMsgName(msgName);
+	}
+	public static String getMsg() {
+		return threadLocal.get().getMsg();
+	}
+	public static void setMsg(String msg) {
+		threadLocal.get().setMsg(msg);
+	}
 	
 //	private static class Config {
 //		public transient Boolean autoWrap=true;//自动封装为某种格式
