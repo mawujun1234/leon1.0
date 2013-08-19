@@ -23,6 +23,11 @@ Ext.define("Leon.LoginWin",{
 		        inputType:'password',
 		        allowBlank: false
 		    },{
+                    fieldLabel  : '记住',
+                    xtype:'checkbox',
+                    name      : 'rememberMe',
+                    inputValue: '1'
+            },{
 		    	text:'提交',
 		    	xtype:'button',
 		    	formBind: true,

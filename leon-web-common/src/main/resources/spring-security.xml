@@ -13,7 +13,7 @@
     <http pattern="/icons/**" security="none" />  
     <http pattern="/common/**" security="none" />  
     <http pattern="/ext-4/**" security="none" />  
-    <http pattern="/login.jsp" security="none" />  http://zhoualine.iteye.com/blog/1755233   http://blog.csdn.net/shadowsick/article/details/8576449#
+    <http pattern="/login.jsp" security="none" />  
     --> 
 
     <!-- 这个id要和web.xml中的配置一样，否则会爆No bean named 'springSecurityFilterChain' is defined的异常 -->
@@ -45,7 +45,7 @@
 	           securityContextPersistenceFilterWithASCTrue,
 	           logoutFilter,
 	           usernamePasswordAuthenticationFilter,
-	           
+	           rememberMeAuthenticationFilter,
 	           sessionManagementFilter,
 	           exceptionTranslationFilter,
 	           filterSecurityInterceptor" />
@@ -69,7 +69,7 @@
 	
 	<beans:bean class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter" name="usernamePasswordAuthenticationFilter">
 		<beans:property name="filterProcessesUrl" value="/j_spring_security_check"></beans:property><!-- 认证地址 -->
-		<beans:property name="authenticationManager" ref="myAuthenticationManager"></beans:property>
+		<beans:property name="authenticationManager" ref="authenticationManager"></beans:property>
 		<beans:property name="postOnly" value="false"></beans:property>
 		<beans:property name="authenticationSuccessHandler"><!-- 认证成功的时候跳转-->
 			<!-- <beans:bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler"> -->
@@ -90,20 +90,23 @@
 		</beans:property>
 		<!-- session的并发控制 ，往SessionRegistry中注册会话信息，到时候可以供给concurrentSessionFilter判断是否已经过期，就可以跳转到过期页面了-->
 		<beans:property name="sessionAuthenticationStrategy" ref="concurrentSessionControlStrategy"></beans:property>
+		<!-- 当登录成功后，就记录登录成功信息 -->
+		<beans:property name="rememberMeServices" ref="rememberMeServices"></beans:property>
 	</beans:bean>
 	<beans:bean name="redirectStrategy" class="com.mawujun.user.login.ContentNavigationDefaultRedirectStrategy"></beans:bean>
 	<!-- 实现了UserDetailsService的Bean -->  
-    <authentication-manager alias="myAuthenticationManager">  
-        <authentication-provider user-service-ref="myUserDetailServiceImpl">  
+    <authentication-manager alias="authenticationManager">  
+        <authentication-provider user-service-ref="userDetailsService">  
             <!-- 登入 密码  采用MD5加密 
             <password-encoder hash="md5" ref="passwordEncoder">  
             </password-encoder>   --> 
         </authentication-provider>  
+        <!-- rememberMe的认证提供者 -->
+        <authentication-provider ref="rememberMeAuthenticationProvider"></authentication-provider>
     </authentication-manager>  
     
     <!-- 自定义UserDetailsService认证  -->   
-    <beans:bean id="myUserDetailServiceImpl"  
-        class="com.mawujun.user.login.UserDetailsServiceImpl">  
+    <beans:bean id="userDetailsService"   class="com.mawujun.user.login.UserDetailsServiceImpl">  
         <beans:property name="userService" ref="userService"></beans:property>  
     </beans:bean>  
   
@@ -134,7 +137,7 @@
 	<!-- 自定义认证管理,资源,权限   
 	<beans:bean class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor" name="filterSecurityInterceptor"> -->
 	<beans:bean class="com.mawujun.user.login.FilterSecurityInterceptorImpl" name="filterSecurityInterceptor">
-		<beans:property name="authenticationManager" ref="myAuthenticationManager"></beans:property>
+		<beans:property name="authenticationManager" ref="authenticationManager"></beans:property>
 		<beans:property name="accessDecisionManager">
 			<beans:bean class="com.mawujun.user.login.AffirmativeBasedImpl">
 				<!--取消了投票器，因为这里没有实现反向授权-->	
@@ -172,8 +175,8 @@
 			<beans:array>
 				<!-- 注销监听器  -->
 				<beans:ref bean="logoutHandler" />	
-				<!--注入rememberMeServices属性是为了安全退出的时候把记住密码的状态也删除了
-				<ref bean="rememberMeServices" />-->
+				<!--注入rememberMeServices属性是为了安全退出的时候把记住密码的状态也删除了-->
+				<beans:ref bean="rememberMeServices" />
 			</beans:array>
 		</beans:constructor-arg>
 		<beans:property name="filterProcessesUrl" value="/j_spring_security_logout" />
@@ -228,7 +231,27 @@
 	<beans:bean name="httpSessionRequestCache" class="org.springframework.security.web.savedrequest.HttpSessionRequestCache">
 	</beans:bean>
 	
-
+	<!-- ======================================华丽的分割线==============================================-->
+	<!-- 记住密码功能(COOKIE方式) -->
+	<beans:bean id="rememberMeAuthenticationFilter" class="org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
+		<beans:property name="rememberMeServices" ref="rememberMeServices" />
+		<beans:property name="authenticationManager" ref="authenticationManager" />
+	</beans:bean>
+	<!-- 一种是客户端记住用户名密码，一种是服务端记住用户名密码，现在采用的是客户端记住用户名密码 -->
+	<beans:bean id="rememberMeServices" class="org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices">
+		<beans:property name="userDetailsService" ref="userDetailsService" />
+		<!-- 前台勾选是否记住用户名密码的参数，当 alwaysRemember=false的时候才会有用-->
+		<beans:property name="parameter" value="rememberMe" />
+		<!-- 表示肯定要记住用户名密码 -->
+		<beans:property name="alwaysRemember" value="false"></beans:property>
+		<!-- 默认时间604800秒(一个星期) -->
+		<beans:property name="tokenValiditySeconds" value="604800" />
+		<beans:property name="key" value="springRocks" />
+	</beans:bean>
+	<!--添加到 <authentication-manager alias="authenticationManager">中，作为第二种认证提供者的方式  -->
+	<beans:bean id="rememberMeAuthenticationProvider" class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
+		<beans:property name="key" value="springRocks" />
+	</beans:bean>
 	
 	<!-- DefaultWebInvocationPrivilegeEvaluator页面标签的权限 -->
 	
