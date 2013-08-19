@@ -30,6 +30,7 @@
 	  -->
 	  <beans:constructor-arg> 
 	  	<beans:list>  
+	  		<filter-chain pattern="/favicon.ico" filters="none"></filter-chain>
 	  		<filter-chain pattern="/**/*.js" filters="none"></filter-chain>
 	  		<filter-chain pattern="/icons/**" filters="none"></filter-chain>
 	  		<filter-chain pattern="/common/**" filters="none"></filter-chain>

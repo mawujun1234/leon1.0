@@ -87,7 +87,7 @@ public class FilterInvocationSecurityMetadataSourceImpl implements
 			 for(String url:needAuthenticationUrls){
 				//添加所有的路径，都必须是认证过的才能访问
 				//Authentication只是作为一个标识符，可以让beforeInvocation中不范虎null	
-				ConfigAttribute configAttribute =    new SecurityConfig("Authentication"); 
+				ConfigAttribute configAttribute =    new SecurityConfig("IS_AUTHENTICATED_FULLY"); 
 				List<ConfigAttribute> list=new ArrayList<ConfigAttribute>();
 				list.add(configAttribute);
 				resourceMap.put(new AntPathRequestMatcher(url), list);  
