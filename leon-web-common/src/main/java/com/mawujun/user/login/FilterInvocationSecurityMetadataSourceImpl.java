@@ -31,6 +31,7 @@ public class FilterInvocationSecurityMetadataSourceImpl implements
 	private List<String> authenticatedFullyUrls;//完整登陆可以访问的url范围
 	private List<String> authenticatedRememberedUrls;//用记住账号密码登陆的时候可以访问的url范围
 	private List<String> authenticatedAnonymouslyUrls;//匿名可以访问的url范围
+	private List<IpBlacklist> ipBlacklists;
 	
 	 private static Map<RequestMatcher, Collection<ConfigAttribute>> resourceMap = new LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>>();  
 	 
@@ -47,9 +48,7 @@ public class FilterInvocationSecurityMetadataSourceImpl implements
 	            if (entry.getKey().matches(request)) {
 	                return entry.getValue();
 	            }
-//	        	if(entry.getKey().equals(getRequestPath(request))){
-//	        		return entry.getValue();
-//	        	}
+
 	        }
 	        return null;
 	        
@@ -61,7 +60,8 @@ public class FilterInvocationSecurityMetadataSourceImpl implements
 		initResourceMap();
 		
 		Set<ConfigAttribute> allAttributes = new HashSet<ConfigAttribute>();
-
+//这里是不是永远只返回一种了，要么就是Role，要么就是Authentication，要么就是Ip
+		这里别忘记测试了，不过先完成ip的测试加上去，或者就不使用Ip头投票器了，直接在这里判断，如果 有ip禁止就直接抛出异常，更简单
         for (Map.Entry<RequestMatcher, Collection<ConfigAttribute>> entry : resourceMap.entrySet()) {
             allAttributes.addAll(entry.getValue());
         }
@@ -123,6 +123,20 @@ public class FilterInvocationSecurityMetadataSourceImpl implements
 			 }
 		 }
 		
+		//添加黑名单，符合这些ip的机器访问不了
+		 if(ipBlacklists!=null && ipBlacklists.size()>0){
+			 for(IpBlacklist ipBlacklist:ipBlacklists){
+				AntPathRequestMatcher matcher=new AntPathRequestMatcher(ipBlacklist.getUrl());
+				ConfigAttribute configAttribute =    new IpSecurityConfig(ipBlacklist.getIp());
+				if(resourceMap.containsKey(matcher)){
+					 resourceMap.get(matcher).add(configAttribute);
+				 } else{
+					 List<ConfigAttribute> list=new ArrayList<ConfigAttribute>();
+					 list.add(configAttribute);
+					 resourceMap.put(matcher, list); 
+				 }
+			 }
+		 }
 	}
 	
 
@@ -156,6 +170,9 @@ public class FilterInvocationSecurityMetadataSourceImpl implements
 	}
 	public void setRolePrefix(String rolePrefix) {
 		this.rolePrefix = rolePrefix;
+	}
+	public void setIpBlacklists(List<IpBlacklist> ipBlacklist) {
+		this.ipBlacklists = ipBlacklist;
 	}
 
 
