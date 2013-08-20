@@ -3,6 +3,7 @@ package com.mawujun.user.login;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,12 +26,14 @@ public class UserDetailsImpl implements UserDetails {
 
 	}
 	
-	public void setRoles(List<String> roleIds) {
+	public void setRoles(Set<String> roleIds) {
 		if(roleIds!=null){
 		
 			for(String id:roleIds){
 				SimpleGrantedAuthority sga=new SimpleGrantedAuthority(id);
-				authorities.add(sga);
+				//if(!authorities.contains(sga)){		
+					authorities.add(sga);
+				//}
 			}
 
 		} 

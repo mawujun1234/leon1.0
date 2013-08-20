@@ -108,7 +108,9 @@
     
     <!-- 自定义UserDetailsService认证  -->   
     <beans:bean id="userDetailsService"   class="com.mawujun.user.login.UserDetailsServiceImpl">  
-        <beans:property name="userService" ref="userService"></beans:property>  
+        <beans:property name="userService" ref="userService">
+        </beans:property>  
+        <beans:property name="rolePrefix" value="ROLE_"></beans:property>
     </beans:bean>  
   
     <!-- 用户的密码加密或解密 -->  
@@ -140,12 +142,19 @@
 	<beans:bean class="com.mawujun.user.login.FilterSecurityInterceptorImpl" name="filterSecurityInterceptor">
 		<beans:property name="authenticationManager" ref="authenticationManager"></beans:property>
 		<beans:property name="accessDecisionManager">
-			<beans:bean class="com.mawujun.user.login.AffirmativeBasedImpl">
-				<!--取消了投票器，因为这里没有实现反向授权-->	
+			<!--  <beans:bean class="org.springframework.security.access.vote.AffirmativeBased">一个同意就同意-->
+			<beans:bean class="org.springframework.security.access.vote.UnanimousBased"><!-- 全部同意才同意 -->
+				<!--投票器具有双重判断，首先判断这个投票器惨不参与投票，如果参与再使用投票决策器，一票通过，大部分同意，或一票不通过就不通过策略-->	
+				<!-- 当一个地址即符合RoleVoter，也符合AuthenticatedVoter的时候，一票通过该怎么办？所以对于菜单一定要注意进行AuthenticatedVoter投票的时候一定要进行 RoleVoter投票-->
 				<beans:property name="decisionVoters">
 					<beans:list>
 						<beans:bean class="org.springframework.security.access.vote.RoleVoter">
-							<beans:property name="rolePrefix" value=""></beans:property>
+							<!-- 和前面的userDetailsService进行对应，还有FilterInvocationSecurityMetadataSourceImpl，一共三个地方 ，rolePrefix表示，只有这些内容才进行投票，否则就通过其他投票器进行判断-->
+							<beans:property name="rolePrefix" value="ROLE_"></beans:property>
+						</beans:bean>
+						<!-- 实际上AuthenticatedVoter只会对IS_AUTHENTICATED_FULLY、IS_AUTHENTICATED_REMEMBERED、IS_AUTHENTICATED_ANONYMOUSLY三种权限做vote处理
+						supports方法 -->
+						<beans:bean class="org.springframework.security.access.vote.AuthenticatedVoter">
 						</beans:bean>
 					</beans:list>
 				</beans:property>		
@@ -153,19 +162,36 @@
 		</beans:property>
 		<beans:property name="securityMetadataSource"><!-- 实现了角色资源的对应关系 -->
 			<beans:bean class="com.mawujun.user.login.FilterInvocationSecurityMetadataSourceImpl">
+				<beans:property name="rolePrefix" value="ROLE_"></beans:property>
 				<beans:property name="roleService" ref="roleService"></beans:property>
-				<!-- 必须要认证过才能访问的URL配置，roleService中获取的资源就表示认证后还不一定可以昂问，也就是说roleService的内容必须认证才能访问，但认证后不一定能访问roleService中返回的内容
-				 这些地址之外的就表示无论谁都可以访问。-->
+				<!-- 定义了认证用户可以访问的范围，翻过来说匹配的地址必须是认证用户才能访问，
+					1：还有能匿名的可定可以remember me访问，能remember me访问的可定可以认证后访问。
+					2：认证可以访问的url，必须还要通过投票器进行决定才能确认是不是真的能访问，所以菜单url必须在authenticatedFullyUrls的范围之内或者通过AbstractAccessDecisionManager进行控制
+					3：rejectPublicInvocations属性表示在这些资源之外的内容，也就是没有在控制范围内的url，默认是允许访问还是拒绝访问
+					4：相当于是三种情况控制，认证就可以访问（三种认证）,必须授权才可以访问，其他的没有在前面两个范围内的访问控制。还可以再添加IP地址的控制（投票）-->
 				 <!-- 这里还可以扩展/download/**这些内容必须是谁可以访问的，也可以做成在页面上动态配置 -->
-				<beans:property name="needAuthenticationUrls">
+				<beans:property name="authenticatedFullyUrls">
 					<beans:list>
 						<beans:value>/**</beans:value>
 					</beans:list>
 				</beans:property>
+				<!-- 可以定义 remember me可以访问的url范围，匿名用户可以访问的url范围-->
+				<!-- <beans:property name="authenticatedRememberedUrls">
+					<beans:list>
+						<beans:value>/**</beans:value>
+					</beans:list>
+				</beans:property>
+				<beans:property name="authenticatedAnonymouslyUrls">
+					<beans:list>
+						<beans:value>/**</beans:value>
+					</beans:list>
+				</beans:property> -->
+				<!-- 添加ip地址的访问控制 -->
 			</beans:bean>
 		</beans:property>
-		<!-- 当某个资源被访问时，发现没有 授予角色时，也就是还没有进行分配的时候，是拒绝还是允许-->
-		<beans:property name="rejectPublicInvocations" value="false"></beans:property>
+		<!-- 当某个资源被访问时，发现没有 授予角色时，也就是还没有进行分配的时候，是拒绝还是允许true是拒绝，
+		-->
+		<beans:property name="rejectPublicInvocations" value="true"></beans:property>
 	</beans:bean>
 	
 	<!-- ======================================华丽的分割线==============================================-->
