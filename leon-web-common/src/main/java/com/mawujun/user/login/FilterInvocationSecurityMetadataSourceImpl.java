@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -31,7 +32,7 @@ public class FilterInvocationSecurityMetadataSourceImpl implements
 	private List<String> authenticatedRememberedUrls;//用记住账号密码登陆的时候可以访问的url范围
 	private List<String> authenticatedAnonymouslyUrls;//匿名可以访问的url范围
 	
-	 private static Map<RequestMatcher, Collection<ConfigAttribute>> resourceMap = new HashMap<RequestMatcher, Collection<ConfigAttribute>>();  
+	 private static Map<RequestMatcher, Collection<ConfigAttribute>> resourceMap = new LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>>();  
 	 
 	 
 	 public FilterInvocationSecurityMetadataSourceImpl(){
