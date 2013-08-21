@@ -30,18 +30,19 @@
 	  -->
 	  <beans:constructor-arg> 
 	  	<beans:list>  
-	  		<filter-chain pattern="/favicon.ico" filters="none"></filter-chain>
-	  		<filter-chain pattern="/**/*.js" filters="none"></filter-chain>
-	  		<filter-chain pattern="/icons/**" filters="none"></filter-chain>
-	  		<filter-chain pattern="/common/**" filters="none"></filter-chain>
-	  		<filter-chain pattern="/ext-4/**" filters="none"></filter-chain>
-	  		<filter-chain pattern="/login.jsp" filters="none"></filter-chain>
+	  		<filter-chain pattern="/favicon.ico" filters="ipFilter"></filter-chain>
+	  		<filter-chain pattern="/**/*.js" filters="ipFilter"></filter-chain>
+	  		<filter-chain pattern="/icons/**" filters="ipFilter"></filter-chain>
+	  		<filter-chain pattern="/common/**" filters="ipFilter"></filter-chain>
+	  		<filter-chain pattern="/ext-4/**" filters="ipFilter"></filter-chain>
+	  		<filter-chain pattern="/login.jsp" filters="ipFilter"></filter-chain>
 	  		<filter-chain pattern="/loginFailure.jsp" filters="none"></filter-chain>
 	  		<filter-chain pattern="/accessDeny.jsp" filters="none"></filter-chain>
 	  		<filter-chain pattern="/timeout.jsp" filters="none"></filter-chain>
 	  		<!-- <filter-chain pattern="/j_spring_security_check" filters="none"></filter-chain> -->
 	  		<!-- http://mark.koli.ch/2010/07/spring-3-and-spring-security-setting-your-own-custom-j-spring-security-check-filter-processes-url.html -->
             <filter-chain pattern="/**" filters="
+            	ipFilter,
                concurrentSessionFilter,
 	           securityContextPersistenceFilterWithASCTrue,
 	           logoutFilter,
@@ -52,6 +53,19 @@
 	           filterSecurityInterceptor" />
         </beans:list>
        </beans:constructor-arg>
+	</beans:bean>
+	<!-- ======================================华丽的分割线==============================================-->
+	<beans:bean class="com.mawujun.user.login.IpFilter" name="ipFilter">
+		<beans:property name="denyUrl" value="/accessDeny.jsp" />
+		<beans:property name="ipBlacklists">
+			<beans:list>
+				<beans:bean class="com.mawujun.user.login.IpBlacklist">
+					<beans:property name="url" value="/**"></beans:property>
+					<!-- 现在是制定一个网段，也可以制定一个网址 172.16.5.5 -->
+					<beans:property name="ip" value="172.16.5.5/24"></beans:property>
+				</beans:bean>
+			</beans:list>
+		</beans:property>
 	</beans:bean>
 	<!-- ======================================华丽的分割线==============================================-->
 	<beans:bean class="org.springframework.security.web.context.SecurityContextPersistenceFilter" name="securityContextPersistenceFilterWithASCTrue">
@@ -142,8 +156,7 @@
 	<beans:bean class="com.mawujun.user.login.FilterSecurityInterceptorImpl" name="filterSecurityInterceptor">
 		<beans:property name="authenticationManager" ref="authenticationManager"></beans:property>
 		<beans:property name="accessDecisionManager">
-			<!--  <beans:bean class="org.springframework.security.access.vote.AffirmativeBased">一个同意就同意-->
-			<beans:bean class="org.springframework.security.access.vote.UnanimousBased"><!-- 全部同意才同意 -->
+			<beans:bean class="com.mawujun.user.login.UnanimousBasedImpl"><!-- 全部同意才同意 -->
 				<!--投票器具有双重判断，首先判断这个投票器惨不参与投票，如果参与再使用投票决策器，一票通过，大部分同意，或一票不通过就不通过策略-->	
 				<!-- 当一个地址即符合RoleVoter，也符合AuthenticatedVoter的时候，一票通过该怎么办？所以对于菜单一定要注意进行AuthenticatedVoter投票的时候一定要进行 RoleVoter投票-->
 				<beans:property name="decisionVoters">
@@ -156,8 +169,7 @@
 						supports方法 -->
 						<beans:bean class="org.springframework.security.access.vote.AuthenticatedVoter">
 						</beans:bean>
-						<beans:bean class="com.mawujun.user.login.IpVoter">
-						</beans:bean>
+
 					</beans:list>
 				</beans:property>		
 			</beans:bean>
@@ -171,29 +183,14 @@
 					2：认证可以访问的url，必须还要通过投票器进行决定才能确认是不是真的能访问，所以菜单url必须在authenticatedFullyUrls的范围之内或者通过AbstractAccessDecisionManager进行控制
 					3：rejectPublicInvocations属性表示在这些资源之外的内容，也就是没有在控制范围内的url，默认是允许访问还是拒绝访问
 					4：相当于是三种情况控制，认证就可以访问（三种认证）,必须授权才可以访问，其他的没有在前面两个范围内的访问控制。还可以再添加IP地址的控制（投票）-->
+					<!-- d定义成remember级别，这样完全认证就可以访问了，如果定义成完全认证级别的话，在remember和完全认证不区分的情况下，rememberme登录的时候就访问不了，会拒绝访问 -->
 				 <!-- 这里还可以扩展/download/**这些内容必须是谁可以访问的，也可以做成在页面上动态配置 -->
-				<beans:property name="authenticatedFullyUrls">
+				 <beans:property name="authenticatedUrls">
 					<beans:list>
-						<beans:value>/**</beans:value>
-					</beans:list>
-				</beans:property><!-- 这里可以简化，把三个合并成一个 可以是url，value是匿名，认证用户，还是renemberme用户和ip是同个道理 -->
-				<!-- 可以定义 remember me可以访问的url范围，匿名用户可以访问的url范围-->
-				<!-- <beans:property name="authenticatedRememberedUrls">
-					<beans:list>
-						<beans:value>/**</beans:value>
-					</beans:list>
-				</beans:property>
-				<beans:property name="authenticatedAnonymouslyUrls">
-					<beans:list>
-						<beans:value>/**</beans:value>
-					</beans:list>
-				</beans:property> -->
-				<!-- 添加ip地址的访问控制 -->
-				<beans:property name="ipBlacklists">
-					<beans:list>
-						<beans:bean class="com.mawujun.user.login.IpBlacklist">
+						<beans:bean class="com.mawujun.user.login.AutheTypeSecurityConfig">
 							<beans:property name="url" value="/**"></beans:property>
-							<beans:property name="ip" value="192.168.1.3/24"></beans:property>
+							<!-- IS_AUTHENTICATED_FULLY,IS_AUTHENTICATED_REMEMBERED,IS_AUTHENTICATED_ANONYMOUSLY -->
+							<beans:property name="autheType" value="IS_AUTHENTICATED_REMEMBERED"></beans:property>
 						</beans:bean>
 					</beans:list>
 				</beans:property>

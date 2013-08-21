@@ -8,7 +8,8 @@ Ext.onReady(function(){
 		model:'Leon.desktop.user.User',
 		region:'west',
 		split:true,
-		autoSync:false,
+		editable:true,
+		autoSync:true,
 		//autoLoad:true,
 		//autoInitAction:false,
 		flex: 1,
@@ -17,13 +18,31 @@ Ext.onReady(function(){
 			 {dataIndex:'loginName',text:'登陆名'},
 			 {dataIndex:'password',text:'密码'},
 	         {dataIndex:'name',text:'姓名'},
-	         {dataIndex:'deleted',text:'是否删除'},
-	         {dataIndex:'deletedDate',text:'删除日期'},
-	         {dataIndex:'enable',text:'是否可用'},
-	         {dataIndex:'locked',text:'是否锁定'},
-	         {dataIndex:'createDate',text:'创建日期',xtype: 'datecolumn',   format:'Y-m-d'},
-	         {dataIndex:'expireDate',text:'过期日期'},
-	         {dataIndex:'lastLoginDate',text:'最后登陆时间'}
+	         {dataIndex:'deleted',text:'是否已删除'},
+	         {dataIndex:'deletedDate',text:'删除日期',xtype: 'datecolumn',   format:'Y-m-d'},
+	         {dataIndex:'enable',text:'是否可用',xtype:'checkcolumn', editor: {
+                xtype: 'checkbox',
+                allowBlank: false
+             }},
+	         {dataIndex:'locked',text:'是否锁定',xtype:'checkcolumn', editor: {
+                xtype: 'checkbox',
+                allowBlank: false
+             }},
+	         {dataIndex:'accountExpired',text:'是否过期',renderer: function(value,metaData ,record ){
+	         	var expireDate=record.get("expireDate");
+	         	var now=new Date();
+		        if (expireDate&&expireDate<now) {
+		            return true;
+		        }
+		        return false;
+		    }},
+	         {dataIndex:'expireDate',text:'过期日期',xtype: 'datecolumn',   format:'Y-m-d', editor: {
+                xtype: 'datefield',
+                format:'Y-m-d',
+                allowBlank: false
+             }},
+	         {dataIndex:'lastLoginDate',text:'最后登陆时间',xtype: 'datecolumn',   format:'Y-m-d'},
+	         {dataIndex:'createDate',text:'创建日期',xtype: 'datecolumn',   format:'Y-m-d'}
 	    ]
 		
 	});

@@ -9,6 +9,7 @@ Ext.defineModel("Leon.desktop.user.User",{
 		{name:'deletedDate',type:'date'},
 		{name:'enable',type:'boolean'},
 		{name:'locked',type:'boolean'},
+		{name:'accountExpired',type:'boolean'},
 		{name:'createDate',type:'date'},
 		{name:'expireDate',type:'date'},
 		{name:'lastLoginDate',type:'date'}

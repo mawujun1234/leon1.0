@@ -23,6 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		if(user==null || user.isDeleted()){
 			throw new UsernameNotFoundException("用户不存在");
 		}
+		
 		UserDetailsImpl aa=new UserDetailsImpl();
 		aa.setUser(user);
 		List<String> roleIds=userService.queryRoleId(user.getId());

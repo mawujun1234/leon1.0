@@ -67,6 +67,15 @@ public class User extends UUIDEntity{
 	public boolean isAdmin() {
 		return "admin".equalsIgnoreCase(loginName);
 	}
+	public boolean isAccountExpired() {
+		if(expireDate!=null){
+			if(expireDate.getTime()<(new Date()).getTime()){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public void setEnable(boolean isEnable) {
 		this.enable = isEnable;
 	}

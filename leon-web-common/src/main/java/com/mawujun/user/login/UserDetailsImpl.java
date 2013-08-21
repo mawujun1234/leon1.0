@@ -56,12 +56,18 @@ public class UserDetailsImpl implements UserDetails {
 
 	@Override
 	public boolean isAccountNonExpired() {
+		if(isAdmin()){
+			return true;
+		}
 		// TODO Auto-generated method stub
-		return true;
+		return !user.isAccountExpired();
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
+		if(isAdmin()){
+			return true;
+		}
 		// TODO Auto-generated method stub
 		return !user.isLocked();
 	}
@@ -74,6 +80,9 @@ public class UserDetailsImpl implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
+		if(isAdmin()){
+			return true;
+		}
 		// TODO Auto-generated method stub
 		return user.isEnable();
 	}
