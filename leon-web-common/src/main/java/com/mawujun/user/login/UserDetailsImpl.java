@@ -9,7 +9,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.mawujun.role.Role;
 import com.mawujun.user.User;
 
 public class UserDetailsImpl implements UserDetails {
@@ -59,6 +58,7 @@ public class UserDetailsImpl implements UserDetails {
 		if(isAdmin()){
 			return true;
 		}
+		System.out.println("======================="+user.isAccountExpired());
 		// TODO Auto-generated method stub
 		return !user.isAccountExpired();
 	}

@@ -22,6 +22,7 @@ Ext.onReady(function(){
 //		}
 	});
 	
+	这里有问题，解决下
 	tree.removeAction("create");
 	var createModule = new Ext.Action({
 		    text: '新增目录',

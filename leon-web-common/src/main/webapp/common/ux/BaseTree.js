@@ -142,7 +142,7 @@ Ext.define('Leon.common.ux.BaseTree', {
         	 */
         	'beforePaste'
         );
-		me.callParent();
+		me.callParent(arguments);
     },
     dynamicModel:function(name, fields,api) {
     	//http://www.sencha.com/forum/showthread.php?136362-Extjs-4-Dynamic-Model

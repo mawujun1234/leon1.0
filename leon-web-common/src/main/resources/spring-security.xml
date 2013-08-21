@@ -87,8 +87,10 @@
 		<beans:property name="defaultFailureUrl" value="/loginFailure.jsp"></beans:property>
 		<beans:property name="redirectStrategy" ref="redirectStrategy">
 		</beans:property>
-		<!-- 是否使用forword来转发请求 ，使用forword的话，就可以再前台获取到请求数据和异常信息，默认是false 
-		<beans:propert name="useForward" value="false"></beans:property> -->
+		<!-- 是否使用forword来转发请求 ，使用forword的话，就可以再前台获取到请求数据和异常信息，默认是false -->
+		<!-- 设置成true后，就可以通过request.getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);获取到异常信息
+		否则就放在session中 -->
+		<beans:property name="useForward" value="true"></beans:property> 
 	</beans:bean>
 	<beans:bean class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter" name="usernamePasswordAuthenticationFilter">
 		<beans:property name="filterProcessesUrl" value="/j_spring_security_check"></beans:property><!-- 认证地址 -->

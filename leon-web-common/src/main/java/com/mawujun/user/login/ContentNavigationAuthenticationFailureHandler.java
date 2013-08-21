@@ -25,7 +25,7 @@ public class ContentNavigationAuthenticationFailureHandler extends
 			   //response.setStatus(402);//Unauthorized 
 			   //认证的时候，用户名或密码错误时，返回的信息
 			   Writer writer=response.getWriter();
-				writer.write("{success:false,msg:'用户名或密码错误!'}");
+				writer.write("{success:false,msg:'"+exception.getMessage()+"!'}");
 				writer.close();
 			   return;
 		   }

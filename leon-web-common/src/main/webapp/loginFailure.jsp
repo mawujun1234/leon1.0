@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page language="java" import="java.util.*,org.springframework.security.web.WebAttributes;" pageEncoding="UTF-8"%>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -23,6 +23,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-    登录失败,<a href="login.jsp">返回</a>
+    登录失败,<a href="login.jsp">返回</a><br/>
+    <%
+    Exception exception=(Exception)request.getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+    out.println(exception.getMessage());
+    //exception.printStackTrace();
+    %>
   </body>
 </html>

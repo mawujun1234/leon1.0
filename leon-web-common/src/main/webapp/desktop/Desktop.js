@@ -70,11 +70,11 @@ Ext.define('Leon.desktop.Desktop', {
         me.initMenuItemEvent(me.initMenus);
         menuItems=menuItems.concat(me.initMenus);
         menuItems.push('->','-',{
-        	text:'退出',
-        	iconCls:'icons_door_out',
+        	text:'切换用户',
+        	iconCls:'icons_user_go',
         	xtype: 'splitbutton',
         	handler:function(){
-        		location.href="/j_spring_security_logout";
+        		location.href="/j_spring_security_switch_user?j_username=11";
         	},
         	menu : {items:[
 		        {
@@ -82,20 +82,37 @@ Ext.define('Leon.desktop.Desktop', {
 		        	iconCls:'icons_user_go',
 		        	handler:function(){
 		        	
-		        	}
+		        	},
+		        	menu:{items:[{
+		        		text:'用户1',
+		        		iconCls:'icons_user_b'
+		        	},{
+		        		text:'用户2',
+		        		iconCls:'icons_user_b'
+		        	}]}
 		        },
 		        {
 		        	text: '回到用户',
 		        	iconCls:'icons_user_home',
 		        	handler:function(){
-		        	
+		        		location.href="/j_spring_security_exit_user";
 		        	}
 		        },
 		        {
-		        	text: '切换用户(登录)',
-		        	iconCls:'icons_user_go',
+		        	text: '登录',
+		        	iconCls:'icons_door_in',
 		        	handler:function(){
-		        	
+		        		var loginForm=Ext.create('Leon.LoginWin',{
+		 					modal:true,
+		 					standardSubmit:true,
+		 					success:function(form, action){
+		 						loginForm.close();
+		 					},
+		 					failure:function(form, action){
+		 						Ext.MessageBox.alert("错误", "用户名或密码错误!" );
+		 					}
+		 				});
+						loginForm.show();
 		        	}
 		        },
 		        {

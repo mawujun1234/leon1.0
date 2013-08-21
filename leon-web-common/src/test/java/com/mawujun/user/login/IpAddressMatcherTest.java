@@ -18,7 +18,7 @@ public class IpAddressMatcherTest {
 	public void test0() {
 		IpAddressMatcher aa=new IpAddressMatcher("172.16.3.5");
 		boolean bool=aa.matches("172.16.3.6");
-		assertEquals(true, bool);
+		assertEquals(false, bool);
 	}
 	
 	@Test
