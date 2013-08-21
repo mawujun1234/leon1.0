@@ -50,7 +50,8 @@
 	           rememberMeAuthenticationFilter,
 	           sessionManagementFilter,
 	           exceptionTranslationFilter,
-	           filterSecurityInterceptor" />
+	           filterSecurityInterceptor,
+	           switchUserFilter" />
         </beans:list>
        </beans:constructor-arg>
 	</beans:bean>
@@ -81,7 +82,14 @@
         <beans:property name="disableUrlRewriting" value="false" />  
     </beans:bean>  
 	<!-- ======================================华丽的分割线==============================================-->
-	
+	<!-- <beans:bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler"> -->
+	<beans:bean name="contentNavigationAuthenticationFailureHandler" class="com.mawujun.user.login.ContentNavigationAuthenticationFailureHandler">
+		<beans:property name="defaultFailureUrl" value="/loginFailure.jsp"></beans:property>
+		<beans:property name="redirectStrategy" ref="redirectStrategy">
+		</beans:property>
+		<!-- 是否使用forword来转发请求 ，使用forword的话，就可以再前台获取到请求数据和异常信息，默认是false 
+		<beans:propert name="useForward" value="false"></beans:property> -->
+	</beans:bean>
 	<beans:bean class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter" name="usernamePasswordAuthenticationFilter">
 		<beans:property name="filterProcessesUrl" value="/j_spring_security_check"></beans:property><!-- 认证地址 -->
 		<beans:property name="authenticationManager" ref="authenticationManager"></beans:property>
@@ -93,15 +101,7 @@
 				<beans:property name="requestCache" ref="httpSessionRequestCache"></beans:property>
 			</beans:bean>
 		</beans:property>
-		<beans:property name="authenticationFailureHandler"><!-- 认证失败的时候跳转，还有ExceptionMappingAuthenticationFailureHandler根据不同的异常跳转到不同的也页面-->
-			<!--  <beans:bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">-->
-			<beans:bean class="com.mawujun.user.login.ContentNavigationAuthenticationFailureHandler">
-				<beans:property name="defaultFailureUrl" value="/loginFailure.jsp"></beans:property>
-				<beans:property name="redirectStrategy" ref="redirectStrategy">
-				</beans:property>	
-				<!-- 是否使用forword来转发请求 ，使用forword的话，就可以再前台获取到请求数据和异常信息，默认是false
-				<beans:property name="useForward" value="false"></beans:property>-->
-			</beans:bean>
+		<beans:property name="authenticationFailureHandler" ref="contentNavigationAuthenticationFailureHandler"><!-- 认证失败的时候跳转，还有ExceptionMappingAuthenticationFailureHandler根据不同的异常跳转到不同的也页面-->	
 		</beans:property>
 		<!-- session的并发控制 ，往SessionRegistry中注册会话信息，到时候可以供给concurrentSessionFilter判断是否已经过期，就可以跳转到过期页面了-->
 		<beans:property name="sessionAuthenticationStrategy" ref="concurrentSessionControlStrategy"></beans:property>
@@ -285,6 +285,17 @@
 	<!--添加到 <authentication-manager alias="authenticationManager">中，作为第二种认证提供者的方式  -->
 	<beans:bean id="rememberMeAuthenticationProvider" class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
 		<beans:property name="key" value="springRocks" />
+	</beans:bean>
+	
+	<!-- ======================================华丽的分割线==============================================-->
+	<!-- 在不知道用户密码的情况下，可以切换到另一个用户上 -->
+	<beans:bean id="switchUserFilter" class="org.springframework.security.web.authentication.switchuser.SwitchUserFilter">
+		<beans:property name="userDetailsService" ref="userDetailsService" />
+		<beans:property name="switchUserUrl" value="/j_spring_security_switch_user" />
+		<beans:property name="exitUserUrl" value="/j_spring_security_exit_user" />
+		<beans:property name="targetUrl" value="/index.jsp" />
+		<!-- <beans:property name="switchFailureUrl" value="/loginFailure.jsp" /> 已经在contentNavigationAuthenticationFailureHandler定义好了 -->
+		<beans:property name="failureHandler" ref="contentNavigationAuthenticationFailureHandler" />
 	</beans:bean>
 	
 	<!-- DefaultWebInvocationPrivilegeEvaluator页面标签的权限 -->

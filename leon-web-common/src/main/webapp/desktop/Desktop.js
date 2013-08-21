@@ -72,9 +72,40 @@ Ext.define('Leon.desktop.Desktop', {
         menuItems.push('->','-',{
         	text:'退出',
         	iconCls:'icons_door_out',
+        	xtype: 'splitbutton',
         	handler:function(){
         		location.href="/j_spring_security_logout";
-        	}
+        	},
+        	menu : {items:[
+		        {
+		        	text: '切换用户',
+		        	iconCls:'icons_user_go',
+		        	handler:function(){
+		        	
+		        	}
+		        },
+		        {
+		        	text: '回到用户',
+		        	iconCls:'icons_user_home',
+		        	handler:function(){
+		        	
+		        	}
+		        },
+		        {
+		        	text: '切换用户(登录)',
+		        	iconCls:'icons_user_go',
+		        	handler:function(){
+		        	
+		        	}
+		        },
+		        {
+		        	text: '退出',
+		        	iconCls:'icons_door_out',
+		        	handler:function(){
+		        		location.href="/j_spring_security_logout";
+		        	}
+		        }
+		    ]}
         });
        
         var menubar=Ext.create('Leon.desktop.Menubar',{
