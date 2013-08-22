@@ -24,6 +24,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="index.js"></script>
 	<script type="text/javascript" src="desktop/MenuPlugin.js"></script>
 	<script type="text/javascript" src="desktop/menu/Menu.js"></script>
+	<script type="text/javascript" src="<%=path%>/SwitchUserWin.js"></script>
 
   </head>
   

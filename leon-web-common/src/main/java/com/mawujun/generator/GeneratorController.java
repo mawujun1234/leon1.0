@@ -19,9 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.controller.spring.mvc.JsonConfigHolder;
-import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.utils.PropertiesUtils;
-import com.mawujun.utils.ReflectionUtils;
 import com.mawujun.utils.SystemUtils;
 
 import freemarker.template.TemplateException;

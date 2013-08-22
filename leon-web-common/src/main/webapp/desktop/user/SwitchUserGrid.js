@@ -1,10 +1,12 @@
-Ext.define('Leon.desktop.user.UserQueryGrid',{
+/**
+ * 进行切换用户的管理的，进行增，删，改查的
+ */
+Ext.define('Leon.desktop.user.SwitchUserGrid',{
 	extend:'Ext.grid.Panel',
 	requires: [
 	     'Leon.desktop.user.User'
 	],
 	columnLines :true,
-	url:'/user/query',
 	stripeRows:true,
 	viewConfig:{
 		stripeRows:true,
@@ -44,7 +46,7 @@ Ext.define('Leon.desktop.user.UserQueryGrid',{
        		autoLoad:false,
        		proxy:{
 		    	type: 'ajax',
-        		url : me.url,
+        		url : '/switchUser/query',
         		headers:{ 'Accept':'application/json;'},
         		actionMethods: { read: 'POST' },
         		extraParams:{limit:50},

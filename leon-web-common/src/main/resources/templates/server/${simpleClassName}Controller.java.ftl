@@ -1,14 +1,17 @@
   
 <#assign simpleClassNameFirstLower = simpleClassName?uncap_first> 
 package ${basepackage};
+import java.util.List;
+
 import javax.annotation.Resource;
-import org.springframework.http.HttpEntity;
+
 import org.springframework.stereotype.Controller;
-import com.mawujun.page.PageRequest;
-import com.mawujun.page.QueryResult;
-import com.mawujun.spring.ExtjsJsonResult;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import com.mawujun.utils.page.PageRequest;
+import com.mawujun.utils.page.QueryResult;
+import com.mawujun.controller.spring.mvc.JsonConfigHolder;
 
 <#include "/java_copyright.include"/>
 

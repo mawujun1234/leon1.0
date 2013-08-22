@@ -3,6 +3,7 @@ Ext.define("Leon.LoginWin",{
 	frame:true,
 	layout:'fit',
 	title:'请登录',
+	modal:true,
 	standardSubmit:true,
 	initComponent: function () {
        var me = this;

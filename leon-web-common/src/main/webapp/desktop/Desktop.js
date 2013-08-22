@@ -91,33 +91,21 @@ Ext.define('Leon.desktop.Desktop', {
         	iconCls:'icons_user_go',
         	xtype: 'splitbutton',
         	handler:function(){
-        		location.href="/j_spring_security_switch_user?j_username=11";
+        		//location.href="/j_spring_security_switch_user?j_username=11";
+        		me.showSwitchUserWin();
         	},
         	menu : {items:[
 		        {
 		        	text: '切换用户',
 		        	iconCls:'icons_user_go',
 		        	handler:function(){
-		        		location.href="/j_spring_security_switch_user?j_username=11";
+		        		//location.href="/j_spring_security_switch_user?j_username=11";
+		        		me.showSwitchUserWin();
 		        	},
 		        	menu:switchUsers
-//		        	menu:{items:[{
-//		        		text:'用户11',
-//		        		iconCls:'icons_user_b',
-//		        		handler:function(){
-//			        		location.href="/j_spring_security_switch_user?j_username=11";
-//			        	}
-//		        	},{
-//		        		text:'用户22',
-//		        		iconCls:'icons_user_b',
-//		        		handler:function(){
-//			        		location.href="/j_spring_security_switch_user?j_username=22";
-//			        	}
-//		        	}]}
 		        },
 		        {
 		        	text: '回到用户',
-		        	toolTip:'回到主用户，第一次登陆的用户',
 		        	iconCls:'icons_user_home',
 		        	handler:function(){
 		        		location.href="/j_spring_security_exit_user";
@@ -168,6 +156,12 @@ Ext.define('Leon.desktop.Desktop', {
 
         me.callParent();
         window.desktop=me;
+    },
+    showSwitchUserWin:function(){
+    	var win=Ext.create('Leon.SwitchUserWin',{
+    	
+    	});
+    	win.show();
     },
 
 	initMenuItemEvent:function(initMenus){

@@ -166,6 +166,11 @@ MessageSourceAware {
             logger.debug("Attempt to switch to user [" + username + "]");
         }
         
+        //当自己切换自己的时候，就返回自己,也就是说 当主用户切换到
+        Authentication currentAuth=SecurityContextHolder.getContext().getAuthentication();
+        if(isSameUserName(username,currentAuth)){
+        	return currentAuth;
+        }
 
         UserDetails targetUser = userDetailsService.loadUserByUsername(username);
         userDetailsChecker.check(targetUser);
@@ -205,16 +210,21 @@ MessageSourceAware {
             throw new AuthenticationCredentialsNotFoundException(messages.getMessage(
                     "SwitchUserFilter.noCurrentUser", "No current user associated with this request"));
         }
+        
 
         // check to see if the current user did actual switch to another user
         // if so, get the original source user so we can switch back
         Authentication original = getSourceAuthentication(current);
 
-        if (original == null) {
-            logger.debug("Could not find original user Authentication object!");
-            throw new AuthenticationCredentialsNotFoundException(messages.getMessage(
-                    "SwitchUserFilter.noOriginalAuthentication",
-                    "Could not find original Authentication object"));
+//        if (original == null) {
+//            logger.debug("Could not find original user Authentication object!");
+//            throw new AuthenticationCredentialsNotFoundException(messages.getMessage(
+//                    "SwitchUserFilter.noOriginalAuthentication",
+//                    "Could not find original Authentication object"));
+//        }
+      //如果没有主用户，就i傲视当前用户就是主用户
+        if (null == original) {
+        	return current;
         }
 
         // get the source user details
@@ -265,10 +275,10 @@ MessageSourceAware {
      * @param request
      * @return
      */
-    public boolean isSameUserName(HttpServletRequest request,Authentication marsterAuth){
-    	//Authentication marsterAuth=SecurityContextHolder.getContext().getAuthentication();
-    	 String username = request.getParameter(usernameParameter);
-         if(username.equals(marsterAuth.getName())){
+    public boolean isSameUserName(String username,Authentication currentAuth){
+    	//Authentication currentAuth=SecurityContextHolder.getContext().getAuthentication();
+    	// String username = request.getParameter(usernameParameter);
+         if(username.equals(currentAuth.getName())){
          	return true;
          } else {
         	 return false;
@@ -308,11 +318,7 @@ MessageSourceAware {
         if(marsterAuth==null){
         	marsterAuth= SecurityContextHolder.getContext().getAuthentication();
         } 
-        //当自己切换自己的时候，就返回自己,也就是说 当主用户切换到
-        //String username = request.getParameter(usernameParameter);
-        if(isSameUserName(request,marsterAuth)){
-        	return (UsernamePasswordAuthenticationToken)marsterAuth;
-        }
+        
         
         //在其他用户上面添加进主用户的引用
         SwitchUserGrantedAuthorityImpl switchAuthority = new SwitchUserGrantedAuthorityImpl(ROLE_PREVIOUS_ADMINISTRATOR+"_"+marsterAuth.getName(), marsterAuth);

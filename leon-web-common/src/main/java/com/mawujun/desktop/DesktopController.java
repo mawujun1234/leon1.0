@@ -46,4 +46,5 @@ public class DesktopController {
 		JsonConfigHolder.setWriteMapNullValue(false);
 		return config;
 	}
+	
 }
