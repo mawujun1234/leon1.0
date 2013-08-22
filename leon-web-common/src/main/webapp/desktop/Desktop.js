@@ -69,6 +69,23 @@ Ext.define('Leon.desktop.Desktop', {
         
         me.initMenuItemEvent(me.initMenus);
         menuItems=menuItems.concat(me.initMenus);
+        
+        var switchUsers=null;//me.switchUsers;
+        if(me.switchUsers){
+        	switchUsers={items:[]};
+        	for(var i=0;i<me.switchUsers.length;i++){
+        		var userName=me.switchUsers[i]
+        		switchUsers.items.push({
+        			text:userName,
+        			iconCls:'icons_user_b',
+        			handler:function(){
+			        	location.href="/j_spring_security_switch_user?j_username="+userName;
+			        }
+        		});
+        	}
+        }
+        
+        
         menuItems.push('->','-',{
         	text:'切换用户',
         	iconCls:'icons_user_go',
@@ -81,18 +98,26 @@ Ext.define('Leon.desktop.Desktop', {
 		        	text: '切换用户',
 		        	iconCls:'icons_user_go',
 		        	handler:function(){
-		        	
+		        		location.href="/j_spring_security_switch_user?j_username=11";
 		        	},
-		        	menu:{items:[{
-		        		text:'用户1',
-		        		iconCls:'icons_user_b'
-		        	},{
-		        		text:'用户2',
-		        		iconCls:'icons_user_b'
-		        	}]}
+		        	menu:switchUsers
+//		        	menu:{items:[{
+//		        		text:'用户11',
+//		        		iconCls:'icons_user_b',
+//		        		handler:function(){
+//			        		location.href="/j_spring_security_switch_user?j_username=11";
+//			        	}
+//		        	},{
+//		        		text:'用户22',
+//		        		iconCls:'icons_user_b',
+//		        		handler:function(){
+//			        		location.href="/j_spring_security_switch_user?j_username=22";
+//			        	}
+//		        	}]}
 		        },
 		        {
 		        	text: '回到用户',
+		        	toolTip:'回到主用户，第一次登陆的用户',
 		        	iconCls:'icons_user_home',
 		        	handler:function(){
 		        		location.href="/j_spring_security_exit_user";

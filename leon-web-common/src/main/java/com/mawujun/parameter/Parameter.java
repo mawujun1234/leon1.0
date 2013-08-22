@@ -26,6 +26,7 @@ public class Parameter  implements IdEntity<String>,Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@Column(updatable=false)
 	private String id;//自己设置的
 
 	@Column(length=50)

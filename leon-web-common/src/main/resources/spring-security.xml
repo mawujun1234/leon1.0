@@ -290,8 +290,8 @@
 	</beans:bean>
 	
 	<!-- ======================================华丽的分割线==============================================-->
-	<!-- 在不知道用户密码的情况下，可以切换到另一个用户上 -->
-	<beans:bean id="switchUserFilter" class="org.springframework.security.web.authentication.switchuser.SwitchUserFilter">
+	<!-- 在不知道用户密码的情况下，可以切换到另一个用户上，可以动态变换权限，非常适合于测试 -->
+	<beans:bean id="switchUserFilter" class="com.mawujun.user.login.SwitchUserFilterImpl">
 		<beans:property name="userDetailsService" ref="userDetailsService" />
 		<beans:property name="switchUserUrl" value="/j_spring_security_switch_user" />
 		<beans:property name="exitUserUrl" value="/j_spring_security_exit_user" />

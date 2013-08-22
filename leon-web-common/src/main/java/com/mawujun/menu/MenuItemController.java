@@ -14,7 +14,6 @@ import com.mawujun.controller.spring.mvc.JsonConfigHolder;
 import com.mawujun.utils.page.WhereInfo;
 
 @Controller
-@Transactional(propagation=Propagation.REQUIRED)
 public class MenuItemController {
 
 	@Autowired
@@ -34,18 +33,7 @@ public class MenuItemController {
 		JsonConfigHolder.setFilterPropertys("parent,children",MenuItem.class);
 		return menuItems;
 	}
-	/**
-	 * 一次性读取出所有的节点数据
-	 * @return
-	 */
-	@RequestMapping("/menuItem/query4Desktop")
-	@ResponseBody
-	public List<MenuItemVO> query4Desktop(String menuId){		
-
-		List<MenuItemVO> menuItems=menuItemService.query4Desktop(menuId);
-		JsonConfigHolder.setWriteMapNullValue(false);
-		return menuItems;
-	}
+	
 	
 	/**
 	 * 一次性读取出所有的节点数据

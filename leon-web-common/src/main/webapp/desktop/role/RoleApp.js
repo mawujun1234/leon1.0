@@ -22,7 +22,7 @@ Ext.onReady(function(){
 //		}
 	});
 	
-	这里有问题，解决下
+	//这里有问题，解决下
 	tree.removeAction("create");
 	var createModule = new Ext.Action({
 		    text: '新增目录',
@@ -36,7 +36,7 @@ Ext.onReady(function(){
 		    },
 		    iconCls: 'role-category-add'
 	});
-    tree.addAction(0,createModule);
+    tree.addAction(createModule,0);
     var createFun = new Ext.Action({
 		text: '新增角色',
 		handler: function(){
@@ -49,7 +49,7 @@ Ext.onReady(function(){
 		},
 		iconCls: 'role-add-iconCls'
 	});
-    tree.addAction(1,createFun);
+    tree.addAction(createFun,1);
     
     var roleId="";
     tree.on('itemclick',function(view,record,item,index){

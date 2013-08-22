@@ -54,5 +54,9 @@ public class ParameterService extends BaseRepository<Parameter, String> {
 		BeanUtils.copyOrCast(entity, paramm);
 		super.update(paramm);
 	}
+	
+	public void createParameterEnem(Parameter entity){
+		
+	}
 
 }
