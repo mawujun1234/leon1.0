@@ -220,6 +220,10 @@
 	<!-- 注销监听器,多个地方引用了  -->
 	<beans:bean id="logoutHandler" class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler"></beans:bean>
 
+
+
+
+
 	<!-- ======================================华丽的分割线==============================================-->	
 	<!-- SESSION固化保护,以及并发控制 -->
 	<beans:bean id="sessionManagementFilter" class="org.springframework.security.web.session.SessionManagementFilter">

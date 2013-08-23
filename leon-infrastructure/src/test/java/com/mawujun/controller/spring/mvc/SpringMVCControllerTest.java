@@ -74,7 +74,7 @@ public class SpringMVCControllerTest {
 	public void getFoo() throws Exception {
 		this.mockMvc.perform(get("/foo").accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk())
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		.andExpect(jsonPath("$.name").value("Lee"));
 
 	}
@@ -92,7 +92,7 @@ public class SpringMVCControllerTest {
 	public void queryPage() throws Exception {
 		this.mockMvc.perform(get("/test/queryPage.do").accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk())
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		//.andExpect(jsonPath("$.success").value(true))
 		.andExpect(jsonPath("$.total").value(100))
 		.andExpect(jsonPath("$..root[0].name").value("name0"));
@@ -105,7 +105,7 @@ public class SpringMVCControllerTest {
 	public void queryPage1() throws Exception {
 		this.mockMvc.perform(get("/test/queryPage1.do").accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk())
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		//.andExpect(jsonPath("$.success").value(true))
 		//.andExpect(jsonPath("$.total").value(100))
 		.andExpect(jsonPath("$..result[0].name").value("name0"));
@@ -116,7 +116,7 @@ public class SpringMVCControllerTest {
 	public void queryMap() throws Exception {
 		this.mockMvc.perform(get("/test/queryMap.do").accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk())
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		//.andExpect(jsonPath("$.success").value(true))
 		.andExpect(jsonPath("$.name").value("name"))
 		.andExpect(jsonPath("$.age").value("111"));
@@ -130,8 +130,8 @@ public class SpringMVCControllerTest {
 	public void queryModel() throws Exception {
 		this.mockMvc.perform(get("/test/queryModel.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
 		.andExpect(status().isOk())
-		.andExpect(content().encoding("ISO-8859-1"))
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().encoding("UTF-8"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		//.andExpect(jsonPath("$.success").value(true))
 		.andExpect(jsonPath("$.name").value("parent"))
 		.andExpect(jsonPath("$.id").value(1))
@@ -147,8 +147,8 @@ public class SpringMVCControllerTest {
 	public void queryCycleList() throws Exception {
 		this.mockMvc.perform(get("/test/queryCycleList.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
 		.andExpect(status().isOk())
-		.andExpect(content().encoding("ISO-8859-1"))
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().encoding("UTF-8"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		//.andExpect(jsonPath("$.success").value(true))
 		.andExpect(jsonPath("$.[0]name").value("parent"))
 		.andExpect(jsonPath("$.[0]id").value(1))
@@ -164,8 +164,8 @@ public class SpringMVCControllerTest {
 	public void queryCycle() throws Exception {
 		this.mockMvc.perform(get("/test/queryCycle.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
 		.andExpect(status().isOk())
-		.andExpect(content().encoding("ISO-8859-1"))
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().encoding("UTF-8"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		//.andExpect(jsonPath("$.success").value(true))
 		.andExpect(jsonPath("$.name").value("parent"))
 		.andExpect(jsonPath("$.id").value(1))
@@ -177,8 +177,8 @@ public class SpringMVCControllerTest {
 	public void filterProperty() throws Exception {
 		this.mockMvc.perform(get("/test/filterProperty.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
 		.andExpect(status().isOk())
-		.andExpect(content().encoding("ISO-8859-1"))
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().encoding("UTF-8"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		//.andExpect(jsonPath("$.success").value(true))
 		.andExpect(jsonPath("$.root.name").doesNotExist())
 		.andExpect(jsonPath("$.root.id").value(1))
@@ -190,8 +190,8 @@ public class SpringMVCControllerTest {
 	public void filterPropertyList() throws Exception {
 		this.mockMvc.perform(get("/test/filterPropertyList.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
 		.andExpect(status().isOk())
-		.andExpect(content().encoding("ISO-8859-1"))
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().encoding("UTF-8"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		//.andExpect(jsonPath("$.success").value(true))
 		.andExpect(jsonPath("$.root[0].name").doesNotExist())
 		.andExpect(jsonPath("$.root[0].id").value(1))
@@ -207,8 +207,8 @@ public class SpringMVCControllerTest {
 	public void filterOnlyId() throws Exception {
 		this.mockMvc.perform(get("/test/filterOnlyId.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
 		.andExpect(status().isOk())
-		.andExpect(content().encoding("ISO-8859-1"))
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().encoding("UTF-8"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		//.andExpect(jsonPath("$.success").value(true))
 		.andExpect(jsonPath("$.root.name").value("child"))
 		.andExpect(jsonPath("$.root.id").value(1))
@@ -227,8 +227,8 @@ public class SpringMVCControllerTest {
 		this.mockMvc.perform(get("/test/bindModel.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
 				.content("{name:'parent',id:1,createDate:'2012-11-11',age:11,childen:[{name:'childrens'}]}").contentType(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk())
-		.andExpect(content().encoding("ISO-8859-1"))
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().encoding("UTF-8"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		//.andExpect(jsonPath("$.success").value(true))
 		.andExpect(jsonPath("$.name").value("parent"))
 		.andExpect(jsonPath("$.id").value(1))
@@ -244,8 +244,8 @@ public class SpringMVCControllerTest {
 		this.mockMvc.perform(get("/test/bindPageRequestByJosn.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
 				.content("{start:0,limit:10,wheres:[{prop:'name',op:'like',ignoreCase:true,value:'ma'},{prop:'age',op:'<',value:10}],sorts:[{prop:'name',dir:'ASC'},{prop:'age',dir:'DESC'}]}").contentType(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk())
-		.andExpect(content().encoding("ISO-8859-1"))
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().encoding("UTF-8"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		//.andExpect(jsonPath("$.success").value(true))
 		.andExpect(jsonPath("$.start").value(0))
 		.andExpect(jsonPath("$.limit").value(10))
@@ -267,8 +267,8 @@ public class SpringMVCControllerTest {
 		this.mockMvc.perform(get("/test/bindPageRequestByConverter.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
 				.param("pageRequest", "{start:0,limit:10,wheres:[{prop:'name',op:'like',value:'ma'},{prop:'age',op:'<',value:10}],sorts:[{prop:'name',dir:'ASC'},{prop:'age',dir:'DESC'}]}").contentType(MediaType.TEXT_HTML))
 		.andExpect(status().isOk())
-		.andExpect(content().encoding("ISO-8859-1"))
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().encoding("UTF-8"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		//.andExpect(jsonPath("$.success").value(true))
 		.andExpect(jsonPath("$.start").value(0))
 		.andExpect(jsonPath("$.limit").value(10))
@@ -300,8 +300,8 @@ public class SpringMVCControllerTest {
 				.param("sorts[1].dir", "DESC")
 				.contentType(MediaType.TEXT_HTML))
 		.andExpect(status().isOk())
-		.andExpect(content().encoding("ISO-8859-1"))
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().encoding("UTF-8"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		//.andExpect(jsonPath("$.success").value(true))
 		.andExpect(jsonPath("$.start").value(0))
 		.andExpect(jsonPath("$.limit").value(10))
@@ -358,7 +358,7 @@ public class SpringMVCControllerTest {
 	public void testExtProperties() throws Exception{
 		this.mockMvc.perform(get("/test/testExtProperties.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
 		//.andExpect(status().isServiceUnavailable())
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		.andExpect(jsonPath("$.11").value(11))
 		.andExpect(jsonPath("$.aa").value("aaaa"));
 	}
@@ -367,7 +367,7 @@ public class SpringMVCControllerTest {
 	public void testExtProperties1() throws Exception{
 		this.mockMvc.perform(get("/test/testExtProperties1.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
 		//.andExpect(status().isServiceUnavailable())
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		.andExpect(jsonPath("$.name").value("1111"))
 		.andExpect(jsonPath("$.aa").value("aaaa"));
 	}

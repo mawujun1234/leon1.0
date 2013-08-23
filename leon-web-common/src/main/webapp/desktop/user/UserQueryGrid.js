@@ -5,7 +5,7 @@ Ext.define('Leon.desktop.user.UserQueryGrid',{
 	],
 	columnLines :true,
 	url:'/user/query',
-	stripeRows:true,
+	//stripeRows:true,
 	viewConfig:{
 		stripeRows:true,
 		listeners:{
@@ -36,7 +36,7 @@ Ext.define('Leon.desktop.user.UserQueryGrid',{
 	        {dataIndex:'expireDate',text:'过期日期',xtype: 'datecolumn',   format:'Y-m-d'},
 	        {dataIndex:'lastLoginDate',text:'最后登陆时间',xtype: 'datecolumn',   format:'Y-m-d'}
        ];
-        me.store=e=Ext.create('Ext.data.Store',{
+        me.store=Ext.create('Ext.data.Store',{
        		autoSync:false,
        		pageSize:50,
        		//fields:['userId','userName'],

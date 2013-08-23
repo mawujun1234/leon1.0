@@ -72,7 +72,7 @@ public class SpringMVCController_autoWarp_Test {
 	public void getFoo() throws Exception {
 		this.mockMvc.perform(get("/foo").accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk())
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		.andExpect(jsonPath("$.name").value("Lee"));
 
 	}
@@ -90,7 +90,7 @@ public class SpringMVCController_autoWarp_Test {
 	public void queryPage() throws Exception {
 		this.mockMvc.perform(get("/autoWarp/queryPage.do").accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk())
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		.andExpect(jsonPath("$.success").value(true))
 		.andExpect(jsonPath("$.total").value(9))
 		.andExpect(jsonPath("$.root[0].name").value("name0"));
@@ -103,7 +103,7 @@ public class SpringMVCController_autoWarp_Test {
 	public void queryPage1() throws Exception {
 		this.mockMvc.perform(get("/autoWarp/queryPage1.do").accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk())
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		.andExpect(jsonPath("$.success").value(true))
 		.andExpect(jsonPath("$.total").value(100))
 		.andExpect(jsonPath("$.root[0].name").value("name0"));
@@ -116,7 +116,7 @@ public class SpringMVCController_autoWarp_Test {
 	public void queryMap() throws Exception {
 		this.mockMvc.perform(get("/autoWarp/queryMap.do").accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk())
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		.andExpect(jsonPath("$.success").value(true))
 		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
 		.andExpect(jsonPath("$.root.name").value("name"))
@@ -129,8 +129,8 @@ public class SpringMVCController_autoWarp_Test {
 	public void queryModel() throws Exception {
 		this.mockMvc.perform(get("/autoWarp/queryModel.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
 		.andExpect(status().isOk())
-		.andExpect(content().encoding("ISO-8859-1"))
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().encoding("UTF-8"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		.andExpect(jsonPath("$.success").value(true))
 		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
 		.andExpect(jsonPath("$.root.name").value("parent"))
@@ -148,8 +148,8 @@ public class SpringMVCController_autoWarp_Test {
 	public void queryCycle() throws Exception {
 		this.mockMvc.perform(get("/autoWarp/queryCycle.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
 		.andExpect(status().isOk())
-		.andExpect(content().encoding("ISO-8859-1"))
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().encoding("UTF-8"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		.andExpect(jsonPath("$.success").value(true))
 		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
 		.andExpect(jsonPath("$.root.name").value("parent"))
@@ -166,8 +166,8 @@ public class SpringMVCController_autoWarp_Test {
 	public void queryCycleList() throws Exception {
 		this.mockMvc.perform(get("/autoWarp/queryCycleList.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
 		.andExpect(status().isOk())
-		.andExpect(content().encoding("ISO-8859-1"))
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().encoding("UTF-8"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		.andExpect(jsonPath("$.success").value(true))
 		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
 		.andExpect(jsonPath("$.root[0].name").value("parent"))
@@ -184,8 +184,8 @@ public class SpringMVCController_autoWarp_Test {
 	public void queryCycleList_rootName() throws Exception {
 		this.mockMvc.perform(get("/autoWarp/queryCycleList_rootName.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
 		.andExpect(status().isOk())
-		.andExpect(content().encoding("ISO-8859-1"))
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().encoding("UTF-8"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		.andExpect(jsonPath("$.success").value(true))
 		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
 		.andExpect(jsonPath("$.children[0].name").value("parent"))
@@ -198,8 +198,8 @@ public class SpringMVCController_autoWarp_Test {
 	public void filterProperty() throws Exception {
 		this.mockMvc.perform(get("/autoWarp/filterProperty.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
 		.andExpect(status().isOk())
-		.andExpect(content().encoding("ISO-8859-1"))
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().encoding("UTF-8"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		.andExpect(jsonPath("$.success").value(true))
 		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
 		.andExpect(jsonPath("$.root.name").doesNotExist())
@@ -212,8 +212,8 @@ public class SpringMVCController_autoWarp_Test {
 	public void filterPropertyList() throws Exception {
 		this.mockMvc.perform(get("/autoWarp/filterPropertyList.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
 		.andExpect(status().isOk())
-		.andExpect(content().encoding("ISO-8859-1"))
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().encoding("UTF-8"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		.andExpect(jsonPath("$.success").value(true))
 		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
 		.andExpect(jsonPath("$.root[0].name").doesNotExist())
@@ -230,8 +230,8 @@ public class SpringMVCController_autoWarp_Test {
 	public void filterOnlyId() throws Exception {
 		this.mockMvc.perform(get("/autoWarp/filterOnlyId.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
 		.andExpect(status().isOk())
-		.andExpect(content().encoding("ISO-8859-1"))
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().encoding("UTF-8"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		.andExpect(jsonPath("$.success").value(true))
 		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
 		.andExpect(jsonPath("$.root.name").value("child"))
@@ -251,8 +251,8 @@ public class SpringMVCController_autoWarp_Test {
 		this.mockMvc.perform(get("/autoWarp/bindModel.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
 				.content("{name:'parent',id:1,createDate:'2012-11-11',age:11,childen:[{name:'childrens'}]}").contentType(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk())
-		.andExpect(content().encoding("ISO-8859-1"))
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().encoding("UTF-8"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		.andExpect(jsonPath("$.success").value(true))
 		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
 		.andExpect(jsonPath("$.root.name").value("parent"))
@@ -269,8 +269,8 @@ public class SpringMVCController_autoWarp_Test {
 		this.mockMvc.perform(get("/autoWarp/bindPageRequestByJosn.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
 				.content("{start:0,limit:10,wheres:[{key:'name_like',value:'ma'},{prop:'age',op:'LT',value:10}],sorts:[{prop:'name',dir:'ASC'},{prop:'age',dir:'DESC'}]}").contentType(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk())
-		.andExpect(content().encoding("ISO-8859-1"))
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().encoding("UTF-8"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		.andExpect(jsonPath("$.success").value(true))
 		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
 		.andExpect(jsonPath("$.start").value(0))
@@ -292,8 +292,8 @@ public class SpringMVCController_autoWarp_Test {
 		this.mockMvc.perform(get("/autoWarp/bindPageRequestByConverter.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
 				.param("pageRequest", "{start:0,limit:10,wheres:[{key:'name_like',value:'ma'},{prop:'age',op:'LT',value:10}],sorts:[{prop:'name',dir:'ASC'},{prop:'age',dir:'DESC'}]}").contentType(MediaType.TEXT_HTML))
 		.andExpect(status().isOk())
-		.andExpect(content().encoding("ISO-8859-1"))
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().encoding("UTF-8"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		.andExpect(jsonPath("$.success").value(true))
 		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
 		.andExpect(jsonPath("$.start").value(0))
@@ -325,8 +325,8 @@ public class SpringMVCController_autoWarp_Test {
 				.param("sorts[1].dir", "DESC")
 				.contentType(MediaType.TEXT_HTML))
 		.andExpect(status().isOk())
-		.andExpect(content().encoding("ISO-8859-1"))
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().encoding("UTF-8"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		.andExpect(jsonPath("$.success").value(true))
 		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
 		.andExpect(jsonPath("$.start").value(0))
@@ -384,7 +384,7 @@ public class SpringMVCController_autoWarp_Test {
 	public void testExtProperties() throws Exception{
 		this.mockMvc.perform(get("/autoWarp/testExtProperties.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
 		//.andExpect(status().isServiceUnavailable())
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		.andExpect(jsonPath("$.11").value(11))
 		.andExpect(jsonPath("$.aa").value("aaaa"));
 	}
@@ -393,7 +393,7 @@ public class SpringMVCController_autoWarp_Test {
 	public void testExtProperties1() throws Exception{
 		this.mockMvc.perform(get("/autoWarp/testExtProperties1.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
 		//.andExpect(status().isServiceUnavailable())
-		.andExpect(content().contentType("application/json"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
 		.andExpect(jsonPath("$.name").value("1111"))
 		.andExpect(jsonPath("$.aa").value("aaaa"));
 	}
