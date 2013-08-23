@@ -45,7 +45,12 @@ Ext.onReady(function(){
 								method:'POST',
 								params:{sessionId:record.get("sessionId")},
 								success:function(){
-									grid.getStore().remove( record );
+									if(record.get("count")==1){
+										grid.getStore().remove( record );
+									} else{
+										record.set("count",record.get("count")-1);
+									}
+									
 								}
 							});
 						}
