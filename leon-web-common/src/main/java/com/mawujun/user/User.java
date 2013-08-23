@@ -37,7 +37,9 @@ public class User extends UUIDEntity{
 	@Column(updatable=false)
 	private Date createDate;
 	private Date expireDate;
+	
 	private Date lastLoginDate;
+	private String lastIp;
 	
 	public User(){}
 	
@@ -120,5 +122,13 @@ public class User extends UUIDEntity{
 	}
 	public void setDeletedDate(Date deletedDate) {
 		this.deletedDate = deletedDate;
+	}
+
+	public String getLastIp() {
+		return lastIp;
+	}
+
+	public void setLastIp(String lastIp) {
+		this.lastIp = lastIp;
 	}
 }

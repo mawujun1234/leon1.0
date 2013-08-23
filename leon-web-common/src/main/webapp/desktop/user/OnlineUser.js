@@ -7,7 +7,10 @@ Ext.onReady(function(){
        			{name: 'name', type: 'string'},
        			{name: 'count', type: 'int'},
        			{name: 'lastRequest', type: 'string'},
-       			{name: 'sessionId', type: 'string'}
+       			{name: 'sessionId', type: 'string'},
+       			{name: 'lastIp', type: 'string'},
+       			{name: 'lastLoginDate', type: 'string'},
+       			{name: 'onlineSeconds', type: 'int'}
        		],
        		autoLoad:true,
        		proxy:{
@@ -81,7 +84,10 @@ Ext.onReady(function(){
 	        {dataIndex:'loginName',text:'登陆名'},
 	        {dataIndex:'name',text:'姓名'},
 	        {dataIndex:'count',text:'在线个数'},
-	        {dataIndex:'lastRequest',text:'最后请求时间',width:150}
+	        {dataIndex:'lastRequest',text:'最后请求时间',width:150},
+	        {dataIndex:'lastIp',text:'ip',width:150},
+	        {dataIndex:'lastLoginDate',text:'登录时间',width:150},
+	        {dataIndex:'onlineSeconds',text:'在线时长'}
        ],
        store:store,
 //       dockedItems: [{

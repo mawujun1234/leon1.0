@@ -18,7 +18,11 @@ public class UserDetailsImpl implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
 	private User user;
+	
 	List<GrantedAuthority> authorities=new ArrayList<GrantedAuthority>();
+	
+	
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
@@ -124,6 +128,4 @@ public class UserDetailsImpl implements UserDetails {
 			return false;
 		return true;
 	}
-
-	
 }

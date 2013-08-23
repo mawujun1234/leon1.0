@@ -97,10 +97,13 @@
 		<beans:property name="authenticationManager" ref="authenticationManager"></beans:property>
 		<beans:property name="postOnly" value="false"></beans:property>
 		<beans:property name="authenticationSuccessHandler"><!-- 认证成功的时候跳转-->
-			<!-- <beans:bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler"> -->
-			<beans:bean class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+			<!-- <beans:bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler">
+			<beans:bean class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler"> -->
+			<beans:bean class="com.mawujun.user.login.SavedRequestAwareAuthenticationSuccessHandlerImpl"> 
 				<beans:property name="defaultTargetUrl" value="/index.jsp"></beans:property>
 				<beans:property name="requestCache" ref="httpSessionRequestCache"></beans:property>
+				<!-- 更新用户的登录信息 最经的登录时间和登录ip-->
+				<beans:property name="userService" ref="userService"></beans:property>
 			</beans:bean>
 		</beans:property>
 		<beans:property name="authenticationFailureHandler" ref="contentNavigationAuthenticationFailureHandler"><!-- 认证失败的时候跳转，还有ExceptionMappingAuthenticationFailureHandler根据不同的异常跳转到不同的也页面-->	
