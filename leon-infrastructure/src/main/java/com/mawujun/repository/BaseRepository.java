@@ -522,5 +522,9 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 	public HibernateDao<T, ID> getHibernateDao() {
 		return hibernateDao;
 	}
+	
+	public int queryCountMybatis(final String statement,Object params) {
+		return this.getMybatisRepository().selectInt(statement, params);
+	}
 
 }

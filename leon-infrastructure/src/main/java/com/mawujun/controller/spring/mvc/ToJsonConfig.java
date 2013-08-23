@@ -9,6 +9,7 @@ class ToJsonConfig {
 	public transient String filterPropertysName="filterPropertys";
 	public transient String rootName="root";
 	public transient String successName="success";
+	public transient boolean successValue=true;
 	public transient String totalName="total";
 	public transient String startName="start";
 	public transient String limitName="limit";
@@ -156,6 +157,12 @@ class ToJsonConfig {
 	}
 	public void setMsg(String msg) {
 		this.msg = msg;
+	}
+	public boolean getSuccessValue() {
+		return successValue;
+	}
+	public void setSuccessValue(boolean successValue) {
+		this.successValue = successValue;
 	}
 	
 }

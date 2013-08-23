@@ -20,6 +20,14 @@ public class SwitchUser extends UUIDEntity{
 	@ManyToOne(fetch=FetchType.LAZY)
 	private User switchUser;
 	
+	public SwitchUser(){}
+	
+	public SwitchUser(String masterId,String switchUserId){
+		this.master=new User(masterId);
+		this.switchUser=new User(switchUserId);
+	}
+	
+	
 	public User getMaster() {
 		return master;
 	}

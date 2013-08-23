@@ -137,22 +137,18 @@ Ext.onReady(function(){
     	});
     });
     
-//    var roleInheritGrid=Ext.create('Leon.desktop.role.RoleRoleGrid',{
-//    	title:'继承角色',
-//    	roleRoleEnum:'inherit',
+//取消了互斥角色，因为互斥角色判断太麻烦了，而且用到的可能性更小
+//    var roleMutexGrid=Ext.create('Leon.desktop.role.RoleRoleGrid',{
+//    	title:'互斥角色',
+//    	roleRoleEnum:'mutex',
 //    	currentRole:null
 //    });
-    var roleMutexGrid=Ext.create('Leon.desktop.role.RoleRoleGrid',{
-    	title:'互斥角色',
-    	roleRoleEnum:'mutex',
-    	currentRole:null
-    });
 
 	var tabPanel=Ext.create('Ext.tab.Panel', {
 		region:'center',
 		split:true,
 	    activeTab: 0,
-	    items: [roleFunTree,roleMutexGrid],
+	    items: [roleFunTree],
 	    listeners:{
 	    	render:function(tabPanel){
 	    		tabPanel.mask();

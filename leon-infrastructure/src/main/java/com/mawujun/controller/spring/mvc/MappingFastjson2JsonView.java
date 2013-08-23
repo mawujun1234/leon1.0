@@ -52,18 +52,18 @@ public class MappingFastjson2JsonView extends AbstractView {
 		if(model.get(SimpleMappingExceptionResolver.DEFAULT_EXCEPTION_ATTRIBUTE)!=null){
 			Exception exception=(Exception)model.get(SimpleMappingExceptionResolver.DEFAULT_EXCEPTION_ATTRIBUTE);
 			Map<String,Object> map=new  HashMap<String, Object>();
-			map.put("success", false);
+			map.put(JsonConfigHolder.getSuccessName(), false);
 
 			if(exception instanceof BussinessException){
 				if( exception.getMessage()!=null){
-					map.put("message", exception.getMessage());
+					map.put(JsonConfigHolder.getMsgName(), exception.getMessage());
 				} else {
 					ExceptionCode errorCode=((BussinessException) exception).getErrorCode();
 					String key = errorCode.getClass().getSimpleName() + "." + errorCode;
 					try {
-						map.put("message", bundle.getString(key));
+						map.put(JsonConfigHolder.getMsgName(), bundle.getString(key));
 					} catch(MissingResourceException e){
-						map.put("message",exception.getMessage());
+						map.put(JsonConfigHolder.getMsgName(),exception.getMessage());
 					}
 				}
 				
@@ -72,18 +72,18 @@ public class MappingFastjson2JsonView extends AbstractView {
 				//还要监听验证异常，从hibernate后台抛出来的
 			} else if(exception instanceof ConstraintViolationException ){
 				ConstraintViolationException ex=(ConstraintViolationException)exception;
-				//map.put("message",ex.getMessage());
+				//map.put(JsonConfigHolder.getMsgName(),ex.getMessage());
 				
 				StringBuffer detailMsg=new StringBuffer();
 				Set<? extends ConstraintViolation> constraintViolations=ex.getConstraintViolations();
 				for (ConstraintViolation violation : constraintViolations) {
 					detailMsg.append(violation.getPropertyPath().toString()+"字段"+violation.getMessage()+":"+violation.getInvalidValue()+";");
 				}
-				map.put("message",detailMsg);
+				map.put(JsonConfigHolder.getMsgName(),detailMsg);
 			} else {
 				
-				//map.put("message", exception.getMessage());
-				map.put("message", "后台发生系统异常，请联系管理员或重试!");
+				//map.put(JsonConfigHolder.getMsgName(), exception.getMessage());
+				map.put(JsonConfigHolder.getMsgName(), "后台发生系统异常，请联系管理员或重试!");
 			}
 			//model=map;
 			

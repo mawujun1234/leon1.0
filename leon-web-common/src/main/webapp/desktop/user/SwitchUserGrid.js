@@ -17,7 +17,7 @@ Ext.define('Leon.desktop.user.SwitchUserGrid',{
 		}
 	},
 	config:{
-		groupId:null
+		masterId:null
 	},
 	
 	initComponent: function () {
@@ -31,12 +31,12 @@ Ext.define('Leon.desktop.user.SwitchUserGrid',{
 			{dataIndex:'password',text:'密码'},
 	        {dataIndex:'name',text:'姓名'},
 	        {dataIndex:'deleted',text:'是否删除'},
-	        {dataIndex:'deletedDate',text:'删除日期'},
+	        {dataIndex:'deletedDate',text:'删除日期',xtype: 'datecolumn',   format:'Y-m-d'},
 	        {dataIndex:'enable',text:'是否可用'},
 	        {dataIndex:'locked',text:'是否锁定'},
 	        {dataIndex:'createDate',text:'创建日期',xtype: 'datecolumn',   format:'Y-m-d'},
-	        {dataIndex:'expireDate',text:'过期日期'},
-	        {dataIndex:'lastLoginDate',text:'最后登陆时间'}
+	        {dataIndex:'expireDate',text:'过期日期',xtype: 'datecolumn',   format:'Y-m-d'},
+	        {dataIndex:'lastLoginDate',text:'最后登陆时间',xtype: 'datecolumn',   format:'Y-m-d'}
        ];
         me.store=e=Ext.create('Ext.data.Store',{
        		autoSync:false,
@@ -63,11 +63,62 @@ Ext.define('Leon.desktop.user.SwitchUserGrid',{
        	 name:'userName'
        });
        var tbar=Ext.create('Ext.toolbar.Toolbar', {
-       		items:[nameField,{
+       		items:[{
+       			text:'添加',
+       			iconCls: 'form-add-button',
+       			handler:function(){
+       				var userGrid=Ext.create('Leon.desktop.user.UserQueryGrid',{
+						listeners:{
+							itemdblclick:function(grid,record){
+								Ext.Ajax.request({
+									url:'/switchUser/create',
+									method:'POST',
+									params:{masterId:me.getMasterId(),switchUserId:record.get("id")},
+									success:function(){
+										//me.getStore().reload();
+									}
+								});
+							}
+						}
+					});
+       				var win=Ext.create('Ext.window.Window',{
+       					layout:'fit',
+       					height:400,
+       					modal:true,
+       					width:300,
+       					items:[userGrid],
+       					listeners:{
+       						close:function(){
+       							me.getStore().reload();
+       						}
+       					}
+       				});
+       				win.show();
+       			}
+       		},{
+       			text:'删除',
+       			iconCls: 'form-delete-button',
+       			handler:function(btn){
+			    	Ext.Msg.confirm("删除",'确定要删除吗?', function(btn, text){
+						if (btn == 'yes'){
+							var record=me.getSelectionModel( ).getLastSelected( );//.getLastSelected( );
+							//
+							Ext.Ajax.request({
+								url:'/switchUser/destroy',
+								method:'POST',
+								params:{masterId:me.getMasterId(),switchUserId:record.get("id")},
+								success:function(){
+									me.getStore().remove( record );
+								}
+							});
+						}
+					});	
+       			}
+       		},nameField,{
        			text:'查询',
        			iconCls:'icons_search ',
        			handler:function(){
-					 me.getStore().getProxy( ).extraParams={userName:nameField.getValue(),groupId:me.getGroupId()};
+					 me.getStore().getProxy( ).extraParams={userName:nameField.getValue(),masterId:me.getMasterId()};
 					 me.getStore().reload();
        			}	
        		}]
@@ -82,5 +133,10 @@ Ext.define('Leon.desktop.user.SwitchUserGrid',{
 	   }];
        
        me.callParent();
+	},
+	reload:function(masterId){
+		var me=this;
+		 me.getStore().getProxy( ).extraParams={masterId:me.getMasterId()};
+		 me.getStore().reload();
 	}
 });

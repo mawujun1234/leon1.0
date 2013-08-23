@@ -69,6 +69,7 @@ Ext.define('Leon.desktop.Desktop', {
         
         me.initMenuItemEvent(me.initMenus);
         menuItems=menuItems.concat(me.initMenus);
+        delete me.initMenus;
         
         var switchUsers=null;//me.switchUsers;
         if(me.switchUsers){
@@ -84,6 +85,7 @@ Ext.define('Leon.desktop.Desktop', {
         		});
         	}
         }
+        delete me.switchUsers;
         
         
         menuItems.push('->','-',{
@@ -115,6 +117,7 @@ Ext.define('Leon.desktop.Desktop', {
 		        	text: '登录',
 		        	iconCls:'icons_door_in',
 		        	handler:function(){
+		        		
 		        		var loginForm=Ext.create('Leon.LoginWin',{
 		 					modal:true,
 		 					standardSubmit:true,
@@ -145,8 +148,10 @@ Ext.define('Leon.desktop.Desktop', {
         var taskbar=Ext.create('Leon.desktop.Taskbar',{
         	style:{
                'z-index': 99999999
-            }
+            },
+            items:[{text:'当前用户:'+me.authMsg},'-','-']
         });
+        delete me.authMsg;
         me.tbar=menubar;
         me.bbar=taskbar;
         

@@ -21,4 +21,17 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    FROM leon_user_role a,leon_role_fun b
 		where a.role_id=b.role_id and a.user_id=#{user_id}
     </select>
+    
+    
+    <select id="querySwitchUsers" resultType="com.mawujun.user.User" parameterType="String">
+    	SELECT a.*
+	    FROM leon_user a,leon_SwitchUser b
+		where a.id=b.switchuser_id and b.master_id=#{masterId} 
+    </select>
+    <!-- 查找某个用户时候具有另一个用户的切换权限 -->
+     <select id="querySwitchUsersCount" resultType="int" parameterType="map">
+    	SELECT count(a.id)
+	    FROM leon_user a,leon_SwitchUser b
+		where a.id=b.switchuser_id and b.master_id=#{masterId} and  a.loginName=#{j_username}
+    </select>
 </mapper>

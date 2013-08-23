@@ -78,7 +78,7 @@ public class FastJsonToStringUtils {
 			map.put(JsonConfigHolder.getStartName(), page.getStart());
 			map.put(JsonConfigHolder.getLimitName(), page.getPageSize());
 			map.put(JsonConfigHolder.getPageNoName(), page.getPageNo());
-			map.put(JsonConfigHolder.getSuccessName(), true);
+			//map.put(JsonConfigHolder.getSuccessName(), true);
 			//map.put("wheres", page.getWheres());
 			//map.put("sorts", page.getSorts());
 			//object=map;
@@ -86,7 +86,7 @@ public class FastJsonToStringUtils {
 		} else {
 			
 			map.put(JsonConfigHolder.getRootName(), object);
-			map.put(JsonConfigHolder.getSuccessName(), true);
+			
 			if(object instanceof Collection){
 				map.put(JsonConfigHolder.getTotalName(), ((Collection)object).size());
 			} else {
@@ -104,6 +104,7 @@ public class FastJsonToStringUtils {
 			map.put(JsonConfigHolder.getMsgName(), JsonConfigHolder.getMsg());
 		}
 		
+		map.put(JsonConfigHolder.getSuccessName(), JsonConfigHolder.getSuccessValue());
 		
 		serializer.write(map);
 		String jsonString=serializer.toString();

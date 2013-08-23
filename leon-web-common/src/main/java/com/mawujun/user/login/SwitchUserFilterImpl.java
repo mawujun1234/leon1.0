@@ -243,32 +243,32 @@ MessageSourceAware {
         return original;
     }
     
-//    /**
-//     * 获取主用户
-//     * @author mawujun email:16064988@163.com qq:16064988
-//     * @return
-//     */
-//    public Authentication getMasterAuthentication(){
-//    	//如果本来就是主用户，那就返回主用户
-//    	Authentication current = SecurityContextHolder.getContext().getAuthentication();
-//    	// Authentication original = current;
-//    	Authentication original =null;
-//
-//         // iterate over granted authorities and find the 'switch user' authority
-//         Collection<? extends GrantedAuthority> authorities = current.getAuthorities();
-//
-//         for (GrantedAuthority auth : authorities) {
-//             // check for switch user type of authority
-//             if (auth instanceof SwitchUserGrantedAuthorityImpl) {
-//            	 if(((SwitchUserGrantedAuthorityImpl)auth).isMaster()) {
-//            		 original = ((SwitchUserGrantedAuthorityImpl) auth).getSource();
-//                     logger.debug("Found original switch user granted authority [" + original + "]");
-//            	 } 
-//             }
-//         }
-//
-//         return original;
-//    }
+    /**
+     * 获取主用户,如果当前用户没有主用户，说明还没有切换过用户，就把当前用户做为主用户
+     * @author mawujun email:16064988@163.com qq:16064988
+     * @return
+     */
+    public static Authentication getMasterAuthentication(){
+    	//如果本来就是主用户，那就返回主用户
+    	Authentication current = SecurityContextHolder.getContext().getAuthentication();
+    	// Authentication original = current;
+    	Authentication original =current;
+
+         // iterate over granted authorities and find the 'switch user' authority
+         Collection<? extends GrantedAuthority> authorities = current.getAuthorities();
+
+         for (GrantedAuthority auth : authorities) {
+             // check for switch user type of authority
+             if (auth instanceof SwitchUserGrantedAuthorityImpl) {
+            	 if(((SwitchUserGrantedAuthorityImpl)auth).isMaster()) {
+            		 original = ((SwitchUserGrantedAuthorityImpl) auth).getSource();
+                     //logger.debug("Found original switch user granted authority [" + original + "]");
+            	 } 
+             }
+         }
+
+         return original;
+    }
     /**
      * 判断当前用户和要切换的用户是不是同个用户
      * @author mawujun email:16064988@163.com qq:16064988

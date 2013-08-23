@@ -35,23 +35,66 @@
     <mvc:resources mapping="/console/**" location="/console/"/>
     
     <mvc:default-servlet-handler />  -->
-  <!--   -->
-  <!--<mvc:resources mapping="/j_spring_security_check" location="/j_spring_security_check"/>-->
 
-  
+
+
+
+	<!-- ②：启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+	</bean>
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="webBindingInitializer">
+			<bean class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
+				<property name="conversionService" >
+					<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+						<property name="converters">
+							<list>
+								<bean class="com.mawujun.controller.spring.mvc.JsonStringToPageRequest_FastJson"></bean>
+								<bean class="com.mawujun.controller.spring.mvc.JsonStringToSortInfo_FastJson"></bean>
+								<bean class="com.mawujun.controller.spring.mvc.JsonStringToWhereInfo_FastJson"></bean>
+							</list>
+						</property>
+					</bean>
+				</property> 
+				<property name="propertyEditorRegistrars">
+					<array>
+						<bean class="com.mawujun.controller.spring.mvc.CustomPropertyEditorRegistrar"></bean>
+					</array>
+				</property>
+			</bean>
+		</property>
+		<property name="messageConverters">
+			<list>
+				<bean id="stringHttpMessageConverter"
+					class="com.mawujun.controller.spring.mvc.StringHttpMessageConverterImpl">
+					<constructor-arg value="UTF-8">
+						
+					</constructor-arg>
+					<property name="writeAcceptCharset" value="false" />
+				</bean>
+				<bean id="jsonHttpMessageConverter"
+					class="com.mawujun.controller.spring.mvc.MappingFastJson2HttpMessageConverter" /><!-- 在循环引用和属性过滤上设置更方便 -->
+				<bean id="byteArrayHttpMessageConverter"
+					class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
+				<bean id="xmlAwareFormHttpMessageConverter"
+					class="org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter" />
+				<bean id="sourceHttpMessageConverter"
+					class="org.springframework.http.converter.xml.SourceHttpMessageConverter" />
+			</list>
+		</property>
+	</bean>
+	
+	
+<!--不推荐使用了
 <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
 	<property name="order" value="1" />
 </bean>
-<!--  
-<mvc:annotation-driven />
 -->
-<!-- 参数绑定，请求体数据绑定，响应体数据返回 -->
+<!-- 参数绑定，请求体数据绑定，响应体数据返回  不推荐使用了
 <bean
 	class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
-	<!-- 请求参数绑定 -->
 	<property name="webBindingInitializer">
 		<bean class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
-			<!-- <property name="validator" ref="validator" />-->
 			<property name="conversionService" >
 				<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
 					<property name="converters">
@@ -63,7 +106,6 @@
 					</property>
 				</bean>
 			</property> 
-			<!--  -->
 			<property name="propertyEditorRegistrars">
 				<array>
 					<bean class="com.mawujun.controller.spring.mvc.CustomPropertyEditorRegistrar"></bean>
@@ -71,7 +113,6 @@
 			</property>
 		</bean>
 	</property>
-	<!-- 请求体数据绑定，响应体数据返回 -->
 	<property name="messageConverters">
 		<list>
 			<bean id="stringHttpMessageConverter"
@@ -82,11 +123,7 @@
 				<property name="writeAcceptCharset" value="false" />
 			</bean>
 			<bean id="jsonHttpMessageConverter"
-				class="com.mawujun.controller.spring.mvc.MappingFastJson2HttpMessageConverter" /><!-- 在循环引用和属性过滤上设置更方便 -->
-			<!-- <bean id="jsonHttpMessageConverter"
-				class="com.mawujun.controller.spring.HttpMessageConverter_JsonLib" />
-			<bean id="jsonHttpMessageConverter" class="com.mawujun.controller.spring.MappingJackson2HttpMessageConverter" 
-				/> -->
+				class="com.mawujun.controller.spring.mvc.MappingFastJson2HttpMessageConverter" />
 			<bean id="byteArrayHttpMessageConverter"
 				class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
 			<bean id="xmlAwareFormHttpMessageConverter"
@@ -95,8 +132,8 @@
 				class="org.springframework.http.converter.xml.SourceHttpMessageConverter" />
 		</list>
 	</property>
-
 </bean>
+-->
     
 
 

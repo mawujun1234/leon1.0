@@ -46,6 +46,11 @@ public class UserDetailsImpl implements UserDetails {
 		// TODO Auto-generated method stub
 		return user.getPassword();
 	}
+	
+	public String getId() {
+		// TODO Auto-generated method stub
+		return user.getId();
+	}
 
 	@Override
 	public String getUsername() {

@@ -679,7 +679,8 @@ public class HibernateDao<T, ID extends Serializable>{
 		setParamsByCnd(query,cnd,classMetadata);
 		
 		int rr=query.executeUpdate();
-		session.clear();
+		//session.clear();
+		session.flush();
 		return rr;
 		
 	}

@@ -38,7 +38,7 @@ Ext.define('Leon.desktop.Taskbar', {
 //            me.tray
 //        ];
 
-        me.items=[{iconCls: 'taskBar-index-button',text:'任务栏：'},'-','-'];
+        //me.items=['-'];
         me.callParent();
     },
     onWindowBtnClick: function (btn) {

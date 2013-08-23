@@ -87,12 +87,12 @@ public class PropertyConfigController {
 		return id;
 	}
 	
-	@RequestMapping("/destroy")
-	@ResponseBody
-	public PropertyConfig destroy(@RequestBody PropertyConfig propertyConfig) {
-		propertyConfigService.delete(propertyConfig);
-		return propertyConfig;
-	}
+//	@RequestMapping("/destroy")
+//	@ResponseBody
+//	public PropertyConfig destroy(@RequestBody PropertyConfig propertyConfig) {
+//		propertyConfigService.delete(propertyConfig);
+//		return propertyConfig;
+//	}
 	
 	
 }

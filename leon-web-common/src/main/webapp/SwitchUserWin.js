@@ -30,18 +30,32 @@ Ext.define("Leon.SwitchUserWin",{
 		    	xtype:'button',
 		    	formBind: true,
 		    	handler:function(){
+		    		
 		    		var basicform = this.up('form').getForm();
 		            if (basicform.isValid()) {
-		            	me.getEl().mask("正在切换，请稍候...");
-		                basicform.submit({
-		                	//method:'GET',
-		                    success: function(form, action) {
-		                       me.success(form, action);
-		                    },
-		                    failure: function(form, action) {
-		                        me.failure(form, action);
-		                    }
-		                });
+		            	var values=basicform.getValues();
+		            	Ext.Ajax.request({
+			    			url:'/switchUser/checkPermission',
+			    			params:{j_username:values.j_username},
+			    			success:function(response){
+			    				var obj=Ext.decode(response.responseText);
+			    				if(!obj.success){
+			    					Ext.Msg.alert("消息","你没有权限切换到该用户,可切换的用户范围请点击下面的表格的插叙按钮进行查看。");
+			    					return;
+			    				}
+			    				me.getEl().mask("正在切换，请稍候...");
+				                basicform.submit({
+				                	//method:'GET',
+				                    success: function(form, action) {
+				                       me.success(form, action);
+				                    },
+				                    failure: function(form, action) {
+				                        me.failure(form, action);
+				                    }
+				                });
+			    			}
+			    		});
+		            	
 		            }
 		    	}
 		    }]

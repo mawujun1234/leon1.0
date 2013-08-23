@@ -10,7 +10,8 @@ Ext.onReady(function(){
 			var obj=Ext.decode(response.responseText);
 			var desktop=Ext.create('Leon.desktop.Desktop',{
 				initMenus:obj.root.menuItems
-				,switchUsers:obj.root.switchUsers?obj.root.switchUsers:null
+				,switchUsers:obj.root.switchUsers?obj.root.switchUsers:null,
+				authMsg:obj.root.authMsg
 			});
 			Ext.create('Ext.container.Viewport',{
 				layout:'fit',

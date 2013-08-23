@@ -8,6 +8,7 @@ import java.util.Set;
 import com.mawujun.menu.MenuItemVO;
 
 public class DesktopConfig {
+	private String authMsg;//认证用户逇信息
 	private Set<String> switchUsers;
 	private List<MenuItemVO> menuItems;
 	
@@ -26,4 +27,11 @@ public class DesktopConfig {
 	public void setMenuItems(List<MenuItemVO> menuItems) {
 		this.menuItems = menuItems;
 	}
+	public String getAuthMsg() {
+		return authMsg;
+	}
+	public void setAuthMsg(String authMsg) {
+		this.authMsg = authMsg;
+	}
+
 }

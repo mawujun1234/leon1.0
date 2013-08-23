@@ -39,6 +39,12 @@ public class User extends UUIDEntity{
 	private Date expireDate;
 	private Date lastLoginDate;
 	
+	public User(){}
+	
+	public User(String id){
+		this.id=id;
+	}
+	
 //	@Transient
 //	private Set<Role> roles;
 	

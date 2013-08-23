@@ -3,6 +3,7 @@ Ext.require('Leon.common.ux.BaseGrid');
 Ext.require('Leon.desktop.user.UserForm');
 Ext.require('Leon.desktop.role.RoleSelectPanel');
 Ext.require('Leon.desktop.parameter.ParameterUtils');
+Ext.require('Leon.desktop.user.SwitchUserGrid')
 Ext.onReady(function(){
 	var grid=Ext.create('Leon.common.ux.BaseGrid',{
 		model:'Leon.desktop.user.User',
@@ -118,6 +119,9 @@ Ext.onReady(function(){
 		funTree.getStore().load({params:{userId:record.getId()}});
 		//获取该用户的参数
 		utils.setSubjectId(record.getId());
+		
+		switchUserGrid.setMasterId(record.getId());
+		switchUserGrid.reload(record.getId());
 	});
 	var roleSelectedTree=Ext.create('Leon.desktop.role.RoleSelectPanel',{
     	url:'/user/queryRole',
@@ -172,6 +176,9 @@ Ext.onReady(function(){
 	});
 	
 	
+	var switchUserGrid=Ext.create('Leon.desktop.user.SwitchUserGrid',{
+		title:'切换用户管理'
+	});
 	
 	
 	//var form=Ext.create('Leon.desktop.user.UserForm',{title:'用户表单'});
@@ -182,7 +189,8 @@ Ext.onReady(function(){
 	    activeTab: 0,
 	    items: [
 	    	roleSelectedTree,
-	        funTree
+	        funTree,
+	        switchUserGrid
 	    ],
 	    listeners:{
 	    	render:function(tabPanel){

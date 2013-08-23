@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.mawujun.exception.BussinessException;
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository.cnd.Cnd;
-import com.mawujun.repository.mybatis.Params;
+import com.mawujun.repository.mybatis.MybatisParamUtils;
 
 @Service
 public class ParameterSubjectService extends
@@ -32,7 +32,7 @@ public class ParameterSubjectService extends
 //		params.put("parameterId", parameterId);
 //		params.put("subjectType", subjectType);
 		
-		Params params=Params.init().put("parameterId", parameterId).put("subjectType", subjectType);
+		MybatisParamUtils params=MybatisParamUtils.init().put("parameterId", parameterId).put("subjectType", subjectType);
 		if(SubjectType.SYSTEM.toString().equals(subjectType)){
 			//return this.query(Cnd.select().andEquals("parameterId", parameterId).andEquals("subjectType", subjectType));
 			return this.queryList("query_SYSTEM", params,ParameterSubjectVO.class);

@@ -43,6 +43,8 @@ public class DesktopController {
 			}
 		}
 		
+		config.setAuthMsg(currentAuth.getName());
+		
 		JsonConfigHolder.setWriteMapNullValue(false);
 		return config;
 	}

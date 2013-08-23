@@ -29,12 +29,12 @@ Ext.define('Leon.desktop.user.UserQueryGrid',{
 			{dataIndex:'password',text:'密码'},
 	        {dataIndex:'name',text:'姓名'},
 	        {dataIndex:'deleted',text:'是否删除'},
-	        {dataIndex:'deletedDate',text:'删除日期'},
+	        {dataIndex:'deletedDate',text:'删除日期',xtype: 'datecolumn',   format:'Y-m-d'},
 	        {dataIndex:'enable',text:'是否可用'},
 	        {dataIndex:'locked',text:'是否锁定'},
 	        {dataIndex:'createDate',text:'创建日期',xtype: 'datecolumn',   format:'Y-m-d'},
-	        {dataIndex:'expireDate',text:'过期日期'},
-	        {dataIndex:'lastLoginDate',text:'最后登陆时间'}
+	        {dataIndex:'expireDate',text:'过期日期',xtype: 'datecolumn',   format:'Y-m-d'},
+	        {dataIndex:'lastLoginDate',text:'最后登陆时间',xtype: 'datecolumn',   format:'Y-m-d'}
        ];
         me.store=e=Ext.create('Ext.data.Store',{
        		autoSync:false,

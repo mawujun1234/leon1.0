@@ -113,6 +113,13 @@ public class JsonConfigHolder {
 		threadLocal.get().setSuccessName(successName);
 	}
 	
+	public static boolean getSuccessValue() {
+		return threadLocal.get().getSuccessValue();
+	}
+	public static void setSuccessValue(boolean successValue) {
+		threadLocal.get().setSuccessValue(successValue);
+	}
+	
 	public static String getTotalName() {
 		
 		return threadLocal.get().getTotalName();
