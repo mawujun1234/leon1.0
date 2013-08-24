@@ -44,12 +44,12 @@ public class JavaEntityMetaDataServiceTest {
 	
 	@Test
 	public void generatorToString_model() throws TemplateException, IOException {
-		String aa=javaEntityMetaDataService.generatorToString(Fun.class, "${simpleClassName}.js.ftl",null);
-		System.out.println(aa);
+		//String aa=javaEntityMetaDataService.generatorToString(Fun.class, "${simpleClassName}.js.ftl",null);
+		//System.out.println(aa);
 	}
 	@Test
 	public void generatorToString_controller() throws TemplateException, IOException {
-		String aa=javaEntityMetaDataService.generatorToString(Fun.class, "${simpleClassName}Controller.java.ftl",null);
-		System.out.println(aa);
+		//String aa=javaEntityMetaDataService.generatorToString(Fun.class, "${simpleClassName}Controller.java.ftl",null);
+		//System.out.println(aa);
 	}
 }
