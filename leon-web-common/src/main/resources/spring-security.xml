@@ -179,8 +179,14 @@
 				</beans:property>		
 			</beans:bean>
 		</beans:property>
-		<beans:property name="securityMetadataSource"><!-- 实现了角色资源的对应关系 -->
-			<beans:bean class="com.mawujun.user.login.FilterInvocationSecurityMetadataSourceImpl">
+		<beans:property name="securityMetadataSource" ref="filterInvocationSecurityMetadataSourceImpl"><!-- 实现了角色资源的对应关系 -->
+			
+		</beans:property>
+		<!-- 当某个资源被访问时，发现没有 授予角色时，也就是还没有进行分配的时候，是拒绝还是允许true是拒绝，
+		-->
+		<beans:property name="rejectPublicInvocations" value="true"></beans:property>
+	</beans:bean>
+	<beans:bean name="filterInvocationSecurityMetadataSourceImpl" class="com.mawujun.user.login.FilterInvocationSecurityMetadataSourceImpl">
 				<beans:property name="rolePrefix" value="ROLE_"></beans:property>
 				<beans:property name="roleService" ref="roleService"></beans:property>
 				<!-- 定义了认证用户可以访问的范围，翻过来说匹配的地址必须是认证用户才能访问，
@@ -199,11 +205,6 @@
 						</beans:bean>
 					</beans:list>
 				</beans:property>
-			</beans:bean>
-		</beans:property>
-		<!-- 当某个资源被访问时，发现没有 授予角色时，也就是还没有进行分配的时候，是拒绝还是允许true是拒绝，
-		-->
-		<beans:property name="rejectPublicInvocations" value="true"></beans:property>
 	</beans:bean>
 	
 	<!-- ======================================华丽的分割线==============================================-->

@@ -81,11 +81,19 @@ Ext.define('Leon.desktop.Window', {
             loadMask:'正在加载，请稍候...',
             
             border: false
+
 			//src:me.url
 			//src:'http://www.baidu.com'
 		});
 
 		me.items=[iframe];
+		if(me.execuMethod){
+			iframe.on('load',function(){
+            	me.execuIframeMethod(me.execuMethod);
+            	delete me.execuMethod;
+           });
+		}
+		
 		
 		this.callParent();
 		me.on("afterrender",function(win){
@@ -93,6 +101,17 @@ Ext.define('Leon.desktop.Window', {
 		});
 		
 
+	},
+	/**
+	 * 执行iframe里的方法
+	 */
+	execuIframeMethod:function(execuMethod){
+		//alert(me.execuMethod.method);
+		var iframe=this.items.getAt(0);
+		var windoww=iframe.getWin(); //iframe里的window对象
+		//var  func=eval(me.execuMethod.method);
+		//alert(windoww[execuMethod.methodName]);
+		windoww[execuMethod.methodName](execuMethod.params);
 	}
 
 });

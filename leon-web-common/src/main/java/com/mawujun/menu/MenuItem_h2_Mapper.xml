@@ -10,7 +10,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	SELECT distinct id
 	    FROM leon_MenuItem 
 		where menu_id=#{menu_id}  and fun_id is not null
-		
     </select>
-	<!-- select语句的生成结束=============================================================================================== -->
+	<select id="queryMenuItem" resultType="com.mawujun.menu.MenuItemVO" >
+    	SELECT a.*
+	    FROM leon_MenuItem a,leon_fun  b
+		where a.menu_id=#{menuId}  and a.fun_id=b.id and b.url=#{jspUrl}
+    </select>
 </mapper>

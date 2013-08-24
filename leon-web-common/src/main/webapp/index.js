@@ -3,12 +3,11 @@
 Ext.onReady(function(){
 	//alert(1);
 	Ext.Ajax.request({
-		//url:'/menuItem/query4Desktop?menuId=default',
-		url:'/desktop/query?menuId=default',
+		url:'/desktop/query',
 		headers:{ 'Accept':'application/json;'},
 		success:function(response){
 			var obj=Ext.decode(response.responseText);
-			var desktop=Ext.create('Leon.desktop.Desktop',{
+			window.desktop=Ext.create('Leon.desktop.Desktop',{
 				initMenus:obj.root.menuItems
 				,switchUsers:obj.root.switchUsers?obj.root.switchUsers:null,
 				authMsg:obj.root.authMsg

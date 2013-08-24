@@ -1,7 +1,9 @@
 package com.mawujun.desktop;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.controller.spring.mvc.JsonConfigHolder;
+import com.mawujun.exception.BussinessException;
 import com.mawujun.menu.MenuItemService;
 import com.mawujun.menu.MenuItemVO;
 import com.mawujun.user.login.SwitchUserFilterImpl;
@@ -27,8 +30,8 @@ public class DesktopController {
 	 */
 	@RequestMapping("/desktop/query")
 	@ResponseBody
-	public DesktopConfig query4Desktop(String menuId){		
-
+	public DesktopConfig query4Desktop(){		
+		String menuId="default";
 		List<MenuItemVO> menuItems=menuItemService.query4Desktop(menuId);
 		DesktopConfig config=new DesktopConfig();
 		config.setMenuItems(menuItems);
@@ -48,5 +51,20 @@ public class DesktopController {
 		JsonConfigHolder.setWriteMapNullValue(false);
 		return config;
 	}
+	
+	@RequestMapping("/desktop/queryMenuItem")
+	@ResponseBody
+	public MenuItemVO queryMenuItem(String jspUrl){	
+		String menuId="default";
+		MenuItemVO vo=menuItemService.queryMenuItem(jspUrl, menuId);
+		if(vo==null){
+			throw new BussinessException("提供的jsp路径有问题，不能确定菜单项!");
+		}
+		vo.setUrl(jspUrl);
+		return vo;
+		
+	}
+
+		
 	
 }

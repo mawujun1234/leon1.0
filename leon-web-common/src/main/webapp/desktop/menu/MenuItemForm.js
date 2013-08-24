@@ -44,6 +44,14 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
 //	            //allowBlank: false,
 //	            //tooltip: 'Enter your first name'
 //	        },
+           {
+	            fieldLabel: 'id',
+	            //afterLabelTextTpl: me.required,
+	            name: 'id',
+	            readOnly:true
+	            //allowBlank: false,
+	            //tooltip: 'Enter your first name'
+	        },
 	        {
                 xtype: 'fieldcontainer',
                 fieldLabel: '所属功能',

@@ -208,10 +208,26 @@ Ext.define('Leon.common.ux.BaseGrid', {
 		actions.push(reload);
 		
 		if(me.autoShowSimpleActionToTbar){
+//			me.tbar={
+//				itemId:'action_toolbar',
+//				items:actions
+//			};
 			me.tbar={
+			  xtype: 'container',
+			  layout: 'anchor',
+			  itemId:'action_toolbar_container',
+			  defaults: {anchor: '0'},
+			  defaultType: 'toolbar',
+			  items: [{
+			  	border:false,
 				itemId:'action_toolbar',
 				items:actions
-			};
+			  }
+//			, {
+//			    items: [{text:'22'}] // toolbar 2
+//			  }
+			  ]
+			}
 		}
 		var menu=Ext.create('Ext.menu.Menu', {
 			    items: actions
@@ -417,10 +433,23 @@ Ext.define('Leon.common.ux.BaseGrid', {
     getContextMenu:function(){
     	return this.contextMenu;
     },
+    /**
+     * 获取工作栏的容器
+     * @return {}
+     */
+    getActionTbarContainer:function(){
+     	return this.getDockedComponent( "action_toolbar_container" );
+    },
+    addTopBar:function(toolbar){
+    	var action_toolbar_container=this.getActionTbarContainer();
+    	action_toolbar_container.add( toolbar );
+    },
     actionTbar:null,
     getActionTbar:function(){
     	if(!this.actionTbar){
-    		this.actionTbar=this.getDockedItems('toolbar[itemId="action_toolbar"]')[0];
+    		var action_toolbar_container=this.getActionTbarContainer();//this.getDockedComponent( "action_toolbar_container" );
+    		this.actionTbar=action_toolbar_container.getComponent('action_toolbar');
+    		//alert(this.actionTbar);
     	}
     	
     	return this.actionTbar

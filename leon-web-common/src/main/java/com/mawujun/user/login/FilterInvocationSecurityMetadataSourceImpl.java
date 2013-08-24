@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -40,11 +41,58 @@ public class FilterInvocationSecurityMetadataSourceImpl implements
 	 public FilterInvocationSecurityMetadataSourceImpl(){
 
 	 }
+	 /**
+	  * 更新的权限信息，所以是url要完全匹配才可以
+	  * @author mawujun 16064988@qq.com 
+	  * @param object HttpServletRequest
+	  * @return
+	  * @throws IllegalArgumentException
+	  */
+	 protected Collection<ConfigAttribute> getAttributesFully(String url)
+				throws IllegalArgumentException {
+		 //Set<ConfigAttribute> result=new LinkedHashSet<ConfigAttribute>();
+		 //final HttpServletRequest request = ((FilterInvocation) object).getRequest();
+	        for (Map.Entry<RequestMatcher, Collection<ConfigAttribute>> entry : resourceMap.entrySet()) {
+	        	//RequestMatcher这里把本来是调用这个的matches方法
+	            if (((AntPathRequestMatcher)entry.getKey()).getPattern().equalsIgnoreCase(url)) {
+	                return entry.getValue();
+	            }
+
+	        }
+	        return null;
+	 }
+	 /**
+	  * 移除某个url上的角色
+	  * @author mawujun 16064988@qq.com 
+	  * @param object HttpServletRequest
+	  * @param role_id
+	  */
+	 public void removeConfigAttribute(String url,String role_id){
+		 Collection<ConfigAttribute> roleIds=getAttributesFully(url);
+		 if(roleIds==null){
+			 return;
+		 }
+		 ConfigAttribute configAttribute =    new SecurityConfig(rolePrefix+role_id);
+		 roleIds.remove(configAttribute);
+	 }
+	 /**
+	  * 网某个url上添加角色
+	  * @author mawujun 16064988@qq.com 
+	  * @param url
+	  * @param role_id
+	  */
+	 public void addConfigAttribute(String url,String role_id){
+		 Collection<ConfigAttribute> roleIds=getAttributesFully(url);
+		 if(roleIds==null){
+			 return;
+		 }
+		 ConfigAttribute configAttribute =    new SecurityConfig(rolePrefix+role_id);
+		 roleIds.add(configAttribute);
+	 }
 	@Override
-	public Collection<ConfigAttribute> getAttributes(Object object)
-			throws IllegalArgumentException {
+	public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
 		
-		Set<ConfigAttribute> result=new HashSet<ConfigAttribute>();
+		Set<ConfigAttribute> result=new LinkedHashSet<ConfigAttribute>();
 		 final HttpServletRequest request = ((FilterInvocation) object).getRequest();
 	        for (Map.Entry<RequestMatcher, Collection<ConfigAttribute>> entry : resourceMap.entrySet()) {
 	        	//RequestMatcher这里把本来是调用这个的matches方法
@@ -75,7 +123,7 @@ public class FilterInvocationSecurityMetadataSourceImpl implements
 	}
 	
 	public void initResourceMap(){
-		List<Map<String,Object>> funRoles=roleService.queryList("queryFun");
+		List<Map<String,Object>> funRoles=roleService.queryRoleUrl();
 		 for(Map<String,Object> map:funRoles){
 			 if(!StringUtils.hasLength(map.get("URL").toString())){
 				 continue;
@@ -85,48 +133,12 @@ public class FilterInvocationSecurityMetadataSourceImpl implements
 			 if(resourceMap.containsKey(matcher)){
 				 resourceMap.get(matcher).add(configAttribute);
 			 } else{
-				List<ConfigAttribute> list=new ArrayList<ConfigAttribute>();
+				LinkedHashSet<ConfigAttribute> list=new LinkedHashSet<ConfigAttribute>();
 				list.add(configAttribute);
 				resourceMap.put(matcher, list);  
 			 }
 			
 		 }
-//		 
-//		 //添加必须认证才能访问的url
-//		 if(authenticatedFullyUrls!=null && authenticatedFullyUrls.size()>0){
-//			 for(String url:authenticatedFullyUrls){
-//				//添加所有的路径，都必须是认证过的才能访问
-//				//Authentication只是作为一个标识符，可以让beforeInvocation中不范虎null	
-//				ConfigAttribute configAttribute =    new SecurityConfig(AuthenticatedVoter.IS_AUTHENTICATED_FULLY); 
-//				List<ConfigAttribute> list=new ArrayList<ConfigAttribute>();
-//				list.add(configAttribute);
-//				resourceMap.put(new AntPathRequestMatcher(url), list);  
-//			 }
-//		 }
-//		 
-//		//添加通过remerber me登陆的用户可以访问的路径范围
-//		 if(authenticatedRememberedUrls!=null && authenticatedRememberedUrls.size()>0){
-//			 for(String url:authenticatedRememberedUrls){
-//				//添加所有的路径，都必须是认证过的才能访问
-//				//Authentication只是作为一个标识符，可以让beforeInvocation中不范虎null	
-//				ConfigAttribute configAttribute =    new SecurityConfig(AuthenticatedVoter.IS_AUTHENTICATED_REMEMBERED); 
-//				List<ConfigAttribute> list=new ArrayList<ConfigAttribute>();
-//				list.add(configAttribute);
-//				resourceMap.put(new AntPathRequestMatcher(url), list);  
-//			 }
-//		 }
-//		 
-//		//匿名登陆的用户可以访问的路径范围
-//		 if(authenticatedAnonymouslyUrls!=null && authenticatedAnonymouslyUrls.size()>0){
-//			 for(String url:authenticatedAnonymouslyUrls){
-//				//添加所有的路径，都必须是认证过的才能访问
-//				//Authentication只是作为一个标识符，可以让beforeInvocation中不范虎null	
-//				ConfigAttribute configAttribute =    new SecurityConfig(AuthenticatedVoter.IS_AUTHENTICATED_ANONYMOUSLY); 
-//				List<ConfigAttribute> list=new ArrayList<ConfigAttribute>();
-//				list.add(configAttribute);
-//				resourceMap.put(new AntPathRequestMatcher(url), list);  
-//			 }
-//		 }
 		 
 
 		 if(authenticatedUrls!=null && authenticatedUrls.size()>0){

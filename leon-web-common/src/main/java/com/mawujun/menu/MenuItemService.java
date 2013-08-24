@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;
 import com.mawujun.repository.BaseRepository;
+import com.mawujun.repository.mybatis.MybatisParamUtils;
 import com.mawujun.utils.BeanUtils;
 import com.mawujun.utils.help.ReportCodeHelper;
 import com.mawujun.utils.page.WhereInfo;
@@ -193,6 +194,22 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 			menuItem.getChildren().size();
 			super.initLazyProperty(menuItem.getChildren());
 			//}	
+		}
+	}
+	/**
+	 * 如果没有就返回null
+	 * @author mawujun 16064988@qq.com 
+	 * @param jspUrl
+	 * @param menuId
+	 * @return
+	 */
+	public MenuItemVO queryMenuItem(String jspUrl,String menuId){	
+		Map params=MybatisParamUtils.init().add("jspUrl", jspUrl).add("menuId", menuId);
+		List<MenuItemVO> menuItems=super.queryList("queryMenuItem", params, MenuItemVO.class);
+		if(menuItems==null || menuItems.size()==0){
+			return null;
+		} else {
+			return menuItems.get(0);
 		}
 	}
 

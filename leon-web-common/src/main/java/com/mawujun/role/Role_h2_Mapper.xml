@@ -14,7 +14,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     </select>
 	
 	<!--用于FilterInvocationSecurityMetadataSourceImpl-->
-	<select id="queryFun" resultType="map">
+	<select id="queryRoleUrl" resultType="map">
     	SELECT a.url,b.role_Id
 	    FROM leon_Fun a,leon_Role_Fun b
 		where a.id=b.fun_id

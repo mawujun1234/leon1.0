@@ -67,6 +67,7 @@ Ext.define('Leon.desktop.Desktop', {
         var menuItems=[{iconCls: 'menubar-index-button',xtype:'button',text:'桌面'},'-','-'];
         //me.returnMenuItem(menuItems,me.initMenus);
         
+        me.menuCache={};//用来根据url快速导航到按钮的
         me.initMenuItemEvent(me.initMenus);
         menuItems=menuItems.concat(me.initMenus);
         delete me.initMenus;
@@ -168,11 +169,50 @@ Ext.define('Leon.desktop.Desktop', {
     	});
     	win.show();
     },
+    /**
+     * execuMethod 是一个对象，例如
+     * {
+     * 	methodName:'queryByName',
+     *  params:{a:1,b:2}
+     * }
+     * @param {} jspUrl
+     * @param {} execuMethod
+     */
+	showWindowByJspPath:function(jspUrl,execuMethod){
+		var me=this;
+		//如果已经存在这个窗口，就显示已经存在的窗口
+    	if(this.windows.containsKey(jspUrl)){
+    		var win=this.windows.get(jspUrl);
+    		win.execuIframeMethod(execuMethod);
+    		return this.restoreWindow(win);
+    	}
 
+		//根据jspUrl获取菜单的Item
+		Ext.Ajax.request({
+			url:'/desktop/queryMenuItem',
+			method:'POST',
+			params:{jspUrl:jspUrl},
+			success:function(response){
+				var obj=Ext.decode(response.responseText);
+				var btn=obj.root;
+				win=me.createWindow({
+		        	title:btn.text,
+		        	url:btn.url,
+		        	iconCls:btn.iconCls,
+		        	execuMethod:execuMethod
+		        });
+		        //
+		        //创建成功后，在里面建立接收参数。
+			}
+		});
+	},
 	initMenuItemEvent:function(initMenus){
 		var me=this;
 		for(var i=0;i<initMenus.length;i++){
         		var model=initMenus[i];
+        		
+        		model.itemId=model.id;
+        		delete model.id;
 
         		model.link_url=model.url;
         		delete model.url;
@@ -192,44 +232,44 @@ Ext.define('Leon.desktop.Desktop', {
         		}
         	}
 	},
-    /**
-	 * 返回菜单的组件形式
-	 */
-    returnMenuItem:function(menuItems,initMenus){
-    	var me=this;
-    	//var initMenus=model.children;
-    	if(initMenus){
-        	for(var i=0;i<initMenus.length;i++){
-        		var model=initMenus[i];
-        		//alert(model.url);
-        		var button={
-        			text:model.text,
-        			link_url:model.url,
-        			pluginUrl:model.pluginUrl,
-        			scripts:model.scripts,
-        			iconCls:model.iconCls
-        			,arrowAlign:'right'
-        		};
-        		
-        		if(model.children && model.children.length>0){
-        			button.menu={items:[]};
-        			me.returnMenuItem(button.menu.items, model.children);
-        		} else {
-        			button.plugins=[{ptype:'menuplugin',pluginUrl:button.pluginUrl,scripts:button.scripts}];
-        			//alert(menu.url+"===");
-	        		button.handler=function(btn){
-		        		me.createWindow({
-		        			title:btn.text,
-		        			url:btn.link_url,
-		        			iconCls:btn.iconCls
-		        		});
-	        		}
-        		}
-        		menuItems.push(button);
-        	}
-        }
-        return menuItems;
-    },
+//    /**
+//	 * 返回菜单的组件形式
+//	 */
+//    returnMenuItem:function(menuItems,initMenus){
+//    	var me=this;
+//    	//var initMenus=model.children;
+//    	if(initMenus){
+//        	for(var i=0;i<initMenus.length;i++){
+//        		var model=initMenus[i];
+//        		//alert(model.url);
+//        		var button={
+//        			text:model.text,
+//        			link_url:model.url,
+//        			pluginUrl:model.pluginUrl,
+//        			scripts:model.scripts,
+//        			iconCls:model.iconCls
+//        			,arrowAlign:'right'
+//        		};
+//        		
+//        		if(model.children && model.children.length>0){
+//        			button.menu={items:[]};
+//        			me.returnMenuItem(button.menu.items, model.children);
+//        		} else {
+//        			button.plugins=[{ptype:'menuplugin',pluginUrl:button.pluginUrl,scripts:button.scripts}];
+//        			//alert(menu.url+"===");
+//	        		button.handler=function(btn){
+//		        		me.createWindow({
+//		        			title:btn.text,
+//		        			url:btn.link_url,
+//		        			iconCls:btn.iconCls
+//		        		});
+//	        		}
+//        		}
+//        		menuItems.push(button);
+//        	}
+//        }
+//        return menuItems;
+//    },
 
     createWindow:function(config){
     	if(!config.url){
@@ -237,8 +277,7 @@ Ext.define('Leon.desktop.Desktop', {
     	}
     	//如果已经存在这个窗口，就显示已经存在的窗口
     	if(this.windows.containsKey(config.url)){
-    		this.restoreWindow(this.windows.get(config.url));
-    		return;
+    		return this.restoreWindow(this.windows.get(config.url));
     	}
     	
     	var me = this,win;

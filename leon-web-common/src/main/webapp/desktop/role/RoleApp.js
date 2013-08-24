@@ -72,10 +72,9 @@ Ext.onReady(function(){
     			tabPanel.unmask();
     		}   		
     	});
-    	//roleInheritGrid.currentRole=record;
-    	//roleInheritGrid.getStore().load({params:{childId:record.getId(),roleRoleEnum:'inherit'}});
-    	roleMutexGrid.currentRole=record;
-    	roleMutexGrid.getStore().load({params:{ownId:record.getId(),roleRoleEnum:'mutex'}});
+
+    	//roleMutexGrid.currentRole=record;
+    	//roleMutexGrid.getStore().load({params:{ownId:record.getId(),roleRoleEnum:'mutex'}});
     	
     	utils.setSubjectId(record.getId());
     });

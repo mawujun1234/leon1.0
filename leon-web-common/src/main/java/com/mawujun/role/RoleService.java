@@ -95,6 +95,10 @@ public class RoleService extends BaseRepository<Role, String> {
 		}
 	}
 	
+	public List<Map<String,Object>> queryRoleUrl(){
+		return super.queryList("queryRoleUrl");
+	}
+	
 //	public List<Map<String,Object>> queryByRole(String otherId,String roleRoleEnum){
 //		Map<String,String> params=new HashMap<String,String>();
 //		params.put("otherId", otherId);

@@ -60,6 +60,18 @@ Ext.onReady(function(){
 					});	
        			}
        		
+       		},{
+       			text:'查看用户信息',
+       			iconCls:'icons_user_magnify',
+       			handler:function(){
+       				var record=grid.getSelectionModel( ).getLastSelected( );
+       				var execuMethod={
+       					methodName:'queryUserByLoginName',
+       					params:{loginName:record.get("loginName")}
+       				}
+       				top.desktop.showWindowByJspPath("/desktop/user/UserApp.jsp",execuMethod);
+       			}
+       		
        		},'-',nameField,{
        			text:'查询',
        			iconCls:'icons_search ',

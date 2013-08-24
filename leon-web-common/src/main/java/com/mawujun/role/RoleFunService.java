@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,7 @@ import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository.idEntity.UUIDGenerator;
+import com.mawujun.user.login.FilterInvocationSecurityMetadataSourceImpl;
 import com.mawujun.utils.page.WhereInfo;
 
 @Service
@@ -39,6 +42,9 @@ public class RoleFunService extends BaseRepository<RoleFun, String> {
 //		return selectedFuns;
 	}
 	
+	@Resource(name="filterInvocationSecurityMetadataSourceImpl")
+	FilterInvocationSecurityMetadataSourceImpl  filterInvocationSecurityMetadataSourceImpl;
+	
 	public void create(RoleFun roleFun) {
 		roleFun.setCreateDate(new Date());
 		super.create(roleFun);
@@ -46,8 +52,13 @@ public class RoleFunService extends BaseRepository<RoleFun, String> {
 		Role role=roleService.get(roleFun.getRole().getId());
 		role.addFun(roleFun);
 		
-		//RoleCacheHolder.add(roleFun);
+		
+		//更新spring security中的权限信息
+		Fun fun=funService.get(roleFun.getFun().getId());
+		filterInvocationSecurityMetadataSourceImpl.addConfigAttribute(fun.getUrl(), roleFun.getRole().getId());
 	}
+	
+	
 	public RoleFun delete(String roleId,String funId) {
 		Role role=roleService.get(roleId);
 		RoleFun roleFun=role.getFun(funId);
@@ -57,6 +68,9 @@ public class RoleFunService extends BaseRepository<RoleFun, String> {
 		}
 		super.delete(roleFun);
 		role.removeFun(roleFun);
+		//更新spring security中的权限信息
+		Fun fun=funService.get(roleFun.getFun().getId());
+		filterInvocationSecurityMetadataSourceImpl.removeConfigAttribute(fun.getUrl(), roleId);
 		return roleFun;
 	}
 	public RoleFun update(String roleId,String funId,String permissionEnum) {

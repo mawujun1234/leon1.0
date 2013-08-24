@@ -3,8 +3,14 @@ Ext.require('Leon.common.ux.BaseGrid');
 Ext.require('Leon.desktop.user.UserForm');
 Ext.require('Leon.desktop.role.RoleSelectPanel');
 Ext.require('Leon.desktop.parameter.ParameterUtils');
-Ext.require('Leon.desktop.user.SwitchUserGrid')
+Ext.require('Leon.desktop.user.SwitchUserGrid');
+
+
 Ext.onReady(function(){
+	window.queryUserByLoginName=function(params){
+		nameField.setValue(params.loginName);
+		grid.getStore().load({params:{userName:params.loginName}});
+	};
 	var grid=Ext.create('Leon.common.ux.BaseGrid',{
 		model:'Leon.desktop.user.User',
 		region:'west',
@@ -87,6 +93,21 @@ Ext.onReady(function(){
 		    }
 	});
 	grid.addAction(3,recover);
+	
+	var nameField=Ext.create('Ext.form.field.Text',{
+       	 name:'userName'
+       });
+    var tbar=Ext.create('Ext.toolbar.Toolbar', {
+       		items:[nameField,{
+       			text:'查询',
+       			iconCls:'icons_search ',
+       			handler:function(){
+					 grid.getStore().getProxy( ).extraParams={userName:nameField.getValue()};
+					 grid.getStore().reload();
+       			}	
+       		}]
+    });
+    grid.addTopBar(tbar);
 	
 	
 	var form=Ext.create('Leon.desktop.user.UserForm',{});
