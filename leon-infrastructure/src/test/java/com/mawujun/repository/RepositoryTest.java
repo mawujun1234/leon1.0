@@ -523,7 +523,7 @@ public class RepositoryTest extends DbunitBaseRepositoryTest {
 		Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
 		Cnd cnd=Cnd.select().andGT("age", 20).andLike("firstName", "admin").andIn("lastName", "123","1234").addSelect("age","firstName").asc("age");
 		
-		List<Map> entitys=repository.query(cnd,Map.class);
+		List<Map> entitys=repository.queryList(cnd,Map.class);
 		tx.commit();
 		
 		assertEquals(2,entitys.size());
@@ -537,7 +537,7 @@ public class RepositoryTest extends DbunitBaseRepositoryTest {
 		Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
 		Cnd cnd=Cnd.select().andGT("age", 20).andLike("firstName", "admin").andIn("lastName", "123","1234").addSelect("age","firstName").asc("age");
 		
-		List<EntityTest> entitys=repository.query(cnd,EntityTest.class);
+		List<EntityTest> entitys=repository.queryList(cnd,EntityTest.class);
 		tx.commit();
 		
 		assertEquals(2,entitys.size());
@@ -552,7 +552,7 @@ public class RepositoryTest extends DbunitBaseRepositoryTest {
 		Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
 		Cnd cnd=Cnd.select().andGT("age", 20).andLike("firstName", "admin").andIn("lastName", "123","1234").addSelect("firstName").asc("age");
 		
-		List<String> entitys=repository.query(cnd,String.class);
+		List<String> entitys=repository.queryList(cnd,String.class);
 		tx.commit();
 		
 		assertEquals(2,entitys.size());

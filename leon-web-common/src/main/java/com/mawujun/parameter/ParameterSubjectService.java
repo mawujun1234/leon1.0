@@ -32,14 +32,14 @@ public class ParameterSubjectService extends
 //		params.put("parameterId", parameterId);
 //		params.put("subjectType", subjectType);
 		
-		MybatisParamUtils params=MybatisParamUtils.init().put("parameterId", parameterId).put("subjectType", subjectType);
+		MybatisParamUtils params=MybatisParamUtils.init().put("parameterId", parameterId).putIf("subjectType", subjectType);
 		if(SubjectType.SYSTEM.toString().equals(subjectType)){
 			//return this.query(Cnd.select().andEquals("parameterId", parameterId).andEquals("subjectType", subjectType));
 			return this.queryList("query_SYSTEM", params,ParameterSubjectVO.class);
 		} else if(SubjectType.USER.toString().equals(subjectType)){
 			return this.queryList("query_USER", params,ParameterSubjectVO.class);
 		} else {
-			throw new BussinessException("还没有做!!");
+			throw new BussinessException("该主题的参数配置  还没有做!!查询所有主体也还咩有做");
 		}
 		//return null;
 	}

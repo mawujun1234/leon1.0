@@ -14,6 +14,15 @@ import com.mawujun.utils.BeanUtils;
 public class ParameterService extends BaseRepository<Parameter, String> {
 	@Autowired
 	private ParameterSubjectService parameterSubjectService;
+	@Autowired
+	private PGeneratorService pGeneratorService;
+	/**
+	 * 创建的时候同时更改P文件，添加该参数的id
+	 */
+	public void create(Parameter entity) {
+		super.create(entity);
+		this.updatePjavaFile();
+	}
 	public void delete(Parameter entity) {
 		int count=parameterSubjectService.queryCount(Cnd.where().andEquals("parameterId", entity.getId()));
 		if(count>0){
@@ -21,11 +30,18 @@ public class ParameterService extends BaseRepository<Parameter, String> {
 		}
 		
 		super.delete(entity);
+		this.updatePjavaFile();
+	}
+	
+	public void updatePjavaFile(){
+		//获取所有的参数id
+		List<String> ids=super.queryList(Cnd.select().addSelect("id"), String.class);
+		pGeneratorService.updatePjavaFile(ids);
 	}
 	
 	public void update(Parameter entity) {
 		//判断主体是否有没引用，如果被引用了并且更新的时候取消了，这个时候就报错
-		List<String> list=parameterSubjectService.query(Cnd.select().addSelect("subjectType").distinct().andEquals("parameterId", entity.getId()), String.class);
+		List<String> list=parameterSubjectService.queryList(Cnd.select().addSelect("subjectType").distinct().andEquals("parameterId", entity.getId()), String.class);
 		String subjects=entity.getSubjects();
 		subjects=subjects.substring(1, subjects.length()-1);
 		String tempArray[]=subjects.split(",");
@@ -55,8 +71,5 @@ public class ParameterService extends BaseRepository<Parameter, String> {
 		super.update(paramm);
 	}
 	
-	public void createParameterEnem(Parameter entity){
-		
-	}
 
 }

@@ -79,9 +79,9 @@ Ext.define('Leon.desktop.parameter.ParameterSubjectGrid',{
        			text:'查询',
        			iconCls:'icons_search ',
        			handler:function(){
-       				if(!subjectTypeCombo.getValue()){
-       					return;
-       				}
+//       				if(!subjectTypeCombo.getValue()){
+//       					return;
+//       				}
 					 me.getStore().getProxy( ).extraParams={subjectType:subjectTypeCombo.getValue(),parameterId:me.parameterId};
 					 me.getStore().reload();
        			}	

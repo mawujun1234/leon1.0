@@ -23,8 +23,35 @@ public class MybatisParamUtils extends HashMap<String, Object> {
 		super.put(key, value);
 		return this;
 	}
+	/**
+	 * 如果value==null，就不添加这儿条件
+	 * @author mawujun 16064988@qq.com 
+	 * @param key
+	 * @param value
+	 * @return
+	 */
+	public MybatisParamUtils addIf(String key,Object value){
+		if(value!=null){
+			super.put(key, value);
+		}		
+		return this;
+	}
 	public MybatisParamUtils put(String key,Object value){
 		super.put(key, value);
+		return this;
+	}
+	
+	/**
+	 * 如果value==null，就不添加这儿条件
+	 * @author mawujun 16064988@qq.com 
+	 * @param key
+	 * @param value
+	 * @return
+	 */
+	public MybatisParamUtils putIf(String key,Object value){
+		if(value!=null){
+			super.put(key, value);
+		}		
 		return this;
 	}
 

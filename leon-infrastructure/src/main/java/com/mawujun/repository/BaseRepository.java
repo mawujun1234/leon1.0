@@ -293,14 +293,14 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 		return hibernateDao.query(cnd,false);
 	}
 	/**
-	 * 
+	 * List<String> ids=super.queryList(Cnd.select().addSelect("id"), String.class);
 	 * @author mawujun email:16064988@163.com qq:16064988
 	 * @param cnd
 	 * @param classT要返回的数据类型
 	 * @return
 	 */
-	public <M> List<M> query(Cnd cnd,Class<M> classT) {
-		return hibernateDao.query(cnd,classT);
+	public <M> List<M> queryList(Cnd cnd,Class<M> classT) {
+		return hibernateDao.queryList(cnd,classT);
 	}
 	public int queryCount(Cnd cnd) {
 		return hibernateDao.queryCount(cnd);

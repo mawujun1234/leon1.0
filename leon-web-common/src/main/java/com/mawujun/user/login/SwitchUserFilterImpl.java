@@ -51,7 +51,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
-import com.mawujun.parameter.ParameterEnum;
+import com.mawujun.parameter.P;
 import com.mawujun.utils.ReflectionUtils;
 
 /**

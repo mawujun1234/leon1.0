@@ -877,7 +877,14 @@ public class HibernateDao<T, ID extends Serializable>{
 		return query.list();
 
 	}
-	public <M> List<M> query(Cnd cnd,Class<M> classM) {
+	/**
+	 * List<String> ids=super.queryList(Cnd.select().addSelect("id"), String.class);
+	 * @author mawujun 16064988@qq.com 
+	 * @param cnd
+	 * @param classM
+	 * @return
+	 */
+	public <M> List<M> queryList(Cnd cnd,Class<M> classM) {
 		cnd.setSqlType(SqlType.SELECT);
 		StringBuilder builder=new StringBuilder();
 		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);

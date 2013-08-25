@@ -9,9 +9,10 @@ Ext.define('Leon.desktop.parameter.ParameterForm', {
 	defaultType: 'textfield',
         items: [{
             fieldLabel: 'id',
-            afterLabelTextTpl: required,
+            afterLabelTextTpl: '<span style="color:red;font-weight:bold" data-qtip="不能使用数字">*</span>',
             name: 'id',
             allowBlank: false,
+            vtype:'alpha',
             tooltip: '输入唯一码'
         },{
             fieldLabel: '名称',
