@@ -8,7 +8,7 @@ import com.mawujun.utils.SystemUtils;
  * @author mawujun 16064988@qq.com  
  *
  */
-public class JavaPatUtil {
+public class JavaSrcPathUtil {
 	
 	public String getSrcPath(){
 		String path=System.getProperty("user.dir")+SystemUtils.FILE_SEPARATOR+"src"+SystemUtils.FILE_SEPARATOR+"main"+SystemUtils.FILE_SEPARATOR+"java";

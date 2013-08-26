@@ -3,9 +3,11 @@ package com.mawujun.menu;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -37,7 +39,9 @@ public class MenuItem extends UUIDEntity {
 	@Column(length=80)
 	private String pluginUrl;
 	@Label(name="代码")
-	@Column(length=1000)
+	@Lob 
+	@Basic(fetch = FetchType.EAGER) 
+	@Column(columnDefinition="CLOB", nullable=true) 
 	private String scripts;
 	@Label(name="图标")
 	@Column(length=40)

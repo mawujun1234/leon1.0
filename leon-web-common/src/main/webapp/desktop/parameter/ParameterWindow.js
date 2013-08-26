@@ -3,7 +3,8 @@ Ext.define('Leon.desktop.parameter.ParameterWindow', {
     requires:[
     	'Leon.desktop.parameter.ParameterForm',
     	'Leon.desktop.parameter.SimpleForm',
-    	'Leon.desktop.parameter.GridForm'
+    	'Leon.desktop.parameter.GridForm',
+    	'Leon.desktop.parameter.JavaForm'
     ],
 	//type : 'IframeWindow',
 	url : '',//iframe链接的地址
@@ -58,6 +59,13 @@ Ext.define('Leon.desktop.parameter.ParameterWindow', {
 		            		form.getStore().loadData(Ext.decode(me.record.get("content")));
 		            	}
 		            	
+		            } else if(valueEnum=='JAVA'){
+		            	layout.setActiveItem(3);
+		            	var form=layout.getActiveItem();
+		            	form.loadRecord(me.record);
+		            	if(!me.creaetNew && me.record.get("content")){
+		            		form.getStore().loadData(Ext.decode(me.record.get("content")));
+		            	}
 		            } else {
 		            	alert("请他情况还没有做，请稍后!");
 		            }
@@ -163,6 +171,45 @@ Ext.define('Leon.desktop.parameter.ParameterWindow', {
 		    }]
 	    });
 	    
+	    var javaForm=Ext.create('Leon.desktop.parameter.JavaForm',{
+	    	bbar:[{
+	    		text:'上一步',
+	    		handler:function(){
+	    			var layout = me.getLayout();
+		            var form=layout.getActiveItem();
+		            form.updateRecord();
+	    			me.getLayout().setActiveItem(0);
+	    		}
+	    	},'->',{
+		        text: '完成',
+		        handler: function(){
+		            var layout = me.getLayout();
+		            var form=layout.getActiveItem();
+
+		            form.updateRecord();
+		            //me.getLayout().getLayoutItems( )[0].updateRecord();;
+		            //getValues( [asString], [dirtyOnly], [includeEmptyText], [useDataValues] )
+		            var simpleValues=form.getValues(false,false,false);
+		            //console.log(simpleValues);
+		            delete simpleValues.content;
+
+		            //return;
+		            if(me.createNew){
+		            	me.record.phantom=true;
+		            }
+
+		            me.record.save({
+						success: function(record, operation) {
+							me.close();
+							if(me.createNew){
+								me.parameterGrid.getStore().reload();
+							}
+						}
+					});
+		            
+		        }
+		    }]
+	    });
 	    
 	    if(!me.record){
 	    	me.createNew=true;
@@ -179,7 +226,7 @@ Ext.define('Leon.desktop.parameter.ParameterWindow', {
 	    //me.record.phantom=true;
 	   
 
-	    this.items=[parameterForm,simpleForm,gridForm];
+	    this.items=[parameterForm,simpleForm,gridForm,javaForm];
 		this.callParent();
 		
 	},

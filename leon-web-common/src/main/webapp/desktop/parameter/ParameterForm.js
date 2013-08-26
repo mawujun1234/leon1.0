@@ -21,7 +21,7 @@ Ext.define('Leon.desktop.parameter.ParameterForm', {
             allowBlank: false,
             tooltip: '输入名称'
         }, {
-            fieldLabel: '值类型',
+            fieldLabel: '数据源',
             name: 'valueEnum',
             afterLabelTextTpl: required,
             allowBlank: false,

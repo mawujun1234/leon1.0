@@ -11,7 +11,7 @@ public enum ParameterValueEnum {
 	BOOLEAN("布尔值"),ARRAY("数组"),DATE("日期"),TIME("时间"),
 	SCHEDULED("定时调度"),
 	//RANGE("范围"),//使用规则来替代这个，例如超出这个范围就报错
-	SQL("sql查询"),//使用sql读取出数据
+	//SQL("sql查询"),//使用sql读取出数据
 	JAVA("java类");//使用java类去读取数据
 	
 	private String name;
@@ -66,10 +66,10 @@ public enum ParameterValueEnum {
 //			return new ShowModelEnum[]{ShowModelEnum.RANGENUMBERBOX};
 		} else if(this==ParameterValueEnum.SCHEDULED){
 			return new ShowModelEnum[]{ShowModelEnum.TEXTFIELD};
-		} else if(this==ParameterValueEnum.SQL){
-			return new ShowModelEnum[]{ShowModelEnum.TEXTFIELD};
+		//} else if(this==ParameterValueEnum.SQL){
+		//	return new ShowModelEnum[]{ShowModelEnum.COMBOBOX,ShowModelEnum.CHECKBOXGROUP,ShowModelEnum.RADIOGROUP};
 		} else if(this==ParameterValueEnum.JAVA){
-			return new ShowModelEnum[]{ShowModelEnum.TEXTFIELD};
+			return new ShowModelEnum[]{ShowModelEnum.COMBOBOX,ShowModelEnum.CHECKBOXGROUP,ShowModelEnum.RADIOGROUP};
 		}
 		return ShowModelEnum.values();
 	}

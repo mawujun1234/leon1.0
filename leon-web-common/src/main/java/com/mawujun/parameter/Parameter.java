@@ -1,6 +1,7 @@
 package com.mawujun.parameter;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.util.StringUtils;
 
+import com.alibaba.fastjson.JSON;
 import com.mawujun.repository.idEntity.IdEntity;
 
 @Entity
@@ -110,8 +112,11 @@ public class Parameter  implements IdEntity<String>,Serializable{
 	}
 
 	public String getContent() {
+		
 		return content;
 	}
+	
+	
 
 	public void setContent(String content) {
 		this.content = content;

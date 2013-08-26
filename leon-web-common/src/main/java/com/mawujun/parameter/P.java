@@ -6,5 +6,6 @@ package com.mawujun.parameter;
  */
 public enum P {
 
-tttt;
+tttt,
+java;
 }

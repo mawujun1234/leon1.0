@@ -38,30 +38,30 @@
 	              </configuration>
 	    	</plugin>
 	    	
-	<!--  http://zeroturnaround.com/forums/topic/jrebel-maven-plugin-not-available-in-eclipse-juno-solved/
-	https://github.com/ktoso/maven-git-commit-id-plugin/issues/22
-	http://update.zeroturnaround.com/update-site/
-	-->
+	
 		<plugin>
-	    		<groupId>org.eclipse.jetty</groupId>
+	    		<groupId>org.mortbay.jetty</groupId>
 	    		<artifactId>jetty-maven-plugin</artifactId>
 	    		<!-- jetty:run <version>9.0.0.RC1</version>-->
 	    		
 	    		<configuration>
-	    			<!--  <webDefaultXml>src/main/resources/webdefault.xml</webDefaultXml>-->
+	    			<!--  <webDefaultXml>src/main/resources/webdefault.xml</webDefaultXml>
 					<scanIntervalSeconds>0</scanIntervalSeconds>
 					<connectors>
 						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
 							<port>8082</port>
 							<maxIdleTime>60000</maxIdleTime>
 						</connector>
-					</connectors>
+					</connectors>-->
 					<webAppConfig>
 						<contextPath>/</contextPath>
 					</webAppConfig>
 				</configuration>
 	    	</plugin>
-
+	<!--  http://zeroturnaround.com/forums/topic/jrebel-maven-plugin-not-available-in-eclipse-juno-solved/
+	https://github.com/ktoso/maven-git-commit-id-plugin/issues/22
+	http://update.zeroturnaround.com/update-site/
+	-->
 	    	<plugin>
 	    		<groupId>org.zeroturnaround</groupId>
 	    		<artifactId>jrebel-maven-plugin</artifactId>
