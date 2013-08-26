@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mawujun.controller.spring.mvc.JsonConfigHolder;
 import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;
+import com.mawujun.user.login.FilterInvocationSecurityMetadataSourceImpl;
 
 @Controller
 public class RoleFunController {
@@ -68,6 +71,9 @@ public class RoleFunController {
 		return funes;
 	}
 	
+	@Resource(name="filterInvocationSecurityMetadataSourceImpl")
+	FilterInvocationSecurityMetadataSourceImpl  filterInvocationSecurityMetadataSourceImpl;
+	
 	@RequestMapping("/roleFun/create")
 	@ResponseBody
 	public RoleFun create(String roleId,String funId,String permissionEnum){
@@ -79,6 +85,8 @@ public class RoleFunController {
 		roleFun.setPermissionEnum(permissionEnum);
 		
 		roleFunService.create(roleFun);
+		
+		filterInvocationSecurityMetadataSourceImpl.addConfigAttribute(roleFun.getFun().getUrl(), roleFun.getRole().getId());
 		JsonConfigHolder.setFilterPropertys("role,fun");
 		return roleFun;
 	}
@@ -96,6 +104,8 @@ public class RoleFunController {
 	@ResponseBody
 	public RoleFun destroy(String roleId,String funId){
 		RoleFun roleFun=roleFunService.delete(roleId,funId);
+		filterInvocationSecurityMetadataSourceImpl.removeConfigAttribute(roleFun.getFun().getUrl(), roleId);
+		
 		JsonConfigHolder.setFilterPropertys("role,fun");
 		
 		return roleFun;

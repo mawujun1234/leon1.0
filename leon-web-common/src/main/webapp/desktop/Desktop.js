@@ -170,6 +170,7 @@ Ext.define('Leon.desktop.Desktop', {
     	win.show();
     },
     /**
+     * 主要用于两个窗口Window之间进行协同的
      * execuMethod 是一个对象，例如
      * {
      * 	methodName:'queryByName',
@@ -220,7 +221,8 @@ Ext.define('Leon.desktop.Desktop', {
         		if(model.menu && model.menu.items && model.menu.items.length>0){
         			me.initMenuItemEvent(model.menu.items);
         		} else {
-        			model.plugins=[{ptype:'menuplugin',pluginUrl:model.pluginUrl,scripts:model.scripts}];
+        			model.plugins=[{ptype:'menuplugin',scripts:model.scripts}];
+        			//model.xtype= 'splitbutton';
         			//alert(menu.url+"===");
 	        		model.handler=function(btn){
 		        		me.createWindow({

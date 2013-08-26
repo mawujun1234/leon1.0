@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +16,9 @@ import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository.mybatis.MybatisParamUtils;
+import com.mawujun.user.login.UserDetailsImpl;
 import com.mawujun.utils.BeanUtils;
+import com.mawujun.utils.StringUtils;
 import com.mawujun.utils.help.ReportCodeHelper;
 import com.mawujun.utils.page.WhereInfo;
 
@@ -26,6 +30,8 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 	
 	@Autowired
 	private MenuService menuService;
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 
 	
 	public void create(MenuItem entity) {
@@ -146,6 +152,24 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 			//MenuItemVO fun=parentKeys.get(leaf.getId());
 			MenuItemVO vo=BeanUtils.copyOrCast(leaf, MenuItemVO.class);
 			//fun.addItems(vo);
+			if(StringUtils.hasText(leaf.getJavaClass())){
+				try {
+					Class clazz=Class.forName(leaf.getJavaClass());
+					MenuVOExten menuVOExten=(MenuVOExten)clazz.newInstance();
+					UserDetailsImpl impl=(UserDetailsImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+					menuVOExten.execute(vo, jdbcTemplate, impl.getUser());
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InstantiationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
 			
 			if(leaf.getParent()!=null){
 				List<MenuItem> ancestores=leaf.findAncestors();

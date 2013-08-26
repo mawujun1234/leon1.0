@@ -12,9 +12,8 @@ import java.util.Map;
  *
  */
 public enum SubjectType {
-	USER("用户"),
-	GROUP("用户组"),
-	ROLE("角色"),POSITION("职位"),UNIT("组织单元"),SYSTEM("系统");
+	USER("用户"),POSITION("职位"),UNIT("组织单元"),
+	GROUP("用户组"),ROLE("角色"),SYSTEM("系统");
 	
 	private String name;
 	SubjectType(String name){

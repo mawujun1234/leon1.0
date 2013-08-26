@@ -23,7 +23,7 @@ public class User extends UUIDEntity{
 	
 	@Column(length=20)
 	private String loginName;
-	@Column(length=20)
+	@Column(length=20,updatable=false)
 	private String password;
 	@Column(length=20)
 	private String name;

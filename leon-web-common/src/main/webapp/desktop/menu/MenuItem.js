@@ -7,7 +7,7 @@ Ext.defineModel("Leon.desktop.menu.MenuItem",{
 		{name:'id',type:'auto'},
 		{name:'code',type:'string'},
 		{name:'text',type:'string'},
-		{name:'pluginUrl',type:'string'},
+		{name:'javaClass',type:'string'},
 		{name:'scripts',type:'string'},
 		{name:'iconCls',type:'string'},
 		{name:'reportCode',type:'string'},

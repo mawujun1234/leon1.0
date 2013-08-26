@@ -42,8 +42,8 @@ public class RoleFunService extends BaseRepository<RoleFun, String> {
 //		return selectedFuns;
 	}
 	
-	@Resource(name="filterInvocationSecurityMetadataSourceImpl")
-	FilterInvocationSecurityMetadataSourceImpl  filterInvocationSecurityMetadataSourceImpl;
+//	@Resource(name="filterInvocationSecurityMetadataSourceImpl")
+//	FilterInvocationSecurityMetadataSourceImpl  filterInvocationSecurityMetadataSourceImpl;
 	
 	public void create(RoleFun roleFun) {
 		roleFun.setCreateDate(new Date());
@@ -51,11 +51,11 @@ public class RoleFunService extends BaseRepository<RoleFun, String> {
 
 		Role role=roleService.get(roleFun.getRole().getId());
 		role.addFun(roleFun);
-		
+		roleFun.getFun().getCode();//不能删除，用来初始化fun的
 		
 		//更新spring security中的权限信息
-		Fun fun=funService.get(roleFun.getFun().getId());
-		filterInvocationSecurityMetadataSourceImpl.addConfigAttribute(fun.getUrl(), roleFun.getRole().getId());
+		//Fun fun=funService.get(roleFun.getFun().getId());
+		//filterInvocationSecurityMetadataSourceImpl.addConfigAttribute(fun.getUrl(), roleFun.getRole().getId());
 	}
 	
 	
@@ -68,9 +68,11 @@ public class RoleFunService extends BaseRepository<RoleFun, String> {
 		}
 		super.delete(roleFun);
 		role.removeFun(roleFun);
+		
+		roleFun.getFun().getCode();//不能删除，用来初始化fun的
 		//更新spring security中的权限信息
-		Fun fun=funService.get(roleFun.getFun().getId());
-		filterInvocationSecurityMetadataSourceImpl.removeConfigAttribute(fun.getUrl(), roleId);
+		//Fun fun=funService.get(roleFun.getFun().getId());
+		//filterInvocationSecurityMetadataSourceImpl.removeConfigAttribute(fun.getUrl(), roleId);
 		return roleFun;
 	}
 	public RoleFun update(String roleId,String funId,String permissionEnum) {

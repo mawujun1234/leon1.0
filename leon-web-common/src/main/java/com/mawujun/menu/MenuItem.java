@@ -35,9 +35,9 @@ public class MenuItem extends UUIDEntity {
 	@Label(name="名称")
 	@Column(length=20)
 	private String text;
-	@Label(name="插件地址")
+	@Label(name="java扩展")
 	@Column(length=80)
-	private String pluginUrl;
+	private String javaClass;
 	@Label(name="代码")
 	@Lob 
 	@Basic(fetch = FetchType.EAGER) 
@@ -80,12 +80,12 @@ public class MenuItem extends UUIDEntity {
 		this.text = text;
 	}
 
-	public String getPluginUrl() {
-		return pluginUrl;
+	public String getJavaClass() {
+		return javaClass;
 	}
 
-	public void setPluginUrl(String pluginUrl) {
-		this.pluginUrl = pluginUrl;
+	public void setJavaClass(String javaClass) {
+		this.javaClass = javaClass;
 	}
 
 	public String getScripts() {

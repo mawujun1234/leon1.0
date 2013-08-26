@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,6 +31,8 @@ public class UserController {
 	@Autowired
 	private UserRoleService userRoleService;
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	/**
 	 * 这是基于分页的几种写法
 	 * @author mawujun email:16064988@163.com qq:16064988
@@ -65,6 +69,9 @@ public class UserController {
 	@ResponseBody
 	public User create(@RequestBody User user){		
 		user.setCreateDate(new Date());
+		if(passwordEncoder!=null){
+			user.setPassword(passwordEncoder.encode(user.getPassword()));
+		}
 		userService.create(user);
 		return user;
 	}
@@ -97,6 +104,16 @@ public class UserController {
 	@ResponseBody
 	public String recover(String id){		
 		 userService.recover(id);
+		 return id;
+		 //return "{success:true}";
+	}
+	@RequestMapping("/user/resetPwd")
+	@ResponseBody
+	public String resetPwd(String id,String password){
+		if(!StringUtils.hasText(password)){
+			throw new BussinessException("密码不能为空");
+		}
+		 userService.resetPwd(id,passwordEncoder.encode(password));
 		 return id;
 		 //return "{success:true}";
 	}

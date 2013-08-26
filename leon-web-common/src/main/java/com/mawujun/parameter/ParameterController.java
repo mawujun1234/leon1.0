@@ -120,8 +120,8 @@ public class ParameterController {
 	
 	@RequestMapping("/parameter/destroy")
 	@ResponseBody
-	public Parameter destroy(@RequestBody Parameter parameter){		
-		parameterService.delete(parameter);
+	public Parameter destroy(@RequestBody Parameter parameter,Boolean forceDelete){		
+		parameterService.delete(parameter,forceDelete);
 		return parameter;
 	}
 

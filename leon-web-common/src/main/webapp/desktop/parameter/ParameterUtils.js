@@ -132,6 +132,7 @@ Ext.define('Leon.desktop.parameter.ParameterUtils', {
          		var field={
          			fieldLabel:params.name,
          			name:params.id,
+         			editable:false,
          			xtype:'combobox',
          			afterLabelTextTpl: me.getQuickTip(params.desc),
          			displayField: 'name',

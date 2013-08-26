@@ -96,6 +96,20 @@ Ext.define('Leon.desktop.parameter.ParameterGrid',{
        				});
        			}	
        		},{
+       			text:'强制删除',
+       			iconCls:'form-delete-button ',
+       			handler:function(){
+       				Ext.Msg.confirm("消息","删除后就不能恢复了，并且所有主体引用的值也都会被删除，确定要删除吗?",function(btn){
+       					if(btn=='yes'){
+       						var model=me.getSelectionModel( ).getLastSelected( ) ;
+		       				if(model){
+		       					//me.getStore().remove(model);
+		       					model.destroy({params:{forceDelete:true}});
+		       				}
+       					}
+       				});
+       			}	
+       		},{
        			text:'相关主体',
        			iconCls:'icons_account_balances ',
        			handler:function(){

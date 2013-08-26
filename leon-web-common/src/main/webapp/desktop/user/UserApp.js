@@ -92,7 +92,31 @@ Ext.onReady(function(){
 				});
 		    }
 	});
-	grid.addAction(3,recover);
+	grid.addAction(4,recover);
+	var resetPwd = new Ext.Action({
+		    text: '重置密码',
+		    iconCls: 'icons_recycle',
+		    handler: function(){
+		    	var user=grid.getLastSelected( );
+		    	if(!user){
+		    		return;
+		    	}
+		    	Ext.Msg.prompt("重置密码",'请输入新密码:', function(btn, text){
+					if (btn == 'ok'){
+						//.getLastSelected( );
+						Ext.Ajax.request({
+							url:'/user/resetPwd',
+							params:{id:user.getId(),password:text},
+							success:function(){
+								grid.getStore().reload();
+							}
+						});
+						
+					}
+				},window,false,"123456");
+		    }
+	});
+	grid.addAction(2,resetPwd);
 	
 	var nameField=Ext.create('Ext.form.field.Text',{
        	 name:'userName'
@@ -130,6 +154,7 @@ Ext.onReady(function(){
 	}
 	grid.onUpdate=function(){
 		var modal=grid.getLastSelected();
+		form.hidePassordField();
 		form.getForm().loadRecord(modal);
 		win.show();
 	}

@@ -83,5 +83,8 @@ Ext.define('Leon.desktop.user.UserForm',{
        
        me.addEvents("created");
        me.callParent();
+	},
+	hidePassordField:function(){
+		this.getForm().findField("password").hide();
 	}
 });

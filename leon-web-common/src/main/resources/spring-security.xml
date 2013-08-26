@@ -117,6 +117,8 @@
 	<!-- 实现了UserDetailsService的Bean -->  
     <authentication-manager alias="authenticationManager">  
         <authentication-provider user-service-ref="userDetailsService">  
+        	 <password-encoder ref="passwordEncoder">  
+             </password-encoder> 
             <!-- 登入 密码  采用MD5加密 
             <password-encoder hash="md5" ref="passwordEncoder">  
             </password-encoder>   --> 
@@ -132,9 +134,13 @@
         <beans:property name="rolePrefix" value="ROLE_"></beans:property>
     </beans:bean>  
   
-    <!-- 用户的密码加密或解密 -->  
-    <beans:bean id="passwordEncoder"  
-		class="org.springframework.security.authentication.encoding.Md5PasswordEncoder" />  
+    <!-- 用户的密码加密或解密org.springframework.security.authentication.encoding.Md5PasswordEncoder,这个类的接口已经不推荐使用了 ,但还可以使用-->  
+    <!--  UserController类也依赖这个类进行加密，在创建用户登录和更改密码的时候-->  
+    <beans:bean id="passwordEncoder"  class="org.springframework.security.crypto.password.NoOpPasswordEncoder" />  
+    
+    
+    
+    
 	<!-- ======================================华丽的分割线==============================================-->
 	<!-- 异常处理过滤器 --> 
 	<beans:bean class="org.springframework.security.web.access.ExceptionTranslationFilter" name="exceptionTranslationFilter">
@@ -186,6 +192,7 @@
 		-->
 		<beans:property name="rejectPublicInvocations" value="true"></beans:property>
 	</beans:bean>
+	<!--RoleFunController也依赖这个类，用来更新这个对象的权限的 -->
 	<beans:bean name="filterInvocationSecurityMetadataSourceImpl" class="com.mawujun.user.login.FilterInvocationSecurityMetadataSourceImpl">
 				<beans:property name="rolePrefix" value="ROLE_"></beans:property>
 				<beans:property name="roleService" ref="roleService"></beans:property>

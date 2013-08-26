@@ -46,4 +46,8 @@ public class UserService  extends BaseRepository<User, String>{
 		Cnd cnd=Cnd.update().set("deleted", false).andEquals("id", id);
 		super.update(cnd);
 	}
+	
+	public void resetPwd(String id,String password) {
+		super.update(Cnd.update().set("password", password).andEquals("id", id));
+	}
 }

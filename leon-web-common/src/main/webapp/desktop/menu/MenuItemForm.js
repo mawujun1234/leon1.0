@@ -151,13 +151,15 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
 	            //allowBlank: false,
 	            //tooltip: '请输入名称'
 	        },{
-	            fieldLabel: '菜单扩展js',
-	            name: 'pluginUrl',
-	            tooltip: "请输入pluginUrl"
+	            fieldLabel: 'java扩展',
+	            name: 'javaClass',
+	            afterLabelTextTpl:'<span class="icons_help" data-qtip="后台扩展菜单，必须继承com.mawujun.menu.MenuVOExten，例子请看MenuVOExtenSample。">&nbsp;&nbsp;&nbsp;&nbsp;</span>',
+	            tooltip: "请输入javaClass"
 	        },{
-	            fieldLabel: 'scripts',
+	            fieldLabel: 'js扩展',
 	            xtype:'textareafield',
 	            grow      : true,
+	            afterLabelTextTpl:'<span class="icons_help" data-qtip="写一个函数，这个函数可以访问menuItem，例如function run(){menuItem.setText(menuItem.getText( )}">&nbsp;&nbsp;&nbsp;&nbsp;</span>',
 	            name: 'scripts',
 	            tooltip: "请输入scripts"
 	        }
@@ -282,7 +284,7 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
 		var fields=me.getForm().getFields( ) ;
 		var disableFieldObj={
 			code:true,
-			pluginUrl:true,
+			javaClass:true,
 			scripts:true
 		}
 		fields.each(function(item,index ,len){

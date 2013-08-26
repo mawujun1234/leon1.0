@@ -7,13 +7,13 @@ public class MenuItemVO {
 	private String id;
 	private String code;//帮助记码
 	private String text;
-	private String pluginUrl;
+	private String javaClass;
 	private String scripts;
 	private String iconCls;
 	private String url;
 	//private String handler="function(){me.onMenuItemClick();}";
 	
-	private MenuVO menu=null;
+	private MenuVO menu=null;//extjs按钮的menu属性，用来生成下拉菜单的
 
 	public String getId() {
 		return id;
@@ -39,13 +39,6 @@ public class MenuItemVO {
 		this.text = text;
 	}
 
-	public String getPluginUrl() {
-		return pluginUrl;
-	}
-
-	public void setPluginUrl(String pluginUrl) {
-		this.pluginUrl = pluginUrl;
-	}
 
 	public String getScripts() {
 		return scripts;
@@ -78,6 +71,11 @@ public class MenuItemVO {
 		return menu;
 	}
 
+	/**
+	 * MenuVO 里面有items属性，对应的就是List<MenuItemVO>，也就是子菜单
+	 * @author mawujun 16064988@qq.com 
+	 * @param menu
+	 */
 	public void setMenu(MenuVO menu) {
 		this.menu = menu;
 	}
@@ -86,6 +84,14 @@ public class MenuItemVO {
 			this.menu=new MenuVO();
 		}
 		this.menu.addItems(items);
+	}
+
+	public String getJavaClass() {
+		return javaClass;
+	}
+
+	public void setJavaClass(String javaClass) {
+		this.javaClass = javaClass;
 	}
 
 //	public String getHandler() {

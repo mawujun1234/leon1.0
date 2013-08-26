@@ -1,8 +1,7 @@
 /**
  * 更新菜单内容的例子，
  * 使用方法如下：
- * plugins:[{ptype:'menuplugin',url:'/desktop/example/MenuPluginUpdateText.js'}],
- * 或
+ * 
  * plugins:[{ptype:'menuplugin',scripts:'function run(){menuItem.setText(menuItem.getText( ) +"(scripts)")}'}]
  * 
  * 在使用scripts的时候,函数名称可以是匿名，也可以是任何其他名称，函数中可以使用变量menuItem，即当前menuItem
@@ -16,8 +15,8 @@ Ext.define('Leon.desktop.example.MenuPlugin', {
     
     init: function(menuItem) {
     	var me=this;
-    	if(me.url){
-    		var className=me.url.substring(1,me.url.length-3);
+    	if(me.pluginUrl){
+    		var className=me.pluginUrl.substring(1,me.pluginUrl.length-3);
     		className='Leon.'+className.split('/').join('.');
     		var obj=Ext.create(className,{menuItem:menuItem});
 //    		alert(me.url);

@@ -1,8 +1,11 @@
 package com.mawujun.parameter;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 
 public class JavaBeanDataSourceSample implements JavaBeanDataSource {
 
@@ -18,8 +21,21 @@ public class JavaBeanDataSourceSample implements JavaBeanDataSource {
 //		}
 //		return list;
 		List<JavaBeanKeyName> list=null;
-		d
-		list=(List<JavaBeanKeyName>) jdbcTemplate.queryForList("select id as key,text as name from leon_menu", JavaBeanKeyName.class);
+		
+		list=(List<JavaBeanKeyName>) jdbcTemplate.query("select id as key,text as name from leon_menu", new RowMapper<JavaBeanKeyName>(){
+
+			@Override
+			public JavaBeanKeyName mapRow(ResultSet rs, int rowNum)
+					throws SQLException {
+				JavaBeanKeyName keName=new JavaBeanKeyName();
+				keName.setKey((String)rs.getString("key"));  
+				keName.setName((String)rs.getString("name"));  
+				return keName;
+			}
+
+			
+			
+		});
 		
 		return list;
 	}

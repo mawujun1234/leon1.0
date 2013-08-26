@@ -23,12 +23,17 @@ public class ParameterService extends BaseRepository<Parameter, String> {
 		super.create(entity);
 		this.updatePjavaFile();
 	}
-	public void delete(Parameter entity) {
-		int count=parameterSubjectService.queryCount(Cnd.where().andEquals("parameterId", entity.getId()));
-		if(count>0){
-			throw new BussinessException("该参数有主体在引用不能删除!");
+	public void delete(Parameter entity,Boolean forceDelete) {
+		if(forceDelete){
+			//删除引用了这个参数的所有主体
+			parameterSubjectService.deleteBatch(Cnd.delete().andEquals("parameterId", entity.getId()));
+		} else {
+			int count=parameterSubjectService.queryCount(Cnd.where().andEquals("parameterId", entity.getId()));
+			if(count>0){
+				throw new BussinessException("该参数有主体在引用不能删除!");
+			}		
+			
 		}
-		
 		super.delete(entity);
 		this.updatePjavaFile();
 	}
