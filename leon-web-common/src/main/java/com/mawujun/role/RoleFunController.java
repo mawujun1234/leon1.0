@@ -71,8 +71,8 @@ public class RoleFunController {
 		return funes;
 	}
 	
-	@Resource(name="filterInvocationSecurityMetadataSourceImpl")
-	FilterInvocationSecurityMetadataSourceImpl  filterInvocationSecurityMetadataSourceImpl;
+	@Resource(name="roleFunObservers")
+	List<RoleFunObserver>  roleFunObservers;
 	
 	@RequestMapping("/roleFun/create")
 	@ResponseBody
@@ -86,7 +86,8 @@ public class RoleFunController {
 		
 		roleFunService.create(roleFun);
 		
-		filterInvocationSecurityMetadataSourceImpl.addConfigAttribute(roleFun.getFun().getUrl(), roleFun.getRole().getId());
+		//filterInvocationSecurityMetadataSourceImpl.addConfigAttribute(roleFun.getFun().getUrl(), roleFun.getRole().getId());
+		notifyObservers(roleFun.getRole(),roleFun.getFun(),true);
 		JsonConfigHolder.setFilterPropertys("role,fun");
 		return roleFun;
 	}
@@ -104,11 +105,31 @@ public class RoleFunController {
 	@ResponseBody
 	public RoleFun destroy(String roleId,String funId){
 		RoleFun roleFun=roleFunService.delete(roleId,funId);
-		filterInvocationSecurityMetadataSourceImpl.removeConfigAttribute(roleFun.getFun().getUrl(), roleId);
+		notifyObservers(roleFun.getRole(),roleFun.getFun(),false);
+		//filterInvocationSecurityMetadataSourceImpl.removeConfigAttribute(roleFun.getFun().getUrl(), roleId);
 		
 		JsonConfigHolder.setFilterPropertys("role,fun");
 		
 		return roleFun;
+	}
+	/**
+	 * 
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param role
+	 * @param fun
+	 * @param createOrDestroy true 表示创建了，false表示是删除
+	 */
+	protected void notifyObservers(Role role,Fun fun,boolean createOrDestroy){
+		if(roleFunObservers!=null){
+			for(RoleFunObserver obser:roleFunObservers){
+				if(createOrDestroy){
+					obser.create(role, fun);
+				} else {
+					obser.destroy(role, fun);
+				}
+				
+			}
+		}
 	}
 
 

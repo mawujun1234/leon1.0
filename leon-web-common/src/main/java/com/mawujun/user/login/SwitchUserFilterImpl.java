@@ -171,6 +171,11 @@ MessageSourceAware {
         if(isSameUserName(username,currentAuth)){
         	return currentAuth;
         }
+        //如果是切换会主用户
+        Authentication masterAuth=getMasterAuthentication();
+        if(isSameUserName(username, masterAuth)){
+        	return masterAuth;
+        }
 
         UserDetails targetUser = userDetailsService.loadUserByUsername(username);
         userDetailsChecker.check(targetUser);
@@ -318,6 +323,7 @@ MessageSourceAware {
         if(marsterAuth==null){
         	marsterAuth= SecurityContextHolder.getContext().getAuthentication();
         } 
+        
         
         
         //在其他用户上面添加进主用户的引用

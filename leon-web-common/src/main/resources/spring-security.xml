@@ -2,10 +2,12 @@
 <beans:beans xmlns="http://www.springframework.org/schema/security"  
     xmlns:beans="http://www.springframework.org/schema/beans"   
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans   
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd    
 	http://www.springframework.org/schema/security   
-	http://www.springframework.org/schema/security/spring-security-3.1.xsd">  
+	http://www.springframework.org/schema/security/spring-security-3.1.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">  
     <!-- 
     <global-method-security pre-post-annotations="enabled"></global-method-security>  .
      -->
@@ -213,7 +215,10 @@
 					</beans:list>
 				</beans:property>
 	</beans:bean>
-	
+	<util:list id="roleFunObservers" list-class="java.util.ArrayList">  
+	  <beans:ref bean="filterInvocationSecurityMetadataSourceImpl"/>
+	</util:list>
+
 	<!-- ======================================华丽的分割线==============================================-->
 	<!-- 注销过滤器 -->
 	<beans:bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">

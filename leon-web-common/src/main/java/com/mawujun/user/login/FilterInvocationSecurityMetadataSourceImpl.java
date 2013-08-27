@@ -20,11 +20,14 @@ import org.springframework.security.web.access.intercept.FilterInvocationSecurit
 import org.springframework.security.web.util.AntPathRequestMatcher;
 import org.springframework.security.web.util.RequestMatcher;
 
+import com.mawujun.fun.Fun;
+import com.mawujun.role.Role;
+import com.mawujun.role.RoleFunObserver;
 import com.mawujun.role.RoleService;
 import com.mawujun.utils.StringUtils;
 
 public class FilterInvocationSecurityMetadataSourceImpl implements
-		FilterInvocationSecurityMetadataSource {
+		FilterInvocationSecurityMetadataSource,RoleFunObserver {
 	
 	private RoleService roleService;
 	 private String rolePrefix = "ROLE_";
@@ -61,34 +64,7 @@ public class FilterInvocationSecurityMetadataSourceImpl implements
 	        }
 	        return null;
 	 }
-	 /**
-	  * 移除某个url上的角色
-	  * @author mawujun 16064988@qq.com 
-	  * @param object HttpServletRequest
-	  * @param role_id
-	  */
-	 public void removeConfigAttribute(String url,String role_id){
-		 Collection<ConfigAttribute> roleIds=getAttributesFully(url);
-		 if(roleIds==null){
-			 return;
-		 }
-		 ConfigAttribute configAttribute =    new SecurityConfig(rolePrefix+role_id);
-		 roleIds.remove(configAttribute);
-	 }
-	 /**
-	  * 网某个url上添加角色
-	  * @author mawujun 16064988@qq.com 
-	  * @param url
-	  * @param role_id
-	  */
-	 public void addConfigAttribute(String url,String role_id){
-		 Collection<ConfigAttribute> roleIds=getAttributesFully(url);
-		 if(roleIds==null){
-			 return;
-		 }
-		 ConfigAttribute configAttribute =    new SecurityConfig(rolePrefix+role_id);
-		 roleIds.add(configAttribute);
-	 }
+	
 	@Override
 	public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
 		
@@ -181,6 +157,45 @@ public class FilterInvocationSecurityMetadataSourceImpl implements
 	
 	public void setAuthenticatedUrls(List<AutheTypeSecurityConfig> authenticatedUrls) {
 		this.authenticatedUrls = authenticatedUrls;
+	}
+	
+	 /**
+	  * 移除某个url上的角色
+	  * @author mawujun 16064988@qq.com 
+	  * @param object HttpServletRequest
+	  * @param role_id
+	  */
+	 public void removeConfigAttribute(String url,String role_id){
+		 Collection<ConfigAttribute> roleIds=getAttributesFully(url);
+		 if(roleIds==null){
+			 return;
+		 }
+		 ConfigAttribute configAttribute =    new SecurityConfig(rolePrefix+role_id);
+		 roleIds.remove(configAttribute);
+	 }
+	 /**
+	  * 网某个url上添加角色
+	  * @author mawujun 16064988@qq.com 
+	  * @param url
+	  * @param role_id
+	  */
+	 public void addConfigAttribute(String url,String role_id){
+		 Collection<ConfigAttribute> roleIds=getAttributesFully(url);
+		 if(roleIds==null){
+			 return;
+		 }
+		 ConfigAttribute configAttribute =    new SecurityConfig(rolePrefix+role_id);
+		 roleIds.add(configAttribute);
+	 }
+	@Override
+	public void create(Role role, Fun fun) {
+		// TODO Auto-generated method stub
+		addConfigAttribute(fun.getUrl(),role.getId());
+	}
+	@Override
+	public void destroy(Role role, Fun fun) {
+		// TODO Auto-generated method stub
+		removeConfigAttribute(fun.getUrl(),role.getId());
 	}
 
 
