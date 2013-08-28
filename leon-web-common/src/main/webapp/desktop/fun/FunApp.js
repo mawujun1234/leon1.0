@@ -1,6 +1,7 @@
 Ext.require('Leon.desktop.fun.FunTree');
 Ext.require('Leon.desktop.fun.FunForm');
 Ext.require('Leon.common.ux.ConstantCombo');
+Ext.require('Leon.desktop.fun.HelpPanel');
 //Ext.require('Leon.common.ux.BaseAjax');//這個必須要加的
 //Ext.require('Leon.common.ux.BaseTree');//這個必須要加的
 Ext.onReady(function(){
@@ -43,6 +44,7 @@ Ext.onReady(function(){
 
     
 	var form=Ext.create('Leon.desktop.fun.FunForm',{
+		title:'表单',
 		region:'center'
 	});
 	tree.on('itemclick',function(view,record,item,index){
@@ -53,13 +55,32 @@ Ext.onReady(function(){
 			form.getForm().findField("url").show();
 		}
 		form.getForm().loadRecord(record);
+
+		helpPanel.setFunId(record.getId());
+		tabPanel.getEl().unmask();
 	});
 	
-	
+	var helpPanel=Ext.create('Leon.desktop.fun.HelpPanel',{
+		title:'帮助文档'
+	});
+	var tabPanel=Ext.create('Ext.tab.Panel', {
+		region:'center',
+		split:true,
+		mask:true,
+	    activeTab: 0,
+	    items: [
+	    	form,helpPanel
+	    ],
+	    listeners:{
+	    	render:function(tabPanel){
+	    		tabPanel.getEl().mask();
+	    	}
+	    }
+	}); 
 	
 	var viewPort=Ext.create('Ext.container.Viewport',{
 		layout:'border',
-		items:[tree,form]
+		items:[tree,tabPanel]
 	});
 
 });

@@ -94,5 +94,13 @@ public class FunController {
 		funService.delete(id);
 	}
 	
-	
+	@RequestMapping("/fun/helpCreate")
+	@ResponseBody
+	public void helpCreate(String funId,String editorValue){				
+		System.out.println(editorValue);
+		System.out.println(funId);
+		//保存为html，以funId为文件夹名称，html文件也是以这个id为名称，如果有图片也上传到这个文件夹下面，
+		//展示的时候，新建一个函数，动态的网<script id="editor">标签里面添加内容，也就是util的内容
+		//而用户查看的时候，是用一个html包围这些内容的
+	}
 }

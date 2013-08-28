@@ -32,7 +32,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body>
   <div id="funTree"></div>
-  <div id="contentEditor"></div>
+  <div id="contentEditor">
+  
+
+            
+  
+  </div>
   <!--  
   <div>
     <script id="editor" type="text/plain" ></script>

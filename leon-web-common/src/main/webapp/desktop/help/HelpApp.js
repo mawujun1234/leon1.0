@@ -1,68 +1,60 @@
 Ext.onReady(function(){
 	var panel=Ext.create('Ext.panel.Panel',{
 		region:'center',
-		split:true,
 		renderTo:'funTree'
 	});
 	var contentEditor=Ext.create('Ext.panel.Panel',{
-		width:700,
+		width:800,
 		split:true,
 		region:'east',
-		html:'<div><script id="editor" type="text/plain" style="height:300px"></script></div>',
+		html:'<h3>UEditor - 完整示例</h3><p class="note">注：线上演示版上传图片功能一次只能上传一张，涂鸦功能不能将背景和图片合成，而下载版没有限制</p>' +
+				'<div><script id="ueEditor" type="text/plain"></script></div>',
 		renderTo:'contentEditor',
 		listeners:{
 			afterrender:function(){
-				var ueEditor = UE.getEditor('editor');
-				contentEditor.canResize=true;
+				var ueEditor = UE.getEditor('ueEditor');
+				//window.isFirstResize=true;
+				//console.log(2);
 			}
-//			resize:function(){alert(contentEditor.canResize);
-//				if(contentEditor.canResize){
-//					buildUe();
-//				}
-//				
-//			}
 		}
 	});
 	
 	var viewPort=Ext.create('Ext.container.Viewport',{
 		layout:'border',
 		items:[panel,contentEditor]
+//		listeners:{
+//			resize:function(){
+//				console.log(11);
+//				if(!window.isFirstResize){
+//					//buildUe();
+//				}	
+//				window.isFirstResize=false;
+//			}
+//		}
 	});
 	
 	/**
 	 * ueditor不会自动变化大小，监听这个就可以了
 	 */
 	function buildUe() {
-		//var content=getContent();
-		var tmpUe = util.$G("editor");//, isCheck = util.$G('J_switch').checked,;
+		var content=getContent();
+		var tmpUe = util.$G("ueEditor");//, isCheck = util.$G('J_switch').checked,;
 		var  option = {};
 		tmpUe.removeChild(tmpUe.firstChild);
-//		if (configName == "sourceEditor") {
-//			option[configName] = isCheck ? "codemirror" : "textarea";
-//		} else if (configName == "contextMenu") {
-//			if (!isCheck)
-//				option[configName] = [];
-//		} else {
-//			option[configName] = isCheck;
-//		}
+
 		setTimeout(function() {
-			new UE.ui.Editor(option).render('editor');
+			new UE.ui.Editor(option).render('ueEditor');
 		}, 60);
-		//setContent(content);
+		setContent(content);
 	} 
 	
-	function getContent111() {
-        var arr = [];
-        arr.push("使用editor.getContent()方法可以获得编辑器的内容");
-        arr.push("内容为：");
-        //arr.push(ueEditor.getContent());
-        arr.push(UE.getEditor('editor').getContent());
-        alert(arr.join("\n"));
+	function getContent() {
+       UE.getEditor('ueEditor').getContent()
     }
-    function setContent111(isAppendTo) {
-        var arr = [];
-        arr.push("使用editor.setContent('欢迎使用ueditor')方法可以设置编辑器的内容");
-        ueEditor.setContent('欢迎使用ueditor', isAppendTo);
-        alert(arr.join("\n"));
+    function setContent(content,isAppendTo) {
+        //var arr = [];
+        //arr.push("使用editor.setContent('欢迎使用ueditor')方法可以设置编辑器的内容");
+        UE.getEditor('ueEditor').setContent(content, isAppendTo);
+       // alert(arr.join("\n"));
     }
 });
