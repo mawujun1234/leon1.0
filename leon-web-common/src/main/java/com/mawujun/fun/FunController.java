@@ -1,6 +1,10 @@
 package com.mawujun.fun;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.controller.spring.mvc.JsonConfigHolder;
+import com.mawujun.utils.FileUtils;
 import com.mawujun.utils.page.WhereInfo;
 
 /**
@@ -94,13 +99,36 @@ public class FunController {
 		funService.delete(id);
 	}
 	
-	@RequestMapping("/fun/helpCreate")
+	public String getHelpFilePath(HttpServletRequest request,String funId){
+		String path=request.getSession().getServletContext().getRealPath("/")+"doc"+FileUtils.FILE_SEPARATOR+funId;
+		String filePath=path+FileUtils.FILE_SEPARATOR+funId+".html";
+		return filePath;
+	}
+	
+	@RequestMapping("/fun/helpCreateOrupdate")
 	@ResponseBody
-	public void helpCreate(String funId,String editorValue){				
-		System.out.println(editorValue);
-		System.out.println(funId);
+	public void helpCreateOrupdate(HttpServletRequest request,String funId,String editorValue) throws IOException {				
 		//保存为html，以funId为文件夹名称，html文件也是以这个id为名称，如果有图片也上传到这个文件夹下面，
 		//展示的时候，新建一个函数，动态的网<script id="editor">标签里面添加内容，也就是util的内容
 		//而用户查看的时候，是用一个html包围这些内容的
+		String path=request.getSession().getServletContext().getRealPath("/")+"doc"+FileUtils.FILE_SEPARATOR+funId;
+
+		FileUtils.createDir(path);
+		
+		String filePath=path+FileUtils.FILE_SEPARATOR+funId+".html";
+		System.out.println(filePath);
+		File file=new File(filePath);
+		if(FileUtils.isExists(filePath)){
+			FileUtils.deleteFile(filePath);
+		}
+		
+		FileUtils.writeAsString(file, editorValue);
+	}
+	
+	@RequestMapping("/fun/helpGet")
+	@ResponseBody
+	public String helpGet(HttpServletRequest request,String funId) throws IOException {	
+		String filePath=getHelpFilePath(request,funId);
+		return FileUtils.readAsString(new File(filePath));
 	}
 }
