@@ -11,6 +11,7 @@ public class MenuItemVO {
 	private String scripts;
 	private String iconCls;
 	private String url;
+	private String funId;
 	//private String handler="function(){me.onMenuItemClick();}";
 	
 	private MenuVO menu=null;//extjs按钮的menu属性，用来生成下拉菜单的
@@ -92,6 +93,14 @@ public class MenuItemVO {
 
 	public void setJavaClass(String javaClass) {
 		this.javaClass = javaClass;
+	}
+
+	public String getFunId() {
+		return funId;
+	}
+
+	public void setFunId(String funId) {
+		this.funId = funId;
 	}
 
 //	public String getHandler() {

@@ -227,6 +227,7 @@ Ext.define('Leon.desktop.Desktop', {
 	        		model.handler=function(btn){
 		        		me.createWindow({
 		        			title:btn.text,
+		        			funId:btn.funId,
 		        			url:btn.link_url,
 		        			iconCls:btn.iconCls
 		        		});

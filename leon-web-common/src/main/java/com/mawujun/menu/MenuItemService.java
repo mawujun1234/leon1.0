@@ -151,6 +151,7 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 			}
 			//MenuItemVO fun=parentKeys.get(leaf.getId());
 			MenuItemVO vo=BeanUtils.copyOrCast(leaf, MenuItemVO.class);
+			vo.setFunId(leaf.getFun()!=null?leaf.getFun().getId():null);
 			//fun.addItems(vo);
 			if(StringUtils.hasText(leaf.getJavaClass())){
 				try {

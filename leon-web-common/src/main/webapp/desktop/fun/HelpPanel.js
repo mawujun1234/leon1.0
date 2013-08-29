@@ -5,9 +5,14 @@ Ext.define('Leon.desktop.fun.HelpPanel',{
 	},
 	listeners:{
 			afterrender:function(panel){
-				var ueEditor = UE.getEditor('ueEditor');
-				var hidd=document.getElementById("funId");
-				hidd.value=panel.getFunId();
+				panel.ueEditor = UE.getEditor('ueEditor');
+			},
+			activate:function(panel){
+				panel.updateContent();
+				panel.isFocus=true;
+			},
+			deactivate:function(panel){
+				panel.isFocus=false;
 			}
 	},
 	 //html:'<h3>UEditor - 完整示例</h3><p class="note">注：线上演示版上传图片功能一次只能上传一张，涂鸦功能不能将背景和图片合成，而下载版没有限制</p>' +
@@ -16,10 +21,9 @@ Ext.define('Leon.desktop.fun.HelpPanel',{
 			'<form target="hidFrame" action="/fun/helpCreateOrupdate" method="post">' +
 			'<input type="hidden" name="funId" id="funId"/>' +
 			'<input type="submit" name="submit" value="保    存"/>' +
-			'<script id="ueEditor" type="text/plain"></script></form>',
+			'<script id="ueEditor" type="text/plain">sdfsdfsdfdsf</script></form>',
 	initComponent: function () {
        var me = this;
-      
 	   me.callParent();
 	},
 	setFunId:function(funId){
@@ -29,5 +33,26 @@ Ext.define('Leon.desktop.fun.HelpPanel',{
 			hidd.value=funId;
 			
 		}
+		this.updateContent();
+	},
+	updateContent : function() {
+		var me=this;
+		if(!me.getFunId() || !me.isFocus){
+			//Ext.Msg.alert('消息',"功能id不能为空");
+			return;
+		}
+		me.ueEditor.disable();
+		ueEditor.focus(true);
+		Ext.Ajax.request({
+			url : '/fun/helpGetContent',
+			params : {
+				funId : me.getFunId()
+			},
+			success : function(response) {
+				var conetent = Ext.decode(response.responseText).root;
+				me.ueEditor.setContent(conetent);
+				me.ueEditor.enable();
+			}
+		});
 	}
 });

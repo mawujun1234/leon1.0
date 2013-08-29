@@ -1,3 +1,4 @@
+Ext.require('Leon.desktop.fun.HelpWindow');
 Ext.define('Leon.desktop.Window', {
     extend: 'Ext.window.Window',
 	//type : 'IframeWindow',
@@ -70,8 +71,41 @@ Ext.define('Leon.desktop.Window', {
 		    type:'help',
 		    tooltip: '获取帮助',
 		    handler: function(event, toolEl, panel) {
-		        // show help here
-		    	alert('还没有做!');
+		    	if(!me.funId){
+		    		Ext.Msg.alert('消息','该菜单没有和功能进行挂钩，所以没有帮助文档!');
+		    		return;
+		    	}
+////		        desktop.createWindow({
+////		        	url:'/fun/helpLookContent?funId='+me.funId
+////		        });
+//		    	var win=Ext.WindowManager.get(iframe_id);
+//		    	if(win){
+//		    		win.show();
+//		    		return;
+//		    	}
+////		    	var cfg = {
+////		            stateful: false,
+////		            isWindow: true,
+////		            constrainHeader: true,
+////		            minimizable: true,
+////		            maximizable: true
+////		            ,closeAction:'close',
+////		            title:'帮助文档',
+////		            id:'helpContent_jsp',
+////		            url:'/fun/helpLookContent?funId='+me.funId
+////		            //,height:me.getViewHeight()*0.9
+////		            //,width:me.getViewWidth()*0.9
+////		            //maximized:false,
+////		        };
+		    	//alert(me.funId);
+		    	var win=Ext.WindowManager.get("helpContent_jsp");
+		    	if(win){
+		    		win.reload(me.funId);
+		    		win.show();
+		    		return;
+		    	}
+				var win=Ext.create('Leon.desktop.fun.HelpWindow',{funId:me.funId});
+				win.show();
 		    }
 		}];
 		var iframe=Ext.create('Ext.ux.IFrame',{
@@ -87,6 +121,8 @@ Ext.define('Leon.desktop.Window', {
 		});
 
 		me.items=[iframe];
+		
+		//进行两个窗口之间的交互
 		if(me.execuMethod){
 			iframe.on('load',function(){
             	me.execuIframeMethod(me.execuMethod);

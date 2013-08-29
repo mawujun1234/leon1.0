@@ -67,6 +67,7 @@ Ext.onReady(function(){
 		region:'center',
 		split:true,
 		mask:true,
+		deferredRender :false,
 	    activeTab: 0,
 	    items: [
 	    	form,helpPanel
@@ -75,6 +76,7 @@ Ext.onReady(function(){
 	    	render:function(tabPanel){
 	    		tabPanel.getEl().mask();
 	    	}
+	    	
 	    }
 	}); 
 	
