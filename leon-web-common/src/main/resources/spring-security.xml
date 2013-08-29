@@ -38,6 +38,7 @@
 	  		<filter-chain pattern="/common/**" filters="ipFilter"></filter-chain>
 	  		<filter-chain pattern="/ext-4/**" filters="ipFilter"></filter-chain>
 	  		<filter-chain pattern="/login.jsp" filters="ipFilter"></filter-chain>
+	  		<filter-chain pattern="/**/*.swf" filters="none"></filter-chain>
 	  		<filter-chain pattern="/loginFailure.jsp" filters="none"></filter-chain>
 	  		<filter-chain pattern="/accessDeny.jsp" filters="none"></filter-chain>
 	  		<filter-chain pattern="/timeout.jsp" filters="none"></filter-chain>

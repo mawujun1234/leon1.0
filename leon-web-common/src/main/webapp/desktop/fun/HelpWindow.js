@@ -9,8 +9,10 @@ Ext.define('Leon.desktop.fun.HelpWindow',{
 	minimizable: false,
 	maximizable: true
 	,closeAction:'close',
-	width:100,
-	height:100,
+	title:'帮助文档',
+	iconCls:'icons_help',
+	width:400,
+	height:500,
 	//url:null,
 	initComponent: function () {
        var me = this;
@@ -36,6 +38,7 @@ Ext.define('Leon.desktop.fun.HelpWindow',{
 		me.on("afterrender",function(win){
 			iframe.load(url);
 		});
+		desktop.configWindow(this,{url:'/fun/helpLookContent'});
 	},
 	getUrl:function(funId){
 		return '/fun/helpLookContent?funId='+funId;
