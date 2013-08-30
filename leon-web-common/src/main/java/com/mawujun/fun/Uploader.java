@@ -1,4 +1,4 @@
-package ueditor;
+package com.mawujun.fun;
 
 import java.io.*;
 import java.text.SimpleDateFormat;

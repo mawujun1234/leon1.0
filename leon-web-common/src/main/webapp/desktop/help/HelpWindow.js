@@ -1,4 +1,4 @@
-Ext.define('Leon.desktop.fun.HelpWindow',{
+Ext.define('Leon.desktop.help.HelpWindow',{
 	extend: 'Ext.window.Window',
 	//config:{
 		funId:null,
@@ -38,10 +38,10 @@ Ext.define('Leon.desktop.fun.HelpWindow',{
 		me.on("afterrender",function(win){
 			iframe.load(url);
 		});
-		desktop.configWindow(this,{url:'/fun/helpLookContent'});
+		desktop.configWindow(this,{url:'/help/helpLookContent'});
 	},
 	getUrl:function(funId){
-		return '/fun/helpLookContent?funId='+funId;
+		return '/help/helpLookContent?funId='+funId;
 	},
 	reload:function(funId){
 		this.items.getAt(0).load(this.getUrl(funId));

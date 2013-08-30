@@ -1,4 +1,4 @@
-Ext.require('Leon.desktop.fun.HelpWindow');
+Ext.require('Leon.desktop.help.HelpWindow');
 Ext.define('Leon.desktop.Window', {
     extend: 'Ext.window.Window',
 	//type : 'IframeWindow',
@@ -104,7 +104,7 @@ Ext.define('Leon.desktop.Window', {
 		    		win.show();
 		    		return;
 		    	}
-				var win=Ext.create('Leon.desktop.fun.HelpWindow',{funId:me.funId});
+				var win=Ext.create('Leon.desktop.help.HelpWindow',{funId:me.funId});
 				win.show();
 		    }
 		}];

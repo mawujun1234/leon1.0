@@ -9,7 +9,7 @@
     <%@ page import="java.io.File"%>
     <%@ page import="java.io.FileOutputStream"%>
     <%@ page import="java.util.Date"%>
-    <%@ page import="ueditor.Uploader" %>
+    <%@ page import="com.mawujun.fun.Uploader" %>
 
     <%
     request.setCharacterEncoding("utf-8");
