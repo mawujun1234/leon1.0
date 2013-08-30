@@ -11,8 +11,12 @@ import org.apache.commons.fileupload.servlet.*;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 
+import com.mawujun.util.web.WebUtils;
+
 
 import sun.misc.BASE64Decoder;
+
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 /**
  * UEditor文件上传辅助类
@@ -170,7 +174,7 @@ public class Uploader {
 	 * @return string
 	 */
 	private String getFileExt(String fileName) {
-		return fileName.substring(fileName.lastIndexOf("."));
+		return fileName.substring(fileName.lastIndexOf(".")).toLowerCase();
 	}
 
 	/**
@@ -210,10 +214,15 @@ public class Uploader {
 	 * @return
 	 */
 	private String getPhysicalPath(String path) {
-		String servletPath = this.request.getServletPath();
-		String realPath = this.request.getSession().getServletContext()
-				.getRealPath(servletPath);
-		return new File(realPath).getParent() +"/" +path;
+		Cookie cookie=WebUtils.getCookie(request,"help_funId_folder");
+		String servletPath ="/doc/"+cookie.getValue();
+		String realPath = this.request.getSession().getServletContext().getRealPath(servletPath);
+		return realPath +"/" +path;
+		
+//		String servletPath = this.request.getServletPath();
+//		String realPath = this.request.getSession().getServletContext()
+//				.getRealPath(servletPath);
+//		return new File(realPath).getParent() +"/" +path;
 	}
 
 	public void setSavePath(String savePath) {
