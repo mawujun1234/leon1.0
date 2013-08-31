@@ -7,7 +7,7 @@
     response.setCharacterEncoding("utf-8");
 
     Uploader up = new Uploader(request);
-    up.setSavePath("upload"); //保存路径
+    //up.setSavePath("upload"); //保存路径,默认是保存在doc/{funId}/upload下面
     String[] fileType = {".rar" , ".doc" , ".docx" , ".zip" , ".pdf" , ".txt" , ".swf", ".wmv"};  //允许的文件类型
     up.setAllowFiles(fileType);
     up.setMaxSize(10000);        //允许的文件最大尺寸，单位KB

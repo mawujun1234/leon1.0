@@ -25,6 +25,8 @@
     	<context:include-filter expression="org.springframework.stereotype.Controller" type="annotation"/> 
     </context:component-scan> 
     
+    <mvc:resources mapping="/ueditor/**" location="/ueditor/"/> 
+    
     <!-- 配置静态资源，直接映射到对应的文件夹，不被DispatcherServlet处理，看a总括.docx 
     <mvc:resources mapping="/img/**" location="/img/"/>  
     <mvc:resources mapping="/js/**" location="/js/"/>  

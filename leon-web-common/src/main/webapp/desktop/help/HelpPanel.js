@@ -6,14 +6,33 @@ Ext.define('Leon.desktop.help.HelpPanel',{
 	listeners:{
 			afterrender:function(panel){
 				//实例化编辑器，看ueditor.config.js文件
+				var URL="/desktop/help/";
+				//alert(location.hostname);
+				//alert(location.port);
 			    var options = {
-			    	imagePath: "/doc/" ,
+			    	
+			    	imagePath: "/" ,
+					imageUrl:URL+"jsp/imageUp.jsp",
+					
+					imageManagerUrl:"/desktop/help/jsp/imageManager.jsp",
 			    	imageManagerPath:"/doc/" ,
-			    	catcherPath:"/doc/",
-			    	filePath:"/doc/" ,
-			    	scrawlPath:URL+"jsp/" ,
-			    	snapscreenPath: "/doc/",
-			    	wordImagePath:"/doc/" ,
+			    	
+			    	catcherUrl:URL +"jsp/getRemoteImage.jsp" ,
+			    	catcherPath:"/",
+			    	
+			    	fileUrl:URL+"jsp/fileUp.jsp" ,
+			    	filePath:"/" ,
+			    	
+			    	scrawlUrl:URL+"jsp/scrawlUp.jsp" ,
+			    	scrawlPath:"/" ,
+			    	
+			    	snapscreenHost: location.hostname ,
+			    	snapscreenServerUrl: URL +"jsp/imageUp.jsp",
+			    	snapscreenPath: "/",
+			    	snapscreenServerPort: location.port ,
+			    	
+			    	wordImageUrl:URL + "jsp/imageUp.jsp" ,
+			    	wordImagePath:"/" ,
 			        focus:true,
 			        autoHeightEnabled:false
 			        //,initialFrameHeight:panel.getHeight( ) 

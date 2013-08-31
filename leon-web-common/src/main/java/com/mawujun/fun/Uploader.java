@@ -60,6 +60,11 @@ public class Uploader {
 		tmp.put("IO", "IO异常");
 		tmp.put("DIR", "目录创建失败");
 		tmp.put("UNKNOWN", "未知错误");
+		
+		//帮助文档的存放是按照功能id建目录进行存放的
+		Cookie cookie=WebUtils.getCookie(request,"help_funId_folder");
+		//String servletPath ="/doc/"+cookie.getValue();
+		this.savePath="doc/"+cookie.getValue()+"/"+savePath;
 	
 	}
 
@@ -214,8 +219,8 @@ public class Uploader {
 	 * @return
 	 */
 	private String getPhysicalPath(String path) {
-		Cookie cookie=WebUtils.getCookie(request,"help_funId_folder");
-		String servletPath ="/doc/"+cookie.getValue();
+
+		String servletPath ="/";//文件的前缀，全部放在doc目录下面
 		String realPath = this.request.getSession().getServletContext().getRealPath(servletPath);
 		return realPath +"/" +path;
 		
