@@ -2,7 +2,7 @@
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-
+String sessionId=session.getId();
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -25,6 +25,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <script type="text/javascript" charset="utf-8" src="../../ueditor/ueditor.all.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="../../ueditor/lang/zh-cn/zh-cn.js"></script>
 	<%@include file="../../common/init.jsp" %>
+	<script type="text/javascript">
+		var sessionId='<%=sessionId%>';
+	</script>
 	<script type="text/javascript" src="FunApp.js"></script>
   </head>
   

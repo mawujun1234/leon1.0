@@ -40,6 +40,10 @@ Ext.define('Leon.desktop.help.HelpPanel',{
 			    };
 
 				panel.ueEditor = UE.getEditor('ueEditor',options);
+				//修改了attachment.html文件里的内容post_params:{"JSESSIONID":editor.JSESSIONID}, 
+				//http://9455.net/read/28f90e91fe7182a966261401.html 嗨哟啊添加一个参数，表示是swfupload做的
+				panel.ueEditor.JSESSIONID=sessionId;
+				alert(sessionId);
 
 				//// editor 是编辑器实例，container 是编辑器容器，修改它的宽度就可以了。
 				//editor.container.style.width="500px"; // 设置编辑器宽度为 500px

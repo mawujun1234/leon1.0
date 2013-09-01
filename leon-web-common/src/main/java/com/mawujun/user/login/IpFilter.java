@@ -46,6 +46,11 @@ public class IpFilter extends GenericFilterBean {
 				e.printStackTrace();
 			}
 		}
+		//http://9455.net/read/28f90e91fe7182a966261401.html
+		if(request.getParameter("JSESSIONID")!=null){
+			//如果是swfupload，就直接dispatch到目的路径里面去
+			sdfsf
+		}
 		boolean bool=false;
 		for (Map.Entry<RequestMatcher, Collection<ConfigAttribute>> entry : resourceMap.entrySet()) {
         	//RequestMatcher这里把本来是调用这个的matches方法
