@@ -115,6 +115,7 @@ public class SetCharacterEncodingFilter implements Filter {
         if (ignore || (request.getCharacterEncoding() == null)) {
             String encoding = selectEncoding(request);
             if (encoding != null) {
+        		//request.getParameter("editorValue");
                 request.setCharacterEncoding(encoding);
                 response.setCharacterEncoding(encoding);
             }

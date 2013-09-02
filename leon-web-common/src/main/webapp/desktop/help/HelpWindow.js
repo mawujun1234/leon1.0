@@ -13,6 +13,7 @@ Ext.define('Leon.desktop.help.HelpWindow',{
 	iconCls:'icons_help',
 	width:400,
 	height:500,
+	layout:'fit',
 	//url:null,
 	initComponent: function () {
        var me = this;
