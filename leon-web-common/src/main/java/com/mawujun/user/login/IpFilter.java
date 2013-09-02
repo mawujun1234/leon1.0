@@ -54,6 +54,7 @@ public class IpFilter extends GenericFilterBean {
 			//如果是swfupload，就直接dispatch到目的路径里面去
 			HttpServletRequest req=((HttpServletRequest)request);
 			String path=req.getRequestURI();
+			//String help_funId_folder=request.getParameter("help_funId_folder");
 			req.getRequestDispatcher(path).forward(request, response);
 			return;
 		}

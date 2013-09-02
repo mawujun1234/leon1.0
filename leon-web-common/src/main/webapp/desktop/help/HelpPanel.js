@@ -19,9 +19,8 @@ Ext.define('Leon.desktop.help.HelpPanel',{
 			    	
 			    	catcherUrl:URL +"jsp/getRemoteImage.jsp" ,
 			    	catcherPath:"/",
-			    	//help_funId_folder加上去，是为了解决Uploader上传附件的时候的路径问题
-			    	//IpFilter中过滤了swfupload的请求
-			    	fileUrl:URL+"jsp/fileUp.jsp?JSESSIONIDForSwfUser="+sessionId+"&=help_funId_folder"+panel.getFunId() ,
+
+			    	fileUrl:URL+"jsp/fileUp.jsp",
 			    	filePath:"/" ,
 			    	
 			    	scrawlUrl:URL+"jsp/scrawlUp.jsp" ,
@@ -38,7 +37,6 @@ Ext.define('Leon.desktop.help.HelpPanel',{
 			        autoHeightEnabled:false
 			        //,initialFrameHeight:panel.getHeight( ) 
 			        //,minFrameHeight:panel.getHeight( ) 
-
 			    };
 
 				panel.ueEditor = UE.getEditor('ueEditor',options);
@@ -64,13 +62,24 @@ Ext.define('Leon.desktop.help.HelpPanel',{
 	},
 	 //html:'<h3>UEditor - 完整示例</h3><p class="note">注：线上演示版上传图片功能一次只能上传一张，涂鸦功能不能将背景和图片合成，而下载版没有限制</p>' +
 	//			'<div><script id="ueEditor" type="text/plain"></script></div>',
-	html:'<iframe name="hidFrame" style="display:none"></iframe>' +
-			'<form target="hidFrame" action="/help/helpCreateOrupdate" method="post" >' +
+	html:'<iframe name="hideFrame" style="display:none"></iframe>' +
+			'<form id="helpContent_hideFrame"  target="hideFrame" action="/help/helpCreateOrupdate" method="post" >' +
 			'<input type="hidden" name="funId" id="funId"/>' +
-			'<input type="submit" name="submit" value="保    存"/>' +
+			//'<input type="submit" name="submit" value="保    存"/>' +
 			'<script id="ueEditor" type="text/plain"></script></form>',
 	initComponent: function () {
        var me = this;
+       me.tbar=[{
+       	text:'保存',
+       	iconCls:'form-save-button',
+       	handler:function(){
+       		if(me.ueEditor.hasContents()){ //此处以非空为例
+       			var form=Ext.getDom("helpContent_hideFrame");//document.getElementById("helpContent_hideFrame");//;//("form[target=hideFrame]");
+			    me.ueEditor.sync();   //同步内容
+			    form.submit();   //提交Form
+			}
+       	}
+       }];
 	   me.callParent();
 	},
 	setFunId:function(funId){
@@ -82,6 +91,16 @@ Ext.define('Leon.desktop.help.HelpPanel',{
 		}
 		this.updateContent();
 		Ext.util.Cookies.set('help_funId_folder',funId);
+		
+		
+//		还需要修改后台的代码，解决在FF下session不能共享的问题
+//		help_funId_folder加上去，是为了解决Uploader上传附件的时候的路径问题
+//		IpFilter中通过JSESSIONIDForSwfUser参数过滤了swfupload的请求
+//		在attachment.html文件中加上下面两行
+//		use_query_string:true,//这一行是必须要有的
+//		post_params:{JSESSIONIDForSwfUser:editor.JSESSIONIDForSwfUser,"help_funId_folder":editor.help_funId_folder},
+		this.ueEditor.help_funId_folder=funId;
+		this.ueEditor.JSESSIONIDForSwfUser=sessionId;
 	},
 	updateContent : function() {
 		var me=this;
@@ -89,6 +108,7 @@ Ext.define('Leon.desktop.help.HelpPanel',{
 			//Ext.Msg.alert('消息',"功能id不能为空");
 			return;
 		}
+
 		me.ueEditor.disable();
 		ueEditor.focus(true);
 		Ext.Ajax.request({

@@ -63,7 +63,7 @@ public class Uploader {
 		
 		//帮助文档的存放是按照功能id建目录进行存放的
 		Cookie cookie=WebUtils.getCookie(request,"help_funId_folder");
-		if(cookie==null || cookie.getValue()==null){//这个if是为了解决swfUpload组件上传的时候的路径问题
+		if(cookie==null || cookie.getValue()==null || "".equals(cookie.getValue())){//这个if是为了解决swfUpload组件上传的时候的路径问题
 			this.savePath="doc/"+request.getParameter("help_funId_folder")+"/"+savePath;
 		} else {
 			this.savePath="doc/"+cookie.getValue()+"/"+savePath;
