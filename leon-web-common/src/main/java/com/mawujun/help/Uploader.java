@@ -1,4 +1,4 @@
-package com.mawujun.fun;
+package com.mawujun.help;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -42,7 +42,7 @@ public class Uploader {
 	// 保存路径
 	private String savePath = "upload";
 	// 文件允许格式
-	private String[] allowFiles = { ".rar", ".doc", ".docx", ".zip", ".pdf",".txt", ".swf", ".wmv", ".gif", ".png", ".jpg", ".jpeg", ".bmp" };
+	private String[] allowFiles = { ".sql",".rar", ".doc", ".docx", ".zip", ".pdf",".txt", ".swf", ".wmv", ".gif", ".png", ".jpg", ".jpeg", ".bmp" };
 	// 文件大小限制，单位KB
 	private int maxSize = 10000;
 	
@@ -63,8 +63,12 @@ public class Uploader {
 		
 		//帮助文档的存放是按照功能id建目录进行存放的
 		Cookie cookie=WebUtils.getCookie(request,"help_funId_folder");
-		//String servletPath ="/doc/"+cookie.getValue();
-		this.savePath="doc/"+cookie.getValue()+"/"+savePath;
+		if(cookie==null || cookie.getValue()==null){//这个if是为了解决swfUpload组件上传的时候的路径问题
+			this.savePath="doc/"+request.getParameter("help_funId_folder")+"/"+savePath;
+		} else {
+			this.savePath="doc/"+cookie.getValue()+"/"+savePath;
+		}
+		
 	
 	}
 

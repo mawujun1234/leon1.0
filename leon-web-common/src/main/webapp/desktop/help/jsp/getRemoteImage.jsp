@@ -2,7 +2,7 @@
     <%@ page import="java.io.*"%>
     <%@ page import="java.net.*"%>
     <%@ page import="java.util.*"%>
-    <%@ page import="com.mawujun.fun.Uploader" %>
+    <%@ page import="com.mawujun.help.Uploader" %>
     <%
     	request.setCharacterEncoding("utf-8");
     	response.setCharacterEncoding("utf-8");

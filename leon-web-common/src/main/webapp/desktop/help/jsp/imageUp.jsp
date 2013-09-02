@@ -1,6 +1,6 @@
     <%@ page language="java" contentType="text/html; charset=utf-8"
         pageEncoding="utf-8"%>
-    <%@ page import="com.mawujun.fun.Uploader" %>
+    <%@ page import="com.mawujun.help.Uploader" %>
 
     <%
     request.setCharacterEncoding("utf-8");

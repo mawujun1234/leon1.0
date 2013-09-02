@@ -19,8 +19,9 @@ Ext.define('Leon.desktop.help.HelpPanel',{
 			    	
 			    	catcherUrl:URL +"jsp/getRemoteImage.jsp" ,
 			    	catcherPath:"/",
-			    	
-			    	fileUrl:URL+"jsp/fileUp.jsp" ,
+			    	//help_funId_folder加上去，是为了解决Uploader上传附件的时候的路径问题
+			    	//IpFilter中过滤了swfupload的请求
+			    	fileUrl:URL+"jsp/fileUp.jsp?JSESSIONIDForSwfUser="+sessionId+"&=help_funId_folder"+panel.getFunId() ,
 			    	filePath:"/" ,
 			    	
 			    	scrawlUrl:URL+"jsp/scrawlUp.jsp" ,
@@ -37,16 +38,12 @@ Ext.define('Leon.desktop.help.HelpPanel',{
 			        autoHeightEnabled:false
 			        //,initialFrameHeight:panel.getHeight( ) 
 			        //,minFrameHeight:panel.getHeight( ) 
+
 			    };
 
 				panel.ueEditor = UE.getEditor('ueEditor',options);
-				//修改了attachment.html文件里的内容post_params:{"JSESSIONID":editor.JSESSIONID}, 
-				//http://9455.net/read/28f90e91fe7182a966261401.html 嗨哟啊添加一个参数，表示是swfupload做的
-				panel.ueEditor.JSESSIONID=sessionId;
-				alert(sessionId);
 
-				//// editor 是编辑器实例，container 是编辑器容器，修改它的宽度就可以了。
-				//editor.container.style.width="500px"; // 设置编辑器宽度为 500px
+
 			},
 			activate:function(panel){
 				panel.isActivate=true;

@@ -47,9 +47,15 @@ public class IpFilter extends GenericFilterBean {
 			}
 		}
 		//http://9455.net/read/28f90e91fe7182a966261401.html
-		if(request.getParameter("JSESSIONID")!=null){
+		
+		//System.out.println("==================================="+request.getParameter("JSESSIONIDForSwfUser"));
+		//这个if是为了解决sefupload上传附件的问题
+		if(request.getParameter("JSESSIONIDForSwfUser")!=null){// && "true".equalsIgnoreCase(isSwfUser)
 			//如果是swfupload，就直接dispatch到目的路径里面去
-			sdfsf
+			HttpServletRequest req=((HttpServletRequest)request);
+			String path=req.getRequestURI();
+			req.getRequestDispatcher(path).forward(request, response);
+			return;
 		}
 		boolean bool=false;
 		for (Map.Entry<RequestMatcher, Collection<ConfigAttribute>> entry : resourceMap.entrySet()) {

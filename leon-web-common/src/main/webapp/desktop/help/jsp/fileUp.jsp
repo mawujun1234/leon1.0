@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-<%@ page import="com.mawujun.fun.Uploader" %>
+<%@ page import="com.mawujun.help.Uploader" %>
 
 
 <%
@@ -8,9 +8,10 @@
 
     Uploader up = new Uploader(request);
     //up.setSavePath("upload"); //保存路径,默认是保存在doc/{funId}/upload下面
-    String[] fileType = {".rar" , ".doc" , ".docx" , ".zip" , ".pdf" , ".txt" , ".swf", ".wmv"};  //允许的文件类型
-    up.setAllowFiles(fileType);
-    up.setMaxSize(10000);        //允许的文件最大尺寸，单位KB
+    //这里也可以定义上传文件类型
+    //String[] fileType = {".rar" , ".doc" , ".docx" , ".zip" , ".pdf" , ".txt" , ".swf", ".wmv"};  //允许的文件类型
+    //up.setAllowFiles(fileType);
+    up.setMaxSize(100000);        //允许的文件最大尺寸，单位KB
     up.upload();
     response.getWriter().print("{'url':'"+up.getUrl()+"','fileType':'"+up.getType()+"','state':'"+up.getState()+"','original':'"+up.getOriginalName()+"'}");
 
