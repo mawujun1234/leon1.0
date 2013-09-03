@@ -302,6 +302,7 @@ public class SpringMVCController {
 		throw new BussinessException(DefaulExceptionCode.SYSTEM_EXCEPTION);
 	}
 	@RequestMapping("/test/testConstraintViolationException.do")
+	@ResponseBody
 	public void testConstraintViolationException() throws Exception{
 		JsonConfigHolder.setAutoWrap(false);
 		EntityTest entity1=new EntityTest();

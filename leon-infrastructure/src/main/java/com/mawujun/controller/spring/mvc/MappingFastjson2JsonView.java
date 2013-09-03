@@ -2,6 +2,7 @@ package com.mawujun.controller.spring.mvc;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.MissingResourceException;
@@ -33,6 +34,8 @@ public class MappingFastjson2JsonView extends AbstractView {
 	public static final String DEFAULT_CONTENT_TYPE = "application/json";
 	
 	private Set<String> modelKeys;
+	
+	public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
 
 	private boolean extractValueFromSingleKeyModel = true;
 	
@@ -48,6 +51,8 @@ public class MappingFastjson2JsonView extends AbstractView {
 	protected void renderMergedOutputModel(Map<String, Object> model,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		response.setCharacterEncoding(DEFAULT_CHARSET.toString());
+		response.setContentType(DEFAULT_CONTENT_TYPE);
 		// TODO Auto-generated method stub
 		if(model.get(SimpleMappingExceptionResolver.DEFAULT_EXCEPTION_ATTRIBUTE)!=null){
 			Exception exception=(Exception)model.get(SimpleMappingExceptionResolver.DEFAULT_EXCEPTION_ATTRIBUTE);
@@ -74,12 +79,22 @@ public class MappingFastjson2JsonView extends AbstractView {
 				ConstraintViolationException ex=(ConstraintViolationException)exception;
 				//map.put(JsonConfigHolder.getMsgName(),ex.getMessage());
 				
-				StringBuffer detailMsg=new StringBuffer();
+				//StringBuffer detailMsg=new StringBuffer();
+				Map<String,String> errorsMap=new HashMap<String,String>();
 				Set<? extends ConstraintViolation> constraintViolations=ex.getConstraintViolations();
 				for (ConstraintViolation violation : constraintViolations) {
-					detailMsg.append(violation.getPropertyPath().toString()+"字段"+violation.getMessage()+":"+violation.getInvalidValue()+";");
+					//detailMsg.append(","+violation.getPropertyPath().toString()+":\""+violation.getMessage()+"\"");
+					errorsMap.put(violation.getPropertyPath().toString(), violation.getMessage());
 				}
-				map.put(JsonConfigHolder.getMsgName(),detailMsg);
+				//detailMsg.append("}");
+				//String errors=detailMsg.substring(1);
+				
+				map.put(JsonConfigHolder.getErrorsName(),errorsMap);
+//				Set<? extends ConstraintViolation> constraintViolations=ex.getConstraintViolations();
+//				for (ConstraintViolation violation : constraintViolations) {
+//					detailMsg.append(violation.getPropertyPath().toString()+"字段"+violation.getMessage()+":"+violation.getInvalidValue()+";");
+//				}
+//				map.put(JsonConfigHolder.getMsgName(),detailMsg);
 			} else {
 				
 				//map.put(JsonConfigHolder.getMsgName(), exception.getMessage());

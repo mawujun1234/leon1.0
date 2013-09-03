@@ -112,7 +112,7 @@ Ext.define('Leon.desktop.help.HelpPanel',{
 		me.ueEditor.disable();
 		ueEditor.focus(true);
 		Ext.Ajax.request({
-			url : '/help/helpGetContent?_dc='+new Date(),
+			url : '/app/help/helpGetContent?_dc='+new Date(),
 			params : {
 				funId : me.getFunId()
 			},

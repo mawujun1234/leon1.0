@@ -38,10 +38,10 @@ Ext.define('Leon.desktop.help.HelpWindow',{
 		me.on("afterrender",function(win){
 			iframe.load(url);
 		});
-		desktop.configWindow(this,{url:'/help/helpLookContent'});
+		desktop.configWindow(this,{url:'/app/help/helpLookContent'});
 	},
 	getUrl:function(funId){
-		return '/help/helpLookContent?funId='+funId;
+		return '/app/help/helpLookContent?funId='+funId;
 	},
 	reload:function(funId){
 		this.items.getAt(0).load(this.getUrl(funId));

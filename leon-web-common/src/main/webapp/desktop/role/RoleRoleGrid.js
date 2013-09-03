@@ -23,9 +23,9 @@ Ext.define('Leon.desktop.role.RoleRoleGrid',{
        
        var url="";
 	   if(me.roleRoleEnum=="inherit"){
-			url="/role/queryParent";
+			url="/app/role/queryParent";
 		} else {
-			url="/role/queryMutex";
+			url="/app/role/queryMutex";
 	   }
        me.store=Ext.create('Ext.data.Store',{
        		autoSync:false,
@@ -58,10 +58,10 @@ Ext.define('Leon.desktop.role.RoleRoleGrid',{
 								var params={};
 								var url="";
 								if(me.roleRoleEnum=="inherit"){
-									url="/role/addParent";
+									url="/app/role/addParent";
 									params={parentId:record.getId(),childId:me.currentRole.getId()};
 								} else {
-									url="/role/addMutex";
+									url="/app/role/addMutex";
 									params={ownId:me.currentRole.getId(),mutexId:record.getId()};
 								}
 								tree.mask("正在新增....");
@@ -98,10 +98,10 @@ Ext.define('Leon.desktop.role.RoleRoleGrid',{
        				if(record){
        					var url="";
 						if(me.roleRoleEnum=="inherit"){
-							url="/role/removeParent";
+							url="/app/role/removeParent";
 							params={parentId:record.getId(),childId:me.currentRole.getId()};
 						} else {
-							url="/role/removeMutex";
+							url="/app/role/removeMutex";
 							params={ownId:me.currentRole.getId(),mutexId:record.getId()};
 						}
        					Ext.Ajax.request({

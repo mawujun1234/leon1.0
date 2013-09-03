@@ -35,7 +35,7 @@ Ext.define("Leon.SwitchUserWin",{
 		            if (basicform.isValid()) {
 		            	var values=basicform.getValues();
 		            	Ext.Ajax.request({
-			    			url:'/switchUser/checkPermission',
+			    			url:'/app/switchUser/checkPermission',
 			    			params:{j_username:values.j_username},
 			    			success:function(response){
 			    				var obj=Ext.decode(response.responseText);
@@ -63,7 +63,7 @@ Ext.define("Leon.SwitchUserWin",{
 		
 	   var userGrid=Ext.create('Leon.desktop.user.UserQueryGrid',{
 			//region:'center',
-	   		url:'/switchUser/query',
+	   		url:'/app/switchUser/query',
 			width:400,
 			flex: 0.8,
 			listeners:{

@@ -17,12 +17,12 @@ Ext.onReady(function(){
     });
 	
     var userGroupGrid=Ext.create('Leon.desktop.user.UserSelectGrid',{
-    	url:'/group/queryUser',
+    	url:'/app/group/queryUser',
     	listeners:{
     		addUser:function(grid,user){
     			var group=tree.getLastSelected();
     			Ext.Ajax.request({
-					url:'/group/addUser',
+					url:'/app/group/addUser',
 					params:{userId:user.get("id"),groupId:group.getId()},
 					method:'POST',
 					success:function(){
@@ -33,7 +33,7 @@ Ext.onReady(function(){
     		removeUser:function(grid,user){
     			var group=tree.getLastSelected();
     			Ext.Ajax.request({
-					url:'/group/removeUser',
+					url:'/app/group/removeUser',
 					params:{userId:user.get("id"),groupId:group.getId()},
 					method:'POST',
 					success:function(){
@@ -44,7 +44,7 @@ Ext.onReady(function(){
     	}
     });
     var roleSelectedTree=Ext.create('Leon.desktop.role.RoleSelectPanel',{
-    	url:'/group/queryRole',
+    	url:'/app/group/queryRole',
     	listeners:{
     		addRole:function(selectedRoleTree,selectRoleNode){
     			var group=tree.getLastSelected();
@@ -53,7 +53,7 @@ Ext.onReady(function(){
 		            roleId:selectRoleNode.getId()
 		        };
 		        Ext.Ajax.request({
-		            url:'/group/addRole',
+		            url:'/app/group/addRole',
 		            method:'POST',
 		            params:params,
 		            success:function(){
@@ -68,7 +68,7 @@ Ext.onReady(function(){
 		            roleId:selectRoleNode.getId()
 		        };
     			Ext.Ajax.request({
-		            url:'/group/removeRole',
+		            url:'/app/group/removeRole',
 		            method:'POST',
 		            params:params,
 		            success:function(){

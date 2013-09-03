@@ -25,6 +25,7 @@ import com.mawujun.utils.page.WhereInfo;
  *
  */
 @Controller
+@RequestMapping("/app")
 //@Transactional
 public class FunController {
 	@Autowired

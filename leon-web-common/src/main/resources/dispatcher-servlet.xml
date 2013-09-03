@@ -25,9 +25,9 @@
     	<context:include-filter expression="org.springframework.stereotype.Controller" type="annotation"/> 
     </context:component-scan> 
     
-    <mvc:resources mapping="/ueditor/**" location="/ueditor/"/> 
+    <!--<mvc:resources mapping="/ueditor/**" location="/ueditor/"/> 
     
-    <!-- 配置静态资源，直接映射到对应的文件夹，不被DispatcherServlet处理，看a总括.docx 
+     配置静态资源，直接映射到对应的文件夹，不被DispatcherServlet处理，看a总括.docx 
     <mvc:resources mapping="/img/**" location="/img/"/>  
     <mvc:resources mapping="/js/**" location="/js/"/>  
     <mvc:resources mapping="/css/**" location="/css/"/> 
@@ -191,12 +191,13 @@
 	<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
   		<property name="exceptionMappings"> 
              <props>     
-             	 <prop key="java.lang.Exception">errors/500</prop>      
+             	 <prop key="java.lang.Exception">errors/503</prop>      
              </props>     
          </property>     
         <property name="statusCodes">     
              <props>     
-                 <prop key="errors/500">500</prop>     
+                 <prop key="errors/500">500</prop>   
+                 <prop key="errors/503">503</prop>     
                  <prop key="errors/404">404</prop>  
                  <prop key="exceptionJsonView">503</prop>     
              </props>     
@@ -206,7 +207,7 @@
          <!-- 默认错误页面，当找不到上面mappings中指定的异常对应视图时，使用本默认配置 -->    
          <property name="defaultErrorView" value="jsonView" />    
          <!-- 默认HTTP状态码 -->    
-         <property name="defaultStatusCode" value="500" />  
+         <property name="defaultStatusCode" value="503" />  
    </bean> 
 <!-- 
 	

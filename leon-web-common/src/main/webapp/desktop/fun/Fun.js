@@ -22,11 +22,11 @@ Ext.defineModel("Leon.desktop.fun.Fun",{
 //	,proxy:{
 //		type:'bajax',
 //		api:{
-//			read:'/fun/queryChildren',
-//			load : '/fun/get',
-//			create:'/fun/create',
-//			update:'/fun/update',
-//			destroy:'/fun/destroy'
+//			read:'/app/fun/queryChildren',
+//			load : '/app/fun/get',
+//			create:'/app/fun/create',
+//			update:'/app/fun/update',
+//			destroy:'/app/fun/destroy'
 //		}
 //	}
 //	,proxy:{

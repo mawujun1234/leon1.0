@@ -60,7 +60,7 @@ Ext.onReady(function(){
     	
     	roleId=record.get('id');
     	Ext.Ajax.request({
-    		url:'/roleFun/query',
+    		url:'/app/roleFun/query',
     		method:'POST',
     		params:{roleId:roleId},
     		success:function(response){
@@ -95,12 +95,12 @@ Ext.onReady(function(){
 
 		  
 		}
-    	var url='/roleFun/create';
+    	var url='/app/roleFun/create';
     	var params={};
     	var isDestroy=false;
     	if(!checked){
     		isDestroy=true;
-    		url='/roleFun/destroy';
+    		url='/app/roleFun/destroy';
     		params={
     			roleId:roleId,
 	    		funId:node.getId()

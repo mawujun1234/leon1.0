@@ -25,6 +25,7 @@ import com.mawujun.utils.SystemUtils;
 import freemarker.template.TemplateException;
 
 @Controller
+@RequestMapping("/app")
 public class GeneratorController {
 	@RequestMapping("/generator/listJsDir")
 	public List<Map<String,String>> getAppDir(HttpServletRequest request,String id) throws IOException{

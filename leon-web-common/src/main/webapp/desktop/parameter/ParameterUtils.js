@@ -11,7 +11,7 @@ Ext.define('Leon.desktop.parameter.ParameterUtils', {
          	var me=this;
          	me.subjectType=subjectType;
             Ext.Ajax.request({
-            	url:'/parameter/queryBysubjectType',
+            	url:'/app/parameter/queryBysubjectType',
             	method:'POST',
             	params:{subjectType:me.subjectType},
             	success:function(response){
@@ -42,7 +42,7 @@ Ext.define('Leon.desktop.parameter.ParameterUtils', {
          	var form=me.form;
 
          	Ext.Ajax.request({
-            	url:'/parametersubject/query',
+            	url:'/app/parametersubject/query',
             	method:'POST',
             	params:{subjectId:me.subjectId,subjectType:me.subjectType},
             	success:function(response){
@@ -88,7 +88,7 @@ Ext.define('Leon.desktop.parameter.ParameterUtils', {
          				}
          				//alert(Ext.encode(values));
          				Ext.Ajax.request({
-         					url:'/parametersubject/create',
+         					url:'/app/parametersubject/create',
          					method:'POST',
          					jsonData:arry,
          					success:function(response){

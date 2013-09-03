@@ -335,7 +335,7 @@ public class SpringMVCControllerTest {
 		.andExpect(status().isServiceUnavailable())
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(false))
-		.andExpect(jsonPath("$.message").value("后台发生系统异常，请联系管理员或重试!"));
+		.andExpect(jsonPath("$.msg").value("后台发生系统异常，请联系管理员或重试!"));
 	}
 	@Test
 	public void testBussinessExceptionReturnJson() throws Exception {
@@ -343,7 +343,7 @@ public class SpringMVCControllerTest {
 		.andExpect(status().isServiceUnavailable())
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(false))
-		.andExpect(jsonPath("$.message").value("系统异常，请重试或者联系管理员"));
+		.andExpect(jsonPath("$.msg").value("系统异常，请重试或者联系管理员"));
 	}
 	@Test
 	public void testConstraintViolationExceptionReturnJson() throws Exception {
@@ -351,7 +351,7 @@ public class SpringMVCControllerTest {
 		.andExpect(status().isServiceUnavailable())
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(false))
-		.andExpect(jsonPath("$.message").value("email字段不是一个合法的电子邮件地址:11;"));
+		.andExpect(jsonPath("$.errors.email").value("不是一个合法的电子邮件地址"));
 	}
 	
 	@Test

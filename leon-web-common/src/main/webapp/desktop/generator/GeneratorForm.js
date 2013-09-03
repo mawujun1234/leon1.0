@@ -93,7 +93,7 @@ Ext.define('Leon.desktop.generator.GeneratorForm',{
                     	text:'选择目录',
                     	handler:function(btn){
                     		var dirSelect=Ext.create('Leon.desktop.generator.DirSelectPanel',{
-                    			url:'/generator/listJsDir'
+                    			url:'/app/generator/listJsDir'
                     		});
                     		var win=Ext.create('Ext.Window',{
                     			layout:'fit',
@@ -122,7 +122,7 @@ Ext.define('Leon.desktop.generator.GeneratorForm',{
                     	text:'选择目录',
                     	handler:function(){
                     		var dirSelect=Ext.create('Leon.desktop.generator.DirSelectPanel',{
-                    			url:'/generator/listJavaDir'
+                    			url:'/app/generator/listJavaDir'
                     		});
                     		var win=Ext.create('Ext.Window',{
                     			layout:'fit',

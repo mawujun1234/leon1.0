@@ -28,7 +28,7 @@ public class PropertyConfigController {
 	@Autowired
 	JavaEntityMetaDataService javaEntityMetaDataService;
 
-	@RequestMapping("/query")
+	@RequestMapping("/query.do")
 	@ResponseBody
 	public List<PropertyConfig> query(String subjectName) throws ClassNotFoundException {	
 		List<PropertyConfig> list=propertyConfigService.query(Cnd.select().andEquals("subjectName", subjectName));
@@ -61,26 +61,26 @@ public class PropertyConfigController {
 		}
 	}
 
-	@RequestMapping("/load")
+	@RequestMapping("/load.do")
 	public PropertyConfig load(String id) {
 		return propertyConfigService.get(id);
 	}
 	
-	@RequestMapping("/create")
+	@RequestMapping("/create.do")
 	@ResponseBody
 	public PropertyConfig create(@RequestBody PropertyConfig propertyConfig) {
 		propertyConfigService.create(propertyConfig);
 		return propertyConfig;
 	}
 	
-	@RequestMapping("/update")
+	@RequestMapping("/update.do")
 	@ResponseBody
 	public  PropertyConfig update(@RequestBody PropertyConfig propertyConfig) {
 		propertyConfigService.update(propertyConfig);
 		return propertyConfig;
 	}
 	
-	@RequestMapping("/destroy")
+	@RequestMapping("/destroy.do")
 	@ResponseBody
 	public String destroy(String id) {
 		propertyConfigService.delete(id);

@@ -41,7 +41,7 @@
         <filter-name>Set Character Encoding</filter-name>
         <url-pattern>/*</url-pattern>
    </filter-mapping>
-   
+   <!-- 
    <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>*.js</url-pattern>
@@ -87,7 +87,7 @@
         <servlet-name>default</servlet-name>
         <url-pattern>*.swf</url-pattern>
     </servlet-mapping>
-   
+   -->
    
    <context-param>
 		<param-name>system_config_file_path</param-name>
@@ -124,7 +124,7 @@
  
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/app/*</url-pattern>
     </servlet-mapping>
     
 	

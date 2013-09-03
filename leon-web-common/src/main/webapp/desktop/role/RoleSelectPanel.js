@@ -75,7 +75,7 @@ Ext.define('Leon.desktop.role.RoleSelectPanel', {
 			}
 		});
 		var roleTree=Ext.create('Leon.common.ux.BaseTree',{
-			url:'/role/query',
+			url:'/app/role/query',
 			fields:['id','name'],
 			rootVisible: false,
 			title:'未选择的角色',

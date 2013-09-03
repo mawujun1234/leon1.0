@@ -19,11 +19,11 @@ Ext.defineModel("Leon.desktop.constant.ConstantItem",{
 //		headers:{ 'Accept':'application/json;'},
 //		type:'ajax',
 //		api:{
-//			read:'/constantItem/query',
-//			get : '/constantItem/get',
-//			create:'/constantItem/create',
-//			update:'/constantItem/update',
-//			destroy:'/constantItem/destroy'
+//			read:'/app/constantItem/query',
+//			get : '/app/constantItem/get',
+//			create:'/app/constantItem/create',
+//			update:'/app/constantItem/update',
+//			destroy:'/app/constantItem/destroy'
 //		},
 //		reader:{
 //			type:'json',

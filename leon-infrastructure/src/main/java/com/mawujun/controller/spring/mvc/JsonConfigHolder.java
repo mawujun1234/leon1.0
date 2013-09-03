@@ -242,6 +242,18 @@ public class JsonConfigHolder {
 	public static void setMsg(String msg) {
 		threadLocal.get().setMsg(msg);
 	}
+	public static String getErrorsName() {
+		return threadLocal.get().getErrorsName();
+	}
+	public static void setErrorsName(String errorsName) {
+		threadLocal.get().setErrorsName(errorsName);
+	}
+	public static String getErrorsValue() {
+		return threadLocal.get().getErrorsValue();
+	}
+	public static void setErrorsValue(String errorsValue) {
+		threadLocal.get().setErrorsValue(errorsValue);
+	}
 	
 //	private static class Config {
 //		public transient Boolean autoWrap=true;//自动封装为某种格式

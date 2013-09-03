@@ -21,6 +21,7 @@ import com.mawujun.user.login.SwitchUserFilterImpl;
 import com.mawujun.user.login.SwitchUserGrantedAuthorityImpl;
 
 @Controller
+@RequestMapping("/app")
 public class DesktopController {
 	@Autowired
 	private MenuItemService menuItemService;

@@ -15,6 +15,8 @@ class ToJsonConfig {
 	public transient String limitName="limit";
 	public transient String pageNoName="page";
 	public transient String msgName="msg";
+	public transient String errorsName="errors";
+	public transient String errorsValue="";
 	
 	public transient String filterPropertys=null;
 	public transient Class[] filterClass=null;
@@ -163,6 +165,18 @@ class ToJsonConfig {
 	}
 	public void setSuccessValue(boolean successValue) {
 		this.successValue = successValue;
+	}
+	public String getErrorsName() {
+		return errorsName;
+	}
+	public void setErrorsName(String errorsName) {
+		this.errorsName = errorsName;
+	}
+	public String getErrorsValue() {
+		return errorsValue;
+	}
+	public void setErrorsValue(String errorsValue) {
+		this.errorsValue = errorsValue;
 	}
 	
 }
