@@ -125,6 +125,13 @@ Ext.define('Leon.desktop.Desktop', {
 
         me.callParent();
         window.desktop=me;
+        
+        
+        var wallpaper = me.wallpaper;
+        me.wallpaper = me.items.getAt(0);
+        if (wallpaper) {
+            me.setWallpaper(wallpaper, me.wallpaperStretch);
+        }
     },
     showSwitchUserWin:function(){
     	var win=Ext.create('Leon.SwitchUserWin',{
@@ -250,7 +257,7 @@ Ext.define('Leon.desktop.Desktop', {
     	
     	//alert(config.url.lastIndexOf('.js')+'=='+config.url.length);
     	//config.url='/aaa/aa.js';
-    	if(config.url.lastIndexOf('.js')==config.url.length-2){
+    	if(config.url.lastIndexOf('.js')==config.url.length-3){
 			//就使用js来作为url的话，就实例化这个url，
     		//接着判断这个对象是否是window对象，如果是，就直接show，否则就封装在window中
     		Ext.Loader.loadScript({
@@ -507,6 +514,12 @@ Ext.define('Leon.desktop.Desktop', {
     getWinHeight : function(){
         var height = this.getViewHeight();
         return height < 480 ? 480 : height;
+    },
+     getWallpaper: function () {
+        return this.wallpaper.wallpaper;
+    },
+    setWallpaper: function (wallpaper, stretch) {
+        this.wallpaper.setWallpaper(wallpaper, stretch);
+        return this;
     }
-    
 });

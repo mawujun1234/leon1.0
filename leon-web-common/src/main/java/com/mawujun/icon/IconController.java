@@ -25,7 +25,6 @@ import com.mawujun.controller.spring.mvc.JsonConfigHolder;
 import com.mawujun.utils.FileUtils;
 
 @Controller
-@RequestMapping("/app")
 public class IconController {
 
 //	File[] files;

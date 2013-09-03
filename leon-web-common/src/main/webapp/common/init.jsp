@@ -1,6 +1,27 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
-
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/ext-4/resources/css/ext-all.css" />
+<%@ page language="java" pageEncoding="UTF-8" import="com.mawujun.util.web.WebUtils"%>
+<%
+String theme=request.getParameter("theme");
+if(theme==null){
+	Cookie cookie=WebUtils.getCookie(request, "theme");
+	if(cookie.getValue()==null){
+		theme="";
+	} else {
+		theme=cookie.getValue();
+	}
+	
+} else {
+	theme="-"+theme;
+	Cookie c = new Cookie("theme",theme) ;
+	//设定有效时间  以s为单位
+	c.setMaxAge(5*365*24*60*60) ;
+	//设置Cookie路径和域名
+	// c.setPath("/") ;
+	// c.setDomain(".zl.org") ;  //域名要以“.”开头
+	//发送Cookie文件
+	 response.addCookie(c) ;
+}
+%>
+<link id="theme" rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/ext-4/resources/css/ext-all<%=theme %>.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/common/icons.css" />
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/ext-4/bootstrap.js"></script>

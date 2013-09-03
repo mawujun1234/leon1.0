@@ -10,7 +10,9 @@ Ext.onReady(function(){
 			window.desktop=Ext.create('Leon.desktop.Desktop',{
 				initMenus:obj.root.menuItems
 				,switchUsers:obj.root.switchUsers?obj.root.switchUsers:null,
-				authMsg:obj.root.authMsg
+				authMsg:obj.root.authMsg,
+				wallpaper:obj.root.wallpaper,//"desktop/wallpapers/Blue-Sencha.jpg",
+				wallpaperStretch:obj.root.wallpaperStretch//false
 			});
 			Ext.create('Ext.container.Viewport',{
 				layout:'fit',

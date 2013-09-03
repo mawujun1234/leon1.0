@@ -21,7 +21,6 @@ import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 
 @Controller
-@RequestMapping("/app")
 public class GroupController {
 	@Autowired
 	private GroupService groupService;

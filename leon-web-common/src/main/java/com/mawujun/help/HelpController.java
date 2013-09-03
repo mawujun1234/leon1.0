@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mawujun.utils.FileUtils;
 
 @Controller
-@RequestMapping("/app")
 public class HelpController {
 
 	public String getHelpFilePath(HttpServletRequest request,String funId){

@@ -33,7 +33,6 @@ import com.mawujun.utils.page.WhereInfo;
  *
  */
 @Controller
-@RequestMapping("/app")
 public class ConstantTypeController  {
 	/**
 	 * 

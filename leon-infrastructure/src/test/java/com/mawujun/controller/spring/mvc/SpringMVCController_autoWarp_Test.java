@@ -94,7 +94,7 @@ public class SpringMVCController_autoWarp_Test {
 		.andExpect(jsonPath("$.success").value(true))
 		.andExpect(jsonPath("$.total").value(9))
 		.andExpect(jsonPath("$.root[0].name").value("name0"));
-		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"message\":\"The title cannot be empty.\"}]}"));
+		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"msg\":\"The title cannot be empty.\"}]}"));
 
 
 	}
@@ -107,7 +107,7 @@ public class SpringMVCController_autoWarp_Test {
 		.andExpect(jsonPath("$.success").value(true))
 		.andExpect(jsonPath("$.total").value(100))
 		.andExpect(jsonPath("$.root[0].name").value("name0"));
-		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"message\":\"The title cannot be empty.\"}]}"));
+		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"msg\":\"The title cannot be empty.\"}]}"));
 
 
 	}
@@ -121,7 +121,7 @@ public class SpringMVCController_autoWarp_Test {
 		//.andExpect(jsonPath("$.total").value(1))//http://goessner.net/articles/JsonPath/
 		.andExpect(jsonPath("$.root.name").value("name"))
 		.andExpect(jsonPath("$.root.age").value("111"));
-		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"message\":\"The title cannot be empty.\"}]}"));
+		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"msg\":\"The title cannot be empty.\"}]}"));
 
 	}
 	DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
@@ -137,7 +137,7 @@ public class SpringMVCController_autoWarp_Test {
 		.andExpect(jsonPath("$.root.id").value(1))
 		.andExpect(jsonPath("$.root.createDate").value(formatter.format(new Date())))
 		.andExpect(jsonPath("$.root.age").value(11));
-		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"message\":\"The title cannot be empty.\"}]}"));
+		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"msg\":\"The title cannot be empty.\"}]}"));
 	}
 
 	/**
@@ -206,7 +206,7 @@ public class SpringMVCController_autoWarp_Test {
 		.andExpect(jsonPath("$.root.id").value(1))
 		.andExpect(jsonPath("$.root.createDate").value(formatter.format(new Date())))
 		.andExpect(jsonPath("$.root.age").doesNotExist());
-		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"message\":\"The title cannot be empty.\"}]}"));
+		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"msg\":\"The title cannot be empty.\"}]}"));
 	}
 	@Test
 	public void filterPropertyList() throws Exception {
@@ -220,7 +220,7 @@ public class SpringMVCController_autoWarp_Test {
 		.andExpect(jsonPath("$.root[0].id").value(1))
 		.andExpect(jsonPath("$.root[0].createDate").value(formatter.format(new Date())))
 		.andExpect(jsonPath("$.root[0].age").doesNotExist());
-		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"message\":\"The title cannot be empty.\"}]}"));
+		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"msg\":\"The title cannot be empty.\"}]}"));
 	}
 	/**
 	 * 测试只返回id的关联数据
@@ -238,7 +238,7 @@ public class SpringMVCController_autoWarp_Test {
 		.andExpect(jsonPath("$.root.id").value(1))
 		.andExpect(jsonPath("$.root.createDate").value(formatter.format(new Date())))
 		.andExpect(jsonPath("$.root.parent.id").value(2));
-		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"message\":\"The title cannot be empty.\"}]}"));
+		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"msg\":\"The title cannot be empty.\"}]}"));
 	}
 	
 	
@@ -260,7 +260,7 @@ public class SpringMVCController_autoWarp_Test {
 		.andExpect(jsonPath("$.root.createDate").value("2012-11-11"))
 		.andExpect(jsonPath("$.root.age").value(11))
 		.andExpect(jsonPath("$.root.childen[0].name").value("childrens"));
-		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"message\":\"The title cannot be empty.\"}]}"));
+		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"msg\":\"The title cannot be empty.\"}]}"));
 	}
 
 
@@ -361,7 +361,7 @@ public class SpringMVCController_autoWarp_Test {
 		.andExpect(status().isServiceUnavailable())
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(false))
-		.andExpect(jsonPath("$.message").value("后台发生系统异常，请联系管理员或重试!"));
+		.andExpect(jsonPath("$.msg").value("后台发生系统异常，请联系管理员或重试!"));
 	}
 	@Test
 	public void testBussinessExceptionReturnJson() throws Exception {
@@ -369,7 +369,7 @@ public class SpringMVCController_autoWarp_Test {
 		.andExpect(status().isServiceUnavailable())
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(false))
-		.andExpect(jsonPath("$.message").value("系统异常，请重试或者联系管理员"));
+		.andExpect(jsonPath("$.msg").value("系统异常，请重试或者联系管理员"));
 	}
 	@Test
 	public void testConstraintViolationExceptionReturnJson() throws Exception {
@@ -377,7 +377,7 @@ public class SpringMVCController_autoWarp_Test {
 		.andExpect(status().isServiceUnavailable())
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.success").value(false))
-		.andExpect(jsonPath("$.message").value("email字段不是一个合法的电子邮件地址:11;"));
+		.andExpect(jsonPath("$.errors.email").value("不是一个合法的电子邮件地址"));
 	}
 	
 	@Test

@@ -17,11 +17,12 @@ Ext.define('Leon.desktop.Wallpaper', {
 
     cls: 'ux-wallpaper',
     html: '<img src="'+Ext.BLANK_IMAGE_URL+'">',
+    //html: '<img src="desktop/wallpapers/Blue-Sencha.jpg">',
 
     stretch: false,
     wallpaper: null,
-    stateful  : true,
-    stateId  : 'desk-wallpaper',
+    //stateful  : true,
+    //stateId  : 'desk-wallpaper',
 
     afterRender: function () {
         var me = this;
