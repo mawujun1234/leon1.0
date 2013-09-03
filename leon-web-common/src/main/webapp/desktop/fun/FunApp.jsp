@@ -4,14 +4,13 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 String sessionId=session.getId();
 %>
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
     
     <title>功能管理</title>
     <base href="">
-    
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">  
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
@@ -28,7 +27,7 @@ String sessionId=session.getId();
 	<script type="text/javascript">
 		var sessionId='<%=sessionId%>';
 	</script>
-	<script type="text/javascript" src="FunApp.js"></script>
+	<script type="text/javascript" charset="utf-8" src="FunApp.js"></script>
   </head>
   
   <body>
