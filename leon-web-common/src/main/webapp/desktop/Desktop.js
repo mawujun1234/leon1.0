@@ -5,7 +5,8 @@ Ext.define('Leon.desktop.Desktop', {
 	requires: [
 	     'Leon.desktop.Menubar',
 	     'Leon.desktop.Taskbar',
-	     'Leon.desktop.Window'
+	     'Leon.desktop.Window',
+	     'Leon.desktop.Wallpaper'
 	],
 	layout:'fit',
 	border:false,
@@ -20,49 +21,6 @@ Ext.define('Leon.desktop.Desktop', {
         var me = this;
         me.windows = new Ext.util.MixedCollection();
 
-//        var menubar=Ext.create('Leon.desktop.Menubar',{
-//        	items:[{iconCls: 'menubar-index-button',xtype:'button',text:'桌面'}
-//        	,{text:'测试',handler:function(){
-//        		me.createWindow({
-//        			//id:1111,
-//        			title:'测试',
-//        			url:'http://www.baidu.com'
-//        		});
-//        		
-//        	}},{text:'测试jsWindow',handler:function(){
-//        		me.createWindow({
-//        			//id:1111,
-//        			title:'测试jsWindow',
-//        			url:'/desktop/example/JsWindow.js'
-//        		});
-//        		
-//        	}},{text:'测试jsPanel',handler:function(){
-//        		me.createWindow({
-//        			//id:1111,
-//        			title:'测试jsPanel',
-//        			url:'/desktop/example/JsPanel.js'
-//        		});
-//        		
-//        	}},{text:'测试menuExten,插件，子菜单',
-//        		plugins:[{ptype:'menuplugin',url:'/desktop/example/MenuPluginUpdateText.js'}],
-//        		handler:function(){
-//        		me.createWindow({
-//        			//id:1111,
-//        			title:'测试menuExten',
-//        			url:'/desktop/example/MenuExten.js'
-//        		});
-//        		
-//        	}},{text:'scripts',
-//        		plugins:[{ptype:'menuplugin',scripts:'function aa(){menuItem.setText(menuItem.getText( ) +"(scripts)");}'}],
-//        		handler:function(){
-//        		me.createWindow({
-//        			//id:1111,
-//        			title:'测试menuExten',
-//        			url:'/desktop/example/MenuExten.js'
-//        		});
-//        		
-//        	}}]
-//        });
         
         var menuItems=[{iconCls: 'menubar-index-button',xtype:'button',text:'桌面'},'-','-'];
         //me.returnMenuItem(menuItems,me.initMenus);
@@ -159,6 +117,11 @@ Ext.define('Leon.desktop.Desktop', {
         //因为到时候可能做到 任务栏可以设置到左边或右边
         me.menubar=menubar;
         me.taskbar=taskbar;
+        
+        
+        me.items = [
+            { xtype: 'wallpaper', id: me.id+'_wallpaper' }
+        ];
 
         me.callParent();
         window.desktop=me;
