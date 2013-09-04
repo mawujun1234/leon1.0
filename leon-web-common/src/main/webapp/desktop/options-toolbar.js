@@ -122,11 +122,12 @@
                     listeners: {
                         select: function(combo) {
                             var theme = combo.getValue();
-                            if (theme !== defaultTheme) {
-                                setParam({ theme: theme });
-                            } else {
-                                removeParam('theme');
-                            }
+                            setParam({ theme: theme });
+//                            if (theme !== defaultTheme) {
+//                                setParam({ theme: theme });
+//                            } else {
+//                                removeParam('theme');
+//                            }
                         }
                     }
                 }, {

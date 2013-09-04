@@ -271,8 +271,12 @@ Ext.define('Leon.common.ux.BaseTree', {
 		if(me.autoShowSimpleActionToTbar){
 			me.tbar={
 				itemId:'action_toolbar',
+				layout: {
+	                overflowHandler: 'Menu'
+	            },
 				items:actions
-				,autoScroll:true
+				//,autoScroll:true
+				
 			};
 		}
 		var menu=Ext.create('Ext.menu.Menu', {

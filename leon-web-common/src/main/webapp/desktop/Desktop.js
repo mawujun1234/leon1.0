@@ -101,18 +101,52 @@ Ext.define('Leon.desktop.Desktop', {
         });
        
         var menubar=Ext.create('Leon.desktop.Menubar',{
+        	dock: 'top',
+        	layout: {
+                overflowHandler: 'Menu'
+            },
+//        	style:{
+//               'z-index': 666
+//            },
         	items:menuItems
         });
        
         var taskbar=Ext.create('Leon.desktop.Taskbar',{
+        	dock: 'left',
+        	//ui: 'footer',
+        	layout: {
+                overflowHandler: 'Menu'
+            },
         	style:{
                'z-index': 99999999
             },
-            items:[{text:'当前用户:'+me.authMsg},'-','-']
+            items:[{text:'当前用户:'+me.authMsg,xtype:'label'},'-','-']
+            ,listeners:{
+            	afterrender:function(toolbar, eOpts) {            		
+            		toolbar.getEl( ).on("mouseover",function(e,htmlElement){
+			        	toolbar.setWidth(toolbar.prevWidth);
+			        });
+			        toolbar.getEl( ).on("mouseout",function(e,htmlElement){
+			        	toolbar.setWidth(3);
+			        });
+			        var task = new Ext.util.DelayedTask(function(){
+						  toolbar.setWidth(3);
+					});
+					task.delay(1000);
+            	},
+            	resize:function( toolbar, width, height, oldWidth, oldHeight, eOpts ) {
+            		if(width>15){
+            			toolbar.prevWidth=toolbar.getWidth();
+            			
+            		}
+            	}
+            }
         });
+        
         delete me.authMsg;
-        me.tbar=menubar;
-        me.bbar=taskbar;
+        //me.tbar=menubar;
+        //me.bbar=taskbar;
+        this.dockedItems =[taskbar,menubar];
         
         //因为到时候可能做到 任务栏可以设置到左边或右边
         me.menubar=menubar;
@@ -132,6 +166,8 @@ Ext.define('Leon.desktop.Desktop', {
         if (wallpaper) {
             me.setWallpaper(wallpaper, me.wallpaperStretch);
         }
+        
+       
     },
     showSwitchUserWin:function(){
     	var win=Ext.create('Leon.SwitchUserWin',{

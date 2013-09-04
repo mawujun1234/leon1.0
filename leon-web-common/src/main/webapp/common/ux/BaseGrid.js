@@ -218,9 +218,13 @@ Ext.define('Leon.common.ux.BaseGrid', {
 			  itemId:'action_toolbar_container',
 			  defaults: {anchor: '0'},
 			  defaultType: 'toolbar',
+			  
 			  items: [{
 			  	border:false,
 				itemId:'action_toolbar',
+				layout: {
+	                overflowHandler: 'Menu'
+	            },
 				items:actions
 			  }
 //			, {

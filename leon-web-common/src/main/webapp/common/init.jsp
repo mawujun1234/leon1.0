@@ -3,7 +3,7 @@
 String theme=request.getParameter("theme");
 if(theme==null){
 	Cookie cookie=WebUtils.getCookie(request, "theme");
-	if(cookie.getValue()==null){
+	if(cookie==null || cookie.getValue()==null){
 		theme="";
 	} else {
 		theme=cookie.getValue();
@@ -20,11 +20,19 @@ if(theme==null){
 	//发送Cookie文件
 	 response.addCookie(c) ;
 }
+if("-classic".equals(theme)){
+	theme="";
+}
+System.out.println(theme);
 %>
 <link id="theme" rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/ext-4/resources/css/ext-all<%=theme %>.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/common/icons.css" />
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/ext-4/bootstrap.js"></script>
+<%if(theme!=null && !"".equals(theme)) { %>
+<script type="text/javascript" src="<%=request.getContextPath()%>/ext-4/ext-theme<%=theme %>.js"></script>
+<%} %>
+
 <script type="text/javascript" src="<%=request.getContextPath()%>/ext-4/locale/ext-lang-zh_CN.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/common/common.js"></script>
 
