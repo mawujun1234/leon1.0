@@ -42,7 +42,8 @@ public class FunService extends BaseRepository<Fun, String> {
 		//WhereInfo whereinfo=WhereInfo.parse("parent.id", entity.getId());
 		//int childs=this.queryCount(whereinfo);
 		Fun fun=this.get(entity.getId());//Fun缓存了
-		int childs=fun.getChildren().size();
+		//int childs=fun.getChildren().size();
+		int childs=super.queryCount(Cnd.select().andEquals("parent.id", fun.getId()));
 		if(childs>0){
 			throw new BussinessException("存在子节点，不能删除。",WebCommonExceptionCode3.EXISTS_CHILDREN);
 		}
@@ -80,9 +81,9 @@ public class FunService extends BaseRepository<Fun, String> {
 		entity=super.create(entity);
 
 
-		if(parent!=null){
-			parent.addChild(entity);
-		}
+//		if(parent!=null){
+//			parent.addChild(entity);
+//		}
 		return entity;
 	}
 	/**
@@ -123,35 +124,35 @@ public class FunService extends BaseRepository<Fun, String> {
 		
 	}
 	
-	/**
-	 * 构建出整颗树
-	 */
-	public List<Fun> queryAll() {
-		WhereInfo whereinfo=WhereInfo.parse("parent.id","is", null);
-		List<Fun> funes=this.query(whereinfo);
-		recursionFun(funes);
-		return funes;
-	}
-	private void recursionFun( List<Fun> funes){
-		for(Fun fun:funes){
-			if(fun.isFun()){
-				fun.setChecked(false);
-			}
-			//fun.setExpanded(true);
-			this.initLazyProperty(fun.getChildren());
-			if(fun.getChildren().size()>0){
-				recursionFun(fun.getChildren());
-			}
-		}
-		
-	}
+//	/**
+//	 * 构建出整颗树
+//	 */
+//	public List<Fun> queryAll() {
+//		WhereInfo whereinfo=WhereInfo.parse("parent.id","is", null);
+//		List<Fun> funes=this.query(whereinfo);
+//		recursionFun(funes);
+//		return funes;
+//	}
+//	private void recursionFun( List<Fun> funes){
+//		for(Fun fun:funes){
+//			if(fun.isFun()){
+//				fun.setChecked(false);
+//			}
+//			//fun.setExpanded(true);
+//			this.initLazyProperty(fun.getChildren());
+//			if(fun.getChildren().size()>0){
+//				recursionFun(fun.getChildren());
+//			}
+//		}
+//		
+//	}
 
 	public void initCache(){
 		List<Fun> funes=super.queryAll();//super.query(whereinfo);
 		for(Fun fun:funes){
 			//if(fun.getFunEnum()==FunEnum.fun){
 				super.initLazyProperty(fun.getParent());
-				super.initLazyProperty(fun.getChildren());
+				//super.initLazyProperty(fun.getChildren());
 			//}	
 		}
 	}

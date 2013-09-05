@@ -46,8 +46,15 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 		entity.setReportCode(newReportCode);
 		
 		entity.setParent(entity.getParent()==null?null:this.get(entity.getParent().getId()));
+		entity.setLeaf(true);
+		//MenuItem parnet=this.get(entity.getParent().getId());
+		if(entity.getParent()!=null){
+			entity.getParent().setLeaf(false);
+		}
 		
 		return super.create(entity);
+		
+		
 	}
 	public MenuItem update(MenuItem entity) {
 		MenuItem exists=this.get(entity.getId());
@@ -75,14 +82,16 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 		menuitem.setParent(parent);
 		menuitem.setMenu(parent==null?menuService.get(menuId):parent.getMenu());
 		menuitem.setIconCls(fun.getIconCls());
-		
+		menuitem.setLeaf(true);
 		super.create(menuitem);
+		parent.setLeaf(false);
+		super.update(parent);
 
-		if(parent!=null){
-			parent.addChild(menuitem);
-		}
+//		if(parent!=null){
+//			parent.addChild(menuitem);
+//		}
 		
-		return null;
+		return menuitem;
 	}
 //	/**
 //	 * 在默认菜单上创建菜单项
@@ -223,8 +232,8 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 			//if(fun.getFunEnum()==FunEnum.fun){
 			super.initLazyProperty(menuItem.getMenu());
 			super.initLazyProperty(menuItem.getParent());
-			menuItem.getChildren().size();
-			super.initLazyProperty(menuItem.getChildren());
+			//menuItem.getChildren().size();
+			//super.initLazyProperty(menuItem.getChildren());
 			//}	
 		}
 	}

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mawujun.controller.spring.mvc.JsonConfigHolder;
 import com.mawujun.exception.BussinessException;
 import com.mawujun.fun.Fun;
+import com.mawujun.fun.FunVO;
 import com.mawujun.utils.page.MatchMode;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
@@ -145,7 +146,7 @@ public class UserController {
 	
 	@RequestMapping("/user/queryFun")
 	@ResponseBody
-	public List<Fun> queryFun(String userId){	
+	public List<FunVO> queryFun(String userId){	
 		JsonConfigHolder.setRootName("children");
 		return userRoleService.queryFun(userId); 
 	}

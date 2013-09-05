@@ -20,6 +20,7 @@ Ext.define('Leon.desktop.Desktop', {
     initComponent: function () {
         var me = this;
         me.windows = new Ext.util.MixedCollection();
+       
 
  		me.menubarDock=me.menubarDock||"top";
  		me.taskbarDock=me.taskbarDock||"bottom";
@@ -121,16 +122,10 @@ Ext.define('Leon.desktop.Desktop', {
 
         var taskbar=Ext.create('Leon.desktop.Taskbar',{
         	dock: me.taskbarDock,
-        	itemId:"desktop_taskbar",
-        	//ui: 'footer',
-        	layout: {
-                overflowHandler: 'Menu'
-            },
-        	style:{
-               'z-index': 99999999
-            },
-            items:[{text:'当前用户:'+me.authMsg,xtype:'label'},'-','-']
+        	authMsg:me.authMsg
+           // items:[{text:'当前用户:'+me.authMsg,xtype:'label'},'-','-']
         });
+        
         
         function addHideAction(toolbar,dock){
         	toolbar.on("afterrender",function(toolbar, eOpts) {            		
@@ -190,6 +185,8 @@ Ext.define('Leon.desktop.Desktop', {
         me.menubar=menubar;
         me.taskbar=taskbar;
         
+        me.windowMenu = new Ext.menu.Menu(me.createWindowMenu());
+        me.taskbar.windowMenu = me.windowMenu;
         
         me.items = [
             { xtype: 'wallpaper', id: me.id+'_wallpaper' }
@@ -562,7 +559,71 @@ Ext.define('Leon.desktop.Desktop', {
         var height = this.getViewHeight();
         return height < 480 ? 480 : height;
     },
-     getWallpaper: function () {
+    //------------------------------------------------------
+    // Window context menu handlers
+    createWindowMenu: function () {
+        var me = this;
+        return {
+        	style:{
+		        'z-index': 999990+1
+		    },
+            defaultAlign: 'br-tr',
+            items: [
+                { text: '恢复', handler: me.onWindowMenuRestore, scope: me },
+                { text: '最小化', handler: me.onWindowMenuMinimize, scope: me },
+                { text: '最大化', handler: me.onWindowMenuMaximize, scope: me },
+                '-',
+                { text: '关闭', handler: me.onWindowMenuClose, scope: me }
+            ],
+            listeners: {
+                beforeshow: me.onWindowMenuBeforeShow,
+                hide: me.onWindowMenuHide,
+                scope: me
+            }
+        };
+    },
+     
+
+    onWindowMenuBeforeShow: function (menu) {
+        var items = menu.items.items, win = menu.theWin;
+        items[0].setDisabled(win.maximized !== true && win.hidden !== true); // Restore
+        items[1].setDisabled(win.minimized === true); // Minimize
+        items[2].setDisabled(win.maximized === true || win.hidden === true); // Maximize
+    },
+
+    onWindowMenuClose: function () {
+        var me = this, win = me.windowMenu.theWin;
+
+        win.close();
+    },
+
+    onWindowMenuHide: function (menu) {
+        Ext.defer(function() {
+            menu.theWin = null;
+        }, 1);
+    },
+
+    onWindowMenuMaximize: function () {
+        var me = this, win = me.windowMenu.theWin;
+
+        win.maximize();
+        win.toFront();
+    },
+
+    onWindowMenuMinimize: function () {
+        var me = this, win = me.windowMenu.theWin;
+
+        win.minimize();
+    },
+
+    onWindowMenuRestore: function () {
+        var me = this, win = me.windowMenu.theWin;
+
+        me.restoreWindow(win);
+    },
+
+    //------------------------------------------------------
+    getWallpaper: function () {
         return this.wallpaper.wallpaper;
     },
     setWallpaper: function (wallpaper, stretch) {

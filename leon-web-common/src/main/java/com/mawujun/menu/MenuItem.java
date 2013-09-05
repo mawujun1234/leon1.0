@@ -50,6 +50,8 @@ public class MenuItem extends UUIDEntity {
 	@Column(length=40)
 	private String reportCode;//等级关系代码
 	
+	private Boolean leaf=false;
+	
 	@ManyToOne(fetch=FetchType.LAZY,cascade=CascadeType.REFRESH)
 	@NotNull
 	private Menu menu;
@@ -57,13 +59,13 @@ public class MenuItem extends UUIDEntity {
 	private Fun fun;
 	@ManyToOne(fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)
 	private MenuItem parent;
-	@OneToMany(mappedBy="parent",fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)  
-	private List<MenuItem> children=new ArrayList<MenuItem>();
-	
-	public void addChild(MenuItem child) {
-		this.children.add(child);
-	}
+//	@OneToMany(mappedBy="parent",fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)
+//	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)  
+//	private List<MenuItem> children=new ArrayList<MenuItem>();
+//	
+//	public void addChild(MenuItem child) {
+//		this.children.add(child);
+//	}
 	
 	public String getUrl() {
 		if(this.getFun()!=null){
@@ -113,13 +115,13 @@ public class MenuItem extends UUIDEntity {
 		this.reportCode = reportCode;
 	}
 
-	public List<MenuItem> getChildren() {
-		return children;
-	}
-
-	public void setChildren(List<MenuItem> children) {
-		this.children = children;
-	}
+//	public List<MenuItem> getChildren() {
+//		return children;
+//	}
+//
+//	public void setChildren(List<MenuItem> children) {
+//		this.children = children;
+//	}
 
 	public Fun getFun() {
 		return fun;
@@ -160,11 +162,22 @@ public class MenuItem extends UUIDEntity {
 		}
 		return pcategory;
 	}
-	public boolean isLeaf() {
-		if(this.children==null || this.children.size()==0){
-			return true;
-		}
-		return false;
+	public Boolean isLeaf() {
+//		if(this.children==null || this.children.size()==0){
+//			return true;
+//		}
+//		return false;
+		return leaf;
+	}
+
+
+	public Boolean getLeaf() {
+		return leaf;
+	}
+
+
+	public void setLeaf(Boolean leaf) {
+		this.leaf = leaf;
 	}
 	
 //	public boolean isAutoCreate(){

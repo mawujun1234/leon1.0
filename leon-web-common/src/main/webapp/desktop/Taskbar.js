@@ -6,8 +6,23 @@ Ext.define('Leon.desktop.Taskbar', {
         'Ext.resizer.Splitter',
         'Ext.menu.Menu'
     ],
+    itemId:"desktop_taskbar",
+        	//ui: 'footer',
+    layout: {
+        overflowHandler: 'Menu'
+    },
+    style:{
+        'z-index': 99999
+    },
     initComponent: function () {
         var me = this;
+        me.windowBar = new Ext.toolbar.Toolbar(me.getWindowBarConfig());
+        me.items = [
+            {text:'当前用户:'+me.authMsg,xtype:'label'},'-','-',
+            me.windowBar,
+            '-'
+        ];
+        delete me.authMsg;
 
 //        me.startMenu = new Ext.ux.desktop.StartMenu(me.startConfig);
 //
@@ -68,34 +83,62 @@ Ext.define('Leon.desktop.Taskbar', {
             win: win
         };
 
-        var cmp = this.add(config);
+        var cmp = this.windowBar.add(config);
         cmp.toggle(true);
         return cmp;
     },
 
     removeTaskButton: function (btn) {
         var found, me = this;
-        me.items.each(function (item) {
+        me.windowBar.items.each(function (item) {
             if (item === btn) {
                 found = item;
             }
             return !found;
         });
         if (found) {
-            me.remove(found);
+            me.windowBar.remove(found);
         }
         return found;
     },
 
     setActiveButton: function(btn) {
-        if (btn) {
+       if (btn) {
             btn.toggle(true);
         } else {
-            this.items.each(function (item) {
+            this.windowBar.items.each(function (item) {
                 if (item.isButton) {
                     item.toggle(false);
                 }
             });
         }
+    },
+    afterLayout: function () {
+        var me = this;
+        me.callParent();
+        me.windowBar.el.on('contextmenu', me.onButtonContextMenu, me);
+    },
+    onButtonContextMenu: function (e) {
+        var me = this, t = e.getTarget(), btn = me.getWindowBtnFromEl(t);
+        if (btn) {
+            e.stopEvent();
+            me.windowMenu.theWin = btn.win;
+            me.windowMenu.showBy(t);
+        }
+    },
+    getWindowBarConfig: function () {
+        return {
+            flex: 1,
+            border:false,
+            //cls: 'ux-desktop-windowbar',
+            items: [ '&#160;' ],
+            layout: {
+		        overflowHandler: 'Menu'
+		    }
+        };
+    },
+    getWindowBtnFromEl: function (el) {
+        var c = this.windowBar.getChildByElement(el);
+        return c || null;
     }
 });

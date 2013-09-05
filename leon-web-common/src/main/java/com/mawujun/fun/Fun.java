@@ -70,12 +70,11 @@ public class Fun extends TreeNode{
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Fun parent;
 	
-	@OneToMany(mappedBy="parent",fetch=FetchType.LAZY,cascade=CascadeType.REFRESH)
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)  
-	private List<Fun> children=new ArrayList<Fun>();
+//	@OneToMany(mappedBy="parent",fetch=FetchType.LAZY,cascade=CascadeType.REFRESH)
+//	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)  
+//	private List<Fun> children=new ArrayList<Fun>();
 	
-//	@OneToMany(mappedBy="fun",fetch=FetchType.LAZY)
-//	private List<RoleFunAssociation> roleFunAssociations;
+
 	
 	public Fun(){
 		super();
@@ -85,9 +84,7 @@ public class Fun extends TreeNode{
 		this.id=id;
 	}
 	
-	public void addChild(Fun child) {
-		this.children.add(child);
-	}
+
 	
 	public String getText() {
 		return text;
@@ -108,12 +105,12 @@ public class Fun extends TreeNode{
 	public void setCode(String code) {
 		this.code = code;
 	}
-	public List<Fun> getChildren() {
-		return children;
-	}
-	public void setChildren(List<Fun> children) {
-		this.children = children;
-	}
+//	public List<Fun> getChildren() {
+//		return children;
+//	}
+//	public void setChildren(List<Fun> children) {
+//		this.children = children;
+//	}
 
 	/**
 	 * 获取所有的父级
@@ -128,18 +125,18 @@ public class Fun extends TreeNode{
 		}
 		return pcategory;
 	}
-	public List<Fun> findSiblings() {
-		List<Fun> children=new ArrayList<Fun>();
-		List<Fun> allCHild=this.getParent().getChildren();
-		for(Fun fun:allCHild){
-			if(fun.getId().equals(this.getId())){
-				continue;
-			} else {
-				children.add(fun);
-			}
-		}
-		return children;
-	}
+//	public List<Fun> findSiblings() {
+//		List<Fun> children=new ArrayList<Fun>();
+//		List<Fun> allCHild=this.getParent().getChildren();
+//		for(Fun fun:allCHild){
+//			if(fun.getId().equals(this.getId())){
+//				continue;
+//			} else {
+//				children.add(fun);
+//			}
+//		}
+//		return children;
+//	}
 	
 	public Fun getParent() {
 		return parent;

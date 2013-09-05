@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;
+import com.mawujun.fun.FunVO;
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.role.Role;
 import com.mawujun.role.RoleService;
@@ -105,11 +106,11 @@ public class UserRoleService extends BaseRepository<UserRole, UserRolePK> {
 	 * @param userId
 	 * @return
 	 */
-	public List<Fun> queryFun(String userId){	
+	public List<FunVO> queryFun(String userId){	
 		List<Map<String,Object>> funIdRoleIds = super.queryList("queryFun", userId);
 		// 组装出role树
-		Map<String,Fun> parentKeys=new HashMap<String,Fun>();
-		List<Fun> rootFuns = new ArrayList<Fun>();
+		Map<String,FunVO> parentKeys=new HashMap<String,FunVO>();
+		List<FunVO> rootFuns = new ArrayList<FunVO>();
 		for (Map<String,Object> funMap : funIdRoleIds) {
 			//funes.add(funService.get(funId.toString()));
 			
@@ -122,7 +123,7 @@ public class UserRoleService extends BaseRepository<UserRole, UserRolePK> {
 				fun.addRoleName(roleService.get(role_id).getName());
 				continue;
 			}
-			Fun fun=new Fun();
+			FunVO fun=new FunVO();
 			BeanUtils.copyProperties(leaf, fun, new String[]{"children","parent"});
 			fun.addRoleName(roleService.get(role_id).getName());
 			
@@ -130,11 +131,11 @@ public class UserRoleService extends BaseRepository<UserRole, UserRolePK> {
 				List<Fun> ancestores=leaf.findAncestors();
 				int i=0;
 				for(Fun ancestor:ancestores){
-					Fun ancestorNew=null;
+					FunVO ancestorNew=null;
 					if(parentKeys.containsKey(ancestor.getId())){
 						ancestorNew=parentKeys.get(ancestor.getId());
 					} else {
-						ancestorNew=new Fun();
+						ancestorNew=new FunVO();
 						BeanUtils.copyProperties(ancestor, ancestorNew, new String[]{"children","parent"});
 						ancestorNew.setExpanded(true);
 						parentKeys.put(ancestorNew.getId(), ancestorNew);
