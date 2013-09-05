@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -49,14 +50,14 @@ public class MenuItem extends UUIDEntity {
 	@Column(length=40)
 	private String reportCode;//等级关系代码
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY,cascade=CascadeType.REFRESH)
 	@NotNull
 	private Menu menu;
 	@ManyToOne(fetch=FetchType.EAGER,optional=true)
 	private Fun fun;
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)
 	private MenuItem parent;
-	@OneToMany(mappedBy="parent",fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="parent",fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)  
 	private List<MenuItem> children=new ArrayList<MenuItem>();
 	

@@ -142,24 +142,28 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 		hibernateDao.initLazyProperty(proxy);
 	}
 
-	public void create(T entity) {
+	public T create(T entity) {
 		// TODO Auto-generated method stub
 		hibernateDao.save(entity);
 		hibernateDao.flush();
+		return entity;
 	}
-	public void createOrUpdate(T entity) {
+	public T createOrUpdate(T entity) {
 		hibernateDao.saveOrUpdate(entity);
 		hibernateDao.flush();
+		return entity;
 	}
 
 	/**
 	 * 修改对象.把数据库中的实例就更新成 : 传入对象
 	 * 如果每个属性没有填的话，将会变成null，即使你本来不想改
+	 * @return 
 	 */
-	public void update(T entity) {
+	public T update(T entity) {
 		// TODO Auto-generated method stub
 		hibernateDao.update(entity);
 		hibernateDao.flush();
+		return entity;
 	}
 	
 	public void update(Cnd cnd) {
@@ -167,17 +171,19 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 		hibernateDao.flush();
 	}
 
-	public void delete(T entity) {
+	public T delete(T entity) {
 		// TODO Auto-generated method stub
 		hibernateDao.delete(entity);
 		hibernateDao.flush();
+		return entity;
 	}
 	/**
 	 * 根据传递进来的entity，哪些字段有值，不是null就更新到数据库
 	 */
-	public void updateIgnoreNull(T entity) {
+	public T updateIgnoreNull(T entity) {
 		hibernateDao.updateIgnoreNull(entity);
 		hibernateDao.flush();
+		return entity;
 	}
 	/**
 	 * 将符合where条件的，所有记录的值都更新成entity中拥有的键值对，忽略version和id字段

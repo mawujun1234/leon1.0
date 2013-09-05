@@ -40,7 +40,7 @@ public class DesktopController {
 		
 		String userId=((UserDetailsImpl)currentAuth.getPrincipal()).getId();
 		DesktopConfig desktopConfig=desktopConfigService.get(userId);
-		if(desktopConfig==null){
+		if(desktopConfig==null) {
 			desktopConfig=new DesktopConfig();
 		}
 		

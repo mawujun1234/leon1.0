@@ -19,9 +19,10 @@ public class ParameterService extends BaseRepository<Parameter, String> {
 	/**
 	 * 创建的时候同时更改P文件，添加该参数的id
 	 */
-	public void create(Parameter entity) {
-		super.create(entity);
+	public Parameter create(Parameter entity) {
+		entity=super.create(entity);
 		this.updatePjavaFile();
+		return entity;
 	}
 	public void delete(Parameter entity,Boolean forceDelete) {
 		if(forceDelete){
@@ -44,7 +45,7 @@ public class ParameterService extends BaseRepository<Parameter, String> {
 		pGeneratorService.updatePjavaFile(ids);
 	}
 	
-	public void update(Parameter entity) {
+	public Parameter update(Parameter entity) {
 		//判断主体是否有没引用，如果被引用了并且更新的时候取消了，这个时候就报错
 		List<String> list=parameterSubjectService.queryList(Cnd.select().addSelect("subjectType").distinct().andEquals("parameterId", entity.getId()), String.class);
 		String subjects=entity.getSubjects();
@@ -73,7 +74,7 @@ public class ParameterService extends BaseRepository<Parameter, String> {
 			throw new BussinessException("值类型不能更新，因为已经被使用了!");
 		}
 		BeanUtils.copyOrCast(entity, paramm);
-		super.update(paramm);
+		return super.update(paramm);
 	}
 	
 

@@ -15,20 +15,20 @@ import com.mawujun.utils.page.WhereInfo;
 
 @Service
 public class RoleService extends BaseRepository<Role, String> {
-	public Role get(Serializable id) {
-		//Role role=RoleCacheHolder.get(id);
-//		if(role!=null){
-//			return role;
-//		}
-		return super.get(id);
-	}
-	public void create(Role entity) {
-		super.create(entity);
-	}
-	
-	public void delete(Role entity) {
-		super.delete(entity);
-	}
+//	public Role get(Serializable id) {
+//		//Role role=RoleCacheHolder.get(id);
+////		if(role!=null){
+////			return role;
+////		}
+//		return super.get(id);
+//	}
+//	public Role create(Role entity) {
+//		super.create(entity);
+//	}
+//	
+//	public Role delete(Role entity) {
+//		super.delete(entity);
+//	}
 
 
 	public void update(Role entity,Boolean isUpdateParent,String oldParent_id) {	

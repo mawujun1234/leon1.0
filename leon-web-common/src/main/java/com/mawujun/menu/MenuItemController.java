@@ -30,7 +30,7 @@ public class MenuItemController {
 		WhereInfo menuIdwhereinfo=WhereInfo.parse("menu.id", menuId);
 		List<MenuItem> menuItems=menuItemService.query(whereinfo,menuIdwhereinfo);
 
-		JsonConfigHolder.setFilterPropertys("parent,children",MenuItem.class);
+		JsonConfigHolder.setFilterPropertys("children",MenuItem.class);
 		return menuItems;
 	}
 	
@@ -58,6 +58,7 @@ public class MenuItemController {
 	public MenuItem create(@RequestBody MenuItem menuItem,String menuId){		
 		menuItem.setMenu(new Menu(menuId));
 		menuItemService.create(menuItem);
+		JsonConfigHolder.setFilterPropertys("children",MenuItem.class);
 		return menuItem;
 	}
 	
@@ -66,13 +67,15 @@ public class MenuItemController {
 	public MenuItem create(String funId,String parentId,String menuId){		
 		
 		MenuItem menuItem=menuItemService.create(funId,parentId,menuId);
+		JsonConfigHolder.setFilterPropertys("children",MenuItem.class);
 		return menuItem;
 	}
 	
 	@RequestMapping("/menuItem/update")
 	@ResponseBody
 	public MenuItem update(@RequestBody MenuItem menuItem){		
-		menuItemService.update(menuItem);
+		menuItem=menuItemService.update(menuItem);
+		JsonConfigHolder.setFilterPropertys("children",MenuItem.class);
 		 return menuItem;
 	}
 	
@@ -80,6 +83,7 @@ public class MenuItemController {
 	@ResponseBody
 	public MenuItem destroy(@RequestBody MenuItem menuItem){		
 		menuItemService.delete(menuItem);
+		JsonConfigHolder.setFilterPropertys("children",MenuItem.class);
 		return menuItem;
 	}
 

@@ -25,8 +25,22 @@ public class DesktopConfig implements IdEntity<String>,Serializable{
 	@Id
 	@Column(length=36)
 	private String id;
+	@Column(length=100)
 	private String wallpaper;
-	private boolean wallpaperStretch=false;
+	private Boolean wallpaperStretch=false;
+	@Column(length=10)
+	private String menubarDock;
+	@Column(length=10)
+	private String taskbarDock;
+	@Column
+	private Boolean taskbarAutoHide=false;
+	@Column
+	private Boolean menubarAutoHide=false;
+	
+	
+	
+	
+	
 	@Transient
 	private String authMsg;//认证用户逇信息
 	@Transient
@@ -76,6 +90,41 @@ public class DesktopConfig implements IdEntity<String>,Serializable{
 	public String getId() {
 		// TODO Auto-generated method stub
 		return this.id;
+	}
+	public String getMenubarDock() {
+		return menubarDock;
+	}
+	public void setMenubarDock(String menubarDock) {
+		this.menubarDock = menubarDock;
+	}
+	public String getTaskbarDock() {
+		return taskbarDock;
+	}
+	public void setTaskbarDock(String taskbarDock) {
+		this.taskbarDock = taskbarDock;
+	}
+	public void setSwitchUsers(Set<String> switchUsers) {
+		this.switchUsers = switchUsers;
+	}
+	public Boolean isTaskbarAutoHide() {
+		return taskbarAutoHide;
+	}
+	public void setTaskbarAutoHide(Boolean taskbarAutoHide) {
+		if(taskbarAutoHide==null){
+			this.taskbarAutoHide=false;
+			return;
+		}
+		this.taskbarAutoHide = taskbarAutoHide;
+	}
+	public Boolean isMenubarAutoHide() {
+		return menubarAutoHide;
+	}
+	public void setMenubarAutoHide(Boolean menubarAutoHide) {
+		if(menubarAutoHide==null){
+			this.menubarAutoHide=false;
+			return;
+		}
+		this.menubarAutoHide = menubarAutoHide;
 	}
 
 }

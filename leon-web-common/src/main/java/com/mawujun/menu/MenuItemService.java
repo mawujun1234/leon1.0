@@ -34,7 +34,7 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 	private JdbcTemplate jdbcTemplate;
 
 	
-	public void create(MenuItem entity) {
+	public MenuItem create(MenuItem entity) {
 		Object reportCode=null;
 		if(entity.getParent()!=null){
 			WhereInfo whereinfo=WhereInfo.parse("parent.id", entity.getParent().getId());
@@ -47,14 +47,21 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 		
 		entity.setParent(entity.getParent()==null?null:this.get(entity.getParent().getId()));
 		
-		super.create(entity);
+		return super.create(entity);
 	}
-	public void delete(MenuItem entity) {
+	public MenuItem update(MenuItem entity) {
+		MenuItem exists=this.get(entity.getId());
+		BeanUtils.copyProperties(entity, exists, new String[]{"parent", "menu","fun","children"});
+		entity=exists;
+		return super.update(exists);
+		
+	}
+	public MenuItem delete(MenuItem entity) {
 		MenuItem item=this.get(entity.getId());
 //		if(item.isAutoCreate()){
 //			throw new BussinessException("不能删除自动创建的菜单项。<br/>");
 //		}
-		super.delete(item);
+		return super.delete(item);
 	}
 	public MenuItem create(String funId,String parentId,String menuId) {
 		//throw new BussinessException("c测试");

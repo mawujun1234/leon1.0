@@ -319,8 +319,12 @@ Ext.define('Leon.common.ux.BaseTree', {
 		child.save({
 			success: function(record, operation) {
 						// child=record;
-				me.getStore().reload({node:parent});
-				parent.expand();
+				parent.set('leaf',false);
+				parent.appendChild(child);
+				//alert(1);
+//				parent.leaf=false;
+//				me.getStore().reload({node:parent});
+//				parent.expand();
 			}
 		});
     },

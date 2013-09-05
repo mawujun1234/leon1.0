@@ -37,7 +37,7 @@ public class FunService extends BaseRepository<Fun, String> {
 //	}
 
 	@Override
-	public void delete(Fun entity) {
+	public Fun delete(Fun entity) {
 		//判断是否具有子节点
 		//WhereInfo whereinfo=WhereInfo.parse("parent.id", entity.getId());
 		//int childs=this.queryCount(whereinfo);
@@ -54,7 +54,7 @@ public class FunService extends BaseRepository<Fun, String> {
 			throw new BussinessException("有菜单挂钩，不能删除。",WebCommonExceptionCode3.EXISTS_CHILDREN);
 		}
 		
-		super.delete(fun);
+		return super.delete(fun);
 		
 		
 	}
@@ -66,7 +66,7 @@ public class FunService extends BaseRepository<Fun, String> {
 		String newReportCode=ReportCodeHelper.generate3((String)reportCode);
 		return newReportCode;
 	}
-	public void create(Fun entity) {
+	public Fun create(Fun entity) {
 		Fun parent=entity.getParent()==null?null:this.get(entity.getParent().getId());
 		if(parent!=null && parent.getFunEnum()==FunEnum.fun){
 			throw new BussinessException("功能不能增加下级节点");
@@ -77,12 +77,13 @@ public class FunService extends BaseRepository<Fun, String> {
 		
 		//menuItemService.create(entity);
 		
-		super.create(entity);
+		entity=super.create(entity);
 
 
 		if(parent!=null){
 			parent.addChild(entity);
 		}
+		return entity;
 	}
 	/**
 	 * 

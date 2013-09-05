@@ -1,11 +1,4 @@
-/*!
- * Ext JS Library 4.0
- * Copyright(c) 2006-2011 Sencha Inc.
- * licensing@sencha.com
- * http://www.sencha.com/license
- */
-
-Ext.define('Leon.desktop.Settings', {
+Ext.define('Leon.desktop.WallpaperSettings', {
     extend: 'Ext.window.Window',
 
     uses: [
@@ -132,17 +125,19 @@ Ext.define('Leon.desktop.Settings', {
         var me = this;
         if (me.selected) {
         	//发送到后台保存
-        	Ext.Ajax.request({
-        		url:"/app//desktop/createOrUpdate",
-        		method:"POST",
-        		params:{
-        			wallpaper:me.selected,
-        			wallpaperStretch:me.stretch
-        		},
-        		success:function(){
-        			me.desktop.setWallpaper(me.selected, me.stretch);
-        		}
-        	});
+//        	Ext.Ajax.request({
+//        		url:"/app//desktop/createOrUpdate",
+//        		method:"POST",
+//        		params:{
+//        			wallpaper:me.selected,
+//        			wallpaperStretch:me.stretch
+//        		},
+//        		success:function(){
+//        			me.desktop.setWallpaper(me.selected, me.stretch);
+//        		}
+//        	});
+        	me.desktop.setWallpaper(me.selected, me.stretch);
+        	me.desktop.createOrupdateDesktopConfig();
             
         }
         me.destroy();

@@ -10,7 +10,7 @@ Ext.define('Leon.desktop.Desktop', {
 	],
 	layout:'fit',
 	border:false,
-	initMenus:'',//初始化时，传递过来的菜单，根据这菜单数据生成菜单
+	menuItems:'',//初始化时，传递过来的菜单，根据这菜单数据生成菜单
 	
 	xTickSize: 1,
     yTickSize: 1,
@@ -21,14 +21,21 @@ Ext.define('Leon.desktop.Desktop', {
         var me = this;
         me.windows = new Ext.util.MixedCollection();
 
-        
-        var menuItems=[{iconCls: 'menubar-index-button',xtype:'button',text:'桌面'},'-','-'];
-        //me.returnMenuItem(menuItems,me.initMenus);
+ 		me.menubarDock=me.menubarDock||"top";
+ 		me.taskbarDock=me.taskbarDock||"bottom";
+        //alert(me.menubarDock);
+ 		//me.menubarDock="bottom";
+        var menuItems=[{iconCls: 'menubar-index-button',xtype:'button',text:'桌面',handler:function(){
+        	 me.windows.each(function(item){
+        	 	item.hide();
+        	 });
+        }},'-','-'];
+        //me.returnMenuItem(menuItems,me.menuItems);
         
         me.menuCache={};//用来根据url快速导航到按钮的
-        me.initMenuItemEvent(me.initMenus);
-        menuItems=menuItems.concat(me.initMenus);
-        delete me.initMenus;
+        me.initMenuItemEvent(me.menuItems);
+        menuItems=menuItems.concat(me.menuItems);
+        delete me.menuItems;
         
         var switchUsers=null;//me.switchUsers;
         if(me.switchUsers){
@@ -101,7 +108,8 @@ Ext.define('Leon.desktop.Desktop', {
         });
        
         var menubar=Ext.create('Leon.desktop.Menubar',{
-        	dock: 'top',
+        	dock:me.menubarDock,
+        	itemId:"desktop_menubar",
         	layout: {
                 overflowHandler: 'Menu'
             },
@@ -110,9 +118,10 @@ Ext.define('Leon.desktop.Desktop', {
 //            },
         	items:menuItems
         });
-       
+
         var taskbar=Ext.create('Leon.desktop.Taskbar',{
-        	dock: 'left',
+        	dock: me.taskbarDock,
+        	itemId:"desktop_taskbar",
         	//ui: 'footer',
         	layout: {
                 overflowHandler: 'Menu'
@@ -121,27 +130,56 @@ Ext.define('Leon.desktop.Desktop', {
                'z-index': 99999999
             },
             items:[{text:'当前用户:'+me.authMsg,xtype:'label'},'-','-']
-            ,listeners:{
-            	afterrender:function(toolbar, eOpts) {            		
+        });
+        
+        function addHideAction(toolbar,dock){
+        	toolbar.on("afterrender",function(toolbar, eOpts) {            		
             		toolbar.getEl( ).on("mouseover",function(e,htmlElement){
-			        	toolbar.setWidth(toolbar.prevWidth);
+            			if(dock=="left" || dock=="right"){
+            				toolbar.setWidth(toolbar.prevWidth);
+            			} else {
+            				toolbar.setHeight(toolbar.prevWidth);
+            			}
+			        	
 			        });
 			        toolbar.getEl( ).on("mouseout",function(e,htmlElement){
-			        	toolbar.setWidth(3);
+			        	//toolbar.setWidth(3);
+			        	if(dock=="left" || dock=="right"){
+            				toolbar.setWidth(3);
+            			} else {
+            				toolbar.setHeight(3);
+            			}
 			        });
 			        var task = new Ext.util.DelayedTask(function(){
-						  toolbar.setWidth(3);
+						  //toolbar.setWidth(3);
+			        	if(dock=="left" || dock=="right"){
+            				toolbar.setWidth(3);
+            			} else {
+            				toolbar.setHeight(3);
+            			}
 					});
 					task.delay(1000);
-            	},
-            	resize:function( toolbar, width, height, oldWidth, oldHeight, eOpts ) {
+            });
+            toolbar.on("resize",function( toolbar, width, height, oldWidth, oldHeight, eOpts) {
+            		//toolbar.prevWidth=toolbar.getWidth();	
+            	if(dock=="left" || dock=="right"){
             		if(width>15){
-            			toolbar.prevWidth=toolbar.getWidth();
-            			
+            			toolbar.prevWidth=toolbar.getWidth();	
+            		}
+            	} else {
+            		if(height>15){
+            			toolbar.prevWidth=toolbar.getHeight();	
             		}
             	}
-            }
-        });
+            });
+        }
+        
+        if(me.menubarAutoHide){
+        	addHideAction(menubar,me.menubarDock);
+        }
+        if(me.taskbarAutoHide){
+        	addHideAction(taskbar,me.taskbarDock);
+        }
         
         delete me.authMsg;
         //me.tbar=menubar;
@@ -213,10 +251,10 @@ Ext.define('Leon.desktop.Desktop', {
 			}
 		});
 	},
-	initMenuItemEvent:function(initMenus){
+	initMenuItemEvent:function(menuItems){
 		var me=this;
-		for(var i=0;i<initMenus.length;i++){
-        		var model=initMenus[i];
+		for(var i=0;i<menuItems.length;i++){
+        		var model=menuItems[i];
         		
         		model.itemId=model.id;
         		delete model.id;
@@ -241,44 +279,6 @@ Ext.define('Leon.desktop.Desktop', {
         		}
         	}
 	},
-//    /**
-//	 * 返回菜单的组件形式
-//	 */
-//    returnMenuItem:function(menuItems,initMenus){
-//    	var me=this;
-//    	//var initMenus=model.children;
-//    	if(initMenus){
-//        	for(var i=0;i<initMenus.length;i++){
-//        		var model=initMenus[i];
-//        		//alert(model.url);
-//        		var button={
-//        			text:model.text,
-//        			link_url:model.url,
-//        			pluginUrl:model.pluginUrl,
-//        			scripts:model.scripts,
-//        			iconCls:model.iconCls
-//        			,arrowAlign:'right'
-//        		};
-//        		
-//        		if(model.children && model.children.length>0){
-//        			button.menu={items:[]};
-//        			me.returnMenuItem(button.menu.items, model.children);
-//        		} else {
-//        			button.plugins=[{ptype:'menuplugin',pluginUrl:button.pluginUrl,scripts:button.scripts}];
-//        			//alert(menu.url+"===");
-//	        		button.handler=function(btn){
-//		        		me.createWindow({
-//		        			title:btn.text,
-//		        			url:btn.link_url,
-//		        			iconCls:btn.iconCls
-//		        		});
-//	        		}
-//        		}
-//        		menuItems.push(button);
-//        	}
-//        }
-//        return menuItems;
-//    },
 
     createWindow:function(config){
     	if(!config.url){
@@ -370,21 +370,12 @@ Ext.define('Leon.desktop.Desktop', {
 	        });
 			win=Ext.create('Leon.desktop.Window',cfg);
 			me.configWindow(win,cfg);
-
-			if(me.lastXy){
-				win.showAt(me.lastXy[0]+20,me.lastXy[1]+20);
-			} else {
-				win.show();
-			}
-			win.on("show",function(win){
-				me.lastXy=win.getPosition( );
-				//console.dir(me.lastXy);
-			});
-			
+			win.show();
 			return win;
 		}
 
     },
+
     
         //对win进行配置，并和taskbar进行关联
     configWindow:function(win,config){
@@ -536,14 +527,34 @@ Ext.define('Leon.desktop.Desktop', {
     getViewHeight : function(){
       //return (Ext.lib.Dom.getViewHeight() - this.gettaskbarHeight());
     	var me=this;
-    	return (Ext.getBody( ).getHeight() - me.menubar.getHeight( ) - me.taskbar.getHeight( ));
+    	var menubarHeight=0;
+    	var taskbarHeight=0;
+    	if(me.menubar.dock=="top" || me.menubar.dock=="bottom"){
+    		menubarHeight=me.menubar.getHeight( ) ;
+    	}
+    	if(me.taskbar.dock=="top" || me.taskbar.dock=="bottom"){
+    		taskbarHeight=me.taskbar.getHeight( ) ;
+    	}
+
+    	return (Ext.getBody( ).getHeight() - menubarHeight- taskbarHeight);
     },
     getViewWidth : function(){
-       return Ext.getBody( ).getWidth();
+       //return Ext.getBody( ).getWidth();
+    	var me=this;
+    	var menubarWidth=0;
+    	var taskbarWidth=0;
+    	if(me.menubar.dock=="left" || me.menubar.dock=="right"){
+    		menubarWidth=me.menubar.getWidth( ) ;
+    	}
+    	if(me.taskbar.dock=="left" || me.taskbar.dock=="right"){
+    		taskbarWidth=me.taskbar.getWidth( ) ;
+    	}
+    	return Ext.getBody( ).getWidth() - menubarWidth- taskbarWidth;
     },
 
     getWinWidth : function(){
         var width = this.getViewWidth();
+        //alert(width);
         return width < 800 ? 800 : width;
     },
 
@@ -557,5 +568,46 @@ Ext.define('Leon.desktop.Desktop', {
     setWallpaper: function (wallpaper, stretch) {
         this.wallpaper.setWallpaper(wallpaper, stretch);
         return this;
+    },
+    reload:function(){
+    	Ext.getBody().mask("正在重新加载，请稍候...");
+    	location.reload();
+    },
+    setBarDocked:function(menubarDock,taskbarDock){
+    	//this.getDockedComponent("desktop_menubar").setDocked(menubardock);
+    	//this.getDockedComponent("desktop_taskbar").setDocked(taskbardock);
+    	
+    	this.menubarDock=menubarDock;
+    	this.taskbarDock=taskbarDock;
+	    //this.reload();
+    },
+    setBarHide:function(menubarAutoHide,taskbarAutoHide){
+    	this.menubarAutoHide=menubarAutoHide;
+    	this.taskbarAutoHide=taskbarAutoHide;
+	    //this.reload();
+    },
+    createOrupdateDesktopConfig:function(paramsAAA,callback){
+    	var me=this;
+    	var params={
+        		wallpaper:me.getWallpaper(),
+        		wallpaperStretch:me.wallpaper.stretch,
+        		menubarDock:me.menubarDock,
+        		taskbarDock:me.taskbarDock,
+        		menubarAutoHide:me.menubarAutoHide,
+        		taskbarAutoHide:me.taskbarAutoHide
+        }
+        params=Ext.applyIf(params,paramsAAA);
+        //console.dir(params);
+    	//发送到后台保存
+        Ext.Ajax.request({
+        	url:"/app/desktop/createOrUpdate",
+        	method:"POST",
+        	params:params,
+        	success:function(){
+        		if(callback instanceof Function){
+        			callback(params);
+        		}
+        	}
+        });
     }
 });

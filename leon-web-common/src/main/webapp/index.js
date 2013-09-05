@@ -7,13 +7,15 @@ Ext.onReady(function(){
 		headers:{ 'Accept':'application/json;'},
 		success:function(response){
 			var obj=Ext.decode(response.responseText);
-			window.desktop=Ext.create('Leon.desktop.Desktop',{
-				initMenus:obj.root.menuItems
-				,switchUsers:obj.root.switchUsers?obj.root.switchUsers:null,
-				authMsg:obj.root.authMsg,
-				wallpaper:obj.root.wallpaper,//"desktop/wallpapers/Blue-Sencha.jpg",
-				wallpaperStretch:obj.root.wallpaperStretch//false
-			});
+//			window.desktop=Ext.create('Leon.desktop.Desktop',{
+//				initMenus:obj.root.menuItems
+//				,switchUsers:obj.root.switchUsers?obj.root.switchUsers:null,
+//				authMsg:obj.root.authMsg,
+//				wallpaper:obj.root.wallpaper,//"desktop/wallpapers/Blue-Sencha.jpg",
+//				wallpaperStretch:obj.root.wallpaperStretch,
+//				
+//			});
+			window.desktop=Ext.create('Leon.desktop.Desktop',obj.root);
 			Ext.create('Ext.container.Viewport',{
 				layout:'fit',
 				border:false,

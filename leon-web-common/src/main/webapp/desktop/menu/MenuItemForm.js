@@ -29,21 +29,6 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
        var me = this;
 
        me.items= [
-//       		{
-//	            fieldLabel: 'parent_id',
-//	            //afterLabelTextTpl: me.required,
-//	            name: 'parent_id',
-//	            readOnly:true
-//	            //allowBlank: false,
-//	            //tooltip: 'Enter your first name'
-//	        },{
-//	            fieldLabel: '上级名称',
-//	            //afterLabelTextTpl: me.required,
-//	            name: 'parent_text',
-//	            readOnly:true
-//	            //allowBlank: false,
-//	            //tooltip: 'Enter your first name'
-//	        },
            {
 	            fieldLabel: 'id',
 	            //afterLabelTextTpl: me.required,
@@ -67,14 +52,14 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
                         name      : 'fun_text',
                         fieldLabel: '功能名称',
                         //margin: '0 5 0 0',
-                        allowBlank: false
+                        allowBlank: true
                     },{
                         xtype     : 'hidden',
                         name      : 'fun_id',
                         flex:0,
                         fieldLabel: '功能id',
                         //margin: '0 5 0 0',
-                        allowBlank: false
+                        allowBlank: true
                     },{
                         xtype     : 'button',
                         flex:0,
@@ -184,6 +169,7 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
                 form.getForm().updateRecord();
 				form.getRecord().save({
 					success: function(record, operation) {
+						me.fireEvent('createOrupdate',me,record);
 					}
 				});
             }
@@ -194,63 +180,9 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
             	//var copyRcd=this.up('form').getRecord( );
                 this.up('form').getForm().reset(true);
             }
-        }
-//        ,{
-//            text: '复制',
-//            iconCls:'form-copy-button',
-//            handler: function() {
-//                //this.up('form').getForm().isValid();
-//            	var copyRcd=this.up('form').getRecord( ).copy();
-//            	copyRcd.set("id",null);
-//            	this.up('form').copyRcd=copyRcd;
-//            	this.nextSibling().show();
-//            }
-//        },{
-//            text: '粘贴',
-//            hidden:true,
-//            iconCls:'form-paste-button',
-//            handler: function() {
-//            	this.up('form').getForm().loadRecord(this.up('form').copyRcd);
-//            	this.up('form').action="create";
-//                this.hide();
-//            }
-//        },{
-//            text: '新建子功能',
-//            iconCls:'form-addChild-button',
-//            itemId:'createChild',
-//            handler: function(bth) {
-//            	var parent=this.up('form').getRecord( );
-//            	this.up('form').getForm().reset();
-//            	//alert(parent.get("menu_id"));
-//            	var newRecord=Ext.createModel("Leon.desktop.menu.MenuItem",{'parent_id':parent.get("id"),'parent_text':parent.get("text"),menu_id:parent.get("menu_id")});
-//            	this.up('form').getForm().setValues({'parent_id':parent.get("id"),'parent_text':parent.get("text")});
-//            	this.up('form').getForm().loadRecord(newRecord);
-//            	this.up('form').action="create";
-//            	
-//            	bth.hide();
-//            }
-//        },{
-//            text: '删除',
-//            iconCls:'form-delete-button',
-//            handler: function() {
-//
-//            	var record= this.up('form').getRecord();
-//            	var parent=record.parentNode;
-//            	var index=parent.indexOf(record);
-//            	if(record.hasChildNodes( )){
-//            		Ext.Msg.alert("消息","请先删除子节点!");
-//            		return;
-//            	}
-//                record.destroy({
-//                	failure: function(record, operation) {
-//                		parent.insertChild(index,record);
-//                	}
-//                });
-//            }
-//        }
-        ];
+        }];
        
-       me.addEvents("created");
+       me.addEvents("createOrupdate");
        me.callParent();
 	},
 	showFunTree:function(showTarget,fun_id_txt,fun_text_txt){

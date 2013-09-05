@@ -92,10 +92,10 @@ public class UserRoleService extends BaseRepository<UserRole, UserRolePK> {
 		return result;
 	}
 	
-	public void create(UserRole userRole){
+	public UserRole create(UserRole userRole){
 		//注意还要互斥的角色判断
 		userRole.setCreateDate(new Date());
-		super.create(userRole);
+		return super.create(userRole);
 	}
 	
 	

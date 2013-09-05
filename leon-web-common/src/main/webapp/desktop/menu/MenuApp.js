@@ -84,7 +84,12 @@ Ext.onReady(function(){
 		split: true,
 		collapsible: true,
 		title:'表单',
-		width:460
+		width:460,
+		listeners:{
+			createOrupdate:function(form,record){
+				tree.getStore().load({node:record});
+			}
+		}
 	});
 	
 	

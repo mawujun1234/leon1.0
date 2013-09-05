@@ -11,16 +11,20 @@ import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.converters.DateConverter;
 import org.dozer.DozerBeanMapper;
+import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.FatalBeanException;
 import org.springframework.util.Assert;
@@ -32,9 +36,9 @@ import com.google.common.collect.Lists;
  * 1.封装Dozer, 深度转换对象到对象
  * 2.封装Apache Commons BeanUtils, 将字符串转换为对象.
  * 
- * @author calvin
+ * 
  */
-public abstract class BeanUtils {
+public abstract class BeanUtils extends org.apache.commons.beanutils.BeanUtils{
 
 	/**
 	 * 持有Dozer单例, 避免重复创建DozerMapper消耗资源.
@@ -206,6 +210,35 @@ public abstract class BeanUtils {
 	public static Object convert(String[] values, Class<?> toType) {
 		return ConvertUtils.convert(values, toType);
 	}
+	
+	 /**
+     * <p>Copy the specified property value to the specified destination bean,
+     * performing any type conversion that is required.</p>    
+     *
+     * <p>For more details see <code>BeanUtilsBean</code>.</p>
+     *
+     * @param bean Bean on which setting is to be performed
+     * @param name Property name (can be nested/indexed/mapped/combo)
+     * @param value Value to be set
+     *
+     * @exception IllegalAccessException if the caller does not have
+     *  access to the property accessor method
+     * @exception InvocationTargetException if the property accessor method
+     *  throws an exception
+     * @see BeanUtilsBean#copyProperty     
+     */
+    public static void copyProperty(Object bean, String name, Object value)
+        throws IllegalAccessException, InvocationTargetException {
+
+        BeanUtilsBean.getInstance().copyProperty(bean, name, value);
+    }
+	
+	public static void copyProperties(Object source, Object target, String[] ignoreProperties)
+			throws BeansException {
+
+		org.springframework.beans.BeanUtils.copyProperties(source, target, ignoreProperties);
+	}
+
 
 	
 //	public static boolean isWrapClass(Class clz) {

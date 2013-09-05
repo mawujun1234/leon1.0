@@ -30,7 +30,7 @@ public class UserService  extends BaseRepository<User, String>{
 		return super.queryList("queryRole", userId,String.class);
 	}
  
-	public void delete(User entity) {
+	public User delete(User entity) {
 		//删除和角色的uganxi
 		//super.deleteBatch(Cnd.delete().ad)
 		userRoleService.deleteBatch(Cnd.delete().andEquals("id.userId", entity.getId()));
@@ -39,7 +39,7 @@ public class UserService  extends BaseRepository<User, String>{
 		//删除和参数的关系
 		parameterSubjectService.deleteBatch(Cnd.delete().andEquals("subjectId",  entity.getId()).andEquals("subjectType", SubjectType.USER));
 		
-		super.delete(entity);
+		return super.delete(entity);
 	}
 	
 	public void recover(String id) {

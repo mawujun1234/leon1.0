@@ -45,14 +45,14 @@ public class RoleFunService extends BaseRepository<RoleFun, String> {
 //	@Resource(name="filterInvocationSecurityMetadataSourceImpl")
 //	FilterInvocationSecurityMetadataSourceImpl  filterInvocationSecurityMetadataSourceImpl;
 	
-	public void create(RoleFun roleFun) {
+	public RoleFun create(RoleFun roleFun) {
 		roleFun.setCreateDate(new Date());
-		super.create(roleFun);
+		roleFun=super.create(roleFun);
 
 		Role role=roleService.get(roleFun.getRole().getId());
 		role.addFun(roleFun);
 		roleFun.getFun().getCode();//不能删除，用来初始化fun的
-		
+		return roleFun;
 		//更新spring security中的权限信息
 		//Fun fun=funService.get(roleFun.getFun().getId());
 		//filterInvocationSecurityMetadataSourceImpl.addConfigAttribute(fun.getUrl(), roleFun.getRole().getId());
