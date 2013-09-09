@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.controller.spring.mvc.JsonConfigHolder;
+import com.mawujun.exception.BussinessException;
 import com.mawujun.utils.FileUtils;
 import com.mawujun.utils.page.WhereInfo;
 
@@ -70,7 +71,10 @@ public class FunController {
 	
 	@RequestMapping("/fun/create")
 	@ResponseBody
-	public Fun create(@RequestBody Fun fun){				
+	public Fun create(@RequestBody Fun fun){	
+//		if(true){
+//			throw new RuntimeException("测试一场日志");
+//		}
 		funService.create(fun);
 		return fun;
 	}
