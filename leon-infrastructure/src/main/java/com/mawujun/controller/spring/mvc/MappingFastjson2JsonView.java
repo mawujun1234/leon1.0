@@ -102,7 +102,7 @@ public class MappingFastjson2JsonView extends AbstractView {
 			}
 			//model=map;
 			
-			logger.debug(exception.getMessage(),exception);
+			logger.warn(exception.getMessage(),exception);
 			
 			JsonConfigHolder.setAutoWrap(false);
 			String jsonStr=FastJsonToStringUtils.getJsonString(map);
