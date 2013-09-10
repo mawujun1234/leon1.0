@@ -17,12 +17,63 @@ Ext.define('Leon.desktop.Taskbar', {
     initComponent: function () {
         var me = this;
         me.windowBar = new Ext.toolbar.Toolbar(me.getWindowBarConfig());
-        me.items = [
-            {text:'当前用户:'+me.authMsg,xtype:'label'},'-','-',
+        me.items = [{
+	        	text:'欢迎:'+me.desktop.authMsg,
+	        	iconCls:'icons_user_go',
+	        	xtype: 'splitbutton',
+	        	handler:function(){
+	        		//location.href="/j_spring_security_switch_user?j_username=11";
+	        		me.desktop.showSwitchUserWin();
+	        	},
+	        	menu : {items:[
+			        {
+			        	text: '切换用户',
+			        	iconCls:'icons_user_go',
+			        	handler:function(){
+			        		//location.href="/j_spring_security_switch_user?j_username=11";
+			        		me.desktop.showSwitchUserWin();
+			        	},
+			        	menu:me.desktop.switchUsers
+			        },
+			        {
+			        	text: '回到用户',
+			        	iconCls:'icons_user_home',
+			        	handler:function(){
+			        		location.href="/j_spring_security_exit_user";
+			        	}
+			        },
+			        {
+			        	text: '登录',
+			        	iconCls:'icons_door_in',
+			        	handler:function(){
+			        		
+			        		var loginForm=Ext.create('Leon.LoginWin',{
+			 					modal:true,
+			 					standardSubmit:true,
+			 					success:function(form, action){
+			 						loginForm.close();
+			 					},
+			 					failure:function(form, action){
+			 						Ext.MessageBox.alert("错误", "用户名或密码错误!" );
+			 					}
+			 				});
+							loginForm.show();
+			        	}
+			        },
+			        {
+			        	text: '退出',
+			        	iconCls:'icons_door_out',
+			        	handler:function(){
+			        		location.href="/j_spring_security_logout";
+			        	}
+			        }
+			    ]}
+	        },'-','-',
+            //{text:'当前用户:'+me.desktop.authMsg,xtype:'label'},'-','-',
             me.windowBar,
             '-'
         ];
-        delete me.authMsg;
+        //delete me.authMsg;
 
 //        me.startMenu = new Ext.ux.desktop.StartMenu(me.startConfig);
 //

@@ -52,62 +52,62 @@ Ext.define('Leon.desktop.Desktop', {
         		});
         	}
         }
-        delete me.switchUsers;
+       me.switchUsers=switchUsers;
         
         
-        menuItems.push('->','-',{
-        	text:'切换用户',
-        	iconCls:'icons_user_go',
-        	xtype: 'splitbutton',
-        	handler:function(){
-        		//location.href="/j_spring_security_switch_user?j_username=11";
-        		me.showSwitchUserWin();
-        	},
-        	menu : {items:[
-		        {
-		        	text: '切换用户',
-		        	iconCls:'icons_user_go',
-		        	handler:function(){
-		        		//location.href="/j_spring_security_switch_user?j_username=11";
-		        		me.showSwitchUserWin();
-		        	},
-		        	menu:switchUsers
-		        },
-		        {
-		        	text: '回到用户',
-		        	iconCls:'icons_user_home',
-		        	handler:function(){
-		        		location.href="/j_spring_security_exit_user";
-		        	}
-		        },
-		        {
-		        	text: '登录',
-		        	iconCls:'icons_door_in',
-		        	handler:function(){
-		        		
-		        		var loginForm=Ext.create('Leon.LoginWin',{
-		 					modal:true,
-		 					standardSubmit:true,
-		 					success:function(form, action){
-		 						loginForm.close();
-		 					},
-		 					failure:function(form, action){
-		 						Ext.MessageBox.alert("错误", "用户名或密码错误!" );
-		 					}
-		 				});
-						loginForm.show();
-		        	}
-		        },
-		        {
-		        	text: '退出',
-		        	iconCls:'icons_door_out',
-		        	handler:function(){
-		        		location.href="/j_spring_security_logout";
-		        	}
-		        }
-		    ]}
-        });
-       
+//        menuItems.push('->','-',{
+//        	text:'切换用户',
+//        	iconCls:'icons_user_go',
+//        	xtype: 'splitbutton',
+//        	handler:function(){
+//        		//location.href="/j_spring_security_switch_user?j_username=11";
+//        		me.showSwitchUserWin();
+//        	},
+//        	menu : {items:[
+//		        {
+//		        	text: '切换用户',
+//		        	iconCls:'icons_user_go',
+//		        	handler:function(){
+//		        		//location.href="/j_spring_security_switch_user?j_username=11";
+//		        		me.showSwitchUserWin();
+//		        	},
+//		        	menu:switchUsers
+//		        },
+//		        {
+//		        	text: '回到用户',
+//		        	iconCls:'icons_user_home',
+//		        	handler:function(){
+//		        		location.href="/j_spring_security_exit_user";
+//		        	}
+//		        },
+//		        {
+//		        	text: '登录',
+//		        	iconCls:'icons_door_in',
+//		        	handler:function(){
+//		        		
+//		        		var loginForm=Ext.create('Leon.LoginWin',{
+//		 					modal:true,
+//		 					standardSubmit:true,
+//		 					success:function(form, action){
+//		 						loginForm.close();
+//		 					},
+//		 					failure:function(form, action){
+//		 						Ext.MessageBox.alert("错误", "用户名或密码错误!" );
+//		 					}
+//		 				});
+//						loginForm.show();
+//		        	}
+//		        },
+//		        {
+//		        	text: '退出',
+//		        	iconCls:'icons_door_out',
+//		        	handler:function(){
+//		        		location.href="/j_spring_security_logout";
+//		        	}
+//		        }
+//		    ]}
+//        });
+//       
         var menubar=Ext.create('Leon.desktop.Menubar',{
         	dock:me.menubarDock,
         	itemId:"desktop_menubar",
@@ -122,9 +122,11 @@ Ext.define('Leon.desktop.Desktop', {
 
         var taskbar=Ext.create('Leon.desktop.Taskbar',{
         	dock: me.taskbarDock,
-        	authMsg:me.authMsg
+        	desktop:me
+        	//authMsg:me.authMsg
            // items:[{text:'当前用户:'+me.authMsg,xtype:'label'},'-','-']
         });
+        
         
         
         function addHideAction(toolbar,dock){
@@ -177,6 +179,7 @@ Ext.define('Leon.desktop.Desktop', {
         }
         
         delete me.authMsg;
+        delete me.switchUsers;
         //me.tbar=menubar;
         //me.bbar=taskbar;
         this.dockedItems =[taskbar,menubar];
@@ -287,6 +290,8 @@ Ext.define('Leon.desktop.Desktop', {
     	}
     	
     	var me = this,win;
+    	//一弹出就醉大话
+    	config.maximized=true
     	
     	//alert(config.url.lastIndexOf('.js')+'=='+config.url.length);
     	//config.url='/aaa/aa.js';
@@ -335,7 +340,7 @@ Ext.define('Leon.desktop.Desktop', {
 				            ,items:[obj]
 				            //,height:me.getViewHeight()*0.9
 				            //,width:me.getViewWidth()*0.9
-				            //maximized:false,
+				            
 				        });
     					win=Ext.create('Ext.window.Window',cfg);
     					me.configWindow(win,cfg);
