@@ -23,8 +23,16 @@ Ext.define('Leon.desktop.Taskbar', {
 	        	xtype: 'splitbutton',
 	        	handler:function(){
 	        		//location.href="/j_spring_security_switch_user?j_username=11";
-	        		me.desktop.showSwitchUserWin();
+	        		//me.desktop.showSwitchUserWin();
 	        	},
+	        	listeners:{
+		        	mouseover:function(btn){
+		        		btn.maybeShowMenu();
+		        	}
+//		        	menutriggerout:function(btn){
+//		        		btn.hideMenu();
+//		        	}
+		        },
 	        	menu : {items:[
 			        {
 			        	text: '切换用户',
