@@ -12,7 +12,7 @@ Ext.define('Leon.desktop.Taskbar', {
         overflowHandler: 'Menu'
     },
     style:{
-        'z-index': 99999
+        'z-index': 88888
     },
     initComponent: function () {
         var me = this;
@@ -21,18 +21,19 @@ Ext.define('Leon.desktop.Taskbar', {
 	        	text:'欢迎:'+me.desktop.authMsg,
 	        	iconCls:'icons_user_go',
 	        	xtype: 'splitbutton',
-	        	handler:function(){
+	        	handler:function(btn){
 	        		//location.href="/j_spring_security_switch_user?j_username=11";
 	        		//me.desktop.showSwitchUserWin();
+	        		btn.maybeShowMenu();
 	        	},
-	        	listeners:{
-		        	mouseover:function(btn){
-		        		btn.maybeShowMenu();
-		        	}
-//		        	menutriggerout:function(btn){
-//		        		btn.hideMenu();
+//	        	listeners:{
+//		        	mouseover:function(btn){
+//		        		btn.maybeShowMenu();
 //		        	}
-		        },
+////		        	menutriggerout:function(btn){
+////		        		btn.hideMenu();
+////		        	}
+//		        },
 	        	menu : {items:[
 			        {
 			        	text: '切换用户',

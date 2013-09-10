@@ -6,6 +6,13 @@ Ext.define('Leon.desktop.Menubar', {
         'Ext.resizer.Splitter',
         'Ext.menu.Menu'
     ],
+    itemId:"desktop_menubar",
+    layout: {
+         overflowHandler: 'Menu'
+    },
+    style:{
+       'z-index': 88888
+    },
     initComponent: function () {
         var me = this;
 

@@ -110,13 +110,7 @@ Ext.define('Leon.desktop.Desktop', {
 //       
         var menubar=Ext.create('Leon.desktop.Menubar',{
         	dock:me.menubarDock,
-        	itemId:"desktop_menubar",
-        	layout: {
-                overflowHandler: 'Menu'
-            },
-//        	style:{
-//               'z-index': 666
-//            },
+        	
         	items:menuItems
         });
 
@@ -299,8 +293,8 @@ Ext.define('Leon.desktop.Desktop', {
     	}
     	
     	var me = this,win;
-    	//一弹出就醉大话
-    	config.maximized=true
+//    	//一弹出就醉大话
+//    	config.maximized=true
     	
     	//alert(config.url.lastIndexOf('.js')+'=='+config.url.length);
     	//config.url='/aaa/aa.js';
@@ -375,9 +369,9 @@ Ext.define('Leon.desktop.Desktop', {
 	            minimizable: true,
 	            maximizable: true
 	            ,closeAction:'close'
-	            ,height:me.getViewHeight()*0.9
-	            ,width:me.getViewWidth()*0.9
-	            //maximized:false,
+	            //,height:me.getViewHeight()*0.9
+	            //,width:me.getViewWidth()*0.9
+	            ,maximized:true
 	        });
 			win=Ext.create('Leon.desktop.Window',cfg);
 			me.configWindow(win,cfg);
@@ -579,7 +573,7 @@ Ext.define('Leon.desktop.Desktop', {
         var me = this;
         return {
         	style:{
-		        'z-index': 999990+1
+		        'z-index': 999999
 		    },
             defaultAlign: 'br-tr',
             items: [
