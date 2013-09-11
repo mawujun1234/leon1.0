@@ -5,7 +5,7 @@ Ext.define('Leon.common.IconWindow', {
     extend: 'Ext.window.Window',
     pagesize:66,
     width:500,
-    height:350,
+    height:380,
     title:'选择图标',
     modal:true,
     initComponent: function () {
@@ -16,7 +16,7 @@ Ext.define('Leon.common.IconWindow', {
 		    fields: ['iconCls','src','name'],
 		    proxy:{
 		    	type: 'ajax',
-        		url : '/app/icon/query',
+        		url : '/app/png/query',
         		headers:{ 'Accept':'application/json;'},
         		actionMethods: { read: 'POST' },
         		extraParams:{limit:me.pagesize},

@@ -27,6 +27,7 @@ System.out.println(theme);
 %>
 <link id="theme" rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/ext-4/resources/css/ext-all<%=theme %>.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/common/icons.css" />
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/common/pngs.css">
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/ext-4/bootstrap.js"></script>
 <%if(theme!=null && !"".equals(theme)) { %>
