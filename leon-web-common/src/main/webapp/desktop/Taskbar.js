@@ -11,9 +11,10 @@ Ext.define('Leon.desktop.Taskbar', {
     layout: {
         overflowHandler: 'Menu'
     },
-    style:{
-        'z-index': 88888
-    },
+//    style:{
+//        'z-index': 88888
+//    },
+    desktop:null,
     initComponent: function () {
         var me = this;
         me.windowBar = new Ext.toolbar.Toolbar(me.getWindowBarConfig());
@@ -80,7 +81,10 @@ Ext.define('Leon.desktop.Taskbar', {
 	        },'-','-',
             //{text:'当前用户:'+me.desktop.authMsg,xtype:'label'},'-','-',
             me.windowBar,
-            '-'
+            '-',
+            {iconCls: 'icons_desktop-image',xtype:'button',tooltip:'显示桌面',text:'',handler:function(){
+	        	 me.desktop.onAllWindowMinimize();
+	        }}
         ];
         //delete me.authMsg;
 
@@ -184,6 +188,8 @@ Ext.define('Leon.desktop.Taskbar', {
             e.stopEvent();
             me.windowMenu.theWin = btn.win;
             me.windowMenu.showBy(t);
+            //me.windowMenu.showAt(e);
+            
         }
     },
     getWindowBarConfig: function () {

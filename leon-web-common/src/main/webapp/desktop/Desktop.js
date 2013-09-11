@@ -26,11 +26,7 @@ Ext.define('Leon.desktop.Desktop', {
  		me.taskbarDock=me.taskbarDock||"bottom";
         //alert(me.menubarDock);
  		//me.menubarDock="bottom";
-        var menuItems=[{iconCls: 'menubar-index-button',xtype:'button',text:'桌面',handler:function(){
-        	 me.windows.each(function(item){
-        	 	item.hide();
-        	 });
-        }},'-','-'];
+        var menuItems=['-','-'];
         //me.returnMenuItem(menuItems,me.menuItems);
         
         me.menuCache={};//用来根据url快速导航到按钮的
@@ -53,61 +49,7 @@ Ext.define('Leon.desktop.Desktop', {
         	}
         }
        me.switchUsers=switchUsers;
-        
-        
-//        menuItems.push('->','-',{
-//        	text:'切换用户',
-//        	iconCls:'icons_user_go',
-//        	xtype: 'splitbutton',
-//        	handler:function(){
-//        		//location.href="/j_spring_security_switch_user?j_username=11";
-//        		me.showSwitchUserWin();
-//        	},
-//        	menu : {items:[
-//		        {
-//		        	text: '切换用户',
-//		        	iconCls:'icons_user_go',
-//		        	handler:function(){
-//		        		//location.href="/j_spring_security_switch_user?j_username=11";
-//		        		me.showSwitchUserWin();
-//		        	},
-//		        	menu:switchUsers
-//		        },
-//		        {
-//		        	text: '回到用户',
-//		        	iconCls:'icons_user_home',
-//		        	handler:function(){
-//		        		location.href="/j_spring_security_exit_user";
-//		        	}
-//		        },
-//		        {
-//		        	text: '登录',
-//		        	iconCls:'icons_door_in',
-//		        	handler:function(){
-//		        		
-//		        		var loginForm=Ext.create('Leon.LoginWin',{
-//		 					modal:true,
-//		 					standardSubmit:true,
-//		 					success:function(form, action){
-//		 						loginForm.close();
-//		 					},
-//		 					failure:function(form, action){
-//		 						Ext.MessageBox.alert("错误", "用户名或密码错误!" );
-//		 					}
-//		 				});
-//						loginForm.show();
-//		        	}
-//		        },
-//		        {
-//		        	text: '退出',
-//		        	iconCls:'icons_door_out',
-//		        	handler:function(){
-//		        		location.href="/j_spring_security_logout";
-//		        	}
-//		        }
-//		    ]}
-//        });
-//       
+             
         var menubar=Ext.create('Leon.desktop.Menubar',{
         	dock:me.menubarDock,
         	
@@ -572,9 +514,9 @@ Ext.define('Leon.desktop.Desktop', {
     createWindowMenu: function () {
         var me = this;
         return {
-        	style:{
-		        'z-index': 999999
-		    },
+//        	style:{
+//        		"z-index":99999
+//        	},
             defaultAlign: 'br-tr',
             items: [
                 { text: '恢复', handler: me.onWindowMenuRestore, scope: me },
@@ -590,7 +532,7 @@ Ext.define('Leon.desktop.Desktop', {
             }
         };
     },
-     
+   
 
     onWindowMenuBeforeShow: function (menu) {
         var items = menu.items.items, win = menu.theWin;
@@ -622,6 +564,14 @@ Ext.define('Leon.desktop.Desktop', {
         var me = this, win = me.windowMenu.theWin;
 
         win.minimize();
+    },
+    /**
+     * 所有窗口最小化
+     */
+    onAllWindowMinimize:function(){
+    	this.windows.each(function(item){
+	        item.hide();
+	    });
     },
 
     onWindowMenuRestore: function () {
