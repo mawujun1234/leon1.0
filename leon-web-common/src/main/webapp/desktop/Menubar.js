@@ -4,7 +4,8 @@ Ext.define('Leon.desktop.Menubar', {
     requires: [
         'Ext.button.Button',
         'Ext.resizer.Splitter',
-        'Ext.menu.Menu'
+        'Ext.menu.Menu',
+        'Leon.desktop.QuickStartPanel'
     ],
     itemId:"desktop_menubar",
     layout: {
@@ -15,14 +16,32 @@ Ext.define('Leon.desktop.Menubar', {
     },
     initComponent: function () {
         var me = this;
-       // alert(me.items instanceof Array);
+        
 		var newItems=[];
-		newItems.push({text:'',iconCls:'icons_arrow_inout',tooltip:'快速启动',handler:function(){
-			alert("还没有做，这里弹出的是所有菜单的快捷方式，和360的一样");
-		}});
+		newItems.push({text:'',iconCls:'icons_arrow_inout',tooltip:'快速启动',
+//			handler:function(){
+//				//alert("还没有做，这里弹出的是所有菜单的快捷方式，和360的一样");
+//				var panel=Ext.create('Leon.desktop.QuickStartPanel',{
+//					title:'快速启动'
+//				});
+//			}
+			listeners:{
+				mouseover:function(btn){
+					btn.maybeShowMenu();
+				}
+			},
+			menu:{
+				xtype: 'menu',
+	            plain: true,
+	            items: Ext.create('Leon.desktop.QuickStartPanel',{
+					
+				})
+			}
+		});
 		
 		me.items=newItems.concat(me.items);
 		//me.items=newItems;
+
 
         me.callParent();
     }
