@@ -19,6 +19,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 	
+	<link rel="stylesheet" type="text/css" href="desktop/desktop.css">
+	
 	<%@include file="common/init.jsp" %>
 	<script type="text/javascript" src="desktop/Desktop.js"></script>
 	<script type="text/javascript" src="index.js"></script>

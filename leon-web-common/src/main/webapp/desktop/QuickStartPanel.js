@@ -14,6 +14,16 @@ Ext.define('Leon.desktop.QuickStartPanel', {
     shortcutItemSelector: 'div.ux-desktop-shortcut',
     width:300,
     height:200,
+//    shadow:false,
+//    bodyBorder :false,
+//    border:false,
+//    bodyStyle:{
+//    	//background:'transparent',
+//    	//background: 'red',
+//    	"opacity": 10,
+//    	"filter": "alpha(opacity=10)"
+//    },
+    frame:true,
     initComponent: function () {
         var me = this;
         
@@ -24,13 +34,12 @@ Ext.define('Leon.desktop.QuickStartPanel', {
     },
     createShortcutsStore:function(){
     	var myStore = Ext.create('Ext.data.Store', {
-	     fields: [
-	       { name: 'name' },
-	       { name: 'iconCls' },
-	       { name: 'module' }
-	    ],
-	    data:[{name:1,iconCls:'pngs_32_13_32x32',module:'1'}],
-		     autoLoad: true
+		    fields: [
+		       { name: 'name' },
+		       { name: 'iconCls' },
+		       { name: 'module' }
+		    ],
+		    data:[{name:'快捷方式',iconCls:'pngs_32_20110213231934121',module:'1'},{name:'快捷方式',iconCls:'pngs_32_20110213231934121',module:'1'}]
 		});
     	this.shortcuts=myStore;
     },
