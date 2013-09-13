@@ -10,10 +10,11 @@ Ext.define('Leon.desktop.Desktop', {
 	],
 	layout:'fit',
 	border:false,
-	menuItems:'',//初始化时，传递过来的菜单，根据这菜单数据生成菜单
+	//menuItems:'',//初始化时，传递过来的菜单，根据这菜单数据生成菜单
 	
 	xTickSize: 1,
     yTickSize: 1,
+    
     
 	windows:null,
 	lastActiveWindow:null,
@@ -197,15 +198,7 @@ Ext.define('Leon.desktop.Desktop', {
 
         		model.link_url=model.url;
         		delete model.url;
-        		
-//        		model.listeners={
-//        			mouseover:function(btn){
-//        				btn.maybeShowMenu();
-//        			}
-////        			mouseout:function(btn){
-////        				btn.hideMenu();
-////        			}
-//        		}
+
         		
         		if(model.menu && model.menu.items && model.menu.items.length>0){
         			me.initMenuItemEvent(model.menu.items);

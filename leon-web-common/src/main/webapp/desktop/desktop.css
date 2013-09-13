@@ -16,6 +16,8 @@
     padding: 8px;
     margin: 4px;
     width: 64px;
+    height: 64px;
+    float:left;
 }
 
 .ux-desktop-shortcut-icon {
@@ -34,7 +36,12 @@
     color: red;
 }
 
-.x-view-over .ux-desktop-shortcut-text {
+.x-item-over .ux-desktop-shortcut-text {
     text-decoration: underline;
+}
+.x-item-over{
+    background: #eff5fb url(selected.gif) no-repeat right bottom;
+    border:1px solid #99bbe8;
+    padding: 4px;
 }
 

@@ -18,24 +18,19 @@ Ext.define('Leon.desktop.Menubar', {
         var me = this;
         
 		var newItems=[];
+		var quickStartPanel=Ext.create('Leon.desktop.QuickStartPanel',{
+		});
 		newItems.push({text:'',iconCls:'icons_arrow_inout',tooltip:'快速启动',
-//			handler:function(){
-//				//alert("还没有做，这里弹出的是所有菜单的快捷方式，和360的一样");
-//				var panel=Ext.create('Leon.desktop.QuickStartPanel',{
-//					title:'快速启动'
-//				});
-//			}
 			listeners:{
 				mouseover:function(btn){
+					//quickStartPanel.btn=btn;
 					btn.maybeShowMenu();
 				}
 			},
 			menu:{
 				xtype: 'menu',
 	            plain: true,
-	            items: Ext.create('Leon.desktop.QuickStartPanel',{
-					
-				})
+	            items: quickStartPanel
 			}
 		});
 		

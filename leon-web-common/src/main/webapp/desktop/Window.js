@@ -66,6 +66,13 @@ Ext.define('Leon.desktop.Window', {
 		    handler: function(event, toolEl, toolPanel){  	
 		    	iframe.load(me.url);
 		    }
+		},{
+			type:'gear',
+			 tooltip: '设置个性化',
+		    // hidden:true,
+		    handler: function(event, toolEl, toolPanel){  	
+		    	//iframe.load(me.url);
+		    }
 		},
 		{
 		    type:'help',
