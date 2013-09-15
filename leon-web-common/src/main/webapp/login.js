@@ -1,7 +1,7 @@
 Ext.require('Leon.LoginWin');
 Ext.onReady(function(){
 //	var form=new Ext.form.Panel({
-//		url: Ext.ContextPath+'/j_spring_security_check',
+//		url: Ext.JspContextPath+'/j_spring_security_check',
 //		frame:true,
 //		margin:'0 0 0 0',
 //		standardSubmit:true,

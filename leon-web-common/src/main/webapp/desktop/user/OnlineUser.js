@@ -15,7 +15,7 @@ Ext.onReady(function(){
        		autoLoad:true,
        		proxy:{
 		    	type: 'ajax',
-        		url : "/app/onlineUser/query",
+        		url : Ext.ContextPath+"/onlineUser/query",
         		headers:{ 'Accept':'application/json;'},
         		actionMethods: { read: 'POST' },
         		//extraParams:{limit:50},
@@ -44,7 +44,7 @@ Ext.onReady(function(){
 							//.getLastSelected( );
 							//
 							Ext.Ajax.request({
-								url:'/app/onlineUser/forceExpired',
+								url:Ext.ContextPath+'/onlineUser/forceExpired',
 								method:'POST',
 								params:{sessionId:record.get("sessionId")},
 								success:function(){

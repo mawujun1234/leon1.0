@@ -12,7 +12,7 @@ Ext.onReady(function(){
 		//useArrows: true,
 		rootVisible: false,
 		fields:['id','text','discriminator'],
-		url:'/app/constantType/queryNode',
+		url:Ext.ContextPath+'/constantType/queryNode',
 		//region:'west',
 		split:true,
 		flex: 0.8,
@@ -80,7 +80,7 @@ Ext.onReady(function(){
 
 				       var parent=node.parentNode;
 				       Ext.Ajax.request({
-				       	url:'/app/constantType/deleteNode',
+				       	url:Ext.ContextPath+'/constantType/deleteNode',
 				       	params:{id:node.get('id'),discriminator:node.get('discriminator')},
 				       	success:function(){
 				       	

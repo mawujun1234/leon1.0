@@ -16,7 +16,7 @@ Ext.define('Leon.common.IconWindow', {
 		    fields: ['iconCls','iconCls32','src','src16','name'],
 		    proxy:{
 		    	type: 'ajax',
-        		url : '/app/png/query',
+        		url : Ext.ContextPath+'/png/query',
         		headers:{ 'Accept':'application/json;'},
         		actionMethods: { read: 'POST' },
         		extraParams:{limit:me.pagesize},

@@ -173,7 +173,7 @@ Ext.define('Leon.desktop.Desktop', {
 
 		//根据jspUrl获取菜单的Item
 		Ext.Ajax.request({
-			url:'/app/desktop/queryMenuItem',
+			url:Ext.ContextPath+'/desktop/queryMenuItem',
 			method:'POST',
 			params:{jspUrl:jspUrl},
 			success:function(response){
@@ -615,7 +615,7 @@ Ext.define('Leon.desktop.Desktop', {
         //console.dir(params);
     	//发送到后台保存
         Ext.Ajax.request({
-        	url:"/app/desktop/createOrUpdate",
+        	url:Ext.ContextPath+"/desktop/createOrUpdate",
         	method:"POST",
         	params:params,
         	success:function(){

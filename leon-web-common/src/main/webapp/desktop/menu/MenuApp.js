@@ -120,7 +120,7 @@ Ext.onReady(function(){
 				return;
 			}
 			Ext.Ajax.request({
-				url:'/app/menuItem/createByFun',
+				url:Ext.ContextPath+'/menuItem/createByFun',
 				method:'POST',
 				params:{funId:record.getId(),parentId:parent?parent.getId():null,menuId:menuTree.getMenuId()},
 				success:function(response){

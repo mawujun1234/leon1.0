@@ -70,11 +70,11 @@ Ext.apply(Ext,{
 			data.proxy={
 				type:'bajax',
 				api:{
-					read:'/app/'+path+'/query',
-					load : '/app/'+path+'/load',
-					create:'/app/'+path+'/create',
-					update:'/app/'+path+'/update',
-					destroy:'/app/'+path+'/destroy'
+					read:Ext.ContextPath+'/'+path+'/query',
+					load : Ext.ContextPath+'/'+path+'/load',
+					create:Ext.ContextPath+'/'+path+'/create',
+					update:Ext.ContextPath+'/'+path+'/update',
+					destroy:Ext.ContextPath+'/'+path+'/destroy'
 				}
 			}
 		}

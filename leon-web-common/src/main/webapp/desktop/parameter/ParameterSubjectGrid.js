@@ -43,7 +43,7 @@ Ext.define('Leon.desktop.parameter.ParameterSubjectGrid',{
        		autoLoad:false,
        		proxy:{
 		    	type: 'ajax',
-        		url : '/app/parametersubject/querySubject',
+        		url : Ext.ContextPath+'/parametersubject/querySubject',
         		headers:{ 'Accept':'application/json;'},
         		actionMethods: { read: 'POST' },
         		extraParams:{limit:50},
@@ -65,7 +65,7 @@ Ext.define('Leon.desktop.parameter.ParameterSubjectGrid',{
 		    	fields: ['key', 'name'], 
 			    proxy:{
 			    	type:'ajax',
-			    	url:'/app/parametersubject/querySubjectType',
+			    	url:Ext.ContextPath+'/parametersubject/querySubjectType',
 			    	reader:{
 			    		type:'json',
 			    		totalProperty:'total',

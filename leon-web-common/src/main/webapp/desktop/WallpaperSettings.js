@@ -126,7 +126,7 @@ Ext.define('Leon.desktop.WallpaperSettings', {
         if (me.selected) {
         	//发送到后台保存
 //        	Ext.Ajax.request({
-//        		url:"/app//desktop/createOrUpdate",
+//        		url:Ext.ContextPath+"/desktop/createOrUpdate",
 //        		method:"POST",
 //        		params:{
 //        			wallpaper:me.selected,

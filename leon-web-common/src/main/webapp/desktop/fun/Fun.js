@@ -19,34 +19,4 @@ Ext.defineModel("Leon.desktop.fun.Fun",{
 		//{type:'hasMany',model:'Leon.desktop.fun.Fun',name : 'children'},不用，因为树形结构一般都是通过store来获取子节点的
 		{type:'belongsTo',model:'Leon.desktop.fun.Fun',associatedName:'Parent'}
 	]
-//	,proxy:{
-//		type:'bajax',
-//		api:{
-//			read:'/app/fun/queryChildren',
-//			load : '/app/fun/get',
-//			create:'/app/fun/create',
-//			update:'/app/fun/update',
-//			destroy:'/app/fun/destroy'
-//		}
-//	}
-//	,proxy:{
-//		actionMethods: { read: 'POST' },
-//		timeout :600000,
-//		headers:{ 'Accept':'application/json;'},
-//		type:'ajax',
-//		api:{
-//			read:'/fun/queryChildren',
-//			get : '/fun/get',
-//			create:'/fun/create',
-//			update:'/fun/update',
-//			destroy:'/fun/destroy'
-//		},
-//		reader:{
-//			type:'json',
-//			root:'root'
-//		}
-//		,writer:{
-//			type:'json'
-//		}
-//	}
 });

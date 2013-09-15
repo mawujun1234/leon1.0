@@ -71,6 +71,7 @@ Ext.define('Leon.desktop.user.UserForm',{
 	        	xtype:'checkboxfield',
                 fieldLabel  : '是否过期',
                 name      : 'accountExpired',
+                readOnly:true,
                 inputValue: 'true',
                 checked   : false
             },{
@@ -194,7 +195,7 @@ Ext.define('Leon.desktop.user.UserForm',{
 						//var user=grid.getLastSelected( );//.getLastSelected( );
 						var user=me.getForm().getRecord( );
 						Ext.Ajax.request({
-							url:'/app/user/recover',
+							url:Ext.ContextPath+'/user/recover',
 							params:{id:user.getId()},
 							success:function(){
 								//grid.getStore().reload();
@@ -222,7 +223,7 @@ Ext.define('Leon.desktop.user.UserForm',{
 					if (btn == 'ok'){
 						//.getLastSelected( );
 						Ext.Ajax.request({
-							url:'/app/user/resetPwd',
+							url:Ext.ContextPath+'/user/resetPwd',
 							params:{id:user.getId(),password:text},
 							success:function(){
 								//grid.getStore().reload();

@@ -81,7 +81,7 @@ Ext.onReady(function(){
 //					if (btn == 'yes'){
 //						var user=grid.getLastSelected( );//.getLastSelected( );
 //						Ext.Ajax.request({
-//							url:'/app/user/recover',
+//							url:Ext.ContextPath+'/user/recover',
 //							params:{id:user.getId()},
 //							success:function(){
 //								grid.getStore().reload();
@@ -105,7 +105,7 @@ Ext.onReady(function(){
 //					if (btn == 'ok'){
 //						//.getLastSelected( );
 //						Ext.Ajax.request({
-//							url:'/app/user/resetPwd',
+//							url:Ext.ContextPath+'/user/resetPwd',
 //							params:{id:user.getId(),password:text},
 //							success:function(){
 //								grid.getStore().reload();
@@ -171,7 +171,7 @@ Ext.onReady(function(){
 		switchUserGrid.reload(record.getId());
 	});
 	var roleSelectedTree=Ext.create('Leon.desktop.role.RoleSelectPanel',{
-    	url:'/app/user/queryRole',
+    	url:Ext.ContextPath+'/user/queryRole',
     	listeners:{
     		addRole:function(selectedRoleTree,selectRoleNode){
     			var user=grid.getLastSelected();
@@ -180,7 +180,7 @@ Ext.onReady(function(){
 		            roleId:selectRoleNode.getId()
 		        };
 		        Ext.Ajax.request({
-		            url:'/app/user/addRole',
+		            url:Ext.ContextPath+'/user/addRole',
 		            method:'POST',
 		            params:params,
 		            success:function(){
@@ -195,7 +195,7 @@ Ext.onReady(function(){
 		            roleId:selectRoleNode.getId()
 		        };
     			Ext.Ajax.request({
-		            url:'/app/user/removeRole',
+		            url:Ext.ContextPath+'/user/removeRole',
 		            method:'POST',
 		            params:params,
 		            success:function(){
@@ -207,7 +207,7 @@ Ext.onReady(function(){
     });
 
 	var funTree=Ext.create('Leon.common.ux.BaseTree',{
-		url:'/app/user/queryFun',
+		url:Ext.ContextPath+'/user/queryFun',
 		fields:['id','text',"roleNames"],
 		defaultRootName:'children',
 		rootVisible: false,

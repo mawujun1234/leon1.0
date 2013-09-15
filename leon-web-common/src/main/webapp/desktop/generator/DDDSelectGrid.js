@@ -27,7 +27,7 @@ Ext.define('Leon.desktop.generator.DDDSelectGrid',{
        		autoLoad:true,
        		proxy:{
        			type:'ajax',
-				url:'/app/generator/listAllClass',
+				url:Ext.ContextPath+'/generator/listAllClass',
 				reader:{
 					type:'json',
 					root:'root',

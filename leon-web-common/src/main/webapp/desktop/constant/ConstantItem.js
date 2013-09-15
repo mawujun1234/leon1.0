@@ -13,24 +13,4 @@ Ext.defineModel("Leon.desktop.constant.ConstantItem",{
 	associations:[
 		{type:'belongsTo',model:'Leon.desktop.constant.Constant',associatedName:'Constant',associationKey:'constant',foreignKey:"constant_id"}
 	]
-//	,proxy:{
-//		actionMethods: { read: 'POST' },
-//		timeout :600000,
-//		headers:{ 'Accept':'application/json;'},
-//		type:'ajax',
-//		api:{
-//			read:'/app/constantItem/query',
-//			get : '/app/constantItem/get',
-//			create:'/app/constantItem/create',
-//			update:'/app/constantItem/update',
-//			destroy:'/app/constantItem/destroy'
-//		},
-//		reader:{
-//			type:'json',
-//			root:'root'
-//		}
-//		,writer:{
-//			type:'json'
-//		}
-//	}
 });

@@ -34,7 +34,7 @@ Ext.define('Leon.desktop.parameter.ParameterForm', {
             	fields:['key','name'],
             	proxy:{
             		type:'bajax',
-            		url:'/app/parameter/queryParameterValueEnum'
+            		url:Ext.ContextPath+'/parameter/queryParameterValueEnum'
             	}
             }),
             listeners:{
@@ -68,7 +68,7 @@ Ext.define('Leon.desktop.parameter.ParameterForm', {
             	fields:['key','name'],
             	proxy:{
             		type:'bajax',
-            		url:'/app/parameter/queryShowModel'
+            		url:Ext.ContextPath+'/parameter/queryShowModel'
             	}
             })
         },{
@@ -87,7 +87,7 @@ Ext.define('Leon.desktop.parameter.ParameterForm', {
 		var me=this;
 		me.addEvents("subjectsItemsReady");
 		Ext.Ajax.request({
-            	url:'/app/parametersubject/querySubjectType',
+            	url:Ext.ContextPath+'/parametersubject/querySubjectType',
             	method:'POST',
             	//params:{subjectId:me.subjectId,subjectType:me.subjectType},
             	success:function(response){

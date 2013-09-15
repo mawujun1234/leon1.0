@@ -23,9 +23,9 @@ Ext.define('Leon.desktop.role.RoleRoleGrid',{
        
        var url="";
 	   if(me.roleRoleEnum=="inherit"){
-			url="/app/role/queryParent";
+			url=Ext.ContextPath+"/role/queryParent";
 		} else {
-			url="/app/role/queryMutex";
+			url=Ext.ContextPath+"/role/queryMutex";
 	   }
        me.store=Ext.create('Ext.data.Store',{
        		autoSync:false,
@@ -58,10 +58,10 @@ Ext.define('Leon.desktop.role.RoleRoleGrid',{
 								var params={};
 								var url="";
 								if(me.roleRoleEnum=="inherit"){
-									url="/app/role/addParent";
+									url=Ext.ContextPath+"/role/addParent";
 									params={parentId:record.getId(),childId:me.currentRole.getId()};
 								} else {
-									url="/app/role/addMutex";
+									url=Ext.ContextPath+"/role/addMutex";
 									params={ownId:me.currentRole.getId(),mutexId:record.getId()};
 								}
 								tree.mask("正在新增....");
@@ -98,10 +98,10 @@ Ext.define('Leon.desktop.role.RoleRoleGrid',{
        				if(record){
        					var url="";
 						if(me.roleRoleEnum=="inherit"){
-							url="/app/role/removeParent";
+							url=Ext.ContextPath+"/role/removeParent";
 							params={parentId:record.getId(),childId:me.currentRole.getId()};
 						} else {
-							url="/app/role/removeMutex";
+							url=Ext.ContextPath+"/role/removeMutex";
 							params={ownId:me.currentRole.getId(),mutexId:record.getId()};
 						}
        					Ext.Ajax.request({

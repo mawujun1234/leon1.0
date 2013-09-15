@@ -14,7 +14,7 @@ Ext.define("Leon.SwitchUserWin",{
 	initComponent: function () {
        var me = this;
        var form=new Ext.form.Panel({
-			url: Ext.ContextPath+'/j_spring_security_switch_user',
+			url: Ext.JspContextPath+'/j_spring_security_switch_user',
 			frame:true,
 			width:400,
 			flex: 0.3,
@@ -35,7 +35,7 @@ Ext.define("Leon.SwitchUserWin",{
 		            if (basicform.isValid()) {
 		            	var values=basicform.getValues();
 		            	Ext.Ajax.request({
-			    			url:'/app/switchUser/checkPermission',
+			    			url:Ext.ContextPath+'/switchUser/checkPermission',
 			    			params:{j_username:values.j_username},
 			    			success:function(response){
 			    				var obj=Ext.decode(response.responseText);
@@ -63,7 +63,7 @@ Ext.define("Leon.SwitchUserWin",{
 		
 	   var userGrid=Ext.create('Leon.desktop.user.UserQueryGrid',{
 			//region:'center',
-	   		url:'/app/switchUser/query',
+	   		url:Ext.ContextPath+'/switchUser/query',
 			width:400,
 			flex: 0.8,
 			listeners:{

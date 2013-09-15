@@ -46,19 +46,6 @@ Ext.onReady(function(){
 		    pageSize:50,
 		    autoLoad:false,
 		    model:'Leon.desktop.generator.PropertyConfig'
-//		    proxy:{
-//				type: 'ajax',
-//		        url : '/app/generator/getSubjectProperties',
-//		        headers:{ 'Accept':'application/json;'},
-//		        actionMethods: { read: 'POST' },
-//		        extraParams:{limit:50},
-//		        reader:{
-//					type:'json',
-//					root:'root',
-//					successProperty:'success',
-//					totalProperty:'total'		
-//				}
-//			}
 		}),
 		tbar:[{
 			text:'查询',
@@ -97,7 +84,7 @@ Ext.onReady(function(){
 	        	handler:function(btn){
 	        		var showModel=btn.previousSibling("[name=showModel],[checked=true]"); 
 	        		Ext.Ajax.request({
-	        			url:'/app/generator/generatorStr',
+	        			url:Ext.ContextPath+'/generator/generatorStr',
 	        			params:{
 	        				className:form.getSubjectName(),
 	        				type:'Controller',
@@ -164,7 +151,7 @@ Ext.onReady(function(){
 	        		var update=btn.previousSibling("[name=update]"); 
 	        		//var query=btn.previousSibling("[name=query]"); 
 	        		Ext.Ajax.request({
-	        			url:'/app/generator/generatorStr',
+	        			url:Ext.ContextPath+'/generator/generatorStr',
 	        			params:{
 	        				className:form.getSubjectName(),
 	        				type:'Service',
@@ -240,7 +227,7 @@ Ext.onReady(function(){
 	        		var update=btn.previousSibling("[name=update]"); 
 	        		var query=btn.previousSibling("[name=query]"); 
 	        		Ext.Ajax.request({
-	        			url:'/app/generator/generatorStr',
+	        			url:Ext.ContextPath+'/generator/generatorStr',
 	        			params:{
 	        				className:form.getSubjectName(),
 	        				type:'MapperXML',
@@ -292,7 +279,7 @@ Ext.onReady(function(){
 	        	margin:'0 0 0 20',
 	        	handler:function(btn){
 	        		Ext.Ajax.request({
-	        			url:'/app/generator/generatorStr',
+	        			url:Ext.ContextPath+'/generator/generatorStr',
 	        			params:{
 	        				className:form.getSubjectName(),
 	        				type:'Extjs_Model'
@@ -349,7 +336,7 @@ Ext.onReady(function(){
 	        	handler:function(btn){
 	        		var createFormModel=btn.previousSibling("[name=createFormModel]"); 
 	        		Ext.Ajax.request({
-	        			url:'/app/generator/generatorStr',
+	        			url:Ext.ContextPath+'/generator/generatorStr',
 	        			params:{
 	        				className:form.getSubjectName(),
 	        				type:'Extjs_Form',
@@ -452,7 +439,7 @@ Ext.onReady(function(){
 	        		var rowediting=btn.previousSibling("[name=rowediting]");
 	        		var createDelUpd=btn.previousSibling("[name=createDelUpd]");
 	        		Ext.Ajax.request({
-	        			url:'/app/generator/generatorStr',
+	        			url:Ext.ContextPath+'/generator/generatorStr',
 	        			params:{
 	        				className:form.getSubjectName(),
 	        				type:'Extjs_Grid',

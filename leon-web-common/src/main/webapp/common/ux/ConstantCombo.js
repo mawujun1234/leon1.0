@@ -17,7 +17,7 @@ Ext.define('Leon.common.ux.ConstantCombo', {
 		     proxy: {
 		         type: 'ajax',
 		         actionMethods: { read: 'POST' },
-		         url: '/app/constantItem/queryByCode',
+		         url: Ext.ContextPath+'/constantItem/queryByCode',
 		         extraParams :{code:me.code},
 		         reader:{
 						type:'json',

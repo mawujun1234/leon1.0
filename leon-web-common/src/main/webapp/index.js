@@ -3,7 +3,7 @@
 Ext.onReady(function(){
 	//alert(1);
 	Ext.Ajax.request({
-		url:'/app/desktop/query',
+		url:Ext.ContextPath+'/desktop/query',
 		headers:{ 'Accept':'application/json;'},
 		success:function(response){
 			var obj=Ext.decode(response.responseText);

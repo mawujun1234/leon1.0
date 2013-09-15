@@ -46,7 +46,7 @@ Ext.define('Leon.desktop.user.SwitchUserGrid',{
        		autoLoad:false,
        		proxy:{
 		    	type: 'ajax',
-        		url : '/app/switchUser/query',
+        		url : Ext.ContextPath+'/switchUser/query',
         		headers:{ 'Accept':'application/json;'},
         		actionMethods: { read: 'POST' },
         		extraParams:{limit:50},
@@ -71,7 +71,7 @@ Ext.define('Leon.desktop.user.SwitchUserGrid',{
 						listeners:{
 							itemdblclick:function(grid,record){
 								Ext.Ajax.request({
-									url:'/app/switchUser/create',
+									url:Ext.ContextPath+'/switchUser/create',
 									method:'POST',
 									params:{masterId:me.getMasterId(),switchUserId:record.get("id")},
 									success:function(){
@@ -104,7 +104,7 @@ Ext.define('Leon.desktop.user.SwitchUserGrid',{
 							var record=me.getSelectionModel( ).getLastSelected( );//.getLastSelected( );
 							//
 							Ext.Ajax.request({
-								url:'/app/switchUser/destroy',
+								url:Ext.ContextPath+'/switchUser/destroy',
 								method:'POST',
 								params:{masterId:me.getMasterId(),switchUserId:record.get("id")},
 								success:function(){

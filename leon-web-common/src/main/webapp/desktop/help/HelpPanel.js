@@ -63,7 +63,7 @@ Ext.define('Leon.desktop.help.HelpPanel',{
 	 //html:'<h3>UEditor - 完整示例</h3><p class="note">注：线上演示版上传图片功能一次只能上传一张，涂鸦功能不能将背景和图片合成，而下载版没有限制</p>' +
 	//			'<div><script id="ueEditor" type="text/plain"></script></div>',
 	html:'<iframe name="hideFrame" style="display:none"></iframe>' +
-			'<form id="helpContent_hideFrame"  target="hideFrame" action="/app/help/helpCreateOrupdate" method="post" >' +
+			'<form id="helpContent_hideFrame"  target="hideFrame" action='+Ext.ContextPath+'"/help/helpCreateOrupdate" method="post" >' +
 			'<input type="hidden" name="funId" id="funId"/>' +
 			//'<input type="submit" name="submit" value="保    存"/>' +
 			'<script id="ueEditor" type="text/plain"></script></form>',
@@ -112,7 +112,7 @@ Ext.define('Leon.desktop.help.HelpPanel',{
 		me.ueEditor.disable();
 		ueEditor.focus(true);
 		Ext.Ajax.request({
-			url : '/app/help/helpGetContent?_dc='+new Date(),
+			url : Ext.ContextPath+'/help/helpGetContent?_dc='+new Date(),
 			params : {
 				funId : me.getFunId()
 			},
