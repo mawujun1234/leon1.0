@@ -19,7 +19,7 @@ Ext.define('Leon.desktop.Window', {
 	//title:'测试1',
 	initComponent:function(){
 		var me=this;
-		var iframe_id=me.id+"_iframe_";
+		var iframe_id=me.menuItemId+"_iframe_";
 		
 //		me.tools=[{
 //		    type:'refresh',
@@ -67,11 +67,18 @@ Ext.define('Leon.desktop.Window', {
 		    	iframe.load(me.url);
 		    }
 		},{
-			type:'gear',
-			 tooltip: '设置个性化',
+			type:'plus',
+			 tooltip: '发送到快速启动',
 		    // hidden:true,
 		    handler: function(event, toolEl, toolPanel){  	
-		    	//iframe.load(me.url);
+		    	Ext.Ajax.request({
+		    		url:Ext.ContextPath+'/desktop/createQuickstart',
+		    		method:'POST',
+		    		params:{menuItemId:me.menuItemId},
+		    		success:function(response){
+		    			//alert(11);
+		    		}
+		    	});
 		    }
 		},
 		{

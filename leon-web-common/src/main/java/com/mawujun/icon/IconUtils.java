@@ -52,7 +52,25 @@ public class IconUtils {
 	 * @author mawujun email:16064988@163.com qq:16064988
 	 * @throws IOException
 	 */
-	public static void generatorPngCss(String cssPath, String img) throws IOException {
+	public static void generatorPngCss(String cssPath, String iconCls,String iconCls32) throws IOException {
+		
+		String paths[]=iconCls.split("_");
+		String fileNmae="";
+		for(int i=2;i<paths.length;i++){
+			fileNmae+=paths[i];
+			if(i!=paths.length-1){
+				fileNmae+="_";
+			}
+		}
+		FileWriter fos = new FileWriter(cssPath,true);
+		BufferedWriter bw = new BufferedWriter(fos);
+		bw.newLine();
+		bw.append("."+iconCls+ "{background: url(../pngs/16/" + fileNmae+ ".png) left top no-repeat !important;}");
+		bw.append("."+iconCls32+ "{background: url(../pngs/32/" + fileNmae+ ".png) left top no-repeat !important;}");
+		
+		bw.close();
+		fos.close();
+		
 //		// String path1=IconUtils.class.getResource("/").getPath();
 //
 //		String path = "E:\\eclipse\\workspace\\leon\\leon-web-common\\src\\main\\webapp\\pngs\\16";

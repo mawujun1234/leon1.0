@@ -53,9 +53,11 @@ Ext.define('Leon.desktop.Desktop', {
              
         var menubar=Ext.create('Leon.desktop.Menubar',{
         	dock:me.menubarDock,
-        	
+        	desktop:me,
+        	quickstarts:me.quickstarts,
         	items:menuItems
         });
+        delete me.quickstarts;
 
         var taskbar=Ext.create('Leon.desktop.Taskbar',{
         	dock: me.taskbarDock,
@@ -193,7 +195,7 @@ Ext.define('Leon.desktop.Desktop', {
 		for(var i=0;i<menuItems.length;i++){
         		var model=menuItems[i];
         		
-        		model.itemId=model.id;
+        		model.menuItemId=model.id;
         		delete model.id;
 
         		model.link_url=model.url;
@@ -209,6 +211,7 @@ Ext.define('Leon.desktop.Desktop', {
 	        		model.handler=function(btn){
 		        		me.createWindow({
 		        			title:btn.text,
+		        			menuItemId:btn.menuItemId,
 		        			funId:btn.funId,
 		        			url:btn.link_url,
 		        			iconCls:btn.iconCls

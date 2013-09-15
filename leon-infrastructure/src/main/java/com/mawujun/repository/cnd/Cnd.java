@@ -45,6 +45,8 @@ public class Cnd implements PItem{
 	
 	private UpdateItems updateItems;
 	
+	private InsertItems insertItems;
+	
 	private SqlType sqlType;
 	
 	public Cnd() {
@@ -52,6 +54,7 @@ public class Cnd implements PItem{
 		orderBy = new OrderBySet();
 		selectItems=new SelectItems();
 		updateItems=new UpdateItems();
+		insertItems=new InsertItems();
 	}
 	public Cnd(SqlType sqlType) {
 		this();
@@ -87,11 +90,29 @@ public class Cnd implements PItem{
 		
 		return cnd;
 	}
+	/**
+	 * 是用于对象模型
+	 * @author mawujun 16064988@qq.com 
+	 * @return
+	 */
 	public static Cnd delete() {
 		return new Cnd(SqlType.DELETE);
 	}
+	/**
+	 * 是用于对象模型
+	 * @author mawujun 16064988@qq.com 
+	 * @return
+	 */
 	public static Cnd update() {
 		return new Cnd(SqlType.UPDATE);
+	}
+	/**
+	 * 是用于对象模型
+	 * @author mawujun 16064988@qq.com 
+	 * @return
+	 */
+	public static Cnd insert() {
+		return new Cnd(SqlType.INSERT);
 	}
 	//===============================================
 	
@@ -377,10 +398,23 @@ public class Cnd implements PItem{
 	}
 	
 	
-	///////////////////////删除的字段
-	
+	///////////////////////的字段
+	/**
+	 * update和insert的时候设置值得
+	 * @author mawujun 16064988@qq.com 
+	 * @param fieldName
+	 * @param value
+	 * @return
+	 */
 	public Cnd set(String fieldName,Object value) {
-		this.updateItems.set(fieldName, value);
+		if(this.getSqlType()==SqlType.UPDATE){
+			this.updateItems.set(fieldName, value);
+		} else if(this.getSqlType()==SqlType.INSERT){
+			this.insertItems.set(fieldName, value);
+		} else {
+			throw new RuntimeException("该方法只能用于insert和update语句");
+		}
+		
 		return this;
 	}
 	//删除的字段用的
@@ -414,8 +448,13 @@ public class Cnd implements PItem{
 		if(this.getSqlType()==SqlType.SELECT){
 			selectItems.joinHql(classMetadata, sb);
 			sb.append("from "+classMetadata.getEntityName());
+			
+			where.joinHql(classMetadata, sb);
+			orderBy.joinHql(classMetadata, sb);
 		} else if(this.getSqlType()==SqlType.DELETE){
 			sb.append("delete from "+classMetadata.getEntityName());
+			
+			where.joinHql(classMetadata, sb);
 		} else if(this.getSqlType()==SqlType.UPDATE && updateItems.size()>0){//updateItems.size()>0防止用T进行更新的时候出现hql重复
 			//sb.append("delete from "+classMetadata.getEntityName());
 			int versionIndex=classMetadata.getVersionProperty();
@@ -425,20 +464,31 @@ public class Cnd implements PItem{
 				sb.append("update  " + classMetadata.getEntityName()+ " set ");
 			}
 			updateItems.joinHql(classMetadata, sb);
+			where.joinHql(classMetadata, sb);
 			
+		}else if(this.getSqlType()==SqlType.INSERT && insertItems.size()>0){
+			sb.append("insert into "+ classMetadata.getEntityName());
+			insertItems.joinHql(classMetadata, sb);
 		}
-	
-		where.joinHql(classMetadata, sb);
-		orderBy.joinHql(classMetadata, sb);
+		System.out.println(sb);
+//	
+//		where.joinHql(classMetadata, sb);
+//		orderBy.joinHql(classMetadata, sb);
 	}
 
 	@Override
 	public int joinParams(AbstractEntityPersister classMetadata, Object obj,
 			Object[] params, int off) {
+		//int ret=off;
 		 if(this.getSqlType()==SqlType.UPDATE){
 			 off=updateItems.joinParams(classMetadata, obj, params, off);
+			 off=where.joinParams(classMetadata, obj, params, off);
+		 } else if(this.getSqlType()==SqlType.INSERT){
+			 off=insertItems.joinParams(classMetadata, obj, params, off);
+		 } else {
+			 off=where.joinParams(classMetadata, obj, params, off);
 		 }
-		return where.joinParams(classMetadata, obj, params, off);
+		return off;
 	}
 
 	@Override
@@ -446,8 +496,13 @@ public class Cnd implements PItem{
 		int count=0;
 		 if(this.getSqlType()==SqlType.UPDATE){
 			 count=updateItems.paramCount(classMetadata);
+			 count+=where.paramCount(classMetadata);
+		 } else if (this.getSqlType()==SqlType.INSERT){
+			 count=insertItems.paramCount(classMetadata);
+		 } else {
+			 count+=where.paramCount(classMetadata);
 		 }
-		 count+=where.paramCount(classMetadata);
+		
 		return count;
 	}
 	
@@ -495,7 +550,17 @@ public class Cnd implements PItem{
 	 */
 	public String toHql(AbstractEntityPersister classMetadata) {
 		Object[] params = new Object[this.paramCount(classMetadata)];
-		int i = where.joinParams(classMetadata, null, params, 0);
+		this.joinParams(classMetadata, null, params, 0);
+		
+//		if(this.getSqlType()==SqlType.INSERT){t
+//			insertItems.joinParams(classMetadata, null, params, 0);
+//		} else if(this.getSqlType()==SqlType.UPDATE){
+//			updateItems.joinParams(classMetadata, null, params, 0);
+//			where.joinParams(classMetadata, null, params, 0);
+//		} else {
+//			 where.joinParams(classMetadata, null, params, 0);
+//		}
+		
 
 
 		//StringBuilder sb = new StringBuilder("from "+classMetadata.getEntityName());
@@ -504,7 +569,8 @@ public class Cnd implements PItem{
 		String[] ss = sb.toString().split("[?]");
 
 		sb = new StringBuilder();
-		for (i = 0; i < params.length; i++) {
+		int i = 0;
+		for ( i = 0; i < params.length; i++) {
 			sb.append(ss[i]);
 			sb.append(formatFieldValue(params[i]));
 		}

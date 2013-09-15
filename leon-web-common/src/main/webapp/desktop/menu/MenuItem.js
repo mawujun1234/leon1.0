@@ -9,7 +9,8 @@ Ext.defineModel("Leon.desktop.menu.MenuItem",{
 		{name:'text',type:'string'},
 		{name:'javaClass',type:'string'},
 		{name:'scripts',type:'string'},
-		{name:'iconCls',type:'string'},
+		{name:'iconCls',type:'string',defaultValue:'menu-category-default-16'},
+		{name:'iconCls32',type:'string',defaultValue:'menu-category-default-32'},
 		{name:'reportCode',type:'string'},
 		{name:'isAutoCreate',type:'boolean'},
 		{name:'url',type:'string'}//是从功能里面来的

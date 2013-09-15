@@ -13,7 +13,7 @@
     }
 
     var scriptTags = document.getElementsByTagName('script'),
-        defaultTheme = 'classic',
+       // defaultTheme = 'classic',
         defaultRtl = false,
         i = scriptTags.length,
         requires = [

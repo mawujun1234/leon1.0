@@ -94,8 +94,12 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
                         	var win=Ext.create('Leon.common.IconWindow',{
                         		listeners:{
                         			itemdblclick:function(win,record){
+                        				Ext.util.CSS.createStyleSheet("."+record.get("iconCls")+"{background: url("+record.get("src16")+") left top no-repeat !important;}") ;
+                        				Ext.util.CSS.createStyleSheet("."+record.get("iconCls32")+"{background: url("+record.get("src")+") left top no-repeat !important;}") ;
+                        				
                         				iconButton.setIconCls(record.get("iconCls") );
                         				iconButton.nextSibling().setValue(record.get("iconCls"));
+                        				iconButton.nextSibling().nextSibling().setValue(record.get("iconCls32"));
                         				win.close();
                         			}
                         		}
@@ -111,6 +115,17 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
                         	change:function(field, newValue, oldValue, eOpts){
                         		var iconButton=field.previousSibling();
                         		iconButton.setIconCls(newValue );
+                        	}
+                        }
+                    },{
+                        xtype     : 'hidden',
+                        name      : 'iconCls32',
+                        flex:0,
+                        fieldLabel: '图标Cls32',
+                        listeners:{
+                        	change:function(field, newValue, oldValue, eOpts){
+                        		//var iconButton=field.previousSibling();
+                        		//iconButton.setIconCls(newValue );
                         	}
                         }
                     }]

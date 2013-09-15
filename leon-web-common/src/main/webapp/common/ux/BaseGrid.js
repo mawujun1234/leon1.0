@@ -1,5 +1,38 @@
 /**
  * 封装grid
+ * 添加两条工具栏的用法：
+ * var tbar=Ext.create('Ext.toolbar.Toolbar', {
+       		items:[nameField,{
+       			text:'查询',
+       			iconCls:'icons_search ',
+       			handler:function(){
+					 grid.getStore().getProxy( ).extraParams={userName:nameField.getValue()};
+					 grid.getStore().reload();
+       			}	
+       		}]
+    });
+    grid.addTopBar(tbar);
+    
+    插入按钮的做法：
+    	var physicsDel = new Ext.Action({
+		    text: '物理删除',
+		    iconCls: 'icons_list-remove',
+		    handler: function(){
+		    	Ext.Msg.confirm("删除",'确定要删除吗?物理删除后，将不可恢复!', function(btn, text){
+					if (btn == 'yes'){
+						var user=grid.getLastSelected( );//.getLastSelected( );
+						user.destroy({
+							params:{physicsDel:true},
+							success:function(){
+								grid.getStore().reload();
+							}
+						});
+					}
+				});
+		    }
+	});
+	grid.addAction(3,physicsDel);
+    
  */
 Ext.define('Leon.common.ux.BaseGrid', {
     extend: 'Ext.grid.Panel',
@@ -208,10 +241,6 @@ Ext.define('Leon.common.ux.BaseGrid', {
 		actions.push(reload);
 		
 		if(me.autoShowSimpleActionToTbar){
-//			me.tbar={
-//				itemId:'action_toolbar',
-//				items:actions
-//			};
 			me.tbar={
 			  xtype: 'container',
 			  layout: 'anchor',
@@ -227,9 +256,6 @@ Ext.define('Leon.common.ux.BaseGrid', {
 	            },
 				items:actions
 			  }
-//			, {
-//			    items: [{text:'22'}] // toolbar 2
-//			  }
 			  ]
 			}
 		}
@@ -446,7 +472,13 @@ Ext.define('Leon.common.ux.BaseGrid', {
     },
     addTopBar:function(toolbar){
     	var action_toolbar_container=this.getActionTbarContainer();
-    	action_toolbar_container.add( toolbar );
+    	if(action_toolbar_container){
+    		action_toolbar_container.add( toolbar );
+    	} else{
+    		this.addDocked(toolbar,'top');
+    		//this.doLayout();
+    	}
+    	
     },
     actionTbar:null,
     getActionTbar:function(){

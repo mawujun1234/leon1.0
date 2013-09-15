@@ -132,6 +132,12 @@
     position:relative;
     overflow:hidden;
 }
+.menu-category-default-16 { 
+    background: url(../pngs/16/20110213231934903.png) left top no-repeat !important; 
+}
+.menu-category-default-32 { 
+    background: url(../pngs/32/20110213231934903.png) left top no-repeat !important; 
+}
 /***IconWindow显示的样式表***/
 
 

@@ -16,11 +16,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.controller.spring.mvc.JsonConfigHolder;
 import com.mawujun.exception.BussinessException;
+import com.mawujun.menu.MenuItem;
 import com.mawujun.menu.MenuItemService;
 import com.mawujun.menu.MenuItemVO;
+import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.user.login.SwitchUserFilterImpl;
 import com.mawujun.user.login.SwitchUserGrantedAuthorityImpl;
 import com.mawujun.user.login.UserDetailsImpl;
+import com.mawujun.utils.BeanUtils;
 
 @Controller
 //@RequestMapping("/app")
@@ -29,6 +32,8 @@ public class DesktopController {
 	private MenuItemService menuItemService;
 	@Resource
 	private DesktopConfigService desktopConfigService;
+	@Resource
+	private QuickStartServcie quickStartServcie;
 	/**
 	 * 一次性读取出所有的节点数据
 	 * @return
@@ -42,6 +47,17 @@ public class DesktopController {
 		DesktopConfig desktopConfig=desktopConfigService.get(userId);
 		if(desktopConfig==null) {
 			desktopConfig=new DesktopConfig();
+		} else {
+			//获取快捷方式
+			List<QuickStart> quickStarts=quickStartServcie.query(Cnd.select().andEquals("id.userId", userId));
+			for(QuickStart quickStart:quickStarts){
+				//快速启动的数据是放在，一登陆就渲染呢？还是等点击的时候延迟加载。
+				MenuItem leaf=menuItemService.get(quickStart.getId().getMenuItemId());
+				MenuItemVO vo=BeanUtils.copyOrCast(leaf, MenuItemVO.class);
+				vo.setFunId(leaf.getFun()!=null?leaf.getFun().getId():null);
+				desktopConfig.addQuickstart(vo);
+			}
+			
 		}
 		
 		String menuId="default";
@@ -87,6 +103,21 @@ public class DesktopController {
 		desktopConfig.setId(((UserDetailsImpl)currentAuth.getPrincipal()).getId());
 		desktopConfigService.createOrUpdate(desktopConfig);
 		return desktopConfig;
+		
+	}	
+	
+	@RequestMapping("/desktop/createQuickstart")
+	@ResponseBody
+	public QuickStart createQuickstart(String menuItemId){
+		Authentication currentAuth = SecurityContextHolder.getContext().getAuthentication();
+		UserDetailsImpl detail=(UserDetailsImpl)currentAuth.getPrincipal();
+		//为用户添加一个快捷方式
+		//desktopConfigService.createQuickstart(menuItemId, detail.getId());
+		
+		QuickStart quickStart=new QuickStart();
+		quickStart.setId(QuickStart.Id.getInstance(detail.getId(), menuItemId));
+		quickStartServcie.create(quickStart);
+		return quickStart;
 		
 	}	
 	

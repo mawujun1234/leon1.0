@@ -71,7 +71,9 @@ public class IconController {
 			Map<String,String> map=new HashMap<String,String>();
 			map.put("name", files[start].getName());
 			map.put("iconCls", IconUtils.getPngClsName(files[start].getName(),16));//用来在配置的时候设置到按钮上的 所以用16尺寸大小的
+			map.put("iconCls32", IconUtils.getPngClsName(files[start].getName(),32));
 			map.put("src", contextPath+"/pngs/"+sizepng+"/"+files[start].getName());
+			map.put("src16", contextPath+"/pngs/16/"+files[start].getName());
 			result.add(map);
 		}
 		Map<String,Object> map=new HashMap<String,Object>();
@@ -117,5 +119,9 @@ public class IconController {
 		
 		JsonConfigHolder.setAutoWrap(false);
 		return map;
+	}
+	
+	public void appenPngCls(String icoCls,String iconCls32){
+		
 	}
 }

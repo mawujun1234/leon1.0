@@ -15,10 +15,10 @@ Ext.onReady(function(){
 		model:'Leon.desktop.user.User',
 		region:'west',
 		split:true,
-		editable:true,
-		autoSync:true,
+		editable:false,
+		autoSync:false,
 		//autoLoad:true,
-		//autoInitAction:false,
+		autoInitSimpleAction:false,
 		flex: 1,
 		//title:'用户管理',
 		columns:[
@@ -54,69 +54,69 @@ Ext.onReady(function(){
 		
 	});
 	
-	var physicsDel = new Ext.Action({
-		    text: '物理删除',
-		    iconCls: 'icons_list-remove',
-		    handler: function(){
-		    	Ext.Msg.confirm("删除",'确定要删除吗?物理删除后，将不可恢复!', function(btn, text){
-					if (btn == 'yes'){
-						var user=grid.getLastSelected( );//.getLastSelected( );
-						user.destroy({
-							params:{physicsDel:true},
-							success:function(){
-								grid.getStore().reload();
-							}
-						});
-					}
-				});
-		    }
-	});
-	grid.addAction(3,physicsDel);
-	
-	var recover = new Ext.Action({
-		    text: '恢复',
-		    iconCls: 'icons_arrow-step-over',
-		    handler: function(){
-		    	Ext.Msg.confirm("删除",'恢复被逻辑删除的用户，确定要恢复吗?', function(btn, text){
-					if (btn == 'yes'){
-						var user=grid.getLastSelected( );//.getLastSelected( );
-						Ext.Ajax.request({
-							url:'/app/user/recover',
-							params:{id:user.getId()},
-							success:function(){
-								grid.getStore().reload();
-							}
-						});
-						
-					}
-				});
-		    }
-	});
-	grid.addAction(4,recover);
-	var resetPwd = new Ext.Action({
-		    text: '重置密码',
-		    iconCls: 'icons_recycle',
-		    handler: function(){
-		    	var user=grid.getLastSelected( );
-		    	if(!user){
-		    		return;
-		    	}
-		    	Ext.Msg.prompt("重置密码",'请输入新密码:', function(btn, text){
-					if (btn == 'ok'){
-						//.getLastSelected( );
-						Ext.Ajax.request({
-							url:'/app/user/resetPwd',
-							params:{id:user.getId(),password:text},
-							success:function(){
-								grid.getStore().reload();
-							}
-						});
-						
-					}
-				},window,false,"123456");
-		    }
-	});
-	grid.addAction(2,resetPwd);
+//	var physicsDel = new Ext.Action({
+//		    text: '物理删除',
+//		    iconCls: 'icons_list-remove',
+//		    handler: function(){
+//		    	Ext.Msg.confirm("删除",'确定要删除吗?物理删除后，将不可恢复!', function(btn, text){
+//					if (btn == 'yes'){
+//						var user=grid.getLastSelected( );//.getLastSelected( );
+//						user.destroy({
+//							params:{physicsDel:true},
+//							success:function(){
+//								grid.getStore().reload();
+//							}
+//						});
+//					}
+//				});
+//		    }
+//	});
+//	grid.addAction(3,physicsDel);
+//	
+//	var recover = new Ext.Action({
+//		    text: '恢复',
+//		    iconCls: 'icons_arrow-step-over',
+//		    handler: function(){
+//		    	Ext.Msg.confirm("删除",'恢复被逻辑删除的用户，确定要恢复吗?', function(btn, text){
+//					if (btn == 'yes'){
+//						var user=grid.getLastSelected( );//.getLastSelected( );
+//						Ext.Ajax.request({
+//							url:'/app/user/recover',
+//							params:{id:user.getId()},
+//							success:function(){
+//								grid.getStore().reload();
+//							}
+//						});
+//						
+//					}
+//				});
+//		    }
+//	});
+//	grid.addAction(4,recover);
+//	var resetPwd = new Ext.Action({
+//		    text: '重置密码',
+//		    iconCls: 'icons_recycle',
+//		    handler: function(){
+//		    	var user=grid.getLastSelected( );
+//		    	if(!user){
+//		    		return;
+//		    	}
+//		    	Ext.Msg.prompt("重置密码",'请输入新密码:', function(btn, text){
+//					if (btn == 'ok'){
+//						//.getLastSelected( );
+//						Ext.Ajax.request({
+//							url:'/app/user/resetPwd',
+//							params:{id:user.getId(),password:text},
+//							success:function(){
+//								grid.getStore().reload();
+//							}
+//						});
+//						
+//					}
+//				},window,false,"123456");
+//		    }
+//	});
+//	grid.addAction(2,resetPwd);
 	
 	var nameField=Ext.create('Ext.form.field.Text',{
        	 name:'userName'
@@ -146,20 +146,21 @@ Ext.onReady(function(){
 			}
 	});
 	
-	//重载新增的功能，不从表格里面新增
-	grid.onCreate=function(){
-		var modal=Ext.createModel('Leon.desktop.user.User',{enable:true});
-		form.getForm().loadRecord(modal);	
-		win.show();
-	}
-	grid.onUpdate=function(){
-		var modal=grid.getLastSelected();
-		form.hidePassordField();
-		form.getForm().loadRecord(modal);
-		win.show();
-	}
+//	//重载新增的功能，不从表格里面新增
+//	grid.onCreate=function(){
+//		var modal=Ext.createModel('Leon.desktop.user.User',{enable:true});
+//		form.getForm().loadRecord(modal);	
+//		win.show();
+//	}
+//	grid.onUpdate=function(){
+//		var modal=grid.getLastSelected();
+//		form.hidePassordField();
+//		form.getForm().loadRecord(modal);
+//		win.show();
+//	}
 	grid.on("itemclick",function(grid, record, item, index, e, eOpts ){
 		tabPanel.getEl().unmask();
+		userForm.loadRecord(record);
 		//selectedRoleTree.getStore().load({params:{userId:record.getId()}});
 		roleSelectedTree.reloadSelected({userId:record.getId()});
 		funTree.getStore().load({params:{userId:record.getId()}});
@@ -226,7 +227,10 @@ Ext.onReady(function(){
 		title:'切换用户管理'
 	});
 	
-	
+	var userForm=Ext.create('Leon.desktop.user.UserForm',{
+		title:'用户信息',
+		grid:grid
+	});
 	//var form=Ext.create('Leon.desktop.user.UserForm',{title:'用户表单'});
 	var tabPanel=Ext.create('Ext.tab.Panel', {
 		region:'center',
@@ -234,6 +238,7 @@ Ext.onReady(function(){
 		mask:true,
 	    activeTab: 0,
 	    items: [
+	    	userForm,
 	    	roleSelectedTree,
 	        funTree,
 	        switchUserGrid

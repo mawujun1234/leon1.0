@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;
 import com.mawujun.repository.BaseRepository;
+import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.repository.mybatis.MybatisParamUtils;
 import com.mawujun.user.login.UserDetailsImpl;
 import com.mawujun.utils.BeanUtils;
@@ -32,7 +33,18 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 	private MenuService menuService;
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-
+//
+//	/**
+//	 * 根据选择了的png，动态往pngs.css文件中添加css的class，这样可以减少pngs文件的大小
+//	 * @author mawujun 16064988@qq.com
+//	 */
+//	public void appenPngCls(String icoCls,String iconCls32){
+//		//首先判断是否已经存在这个pngs了，如果已经存在，就不添加了
+//		int count=super.queryCount(Cnd.select().andEquals("iconCls", icoCls));
+//		if(count==0){
+//			IconUtils.a
+//		}
+//	}
 	
 	public MenuItem create(MenuItem entity) {
 		Object reportCode=null;
@@ -169,6 +181,8 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 			MenuItemVO vo=BeanUtils.copyOrCast(leaf, MenuItemVO.class);
 			vo.setFunId(leaf.getFun()!=null?leaf.getFun().getId():null);
 			//fun.addItems(vo);
+			
+			//对菜单进行二次开发==============
 			if(StringUtils.hasText(leaf.getJavaClass())){
 				try {
 					Class clazz=Class.forName(leaf.getJavaClass());
@@ -187,6 +201,7 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 				}
 				
 			}
+			//===========================
 			
 			if(leaf.getParent()!=null){
 				List<MenuItem> ancestores=leaf.findAncestors();

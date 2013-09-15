@@ -40,7 +40,7 @@
     text-decoration: underline;
 }
 .x-item-over{
-    background: #eff5fb url(selected.gif) no-repeat right bottom;
+    /**background: #eff5fb url(selected.gif) no-repeat right bottom;**/
     border:1px solid #99bbe8;
     padding: 4px;
 }

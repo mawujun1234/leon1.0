@@ -48,6 +48,9 @@ public class DesktopConfig implements IdEntity<String>,Serializable{
 	@Transient
 	private List<MenuItemVO> menuItems;
 	
+	@Transient
+	private List<MenuItemVO> quickstarts;
+	
 	public Set<String> getSwitchUsers() {
 		return switchUsers;
 	}
@@ -125,6 +128,18 @@ public class DesktopConfig implements IdEntity<String>,Serializable{
 			return;
 		}
 		this.menubarAutoHide = menubarAutoHide;
+	}
+	public List<MenuItemVO> getQuickstarts() {
+		return quickstarts;
+	}
+	public void setQuickstarts(List<MenuItemVO> quickstarts) {
+		this.quickstarts = quickstarts;
+	}
+	public void addQuickstart(MenuItemVO quickstart) {
+		if(this.quickstarts==null){
+			this.quickstarts=new ArrayList<MenuItemVO>();
+		}
+		this.quickstarts.add(quickstart);
 	}
 
 }

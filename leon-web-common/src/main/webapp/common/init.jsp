@@ -4,13 +4,13 @@ String theme=request.getParameter("theme");
 if(theme==null){
 	Cookie cookie=WebUtils.getCookie(request, "theme");
 	if(cookie==null || cookie.getValue()==null){
-		theme="";
+		theme="classic";
 	} else {
 		theme=cookie.getValue();
 	}
 	
 } else {
-	theme="-"+theme;
+	//theme="-"+theme;
 	Cookie c = new Cookie("theme",theme) ;
 	//设定有效时间  以s为单位
 	c.setMaxAge(5*365*24*60*60) ;
@@ -20,18 +20,21 @@ if(theme==null){
 	//发送Cookie文件
 	 response.addCookie(c) ;
 }
-if("-classic".equals(theme)){
-	theme="";
+String jsTheme="";
+if("classic".equals(theme)){
+	jsTheme="";
+} else {
+	jsTheme="-"+theme;
 }
-System.out.println(theme);
+
 %>
-<link id="theme" rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/ext-4/resources/css/ext-all<%=theme %>.css" />
+<link id="theme" rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/ext-4/resources/css/ext-all<%=jsTheme %>.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/common/icons.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/common/pngs.css">
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/ext-4/bootstrap.js"></script>
 <%if(theme!=null && !"".equals(theme)) { %>
-<script type="text/javascript" src="<%=request.getContextPath()%>/ext-4/ext-theme<%=theme %>.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/ext-4/ext-theme<%=jsTheme %>.js"></script>
 <%} %>
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/ext-4/locale/ext-lang-zh_CN.js"></script>
@@ -46,6 +49,7 @@ System.out.println(theme);
 
 </style>
 <%
+
 String servletPath=request.getServletPath();
 int routeLength=servletPath.split("/").length-2;
 String route="";
@@ -59,10 +63,12 @@ if(routeLength>0){
 }
 %>
 <script type="text/javascript">
+defaultTheme = '<%=theme%>',
 //var servletPath='<%=servletPath%>';
 //int routeLength	=servletPath.split(regex).length-1;
 //if
-Ext.ContextPath="<%=request.getContextPath()%>";//应用程序上下文
+Ext.ContextPath="<%=request.getContextPath()%>/app";//应用程序上下文
+Ext.JspContextPath="<%=request.getContextPath()%>";
 Ext.QuickTips.init();
 
 

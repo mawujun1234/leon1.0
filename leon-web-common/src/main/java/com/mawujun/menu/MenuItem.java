@@ -46,7 +46,9 @@ public class MenuItem extends UUIDEntity {
 	private String scripts;
 	@Label(name="图标")
 	@Column(length=40)
-	private String iconCls="menu_category";
+	private String iconCls;
+	@Column(length=40)
+	private String iconCls32;
 	@Column(length=40)
 	private String reportCode;//等级关系代码
 	
@@ -178,6 +180,19 @@ public class MenuItem extends UUIDEntity {
 
 	public void setLeaf(Boolean leaf) {
 		this.leaf = leaf;
+	}
+
+
+	public String getIconCls32() {
+		if(this.iconCls32==null || "".equals(this.iconCls32)){
+			return this.getIconCls();
+		}
+		return iconCls32;
+	}
+
+
+	public void setIconCls32(String iconCls32) {
+		this.iconCls32 = iconCls32;
 	}
 	
 //	public boolean isAutoCreate(){

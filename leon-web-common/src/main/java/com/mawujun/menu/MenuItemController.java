@@ -1,6 +1,9 @@
 package com.mawujun.menu;
 
+import java.io.IOException;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.controller.spring.mvc.JsonConfigHolder;
+import com.mawujun.icon.IconUtils;
+import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.utils.page.WhereInfo;
 
 @Controller
@@ -55,9 +60,10 @@ public class MenuItemController {
 	
 	@RequestMapping("/menuItem/create")
 	@ResponseBody
-	public MenuItem create(@RequestBody MenuItem menuItem,String menuId){		
+	public MenuItem create(HttpServletRequest request,@RequestBody MenuItem menuItem,String menuId) throws IOException{		
 		menuItem.setMenu(new Menu(menuId));
 		menuItemService.create(menuItem);
+		appenPngCls(request,menuItem.getIconCls(),menuItem.getIconCls32());
 		JsonConfigHolder.setFilterPropertys("children",MenuItem.class);
 		return menuItem;
 	}
@@ -73,8 +79,9 @@ public class MenuItemController {
 	
 	@RequestMapping("/menuItem/update")
 	@ResponseBody
-	public MenuItem update(@RequestBody MenuItem menuItem){		
+	public MenuItem update(HttpServletRequest request,@RequestBody MenuItem menuItem) throws IOException{		
 		menuItem=menuItemService.update(menuItem);
+		appenPngCls(request,menuItem.getIconCls(),menuItem.getIconCls32());
 		JsonConfigHolder.setFilterPropertys("children",MenuItem.class);
 		 return menuItem;
 	}
@@ -85,6 +92,19 @@ public class MenuItemController {
 		menuItemService.delete(menuItem);
 		JsonConfigHolder.setFilterPropertys("children",MenuItem.class);
 		return menuItem;
+	}
+	/**
+	 * 根据选择了的png，动态往pngs.css文件中添加css的class，这样可以减少pngs文件的大小
+	 * @author mawujun 16064988@qq.com
+	 * @throws IOException 
+	 */
+	public void appenPngCls(HttpServletRequest request,String iconCls,String iconCls32) throws IOException{
+		int count=menuItemService.queryCount(Cnd.select().andEquals("iconCls", iconCls));
+		
+		if(count==0){
+			String cssPath=request.getSession().getServletContext().getRealPath("/common/pngs.css");
+			IconUtils.generatorPngCss(cssPath, iconCls,iconCls32);
+		}
 	}
 
 }

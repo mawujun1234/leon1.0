@@ -13,7 +13,7 @@ Ext.define('Leon.common.IconWindow', {
         var store=Ext.create('Ext.data.Store', {
         	autoLoad:true,
         	pageSize:me.pagesize,
-		    fields: ['iconCls','src','name'],
+		    fields: ['iconCls','iconCls32','src','src16','name'],
 		    proxy:{
 		    	type: 'ajax',
         		url : '/app/png/query',

@@ -311,7 +311,9 @@ public class HibernateDao<T, ID extends Serializable>{
 	}
 	
 	protected void setParams(Query query,int position,Object val) {		
-		if (ReflectionUtils.isString(val)) {
+		if(val==null){
+			query.setParameter(position, null);
+		} else if (ReflectionUtils.isString(val)) {
 			query.setString(position, (String) val);
 		} else if (ReflectionUtils.isChar(val)) {
 			query.setString(position, ((Character) val) + "");
@@ -367,6 +369,40 @@ public class HibernateDao<T, ID extends Serializable>{
 			setParams(query,position+i,params[i]);
 		}
 	}
+	/**
+	 * 把实体里的非null值转换到Cnd里面
+	 * @author mawujun 16064988@qq.com 
+	 * @param entity
+	 * @param cnd
+	 */
+	private void transEntityValue2Cnd(final T entity,Cnd cnd){
+		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
+		
+		String[] propertyNames=classMetadata.getPropertyNames();
+		Object[] propertyValues=classMetadata.getPropertyValues(entity);
+		int versionIndex=classMetadata.getVersionProperty();
+//		
+//		List<Object> params=new ArrayList<Object>();
+//		StringBuilder builder=null;
+//		if(versionIndex!=-66){//如果有version字段就更新他
+//			builder=new StringBuilder("update versioned  " + this.entityClass.getName()+ " obj set ");
+//		} else {
+//			builder=new StringBuilder("update  " + this.entityClass.getName()+ " obj set ");
+//		}
+		
+		int i=0;
+		//boolean isiFirst=true;//判断是不是第一个set
+		for(Object value :propertyValues ){
+			
+			if(versionIndex!=-66 && versionIndex==i){
+				continue;
+			}
+			if(value!=null){
+				cnd.set(propertyNames[i], value);
+			}
+			i++;
+		}
+	}
 	
 	/**
 	 * 动态更新，对有值的字段进行更新，即如果字段=null，那就不进行更新
@@ -380,34 +416,21 @@ public class HibernateDao<T, ID extends Serializable>{
 		}
 		
 		
-		Object[] objs=getUpdateProp_position(entity);
-		StringBuilder builder=(StringBuilder)objs[0];
-		List<Object> params11111=(List<Object>)objs[1];
+//		Object[] objs=getUpdateProp_position(entity);
+//		StringBuilder builder=(StringBuilder)objs[0];
+//		List<Object> params11111=(List<Object>)objs[1];
 		
-		//StringBuilder builder=getUpdateProp(entity);
+		StringBuilder builder=new StringBuilder();
+		this.transEntityValue2Cnd(entity, cnd);
 		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
-//		String[] propertyNames=classMetadata.getPropertyNames();
-//		Object[] propertyValues=classMetadata.getPropertyValues(entity);
-//		int versionIndex=classMetadata.getVersionProperty();
-//
-//		boolean isiFirst=true;//判断是不是第一个set
 		
 
 		//返回了带where的条件
-		cnd.joinHql(classMetadata, builder);
+		cnd.joinHql(classMetadata, builder);//where条件没加上去,因为值没有，值没有通过set方法调用
 		Query query = this.getSession().createQuery(builder.toString());
-		
-		setParamsByCnd(query,cnd,classMetadata,params11111.toArray(new Object[params11111.size()]));
-//		Object[] params = new Object[cnd.paramCount(classMetadata)];
-//		cnd.joinParams(classMetadata, null, params, 0);
-//		for(Object o:params){
-//			params11111.add(o);
-//		}
-//		params=params11111.toArray(new Object[params11111.size()]);
-//
-//		for (int i = 0; i < params.length; i++) {
-//			setParams(query,i,params[i]);
-//		}
+		setParamsByCnd(query,cnd,classMetadata);
+		//setParamsByCnd(query,cnd,classMetadata,params11111.toArray(new Object[params11111.size()]));
+
 		
 		query.executeUpdate();
 		

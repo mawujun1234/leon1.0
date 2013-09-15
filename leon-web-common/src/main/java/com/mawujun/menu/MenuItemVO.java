@@ -10,6 +10,7 @@ public class MenuItemVO {
 	private String javaClass;
 	private String scripts;
 	private String iconCls;
+	private String iconCls32;
 	private String url;
 	private String funId;
 	//private String handler="function(){me.onMenuItemClick();}";
@@ -101,6 +102,14 @@ public class MenuItemVO {
 
 	public void setFunId(String funId) {
 		this.funId = funId;
+	}
+
+	public String getIconCls32() {
+		return iconCls32;
+	}
+
+	public void setIconCls32(String iconCls32) {
+		this.iconCls32 = iconCls32;
 	}
 
 //	public String getHandler() {

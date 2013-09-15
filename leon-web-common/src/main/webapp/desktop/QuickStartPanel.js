@@ -2,11 +2,11 @@ Ext.define('Leon.desktop.QuickStartPanel', {
     extend: 'Ext.panel.Panel',
     shortcutTpl: [
         '<tpl for=".">',
-            '<div class="ux-desktop-shortcut" id="{name}-shortcut">',
-                '<div class="ux-desktop-shortcut-icon {iconCls}">',
-                    '<img src="',Ext.BLANK_IMAGE_URL,'" title="{name}">',
+            '<div class="ux-desktop-shortcut" id="{menuItemId}-shortcut">',
+                '<div class="ux-desktop-shortcut-icon {iconCls32}">',
+                    '<img src="',Ext.BLANK_IMAGE_URL,'" title="{text}">',
                 '</div>',
-                '<span class="ux-desktop-shortcut-text">{name}</span>',
+                '<span class="ux-desktop-shortcut-text">{text}</span>',
             '</div>',
         '</tpl>',
         '<div class="x-clear"></div>'
@@ -20,6 +20,7 @@ Ext.define('Leon.desktop.QuickStartPanel', {
         var me = this;
         
         me.createShortcutsStore();
+        delete me.quickstarts
         var item=me.createDataView();
 		me.items=[item];
 
@@ -34,24 +35,19 @@ Ext.define('Leon.desktop.QuickStartPanel', {
         me.callParent();
     },
     createShortcutsStore:function(){
+    	var me=this;
+    	var data=this.quickstarts;
+    	//.break 这里进行数据匹配，病显示在桌面上，注意要使用32位的图标
     	var myStore = Ext.create('Ext.data.Store', {
 		    fields: [
-		       { name: 'name' },
+		       { name: 'text' },
 		       { name: 'iconCls' },
-		       { name: 'module' }
+		       { name: 'iconCls32' },
+		       { name: 'url' },
+		       { name: 'menuItemId' },
+		       { name: 'funId' }
 		    ],
-		    data:[{name:'快捷方式1',iconCls:'pngs_32_20110213231934121',module:'1'},
-		    	{name:'快捷方式2',iconCls:'pngs_32_20110213231934121',module:'1'},
-		    	{name:'快捷方式3',iconCls:'pngs_32_20110213231934121',module:'1'},
-		    	{name:'快捷方式4',iconCls:'pngs_32_20110213231934121',module:'1'},
-		    	{name:'快捷方式5',iconCls:'pngs_32_20110213231934121',module:'1'},
-		    	{name:'快捷方式6',iconCls:'pngs_32_20110213231934121',module:'1'},
-		    	{name:'快捷方式7',iconCls:'pngs_32_20110213231934121',module:'1'},
-		    	{name:'快捷方式8',iconCls:'pngs_32_20110213231934121',module:'1'},
-		    	{name:'快捷方式9',iconCls:'pngs_32_20110213231934121',module:'1'},
-		    	{name:'快捷方式10',iconCls:'pngs_32_20110213231934121',module:'1'},
-		    	{name:'快捷方式11',iconCls:'pngs_32_20110213231934121',module:'1'},
-		    	{name:'快捷方式12',iconCls:'pngs_32_20110213231934121',module:'1'}]
+		    data:me.quickstarts
 		});
     	this.shortcuts=myStore;
     	
@@ -76,8 +72,18 @@ Ext.define('Leon.desktop.QuickStartPanel', {
             x: 0, y: 0,
             tpl: new Ext.XTemplate(me.shortcutTpl),
             listeners:{
-            	'itemclick':function(){
-					alert('弹出桌面');
+            	'itemclick':function(view,record,item){
+            		//console.dir(record.data);
+            		var params=record.data;
+            		params.title=params.text;
+					me.desktop.createWindow(record.data);
+//					me.createWindow({
+//		        			title:btn.text,
+//		        			menuItemId:btn.menuItemId,
+//		        			funId:btn.funId,
+//		        			url:btn.link_url,
+//		        			iconCls:btn.iconCls
+//		        		});
 				}
             }
         };

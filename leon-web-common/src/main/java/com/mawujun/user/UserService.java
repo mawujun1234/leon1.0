@@ -43,7 +43,7 @@ public class UserService  extends BaseRepository<User, String>{
 	}
 	
 	public void recover(String id) {
-		Cnd cnd=Cnd.update().set("deleted", false).andEquals("id", id);
+		Cnd cnd=Cnd.update().set("deleted", false).set("deletedDate", null).andEquals("id", id);
 		super.update(cnd);
 	}
 	

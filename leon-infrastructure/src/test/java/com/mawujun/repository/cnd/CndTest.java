@@ -478,4 +478,33 @@ public class CndTest  extends DbunitBaseRepositoryTest {
 		assertEquals(" select distinct firstName,id from com.mawujun.repository.EntityTest WHERE  NOT LOWER(firstName) LIKE LOWER('%E1%') OR  NOT LOWER(firstName) LIKE LOWER('%E1%') ORDER BY firstName DESC  ",cnd0.toHql(classMetadata));
 	}
 
+	@Test
+	public void insert() {
+		AbstractEntityPersister classMetadata=(AbstractEntityPersister)sessionFactory.getClassMetadata(EntityTest.class);
+		Cnd cnd0=Cnd.insert().set("firstName", "E1").set("lastName", null).set("age", 1);
+		
+		StringBuilder sb=new StringBuilder();
+		cnd0.joinHql(classMetadata, sb);
+		assertEquals("insert into com.mawujun.repository.EntityTest(firstName,lastName,age)  values(?,?,?)"
+				,sb.toString());
+		
+		assertEquals("insert into com.mawujun.repository.EntityTest(firstName,lastName,age)  values('E1',NULL,1)"
+				,cnd0.toHql(classMetadata));
+	}
+	
+	@Test
+	public void update() {
+		AbstractEntityPersister classMetadata=(AbstractEntityPersister)sessionFactory.getClassMetadata(EntityTest.class);
+		Cnd cnd0=Cnd.update().set("firstName", "E1").set("lastName", null).set("age", 20).andEquals("id", 1);
+		
+		StringBuilder sb=new StringBuilder();
+		cnd0.joinHql(classMetadata, sb);
+		assertEquals("update versioned  com.mawujun.repository.EntityTest set firstName=?,lastName=?,age=? WHERE id=?"
+				,sb.toString());
+		assertEquals("update versioned  com.mawujun.repository.EntityTest set firstName='E1',lastName=NULL,age=20 WHERE id=1"
+				,cnd0.toHql(classMetadata));
+		
+//		assertEquals("insert into com.mawujun.repository.EntityTest(firstName,lastName,age)  values('E1',NULL,1)"
+//				,cnd0.toHql(classMetadata));
+	}
 }
