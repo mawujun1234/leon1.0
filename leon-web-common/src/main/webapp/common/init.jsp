@@ -33,8 +33,9 @@ if("classic".equals(theme)){
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/common/pngs.css">
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/ext-4/bootstrap.js"></script>
+
 <%if(theme!=null && !"".equals(theme)) { %>
-<script type="text/javascript" src="<%=request.getContextPath()%>/ext-4/ext-theme<%=jsTheme %>.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/ext-4/ext-theme-<%=theme %>.js"></script>
 <%} %>
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/ext-4/locale/ext-lang-zh_CN.js"></script>
@@ -77,11 +78,9 @@ Ext.Loader.setConfig({
 	enabled: true,
 	paths:{
 		'Leon':'<%=route%>',
-		'Ext.ux':'<%=route%>'+'/ext-4/examples/ux',
+		'Ext.ux':'<%=route%>'+'/ext-4/examples/ux'
 		//'MyDesktop':'.'
 	}
 });
-
-//Ext.setGlyphFontFamily("Pictos");
 </script>
 
