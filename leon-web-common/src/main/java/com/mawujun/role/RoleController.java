@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.mawujun.cache.RoleCacheHolder;
+import com.mawjun.utils.RoleCacheHolder;
 import com.mawujun.controller.spring.mvc.JsonConfigHolder;
 import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;

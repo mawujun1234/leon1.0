@@ -1034,6 +1034,9 @@ public class HibernateDao<T, ID extends Serializable>{
 		setParamsByCnd(query,cnd,classMetadata);
 
 		Object obj= query.uniqueResult();//.list().;
+		if(obj==null){
+			return null;
+		}
 		if(classM.isAssignableFrom(obj.getClass())){
 			return (M)obj;
 		}

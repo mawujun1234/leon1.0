@@ -28,7 +28,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import com.mawujun.cache.RoleCacheHolder;
+import com.mawjun.utils.RoleCacheHolder;
 import com.mawujun.exten.TreeNode;
 import com.mawujun.fun.Fun;
 

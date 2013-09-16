@@ -12,6 +12,7 @@ import com.mawujun.utils.BeanUtils;
 
 /**
  * 因为不能新建一个类，代码中写死了，所以使用继承
+ * 还有一个功能就是解决数据库对列名大小写不敏感的问题，把列名全部转换成小写，提高程序的跨数据库的可移植性
  * @author mawujun
  *
  */
@@ -35,6 +36,12 @@ public class Record extends LinkedHashMap<String, Object> {
 		return super.keySet();
 	}
 	
+	/**
+	 * 把列面全部转换成大写，解决不同数据返回大小写不一样的问题
+	 */
+	public Object put(String key, Object value){
+		return super.put(key.toLowerCase(), value);
+	}
 	
 	public Object getValue(String name)
 	{	

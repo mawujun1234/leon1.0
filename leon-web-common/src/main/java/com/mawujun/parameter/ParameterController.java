@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
+import com.mawjun.utils.ParameterHolder;
 import com.mawujun.repository.cnd.Cnd;
 
 @Controller
@@ -44,6 +45,8 @@ public class ParameterController {
 	@RequestMapping("/parameter/query")
 	@ResponseBody
 	public List<Parameter> query(){		
+		ParameterHolder.getUserParameterValue("402881e53f0a1310013f0a17b7770000", P.tttt);
+		
 		return parameterService.query(Cnd.where().asc("sort"));
 	}
 	/**

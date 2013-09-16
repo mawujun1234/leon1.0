@@ -115,8 +115,8 @@ public class UserRoleService extends BaseRepository<UserRole, UserRolePK> {
 			//funes.add(funService.get(funId.toString()));
 			
 			
-			String role_id=funMap.get("ROLE_ID").toString();
-			Fun leaf=funService.get(funMap.get("FUN_ID").toString());
+			String role_id=funMap.get("role_id").toString();
+			Fun leaf=funService.get(funMap.get("fun_id").toString());
 			
 			if(parentKeys.get(leaf.getId()) !=null){//表示这个功能能已经添加过了
 				Fun fun=parentKeys.get(leaf.getId());

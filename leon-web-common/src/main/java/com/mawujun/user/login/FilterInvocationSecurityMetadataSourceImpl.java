@@ -101,11 +101,11 @@ public class FilterInvocationSecurityMetadataSourceImpl implements
 	public void initResourceMap(){
 		List<Map<String,Object>> funRoles=roleService.queryRoleUrl();
 		 for(Map<String,Object> map:funRoles){
-			 if(!StringUtils.hasLength(map.get("URL").toString())){
+			 if(!StringUtils.hasLength(map.get("url").toString())){
 				 continue;
 			 }
-			 AntPathRequestMatcher matcher=new AntPathRequestMatcher(map.get("URL").toString());
-			 ConfigAttribute configAttribute =    new SecurityConfig(rolePrefix+map.get("ROLE_ID"));  
+			 AntPathRequestMatcher matcher=new AntPathRequestMatcher(map.get("url").toString());
+			 ConfigAttribute configAttribute =    new SecurityConfig(rolePrefix+map.get("role_id"));  
 			 if(resourceMap.containsKey(matcher)){
 				 resourceMap.get(matcher).add(configAttribute);
 			 } else{

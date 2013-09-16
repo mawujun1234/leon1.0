@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mawujun.cache.RoleCacheHolder;
+import com.mawjun.utils.RoleCacheHolder;
 import com.mawujun.exception.BussinessException;
 import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;

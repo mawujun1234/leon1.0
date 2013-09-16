@@ -1,6 +1,7 @@
 package com.mawujun.parameter;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -23,8 +24,25 @@ public class ParameterSubjectService extends
 		return parametersubjects.length;
 	}
 	public String getParameterValue(String subjectId,SubjectType subjectType,String parameterId){
-		return this.queryUnique(Cnd.select().andEquals("subjectId", subjectId).andEquals("subjectType", subjectType)
-				.andEquals("parameterId", parameterId).addSelect("parameterValue"),String.class);
+		if(SubjectType.USER==subjectType){
+			//如果是用户的话,要首先获取用户，再获取用户所属的职位，组织单元，用户组，角色，系统
+			//大小写的问题
+			dd
+			List<Map<String,Object>> list=super.queryList("query_USER_part_of", subjectId);
+			String result= this.queryUnique(Cnd.select().andEquals("subjectId", subjectId).andEquals("subjectType", subjectType)
+					.andEquals("parameterId", parameterId).addSelect("parameterValue"),String.class);
+			return result;
+			
+		} else {
+			String result= this.queryUnique(Cnd.select().andEquals("subjectId", subjectId).andEquals("subjectType", subjectType)
+					.andEquals("parameterId", parameterId).addSelect("parameterValue"),String.class);
+			if(result==null || "".equalsIgnoreCase(result)){
+				result=this.queryUnique(Cnd.select().andEquals("subjectId", "SYSTEM").andEquals("subjectType", SubjectType.SYSTEM)
+						.andEquals("parameterId", parameterId).addSelect("parameterValue"),String.class);
+			}
+			return result;
+		}
+		
 		
 	}
 	public List<ParameterSubjectVO> querySubject(String parameterId,String subjectType){
