@@ -19,9 +19,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	
 	<!-- 查询用户所属的职位，组织单元，用户组，角色============================================  -->
 	<select id="query_USER_part_of" resultType="record" >
-    	select 'GROUP' AS subjecttype,group_id as SUBJECTID from leon_group_user where user_id=#{userId}
+    	select distinct 'GROUP' AS subjecttype,group_id as SUBJECTID from leon_group_user where user_id=#{userId}
     	UNION ALL
-    	select 'ROLE' AS subjecttype,ROLE_id  as SUBJECTID from leon_user_role where user_id=#{userId}
+    	select distinct 'ROLE' AS subjecttype,ROLE_id  as SUBJECTID from leon_user_role where user_id=#{userId}
     </select>
 	
 	<!-- ========================================================== -->
