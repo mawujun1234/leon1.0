@@ -5,8 +5,6 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import com.mawjun.utils.ParameterHolder;
-import com.mawujun.exception.BussinessException;
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.repository.mybatis.MybatisParamUtils;

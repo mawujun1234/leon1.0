@@ -6,6 +6,7 @@ Ext.defineModel("Leon.desktop.fun.Fun",{
 	fields:[
 		{name:'id',type:'auto'},
 		{name:'code',type:'string'},
+		{name:'isEnable',type:'boolean',defaltValue:true},
 		{name:'text',type:'string'},
 		{name:'url',type:'string'},
 		{name:'reportCode',type:'string'},

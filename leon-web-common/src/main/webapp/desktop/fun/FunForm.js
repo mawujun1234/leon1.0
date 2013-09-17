@@ -15,7 +15,7 @@ Ext.define('Leon.desktop.fun.FunForm',{
     //trackResetOnLoad:true,
     
     fieldDefaults: {
-            labelWidth: 55,
+            labelWidth: 75,
             anchor: '100%'
         },
 
@@ -39,14 +39,15 @@ Ext.define('Leon.desktop.fun.FunForm',{
 //	            readOnly:true
 //	            //allowBlank: false,
 //	            //tooltip: 'Enter your first name'
-//	        },{
-//	            fieldLabel: 'id',
-//	            //afterLabelTextTpl: me.required,
-//	            readOnly:true,
-//	            name: 'id'
-//	            //allowBlank: false,
-//	            //tooltip: 'Enter your first name'
 //	        },
+       		{
+	            fieldLabel: 'id',
+	            //afterLabelTextTpl: me.required,
+	            readOnly:true,
+	            name: 'id'
+	            //allowBlank: false,
+	            //tooltip: 'Enter your first name'
+	        },
 	        {
 	            fieldLabel: '名称',
 	            afterLabelTextTpl: me.required,
@@ -54,11 +55,27 @@ Ext.define('Leon.desktop.fun.FunForm',{
 	            allowBlank: false,
 	            tooltip: '请输入名称'
 	        },{
+	        	xtype:'combobox',
+			    fieldLabel: '是否可用',
+			    afterLabelTextTpl:'<span class="icons_help" data-qtip="不可用：表示所有关联到这个功能的菜单和界面元素都看不见了，可用于临时维护。">&nbsp;&nbsp;&nbsp;&nbsp;</span>',
+			    store:  Ext.create('Ext.data.Store', {
+				    fields: ['id', 'name'],
+				    data : [
+				        {"id":true, "name":"可用"},
+				        {"id":false, "name":"不可用"}
+				    ]
+				}),
+			    queryMode: 'local',
+			    displayField: 'name',
+			    valueField: 'id',
+			    editable:false,
+			    value:true,
+			    name:'isEnable'
+			},{
 	            fieldLabel: '助记码',
 	            //afterLabelTextTpl: me.required,
-	            name: 'code'
-	            //allowBlank: false,
-	            //tooltip: '请输入名称'
+	            name: 'code',
+	            afterLabelTextTpl:'<span class="icons_help" data-qtip="主要用于界面元素的显示控制，例如界面元素按钮的id=testId,这里也设置成testid，把这个功能授予某个用户的时候，这个用户就能看到这个按钮了">&nbsp;&nbsp;&nbsp;&nbsp;</span>'
 	        },{
 	            fieldLabel: 'url',
 	            name: 'url',

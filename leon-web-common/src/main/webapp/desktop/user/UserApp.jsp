@@ -20,7 +20,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
-	
 	<%@include file="../../common/init.jsp" %>
 	<script type="text/javascript" src="UserApp.js"></script>
   </head>

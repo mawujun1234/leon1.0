@@ -93,6 +93,7 @@ Ext.define('Leon.desktop.user.UserForm',{
 	    ];
 	    me.buttons= [{
             text: '保存',
+            
             iconCls:'form-save-button',
             handler: function() {
             	var form=this.up('form');

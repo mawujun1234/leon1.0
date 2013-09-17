@@ -134,17 +134,17 @@ Ext.onReady(function(){
     grid.addTopBar(tbar);
 	
 	
-	var form=Ext.create('Leon.desktop.user.UserForm',{});
-	var win=Ext.create('Ext.Window',{
-			layout:'fit',
-			modal:true,
-			items:[form],
-			listeners:{
-				close:function(panel){
-					grid.getStore().reload();
-				}
-			}
-	});
+//	var form=Ext.create('Leon.desktop.user.UserForm',{});
+//	var win=Ext.create('Ext.Window',{
+//			layout:'fit',
+//			modal:true,
+//			items:[form],
+//			listeners:{
+//				close:function(panel){
+//					grid.getStore().reload();
+//				}
+//			}
+//	});
 	
 //	//重载新增的功能，不从表格里面新增
 //	grid.onCreate=function(){

@@ -41,6 +41,8 @@ public class Fun extends TreeNode{
 	@Column(length=20)
 	@Label(name="名称")
 	private String text;
+	@Label(name="是否可用")
+	private Boolean isEnable;
 	@Column(length=80)
 	@Label(name="地址")
 	private String url;
@@ -206,11 +208,12 @@ public class Fun extends TreeNode{
 		}
 		
 	}
-//	public String getMenuItemId() {
-//		return menuItemId;
-//	}
-//	public void setMenuItemId(String menuItemId) {
-//		this.menuItemId = menuItemId;
-//	}
+	public Boolean getIsEnable() {
+		return isEnable;
+	}
+	public void setIsEnable(Boolean isEnable) {
+		this.isEnable = isEnable;
+	}
+
 
 }

@@ -167,6 +167,7 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 		//List<Object> menuItemLeaf = super.queryListObj("query4Desktop", menuId);
 		List<String> menuItemLeaf = super.queryList("query4Desktop", menuId,String.class);
 		// 组装出role树
+		重新构建树，改成用递归的方法，这样更清晰，添加进功能被禁用的功能，还有就是菜单的任何一节点都可以挂钩功能，也就是说菜单的目录节点也可以点击，弹出窗口
 		Map<String,MenuItemVO> parentKeys=new HashMap<String,MenuItemVO>();
 		List<MenuItemVO> menuItems = new ArrayList<MenuItemVO>();
 		for (Object menuItemIdObj: menuItemLeaf) {

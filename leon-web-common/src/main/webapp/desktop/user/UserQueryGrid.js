@@ -63,6 +63,7 @@ Ext.define('Leon.desktop.user.UserQueryGrid',{
        var tbar=Ext.create('Ext.toolbar.Toolbar', {
        		items:[nameField,{
        			text:'查询',
+       			
        			iconCls:'icons_search ',
        			handler:function(){
 					 me.getStore().getProxy( ).extraParams={userName:nameField.getValue(),groupId:me.getGroupId()};
