@@ -8,6 +8,7 @@ import com.mawujun.parameter.SubjectType;
 
 /**
  * 用来全局获取参数值得
+ * ParameterHolder.getUserParameterValue("402881e53f0a1310013f0a17b7770000", P.tttt);
  * @author mawujun email:16064988@163.com qq:16064988
  *
  */
@@ -38,6 +39,6 @@ public class ParameterHolder {
 	}
 	
 	public static String getSystemParameterValue(String subjectId,P parameterId){
-		return ParameterHolder.getParameterValue(subjectId, SubjectType.SYSTEM, parameterId);
+		return parameterSubjectService.getSystemParameterValue(subjectId,  parameterId.toString());
 	}
 }

@@ -45,7 +45,7 @@ public class ParameterController {
 	@RequestMapping("/parameter/query")
 	@ResponseBody
 	public List<Parameter> query(){		
-		ParameterHolder.getUserParameterValue("402881e53f0a1310013f0a17b7770000", P.tttt);
+		//ParameterHolder.getUserParameterValue("402881e53f0a1310013f0a17b7770000", P.tttt);
 		
 		return parameterService.query(Cnd.where().asc("sort"));
 	}

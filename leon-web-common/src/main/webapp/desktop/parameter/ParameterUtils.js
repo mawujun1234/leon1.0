@@ -79,9 +79,11 @@ Ext.define('Leon.desktop.parameter.ParameterUtils', {
          				var arry=[];
          				for(var key in values){
          					var obj={
-         						subjectType:me.subjectType,
-         						subjectId:me.subjectId,
-         						parameterId:key,
+         						id:{
+         							subjectType:me.subjectType,
+         							subjectId:me.subjectId,
+         							parameterId:key
+         						},
          						parameterValue:values[key]
          					}
          					arry.push(obj);

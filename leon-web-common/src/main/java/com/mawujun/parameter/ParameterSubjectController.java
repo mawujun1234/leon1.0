@@ -44,20 +44,20 @@ public class ParameterSubjectController {
 	@ResponseBody
 	public Map<String,Object> query(String subjectId,String subjectType){		
 		//把参数行列转换后，显示在form里
-		List<ParameterSubject> pses=parametersubjectService.query(Cnd.select().andEquals("subjectId", subjectId).andEquals("subjectType", subjectType));
+		List<ParameterSubject> pses=parametersubjectService.query(Cnd.select().andEquals("id.subjectId", subjectId).andEquals("id.subjectType", subjectType));
 		HashMap<String,Object> result=new HashMap<String,Object>();
 		for(ParameterSubject ps:pses){
 			//如果是数组的话，就转换成字符串
-			if(parameterService.get(ps.getParameterId()).getShowModel()==ShowModelEnum.CHECKBOXGROUP){
+			if(parameterService.get(ps.getId().getParameterId()).getShowModel()==ShowModelEnum.CHECKBOXGROUP){
 				String value=ps.getParameterValue();
 				if(!value.startsWith("[")){
 					value="["+value+"]";
 				}
 				Object o=JSON.parse(value);
 				System.out.println(o.getClass());
-				result.put(ps.getParameterId(), o);
+				result.put(ps.getId().getParameterId(), o);
 			} else {
-				result.put(ps.getParameterId(), ps.getParameterValue());
+				result.put(ps.getId().getParameterId(), ps.getParameterValue());
 			}
 			
 		}
@@ -86,19 +86,6 @@ public class ParameterSubjectController {
 		parametersubjectService.create(parametersubjects);
 		return parametersubjects;
 	}
-	
-//	@RequestMapping("/parametersubject/update")
-//	@ResponseBody
-//	public ParameterSubject update(@RequestBody ParameterSubject parametersubject){		
-//		parametersubjectService.update(parametersubject);
-//		return parametersubject;
-//	}
-//	
-//	@RequestMapping("/parametersubject/destroy")
-//	@ResponseBody
-//	public ParameterSubject destroy(@RequestBody ParameterSubject parametersubject){		
-//		parametersubjectService.delete(parametersubject);
-//		return parametersubject;
-//	}
+
 
 }

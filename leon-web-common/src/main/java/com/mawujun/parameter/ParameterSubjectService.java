@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.mawjun.utils.ParameterHolder;
 import com.mawujun.exception.BussinessException;
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository.cnd.Cnd;
@@ -12,11 +13,11 @@ import com.mawujun.repository.mybatis.MybatisParamUtils;
 
 @Service
 public class ParameterSubjectService extends
-		BaseRepository<ParameterSubject, String> {
+		BaseRepository<ParameterSubject, ParameterSubject.Id> {
 
 	public int create(ParameterSubject[] parametersubjects){
 		//删除该主体的所有参数
-		super.deleteBatch(Cnd.select().andEquals("subjectId", parametersubjects[0].getSubjectId()).andEquals("subjectType", parametersubjects[0].getSubjectType()));
+		super.deleteBatch(Cnd.select().andEquals("id.subjectId", parametersubjects[0].getId().getSubjectId()).andEquals("id.subjectType", parametersubjects[0].getId().getSubjectType()));
 		//再进行保存
 		for(ParameterSubject ps:parametersubjects){
 			super.create(ps);
@@ -24,41 +25,50 @@ public class ParameterSubjectService extends
 		return parametersubjects.length;
 	}
 	public String getParameterValue(String subjectId,SubjectType subjectType,String parameterId){
+		String result=null;
 		if(SubjectType.USER==subjectType){
 			//如果是用户的话,要首先获取用户，再获取用户所属的职位，组织单元，用户组，角色，系统
-			//大小写的问题
-			dd
-			List<Map<String,Object>> list=super.queryList("query_USER_part_of", subjectId);
-			String result= this.queryUnique(Cnd.select().andEquals("subjectId", subjectId).andEquals("subjectType", subjectType)
-					.andEquals("parameterId", parameterId).addSelect("parameterValue"),String.class);
-			return result;
+			MybatisParamUtils pamras=MybatisParamUtils.init().add("user_Id", subjectId).add("parameter_Id", parameterId);
+			List<Map<String,Object>> list=super.queryList("query_USER_part_of", pamras);
+			for(Map<String,Object> map:list){
+				if(map.get("parametervalue")!=null){
+					return map.get("parametervalue").toString();
+				}
+			}
 			
 		} else {
-			String result= this.queryUnique(Cnd.select().andEquals("subjectId", subjectId).andEquals("subjectType", subjectType)
-					.andEquals("parameterId", parameterId).addSelect("parameterValue"),String.class);
-			if(result==null || "".equalsIgnoreCase(result)){
-				result=this.queryUnique(Cnd.select().andEquals("subjectId", "SYSTEM").andEquals("subjectType", SubjectType.SYSTEM)
-						.andEquals("parameterId", parameterId).addSelect("parameterValue"),String.class);
-			}
-			return result;
+			result= this.queryUnique(Cnd.select().andEquals("id.subjectId", subjectId).andEquals("id.subjectType", subjectType)
+					.andEquals("id.parameterId", parameterId).addSelect("parameterValue"),String.class);
+			
 		}
-		
-		
+		if(result==null || "".equalsIgnoreCase(result)){
+			result=getSystemParameterValue(subjectId,parameterId);
+		}
+		return result;
 	}
+	
+	public String getSystemParameterValue(String subjectId,String parameterId){
+		return this.queryUnique(Cnd.select().andEquals("id.subjectId", "SYSTEM").andEquals("id.subjectType", SubjectType.SYSTEM)
+				.andEquals("id.parameterId", parameterId).addSelect("parameterValue"),String.class);
+	}
+	
 	public List<ParameterSubjectVO> querySubject(String parameterId,String subjectType){
-//		Map<String,String> params=new HashMap<String,String>();
-//		params.put("parameterId", parameterId);
-//		params.put("subjectType", subjectType);
+
+		MybatisParamUtils params=MybatisParamUtils.init().put("parameter_Id", parameterId).putIf("subjectType", subjectType);
+		return this.queryList("query_"+subjectType, params,ParameterSubjectVO.class);
 		
-		MybatisParamUtils params=MybatisParamUtils.init().put("parameterId", parameterId).putIf("subjectType", subjectType);
-		if(SubjectType.SYSTEM.toString().equals(subjectType)){
-			//return this.query(Cnd.select().andEquals("parameterId", parameterId).andEquals("subjectType", subjectType));
-			return this.queryList("query_SYSTEM", params,ParameterSubjectVO.class);
-		} else if(SubjectType.USER.toString().equals(subjectType)){
-			return this.queryList("query_USER", params,ParameterSubjectVO.class);
-		} else {
-			throw new BussinessException("该主题的参数配置  还没有做!!查询所有主体也还咩有做");
-		}
+//		if(SubjectType.SYSTEM.toString().equals(subjectType)){
+//			//return this.query(Cnd.select().andEquals("parameterId", parameterId).andEquals("subjectType", subjectType));
+//			return this.queryList("query_SYSTEM", params,ParameterSubjectVO.class);
+//		} else if(SubjectType.USER.toString().equals(subjectType)){
+//			return this.queryList("query_USER", params,ParameterSubjectVO.class);
+//		} else if(SubjectType.GROUP.toString().equals(subjectType)){
+//			return this.queryList("query_GROUP", params,ParameterSubjectVO.class);
+//		} else if(SubjectType.ROLE.toString().equals(subjectType)){
+//			return this.queryList("query_ROLE", params,ParameterSubjectVO.class);
+//		} else {
+//			throw new BussinessException("该主题的参数配置  还没有做!!查询所有主体也还咩有做");
+//		}
 		//return null;
 	}
 	
