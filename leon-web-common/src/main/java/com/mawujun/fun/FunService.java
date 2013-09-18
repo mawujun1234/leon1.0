@@ -103,7 +103,7 @@ public class FunService extends BaseRepository<Fun, String> {
 	public List<String> queryAllElements(String userId) {	
 		//return super.queryList(Cnd.select().addSelect("elementId").distinct().andEquals(name, val), classT)
 		List<String> list=new ArrayList();
-		根据权限从数据库中获取，包括角色，组，职位，组织单元
+		根据权限从数据库中获取，包括角色，组，职位，组织单元，最最终还是获取用户所属的角色所拥有的功能
 		list.add("generator-2c908385412fd0e701412fd93e1d0001");
 		return list;
 	}
