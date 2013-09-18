@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mawjun.utils.SecurityContextHolder;
 import com.mawujun.controller.spring.mvc.JsonConfigHolder;
 import com.mawujun.exception.BussinessException;
+import com.mawujun.user.login.UserDetailsImpl;
 import com.mawujun.utils.FileUtils;
 import com.mawujun.utils.page.WhereInfo;
 
@@ -43,6 +45,8 @@ public class FunController {
 			whereinfo=WhereInfo.parse("parent.id", "is",null);
 		}
 		List<Fun> funes=funService.query(whereinfo);
+		JsonConfigHolder.setFilterPropertys("parent");
+		//JsonConfigHolder.setRootName("children");
 		return funes;
 	}
 	/**
@@ -52,11 +56,6 @@ public class FunController {
 	@RequestMapping("/fun/queryAll")
 	@ResponseBody
 	public List<Fun> queryAll(){	
-	
-//		ModelMap resultMap=new ModelMap();
-//		resultMap.put("children", funService.queryAll());
-//		resultMap.put(ResultMap.filterPropertysName, "parent");
-//		return resultMap;
 		
 		JsonConfigHolder.setFilterPropertys("parent");
 		JsonConfigHolder.setRootName("children");
@@ -91,6 +90,22 @@ public class FunController {
 	public Fun destroy(@RequestBody Fun fun){		
 		funService.delete(fun);
 		return fun;
+	}
+	
+	/**
+	 * 生成界面元素的css文件，用来控制界面元素的显示和隐藏
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/fun/generatorElementCss.css")
+	@ResponseBody
+	public String generatorElementCss(){		
+		UserDetailsImpl userDetail=SecurityContextHolder.getUserDetailsImpl();
+		List<String> elementIds= funService.queryAllElements(userDetail.getId());
+		生成css文件内容
+		JsonConfigHolder.setAutoWrap(false);
+		return "#generator-2c908385412fd0e701412fd93e1d0001{display:none;}";
 	}
 	
 	@RequestMapping("/fun/load/{id}")

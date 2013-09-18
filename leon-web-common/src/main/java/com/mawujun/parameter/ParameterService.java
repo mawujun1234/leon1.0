@@ -47,7 +47,7 @@ public class ParameterService extends BaseRepository<Parameter, String> {
 	
 	public Parameter update(Parameter entity) {
 		//判断主体是否有没引用，如果被引用了并且更新的时候取消了，这个时候就报错
-		List<String> list=parameterSubjectService.queryList(Cnd.select().addSelect("subjectType").distinct().andEquals("parameterId", entity.getId()), String.class);
+		List<String> list=parameterSubjectService.queryList(Cnd.select().addSelect("id.subjectType").distinct().andEquals("id.parameterId", entity.getId()), String.class);
 		String subjects=entity.getSubjects();
 		subjects=subjects.substring(1, subjects.length()-1);
 		String tempArray[]=subjects.split(",");

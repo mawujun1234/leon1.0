@@ -201,14 +201,8 @@ Ext.define('Leon.desktop.Desktop', {
         		model.link_url=model.url;
         		delete model.url;
 
-        		
-        		if(model.menu && model.menu.items && model.menu.items.length>0){
-        			me.initMenuItemEvent(model.menu.items);
-        		} else {
-        			model.plugins=[{ptype:'menuplugin',scripts:model.scripts}];
-        			//model.xtype= 'splitbutton';
-        			//alert(menu.url+"===");
-	        		model.handler=function(btn){
+        		if(model.link_url){	
+        			model.handler=function(btn){
 		        		me.createWindow({
 		        			title:btn.text,
 		        			menuItemId:btn.menuItemId,
@@ -218,6 +212,33 @@ Ext.define('Leon.desktop.Desktop', {
 		        		});
 	        		}
         		}
+        		if(model.scripts){
+        			model.plugins=[{ptype:'menuplugin',scripts:model.scripts}];
+        		}
+        		if(model.menu && model.menu.items && model.menu.items.length>0){
+        			if(model.link_url){
+        				model.xtype= 'splitbutton';
+        			}
+        			
+        			me.initMenuItemEvent(model.menu.items);
+        		}
+        		
+//        		if(model.menu && model.menu.items && model.menu.items.length>0){
+//        			me.initMenuItemEvent(model.menu.items);
+//        		} else {
+//        			model.plugins=[{ptype:'menuplugin',scripts:model.scripts}];
+//        			//model.xtype= 'splitbutton';
+//        			//alert(menu.url+"===");
+//	        		model.handler=function(btn){
+//		        		me.createWindow({
+//		        			title:btn.text,
+//		        			menuItemId:btn.menuItemId,
+//		        			funId:btn.funId,
+//		        			url:btn.link_url,
+//		        			iconCls:btn.iconCls
+//		        		});
+//	        		}
+//        		}
         	}
 	},
 

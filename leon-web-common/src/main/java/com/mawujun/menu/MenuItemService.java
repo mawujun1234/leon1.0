@@ -33,18 +33,7 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 	private MenuService menuService;
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-//
-//	/**
-//	 * 根据选择了的png，动态往pngs.css文件中添加css的class，这样可以减少pngs文件的大小
-//	 * @author mawujun 16064988@qq.com
-//	 */
-//	public void appenPngCls(String icoCls,String iconCls32){
-//		//首先判断是否已经存在这个pngs了，如果已经存在，就不添加了
-//		int count=super.queryCount(Cnd.select().andEquals("iconCls", icoCls));
-//		if(count==0){
-//			IconUtils.a
-//		}
-//	}
+
 	
 	public MenuItem create(MenuItem entity) {
 		Object reportCode=null;
@@ -71,15 +60,16 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 	public MenuItem update(MenuItem entity) {
 		MenuItem exists=this.get(entity.getId());
 		BeanUtils.copyProperties(entity, exists, new String[]{"parent", "menu","fun","children"});
+		if(entity.getFun()!=null){
+			exists.setFun(funService.get(entity.getFun().getId()));
+		}
 		entity=exists;
 		return super.update(exists);
 		
 	}
 	public MenuItem delete(MenuItem entity) {
 		MenuItem item=this.get(entity.getId());
-//		if(item.isAutoCreate()){
-//			throw new BussinessException("不能删除自动创建的菜单项。<br/>");
-//		}
+
 		return super.delete(item);
 	}
 	public MenuItem create(String funId,String parentId,String menuId) {
@@ -105,69 +95,14 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 		
 		return menuitem;
 	}
-//	/**
-//	 * 在默认菜单上创建菜单项
-//	 * @author mawujun 16064988@qq.com 
-//	 * @param fun
-//	 */
-//	public void create(Fun fun) {
-//		//新建功能的时候同时建立菜单，还没有做
-//		// 获取对应的父菜单,获取第一个匹配的菜单
-//		WhereInfo whereinfoItem = WhereInfo.parse("fun.id", fun.getParent()==null?null:fun.getParent().getId());
-//		WhereInfo whereinfoItem1 = WhereInfo.parse("menu.id", Menu.default_id);
-//		MenuItem menuparent = this.queryUnique(whereinfoItem,whereinfoItem1);
-//
-//		MenuItem menuitem = new MenuItem();
-//		menuitem.setText(fun.getText());
-//		menuitem.setReportCode(fun.getReportCode());
-//		menuitem.setFun(fun);
-//		menuitem.setParent(menuparent);
-//		menuitem.setMenu(new Menu(Menu.default_id));
-//		menuitem.setIconCls(fun.getIconCls());
-//		
-//		super.create(menuitem);
-//		fun.setMenuItemId(menuitem.getId());
-//	}
-//	
-//	public void update(Fun fun) {
-////		WhereInfo whereinfoItem=WhereInfo.parse("fun.id", entity.getId());
-////		WhereInfo whereinfoItem1=WhereInfo.parse("menu.id", Menu.default_id);
-////		MenuItem menuItem=menuItemService.queryUnique(whereinfoItem,whereinfoItem1);
-////		menuItem.setText(entity.getText());
-////		menuItem.setReportCode(entity.getReportCode());
-//		MenuItem menuItem=this.get(fun.getMenuItemId());
-//		menuItem.setText(fun.getText());
-//		menuItem.setReportCode(fun.getReportCode());
-//		super.update(menuItem);
-//	}
-//	public void delete(Fun fun) {
-//		WhereInfo whereinfoItem=WhereInfo.parse("fun.id", fun.getId());
-//		WhereInfo whereinfoItem1=WhereInfo.parse("menu.id", Menu.default_id);
-//		List<MenuItem> menuItems= this.query(whereinfoItem,whereinfoItem1);
-//		if(menuItems!=null && menuItems.size()>0){
-//			StringBuilder builder=new StringBuilder();
-//			for(MenuItem menuItem:menuItems){
-//				builder.append(menuItem.getMenu().getText()+":"+menuItem.getText()+";");
-//			}
-//			throw new BussinessException("有菜单挂钩，不能删除。<br/>"+builder);
-//		} else if(menuItems.size()==1){	
-//			this.delete(menuItems.get(0));
-//		}
-//	}
+
 	
-	public List<MenuItemVO> query4Desktop(String menuId) {
-		
-		//https://github.com/DozerMapper/dozer
-		//在这里就直接转换成桌面需要用的格式，具有menu，和items等数据
-		//dozer 可以把对象拷贝为map。过滤属性
-		
-		//BeanMapper.convert(value, MenuItemVO.class);
-		
-		
-		//List<Object> menuItemLeaf = super.queryListObj("query4Desktop", menuId);
-		List<String> menuItemLeaf = super.queryList("query4Desktop", menuId,String.class);
-		// 组装出role树
-		重新构建树，改成用递归的方法，这样更清晰，添加进功能被禁用的功能，还有就是菜单的任何一节点都可以挂钩功能，也就是说菜单的目录节点也可以点击，弹出窗口
+	public List<MenuItemVO> query4Desktop(String menuId,Boolean isAdmin) {
+
+		//如果是管理员，可以获查看到所有的菜单
+		List<String> menuItemLeaf = super.queryList("query4Desktop", MybatisParamUtils.init().add("menu_id", menuId).add("isAdmin", isAdmin)
+				,String.class);
+
 		Map<String,MenuItemVO> parentKeys=new HashMap<String,MenuItemVO>();
 		List<MenuItemVO> menuItems = new ArrayList<MenuItemVO>();
 		for (Object menuItemIdObj: menuItemLeaf) {
@@ -178,30 +113,12 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 			if(parentKeys.get(menuItemId) !=null){//表示这个功能能已经添加过了
 				continue;
 			}
-			//MenuItemVO fun=parentKeys.get(leaf.getId());
+
 			MenuItemVO vo=BeanUtils.copyOrCast(leaf, MenuItemVO.class);
 			vo.setFunId(leaf.getFun()!=null?leaf.getFun().getId():null);
-			//fun.addItems(vo);
-			
+
 			//对菜单进行二次开发==============
-			if(StringUtils.hasText(leaf.getJavaClass())){
-				try {
-					Class clazz=Class.forName(leaf.getJavaClass());
-					MenuVOExten menuVOExten=(MenuVOExten)clazz.newInstance();
-					UserDetailsImpl impl=(UserDetailsImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-					menuVOExten.execute(vo, jdbcTemplate, impl.getUser());
-				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InstantiationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-			}
+			extenMenuItem(leaf,vo);
 			//===========================
 			
 			if(leaf.getParent()!=null){
@@ -216,8 +133,7 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 						BeanUtils.copyOrCast(ancestor, ancestorNew);
 						parentKeys.put(ancestorNew.getId(), ancestorNew);
 					}
-					if(i==0){
-						
+					if(i==0){			
 						ancestorNew.addItems(vo);
 					} else {
 						ancestorNew.addItems(parentKeys.get(ancestores.get(i-1).getId()));
@@ -227,19 +143,34 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 						menuItems.add(ancestorNew);
 					}
 				}
-			} else {
-				
+			} else {		
 				menuItems.add(vo);
 				parentKeys.put(vo.getId(), vo);
 			}
 			
 		}
 		return menuItems;
-		
-//		//根据mybatis去查询
-//				Map params=new HashMap();
-//				params.put("menu_id", menuId);
-//		return (List<MenuItem>)super.queryListT("query4Desktop", params);
+	}
+	
+	private void extenMenuItem(MenuItem leaf,MenuItemVO vo){
+		if(StringUtils.hasText(leaf.getJavaClass())){
+			try {
+				Class clazz=Class.forName(leaf.getJavaClass());
+				MenuVOExten menuVOExten=(MenuVOExten)clazz.newInstance();
+				UserDetailsImpl impl=(UserDetailsImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+				menuVOExten.execute(vo, jdbcTemplate, impl.getUser());
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
 	}
 	
 	public void initCache(){

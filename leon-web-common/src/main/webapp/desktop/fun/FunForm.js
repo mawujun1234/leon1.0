@@ -72,10 +72,10 @@ Ext.define('Leon.desktop.fun.FunForm',{
 			    value:true,
 			    name:'isEnable'
 			},{
-	            fieldLabel: '助记码',
+	            fieldLabel: '界面元素id',
 	            //afterLabelTextTpl: me.required,
-	            name: 'code',
-	            afterLabelTextTpl:'<span class="icons_help" data-qtip="主要用于界面元素的显示控制，例如界面元素按钮的id=testId,这里也设置成testid，把这个功能授予某个用户的时候，这个用户就能看到这个按钮了">&nbsp;&nbsp;&nbsp;&nbsp;</span>'
+	            name: 'elementId',
+	            afterLabelTextTpl:'<span class="icons_help" data-qtip="主要用于界面元素的显示控制，例如界面元素按钮的id=testId,这里也设置成testid，把这个功能授予某个用户的时候，这个用户就能看到这个按钮了,注意要具有唯一性">&nbsp;&nbsp;&nbsp;&nbsp;</span>'
 	        },{
 	            fieldLabel: 'url',
 	            name: 'url',

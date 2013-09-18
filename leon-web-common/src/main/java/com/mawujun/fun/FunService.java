@@ -1,5 +1,6 @@
 package com.mawujun.fun;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -69,21 +70,17 @@ public class FunService extends BaseRepository<Fun, String> {
 	}
 	public Fun create(Fun entity) {
 		Fun parent=entity.getParent()==null?null:this.get(entity.getParent().getId());
-		if(parent!=null && parent.getFunEnum()==FunEnum.fun){
-			throw new BussinessException("功能不能增加下级节点");
+		if(parent!=null && parent.getFunEnum()==FunEnum.fun && !entity.isFun()){
+			throw new BussinessException("功能不能增加模块节点");
 		}
 		entity.setParent(parent);
-
-		//entity.setReportCode(getMaxReportCode(entity.getParent()==null?null:entity.getParent().getId()));
-		
-		//menuItemService.create(entity);
+		if(parent!=null){
+			parent.setLeaf(false);
+			super.update(parent);
+		}
 		
 		entity=super.create(entity);
 
-
-//		if(parent!=null){
-//			parent.addChild(entity);
-//		}
 		return entity;
 	}
 	/**
@@ -94,58 +91,23 @@ public class FunService extends BaseRepository<Fun, String> {
 	 * @param oldParent_id
 	 */
 	public void update(Fun entity,Boolean isUpdateParent,String oldParent_id) {	
-
-//		if(isUpdateParent!=null && isUpdateParent==true){
-//			entity.setReportCode(getMaxReportCode(entity.getParent().getId()));
-//			super.update(entity);
-//			
-//			 //首先获取在菜单树种，原来所挂的父菜单项
-//			WhereInfo whereinfoItem=WhereInfo.parse("fun.id", entity.getParent().getId());
-//			WhereInfo whereinfoItem1=WhereInfo.parse("menu.id", Menu.default_id);
-//			MenuItem parent_menuItem=menuItemService.queryUnique(whereinfoItem,whereinfoItem1);
-//			
-//			WhereInfo whereinfoItem11=WhereInfo.parse("fun.id", entity.getId());
-//			WhereInfo whereinfoItem111=WhereInfo.parse("menu.id", Menu.default_id);
-//			MenuItem menuItem=menuItemService.queryUnique(whereinfoItem11,whereinfoItem111);
-//			menuItem.setParent(parent_menuItem);
-//			menuItemService.update(menuItem);
-//			
-//		} else {
-			super.update(entity);
-//			
-//			WhereInfo whereinfoItem=WhereInfo.parse("fun.id", entity.getId());
-//			WhereInfo whereinfoItem1=WhereInfo.parse("menu.id", Menu.default_id);
-//			MenuItem menuItem=menuItemService.queryUnique(whereinfoItem,whereinfoItem1);
-//			menuItem.setText(entity.getText());
-//			menuItem.setReportCode(entity.getReportCode());
-//			//menuItemService.update(menuItem);
-//		}
-		
-		
+		super.update(entity);
 	}
-	
-//	/**
-//	 * 构建出整颗树
-//	 */
-//	public List<Fun> queryAll() {
-//		WhereInfo whereinfo=WhereInfo.parse("parent.id","is", null);
-//		List<Fun> funes=this.query(whereinfo);
-//		recursionFun(funes);
-//		return funes;
-//	}
-//	private void recursionFun( List<Fun> funes){
-//		for(Fun fun:funes){
-//			if(fun.isFun()){
-//				fun.setChecked(false);
-//			}
-//			//fun.setExpanded(true);
-//			this.initLazyProperty(fun.getChildren());
-//			if(fun.getChildren().size()>0){
-//				recursionFun(fun.getChildren());
-//			}
-//		}
-//		
-//	}
+	/**
+	 * 获取所有界面元素要用的功能id
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param entity
+	 * @param isUpdateParent
+	 * @param oldParent_id
+	 */
+	public List<String> queryAllElements(String userId) {	
+		//return super.queryList(Cnd.select().addSelect("elementId").distinct().andEquals(name, val), classT)
+		List<String> list=new ArrayList();
+		根据权限从数据库中获取，包括角色，组，职位，组织单元
+		list.add("generator-2c908385412fd0e701412fd93e1d0001");
+		return list;
+	}
+
 
 	public void initCache(){
 		List<Fun> funes=super.queryAll();//super.query(whereinfo);

@@ -52,6 +52,7 @@ if("classic".equals(theme)){
 <%
 
 String servletPath=request.getServletPath();
+//String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+servletPath;
 int routeLength=servletPath.split("/").length-2;
 String route="";
 if(routeLength>0){
@@ -62,13 +63,13 @@ if(routeLength>0){
 } else if (routeLength==0){
 	route=".";
 }
+String springPrev="/app";
 %>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()+springPrev %>/fun/generatorElementCss.css">
 <script type="text/javascript">
 defaultTheme = '<%=theme%>',
-//var servletPath='<%=servletPath%>';
-//int routeLength	=servletPath.split(regex).length-1;
-//if
-Ext.ContextPath="<%=request.getContextPath()%>/app";//应用程序上下文
+
+Ext.ContextPath="<%=request.getContextPath()+springPrev%>";//应用程序上下文
 Ext.JspContextPath="<%=request.getContextPath()%>";
 Ext.QuickTips.init();
 

@@ -10,20 +10,6 @@ Ext.onReady(function(){
 		width:200
 	});
 	grid.on('itemclick',function(view,record,item,index){
-//		//注意这样是否会报错，如果不会报错，就完善文档
-//		//var MenuItem= Ext.ModelManager.getModel('Leon.desktop.menu.MenuItem')
-//		Ext.Ajax.request({
-//			url:Ext.ContextPath+'/menuItem/load',
-//			params:{id:record.get('rootId')},
-//			success:function(response){
-//				var obj=Ext.decode(response.responseText);
-//				if(obj.success){
-//					obj.root.expanded=true;
-//					var record=Ext.createModel('Leon.desktop.menu.MenuItem',obj.root);
-//					tree.setRootNode(record);
-//				}
-//			}
-//		});	
 		var rootNode=tree.getRootNode();
 		rootNode.set('text',record.get("text"));
 		rootNode.commit();
@@ -31,19 +17,12 @@ Ext.onReady(function(){
 		tree.setMenuId(record.get("id"));
 		//tree.getStore().reload({node:tree.getRootNode( )});
 		form.getForm().reset(false);
-//		if(tree.getMenuId()=="default"){
-//			form.setReadonlyItem4DefauleMenu(true);
-//			//tree.setDisableAction(true);
-//		} else {
-//			form.setReadonlyItem4DefauleMenu(false);
-//			//tree.setDisableAction(false);
-//		}
+
 		
 		tree.getStore().getProxy().extraParams={menuId:record.get("id")};
-//		if(record.get("id")=='default'){
-//			tree.disableAction('update','destroy','');
-//		}
+
 		tree.getStore().load({node:tree.getRootNode( )});
+		tree.getStore().getProxy().extraParams={menuId:record.get("id")};
 	});
 
 	var tree=Ext.create('Leon.desktop.menu.MenuItemTree',{
@@ -53,17 +32,21 @@ Ext.onReady(function(){
 	tree.getStore().getProxy().extraParams={menuId:'default'};
 	tree.getStore().load({node:tree.getRootNode( )});
 	tree.on('itemclick',function(view,record,item,index){
-		//alert(1);
+
 		var basicFoem=form.getForm();
 		basicFoem.loadRecord(record);
-
-		//basicFoem.setValues({"iconCls":record.getFun().get("text")}) ;
-		basicFoem.setValues({"fun_text":record.getFun().get("text")}) ;
+		
 		var parent=tree.getStore().getNodeById(record.get("parent_id"));
 		if(parent){
 			basicFoem.setValues({"parent_text":parent.get("text")}) ;
 		} else {
 			basicFoem.setValues({"parent_text":null}) ;
+		}
+
+		if(record.get("fun_id")){
+			basicFoem.findField("fun_text").setValue(record.getFun().get("text"));//.setValues({"fun_text":record.getFun().get("text")}) ;
+		} else {
+			basicFoem.findField("fun_text").setValue("") ;
 		}
 
 	});

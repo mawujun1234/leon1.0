@@ -119,7 +119,7 @@ public class Role extends TreeNode {
 		}
 		return null;
 	}
-	public boolean isLeaf() {
+	public Boolean isLeaf() {
 		 if(RoleEnum.role==roleEnum){
 			return true;
 		}

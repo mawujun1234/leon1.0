@@ -42,8 +42,9 @@ public class DesktopController {
 	@ResponseBody
 	public DesktopConfig query(){	
 		Authentication currentAuth = SecurityContextHolder.getContext().getAuthentication();
+		UserDetailsImpl userDetail=(UserDetailsImpl)currentAuth.getPrincipal();
 		
-		String userId=((UserDetailsImpl)currentAuth.getPrincipal()).getId();
+		String userId=userDetail.getId();
 		DesktopConfig desktopConfig=desktopConfigService.get(userId);
 		if(desktopConfig==null) {
 			desktopConfig=new DesktopConfig();
@@ -61,7 +62,7 @@ public class DesktopController {
 		}
 		
 		String menuId="default";
-		List<MenuItemVO> menuItems=menuItemService.query4Desktop(menuId);
+		List<MenuItemVO> menuItems=menuItemService.query4Desktop(menuId,userDetail.isAdmin());
 		//DesktopConfig config=new DesktopConfig();
 		desktopConfig.setMenuItems(menuItems);
 		

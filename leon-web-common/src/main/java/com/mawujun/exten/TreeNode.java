@@ -7,7 +7,7 @@ import javax.persistence.Transient;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
 @MappedSuperclass
-public class TreeNode  extends UUIDEntity{
+public class TreeNode  extends UUIDEntity  implements TreeNodeInterface{
 
 	/**
 	 * 
@@ -17,18 +17,18 @@ public class TreeNode  extends UUIDEntity{
 	private String icon;
 	@Column(length=20)
 	private String iconCls;
-	@Transient
-	private boolean leaf=false;
+	//@Transient
+	private Boolean leaf=false;
 	@Transient
 	private Boolean checked=null;
 	@Transient
-	private boolean expanded=false;
+	private Boolean expanded=false;
 	@Transient
-	private boolean edit=true;
-	public boolean isLeaf() {
+	private Boolean edit=true;
+	public Boolean isLeaf() {
 		return leaf;
 	}
-	public void setLeaf(boolean leaf) {
+	public void setLeaf(Boolean leaf) {
 		this.leaf = leaf;
 	}
 	public Boolean isChecked() {
@@ -37,16 +37,16 @@ public class TreeNode  extends UUIDEntity{
 	public void setChecked(Boolean checked) {
 		this.checked = checked;
 	}
-	public boolean isExpanded() {
+	public Boolean isExpanded() {
 		return expanded;
 	}
-	public void setExpanded(boolean expanded) {
+	public void setExpanded(Boolean expanded) {
 		this.expanded = expanded;
 	}
-	public boolean isEdit() {
+	public Boolean isEdit() {
 		return edit;
 	}
-	public void setEdit(boolean edit) {
+	public void setEdit(Boolean edit) {
 		this.edit = edit;
 	}
 	public static long getSerialversionuid() {

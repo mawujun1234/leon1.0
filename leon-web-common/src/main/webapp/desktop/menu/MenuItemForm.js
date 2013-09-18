@@ -48,11 +48,22 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
                     hideLabel: true
                 },
                 items: [{
-                        xtype     : 'textfield',
+                        xtype     : 'triggerfield',
+                        triggerCls:'x-form-clear-trigger',
+                        //readOnly:true,
+                        editable:false,
                         name      : 'fun_text',
                         fieldLabel: '功能名称',
                         //margin: '0 5 0 0',
-                        allowBlank: true
+                        allowBlank: true,
+                        onTriggerClick: function() {
+                        	var trigger=this;
+					        trigger.setValue("");
+					        //alert(trigger.nextSibling().getValue());
+					        trigger.nextSibling().setValue("");
+					        
+					        //alert(trigger.nextSibling().getValue());
+					    }
                     },{
                         xtype     : 'hidden',
                         name      : 'fun_id',
@@ -182,6 +193,12 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
                 }
                //这个时候只会更新forginKey，而不会更新associationName的数据
                 form.getForm().updateRecord();
+                //console.log(form.getRecord().get("fun_id"));
+                //当清空关联的功能的时候
+                if(!form.getRecord().get("fun_id")){
+                	form.getRecord().setFun({});
+                }
+                
 				form.getRecord().save({
 					success: function(record, operation) {
 						me.fireEvent('createOrupdate',me,record);
@@ -208,6 +225,11 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
 			height:500
 		});
 		tree.on("itemdblclick",function(view,record,index,e){
+			if(record.get("funEnum")=="module"){
+				Ext.Msg.alert("消息","请选择功能节点!");
+				return;
+			}
+			
 			fun_id_txt.setValue(record.get("id"));
 			fun_text_txt.setValue(record.get("text"));
 			win.close();

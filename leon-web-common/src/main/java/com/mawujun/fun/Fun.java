@@ -38,11 +38,17 @@ public class Fun extends TreeNode{
 	@Column(length=20)
 	@Size(max=20)
 	private String code;//助记码
+	
+	@Label(name="界面元素id")
+	@Column(length=80)
+	private String elementId;//助记码
+	
 	@Column(length=20)
 	@Label(name="名称")
 	private String text;
 	@Label(name="是否可用")
 	private Boolean isEnable;
+
 	@Column(length=80)
 	@Label(name="地址")
 	private String url;
@@ -176,12 +182,7 @@ public class Fun extends TreeNode{
 		}
 		return null;
 	}
-	public boolean isLeaf() {
-		 if(FunEnum.fun==funEnum){
-			return true;
-		}
-		 return false;
-	}
+
 	public boolean isFun() {
 		if(FunEnum.module==funEnum){
 			return false;
@@ -213,6 +214,21 @@ public class Fun extends TreeNode{
 	}
 	public void setIsEnable(Boolean isEnable) {
 		this.isEnable = isEnable;
+	}
+//	@Override
+//	public Boolean isLeaf() {
+//		return isLeaf;
+//	}
+//	@Override
+//	public void setLeaf(Boolean isLeaf) {
+//		super.setLeaf(isLeaf);
+//		this.isLeaf = isLeaf;
+//	}
+	public String getElementId() {
+		return elementId;
+	}
+	public void setElementId(String elementId) {
+		this.elementId = elementId;
 	}
 
 

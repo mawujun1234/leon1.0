@@ -5,6 +5,11 @@ Ext.define('Leon.desktop.fun.FunTree',{
 	    'Leon.desktop.fun.Fun'
 	],
 	rootVisible: false,
+	viewConfig: {
+	    getRowClass: function(record, rowIndex, rowParams, store){
+	        return record.get("isEnable")==true ? "" : "disableFunNode";
+	    }
+	},
 	initComponent: function () {
        var me = this;
        

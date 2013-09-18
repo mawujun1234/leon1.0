@@ -7,9 +7,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <!-- 注意文件名称为:Example_${DbName}_Mapper.xml-->
 <mapper namespace="com.mawujun.menu">
 	<select id="query4Desktop" resultType="String" >
-    	SELECT distinct id
-	    FROM leon_MenuItem 
-		where menu_id=#{menu_id}  and fun_id is not null
+    	SELECT distinct a.id
+	    FROM leon_MenuItem a,leon_fun  b
+		where a.fun_id=b.id and a.menu_id=#{menu_id}  and a.fun_id is not null 
+		<if test="isAdmin!=true">
+			and b.isenable=true
+		</if>
     </select>
     <!-- 用于跨iframe启动另一个窗口的时候,根据jsp获取到相应的menuItem-->
 	<select id="queryMenuItem" resultType="com.mawujun.menu.MenuItemVO" >

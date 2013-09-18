@@ -20,7 +20,7 @@ Ext.onReady(function(){
 		    handler: function(){
 		    	var parent=tree.getSelectionModel( ).getLastSelected( )||tree.getRootNode( );    
 				if(parent.get("funEnum")=="fun"){
-					Ext.Msg.alert("消息","功能不能增加下级节点!");
+					Ext.Msg.alert("消息","功能下面不能增加模块节点!");
 					return;
 				}
 		    	tree.onCreate({text:'新模块','funEnum':'module'});
@@ -32,11 +32,11 @@ Ext.onReady(function(){
 		text: '新增功能',
 		handler: function(){
 			var parent=tree.getSelectionModel( ).getLastSelected( )||tree.getRootNode( );    
-			if(parent.get("funEnum")=="fun"){
-				Ext.Msg.alert("消息","功能不能增加下级节点!");
-				return;
-			}
-		    tree.onCreate({text:'新功能','funEnum':'fun'});
+//			if(parent.get("funEnum")=="fun"){
+//				Ext.Msg.alert("消息","功能不能增加下级节点!");
+//				return;
+//			}
+		    tree.onCreate({text:'新功能','funEnum':'fun',isEnable:true,leaf:true});
 		},
 		iconCls: 'fun-fun-add'
 	});
