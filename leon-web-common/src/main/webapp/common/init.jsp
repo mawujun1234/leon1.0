@@ -64,8 +64,10 @@ if(routeLength>0){
 	route=".";
 }
 String springPrev="/app";
+
+String funId=request.getParameter("funId");
 %>
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()+springPrev %>/fun/generatorElementCss.css">
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()+springPrev %>/fun/generatorElementCss.css?funId=<%=funId%>">
 <script type="text/javascript">
 defaultTheme = '<%=theme%>',
 

@@ -52,6 +52,7 @@ public class MenuItem extends UUIDEntity {
 	@Column(length=40)
 	private String reportCode;//等级关系代码
 	
+	@org.hibernate.annotations.Type(type="yes_no")
 	private Boolean leaf=false;
 	
 	@ManyToOne(fetch=FetchType.LAZY,cascade=CascadeType.REFRESH)

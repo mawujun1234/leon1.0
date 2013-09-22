@@ -80,27 +80,27 @@ public class RoleController {
 		roleService.delete(role);
 		return role;
 	}
-	@RequestMapping("/role/queryMutex")
-	@ResponseBody
-	public Set<Role> queryMutex(String ownId) {
-		Set<Role> roles=null;
-		roles=roleService.queryMutex(ownId);
-		roles.size();
-		JsonConfigHolder.setFilterPropertys("parents,children,mutex,funes");
-		return roles;
-	}
-	
-	@RequestMapping("/role/addMutex")
-	@ResponseBody
-	public void addMutex(String ownId,String mutexId){	
-		roleService.addMutex(ownId, mutexId);
-	}
-	
-	@RequestMapping("/role/removeMutex")
-	@ResponseBody
-	public void removeMutex(String ownId,String mutexId){	
-		roleService.removeMutex(ownId, mutexId);
-	}
+//	@RequestMapping("/role/queryMutex")
+//	@ResponseBody
+//	public Set<Role> queryMutex(String ownId) {
+//		Set<Role> roles=null;
+//		roles=roleService.queryMutex(ownId);
+//		roles.size();
+//		JsonConfigHolder.setFilterPropertys("parents,children,mutex,funes");
+//		return roles;
+//	}
+//	
+//	@RequestMapping("/role/addMutex")
+//	@ResponseBody
+//	public void addMutex(String ownId,String mutexId){	
+//		roleService.addMutex(ownId, mutexId);
+//	}
+//	
+//	@RequestMapping("/role/removeMutex")
+//	@ResponseBody
+//	public void removeMutex(String ownId,String mutexId){	
+//		roleService.removeMutex(ownId, mutexId);
+//	}
 	
 //	@RequestMapping("/role/addParent")
 //	@ResponseBody

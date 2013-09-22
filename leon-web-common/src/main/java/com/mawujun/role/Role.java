@@ -64,15 +64,15 @@ public class Role extends TreeNode {
 //	@ManyToMany(cascade=CascadeType.REFRESH,mappedBy="parents")
 //	Set<Role> children=new HashSet<Role>();
 	
-	@ManyToMany(cascade = CascadeType.REMOVE)
-	@Fetch(FetchMode.SUBSELECT)
-	@JoinTable(
-			name = "leon_role_mutex",
-			inverseJoinColumns = @JoinColumn(name = "own_id"), 
-			joinColumns = @JoinColumn(name = "mutex_id")
-	) 
-	@Cache(usage= CacheConcurrencyStrategy.READ_WRITE)
-	Set<Role> mutex=new HashSet<Role>();
+//	@ManyToMany(cascade = CascadeType.REMOVE)
+//	@Fetch(FetchMode.SUBSELECT)
+//	@JoinTable(
+//			name = "leon_role_mutex",
+//			inverseJoinColumns = @JoinColumn(name = "own_id"), 
+//			joinColumns = @JoinColumn(name = "mutex_id")
+//	) 
+//	@Cache(usage= CacheConcurrencyStrategy.READ_WRITE)
+//	Set<Role> mutex=new HashSet<Role>();
 	
 	//拥有的权限
 	@OneToMany(mappedBy="role",fetch=FetchType.LAZY,cascade=CascadeType.REMOVE)
@@ -145,18 +145,18 @@ public class Role extends TreeNode {
 		this.category = category;
 	}
 
-	public Set<Role> getMutex() {
-		return mutex;
-	}
-	public void setMutex(Set<Role> mutex) {
-		this.mutex = mutex;
-	}
-	public void addMutex(Role mutex) {
-		this.mutex.add(mutex);
-	}
-	public void removeMutex(Role child) {
-		this.mutex.remove(child);
-	}
+//	public Set<Role> getMutex() {
+//		return mutex;
+//	}
+//	public void setMutex(Set<Role> mutex) {
+//		this.mutex = mutex;
+//	}
+//	public void addMutex(Role mutex) {
+//		this.mutex.add(mutex);
+//	}
+//	public void removeMutex(Role child) {
+//		this.mutex.remove(child);
+//	}
 	
 
 //	/**
@@ -247,30 +247,30 @@ public class Role extends TreeNode {
 //		}
 //		return false;
 //	}
-	/**
-	 * 判断是否排斥，包括父类和子类，都要检查
-	 * @author mawujun 16064988@qq.com 
-	 * @param mutex
-	 * @return
-	 */
-	public boolean isMutex(Role mutex) {
-		for(Role role:this.mutex) {
-			if (role.getId().equals(mutex.getId())) {
-				return true;
-			} 
-		}
-		return false;
-//		if(isMutexOwn(mutex)){
-//			return true;
-//		}
-//		if(isMutexAncestor(mutex)){
-//			return true;
-//		}
-//		if(isMutexGrandson(mutex)){
-//			return true;
+//	/**
+//	 * 判断是否排斥，包括父类和子类，都要检查
+//	 * @author mawujun 16064988@qq.com 
+//	 * @param mutex
+//	 * @return
+//	 */
+//	public boolean isMutex(Role mutex) {
+//		for(Role role:this.mutex) {
+//			if (role.getId().equals(mutex.getId())) {
+//				return true;
+//			} 
 //		}
 //		return false;
-	}
+////		if(isMutexOwn(mutex)){
+////			return true;
+////		}
+////		if(isMutexAncestor(mutex)){
+////			return true;
+////		}
+////		if(isMutexGrandson(mutex)){
+////			return true;
+////		}
+////		return false;
+//	}
 	public Set<RoleFun> getFunes() {
 		return funes;
 	}

@@ -48,7 +48,7 @@ Ext.define('Leon.desktop.generator.GeneratorForm',{
                         allowBlank: false
                     },{
                     	xtype:'button',
-                    	id :'generator-2c908385412fd0e701412fd93e1d0001',
+                    	id :'generator-2c908385405b8a0901405b933d840001',
                     	text:'选择主体',
                     	handler:function(btn){
                     		var combobox=btn.previousSibling("[xtype=combobox][name=subjectType]")

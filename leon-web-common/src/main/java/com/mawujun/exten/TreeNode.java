@@ -18,6 +18,7 @@ public class TreeNode  extends UUIDEntity  implements TreeNodeInterface{
 	@Column(length=20)
 	private String iconCls;
 	//@Transient
+	@org.hibernate.annotations.Type(type="yes_no")
 	private Boolean leaf=false;
 	@Transient
 	private Boolean checked=null;

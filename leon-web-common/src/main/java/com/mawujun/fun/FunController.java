@@ -20,6 +20,7 @@ import com.mawujun.controller.spring.mvc.JsonConfigHolder;
 import com.mawujun.exception.BussinessException;
 import com.mawujun.user.login.UserDetailsImpl;
 import com.mawujun.utils.FileUtils;
+import com.mawujun.utils.StringUtils;
 import com.mawujun.utils.page.WhereInfo;
 
 /**
@@ -100,12 +101,27 @@ public class FunController {
 	 */
 	@RequestMapping("/fun/generatorElementCss.css")
 	@ResponseBody
-	public String generatorElementCss(){		
+	public String generatorElementCss(String funId){	
 		UserDetailsImpl userDetail=SecurityContextHolder.getUserDetailsImpl();
-		List<String> elementIds= funService.queryAllElements(userDetail.getId());
-		生成css文件内容
+		if(userDetail.isAdmin()){
+			//return "";
+		}
+		
+		if(!StringUtils.hasText(funId)){
+			throw new BussinessException("获取界面元素权限的时候，没有传入父功能id");
+		}
+		
+		List<String> elementIds= funService.queryAllDenyPageElement(userDetail.getId(),funId);
+		//生成css文件内容
+		StringBuilder builder=new StringBuilder();
+		//所有没有授权过的全国获取过来了，因为默认就是拒绝的
+		for(String elementId:elementIds){
+			builder.append("#"+elementId+"{display:none;}");
+		}
+		
 		JsonConfigHolder.setAutoWrap(false);
-		return "#generator-2c908385412fd0e701412fd93e1d0001{display:none;}";
+		return builder.toString();
+		//return "#generator-2c908385412fd0e701412fd93e1d0001{display:none;}";
 	}
 	
 	@RequestMapping("/fun/load/{id}")

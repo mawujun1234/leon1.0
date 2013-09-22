@@ -89,29 +89,7 @@ Ext.define('Leon.desktop.Window', {
 		    		Ext.Msg.alert('消息','该菜单没有和功能进行挂钩，所以没有帮助文档!');
 		    		return;
 		    	}
-////		        desktop.createWindow({
-////		        	url:'/fun/helpLookContent?funId='+me.funId
-////		        });
-//		    	var win=Ext.WindowManager.get(iframe_id);
-//		    	if(win){
-//		    		win.show();
-//		    		return;
-//		    	}
-////		    	var cfg = {
-////		            stateful: false,
-////		            isWindow: true,
-////		            constrainHeader: true,
-////		            minimizable: true,
-////		            maximizable: true
-////		            ,closeAction:'close',
-////		            title:'帮助文档',
-////		            id:'helpContent_jsp',
-////		            url:'/fun/helpLookContent?funId='+me.funId
-////		            //,height:me.getViewHeight()*0.9
-////		            //,width:me.getViewWidth()*0.9
-////		            //maximized:false,
-////		        };
-		    	//alert(me.funId);
+
 		    	var win=Ext.WindowManager.get("helpContent_jsp");
 		    	if(win){
 		    		win.reload(me.funId);
@@ -147,6 +125,13 @@ Ext.define('Leon.desktop.Window', {
 		
 		this.callParent();
 		me.on("afterrender",function(win){
+			var url=me.url;
+			if(me.url.lastIndexOf('?')!=-1){
+				url+="&funId="+me.funId
+			} else {
+				url+="?funId="+me.funId
+			}
+			me.url=url;
 			iframe.load(me.url);
 		});
 		

@@ -43,36 +43,36 @@ public class RoleService extends BaseRepository<Role, String> {
 	}
 	
 	
-	public Set<Role> queryMutex(String ownId) {
-		Role own=this.get(ownId);
-		super.initLazyProperty(own.getMutex());
-		return own.getMutex();
-	}
-	
-	public void addMutex(String ownId,String mutexId){
-		if(ownId.equals(mutexId)){
-			throw new BussinessException("不能设置自己为自己的互斥角色");
-		}
-
-		Role own=this.get(ownId);
-		Role mutex=this.get(mutexId);
-//		//如果已经存在互斥关系的话，那也不能添加继承关系了
-//		if(own.isInherit(mutex)){
-//			throw new BussinessException("存在继承关系的两个角色不能设为互斥角色!");
+//	public Set<Role> queryMutex(String ownId) {
+//		Role own=this.get(ownId);
+//		super.initLazyProperty(own.getMutex());
+//		return own.getMutex();
+//	}
+//	
+//	public void addMutex(String ownId,String mutexId){
+//		if(ownId.equals(mutexId)){
+//			throw new BussinessException("不能设置自己为自己的互斥角色");
 //		}
-		own.addMutex(mutex);
-		mutex.addMutex(own);
-		super.update(own);
-		super.update(mutex);
-	}
-	public void removeMutex(String ownId,String mutexId) {
-		Role own=this.get(ownId);
-		Role mutex=this.get(mutexId);
-		own.removeMutex(mutex);
-		mutex.removeMutex(own);
-		super.update(own);
-		super.update(mutex);
-	}
+//
+//		Role own=this.get(ownId);
+//		Role mutex=this.get(mutexId);
+////		//如果已经存在互斥关系的话，那也不能添加继承关系了
+////		if(own.isInherit(mutex)){
+////			throw new BussinessException("存在继承关系的两个角色不能设为互斥角色!");
+////		}
+//		own.addMutex(mutex);
+//		mutex.addMutex(own);
+//		super.update(own);
+//		super.update(mutex);
+//	}
+//	public void removeMutex(String ownId,String mutexId) {
+//		Role own=this.get(ownId);
+//		Role mutex=this.get(mutexId);
+//		own.removeMutex(mutex);
+//		mutex.removeMutex(own);
+//		super.update(own);
+//		super.update(mutex);
+//	}
 	public void initCache(){
 		//WhereInfo whereinfo=WhereInfo.parse("roleEnum", RoleEnum.role);
 		List<Role> roles=super.queryAll();//super.query(whereinfo);
@@ -80,7 +80,7 @@ public class RoleService extends BaseRepository<Role, String> {
 			//if(role.getRoleEnum()==RoleEnum.role){
 				//super.initLazyProperty(role.getParents());
 				//super.initLazyProperty(role.getChildren());
-				super.initLazyProperty(role.getMutex());
+				//super.initLazyProperty(role.getMutex());
 //				role.getMutex().size();
 //				for (Role roleFun:role.getMutex()){
 //					System.out.println(roleFun.getId());

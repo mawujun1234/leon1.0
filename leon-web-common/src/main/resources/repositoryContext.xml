@@ -76,6 +76,7 @@
 				<property name="mapperLocations" >
 					<list>
 						<value >classpath:/**/*_${jdbc.dbName}_Mapper.xml</value>
+						<value >classpath:/**/*_common_Mapper.xml</value>
 					</list>
 				</property>
 	</bean>
@@ -109,13 +110,15 @@
 			-->
 			<property name="hibernateProperties">
 				<props>
+					<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+					
 					<prop key="hibernate.dialect">${${jdbc.dbName}.hibernate.dialet}</prop>
 					<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
 					<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
 					<prop key="use_sql_comments">${use_sql_comments}</prop>
 					<prop key="hibernate.max_fetch_depth">${hibernate.max_fetch_depth}</prop>
 					<prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size}</prop>
-					<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+					
 					<prop key="hibernate.archive.autodetection">class</prop>
 					
 					<prop key="hibernate.validator.apply_to_ddl">true</prop>

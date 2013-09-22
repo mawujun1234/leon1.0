@@ -30,8 +30,9 @@ public class User extends UUIDEntity{
 	
 	private boolean deleted;
 	private Date deletedDate;
-	
+	@org.hibernate.annotations.Type(type="yes_no")
 	private boolean enable;
+	@org.hibernate.annotations.Type(type="yes_no")
 	private boolean locked;
 	
 	@Column(updatable=false)

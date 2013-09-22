@@ -18,6 +18,7 @@ import com.mawujun.menu.MenuItemService;
 import com.mawujun.menu.MenuService;
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository.cnd.Cnd;
+import com.mawujun.repository.mybatis.MybatisParamUtils;
 import com.mawujun.role.Role;
 import com.mawujun.role.RoleEnum;
 import com.mawujun.service.BaseService;
@@ -100,12 +101,12 @@ public class FunService extends BaseRepository<Fun, String> {
 	 * @param isUpdateParent
 	 * @param oldParent_id
 	 */
-	public List<String> queryAllElements(String userId) {	
-		//return super.queryList(Cnd.select().addSelect("elementId").distinct().andEquals(name, val), classT)
-		List<String> list=new ArrayList();
-		根据权限从数据库中获取，包括角色，组，职位，组织单元，最最终还是获取用户所属的角色所拥有的功能
-		list.add("generator-2c908385412fd0e701412fd93e1d0001");
-		return list;
+	public List<String> queryAllDenyPageElement(String userId,String funId) {	
+		return super.queryList("queryAllDenyPageElement", MybatisParamUtils.init().add("user_id", userId).add("parent_id", funId).add("isenable", true), String.class);
+//		List<String> list=new ArrayList();
+//		//根据权限从数据库中获取，包括角色，组，职位，组织单元，最最终还是获取用户所属的角色所拥有的功能
+//		list.add("generator-2c908385412fd0e701412fd93e1d0001");
+//		return list;
 	}
 
 

@@ -47,6 +47,7 @@ public class Fun extends TreeNode{
 	@Label(name="名称")
 	private String text;
 	@Label(name="是否可用")
+	@org.hibernate.annotations.Type(type="yes_no")
 	private Boolean isEnable;
 
 	@Column(length=80)

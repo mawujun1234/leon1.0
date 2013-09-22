@@ -33,8 +33,10 @@ public class DesktopConfig implements IdEntity<String>,Serializable{
 	@Column(length=10)
 	private String taskbarDock;
 	@Column
+	@org.hibernate.annotations.Type(type="yes_no")
 	private Boolean taskbarAutoHide=false;
 	@Column
+	@org.hibernate.annotations.Type(type="yes_no")
 	private Boolean menubarAutoHide=false;
 	
 	
