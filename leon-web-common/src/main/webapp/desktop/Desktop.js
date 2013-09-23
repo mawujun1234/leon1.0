@@ -192,6 +192,9 @@ Ext.define('Leon.desktop.Desktop', {
 	},
 	initMenuItemEvent:function(menuItems){
 		var me=this;
+		if(!menuItems){
+			return;
+		}
 		for(var i=0;i<menuItems.length;i++){
         		var model=menuItems[i];
         		

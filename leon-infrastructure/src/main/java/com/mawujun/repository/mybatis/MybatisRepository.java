@@ -155,7 +155,7 @@ public class MybatisRepository  {
 		if(page.isCountTotal()) {
 			List<Map<String, Object>> result=getSqlSession().selectList(statement,params,new RowBounds(pageRequest.getStart(),pageRequest.getPageSize()));	
 			page.setResult(result);
-			int totalCount=this.getSqlSession().selectOne(statement+"_count", params);
+			int totalCount=(Integer)this.getSqlSession().selectOne(statement+"_count", params);
 			page.setTotalItems(totalCount);
 			
 		} else {
@@ -188,7 +188,7 @@ public class MybatisRepository  {
 		Class resultTypeClass=mappedStatement.getResultMaps().get(0).getType();//.getName(); 
 		if(resultTypeClass.getName().equals(Record.class.getName())){
 			if(page.isCountTotal()) {
-				int totalCount=this.getSqlSession().selectOne(statement+"_count", params);
+				int totalCount=(Integer)this.getSqlSession().selectOne(statement+"_count", params);
 				page.setTotalItems(totalCount);	
 				List<Record> result=getSqlSession().selectList(statement,params,new RowBounds(pageRequest.getStart(),pageRequest.getPageSize()));	
 				page.setResult(result);
@@ -201,7 +201,7 @@ public class MybatisRepository  {
 			}
 		} else {//有可能是map，也有可能是实体类
 			if(page.isCountTotal()) {
-				int totalCount=this.getSqlSession().selectOne(statement+"_count", params);
+				int totalCount=(Integer)this.getSqlSession().selectOne(statement+"_count", params);
 				page.setTotalItems(totalCount);	
 				List<Record> result=getSqlSession().selectList(statement,params,new RowBounds(pageRequest.getStart(),pageRequest.getPageSize()));	
 				page.setResult(result);
@@ -226,7 +226,7 @@ public class MybatisRepository  {
 		}
 		this.getSql(statement, params);
 		if(page.isCountTotal()) {
-			int totalCount=this.getSqlSession().selectOne(statement+"_count", params);
+			int totalCount=(Integer)this.getSqlSession().selectOne(statement+"_count", params);
 			
 			page.setTotalItems(totalCount);
 			List<Object> result=getSqlSession().selectList(statement,params,new RowBounds(pageRequest.getStart(),pageRequest.getPageSize()));	
@@ -250,7 +250,7 @@ public class MybatisRepository  {
 		}
 		this.getSql(statement, params);
 		if(page.isCountTotal()) {
-			int totalCount=this.getSqlSession().selectOne(statement+"_count", params);
+			int totalCount=(Integer)this.getSqlSession().selectOne(statement+"_count", params);
 			
 			page.setTotalItems(totalCount);
 			List<M> result=getSqlSession().selectList(statement,params,new RowBounds(pageRequest.getStart(),pageRequest.getPageSize()));	

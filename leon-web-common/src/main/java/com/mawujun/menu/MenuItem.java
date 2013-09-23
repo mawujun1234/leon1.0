@@ -55,7 +55,7 @@ public class MenuItem extends UUIDEntity {
 	@org.hibernate.annotations.Type(type="yes_no")
 	private Boolean leaf=false;
 	
-	@ManyToOne(fetch=FetchType.LAZY,cascade=CascadeType.REFRESH)
+	@ManyToOne(fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)
 	@NotNull
 	private Menu menu;
 	@ManyToOne(fetch=FetchType.EAGER,optional=true)

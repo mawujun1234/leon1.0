@@ -145,17 +145,26 @@
 		<version>1.3</version>
 	</dependency>
      
-    <dependency>
-	    <groupId>org.apache.logging.log4j</groupId>
-	    <artifactId>log4j-api</artifactId>
-	    <version>2.0-beta9</version>
-	  </dependency>
-	  <dependency>
-	    <groupId>org.apache.logging.log4j</groupId>
-	    <artifactId>log4j-core</artifactId>
-	    <version>2.0-beta9</version>
-	</dependency>       
-            
-  
+   <dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-api</artifactId>
+    <version>2.0-beta9</version>
+  </dependency>
+  <dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-core</artifactId>
+    <version>2.0-beta9</version>
+  </dependency>
+   <dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-slf4j-impl</artifactId>
+    <version>2.0-beta9</version>
+  </dependency>
+  <dependency><!-- 添加这个是为了整合slf4j和log4j2 -->
+   	<groupId>org.slf4j</groupId>
+   	<artifactId>slf4j-api</artifactId>
+   	<version>1.7.5</version>
+   </dependency>
+
   </dependencies>
 </project>

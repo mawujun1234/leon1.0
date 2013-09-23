@@ -307,10 +307,10 @@ public class Cnd implements PItem{
 		return this;
 	}
 
-	public Cnd orIn(String name, int... ids) {
-		this.getWhere().orIn(name,ids);
-		return this;
-	}
+//	public Cnd orIn(String name, int... ids) {
+//		this.getWhere().orIn(name,ids);
+//		return this;
+//	}
 
 	public Cnd orIn(String name, String... names) {
 		this.getWhere().orIn(name,names);
