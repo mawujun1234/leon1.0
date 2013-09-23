@@ -119,7 +119,8 @@ public class FunController {
 			builder.append("#"+elementId+"{display:none;}");
 		}
 		
-		JsonConfigHolder.setAutoWrap(false);
+		JsonConfigHolder.setAutoWrap(true);
+		System.out.println(JsonConfigHolder.getThreadLocal().hashCode()+"==========================================");
 		return builder.toString();
 		//return "#generator-2c908385412fd0e701412fd93e1d0001{display:none;}";
 	}

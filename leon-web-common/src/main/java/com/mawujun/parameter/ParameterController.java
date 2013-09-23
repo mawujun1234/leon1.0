@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.mawjun.utils.ParameterHolder;
+import com.mawujun.controller.spring.mvc.JsonConfigHolder;
 import com.mawujun.repository.cnd.Cnd;
 
 @Controller
@@ -56,7 +57,10 @@ public class ParameterController {
 	 */
 	@RequestMapping("/parameter/queryBysubjectType")
 	@ResponseBody
-	public List<Parameter> queryBysubjectType(String subjectType) throws SQLException{		
+	public List<Parameter> queryBysubjectType(String subjectType) throws SQLException{
+		这里和FunController中的内容起冲突了，因为这里是同个线程，那为什么其他请求不会呢，例如角色管理中的
+		System.out.println(JsonConfigHolder.getThreadLocal().hashCode()+"==========================================");
+		//System.out.println(JsonConfigHolder.getAutoWrap());
 		//如果是java和sql的话 要先从后台去获取，变成congtent然后再传递到前台，或者是getContent的时候去获取，写在getContent方法内
 		List<Parameter> parameters=parameterService.query(Cnd.select().andLike("subjects", subjectType).asc("sort"));
 		List<Parameter> result=new ArrayList<Parameter>();
@@ -66,6 +70,7 @@ public class ParameterController {
 			}
 			result.add(param);
 		}
+		//System.out.println(JsonConfigHolder.getAutoWrap());
 		return result;
 	}
 	/**

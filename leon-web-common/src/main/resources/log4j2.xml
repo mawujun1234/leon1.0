@@ -11,7 +11,14 @@
   	<Logger name="org.apache.ibatis.jdbc.ScriptRunner" level="info" additivity="false"></Logger>
     <Logger name="java.sql" level="info" additivity="false"></Logger>
     <Logger name="org.hibernate" level="debug" additivity="false"></Logger>
-    <Logger name="org.dozer" level="error" additivity="false"></Logger>
+    <Logger name="org.dozer" level="info" additivity="false"></Logger>
+    
+    <!-- log4jdbc 配置 -->
+    <Logger name="jdbc.sqlonly" level="OFF" additivity="true"></Logger>
+    <Logger name="jdbc.sqltiming" level="debug" additivity="true"></Logger>
+    <Logger name="jdbc.audit" level="OFF" additivity="true"></Logger>
+    <Logger name="jdbc.resultset" level="OFF" additivity="true"></Logger>
+    <Logger name="jdbc.connection" level="OFF" additivity="true"></Logger>
     
     <Root level="debug">
       <AppenderRef ref="STDOUT"/>

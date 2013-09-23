@@ -1,6 +1,9 @@
 package com.mawujun.controller.spring.mvc;
 
 import java.util.Map;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 /**
  * 在前台往后台返回数据的时候，的配置文件
@@ -8,16 +11,17 @@ import java.util.Map;
  *
  */
 public class JsonConfigHolder {
+	private static Logger logger = LogManager.getLogger(JsonConfigHolder.class);  
 	
 	protected static ThreadLocal<ToJsonConfig> threadLocal = new ThreadLocal<ToJsonConfig>(){
 		protected ToJsonConfig initialValue() {
 			return new ToJsonConfig();
 			
 		}
-		protected void afterExecute(Runnable r, Throwable t) {  
-			JsonConfigHolder.remove();  
-		      //logger.debug("clear thread context");  
-		}
+//		protected void afterExecute(Runnable r, Throwable t) {  
+//			JsonConfigHolder.remove();  
+//		    logger.debug("clear thread context");  
+//		}
 	};
 
 ////fastjson的判断加一下，日期格式等等
@@ -27,6 +31,9 @@ public class JsonConfigHolder {
 //			threadLocal.set(new Config());
 //		}
 //	}
+	public static ThreadLocal<ToJsonConfig> getThreadLocal(){
+		return threadLocal;
+	}
 	
 	public static void reset(){
 		threadLocal.remove();
