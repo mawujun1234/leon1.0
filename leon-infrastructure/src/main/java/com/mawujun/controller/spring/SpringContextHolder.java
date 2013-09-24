@@ -26,7 +26,6 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
 	public void setApplicationContext(ApplicationContext contex)
 			throws BeansException {
 		
-		System.out.println("========================初始化SpringContextHolder"+contex.getId());
 		logger.debug("注入ApplicationContext到SpringContextHolder:" + applicationContext);
 
 		if (SpringContextHolder.applicationContext != null) {

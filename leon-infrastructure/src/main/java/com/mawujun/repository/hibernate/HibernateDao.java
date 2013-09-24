@@ -31,13 +31,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.mawujun.exception.BussinessException;
+import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.repository.cnd.SqlType;
 import com.mawujun.utils.AssertUtils;
 import com.mawujun.utils.BeanUtils;
 import com.mawujun.utils.ReflectionUtils;
-import com.mawujun.utils.page.Operation;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 import com.mawujun.utils.page.SortInfo;
@@ -165,10 +164,10 @@ public class HibernateDao<T, ID extends Serializable>{
 	 */
 	public void update(Cnd cnd) {
 		if(cnd.getSqlType()!=SqlType.UPDATE ){
-			throw new BussinessException("SqlType不对");
+			throw new BusinessException("SqlType不对");
 		}
 		if(cnd.getUpdateItems()==null){
-			throw new BussinessException("没有设置更新字段，请先设置了");
+			throw new BusinessException("没有设置更新字段，请先设置了");
 		}
 		cnd.setSqlType(SqlType.UPDATE);
 		
@@ -453,9 +452,9 @@ public class HibernateDao<T, ID extends Serializable>{
 		
 		builder.append(" where ");
 		for(WhereInfo whereInfo:wheres){
-			if(whereInfo.getOp().equals(Operation.BETWEEN)){
+			if(whereInfo.getOp().equalsIgnoreCase("between")){
 				builder.append(" obj."+whereInfo.getProp()+" "+whereInfo.getOp()+":"+whereInfo.getPropTrans()+0+" and :"+whereInfo.getPropTrans()+1);
-			} else if(whereInfo.getOp().equals(Operation.IN)){
+			} else if(whereInfo.getOp().equalsIgnoreCase("in")){
 				builder.append(" obj."+whereInfo.getProp()+" in (:"+whereInfo.getPropTrans()+")");
 			}else {
 				builder.append(" obj."+whereInfo.getProp()+whereInfo.getOp()+":"+whereInfo.getPropTrans());
@@ -489,19 +488,13 @@ public class HibernateDao<T, ID extends Serializable>{
 	
 	private void setParamsByWhereInfo(Query query,AbstractEntityPersister classMetadata,WhereInfo... wheres){
 		for(WhereInfo whereInfo:wheres){
-			 if(whereInfo.getOp().equals(Operation.BETWEEN)){
+			 if(whereInfo.getOp().equalsIgnoreCase("between")){
 				 Type type=classMetadata.getPropertyType(whereInfo.getProp());
 				 
 				 query.setParameter(whereInfo.getPropTrans()+"0",  BeanUtils.convert(((Object[])whereInfo.getValue())[0],type.getReturnedClass()));
 				 query.setParameter(whereInfo.getPropTrans()+"1",  BeanUtils.convert(((Object[])whereInfo.getValue())[1],type.getReturnedClass()));
-			} else if(whereInfo.getOp().equals(Operation.IN)){
+			} else if(whereInfo.getOp().equalsIgnoreCase("in")){
 
-//				Type type=classMetadata.getPropertyType(whereInfo.getProperty());
-//				Object[] old=(Object[])whereInfo.getValue();
-//				Object[] aaa=new Object[old.length];
-//				for(int i=0;i<old.length;i++){
-//					aaa[i]= BeanMapper.convert(old[i], type.getReturnedClass());
-//				}
 				Object obj1=BeanUtils.convert((String[])whereInfo.getValue(), Integer.class);
 				query.setParameterList(whereInfo.getPropTrans(),(Object[])obj1);
 			}else {	
@@ -921,45 +914,76 @@ public class HibernateDao<T, ID extends Serializable>{
 		Query query = session.createQuery(builder.toString());
 		
 		setParamsByCnd(query,cnd,classMetadata);
-		List<Object[]> list= query.list();
+		
 		List<String> names=cnd.getSelectItems().getNames();
 
 		List<M> result=new ArrayList<M>();
 		try{
-			if(classM.isAssignableFrom(Map.class)){
-				classM=(Class<M>) HashMap.class;
-				for(Object[] objs:list){
-					M m=classM.newInstance();
-					
-					for(int i=0;i<names.size();i++){
-						((Map)m).put(names.get(i), objs[i]);
+			if(names.size()==1){
+				List<Object> list= query.list();
+				if (ReflectionUtils.isBaseType(classM)) {
+					for (Object objs : list) {
+						M m = (M) BeanUtils.convert(objs, classM);
+						result.add(m);
 					}
-					result.add(m);
-				}
-			} else if(ReflectionUtils.isBaseType(classM)){
-				if(names.size()==1){
+				} else if(classM.isAssignableFrom(Map.class)){
+					classM=(Class<M>) HashMap.class;
 					for(Object objs:list){
-						M m=(M) BeanUtils.convert(objs, classM);
+						M m=classM.newInstance();
+						
+						for(int i=0;i<names.size();i++){
+							((Map)m).put(names.get(i), objs);
+						}
 						result.add(m);
 					}
 				} else {
-					for(Object[] objs:list){
-						M m=(M) BeanUtils.convert(objs[0], classM);
+					for(Object objs:list){
+						M m=classM.newInstance();
+						for(int i=0;i<names.size();i++){
+							ReflectionUtils.setFieldValue(m, names.get(i), objs);
+						}
 						result.add(m);
 					}
 				}
-				
 			} else {
-				for(Object[] objs:list){
-					M m=classM.newInstance();
-					for(int i=0;i<names.size();i++){
-						ReflectionUtils.setFieldValue(m, names.get(i), objs[i]);
+				List<Object[]> list= query.list();
+				if(classM.isAssignableFrom(Map.class)){
+					classM=(Class<M>) HashMap.class;
+					for(Object[] objs:list){
+						M m=classM.newInstance();
+						
+						for(int i=0;i<names.size();i++){
+							((Map)m).put(names.get(i), objs[i]);
+						}
+						result.add(m);
 					}
-					result.add(m);
-				}
+				} else if(ReflectionUtils.isBaseType(classM)){
+					throw new BusinessException("不能将多个查询列，转换为一个基本类型!");
+//					if(names.size()==1){
+//						for(Object objs:list){
+//							M m=(M) BeanUtils.convert(objs, classM);
+//							result.add(m);
+//						}
+//					} else {
+//						for(Object[] objs:list){
+//							M m=(M) BeanUtils.convert(objs[0], classM);
+//							result.add(m);
+//						}
+//					}
+					
+				} else {
+					for(Object[] objs:list){
+						M m=classM.newInstance();
+						for(int i=0;i<names.size();i++){
+							ReflectionUtils.setFieldValue(m, names.get(i), objs[i]);
+						}
+						result.add(m);
+					}
+				}		
 			}
+
 		} catch(Exception e) {
-			throw  BussinessException.wrap(e);
+			throw  BusinessException.wrap(e);
 		}
 		
 		
@@ -1062,7 +1086,7 @@ public class HibernateDao<T, ID extends Serializable>{
 				}
 				
 			} catch (Exception e) {
-				throw BussinessException.wrap(e);
+				throw BusinessException.wrap(e);
 			}
 		}
 //		List<String> names=cnd.getSelectItems().getNames();
@@ -1101,7 +1125,7 @@ public class HibernateDao<T, ID extends Serializable>{
 //				}
 //			}
 //		} catch(Exception e) {
-//			throw  BussinessException.wrap(e);
+//			throw  BusinessException.wrap(e);
 //		}
 //		return null;
 	}
@@ -1235,7 +1259,7 @@ public class HibernateDao<T, ID extends Serializable>{
 			criterion =Restrictions.in(whereInfo.getProp(), (Object[])whereInfo.getValue());
 			
 		} else{
-			throw new BussinessException("操作符还不支持");
+			throw new BusinessException("操作符还不支持");
 		}
 		
 //		switch(whereInfo.getOp()){

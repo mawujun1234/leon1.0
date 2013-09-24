@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mawujun.exception.BussinessException;
+import com.mawujun.exception.BusinessException;
 import com.mawujun.exception.DefaulExceptionCode;
 import com.mawujun.fun.Fun;
 import com.mawujun.repository.BaseRepository;
@@ -45,7 +45,7 @@ public class MenuService extends BaseService<Menu, String> {
 	
 	public void delete(Menu entity) {
 		if("default".equalsIgnoreCase(entity.getId())){
-			throw new BussinessException("默认菜单不能删除");
+			throw new BusinessException("默认菜单不能删除");
 		}
 		getRepository().delete(entity);
 	}

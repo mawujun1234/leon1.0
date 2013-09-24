@@ -15,10 +15,11 @@
 * limitations under the License.
 */
 
-package com.mawujun.util.web;
+package com.mawujun.controller.spring.mvc;
 
 
 import java.io.IOException;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -124,6 +125,7 @@ public class SetCharacterEncodingFilter implements Filter {
 	// Pass control on to the next filter
         chain.doFilter(request, response);
 
+        JsonConfigHolder.remove();
     }
 
 

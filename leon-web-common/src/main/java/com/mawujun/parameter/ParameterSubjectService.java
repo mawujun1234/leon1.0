@@ -65,7 +65,7 @@ public class ParameterSubjectService extends
 //		} else if(SubjectType.ROLE.toString().equals(subjectType)){
 //			return this.queryList("query_ROLE", params,ParameterSubjectVO.class);
 //		} else {
-//			throw new BussinessException("该主题的参数配置  还没有做!!查询所有主体也还咩有做");
+//			throw new BusinessException("该主题的参数配置  还没有做!!查询所有主体也还咩有做");
 //		}
 		//return null;
 	}

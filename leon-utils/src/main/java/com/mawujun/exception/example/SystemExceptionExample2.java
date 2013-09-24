@@ -1,6 +1,6 @@
 package com.mawujun.exception.example;
 
-import com.mawujun.exception.BussinessException;
+import com.mawujun.exception.BusinessException;
 import com.mawujun.exception.ValidationCode;
 
 public class SystemExceptionExample2 {
@@ -13,7 +13,7 @@ public class SystemExceptionExample2 {
 
 	public static void validate(String field, String value) {
 		if (value == null || value.length() < MIN_LENGTH) {
-			throw new BussinessException(ValidationCode.VALUE_TOO_SHORT)
+			throw new BusinessException(ValidationCode.VALUE_TOO_SHORT)
 			.set("field", field).set("value", value).set("min-length", MIN_LENGTH); 
 		}
 	}

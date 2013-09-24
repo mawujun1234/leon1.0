@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.controller.spring.mvc.JsonConfigHolder;
-import com.mawujun.exception.BussinessException;
+import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.repository.mybatis.MybatisParamUtils;
 import com.mawujun.user.login.SwitchUserFilterImpl;
@@ -118,7 +118,7 @@ public class SwitchUserController {
 		} else {
 			//JsonConfigHolder.setMsg("没有权限切换到用户"+j_username);
 			//JsonConfigHolder.setSuccessValue(false);
-			throw new BussinessException("没有权限切换到用户"+j_username);
+			throw new BusinessException("没有权限切换到用户"+j_username);
 		}
 		return msg;
 		//switchUserService.queryCount(Cnd.select().andEquals("master.id", masterId).andEquals("switchUser.id", switchUserId))

@@ -7,7 +7,7 @@ import java.util.Map;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mawujun.exception.BussinessException;
+import com.mawujun.exception.BusinessException;
 import com.mawujun.exception.DefaulExceptionCode;
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository.idEntity.IdEntity;
@@ -72,7 +72,7 @@ public abstract class BaseService<T extends IdEntity<ID>, ID extends Serializabl
 	 */
 	public QueryResult<Map<String,Object>> queryPageMapByMybatis(final PageRequest pageRequest)  {
 		if(pageRequest.getSqlId()==null || "".equals(pageRequest.getSqlId().trim())){
-			throw new BussinessException(DefaulExceptionCode.SYSTEM_MYBATIS_STATEMENT_CAN_NOT_NULL);
+			throw new BusinessException(DefaulExceptionCode.SYSTEM_MYBATIS_STATEMENT_CAN_NOT_NULL);
 		}
 		return getRepository().queryPageMapBybatis(pageRequest.getSqlId(), pageRequest);
 	}
@@ -84,7 +84,7 @@ public abstract class BaseService<T extends IdEntity<ID>, ID extends Serializabl
 	 */
 	public QueryResult<Record> queryPageRecordByMybatis(final PageRequest pageRequest)  {
 		if(pageRequest.getSqlId()==null || "".equals(pageRequest.getSqlId().trim())){
-			throw new BussinessException(DefaulExceptionCode.SYSTEM_MYBATIS_STATEMENT_CAN_NOT_NULL);
+			throw new BusinessException(DefaulExceptionCode.SYSTEM_MYBATIS_STATEMENT_CAN_NOT_NULL);
 		}
 		return getRepository().queryPageRecordByMybatis(pageRequest.getSqlId(), pageRequest);
 	}
@@ -96,7 +96,7 @@ public abstract class BaseService<T extends IdEntity<ID>, ID extends Serializabl
 //	 */
 //	public QueryResult<Object> queryPageObjByMybatis(final PageRequest pageRequest)  {
 //		if(pageRequest.getSqlId()==null || "".equals(pageRequest.getSqlId().trim())){
-//			throw new BussinessException(DefaulExceptionCode.SYSTEM_MYBATIS_STATEMENT_CAN_NOT_NULL);
+//			throw new BusinessException(DefaulExceptionCode.SYSTEM_MYBATIS_STATEMENT_CAN_NOT_NULL);
 //		}
 //		return getRepository().queryPageObjByMybatis(pageRequest.getSqlId(), pageRequest);
 //	}

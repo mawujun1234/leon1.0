@@ -1,15 +1,9 @@
 package com.mawujun.fun;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,9 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawjun.utils.SecurityContextHolder;
 import com.mawujun.controller.spring.mvc.JsonConfigHolder;
-import com.mawujun.exception.BussinessException;
+import com.mawujun.exception.BusinessException;
 import com.mawujun.user.login.UserDetailsImpl;
-import com.mawujun.utils.FileUtils;
 import com.mawujun.utils.StringUtils;
 import com.mawujun.utils.page.WhereInfo;
 
@@ -108,7 +101,7 @@ public class FunController {
 		}
 		
 		if(!StringUtils.hasText(funId)){
-			throw new BussinessException("获取界面元素权限的时候，没有传入父功能id");
+			throw new BusinessException("获取界面元素权限的时候，没有传入父功能id");
 		}
 		
 		List<String> elementIds= funService.queryAllDenyPageElement(userDetail.getId(),funId);
@@ -119,8 +112,8 @@ public class FunController {
 			builder.append("#"+elementId+"{display:none;}");
 		}
 		
-		JsonConfigHolder.setAutoWrap(true);
-		System.out.println(JsonConfigHolder.getThreadLocal().hashCode()+"==========================================");
+		JsonConfigHolder.setAutoWrap(false);
+		System.out.println(Thread.currentThread().getId()+"==========================================");
 		return builder.toString();
 		//return "#generator-2c908385412fd0e701412fd93e1d0001{display:none;}";
 	}

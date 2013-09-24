@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mawjun.utils.RoleCacheHolder;
-import com.mawujun.exception.BussinessException;
+import com.mawujun.exception.BusinessException;
 import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;
 import com.mawujun.repository.BaseRepository;
@@ -64,7 +64,7 @@ public class RoleFunService extends BaseRepository<RoleFun, String> {
 		RoleFun roleFun=role.getFun(funId);
 
 		if(roleFun==null){
-			throw new BussinessException("该功能是从父角色上继承过来，不能修改!");
+			throw new BusinessException("该功能是从父角色上继承过来，不能修改!");
 		}
 		super.delete(roleFun);
 		role.removeFun(roleFun);

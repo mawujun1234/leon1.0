@@ -17,7 +17,7 @@ import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import com.mawujun.controller.spring.mvc.MappingFastJson2HttpMessageConverter;
-import com.mawujun.exception.BussinessException;
+import com.mawujun.exception.BusinessException;
 import com.mawujun.exception.ExceptionCode;
 
 /**
@@ -39,11 +39,11 @@ public class MappingJackson2JsonView_Custom extends MappingJackson2JsonView {
 			Map<String,Object> map=new  HashMap<String, Object>();
 			map.put("success", false);
 
-			if(exception instanceof BussinessException){
+			if(exception instanceof BusinessException){
 				if( exception.getMessage()!=null){
 					map.put("message", exception.getMessage());
 				} else {
-					ExceptionCode errorCode=((BussinessException) exception).getErrorCode();
+					ExceptionCode errorCode=((BusinessException) exception).getErrorCode();
 					String key = errorCode.getClass().getSimpleName() + "." + errorCode;
 					try {
 						map.put("message", bundle.getString(key));

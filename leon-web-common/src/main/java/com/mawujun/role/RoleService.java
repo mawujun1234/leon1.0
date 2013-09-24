@@ -9,7 +9,7 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 
 import com.mawjun.utils.RoleCacheHolder;
-import com.mawujun.exception.BussinessException;
+import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.utils.page.WhereInfo;
 
@@ -51,14 +51,14 @@ public class RoleService extends BaseRepository<Role, String> {
 //	
 //	public void addMutex(String ownId,String mutexId){
 //		if(ownId.equals(mutexId)){
-//			throw new BussinessException("不能设置自己为自己的互斥角色");
+//			throw new BusinessException("不能设置自己为自己的互斥角色");
 //		}
 //
 //		Role own=this.get(ownId);
 //		Role mutex=this.get(mutexId);
 ////		//如果已经存在互斥关系的话，那也不能添加继承关系了
 ////		if(own.isInherit(mutex)){
-////			throw new BussinessException("存在继承关系的两个角色不能设为互斥角色!");
+////			throw new BusinessException("存在继承关系的两个角色不能设为互斥角色!");
 ////		}
 //		own.addMutex(mutex);
 //		mutex.addMutex(own);
@@ -117,13 +117,13 @@ public class RoleService extends BaseRepository<Role, String> {
 //		Role child=RoleCacheHolder.get(childId);
 //		
 //		if(child.isChild(parent)){
-//			throw new BussinessException("不能把《"+parent.getName()+"》设置为《"+child.getName()+"》的父角色,会出现死循环!");
+//			throw new BusinessException("不能把《"+parent.getName()+"》设置为《"+child.getName()+"》的父角色,会出现死循环!");
 //			
 //			
 //		}
 //		//再检查是不是互斥，如果是互斥的话就不能添加，如果和另一个类的父类或子类互斥 那也不能添加
 //		if(child.isMutex(parent)){
-//			throw new BussinessException("不能把《"+parent.getName()+"》设置为《"+child.getName()+"》的父角色,因为角色中有冲突角色的设置!");
+//			throw new BusinessException("不能把《"+parent.getName()+"》设置为《"+child.getName()+"》的父角色,因为角色中有冲突角色的设置!");
 //		}
 //		
 //		//Collections.synchronizedList(new ArrayList());

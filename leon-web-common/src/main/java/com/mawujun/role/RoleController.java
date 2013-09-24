@@ -1,22 +1,13 @@
 package com.mawujun.role;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.mawjun.utils.RoleCacheHolder;
-import com.mawujun.controller.spring.mvc.JsonConfigHolder;
-import com.mawujun.fun.Fun;
-import com.mawujun.fun.FunService;
 import com.mawujun.utils.page.WhereInfo;
 
 @Controller
@@ -31,6 +22,7 @@ public class RoleController {
 	@RequestMapping("/role/query")
 	@ResponseBody
 	public List<Role> query(String id) {
+		System.out.println(Thread.currentThread().getId()+"==========================================");
 		List<Role> roles=null;
 		if(!"root".equals(id)){
 			WhereInfo whereinfo=WhereInfo.parse("category.id", id);

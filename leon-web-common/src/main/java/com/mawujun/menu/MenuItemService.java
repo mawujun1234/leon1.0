@@ -73,7 +73,7 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 		return super.delete(item);
 	}
 	public MenuItem create(String funId,String parentId,String menuId) {
-		//throw new BussinessException("c测试");
+		//throw new BusinessException("c测试");
 		Fun fun=funService.get(funId);
 		MenuItem parent=this.get(parentId);
 		

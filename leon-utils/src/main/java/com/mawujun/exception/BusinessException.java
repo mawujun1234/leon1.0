@@ -10,48 +10,48 @@ import java.util.TreeMap;
  * @author mawujun
  *
  */
-public class BussinessException extends RuntimeException {
+public class BusinessException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
-    public static BussinessException wrap(Throwable exception, ExceptionCode errorCode) {
-        if (exception instanceof BussinessException) {
-            BussinessException se = (BussinessException)exception;
+    public static BusinessException wrap(Throwable exception, ExceptionCode errorCode) {
+        if (exception instanceof BusinessException) {
+            BusinessException se = (BusinessException)exception;
         	if (errorCode != null && errorCode != se.getErrorCode()) {
-                return new BussinessException(exception.getMessage(), exception, errorCode);
+                return new BusinessException(exception.getMessage(), exception, errorCode);
 			}
 			return se;
         } else {
-            return new BussinessException(exception.getMessage(), exception, errorCode);
+            return new BusinessException(exception.getMessage(), exception, errorCode);
         }
     }
     
-    public static BussinessException wrap(Throwable exception) {
+    public static BusinessException wrap(Throwable exception) {
     	return wrap(exception, null);
     }
     
     private ExceptionCode errorCode;
     private final Map<String,Object> properties = new TreeMap<String,Object>();
     
-    public BussinessException(ExceptionCode errorCode) {
+    public BusinessException(ExceptionCode errorCode) {
 		this.errorCode = errorCode;
 	}
     
-    public BussinessException(String message) {
+    public BusinessException(String message) {
 		this(message,DefaulExceptionCode.SYSTEM_EXCEPTION);
 	}
 
-	public BussinessException(String message, ExceptionCode errorCode) {
+	public BusinessException(String message, ExceptionCode errorCode) {
 		super(message);
 		this.errorCode = errorCode;
 	}
 
-	public BussinessException(Throwable cause, ExceptionCode errorCode) {
+	public BusinessException(Throwable cause, ExceptionCode errorCode) {
 		super(cause);
 		this.errorCode = errorCode;
 	}
 
-	public BussinessException(String message, Throwable cause, ExceptionCode errorCode) {
+	public BusinessException(String message, Throwable cause, ExceptionCode errorCode) {
 		super(message, cause);
 		this.errorCode = errorCode;
 	}
@@ -60,7 +60,7 @@ public class BussinessException extends RuntimeException {
         return errorCode;
     }
 	
-	public BussinessException setErrorCode(ExceptionCode errorCode) {
+	public BusinessException setErrorCode(ExceptionCode errorCode) {
         this.errorCode = errorCode;
         return this;
     }
@@ -74,7 +74,7 @@ public class BussinessException extends RuntimeException {
         return (T)properties.get(name);
     }
 	
-    public BussinessException set(String name, Object value) {
+    public BusinessException set(String name, Object value) {
         properties.put(name, value);
         return this;
     }

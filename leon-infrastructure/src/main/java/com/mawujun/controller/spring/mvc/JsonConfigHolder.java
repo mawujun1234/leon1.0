@@ -1,36 +1,26 @@
 package com.mawujun.controller.spring.mvc;
 
+import java.util.HashMap;
 import java.util.Map;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 
 /**
- * 在前台往后台返回数据的时候，的配置文件
+ * 在前台往后台返回数据的时候，的配置文件,
+ * 在使用的时候一定要建立一个Filter对JsonConfigHolder进行清理，即调用JsonConfigHolder.remove()方法，
+ * 因为很多web服务器都使用了线程池，线程使用后是不会销毁的，这样的话，这个对象就会被别的线程使用了，就会存在冲突。
  * @author mawujun email:mawujun1234@163.com qq:16064988
  *
  */
 public class JsonConfigHolder {
-	private static Logger logger = LogManager.getLogger(JsonConfigHolder.class);  
+	//private static Logger logger = LogManager.getLogger(JsonConfigHolder.class);  
 	
 	protected static ThreadLocal<ToJsonConfig> threadLocal = new ThreadLocal<ToJsonConfig>(){
 		protected ToJsonConfig initialValue() {
 			return new ToJsonConfig();
 			
 		}
-//		protected void afterExecute(Runnable r, Throwable t) {  
-//			JsonConfigHolder.remove();  
-//		    logger.debug("clear thread context");  
-//		}
 	};
 
-////fastjson的判断加一下，日期格式等等
-//	//2:按原始对象返回，调用下配置就可以了，设置为false，就不使用规定的格式
-//	public static void init(){
-//		if(threadLocal.get()==null){
-//			threadLocal.set(new Config());
-//		}
-//	}
 	public static ThreadLocal<ToJsonConfig> getThreadLocal(){
 		return threadLocal;
 	}
@@ -174,17 +164,6 @@ public class JsonConfigHolder {
 		threadLocal.get().setAutoWrap(autoWrap);
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	public static String getDatePattern() {
 		return threadLocal.get().getDatePattern();
 	}
@@ -260,6 +239,186 @@ public class JsonConfigHolder {
 	}
 	public static void setErrorsValue(String errorsValue) {
 		threadLocal.get().setErrorsValue(errorsValue);
+	}
+	
+	
+	
+	private static class ToJsonConfig {
+		public transient Boolean autoWrap=true;//自动封装为某种格式
+		
+		public transient String filterPropertysName="filterPropertys";
+		public transient String rootName="root";
+		public transient String successName="success";
+		public transient boolean successValue=true;
+		public transient String totalName="total";
+		public transient String startName="start";
+		public transient String limitName="limit";
+		public transient String pageNoName="page";
+		public transient String msgName="msg";
+		public transient String errorsName="errors";
+		public transient String errorsValue="";
+		
+		public transient String filterPropertys=null;
+		public transient Class[] filterClass=null;
+		public transient Boolean enableHibernateLazyInitializerFilter=true;
+		public transient String msg=null;
+		
+		//关闭fastjson的循环引用处理
+		public transient Boolean disableCircularReferenceDetect=true;
+		public transient String datePattern="yyyy-MM-dd";
+		
+		//添加额外的属性
+		public transient Map extProperties;
+		
+		public transient Boolean writeMapNullValue=true;//是否输出为null的内容
+		
+		
+		public String getFilterPropertysName() {
+			return filterPropertysName;
+		}
+		public void setFilterPropertysName(String filterPropertysName) {
+			this.filterPropertysName = filterPropertysName;
+		}
+		public String getRootName() {
+			return rootName;
+		}
+		public void setRootName(String rootName) {
+			this.rootName = rootName;
+		}
+		public String getFilterPropertys() {
+			return filterPropertys;
+		}
+		public void setFilterPropertys(String filterPropertys) {
+			this.filterPropertys = filterPropertys;
+		}
+		public void setFilterPropertys(String filterPropertys,Class... clazz) {
+			this.filterPropertys = filterPropertys;
+			this.filterClass=clazz;
+		}
+		public Boolean getEnableHibernateLazyInitializerFilter() {
+			return enableHibernateLazyInitializerFilter;
+		}
+		public void setEnableHibernateLazyInitializerFilter(
+				Boolean enableHibernateLazyInitializerFilter) {
+			this.enableHibernateLazyInitializerFilter = enableHibernateLazyInitializerFilter;
+		}
+
+		public String getSuccessName() {
+			return successName;
+		}
+		public void setSuccessName(String successName) {
+			this.successName = successName;
+		}
+		public String getTotalName() {
+			return totalName;
+		}
+		public void setTotalName(String totalName) {
+			this.totalName = totalName;
+		}
+		public String getStartName() {
+			return startName;
+		}
+		public void setStartName(String startName) {
+			this.startName = startName;
+		}
+		public String getLimitName() {
+			return limitName;
+		}
+		public void setLimitName(String limitName) {
+			this.limitName = limitName;
+		}
+		public String getPageNoName() {
+			return pageNoName;
+		}
+		public void setPageNoName(String pageNoName) {
+			this.pageNoName = pageNoName;
+		}
+		public Boolean getAutoWrap() {
+			return autoWrap;
+		}
+		public void setAutoWrap(Boolean autoWrap) {
+			this.autoWrap = autoWrap;
+		}
+		public Boolean getDisableCircularReferenceDetect() {
+			return disableCircularReferenceDetect;
+		}
+		public void setDisableCircularReferenceDetect(
+				Boolean disableCircularReferenceDetect) {
+			this.disableCircularReferenceDetect = disableCircularReferenceDetect;
+		}
+		public Class[] getFilterClass() {
+			return filterClass;
+		}
+		public void setFilterClass(Class[] filterClass) {
+			this.filterClass = filterClass;
+		}
+		public String getDatePattern() {
+			return datePattern;
+		}
+		public void setDatePattern(String datePattern) {
+			this.datePattern = datePattern;
+		}
+		public Map getExtProperties() {
+			return extProperties;
+		}
+		/**
+		 * 判断是否有额外的属性
+		 * @param key
+		 * @param value
+		 */
+		public boolean hasExtProperty() {
+			if(this.extProperties!=null && this.extProperties.size()>0){
+				return true;
+			} else {
+				return false;
+			}
+		}
+		public void addProperty(Object key,Object value) {
+			if(this.extProperties==null) {
+				this.extProperties=new HashMap();
+			}
+			this.extProperties.put(key, value);
+		}
+		public Boolean getWriteMapNullValue() {
+			return writeMapNullValue;
+		}
+		public void setWriteMapNullValue(Boolean writeMapNullValue) {
+			this.writeMapNullValue = writeMapNullValue;
+		}
+		public String getMsgName() {
+			return msgName;
+		}
+		public void setMsgName(String msgName) {
+			this.msgName = msgName;
+		}
+		public void setExtProperties(Map extProperties) {
+			this.extProperties = extProperties;
+		}
+		public String getMsg() {
+			return msg;
+		}
+		public void setMsg(String msg) {
+			this.msg = msg;
+		}
+		public boolean getSuccessValue() {
+			return successValue;
+		}
+		public void setSuccessValue(boolean successValue) {
+			this.successValue = successValue;
+		}
+		public String getErrorsName() {
+			return errorsName;
+		}
+		public void setErrorsName(String errorsName) {
+			this.errorsName = errorsName;
+		}
+		public String getErrorsValue() {
+			return errorsValue;
+		}
+		public void setErrorsValue(String errorsValue) {
+			this.errorsValue = errorsValue;
+		}
+		
 	}
 	
 //	private static class Config {

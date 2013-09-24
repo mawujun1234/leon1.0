@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mawujun.exception.BussinessException;
+import com.mawujun.exception.BusinessException;
 import com.mawujun.exception.DefaulExceptionCode;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.repository.hibernate.HibernateDao;
@@ -354,8 +354,8 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 			String[] columns=classMetadata.getPropertyColumnNames(whereInfo.getProp());
 
 			if(columns==null){
-				//throw new BussinessException(whereInfo.getPropertyToDefault()+"不存在这个查询属性");
-				throw new BussinessException(DefaulExceptionCode.SYSTEM_PROPERTY_IS_NOT_EXISTS).set("propertyName", whereInfo.getProp());
+				//throw new BusinessException(whereInfo.getPropertyToDefault()+"不存在这个查询属性");
+				throw new BusinessException(DefaulExceptionCode.SYSTEM_PROPERTY_IS_NOT_EXISTS).set("propertyName", whereInfo.getProp());
 			}
 	
 			whereInfo.setProp(columns[0]);
@@ -408,7 +408,7 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 	 */
 	public QueryResult<T> queryPageMybatis(final PageRequest pageRequest) {
 		if(pageRequest.getSqlId()==null || "".equals(pageRequest.getSqlId())){
-			throw new BussinessException("sqlId必须设置");
+			throw new BusinessException("sqlId必须设置");
 		}
 //		WhereInfo[] wheresNew=changePropertyToColumn(pageRequest.getWheres());
 //		pageRequest.setWheres(wheresNew);
@@ -424,7 +424,7 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 	 */
 	public <M> QueryResult<M> queryPageMybatis(final PageRequest pageRequest,Class<M> classM) {
 		if(pageRequest.getSqlId()==null || "".equals(pageRequest.getSqlId())){
-			throw new BussinessException("sqlId必须设置");
+			throw new BusinessException("sqlId必须设置");
 		}
 		changePropertyToColumn(pageRequest);
 		

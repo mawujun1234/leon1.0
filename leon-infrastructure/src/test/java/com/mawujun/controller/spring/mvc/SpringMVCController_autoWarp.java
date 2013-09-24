@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.mawujun.exception.BussinessException;
+import com.mawujun.exception.BusinessException;
 import com.mawujun.exception.DefaulExceptionCode;
 import com.mawujun.repository.EntityTest;
 import com.mawujun.repository.hibernate.validate.ValidatorUtils;
@@ -324,7 +324,7 @@ public class SpringMVCController_autoWarp {
 	}
 	@RequestMapping("/autoWarp/testBussinessException.do")
 	public void testBussinessException() throws Exception{
-		throw new BussinessException(DefaulExceptionCode.SYSTEM_EXCEPTION);
+		throw new BusinessException(DefaulExceptionCode.SYSTEM_EXCEPTION);
 	}
 	@RequestMapping("/autoWarp/testConstraintViolationException.do")
 	public void testConstraintViolationException() throws Exception{

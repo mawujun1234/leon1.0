@@ -140,7 +140,7 @@ public abstract class MybatisBatchRepository {
 		QueryResult<Map<String, Object>> page = new QueryResult<Map<String, Object>>(pageRequest);
 		Object params=pageRequest.getParams();
 		if(page.isCountTotal()) {
-			int totalCount=this.getBatchSqlSession().selectOne(statement+".count", params);
+			int totalCount=(Integer)this.getBatchSqlSession().selectOne(statement+"_count", params);
 			page.setTotalItems(totalCount);
 		}
 //		//params.put("sortColumns", pageRequest.getSortColumns());
@@ -161,7 +161,7 @@ public abstract class MybatisBatchRepository {
 		QueryResult<Object> page = new QueryResult<Object>(pageRequest);
 		Object params=pageRequest.getParams();
 		if(page.isCountTotal()) {
-			int totalCount=this.getBatchSqlSession().selectOne(statement+".count", params);
+			int totalCount=(Integer)this.getBatchSqlSession().selectOne(statement+"_count", params);
 			page.setTotalItems(totalCount);
 		}
 //		//params.put("sortColumns", pageRequest.getSortColumns());

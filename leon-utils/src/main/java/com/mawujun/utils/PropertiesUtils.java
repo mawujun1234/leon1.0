@@ -13,7 +13,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import com.mawujun.exception.BussinessException;
+import com.mawujun.exception.BusinessException;
 
 /**
  * Properties的操作的工具类,为Properties提供一个代理增加相关工具方法如 getRequiredString(),getInt(),getBoolean()等方法
@@ -350,7 +350,7 @@ public class PropertiesUtils {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			throw new BussinessException("加载properties文件失败");
+			throw new BusinessException("加载properties文件失败");
 		}
 		return utils;
 	}

@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.mawujun.exception.BussinessException;
+import com.mawujun.exception.BusinessException;
 import com.mawujun.utils.SystemUtils;
 
 @Service
@@ -49,7 +49,7 @@ public class PGeneratorService {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			//throw new BussinessException("修改P.class失败!");
+			//throw new BusinessException("修改P.class失败!");
 		}
        
 	}

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.mawjun.utils.FunCacheHolder;
 import com.mawjun.utils.RoleCacheHolder;
-import com.mawujun.exception.BussinessException;
+import com.mawujun.exception.BusinessException;
 import com.mawujun.exception.WebCommonExceptionCode3;
 import com.mawujun.menu.Menu;
 import com.mawujun.menu.MenuItem;
@@ -47,14 +47,14 @@ public class FunService extends BaseRepository<Fun, String> {
 		//int childs=fun.getChildren().size();
 		int childs=super.queryCount(Cnd.select().andEquals("parent.id", fun.getId()));
 		if(childs>0){
-			throw new BussinessException("存在子节点，不能删除。",WebCommonExceptionCode3.EXISTS_CHILDREN);
+			throw new BusinessException("存在子节点，不能删除。",WebCommonExceptionCode3.EXISTS_CHILDREN);
 		}
 		
 
 		//menuItemService.delete(fun);
 		int menuItemCount=menuItemService.queryCount(Cnd.select().andEquals("fun.id", entity.getId()));
 		if(menuItemCount>0){
-			throw new BussinessException("有菜单挂钩，不能删除。",WebCommonExceptionCode3.EXISTS_CHILDREN);
+			throw new BusinessException("有菜单挂钩，不能删除。",WebCommonExceptionCode3.EXISTS_CHILDREN);
 		}
 		
 		return super.delete(fun);
@@ -72,7 +72,7 @@ public class FunService extends BaseRepository<Fun, String> {
 	public Fun create(Fun entity) {
 		Fun parent=entity.getParent()==null?null:this.get(entity.getParent().getId());
 		if(parent!=null && parent.getFunEnum()==FunEnum.fun && !entity.isFun()){
-			throw new BussinessException("功能不能增加模块节点");
+			throw new BusinessException("功能不能增加模块节点");
 		}
 		entity.setParent(parent);
 		if(parent!=null){

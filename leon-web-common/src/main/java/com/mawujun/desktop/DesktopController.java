@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.controller.spring.mvc.JsonConfigHolder;
-import com.mawujun.exception.BussinessException;
+import com.mawujun.exception.BusinessException;
 import com.mawujun.menu.MenuItem;
 import com.mawujun.menu.MenuItemService;
 import com.mawujun.menu.MenuItemVO;
@@ -90,7 +90,7 @@ public class DesktopController {
 		String menuId="default";
 		MenuItemVO vo=menuItemService.queryMenuItem(jspUrl, menuId);
 		if(vo==null){
-			throw new BussinessException("提供的jsp路径有问题，不能确定菜单项!");
+			throw new BusinessException("提供的jsp路径有问题，不能确定菜单项!");
 		}
 		vo.setUrl(jspUrl);
 		return vo;

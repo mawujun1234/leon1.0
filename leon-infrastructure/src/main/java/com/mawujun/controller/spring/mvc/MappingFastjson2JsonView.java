@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
@@ -21,8 +22,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 import org.springframework.web.servlet.view.AbstractView;
 
-import com.mawujun.controller.spring.mvc.exception.MappingJackson2JsonView_Custom;
-import com.mawujun.exception.BussinessException;
+import com.mawujun.exception.BusinessException;
 import com.mawujun.exception.ExceptionCode;
 
 /**
@@ -40,6 +40,7 @@ public class MappingFastjson2JsonView extends AbstractView {
 	private boolean extractValueFromSingleKeyModel = true;
 	
 	final static Logger logger = LoggerFactory.getLogger(MappingFastjson2JsonView.class);   
+	
 	ResourceBundle bundle = ResourceBundle.getBundle("com.mawujun.exception.exceptions");
 	
 	public MappingFastjson2JsonView() {
@@ -59,11 +60,11 @@ public class MappingFastjson2JsonView extends AbstractView {
 			Map<String,Object> map=new  HashMap<String, Object>();
 			map.put(JsonConfigHolder.getSuccessName(), false);
 
-			if(exception instanceof BussinessException){
+			if(exception instanceof BusinessException){
 				if( exception.getMessage()!=null){
 					map.put(JsonConfigHolder.getMsgName(), exception.getMessage());
 				} else {
-					ExceptionCode errorCode=((BussinessException) exception).getErrorCode();
+					ExceptionCode errorCode=((BusinessException) exception).getErrorCode();
 					String key = errorCode.getClass().getSimpleName() + "." + errorCode;
 					try {
 						map.put(JsonConfigHolder.getMsgName(), bundle.getString(key));
@@ -102,7 +103,7 @@ public class MappingFastjson2JsonView extends AbstractView {
 			}
 			//model=map;
 			
-			logger.warn(exception.getMessage(),exception);
+			logger.error(exception.getMessage(),exception);
 			
 			JsonConfigHolder.setAutoWrap(false);
 			String jsonStr=FastJsonToStringUtils.getJsonString(map);

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.controller.spring.mvc.JsonConfigHolder;
-import com.mawujun.exception.BussinessException;
+import com.mawujun.exception.BusinessException;
 import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunVO;
 import com.mawujun.utils.page.MatchMode;
@@ -88,7 +88,7 @@ public class UserController {
 	@ResponseBody
 	public User destroy(@RequestBody User user,Boolean physicsDel){	
 		if(user.isAdmin()){
-			throw new BussinessException("管理员账号不能删除!");
+			throw new BusinessException("管理员账号不能删除!");
 		}
 		if(physicsDel!=null && physicsDel){
 			userService.delete(user);
@@ -112,7 +112,7 @@ public class UserController {
 	@ResponseBody
 	public String resetPwd(String id,String password){
 		if(!StringUtils.hasText(password)){
-			throw new BussinessException("密码不能为空");
+			throw new BusinessException("密码不能为空");
 		}
 		 userService.resetPwd(id,passwordEncoder.encode(password));
 		 return id;
