@@ -29,6 +29,8 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 
@@ -1119,4 +1121,14 @@ public class StringUtils   extends org.apache.commons.lang3.StringUtils{
 		return arrayToDelimitedString(arr, ",");
 	}
 
+	/**
+	 * 判断一个字符串是不是数子
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param input
+	 * @return
+	 */
+	public static boolean isNumber(String input){  
+        Matcher mer = Pattern.compile("^[0-9]+$").matcher(input);  
+        return mer.find();  
+    }  
 }

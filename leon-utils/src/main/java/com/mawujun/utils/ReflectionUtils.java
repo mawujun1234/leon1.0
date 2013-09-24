@@ -312,6 +312,15 @@ public class ReflectionUtils {
 	public static boolean isPrimitiveNumber(Object obj) {
 		return isInt(obj) || isLong(obj) || isFloat(obj) || isDouble(obj) || isByte(obj) || isShort(obj);
 	}
+	/**
+	 * 判断一个字符串是不是数字
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param input
+	 * @return
+	 */
+	public static boolean isNumber(String input){  
+		return StringUtils.isNumber(input);
+	}
 
 
 	/**
