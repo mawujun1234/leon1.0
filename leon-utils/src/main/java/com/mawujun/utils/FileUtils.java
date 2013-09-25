@@ -41,6 +41,15 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 	public static File[] listFiles(File directory){
 		return directory.listFiles();
 	}
+	/**
+	 * 返回某个目录下面的所有文件和目录，不包括子文件夹中的文件
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param directory
+	 * @return
+	 */
+	public static File[] listFiles(String dirPath){
+		return listFiles(new File(dirPath));
+	}
 	
 	/**
      * The extension separator character.
