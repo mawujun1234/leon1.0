@@ -1,4 +1,4 @@
-package com.mawjun.utils;
+package com.mawujun.utils;
 
 import com.mawujun.controller.spring.SpringContextHolder;
 import com.mawujun.parameter.P;

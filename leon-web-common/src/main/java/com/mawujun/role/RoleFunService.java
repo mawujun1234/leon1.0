@@ -9,13 +9,13 @@ import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mawjun.utils.RoleCacheHolder;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository.idEntity.UUIDGenerator;
 import com.mawujun.user.login.FilterInvocationSecurityMetadataSourceImpl;
+import com.mawujun.utils.RoleCacheHolder;
 import com.mawujun.utils.page.WhereInfo;
 
 @Service

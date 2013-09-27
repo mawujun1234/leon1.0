@@ -1,4 +1,4 @@
-package com.mawjun.utils;
+package com.mawujun.utils;
 
 import java.io.Serializable;
 import java.util.concurrent.ConcurrentHashMap;

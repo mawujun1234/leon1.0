@@ -26,19 +26,28 @@ if("classic".equals(theme)){
 } else {
 	jsTheme="-"+theme;
 }
+String extjscontextPath=request.getContextPath();
+String ip=request.getRemoteAddr();
+if("localhost".equals(ip) ||"127.0.0.1".equals(ip) || ip.startsWith("192.168.")){
+	
+} else {
+	//http://extj1234.duapp.com
+	//主要用于发布到到百多的开发者平台的时候使用的，这个时候war包就不会把extjs的内容打包进去了
+	extjscontextPath="http://extj1234.duapp.com";
+}
 
 %>
-<link id="theme" rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/ext-4/resources/css/ext-all<%=jsTheme %>.css" />
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/common/icons.css" />
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/common/pngs.css">
 
-<script type="text/javascript" src="<%=request.getContextPath()%>/ext-4/bootstrap.js"></script>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/common/icons.css" />
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/common/pngs.css">
 
+<link id="theme" rel="stylesheet" type="text/css" href="<%=extjscontextPath%>/ext-4/resources/css/ext-all<%=jsTheme %>.css" />
+<script type="text/javascript" src="<%=extjscontextPath%>/ext-4/bootstrap.js"></script>
 <%if(theme!=null && !"".equals(theme)) { %>
-<script type="text/javascript" src="<%=request.getContextPath()%>/ext-4/ext-theme-<%=theme %>.js"></script>
+<script type="text/javascript" src="<%=extjscontextPath %>/ext-4/ext-theme-<%=theme %>.js"></script>
 <%} %>
+<script type="text/javascript" src="<%=extjscontextPath%>/ext-4/locale/ext-lang-zh_CN.js"></script>
 
-<script type="text/javascript" src="<%=request.getContextPath()%>/ext-4/locale/ext-lang-zh_CN.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/common/common.js"></script>
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/common/ux/BaseAjax.js"></script>

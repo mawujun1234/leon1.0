@@ -1,4 +1,4 @@
-package com.mawjun.utils;
+package com.mawujun.utils;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;

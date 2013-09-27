@@ -1,4 +1,4 @@
-package com.mawjun.utils;
+package com.mawujun.utils;
 
 import com.mawujun.constant.ConstantItem;
 import com.mawujun.constant.cache.IConstantCache;

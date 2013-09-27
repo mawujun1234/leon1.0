@@ -1,4 +1,4 @@
-package com.mawjun.utils;
+package com.mawujun.utils;
 
 import com.mawujun.parameter.PGeneratorService;
 import com.mawujun.utils.SystemUtils;

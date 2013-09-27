@@ -3,7 +3,7 @@ package com.mawujun.constant.cache;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
-import com.mawjun.utils.ConstantCacheHolder;
+import com.mawujun.utils.ConstantCacheHolder;
 
 /**
  * 常数值，这个只是显示的，真正的常数值是CodeItem

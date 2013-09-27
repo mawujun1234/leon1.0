@@ -13,5 +13,6 @@
         </dependent-module>
         <property name="context-root" value="leon-web-common"/>
         <property name="java-output-path" value="/leon-web-common/target/classes"/>
+        <property name="component.exclusion.patterns" value="ext-4/**"/>
     </wb-module>
 </project-modules>

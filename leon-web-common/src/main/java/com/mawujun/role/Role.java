@@ -28,9 +28,9 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import com.mawjun.utils.RoleCacheHolder;
 import com.mawujun.exten.TreeNode;
 import com.mawujun.fun.Fun;
+import com.mawujun.utils.RoleCacheHolder;
 
 @Entity
 @Table(name="leon_Role")
