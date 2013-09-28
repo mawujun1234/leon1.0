@@ -16,7 +16,7 @@ import com.mawujun.utils.FileUtils;
 public class HelpController {
 
 	public String getHelpFilePath(HttpServletRequest request,String funId){
-		String path=request.getSession().getServletContext().getRealPath("/")+"doc"+FileUtils.FILE_SEPARATOR+funId;
+		String path=request.getSession().getServletContext().getRealPath("/")+File.separator+"doc"+FileUtils.FILE_SEPARATOR+funId;
 		String filePath=path+FileUtils.FILE_SEPARATOR+funId+".html";
 		return filePath;
 	}

@@ -69,7 +69,8 @@
 					</webAppConfig>
 				</configuration>
 			</plugin>
-			<!-- http://zeroturnaround.com/forums/topic/jrebel-maven-plugin-not-available-in-eclipse-juno-solved/ 
+			
+			<!-- jrebel热替换功能的插件  http://zeroturnaround.com/forums/topic/jrebel-maven-plugin-not-available-in-eclipse-juno-solved/ 
 				https://github.com/ktoso/maven-git-commit-id-plugin/issues/22 http://update.zeroturnaround.com/update-site/ -->
 			<plugin>
 				<groupId>org.zeroturnaround</groupId>

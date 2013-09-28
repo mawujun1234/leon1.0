@@ -26,10 +26,10 @@ Ext.define('Leon.desktop.Menubar', {
 		
 		newItems.push({text:'',iconCls:'icons_arrow_inout',tooltip:'快速启动',
 			listeners:{
-				mouseover:function(btn){
-					//quickStartPanel.btn=btn;
-					btn.maybeShowMenu();
-				}
+//				mouseover:function(btn){
+//					//quickStartPanel.btn=btn;
+//					btn.maybeShowMenu();
+//				}
 			},
 			menu:{
 				xtype: 'menu',
