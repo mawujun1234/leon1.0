@@ -86,8 +86,12 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 		menuitem.setIconCls(fun.getIconCls());
 		menuitem.setLeaf(true);
 		super.create(menuitem);
-		parent.setLeaf(false);
-		super.update(parent);
+		
+		if(parent!=null){
+			parent.setLeaf(false);
+			super.update(parent);
+		}
+		
 
 //		if(parent!=null){
 //			parent.addChild(menuitem);

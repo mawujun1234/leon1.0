@@ -1,15 +1,15 @@
-Ext.require('Leon.desktop.monitor.SystemInfo');
+Ext.require('Leon.desktop.monitor.SystemInfoPanel');
 Ext.onReady(function(){
-	var systemInfo=Ext.create('Leon.desktop.monitor.SystemInfo',{});
+	var systemInfoPanel=Ext.create('Leon.desktop.monitor.SystemInfoPanel',{});
 
 	var tabPanel=Ext.create('Ext.tab.Panel', {
 		region:'center',
 		split:true,
 	    activeTab: 0,
-	    items: [systemInfo],
+	    items: [systemInfoPanel],
 	    listeners:{
 	    	render:function(tabPanel){
-	    		tabPanel.mask();
+	    		//tabPanel.mask();
 	    	}
 	    }
 	});

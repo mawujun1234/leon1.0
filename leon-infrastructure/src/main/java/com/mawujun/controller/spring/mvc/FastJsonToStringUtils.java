@@ -242,7 +242,7 @@ public class FastJsonToStringUtils {
 	        if ( value!=null && value instanceof HibernateProxy) {
 	        	if(value instanceof IdEntity){
 	        		//现在只是把
-		        	return new IdEntity(){
+		        	return new IdEntity<Object>(){
 						@Override
 						public void setId(Object id) {
 							// TODO Auto-generated method stub
