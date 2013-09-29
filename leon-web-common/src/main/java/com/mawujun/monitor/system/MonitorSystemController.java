@@ -132,7 +132,7 @@ public class MonitorSystemController {
         
         addMap("RAM", mem.getRam()+"",SystenInfoType.FREEINFO);
         
-        http://kgd1120.iteye.com/blog/1254657
+        //http://kgd1120.iteye.com/blog/1254657
         FileSystem[] fileSystems=sigar.getFileSystemList();
         //fileSystems[0].get
         addMap("文件系统", Arrays.asList(fileSystems).toString(),SystenInfoType.FILESYSTEMINFO);
@@ -140,6 +140,17 @@ public class MonitorSystemController {
         addMap("网络接口",Arrays.asList(sigar.getNetInterfaceList()).toString(),SystenInfoType.NETWORK);
         sigar.close();
         return list;
+	}
+	
+	/**
+	 * 获取除系统信息外的所有其他信息，例如CPU,内存，硬盘，网络
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @return
+	 * @throws SigarException
+	 */
+	@RequestMapping("/monitorSystem/queryOtherInfo")
+	public List<Map<String, String>> querySystemInfo() throws SigarException {
+		
 	}
 
 }
