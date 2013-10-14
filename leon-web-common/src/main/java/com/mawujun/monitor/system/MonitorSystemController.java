@@ -149,8 +149,8 @@ public class MonitorSystemController {
 	 * @throws SigarException
 	 */
 	@RequestMapping("/monitorSystem/queryOtherInfo")
-	public List<Map<String, String>> querySystemInfo() throws SigarException {
-		
+	public List<Map<String, String>> queryOtherInfo() throws SigarException {
+		return null;
 	}
 
 }
