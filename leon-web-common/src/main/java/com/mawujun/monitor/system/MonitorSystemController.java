@@ -12,11 +12,15 @@ import java.util.Map;
 
 import org.hyperic.sigar.CpuPerc;
 import org.hyperic.sigar.FileSystem;
+import org.hyperic.sigar.FileSystemUsage;
 import org.hyperic.sigar.Mem;
+import org.hyperic.sigar.NetInterfaceConfig;
+import org.hyperic.sigar.NetInterfaceStat;
 import org.hyperic.sigar.OperatingSystem;
 import org.hyperic.sigar.Sigar;
 import org.hyperic.sigar.SigarException;
 import org.hyperic.sigar.SigarLoader;
+import org.hyperic.sigar.SigarNotImplementedException;
 import org.hyperic.sigar.Swap;
 import org.hyperic.sigar.win32.LocaleInfo;
 import org.springframework.stereotype.Controller;
@@ -53,7 +57,7 @@ public class MonitorSystemController {
 		map.put("group", group.toString());
 		list.add(map);
 	 }
-	@RequestMapping("/monitorSystem/querySystemInfo")
+	//@RequestMapping("/monitorSystem/querySystemInfo")
 	public List<Map<String, String>> querySystemInfo() throws SigarException {
 		if(list.size()>0){
 			list.clear();
@@ -149,9 +153,20 @@ public class MonitorSystemController {
 	 * @return
 	 * @throws SigarException
 	 */
-	@RequestMapping("/monitorSystem/queryOtherInfo")
-	public List<Map<String, String>> queryOtherInfo() throws SigarException {
-		return null;
+	@RequestMapping("/monitorSystem/querySystemInfo")
+	public Map<String,Object> queryOtherInfo() throws SigarException {
+		Map<String,Object> cpuInfo=getCpuInfo();
+		Map<String,Object> memoryInfo=getMemoryInfo();
+		Map<String,Object> fileSystemInfo=getFileSystemInfo();
+		Map<String,Object> netInfo=getNetInfo();
+		
+		Map<String,Object> result=new HashMap<String,Object>();
+		result.put("cpuInfo", cpuInfo);
+		result.put("memoryInfo", memoryInfo);
+		result.put("fileSystemInfo", fileSystemInfo);
+		result.put("netInfo", netInfo);
+
+		return result;
 	}
 	
 	Sigar sigar = new Sigar();
@@ -240,6 +255,9 @@ public class MonitorSystemController {
 	}
 	
 	private Map<String, Object> getFileSystemInfo() throws SigarException {
+		
+		Map<String,Object> fileSystemInfo=new HashMap<String,Object>();
+		
 		FileSystem fslist[] = sigar.getFileSystemList();  
 		//http://kgd1120.iteye.com/blog/1254657
         DecimalFormat df = new DecimalFormat("#0.00");  
@@ -247,17 +265,7 @@ public class MonitorSystemController {
         for (int i = 0; i < fslist.length; i++) {  
             System.out.println("\n~~~~~~~~~~" + i + "~~~~~~~~~~");  
             FileSystem fs = fslist[i];  
-            // 分区的盘符名称  
-            System.out.println("fs.getDevName() = " + fs.getDevName());  
-            // 分区的盘符名称  
-            System.out.println("fs.getDirName() = " + fs.getDirName());  
-            System.out.println("fs.getFlags() = " + fs.getFlags());//  
-            // 文件系统类型，比如 FAT32、NTFS  
-            System.out.println("fs.getSysTypeName() = " + fs.getSysTypeName());  
-            // 文件系统类型名，比如本地硬盘、光驱、网络文件系统等  
-            System.out.println("fs.getTypeName() = " + fs.getTypeName());  
-            // 文件系统类型  
-            System.out.println("fs.getType() = " + fs.getType());  
+
             FileSystemUsage usage = null;  
             try {  
                 usage = sigar.getFileSystemUsage(fs.getDirName());  
@@ -272,17 +280,38 @@ public class MonitorSystemController {
             case 1: // TYPE_NONE  
                 break;  
             case 2: // TYPE_LOCAL_DISK : 本地硬盘  
+            	// 分区的盘符名称  
+                //System.out.println("fs.getDevName() = " + fs.getDevName());  
+                fileSystemInfo.put(fs.getDevName()+"_devName", fs.getDevName());
+                // 分区的盘符名称  
+                //System.out.println("fs.getDirName() = " + fs.getDirName());  
+                fileSystemInfo.put(fs.getDevName()+"_dirName", fs.getDirName());
+                //System.out.println("fs.getFlags() = " + fs.getFlags());//  
+                // 文件系统类型，比如 FAT32、NTFS  
+                //System.out.println("fs.getSysTypeName() = " + fs.getSysTypeName());  
+                fileSystemInfo.put(fs.getDevName()+"_sysTypeName",  fs.getSysTypeName());
+                // 文件系统类型名，比如本地硬盘、光驱、网络文件系统等  
+                //System.out.println("fs.getTypeName() = " + fs.getTypeName());  
+                fileSystemInfo.put(fs.getDevName()+"_typeName", fs.getTypeName());
+                // 文件系统类型  
+                //System.out.println("fs.getType() = " + fs.getType()); 
+                fileSystemInfo.put(fs.getDevName()+"_type", fs.getType());
                 // 文件系统总大小  
-                System.out.println(" Total = " + df.format((float)usage.getTotal()/1024/1024) + "G");  
+                //System.out.println(" Total = " + df.format((float)usage.getTotal()/1024/1024) + "G");  
+                fileSystemInfo.put(fs.getDevName()+"_total", df.format((float)usage.getTotal()/1024/1024) + "G");
                 // 文件系统剩余大小  
-                System.out.println(" Free = " + df.format((float)usage.getFree()/1024/1024) + "G");  
+                //System.out.println(" Free = " + df.format((float)usage.getFree()/1024/1024) + "G");  
+                fileSystemInfo.put(fs.getDevName()+"_free", df.format((float)usage.getFree()/1024/1024) + "G");
                 // 文件系统可用大小  
-                System.out.println(" Avail = " + df.format((float)usage.getAvail()/1024/1024) + "G");  
+                //System.out.println(" Avail = " + df.format((float)usage.getAvail()/1024/1024) + "G");  
+                fileSystemInfo.put(fs.getDevName()+"_avail", df.format((float)usage.getAvail()/1024/1024) + "G");
                 // 文件系统已经使用量  
-                System.out.println(" Used = " + df.format((float)usage.getUsed()/1024/1024) + "G");  
+                //System.out.println(" Used = " + df.format((float)usage.getUsed()/1024/1024) + "G");  
+                fileSystemInfo.put(fs.getDevName()+"_used", df.format((float)usage.getUsed()/1024/1024) + "G");
                 double usePercent = usage.getUsePercent() * 100D;  
                 // 文件系统资源的利用率  
-                System.out.println(" Usage = " + df.format(usePercent) + "%");  
+                //System.out.println(" Usage = " + df.format(usePercent) + "%");  
+                fileSystemInfo.put(fs.getDevName()+"_usage",  df.format(usePercent) + "%");
                 break;  
             case 3:// TYPE_NETWORK ：网络  
                 break;  
@@ -293,10 +322,45 @@ public class MonitorSystemController {
             case 6:// TYPE_SWAP ：页面交换  
                 break;  
             }  
-            System.out.println(" DiskReads = " + usage.getDiskReads());  
-            System.out.println(" DiskWrites = " + usage.getDiskWrites());  
+            //System.out.println(" DiskReads = " + usage.getDiskReads());  
+            fileSystemInfo.put(fs.getDevName()+"_diskreads",  usage.getDiskReads());
+            //System.out.println(" DiskWrites = " + usage.getDiskWrites());  
+            fileSystemInfo.put(fs.getDevName()+"_diskwrites",  usage.getDiskWrites());
         }  
-        return;  
+        return fileSystemInfo;  
+	}
+	
+	private Map<String, Object> getNetInfo() throws SigarException {
+		Map<String,Object> netInfo=new HashMap<String,Object>();
+		
+		String ifNames[] = sigar.getNetInterfaceList();  
+        for (int i = 0; i < ifNames.length; i++) {  
+            String name = ifNames[i];  
+            NetInterfaceConfig ifconfig = sigar.getNetInterfaceConfig(name);  
+            netInfo.put("name" , name);// 网络设备名  
+            netInfo.put("address" , ifconfig.getAddress());// IP地址  
+            netInfo.put("netmask" , ifconfig.getNetmask());// 子网掩码  
+            netInfo.put("macAddr" , ifconfig.getHwaddr());// 网卡MAC地址  
+            if ((ifconfig.getFlags() & 1L) <= 0L) {  
+            	System.out.println("!IFF_UP...skipping getNetInterfaceStat");  
+                continue;  
+            }  
+            try {  
+                NetInterfaceStat ifstat=sigar.getNetInterfaceStat(name);  
+                netInfo.put("rxpackets" , ifstat.getRxPackets());// 接收的总包裹数  
+                netInfo.put("txpackets" , ifstat.getTxPackets());// 发送的总包裹数  
+                netInfo.put("rxbytes" , ifstat.getRxBytes());// 接收到的总字节数  
+                netInfo.put("txbytes" , ifstat.getTxBytes());// 发送的总字节数  
+                netInfo.put("rxerrors" , ifstat.getRxErrors());// 接收到的错误包数  
+                netInfo.put("txerrors" , ifstat.getTxErrors());// 发送数据包时的错误数  
+                netInfo.put("rxdropped" , ifstat.getRxDropped());// 接收时丢弃的包数  
+                netInfo.put("txdropped" , ifstat.getTxDropped());// 发送时丢弃的包数  
+            } catch (SigarNotImplementedException e) {  
+            } catch (SigarException e) {  
+            	System.out.println(e.getMessage());  
+            }  
+        }  
+        return netInfo;
 	}
 
 }
