@@ -48,23 +48,40 @@ public class MonitorSystemController {
 	        } catch (UnknownHostException e) {
 	            return "unknown";
 	        }
-	    }
-	 List<Map<String, String>> list=new ArrayList<Map<String, String>>();
-	 private void addMap(String name,String value,SystenInfoType group){
-		Map<String,String> map=new HashMap<String,String>();
-		map.put("name", name);
-		map.put("value", value);
-		map.put("group", group.toString());
-		list.add(map);
-	 }
-	//@RequestMapping("/monitorSystem/querySystemInfo")
-	public List<Map<String, String>> querySystemInfo() throws SigarException {
-		if(list.size()>0){
-			list.clear();
-			//return list;
-		}
+	   }
+
+	
+	/**
+	 * 获取除系统信息外的所有其他信息，例如CPU,内存，硬盘，网络
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @return
+	 * @throws SigarException
+	 */
+	@RequestMapping("/monitorSystem/querySystemInfo")
+	public Map<String,Object> queryOtherInfo() throws SigarException {
+		Map<String,Object> systemInfo=getSystemInfo();
+		Map<String,Object> cpuInfo=getCpuInfo();
+		Map<String,Object> memoryInfo=getMemoryInfo();
+		Map<String,Object> fileSystemInfo=getFileSystemInfo();
+		Map<String,Object> netInfo=getNetInfo();
+		
+		Map<String,Object> result=new HashMap<String,Object>();
+		result.put("systemInfo", systemInfo);
+		result.put("cpuInfo", cpuInfo);
+		result.put("memoryInfo", memoryInfo);
+		result.put("fileSystemInfo", fileSystemInfo);
+		result.put("netInfo", netInfo);
+
+		return result;
+	}
+	
+	Sigar sigar = new Sigar();
+	
+	private Map<String,Object> getSystemInfo() throws SigarException{
+		Map<String,Object> systemInfo=new HashMap<String,Object>();
 		String host = getHostName();
-		addMap("主机名称",host,SystenInfoType.SYTEM);
+		//addMap("主机名称",host,SystenInfoType.SYTEM);
+		systemInfo.put("host", host);//主机名称
 		
 		String fqdn;
 		Sigar sigar = new Sigar();
@@ -76,100 +93,42 @@ public class MonitorSystemController {
 		} finally {
 			//sigar.close();
 		}
-		addMap("主机全名",fqdn,SystenInfoType.SYTEM);
+		//addMap("主机全名",fqdn,SystenInfoType.SYTEM);
+		systemInfo.put("fqdn", fqdn);//主机全名
 		
 		if (SigarLoader.IS_WIN32) {
             LocaleInfo info = new LocaleInfo();
-			addMap("语言",info.toString(),SystenInfoType.SYTEM);
+			//addMap("语言",info.toString(),SystenInfoType.SYTEM);
+			systemInfo.put("localeInfo", info.toString());//语言
+			
         }
-		addMap("当前用户",System.getProperty("user.name"),SystenInfoType.SYTEM);
+		systemInfo.put("user_name", System.getProperty("user.name"));//当前用户
 		
 		OperatingSystem sys = OperatingSystem.getInstance();
-		addMap("操作系统描述",sys.getDescription(),SystenInfoType.SYTEM);
-        addMap("操作系统名称",sys.getName(),SystenInfoType.SYTEM);
-        addMap("操作系统内核类型",sys.getArch(),SystenInfoType.SYTEM);
-        addMap("操作系统机器",sys.getMachine(),SystenInfoType.SYTEM);
-        addMap("操作系统版本",sys.getVersion(),SystenInfoType.SYTEM);
-        addMap("操作系统补丁包",sys.getPatchLevel(),SystenInfoType.SYTEM);
-        addMap("操作系统厂商",sys.getVendor(),SystenInfoType.SYTEM);
-        addMap("操作系统厂商版本",sys.getVendorVersion(),SystenInfoType.SYTEM);
-        if (sys.getVendorCodeName() != null) {
-            addMap("OS code name",sys.getVendorCodeName(),SystenInfoType.SYTEM);
-        }
-        addMap("操作系统内核版本",sys.getDataModel(),SystenInfoType.SYTEM);
-        addMap("操作系统cpu endian",sys.getCpuEndian(),SystenInfoType.SYTEM);
-        addMap("Java vm version",System.getProperty("java.vm.version"),SystenInfoType.SYTEM);
-        addMap("Java vm vendor",System.getProperty("java.vm.vendor"),SystenInfoType.SYTEM);
-        addMap("Java home", System.getProperty("java.home"),SystenInfoType.SYTEM);
-        
-        
-        org.hyperic.sigar.CpuInfo[] infos = sigar.getCpuInfoList();
-        //addMap("CPU个数", infos.length+"",SystenInfoType.CPUINFO);     
-        org.hyperic.sigar.CpuInfo info = infos[0];
-        long cacheSize = info.getCacheSize();
-        addMap("厂商", info.getVendor(),SystenInfoType.CPUINFO);
-        addMap("型号", info.getModel(),SystenInfoType.CPUINFO);
-        addMap("频率", info.getMhz()+"",SystenInfoType.CPUINFO);
-        addMap("逻辑处理器", info.getTotalCores()+"",SystenInfoType.CPUINFO);
-        if ((info.getTotalCores() != info.getTotalSockets()) ||
-            (info.getCoresPerSocket() > info.getTotalCores())) {
-        	addMap("物理 CPU个数.", info.getTotalSockets()+"",SystenInfoType.CPUINFO);
-        	addMap("CPU内核个数/个", info.getCoresPerSocket()+"",SystenInfoType.CPUINFO);
-
-        }
-        if (cacheSize != Sigar.FIELD_NOTIMPL) {
-        	addMap("缓冲存储器数量", cacheSize+"",SystenInfoType.CPUINFO);
-        }
-
-        Mem mem   = sigar.getMem();
-        Swap swap = sigar.getSwap();
-        addMap("内存总量", mem.getTotal()/1024/1024+"",SystenInfoType.FREEINFO);
-        addMap("当前内存使用量", mem.getUsed()/1024/1024+"",SystenInfoType.FREEINFO);
-        addMap("当前内存剩余量", mem.getFree()/1024/1024+"",SystenInfoType.FREEINFO);
-        
-       // addMap("Mem total", mem.getTotal()+"",SystenInfoType.FREEINFO);
-        addMap("实际内存使用量", mem.getActualUsed()/1024/1024+"",SystenInfoType.FREEINFO);
-        addMap("实际内存剩余量", mem.getActualFree()/1024/1024+"",SystenInfoType.FREEINFO);
-        
-        addMap("交换区总量", swap.getTotal()/1024/1024+"",SystenInfoType.FREEINFO);
-        addMap("当前交换区使用量", swap.getUsed()/1024/1024+"",SystenInfoType.FREEINFO);
-        addMap("当前交换区剩余量", swap.getFree()/1024/1024+"",SystenInfoType.FREEINFO);
-        
-        addMap("RAM", mem.getRam()+"",SystenInfoType.FREEINFO);
-        
-        //http://kgd1120.iteye.com/blog/1254657
-        FileSystem[] fileSystems=sigar.getFileSystemList();
-        //fileSystems[0].get
-        addMap("文件系统", Arrays.asList(fileSystems).toString(),SystenInfoType.FILESYSTEMINFO);
-        
-        addMap("网络接口",Arrays.asList(sigar.getNetInterfaceList()).toString(),SystenInfoType.NETWORK);
-        sigar.close();
-        return list;
-	}
-	
-	/**
-	 * 获取除系统信息外的所有其他信息，例如CPU,内存，硬盘，网络
-	 * @author mawujun email:16064988@163.com qq:16064988
-	 * @return
-	 * @throws SigarException
-	 */
-	@RequestMapping("/monitorSystem/querySystemInfo")
-	public Map<String,Object> queryOtherInfo() throws SigarException {
-		Map<String,Object> cpuInfo=getCpuInfo();
-		Map<String,Object> memoryInfo=getMemoryInfo();
-		Map<String,Object> fileSystemInfo=getFileSystemInfo();
-		Map<String,Object> netInfo=getNetInfo();
 		
-		Map<String,Object> result=new HashMap<String,Object>();
-		result.put("cpuInfo", cpuInfo);
-		result.put("memoryInfo", memoryInfo);
-		result.put("fileSystemInfo", fileSystemInfo);
-		result.put("netInfo", netInfo);
-
-		return result;
+        // 操作系统内核类型如： 386、486、586等x86  
+        systemInfo.put("arch", sys.getArch());//操作系统内核类型
+        systemInfo.put("dataModel", sys.getDataModel());//操作系统内核版本
+        systemInfo.put("cpuEndian", sys.getCpuEndian());//"操作系统cpu endian
+        // 系统描述  
+     	systemInfo.put("description", sys.getDescription());//操作系统描述
+        systemInfo.put("name", sys.getName());//操作系统名称
+        //systemInfo.put("machine", sys.getMachine());//操作系统机器
+        systemInfo.put("version", sys.getVersion());//操作系统版本
+        systemInfo.put("patchlevel", sys.getPatchLevel());//操作系统补丁包
+        systemInfo.put("vendor", sys.getVendor());//操作系统厂商
+        systemInfo.put("vendorVersion", sys.getVendorVersion());//操作系统厂商版本
+        if (sys.getVendorCodeName() != null) {
+            systemInfo.put("vendorcodename", sys.getVendorCodeName());
+        }
+        
+        
+        systemInfo.put("java_vm_version", System.getProperty("java.vm.version"));//
+        systemInfo.put("java_vm_vendor", System.getProperty("java.vm.vendor"));
+        systemInfo.put("java_home", System.getProperty("java.home"));
+        
+        return systemInfo;
 	}
-	
-	Sigar sigar = new Sigar();
 	private Map<String,Object> getCpuInfo() throws SigarException{
 		Map<String,Object> cpuInfo=new HashMap<String,Object>();
 		org.hyperic.sigar.CpuInfo[] infos = sigar.getCpuInfoList();

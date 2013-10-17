@@ -79,9 +79,11 @@ public class MenuItemController {
 	
 	@RequestMapping("/menuItem/update")
 	@ResponseBody
-	public MenuItem update(HttpServletRequest request,@RequestBody MenuItem menuItem) throws IOException{		
+	public MenuItem update(HttpServletRequest request,@RequestBody MenuItem menuItem) throws IOException{	
+		appenPngCls(request,menuItem.getIconCls(),menuItem.getIconCls32());//顺序很重要
+		
 		menuItem=menuItemService.update(menuItem);
-		appenPngCls(request,menuItem.getIconCls(),menuItem.getIconCls32());
+		
 		JsonConfigHolder.setFilterPropertys("children",MenuItem.class);
 		 return menuItem;
 	}
