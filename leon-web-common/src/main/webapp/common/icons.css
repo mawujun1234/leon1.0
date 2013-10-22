@@ -1,3 +1,10 @@
+.x-form-clear-trigger {
+     background-image: url(../images/clear-trigger.gif);
+}
+        
+.x-form-search-trigger {
+     background-image: url(../images/search-trigger.gif);
+}
 .menuBar-index-button { 
     background: url(../icons/house.png) left top no-repeat !important; 
 }
