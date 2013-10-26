@@ -1,7 +1,7 @@
 Ext.define('Leon.desktop.user.UserForm',{
 	extend:'Ext.form.Panel',
 	requires: [
-	     'Leon.desktop.user.User'
+	     'Leon.desktop.user.User','Leon.common.ux.MultiSelectField'
 	],
 	fieldDefaults: {
             msgTarget: 'side',
@@ -88,6 +88,11 @@ Ext.define('Leon.desktop.user.UserForm',{
 	        	xtype:'datefield',
                 fieldLabel  : '创建日期',
                 name      : 'createDate',
+                format:'Y-m-d'
+            },{
+	        	xtype:'multiselectfield',
+                fieldLabel  : '测试',
+                name      : 'multiselectfield',
                 format:'Y-m-d'
             }
 	    ];
