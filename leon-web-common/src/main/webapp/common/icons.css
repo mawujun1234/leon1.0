@@ -67,6 +67,12 @@
 }
 .icons_arrow_180{background: url(../icons/arrow_180.png) left top no-repeat !important;}
 .icons_arrow{background: url(../icons/arrow.png) left top no-repeat !important;}
+.icons_arrow_inout{background: url(../icons/arrow_inout.png) left top no-repeat !important;}
+.icons_user_go{background: url(../icons/user_go.png) left top no-repeat !important;}
+.icons_user_home{background: url(../icons/user_home.png) left top no-repeat !important;}
+.icons_door_in{background: url(../icons/door_in.png) left top no-repeat !important;}
+.icons_door_out{background: url(../icons/door_out.png) left top no-repeat !important;}
+.icons_desktop-image{background: url(../icons/desktop-image.png) left top no-repeat !important;}
 /***IconWindow显示的样式表*****/
 #images-view .x-panel-body{
     background: white;

@@ -89,11 +89,6 @@ Ext.define('Leon.desktop.user.UserForm',{
                 fieldLabel  : '创建日期',
                 name      : 'createDate',
                 format:'Y-m-d'
-            },{
-	        	xtype:'multiselectfield',
-                fieldLabel  : '测试',
-                name      : 'multiselectfield',
-                format:'Y-m-d'
             }
 	    ];
 	    me.buttons= [{

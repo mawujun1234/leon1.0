@@ -1,5 +1,12 @@
 /**
- * 只要覆盖onTrigger2Click方法就可以了，例子看注释掉的
+ * 只要覆盖onTrigger2Click方法就可以了，例子看注释掉的,
+ * 使用方法如下：
+ * ,{
+	        	xtype:'multiselectfield',
+                fieldLabel  : '测试',
+                name      : 'multiselectfield'
+            }
+            还可能要覆盖onTrigger2Click方法 来弹出选择框
  */
 Ext.define('Leon.common.ux.MultiSelectField', {
     extend: 'Ext.form.field.Trigger',
@@ -46,8 +53,28 @@ Ext.define('Leon.common.ux.MultiSelectField', {
 	 */
     onTrigger2Click : function(){
         var me = this;
-        var selectPanel=Ext.create('Leon.common.ux.MultiSelectPanel',{});
+        var selectPanel=Ext.create('Leon.common.ux.MultiSelectPanel',{
+        	listeners:{
+        		selectedFinish:function(models){
+        		    if(!models||models.length==0){
+		        		return;
+		        	}
+		        	alert(models);
+		        	var rawValue='';
+		        	var value=[];
+		        	for(var i=0;i<models.length;i++){
+		        		value.push(models[i].get('id'))
+		        		rawValue+=','+models[i].get('name');
+		        	}
+		        	
+		        	me.setValue(value);
+		            me.setRawValue(rawValue.substring(1));
+		            selectPanel.close();
+        		}
+        	}
+        });
         selectPanel.show(me);
+        
   //这是例子，不要删除    
 //        var selOrgWin=Ext.create('Ext.ux.utils.SelectOrgPanel',{});
 //        selOrgWin.show();
@@ -91,8 +118,8 @@ Ext.define('Leon.common.ux.MultiSelectPanel', {
 	 extend: 'Ext.Window',
 	 layout:{type:'hbox',align: 'stretch'},     
 	 modal:true,
-	 title:'111',
-	 width:500,
+	 title:'可多选',
+	 width:530,
 	 height:400,
 	 initComponent: function () {
 	 	var me=this;
@@ -100,19 +127,32 @@ Ext.define('Leon.common.ux.MultiSelectPanel', {
 	 	var panel2=me.getSelectedDataPanel();
 	 	 
 	 	me.items=[panel1,panel2];
+	 	me.buttons= [
+		  { text: '确定',handler:function(){
+		  	var models=me.selectedDataPanel.getStore().getRange();
+		  	
+		  	me.fireEvent("selectedFinish",models);
+		  } },
+		  { text: '取消',handler:function(){
+		  	me.close();
+		  }}
+		];
+		
+		me.addEvents("selectedFinish");
 		me.callParent();
 	 },
 	 /**
 	  * 生成被选择的数据源
 	  */
 	 getOrginalDataPanel:function(){
+	 	var me=this;
 	 	var store=Ext.create('Ext.data.Store', {
-		    fields:['name', 'email', 'phone'],
+		    fields:['id', 'name'],
 		    data:{'items':[
-		        { 'name': 'Lisa',  "email":"lisa@simpsons.com",  "phone":"555-111-1224"  },
-		        { 'name': 'Bart',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
-		        { 'name': 'Homer', "email":"home@simpsons.com",  "phone":"555-222-1244"  },
-		        { 'name': 'Marge', "email":"marge@simpsons.com", "phone":"555-222-1254"  }
+		        { 'name': 'Lisa',  "id":"555-111-1224"  },
+		        { 'name': 'Bart',  "id":"555-222-1234" },
+		        { 'name': 'Homer',  "id":"555-222-1244"  },
+		        { 'name': 'Marge', "id":"555-222-1254"  }
 		    ]},
 		    proxy: {
 		        type: 'memory',
@@ -127,10 +167,10 @@ Ext.define('Leon.common.ux.MultiSelectPanel', {
 		    store: store,
 		    columns: [
 		        { text: 'Name',  dataIndex: 'name' },
-		        { text: 'Email', dataIndex: 'email', flex: 1 },
-		        { text: 'Phone', dataIndex: 'phone' }
+		        { text: 'id', dataIndex: 'id', flex: 1 }
 		    ],
-		    flex:1,
+		    flex:1.1,
+		    selModel:{mode:'MULTI'},
 		    dockedItems: [{
 		        xtype: 'toolbar',
 		        dock: 'right',
@@ -138,38 +178,36 @@ Ext.define('Leon.common.ux.MultiSelectPanel', {
 		        	icon:'/icons/arrow.png',
 		            text: '',
 		            handler:function(){
-		            	var selectRoleNode=roleTree.getLastSelected();
-		            	if(selectRoleNode && selectRoleNode.isLeaf()){
-		            		me.fireEvent("addRole",selectedRoleTree,selectRoleNode);
-
+		            	var models=grid.getSelectionModel( ).getSelection();
+		            	if(models){
+		            		me.selectedDataPanel.getStore().insert(0,models);
 		            	} else {
-		            		Ext.Msg.alert('消息',"目录不能移动，请选择角色!");
+		            		
 		            	}
 		            }
 		        },{
 		        	icon:'/icons/arrow_180.png',	
 		            text: '',
 		            handler:function(){//去掉角色
-		            	var selectRoleNode=selectedRoleTree.getSelectionModel( ).getLastSelected();
-		            	if(selectRoleNode && selectRoleNode.isLeaf()){
-		            		me.fireEvent("removeRole",selectedRoleTree,selectRoleNode);
+		            	var models=me.selectedDataPanel.getSelectionModel( ).getSelection();
+		            	if(models){
+		            		me.selectedDataPanel.getStore().remove(models);
 		            	} else {
-		            		Ext.Msg.alert('消息',"目录不能移动，请选择角色!");
+		            		
 		            	}
 		            }
 		        },{xtype:'tbspacer',flex:1}]
 		    }]
 		});
+		me.orginalDataPanel=grid;
 		return grid;
 	 },
 	 getSelectedDataPanel:function(){
+	 	var me=this;
 	 	var store=Ext.create('Ext.data.Store', {
-		    fields:['name', 'email', 'phone'],
+		    fields:['id', 'name'],
 		    data:{'items':[
-		        { 'name': 'Lisa',  "email":"lisa@simpsons.com",  "phone":"555-111-1224"  },
-		        { 'name': 'Bart',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
-		        { 'name': 'Homer', "email":"home@simpsons.com",  "phone":"555-222-1244"  },
-		        { 'name': 'Marge', "email":"marge@simpsons.com", "phone":"555-222-1254"  }
+		      
 		    ]},
 		    proxy: {
 		        type: 'memory',
@@ -182,13 +220,14 @@ Ext.define('Leon.common.ux.MultiSelectPanel', {
 		
 		var grid=Ext.create('Ext.grid.Panel', {
 		    store: store,
-		    flex:1,
+		    flex:0.9,
+		    selModel:{mode:'MULTI'},
 		    columns: [
 		        { text: 'Name',  dataIndex: 'name' },
-		        { text: 'Email', dataIndex: 'email', flex: 1 },
-		        { text: 'Phone', dataIndex: 'phone' }
+		        { text: 'id', dataIndex: 'id', flex: 1 }
 		    ]
 		});
+		me.selectedDataPanel=grid;
 		return grid;
 	 }
 });
