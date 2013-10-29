@@ -134,27 +134,21 @@ public class MonitorSystemController {
 		org.hyperic.sigar.CpuInfo[] infos = sigar.getCpuInfoList();
         //addMap("CPU个数", infos.length+"",SystenInfoType.CPUINFO);     
         org.hyperic.sigar.CpuInfo info = infos[0];
-        long cacheSize = info.getCacheSize();
-        //addMap("厂商", info.getVendor());
-        cpuInfo.put("vendor",  info.getVendor());
-        //addMap("型号", info.getModel());
-        cpuInfo.put("model", info.getModel());
-        //addMap("频率", info.getMhz()+"");
-        cpuInfo.put("mhz",  info.getMhz());
-        //addMap("逻辑处理器", info.getTotalCores());
-        cpuInfo.put("totalCPUs", info.getTotalCores());
-        if ((info.getTotalCores() != info.getTotalSockets()) ||
-            (info.getCoresPerSocket() > info.getTotalCores())) {
-        	//addMap("物理 CPU个数.", info.getTotalSockets(),SystenInfoType.CPUINFO);
-        	cpuInfo.put("physicalCPUs", info.getTotalSockets());
-        	//addMap("CPU内核个数/个", info.getCoresPerSocket(),SystenInfoType.CPUINFO);
-        	cpuInfo.put("coresPerCPU", info.getCoresPerSocket());
-
-        }
-        if (cacheSize != Sigar.FIELD_NOTIMPL) {
-        	//addMap("缓冲存储器数量", cacheSize,SystenInfoType.CPUINFO);
-        	cpuInfo.put("cacheSize", cacheSize);// 缓冲存储器数量
-        }
+       
+        cpuInfo.put("vendor",  info.getVendor());//厂商
+        cpuInfo.put("model", info.getModel());//型号
+        cpuInfo.put("mhz",  info.getMhz());//频率
+        cpuInfo.put("totalCPUs", info.getTotalCores());//逻辑处理器
+//        if ((info.getTotalCores() != info.getTotalSockets()) ||
+//            (info.getCoresPerSocket() > info.getTotalCores())) {
+//        	cpuInfo.put("physicalCPUs", info.getTotalSockets());//物理 CPU个数
+//        	cpuInfo.put("coresPerCPU", info.getCoresPerSocket());//CPU内核个数/个
+//
+//        }
+//        long cacheSize = info.getCacheSize();
+//        if (cacheSize != Sigar.FIELD_NOTIMPL) {
+//        	cpuInfo.put("cacheSize", cacheSize);// 缓冲存储器数量
+//        }
         
         CpuPerc cpu=this.sigar.getCpuPerc();
         cpuInfo.put("userTime" , CpuPerc.format(cpu.getUser()));//用户使用率
@@ -164,10 +158,11 @@ public class MonitorSystemController {
         cpuInfo.put("niceTime" , CpuPerc.format(cpu.getNice()));
         cpuInfo.put("combined" , CpuPerc.format(cpu.getCombined()));//总的使用率
         cpuInfo.put("irqTime" , CpuPerc.format(cpu.getIrq()));
-        if (SigarLoader.IS_LINUX) {
-            cpuInfo.put("softIrqTime" , CpuPerc.format(cpu.getSoftIrq()));
-            cpuInfo.put("stolenTime" , CpuPerc.format(cpu.getStolen()));
-        }
+//        if (SigarLoader.IS_LINUX) {
+//            cpuInfo.put("softIrqTime" , CpuPerc.format(cpu.getSoftIrq()));
+//            cpuInfo.put("stolenTime" , CpuPerc.format(cpu.getStolen()));
+//        }
+        
         
 //     // 方式二，当多个cpu的时候，获取多个cpu的使用情况
 //        CpuPerc cpuList[] = null;  

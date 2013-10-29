@@ -52,6 +52,7 @@ if("localhost".equals(ip) ||"127.0.0.1".equals(ip) || ip.startsWith("192.168."))
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/common/ux/BaseAjax.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/common/ux/BaseTree.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/common/ux/BaseStore.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/LoginWin.js"></script>
 
     
