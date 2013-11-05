@@ -135,10 +135,10 @@ public class MonitorSystemController {
         //addMap("CPU个数", infos.length+"",SystenInfoType.CPUINFO);     
         org.hyperic.sigar.CpuInfo info = infos[0];
        
-        cpuInfo.put("vendor",  info.getVendor());//厂商
-        cpuInfo.put("model", info.getModel());//型号
-        cpuInfo.put("mhz",  info.getMhz());//频率
-        cpuInfo.put("totalCPUs", info.getTotalCores());//逻辑处理器
+        cpuInfo.put("cpu_vendor",  info.getVendor());//厂商
+        cpuInfo.put("cpu_model", info.getModel());//型号
+        cpuInfo.put("cpu_mhz",  info.getMhz());//频率
+        cpuInfo.put("cpu_totalCPUs", info.getTotalCores());//逻辑处理器
 //        if ((info.getTotalCores() != info.getTotalSockets()) ||
 //            (info.getCoresPerSocket() > info.getTotalCores())) {
 //        	cpuInfo.put("physicalCPUs", info.getTotalSockets());//物理 CPU个数
@@ -151,13 +151,13 @@ public class MonitorSystemController {
 //        }
         
         CpuPerc cpu=this.sigar.getCpuPerc();
-        cpuInfo.put("userTime" , CpuPerc.format(cpu.getUser()));//用户使用率
-        cpuInfo.put("sysTime" , CpuPerc.format(cpu.getSys()));//系统使用率
-        cpuInfo.put("idleTime" , CpuPerc.format(cpu.getIdle()));//当前空闲率:
-        cpuInfo.put("waitTime" , CpuPerc.format(cpu.getWait()));//当前等待率
-        cpuInfo.put("niceTime" , CpuPerc.format(cpu.getNice()));
-        cpuInfo.put("combined" , CpuPerc.format(cpu.getCombined()));//总的使用率
-        cpuInfo.put("irqTime" , CpuPerc.format(cpu.getIrq()));
+        cpuInfo.put("cpu_userTime" , CpuPerc.format(cpu.getUser()));//用户使用率
+        cpuInfo.put("cpu_sysTime" , CpuPerc.format(cpu.getSys()));//系统使用率
+        cpuInfo.put("cpu_idleTime" , CpuPerc.format(cpu.getIdle()));//当前空闲率:
+        cpuInfo.put("cpu_waitTime" , CpuPerc.format(cpu.getWait()));//当前等待率
+        cpuInfo.put("cpu_niceTime" , CpuPerc.format(cpu.getNice()));
+        cpuInfo.put("cpu_combined" , CpuPerc.format(cpu.getCombined()));//总的使用率
+        cpuInfo.put("cpu_irqTime" , CpuPerc.format(cpu.getIrq()));
 //        if (SigarLoader.IS_LINUX) {
 //            cpuInfo.put("softIrqTime" , CpuPerc.format(cpu.getSoftIrq()));
 //            cpuInfo.put("stolenTime" , CpuPerc.format(cpu.getStolen()));
@@ -186,24 +186,24 @@ public class MonitorSystemController {
 //		addMap("内存总量", mem.getTotal() / 1024 / 1024 + "",SystenInfoType.FREEINFO);
 //		addMap("当前内存使用量", mem.getUsed() / 1024 / 1024 + "",SystenInfoType.FREEINFO);
 //		addMap("当前内存剩余量", mem.getFree() / 1024 / 1024 + "",SystenInfoType.FREEINFO);
-		memoryInfo.put("total", mem.getTotal() / 1024 / 1024);
-		memoryInfo.put("used",  mem.getUsed() / 1024 / 1024);
-		memoryInfo.put("free", mem.getFree() / 1024 / 1024);
+		memoryInfo.put("mem_total", mem.getTotal() / 1024 / 1024);
+		memoryInfo.put("mem_used",  mem.getUsed() / 1024 / 1024);
+		memoryInfo.put("mem_free", mem.getFree() / 1024 / 1024);
 		
 
 //		// addMap("Mem total", mem.getTotal()+"",SystenInfoType.FREEINFO);
 //		addMap("实际内存使用量", mem.getActualUsed() / 1024 / 1024 + "",SystenInfoType.FREEINFO);
 //		addMap("实际内存剩余量", mem.getActualFree() / 1024 / 1024 + "",SystenInfoType.FREEINFO);
-		memoryInfo.put("actual_total", mem.getTotal() / 1024 / 1024);
-		memoryInfo.put("actual_used",  mem.getActualUsed() / 1024 / 1024);
-		memoryInfo.put("actual_free", mem.getActualFree() / 1024 / 1024);
+		memoryInfo.put("mem_actual_total", mem.getTotal() / 1024 / 1024);
+		memoryInfo.put("mem_actual_used",  mem.getActualUsed() / 1024 / 1024);
+		memoryInfo.put("mem_actual_free", mem.getActualFree() / 1024 / 1024);
 
 //		addMap("交换区总量", swap.getTotal() / 1024 / 1024 + "",SystenInfoType.FREEINFO);
 //		addMap("当前交换区使用量", swap.getUsed() / 1024 / 1024 + "",SystenInfoType.FREEINFO);
 //		addMap("当前交换区剩余量", swap.getFree() / 1024 / 1024 + "",SystenInfoType.FREEINFO);
-		memoryInfo.put("swap_total", swap.getTotal() / 1024 / 1024);
-		memoryInfo.put("swap_used",  swap.getUsed() / 1024 / 1024);
-		memoryInfo.put("swap_free", swap.getFree() / 1024 / 1024);
+		memoryInfo.put("mem_swap_total", swap.getTotal() / 1024 / 1024);
+		memoryInfo.put("mem_swap_used",  swap.getUsed() / 1024 / 1024);
+		memoryInfo.put("mem_swap_free", swap.getFree() / 1024 / 1024);
 		
 		return memoryInfo;
 	}
@@ -235,36 +235,26 @@ public class MonitorSystemController {
                 break;  
             case 2: // TYPE_LOCAL_DISK : 本地硬盘  
             	// 分区的盘符名称  
-                //System.out.println("fs.getDevName() = " + fs.getDevName());  
                 fileSystemInfo.put(fs.getDevName()+"_devName", fs.getDevName());
-                // 分区的盘符名称  
-                //System.out.println("fs.getDirName() = " + fs.getDirName());  
-                fileSystemInfo.put(fs.getDevName()+"_dirName", fs.getDirName());
+//                // 分区的盘符名称  
+//                fileSystemInfo.put(fs.getDevName()+"_dirName", fs.getDirName());
                 //System.out.println("fs.getFlags() = " + fs.getFlags());//  
                 // 文件系统类型，比如 FAT32、NTFS  
-                //System.out.println("fs.getSysTypeName() = " + fs.getSysTypeName());  
                 fileSystemInfo.put(fs.getDevName()+"_sysTypeName",  fs.getSysTypeName());
-                // 文件系统类型名，比如本地硬盘、光驱、网络文件系统等  
-                //System.out.println("fs.getTypeName() = " + fs.getTypeName());  
-                fileSystemInfo.put(fs.getDevName()+"_typeName", fs.getTypeName());
-                // 文件系统类型  
-                //System.out.println("fs.getType() = " + fs.getType()); 
-                fileSystemInfo.put(fs.getDevName()+"_type", fs.getType());
+//                // 文件系统类型名，比如本地硬盘、光驱、网络文件系统等   
+//                fileSystemInfo.put(fs.getDevName()+"_typeName", fs.getTypeName());
+//                // 文件系统类型  
+//                fileSystemInfo.put(fs.getDevName()+"_type", fs.getType());
                 // 文件系统总大小  
-                //System.out.println(" Total = " + df.format((float)usage.getTotal()/1024/1024) + "G");  
                 fileSystemInfo.put(fs.getDevName()+"_total", df.format((float)usage.getTotal()/1024/1024) + "G");
                 // 文件系统剩余大小  
-                //System.out.println(" Free = " + df.format((float)usage.getFree()/1024/1024) + "G");  
                 fileSystemInfo.put(fs.getDevName()+"_free", df.format((float)usage.getFree()/1024/1024) + "G");
-                // 文件系统可用大小  
-                //System.out.println(" Avail = " + df.format((float)usage.getAvail()/1024/1024) + "G");  
+                // 文件系统可用大小   
                 fileSystemInfo.put(fs.getDevName()+"_avail", df.format((float)usage.getAvail()/1024/1024) + "G");
-                // 文件系统已经使用量  
-                //System.out.println(" Used = " + df.format((float)usage.getUsed()/1024/1024) + "G");  
+                // 文件系统已经使用量    
                 fileSystemInfo.put(fs.getDevName()+"_used", df.format((float)usage.getUsed()/1024/1024) + "G");
                 double usePercent = usage.getUsePercent() * 100D;  
                 // 文件系统资源的利用率  
-                //System.out.println(" Usage = " + df.format(usePercent) + "%");  
                 fileSystemInfo.put(fs.getDevName()+"_usage",  df.format(usePercent) + "%");
                 break;  
             case 3:// TYPE_NETWORK ：网络  
@@ -291,24 +281,24 @@ public class MonitorSystemController {
         for (int i = 0; i < ifNames.length; i++) {  
             String name = ifNames[i];  
             NetInterfaceConfig ifconfig = sigar.getNetInterfaceConfig(name);  
-            netInfo.put("name" , name);// 网络设备名  
-            netInfo.put("address" , ifconfig.getAddress());// IP地址  
-            netInfo.put("netmask" , ifconfig.getNetmask());// 子网掩码  
-            netInfo.put("macAddr" , ifconfig.getHwaddr());// 网卡MAC地址  
+            netInfo.put("net_name" , name);// 网络设备名  
+            netInfo.put("net_address" , ifconfig.getAddress());// IP地址  
+            netInfo.put("net_netmask" , ifconfig.getNetmask());// 子网掩码  
+            netInfo.put("net_macAddr" , ifconfig.getHwaddr());// 网卡MAC地址  
             if ((ifconfig.getFlags() & 1L) <= 0L) {  
             	System.out.println("!IFF_UP...skipping getNetInterfaceStat");  
                 continue;  
             }  
             try {  
                 NetInterfaceStat ifstat=sigar.getNetInterfaceStat(name);  
-                netInfo.put("rxpackets" , ifstat.getRxPackets());// 接收的总包裹数  
-                netInfo.put("txpackets" , ifstat.getTxPackets());// 发送的总包裹数  
-                netInfo.put("rxbytes" , ifstat.getRxBytes());// 接收到的总字节数  
-                netInfo.put("txbytes" , ifstat.getTxBytes());// 发送的总字节数  
-                netInfo.put("rxerrors" , ifstat.getRxErrors());// 接收到的错误包数  
-                netInfo.put("txerrors" , ifstat.getTxErrors());// 发送数据包时的错误数  
-                netInfo.put("rxdropped" , ifstat.getRxDropped());// 接收时丢弃的包数  
-                netInfo.put("txdropped" , ifstat.getTxDropped());// 发送时丢弃的包数  
+                netInfo.put("net_rxpackets" , ifstat.getRxPackets());// 接收的总包裹数  
+                netInfo.put("net_txpackets" , ifstat.getTxPackets());// 发送的总包裹数  
+                netInfo.put("net_rxbytes" , ifstat.getRxBytes());// 接收到的总字节数  
+                netInfo.put("net_txbytes" , ifstat.getTxBytes());// 发送的总字节数  
+                netInfo.put("net_rxerrors" , ifstat.getRxErrors());// 接收到的错误包数  
+                netInfo.put("net_txerrors" , ifstat.getTxErrors());// 发送数据包时的错误数  
+                netInfo.put("net_rxdropped" , ifstat.getRxDropped());// 接收时丢弃的包数  
+                netInfo.put("net_txdropped" , ifstat.getTxDropped());// 发送时丢弃的包数  
             } catch (SigarNotImplementedException e) {  
             } catch (SigarException e) {  
             	System.out.println(e.getMessage());  
