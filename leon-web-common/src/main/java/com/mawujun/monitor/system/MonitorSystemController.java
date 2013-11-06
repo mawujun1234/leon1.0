@@ -25,6 +25,7 @@ import org.hyperic.sigar.Swap;
 import org.hyperic.sigar.win32.LocaleInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class MonitorSystemController {
@@ -50,6 +51,28 @@ public class MonitorSystemController {
 	        }
 	   }
 
+	/**
+	 * 获取硬盘盘符的个数
+	 * 
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @return
+	 * @throws SigarException
+	 */
+	@RequestMapping("/monitorSystem/getDevNames")
+	@ResponseBody
+	public List<String> getDevNames() throws SigarException {
+		FileSystem fslist[] = sigar.getFileSystemList();  
+		//http://kgd1120.iteye.com/blog/1254657
+        DecimalFormat df = new DecimalFormat("#0.00");  
+        // String dir = System.getProperty("user.home");// 当前用户文件夹路径  
+        List<String> devNames=new ArrayList<String>();
+        for (int i = 0; i < fslist.length; i++) {  
+        	if (fslist[i].getType() == 2){
+        		devNames.add(fslist[i].getDevName());
+        	}
+        }
+        return devNames;
+	}
 	
 	/**
 	 * 获取除系统信息外的所有其他信息，例如CPU,内存，硬盘，网络
@@ -217,7 +240,6 @@ public class MonitorSystemController {
         DecimalFormat df = new DecimalFormat("#0.00");  
         // String dir = System.getProperty("user.home");// 当前用户文件夹路径  
         for (int i = 0; i < fslist.length; i++) {  
-            System.out.println("\n~~~~~~~~~~" + i + "~~~~~~~~~~");  
             FileSystem fs = fslist[i];  
 
             FileSystemUsage usage = null;  
@@ -234,28 +256,37 @@ public class MonitorSystemController {
             case 1: // TYPE_NONE  
                 break;  
             case 2: // TYPE_LOCAL_DISK : 本地硬盘  
-            	// 分区的盘符名称  
-                fileSystemInfo.put(fs.getDevName()+"_devName", fs.getDevName());
-//                // 分区的盘符名称  
-//                fileSystemInfo.put(fs.getDevName()+"_dirName", fs.getDirName());
-                //System.out.println("fs.getFlags() = " + fs.getFlags());//  
-                // 文件系统类型，比如 FAT32、NTFS  
-                fileSystemInfo.put(fs.getDevName()+"_sysTypeName",  fs.getSysTypeName());
-//                // 文件系统类型名，比如本地硬盘、光驱、网络文件系统等   
-//                fileSystemInfo.put(fs.getDevName()+"_typeName", fs.getTypeName());
-//                // 文件系统类型  
-//                fileSystemInfo.put(fs.getDevName()+"_type", fs.getType());
-                // 文件系统总大小  
-                fileSystemInfo.put(fs.getDevName()+"_total", df.format((float)usage.getTotal()/1024/1024) + "G");
-                // 文件系统剩余大小  
-                fileSystemInfo.put(fs.getDevName()+"_free", df.format((float)usage.getFree()/1024/1024) + "G");
-                // 文件系统可用大小   
-                fileSystemInfo.put(fs.getDevName()+"_avail", df.format((float)usage.getAvail()/1024/1024) + "G");
-                // 文件系统已经使用量    
-                fileSystemInfo.put(fs.getDevName()+"_used", df.format((float)usage.getUsed()/1024/1024) + "G");
-                double usePercent = usage.getUsePercent() * 100D;  
-                // 文件系统资源的利用率  
-                fileSystemInfo.put(fs.getDevName()+"_usage",  df.format(usePercent) + "%");
+            	StringBuilder builder=new StringBuilder();
+            	builder.append(fs.getSysTypeName()+";");
+            	builder.append( df.format((float)usage.getTotal()/1024/1024) + "G"+";");
+            	builder.append(df.format((float)usage.getFree()/1024/1024) + "G"+";");
+            	//builder.append(df.format((float)usage.getAvail()/1024/1024) + "G"+";");
+            	builder.append(df.format((float)usage.getUsed()/1024/1024) + "G"+";");
+            	
+            	fileSystemInfo.put(fs.getDevName()+"_devInfo", builder);
+            	
+//            	// 分区的盘符名称  
+//                fileSystemInfo.put(fs.getDevName()+"_devName", fs.getDevName());
+////                // 分区的盘符名称  
+////                fileSystemInfo.put(fs.getDevName()+"_dirName", fs.getDirName());
+//                //System.out.println("fs.getFlags() = " + fs.getFlags());//  
+//                // 文件系统类型，比如 FAT32、NTFS  
+//                fileSystemInfo.put(fs.getDevName()+"_sysTypeName",  fs.getSysTypeName());
+////                // 文件系统类型名，比如本地硬盘、光驱、网络文件系统等   
+////                fileSystemInfo.put(fs.getDevName()+"_typeName", fs.getTypeName());
+////                // 文件系统类型  
+////                fileSystemInfo.put(fs.getDevName()+"_type", fs.getType());
+//                // 文件系统总大小  
+//                fileSystemInfo.put(fs.getDevName()+"_total", df.format((float)usage.getTotal()/1024/1024) + "G");
+//                // 文件系统剩余大小  
+//                fileSystemInfo.put(fs.getDevName()+"_free", df.format((float)usage.getFree()/1024/1024) + "G");
+//                // 文件系统可用大小   
+//                fileSystemInfo.put(fs.getDevName()+"_avail", df.format((float)usage.getAvail()/1024/1024) + "G");
+//                // 文件系统已经使用量    
+//                fileSystemInfo.put(fs.getDevName()+"_used", df.format((float)usage.getUsed()/1024/1024) + "G");
+//                double usePercent = usage.getUsePercent() * 100D;  
+//                // 文件系统资源的利用率  
+//                fileSystemInfo.put(fs.getDevName()+"_usage",  df.format(usePercent) + "%");
                 break;  
             case 3:// TYPE_NETWORK ：网络  
                 break;  

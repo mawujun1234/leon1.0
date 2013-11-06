@@ -3,8 +3,20 @@ Ext.define('Leon.desktop.monitor.SystemInfoPanel',{
 	title:'概要',
 	border:false, 
 	frame:true,
+	autoScroll:true,
 	initComponent:function(){
 		var me=this;
+		
+		
+		var debConfig=[];
+		if(me.devNames){
+			for(var i=0;i<me.devNames.length;i++){
+				debConfig.push({  
+		            style: {borderStyle: 'none'}, 
+		            items:[{  xtype:"textfield",  readOnly:true,fieldLabel: me.devNames[i]+'',   name: me.devNames[i]+'_devInfo'}]  
+		        });
+			}
+		}
 		me.items=[{//第一行  
 			xtype: 'fieldset',
 			title: '系统信息',
@@ -209,12 +221,7 @@ Ext.define('Leon.desktop.monitor.SystemInfoPanel',{
 	            layout:"column",  
 	            frame:true,
 	            defaults:{frame:true,layout: 'form',border:false,columnWidth:.3},
-	            items:[
-	            	{  
-		            	style: {borderStyle: 'none'}, 
-		                items:[{  xtype:"textfield",  readOnly:true,fieldLabel: '',   name: ''}]  
-		            }
-	            ]
+	            items:debConfig
             },{
             	xtype: 'fieldset',
             	title: '网络信息',
