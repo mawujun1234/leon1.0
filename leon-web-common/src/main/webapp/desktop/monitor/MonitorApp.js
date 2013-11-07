@@ -47,6 +47,14 @@ function initPage(devNames){
 					systemInfoPanel.getForm().setValues(obj.root.memoryInfo);
 					systemInfoPanel.getForm().setValues(obj.root.fileSystemInfo);
 					systemInfoPanel.getForm().setValues(obj.root.netInfo);
+					
+					//
+					cpuInfoPanel.addData({
+						time:new Date(),
+						cpu_combined:obj.root.cpuInfo.cpu_combined,
+						cpu_userTime:obj.root.cpuInfo.cpu_userTime,
+						cpu_sysTime:obj.root.cpuInfo.cpu_sysTime
+					});
 				}
 			});
 		},
