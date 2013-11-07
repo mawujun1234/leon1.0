@@ -1,14 +1,14 @@
 Ext.require('Leon.desktop.monitor.SystemInfoPanel');
-Ext.require('Leon.desktop.monitor.CpuInfoPanel')
+Ext.require('Leon.desktop.monitor.CpuMemInfoPanel')
 Ext.onReady(function(){
 	
 
 	Ext.Ajax.request({
 				method:'POST',
-				url:Ext.ContextPath+"/monitorSystem/getDevNames",
+				url:Ext.ContextPath+"/monitorSystem/querySystemInfo",
 				success:function(response){
 					var obj=Ext.decode(response.responseText);
-					initPage(obj.root);
+					initPage(obj.root.fileSystemInfo.devNames);
 				}
 	});
 	
@@ -17,7 +17,7 @@ function initPage(devNames){
 		devNames:devNames,
 		title:'系统信息'
 	});
-	var cpuInfoPanel=Ext.create('Leon.desktop.monitor.CpuInfoPanel',{
+	var cpuInfoPanel=Ext.create('Leon.desktop.monitor.CpuMemInfoPanel',{
 		title:'CPU信息'
 	});
 
@@ -42,8 +42,6 @@ function initPage(devNames){
 				url:Ext.ContextPath+"/monitorSystem/querySystemInfo",
 				success:function(response){
 					var obj=Ext.decode(response.responseText);
-					//console.log(obj.cpuInfo);
-					
 					systemInfoPanel.getForm().setValues(obj.root.systemInfo);
 					systemInfoPanel.getForm().setValues(obj.root.cpuInfo);
 					systemInfoPanel.getForm().setValues(obj.root.memoryInfo);
@@ -65,10 +63,5 @@ function initPage(devNames){
 		}
 	});
 }	
-//	
-//	
-//	Ext.EventManager.onDocumentReady(function(e,el){
-//		Ext.TaskManager.start(task);
-//	});
-	
+
 });

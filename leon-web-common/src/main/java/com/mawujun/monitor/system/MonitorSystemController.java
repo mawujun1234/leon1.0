@@ -234,6 +234,7 @@ public class MonitorSystemController {
 	private Map<String, Object> getFileSystemInfo() throws SigarException {
 		
 		Map<String,Object> fileSystemInfo=new HashMap<String,Object>();
+		 List<String> devNames=new ArrayList<String>();
 		
 		FileSystem fslist[] = sigar.getFileSystemList();  
 		//http://kgd1120.iteye.com/blog/1254657
@@ -264,6 +265,7 @@ public class MonitorSystemController {
             	builder.append(df.format((float)usage.getUsed()/1024/1024) + "G"+";");
             	
             	fileSystemInfo.put(fs.getDevName()+"_devInfo", builder);
+            	devNames.add(fs.getDevName());
             	
 //            	// 分区的盘符名称  
 //                fileSystemInfo.put(fs.getDevName()+"_devName", fs.getDevName());
@@ -297,11 +299,10 @@ public class MonitorSystemController {
             case 6:// TYPE_SWAP ：页面交换  
                 break;  
             }  
-            //System.out.println(" DiskReads = " + usage.getDiskReads());  
-            fileSystemInfo.put(fs.getDevName()+"_diskreads",  usage.getDiskReads());
-            //System.out.println(" DiskWrites = " + usage.getDiskWrites());  
-            fileSystemInfo.put(fs.getDevName()+"_diskwrites",  usage.getDiskWrites());
+//            fileSystemInfo.put(fs.getDevName()+"_diskreads",  usage.getDiskReads()); 
+//            fileSystemInfo.put(fs.getDevName()+"_diskwrites",  usage.getDiskWrites());
         }  
+        fileSystemInfo.put("devNames", devNames);
         return fileSystemInfo;  
 	}
 	
