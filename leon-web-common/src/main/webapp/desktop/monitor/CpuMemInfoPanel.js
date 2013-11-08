@@ -27,21 +27,26 @@ Ext.define('Leon.desktop.monitor.CpuMemInfoPanel',{
 		if(me.store){
 			return me.store;
 		}
+		me.currentDate=new Date();//这个是
 		me.store= Ext.create('Ext.data.Store', {
 			 	xtype:'store',
-			 	fields:['time','cpu_combined','cpu_userTime','cpu_sysTime'],
+			 	fields:['time','cpu_combined','mem_used'],
 			 	data: [
+			 		{time:Ext.Date.format(Ext.Date.add(me.currentDate,Ext.Date.SECOND,-10),"H:i:s"),cpu_combined:0,mem_used:0},//
+			 		{time:Ext.Date.format(Ext.Date.add(me.currentDate,Ext.Date.SECOND,-5),"H:i:s"),cpu_combined:0,mem_used:0}		 		
 			    ]
 			 });
-	return me.store
+		return me.store
 	},
 	addData:function(model){
 		var me=this;
+		me.currentDate=Ext.Date.add(me.currentDate,Ext.Date.SECOND,5);
 		
-		if(me.getStore().getCount( )>=60){
+		model.time=Ext.Date.format(me.currentDate,"H:i:s");
+		if(me.getStore().getCount( )>=12){
 			me.store.removeAt(0);
 		}
-		me.store.add(model);
+		me.store.loadData([model],true);
 		console.log(model);
 		console.log(me.getStore().getCount( ));
 	},
@@ -58,16 +63,16 @@ Ext.define('Leon.desktop.monitor.CpuMemInfoPanel',{
 		            title: 'CPU百分比',grid: true,
 		            type: 'Numeric',
 		            position: 'left',
-		            fields: ['cpu_combined','cpu_userTime','cpu_sysTime'],
+		            fields: ['cpu_combined'],
 		            minimum: 0,
 		            maximum: 100
 		        },
 		        {
 		            title: '时间',grid: true,
-		            type: 'Time',
+		            type: 'Category',
 		            position: 'bottom',
-		            fields: ['time'],
-		            dateFormat: 'H:i:s'
+		            fields: ['time']
+		            //dateFormat: 'i'
 		            //constrain: true,
     				//fromDate: new Date('1/1/11'),
     				//toDate: new Date('1/7/11')
@@ -78,6 +83,16 @@ Ext.define('Leon.desktop.monitor.CpuMemInfoPanel',{
 		        	axis: 'left',
 		        	smooth: true,
 		            type: 'line',
+		            highlight: {
+		                size: 7,
+		                radius: 7
+		            },
+		            markerConfig: {
+		                type: 'circle',
+		                size: 4,
+		                radius: 4,
+		                'stroke-width': 0
+		            },
 		            xField: 'time',
 		            yField: 'cpu_combined'
 		        }
@@ -86,38 +101,50 @@ Ext.define('Leon.desktop.monitor.CpuMemInfoPanel',{
 		return chart;
 	},
 	getMemChart:function(){
+		var me=this;
 		var chart=Ext.create('Ext.chart.Chart',{
 			 region:'center',
 			 flex: 1,
-			  width:900,
-			 store:{
-			 	xtype:'bstore',
-			 	fields:['time','temperature'],
-			 	url:Ext.ContextPath+"/monitorSystem/querySystemInfo"
-			 },
+			 animate: true,
+			 width:900,
+			 store:me.getStore(),
 			 axes: [
 		        {
-		            title: 'Temperature',
+		            title: 'Memory百分比',grid: true,
 		            type: 'Numeric',
 		            position: 'left',
-		            fields: ['temperature'],
+		            fields: ['mem_used'],
 		            minimum: 0,
 		            maximum: 100
 		        },
 		        {
-		            title: 'Time',
-		            type: 'Time',
+		            title: '时间',grid: true,
+		            type: 'Category',
 		            position: 'bottom',
-		            fields: ['time'],
-		            minimum: 0,
-		            maximum: 60
+		            fields: ['time']
+		            //dateFormat: 'i'
+		            //constrain: true,
+    				//fromDate: new Date('1/1/11'),
+    				//toDate: new Date('1/7/11')
 		        }
 		    ],
 		    series: [
 		        {
+		        	axis: 'left',
+		        	smooth: true,
 		            type: 'line',
+		            highlight: {
+		                size: 7,
+		                radius: 7
+		            },
+		            markerConfig: {
+		                type: 'circle',
+		                size: 4,
+		                radius: 4,
+		                'stroke-width': 0
+		            },
 		            xField: 'time',
-		            yField: 'temperature'
+		            yField: 'mem_used'
 		        }
 		    ]
 		});

@@ -48,12 +48,15 @@ function initPage(devNames){
 					systemInfoPanel.getForm().setValues(obj.root.fileSystemInfo);
 					systemInfoPanel.getForm().setValues(obj.root.netInfo);
 					
-					//
+					//++
+					//console.log(obj.root.cpuInfo.cpu_combined);
+					console.log(obj.root.cpuInfo.cpu_combined.replace("%",""));
+					var cpu_combineds=obj.root.cpuInfo.cpu_combined.split('.');
 					cpuInfoPanel.addData({
-						time:new Date(),
-						cpu_combined:obj.root.cpuInfo.cpu_combined,
-						cpu_userTime:obj.root.cpuInfo.cpu_userTime,
-						cpu_sysTime:obj.root.cpuInfo.cpu_sysTime
+						mem_used:(obj.root.memoryInfo.mem_used/obj.root.memoryInfo.mem_total)*100,
+						cpu_combined:parseInt(cpu_combineds[0])//obj.root.cpuInfo.cpu_combined.replace("%",""),
+						//cpu_userTime:obj.root.cpuInfo.cpu_userTime,
+						//cpu_sysTime:obj.root.cpuInfo.cpu_sysTime
 					});
 				}
 			});
