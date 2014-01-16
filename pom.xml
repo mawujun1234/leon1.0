@@ -115,6 +115,18 @@
   	  </plugins> 
   </build>
 
+
+  <dependencyManagement>
+  	<dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-framework-bom</artifactId>
+            <version>4.0.0.RELEASE</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>  
+    </dependencies>
+  </dependencyManagement>
   <dependencies>
   	<dependency>
     	<groupId>javax.servlet</groupId>
@@ -137,7 +149,7 @@
     </dependency>
    
    
-    
+    <!-- 刚注释掉的
     <dependency>
     	<groupId>org.springframework</groupId>
     	<artifactId>spring-core</artifactId>
@@ -174,15 +186,12 @@
     	<groupId>org.springframework</groupId>
     	<artifactId>spring-tx</artifactId>
     	<version>3.2.2.RELEASE</version>
-    </dependency>
-    
-   
+    </dependency> 
     <dependency>
     	<groupId>org.springframework</groupId>
     	<artifactId>spring-expression</artifactId>
     	<version>3.2.2.RELEASE</version>
     </dependency>
-    
     <dependency>
     	<groupId>org.springframework</groupId>
     	<artifactId>spring-aop</artifactId>
@@ -202,7 +211,7 @@
     	<groupId>org.springframework</groupId>
     	<artifactId>spring-oxm</artifactId>
     	<version>3.2.2.RELEASE</version>
-    </dependency>
+    </dependency>-->
      <!-- <dependency>
     	<groupId>org.springframework</groupId>
     	<artifactId>spring-instrument</artifactId>
@@ -218,17 +227,17 @@
    <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-core</artifactId>
-      <version>3.1.4.RELEASE</version>
+      <version>3.2.0.RELEASE</version>
    </dependency> 
    <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-web</artifactId>
-      <version>3.1.4.RELEASE</version>
+      <version>3.2.0.RELEASE</version>
     </dependency> 
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-config</artifactId>
-      <version>3.1.4.RELEASE</version>
+      <version>3.2.0.RELEASE</version>
     </dependency>
      
      
@@ -469,8 +478,13 @@
     	<version>2.4.9</version>
     	<scope>test</scope>
     </dependency>
-    
+
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-aop</artifactId>
+	</dependency>
   </dependencies>
+  
    
 
  
