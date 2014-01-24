@@ -12,6 +12,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  	<org.springframework.version>4.0.0.RELEASE</org.springframework.version> 			
   </properties>
   
   <modules>
@@ -115,18 +116,14 @@
   	  </plugins> 
   </build>
 
+<!-- 这个是临时的，为org.aspectj的1.8.0.M1版本使用的，dbqbroker项目中叶有这个配置-->
+<repositories>
+	<repository>
+    <id>opencast-public</id>
+    <url>http://repository.opencastproject.org/nexus/content/repositories/public/</url>
+  </repository>
+</repositories>
 
-  <dependencyManagement>
-  	<dependencies>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-framework-bom</artifactId>
-            <version>4.0.0.RELEASE</version>
-            <type>pom</type>
-            <scope>import</scope>
-        </dependency>  
-    </dependencies>
-  </dependencyManagement>
   <dependencies>
   	<dependency>
     	<groupId>javax.servlet</groupId>
@@ -148,82 +145,87 @@
       <scope>test</scope>
     </dependency>
    
-   
-    <!-- 刚注释掉的
+
+<dependency>
+  <groupId>org.aspectj</groupId>
+  <artifactId>aspectjweaver</artifactId>
+  <version>1.8.0.M1</version><!-- <version>1.7.4</version> -->
+</dependency>
+    <!-- 刚注释掉的-->
     <dependency>
     	<groupId>org.springframework</groupId>
     	<artifactId>spring-core</artifactId>
-    	<version>3.2.2.RELEASE</version>
+    	<version>${org.springframework.version}</version>
     </dependency>
     <dependency>
     	<groupId>org.springframework</groupId>
     	<artifactId>spring-test</artifactId>
-    	<version>3.2.2.RELEASE</version>
+    	<version>${org.springframework.version}</version>
     </dependency>
    
     <dependency>
     	<groupId>org.springframework</groupId>
     	<artifactId>spring-context</artifactId>
-    	<version>3.2.2.RELEASE</version>
+    	<version>${org.springframework.version}</version>
     </dependency>
 	<dependency>
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-context-support</artifactId>
-		<version>3.2.2.RELEASE</version>
+		<version>${org.springframework.version}</version>
 	</dependency>
     
     <dependency>
     	<groupId>org.springframework</groupId>
     	<artifactId>spring-web</artifactId>
-    	<version>3.2.2.RELEASE</version>
+    	<version>${org.springframework.version}</version>
     </dependency>
     <dependency>
     	<groupId>org.springframework</groupId>
     	<artifactId>spring-webmvc</artifactId>
-    	<version>3.2.2.RELEASE</version>
+    	<version>${org.springframework.version}</version>
     </dependency>
     <dependency>
     	<groupId>org.springframework</groupId>
     	<artifactId>spring-tx</artifactId>
-    	<version>3.2.2.RELEASE</version>
+    	<version>${org.springframework.version}</version>
     </dependency> 
     <dependency>
     	<groupId>org.springframework</groupId>
     	<artifactId>spring-expression</artifactId>
-    	<version>3.2.2.RELEASE</version>
+    	<version>${org.springframework.version}</version>
     </dependency>
     <dependency>
     	<groupId>org.springframework</groupId>
     	<artifactId>spring-aop</artifactId>
-    	<version>3.2.2.RELEASE</version>
+    	<version>${org.springframework.version}</version>
     </dependency>
     <dependency>
     	<groupId>org.springframework</groupId>
     	<artifactId>spring-aspects</artifactId>
-    	<version>3.2.2.RELEASE</version>
+    	<version>${org.springframework.version}</version>
     </dependency>
     <dependency>
     	<groupId>org.springframework</groupId>
     	<artifactId>spring-orm</artifactId>
-    	<version>3.2.2.RELEASE</version>
+    	<version>${org.springframework.version}</version>
     </dependency>
     <dependency>
     	<groupId>org.springframework</groupId>
     	<artifactId>spring-oxm</artifactId>
-    	<version>3.2.2.RELEASE</version>
-    </dependency>-->
+    	<version>${org.springframework.version}</version>
+    </dependency>
      <!-- <dependency>
     	<groupId>org.springframework</groupId>
     	<artifactId>spring-instrument</artifactId>
-    	<version>3.2.2.RELEASE</version>
+    	<version>${org.springframework.version}</version>
     </dependency>-->
     <!-- 
      <dependency>
     	<groupId>org.springframework</groupId>
     	<artifactId>spring-asm</artifactId>
     	<version>3.1.4.RELEASE</version>
-    </dependency>
-     -->
+    </dependency>-->
+     
    <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-core</artifactId>
@@ -247,7 +249,7 @@
     
     
     
-    <!-- 持久层的依赖 -->
+<!-- ======================================持久层============================================================= -->
     <dependency>
     	<groupId>org.hibernate</groupId>
     	<artifactId>hibernate-core</artifactId>
@@ -288,12 +290,12 @@
     <dependency>
     	<groupId>org.mybatis</groupId>
     	<artifactId>mybatis</artifactId>
-    	<version>3.2.2</version>
+    	<version>3.2.4</version>
     </dependency>
     <dependency>
     	<groupId>org.mybatis</groupId>
     	<artifactId>mybatis-spring</artifactId>
-    	<version>1.2.0</version>
+    	<version>1.2.2</version>
     </dependency>
 
 <!-- ======================================日志木块============================================================= -->
@@ -479,10 +481,6 @@
     	<scope>test</scope>
     </dependency>
 
-	<dependency>
-		<groupId>org.springframework</groupId>
-		<artifactId>spring-aop</artifactId>
-	</dependency>
   </dependencies>
   
    
