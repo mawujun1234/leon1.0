@@ -642,7 +642,7 @@ public class RepositoryTest extends DbunitBaseRepositoryTest {
 		
 		QueryResult<EntityTest> entitys=repository.queryPageMybatis(page);
 		//tx.commit();
-		assertEquals(1,entitys.getTotalItems());
+		assertEquals(2,entitys.getTotalItems());
 		assertEquals(1,entitys.getTotalPages());
 	}
 	
@@ -660,7 +660,7 @@ public class RepositoryTest extends DbunitBaseRepositoryTest {
 		//主要测试getMybatisStataement方法会不会自动组装com.mawujun.repository.EntityTest.queryPage
 		QueryResult<EntityTest> entitys=repository.queryPageMybatis("queryPage",page);
 		//tx.commit();
-		assertEquals(1,entitys.getTotalItems());
+		assertEquals(2,entitys.getTotalItems());
 		assertEquals(1,entitys.getTotalPages());
 	}
 
