@@ -1,4 +1,4 @@
-<%@ page language="java" pageEncoding="UTF-8" import="com.mawujun.util.web.WebUtils"%>
+<%@ page  isELIgnored="false" language="java" pageEncoding="UTF-8" import="com.mawujun.util.web.WebUtils"%>
 <%
 String theme=request.getParameter("theme");
 if(theme==null){

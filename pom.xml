@@ -116,7 +116,7 @@
   	  </plugins> 
   </build>
 
-<!-- 这个是临时的，为org.aspectj的1.8.0.M1版本使用的，dbqbroker项目中叶有这个配置-->
+<!-- 这个是临时的，为org.aspectj的1.8.0.M1版本使用的，dbqbroker,ems项目中叶有这个配置-->
 <repositories>
 	<repository>
     <id>opencast-public</id>
