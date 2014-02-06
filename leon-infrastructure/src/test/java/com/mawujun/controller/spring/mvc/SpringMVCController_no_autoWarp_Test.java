@@ -33,7 +33,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration // path defaults to "file:src/main/webapp"
 @ContextConfiguration(locations={"classpath:com/mawujun/controller/spring/mvc/dispatcher-servlet.xml"})
-public class SpringMVCControllerTest {
+public class SpringMVCController_no_autoWarp_Test {
 	@Autowired
     private WebApplicationContext wac;
 
@@ -371,5 +371,23 @@ public class SpringMVCControllerTest {
 		.andExpect(jsonPath("$.name").value("1111"))
 		.andExpect(jsonPath("$.aa").value("aaaa"));
 	}
+	
+	@Test
+	public void testRtnStr() throws Exception{
+		this.mockMvc.perform(get("/test/testRtnStr.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
+		//.andExpect(status().isServiceUnavailable())
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
+		.andExpect(jsonPath("$.name").value("ma"))
+		.andExpect(jsonPath("$.age").value(16));
+	}
+	
+//	@Test
+//	public void testRtnStr1() throws Exception{
+//		this.mockMvc.perform(get("/test/testRtnStr1.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
+//		//.andExpect(status().isServiceUnavailable())
+//		.andExpect(content().contentType("application/json"))
+//		.andExpect(jsonPath("$.name").value("ma1"))
+//		.andExpect(jsonPath("$.age").value(161));
+//	}
 	
 }

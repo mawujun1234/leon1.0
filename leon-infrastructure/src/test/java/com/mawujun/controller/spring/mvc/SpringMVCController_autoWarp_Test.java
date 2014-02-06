@@ -385,7 +385,7 @@ public class SpringMVCController_autoWarp_Test {
 		this.mockMvc.perform(get("/autoWarp/testExtProperties.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
 		//.andExpect(status().isServiceUnavailable())
 		.andExpect(content().contentType("application/json;charset=UTF-8"))
-		.andExpect(jsonPath("$.11").value(11))
+		.andExpect(jsonPath("$.root.11").value(11))
 		.andExpect(jsonPath("$.aa").value("aaaa"));
 	}
 	
@@ -394,8 +394,18 @@ public class SpringMVCController_autoWarp_Test {
 		this.mockMvc.perform(get("/autoWarp/testExtProperties1.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
 		//.andExpect(status().isServiceUnavailable())
 		.andExpect(content().contentType("application/json;charset=UTF-8"))
-		.andExpect(jsonPath("$.name").value("1111"))
+		.andExpect(jsonPath("$.root.name").value("1111"))
 		.andExpect(jsonPath("$.aa").value("aaaa"));
+	}
+	
+	@Test
+	public void testRtnStr() throws Exception{
+		this.mockMvc.perform(get("/autoWarp/testRtnStr.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
+		//.andExpect(status().isServiceUnavailable())
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
+		.andExpect(jsonPath("$.success").value(true))
+		.andExpect(jsonPath("$.root").value("{name:'ma',age:16}"))
+		.andExpect(jsonPath("total").value(1));
 	}
 	
 }

@@ -57,7 +57,7 @@
 					<constructor-arg value="UTF-8">
 						
 					</constructor-arg>
-					<property name="writeAcceptCharset" value="false" />
+					<property name="writeAcceptCharset" value="true" />
 				</bean>
 				<bean id="jsonHttpMessageConverter"
 					class="com.mawujun.controller.spring.mvc.MappingFastJson2HttpMessageConverter" /><!-- 在循环引用和属性过滤上设置更方便 -->

@@ -338,7 +338,7 @@ public class SpringMVCController_autoWarp {
 	@RequestMapping("/autoWarp/testExtProperties.do")
 	@ResponseBody
 	public HashMap testExtProperties(){
-		JsonConfigHolder.setAutoWrap(false);
+		//JsonConfigHolder.setAutoWrap(false);
 		JsonConfigHolder.addProperty("aa", "aaaa");
 		HashMap bb= new HashMap();
 		bb.put("11", 11);
@@ -348,11 +348,18 @@ public class SpringMVCController_autoWarp {
 	@RequestMapping("/autoWarp/testExtProperties1.do")
 	@ResponseBody
 	public Model testExtProperties1(){
-		JsonConfigHolder.setAutoWrap(false);
+		//JsonConfigHolder.setAutoWrap(false);
 		JsonConfigHolder.addProperty("aa", "aaaa");
 		Model model=new Model();
 		model.setName("1111");
 		return model;
+	}
+	
+	@RequestMapping("/autoWarp/testRtnStr.do")
+	@ResponseBody
+	public String testRtnStr(){
+		String json="{name:'ma',age:16}";
+		return json;
 	}
 
 }

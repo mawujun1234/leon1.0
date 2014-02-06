@@ -27,7 +27,7 @@ import com.mawujun.utils.page.WhereInfo;
  *
  */
 @Controller
-public class SpringMVCController {
+public class SpringMVCController_no_autoWarp {
 	
 	private QueryResult<Map<String,String>> getQueryResult(){
 		QueryResult<Map<String,String>> page=new QueryResult<Map<String,String>>();
@@ -331,4 +331,20 @@ public class SpringMVCController {
 		model.setName("1111");
 		return model;
 	}
+	
+	
+	@RequestMapping("/test/testRtnStr.do")
+	@ResponseBody
+	public String testRtnStr(){
+		JsonConfigHolder.setAutoWrap(false);
+		String json="{name:'ma',age:16}";
+		return json;
+	}
+	
+//	@RequestMapping("/test/testRtnStr1.do")
+//	public String testRtnStr1(){
+//		JsonConfigHolder.setAutoWrap(false);
+//		String json="{name:'ma1',age:161}";
+//		return json;
+//	}
 }

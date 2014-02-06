@@ -52,7 +52,7 @@ public class FastJsonToStringUtils {
 	public static String  getJsonString(Object object){
 		JSONSerializer serializer=getJSONSerializer(object);
 
-			if(!JsonConfigHolder.getAutoWrap()){
+		if(!JsonConfigHolder.getAutoWrap()){
 				if(object instanceof Map){
 					doExtProperties((Map)object);
 				}		
@@ -66,7 +66,7 @@ public class FastJsonToStringUtils {
 				
 				//FileCopyUtils.copy(jsonString, new OutputStreamWriter(outputMessage.getBody(), charset));
 				return jsonString;
-			}
+		} else {
 			
 
 		ModelMap map=new ModelMap();
@@ -109,7 +109,9 @@ public class FastJsonToStringUtils {
 		serializer.write(map);
 		String jsonString=serializer.toString();
 		jsonString=replaceJsonPath(jsonString);
+		jsonString=doExtProperties(jsonString);
 		return jsonString;
+		}
 	}
 	
 	/**

@@ -7,6 +7,11 @@ import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.StringHttpMessageConverter;
 
+/**
+ * 用来处理返回string的时候，使用了@ResponseBody的方法
+ * @author mawujun email:160649888@163.com qq:16064988
+ *
+ */
 public class StringHttpMessageConverterImpl extends StringHttpMessageConverter {
 	/**
 	 * A default constructor that uses {@code "ISO-8859-1"} as the default charset.

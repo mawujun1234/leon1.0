@@ -27,7 +27,8 @@ import com.mawujun.exception.ExceptionCode;
 
 /**
  * 处理headers:{ 'Accept':'application/json;'}的异常和正常信息返回
- * @author mawujun email:16064988@163.com qq:16064988
+ * 走的是view的路线
+ * @author mawujun email:160649888@163.com qq:16064988
  *
  */
 public class MappingFastjson2JsonView extends AbstractView {

@@ -196,6 +196,12 @@ public class JsonConfigHolder {
 	public static boolean hasExtProperty() {
 		return threadLocal.get().hasExtProperty();
 	}
+	/**
+	 * 添加额外的属性上传到界面上去
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param key
+	 * @param value
+	 */
 	public static void addProperty(Object key,Object value) {
 		threadLocal.get().addProperty(key, value);
 	}
