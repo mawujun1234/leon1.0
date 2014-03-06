@@ -246,7 +246,12 @@ public class JsonConfigHolder {
 	public static void setErrorsValue(String errorsValue) {
 		threadLocal.get().setErrorsValue(errorsValue);
 	}
-	
+	public static Integer getTotal() {
+		return threadLocal.get().getTotal();
+	}
+	public static void setTotal(Integer total) {
+		threadLocal.get().setTotal(total);
+	}
 	
 	
 	private static class ToJsonConfig {
@@ -257,6 +262,8 @@ public class JsonConfigHolder {
 		public transient String successName="success";
 		public transient boolean successValue=true;
 		public transient String totalName="total";
+		public transient Integer total=null;
+		
 		public transient String startName="start";
 		public transient String limitName="limit";
 		public transient String pageNoName="page";
@@ -423,6 +430,12 @@ public class JsonConfigHolder {
 		}
 		public void setErrorsValue(String errorsValue) {
 			this.errorsValue = errorsValue;
+		}
+		public Integer getTotal() {
+			return total;
+		}
+		public void setTotal(Integer total) {
+			this.total = total;
 		}
 		
 	}

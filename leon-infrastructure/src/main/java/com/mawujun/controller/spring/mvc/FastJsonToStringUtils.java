@@ -88,13 +88,13 @@ public class FastJsonToStringUtils {
 			map.put(JsonConfigHolder.getRootName(), object);
 			
 			if(object instanceof Collection){
-				map.put(JsonConfigHolder.getTotalName(), ((Collection)object).size());
+				map.put(JsonConfigHolder.getTotalName(), JsonConfigHolder.getTotal()!=null?JsonConfigHolder.getTotal():((Collection)object).size());
 			} else {
 				Class c=object.getClass();
 				if(c.isArray()){
-					map.put(JsonConfigHolder.getTotalName(), ((Object[])object).length);
+					map.put(JsonConfigHolder.getTotalName(), JsonConfigHolder.getTotal()!=null?JsonConfigHolder.getTotal():((Object[])object).length);
 				} else {
-					map.put(JsonConfigHolder.getTotalName(),1);
+					map.put(JsonConfigHolder.getTotalName(),JsonConfigHolder.getTotal()!=null?JsonConfigHolder.getTotal():1);
 				}
 
 			}
