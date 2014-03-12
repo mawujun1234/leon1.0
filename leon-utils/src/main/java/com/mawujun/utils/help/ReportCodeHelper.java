@@ -72,6 +72,22 @@ public class ReportCodeHelper {
 		
 		return generate(baseCode,3);
 	}
+	public static String generateFirstChildCode3(String baseCode){	
+		return generateFirstChildCode(baseCode,3);
+	}
+	/**
+	 * 获取下一节点的第一个值
+	 * @param baseCode
+	 * @param len
+	 * @return
+	 */
+	public static String generateFirstChildCode(String baseCode,int len){	
+		//return generate(baseCode+sperator+getMinCode(len),len);
+		return baseCode+sperator+getMinCode(len);
+	}
+	private static String getMinCode(int len){
+		return StringUtils.leftPad("", len, minStr);
+	}
 	/**
 	 * len最好大于等于basecode中每个节点的位数，否则使用默认的长度忽略len
 	 * 层次的深度是通过总长度进行限制的，层次的分隔符是：'~'.增加的是最后一个层次的节点数+1,其他层次的节点数不变，采用91进制
@@ -81,7 +97,7 @@ public class ReportCodeHelper {
 	 */
 	public static String generate(String baseCode,int len){
 		if(baseCode==null || "".equals(baseCode.trim())){
-			baseCode=StringUtils.leftPad("", len, minStr);
+			baseCode=getMinCode(len);
 			return baseCode;
 		}
 		String codes[]=baseCode.split(sperator);
