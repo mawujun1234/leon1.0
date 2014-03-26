@@ -1,4 +1,4 @@
-package com.mawujun.repository.mybatisHibernate;
+package com.mawujun.repository1;
 
 import org.apache.ibatis.binding.MapperProxyFactory;
 import org.apache.ibatis.session.SqlSession;

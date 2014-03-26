@@ -1,4 +1,4 @@
-package com.mawujun.repository.mybatisHibernate;
+package com.mawujun.repository1;
 
 import java.lang.reflect.Method;
 import java.util.HashSet;
@@ -9,6 +9,12 @@ import org.apache.ibatis.binding.MapperMethod;
 import org.apache.ibatis.binding.MapperProxy;
 import org.apache.ibatis.session.SqlSession;
 
+/**
+ * z这个类也可以自己扩展，例如要把某些逻辑写在持久层里的时候，可以为某些类专门指定使用哪个Proxy
+ * @author mawujun 16064988@qq.com  
+ *
+ * @param <T>
+ */
 public class MyMapperProxy<T> extends MapperProxy<T> {
 	/**
 	 * 
@@ -34,7 +40,7 @@ public class MyMapperProxy<T> extends MapperProxy<T> {
 			if(method.getReturnType()==Void.class){
 					return null;
 			} else {
-				//在这里执行hibernate的相关操作
+				在这里执行hibernate的相关操作
 				//return new User();
 				return null;
 			}
