@@ -3,7 +3,13 @@ package com.mawujun.repository;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+
+
 
 import com.mawujun.repository1.HibernateInvoke;
 
@@ -25,10 +31,9 @@ public class MyClassTest {
 //			System.out.println(pType[0].getClass().getGenericSuperclass());
 //
 //		}
-		
-		Method method=MyClass.class.getMethod("get");
-		
-		method.getParameterTypes();
+		//boolean bool=ArrayList.class.isAssignableFrom(List.class);
+		boolean bool=ArrayList.class.isAssignableFrom(ArrayList.class);
+		System.out.println(bool);
 	}
 
 }

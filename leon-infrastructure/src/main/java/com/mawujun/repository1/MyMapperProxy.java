@@ -49,7 +49,7 @@ public class MyMapperProxy<T> extends MapperProxy<T> {
 		SessionFactory sessionFactory=SpringContextHolder.getBean(SessionFactory.class);
 		//hibernateProxy=new HibernateInvoke(sessionFactory);
 		//hibernateProxy.setEntityClass((Class)types[0]);
-		hibernateProxy=new HibernateInvoke<EntityTest>((Class)types[0],sessionFactory);
+		hibernateProxy=new HibernateInvoke((Class)types[0],sessionFactory);
 
 	}
 
@@ -71,13 +71,9 @@ public class MyMapperProxy<T> extends MapperProxy<T> {
 	public Object invokeByHibernate(Object proxy, Method method, Object[] args) throws Throwable {
 		//method.i
 		//Method[] methods=HibernateInvoke.class.getMethods();
-		Class[] paramTypes=new Class[args.length];
-		for(int i=0;i<args.length;i++){
-			Object o=args[i];
-			paramTypes[i]=o.getClass();
-		}
 		
-		Method hMethod=getMethod(method.getName(),paramTypes);
+		
+		Method hMethod=getMethod(method.getName(),args);
 		return hMethod.invoke(hibernateProxy, args);
 		 
 //		String methodName=method.getName();
@@ -115,17 +111,37 @@ public class MyMapperProxy<T> extends MapperProxy<T> {
 	 * @param name
 	 * @param paramTypes
 	 * @return
+	 * @throws SecurityException 
+	 * @throws NoSuchMethodException 
 	 */
-	public  Method getMethod(String name, Class[] paramTypes) {
+	public  Method getMethod(String name, Object[] args) throws NoSuchMethodException, SecurityException {
 		//AssertUtils.notNull(clazz, "Class must not be null");
 		AssertUtils.notNull(name, "Method name must not be null");
+		Class searchType = HibernateInvoke.class;
+		//没有参数的方法
+		if(args==null){
+			Method temp=hibernateMethodCache.get(name);
+			if(temp==null){
+				temp=searchType.getMethod(name);
+			}
+			hibernateMethodCache.put(name,temp);
+			return temp;
+		}
 		
-		Method temp=hibernateMethodCache.get(getKey(name,paramTypes));
+		Class[] paramTypes=new Class[args.length];
+		for(int i=0;i<args.length;i++){
+			Object o=args[i];
+			paramTypes[i]=o.getClass();
+		}
+		
+		
+		String key=getKey(name,paramTypes);
+		Method temp=hibernateMethodCache.get(key);
 		if(temp!=null){
 			return temp;
 		}
 		
-		Class searchType = HibernateInvoke.class;
+		
 		
 		while (!Object.class.equals(searchType) && searchType != null) {
 			Method[] methods = (searchType.isInterface() ? searchType.getMethods() : searchType.getDeclaredMethods());
@@ -134,18 +150,21 @@ public class MyMapperProxy<T> extends MapperProxy<T> {
 				if (name.equals(method.getName()) ) {
 					if((paramTypes == null || paramTypes.length==0) && method.getParameterTypes().length==0){
 						return method;
-					} else if(isSameParames(paramTypes,method.getParameterTypes())==1){
-						temp=method;
-					} else if(isSameParames(paramTypes,method.getParameterTypes())==2){
-						return method;
+					} else {
+						int isSame= isSameParames(paramTypes,method.getParameterTypes());
+						if(isSame==1){
+							temp=method;
+						} else if(isSame==2){
+							hibernateMethodCache.put(key,method);
+							return method;
+						}
 					}
-					
 				}
 			}
 			searchType = searchType.getSuperclass();
 		}
 		
-		hibernateMethodCache.put(getKey(name,paramTypes),temp);
+		hibernateMethodCache.put(key,temp);
 		return temp;
 	}
 	
@@ -162,16 +181,25 @@ public class MyMapperProxy<T> extends MapperProxy<T> {
 	 */
 	public int isSameParames(Class[] paramTypes,Class[] methodParamTypes){
 		if(paramTypes.length!=methodParamTypes.length){
-			return false;
+			return 0;
 		}
-		boolean isSame=true;
+		int isSame=2;
 		for(int i=0;i<paramTypes.length;i++){
-			if(methodParamTypes[i]==Object.class){
+			//methodParamTypes[i]==Serializable.class用于判断id的时候
+			//if(methodParamTypes[i]==Object.class || methodParamTypes[i]==Serializable.class){
+			if(methodParamTypes[i]==paramTypes[i]){	
 				continue;
-			} else if(methodParamTypes[i]==paramTypes[i]){
-				continue;
+			} else if(methodParamTypes[i].isAssignableFrom(paramTypes[i])){
+				isSame=1;
+			} else if (methodParamTypes[i].isArray() && paramTypes[i].isArray()) {
+				if (methodParamTypes[i].getComponentType() == paramTypes[i].getComponentType()) {
+					continue;
+				//} else if (paramTypes[i].getComponentType() == Object.class|| methodParamTypes[i].getComponentType() == Serializable.class) {
+				} else if (methodParamTypes[i].getComponentType().isAssignableFrom(paramTypes[i].getComponentType())) {
+					isSame = 1;
+				}
 			} else {
-				return false;
+				return 0;
 			}
 		}
 		return isSame;

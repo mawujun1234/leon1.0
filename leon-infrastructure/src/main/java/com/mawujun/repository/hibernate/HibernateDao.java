@@ -143,10 +143,11 @@ public class HibernateDao<T, ID extends Serializable>{
 	/**
 	 * 保存新增或修改的对象.
 	 */
-	public void save(final T entity) {
+	public Serializable save(final T entity) {
 		AssertUtils.notNull(entity, "entity不能为空");
-		getSession().save(entity);
+		Serializable id=getSession().save(entity);
 		logger.debug("save entity: {}", entity);
+		return id;
 	}
 
 	/**
