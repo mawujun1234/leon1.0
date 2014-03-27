@@ -16,9 +16,9 @@
 
 	
 
-	<!-- 
-	<bean id="springContextHolder" class="com.mawujun.spring.SpringContextHolder" lazy-init="false" ></bean>
-	 -->
+	<!-- -->
+	<bean id="springContextHolder" class="com.mawujun.controller.spring.SpringContextHolder" lazy-init="false" ></bean>
+	 
 
 	<!-- 使用annotation 自动注册bean,并保证@Required,@Autowired的属性被注入 -->
 	<context:component-scan base-package="com.mawujun">

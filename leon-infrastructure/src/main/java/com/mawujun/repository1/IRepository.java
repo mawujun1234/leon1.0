@@ -2,16 +2,7 @@ package com.mawujun.repository1;
 
 import java.io.Serializable;
 
-import com.mawujun.utils.page.WhereInfo;
-
-public interface IRepository<T, ID extends Serializable> {
-	public void create(T entity);
-	public void update(T entity);
-	public void delete(T entity);
-	public void delete(Serializable id);
-	public T get(Serializable id);
-	
-	public void updateDynamic(T entity);
+public interface IRepository<T, ID extends Serializable> extends IHibernateRepository<T, ID> {
 	//public void updateDynamic(T entity,WhereInfo... wheres);
 	
 	

@@ -345,7 +345,7 @@ public class MappingFastJson2HttpMessageConverter extends AbstractHttpMessageCon
 //			return;
 //		}
 //		
-//		if((root instanceof HibernateProxy) ){
+//		if((root instanceof HibernateInvoke) ){
 //			return;
 //		}
 //		//
@@ -443,7 +443,7 @@ public class MappingFastJson2HttpMessageConverter extends AbstractHttpMessageCon
 
 //	private class HibernateLazyInitializerFilter implements ValueFilter {
 //		public Object process(Object source, String name, final Object value) {
-//	        if ( value!=null && value instanceof HibernateProxy) {
+//	        if ( value!=null && value instanceof HibernateInvoke) {
 //	        	if(value instanceof IdEntity){
 //	        		//现在只是把
 //		        	return new IdEntity(){
