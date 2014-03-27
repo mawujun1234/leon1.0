@@ -1,6 +1,7 @@
 package com.mawujun.repository1;
 
 import java.io.Serializable;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -15,6 +16,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.hibernate.SessionFactory;
 
 import com.mawujun.controller.spring.SpringContextHolder;
+import com.mawujun.repository.EntityTest;
 import com.mawujun.utils.AssertUtils;
 import com.mawujun.utils.ReflectionUtils;
 
@@ -45,9 +47,10 @@ public class MyMapperProxy<T> extends MapperProxy<T> {
 		mapperInterface.getGenericSuperclass();
 		Type[] types=((ParameterizedType)mapperInterface.getGenericInterfaces()[0]).getActualTypeArguments();
 		SessionFactory sessionFactory=SpringContextHolder.getBean(SessionFactory.class);
-		hibernateProxy=new HibernateInvoke(sessionFactory);
-		hibernateProxy.setEntityClass((Class)types[0]);
-		//System.out.println(11);
+		//hibernateProxy=new HibernateInvoke(sessionFactory);
+		//hibernateProxy.setEntityClass((Class)types[0]);
+		hibernateProxy=new HibernateInvoke<EntityTest>((Class)types[0],sessionFactory);
+
 	}
 
 
@@ -129,11 +132,12 @@ public class MyMapperProxy<T> extends MapperProxy<T> {
 			for (int i = 0; i < methods.length; i++) {
 				Method method = methods[i];
 				if (name.equals(method.getName()) ) {
-					if(paramTypes == null || Arrays.equals(paramTypes, method.getParameterTypes())){
+					if((paramTypes == null || paramTypes.length==0) && method.getParameterTypes().length==0){
 						return method;
-					} else if(method.getParameterTypes().length==paramTypes.length){
-						
-						temp=method;//如果没有参数一致的方法的时候，就返回最后一个名词匹配的方法
+					} else if(isSameParames(paramTypes,method.getParameterTypes())==1){
+						temp=method;
+					} else if(isSameParames(paramTypes,method.getParameterTypes())==2){
+						return method;
 					}
 					
 				}
@@ -143,6 +147,34 @@ public class MyMapperProxy<T> extends MapperProxy<T> {
 		
 		hibernateMethodCache.put(getKey(name,paramTypes),temp);
 		return temp;
+	}
+	
+	/***
+	 * 0表示不匹配
+	 * 1：表示是Object的匹配，那要把这个方法先缓存
+	 * 2：表示是完全匹配，直接可以返回该方法
+	 * 
+	 * 考虑多个参数
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param paramTypes
+	 * @param methodParamTypes
+	 * @return
+	 */
+	public int isSameParames(Class[] paramTypes,Class[] methodParamTypes){
+		if(paramTypes.length!=methodParamTypes.length){
+			return false;
+		}
+		boolean isSame=true;
+		for(int i=0;i<paramTypes.length;i++){
+			if(methodParamTypes[i]==Object.class){
+				continue;
+			} else if(methodParamTypes[i]==paramTypes[i]){
+				continue;
+			} else {
+				return false;
+			}
+		}
+		return isSame;
 	}
 
 }
