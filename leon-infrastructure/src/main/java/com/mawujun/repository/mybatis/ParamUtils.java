@@ -4,22 +4,22 @@ import java.util.HashMap;
 
 /**
  * Hashmap的参数构成器
- * MybatisParamUtils params=MybatisParamUtils.init().put("parameterId", parameterId).put("subjectType", subjectType);
+ * ParamUtils params=ParamUtils.init().put("parameterId", parameterId).put("subjectType", subjectType);
  * this.queryList("query_SYSTEM", params,ParameterSubjectVO.class);
- * @author mawujun email:16064988@163.com qq:16064988
+ * @author mawujun email:160649888@163.com qq:16064988
  *
  */
-public class MybatisParamUtils extends HashMap<String, Object> {
+public class ParamUtils extends HashMap<String, Object> {
 	//Map<String,Object> paams=new HashMap<String,Object>();
-	public static MybatisParamUtils init(){
-		return new MybatisParamUtils();
+	public static ParamUtils init(){
+		return new ParamUtils();
 	}
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public  MybatisParamUtils add(String key,Object value){
+	public  ParamUtils add(String key,Object value){
 		super.put(key, value);
 		return this;
 	}
@@ -30,13 +30,13 @@ public class MybatisParamUtils extends HashMap<String, Object> {
 	 * @param value
 	 * @return
 	 */
-	public MybatisParamUtils addIf(String key,Object value){
+	public ParamUtils addIf(String key,Object value){
 		if(value!=null){
 			super.put(key, value);
 		}		
 		return this;
 	}
-	public MybatisParamUtils put(String key,Object value){
+	public ParamUtils put(String key,Object value){
 		super.put(key, value);
 		return this;
 	}
@@ -48,7 +48,7 @@ public class MybatisParamUtils extends HashMap<String, Object> {
 	 * @param value
 	 * @return
 	 */
-	public MybatisParamUtils putIf(String key,Object value){
+	public ParamUtils putIf(String key,Object value){
 		if(value!=null){
 			super.put(key, value);
 		}		

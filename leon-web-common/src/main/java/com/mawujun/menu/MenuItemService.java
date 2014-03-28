@@ -16,7 +16,7 @@ import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository.cnd.Cnd;
-import com.mawujun.repository.mybatis.MybatisParamUtils;
+import com.mawujun.repository.mybatis.ParamUtils;
 import com.mawujun.user.login.UserDetailsImpl;
 import com.mawujun.utils.BeanUtils;
 import com.mawujun.utils.StringUtils;
@@ -104,7 +104,7 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 	public List<MenuItemVO> query4Desktop(String menuId,Boolean isAdmin) {
 
 		//如果是管理员，可以获查看到所有的菜单
-		List<String> menuItemLeaf = super.queryList("query4Desktop", MybatisParamUtils.init().add("menu_id", menuId).add("isAdmin", isAdmin)
+		List<String> menuItemLeaf = super.queryList("query4Desktop", ParamUtils.init().add("menu_id", menuId).add("isAdmin", isAdmin)
 				,String.class);
 
 		Map<String,MenuItemVO> parentKeys=new HashMap<String,MenuItemVO>();
@@ -196,7 +196,7 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 	 * @return
 	 */
 	public MenuItemVO queryMenuItem(String jspUrl,String menuId){	
-		Map params=MybatisParamUtils.init().add("jspUrl", jspUrl).add("menuId", menuId);
+		Map params=ParamUtils.init().add("jspUrl", jspUrl).add("menuId", menuId);
 		List<MenuItemVO> menuItems=super.queryList("queryMenuItem", params, MenuItemVO.class);
 		if(menuItems==null || menuItems.size()==0){
 			return null;

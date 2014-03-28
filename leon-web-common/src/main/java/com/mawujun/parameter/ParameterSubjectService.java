@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository.cnd.Cnd;
-import com.mawujun.repository.mybatis.MybatisParamUtils;
+import com.mawujun.repository.mybatis.ParamUtils;
 
 @Service
 public class ParameterSubjectService extends
@@ -26,7 +26,7 @@ public class ParameterSubjectService extends
 		String result=null;
 		if(SubjectType.USER==subjectType){
 			//如果是用户的话,要首先获取用户，再获取用户所属的职位，组织单元，用户组，角色，系统
-			MybatisParamUtils pamras=MybatisParamUtils.init().add("user_Id", subjectId).add("parameter_Id", parameterId);
+			ParamUtils pamras=ParamUtils.init().add("user_Id", subjectId).add("parameter_Id", parameterId);
 			List<Map<String,Object>> list=super.queryList("query_USER_part_of", pamras);
 			for(Map<String,Object> map:list){
 				if(map.get("parametervalue")!=null){
@@ -52,7 +52,7 @@ public class ParameterSubjectService extends
 	
 	public List<ParameterSubjectVO> querySubject(String parameterId,String subjectType){
 
-		MybatisParamUtils params=MybatisParamUtils.init().put("parameter_Id", parameterId).putIf("subjectType", subjectType);
+		ParamUtils params=ParamUtils.init().put("parameter_Id", parameterId).putIf("subjectType", subjectType);
 		return this.queryList("query_"+subjectType, params,ParameterSubjectVO.class);
 		
 //		if(SubjectType.SYSTEM.toString().equals(subjectType)){

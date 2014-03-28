@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.controller.spring.mvc.JsonConfigHolder;
 import com.mawujun.repository.cnd.Cnd;
-import com.mawujun.repository.mybatis.MybatisParamUtils;
+import com.mawujun.repository.mybatis.ParamUtils;
 import com.mawujun.role.Role;
 import com.mawujun.user.User;
 import com.mawujun.user.UserRole;
@@ -120,7 +120,7 @@ public class GroupController {
 //		PageRequest pageRqeust=PageRequest.init(start, limit).setSqlModel(true).setSqlId("queryRole")
 //				.addWhere("group_id",groupId);
 //		QueryResult<Role> roles=userGroupService.queryPageMybatis(pageRqeust,Role.class);
-		List<Role> roles=userGroupService.queryList("queryRole", MybatisParamUtils.init().add("group_id", groupId), Role.class);
+		List<Role> roles=userGroupService.queryList("queryRole", ParamUtils.init().add("group_id", groupId), Role.class);
 		JsonConfigHolder.setFilterPropertys("mutex,funes,category",Role.class);
 		JsonConfigHolder.setRootName("children");
 		return roles;

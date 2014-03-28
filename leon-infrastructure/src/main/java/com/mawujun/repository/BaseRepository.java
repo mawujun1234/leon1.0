@@ -144,7 +144,7 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 
 	public T create(T entity) {
 		// TODO Auto-generated method stub
-		hibernateDao.save(entity);
+		hibernateDao.create(entity);
 		hibernateDao.flush();
 		return entity;
 	}
@@ -203,7 +203,7 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 
 	public void delete(Serializable id) {
 		// TODO Auto-generated method stub
-		hibernateDao.delete(id);
+		hibernateDao.deleteById(id);
 		hibernateDao.flush();
 	}
 
@@ -215,9 +215,9 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 
 	public int createBatch(T... entitys) {
 		// TODO Auto-generated method stub
-		int i=hibernateDao.saveBatch(entitys);
+		Serializable[] ids=hibernateDao.createBatch(entitys);
 		hibernateDao.flush();
-		return i;
+		return ids.length;
 	}
 
 	public int deleteBatch(T... entitys) {
@@ -258,9 +258,9 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 	}
 
 	public int saveBatch(Collection<T> entities) {
-		int i=hibernateDao.saveBatch(entities);
+		Serializable[] ids=hibernateDao.createBatch(entities);
 		hibernateDao.flush();
-		return i;
+		return ids.length;
 	}
 
 	public int deleteBatch(Collection<T> entities) {
@@ -309,7 +309,7 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 		return hibernateDao.queryList(cnd,classT);
 	}
 	public int queryCount(Cnd cnd) {
-		return hibernateDao.queryCount(cnd);
+		return hibernateDao.queryCount(cnd).intValue();
 	}
 	public T queryUnique(Cnd cnd) {
 		return hibernateDao.queryUnique(cnd);

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mawujun.controller.spring.mvc.JsonConfigHolder;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
-import com.mawujun.repository.mybatis.MybatisParamUtils;
+import com.mawujun.repository.mybatis.ParamUtils;
 import com.mawujun.user.login.SwitchUserFilterImpl;
 import com.mawujun.user.login.UserDetailsImpl;
 import com.mawujun.utils.StringUtils;
@@ -112,7 +112,7 @@ public class SwitchUserController {
 			masterId = detail.getId();
 		}
 		//WhereInfo
-		int count=switchUserService.queryCountMybatis("querySwitchUsersCount", MybatisParamUtils.init().add("masterId", masterId).add("j_username", j_username));
+		int count=switchUserService.queryCountMybatis("querySwitchUsersCount", ParamUtils.init().add("masterId", masterId).add("j_username", j_username));
 		if(count>0){
 			//JsonConfigHolder.setMsg("允许");
 		} else {

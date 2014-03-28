@@ -10,7 +10,7 @@ import com.mawujun.exception.WebCommonExceptionCode3;
 import com.mawujun.menu.MenuItemService;
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository.cnd.Cnd;
-import com.mawujun.repository.mybatis.MybatisParamUtils;
+import com.mawujun.repository.mybatis.ParamUtils;
 import com.mawujun.utils.help.ReportCodeHelper;
 import com.mawujun.utils.page.WhereInfo;
 
@@ -91,7 +91,7 @@ public class FunService extends BaseRepository<Fun, String> {
 	 * @param oldParent_id
 	 */
 	public List<String> queryAllDenyPageElement(String userId,String funId) {	
-		return super.queryList("queryAllDenyPageElement", MybatisParamUtils.init().add("user_id", userId).add("parent_id", funId).add("isenable", true), String.class);
+		return super.queryList("queryAllDenyPageElement", ParamUtils.init().add("user_id", userId).add("parent_id", funId).add("isenable", true), String.class);
 //		List<String> list=new ArrayList();
 //		//根据权限从数据库中获取，包括角色，组，职位，组织单元，最最终还是获取用户所属的角色所拥有的功能
 //		list.add("generator-2c908385412fd0e701412fd93e1d0001");

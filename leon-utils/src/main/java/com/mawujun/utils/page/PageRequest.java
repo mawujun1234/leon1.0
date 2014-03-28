@@ -317,21 +317,6 @@ public class PageRequest {
 			params.put("sorts", this.getSorts());
 		}
 		return params;
-		
-//		if(params!=null){
-//			return params;
-//		} else {
-//			if(this.getWheres()==null){
-//				return null;
-//			}
-//			Map<String,Object> params=new HashMap<String,Object>();
-//			for(WhereInfo whereInfo:this.getWheres()){
-//				params.put(whereInfo.getProperty(), whereInfo.getValue());
-//			}
-//			params.put("whereInfos", this.getWheres());
-//			return params;
-//		}
-//		
 	}
 	/**
 	 * 如从sorts中获取,返回的是String,例如 name asc，id desc，aaa，没有order by关键字

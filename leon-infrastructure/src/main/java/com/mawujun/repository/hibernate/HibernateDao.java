@@ -43,7 +43,7 @@ import com.mawujun.utils.page.SortInfo;
 import com.mawujun.utils.page.WhereInfo;
 
 
-public class HibernateDao<T, ID extends Serializable>{
+public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T,ID>{
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
 	protected SessionFactory sessionFactory;
@@ -143,11 +143,12 @@ public class HibernateDao<T, ID extends Serializable>{
 	/**
 	 * 保存新增或修改的对象.
 	 */
-	public Serializable save(final T entity) {
+	public ID create(final T entity) {
 		AssertUtils.notNull(entity, "entity不能为空");
 		Serializable id=getSession().save(entity);
 		logger.debug("save entity: {}", entity);
-		return id;
+		getSession().flush();
+		return (ID)id;
 	}
 
 	/**
@@ -157,6 +158,7 @@ public class HibernateDao<T, ID extends Serializable>{
 		AssertUtils.notNull(entity, "entity不能为空");
 		getSession().saveOrUpdate(entity);
 		logger.debug("save entity: {}", entity);
+		getSession().flush();
 	}
 	/**
 	 * 通过Cnd。update().set(...)。andEquals();来指定更新的字段和条件
@@ -192,6 +194,7 @@ public class HibernateDao<T, ID extends Serializable>{
 	public void update(final T entity) {
 		AssertUtils.notNull(entity, "entity不能为空");
 		this.getSession().update(entity);
+		getSession().flush();
 	}
 
 	private StringBuilder getUpdateProp(final T entity){
@@ -515,15 +518,17 @@ public class HibernateDao<T, ID extends Serializable>{
 	public void delete(final T entity) {
 		AssertUtils.notNull(entity, "entity不能为空");
 		getSession().delete(entity);
+		getSession().flush();
 		logger.debug("delete entity: {}", entity);
 	}
 
 	/**
 	 * 按id删除对象.
 	 */
-	public void delete(final Serializable id) {
+	public void deleteById(final Serializable id) {
 		AssertUtils.notNull(id, "id不能为空");
 		delete(load(id));
+		getSession().flush();
 //		String hql="delete " + this.entityClass.getName()+ " obj where id=?";
 //		Query query = this.getSession().createQuery(hql);
 //		query.setParameter(0, id);
@@ -568,36 +573,40 @@ public class HibernateDao<T, ID extends Serializable>{
 	 * 把对象进行批量提交
 	 * @param entities
 	 */
-	public int saveBatch(final T... entities) {
+	public Serializable[] createBatch(final T... entities) {
 		if(cancelExecute(entities)){
-			return 0;
+			return null;
 		}
 		int i=0;
+		Serializable[] ids=new Serializable[entities.length];
 		for (T t : entities ) {
-			this.save(t);
+			ids[i]=this.create(t);
 		    if ( ++i % batchSize == 0 ) { //20, same as the JDBC batch size
 		        //flush a batch of inserts and release memory:
 		    	this.getSession().flush();
 		    	this.getSession().clear();
 		    }
 		}
-		return i+1;
+		getSession().flush();
+		return ids;
 	}
 	
-	public int saveBatch(final Collection<T> entities){
+	public Serializable[] createBatch(final Collection<T> entities){
 		if(cancelExecute(entities)){
-			return 0;
+			return null;
 		}
 		int i=0;
+		Serializable[] ids=new Serializable[entities.size()];
 		for (T t : entities ) {
-			this.save(t);
+			ids[i]=this.create(t);
 		    if ( ++i % batchSize == 0 ) { //20, same as the JDBC batch size
 		        //flush a batch of inserts and release memory:
 		    	this.getSession().flush();
 		    	this.getSession().clear();
 		    }
 		}
-		return i+1;
+		getSession().flush();
+		return ids;
 	}
 
 	private boolean cancelExecute(Object object){
@@ -623,7 +632,7 @@ public class HibernateDao<T, ID extends Serializable>{
 		    	this.getSession().clear();
 		    }
 		}
-		return i+1;
+		return i;
 	}
 	public int deleteBatch(final Collection<T> entities){
 		if(cancelExecute(entities)){
@@ -638,7 +647,7 @@ public class HibernateDao<T, ID extends Serializable>{
 		    	this.getSession().clear();
 		    }
 		}
-		return i+1;
+		return i;
 	}
 
 	public int deleteBatch(final ID... IDS){
@@ -763,7 +772,8 @@ public class HibernateDao<T, ID extends Serializable>{
 		    	this.getSession().clear();
 		    }
 		}
-		return count+1;
+		getSession().flush();
+		return count;
 	}
 	public int updateBatch(final Collection<T> entities){
 		if(cancelExecute(entities)){
@@ -777,7 +787,8 @@ public class HibernateDao<T, ID extends Serializable>{
 		    	this.getSession().clear();
 		    }
 		}
-		return count+1;
+		getSession().flush();
+		return count;
 	}
 
 	/**
@@ -865,6 +876,9 @@ public class HibernateDao<T, ID extends Serializable>{
 		whereInfo2Criterion(criteria,whereInfos);
 		
 		return criteria.list();
+	}
+	public List<T> query(Cnd cnd) {
+		return query(cnd,false);
 	}
 	/**
 	 * 
@@ -998,7 +1012,7 @@ public class HibernateDao<T, ID extends Serializable>{
 		int totalCount = countCriteriaResult(criteria);
 		return totalCount;
 	}
-	public int queryCount(Cnd cnd) {
+	public Long queryCount(Cnd cnd) {
 		cnd.setSqlType(SqlType.SELECT);
 		StringBuilder builder=new StringBuilder("select count(*)   ");
 		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
@@ -1013,7 +1027,8 @@ public class HibernateDao<T, ID extends Serializable>{
 		
 		setParamsByCnd(query,cnd,classMetadata);
 		query.setResultTransformer(CriteriaSpecification.ROOT_ENTITY);
-		return ((Long)query.uniqueResult()).intValue();
+		//return ((Long)query.uniqueResult()).intValue();
+		return (Long)query.uniqueResult();
 	}
 	/**
 	 * 返回第一个对象
@@ -1140,6 +1155,22 @@ public class HibernateDao<T, ID extends Serializable>{
 	
 	public Object queryMax(String property,Cnd cnd) {
 		StringBuilder builder=new StringBuilder("select max("+property+") ");
+		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
+		cnd.joinHql(classMetadata, builder);
+		
+
+		Object[] params = new Object[cnd.paramCount(classMetadata)];
+		int paramsCount = cnd.joinParams(classMetadata, null, params, 0);
+		
+		Session session = this.getSession();
+		Query query = session.createQuery(builder.toString());
+		
+		setParamsByCnd(query,cnd,classMetadata);
+		query.setResultTransformer(CriteriaSpecification.ROOT_ENTITY);
+		return query.uniqueResult();
+	}
+	public Object queryMin(String property,Cnd cnd) {
+		StringBuilder builder=new StringBuilder("select min("+property+") ");
 		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
 		cnd.joinHql(classMetadata, builder);
 		

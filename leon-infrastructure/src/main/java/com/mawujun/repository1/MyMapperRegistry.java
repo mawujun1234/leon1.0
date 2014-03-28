@@ -1,7 +1,6 @@
 package com.mawujun.repository1;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.ibatis.binding.BindingException;
@@ -9,10 +8,15 @@ import org.apache.ibatis.binding.MapperProxyFactory;
 import org.apache.ibatis.binding.MapperRegistry;
 import org.apache.ibatis.builder.annotation.MapperAnnotationBuilder;
 import org.apache.ibatis.session.Configuration;
+import org.hibernate.SessionFactory;
 
 public class MyMapperRegistry extends MapperRegistry {
 	private final Map<Class<?>, MapperProxyFactory<?>> knownMappersNew;// = new HashMap<Class<?>, MapperProxyFactory<?>>();
-	Configuration configNew=null;
+	Configuration configNew=null;//访问不了父类的Configuration所以使用一个引用，引用到父类的Configuration
+	//hibernate的SessionFactory
+	SessionFactory sessionFactory;
+	
+	
 	public MyMapperRegistry(Configuration config) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		super(config);
 		configNew=config;
@@ -34,8 +38,10 @@ public class MyMapperRegistry extends MapperRegistry {
 			}
 			boolean loadCompleted = false;
 			try {
-				
-				knownMappersNew.put(type, new MyMapperProxyFactory<T>(type));
+				//使用自己定义的MapperProxyFactory
+				MyMapperProxyFactory myMapperProxyFactory=new MyMapperProxyFactory<T>(type);
+				myMapperProxyFactory.setSessionFactory(sessionFactory);
+				knownMappersNew.put(type, myMapperProxyFactory);
 				// It's important that the type is added before the parser is
 				// run
 				// otherwise the binding may automatically be attempted by the
@@ -49,5 +55,18 @@ public class MyMapperRegistry extends MapperRegistry {
 				}
 			}
 		}
+	}
+
+	/**
+	 * 获取hibernate的SessionFactory
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @return
+	 */
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
+
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
 	}
 }

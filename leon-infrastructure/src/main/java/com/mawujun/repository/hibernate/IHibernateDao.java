@@ -1,4 +1,4 @@
-package com.mawujun.repository1;
+package com.mawujun.repository.hibernate;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -13,7 +13,7 @@ import com.mawujun.utils.page.QueryResult;
  * @author mawujun email:16064988@163.com qq:16064988
  *
  */
-public interface IHibernateRepository <T, ID extends Serializable>{
+public interface IHibernateDao <T, ID extends Serializable>{
 
 	public ID create(T entity);
 	
@@ -26,8 +26,8 @@ public interface IHibernateRepository <T, ID extends Serializable>{
 	public void update(Cnd cnd);
 	
 	public void delete(T entity);
-	public void deleteById(Serializable id);
-	public T get(Serializable id);
+	public void deleteById(ID id);
+	public T get(ID id);
 	
 	/**
 	 * 动态更新，对有值的字段进行更新，即如果字段=null，那就不进行更新
@@ -74,8 +74,8 @@ public interface IHibernateRepository <T, ID extends Serializable>{
 	public T queryUnique(Cnd cnd);
 	public <M> M queryUnique(Cnd cnd,Class<M> classM);
 	
-	
-	public List<T> query(Cnd cnd,boolean uniqueResult);
+	public List<T> queryAll();
+	public List<T> query(Cnd cnd);
 	public QueryResult<T> queryPage(final PageRequest pageRequest);
 	
 }

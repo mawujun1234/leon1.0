@@ -30,10 +30,7 @@
 		<property name="minEvictableIdleTimeMillis" value="3600000" />
 	</bean>
 	-->
-	<bean id="sqlSessionFactory" class="com.mawujun.repository1.MySqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
-		
-	</bean>
+
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" lazy-init="false" >
 			<property name="dataSource" ref="dataSource" />  
 			<!--
@@ -63,7 +60,10 @@
 	</bean>
     <tx:annotation-driven transaction-manager="transactionManager"  proxy-target-class="false" />
 	
-	
+	<bean id="sqlSessionFactory" class="com.mawujun.repository1.MySqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />	
+		<property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer" depends-on="sessionFactory">
 		<property name="basePackage" value="com.mawujun.repository1" />
 		<property name="markerInterface" value="com.mawujun.repository1.IRepository" />

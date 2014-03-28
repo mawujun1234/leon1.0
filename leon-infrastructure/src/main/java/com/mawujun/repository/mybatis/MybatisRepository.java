@@ -8,13 +8,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.ibatis.builder.MapperBuilderAssistant;
+import org.apache.ibatis.builder.StaticSqlSource;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlSource;
+import org.apache.ibatis.scripting.defaults.RawSqlSource;
 import org.apache.ibatis.scripting.xmltags.DynamicSqlSource;
 import org.apache.ibatis.scripting.xmltags.IfSqlNode;
 import org.apache.ibatis.scripting.xmltags.MixedSqlNode;
 import org.apache.ibatis.scripting.xmltags.SqlNode;
 import org.apache.ibatis.scripting.xmltags.TextSqlNode;
+import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -24,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mawujun.repository.idEntity.UUIDEntity;
 import com.mawujun.repository.idEntity.UUIDGenerator;
 import com.mawujun.utils.ReflectionUtils;
+import com.mawujun.utils.page.Page;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 
@@ -36,7 +40,7 @@ public class MybatisRepository  {
 	
 	//=================================拷贝于SqlSessionDaoSupport
 	//private SqlSessionFactory sqlSessionFactory;
-	protected SqlSession sqlSession;
+	protected SqlSession sqlSession;//是线程安全的
 	//private SqlSession batchSqlSession;//用于批处理的sql session
 	protected SqlSessionFactory sqlSessionFactory;
 	@Autowired(required = true)
@@ -133,6 +137,24 @@ public class MybatisRepository  {
 		return getSqlSession().selectOne(statement, params);
 	}
 	
+	/**
+	 * 简单的封装，会自动分页
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param statement
+	 * @param page
+	 * @return
+	 */
+	public Page selectPage(String statement, Page page)  {	
+		createCountMapperstatement(statement);
+		
+		List<Map<String, Object>> result=getSqlSession().selectList(statement,page.getParams(),new RowBounds(page.getStart(),page.getPageSize()));	
+		page.setResult(result);
+		
+		int totalCount=(Integer)this.getSqlSession().selectOne(statement+"_count", page.getParams());
+		page.setTotal(totalCount);
+		
+		return page;	
+	}
 
 
 	/**
@@ -179,7 +201,7 @@ public class MybatisRepository  {
 	 * @throws InstantiationException 
 	 */
 	public QueryResult<Record> selectPageRecord(String statement, PageRequest pageRequest)  {
-		MappedStatement mappedStatement=sqlSessionFactory.getConfiguration().getMappedStatement(statement);
+		MappedStatement mappedStatement=this.getSqlSession().getConfiguration().getMappedStatement(statement);
 		QueryResult<Record> page = new QueryResult<Record>(pageRequest);
 		
 		Map params=prepareCountAndDynicSortSql(statement,pageRequest);
@@ -463,17 +485,15 @@ public class MybatisRepository  {
 		return sql;
 	}
 
-
 	/**
-	 * 根据已经有的select语句自动构建求总数的sql,注意还要去掉order by等语句 用来提高sql效率
+	 * 
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param statement
+	 * @param configuration
+	 * @param mappedStatement
+	 * @param sqlSourceOrginal
 	 */
-	private void createCountMapperstatement(String statement){
-		if(sqlSessionFactory.getConfiguration().hasStatement(statement+"_count")){
-			return;
-		}
-		MappedStatement mappedStatement=sqlSessionFactory.getConfiguration().getMappedStatement(statement);
-
-		SqlSource sqlSourceOrginal=mappedStatement.getSqlSource();
+	private void handlerDynamicSqlSource(String statement,Configuration configuration,MappedStatement mappedStatement,SqlSource sqlSourceOrginal){
 		SqlNode sqlNode=(SqlNode) ReflectionUtils.getFieldValue(sqlSourceOrginal, "rootSqlNode");
 		if(sqlNode instanceof MixedSqlNode){
 			 List<SqlNode> contentsOrginal=(List<SqlNode>) ReflectionUtils.getFieldValue(sqlNode, "contents");
@@ -512,10 +532,10 @@ public class MybatisRepository  {
 //			 contents.add(test1);
 			 
 			 MixedSqlNode newMixedSqlNode=new MixedSqlNode(contents);
-			 DynamicSqlSource newDynamicSqlSource=new DynamicSqlSource(sqlSessionFactory.getConfiguration(),newMixedSqlNode);
+			 DynamicSqlSource newDynamicSqlSource=new DynamicSqlSource(configuration,newMixedSqlNode);
 			// System.out.println(newDynamicSqlSource.getBoundSql(null).getSql());
 			 
-			MapperBuilderAssistant assistant=new MapperBuilderAssistant(sqlSessionFactory.getConfiguration(),mappedStatement.getResource());
+			MapperBuilderAssistant assistant=new MapperBuilderAssistant(configuration,mappedStatement.getResource());
 
 			assistant.setCurrentNamespace(mappedStatement.getId().substring(0, mappedStatement.getId().lastIndexOf('.')));
 			String parameterMap=null;
@@ -559,6 +579,68 @@ public class MybatisRepository  {
 					 null, null, mappedStatement.getDatabaseId(), mappedStatement.getLang());
 
 		}
+	}
+
+	private void handlerRawSqlSource(String statement,Configuration configuration,MappedStatement mappedStatement,SqlSource sqlSourceOrginal){
+		StaticSqlSource sqlSource=(StaticSqlSource) ReflectionUtils.getFieldValue(sqlSourceOrginal, "sqlSource");
+		String sql=(String) ReflectionUtils.getFieldValue(sqlSource, "sql");
+		 sql=removeOrders(sql);
+		 int fromIndex=sql.toLowerCase().indexOf("from");
+		 if(fromIndex>0){
+			 sql="select count (*) "+sql.substring(fromIndex);
+		 }
+		 
+		
+		//sqlSourceOrginal.getBoundSql(parameterObject)
+		mappedStatement.getParameterMap().getClass();
+		RawSqlSource newRawSqlSource=new RawSqlSource(configuration,sql,mappedStatement.getParameterMap().getType());
+		MapperBuilderAssistant assistant=new MapperBuilderAssistant(configuration,mappedStatement.getResource());
+
+		assistant.setCurrentNamespace(mappedStatement.getId().substring(0, mappedStatement.getId().lastIndexOf('.')));
+		String parameterMap=null;
+		if(mappedStatement.getParameterMap().getId().endsWith("-Inline")){
+			parameterMap=null;
+		} else {
+			parameterMap=mappedStatement.getParameterMap().getId();
+		}
+		
+		assistant.addMappedStatement(statement+"_count", newRawSqlSource, 
+				 mappedStatement.getStatementType(), 
+				 mappedStatement.getSqlCommandType(), 
+				 mappedStatement.getFetchSize(), 
+				 mappedStatement.getTimeout(), 
+				 parameterMap,
+				 mappedStatement.getParameterMap().getType(), 
+				 null, 
+				 Integer.class, 
+				 mappedStatement.getResultSetType(), 
+				 true, false,
+				 false,//resultOrdered,
+				 mappedStatement.getKeyGenerator(), 
+				 null, null, mappedStatement.getDatabaseId(), mappedStatement.getLang());
+	}
+	/**
+	 * 根据已经有的select语句自动构建求总数的sql,注意还要去掉order by等语句 用来提高sql效率
+	 * 
+	 * 现在不是用子查询，只是把select 语句 替换成select count(*)，但是如果使用union或union all的时候就会爆错，这个时候需要使用子查询，这个还没有做
+	 */
+	private void createCountMapperstatement(String statement){
+		Configuration configuration=getSqlSession().getConfiguration();//sqlSessionFactory.getConfiguration();
+		
+		if(configuration.hasStatement(statement+"_count")){
+			return;
+		}
+		MappedStatement mappedStatement=configuration.getMappedStatement(statement);
+
+		SqlSource sqlSourceOrginal=mappedStatement.getSqlSource();//RawSqlSource
+		if(sqlSourceOrginal instanceof RawSqlSource){
+			handlerRawSqlSource(statement,configuration,mappedStatement,sqlSourceOrginal);
+		} else {
+			handlerDynamicSqlSource(statement,configuration,mappedStatement,sqlSourceOrginal);
+		}
+		
+		
+		
 		//System.out.println("============================"+sqlSessionFactory.getConfiguration().hasStatement(statement+"_count"));
 		//System.out.println("============================"+sqlSessionFactory.getConfiguration().getMappedStatement(statement+"_count").getSqlSource().getBoundSql(null).getSql());	
 	  
@@ -583,7 +665,7 @@ public class MybatisRepository  {
 		
 		Map params=pageRequest.getParams();
 		
-		MappedStatement mappedStatement=sqlSessionFactory.getConfiguration().getMappedStatement(statement);
+		MappedStatement mappedStatement=this.getSqlSession().getConfiguration().getMappedStatement(statement);
 
 		//使用动态排序，参数必须是map，如果参数不是map，就不能进行动态排序的判断
 			//只有请求了设置了动态排序，才会去动态排序
@@ -634,7 +716,7 @@ public class MybatisRepository  {
 		//子查询中也可以使用order by（在子查询中先排序，然后取前几位），但是要在查询top-n的时候。一般是指最大的n条记录或着是最小的n条记录。
 		//mysql子查询中可以使用order by
 		//但一般不建议这么做，建议在外面做order by
-		MappedStatement mappedStatement=sqlSessionFactory.getConfiguration().getMappedStatement(statement);
+		MappedStatement mappedStatement=this.getSqlSession().getConfiguration().getMappedStatement(statement);
 
 		SqlSource sqlSourceOrginal=mappedStatement.getSqlSource();
 		SqlNode sqlNode=(SqlNode) ReflectionUtils.getFieldValue(sqlSourceOrginal, "rootSqlNode");
