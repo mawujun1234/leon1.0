@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 import org.dbunit.dataset.DataSetException;
@@ -51,7 +52,7 @@ import com.mawujun.utils.page.WhereInfo;
 public class Repository1Test  extends DbunitBaseRepositoryTest{
 	private String EntityTest_TableName="t_EntityTest";
 	
-	@Autowired
+	@Resource(name="entityTestMapper")
 	EntityTestMapper entityTestMapper;
 	@Autowired
 	DataSource dataSource;
