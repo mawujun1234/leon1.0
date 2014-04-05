@@ -66,6 +66,7 @@
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer" depends-on="sessionFactory">
 		<property name="basePackage" value="com.mawujun.repository1" />
 		<property name="markerInterface" value="com.mawujun.repository1.IRepository" />
+		<property name="annotationClass" value="org.springframework.stereotype.Repository" />
 	</bean>
 		 
 
