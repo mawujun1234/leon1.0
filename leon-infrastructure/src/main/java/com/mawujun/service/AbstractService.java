@@ -17,10 +17,10 @@ public abstract class AbstractService<T extends IdEntity<ID>, ID extends Seriali
 	 * @author mawujun 16064988@qq.com 
 	 * @return
 	 */
-	public abstract IRepository<T,ID> getRepositoryMapper();
+	public abstract IRepository<T,ID> getRepository();
 	
 	public ID create(T entity) {
-		return this.getRepositoryMapper().create(entity);
+		return this.getRepository().create(entity);
 	}
 	
 	/**
@@ -29,32 +29,32 @@ public abstract class AbstractService<T extends IdEntity<ID>, ID extends Seriali
 	 * @param cnd
 	 */
 	public void update(Cnd cnd) {
-		this.getRepositoryMapper().update(cnd);
+		this.getRepository().update(cnd);
 	}
 	/**
 	 * 动态更新，对有值的字段进行更新，即如果字段=null，那就不进行更新
 	 * @param entity
 	 */
 	public void updateIgnoreNull(final T entity) {
-		this.getRepositoryMapper().updateIgnoreNull(entity);
+		this.getRepository().updateIgnoreNull(entity);
 	}
 	
 	
 	public void delete(T entity) {
-		this.getRepositoryMapper().delete(entity);
+		this.getRepository().delete(entity);
 	}
 	public void deleteById(ID id) {
-		this.getRepositoryMapper().deleteById(id);
+		this.getRepository().deleteById(id);
 	}
 	public T get(ID id) {
-		return this.getRepositoryMapper().get(id);
+		return this.getRepository().get(id);
 	}
 	
 	public Serializable[] createBatch(final T... entities) {
-		return this.getRepositoryMapper().createBatch(entities);
+		return this.getRepository().createBatch(entities);
 	}
 	public Serializable[] createBatch(final Collection<T> entities) {
-		return this.getRepositoryMapper().createBatch(entities);
+		return this.getRepository().createBatch(entities);
 	}
 	
 	/**
@@ -64,14 +64,14 @@ public abstract class AbstractService<T extends IdEntity<ID>, ID extends Seriali
 	 * @return
 	 */
 	public int updateBatch(final T... entities) {
-		return this.getRepositoryMapper().updateBatch(entities);
+		return this.getRepository().updateBatch(entities);
 	}
 	public int updateBatch(final Collection<T> entities) {
-		return this.getRepositoryMapper().updateBatch(entities);
+		return this.getRepository().updateBatch(entities);
 	}
 	
 	public int deleteAll() {
-		return this.getRepositoryMapper().deleteAll();
+		return this.getRepository().deleteAll();
 	}
 	/**
 	 * 注意，使用Cnd的地方表示删除的是泛型指定的类。
@@ -80,13 +80,13 @@ public abstract class AbstractService<T extends IdEntity<ID>, ID extends Seriali
 	 * @return
 	 */
 	public int deleteBatch(Cnd cnd) {
-		return this.getRepositoryMapper().deleteBatch(cnd);
+		return this.getRepository().deleteBatch(cnd);
 	}
 	public int deleteBatch(final Collection<T> entities) {
-		return this.getRepositoryMapper().deleteBatch(entities);
+		return this.getRepository().deleteBatch(entities);
 	}
 	public int deleteBatch(final T... entities) {
-		return this.getRepositoryMapper().deleteBatch(entities);
+		return this.getRepository().deleteBatch(entities);
 	}
 	public int deleteBatch(final ID... IDS) {
 		return this.deleteBatch(IDS);

@@ -2,10 +2,10 @@ package com.mawujun.menu;
 
 import org.springframework.stereotype.Repository;
 
-import com.mawujun.repository.BaseRepository;
+import com.mawujun.repository1.IRepository;
 
 @Repository
-public class MenuRepository extends BaseRepository<Menu, String> {
+public interface MenuRepository extends IRepository<Menu, String> {
 
 
 }

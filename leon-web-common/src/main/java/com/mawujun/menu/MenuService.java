@@ -6,16 +6,12 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mawujun.exception.BusinessException;
-import com.mawujun.exception.DefaulExceptionCode;
-import com.mawujun.fun.Fun;
-import com.mawujun.repository.BaseRepository;
-import com.mawujun.service.BaseService;
-import com.mawujun.utils.help.ReportCodeHelper;
-import com.mawujun.utils.page.WhereInfo;
+import com.mawujun.repository1.IRepository;
+import com.mawujun.service.AbstractService;
 
 @Service
 @Transactional(propagation=Propagation.REQUIRED)
-public class MenuService extends BaseService<Menu, String> {
+public class MenuService extends AbstractService<Menu, String> {
 	
 	@Autowired
 	private MenuRepository menuRepository;
@@ -23,14 +19,20 @@ public class MenuService extends BaseService<Menu, String> {
 	@Autowired
 	private MenuItemService menuItemService;
 
+//	@Override
+//	public BaseRepository<Menu, String> getRepository() {
+//		// TODO Auto-generated method stub
+//		return menuRepository;
+//	}
+//	
 	@Override
-	public BaseRepository<Menu, String> getRepository() {
+	public IRepository<Menu, String> getRepository() {
 		// TODO Auto-generated method stub
 		return menuRepository;
 	}
 	
-	public void create(Menu entity) {
-		super.create(entity);
+	public String create(Menu entity) {
+		return super.create(entity);
 
 //		MenuItem menuitem=new MenuItem();
 //		menuitem.setText(entity.getText());
@@ -40,7 +42,7 @@ public class MenuService extends BaseService<Menu, String> {
 //		menuItemService.create(menuitem);
 //		
 		//entity.setRootId(menuitem.getId());
-		menuRepository.update(entity);
+		//menuRepository.update(entity);
 	}
 	
 	public void delete(Menu entity) {
@@ -49,5 +51,7 @@ public class MenuService extends BaseService<Menu, String> {
 		}
 		getRepository().delete(entity);
 	}
+
+
 
 }
