@@ -24,16 +24,18 @@ public interface IHibernateDao <T, ID extends Serializable>{
 	 * @param cnd
 	 */
 	public void update(Cnd cnd);
-	
-	public void delete(T entity);
-	public void deleteById(ID id);
-	public T get(ID id);
-	
 	/**
 	 * 动态更新，对有值的字段进行更新，即如果字段=null，那就不进行更新
 	 * @param entity
 	 */
 	public void updateIgnoreNull(final T entity);
+	
+	
+	public void delete(T entity);
+	public void deleteById(ID id);
+	public T get(ID id);
+	
+	
 	
 	
 	
