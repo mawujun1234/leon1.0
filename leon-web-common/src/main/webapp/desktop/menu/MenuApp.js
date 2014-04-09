@@ -30,7 +30,7 @@ Ext.onReady(function(){
 		region:'center'
 	});
 	tree.getStore().getProxy().extraParams={menuId:'default'};
-	tree.getStore().load({node:tree.getRootNode( )});
+	//tree.getStore().load({node:tree.getRootNode( )});
 	tree.on('itemclick',function(view,record,item,index){
 
 		var basicFoem=form.getForm();
