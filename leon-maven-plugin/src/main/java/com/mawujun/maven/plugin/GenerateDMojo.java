@@ -26,10 +26,11 @@ import java.io.IOException;
 /**
  * 用来生成D类的代码，可以在开发当中直接使用D。User。name这样引用属性
  *
- * @goal generateD
+ * @goal touch 
  * 
  * @phase process-sources
  */
+@Mojo( name = "sayhi")
 public class GenerateDMojo
     extends AbstractMojo
 {
@@ -43,6 +44,8 @@ public class GenerateDMojo
     public void execute()
         throws MojoExecutionException
     {
+    	getLog().info("=============================================");
+    	System.out.println("=============================================");
         File f = outputDirectory;
 
         if ( !f.exists() )
