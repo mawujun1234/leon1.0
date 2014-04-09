@@ -52,20 +52,48 @@
 		</property>
 	</bean>
 -->
-	<!-- 这里也可以引用web.xml中的${spring.profiles.active}，测试成功。
-	${profiles.active}是maven默认定义的key值-->
-	<context:property-placeholder location="classpath:leon.${spring.profiles.active}.properties,classpath:dialet_config.properties" />  
-	
-	<bean id="sqlSessionFactory" class="com.mawujun.repository1.MySqlSessionFactoryBean" depends-on="sessionFactory">
-		<property name="dataSource" ref="dataSource" />	
-		<property name="sessionFactory" ref="sessionFactory" />	
+
+<!--  -->
+	<bean id="sqlSessionFactory" class="com.mawujun.repository1.MySqlSessionFactoryBean"
+		depends-on="sessionFactory">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sessionFactory" ref="sessionFactory" />
+
+		<property name="configLocation" value="classpath:Configuration.xml" />
+		<property name="plugins">
+			<list>
+				<bean class="com.mawujun.repository.mybatis.OffsetLimitInterceptor">
+					<property name="dialect">
+						<bean class="${${jdbc.dbName}.mybatis.dialet}"></bean>
+					</property>
+				</bean>
+			</list>
+		</property>
+
+		<property name="databaseIdProvider">
+			<bean class="com.mawujun.repository.mybatis.DatabaseIdProviderCustom">
+				<property name="databaseId" value="${jdbc.dbName}"></property>
+			</bean>
+		</property>
+		<property name="mapperLocations">
+			<list>
+				<value>classpath:/**/*_${jdbc.dbName}_Mapper.xml</value>
+				<value>classpath:/**/*_common_Mapper.xml</value>
+			</list>
+		</property>
 	</bean>
-	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer" depends-on="sessionFactory">
+	<!-- 自动搜索IRepository的dao层类和相应的mapper.xml文件 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer" >
 		<property name="basePackage" value="com.mawujun" />
 		<property name="markerInterface" value="com.mawujun.repository1.IRepository" />
 		<property name="annotationClass" value="org.springframework.stereotype.Repository" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property> 
 	</bean>
-<!--
+	
+	<!-- 这里也可以引用web.xml中的${spring.profiles.active}，测试成功。
+	${profiles.active}是maven默认定义的key值--> 
+	<context:property-placeholder location="classpath:leon.${spring.profiles.active}.properties,classpath:dialet_config.properties" /> 
+<!--这个不能删除，自动分页插件的配置和数据库的切换支持，因为是做平台，所以不同的数据库可能sql也是不一样的
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"  lazy-init="true">
 				<property name="dataSource" ref="dataSource" />
 				<property name="configLocation" value="classpath:Configuration.xml" />
@@ -178,6 +206,7 @@
 			</property>
 	</bean>
 	
+	<!-- 用于菜单的扩展的时候，需要自己手写sql的时候 -->
 	<bean name="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<constructor-arg ref="dataSource"></constructor-arg>
 	</bean>

@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.repository.idEntity.IdEntity;
@@ -11,6 +14,7 @@ import com.mawujun.repository1.IRepository;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 
+@Transactional(propagation=Propagation.REQUIRED)
 public abstract class AbstractService<T extends IdEntity<ID>, ID extends Serializable> {
 	/**
 	 * 用来返回默认的Repository
@@ -30,6 +34,9 @@ public abstract class AbstractService<T extends IdEntity<ID>, ID extends Seriali
 	 */
 	public void update(Cnd cnd) {
 		this.getRepository().update(cnd);
+	}
+	public void update(T entity) {
+		this.getRepository().update(entity);
 	}
 	/**
 	 * 动态更新，对有值的字段进行更新，即如果字段=null，那就不进行更新
@@ -89,18 +96,18 @@ public abstract class AbstractService<T extends IdEntity<ID>, ID extends Seriali
 		return this.getRepository().deleteBatch(entities);
 	}
 	public int deleteBatch(final ID... IDS) {
-		return this.deleteBatch(IDS);
+		return this.getRepository().deleteBatch(IDS);
 	}
 	
 	
 	public Long queryCount(Cnd cnd) {
-		return this.queryCount(cnd);
+		return this.getRepository().queryCount(cnd);
 	}
 	public Object queryMax(String property,Cnd cnd) {
-		return this.queryMax(property, cnd);
+		return this.getRepository().queryMax(property, cnd);
 	}
 	public Object queryMin(String property,Cnd cnd) {
-		return this.queryMin(property, cnd);
+		return this.getRepository().queryMin(property, cnd);
 	}
 	/**
 	 * 返回第一个对象
@@ -109,19 +116,19 @@ public abstract class AbstractService<T extends IdEntity<ID>, ID extends Seriali
 	 * @return
 	 */
 	public T queryUnique(Cnd cnd) {
-		return this.queryUnique(cnd);
+		return this.getRepository().queryUnique(cnd);
 	}
 	public <M> M queryUnique(Cnd cnd,Class<M> classM) {
-		return this.queryUnique(cnd, classM);
+		return this.getRepository().queryUnique(cnd, classM);
 	}
 	
 	public List<T> queryAll() {
-		return this.queryAll();
+		return this.getRepository().queryAll();
 	}
 	public List<T> query(Cnd cnd) {
-		return this.query(cnd);
+		return this.getRepository().query(cnd);
 	}
 	public QueryResult<T> queryPage(final PageRequest pageRequest) {
-		return this.queryPage(pageRequest);
+		return this.getRepository().queryPage(pageRequest);
 	}
 }

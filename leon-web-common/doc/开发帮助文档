@@ -1,0 +1,14 @@
+打开h2数据库的开发环境的时候地址填写
+  因为是使用h2的文件形式，所以要指定文件jdbc:h2:file:E:\eclipse\workspace\leon\leon-web-common\leon;AUTO_SERVER=TRUE，具体查看“a总括.docx
+持久层开发
+    继承IRepository,例如MenuItemRepository，如果需要自己写sql，就再创建一个mybatis文件和MenuItemRepository同名，MenuItemRepository.xml注意里面的namespace就是MenuItemRepository的全
+    限定类名。
+    如果默认的方法不满足你的使用，就在MenuItemRepository这个借口类里面顶一个方法，同时在xml文件中定义一个同名的statement就可以了
+ 
+service层开发
+    只需要继承AbstractService就可以了。
+    
+领域层
+             所有类要继承IdEntity或其子类
+    Boolean字段使用    @org.hibernate.annotations.Type(type="yes_no"),数据库存储为Y或N
+             基本类型都使用包装类，例如int使用Integer，float使用Float

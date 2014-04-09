@@ -25,15 +25,11 @@ Ext.define('Leon.desktop.Desktop', {
 
  		me.menubarDock=me.menubarDock||"top";
  		me.taskbarDock=me.taskbarDock||"bottom";
-        //alert(me.menubarDock);
- 		//me.menubarDock="bottom";
-        var menuItems=['-','-'];
-        //me.returnMenuItem(menuItems,me.menuItems);
+
         
         me.menuCache={};//用来根据url快速导航到按钮的
-        me.initMenuItemEvent(me.menuItems);
-        menuItems=menuItems.concat(me.menuItems);
-        delete me.menuItems;
+         
+        
         
         var switchUsers=null;//me.switchUsers;
         if(me.switchUsers){
@@ -55,8 +51,9 @@ Ext.define('Leon.desktop.Desktop', {
         	dock:me.menubarDock,
         	desktop:me,
         	quickstarts:me.quickstarts,
-        	items:menuItems
+        	items:me.menuItems
         });
+        delete me.menuItems;
         delete me.quickstarts;
 
         var taskbar=Ext.create('Leon.desktop.Taskbar',{
@@ -190,49 +187,72 @@ Ext.define('Leon.desktop.Desktop', {
 			}
 		});
 	},
-	initMenuItemEvent:function(menuItems){
-		var me=this;
-		if(!menuItems){
-			return;
-		}
-		for(var i=0;i<menuItems.length;i++){
-        		var model=menuItems[i];
-        		
-        		model.menuItemId=model.id;
-        		delete model.id;
-
-        		model.link_url=model.url;
-        		delete model.url;
-
-        		if(model.link_url){	
-        			model.handler=function(btn){
-		        		me.createWindow({
-		        			title:btn.text,
-		        			menuItemId:btn.menuItemId,
-		        			funId:btn.funId,
-		        			url:btn.link_url,
-		        			iconCls:btn.iconCls
-		        		});
-	        		}
-        		}
-        		if(model.scripts){
-        			model.plugins=[{ptype:'menuplugin',scripts:model.scripts}];
-        		}
-        		if(model.menu && model.menu.items && model.menu.items.length>0){
-        			if(model.link_url){
-        				model.xtype= 'splitbutton';
-        			}
-        			
-        			me.initMenuItemEvent(model.menu.items);
-        		}
-        		
-//        		if(model.menu && model.menu.items && model.menu.items.length>0){
-//        			me.initMenuItemEvent(model.menu.items);
-//        		} else {
-//        			model.plugins=[{ptype:'menuplugin',scripts:model.scripts}];
-//        			//model.xtype= 'splitbutton';
-//        			//alert(menu.url+"===");
-//	        		model.handler=function(btn){
+	
+	
+//	menuAjaxShow:function(button){
+//    		//alert(button.text);
+//    		//alert(menu.items.getCount());
+//			var me=this;
+//    		if( button.menuLoaded){
+//    			button.showMenu();
+//    			return;
+//    		}
+//    		var menu=button.menu;
+//    		//console.log(button.text);
+//    		Ext.Ajax.request({    
+//		   	    url:Ext.ContextPath+"/menuItem/query", 
+//		   	    params:{id:button.menuItemId},
+//		   	    method:'post',
+//		        success : function(response, options){
+//		               var resp = Ext.decode(response.responseText);
+//		               //updateItems(resp.navi);
+//		               //console.log();
+//		               menu.removeAll();
+//		               //me.updateItems(menu,resp.root);
+//		               
+////		               for(var m in resp.root){
+////		    			var item=resp.root[m];
+////		    			if(!item.leaf){
+////		    				item.menu=[{text:'正在加载...'}];
+////		    				item.listeners={
+////		    					//menushow:me.menuAjaxShow,
+////		    					//focus:me.menuAjaxShow
+////		    				}
+////		    			} else {
+////		    				//item.handler=me.naviAction;
+////		    			}
+////		    			
+////					}
+//		            //eagerInitMenuItem
+//		    		menu.insert(2, resp.root);
+//    				button.showMenu();
+//		            button.menuLoaded=true;
+//		       }, 
+//		       failure : function(response,options){
+//		               Ext.Msg.alert("错误","加载子菜单失败！")
+//		       }
+//			 });
+//    	},
+//		/**
+//	 * 一次性初始化所有的菜单项
+//	 * @param {} menuItems
+//	 */
+//	eagerInitMenuItem:function(menuItems){
+//		var me=this;
+//		if(!menuItems){
+//			return;
+//		}
+//		for(var i=0;i<menuItems.length;i++){
+//        		var model=menuItems[i];
+//        		
+//        		model.menuItemId=model.id;
+//        		delete model.id;
+//
+//        		model.link_url=model.url;
+//        		delete model.url;
+//				//如果有url，就表示可以点击
+//        		if(model.link_url){	
+//        			model.handler=function(btn){
 //		        		me.createWindow({
 //		        			title:btn.text,
 //		        			menuItemId:btn.menuItemId,
@@ -242,8 +262,79 @@ Ext.define('Leon.desktop.Desktop', {
 //		        		});
 //	        		}
 //        		}
-        	}
-	},
+//        		if(model.scripts){
+//        			model.plugins=[{ptype:'menuplugin',scripts:model.scripts}];
+//        		}
+//        		
+//        		//如果不是叶子节点，就开始异步加载下级节点
+//        		if(!model.leaf){
+//        			//console.log(model.text);
+//    				model.menu=[{text:'正在加载...'}];
+//    				
+//    				model.listeners={
+//    					mouseover:me.menuAjaxShow
+////    					,mouseout:function(button){
+////    						console.log(button.mouseMoveOut);
+////    						if(button.mouseMoveOut){
+////    							button.hideMenu();button.blur();
+////    							button.mouseMoveOut=true;
+////    						}
+////    						//button.hideMenu();
+////    						//button.blur();
+////    					}
+////    					,menutriggerover:function(button){
+////    						console.log(1);
+////    						button.mouseMoveOut=false;
+////    					}
+//    				}
+//    				//如果有下级菜单就显示为split不tton
+//        			model.xtype= 'splitbutton';
+//    			} 
+//        	}
+//	},
+	
+//	/**
+//	 * 一次性初始化所有的菜单项
+//	 * @param {} menuItems
+//	 */
+//	eagerInitMenuItem:function(menuItems){
+//		var me=this;
+//		if(!menuItems){
+//			return;
+//		}
+//		for(var i=0;i<menuItems.length;i++){
+//        		var model=menuItems[i];
+//        		
+//        		model.menuItemId=model.id;
+//        		delete model.id;
+//
+//        		model.link_url=model.url;
+//        		delete model.url;
+//
+//        		if(model.link_url){	
+//        			model.handler=function(btn){
+//		        		me.createWindow({
+//		        			title:btn.text,
+//		        			menuItemId:btn.menuItemId,
+//		        			funId:btn.funId,
+//		        			url:btn.link_url,
+//		        			iconCls:btn.iconCls
+//		        		});
+//	        		}
+//        		}
+//        		if(model.scripts){
+//        			model.plugins=[{ptype:'menuplugin',scripts:model.scripts}];
+//        		}
+//        		if(model.menu && model.menu.items && model.menu.items.length>0){
+//        			if(model.link_url){
+//        				model.xtype= 'splitbutton';
+//        			}
+//        			
+//        			me.eagerInitMenuItem(model.menu.items);
+//        		}
+//
+//        	}
+//	},
 
     createWindow:function(config){
     	if(!config.url){

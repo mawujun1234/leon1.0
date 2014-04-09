@@ -7,6 +7,7 @@ public class MenuItemVO {
 	private String id;
 	private String code;//帮助记码
 	private String text;
+	private Boolean leaf;
 	private String javaClass;
 	private String scripts;
 	private String iconCls;
@@ -110,6 +111,14 @@ public class MenuItemVO {
 
 	public void setIconCls32(String iconCls32) {
 		this.iconCls32 = iconCls32;
+	}
+
+	public Boolean getLeaf() {
+		return leaf;
+	}
+
+	public void setLeaf(Boolean leaf) {
+		this.leaf = leaf;
 	}
 
 //	public String getHandler() {

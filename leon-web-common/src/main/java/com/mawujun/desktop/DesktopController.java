@@ -62,7 +62,7 @@ public class DesktopController {
 		}
 		
 		String menuId="default";
-		List<MenuItemVO> menuItems=menuItemService.query4Desktop(menuId,userDetail.isAdmin());
+		List<MenuItemVO> menuItems=menuItemService.query4Desktop(menuId,userDetail.isAdmin(),null);
 		//DesktopConfig config=new DesktopConfig();
 		desktopConfig.setMenuItems(menuItems);
 		

@@ -31,11 +31,16 @@ public class MenuItemController {
 	@RequestMapping("/menuItem/query")
 	@ResponseBody
 	public List<MenuItem> query(String id,String menuId){
-		WhereInfo whereinfo=WhereInfo.parse("parent.id", "root".equals(id)?null:id);
-		WhereInfo menuIdwhereinfo=WhereInfo.parse("menu.id", menuId);
-		List<MenuItem> menuItems=menuItemService.query(whereinfo,menuIdwhereinfo);
+		//WhereInfo whereinfo=WhereInfo.parse("parent.id", "root".equals(id)?null:id);
+		//WhereInfo menuIdwhereinfo=WhereInfo.parse("menu.id", menuId);
+		//List<MenuItem> menuItems=menuItemService.query(whereinfo,menuIdwhereinfo);
+		
+		if(menuId==null){
+			menuId="default";
+		}
+		List<MenuItem> menuItems=menuItemService.query(Cnd.select().andEquals("menu.id", menuId).andEquals("parent.id", "root".equals(id)?null:id));
 
-		JsonConfigHolder.setFilterPropertys("children",MenuItem.class);
+		JsonConfigHolder.setFilterPropertys("children,parent,menu",MenuItem.class);
 		return menuItems;
 	}
 	
@@ -48,8 +53,9 @@ public class MenuItemController {
 	@ResponseBody
 	public List<MenuItem> queryAll(String menuId){		
 		//这里没有进行上下级的组装，所以界面上出现了3个菜单
-		WhereInfo menuIdwhereinfo=WhereInfo.parse("menu.id", menuId);
-		List<MenuItem> funes=menuItemService.query(menuIdwhereinfo);
+		//WhereInfo menuIdwhereinfo=WhereInfo.parse("menu.id", menuId);
+		//List<MenuItem> funes=menuItemService.query(menuIdwhereinfo);
+		List<MenuItem> funes=menuItemService.query(Cnd.select().andEquals("menu.id", menuId));
 		return funes;
 	}
 	@RequestMapping("/menuItem/load")
@@ -82,7 +88,7 @@ public class MenuItemController {
 	public MenuItem update(HttpServletRequest request,@RequestBody MenuItem menuItem) throws IOException{	
 		appenPngCls(request,menuItem.getIconCls(),menuItem.getIconCls32());//顺序很重要
 		
-		menuItem=menuItemService.update(menuItem);
+		menuItemService.update(menuItem);
 		
 		JsonConfigHolder.setFilterPropertys("children",MenuItem.class);
 		 return menuItem;
@@ -101,7 +107,7 @@ public class MenuItemController {
 	 * @throws IOException 
 	 */
 	public void appenPngCls(HttpServletRequest request,String iconCls,String iconCls32) throws IOException{
-		int count=menuItemService.queryCount(Cnd.select().andEquals("iconCls", iconCls));
+		long count=menuItemService.queryCount(Cnd.select().andEquals("iconCls", iconCls));
 		
 		if(count==0){
 			String cssPath=request.getSession().getServletContext().getRealPath("/common/pngs.css");

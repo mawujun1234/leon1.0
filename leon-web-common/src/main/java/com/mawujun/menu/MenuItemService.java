@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +18,8 @@ import com.mawujun.fun.FunService;
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.repository.mybatis.ParamUtils;
+import com.mawujun.repository1.IRepository;
+import com.mawujun.service.AbstractService;
 import com.mawujun.user.login.UserDetailsImpl;
 import com.mawujun.utils.BeanUtils;
 import com.mawujun.utils.StringUtils;
@@ -25,7 +28,7 @@ import com.mawujun.utils.page.WhereInfo;
 
 @Service
 @Transactional(propagation=Propagation.REQUIRED)
-public class MenuItemService extends BaseRepository<MenuItem, String> {
+public class MenuItemService extends AbstractService<MenuItem, String> {//extends BaseRepository<MenuItem, String> {
 	@Autowired
 	private FunService funService;
 	
@@ -33,13 +36,22 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 	private MenuService menuService;
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	
+	@Autowired
+	private MenuItemRepository menuItemRepository;
+	
+	@Override
+	public MenuItemRepository getRepository() {
+		// TODO Auto-generated method stub
+		return menuItemRepository;
+	}
 
 	
-	public MenuItem create(MenuItem entity) {
+	public String create(MenuItem entity) {
 		Object reportCode=null;
 		if(entity.getParent()!=null){
-			WhereInfo whereinfo=WhereInfo.parse("parent.id", entity.getParent().getId());
-			reportCode=this.queryMax("reportCode",whereinfo);
+			//WhereInfo whereinfo=WhereInfo.parse("parent.id", entity.getParent().getId());
+			reportCode=this.getRepository().queryMax("reportCode",Cnd.where().andEquals("parent.id", entity.getParent().getId()));
 		}
 		//获取父节点的reportcode
 		
@@ -53,24 +65,24 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 			entity.getParent().setLeaf(false);
 		}
 		
-		return super.create(entity);
+		return this.getRepository().create(entity);
 		
 		
 	}
-	public MenuItem update(MenuItem entity) {
+	public void update(MenuItem entity) {
 		MenuItem exists=this.get(entity.getId());
 		BeanUtils.copyProperties(entity, exists, new String[]{"parent", "menu","fun","children"});
 		if(entity.getFun()!=null){
 			exists.setFun(funService.get(entity.getFun().getId()));
 		}
 		entity=exists;
-		return super.update(exists);
+		super.update(exists);
 		
 	}
-	public MenuItem delete(MenuItem entity) {
+	public void delete(MenuItem entity) {
 		MenuItem item=this.get(entity.getId());
 
-		return super.delete(item);
+		super.delete(item);
 	}
 	public MenuItem create(String funId,String parentId,String menuId) {
 		//throw new BusinessException("c测试");
@@ -101,11 +113,66 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 	}
 
 	
-	public List<MenuItemVO> query4Desktop(String menuId,Boolean isAdmin) {
+//	public List<MenuItemVO> query4Desktop(String menuId,Boolean isAdmin) {
+//
+//		//如果是管理员，可以获查看到所有的菜单
+//		//List<String> menuItemLeaf = super.queryList("query4Desktop", ParamUtils.init().add("menu_id", menuId).add("isAdmin", isAdmin),String.class);
+//		List<String> menuItemLeaf =this.getRepository().query4Desktop(ParamUtils.init().add("menu_id", menuId).add("isAdmin", isAdmin));
+//
+//		Map<String,MenuItemVO> parentKeys=new HashMap<String,MenuItemVO>();
+//		List<MenuItemVO> menuItems = new ArrayList<MenuItemVO>();
+//		for (Object menuItemIdObj: menuItemLeaf) {
+//			String menuItemId=(String)menuItemIdObj;
+//
+//			MenuItem leaf=this.get(menuItemId);
+//			
+//			if(parentKeys.get(menuItemId) !=null){//表示这个功能能已经添加过了
+//				continue;
+//			}
+//
+//			MenuItemVO vo=BeanUtils.copyOrCast(leaf, MenuItemVO.class);
+//			vo.setFunId(leaf.getFun()!=null?leaf.getFun().getId():null);
+//
+//			//对菜单进行二次开发==============
+//			extenMenuItem(leaf,vo);
+//			//===========================
+//			
+//			if(leaf.getParent()!=null){
+//				List<MenuItem> ancestores=leaf.findAncestors();
+//				int i=0;
+//				for(MenuItem ancestor:ancestores){
+//					MenuItemVO ancestorNew=null;
+//					if(parentKeys.containsKey(ancestor.getId())){
+//						ancestorNew=parentKeys.get(ancestor.getId());
+//					} else {
+//						ancestorNew=new MenuItemVO();
+//						BeanUtils.copyOrCast(ancestor, ancestorNew);
+//						parentKeys.put(ancestorNew.getId(), ancestorNew);
+//					}
+//					if(i==0){			
+//						ancestorNew.addItems(vo);
+//					} else {
+//						ancestorNew.addItems(parentKeys.get(ancestores.get(i-1).getId()));
+//					}
+//					i++;
+//					if(i==ancestores.size() && !menuItems.contains(ancestorNew)){
+//						menuItems.add(ancestorNew);
+//					}
+//				}
+//			} else {		
+//				menuItems.add(vo);
+//				parentKeys.put(vo.getId(), vo);
+//			}
+//			
+//		}
+//		return menuItems;
+//	}
+	
+	public List<MenuItemVO> query4Desktop(String menuId,Boolean isAdmin,String parentId) {
 
 		//如果是管理员，可以获查看到所有的菜单
-		List<String> menuItemLeaf = super.queryList("query4Desktop", ParamUtils.init().add("menu_id", menuId).add("isAdmin", isAdmin)
-				,String.class);
+		//List<String> menuItemLeaf = super.queryList("query4Desktop", ParamUtils.init().add("menu_id", menuId).add("isAdmin", isAdmin),String.class);
+		List<String> menuItemLeaf =this.getRepository().query4Desktop(ParamUtils.init().add("menu_id", menuId).add("isAdmin", isAdmin).addIf("parent_id", parentId));
 
 		Map<String,MenuItemVO> parentKeys=new HashMap<String,MenuItemVO>();
 		List<MenuItemVO> menuItems = new ArrayList<MenuItemVO>();
@@ -124,33 +191,34 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 			//对菜单进行二次开发==============
 			extenMenuItem(leaf,vo);
 			//===========================
+			menuItems.add(vo);
 			
-			if(leaf.getParent()!=null){
-				List<MenuItem> ancestores=leaf.findAncestors();
-				int i=0;
-				for(MenuItem ancestor:ancestores){
-					MenuItemVO ancestorNew=null;
-					if(parentKeys.containsKey(ancestor.getId())){
-						ancestorNew=parentKeys.get(ancestor.getId());
-					} else {
-						ancestorNew=new MenuItemVO();
-						BeanUtils.copyOrCast(ancestor, ancestorNew);
-						parentKeys.put(ancestorNew.getId(), ancestorNew);
-					}
-					if(i==0){			
-						ancestorNew.addItems(vo);
-					} else {
-						ancestorNew.addItems(parentKeys.get(ancestores.get(i-1).getId()));
-					}
-					i++;
-					if(i==ancestores.size() && !menuItems.contains(ancestorNew)){
-						menuItems.add(ancestorNew);
-					}
-				}
-			} else {		
-				menuItems.add(vo);
-				parentKeys.put(vo.getId(), vo);
-			}
+//			if(leaf.getParent()!=null){
+//				List<MenuItem> ancestores=leaf.findAncestors();
+//				int i=0;
+//				for(MenuItem ancestor:ancestores){
+//					MenuItemVO ancestorNew=null;
+//					if(parentKeys.containsKey(ancestor.getId())){
+//						ancestorNew=parentKeys.get(ancestor.getId());
+//					} else {
+//						ancestorNew=new MenuItemVO();
+//						BeanUtils.copyOrCast(ancestor, ancestorNew);
+//						parentKeys.put(ancestorNew.getId(), ancestorNew);
+//					}
+//					if(i==0){			
+//						ancestorNew.addItems(vo);
+//					} else {
+//						ancestorNew.addItems(parentKeys.get(ancestores.get(i-1).getId()));
+//					}
+//					i++;
+//					if(i==ancestores.size() && !menuItems.contains(ancestorNew)){
+//						menuItems.add(ancestorNew);
+//					}
+//				}
+//			} else {		
+//				menuItems.add(vo);
+//				parentKeys.put(vo.getId(), vo);
+//			}
 			
 		}
 		return menuItems;
@@ -178,14 +246,14 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 	}
 	
 	public void initCache(){
-		List<MenuItem> menuItems=super.queryAll();//super.query(whereinfo);
+		List<MenuItem> menuItems=super.queryAll();
 		for(MenuItem menuItem:menuItems){
 			//if(fun.getFunEnum()==FunEnum.fun){
-			super.initLazyProperty(menuItem.getMenu());
-			super.initLazyProperty(menuItem.getParent());
-			//menuItem.getChildren().size();
-			//super.initLazyProperty(menuItem.getChildren());
-			//}	
+			//super.initLazyProperty(menuItem.getMenu());
+			//super.initLazyProperty(menuItem.getParent());
+			
+			Hibernate.initialize(menuItem.getMenu());
+			Hibernate.initialize(menuItem.getParent());
 		}
 	}
 	/**
@@ -197,12 +265,14 @@ public class MenuItemService extends BaseRepository<MenuItem, String> {
 	 */
 	public MenuItemVO queryMenuItem(String jspUrl,String menuId){	
 		Map params=ParamUtils.init().add("jspUrl", jspUrl).add("menuId", menuId);
-		List<MenuItemVO> menuItems=super.queryList("queryMenuItem", params, MenuItemVO.class);
+		//List<MenuItemVO> menuItems=super.queryList("queryMenuItem", params, MenuItemVO.class);
+		List<MenuItemVO> menuItems=this.getRepository().queryMenuItem(params);
 		if(menuItems==null || menuItems.size()==0){
 			return null;
 		} else {
 			return menuItems.get(0);
 		}
 	}
+
 
 }
