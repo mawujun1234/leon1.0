@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mawujun.controller.spring.mvc.JsonConfigHolder;
 import com.mawujun.icon.IconUtils;
 import com.mawujun.repository.cnd.Cnd;
+import com.mawujun.utils.M;
 import com.mawujun.utils.page.WhereInfo;
 
 @Controller
@@ -38,7 +39,9 @@ public class MenuItemController {
 		if(menuId==null){
 			menuId="default";
 		}
-		List<MenuItem> menuItems=menuItemService.query(Cnd.select().andEquals("menu.id", menuId).andEquals("parent.id", "root".equals(id)?null:id));
+		//M.MenuItem.menu_id
+		//List<MenuItem> menuItems=menuItemService.query(Cnd.select().andEquals("menu.id", menuId).andEquals("parent.id", "root".equals(id)?null:id));
+		List<MenuItem> menuItems=menuItemService.query(Cnd.select().andEquals(M.MenuItem.menu_id, menuId).andEquals(M.MenuItem.parent_id, "root".equals(id)?null:id));
 
 		JsonConfigHolder.setFilterPropertys("children,parent,menu",MenuItem.class);
 		return menuItems;
@@ -55,7 +58,7 @@ public class MenuItemController {
 		//这里没有进行上下级的组装，所以界面上出现了3个菜单
 		//WhereInfo menuIdwhereinfo=WhereInfo.parse("menu.id", menuId);
 		//List<MenuItem> funes=menuItemService.query(menuIdwhereinfo);
-		List<MenuItem> funes=menuItemService.query(Cnd.select().andEquals("menu.id", menuId));
+		List<MenuItem> funes=menuItemService.query(Cnd.select().andEquals(M.MenuItem.menu_id, menuId));
 		return funes;
 	}
 	@RequestMapping("/menuItem/load")
@@ -107,7 +110,7 @@ public class MenuItemController {
 	 * @throws IOException 
 	 */
 	public void appenPngCls(HttpServletRequest request,String iconCls,String iconCls32) throws IOException{
-		long count=menuItemService.queryCount(Cnd.select().andEquals("iconCls", iconCls));
+		long count=menuItemService.queryCount(Cnd.select().andEquals(M.MenuItem.iconCls, iconCls));
 		
 		if(count==0){
 			String cssPath=request.getSession().getServletContext().getRealPath("/common/pngs.css");

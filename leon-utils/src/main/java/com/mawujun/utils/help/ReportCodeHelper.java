@@ -6,7 +6,6 @@ import org.apache.commons.lang.StringUtils;
 
 import com.mawujun.utils.ArrayUtils;
 
-import javassist.expr.NewArray;
 
 /**
  * 用于生产0001-0001-0002这种方式的数据

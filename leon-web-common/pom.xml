@@ -13,7 +13,6 @@
 	<name>leon-web-common Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 
-
 	<build>
 		<!-- 进行profile的切换 -->
 		<resources>
@@ -22,8 +21,7 @@
 				<filtering>true</filtering>
 			</resource>
 		</resources>
-		
-		<pluginManagement> 
+
 		<plugins>
 		 <plugin>
 	        <groupId>org.apache.maven.plugins</groupId>
@@ -98,7 +96,26 @@
 				<groupId>com.mawujun</groupId>
 				<artifactId>leon-maven-plugin</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
-				<!-- -->
+				<configuration>
+					<classpathDirectorys>
+						<classpathDirectory>${project.build.outputDirectory}</classpathDirectory>
+						<classpathDirectory>${basedir}\..\leon-infrastructure\target\classes</classpathDirectory>
+						<classpathDirectory>${basedir}\..\leon-utils\target\classes</classpathDirectory>
+						<!-- 必须添加，和annotationClassName对应的，不然就找不到 annotationClassName指定的注解-->
+						<!----><classpathDirectory>${basedir}\lib\hibernate-jpa-2.0-api-1.0.1.Final.jar</classpathDirectory>
+					</classpathDirectorys>
+					<packageNames>
+						<packageName>com.mawujun</packageName>
+					</packageNames>
+					<excludePackageNames>
+						<excludePackageName>com.mawujun.monitor.system</excludePackageName>
+					</excludePackageNames>
+					
+					<annotationClassName>javax.persistence.Entity</annotationClassName>
+					<targetMDir>${basedir}\src\main\java\com\mawujun\utils</targetMDir>
+					
+				</configuration>
+				<!--
 				<executions>  
 		           <execution>  
 		            <phase>compile</phase>  
@@ -107,10 +124,10 @@
 		            </goals>  
 		          </execution>  
 		        </executions> 
+		         -->
 			</plugin>
  			
 		</plugins>
-		 </pluginManagement>
 	</build>
 	<dependencies>
 		<dependency>
