@@ -43,7 +43,8 @@ public class MenuItemController {
 		//List<MenuItem> menuItems=menuItemService.query(Cnd.select().andEquals("menu.id", menuId).andEquals("parent.id", "root".equals(id)?null:id));
 		List<MenuItem> menuItems=menuItemService.query(Cnd.select().andEquals(M.MenuItem.menu_id, menuId).andEquals(M.MenuItem.parent_id, "root".equals(id)?null:id));
 
-		JsonConfigHolder.setFilterPropertys("children,parent,menu",MenuItem.class);
+		JsonConfigHolder.setFilterPropertys(MenuItem.class,M.MenuItem.parent,M.MenuItem.menu);
+		//JsonConfigHolder.setFilterPropertys("parent,menu",MenuItem.class);
 		return menuItems;
 	}
 	
@@ -73,7 +74,7 @@ public class MenuItemController {
 		menuItem.setMenu(new Menu(menuId));
 		menuItemService.create(menuItem);
 		appenPngCls(request,menuItem.getIconCls(),menuItem.getIconCls32());
-		JsonConfigHolder.setFilterPropertys("children",MenuItem.class);
+		//JsonConfigHolder.setFilterPropertys("children",MenuItem.class);
 		return menuItem;
 	}
 	
@@ -82,7 +83,7 @@ public class MenuItemController {
 	public MenuItem create(String funId,String parentId,String menuId){		
 		
 		MenuItem menuItem=menuItemService.create(funId,parentId,menuId);
-		JsonConfigHolder.setFilterPropertys("children",MenuItem.class);
+		//JsonConfigHolder.setFilterPropertys("children",MenuItem.class);
 		return menuItem;
 	}
 	
@@ -93,7 +94,7 @@ public class MenuItemController {
 		
 		menuItemService.update(menuItem);
 		
-		JsonConfigHolder.setFilterPropertys("children",MenuItem.class);
+		//JsonConfigHolder.setFilterPropertys("children",MenuItem.class);
 		 return menuItem;
 	}
 	

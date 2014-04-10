@@ -44,16 +44,22 @@ import java.util.Vector;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.Table;
+
 /**
- * 用来生成D类的代码，可以在开发当中直接使用D。User。name这样引用属性
- * 在执行这个命令后，就可以执行监听功能，当文件变动后，就自动进行变化
- *
+ * 根据领域模型来生成D类的代码，可以在开发当中直接使用D。User。name这样引用属性,
+ * 也可以用T。leon_User.name这样引用列名
+ * 扩展功能：
+ * 1：在执行这个命令后，就可以执行监听功能，当文件变动后，就自动进行变化
+ * 
  * 
  * 
  */
 @Mojo( name = "generateM")
-public class GenerateDMojo
-    extends AbstractMojo
+public class GenerateMMojo extends AbstractMojo
 {
     /**
      * class文件编译的目录
@@ -70,9 +76,10 @@ public class GenerateDMojo
 	/**
 	 * 超找指定了annotationClass的类作为实体类
 	 */
-	@Parameter
-	private String annotationClassName;
-	private Class annotationClass;
+	//@Parameter
+	//private String annotationClassName;
+	private Class annotationClass=javax.persistence.Entity.class;
+	private Class annotationTable=javax.persistence.Table.class;
 	@Parameter
 	private String targetMDir;
 
@@ -98,7 +105,7 @@ public class GenerateDMojo
     		}
     		
 			URLClassLoader myloader = new URLClassLoader(urls, Thread.currentThread().getContextClassLoader());
-			annotationClass=myloader.loadClass(annotationClassName);
+			//annotationClass=myloader.loadClass(annotationClassName);
 			
 			
 			
@@ -119,10 +126,7 @@ public class GenerateDMojo
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			 getLog().info(e.getMessage()); 
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
+		}  catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
@@ -151,22 +155,56 @@ public class GenerateDMojo
     	
     	
     	for(Class clazz:entities){
-    		getLog().info("============================================="+clazz.getName());
+    		
 
-    		fileWrite.append("public static final class "+clazz.getSimpleName()+" {\n");
+    		Table annoation=(Table)clazz.getAnnotation(annotationTable);
+    		if(annoation==null){
+    			throw new NullPointerException(clazz.getClass()+"的Table注解没有设置");
+    		}
+    		getLog().info("============================================="+annoation.name());
+    		
+    		//fileWrite.append("public static final class "+clazz.getSimpleName()+" {\n");
+    		fileWrite.append("public static final class "+annoation.name()+" {\n");
     		 Field[]fields = clazz.getDeclaredFields();
              for (Field field : fields) { //完全等同于上面的for循环
-                 System.out.println(field.getName()+" "+field.getType());
-                 //fileWrite.append("public static final "+field.getType().getName()+" "+field.getName()+"=\""+field.getName()+"\";\n");
-                 if(isBaseType(field.getType())){
-                	 fileWrite.append("	public static final String "+field.getName()+"=\""+field.getName()+"\";\n");
-                 } else if(!isOf(field.getType(),Map.class) && !isOf(field.getType(),Collection.class)){                	 
-                	 //====================输出关联类的列名
-                	 fileWrite.append("	/**\n");
-                	 fileWrite.append("	* 访问外键的列名，用于sql的时候，返回的是"+field.getName()+"_id\n");
-                	 fileWrite.append("	*/\n");
-                	 fileWrite.append("	public static final String "+field.getName()+"_id=\""+field.getName()+"_id\";\n");
-                 } 
+                 //System.out.println(field.getName()+" "+field.getType());
+            	 getLog().info(field.getName());
+            		 if(isBaseType(field.getType()) || field.getType().isEnum()){
+            			 
+            			 Column columnAnnotation=(Column)field.getAnnotation(Column.class);
+            			 if(columnAnnotation==null || (columnAnnotation!=null && columnAnnotation.name().equals(""))){
+            				 fileWrite.append("	public static final String "+field.getName()+"=\""+field.getName()+"\";\n");
+            			 } else {
+            				 fileWrite.append("	public static final String "+columnAnnotation.name()+"=\""+columnAnnotation.name()+"\";\n");
+            			 }
+                    	
+                     } else if(!isOf(field.getType(),Map.class) && !isOf(field.getType(),Collection.class)){ 
+                    	 JoinColumn columnAnnotation=(JoinColumn)field.getAnnotation(Column.class);
+                    	 if(columnAnnotation==null || (columnAnnotation!=null && columnAnnotation.name().equals(""))){
+                    		 fileWrite.append("	/**\n");
+                        	 fileWrite.append("	* 访问外键的列名，用于sql的时候，返回的是"+field.getName()+"_id\n");
+                        	 fileWrite.append("	*/\n");
+                        	 fileWrite.append("	public static final String "+field.getName()+"_id=\""+field.getName()+"_id\";\n");
+                    	 } else {
+                    		 fileWrite.append("	/**\n");
+                        	 fileWrite.append("	* 访问外键的列名，用于sql的时候，返回的是"+columnAnnotation.name()+"_id\n");
+                        	 fileWrite.append("	*/\n");
+                        	 fileWrite.append("	public static final String "+columnAnnotation.name()+"=\""+columnAnnotation.name()+"\";\n");
+                    	 }
+                    	 
+                     } 
+//            	 } else {
+//            		 if(isBaseType(field.getType())){
+//                    	 fileWrite.append("	public static final String "+columnAnnotation.name()+"=\""+columnAnnotation.name()+"\";\n");
+//                     } else if(!isOf(field.getType(),Map.class) && !isOf(field.getType(),Collection.class)){                	 
+//                    	 //====================输出关联类的列名
+//                    	 fileWrite.append("	/**\n");
+//                    	 fileWrite.append("	* 访问外键的列名，用于sql的时候，返回的是"+field.getName()+"_id\n");
+//                    	 fileWrite.append("	*/\n");
+//                    	 fileWrite.append("	public static final String "+field.getName()+"_id=\""+field.getName()+"_id\";\n");
+//                     } 
+//            	 }
+                
                 
              }
              fileWrite.append("}\n");
@@ -201,15 +239,22 @@ public class GenerateDMojo
     		fileWrite.append("public static final class "+clazz.getSimpleName()+" {\n");
     		 Field[]fields = clazz.getDeclaredFields();
              for (Field field : fields) { //完全等同于上面的for循环
-                 System.out.println(field.getName()+" "+field.getType());
+            	 getLog().info(field.getName());
+                 //System.out.println(field.getName()+" "+field.getType());
                  //fileWrite.append("public static final "+field.getType().getName()+" "+field.getName()+"=\""+field.getName()+"\";\n");
-                 if(isBaseType(field.getType())){
+                 if(isBaseType(field.getType()) || field.getType().isEnum()){
                 	 fileWrite.append("	public static final String "+field.getName()+"=\""+field.getName()+"\";\n");
                  } else if(!isOf(field.getType(),Map.class) && !isOf(field.getType(),Collection.class)){
                 	 fileWrite.append("	/**\n");
                 	 fileWrite.append("	* 访问关联类的id，用于hql的时候，返回的是"+field.getName()+".id\n");
                 	 fileWrite.append("	*/\n");
                 	 fileWrite.append("	public static final String "+field.getName()+"_id=\""+field.getName()+".id\";\n");
+                	 
+                	 
+                	 fileWrite.append("	/**\n");
+                	 fileWrite.append("	* 返回的是关联类的属性名称，返回的是"+field.getName()+".id\n");
+                	 fileWrite.append("	*/\n");
+                	 fileWrite.append("	public static final String "+field.getName()+"=\""+field.getName()+"\";\n");
                  } else {
                 	 //其他关联类，例如集合等
                 	 fileWrite.append("	/**\n");

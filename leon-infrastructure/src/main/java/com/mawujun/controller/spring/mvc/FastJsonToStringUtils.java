@@ -151,7 +151,8 @@ public class FastJsonToStringUtils {
 	
 	
 	private static void doFilterPropertys(Object root ,JSONSerializer serializer) {
-		if(JsonConfigHolder.getFilterPropertys()==null || "".equals(JsonConfigHolder.getFilterPropertys())){
+		//if(JsonConfigHolder.getFilterPropertys()==null || "".equals(JsonConfigHolder.getFilterPropertys())){
+		if(JsonConfigHolder.getFilterPropertys()==null || JsonConfigHolder.getFilterPropertys().length==0){
 			return;
 		}
 		
@@ -166,7 +167,7 @@ public class FastJsonToStringUtils {
         	}
 		}
 		
-		String[] excludes=JsonConfigHolder.getFilterPropertys().split(",");//((String)map.get(ResultMap.filterPropertysName)).split(",");
+		String[] excludes=JsonConfigHolder.getFilterPropertys();//.split(",");
 		//为定义了的类进行属性过滤
 		if(JsonConfigHolder.getFilterClass()!=null&& JsonConfigHolder.getFilterClass().length>0){
 			for(Class clazz:JsonConfigHolder.getFilterClass()){

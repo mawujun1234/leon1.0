@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository.cnd.Cnd;
-import com.mawujun.repository.mybatis.ParamUtils;
+import com.mawujun.utils.ParamUtils;
 
 @Service
 public class ParameterSubjectService extends

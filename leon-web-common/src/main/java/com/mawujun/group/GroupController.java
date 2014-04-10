@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.controller.spring.mvc.JsonConfigHolder;
 import com.mawujun.repository.cnd.Cnd;
-import com.mawujun.repository.mybatis.ParamUtils;
 import com.mawujun.role.Role;
 import com.mawujun.user.User;
 import com.mawujun.user.UserRole;
 import com.mawujun.user.UserRolePK;
+import com.mawujun.utils.ParamUtils;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 

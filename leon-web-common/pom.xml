@@ -111,7 +111,6 @@
 						<excludePackageName>com.mawujun.monitor.system</excludePackageName>
 					</excludePackageNames>
 					
-					<annotationClassName>javax.persistence.Entity</annotationClassName>
 					<targetMDir>${basedir}\src\main\java\com\mawujun\utils</targetMDir>
 					
 				</configuration>

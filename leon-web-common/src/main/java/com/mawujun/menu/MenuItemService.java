@@ -17,12 +17,14 @@ import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository.cnd.Cnd;
-import com.mawujun.repository.mybatis.ParamUtils;
 import com.mawujun.repository1.IRepository;
 import com.mawujun.service.AbstractService;
 import com.mawujun.user.login.UserDetailsImpl;
 import com.mawujun.utils.BeanUtils;
+import com.mawujun.utils.M;
+import com.mawujun.utils.ParamUtils;
 import com.mawujun.utils.StringUtils;
+import com.mawujun.utils.T;
 import com.mawujun.utils.help.ReportCodeHelper;
 import com.mawujun.utils.page.WhereInfo;
 
@@ -51,7 +53,7 @@ public class MenuItemService extends AbstractService<MenuItem, String> {//extend
 		Object reportCode=null;
 		if(entity.getParent()!=null){
 			//WhereInfo whereinfo=WhereInfo.parse("parent.id", entity.getParent().getId());
-			reportCode=this.getRepository().queryMax("reportCode",Cnd.where().andEquals("parent.id", entity.getParent().getId()));
+			reportCode=this.getRepository().queryMax(M.MenuItem.reportCode,Cnd.where().andEquals(M.MenuItem.parent_id, entity.getParent().getId()));
 		}
 		//获取父节点的reportcode
 		
@@ -71,7 +73,7 @@ public class MenuItemService extends AbstractService<MenuItem, String> {//extend
 	}
 	public void update(MenuItem entity) {
 		MenuItem exists=this.get(entity.getId());
-		BeanUtils.copyProperties(entity, exists, new String[]{"parent", "menu","fun","children"});
+		BeanUtils.copyProperties(entity, exists, new String[]{M.MenuItem.parent, M.MenuItem.menu,M.MenuItem.fun});
 		if(entity.getFun()!=null){
 			exists.setFun(funService.get(entity.getFun().getId()));
 		}
@@ -172,7 +174,7 @@ public class MenuItemService extends AbstractService<MenuItem, String> {//extend
 
 		//如果是管理员，可以获查看到所有的菜单
 		//List<String> menuItemLeaf = super.queryList("query4Desktop", ParamUtils.init().add("menu_id", menuId).add("isAdmin", isAdmin),String.class);
-		List<String> menuItemLeaf =this.getRepository().query4Desktop(ParamUtils.init().add("menu_id", menuId).add("isAdmin", isAdmin).addIf("parent_id", parentId));
+		List<String> menuItemLeaf =this.getRepository().query4Desktop(ParamUtils.init().add(T.leon_menuItem.menu_id, menuId).add("isAdmin", isAdmin).addIf(T.leon_menuItem.parent_id, parentId));
 
 		Map<String,MenuItemVO> parentKeys=new HashMap<String,MenuItemVO>();
 		List<MenuItemVO> menuItems = new ArrayList<MenuItemVO>();

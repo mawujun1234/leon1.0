@@ -10,6 +10,10 @@ public static final class Constant {
 	*/
 	public static final String constantType_id="constantType.id";
 	/**
+	* 返回的是关联类的属性名称，返回的是constantType.id
+	*/
+	public static final String constantType="constantType";
+	/**
 	* 这里一般是集合属性，返回的是constantItemes
 	*/
 	public static final String constantItemes="constantItemes";
@@ -25,6 +29,10 @@ public static final class ConstantItem {
 	* 访问关联类的id，用于hql的时候，返回的是constant.id
 	*/
 	public static final String constant_id="constant.id";
+	/**
+	* 返回的是关联类的属性名称，返回的是constant.id
+	*/
+	public static final String constant="constant";
 	public static final String discriminator="discriminator";
 }
 public static final class ConstantType {
@@ -66,6 +74,10 @@ public static final class QuickStart {
 	* 访问关联类的id，用于hql的时候，返回的是id.id
 	*/
 	public static final String id_id="id.id";
+	/**
+	* 返回的是关联类的属性名称，返回的是id.id
+	*/
+	public static final String id="id";
 }
 public static final class Fun {
 	public static final String serialVersionUID="serialVersionUID";
@@ -81,13 +93,18 @@ public static final class Fun {
 	*/
 	public static final String bussinessType_id="bussinessType.id";
 	/**
-	* 访问关联类的id，用于hql的时候，返回的是funEnum.id
+	* 返回的是关联类的属性名称，返回的是bussinessType.id
 	*/
-	public static final String funEnum_id="funEnum.id";
+	public static final String bussinessType="bussinessType";
+	public static final String funEnum="funEnum";
 	/**
 	* 访问关联类的id，用于hql的时候，返回的是parent.id
 	*/
 	public static final String parent_id="parent.id";
+	/**
+	* 返回的是关联类的属性名称，返回的是parent.id
+	*/
+	public static final String parent="parent";
 }
 public static final class PropertyConfig {
 	public static final String serialVersionUID="serialVersionUID";
@@ -104,6 +121,10 @@ public static final class Group {
 	*/
 	public static final String parent_id="parent.id";
 	/**
+	* 返回的是关联类的属性名称，返回的是parent.id
+	*/
+	public static final String parent="parent";
+	/**
 	* 这里一般是集合属性，返回的是children
 	*/
 	public static final String children="children";
@@ -114,6 +135,10 @@ public static final class GroupRole {
 	* 访问关联类的id，用于hql的时候，返回的是id.id
 	*/
 	public static final String id_id="id.id";
+	/**
+	* 返回的是关联类的属性名称，返回的是id.id
+	*/
+	public static final String id="id";
 	public static final String createDate="createDate";
 }
 public static final class GroupUser {
@@ -121,6 +146,10 @@ public static final class GroupUser {
 	* 访问关联类的id，用于hql的时候，返回的是id.id
 	*/
 	public static final String id_id="id.id";
+	/**
+	* 返回的是关联类的属性名称，返回的是id.id
+	*/
+	public static final String id="id";
 	public static final String createDate="createDate";
 }
 public static final class Help {
@@ -149,26 +178,63 @@ public static final class MenuItem {
 	*/
 	public static final String menu_id="menu.id";
 	/**
+	* 返回的是关联类的属性名称，返回的是menu.id
+	*/
+	public static final String menu="menu";
+	/**
 	* 访问关联类的id，用于hql的时候，返回的是fun.id
 	*/
 	public static final String fun_id="fun.id";
 	/**
+	* 返回的是关联类的属性名称，返回的是fun.id
+	*/
+	public static final String fun="fun";
+	/**
 	* 访问关联类的id，用于hql的时候，返回的是parent.id
 	*/
 	public static final String parent_id="parent.id";
+	/**
+	* 返回的是关联类的属性名称，返回的是parent.id
+	*/
+	public static final String parent="parent";
+}
+public static final class Parameter {
+	public static final String serialVersionUID="serialVersionUID";
+	public static final String id="id";
+	public static final String name="name";
+	public static final String desc="desc";
+	public static final String showModel="showModel";
+	public static final String valueEnum="valueEnum";
+	public static final String content="content";
+	public static final String subjects="subjects";
+	public static final String sort="sort";
+	public static final String validation="validation";
+}
+public static final class ParameterSubject {
+	public static final String serialVersionUID="serialVersionUID";
+	public static final String parameterValue="parameterValue";
+	/**
+	* 访问关联类的id，用于hql的时候，返回的是id.id
+	*/
+	public static final String id_id="id.id";
+	/**
+	* 返回的是关联类的属性名称，返回的是id.id
+	*/
+	public static final String id="id";
 }
 public static final class Role {
 	public static final String serialVersionUID="serialVersionUID";
 	public static final String name="name";
 	public static final String description="description";
-	/**
-	* 访问关联类的id，用于hql的时候，返回的是roleEnum.id
-	*/
-	public static final String roleEnum_id="roleEnum.id";
+	public static final String roleEnum="roleEnum";
 	/**
 	* 访问关联类的id，用于hql的时候，返回的是category.id
 	*/
 	public static final String category_id="category.id";
+	/**
+	* 返回的是关联类的属性名称，返回的是category.id
+	*/
+	public static final String category="category";
 	/**
 	* 这里一般是集合属性，返回的是funes
 	*/
@@ -181,13 +247,18 @@ public static final class RoleFun {
 	*/
 	public static final String role_id="role.id";
 	/**
+	* 返回的是关联类的属性名称，返回的是role.id
+	*/
+	public static final String role="role";
+	/**
 	* 访问关联类的id，用于hql的时候，返回的是fun.id
 	*/
 	public static final String fun_id="fun.id";
 	/**
-	* 访问关联类的id，用于hql的时候，返回的是permissionEnum.id
+	* 返回的是关联类的属性名称，返回的是fun.id
 	*/
-	public static final String permissionEnum_id="permissionEnum.id";
+	public static final String fun="fun";
+	public static final String permissionEnum="permissionEnum";
 	public static final String createDate="createDate";
 }
 public static final class SwitchUser {
@@ -197,9 +268,17 @@ public static final class SwitchUser {
 	*/
 	public static final String master_id="master.id";
 	/**
+	* 返回的是关联类的属性名称，返回的是master.id
+	*/
+	public static final String master="master";
+	/**
 	* 访问关联类的id，用于hql的时候，返回的是switchUser.id
 	*/
 	public static final String switchUser_id="switchUser.id";
+	/**
+	* 返回的是关联类的属性名称，返回的是switchUser.id
+	*/
+	public static final String switchUser="switchUser";
 }
 public static final class User {
 	public static final String serialVersionUID="serialVersionUID";
@@ -220,6 +299,10 @@ public static final class UserRole {
 	* 访问关联类的id，用于hql的时候，返回的是id.id
 	*/
 	public static final String id_id="id.id";
+	/**
+	* 返回的是关联类的属性名称，返回的是id.id
+	*/
+	public static final String id="id";
 	public static final String createDate="createDate";
 }
 }

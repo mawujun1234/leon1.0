@@ -10,7 +10,7 @@ import com.mawujun.exception.WebCommonExceptionCode3;
 import com.mawujun.menu.MenuItemService;
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository.cnd.Cnd;
-import com.mawujun.repository.mybatis.ParamUtils;
+import com.mawujun.utils.ParamUtils;
 import com.mawujun.utils.help.ReportCodeHelper;
 import com.mawujun.utils.page.WhereInfo;
 

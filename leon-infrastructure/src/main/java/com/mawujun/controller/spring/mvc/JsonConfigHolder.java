@@ -43,7 +43,7 @@ public class JsonConfigHolder {
 		threadLocal.get().setFilterPropertysName(filterPropertysName);
 	}
 	
-	public static String getFilterPropertys() {
+	public static String[] getFilterPropertys() {
 		
 		return threadLocal.get().getFilterPropertys();
 	}
@@ -75,6 +75,9 @@ public class JsonConfigHolder {
 	 */
 	public static void setFilterPropertys(String filterPropertys,Class... clazz) {		
 		threadLocal.get().setFilterPropertys(filterPropertys,clazz);
+	}
+	public static void setFilterPropertys(Class clazz,String... filterPropertys) {		
+		threadLocal.get().setFilterPropertys(clazz,filterPropertys);
 	}
 
 
@@ -271,7 +274,8 @@ public class JsonConfigHolder {
 		public transient String errorsName="errors";
 		public transient String errorsValue="";
 		
-		public transient String filterPropertys=null;
+		//public transient String filterPropertys=null;
+		public transient String[] filterPropertys=null;
 		public transient Class[] filterClass=null;
 		public transient Boolean enableHibernateLazyInitializerFilter=true;
 		public transient String msg=null;
@@ -298,15 +302,26 @@ public class JsonConfigHolder {
 		public void setRootName(String rootName) {
 			this.rootName = rootName;
 		}
-		public String getFilterPropertys() {
+		public String[] getFilterPropertys() {
 			return filterPropertys;
 		}
 		public void setFilterPropertys(String filterPropertys) {
-			this.filterPropertys = filterPropertys;
+			if(filterPropertys!=null){
+				this.filterPropertys =filterPropertys.split(",");
+			}
+			//this.filterPropertys = filterPropertys;
 		}
 		public void setFilterPropertys(String filterPropertys,Class... clazz) {
-			this.filterPropertys = filterPropertys;
+			//this.filterPropertys = filterPropertys;
+			if(filterPropertys!=null){
+				this.filterPropertys =filterPropertys.split(",");
+			}
 			this.filterClass=clazz;
+		}
+		public void setFilterPropertys(Class clazz,String... filterPropertys) {
+			this.filterPropertys = filterPropertys;
+			//this.filterClass=clazz;
+			this.filterClass=new Class[]{clazz};
 		}
 		public Boolean getEnableHibernateLazyInitializerFilter() {
 			return enableHibernateLazyInitializerFilter;

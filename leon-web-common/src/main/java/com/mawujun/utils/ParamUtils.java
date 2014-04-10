@@ -1,4 +1,4 @@
-package com.mawujun.repository.mybatis;
+package com.mawujun.utils;
 
 import java.util.HashMap;
 
