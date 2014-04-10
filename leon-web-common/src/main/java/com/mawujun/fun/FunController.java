@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.controller.spring.mvc.JsonConfigHolder;
 import com.mawujun.exception.BusinessException;
+import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.user.login.UserDetailsImpl;
+import com.mawujun.utils.M;
 import com.mawujun.utils.SecurityContextHolder;
 import com.mawujun.utils.StringUtils;
 import com.mawujun.utils.page.WhereInfo;
@@ -22,7 +24,6 @@ import com.mawujun.utils.page.WhereInfo;
  *
  */
 @Controller
-//@Transactional
 public class FunController {
 	@Autowired
 	private FunService funService;
@@ -34,12 +35,19 @@ public class FunController {
 	@RequestMapping("/fun/query")
 	@ResponseBody
 	public List<Fun> query(String id){
-		WhereInfo whereinfo=WhereInfo.parse("parent.id", id);
+//		WhereInfo whereinfo=WhereInfo.parse("parent.id", id);
+//		if("root".equals(id)){
+//			whereinfo=WhereInfo.parse("parent.id", "is",null);
+//		}
+		//List<Fun> funes=funService.query(whereinfo);
+		Cnd cnd=Cnd.select();
 		if("root".equals(id)){
-			whereinfo=WhereInfo.parse("parent.id", "is",null);
+			cnd.andIsNull(M.Fun.parent_id);
+		} else {
+			cnd.andEquals(M.Fun.parent_id, id);
 		}
-		List<Fun> funes=funService.query(whereinfo);
-		JsonConfigHolder.setFilterPropertys("parent");
+		List<Fun> funes=funService.query(cnd);
+		JsonConfigHolder.setFilterPropertys(M.Fun.parent);
 		//JsonConfigHolder.setRootName("children");
 		return funes;
 	}
@@ -51,7 +59,7 @@ public class FunController {
 	@ResponseBody
 	public List<Fun> queryAll(){	
 		
-		JsonConfigHolder.setFilterPropertys("parent");
+		JsonConfigHolder.setFilterPropertys(M.Fun.parent);
 		JsonConfigHolder.setRootName("children");
 		return funService.queryAll();
 		
@@ -127,7 +135,7 @@ public class FunController {
 	@RequestMapping("/fun/destory/{id}")
 	@ResponseBody
 	public void destory(@PathVariable String id){		
-		funService.delete(id);
+		funService.deleteById(id);
 	}
 	
 }

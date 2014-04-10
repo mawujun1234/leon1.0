@@ -50,6 +50,7 @@ public class DesktopController {
 			desktopConfig=new DesktopConfig();
 		} else {
 			//获取快捷方式
+			gg
 			List<QuickStart> quickStarts=quickStartServcie.query(Cnd.select().andEquals("id.userId", userId));
 			for(QuickStart quickStart:quickStarts){
 				//快速启动的数据是放在，一登陆就渲染呢？还是等点击的时候延迟加载。

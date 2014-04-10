@@ -2,39 +2,46 @@ package com.mawujun.fun;
 
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mawujun.exception.BusinessException;
 import com.mawujun.exception.WebCommonExceptionCode3;
+import com.mawujun.menu.MenuItemRepository;
 import com.mawujun.menu.MenuItemService;
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository.cnd.Cnd;
+import com.mawujun.service.AbstractService;
+import com.mawujun.utils.M;
 import com.mawujun.utils.ParamUtils;
 import com.mawujun.utils.help.ReportCodeHelper;
 import com.mawujun.utils.page.WhereInfo;
 
 @Service
-public class FunService extends BaseRepository<Fun, String> {
+public class FunService extends AbstractService<Fun, String> {
 //	@Autowired
 //	private FunRepository funRepository;
 	@Autowired
 	private MenuItemService menuItemService;
 	
-//	@Override
-//	public BaseRepository<Fun, String> getRepository() {
-//		// TODO Auto-generated method stub
-//		return funRepository;
-//	}
+	@Autowired
+	private FunRepository funRepository;
+	
+	@Override
+	public FunRepository getRepository() {
+		// TODO Auto-generated method stub
+		return funRepository;
+	}
 
 	@Override
-	public Fun delete(Fun entity) {
+	public void delete(Fun entity) {
 		//判断是否具有子节点
 		//WhereInfo whereinfo=WhereInfo.parse("parent.id", entity.getId());
 		//int childs=this.queryCount(whereinfo);
 		Fun fun=this.get(entity.getId());//Fun缓存了
 		//int childs=fun.getChildren().size();
-		int childs=super.queryCount(Cnd.select().andEquals("parent.id", fun.getId()));
+		long childs=super.queryCount(Cnd.select().andEquals(M.Fun.parent_id, fun.getId()));
 		if(childs>0){
 			throw new BusinessException("存在子节点，不能删除。",WebCommonExceptionCode3.EXISTS_CHILDREN);
 		}
@@ -46,19 +53,19 @@ public class FunService extends BaseRepository<Fun, String> {
 			throw new BusinessException("有菜单挂钩，不能删除。",WebCommonExceptionCode3.EXISTS_CHILDREN);
 		}
 		
-		return super.delete(fun);
+		super.delete(fun);
 		
 		
 	}
 	
-	public String getMaxReportCode(String parent_id){
-		//获取父节点的reportcode
-		WhereInfo whereinfo=WhereInfo.parse("parent.id", parent_id);
-		Object reportCode=this.queryMax("reportCode",whereinfo);
-		String newReportCode=ReportCodeHelper.generate3((String)reportCode);
-		return newReportCode;
-	}
-	public Fun create(Fun entity) {
+//	public String getMaxReportCode(String parent_id){
+//		//获取父节点的reportcode
+//		//WhereInfo whereinfo=WhereInfo.parse("parent.id", parent_id);
+//		//Object reportCode=this.queryMax("reportCode",whereinfo);
+//		String newReportCode=ReportCodeHelper.generate3((String)reportCode);
+//		return newReportCode;
+//	}
+	public String create(Fun entity) {
 		Fun parent=entity.getParent()==null?null:this.get(entity.getParent().getId());
 		if(parent!=null && parent.getFunEnum()==FunEnum.fun && !entity.isFun()){
 			throw new BusinessException("功能不能增加模块节点");
@@ -69,9 +76,9 @@ public class FunService extends BaseRepository<Fun, String> {
 			super.update(parent);
 		}
 		
-		entity=super.create(entity);
+		return super.create(entity);
 
-		return entity;
+		//return entity;
 	}
 	/**
 	 * 
@@ -91,11 +98,8 @@ public class FunService extends BaseRepository<Fun, String> {
 	 * @param oldParent_id
 	 */
 	public List<String> queryAllDenyPageElement(String userId,String funId) {	
-		return super.queryList("queryAllDenyPageElement", ParamUtils.init().add("user_id", userId).add("parent_id", funId).add("isenable", true), String.class);
-//		List<String> list=new ArrayList();
-//		//根据权限从数据库中获取，包括角色，组，职位，组织单元，最最终还是获取用户所属的角色所拥有的功能
-//		list.add("generator-2c908385412fd0e701412fd93e1d0001");
-//		return list;
+		//return super.queryList("queryAllDenyPageElement", ParamUtils.init().add("user_id", userId).add("parent_id", funId).add("isenable", true), String.class);
+		return this.getRepository().queryAllDenyPageElement(ParamUtils.init().add("user_id", userId).add("parent_id", funId).add("isenable", true));
 	}
 
 
@@ -103,7 +107,7 @@ public class FunService extends BaseRepository<Fun, String> {
 		List<Fun> funes=super.queryAll();//super.query(whereinfo);
 		for(Fun fun:funes){
 			//if(fun.getFunEnum()==FunEnum.fun){
-				super.initLazyProperty(fun.getParent());
+			Hibernate.initialize(fun.getParent());
 				//super.initLazyProperty(fun.getChildren());
 			//}	
 		}

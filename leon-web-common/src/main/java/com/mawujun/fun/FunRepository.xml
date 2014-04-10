@@ -5,7 +5,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com 承接各种项目 -->
 <!-- 注意文件名称为:Example_${DbName}_Mapper.xml-->
-<mapper namespace="com.mawujun.fun">
+<mapper namespace="com.mawujun.fun.FunRepository">
 	<!-- 控制界面元素的显示的sql，获取用户拥有的角色，所在的组，职位，组织单元所拥有的角色，再获取这些角色在某个功能下面的所有子功能 -->
 	<select id="queryAllDenyPageElement" resultType="string" >	
 	SELECT o.elementid FROM LEON_FUN o where o.isEnable=#{isenable}
