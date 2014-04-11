@@ -26,6 +26,9 @@ public abstract class AbstractService<T extends IdEntity<ID>, ID extends Seriali
 	public ID create(T entity) {
 		return this.getRepository().create(entity);
 	}
+	public void createOrUpdate(final T entity) {
+		this.getRepository().createOrUpdate(entity);
+	}
 	
 	/**
 	 * 通过Cnd。update().set(...)。andEquals();来指定更新的字段和条件

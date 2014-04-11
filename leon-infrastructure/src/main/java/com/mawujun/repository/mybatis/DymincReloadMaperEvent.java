@@ -9,10 +9,6 @@ import java.util.List;
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 
-import net.contentobjects.jnotify.JNotify;
-import net.contentobjects.jnotify.JNotifyException;
-import net.contentobjects.jnotify.JNotifyListener;
-
 import com.mawujun.utils.FileUtils;
 import com.mawujun.utils.StringTokenizerUtils;
 import com.mawujun.utils.SystemUtils;
@@ -100,54 +96,54 @@ public class DymincReloadMaperEvent extends Thread{
 		}
 
 		if(!isJDK7){
-			try {
-				this.copyDLLFile();
-			} catch (IOException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			}
-			for(String folder:folders){
-
-				String path=this.getClass().getResource("/").getPath()+folder;
-				path=path.replace("%20", " "); 
-				File file=new File(path);
-
-			    // watch mask, specify events you care about,
-			    // or JNotify.FILE_ANY for all events.
-			    int mask = JNotify.FILE_CREATED  | 
-			               JNotify.FILE_DELETED  | 
-			               JNotify.FILE_MODIFIED ;
-			               //JNotify.FILE_RENAMED;
-
-			    // watch subtree?
-			    boolean watchSubtree = true;
-
-			    // add actual watch
-			    int watchID=0;
-			    try {
-			    	//System.out.println(" JNotify.addWatch(");
-			    	logger.debug(" JNotify.addWatch(");
-					watchID = JNotify.addWatch(file.getAbsolutePath(), mask, watchSubtree, new Listener());
-//					while(flag) { 
-//			            //sdSystem.out.println(i " ") ; 
-//			        } 
-					//System.out.println(" =======================)");
-					logger.debug(" =======================)");
-				} catch (JNotifyException e) {
-					e.printStackTrace();
-				    boolean res=false;
-					try {
-						res = JNotify.removeWatch(watchID);
-					} catch (JNotifyException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				    if (!res) {
-				      // invalid watch ID specified.
-				    }
-				    e.printStackTrace();
-				}
-			}
+//			try {
+//				this.copyDLLFile();
+//			} catch (IOException e2) {
+//				// TODO Auto-generated catch block
+//				e2.printStackTrace();
+//			}
+//			for(String folder:folders){
+//
+//				String path=this.getClass().getResource("/").getPath()+folder;
+//				path=path.replace("%20", " "); 
+//				File file=new File(path);
+//
+//			    // watch mask, specify events you care about,
+//			    // or JNotify.FILE_ANY for all events.
+//			    int mask = JNotify.FILE_CREATED  | 
+//			               JNotify.FILE_DELETED  | 
+//			               JNotify.FILE_MODIFIED ;
+//			               //JNotify.FILE_RENAMED;
+//
+//			    // watch subtree?
+//			    boolean watchSubtree = true;
+//
+//			    // add actual watch
+//			    int watchID=0;
+//			    try {
+//			    	//System.out.println(" JNotify.addWatch(");
+//			    	logger.debug(" JNotify.addWatch(");
+//					watchID = JNotify.addWatch(file.getAbsolutePath(), mask, watchSubtree, new Listener());
+////					while(flag) { 
+////			            //sdSystem.out.println(i " ") ; 
+////			        } 
+//					//System.out.println(" =======================)");
+//					logger.debug(" =======================)");
+//				} catch (JNotifyException e) {
+//					e.printStackTrace();
+//				    boolean res=false;
+//					try {
+//						res = JNotify.removeWatch(watchID);
+//					} catch (JNotifyException e1) {
+//						// TODO Auto-generated catch block
+//						e1.printStackTrace();
+//					}
+//				    if (!res) {
+//				      // invalid watch ID specified.
+//				    }
+//				    e.printStackTrace();
+//				}
+//			}
 		} else {
 			
 		}
@@ -192,71 +188,54 @@ public class DymincReloadMaperEvent extends Thread{
 		return file.getAbsolutePath();
 	}
 	
-//	public void copyDLLFile() throws IOException {
-//		String pathSeparator=System.getProperty("path.separator");
-//		String[] library=StringTokenizerUtils.split(System.getProperty("java.library.path"), pathSeparator);
-//    	for(String lib:library){
-//    		FileUtils.copyFileToDirectory(new File(this.getPath()+"jnotify.dll"), new File(lib));
-//    		FileUtils.copyFileToDirectory(new File(this.getPath()+"jnotify_64bit.dll"), new File(lib));
-//    		FileUtils.copyFileToDirectory(new File(this.getPath()+"libjnotify.jnilib"), new File(lib));
-//    		FileUtils.copyFileToDirectory(new File(this.getPath()+"libjnotify.so"), new File(lib));
-//    		break;
-//    	}
-//	}
-//	/**
-//	 * 获取项目类的根路径
-//	 * @return
-//	 */
-//	public String getPath(){
-//		return this.getClass().getResource("/com/mawujun/repository/mybatis").getPath().replace("%20", " "); 
-//	}
+
 	
 
-	class Listener implements JNotifyListener {
-		long lastCurrentTime=0l;
-		
-	    public void fileRenamed(int wd, String rootPath, String oldName,String newName) {
-	    	
-	    	if(dymincReloadActions==null){
-	    		return;
-	    	}
-	    	for(DymincReloadAction aa:dymincReloadActions){
-	    		aa.fileRenamed(wd,rootPath, oldName,newName);
-	    	}
-	    }
-	    public void fileModified(int wd, String rootPath, String name) {
-	    	
-	    	if(dymincReloadActions==null){
-	    		return;
-	    	}
-	    	for(DymincReloadAction aa:dymincReloadActions){
-	    		aa.fileModified(rootPath, name);
-	    	}
-	      
-	    }
-	    public void fileDeleted(int wd, String rootPath, String name) {
-	    	
-	    	if(dymincReloadActions==null){
-	    		return;
-	    	}
-	    	for(DymincReloadAction aa:dymincReloadActions){
-	    		aa.fileDeleted(rootPath, name);
-	    	}
-	    	//dymincReloadAction.fileDeleted(rootPath, name);
-	    }
-	    public void fileCreated(int wd, String rootPath, String name) {
-	    	
-	    	if(dymincReloadActions==null){
-	    		return;
-	    	}
-	    	for(DymincReloadAction aa:dymincReloadActions){
-	    		aa.fileCreated(rootPath, name);
-	    	}
-	    	//dymincReloadAction.fileCreated(rootPath, name);
-	    }
-	    
-	    
-	}
+//	class Listener implements JNotifyListener {
+//		long lastCurrentTime=0l;
+//		
+//	    public void fileRenamed(int wd, String rootPath, String oldName,String newName) {
+//	    	
+//	    	if(dymincReloadActions==null){
+//	    		return;
+//	    	}
+//	    	for(DymincReloadAction aa:dymincReloadActions){
+//	    		aa.fileRenamed(wd,rootPath, oldName,newName);
+//	    	}
+//	    }
+//	    public void fileModified(int wd, String rootPath, String name) {
+//	    	
+//	    	if(dymincReloadActions==null){
+//	    		return;
+//	    	}
+//	    	for(DymincReloadAction aa:dymincReloadActions){
+//	    		aa.fileModified(rootPath, name);
+//	    	}
+//	      
+//	    }
+//	    public void fileDeleted(int wd, String rootPath, String name) {
+//	    	
+//	    	if(dymincReloadActions==null){
+//	    		return;
+//	    	}
+//	    	for(DymincReloadAction aa:dymincReloadActions){
+//	    		aa.fileDeleted(rootPath, name);
+//	    	}
+//	    	//dymincReloadAction.fileDeleted(rootPath, name);
+//	    }
+//	    public void fileCreated(int wd, String rootPath, String name) {
+//	    	
+//	    	if(dymincReloadActions==null){
+//	    		return;
+//	    	}
+//	    	for(DymincReloadAction aa:dymincReloadActions){
+//	    		aa.fileCreated(rootPath, name);
+//	    	}
+//	    	//dymincReloadAction.fileCreated(rootPath, name);
+//	    }
+//	    
+//	    
+//	}
 
 
 	

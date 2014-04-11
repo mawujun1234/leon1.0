@@ -16,6 +16,7 @@ import com.mawujun.utils.page.QueryResult;
 public interface IHibernateDao <T, ID extends Serializable>{
 
 	public ID create(T entity);
+	public void createOrUpdate(final T entity);
 	
 	public void update(T entity);
 	/**

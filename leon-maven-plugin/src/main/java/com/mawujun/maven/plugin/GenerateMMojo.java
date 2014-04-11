@@ -45,6 +45,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
@@ -169,7 +170,27 @@ public class GenerateMMojo extends AbstractMojo
              for (Field field : fields) { //完全等同于上面的for循环
                  //System.out.println(field.getName()+" "+field.getType());
             	 getLog().info(field.getName());
-            		 if(isBaseType(field.getType()) || field.getType().isEnum()){
+            	
+            	 Annotation embeddedIdAnnotataion=field.getAnnotation(EmbeddedId.class);
+            	 //是复合主键的情况下
+            	 if(embeddedIdAnnotataion!=null){
+            		 Class<?> fieldClass=field.getType();
+            		 fileWrite.append("	 /**\n");
+                	 fileWrite.append("	 * 这个是复合主键。里面的是复合组件的组成列的列名\n");
+                	 fileWrite.append("	 */\n");
+                	 fileWrite.append("	public static final class "+fieldClass.getSimpleName()+" {\n");
+                	 Field[] embeddedIdFields = fieldClass.getDeclaredFields();
+                	 for (Field embeddedIdfield : embeddedIdFields) { 
+                		 Column columnAnnotation=(Column)embeddedIdfield.getAnnotation(Column.class);
+                		 if(columnAnnotation==null || (columnAnnotation!=null && columnAnnotation.name().equals(""))){
+            				 fileWrite.append("		public static final String "+embeddedIdfield.getName()+"=\""+embeddedIdfield.getName()+"\";\n");
+            			 } else {
+            				 fileWrite.append("		public static final String "+columnAnnotation.name()+"=\""+columnAnnotation.name()+"\";\n");
+            			 }
+                	 }
+                	 fileWrite.append("			\n");
+                	 fileWrite.append("	}\n");
+            	 } else if(isBaseType(field.getType()) || field.getType().isEnum()){
             			 
             			 Column columnAnnotation=(Column)field.getAnnotation(Column.class);
             			 if(columnAnnotation==null || (columnAnnotation!=null && columnAnnotation.name().equals(""))){
@@ -178,7 +199,7 @@ public class GenerateMMojo extends AbstractMojo
             				 fileWrite.append("	public static final String "+columnAnnotation.name()+"=\""+columnAnnotation.name()+"\";\n");
             			 }
                     	
-                     } else if(!isOf(field.getType(),Map.class) && !isOf(field.getType(),Collection.class)){ 
+                 } else if(!isOf(field.getType(),Map.class) && !isOf(field.getType(),Collection.class)){ 
                     	 JoinColumn columnAnnotation=(JoinColumn)field.getAnnotation(Column.class);
                     	 if(columnAnnotation==null || (columnAnnotation!=null && columnAnnotation.name().equals(""))){
                     		 fileWrite.append("	/**\n");
@@ -192,19 +213,7 @@ public class GenerateMMojo extends AbstractMojo
                         	 fileWrite.append("	public static final String "+columnAnnotation.name()+"=\""+columnAnnotation.name()+"\";\n");
                     	 }
                     	 
-                     } 
-//            	 } else {
-//            		 if(isBaseType(field.getType())){
-//                    	 fileWrite.append("	public static final String "+columnAnnotation.name()+"=\""+columnAnnotation.name()+"\";\n");
-//                     } else if(!isOf(field.getType(),Map.class) && !isOf(field.getType(),Collection.class)){                	 
-//                    	 //====================输出关联类的列名
-//                    	 fileWrite.append("	/**\n");
-//                    	 fileWrite.append("	* 访问外键的列名，用于sql的时候，返回的是"+field.getName()+"_id\n");
-//                    	 fileWrite.append("	*/\n");
-//                    	 fileWrite.append("	public static final String "+field.getName()+"_id=\""+field.getName()+"_id\";\n");
-//                     } 
-//            	 }
-                
+                 }     
                 
              }
              fileWrite.append("}\n");
@@ -245,16 +254,39 @@ public class GenerateMMojo extends AbstractMojo
                  if(isBaseType(field.getType()) || field.getType().isEnum()){
                 	 fileWrite.append("	public static final String "+field.getName()+"=\""+field.getName()+"\";\n");
                  } else if(!isOf(field.getType(),Map.class) && !isOf(field.getType(),Collection.class)){
-                	 fileWrite.append("	/**\n");
-                	 fileWrite.append("	* 访问关联类的id，用于hql的时候，返回的是"+field.getName()+".id\n");
-                	 fileWrite.append("	*/\n");
-                	 fileWrite.append("	public static final String "+field.getName()+"_id=\""+field.getName()+".id\";\n");
-                	 
-                	 
-                	 fileWrite.append("	/**\n");
-                	 fileWrite.append("	* 返回的是关联类的属性名称，返回的是"+field.getName()+".id\n");
-                	 fileWrite.append("	*/\n");
-                	 fileWrite.append("	public static final String "+field.getName()+"=\""+field.getName()+"\";\n");
+                	 Class<?> fieldClass=field.getType();
+                	 Annotation embeddedIdAnnotataion=field.getAnnotation(EmbeddedId.class);
+                	 //fieldClass.getAnnotations();
+                	 //是复合主键的情况下
+                	 if(embeddedIdAnnotataion!=null){
+                		 fileWrite.append("	 /**\n");
+                    	 fileWrite.append("	 * 返回复合主键的组成:"+field.getName()+"\n");
+                    	 fileWrite.append("	 */\n");
+                    	 fileWrite.append("	public static final class "+fieldClass.getSimpleName()+" {\n");
+                    	 Field[] embeddedIdFields = fieldClass.getDeclaredFields();
+                    	 for (Field embeddedIdfield : embeddedIdFields) { 
+                    		 fileWrite.append("		public static final String "+embeddedIdfield.getName()+"=\""+field.getName()+"."+embeddedIdfield.getName()+"\";\n");
+                    	 }
+                    	 fileWrite.append("			\n");
+                    	 fileWrite.append("	}\n");
+                    	 
+                    	 
+                    	 fileWrite.append("	/**\n");
+                    	 fileWrite.append("	* 这是一个复合主键，返回的是该复合主键的属性名称，在hql中使用:"+field.getName()+"\n");
+                    	 fileWrite.append("	*/\n");
+                    	 fileWrite.append("	public static final String "+field.getName()+"=\""+field.getName()+"\";\n");
+                	 } else {
+	                	 fileWrite.append("	/**\n");
+	                	 fileWrite.append("	* 访问关联类的id，用于hql的时候，返回的是"+field.getName()+".id\n");
+	                	 fileWrite.append("	*/\n");
+	                	 fileWrite.append("	public static final String "+field.getName()+"_id=\""+field.getName()+".id\";\n");
+	                	 
+	                	 
+	                	 fileWrite.append("	/**\n");
+	                	 fileWrite.append("	* 返回的是关联类的属性名称，返回的是"+field.getName()+"\n");
+	                	 fileWrite.append("	*/\n");
+	                	 fileWrite.append("	public static final String "+field.getName()+"=\""+field.getName()+"\";\n");
+                	 }
                  } else {
                 	 //其他关联类，例如集合等
                 	 fileWrite.append("	/**\n");

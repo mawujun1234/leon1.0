@@ -42,10 +42,14 @@ public static final class leon_DesktopConfig {
 }
 public static final class leon_QuickStart {
 	public static final String serialVersionUID="serialVersionUID";
-	/**
-	* 访问外键的列名，用于sql的时候，返回的是id_id
-	*/
-	public static final String id_id="id_id";
+	 /**
+	 * 这个是复合主键。里面的是复合组件的组成列的列名
+	 */
+	public static final class Id {
+		public static final String user_id="user_id";
+		public static final String menuItem_id="menuItem_id";
+			
+	}
 }
 public static final class leon_Fun {
 	public static final String serialVersionUID="serialVersionUID";
@@ -83,17 +87,27 @@ public static final class leon_group {
 }
 public static final class leon_group_role {
 	public static final String serialVersionUID="serialVersionUID";
-	/**
-	* 访问外键的列名，用于sql的时候，返回的是id_id
-	*/
-	public static final String id_id="id_id";
+	 /**
+	 * 这个是复合主键。里面的是复合组件的组成列的列名
+	 */
+	public static final class GroupRolePK {
+		public static final String serialVersionUID="serialVersionUID";
+		public static final String role_id="role_id";
+		public static final String group_id="group_id";
+			
+	}
 	public static final String createDate="createDate";
 }
 public static final class leon_group_user {
-	/**
-	* 访问外键的列名，用于sql的时候，返回的是id_id
-	*/
-	public static final String id_id="id_id";
+	 /**
+	 * 这个是复合主键。里面的是复合组件的组成列的列名
+	 */
+	public static final class GroupUserPK {
+		public static final String serialVersionUID="serialVersionUID";
+		public static final String user_id="user_id";
+		public static final String group_id="group_id";
+			
+	}
 	public static final String createDate="createDate";
 }
 public static final class leon_help {
@@ -145,10 +159,16 @@ public static final class leon_Parameter {
 public static final class leon_parameter_subject {
 	public static final String serialVersionUID="serialVersionUID";
 	public static final String parameterValue="parameterValue";
-	/**
-	* 访问外键的列名，用于sql的时候，返回的是id_id
-	*/
-	public static final String id_id="id_id";
+	 /**
+	 * 这个是复合主键。里面的是复合组件的组成列的列名
+	 */
+	public static final class Id {
+		public static final String serialVersionUID="serialVersionUID";
+		public static final String subject_id="subject_id";
+		public static final String parameter_id="parameter_id";
+		public static final String subjectType="subjectType";
+			
+	}
 }
 public static final class leon_Role {
 	public static final String serialVersionUID="serialVersionUID";
@@ -199,10 +219,15 @@ public static final class leon_User {
 	public static final String lastIp="lastIp";
 }
 public static final class leon_user_role {
-	/**
-	* 访问外键的列名，用于sql的时候，返回的是id_id
-	*/
-	public static final String id_id="id_id";
+	 /**
+	 * 这个是复合主键。里面的是复合组件的组成列的列名
+	 */
+	public static final class UserRolePK {
+		public static final String serialVersionUID="serialVersionUID";
+		public static final String user_id="user_id";
+		public static final String role_id="role_id";
+			
+	}
 	public static final String createDate="createDate";
 }
 }

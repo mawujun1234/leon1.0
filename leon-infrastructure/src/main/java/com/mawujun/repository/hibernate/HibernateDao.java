@@ -154,7 +154,7 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 	/**
 	 * 保存新增或修改的对象.
 	 */
-	public void saveOrUpdate(final T entity) {
+	public void createOrUpdate(final T entity) {
 		AssertUtils.notNull(entity, "entity不能为空");
 		getSession().saveOrUpdate(entity);
 		logger.debug("save entity: {}", entity);

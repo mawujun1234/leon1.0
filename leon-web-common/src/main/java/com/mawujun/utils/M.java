@@ -10,7 +10,7 @@ public static final class Constant {
 	*/
 	public static final String constantType_id="constantType.id";
 	/**
-	* 返回的是关联类的属性名称，返回的是constantType.id
+	* 返回的是关联类的属性名称，返回的是constantType
 	*/
 	public static final String constantType="constantType";
 	/**
@@ -30,7 +30,7 @@ public static final class ConstantItem {
 	*/
 	public static final String constant_id="constant.id";
 	/**
-	* 返回的是关联类的属性名称，返回的是constant.id
+	* 返回的是关联类的属性名称，返回的是constant
 	*/
 	public static final String constant="constant";
 	public static final String discriminator="discriminator";
@@ -70,12 +70,16 @@ public static final class DesktopConfig {
 }
 public static final class QuickStart {
 	public static final String serialVersionUID="serialVersionUID";
+	 /**
+	 * 返回复合主键的组成:id
+	 */
+	public static final class Id {
+		public static final String userId="id.userId";
+		public static final String menuItemId="id.menuItemId";
+			
+	}
 	/**
-	* 访问关联类的id，用于hql的时候，返回的是id.id
-	*/
-	public static final String id_id="id.id";
-	/**
-	* 返回的是关联类的属性名称，返回的是id.id
+	* 这是一个复合主键，返回的是该复合主键的属性名称，在hql中使用:id
 	*/
 	public static final String id="id";
 }
@@ -93,7 +97,7 @@ public static final class Fun {
 	*/
 	public static final String bussinessType_id="bussinessType.id";
 	/**
-	* 返回的是关联类的属性名称，返回的是bussinessType.id
+	* 返回的是关联类的属性名称，返回的是bussinessType
 	*/
 	public static final String bussinessType="bussinessType";
 	public static final String funEnum="funEnum";
@@ -102,7 +106,7 @@ public static final class Fun {
 	*/
 	public static final String parent_id="parent.id";
 	/**
-	* 返回的是关联类的属性名称，返回的是parent.id
+	* 返回的是关联类的属性名称，返回的是parent
 	*/
 	public static final String parent="parent";
 }
@@ -121,7 +125,7 @@ public static final class Group {
 	*/
 	public static final String parent_id="parent.id";
 	/**
-	* 返回的是关联类的属性名称，返回的是parent.id
+	* 返回的是关联类的属性名称，返回的是parent
 	*/
 	public static final String parent="parent";
 	/**
@@ -131,23 +135,33 @@ public static final class Group {
 }
 public static final class GroupRole {
 	public static final String serialVersionUID="serialVersionUID";
+	 /**
+	 * 返回复合主键的组成:id
+	 */
+	public static final class GroupRolePK {
+		public static final String serialVersionUID="id.serialVersionUID";
+		public static final String roleId="id.roleId";
+		public static final String groupId="id.groupId";
+			
+	}
 	/**
-	* 访问关联类的id，用于hql的时候，返回的是id.id
-	*/
-	public static final String id_id="id.id";
-	/**
-	* 返回的是关联类的属性名称，返回的是id.id
+	* 这是一个复合主键，返回的是该复合主键的属性名称，在hql中使用:id
 	*/
 	public static final String id="id";
 	public static final String createDate="createDate";
 }
 public static final class GroupUser {
+	 /**
+	 * 返回复合主键的组成:id
+	 */
+	public static final class GroupUserPK {
+		public static final String serialVersionUID="id.serialVersionUID";
+		public static final String userId="id.userId";
+		public static final String groupId="id.groupId";
+			
+	}
 	/**
-	* 访问关联类的id，用于hql的时候，返回的是id.id
-	*/
-	public static final String id_id="id.id";
-	/**
-	* 返回的是关联类的属性名称，返回的是id.id
+	* 这是一个复合主键，返回的是该复合主键的属性名称，在hql中使用:id
 	*/
 	public static final String id="id";
 	public static final String createDate="createDate";
@@ -178,7 +192,7 @@ public static final class MenuItem {
 	*/
 	public static final String menu_id="menu.id";
 	/**
-	* 返回的是关联类的属性名称，返回的是menu.id
+	* 返回的是关联类的属性名称，返回的是menu
 	*/
 	public static final String menu="menu";
 	/**
@@ -186,7 +200,7 @@ public static final class MenuItem {
 	*/
 	public static final String fun_id="fun.id";
 	/**
-	* 返回的是关联类的属性名称，返回的是fun.id
+	* 返回的是关联类的属性名称，返回的是fun
 	*/
 	public static final String fun="fun";
 	/**
@@ -194,7 +208,7 @@ public static final class MenuItem {
 	*/
 	public static final String parent_id="parent.id";
 	/**
-	* 返回的是关联类的属性名称，返回的是parent.id
+	* 返回的是关联类的属性名称，返回的是parent
 	*/
 	public static final String parent="parent";
 }
@@ -213,12 +227,18 @@ public static final class Parameter {
 public static final class ParameterSubject {
 	public static final String serialVersionUID="serialVersionUID";
 	public static final String parameterValue="parameterValue";
+	 /**
+	 * 返回复合主键的组成:id
+	 */
+	public static final class Id {
+		public static final String serialVersionUID="id.serialVersionUID";
+		public static final String subjectId="id.subjectId";
+		public static final String parameterId="id.parameterId";
+		public static final String subjectType="id.subjectType";
+			
+	}
 	/**
-	* 访问关联类的id，用于hql的时候，返回的是id.id
-	*/
-	public static final String id_id="id.id";
-	/**
-	* 返回的是关联类的属性名称，返回的是id.id
+	* 这是一个复合主键，返回的是该复合主键的属性名称，在hql中使用:id
 	*/
 	public static final String id="id";
 }
@@ -232,7 +252,7 @@ public static final class Role {
 	*/
 	public static final String category_id="category.id";
 	/**
-	* 返回的是关联类的属性名称，返回的是category.id
+	* 返回的是关联类的属性名称，返回的是category
 	*/
 	public static final String category="category";
 	/**
@@ -247,7 +267,7 @@ public static final class RoleFun {
 	*/
 	public static final String role_id="role.id";
 	/**
-	* 返回的是关联类的属性名称，返回的是role.id
+	* 返回的是关联类的属性名称，返回的是role
 	*/
 	public static final String role="role";
 	/**
@@ -255,7 +275,7 @@ public static final class RoleFun {
 	*/
 	public static final String fun_id="fun.id";
 	/**
-	* 返回的是关联类的属性名称，返回的是fun.id
+	* 返回的是关联类的属性名称，返回的是fun
 	*/
 	public static final String fun="fun";
 	public static final String permissionEnum="permissionEnum";
@@ -268,7 +288,7 @@ public static final class SwitchUser {
 	*/
 	public static final String master_id="master.id";
 	/**
-	* 返回的是关联类的属性名称，返回的是master.id
+	* 返回的是关联类的属性名称，返回的是master
 	*/
 	public static final String master="master";
 	/**
@@ -276,7 +296,7 @@ public static final class SwitchUser {
 	*/
 	public static final String switchUser_id="switchUser.id";
 	/**
-	* 返回的是关联类的属性名称，返回的是switchUser.id
+	* 返回的是关联类的属性名称，返回的是switchUser
 	*/
 	public static final String switchUser="switchUser";
 }
@@ -295,12 +315,17 @@ public static final class User {
 	public static final String lastIp="lastIp";
 }
 public static final class UserRole {
+	 /**
+	 * 返回复合主键的组成:id
+	 */
+	public static final class UserRolePK {
+		public static final String serialVersionUID="id.serialVersionUID";
+		public static final String userId="id.userId";
+		public static final String roleId="id.roleId";
+			
+	}
 	/**
-	* 访问关联类的id，用于hql的时候，返回的是id.id
-	*/
-	public static final String id_id="id.id";
-	/**
-	* 返回的是关联类的属性名称，返回的是id.id
+	* 这是一个复合主键，返回的是该复合主键的属性名称，在hql中使用:id
 	*/
 	public static final String id="id";
 	public static final String createDate="createDate";

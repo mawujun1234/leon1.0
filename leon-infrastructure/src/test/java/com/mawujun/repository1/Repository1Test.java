@@ -100,6 +100,21 @@ public class Repository1Test  extends DbunitBaseRepositoryTest{
 	}
 	
 	@Test
+	public void createOrUpdate() throws IOException, DataSetException, SQLException {
+		assertNotNull(entityTestMapper);
+		
+		EntityTest entity=new EntityTest();
+		entity.setFirstName("ma");
+		entity.setLastName("wujun");
+		entity.setEmail("160649888@163.com");
+		entityTestMapper.createOrUpdate(entity);
+		
+		assertNotNull(entity.getId());
+		//assertEquals(id, entity.getId());
+		//assertEquals(new Integer(4), entity.getId());
+	}
+	
+	@Test
 	public void update() throws IOException, DataSetException, SQLException {
 		EntityTest entity=new EntityTest();
 		entity.setFirstName("ma");

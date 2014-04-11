@@ -149,7 +149,7 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 		return entity;
 	}
 	public T createOrUpdate(T entity) {
-		hibernateDao.saveOrUpdate(entity);
+		hibernateDao.createOrUpdate(entity);
 		hibernateDao.flush();
 		return entity;
 	}

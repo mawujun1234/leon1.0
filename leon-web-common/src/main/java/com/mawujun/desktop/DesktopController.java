@@ -24,6 +24,7 @@ import com.mawujun.user.login.SwitchUserFilterImpl;
 import com.mawujun.user.login.SwitchUserGrantedAuthorityImpl;
 import com.mawujun.user.login.UserDetailsImpl;
 import com.mawujun.utils.BeanUtils;
+import com.mawujun.utils.M;
 
 @Controller
 //@RequestMapping("/app")
@@ -50,8 +51,9 @@ public class DesktopController {
 			desktopConfig=new DesktopConfig();
 		} else {
 			//获取快捷方式
-			gg
-			List<QuickStart> quickStarts=quickStartServcie.query(Cnd.select().andEquals("id.userId", userId));
+			//M.QuickStart.Id.
+			//List<QuickStart> quickStarts=quickStartServcie.query(Cnd.select().andEquals("id.userId", userId));
+			List<QuickStart> quickStarts=quickStartServcie.query(Cnd.select().andEquals(M.QuickStart.Id.userId, userId));
 			for(QuickStart quickStart:quickStarts){
 				//快速启动的数据是放在，一登陆就渲染呢？还是等点击的时候延迟加载。
 				MenuItem leaf=menuItemService.get(quickStart.getId().getMenuItemId());
