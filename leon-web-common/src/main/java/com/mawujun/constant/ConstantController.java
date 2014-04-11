@@ -21,8 +21,10 @@ import com.mawujun.annotation.Label;
 import com.mawujun.controller.spring.mvc.JsonConfigHolder;
 import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;
+import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.repository.idEntity.AutoIdEntity;
 import com.mawujun.repository.idEntity.UUIDEntity;
+import com.mawujun.utils.M;
 import com.mawujun.utils.page.WhereInfo;
 
 /**
@@ -47,9 +49,11 @@ public class ConstantController {
 	@RequestMapping("/constant/query")
 	@ResponseBody
 	public List<Constant> query(String constanType_id){		
-		WhereInfo whereinfo=WhereInfo.parse("constantType.id", constanType_id);
-		JsonConfigHolder.setFilterPropertys("constantType,constantItemes",Constant.class);
-		return constantService.query(whereinfo);
+		//WhereInfo whereinfo=WhereInfo.parse("constantType.id", constanType_id);
+		//JsonConfigHolder.setFilterPropertys("constantType,constantItemes",Constant.class);
+		//return constantService.query(whereinfo);
+		JsonConfigHolder.setFilterPropertys(Constant.class, M.Constant.constantType.name(),M.Constant.constantItemes);
+		return constantService.query(Cnd.select().andEquals(M.Constant.constantType.id, constanType_id));
 	}
 	@RequestMapping("/constant/load")
 	@ResponseBody

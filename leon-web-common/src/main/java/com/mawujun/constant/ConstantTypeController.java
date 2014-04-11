@@ -108,11 +108,11 @@ public class ConstantTypeController  {
 	@ResponseBody
 	public void deleteNode(String id,String discriminator){	
 		if(ConstantEnum.ConstantType.toString().equals(discriminator)){
-			constantTypeService.delete(id);
+			constantTypeService.deleteById(id);
 		} else if(ConstantEnum.Constant.toString().equals(discriminator)){
-			constantService.delete(id);
+			constantService.deleteById(id);
 		}else if(ConstantEnum.ConstantItem.toString().equals(discriminator)){
-			constantItemService.delete(id);
+			constantItemService.deleteById(id);
 		}
 		//return list;
 	}

@@ -41,7 +41,7 @@ public class FunService extends AbstractService<Fun, String> {
 		//int childs=this.queryCount(whereinfo);
 		Fun fun=this.get(entity.getId());//Fun缓存了
 		//int childs=fun.getChildren().size();
-		long childs=super.queryCount(Cnd.select().andEquals(M.Fun.parent_id, fun.getId()));
+		long childs=super.queryCount(Cnd.select().andEquals(M.Fun.parent.id, fun.getId()));
 		if(childs>0){
 			throw new BusinessException("存在子节点，不能删除。",WebCommonExceptionCode3.EXISTS_CHILDREN);
 		}

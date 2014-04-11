@@ -53,7 +53,7 @@ public class DesktopController {
 			//获取快捷方式
 			//M.QuickStart.Id.
 			//List<QuickStart> quickStarts=quickStartServcie.query(Cnd.select().andEquals("id.userId", userId));
-			List<QuickStart> quickStarts=quickStartServcie.query(Cnd.select().andEquals(M.QuickStart.Id.userId, userId));
+			List<QuickStart> quickStarts=quickStartServcie.query(Cnd.select().andEquals(M.QuickStart.id.userId, userId));
 			for(QuickStart quickStart:quickStarts){
 				//快速启动的数据是放在，一登陆就渲染呢？还是等点击的时候延迟加载。
 				MenuItem leaf=menuItemService.get(quickStart.getId().getMenuItemId());

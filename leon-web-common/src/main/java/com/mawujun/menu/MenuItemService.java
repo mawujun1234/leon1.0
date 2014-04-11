@@ -53,7 +53,7 @@ public class MenuItemService extends AbstractService<MenuItem, String> {//extend
 		Object reportCode=null;
 		if(entity.getParent()!=null){
 			//WhereInfo whereinfo=WhereInfo.parse("parent.id", entity.getParent().getId());
-			reportCode=this.getRepository().queryMax(M.MenuItem.reportCode,Cnd.where().andEquals(M.MenuItem.parent_id, entity.getParent().getId()));
+			reportCode=this.getRepository().queryMax(M.MenuItem.reportCode,Cnd.where().andEquals(M.MenuItem.parent.id, entity.getParent().getId()));
 		}
 		//获取父节点的reportcode
 		
@@ -73,7 +73,7 @@ public class MenuItemService extends AbstractService<MenuItem, String> {//extend
 	}
 	public void update(MenuItem entity) {
 		MenuItem exists=this.get(entity.getId());
-		BeanUtils.copyProperties(entity, exists, new String[]{M.MenuItem.parent, M.MenuItem.menu,M.MenuItem.fun});
+		BeanUtils.copyProperties(entity, exists, new String[]{M.MenuItem.parent.name(), M.MenuItem.menu.name(),M.MenuItem.fun.name()});
 		if(entity.getFun()!=null){
 			exists.setFun(funService.get(entity.getFun().getId()));
 		}

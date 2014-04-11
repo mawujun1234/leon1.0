@@ -8,6 +8,8 @@ import com.mawujun.constant.Constant;
 import com.mawujun.constant.ConstantItem;
 import com.mawujun.constant.ConstantService;
 import com.mawujun.controller.spring.SpringContextHolder;
+import com.mawujun.repository.cnd.Cnd;
+import com.mawujun.utils.M;
 import com.mawujun.utils.page.WhereInfo;
 
 
@@ -58,7 +60,8 @@ public class SingleAppConstantCache implements IConstantCache {
 		if(codeItem==null){
 			ConstantService constantService=SpringContextHolder.getBean(ConstantService.class);
 			
-			Constant constant=constantService.queryUnique(WhereInfo.parse("code", constantCode));//(constantCode);g
+			//Constant constant=constantService.queryUnique(WhereInfo.parse("code", constantCode));//(constantCode);g
+			Constant constant=constantService.queryUnique(Cnd.select().andEquals(M.Constant.code, constantCode));//(constantCode);g
 			if(constant.getConstantItemes()!=null){
 				for(ConstantItem codeItem1:constant.getConstantItemes()){
 					cache.put(codeItem1.getConstant().getCode()+"=="+codeItem1.getCode(), codeItem1);

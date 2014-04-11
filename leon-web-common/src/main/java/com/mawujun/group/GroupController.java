@@ -16,6 +16,7 @@ import com.mawujun.role.Role;
 import com.mawujun.user.User;
 import com.mawujun.user.UserRole;
 import com.mawujun.user.UserRolePK;
+import com.mawujun.utils.M;
 import com.mawujun.utils.ParamUtils;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
@@ -36,9 +37,9 @@ public class GroupController {
 	@ResponseBody
 	public List<Group> query(String id){		
 		if("root".equals(id)){
-			return groupService.query(Cnd.where().andIsNull("parent"));
+			return groupService.query(Cnd.where().andIsNull(M.Group.parent.name()));
 		} else {
-			return groupService.query(Cnd.where().andEquals("parent", id));
+			return groupService.query(Cnd.where().andEquals(M.Group.parent.name(), id));
 		}
 		
 	}
@@ -82,17 +83,22 @@ public class GroupController {
 	@RequestMapping("/group/removeUser")
 	@ResponseBody
 	public GroupUserPK removeUser(GroupUserPK userGroupPK){		 
-		userGroupService.delete(userGroupPK);
+		userGroupService.deleteById(userGroupPK);
 		//userService.delete(user);
 		return userGroupPK;
 	}
 	
 	@RequestMapping("/group/queryUser")
 	@ResponseBody
-	public QueryResult<User> queryUser(String groupId,String userName,Integer start,Integer limit){	
+	public QueryResult<User> queryUser(String groupId,String userName,Integer start,Integer limit){
+		
+//		PageRequest pageRqeust=PageRequest.init(start, limit).setSqlModel(true).setSqlId("queryUser")
+//				.addWhere("group_id",groupId).addLikeWhere("name",  userName);
+//		QueryResult<User> users=userGroupService.queryPageMybatis(pageRqeust,User.class);
+		
 		PageRequest pageRqeust=PageRequest.init(start, limit).setSqlModel(true).setSqlId("queryUser")
 				.addWhere("group_id",groupId).addLikeWhere("name",  userName);
-		QueryResult<User> users=userGroupService.queryPageMybatis(pageRqeust,User.class);
+		QueryResult<User> users=userGroupService.queryPage(pageRqeust);
 		return users;
 	}
 	
@@ -110,7 +116,7 @@ public class GroupController {
 	@RequestMapping("/group/removeRole")
 	@ResponseBody
 	public GroupRolePK removeRole(GroupRolePK groupRolePK){		 
-		groupRoleService.delete(groupRolePK);;
+		groupRoleService.deleteById(groupRolePK);
 		return groupRolePK;
 	}
 	

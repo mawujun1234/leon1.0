@@ -166,7 +166,8 @@ public class GenerateMMojo extends AbstractMojo
     		
     		//fileWrite.append("public static final class "+clazz.getSimpleName()+" {\n");
     		fileWrite.append("public static final class "+annoation.name()+" {\n");
-    		 Field[]fields = clazz.getDeclaredFields();
+    		 //Field[]fields = clazz.getDeclaredFields();
+    		List<Field> fields= getClassField(clazz);
              for (Field field : fields) { //完全等同于上面的for循环
                  //System.out.println(field.getName()+" "+field.getType());
             	 getLog().info(field.getName());
@@ -179,7 +180,8 @@ public class GenerateMMojo extends AbstractMojo
                 	 fileWrite.append("	 * 这个是复合主键。里面的是复合组件的组成列的列名\n");
                 	 fileWrite.append("	 */\n");
                 	 fileWrite.append("	public static final class "+fieldClass.getSimpleName()+" {\n");
-                	 Field[] embeddedIdFields = fieldClass.getDeclaredFields();
+                	 //Field[] embeddedIdFields = fieldClass.getDeclaredFields();
+                	 List<Field> embeddedIdFields= getClassField(fieldClass);
                 	 for (Field embeddedIdfield : embeddedIdFields) { 
                 		 Column columnAnnotation=(Column)embeddedIdfield.getAnnotation(Column.class);
                 		 if(columnAnnotation==null || (columnAnnotation!=null && columnAnnotation.name().equals(""))){
@@ -246,7 +248,8 @@ public class GenerateMMojo extends AbstractMojo
     		getLog().info("============================================="+clazz.getName());
 
     		fileWrite.append("public static final class "+clazz.getSimpleName()+" {\n");
-    		 Field[]fields = clazz.getDeclaredFields();
+    		 //Field[]fields = clazz.getDeclaredFields();
+    		 List<Field> fields= getClassField(clazz);
              for (Field field : fields) { //完全等同于上面的for循环
             	 getLog().info(field.getName());
                  //System.out.println(field.getName()+" "+field.getType());
@@ -256,36 +259,69 @@ public class GenerateMMojo extends AbstractMojo
                  } else if(!isOf(field.getType(),Map.class) && !isOf(field.getType(),Collection.class)){
                 	 Class<?> fieldClass=field.getType();
                 	 Annotation embeddedIdAnnotataion=field.getAnnotation(EmbeddedId.class);
-                	 //fieldClass.getAnnotations();
                 	 //是复合主键的情况下
                 	 if(embeddedIdAnnotataion!=null){
                 		 fileWrite.append("	 /**\n");
-                    	 fileWrite.append("	 * 返回复合主键的组成:"+field.getName()+"\n");
+                    	 fileWrite.append("	 * 返回复合主键的组成，，以对象关联的方式:"+field.getName()+"\n");
                     	 fileWrite.append("	 */\n");
-                    	 fileWrite.append("	public static final class "+fieldClass.getSimpleName()+" {\n");
-                    	 Field[] embeddedIdFields = fieldClass.getDeclaredFields();
+                    	 fileWrite.append("	public static final class "+field.getName()+" {\n");
+                    	 //Field[] embeddedIdFields = fieldClass.getDeclaredFields();
+                    	 List<Field> embeddedIdFields= getClassField(fieldClass);
                     	 for (Field embeddedIdfield : embeddedIdFields) { 
                     		 fileWrite.append("		public static final String "+embeddedIdfield.getName()+"=\""+field.getName()+"."+embeddedIdfield.getName()+"\";\n");
                     	 }
                     	 fileWrite.append("			\n");
+                    	 
+                     	 fileWrite.append("	    /**\n");
+	                	 fileWrite.append("	    * 返回的是复合主键的属性名称，主要用于属性过滤或以id来查询的时候\n");
+	                	 fileWrite.append("	    */\n");
+	                	 fileWrite.append("	    public static String name(){ \n");
+	                	 fileWrite.append("		    return \""+field.getName()+"\";\n");
+	                	 fileWrite.append("	    }\n");
+	                	 
                     	 fileWrite.append("	}\n");
                     	 
                     	 
-                    	 fileWrite.append("	/**\n");
-                    	 fileWrite.append("	* 这是一个复合主键，返回的是该复合主键的属性名称，在hql中使用:"+field.getName()+"\n");
-                    	 fileWrite.append("	*/\n");
-                    	 fileWrite.append("	public static final String "+field.getName()+"=\""+field.getName()+"\";\n");
+//                    	 fileWrite.append("	/**\n");
+//                    	 fileWrite.append("	* 这是一个复合主键，返回的是该复合主键的属性名称，在hql中使用:"+field.getName()+"\n");
+//                    	 fileWrite.append("	*/\n");
+//                    	 fileWrite.append("	public static final String "+field.getName()+"=\""+field.getName()+"\";\n");
                 	 } else {
-	                	 fileWrite.append("	/**\n");
-	                	 fileWrite.append("	* 访问关联类的id，用于hql的时候，返回的是"+field.getName()+".id\n");
-	                	 fileWrite.append("	*/\n");
-	                	 fileWrite.append("	public static final String "+field.getName()+"_id=\""+field.getName()+".id\";\n");
+
+	                	 //返回关联类的属性，以对象关联的方式
+	                	 fileWrite.append("	 /**\n");
+                    	 fileWrite.append("	 * 返回关联对象的属性，，以对象关联的方式(a.b这种形式)，只有一些基本属性，层级不再往下了\n");
+                    	 fileWrite.append("	 */\n");
+                    	 fileWrite.append("	public static final class "+field.getName()+" {\n");
+                    	 //Field[] embeddedIdFields = fieldClass.getDeclaredFields();
+                    	 List<Field> embeddedIdFields= getClassField(fieldClass);
+                    	 for (Field embeddedIdfield : embeddedIdFields) { 
+                    		 if(isBaseType(embeddedIdfield.getType()) || embeddedIdfield.getType().isEnum()) {
+                    			 fileWrite.append("		public static final String "+embeddedIdfield.getName()+"=\""+field.getName()+"."+embeddedIdfield.getName()+"\";\n");
+                    		 }
+                    	 }
+                    	 //返回该属性的名称
+                    	 fileWrite.append("			\n");
+                     	 fileWrite.append("	    /**\n");
+	                	 fileWrite.append("	    * 返回的是关联类的属性名称，主要用于属性过滤的时候\n");
+	                	 fileWrite.append("	    */\n");
+	                	 fileWrite.append("	    public static String name(){ \n");
+	                	 fileWrite.append("		    return \""+field.getName()+"\";\n");
+	                	 fileWrite.append("	    }\n");
 	                	 
 	                	 
-	                	 fileWrite.append("	/**\n");
-	                	 fileWrite.append("	* 返回的是关联类的属性名称，返回的是"+field.getName()+"\n");
-	                	 fileWrite.append("	*/\n");
-	                	 fileWrite.append("	public static final String "+field.getName()+"=\""+field.getName()+"\";\n");
+                    	 fileWrite.append("	}\n");
+                    	 
+	   
+                    	        	 
+//	                	 fileWrite.append("	/**\n");
+//	                	 fileWrite.append("	* 访问关联类的id，用于hql的时候，返回的是"+field.getName()+".id\n");
+//	                	 fileWrite.append("	*/\n");
+//	                	 fileWrite.append("	public static final String "+field.getName()+"_id=\""+field.getName()+".id\";\n");
+//	                	 fileWrite.append("	/**\n");
+//	                	 fileWrite.append("	* 返回的是关联类的属性名称，主要用于属性过滤的时候\n");
+//	                	 fileWrite.append("	*/\n");
+//	                	 fileWrite.append("	public static final String "+field.getName()+"=\""+field.getName()+"\";\n");
                 	 }
                  } else {
                 	 //其他关联类，例如集合等
@@ -301,6 +337,33 @@ public class GenerateMMojo extends AbstractMojo
     	fileWrite.append("}\n");
     	fileWrite.close();
     }
+    
+    /** 
+     * 这个方法，是最重要的，关键的实现在这里面 
+     *  
+     * @param aClazz 
+     * @param aFieldName 
+     * @return 
+     */  
+    private static List<Field> getClassField(Class aClazz) {  
+	    Field[] declaredFields = aClazz.getDeclaredFields();  
+	    List<Field> fields=new ArrayList<Field>();
+	    
+	    for (Field field : declaredFields) {  
+	    	if("serialVersionUID".equals(field.getName())){
+	    		continue;
+	    	}
+	    	fields.add(field);
+	    }  
+	  
+	    Class superclass = aClazz.getSuperclass();  
+	    
+	    if (superclass != null) {// 简单的递归一下  
+	       
+	        fields.addAll( getClassField(superclass));
+	    }  
+	    return fields;  
+	} 
     public static boolean isBaseType(Class clz){
 		//如果是基本类型就返回true
 		if(clz == String.class || clz==Date.class || clz==java.sql.Date.class || clz==java.sql.Timestamp.class || clz.isPrimitive() || isWrapClass(clz)){

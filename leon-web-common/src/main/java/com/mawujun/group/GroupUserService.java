@@ -4,14 +4,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository.cnd.Cnd;
+import com.mawujun.repository1.IRepository;
+import com.mawujun.service.AbstractService;
 import com.mawujun.user.User;
 
 @Service
-public class GroupUserService extends BaseRepository<GroupUser, GroupUserPK> {
+public class GroupUserService extends AbstractService<GroupUser, GroupUserPK> {
+	@Autowired
+	private GroupUserRepository groupUserRepository;
+
+	@Override
+	public IRepository<GroupUser, GroupUserPK> getRepository() {
+		// TODO Auto-generated method stub
+		return groupUserRepository;
+	}
 
 //	public List<User> queryUser(String groupId,String userName){
 //		Map<String,String> params=new HashMap<String,String>();

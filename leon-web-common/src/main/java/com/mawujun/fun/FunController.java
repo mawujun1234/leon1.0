@@ -42,12 +42,12 @@ public class FunController {
 		//List<Fun> funes=funService.query(whereinfo);
 		Cnd cnd=Cnd.select();
 		if("root".equals(id)){
-			cnd.andIsNull(M.Fun.parent_id);
+			cnd.andIsNull(M.Fun.parent.id);
 		} else {
-			cnd.andEquals(M.Fun.parent_id, id);
+			cnd.andEquals(M.Fun.parent.id, id);
 		}
 		List<Fun> funes=funService.query(cnd);
-		JsonConfigHolder.setFilterPropertys(M.Fun.parent);
+		JsonConfigHolder.setFilterPropertys(M.Fun.parent.name());
 		//JsonConfigHolder.setRootName("children");
 		return funes;
 	}
@@ -59,7 +59,7 @@ public class FunController {
 	@ResponseBody
 	public List<Fun> queryAll(){	
 		
-		JsonConfigHolder.setFilterPropertys(M.Fun.parent);
+		JsonConfigHolder.setFilterPropertys(M.Fun.parent.name());
 		JsonConfigHolder.setRootName("children");
 		return funService.queryAll();
 		

@@ -41,9 +41,9 @@ public class MenuItemController {
 		}
 		//M.MenuItem.menu_id
 		//List<MenuItem> menuItems=menuItemService.query(Cnd.select().andEquals("menu.id", menuId).andEquals("parent.id", "root".equals(id)?null:id));
-		List<MenuItem> menuItems=menuItemService.query(Cnd.select().andEquals(M.MenuItem.menu_id, menuId).andEquals(M.MenuItem.parent_id, "root".equals(id)?null:id));
+		List<MenuItem> menuItems=menuItemService.query(Cnd.select().andEquals(M.MenuItem.menu.id, menuId).andEquals(M.MenuItem.parent.id, "root".equals(id)?null:id));
 
-		JsonConfigHolder.setFilterPropertys(MenuItem.class,M.MenuItem.parent,M.MenuItem.menu);
+		JsonConfigHolder.setFilterPropertys(MenuItem.class,M.MenuItem.parent.name(),M.MenuItem.menu.name());
 		//JsonConfigHolder.setFilterPropertys("parent,menu",MenuItem.class);
 		return menuItems;
 	}
@@ -59,7 +59,7 @@ public class MenuItemController {
 		//这里没有进行上下级的组装，所以界面上出现了3个菜单
 		//WhereInfo menuIdwhereinfo=WhereInfo.parse("menu.id", menuId);
 		//List<MenuItem> funes=menuItemService.query(menuIdwhereinfo);
-		List<MenuItem> funes=menuItemService.query(Cnd.select().andEquals(M.MenuItem.menu_id, menuId));
+		List<MenuItem> funes=menuItemService.query(Cnd.select().andEquals(M.MenuItem.menu.id, menuId));
 		return funes;
 	}
 	@RequestMapping("/menuItem/load")
