@@ -485,10 +485,10 @@ public class CndTest  extends DbunitBaseRepositoryTest {
 		
 		StringBuilder sb=new StringBuilder();
 		cnd0.joinHql(classMetadata, sb);
-		assertEquals("insert into com.mawujun.repository.EntityTest(firstName,lastName,age)  values(?,?,?)"
+		assertEquals("insert into t_EntityTest(firstName,lastName,age)  values(?,?,?)"
 				,sb.toString());
 		
-		assertEquals("insert into com.mawujun.repository.EntityTest(firstName,lastName,age)  values('E1',NULL,1)"
+		assertEquals("insert into t_EntityTest(firstName,lastName,age)  values('E1',NULL,1)"
 				,cnd0.toHql(classMetadata));
 	}
 	

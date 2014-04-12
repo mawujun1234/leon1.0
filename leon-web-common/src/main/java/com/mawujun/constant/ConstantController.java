@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.annotation.Label;
-import com.mawujun.controller.spring.mvc.JsonConfigHolder;
+import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;
 import com.mawujun.repository.cnd.Cnd;

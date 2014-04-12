@@ -7,6 +7,8 @@ import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.StringHttpMessageConverter;
 
+import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
+
 /**
  * 用来处理返回string的时候，使用了@ResponseBody的方法
  * @author mawujun email:160649888@163.com qq:16064988

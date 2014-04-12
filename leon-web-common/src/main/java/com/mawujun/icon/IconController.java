@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.mawujun.controller.spring.mvc.JsonConfigHolder;
+import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.utils.FileUtils;
 
 @Controller

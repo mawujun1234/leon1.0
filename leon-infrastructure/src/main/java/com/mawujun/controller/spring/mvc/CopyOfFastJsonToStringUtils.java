@@ -22,7 +22,7 @@ import com.mawujun.repository.hibernate.HibernateUtils;
 import com.mawujun.repository.idEntity.IdEntity;
 import com.mawujun.utils.page.QueryResult;
 
-public class FastJsonToStringUtils {
+public class CopyOfFastJsonToStringUtils {
 	
 	private static JSONSerializer getJSONSerializer(Object object){
 		//JSONObject result=JSONObjectUtils.toJson(t);
@@ -53,7 +53,6 @@ public class FastJsonToStringUtils {
 	public static String  getJsonString(Object object){
 		JSONSerializer serializer=getJSONSerializer(object);
 
-		//不使用自定义的json数据格式进行封装
 		if(!JsonConfigHolder.getAutoWrap()){
 				if(object instanceof Map){
 					doExtProperties((Map)object);
@@ -69,50 +68,50 @@ public class FastJsonToStringUtils {
 				//FileCopyUtils.copy(jsonString, new OutputStreamWriter(outputMessage.getBody(), charset));
 				return jsonString;
 		} else {
-//			ModelMap map=new ModelMap();
-//			if(object instanceof QueryResult){
-//				QueryResult page=(QueryResult)object;
-//				//ModelMap map=new ModelMap();
-//				map.put(JsonConfigHolder.getRootName(), page.getResult());
-//				map.put(JsonConfigHolder.getTotalName(), page.getTotalItems());
-//				map.put(JsonConfigHolder.getStartName(), page.getStart());
-//				map.put(JsonConfigHolder.getLimitName(), page.getPageSize());
-//				map.put(JsonConfigHolder.getPageNoName(), page.getPageNo());
-//				//map.put(JsonConfigHolder.getSuccessName(), true);
-//				//map.put("wheres", page.getWheres());
-//				//map.put("sorts", page.getSorts());
-//				//object=map;
-//	
-//			} else {
-//				
-//				map.put(JsonConfigHolder.getRootName(), object);
-//				
-//				if(object instanceof Collection){
-//					map.put(JsonConfigHolder.getTotalName(), JsonConfigHolder.getTotal()!=null?JsonConfigHolder.getTotal():((Collection)object).size());
-//				} else {
-//					Class c=object.getClass();
-//					if(c.isArray()){
-//						map.put(JsonConfigHolder.getTotalName(), JsonConfigHolder.getTotal()!=null?JsonConfigHolder.getTotal():((Object[])object).length);
-//					} else {
-//						map.put(JsonConfigHolder.getTotalName(),JsonConfigHolder.getTotal()!=null?JsonConfigHolder.getTotal():1);
-//					}
-//	
-//				}
-//				//object=map;
-//			}
-//			if(JsonConfigHolder.getMsg()!=null){
-//				map.put(JsonConfigHolder.getMsgName(), JsonConfigHolder.getMsg());
-//			}
-//			
-//			map.put(JsonConfigHolder.getSuccessName(), JsonConfigHolder.getSuccessValue());
 			
+
+		ModelMap map=new ModelMap();
+		if(object instanceof QueryResult){
+			QueryResult page=(QueryResult)object;
+			//ModelMap map=new ModelMap();
+			map.put(JsonConfigHolder.getRootName(), page.getResult());
+			map.put(JsonConfigHolder.getTotalName(), page.getTotalItems());
+			map.put(JsonConfigHolder.getStartName(), page.getStart());
+			map.put(JsonConfigHolder.getLimitName(), page.getPageSize());
+			map.put(JsonConfigHolder.getPageNoName(), page.getPageNo());
+			//map.put(JsonConfigHolder.getSuccessName(), true);
+			//map.put("wheres", page.getWheres());
+			//map.put("sorts", page.getSorts());
+			//object=map;
+
+		} else {
 			
+			map.put(JsonConfigHolder.getRootName(), object);
 			
-			serializer.write(JsonConfigHolder.convert(object));
-			String jsonString=serializer.toString();
-			jsonString=replaceJsonPath(jsonString);
-			jsonString=doExtProperties(jsonString);
-			return jsonString;
+			if(object instanceof Collection){
+				map.put(JsonConfigHolder.getTotalName(), JsonConfigHolder.getTotal()!=null?JsonConfigHolder.getTotal():((Collection)object).size());
+			} else {
+				Class c=object.getClass();
+				if(c.isArray()){
+					map.put(JsonConfigHolder.getTotalName(), JsonConfigHolder.getTotal()!=null?JsonConfigHolder.getTotal():((Object[])object).length);
+				} else {
+					map.put(JsonConfigHolder.getTotalName(),JsonConfigHolder.getTotal()!=null?JsonConfigHolder.getTotal():1);
+				}
+
+			}
+			//object=map;
+		}
+		if(JsonConfigHolder.getMsg()!=null){
+			map.put(JsonConfigHolder.getMsgName(), JsonConfigHolder.getMsg());
+		}
+		
+		map.put(JsonConfigHolder.getSuccessName(), JsonConfigHolder.getSuccessValue());
+		
+		serializer.write(map);
+		String jsonString=serializer.toString();
+		jsonString=replaceJsonPath(jsonString);
+		jsonString=doExtProperties(jsonString);
+		return jsonString;
 		}
 	}
 	
