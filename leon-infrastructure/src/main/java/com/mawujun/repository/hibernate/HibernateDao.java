@@ -961,6 +961,7 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 
 		List<M> result=new ArrayList<M>();
 		try{
+			//当只查一列的时候
 			if(names.size()==1){
 				List<Object> list= query.list();
 				if (ReflectionUtils.isBaseType(classM)) {
@@ -988,6 +989,7 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 					}
 				}
 			} else {
+				//当查询结果是多列的时候
 				List<Object[]> list= query.list();
 				if(classM.isAssignableFrom(Map.class)){
 					classM=(Class<M>) HashMap.class;
@@ -1001,17 +1003,6 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 					}
 				} else if(ReflectionUtils.isBaseType(classM)){
 					throw new BusinessException("不能将多个查询列，转换为一个基本类型!");
-//					if(names.size()==1){
-//						for(Object objs:list){
-//							M m=(M) BeanUtils.convert(objs, classM);
-//							result.add(m);
-//						}
-//					} else {
-//						for(Object[] objs:list){
-//							M m=(M) BeanUtils.convert(objs[0], classM);
-//							result.add(m);
-//						}
-//					}
 					
 				} else {
 					for(Object[] objs:list){
@@ -1032,6 +1023,92 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 		return result;
 
 	}
+//	/**
+//	 * List<String> ids=super.query(Cnd.select().addSelect("id"), String.class);
+//	 * @author mawujun 16064988@qq.com 
+//	 * @param cnd
+//	 * @param classM
+//	 * @return
+//	 */
+//	public <M> List<M> query(Cnd cnd,Class<M> classM) {
+//		cnd.setSqlType(SqlType.SELECT);
+//		StringBuilder builder=new StringBuilder();
+//		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
+//		cnd.joinHql(classMetadata, builder);
+//		
+//
+//		Object[] params = new Object[cnd.paramCount(classMetadata)];
+//		int paramsCount = cnd.joinParams(classMetadata, null, params, 0);
+//		
+//		Session session = this.getSession();
+//		Query query = session.createQuery(builder.toString());
+//		
+//		setParamsByCnd(query,cnd,classMetadata);
+//		
+//		List<String> names=cnd.getSelectItems().getNames();
+//
+//		List<M> result=new ArrayList<M>();
+//		try{
+//			if(names.size()==1){
+//				List<Object> list= query.list();
+//				if (ReflectionUtils.isBaseType(classM)) {
+//					for (Object objs : list) {
+//						M m = (M) BeanUtils.convert(objs, classM);
+//						result.add(m);
+//					}
+//				} else if(classM.isAssignableFrom(Map.class)){
+//					classM=(Class<M>) HashMap.class;
+//					for(Object objs:list){
+//						M m=classM.newInstance();
+//						
+//						for(int i=0;i<names.size();i++){
+//							((Map)m).put(names.get(i), objs);
+//						}
+//						result.add(m);
+//					}
+//				} else {
+//					for(Object objs:list){
+//						M m=classM.newInstance();
+//						for(int i=0;i<names.size();i++){
+//							ReflectionUtils.setFieldValue(m, names.get(i), objs);
+//						}
+//						result.add(m);
+//					}
+//				}
+//			} else {
+//				List<Object[]> list= query.list();
+//				if(classM.isAssignableFrom(Map.class)){
+//					classM=(Class<M>) HashMap.class;
+//					for(Object[] objs:list){
+//						M m=classM.newInstance();
+//						
+//						for(int i=0;i<names.size();i++){
+//							((Map)m).put(names.get(i), objs[i]);
+//						}
+//						result.add(m);
+//					}
+//				} else if(ReflectionUtils.isBaseType(classM)){
+//					throw new BusinessException("不能将多个查询列，转换为一个基本类型!");
+//					
+//				} else {
+//					for(Object[] objs:list){
+//						M m=classM.newInstance();
+//						for(int i=0;i<names.size();i++){
+//							ReflectionUtils.setFieldValue(m, names.get(i), objs[i]);
+//						}
+//						result.add(m);
+//					}
+//				}		
+//			}
+//
+//		} catch(Exception e) {
+//			throw  BusinessException.wrap(e);
+//		}
+//		
+//		
+//		return result;
+//
+//	}
 	
 	public int queryCount(WhereInfo... whereInfos) {
 		Criteria criteria = getSession().createCriteria(entityClass);

@@ -96,25 +96,7 @@
 				<groupId>com.mawujun</groupId>
 				<artifactId>leon-maven-plugin</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
-				<configuration>
-					<classpathDirectorys>
-						<classpathDirectory>${project.build.outputDirectory}</classpathDirectory>
-						<classpathDirectory>${basedir}\..\leon-infrastructure\target\classes</classpathDirectory>
-						<classpathDirectory>${basedir}\..\leon-utils\target\classes</classpathDirectory>
-						<!-- 必须添加，和annotationClassName对应的，不然就找不到 annotationClassName指定的注解-->
-						<!----><classpathDirectory>${basedir}\lib\hibernate-jpa-2.0-api-1.0.1.Final.jar</classpathDirectory>
-					</classpathDirectorys>
-					<packageNames>
-						<packageName>com.mawujun</packageName>
-					</packageNames>
-					<excludePackageNames>
-						<excludePackageName>com.mawujun.monitor.system</excludePackageName>
-					</excludePackageNames>
-					
-					<targetMDir>${basedir}\src\main\java\com\mawujun\utils</targetMDir>
-					
-				</configuration>
-				<!--
+				<!-- 
 				<executions>  
 		           <execution>  
 		            <phase>compile</phase>  
@@ -123,7 +105,46 @@
 		            </goals>  
 		          </execution>  
 		        </executions> 
-		         -->
+		        -->
+		        <dependencies>
+		        	<dependency>
+						<groupId>org.hibernate.javax.persistence</groupId>
+						<artifactId>hibernate-jpa-2.0-api</artifactId>
+						<version>1.0.1.Final</version>
+					</dependency>
+					<dependency>
+						<groupId>com.mawujun</groupId>
+						<artifactId>leon-utils</artifactId>
+						<version>0.0.1-SNAPSHOT</version>
+					</dependency>
+			
+					<dependency>
+						<groupId>com.mawujun</groupId>
+						<artifactId>leon-infrastructure</artifactId>
+						<version>0.0.1-SNAPSHOT</version>
+					</dependency>
+		        </dependencies>
+		        
+		        <configuration>
+					<classpathDirectorys>
+						<classpathDirectory>${project.build.outputDirectory}</classpathDirectory>
+					</classpathDirectorys>
+					<packageNames>
+						<packageName>com.mawujun</packageName>
+					</packageNames>
+					<excludePackageNames>
+						<excludePackageName>com.mawujun.monitor.system</excludePackageName>
+					</excludePackageNames>
+					<targetMDir>${basedir}\src\main\java\com\mawujun\utils</targetMDir>	
+					
+					
+					<driverClassName>org.h2.Driver</driverClassName>
+					<url>jdbc:h2:file:E:\eclipse\workspace\leon\leon-web-common\leon;AUTO_SERVER=TRUE</url>
+					<username>sa</username>
+					<password></password>
+				</configuration>
+				
+	
 			</plugin>
  			
 		</plugins>

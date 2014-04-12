@@ -30,6 +30,7 @@ import org.springframework.beans.FatalBeanException;
 import org.springframework.util.Assert;
 
 import com.google.common.collect.Lists;
+import com.mawujun.utils.BeanPropertiesCopyTest.Product;
 
 /**
  * 对象转换工具类.
@@ -49,7 +50,8 @@ public abstract class BeanUtils extends org.apache.commons.beanutils.BeanUtils{
 	 * 基于Dozer转换对象的类型.
 	 * 主要用于对象之间进行拷贝
 	 * 
-	 * Long[] aa=BeanUtils.copy(value, long[].class)value也是数组对象
+	 * 1：Long[] aa=BeanUtils.copy(value, long[].class)value也是数组对象
+	 * 2：BeanUtils.copyOrCast(map, Product.class);把map对象里的值拷贝到类里面
 	 */
 	public static <T> T copyOrCast(Object source, Class<T> destinationClass) {
 		Class fromType=source.getClass();

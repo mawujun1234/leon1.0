@@ -48,6 +48,7 @@ public class UpdateItems implements SqlExpression{
 			if(entry.getValue()==null){
 				params[off++] = null;
 			} else {
+				//在设置参数的时候，很多时候都是设置为String的，如果有指定类型，就转换为指定类型
 				params[off++] = BeanUtils.convert(entry.getValue(), type.getReturnedClass());
 			}
 		}

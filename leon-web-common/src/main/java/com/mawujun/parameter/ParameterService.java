@@ -18,15 +18,13 @@ public class ParameterService extends AbstractService<Parameter, String> {
 	@Autowired
 	private ParameterSubjectService parameterSubjectService;
 	@Autowired
-	private PGeneratorService pGeneratorService;
-	@Autowired
 	private ParameterRepository parameterRepository;
 	/**
 	 * 创建的时候同时更改P文件，添加该参数的id
 	 */
 	public String create(Parameter entity) {
 		super.create(entity);
-		this.updatePjavaFile();
+		//this.updatePjavaFile();
 		return entity.getId();
 	}
 	public void delete(Parameter entity,Boolean forceDelete) {
@@ -43,14 +41,14 @@ public class ParameterService extends AbstractService<Parameter, String> {
 			
 		}
 		super.delete(entity);
-		this.updatePjavaFile();
+		//this.updatePjavaFile();
 	}
 	
-	public void updatePjavaFile(){
-		//获取所有的参数id
-		List<String> ids=super.query(Cnd.select().addSelect("id"), String.class);
-		pGeneratorService.updatePjavaFile(ids);
-	}
+//	public void updatePjavaFile(){
+//		//获取所有的参数id
+//		List<String> ids=super.query(Cnd.select().addSelect("id"), String.class);
+//		pGeneratorService.updatePjavaFile(ids);
+//	}
 	
 	public void update(Parameter entity) {
 		//判断主体是否有没引用，如果被引用了并且更新的时候取消了，这个时候就报错

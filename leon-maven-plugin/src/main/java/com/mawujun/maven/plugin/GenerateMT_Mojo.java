@@ -18,6 +18,8 @@ package com.mawujun.maven.plugin;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.Execute;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
@@ -51,7 +53,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 /**
- * 根据领域模型来生成D类的代码，可以在开发当中直接使用D。User。name这样引用属性,
+ * 根据领域模型来生成D类和T类的代码，可以在开发当中直接使用D。User。name这样引用属性,
  * 也可以用T。leon_User.name这样引用列名
  * 扩展功能：
  * 1：在执行这个命令后，就可以执行监听功能，当文件变动后，就自动进行变化
@@ -59,16 +61,18 @@ import javax.persistence.Table;
  * 
  * 
  */
-@Mojo( name = "generateM")
-public class GenerateMMojo extends AbstractMojo
+@Mojo( name = "generateMT")
+public class GenerateMT_Mojo extends AbstractMojo
 {
     /**
      * class文件编译的目录
+     * 
      */
 	@Parameter
     private List<String> classpathDirectorys;
 	/**
 	 * 加载classpathDirectorys目录下的class的时候会依赖其他类，这里就是加依赖类的
+	 * @parameter
 	 */
 	@Parameter
     private List<String> packageNames;
@@ -76,6 +80,7 @@ public class GenerateMMojo extends AbstractMojo
     private List<String> excludePackageNames;
 	/**
 	 * 超找指定了annotationClass的类作为实体类
+	 * 
 	 */
 	//@Parameter
 	//private String annotationClassName;

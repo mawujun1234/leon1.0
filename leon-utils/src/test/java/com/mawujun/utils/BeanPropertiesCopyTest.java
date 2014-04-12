@@ -3,6 +3,7 @@ package com.mawujun.utils;
 import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,16 @@ public class BeanPropertiesCopyTest {
 		
 		String aa= BeanUtils.copyOrCast("aa", String.class);
 		assertEquals("aa", aa);
+
+		//
+		Map map=new HashMap();
+		map.put("productName", "productName");
+		map.put("price", 11.2);
+		Product product=BeanUtils.copyOrCast(map, Product.class);
+		assertEquals("productName", product.getProductName());
+		assertEquals(new Double(11.2), product.getPrice());
+		
+	
 	}
 
 	@Test  

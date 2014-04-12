@@ -1,7 +1,5 @@
 package com.mawujun.utils;
 
-import com.mawujun.parameter.PGeneratorService;
-import com.mawujun.utils.SystemUtils;
 
 /**
  * 用来开发的时候获取java开发目录的
