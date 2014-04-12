@@ -306,7 +306,7 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 	 * @return
 	 */
 	public <M> List<M> queryList(Cnd cnd,Class<M> classT) {
-		return hibernateDao.queryList(cnd,classT);
+		return hibernateDao.query(cnd,classT);
 	}
 	public int queryCount(Cnd cnd) {
 		return hibernateDao.queryCount(cnd).intValue();

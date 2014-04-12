@@ -1,8 +1,11 @@
 package com.mawujun.user;
 
 import com.mawujun.repository.BaseRepository;
+import com.mawujun.repository1.IRepository;
+import com.mawujun.service.AbstractService;
 import com.mawujun.user.login.UserDetailsImpl;
 import com.mawujun.utils.page.MatchMode;
+import com.mawujun.utils.page.Page;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 
@@ -18,18 +21,40 @@ import org.springframework.stereotype.Service;
  * @since 1.0
  */
 @Service
-public class SwitchUserService extends BaseRepository<SwitchUser, String>{
+public class SwitchUserService extends AbstractService<SwitchUser, String>{
+	@Autowired
+	private SwitchUserRepository switchUserRepository;
 	@Autowired
 	UserService userService;
-	public QueryResult<User> querySwitchUsers(Integer start,Integer limit,String userName,String masterId){
+	@Autowired
+	private UserRepository userRepository;
+	
+	public Page querySwitchUsers(Integer start,Integer limit,String userName,String masterId){
 		User master=userService.get(masterId);
-		PageRequest pageRqeust=PageRequest.init(start, limit).setSqlModel(false).addLikeWhere("name", userName,MatchMode.ANYWHERE,true);
+		//PageRequest pageRqeust=PageRequest.init(start, limit).setSqlModel(false).addLikeWhere("name", userName,MatchMode.ANYWHERE,true);
+		//
 		if(master.isAdmin()){	
-			return  userService.queryPage(pageRqeust);
+			Page page=Page.getInstance(start,limit).addParam("name", "%"+userName+"%");
+			return  userService.queryPage(page);
 		} else {
-			pageRqeust.addWhere("masterId",masterId).setSqlId("querySwitchUsers").setSqlModel(true);
-			return userService.queryPageMybatis(pageRqeust);
+			//pageRqeust.addWhere("masterId",masterId).setSqlId("querySwitchUsers").setSqlModel(true);
+			Page page=Page.getInstance(start,limit).addParam("masterId", masterId);
+			return userRepository.querySwitchUsers(page);
 		}
+		
+//		User master=userService.get(masterId);
+//		PageRequest pageRqeust=PageRequest.init(start, limit).setSqlModel(false).addLikeWhere("name", userName,MatchMode.ANYWHERE,true);
+//		if(master.isAdmin()){	
+//			return  userService.queryPage(pageRqeust);
+//		} else {
+//			pageRqeust.addWhere("masterId",masterId).setSqlId("querySwitchUsers").setSqlModel(true);
+//			return userService.queryPageMybatis(pageRqeust);
+//		}
+	}
+	@Override
+	public IRepository<SwitchUser, String> getRepository() {
+		// TODO Auto-generated method stub
+		return switchUserRepository;
 	}
 	
 

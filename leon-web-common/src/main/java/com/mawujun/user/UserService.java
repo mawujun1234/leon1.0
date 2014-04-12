@@ -11,15 +11,21 @@ import com.mawujun.parameter.ParameterSubjectService;
 import com.mawujun.parameter.SubjectType;
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository.cnd.Cnd;
+import com.mawujun.repository1.IRepository;
+import com.mawujun.service.AbstractService;
+import com.mawujun.utils.M;
+import com.mawujun.utils.Params;
 
 @Service
-public class UserService  extends BaseRepository<User, String>{
+public class UserService  extends AbstractService<User, String>{
 	@Autowired
 	UserRoleService userRoleService;
 	@Autowired
 	GroupUserService groupUserService;
 	@Autowired
 	private ParameterSubjectService parameterSubjectService;
+	@Autowired
+	private UserRepository userRepository;
 	/**
 	 * 注意UserRoleService的
 	 * @author mawujun email:16064988@163.com qq:16064988
@@ -27,27 +33,41 @@ public class UserService  extends BaseRepository<User, String>{
 	 * @return
 	 */
 	public List<String> queryRoleId(String userId) {
-		return super.queryList("queryRole", userId,String.class);
+		return this.getRepository().queryRoleId(userId);
+		//return super.queryList("queryRole", userId,String.class);
 	}
  
-	public User delete(User entity) {
+	public void delete(User entity) {
 		//删除和角色的uganxi
 		//super.deleteBatch(Cnd.delete().ad)
-		userRoleService.deleteBatch(Cnd.delete().andEquals("id.userId", entity.getId()));
+		userRoleService.deleteBatch(Cnd.delete().andEquals(M.UserRole.id.userId, entity.getId()));
 		//删除和组的关系
-		groupUserService.deleteBatch(Cnd.delete().andEquals("id.userId", entity.getId()));
+		groupUserService.deleteBatch(Cnd.delete().andEquals(M.GroupUser.id.userId, entity.getId()));
 		//删除和参数的关系
-		parameterSubjectService.deleteBatch(Cnd.delete().andEquals("subjectId",  entity.getId()).andEquals("subjectType", SubjectType.USER));
+		//parameterSubjectService.deleteBatch(Cnd.delete().andEquals("subjectId",  entity.getId()).andEquals("subjectType", SubjectType.USER));
+		parameterSubjectService.deleteBatch(Cnd.delete().andEquals(M.ParameterSubject.id.subjectId,  entity.getId())
+				.andEquals(M.ParameterSubject.id.subjectType, SubjectType.USER));
 		
-		return super.delete(entity);
+		super.delete(entity);
 	}
 	
 	public void recover(String id) {
-		Cnd cnd=Cnd.update().set("deleted", false).set("deletedDate", null).andEquals("id", id);
+		//Cnd cnd=Cnd.update().set("deleted", false).set("deletedDate", null).andEquals("id", id);
+		Cnd cnd=Cnd.update().set(M.User.deleted, false).set(M.User.deletedDate, null).andEquals(M.User.id, id);
 		super.update(cnd);
 	}
 	
 	public void resetPwd(String id,String password) {
-		super.update(Cnd.update().set("password", password).andEquals("id", id));
+		super.update(Cnd.update().set(M.User.password, password).andEquals(M.User.id, id));
+	}
+
+	public int querySwitchUsersCount(String masterId,String j_username){
+		int count=this.getRepository().querySwitchUsersCount(Params.init().add("masterId", masterId).add("j_username", j_username));
+		return count;
+	}
+	@Override
+	public UserRepository getRepository() {
+		// TODO Auto-generated method stub
+		return userRepository;
 	}
 }

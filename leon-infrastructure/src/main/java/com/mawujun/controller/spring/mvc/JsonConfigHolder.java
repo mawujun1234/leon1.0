@@ -76,6 +76,9 @@ public class JsonConfigHolder {
 	public static void setFilterPropertys(String filterPropertys,Class... clazz) {		
 		threadLocal.get().setFilterPropertys(filterPropertys,clazz);
 	}
+	public static void setFilterPropertys(String... filterPropertys) {		
+		threadLocal.get().setFilterPropertys(null,filterPropertys);
+	}
 	public static void setFilterPropertys(Class clazz,String... filterPropertys) {		
 		threadLocal.get().setFilterPropertys(clazz,filterPropertys);
 	}
@@ -321,7 +324,10 @@ public class JsonConfigHolder {
 		public void setFilterPropertys(Class clazz,String... filterPropertys) {
 			this.filterPropertys = filterPropertys;
 			//this.filterClass=clazz;
-			this.filterClass=new Class[]{clazz};
+			if(clazz!=null){
+				this.filterClass=new Class[]{clazz};
+			}
+			
 		}
 		public Boolean getEnableHibernateLazyInitializerFilter() {
 			return enableHibernateLazyInitializerFilter;

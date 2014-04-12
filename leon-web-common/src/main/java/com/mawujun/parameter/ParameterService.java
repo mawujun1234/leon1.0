@@ -8,28 +8,35 @@ import org.springframework.stereotype.Service;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository.cnd.Cnd;
+import com.mawujun.repository1.IRepository;
+import com.mawujun.service.AbstractService;
 import com.mawujun.utils.BeanUtils;
+import com.mawujun.utils.M;
 
 @Service
-public class ParameterService extends BaseRepository<Parameter, String> {
+public class ParameterService extends AbstractService<Parameter, String> {
 	@Autowired
 	private ParameterSubjectService parameterSubjectService;
 	@Autowired
 	private PGeneratorService pGeneratorService;
+	@Autowired
+	private ParameterRepository parameterRepository;
 	/**
 	 * 创建的时候同时更改P文件，添加该参数的id
 	 */
-	public Parameter create(Parameter entity) {
-		entity=super.create(entity);
+	public String create(Parameter entity) {
+		super.create(entity);
 		this.updatePjavaFile();
-		return entity;
+		return entity.getId();
 	}
 	public void delete(Parameter entity,Boolean forceDelete) {
 		if(forceDelete){
 			//删除引用了这个参数的所有主体
-			parameterSubjectService.deleteBatch(Cnd.delete().andEquals("parameterId", entity.getId()));
+			//parameterSubjectService.deleteBatch(Cnd.delete().andEquals("parameterId", entity.getId()));
+			parameterSubjectService.deleteBatch(Cnd.delete().andEquals(M.ParameterSubject.id.parameterId, entity.getId()));
 		} else {
-			int count=parameterSubjectService.queryCount(Cnd.where().andEquals("parameterId", entity.getId()));
+			//Long count=parameterSubjectService.queryCount(Cnd.where().andEquals("parameterId", entity.getId()));
+			Long count=parameterSubjectService.queryCount(Cnd.where().andEquals(M.ParameterSubject.id.parameterId, entity.getId()));
 			if(count>0){
 				throw new BusinessException("该参数有主体在引用不能删除!");
 			}		
@@ -41,13 +48,16 @@ public class ParameterService extends BaseRepository<Parameter, String> {
 	
 	public void updatePjavaFile(){
 		//获取所有的参数id
-		List<String> ids=super.queryList(Cnd.select().addSelect("id"), String.class);
+		List<String> ids=super.query(Cnd.select().addSelect("id"), String.class);
 		pGeneratorService.updatePjavaFile(ids);
 	}
 	
-	public Parameter update(Parameter entity) {
+	public void update(Parameter entity) {
 		//判断主体是否有没引用，如果被引用了并且更新的时候取消了，这个时候就报错
-		List<String> list=parameterSubjectService.queryList(Cnd.select().addSelect("id.subjectType").distinct().andEquals("id.parameterId", entity.getId()), String.class);
+		//List<String> list=parameterSubjectService.query(Cnd.select().addSelect("id.subjectType").distinct().andEquals("id.parameterId", entity.getId()), String.class);
+		List<String> list=parameterSubjectService.query(Cnd.select().addSelect(M.ParameterSubject.id.subjectType).distinct()
+				.andEquals(M.ParameterSubject.id.parameterId, entity.getId()), String.class);
+
 		String subjects=entity.getSubjects();
 		subjects=subjects.substring(1, subjects.length()-1);
 		String tempArray[]=subjects.split(",");
@@ -74,7 +84,12 @@ public class ParameterService extends BaseRepository<Parameter, String> {
 			throw new BusinessException("值类型不能更新，因为已经被使用了!");
 		}
 		BeanUtils.copyOrCast(entity, paramm);
-		return super.update(paramm);
+		super.update(paramm);
+	}
+	@Override
+	public IRepository<Parameter, String> getRepository() {
+		// TODO Auto-generated method stub
+		return parameterRepository;
 	}
 	
 

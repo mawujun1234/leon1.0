@@ -14,16 +14,26 @@ import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository.idEntity.UUIDGenerator;
+import com.mawujun.repository1.IRepository;
+import com.mawujun.service.AbstractService;
 import com.mawujun.user.login.FilterInvocationSecurityMetadataSourceImpl;
 import com.mawujun.utils.RoleCacheHolder;
 import com.mawujun.utils.page.WhereInfo;
 
 @Service
-public class RoleFunService extends BaseRepository<RoleFun, String> {
+public class RoleFunService extends AbstractService<RoleFun, String> {
 	@Autowired
 	private FunService funService;
 	@Autowired
 	private RoleService roleService;
+	@Autowired
+	private RoleFunRepository roleFunRepository;
+	
+	@Override
+	public IRepository<RoleFun, String> getRepository() {
+		// TODO Auto-generated method stub
+		return roleFunRepository;
+	}
 	
 	public Set<RoleFun> query(String roleId){
 		//List<Fun> funs=funService.queryAll();
@@ -45,14 +55,14 @@ public class RoleFunService extends BaseRepository<RoleFun, String> {
 //	@Resource(name="filterInvocationSecurityMetadataSourceImpl")
 //	FilterInvocationSecurityMetadataSourceImpl  filterInvocationSecurityMetadataSourceImpl;
 	
-	public RoleFun create(RoleFun roleFun) {
+	public String create(RoleFun roleFun) {
 		roleFun.setCreateDate(new Date());
-		roleFun=super.create(roleFun);
+		String id=super.create(roleFun);
 
 		Role role=roleService.get(roleFun.getRole().getId());
 		role.addFun(roleFun);
 		roleFun.getFun().getCode();//不能删除，用来初始化fun的
-		return roleFun;
+		return id;
 		//更新spring security中的权限信息
 		//Fun fun=funService.get(roleFun.getFun().getId());
 		//filterInvocationSecurityMetadataSourceImpl.addConfigAttribute(fun.getUrl(), roleFun.getRole().getId());
@@ -114,5 +124,7 @@ public class RoleFunService extends BaseRepository<RoleFun, String> {
 ////		}
 //		return results;
 //	}
+
+
 
 }

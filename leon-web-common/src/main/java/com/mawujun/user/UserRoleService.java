@@ -14,15 +14,22 @@ import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;
 import com.mawujun.fun.FunVO;
 import com.mawujun.repository.BaseRepository;
+import com.mawujun.repository1.IRepository;
 import com.mawujun.role.Role;
 import com.mawujun.role.RoleService;
+import com.mawujun.service.AbstractService;
+import com.mawujun.utils.M;
 
 @Service
-public class UserRoleService extends BaseRepository<UserRole, UserRolePK> {
+public class UserRoleService extends AbstractService<UserRole, UserRolePK> {
 	@Autowired
 	private RoleService roleService;
 	@Autowired
 	private FunService funService;
+	@Autowired
+	private UserRepository userRepository;
+	@Autowired
+	private UserRoleRepository userRoleRepository;
 	
 	/**
 	 * 查询出所有的Role并且构建出Role的整棵树
@@ -31,10 +38,9 @@ public class UserRoleService extends BaseRepository<UserRole, UserRolePK> {
 	 * @return
 	 */
 	public List<Map<String,Object>> queryRole(String userId){
-		////String hql="select b.id.roleId from UserRole b where b.id.userId=?";
-		//List<UserRole> userRoles=super.query(WhereInfo.parse("id.userId", userId));
 		
-		List<Object> roleIds=super.queryListObject("queryRole", userId);//.selectListObj("queryRole", userId);
+		//List<Object> roleIds=super.queryListObject("queryRole", userId);//.selectListObj("queryRole", userId);
+		List<String> roleIds=userRepository.queryRoleId(userId);
 		//组装出role树
 		List<Role> roles=new ArrayList<Role>();
 		for(Object roleId:roleIds){
@@ -93,7 +99,7 @@ public class UserRoleService extends BaseRepository<UserRole, UserRolePK> {
 		return result;
 	}
 	
-	public UserRole create(UserRole userRole){
+	public UserRolePK create(UserRole userRole){
 		//注意还要互斥的角色判断
 		userRole.setCreateDate(new Date());
 		return super.create(userRole);
@@ -107,7 +113,7 @@ public class UserRoleService extends BaseRepository<UserRole, UserRolePK> {
 	 * @return
 	 */
 	public List<FunVO> queryFun(String userId){	
-		List<Map<String,Object>> funIdRoleIds = super.queryList("queryFun", userId);
+		List<Map<String,Object>> funIdRoleIds = userRepository.queryFun(userId);//super.queryList("queryFun", userId);
 		// 组装出role树
 		Map<String,FunVO> parentKeys=new HashMap<String,FunVO>();
 		List<FunVO> rootFuns = new ArrayList<FunVO>();
@@ -124,7 +130,7 @@ public class UserRoleService extends BaseRepository<UserRole, UserRolePK> {
 				continue;
 			}
 			FunVO fun=new FunVO();
-			BeanUtils.copyProperties(leaf, fun, new String[]{"children","parent"});
+			BeanUtils.copyProperties(leaf, fun, new String[]{M.Fun.parent.name()});
 			fun.addRoleName(roleService.get(role_id).getName());
 			
 			if(leaf.getParent()!=null){
@@ -164,6 +170,12 @@ public class UserRoleService extends BaseRepository<UserRole, UserRolePK> {
 			
 		}
 		return rootFuns;
+	}
+
+	@Override
+	public UserRoleRepository getRepository() {
+		// TODO Auto-generated method stub
+		return userRoleRepository;
 	}
 	
 }

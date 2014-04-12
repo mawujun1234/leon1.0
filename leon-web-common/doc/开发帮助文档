@@ -29,3 +29,6 @@ service层开发
 访问表的字段名的类为T
 	引用方法就是T.MenuItem.id,T.MenuItem.name
 	访问关联类的id分为hql为：T.MenuItem。menu_id
+========================================
+分页查询的时候，如果要使用自动分页的话，就使用匹配queryPage的模式	
+Cnd的快速插入，更新，查询

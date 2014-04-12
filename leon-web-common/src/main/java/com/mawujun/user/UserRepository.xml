@@ -5,8 +5,8 @@
 
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com 承接各种项目 -->
 <!-- 注意文件名称为:Example_${DbName}_Mapper.xml-->
-<mapper namespace="com.mawujun.user">
-	<select id="queryRole" resultType="String" parameterType="String" >
+<mapper namespace="com.mawujun.user.UserRepository">
+	<select id="queryRoleId" resultType="String" parameterType="String" >
     	SELECT a.role_id
 	    FROM leon_user_role a
 		where a.user_id=#{user_id}
@@ -22,6 +22,11 @@
 		where a.role_id=b.role_id and a.user_id=#{user_id}
     </select>
     
+    <select id="queryPage" resultType="com.mawujun.user.User" parameterType="String">
+    	SELECT a.*
+	    FROM leon_user a
+		where a.name like #{name} 
+    </select>
     
     <select id="querySwitchUsers" resultType="com.mawujun.user.User" parameterType="String">
     	SELECT a.*

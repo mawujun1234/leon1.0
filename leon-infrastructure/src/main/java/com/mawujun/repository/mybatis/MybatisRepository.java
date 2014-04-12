@@ -150,7 +150,10 @@ public class MybatisRepository  {
 		List<Map<String, Object>> result=getSqlSession().selectList(statement,page.getParams(),new RowBounds(page.getStart(),page.getPageSize()));	
 		page.setResult(result);
 		
-		int totalCount=(Integer)this.getSqlSession().selectOne(statement+"_count", page.getParams());
+		Integer totalCount=(Integer)this.getSqlSession().selectOne(statement+"_count", page.getParams());
+		if(totalCount==null){
+			totalCount=0;
+		}
 		page.setTotal(totalCount);
 		
 		return page;	

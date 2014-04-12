@@ -98,6 +98,22 @@ public class Repository1Test  extends DbunitBaseRepositoryTest{
 		assertEquals(id, entity.getId());
 		//assertEquals(new Integer(4), entity.getId());
 	}
+	@Test
+	public void createCnd() throws IOException, DataSetException, SQLException {
+		assertNotNull(entityTestMapper);
+		
+//		EntityTest entity=new EntityTest();
+//		entity.setFirstName("ma");
+//		entity.setLastName("wujun");
+//		entity.setEmail("160649888@163.com");
+		Cnd cnd=Cnd.insert().set("firstName", "ma").set("lastName", "wujun").set("email", "160649888@163.com").set("id", 4).set("version", 1);
+		entityTestMapper.create(cnd);
+		
+		long count= entityTestMapper.queryCount(Cnd.select());
+		
+		assertEquals(4, count);
+		//assertEquals(new Integer(4), entity.getId());
+	}
 	
 	@Test
 	public void createOrUpdate() throws IOException, DataSetException, SQLException {
@@ -380,6 +396,18 @@ public class Repository1Test  extends DbunitBaseRepositoryTest{
 		
 		List<EntityTest> entitys=entityTestMapper.query(cnd);
 		assertEquals(2,entitys.size());
+	}
+	
+	@Test
+	public void queryCnd_M() {
+		Cnd cnd=Cnd.select().andGT("age", 20).andLike("firstName", "admin").andIn("lastName", "123","1234").addSelect("age","firstName").asc("age");
+		
+		List<EntityTest> entitys=entityTestMapper.query(cnd,EntityTest.class);
+		
+		assertEquals(2,entitys.size());
+		assertEquals(true,entitys.get(0) instanceof EntityTest);
+		assertEquals((Integer)30,entitys.get(0).getAge());
+		assertEquals((Integer)40,entitys.get(1).getAge());
 	}
 	
 	@Test

@@ -11,6 +11,7 @@ import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.repository.idEntity.IdEntity;
 import com.mawujun.repository1.IRepository;
+import com.mawujun.utils.page.Page;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 
@@ -25,6 +26,15 @@ public abstract class AbstractService<T extends IdEntity<ID>, ID extends Seriali
 	
 	public ID create(T entity) {
 		return this.getRepository().create(entity);
+	}
+	/**
+	 * Cnd cnd=Cnd.insert().set("firstName", "ma").set("lastName", "wujun").set("email", "160649888@163.com").set("id", 4).set("version", 1);
+	 * service.create(cnd);
+	 * @author mawujun 16064988@qq.com 
+	 * @param cnd
+	 */
+	public void create(final Cnd cnd) {
+		this.getRepository().create(cnd);
 	}
 	public void createOrUpdate(final T entity) {
 		this.getRepository().createOrUpdate(entity);
@@ -131,7 +141,31 @@ public abstract class AbstractService<T extends IdEntity<ID>, ID extends Seriali
 	public List<T> query(Cnd cnd) {
 		return this.getRepository().query(cnd);
 	}
+	/**
+	 * List<String> ids=super.query(Cnd.select().addSelect("id"), String.class);
+	 * @author mawujun 16064988@qq.com 
+	 * @param cnd
+	 * @param classM 要返回的数据类型
+	 * @return
+	 */
+	public <M> List<M> query(Cnd cnd,Class<M> classM) {
+		return this.getRepository().query(cnd,classM);
+	}
 	public QueryResult<T> queryPage(final PageRequest pageRequest) {
 		return this.getRepository().queryPage(pageRequest);
+	}
+	/**
+	 * 会自动建立count的sql语句，id默认为：方法名_count,本例就queryPage_count.你也可以自己定义这个sql，取名规则也是这样，这样的话就会覆盖默认实现的count语句
+	 * 后台只需要定义一个sql,select * from XXX where ...就可以了，不需要些分页的代码例如mysql的limit，sqlserver的top等
+	 * 如果 要自定义其他查询分页，只需要定义一个方法，把方法名改成你想要的就可以了，其他的应该和这个方法一样.参数和返回值都必须是Page，才会自动进行查询
+	 * 
+	 * Page的使用方法Page page=Page.getInstance().setPageSize(1).setStart(1).setParams("");
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param statement
+	 * @param page
+	 * @return
+	 */
+	public Page queryPage(Page page) {
+		return this.getRepository().queryPage(page);
 	}
 }

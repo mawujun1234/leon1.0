@@ -14,7 +14,7 @@ import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 import com.mawujun.utils.M;
-import com.mawujun.utils.ParamUtils;
+import com.mawujun.utils.Params;
 import com.mawujun.utils.help.ReportCodeHelper;
 import com.mawujun.utils.page.WhereInfo;
 
@@ -99,7 +99,7 @@ public class FunService extends AbstractService<Fun, String> {
 	 */
 	public List<String> queryAllDenyPageElement(String userId,String funId) {	
 		//return super.queryList("queryAllDenyPageElement", ParamUtils.init().add("user_id", userId).add("parent_id", funId).add("isenable", true), String.class);
-		return this.getRepository().queryAllDenyPageElement(ParamUtils.init().add("user_id", userId).add("parent_id", funId).add("isenable", true));
+		return this.getRepository().queryAllDenyPageElement(Params.init().add("user_id", userId).add("parent_id", funId).add("isenable", true));
 	}
 
 

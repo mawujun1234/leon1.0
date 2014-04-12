@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Page {
-	protected int pageNo = 1;
+	protected int pageNo = 0;
 	protected int pageSize = 50;// 默认是每页50条
 	protected int start = 1;
 
@@ -24,6 +24,10 @@ public class Page {
 	public static Page getInstance(){
 		
 		return new Page();
+	}
+	public static Page getInstance(int start,int limit){
+		
+		return new Page().setStart(start).setPageSize(limit);
 	}
 	
 	public int getPageNo() {

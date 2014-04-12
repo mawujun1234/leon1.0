@@ -12,6 +12,7 @@ import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.repository1.IRepository;
 import com.mawujun.service.AbstractService;
 import com.mawujun.user.User;
+import com.mawujun.utils.page.Page;
 
 @Service
 public class GroupUserService extends AbstractService<GroupUser, GroupUserPK> {
@@ -19,10 +20,12 @@ public class GroupUserService extends AbstractService<GroupUser, GroupUserPK> {
 	private GroupUserRepository groupUserRepository;
 
 	@Override
-	public IRepository<GroupUser, GroupUserPK> getRepository() {
+	public GroupUserRepository getRepository() {
 		// TODO Auto-generated method stub
 		return groupUserRepository;
 	}
+	
+
 
 //	public List<User> queryUser(String groupId,String userName){
 //		Map<String,String> params=new HashMap<String,String>();

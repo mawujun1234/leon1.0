@@ -91,6 +91,19 @@ public class Cnd implements PItem{
 		return cnd;
 	}
 	/**
+	 * Cnd.select("id","name").distinct().andEquals("name", "1");
+	 * Cnd.select()设置SqlType为SELECT
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @return
+	 */
+	public static Cnd select(String... selNames) {
+		Cnd cnd=new Cnd(SqlType.SELECT).addSelect();
+		if(selNames!=null){
+			cnd.addSelect(selNames);
+		}
+		return cnd;
+	}
+	/**
 	 * 是用于对象模型
 	 * @author mawujun 16064988@qq.com 
 	 * @return
@@ -99,7 +112,7 @@ public class Cnd implements PItem{
 		return new Cnd(SqlType.DELETE);
 	}
 	/**
-	 * 是用于对象模型
+	 * 是用于对象模型 Cnd.update().set().set()
 	 * @author mawujun 16064988@qq.com 
 	 * @return
 	 */
@@ -107,7 +120,7 @@ public class Cnd implements PItem{
 		return new Cnd(SqlType.UPDATE);
 	}
 	/**
-	 * 是用于对象模型
+	 * 是用于对象模型Cnd.insert().set().set()
 	 * @author mawujun 16064988@qq.com 
 	 * @return
 	 */
@@ -467,7 +480,9 @@ public class Cnd implements PItem{
 			where.joinHql(classMetadata, sb);
 			
 		}else if(this.getSqlType()==SqlType.INSERT && insertItems.size()>0){
-			sb.append("insert into "+ classMetadata.getEntityName());
+			//因为hibernate不能支持insert into com.mawujun.repository.EntityTest(firstName,lastName,email,id)  values(?,?,?,?)这种方式
+			//只能支持insert into com.mawujun.repository.EntityTest(firstName,lastName,email,id) select  * from .....
+			sb.append("insert into "+ classMetadata.getTableName());
 			insertItems.joinHql(classMetadata, sb);
 		}
 		System.out.println(sb);
@@ -632,6 +647,15 @@ public class Cnd implements PItem{
 			return null;
 		}
 		return updateItems;
+	}
+	public InsertItems getInsertItems() {
+		if(insertItems==null){
+			return null;
+		}
+		if(insertItems.size()==0){
+			return null;
+		}
+		return insertItems;
 	}
 	
 	

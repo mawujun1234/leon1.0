@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mawujun.repository.cnd.Cnd;
+import com.mawujun.utils.M;
 import com.mawujun.utils.page.WhereInfo;
 
 @Controller
@@ -25,11 +27,11 @@ public class RoleController {
 		System.out.println(Thread.currentThread().getId()+"==========================================");
 		List<Role> roles=null;
 		if(!"root".equals(id)){
-			WhereInfo whereinfo=WhereInfo.parse("category.id", id);
-			roles=roleService.query(whereinfo);
+			//WhereInfo whereinfo=WhereInfo.parse("category.id", id);
+			roles=roleService.query(Cnd.where().andEquals(M.Role.category.id, id));
 		} else {
-			WhereInfo whereinfo=WhereInfo.parse("category.id","is", "11");
-			roles=roleService.query(whereinfo);
+			//WhereInfo whereinfo=WhereInfo.parse("category.id","is", "11");
+			roles=roleService.query(Cnd.where().andIsNull(M.Role.category.id));
 		}
 		return roles;
 	}

@@ -16,6 +16,7 @@ import com.mawujun.utils.page.QueryResult;
 public interface IHibernateDao <T, ID extends Serializable>{
 
 	public ID create(T entity);
+	public void create(final Cnd cnd);
 	public void createOrUpdate(final T entity);
 	
 	public void update(T entity);
@@ -79,6 +80,9 @@ public interface IHibernateDao <T, ID extends Serializable>{
 	
 	public List<T> queryAll();
 	public List<T> query(Cnd cnd);
+	
+	public <M> List<M> query(Cnd cnd,Class<M> classM);
+	
 	public QueryResult<T> queryPage(final PageRequest pageRequest);
 	
 }

@@ -14,8 +14,9 @@ import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.user.login.SwitchUserFilterImpl;
 import com.mawujun.user.login.UserDetailsImpl;
-import com.mawujun.utils.ParamUtils;
+import com.mawujun.utils.Params;
 import com.mawujun.utils.StringUtils;
+import com.mawujun.utils.page.Page;
 import com.mawujun.utils.page.QueryResult;
 
 /**
@@ -29,6 +30,8 @@ public class SwitchUserController {
 
 	@Resource
 	private SwitchUserService switchUserService;
+	@Resource
+	private UserService userService;
 	
 	//@Autowired
 	//UserController userController;
@@ -40,7 +43,7 @@ public class SwitchUserController {
 	 */
 	@RequestMapping("/query")
 	@ResponseBody
-	public QueryResult<User> querySwitchUsers(Integer start,Integer limit,String userName,String masterId){
+	public Page querySwitchUsers(Integer start,Integer limit,String userName,String masterId){
 		//用在前台用户切换用户的时候
 		if(!StringUtils.hasText(masterId)){
 			Authentication masterAuth =SwitchUserFilterImpl.getMasterAuthentication();// SecurityContextHolder.getContext().getAuthentication();
@@ -112,7 +115,8 @@ public class SwitchUserController {
 			masterId = detail.getId();
 		}
 		//WhereInfo
-		int count=switchUserService.queryCountMybatis("querySwitchUsersCount", ParamUtils.init().add("masterId", masterId).add("j_username", j_username));
+		//int count=switchUserService.queryCountMybatis("querySwitchUsersCount", Params.init().add("masterId", masterId).add("j_username", j_username));
+		int count=userService.querySwitchUsersCount(masterId, j_username);
 		if(count>0){
 			//JsonConfigHolder.setMsg("允许");
 		} else {

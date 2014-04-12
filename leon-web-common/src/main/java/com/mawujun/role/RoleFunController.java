@@ -18,6 +18,7 @@ import com.mawujun.controller.spring.mvc.JsonConfigHolder;
 import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;
 import com.mawujun.user.login.FilterInvocationSecurityMetadataSourceImpl;
+import com.mawujun.utils.M;
 
 @Controller
 public class RoleFunController {
@@ -88,7 +89,7 @@ public class RoleFunController {
 		
 		//filterInvocationSecurityMetadataSourceImpl.addConfigAttribute(roleFun.getFun().getUrl(), roleFun.getRole().getId());
 		notifyObservers(roleFun.getRole(),roleFun.getFun(),true);
-		JsonConfigHolder.setFilterPropertys("role,fun");
+		JsonConfigHolder.setFilterPropertys(M.RoleFun.role.name(),M.RoleFun.fun.name());
 		return roleFun;
 	}
 	
@@ -97,7 +98,7 @@ public class RoleFunController {
 	public RoleFun update(String roleId,String funId,String permissionEnum){
 		
 		RoleFun roleFun=roleFunService.update( roleId, funId, permissionEnum);
-		JsonConfigHolder.setFilterPropertys("role,fun");
+		JsonConfigHolder.setFilterPropertys(M.RoleFun.role.name(),M.RoleFun.fun.name());
 		return roleFun;
 	}
 	
@@ -108,7 +109,7 @@ public class RoleFunController {
 		notifyObservers(roleFun.getRole(),roleFun.getFun(),false);
 		//filterInvocationSecurityMetadataSourceImpl.removeConfigAttribute(roleFun.getFun().getUrl(), roleId);
 		
-		JsonConfigHolder.setFilterPropertys("role,fun");
+		JsonConfigHolder.setFilterPropertys(M.RoleFun.role.name(),M.RoleFun.fun.name());
 		
 		return roleFun;
 	}

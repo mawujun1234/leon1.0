@@ -139,7 +139,7 @@ public class UserController {
 	@RequestMapping("/user/removeRole")
 	@ResponseBody
 	public UserRolePK removeRole(UserRolePK userRolePK){		 
-		userRoleService.delete(userRolePK);
+		userRoleService.deleteById(userRolePK);
 		//userService.delete(user);
 		return userRolePK;
 	}

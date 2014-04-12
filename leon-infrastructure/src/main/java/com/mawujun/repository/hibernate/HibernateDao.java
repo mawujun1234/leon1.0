@@ -141,7 +141,7 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 	}
 	
 	/**
-	 * 保存新增或修改的对象.
+	 * 保存新增的对象.
 	 */
 	public ID create(final T entity) {
 		AssertUtils.notNull(entity, "entity不能为空");
@@ -149,6 +149,33 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 		logger.debug("save entity: {}", entity);
 		getSession().flush();
 		return (ID)id;
+	}
+	/**
+	 * 保存新增的对象.
+	 */
+	public void create(final Cnd cnd) {
+		AssertUtils.notNull(cnd, "cnd不能为空");
+		if(cnd.getSqlType()!=SqlType.INSERT){
+			throw new IllegalArgumentException("Cnd的类型不对，应该使用insert");
+		}
+		
+		if(cnd.getInsertItems()==null){
+			throw new BusinessException("没有设置更新字段，请先设置了");
+		}
+		//cnd.setSqlType(SqlType.INSERT);
+		
+		
+		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
+		
+		StringBuilder builder=new StringBuilder();
+		cnd.joinHql(classMetadata, builder);
+		//Query query = this.getSession().createQuery(builder.toString());
+		Query query = this.getSession().createSQLQuery(builder.toString());
+		setParamsByCnd(query,cnd,classMetadata);
+		
+		
+
+		query.executeUpdate();
 	}
 
 	/**
@@ -909,13 +936,13 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 
 	}
 	/**
-	 * List<String> ids=super.queryList(Cnd.select().addSelect("id"), String.class);
+	 * List<String> ids=super.query(Cnd.select().addSelect("id"), String.class);
 	 * @author mawujun 16064988@qq.com 
 	 * @param cnd
 	 * @param classM
 	 * @return
 	 */
-	public <M> List<M> queryList(Cnd cnd,Class<M> classM) {
+	public <M> List<M> query(Cnd cnd,Class<M> classM) {
 		cnd.setSqlType(SqlType.SELECT);
 		StringBuilder builder=new StringBuilder();
 		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
@@ -1028,7 +1055,13 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 		setParamsByCnd(query,cnd,classMetadata);
 		query.setResultTransformer(CriteriaSpecification.ROOT_ENTITY);
 		//return ((Long)query.uniqueResult()).intValue();
-		return (Long)query.uniqueResult();
+		Long result=(Long)query.uniqueResult();
+		if(result==null){
+			return 0l;
+		} else {
+			return result;
+		}
+		 
 	}
 	/**
 	 * 返回第一个对象

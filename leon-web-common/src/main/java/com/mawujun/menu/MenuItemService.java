@@ -22,7 +22,7 @@ import com.mawujun.service.AbstractService;
 import com.mawujun.user.login.UserDetailsImpl;
 import com.mawujun.utils.BeanUtils;
 import com.mawujun.utils.M;
-import com.mawujun.utils.ParamUtils;
+import com.mawujun.utils.Params;
 import com.mawujun.utils.StringUtils;
 import com.mawujun.utils.T;
 import com.mawujun.utils.help.ReportCodeHelper;
@@ -174,7 +174,7 @@ public class MenuItemService extends AbstractService<MenuItem, String> {//extend
 
 		//如果是管理员，可以获查看到所有的菜单
 		//List<String> menuItemLeaf = super.queryList("query4Desktop", ParamUtils.init().add("menu_id", menuId).add("isAdmin", isAdmin),String.class);
-		List<String> menuItemLeaf =this.getRepository().query4Desktop(ParamUtils.init().add(T.leon_menuItem.menu_id, menuId).add("isAdmin", isAdmin).addIf(T.leon_menuItem.parent_id, parentId));
+		List<String> menuItemLeaf =this.getRepository().query4Desktop(Params.init().add(T.leon_menuItem.menu_id, menuId).add("isAdmin", isAdmin).addIf(T.leon_menuItem.parent_id, parentId));
 
 		Map<String,MenuItemVO> parentKeys=new HashMap<String,MenuItemVO>();
 		List<MenuItemVO> menuItems = new ArrayList<MenuItemVO>();
@@ -266,7 +266,7 @@ public class MenuItemService extends AbstractService<MenuItem, String> {//extend
 	 * @return
 	 */
 	public MenuItemVO queryMenuItem(String jspUrl,String menuId){	
-		Map params=ParamUtils.init().add("jspUrl", jspUrl).add("menuId", menuId);
+		Map params=Params.init().add("jspUrl", jspUrl).add("menuId", menuId);
 		//List<MenuItemVO> menuItems=super.queryList("queryMenuItem", params, MenuItemVO.class);
 		List<MenuItemVO> menuItems=this.getRepository().queryMenuItem(params);
 		if(menuItems==null || menuItems.size()==0){

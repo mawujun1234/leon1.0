@@ -6,30 +6,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.hibernate.Hibernate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.BaseRepository;
+import com.mawujun.repository1.IRepository;
+import com.mawujun.service.AbstractService;
 import com.mawujun.utils.RoleCacheHolder;
 import com.mawujun.utils.page.WhereInfo;
 
 @Service
-public class RoleService extends BaseRepository<Role, String> {
-//	public Role get(Serializable id) {
-//		//Role role=RoleCacheHolder.get(id);
-////		if(role!=null){
-////			return role;
-////		}
-//		return super.get(id);
-//	}
-//	public Role create(Role entity) {
-//		super.create(entity);
-//	}
-//	
-//	public Role delete(Role entity) {
-//		super.delete(entity);
-//	}
+public class RoleService extends AbstractService<Role, String> {
+	@Autowired
+	private RoleRepository roleRepository;
 
+	@Override
+	public RoleRepository getRepository() {
+		// TODO Auto-generated method stub
+		return roleRepository;
+	}
 
 	public void update(Role entity,Boolean isUpdateParent,String oldParent_id) {	
 		if(isUpdateParent!=null && isUpdateParent==true){
@@ -86,18 +83,19 @@ public class RoleService extends BaseRepository<Role, String> {
 //					System.out.println(roleFun.getId());
 //				}
 				
-				super.initLazyProperty(role.getFunes());
-//				for (RoleFun roleFun:role.getFunes()){
-//					System.out.println(roleFun.getId());
-//				}
+				//super.initLazyProperty(role.getFunes());
+			Hibernate.initialize(role.getFunes());
 
-			//}	
 		}
 	}
 	
 	public List<Map<String,Object>> queryRoleUrl(){
-		return super.queryList("queryRoleUrl");
+		//return super.queryList("queryRoleUrl");
+		return this.getRepository().queryRoleUrl();
 	}
+
+
+
 	
 //	public List<Map<String,Object>> queryByRole(String otherId,String roleRoleEnum){
 //		Map<String,String> params=new HashMap<String,String>();

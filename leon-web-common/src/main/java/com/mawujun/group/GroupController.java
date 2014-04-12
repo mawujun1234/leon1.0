@@ -17,7 +17,8 @@ import com.mawujun.user.User;
 import com.mawujun.user.UserRole;
 import com.mawujun.user.UserRolePK;
 import com.mawujun.utils.M;
-import com.mawujun.utils.ParamUtils;
+import com.mawujun.utils.Params;
+import com.mawujun.utils.page.Page;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 
@@ -90,15 +91,14 @@ public class GroupController {
 	
 	@RequestMapping("/group/queryUser")
 	@ResponseBody
-	public QueryResult<User> queryUser(String groupId,String userName,Integer start,Integer limit){
+	public Page queryUser(String groupId,String userName,Integer start,Integer limit){
 		
 //		PageRequest pageRqeust=PageRequest.init(start, limit).setSqlModel(true).setSqlId("queryUser")
 //				.addWhere("group_id",groupId).addLikeWhere("name",  userName);
 //		QueryResult<User> users=userGroupService.queryPageMybatis(pageRqeust,User.class);
 		
-		PageRequest pageRqeust=PageRequest.init(start, limit).setSqlModel(true).setSqlId("queryUser")
-				.addWhere("group_id",groupId).addLikeWhere("name",  userName);
-		QueryResult<User> users=userGroupService.queryPage(pageRqeust);
+		
+		Page users=groupService.queryUser(Page.getInstance().addParam("group_id",groupId).addParam("name",userName).setStart(start).setPageSize(limit));
 		return users;
 	}
 	
@@ -126,8 +126,10 @@ public class GroupController {
 //		PageRequest pageRqeust=PageRequest.init(start, limit).setSqlModel(true).setSqlId("queryRole")
 //				.addWhere("group_id",groupId);
 //		QueryResult<Role> roles=userGroupService.queryPageMybatis(pageRqeust,Role.class);
-		List<Role> roles=userGroupService.queryList("queryRole", ParamUtils.init().add("group_id", groupId), Role.class);
-		JsonConfigHolder.setFilterPropertys("mutex,funes,category",Role.class);
+		//List<Role> roles=userGroupService.queryList("queryRole", ParamUtils.init().add("group_id", groupId), Role.class);
+		List<Role> roles=groupService.queryRole(Params.init().add("group_id", groupId));
+		//JsonConfigHolder.setFilterPropertys("mutex,funes,category",Role.class);
+		JsonConfigHolder.setFilterPropertys(Role.class,M.Role.funes,M.Role.category.name());
 		JsonConfigHolder.setRootName("children");
 		return roles;
 	}
