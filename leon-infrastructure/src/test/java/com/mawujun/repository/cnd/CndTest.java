@@ -484,7 +484,8 @@ public class CndTest  extends DbunitBaseRepositoryTest {
 		Cnd cnd0=Cnd.insert().set("firstName", "E1").set("lastName", null).set("age", 1);
 		
 		StringBuilder sb=new StringBuilder();
-		cnd0.joinHql(classMetadata, sb);
+		cnd0.setFrom(classMetadata.getTableName());
+		cnd0.joinHql(sb);
 		assertEquals("insert into t_EntityTest(firstName,lastName,age)  values(?,?,?)"
 				,sb.toString());
 		
@@ -498,10 +499,11 @@ public class CndTest  extends DbunitBaseRepositoryTest {
 		Cnd cnd0=Cnd.update().set("firstName", "E1").set("lastName", null).set("age", 20).andEquals("id", 1);
 		
 		StringBuilder sb=new StringBuilder();
-		cnd0.joinHql(classMetadata, sb);
-		assertEquals("update versioned  com.mawujun.repository.EntityTest set firstName=?,lastName=?,age=? WHERE id=?"
+		cnd0.setFrom(classMetadata.getEntityName());
+		cnd0.joinHql(sb);
+		assertEquals("update  com.mawujun.repository.EntityTest set firstName=?,lastName=?,age=? WHERE id=?"
 				,sb.toString());
-		assertEquals("update versioned  com.mawujun.repository.EntityTest set firstName='E1',lastName=NULL,age=20 WHERE id=1"
+		assertEquals("update  com.mawujun.repository.EntityTest set firstName='E1',lastName=NULL,age=20 WHERE id=1"
 				,cnd0.toHql(classMetadata));
 		
 //		assertEquals("insert into com.mawujun.repository.EntityTest(firstName,lastName,age)  values('E1',NULL,1)"

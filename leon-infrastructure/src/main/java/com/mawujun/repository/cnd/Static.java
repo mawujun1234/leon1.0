@@ -1,6 +1,5 @@
 package com.mawujun.repository.cnd;
 
-import org.hibernate.persister.entity.AbstractEntityPersister;
 
 
 
@@ -31,20 +30,20 @@ public class Static implements SqlExpression {// extends NoParamsPItem
 
 
 	@Override
-	public void joinHql(AbstractEntityPersister classMetadata, StringBuilder sb) {
+	public void joinHql(StringBuilder sb) {
 		// TODO Auto-generated method stub
 		sb.append(' ').append(str).append(' ');
 	}
 
 	@Override
-	public int joinParams(AbstractEntityPersister classMetadata, Object obj,
+	public int joinParams(Object obj,
 			Object[] params, int off) {
 		// TODO Auto-generated method stub
 		return off;
 	}
 
 	@Override
-	public int paramCount(AbstractEntityPersister classMetadata) {
+	public int paramCount() {
 		// TODO Auto-generated method stub
 		return 0;
 	}

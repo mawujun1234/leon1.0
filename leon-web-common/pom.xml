@@ -96,16 +96,6 @@
 				<groupId>com.mawujun</groupId>
 				<artifactId>leon-maven-plugin</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
-				<!-- 
-				<executions>  
-		           <execution>  
-		            <phase>compile</phase>  
-		            <goals>  
-		              <goal>touch</goal>  
-		            </goals>  
-		          </execution>  
-		        </executions> 
-		        -->
 		        <dependencies>
 		        	<dependency>
 						<groupId>org.hibernate.javax.persistence</groupId>

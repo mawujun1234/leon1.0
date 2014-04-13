@@ -3,8 +3,6 @@ package com.mawujun.repository.cnd;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.persister.entity.AbstractEntityPersister;
-
 public class SelectItems  implements SqlExpression{
 
 	private List<String> names=new ArrayList<String>();
@@ -23,7 +21,8 @@ public class SelectItems  implements SqlExpression{
 			}
 		}
 	}
-	public void joinHql(AbstractEntityPersister classMetadata, StringBuilder sb) {
+	@Override
+	public void joinHql(StringBuilder sb) {
 		if (!names.isEmpty()) {
 			sb.append(" select ");
 			if(this.isDistinct){
@@ -49,14 +48,14 @@ public class SelectItems  implements SqlExpression{
 	}
 
 	@Override
-	public int joinParams(AbstractEntityPersister classMetadata, Object obj,
+	public int joinParams(Object obj,
 			Object[] params, int off) {
 		// TODO Auto-generated method stub
 		return off;
 	}
 
 	@Override
-	public int paramCount(AbstractEntityPersister classMetadata) {
+	public int paramCount() {
 		// TODO Auto-generated method stub
 		return 0;
 	}

@@ -3,8 +3,6 @@ package com.mawujun.repository.cnd;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.persister.entity.AbstractEntityPersister;
-
 public class OrderBySet  implements OrderBy {//extends NoParamsPItem
 
 	private List<OrderByItem> list;
@@ -25,11 +23,11 @@ public class OrderBySet  implements OrderBy {//extends NoParamsPItem
 //			;// OK,无需添加.
 //	}
 	
-	public void joinHql(AbstractEntityPersister classMetadata, StringBuilder sb) {
+	public void joinHql(StringBuilder sb) {
 		if (!list.isEmpty()) {
 			sb.append(" ORDER BY ");
 			for (OrderByItem obi : list) {
-				obi.joinHql(classMetadata, sb);
+				obi.joinHql( sb);
 				sb.append(", ");
 			}
 			sb.setCharAt(sb.length() - 2, ' ');

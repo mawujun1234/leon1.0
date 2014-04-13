@@ -1,6 +1,5 @@
 package com.mawujun.repository.cnd;
 
-import org.hibernate.persister.entity.AbstractEntityPersister;
 
 
 public class NameRange extends AbstractSqlExpression {
@@ -26,7 +25,7 @@ public class NameRange extends AbstractSqlExpression {
 //			;//OK,无需添加.
 //	}
 	@Override
-	public void joinHql(AbstractEntityPersister classMetadata, StringBuilder sb) {
+	public void joinHql(StringBuilder sb) {
 		if (names.length > 0) {
 			sb.append(this.getName());
 			if (not)
@@ -45,14 +44,14 @@ public class NameRange extends AbstractSqlExpression {
 //			adaptors[off++] = Jdbcs.Adaptor.asString;
 //		return off;
 //	}
-
-	public int joinParams(AbstractEntityPersister classMetadata,Object obj, Object[] params, int off) {
+	@Override
+	public int joinParams(Object obj, Object[] params, int off) {
 		for (String name : names)
 			params[off++] = name;
 		return off;
 	}
-
-	public int paramCount(AbstractEntityPersister classMetadata) {
+	@Override
+	public int paramCount() {
 		return names.length;
 	}
 

@@ -24,7 +24,7 @@ public abstract class NumberRange extends AbstractSqlExpression {
 			;//OK,无需添加.
 	}
 	@Override
-	public void joinHql(AbstractEntityPersister classMetadata, StringBuilder sb) {
+	public void joinHql( StringBuilder sb) {
 		if (ids.length > 0) {
 			sb.append(this.getName());
 			if (not)
@@ -43,14 +43,14 @@ public abstract class NumberRange extends AbstractSqlExpression {
 //			adaptors[off++] = Jdbcs.Adaptor.asLong;
 //		return off;
 //	}
-
-	public int joinParams(AbstractEntityPersister classMetadata, Object obj, Object[] params, int off) {
+	@Override
+	public int joinParams(Object obj, Object[] params, int off) {
 		for (long id : ids)
 			params[off++] = id;
 		return off;
 	}
-
-	public int paramCount(AbstractEntityPersister classMetadata) {
+	@Override
+	public int paramCount() {
 		return ids.length;
 	}
 

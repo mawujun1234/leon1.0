@@ -18,6 +18,7 @@ import org.hibernate.hql.spi.QueryTranslator;
 import org.hibernate.hql.spi.QueryTranslatorFactory;
 import org.hibernate.persister.entity.AbstractEntityPersister;
 
+import com.mawujun.utils.AssertUtils;
 import com.mawujun.utils.BeanUtils;
 import com.mawujun.utils.ReflectionUtils;
 
@@ -120,6 +121,7 @@ public class Cnd implements PItem{
 		return new Cnd(SqlType.UPDATE);
 	}
 	/**
+	 * 注意，这里即使获取hql，最终要获取到的也是sql，因为hibernate不支持insert(....) value(....)这种形式
 	 * 是用于对象模型Cnd.insert().set().set()
 	 * @author mawujun 16064988@qq.com 
 	 * @return
@@ -453,69 +455,110 @@ public class Cnd implements PItem{
 //		where.joinSql(classMetadata, sb);
 //	}
 
+	//AbstractEntityPersister classMetadata;
+	private String from; //要更新的类名或表名
+	/**
+	 * 默认识不用设置的，当设置了后，会覆盖默认设置
+	 * @author mawujun 16064988@qq.com 
+	 * @param from
+	 */
+	public void setFrom(String from){
+		this.from=from;
+	}
+	public String getFrom(){
+		return this.from;
+	}
 	@Override
-	public void joinHql(AbstractEntityPersister classMetadata, StringBuilder sb) {
+	public void joinHql( StringBuilder sb) {
 		// TODO Auto-generated method stub
-		
+		AssertUtils.notNull(from);
 		//sb.append("from "+classMetadata.getEntityName());
+		
 		if(this.getSqlType()==SqlType.SELECT){
-			selectItems.joinHql(classMetadata, sb);
-			sb.append("from "+classMetadata.getEntityName());
+			selectItems.joinHql(sb);
+			sb.append("from "+from);
 			
-			where.joinHql(classMetadata, sb);
-			orderBy.joinHql(classMetadata, sb);
+			where.joinHql(sb);
+			orderBy.joinHql(sb);
 		} else if(this.getSqlType()==SqlType.DELETE){
-			sb.append("delete from "+classMetadata.getEntityName());
+			sb.append("delete from "+from);
 			
-			where.joinHql(classMetadata, sb);
+			where.joinHql(sb);
 		} else if(this.getSqlType()==SqlType.UPDATE && updateItems.size()>0){//updateItems.size()>0防止用T进行更新的时候出现hql重复
-			//sb.append("delete from "+classMetadata.getEntityName());
-			int versionIndex=classMetadata.getVersionProperty();
-			if(versionIndex!=-66){//如果有version字段就更新他
-				sb.append("update versioned  " + classMetadata.getEntityName()+ " set ");
-			} else {
-				sb.append("update  " + classMetadata.getEntityName()+ " set ");
-			}
-			updateItems.joinHql(classMetadata, sb);
-			where.joinHql(classMetadata, sb);
+			//int versionIndex=classMetadata.getVersionProperty();
+			//if(versionIndex!=-66){//如果有version字段就更新他
+			//	sb.append("update versioned  " + classMetadata.getEntityName()+ " set ");
+			//} else {
+				sb.append("update  " + from+ " set ");
+			//}
+			updateItems.joinHql(sb);
+			where.joinHql(sb);
 			
 		}else if(this.getSqlType()==SqlType.INSERT && insertItems.size()>0){
 			//因为hibernate不能支持insert into com.mawujun.repository.EntityTest(firstName,lastName,email,id)  values(?,?,?,?)这种方式
 			//只能支持insert into com.mawujun.repository.EntityTest(firstName,lastName,email,id) select  * from .....
-			sb.append("insert into "+ classMetadata.getTableName());
-			insertItems.joinHql(classMetadata, sb);
+			sb.append("insert into "+ from);//这里是表明
+			insertItems.joinHql(sb);
 		}
 		System.out.println(sb);
-//	
-//		where.joinHql(classMetadata, sb);
-//		orderBy.joinHql(classMetadata, sb);
+		
+//		//sb.append("from "+classMetadata.getEntityName());
+//		if(this.getSqlType()==SqlType.SELECT){
+//			selectItems.joinHql(sb);
+//			sb.append("from "+classMetadata.getEntityName());
+//			
+//			where.joinHql(sb);
+//			orderBy.joinHql(classMetadata, sb);
+//		} else if(this.getSqlType()==SqlType.DELETE){
+//			sb.append("delete from "+classMetadata.getEntityName());
+//			
+//			where.joinHql(sb);
+//		} else if(this.getSqlType()==SqlType.UPDATE && updateItems.size()>0){//updateItems.size()>0防止用T进行更新的时候出现hql重复
+//			//sb.append("delete from "+classMetadata.getEntityName());
+//			int versionIndex=classMetadata.getVersionProperty();
+//			if(versionIndex!=-66){//如果有version字段就更新他
+//				sb.append("update versioned  " + classMetadata.getEntityName()+ " set ");
+//			} else {
+//				sb.append("update  " + classMetadata.getEntityName()+ " set ");
+//			}
+//			updateItems.joinHql(sb);
+//			where.joinHql(sb);
+//			
+//		}else if(this.getSqlType()==SqlType.INSERT && insertItems.size()>0){
+//			//因为hibernate不能支持insert into com.mawujun.repository.EntityTest(firstName,lastName,email,id)  values(?,?,?,?)这种方式
+//			//只能支持insert into com.mawujun.repository.EntityTest(firstName,lastName,email,id) select  * from .....
+//			sb.append("insert into "+ classMetadata.getTableName());
+//			insertItems.joinHql(sb);
+//		}
+//		System.out.println(sb);
+
 	}
 
 	@Override
-	public int joinParams(AbstractEntityPersister classMetadata, Object obj,
+	public int joinParams(Object obj,
 			Object[] params, int off) {
 		//int ret=off;
 		 if(this.getSqlType()==SqlType.UPDATE){
-			 off=updateItems.joinParams(classMetadata, obj, params, off);
-			 off=where.joinParams(classMetadata, obj, params, off);
+			 off=updateItems.joinParams(obj, params, off);
+			 off=where.joinParams(obj, params, off);
 		 } else if(this.getSqlType()==SqlType.INSERT){
-			 off=insertItems.joinParams(classMetadata, obj, params, off);
+			 off=insertItems.joinParams(obj, params, off);
 		 } else {
-			 off=where.joinParams(classMetadata, obj, params, off);
+			 off=where.joinParams(obj, params, off);
 		 }
 		return off;
 	}
 
 	@Override
-	public int paramCount(AbstractEntityPersister classMetadata) {
+	public int paramCount() {
 		int count=0;
 		 if(this.getSqlType()==SqlType.UPDATE){
-			 count=updateItems.paramCount(classMetadata);
-			 count+=where.paramCount(classMetadata);
+			 count=updateItems.paramCount();
+			 count+=where.paramCount();
 		 } else if (this.getSqlType()==SqlType.INSERT){
-			 count=insertItems.paramCount(classMetadata);
+			 count=insertItems.paramCount();
 		 } else {
-			 count+=where.paramCount(classMetadata);
+			 count+=where.paramCount();
 		 }
 		
 		return count;
@@ -558,14 +601,14 @@ public class Cnd implements PItem{
 	}
 
 	/**
-	 * 完整的sql，不带有占位符
+	 * 完整的hql，不带有占位符
 	 * @author mawujun email:16064988@163.com qq:16064988
 	 * @param classMetadata
 	 * @return
 	 */
 	public String toHql(AbstractEntityPersister classMetadata) {
-		Object[] params = new Object[this.paramCount(classMetadata)];
-		this.joinParams(classMetadata, null, params, 0);
+		Object[] params = new Object[this.paramCount()];
+		this.joinParams(null, params, 0);
 		
 //		if(this.getSqlType()==SqlType.INSERT){t
 //			insertItems.joinParams(classMetadata, null, params, 0);
@@ -578,9 +621,14 @@ public class Cnd implements PItem{
 		
 
 
+		if(this.sqlType==SqlType.INSERT){
+			this.setFrom(classMetadata.getTableName());
+		} else {
+			this.setFrom(classMetadata.getEntityName());
+		}
 		//StringBuilder sb = new StringBuilder("from "+classMetadata.getEntityName());
 		StringBuilder sb = new StringBuilder();
-		this.joinHql(classMetadata, sb);
+		this.joinHql(sb);
 		String[] ss = sb.toString().split("[?]");
 
 		sb = new StringBuilder();

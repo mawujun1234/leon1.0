@@ -1,6 +1,5 @@
 package com.mawujun.repository.cnd;
 
-import org.hibernate.persister.entity.AbstractEntityPersister;
 
 
 
@@ -18,8 +17,8 @@ public class IsNull extends NoParamsSqlExpression {
 //			sb.append("NOT ");
 //		sb.append("NULL ");
 //	}
-	
-	public void joinHql(AbstractEntityPersister classMetadata, StringBuilder sb) {
+	@Override
+	public void joinHql(StringBuilder sb) {
 		sb.append(this.getName());
 		sb.append(" IS ");
 		if (not)

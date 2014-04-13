@@ -168,7 +168,12 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
 		
 		StringBuilder builder=new StringBuilder();
-		cnd.joinHql(classMetadata, builder);
+		if(cnd.getFrom()==null){
+			cnd.setFrom(classMetadata.getTableName());
+		}
+		
+		cnd.joinHql(builder);
+		
 		//Query query = this.getSession().createQuery(builder.toString());
 		Query query = this.getSession().createSQLQuery(builder.toString());
 		setParamsByCnd(query,cnd,classMetadata);
@@ -204,8 +209,12 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 		
 		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
 		
+		if(cnd.getFrom()==null){
+			cnd.setFrom(classMetadata.getEntityName());
+		}
 		StringBuilder builder=new StringBuilder();
-		cnd.joinHql(classMetadata, builder);
+		cnd.joinHql( builder);
+		
 		Query query = this.getSession().createQuery(builder.toString());
 		
 		setParamsByCnd(query,cnd,classMetadata);
@@ -392,8 +401,8 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 				position++;
 			}
 		}
-		Object[] params = new Object[cnd.paramCount(classMetadata)];
-		int paramsCount = cnd.joinParams(classMetadata, null, params, 0);
+		Object[] params = new Object[cnd.paramCount()];
+		int paramsCount = cnd.joinParams(null, params, 0);
 
 		for (int i = 0; i < params.length; i++) {
 			setParams(query,position+i,params[i]);
@@ -456,7 +465,11 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 		
 
 		//返回了带where的条件
-		cnd.joinHql(classMetadata, builder);//where条件没加上去,因为值没有，值没有通过set方法调用
+		if(cnd.getFrom()==null){
+			cnd.setFrom(classMetadata.getEntityName());
+		}
+		cnd.joinHql(builder);//where条件没加上去,因为值没有，值没有通过set方法调用
+		
 		Query query = this.getSession().createQuery(builder.toString());
 		setParamsByCnd(query,cnd,classMetadata);
 		//setParamsByCnd(query,cnd,classMetadata,params11111.toArray(new Object[params11111.size()]));
@@ -720,11 +733,15 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 		cnd.setSqlType(SqlType.DELETE);
 		StringBuilder builder=new StringBuilder();
 		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
-		cnd.joinHql(classMetadata, builder);
+		if(cnd.getFrom()==null){
+			cnd.setFrom(classMetadata.getEntityName());
+		}
+		cnd.joinHql(builder);
+		
 		
 
-		Object[] params = new Object[cnd.paramCount(classMetadata)];
-		int paramsCount = cnd.joinParams(classMetadata, null, params, 0);
+		Object[] params = new Object[cnd.paramCount()];
+		int paramsCount = cnd.joinParams(null, params, 0);
 		
 		Session session = this.getSession();
 		Query query = session.createQuery(builder.toString());
@@ -918,11 +935,15 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 		cnd.setSqlType(SqlType.SELECT);
 		StringBuilder builder=new StringBuilder();
 		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
-		cnd.joinHql(classMetadata, builder);
+		if(cnd.getFrom()==null){
+			cnd.setFrom(classMetadata.getEntityName());
+		}
+		cnd.joinHql(builder);
+		
 		
 
-		Object[] params = new Object[cnd.paramCount(classMetadata)];
-		int paramsCount = cnd.joinParams(classMetadata, null, params, 0);
+		Object[] params = new Object[cnd.paramCount()];
+		int paramsCount = cnd.joinParams(null, params, 0);
 		
 		Session session = this.getSession();
 		Query query = session.createQuery(builder.toString());
@@ -946,11 +967,15 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 		cnd.setSqlType(SqlType.SELECT);
 		StringBuilder builder=new StringBuilder();
 		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
-		cnd.joinHql(classMetadata, builder);
+		if(cnd.getFrom()==null){
+			cnd.setFrom(classMetadata.getEntityName());
+		}
+		cnd.joinHql(builder);
+		
 		
 
-		Object[] params = new Object[cnd.paramCount(classMetadata)];
-		int paramsCount = cnd.joinParams(classMetadata, null, params, 0);
+		Object[] params = new Object[cnd.paramCount()];
+		int paramsCount = cnd.joinParams(null, params, 0);
 		
 		Session session = this.getSession();
 		Query query = session.createQuery(builder.toString());
@@ -1120,11 +1145,15 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 		cnd.setSqlType(SqlType.SELECT);
 		StringBuilder builder=new StringBuilder("select count(*)   ");
 		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
-		cnd.joinHql(classMetadata, builder);
+		if(cnd.getFrom()==null){
+			cnd.setFrom(classMetadata.getEntityName());
+		}
+		cnd.joinHql(builder);
+		
 		
 
-		Object[] params = new Object[cnd.paramCount(classMetadata)];
-		int paramsCount = cnd.joinParams(classMetadata, null, params, 0);
+		Object[] params = new Object[cnd.paramCount()];
+		int paramsCount = cnd.joinParams( null, params, 0);
 		
 		Session session = this.getSession();
 		Query query = session.createQuery(builder.toString());
@@ -1172,11 +1201,15 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 		cnd.setSqlType(SqlType.SELECT);
 		StringBuilder builder=new StringBuilder();
 		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
-		cnd.joinHql(classMetadata, builder);
+		if(cnd.getFrom()==null){
+			cnd.setFrom(classMetadata.getEntityName());
+		}
+		cnd.joinHql( builder);
+		
 		
 
-		Object[] params = new Object[cnd.paramCount(classMetadata)];
-		int paramsCount = cnd.joinParams(classMetadata, null, params, 0);
+		Object[] params = new Object[cnd.paramCount()];
+		int paramsCount = cnd.joinParams( null, params, 0);
 		
 		Session session = this.getSession();
 		Query query = session.createQuery(builder.toString());
@@ -1266,11 +1299,15 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 	public Object queryMax(String property,Cnd cnd) {
 		StringBuilder builder=new StringBuilder("select max("+property+") ");
 		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
-		cnd.joinHql(classMetadata, builder);
+		if(cnd.getFrom()==null){
+			cnd.setFrom(classMetadata.getEntityName());
+		}
+		cnd.joinHql( builder);
+		
 		
 
-		Object[] params = new Object[cnd.paramCount(classMetadata)];
-		int paramsCount = cnd.joinParams(classMetadata, null, params, 0);
+		Object[] params = new Object[cnd.paramCount()];
+		int paramsCount = cnd.joinParams(null, params, 0);
 		
 		Session session = this.getSession();
 		Query query = session.createQuery(builder.toString());
@@ -1282,11 +1319,16 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 	public Object queryMin(String property,Cnd cnd) {
 		StringBuilder builder=new StringBuilder("select min("+property+") ");
 		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
-		cnd.joinHql(classMetadata, builder);
+		if(cnd.getFrom()==null){
+			cnd.setFrom(classMetadata.getEntityName());
+		}
+		
+		cnd.joinHql( builder);
+		
 		
 
-		Object[] params = new Object[cnd.paramCount(classMetadata)];
-		int paramsCount = cnd.joinParams(classMetadata, null, params, 0);
+		Object[] params = new Object[cnd.paramCount()];
+		int paramsCount = cnd.joinParams( null, params, 0);
 		
 		Session session = this.getSession();
 		Query query = session.createQuery(builder.toString());

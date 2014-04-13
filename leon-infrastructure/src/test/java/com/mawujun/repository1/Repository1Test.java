@@ -190,7 +190,7 @@ public class Repository1Test  extends DbunitBaseRepositoryTest{
 		assertEquals(new Integer(1),table.getId());
 		assertEquals("1111@11.com",table.getEmail());
 		assertEquals("123",table.getLastName());
-		assertEquals(new Integer(2),new Integer(table.getVersion()));
+		assertEquals(new Integer(1),new Integer(table.getVersion()));
 	}
 	@Test
 	public void createBatch() throws SQLException {

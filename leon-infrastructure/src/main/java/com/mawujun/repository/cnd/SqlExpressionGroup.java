@@ -15,10 +15,6 @@ import static com.mawujun.repository.cnd.Exps.lte;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.HibernateException;
-import org.hibernate.persister.entity.AbstractEntityPersister;
-import org.hibernate.type.Type;
-
 
 
 /**
@@ -255,17 +251,17 @@ public class SqlExpressionGroup implements SqlExpression {// extends AbstractPIt
 //			}
 //		}
 //	}
-	
-	public void joinHql(AbstractEntityPersister classMetadata, StringBuilder sb) {
+	@Override
+	public void joinHql( StringBuilder sb) {
 		if (!exps.isEmpty()) {
 			if (top) {
 				sb.append(" WHERE ");
 				for (SqlExpression exp : exps)
-					exp.joinHql(classMetadata, sb);
+					exp.joinHql( sb);
 			} else {
 				sb.append('(');
 				for (SqlExpression exp : exps)
-					exp.joinHql(classMetadata, sb);
+					exp.joinHql(sb);
 				sb.append(')');
 			}
 		}
@@ -276,17 +272,18 @@ public class SqlExpressionGroup implements SqlExpression {// extends AbstractPIt
 //			off = exp.joinAdaptor(en, adaptors, off);
 //		return off;
 //	}
-//
-	public int joinParams(AbstractEntityPersister classMetadata, Object obj, Object[] params, int off) {
+
+	@Override
+	public int joinParams(Object obj, Object[] params, int off) {
 		for (SqlExpression exp : exps)
-			off = exp.joinParams(classMetadata, obj, params, off);
+			off = exp.joinParams(obj, params, off);
 		return off;
 	}
-
-	public int paramCount(AbstractEntityPersister classMetadata) {
+	@Override
+	public int paramCount() {
 		int re = 0;
 		for (SqlExpression exp : exps)
-			re += exp.paramCount(classMetadata);
+			re += exp.paramCount();
 		return re;
 	}
 

@@ -1,8 +1,5 @@
 package com.mawujun.repository.cnd;
 
-import java.util.List;
-
-import org.hibernate.persister.entity.AbstractEntityPersister;
 
 
 public class SimpleExpression extends AbstractSqlExpression {
@@ -24,8 +21,8 @@ public class SimpleExpression extends AbstractSqlExpression {
 //		else
 //			sb.append(_fmtcol(classMetadata)).append(' ').append(op).append(' ').append('?');
 //	}
-	
-	public void joinHql(AbstractEntityPersister classMetadata, StringBuilder sb) {
+	@Override
+	public void joinHql( StringBuilder sb) {
 		if (not)
 			sb.append(" NOT ");
 		if ("=".equals(op) || ">".equals(op) || "<".equals(op) || "!=".equals(op))
@@ -44,7 +41,8 @@ public class SimpleExpression extends AbstractSqlExpression {
 //		return off;
 //	}
 
-	public int joinParams(AbstractEntityPersister classMetadata, Object obj, Object[] params, int off) {
+	@Override
+	public int joinParams(Object obj, Object[] params, int off) {
 		params[off++] = value;
 		return off;
 	}
@@ -55,8 +53,8 @@ public class SimpleExpression extends AbstractSqlExpression {
 //		dd
 //		return 0;
 //	}
-
-	public int paramCount(AbstractEntityPersister classMetadata) {
+	@Override
+	public int paramCount() {
 		return 1;
 	}
 

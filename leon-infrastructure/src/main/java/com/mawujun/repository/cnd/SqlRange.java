@@ -1,6 +1,5 @@
 package com.mawujun.repository.cnd;
 
-import org.hibernate.persister.entity.AbstractEntityPersister;
 
 
 
@@ -21,19 +20,19 @@ public class SqlRange extends NoParamsSqlExpression implements SqlExpression {
 //	}
 
 	@Override
-	 public int joinParams(AbstractEntityPersister classMetadata, Object obj, Object[] params, int off) {
+	 public int joinParams(Object obj, Object[] params, int off) {
 	   for (Object arg : args)
 	           params[off++] = arg;
 	       return off;
 	 }
 	
 	 @Override
-	 public int paramCount(AbstractEntityPersister classMetadata) {
+	 public int paramCount() {
 	    return args.length;
 	 }
 	
 	@Override
-	public void joinHql(AbstractEntityPersister classMetadata, StringBuilder sb) {
+	public void joinHql(StringBuilder sb) {
 		// TODO Auto-generated method stub
 		//sb.append(String.format("%s%s IN (%s)", (not ? " NOT " : ""), this.getName(), sql));
 		sb.append(this.getName());

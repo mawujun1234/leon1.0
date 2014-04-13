@@ -1,0 +1,71 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.apache.maven.plugin.my.unit</groupId>
+  <artifactId>project-to-test</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  <name>Test generateD</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+				<groupId>com.mawujun</groupId>
+				<artifactId>leon-maven-plugin</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+		        <dependencies>
+		        	<dependency>
+						<groupId>org.hibernate.javax.persistence</groupId>
+						<artifactId>hibernate-jpa-2.0-api</artifactId>
+						<version>1.0.1.Final</version>
+					</dependency>
+					<dependency>
+						<groupId>com.mawujun</groupId>
+						<artifactId>leon-utils</artifactId>
+						<version>0.0.1-SNAPSHOT</version>
+					</dependency>
+			
+					<dependency>
+						<groupId>com.mawujun</groupId>
+						<artifactId>leon-infrastructure</artifactId>
+						<version>0.0.1-SNAPSHOT</version>
+					</dependency>
+		        </dependencies>
+		        
+		        <configuration>
+					<!-- <classpathDirectorys>
+						<classpathDirectory>${project.build.outputDirectory}</classpathDirectory>
+					</classpathDirectorys>
+					<packageNames>
+						<packageName>com.mawujun</packageName>
+					</packageNames>
+					<excludePackageNames>
+						<excludePackageName>com.mawujun.monitor.system</excludePackageName>
+					</excludePackageNames>
+					-->
+					<targetMDir>${basedir}\src\test\java\com\mawujun\maven\plugin</targetMDir>	
+					
+					
+					<driverClassName>org.h2.Driver</driverClassName>
+					<url>jdbc:h2:file:E:\eclipse\workspace\leon\leon-web-common\leon;AUTO_SERVER=TRUE</url>
+					<username>sa</username>
+					<password></password>
+					
+				</configuration>
+				
+	
+			</plugin>
+    </plugins>
+  </build>
+</project>

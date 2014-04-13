@@ -1,6 +1,5 @@
 package com.mawujun.repository.cnd;
 
-import org.hibernate.persister.entity.AbstractEntityPersister;
 
 
 
@@ -42,7 +41,7 @@ public class Like extends AbstractSqlExpression {
 //	}
 	
 	@Override
-	public void joinHql(AbstractEntityPersister classMetadata, StringBuilder sb) {
+	public void joinHql( StringBuilder sb) {
 		String colName = this.getName();
 		if (not)
 			sb.append(" NOT ");
@@ -57,13 +56,13 @@ public class Like extends AbstractSqlExpression {
 //		adaptors[off++] = Jdbcs.Adaptor.asString;
 //		return off;
 //	}
-
-	public int joinParams(AbstractEntityPersister classMetadata, Object obj, Object[] params, int off) {
+	@Override
+	public int joinParams(Object obj, Object[] params, int off) {
 		params[off++] = (null == left ? "" : left) + value + (null == right ? "" : right);
 		return off;
 	}
-
-	public int paramCount(AbstractEntityPersister classMetadata) {
+	@Override
+	public int paramCount() {
 		return 1;
 	}
 

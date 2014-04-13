@@ -1,8 +1,5 @@
 package com.mawujun.repository.cnd;
 
-import java.util.List;
-
-import org.hibernate.persister.entity.AbstractEntityPersister;
 
 public interface PItem {
 //	/**
@@ -28,7 +25,7 @@ public interface PItem {
 //	 */
 //	void joinSql(AbstractEntityPersister classMetadata, StringBuilder sb);
 	
-	void joinHql(AbstractEntityPersister classMetadata, StringBuilder sb);
+	void joinHql( StringBuilder sb);
 
 //	/**
 //	 * 根据自身的元素内容，为适配器数组填充适配器
@@ -58,7 +55,7 @@ public interface PItem {
 	 */
 	//int joinEntitys(AbstractEntityPersister classMetadata, Object obj, List<String> entitys);
 	
-	int joinParams(AbstractEntityPersister classMetadata, Object obj, Object[] params, int off);
+	int joinParams(Object obj, Object[] params, int off);
 
 	/**
 	 * @param en
@@ -66,7 +63,7 @@ public interface PItem {
 	 * 
 	 * @return 本语句元素所包含的参数数目
 	 */
-	int paramCount(AbstractEntityPersister classMetadata);
+	int paramCount();
 
 	/**
 	 * @return 当前语句组成元素的日志打印字符串

@@ -1,6 +1,5 @@
 package com.mawujun.repository.cnd;
 
-import org.hibernate.persister.entity.AbstractEntityPersister;
 
 
 public abstract class NoParamsSqlExpression extends AbstractSqlExpression {
@@ -12,12 +11,12 @@ public abstract class NoParamsSqlExpression extends AbstractSqlExpression {
 //	public int joinAdaptor(AbstractEntityPersister classMetadata, ValueAdaptor[] adaptors, int off) {
 //		return off;
 //	}
-
-	public int joinParams(AbstractEntityPersister classMetadata, Object obj, Object[] params, int off) {
+	@Override
+	public int joinParams( Object obj, Object[] params, int off) {
 		return off;
 	}
-
-	public int paramCount(AbstractEntityPersister classMetadata) {
+	@Override
+	public int paramCount() {
 		return 0;
 	}
 

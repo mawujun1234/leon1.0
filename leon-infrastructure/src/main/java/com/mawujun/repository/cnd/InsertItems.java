@@ -4,11 +4,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.hibernate.persister.entity.AbstractEntityPersister;
-import org.hibernate.type.Type;
-
-import com.mawujun.utils.BeanUtils;
-
 public class InsertItems implements SqlExpression {
 	private Map<String,Object> sets=new LinkedHashMap<String,Object>();
 	
@@ -21,7 +16,7 @@ public class InsertItems implements SqlExpression {
 	}
 
 	@Override
-	public void joinHql(AbstractEntityPersister classMetadata, StringBuilder sb) {
+	public void joinHql(StringBuilder sb) {
 		// TODO Auto-generated method stub
 		if (!sets.isEmpty()) {
 			sb.append("(");
@@ -44,24 +39,32 @@ public class InsertItems implements SqlExpression {
 	}
 
 	@Override
-	public int joinParams(AbstractEntityPersister classMetadata, Object obj,
-			Object[] params, int off) {
+	public int joinParams(Object obj,Object[] params, int off) {
 		for (Entry<String,Object> entry : sets.entrySet()) {
-			//把数据抓换为正确的类型
-			Type type=classMetadata.getPropertyType(entry.getKey());
 			if(entry.getValue()==null){
 				params[off++] = null;
 			} else {
-				params[off++] = BeanUtils.convert(entry.getValue(), type.getReturnedClass());
+				params[off++] = entry.getValue();//BeanUtils.convert(entry.getValue(), type.getReturnedClass());
 			}
 			
 		}
+		
+//		for (Entry<String,Object> entry : sets.entrySet()) {
+//			//把数据抓换为正确的类型
+//			Type type=classMetadata.getPropertyType(entry.getKey());
+//			if(entry.getValue()==null){
+//				params[off++] = null;
+//			} else {
+//				params[off++] = BeanUtils.convert(entry.getValue(), type.getReturnedClass());
+//			}
+//			
+//		}
 
 		return off;
 	}
 
 	@Override
-	public int paramCount(AbstractEntityPersister classMetadata) {
+	public int paramCount() {
 		// TODO Auto-generated method stub
 		return this.size();
 	}

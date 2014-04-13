@@ -4,11 +4,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.hibernate.persister.entity.AbstractEntityPersister;
-import org.hibernate.type.Type;
-
-import com.mawujun.utils.BeanUtils;
-
 public class UpdateItems implements SqlExpression{
 
 	private Map<String,Object> sets=new LinkedHashMap<String,Object>();
@@ -16,8 +11,8 @@ public class UpdateItems implements SqlExpression{
 	public void set(String fieldName,Object value) {
 		sets.put(fieldName, value);
 	}
-	
-	public void joinHql(AbstractEntityPersister classMetadata, StringBuilder sb) {
+	@Override
+	public void joinHql(StringBuilder sb) {
 		if (!sets.isEmpty()) {
 			//sb.append(" new map(");
 			int flag=0;
@@ -37,27 +32,32 @@ public class UpdateItems implements SqlExpression{
 	}
 
 	@Override
-	public int joinParams(AbstractEntityPersister classMetadata, Object obj,Object[] params, int off) {
-//		
-//		//ClassUtils.isPrimitiveOrWrapper(type)
-//		query.setParameter(whereInfo.getPropTrans(), BeanUtils.convert(whereInfo.getValue(), type.getReturnedClass()));
+	public int joinParams(Object obj,Object[] params, int off) {
 		for (Entry<String,Object> entry : sets.entrySet()) {
-			//把数据抓换为正确的类型
-			Type type=classMetadata.getPropertyType(entry.getKey());
 			//params[off++] = BeanUtils.convert(entry.getValue(), type.getReturnedClass());
 			if(entry.getValue()==null){
 				params[off++] = null;
 			} else {
 				//在设置参数的时候，很多时候都是设置为String的，如果有指定类型，就转换为指定类型
-				params[off++] = BeanUtils.convert(entry.getValue(), type.getReturnedClass());
+				params[off++] = entry.getValue();//BeanUtils.convert(entry.getValue(), type.getReturnedClass());
 			}
+			
+//			//把数据抓换为正确的类型
+//			Type type=classMetadata.getPropertyType(entry.getKey());
+//			//params[off++] = BeanUtils.convert(entry.getValue(), type.getReturnedClass());
+//			if(entry.getValue()==null){
+//				params[off++] = null;
+//			} else {
+//				//在设置参数的时候，很多时候都是设置为String的，如果有指定类型，就转换为指定类型
+//				params[off++] = BeanUtils.convert(entry.getValue(), type.getReturnedClass());
+//			}
 		}
 
 		return off;
 	}
 
 	@Override
-	public int paramCount(AbstractEntityPersister classMetadata) {
+	public int paramCount() {
 		// TODO Auto-generated method stub
 		return this.size();
 	}
