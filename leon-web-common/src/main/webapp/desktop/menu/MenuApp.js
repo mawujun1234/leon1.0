@@ -54,13 +54,20 @@ Ext.onReady(function(){
 	var createModule = new Ext.Action({
 		    text: '新增菜单',
 		    handler: function(){
-		    	var parent=tree.getLastSelected();
 		    	
-		    	showFunTree(parent,tree);
 		    },
 		    iconCls: 'fun-module-add'
 	});
     tree.addAction(createModule,0);
+    var editModule = new Ext.Action({
+		    text: '编辑',
+		    handler: function(){
+		    	
+		    	form.down("button#save").enable();
+		    },
+		    iconCls: 'form-update-button'
+	});
+    tree.addAction(editModule,1);
     
 	var form=Ext.create('Leon.desktop.menu.MenuItemForm',{
 		region:'east',

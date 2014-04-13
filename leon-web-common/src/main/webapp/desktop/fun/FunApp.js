@@ -41,6 +41,15 @@ Ext.onReady(function(){
 		iconCls: 'fun-fun-add'
 	});
     tree.addAction(createFun,1);
+    var editModule = new Ext.Action({
+		    text: '编辑',
+		    handler: function(){
+		    	
+		    	form.down("button#save").enable();
+		    },
+		    iconCls: 'form-update-button'
+	});
+    tree.addAction(editModule,2);
 
     
 	var form=Ext.create('Leon.desktop.fun.FunForm',{

@@ -5,6 +5,12 @@ import javax.persistence.Table;
 
 import com.mawujun.repository.idEntity.UUIDEntity;
 
+/**
+ * 用来配置某个领域模型的某个属性，在界面上的展现形式的
+ * 是用来生成界面组件的时候用的
+ * @author mawujun 16064988@qq.com  
+ *
+ */
 @Entity
 @Table(name="leon_PropertyConfig")
 public class PropertyConfig extends UUIDEntity {

@@ -52,6 +52,7 @@ Ext.define('Leon.desktop.fun.FunForm',{
 	            fieldLabel: '名称',
 	            afterLabelTextTpl: me.required,
 	            name: 'text',
+	            readOnly:true,
 	            allowBlank: false,
 	            tooltip: '请输入名称'
 	        },{
@@ -68,6 +69,7 @@ Ext.define('Leon.desktop.fun.FunForm',{
 			    queryMode: 'local',
 			    displayField: 'name',
 			    valueField: 'id',
+			    readOnly:true,
 			    editable:false,
 			    value:true,
 			    name:'isEnable'
@@ -75,23 +77,46 @@ Ext.define('Leon.desktop.fun.FunForm',{
 	            fieldLabel: '界面元素id',
 	            //afterLabelTextTpl: me.required,
 	            name: 'elementId',
+	            readOnly:true,
 	            afterLabelTextTpl:'<span class="icons_help" data-qtip="主要用于界面元素的显示控制，例如界面元素按钮的id=testId,这里也设置成testid，把这个功能授予某个用户的时候，这个用户就能看到这个按钮了,注意要具有唯一性">&nbsp;&nbsp;&nbsp;&nbsp;</span>'
 	        },{
 	            fieldLabel: 'url',
 	            name: 'url',
+	            readOnly:true,
 	            tooltip: "请输入url"
 	        }
 	        ,{
 	        	xtype:'constantcombo',
                 fieldLabel  : '业务类型',
+                readOnly:true,
                 name: 'bussinessType',
 				code:'Fun_BussinessType'
             }
 	    ];
 	    me.buttons= [{
-            text: '更新',
+            text: '保存',
+            itemId:'save',
+            disabled :true,
             iconCls:'form-save-button',
-            handler: function() {
+            listeners:{
+				disable:function(b,e){
+					var fields=b.up('form').getForm().getFields( );
+					fields.each(function(items){
+						items.setReadOnly(true);
+					});
+				},
+				enable:function(b){
+					var fields=b.up('form').getForm().getFields( );
+					fields.each(function(items){
+						if(items.getName()=='id'){
+							items.setReadOnly(true);
+						}else{
+							items.setReadOnly(false);
+						}
+					});
+				}
+			},
+            handler: function(b) {
             	var form=this.up('form');
                 if(!form.getForm().isValid()) {
                 	return;
@@ -99,18 +124,21 @@ Ext.define('Leon.desktop.fun.FunForm',{
                 form.getForm().updateRecord();
 				form.getRecord().save({
 					success: function(record, operation) {
-
+						b.disable();
 					}
 				});
+				
             }
-        },{
-            text: '重置',
-            iconCls:'form-reset-button',
-            handler: function() {
-            	//var copyRcd=this.up('form').getRecord( );
-                this.up('form').getForm().reset(true);
-            }
-        }];
+        }
+//        ,{
+//            text: '重置',
+//            iconCls:'form-reset-button',
+//            handler: function() {
+//            	//var copyRcd=this.up('form').getRecord( );
+//                this.up('form').getForm().reset(true);
+//            }
+//        }
+        ];
        
         me.addEvents("created");
        me.callParent();

@@ -18,7 +18,8 @@ public class SubjectRoot {
 	private boolean hasResultMap;//是组件关联的时候
 	
 	//private String jsPackage;//用于用表生成的时候指定的
-	private Map<Object,Object> extenConfig=new HashMap<Object,Object>();
+	//private Map<Object,Object> extenConfig=new HashMap<Object,Object>();
+	private Object extenConfig=new Object();
 	
 	
 
@@ -98,14 +99,20 @@ public class SubjectRoot {
 			List<PropertyColumn> baseTypePropertyColumns) {
 		this.baseTypePropertyColumns = baseTypePropertyColumns;
 	}
-	public Map<Object, Object> getExtenConfig() {
+//	public Map<Object, Object> getExtenConfig() {
+//		return extenConfig;
+//	}
+//	public void setExtenConfig(Map<Object, Object> extenConfig) {
+//		this.extenConfig = extenConfig;
+//	}
+//	public void addExtenConfig(Object key, Object value) {
+//		this.extenConfig.put(key, value);
+//	}
+	public Object getExtenConfig() {
 		return extenConfig;
 	}
-	public void setExtenConfig(Map<Object, Object> extenConfig) {
+	public void setExtenConfig(Object extenConfig) {
 		this.extenConfig = extenConfig;
-	}
-	public void addExtenConfig(Object key, Object value) {
-		this.extenConfig.put(key, value);
 	}
 	
 //	public String getJsPackage() {

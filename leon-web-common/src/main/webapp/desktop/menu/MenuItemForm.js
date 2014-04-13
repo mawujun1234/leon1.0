@@ -54,7 +54,7 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
                         editable:false,
                         name      : 'fun_text',
                         fieldLabel: '功能名称',
-                        //margin: '0 5 0 0',
+                        readOnly:true,
                         allowBlank: true,
                         onTriggerClick: function() {
                         	var trigger=this;
@@ -98,7 +98,7 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
                         xtype     : 'button',
                         flex:0,
                         width:80,
-                        //iconCls:'icons_003_16',
+                        
                         text      : '选择图标',
                         handler:function(iconButton){
 
@@ -153,22 +153,26 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
 	            fieldLabel: '名称',
 	            afterLabelTextTpl: me.required,
 	            name: 'text',
+	            readOnly:true,
 	            allowBlank: false,
 	            tooltip: '请输入名称'
 	        },{
 	            fieldLabel: '助记码',
 	            //afterLabelTextTpl: me.required,
+	            readOnly:true,
 	            name: 'code'
 	            //allowBlank: false,
 	            //tooltip: '请输入名称'
 	        },{
 	            fieldLabel: 'java扩展',
 	            name: 'javaClass',
+	            readOnly:true,
 	            afterLabelTextTpl:'<span class="icons_help" data-qtip="后台扩展菜单，必须继承com.mawujun.menu.MenuVOExten，例子请看MenuVOExtenSample。">&nbsp;&nbsp;&nbsp;&nbsp;</span>',
 	            tooltip: "请输入javaClass"
 	        },{
 	            fieldLabel: 'js扩展',
 	            xtype:'textareafield',
+	            readOnly:true,
 	            grow      : true,
 	            afterLabelTextTpl:'<span class="icons_help" data-qtip="写一个函数，这个函数可以访问menuItem，例如function run(){menuItem.setText(menuItem.getText( )}">&nbsp;&nbsp;&nbsp;&nbsp;</span>',
 	            name: 'scripts',
@@ -178,7 +182,26 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
 	    me.buttons= [{
             text: '保存',
             itemId:'save',
+            disabled :true,
             iconCls:'form-save-button',
+            listeners:{
+				disable:function(b,e){
+					var fields=b.up('form').getForm().getFields( );
+					fields.each(function(items){
+						items.setReadOnly(true);
+					});
+				},
+				enable:function(b){
+					var fields=b.up('form').getForm().getFields( );
+					fields.each(function(items){
+						if(items.getName()=='id'){
+							items.setReadOnly(true);
+						}else{
+							items.setReadOnly(false);
+						}
+					});
+				}
+			},
             handler: function() {
             	var form=this.up('form');
                 if(!form.getForm().isValid()) {
@@ -202,17 +225,20 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
 				form.getRecord().save({
 					success: function(record, operation) {
 						me.fireEvent('createOrupdate',me,record);
+						b.disable();
 					}
 				});
             }
-        },{
-            text: '重置',
-            iconCls:'form-reset-button',
-            handler: function() {
-            	//var copyRcd=this.up('form').getRecord( );
-                this.up('form').getForm().reset(true);
-            }
-        }];
+        }
+//        ,{
+//            text: '重置',
+//            iconCls:'form-reset-button',
+//            handler: function() {
+//            	//var copyRcd=this.up('form').getRecord( );
+//                this.up('form').getForm().reset(true);
+//            }
+//        }
+        ];
        
        me.addEvents("createOrupdate");
        me.callParent();

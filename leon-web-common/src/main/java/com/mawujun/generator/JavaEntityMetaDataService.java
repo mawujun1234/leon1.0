@@ -22,19 +22,16 @@ import org.hibernate.id.SequenceGenerator;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.hibernate.persister.entity.SingleTableEntityPersister;
-import org.hibernate.type.BagType;
 import org.hibernate.type.CollectionType;
 import org.hibernate.type.ComponentType;
 import org.hibernate.type.EntityType;
 import org.hibernate.type.Type;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Service;
 
 import com.mawujun.constant.cache.ConstantItemProxy;
-import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.repository.idEntity.UUIDGenerator;
 import com.mawujun.utils.StringUtils;
 
@@ -47,27 +44,25 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
 /**
- * 用于从DDD中生成相应的代码
+ * 用于从领域模型中读取 meta信息的
  * 
  * @author mawujun qq:16064988 e-mail:16064988@qq.com
  */
-@Service
 public class JavaEntityMetaDataService {
+	protected String dbName;
 
 	protected SessionFactory sessionFactory;
-	@Value("${jdbc.dbName}") 
-	protected String dbName;
-	@Autowired
-	PropertyConfigService propertyConfigService;
+	//@Autowired
+	//PropertyConfigService propertyConfigService;
 
-	@Autowired
-	protected void setSessionFactory(final SessionFactory sessionFactory) {
+	public void setSessionFactory(final SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
 
-	protected SessionFactory getSessionFactory() {
+	public SessionFactory getSessionFactory() {
 		return sessionFactory;
 	}
+	
 
 	/**
 	 * 取得数据库中的所有表名
@@ -491,21 +486,22 @@ public class JavaEntityMetaDataService {
 		}
 		
 		
-		List<PropertyConfig> list=propertyConfigService.query(Cnd.select().andEquals("subjectName", clazz.getName()));
+		//List<PropertyConfig> list=propertyConfigService.query(Cnd.select().andEquals("subjectName", clazz.getName()));
 		
 		//root.put("propertyColumns", newPropertyColumns);
 		root.setPropertyColumns(newPropertyColumns);
 		List<PropertyColumn> baseTypePropertyColumns=new ArrayList<PropertyColumn>();
 		for(PropertyColumn propertyColumn:newPropertyColumns){
-			//添加展示方式
-			if(list!=null && list.size()>0){
-				for(PropertyConfig propertyConfig:list){
-					if(propertyConfig.getProperty().equals(propertyColumn.getProperty())){
-						propertyColumn.setLabel(propertyConfig.getLabel());
-						propertyColumn.setShowModel(propertyConfig.getShowModel());
-					}
-				}
-			}
+			//不要删除，还有用
+//			//添加展示方式
+//			if(list!=null && list.size()>0){
+//				for(PropertyConfig propertyConfig:list){
+//					if(propertyConfig.getProperty().equals(propertyColumn.getProperty())){
+//						propertyColumn.setLabel(propertyConfig.getLabel());
+//						propertyColumn.setShowModel(propertyConfig.getShowModel());
+//					}
+//				}
+//			}
 			
 			if(propertyColumn.getIsBaseType() || propertyColumn.getIsIdProperty()){
 				baseTypePropertyColumns.add(propertyColumn);
@@ -580,7 +576,7 @@ public class JavaEntityMetaDataService {
 	 * @throws TemplateException
 	 * @throws IOException
 	 */
-	public  String generatorToString(String className,String ftl,Map extenConfig) throws ClassNotFoundException, TemplateException, IOException  {
+	public  String generatorToString(String className,String ftl,Object extenConfig) throws ClassNotFoundException, TemplateException, IOException  {
 		Class clazz=Class.forName(className);
 		return generatorToString(clazz, ftl,extenConfig);
 	}
@@ -594,7 +590,7 @@ public class JavaEntityMetaDataService {
 	 * @throws TemplateException
 	 * @throws IOException
 	 */
-	public  String generatorToString(Class clazz,String ftl,Map extenConfig) throws TemplateException, IOException {
+	public  String generatorToString(Class clazz,String ftl,Object extenConfig) throws TemplateException, IOException {
 		if(!StringUtils.hasLength(ftl)) {
 			throw new NullArgumentException("模板文件名称不能为null");
 		}
@@ -628,7 +624,17 @@ public class JavaEntityMetaDataService {
 	}
 
 	
-	
+	/**
+	 * 
+	 * @author mawujun 16064988@qq.com 
+	 * @param className 领域类
+	 * @param ftl 模板文件
+	 * @param extenConfig 扩展的属性
+	 * @param writer 要输出的对象，可以使控制面板，文件
+	 * @throws ClassNotFoundException
+	 * @throws TemplateException
+	 * @throws IOException
+	 */
 	public  void generator(String className,String ftl,Map extenConfig,Writer writer) throws ClassNotFoundException, TemplateException, IOException  {
 		Class clazz=Class.forName(className);
 		generator(clazz,ftl,extenConfig, writer);
@@ -698,5 +704,13 @@ public class JavaEntityMetaDataService {
 		templete.process(root, writer);
 		//out.flush();
 		//return out;
+	}
+
+	public String getDbName() {
+		return dbName;
+	}
+
+	public void setDbName(String dbName) {
+		this.dbName = dbName;
 	}
 }
