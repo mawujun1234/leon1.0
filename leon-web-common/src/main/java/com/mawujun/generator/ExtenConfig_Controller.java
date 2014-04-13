@@ -1,9 +1,9 @@
 package com.mawujun.generator;
 
-public class ControllerExtenConfig {
+public class ExtenConfig_Controller {
 	private ShowModel showModel=ShowModel.page;
-	public static ControllerExtenConfig getInstance(){
-		return new ControllerExtenConfig();
+	public static ExtenConfig_Controller getInstance(){
+		return new ExtenConfig_Controller();
 	}
 	//以树形的结构返回数据，还是grid分页的形式返回数据
 	public static enum ShowModel {  

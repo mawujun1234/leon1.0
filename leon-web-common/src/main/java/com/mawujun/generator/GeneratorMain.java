@@ -14,9 +14,9 @@ public class GeneratorMain {
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("com/mawujun/generator/generatorContext.xml");  
 		JavaEntityMetaDataService javaEntityMetaDataService=context.getBean(JavaEntityMetaDataService.class);
 
-		String tableName=javaEntityMetaDataService.generatorToString(Menu.class,"${simpleClassName}Service.java.ftl",ServiceExtenConfig.getInstance().setCreate(false));	
+		String tableName=javaEntityMetaDataService.generatorToString(Menu.class,"${simpleClassName}Service.java.ftl",ExtenConfig_Service.getInstance().setCreate(false));	
 		System.out.println(tableName);
-		tableName=javaEntityMetaDataService.generatorToString(Menu.class,"${simpleClassName}Controller.java.ftl",ControllerExtenConfig.getInstance());	
+		tableName=javaEntityMetaDataService.generatorToString(Menu.class,"${simpleClassName}Controller.java.ftl",ExtenConfig_Controller.getInstance());	
 		System.out.println(tableName);
 		
         context.close();  
