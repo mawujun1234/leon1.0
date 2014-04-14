@@ -5,23 +5,85 @@ import java.io.IOException;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.mawujun.menu.Menu;
+import com.mawujun.menu.MenuItem;
 
 import freemarker.template.TemplateException;
-
+/**
+ * 生成代码的主类，以ExtenConfig_开头的类，是用来控制代码生成的，因为可能存在在不同的情况下，生成的代码会不一样，有个性化的需求，但大部分一样。
+ * 如果大部分都不样的话，就自己重写ftl文件
+ * @author mawujun email:16064988@163.com qq:16064988
+ *
+ */
 public class GeneratorMain {
+	static GeneratorService generatorService;
 
-	public static void main(String[] args) throws TemplateException, IOException {	
-		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("com/mawujun/generator/generatorContext.xml");  
-		JavaEntityMetaDataService javaEntityMetaDataService=context.getBean(JavaEntityMetaDataService.class);
+	public static void main(String[] args) throws TemplateException, IOException, ClassNotFoundException {	
+		init();
 
-		String tableName=javaEntityMetaDataService.generatorToString(Menu.class,"${simpleClassName}Service.java.ftl",ExtenConfig_Service.getInstance().setCreate(false));	
-		System.out.println(tableName);
-		tableName=javaEntityMetaDataService.generatorToString(Menu.class,"${simpleClassName}Controller.java.ftl",ExtenConfig_Controller.getInstance());	
-		System.out.println(tableName);
+		String str="";	
 		
-        context.close();  
+		String fileName=generatorService.generatorFileName(Menu.class, FtlFile.MybatisXml.toString());		
+		generatorService.generatorFile(MenuItem.class,FtlFile.MybatisXml.toString(),"D:/"+fileName,null);	
+		
+		str=generatorService.generatorToString(Menu.class,FtlFile.MybatisXml.toString(),ExtenConfig_Repository.getInstance());	
+        System.out.println(str);
+		
+		//GeneratorMain.generateAllFile("D:/aa/");
+		
+		
+		
 	}
 	
+	/**
+	 * 生成所有FtlFile配置了的文件,
+	 * 不建议生成放在正式开发的地方，因为会覆盖源文件，万一覆盖了修改过的，就悲剧了
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @throws IOException 
+	 * @throws TemplateException 
+	 * @throws ClassNotFoundException 
+	 */
+	public static void generateAllFile(String dirPath) throws ClassNotFoundException, TemplateException, IOException{
+		FtlFile[] allFtlFile = FtlFile.values();
+		for (FtlFile ftlFile : allFtlFile) {
+			String fileName=generatorService.generatorFileName(Menu.class,ftlFile.toString());		
+			generatorService.generatorFile(Menu.class,ftlFile.toString(),dirPath+fileName,null);	
+		}
+		//打开文件夹
+		Runtime.getRuntime().exec("cmd.exe /c start "+dirPath);
+	}
+	
+	private static void fileDemo() throws ClassNotFoundException, TemplateException, IOException{
+		String fileName=generatorService.generatorFileName(Menu.class, FtlFile.Repository.toString());		
+		generatorService.generatorFile(Menu.class,FtlFile.Repository.toString(),"D:/"+fileName,null);	
+	}
+	
+	private static void strDemo() throws TemplateException, IOException{
+		String str=generatorService.generatorToString(Menu.class,FtlFile.Repository.toString(),null);	
+		System.out.println(str);
+	}
+	
+	public enum FtlFile {
+		Repository("${simpleClassName}Repository.java.ftl"),
+		Service("${simpleClassName}Service.java.ftl"),
+		Controller("${simpleClassName}Controller.java.ftl"),
+		MybatisXml("${simpleClassName}Repository.xml.ftl");
+		
+		private String fileName;
+		FtlFile(String fileName){
+			this.fileName=fileName;
+		}
+		
+		public String toString(){
+			return this.fileName;
+		}
+		
+	}
 
+	public static void init(){
+		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("com/mawujun/generator/generatorContext.xml");  
+		generatorService=context.getBean(GeneratorService.class);
+		
+		//context.close();  
+	}
 
 }

@@ -21,6 +21,9 @@
 		<property name="dbName" value="h2"></property>
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
+	<bean name="generatorService" class="com.mawujun.generator.GeneratorService">
+		<property name="javaEntityMetaDataService" ref="javaEntityMetaDataService"></property>
+	</bean>
 	<jdbc:embedded-database id="dataSource" type="H2">
 			<!--<jdbc:script location="classpath:sql/test.sql" />
 			<jdbc:script location="classpath:sql/initData.sql" />-->

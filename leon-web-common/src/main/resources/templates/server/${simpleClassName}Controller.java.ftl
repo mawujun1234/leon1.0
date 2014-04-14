@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
-import com.mawujun.controller.spring.mvc.JsonConfigHolder;
+import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 
+
+import ${basepackage}.${simpleClassName};
+import ${basepackage}.${simpleClassName}Service;
 <#include "/java_copyright.include"/>
 
 @Controller
@@ -22,7 +25,7 @@ public class ${simpleClassName}Controller {
 	@Resource
 	private ${simpleClassName}Service ${simpleClassNameFirstLower}Service;
 
-	<#if extenConfig.showModel=="tree">
+	<#if extenConfig.showModel?? && extenConfig.showModel=="tree">
 	/**
 	 * 请按自己的需求修改
 	 * @author mawujun email:16064988@163.com qq:16064988
@@ -40,7 +43,7 @@ public class ${simpleClassName}Controller {
 		//${simpleClassNameFirstLower}Service.query(Cnd.select().andEqual("parent.id", id).asc("sort"));
 		return ${simpleClassNameFirstLower}es;
 	}
-	<#elseif extenConfig.showModel=="page">
+	<#elseif extenConfig.showModel?? && extenConfig.showModel=="page">
 	/**
 	 * 这是基于分页的几种写法,的例子，请按自己的需求修改
 	 * @author mawujun email:16064988@163.com qq:16064988

@@ -1,32 +1,31 @@
+<#assign simpleClassNameFirstLower = simpleClassName?uncap_first> 
 package ${basepackage};
 
-import com.mawujun.repository.BaseRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+
+import com.mawujun.service.AbstractService;
+
+
+import ${basepackage}.${simpleClassName};
+import ${basepackage}.${simpleClassName}Repository;
 
 
 <#include "/java_copyright.include"/>
 
 @Service
-public class ${simpleClassName}Service extends BaseRepository<${simpleClassName}, ${idType}>{
-	<#if extenConfig.create==true>
-	public void create(${simpleClassName} entity) {
-		// TODO Auto-generated method stub
-		super.create(entity);
-	}
-	</#if>
+@Transactional(propagation=Propagation.REQUIRED)
+public class ${simpleClassName}Service extends AbstractService<${simpleClassName}, ${idType}>{
+
+	@Autowired
+	private ${simpleClassName}Repository ${simpleClassNameFirstLower}Repository;
 	
-	<#if extenConfig.update==true>
-	public void update(${simpleClassName} entity) {
-		// TODO Auto-generated method stub
-		super.create(entity);
+	@Override
+	public ${simpleClassName}Repository getRepository() {
+		return ${simpleClassNameFirstLower}Repository;
 	}
-	</#if>
-	
-	<#if extenConfig.destroy==true>
-	public void delete(${idType} id) {
-		// TODO Auto-generated method stub
-		super.delete(id);
-	}
-	</#if>
 
 }

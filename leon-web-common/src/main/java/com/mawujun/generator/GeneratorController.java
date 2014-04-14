@@ -24,7 +24,7 @@ import com.mawujun.utils.SystemUtils;
 
 import freemarker.template.TemplateException;
 
-@Controller
+//@Controller
 public class GeneratorController {
 	@RequestMapping("/generator/listJsDir")
 	public List<Map<String,String>> getAppDir(HttpServletRequest request,String id) throws IOException{
@@ -155,98 +155,98 @@ public class GeneratorController {
 		return result;
 	}
 	
-	
-//	@RequestMapping("/generator/getSubjectProperties")
+//	
+////	@RequestMapping("/generator/getSubjectProperties")
+////	@ResponseBody
+////	public List<PropertyConfig> getSubjectProperties(String subjectName) throws ClassNotFoundException{
+////		List<PropertyConfig> list=propertyConfigService.query(Cnd.select().andEquals("subjectName", subjectName));
+////		
+////		if(list==null || list.size()==0){
+////			PropertiesUtils utils=PropertiesUtils.load("templates/templates.properties");
+////			SubjectRoot root=javaEntityMetaDataService.prepareDate(subjectName);
+////			
+////			List<PropertyConfig> result=new ArrayList<PropertyConfig>();
+////			for(PropertyColumn pc:root.getPropertyColumns()){
+////				PropertyConfig config=new PropertyConfig();
+////				config.setSubjectName(subjectName);
+////				config.setProperty(pc.getProperty());
+////				config.setLabel(pc.getProperty());
+////				result.add(config);
+////			}
+////			propertyConfigService.saveBatch(result);
+////			return result;
+////		} else {
+////			return list;
+////		}
+////		
+////		
+////		
+////	}
+//	
+////	//类型和具体的模板文件的对应关系,之后写到配置文件当中去，这样就可以进行修改了
+////	HashMap<String,String> ftlMapper=new HashMap<String,String>();
+////	{
+////		ftlMapper.put("Controller", "${simpleClassName}Controller.java.ftl");
+////		ftlMapper.put("Service", "Controller${simpleClassName}Service.java.ftl");
+////		ftlMapper.put("MapperXML", "${simpleClassName}_${dbName}_Mapper.xml.ftl");
+////		ftlMapper.put("Extjs_Model", "${simpleClassName}.js.ftl");
+////	}
+//	@RequestMapping("/generator/generatorStr")
 //	@ResponseBody
-//	public List<PropertyConfig> getSubjectProperties(String subjectName) throws ClassNotFoundException{
-//		List<PropertyConfig> list=propertyConfigService.query(Cnd.select().andEquals("subjectName", subjectName));
+//	public String generatorStr(HttpServletRequest request,String className, String type) throws ClassNotFoundException, TemplateException, IOException {
+//		PropertiesUtils utils=PropertiesUtils.load("templates/templates.properties");
 //		
-//		if(list==null || list.size()==0){
-//			PropertiesUtils utils=PropertiesUtils.load("templates/templates.properties");
-//			SubjectRoot root=javaEntityMetaDataService.prepareDate(subjectName);
-//			
-//			List<PropertyConfig> result=new ArrayList<PropertyConfig>();
-//			for(PropertyColumn pc:root.getPropertyColumns()){
-//				PropertyConfig config=new PropertyConfig();
-//				config.setSubjectName(subjectName);
-//				config.setProperty(pc.getProperty());
-//				config.setLabel(pc.getProperty());
-//				result.add(config);
+//		String writer=null;
+//		
+//		Map<String, String[]> map=request.getParameterMap();
+//		Map<Object,Object> extenConfig=new HashMap<Object,Object>();
+//		for(String key:map.keySet()){
+//			if(map.get(key).length==1){
+//				extenConfig.put(key, map.get(key)[0]);
+//			} else {
+//				extenConfig.put(key, map.get(key));
 //			}
-//			propertyConfigService.saveBatch(result);
-//			return result;
-//		} else {
-//			return list;
 //		}
-//		
-//		
-//		
-//	}
-	
-//	//类型和具体的模板文件的对应关系,之后写到配置文件当中去，这样就可以进行修改了
-//	HashMap<String,String> ftlMapper=new HashMap<String,String>();
-//	{
-//		ftlMapper.put("Controller", "${simpleClassName}Controller.java.ftl");
-//		ftlMapper.put("Service", "Controller${simpleClassName}Service.java.ftl");
-//		ftlMapper.put("MapperXML", "${simpleClassName}_${dbName}_Mapper.xml.ftl");
-//		ftlMapper.put("Extjs_Model", "${simpleClassName}.js.ftl");
-//	}
-	@RequestMapping("/generator/generatorStr")
-	@ResponseBody
-	public String generatorStr(HttpServletRequest request,String className, String type) throws ClassNotFoundException, TemplateException, IOException {
-		PropertiesUtils utils=PropertiesUtils.load("templates/templates.properties");
-		
-		String writer=null;
-		
-		Map<String, String[]> map=request.getParameterMap();
-		Map<Object,Object> extenConfig=new HashMap<Object,Object>();
-		for(String key:map.keySet()){
-			if(map.get(key).length==1){
-				extenConfig.put(key, map.get(key)[0]);
-			} else {
-				extenConfig.put(key, map.get(key));
-			}
-		}
-
-		writer=javaEntityMetaDataService.generatorToString(className,utils.getProperty(type),extenConfig);	
-		
-		String str=writer.toString();
-		//str= str.replaceAll( "\r\n", " <br/> ");
-		//str= str.replaceAll( "\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
-		JsonConfigHolder.setAutoWrap(false);
-		return str;
-	}
-	
-	@RequestMapping("/generator/saveFile")
-	@ResponseBody
-	public void exportFile(HttpServletRequest request,String className, String type,HttpServletResponse response) throws IOException, ClassNotFoundException, TemplateException {
-		PropertiesUtils utils=PropertiesUtils.load("templates/templates.properties");
-		Map<String, String[]> map=request.getParameterMap();
-		Map<Object,Object> extenConfig=new HashMap<Object,Object>();
-		for(String key:map.keySet()){
-			if(map.get(key).length==1){
-				extenConfig.put(key, map.get(key)[0]);
-			} else {
-				extenConfig.put(key, map.get(key));
-			}
-		}
-		Writer writer=response.getWriter();
-		
-		String fileName=javaEntityMetaDataService.generatorFileName(className, (String)utils.get(type));
-		fileName=fileName.substring(0,fileName.lastIndexOf('.'));
-		fileName = new String((fileName).getBytes("UTF-8"),"ISO8859_1");    
-		response.setContentType("application/html;charset=utf-8");
-		response.addHeader("Content-Disposition","attachment;filename="+fileName);  
-		
-		javaEntityMetaDataService.generator(className,(String)utils.get(type),extenConfig,writer);	
-		writer.close();
 //
-//		// 将数据输出到Servlet输出流中。
-//		//ServletOutputStream sos = response.getOutputStream();
+//		writer=javaEntityMetaDataService.generatorToString(className,utils.getProperty(type),extenConfig);	
+//		
+//		String str=writer.toString();
+//		//str= str.replaceAll( "\r\n", " <br/> ");
+//		//str= str.replaceAll( "\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
+//		JsonConfigHolder.setAutoWrap(false);
+//		return str;
+//	}
+//	
+//	@RequestMapping("/generator/saveFile")
+//	@ResponseBody
+//	public void exportFile(HttpServletRequest request,String className, String type,HttpServletResponse response) throws IOException, ClassNotFoundException, TemplateException {
+//		PropertiesUtils utils=PropertiesUtils.load("templates/templates.properties");
+//		Map<String, String[]> map=request.getParameterMap();
+//		Map<Object,Object> extenConfig=new HashMap<Object,Object>();
+//		for(String key:map.keySet()){
+//			if(map.get(key).length==1){
+//				extenConfig.put(key, map.get(key)[0]);
+//			} else {
+//				extenConfig.put(key, map.get(key));
+//			}
+//		}
 //		Writer writer=response.getWriter();
-//		javaEntityMetaDataService.generator(className,ftlMapper.get(type),writer);	
+//		
+//		String fileName=javaEntityMetaDataService.generatorFileName(className, (String)utils.get(type));
+//		fileName=fileName.substring(0,fileName.lastIndexOf('.'));
+//		fileName = new String((fileName).getBytes("UTF-8"),"ISO8859_1");    
+//		response.setContentType("application/html;charset=utf-8");
+//		response.addHeader("Content-Disposition","attachment;filename="+fileName);  
+//		
+//		javaEntityMetaDataService.generator(className,(String)utils.get(type),extenConfig,writer);	
 //		writer.close();
-		
-	}
+////
+////		// 将数据输出到Servlet输出流中。
+////		//ServletOutputStream sos = response.getOutputStream();
+////		Writer writer=response.getWriter();
+////		javaEntityMetaDataService.generator(className,ftlMapper.get(type),writer);	
+////		writer.close();
+//		
+//	}
 
 }
