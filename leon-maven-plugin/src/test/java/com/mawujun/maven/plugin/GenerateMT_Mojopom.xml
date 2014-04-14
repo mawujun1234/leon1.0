@@ -53,7 +53,7 @@
 					<excludePackageNames>
 						<excludePackageName>com.mawujun.monitor.system</excludePackageName>
 					</excludePackageNames>
-					<targetMDir>${basedir}\src\test\java\com\mawujun\maven\plugin</targetMDir>	
+					<targetMDir>${basedir}\src\test\java\com\mawujun\utils</targetMDir>	
 					
 					<!-- 
 					<driverClassName>org.h2.Driver</driverClassName>
