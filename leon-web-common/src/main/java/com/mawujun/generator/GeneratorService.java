@@ -14,6 +14,7 @@ import java.util.Set;
 
 import javax.security.auth.Subject;
 
+import org.apache.commons.io.FileExistsException;
 import org.apache.commons.lang.NullArgumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -201,6 +202,20 @@ public class GeneratorService {
 	 * @throws IOException
 	 */
 	public  void generatorFile(Class clazz,String ftl,String filePath,Object extenConfig) throws TemplateException, IOException {
+		File file=new File(filePath);
+		if(file.exists()){
+			int i=filePath.lastIndexOf("/");
+			if(i==-1){
+				i=filePath.lastIndexOf("\\");
+			}
+			Runtime.getRuntime().exec("cmd.exe /c start "+filePath.substring(0, i));
+			throw new FileExistsException(file);
+			
+		} else {
+			//filePath.
+			//filePath.substring(beginIndex, endIndex)filePath.lastIndexOf(File.separatorChar);
+			file.createNewFile();
+		}
 		FileWriter fileWriter=new FileWriter(filePath);
 		generator(clazz, ftl, extenConfig, fileWriter);
 	}

@@ -22,10 +22,10 @@ public class GeneratorMain {
 
 		String str="";	
 		
-		String fileName=generatorService.generatorFileName(Menu.class, FtlFile.MybatisXml.toString());		
-		generatorService.generatorFile(MenuItem.class,FtlFile.MybatisXml.toString(),"D:/"+fileName,null);	
+		//String fileName=generatorService.generatorFileName(Menu.class, FtlFile.MybatisXml.toString());		
+		//generatorService.generatorFile(MenuItem.class,FtlFile.MybatisXml.toString(),"D:/"+fileName,null);	
 		
-		str=generatorService.generatorToString(Menu.class,FtlFile.MybatisXml.toString(),ExtenConfig_Repository.getInstance());	
+		str=generatorService.generatorToString(Menu.class,FtlFile.JsModel.toString(),ExtenConfig_Repository.getInstance());	
         System.out.println(str);
 		
 		//GeneratorMain.generateAllFile("D:/aa/");
@@ -66,7 +66,9 @@ public class GeneratorMain {
 		Repository("${simpleClassName}Repository.java.ftl"),
 		Service("${simpleClassName}Service.java.ftl"),
 		Controller("${simpleClassName}Controller.java.ftl"),
-		MybatisXml("${simpleClassName}Repository.xml.ftl");
+		MybatisXml("${simpleClassName}Repository.xml.ftl"),
+		//js的领域模型
+		JsModel("${simpleClassName}.js.ftl");
 		
 		private String fileName;
 		FtlFile(String fileName){
