@@ -1,18 +1,11 @@
 package com.mawujun.user;
 
-import com.mawujun.repository.BaseRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.mawujun.repository1.IRepository;
 import com.mawujun.service.AbstractService;
-import com.mawujun.user.login.UserDetailsImpl;
-import com.mawujun.utils.page.MatchMode;
 import com.mawujun.utils.page.Page;
-import com.mawujun.utils.page.PageRequest;
-import com.mawujun.utils.page.QueryResult;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
 
 
 /**

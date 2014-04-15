@@ -25,7 +25,7 @@ public class GeneratorMain {
 		//String fileName=generatorService.generatorFileName(Menu.class, FtlFile.MybatisXml.toString());		
 		//generatorService.generatorFile(MenuItem.class,FtlFile.MybatisXml.toString(),"D:/"+fileName,null);	
 		
-		str=generatorService.generatorToString(Menu.class,FtlFile.JsModel.toString(),ExtenConfig_Repository.getInstance());	
+		str=generatorService.generatorToString(MenuItem.class,FtlFile.JsModel.toString(),ExtenConfig_Repository.getInstance());	
         System.out.println(str);
 		
 		//GeneratorMain.generateAllFile("D:/aa/");

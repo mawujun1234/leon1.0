@@ -57,7 +57,7 @@ public class GeneratorService {
 //		cfg.setTemplateLoader(mtl);
 		
 		PathMatchingResourcePatternResolver resolver=new PathMatchingResourcePatternResolver();
-		Resource[] reses= resolver.getResources("classpath:templates/**/*.ftl");
+		Resource[] reses= resolver.getResources("classpath:templates/ftl1/**/*.ftl");
 //		String basePath=this.getClass().getResource("/").toString();
 //		Resource[] reses= resolver.getResources("file:"+1+"/templates/**/*.ftl");
 		if(reses==null || reses.length==0){

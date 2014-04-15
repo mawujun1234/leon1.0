@@ -25,25 +25,22 @@ public class ${simpleClassName}Controller {
 	@Resource
 	private ${simpleClassName}Service ${simpleClassNameFirstLower}Service;
 
-	<#if extenConfig.showModel?? && extenConfig.showModel=="tree">
+
 	/**
 	 * 请按自己的需求修改
 	 * @author mawujun email:16064988@163.com qq:16064988
 	 * @param id 是父节点的id
 	 * @return
 	 */
-	@RequestMapping("/${simpleClassNameFirstLower}/query.do")
+	@RequestMapping("/${simpleClassNameFirstLower}/queryChildren")
 	@ResponseBody
-	public List<${simpleClassName}> query(String id) {
-		WhereInfo whereinfo=WhereInfo.parse("parent.id", id);
-		if("root".equals(id)){
-			whereinfo=WhereInfo.parse("parent.id", "is",null);
-		}
-		List<${simpleClassName}> ${simpleClassNameFirstLower}es=${simpleClassNameFirstLower}Service.query(whereinfo);
-		//${simpleClassNameFirstLower}Service.query(Cnd.select().andEqual("parent.id", id).asc("sort"));
+	public List<${simpleClassName}> queryChildren(String id) {
+		Cnd cnd=Cnd.select().andEquals(M.${simpleClassName}.parent.id, "root".equals(id)?null:id);
+		List<${simpleClassName}> ${simpleClassNameFirstLower}es=${simpleClassNameFirstLower}Service.query(cnd);
+		//JsonConfigHolder.setFilterPropertys(${simpleClassName}.class,M.${simpleClassName}.parent.name());
 		return ${simpleClassNameFirstLower}es;
 	}
-	<#elseif extenConfig.showModel?? && extenConfig.showModel=="page">
+
 	/**
 	 * 这是基于分页的几种写法,的例子，请按自己的需求修改
 	 * @author mawujun email:16064988@163.com qq:16064988
@@ -52,60 +49,53 @@ public class ${simpleClassName}Controller {
 	 * @param userName
 	 * @return
 	 */
-	@RequestMapping("/${simpleClassNameFirstLower}/query.do")
+	@RequestMapping("/${simpleClassNameFirstLower}/queryPage")
 	@ResponseBody
-	public QueryResult<${simpleClassName}> query(Integer start,Integer limit,String userName){
-
-		PageRequest pageRqeust=PageRequest.init(start, limit).setSqlModel(false).addLikeWhere("name", userName,MatchMode.ANYWHERE,true);
-		QueryResult<${simpleClassName}> ${simpleClassNameFirstLower}es=${simpleClassNameFirstLower}Service.queryPage(pageRqeust);
-		//PageRequest pageRqeust=PageRequest.init(start, limit).setSqlModel(true).setSqlId("queryUser")//注意这个setSqlId，这个值是xml文件中的值
-		//		.addWhere("group_id",groupId).addLikeWhere("name",  userName);
-		//QueryResult<${simpleClassName}> ${simpleClassNameFirstLower}es=${simpleClassNameFirstLower}Service.queryPageMybatis(pageRqeust,${simpleClassName}.class);
-		//JsonConfigHolder.setRootName("children");
-		//JsonConfigHolder.setFilterPropertys("parents,children,mutex,funes");
-		return ${simpleClassNameFirstLower}es;
+	public Page queryPage(Integer start,Integer limit,String sampleName){
+		Page page=Page.getInstance(start,limit);//.addParam(M.${simpleClassName}.sampleName, "%"+sampleName+"%");
+		return queryPage(page);
 	}
-	<#else>
-	@RequestMapping("/${simpleClassNameFirstLower}/query.do")
+
+	@RequestMapping("/${simpleClassNameFirstLower}/query")
 	@ResponseBody
 	public List<${simpleClassName}> query() {	
 		List<${simpleClassName}> ${simpleClassNameFirstLower}es=${simpleClassNameFirstLower}Service.queryAll();
 		return ${simpleClassNameFirstLower}es;
 	}
-	</#if>
+	
 
-	@RequestMapping("/${simpleClassNameFirstLower}/load.do")
+	@RequestMapping("/${simpleClassNameFirstLower}/load")
 	public ${simpleClassName} load(${idType} id) {
 		return ${simpleClassNameFirstLower}Service.get(id);
 	}
 	
-	@RequestMapping("/${simpleClassNameFirstLower}/create.do")
+	@RequestMapping("/${simpleClassNameFirstLower}/create")
 	@ResponseBody
 	public ${simpleClassName} create(@RequestBody ${simpleClassName} ${simpleClassNameFirstLower}) {
 		${simpleClassNameFirstLower}Service.create(${simpleClassNameFirstLower});
 		return ${simpleClassNameFirstLower};
 	}
 	
-	@RequestMapping("/${simpleClassNameFirstLower}/update.do")
+	@RequestMapping("/${simpleClassNameFirstLower}/update")
 	@ResponseBody
 	public  ${simpleClassName} update(@RequestBody ${simpleClassName} ${simpleClassNameFirstLower}) {
 		${simpleClassNameFirstLower}Service.update(${simpleClassNameFirstLower});
 		return ${simpleClassNameFirstLower};
 	}
 	
-	@RequestMapping("/${simpleClassNameFirstLower}/destroy.do")
+	@RequestMapping("/${simpleClassNameFirstLower}/destroy")
 	@ResponseBody
 	public ${idType} destroy(${idType} id) {
 		${simpleClassNameFirstLower}Service.delete(id);
 		return id;
 	}
 	
-	@RequestMapping("/${simpleClassNameFirstLower}/destroy.do")
-	@ResponseBody
-	public ${simpleClassName} destroy(@RequestBody ${simpleClassName} ${simpleClassNameFirstLower}) {
-		${simpleClassNameFirstLower}Service.delete(${simpleClassNameFirstLower});
-		return ${simpleClassNameFirstLower};
-	}
+//	@RequestMapping("/${simpleClassNameFirstLower}/destroy")
+//	@ResponseBody
+//	public ${simpleClassName} destroy(@RequestBody ${simpleClassName} ${simpleClassNameFirstLower}) {
+//		${simpleClassNameFirstLower}Service.delete(${simpleClassNameFirstLower});
+//		return ${simpleClassNameFirstLower};
+//	}
 	
 	
 }

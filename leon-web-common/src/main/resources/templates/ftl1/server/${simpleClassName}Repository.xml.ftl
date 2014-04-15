@@ -214,7 +214,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</#list>
 	    ]]>
 	</sql>
-	<select id="query" resultType="<@namespace/>.${simpleClassName}" parameterType="map">
+	<select id="queryPage" resultType="<@namespace/>.${simpleClassName}" parameterType="map">
     	SELECT <include refid="columns" />
 	    FROM ${tableName} 
 		<where>

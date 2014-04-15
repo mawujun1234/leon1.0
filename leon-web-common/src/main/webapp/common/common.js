@@ -1,4 +1,4 @@
-
+Ext.required='<span style="color:red;font-weight:bold" data-qtip="Required">*</span>';
 Ext.Ajax.timeout=60000000;
 Ext.Ajax.defaultHeaders={ 'Accept':'application/json;'},
 Ext.Ajax.on({
@@ -68,7 +68,21 @@ Ext.apply(Ext,{
 		if(!data.proxy){
 			var path=Ext.String.uncapitalize(className.split('.').pop());
 			data.proxy={
-				type:'bajax',
+				//type:'bajax',
+				TYPE:'ajax',
+				actionMethods: { read: 'POST' },
+				timeout :600000,
+				headers:{ 'Accept':'application/json;'},
+				reader:{
+						type:'json',
+						root:'root',
+						successProperty:'success',
+						totalProperty:'total'
+						
+				}
+				,writer:{
+					type:'json'
+				},
 				api:{
 					read:Ext.ContextPath+'/'+path+'/query',
 					load : Ext.ContextPath+'/'+path+'/load',
