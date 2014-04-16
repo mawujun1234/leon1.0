@@ -1,46 +1,17 @@
 /**
- * 	var tree=Ext.create('Leon.common.ux.BaseTree',{
-		title:'菜单树',
-		//model:'ddddddd',
-		fields:['id','text','discriminator'],
-		//url:'/constantType/queryChildren',
-		api:{
-			read:'/constantType/queryChildren',
-			load : '/constantType/get',
-			create:'/constantType/create',
-			update:'/constantType/update',
-			destroy:'/constantType/destroy'
-		},
-		region:'west',
-		split:true,
-		width:500
-	});
  * 功能的扩展，添加自定义的怎，删，改
  * 添加右键菜单，增，删，改，并且增加工具栏，增，删，改。
  * 后台的类最好继承TreeNode类，这样就可以少写很多代码
  */
-Ext.define('Leon.common.ux.BaseTree', {
+Ext.define('Leon.genTest.MenuItemTree', {
     extend: 'Ext.tree.Panel',
-    alias: 'widget.btreepanel',
-    //cascadeDelete:false,//在删除的时候是否级联删除节点
-    //displayField :'text',//传递到后台的时候，名称的默认树形
-    //rootVisible:true,
-    //disabledAction:false,//讲动作都禁止掉，不可使用
-    //model:null,//用来构建store，如果没有这个值，就得自己构建model
-    //defaultRootText :'根节点',
-    //defaultRootName :'root',
-    //fields:null,//和api，url搭配的，也可以没有
-    //url:null,//url和fields是同时出现，但和model属性是不能同时出现的
-    //autoLoadData:true,//自动加载数据
-    //autoRootExpanded:true,
-    //api:null,
-    //autoShowSimpleActionToTbar:true,//是否把按钮添加到工具栏
-   // autoinitAction:true,//初始化增，删改等按钮
+    requires:['Leon.genTest.MenuItem'],
+    model:'Leon.genTest.MenuItem',
     initComponent: function () {
 		var me = this;
 
         me.store = Ext.create('Ext.data.TreeStore', {
-	       	autoLoad:me.autoLoadData,
+	       	autoLoad:true,
 	       	nodeParam :'id',//传递到后台的数据，默认是node
 	       	model:me.model,
 			root: {
@@ -49,7 +20,7 @@ Ext.define('Leon.common.ux.BaseTree', {
 			}
 		});
 		me.initAction();
-       
+       //alert(Ext.ModelManager.getModel(me.model));
         
         this.on('beforeitemremove',function(nodeinter,node){
         	if(node.isRoot( ) ){
@@ -77,33 +48,6 @@ Ext.define('Leon.common.ux.BaseTree', {
 		//me.addAction(create);
 		actions.push(create);
 		
-//		var createSibling = new Ext.Action({
-//		    text: '新增兄弟节点',
-//		    disabled:me.disabledAction,
-//		    handler: function(){
-//		    	var node=me.getSelectionModel( ).getLastSelected( );   
-//		    	if(node.isRoot()){
-//				       	Ext.Msg.alert("消息","不能在根节点上新增兄弟节点!");	
-//				       	return;
-//				}
-//		    	var parent=node.parentNode;
-//		    	var values={
-//		    		'parent_id':parent.get("id")
-//		    	};
-//		    	values[me.displayField]='新节点';
-//		        var child=Ext.createModel(node.self.getName(),values);
-//
-//		        child.save({
-//					success: function(record, operation) {s
-//						me.getStore().reload({node:parent});
-//						parent.expand();
-//					}
-//				});
-//
-//		    },
-//		    iconCls: 'form-addChild-button'
-//		});
-//		me.addAction(createSibling);
 		var destroy = new Ext.Action({
 		    text: '删除',
 		    itemId:'destroy',
@@ -231,11 +175,9 @@ Ext.define('Leon.common.ux.BaseTree', {
     	if(values){
     		node.set(values);
     		node.save({
-//				success: function(record, operation) {
-//									//child=record;
-//							//me.getStore().reload({node:parent});
-//							//parent.expand();
-//				}
+				success: function(record, operation) {
+					alert('成功');
+				}
 			});
     	} else {
     		Ext.Msg.prompt('修改', '请输入名称:', function(btn, text){
@@ -245,11 +187,9 @@ Ext.define('Leon.common.ux.BaseTree', {
 					}
 					node.set(me.displayField,text);
 					node.save({
-//						success: function(record, operation) {
-//									//child=record;
-//							//me.getStore().reload({node:parent});
-//							//parent.expand();
-//						}
+						success: function(record, operation) {
+							alert('成功');
+						}
 					});
 				}
 			});

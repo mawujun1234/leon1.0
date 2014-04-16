@@ -69,7 +69,7 @@ Ext.apply(Ext,{
 			var path=Ext.String.uncapitalize(className.split('.').pop());
 			data.proxy={
 				//type:'bajax',
-				TYPE:'ajax',
+				type:'ajax',
 				actionMethods: { read: 'POST' },
 				timeout :600000,
 				headers:{ 'Accept':'application/json;'},

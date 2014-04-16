@@ -1,4 +1,7 @@
-//Ext.require("Leon.${module}.${simpleClassName}");
+<#assign simpleClassNameFirstLower = simpleClassName?uncap_first> 
+<#-- //所在模块-->
+<#assign module = basepackage?substring(basepackage?last_index_of(".")+1)> 
+Ext.require("Leon.${module}.${simpleClassName}");
 Ext.require("Leon.${module}.${simpleClassName}Grid");
 Ext.require("Leon.${module}.${simpleClassName}Tree");
 Ext.require("Leon.${module}.${simpleClassName}Form");
