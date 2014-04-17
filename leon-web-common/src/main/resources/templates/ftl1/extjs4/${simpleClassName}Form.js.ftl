@@ -28,6 +28,7 @@ Ext.define('Leon.${module}.${simpleClassName}Form',{
 		{
             fieldLabel: '${propertyColumn.label!propertyColumn.property}',
             name: '${propertyColumn.property}',
+            readOnly:true,
             xtype: 'datefield',
             format: 'Y-m-d'
         }<#if propertyColumn_has_next>,</#if>
@@ -36,6 +37,7 @@ Ext.define('Leon.${module}.${simpleClassName}Form',{
 	        fieldLabel: '${propertyColumn.label!propertyColumn.property}',
 	        //afterLabelTextTpl: Ext.required,
 	        name: '${propertyColumn.property}',
+	        readOnly:true,
 	        xtype:'numberfield',
 	        allowBlank: false
 	    }<#if propertyColumn_has_next>,</#if>
@@ -44,6 +46,7 @@ Ext.define('Leon.${module}.${simpleClassName}Form',{
 	        fieldLabel: '${propertyColumn.label!propertyColumn.property}',
 	        //afterLabelTextTpl: Ext.required,
 	        name: '${propertyColumn.property}',
+	        readOnly:true,
 	        xtype:'textfield',
 	        allowBlank: false
 	    }<#if propertyColumn_has_next>,</#if>
@@ -53,47 +56,49 @@ Ext.define('Leon.${module}.${simpleClassName}Form',{
 	        xtype:'constantcombo',
             fieldLabel:'${propertyColumn.label!propertyColumn.property}',
             name: '${propertyColumn.property}',
+            readOnly:true,
 			code:'请补充完整'
         }<#if propertyColumn_has_next>,</#if>
 	  <#elseif propertyColumn.isAssociationType==true>
-	  <#if (propertyColumn.showModel!"")=='combobox'>
-	  {
-	  		fieldLabel: '${propertyColumn.label!propertyColumn.property}',
-		    name: '${propertyColumn.property}',
-			,store: new Ext.form.field.ComboBox({
-                typeAhead: true,
-                triggerAction: 'all',
-                queryMode: 'remote',
-		    	displayField: 'name',
-		    	valueField: 'key',
-                store: Ext.create('Ext.data.Store', {
-			    	fields: ['key', 'name'], 
-				    proxy:{
-				    	type:'ajax',
-				    	url:'......',
-				    	reader:{
-				    		type:'json',
-				    		totalProperty:'total',
-				    		root:'root'
-				    	}
+	  <#--if (propertyColumn.showModel!"")=='combobox'-->
+	   {
+	  		fieldLabel: '${propertyColumn.label!propertyColumn.column}',
+		    name: '${propertyColumn.column}',
+		    readOnly:true,
+		    xtype:'combobox',
+            typeAhead: true,
+            triggerAction: 'all',
+            queryMode: 'remote',
+		    displayField: 'name',
+		    valueField: 'id',
+            store: Ext.create('Ext.data.Store', {
+			    fields: ['id', 'name'], 
+				proxy:{
+				    type:'ajax',
+				    url:Ext.ContextPath+'${propertyColumn.property}/query',
+				    reader:{
+				    	type:'json',
+				    	totalProperty:'total',
+				    	root:'root'
 				    }
-				})
-            })
-         }<#if propertyColumn_has_next>,</#if>
+				}
+			})
+        }<#if propertyColumn_has_next>,</#if>
 		<#else>
-		{
+		 {
 	        fieldLabel: '${propertyColumn.label!propertyColumn.property}',
 	        //afterLabelTextTpl: Ext.required,
 	        name: '${propertyColumn.property}',
+	        readOnly:true,
 	        xtype:'textfield',
 	        allowBlank: false
-	   	}<#if propertyColumn_has_next>,</#if>
-		</#if>
+	   	 }<#if propertyColumn_has_next>,</#if>
+		<#--if-->
 	  </#if>
 	  </#list>   
 	  ];   
 
-	  me.buttons= [{
+	var saveButton=Ext.create('Ext.button.Button',{
             text: '保存',
             iconCls:'form-save-button',
             formBind: true,
@@ -110,15 +115,9 @@ Ext.define('Leon.${module}.${simpleClassName}Form',{
 					}
 				});
             }
-        },{
-            text: '重置',
-            iconCls:'form-reset-button',
-            handler: function() {
-            	//var copyRcd=this.up('form').getRecord( );
-                this.up('form').getForm().reset(true);
-            }
-        }];    
-       //me.addEvents("created");
-       me.callParent();
+      })
+	  me.buttons= [saveButton];    
+      me.saveButton=saveButton;
+      me.callParent();
 	}
 });

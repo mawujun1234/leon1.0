@@ -23,14 +23,6 @@ Ext.define('Leon.${module}.${simpleClassName}Tree', {
 			}
 		});
 		me.initAction();
-       //alert(Ext.ModelManager.getModel(me.model));
-        
-        this.on('beforeitemremove',function(nodeinter,node){
-        	if(node.isRoot( ) ){
-        		Ext.Msg.alert("消息","根节点不能删除!");
-        		return false;
-        	}
-        });
        
 		me.callParent(arguments);
     },

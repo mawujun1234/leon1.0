@@ -82,27 +82,72 @@ Ext.define('Leon.genTest.MenuItemForm',{
 	        xtype:'textfield',
 	        allowBlank: false
 	    },
-		{
-	        fieldLabel: 'fun',
-	        //afterLabelTextTpl: Ext.required,
-	        name: 'fun',
-	        xtype:'textfield',
-	        allowBlank: false
-	   	},
-		{
-	        fieldLabel: 'menu',
-	        //afterLabelTextTpl: Ext.required,
-	        name: 'menu',
-	        xtype:'textfield',
-	        allowBlank: false
-	   	},
-		{
-	        fieldLabel: 'parent',
-	        //afterLabelTextTpl: Ext.required,
-	        name: 'parent',
-	        xtype:'textfield',
-	        allowBlank: false
-	   	}
+	   {
+	  		fieldLabel: 'fun_id',
+		    name: 'fun_id',
+		    xtype:'combobox',
+            typeAhead: true,
+            triggerAction: 'all',
+            queryMode: 'remote',
+		    displayField: 'name',
+		    valueField: 'id',
+            store: Ext.create('Ext.data.Store', {
+			    fields: ['id', 'name'], 
+				proxy:{
+				    type:'ajax',
+				    url:Ext.ContextPath+'fun/query',
+				    reader:{
+				    	type:'json',
+				    	totalProperty:'total',
+				    	root:'root'
+				    }
+				}
+			})
+          },
+	   {
+	  		fieldLabel: 'menu_id',
+		    name: 'menu_id',
+		    xtype:'combobox',
+            typeAhead: true,
+            triggerAction: 'all',
+            queryMode: 'remote',
+		    displayField: 'name',
+		    valueField: 'id',
+            store: Ext.create('Ext.data.Store', {
+			    fields: ['id', 'name'], 
+				proxy:{
+				    type:'ajax',
+				    url:Ext.ContextPath+'menu/query',
+				    reader:{
+				    	type:'json',
+				    	totalProperty:'total',
+				    	root:'root'
+				    }
+				}
+			})
+          },
+	   {
+	  		fieldLabel: 'parent_id',
+		    name: 'parent_id',
+		    xtype:'combobox',
+            typeAhead: true,
+            triggerAction: 'all',
+            queryMode: 'remote',
+		    displayField: 'name',
+		    valueField: 'id',
+            store: Ext.create('Ext.data.Store', {
+			    fields: ['id', 'name'], 
+				proxy:{
+				    type:'ajax',
+				    url:Ext.ContextPath+'parent/query',
+				    reader:{
+				    	type:'json',
+				    	totalProperty:'total',
+				    	root:'root'
+				    }
+				}
+			})
+          }
 	  ];   
 
 	  me.buttons= [{
@@ -121,13 +166,6 @@ Ext.define('Leon.genTest.MenuItemForm',{
 
 					}
 				});
-            }
-        },{
-            text: '重置',
-            iconCls:'form-reset-button',
-            handler: function() {
-            	//var copyRcd=this.up('form').getRecord( );
-                this.up('form').getForm().reset(true);
             }
         }];    
        //me.addEvents("created");

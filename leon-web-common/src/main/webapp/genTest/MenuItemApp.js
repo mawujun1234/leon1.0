@@ -11,7 +11,7 @@ Ext.onReady(function(){
 //		width:200
 //	});
 
-	var tree=Ext.create('Leon.genTest.MenuItemTree',{
+	var tree=Ext.create('Leon.genTest.MenuItemTreeQuery',{
 		title:'菜单树',
 		region:'center'
 	});

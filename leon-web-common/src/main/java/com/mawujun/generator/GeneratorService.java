@@ -196,20 +196,28 @@ public class GeneratorService {
 	 * @author mawujun email:160649888@163.com qq:16064988
 	 * @param clazz 领域类
 	 * @param ftl 模板文件的名称
-	 * @param filePath 生成后文件存放的地址
+	 * @param dirPath 生成后文件存放的地址
 	 * @param extenConfig 额外的属性，用来控制生成的代码的
 	 * @throws TemplateException
 	 * @throws IOException
+	 * @throws ClassNotFoundException 
 	 */
-	public  void generatorFile(Class clazz,String ftl,String filePath,Object extenConfig) throws TemplateException, IOException {
+	public  void generatorFile(Class clazz,String ftl,String dirPath,Object extenConfig) throws TemplateException, IOException, ClassNotFoundException {
+		String fileName=this.generatorFileName(clazz, ftl);
+		String filePath=dirPath+File.separatorChar+fileName;
+		
+		File dir=new File(dirPath);
+		if(!dir.exists()){
+			dir.mkdirs();
+		}
 		File file=new File(filePath);
 		if(file.exists()){
-			int i=filePath.lastIndexOf("/");
-			if(i==-1){
-				i=filePath.lastIndexOf("\\");
-			}
-			Runtime.getRuntime().exec("cmd.exe /c start "+filePath.substring(0, i));
-			throw new FileExistsException(file);
+//			int i=filePath.lastIndexOf("/");
+//			if(i==-1){
+//				i=filePath.lastIndexOf("\\");
+//			}
+//			Runtime.getRuntime().exec("cmd.exe /c start "+filePath.substring(0, i));
+//			throw new FileExistsException(file);
 			
 		} else {
 			//filePath.
