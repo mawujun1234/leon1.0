@@ -1,18 +1,44 @@
 package com.mawujun.generator;
 
 public class ExtenConfig {
-	private ShowModel showModel=ShowModel.page;
-	public static ExtenConfig getInstance(){
-		return new ExtenConfig();
+	boolean rowediting=false;
+	boolean editable=false;
+	//boolean pageable=true;
+	boolean userModel=true;
+	boolean createDelUpd=true;
+	
+	
+	public boolean isRowediting() {
+		return rowediting;
 	}
-	//以树形的结构返回数据，还是grid分页的形式返回数据
-	public static enum ShowModel {  
-		  tree,page ,normal
+
+	public void setRowediting(boolean rowediting) {
+		this.rowediting = rowediting;
 	}
-	public ShowModel getShowModel() {
-		return showModel;
+
+	public boolean isEditable() {
+		return editable;
 	}
-	public void setShowModel(ShowModel showModel) {
-		this.showModel = showModel;
-	} 
+
+	public void setEditable(boolean editable) {
+		this.editable = editable;
+	}
+
+	public boolean isUserModel() {
+		return userModel;
+	}
+
+	public void setUserModel(boolean userModel) {
+		this.userModel = userModel;
+	}
+
+
+	public boolean isCreateDelUpd() {
+		return createDelUpd;
+	}
+
+	public void setCreateDelUpd(boolean createDelUpd) {
+		this.createDelUpd = createDelUpd;
+	}
+
 }

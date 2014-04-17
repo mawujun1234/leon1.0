@@ -3,13 +3,13 @@
 Ext.require("Leon.genTest.MenuItemTree");
 Ext.require("Leon.genTest.MenuItemForm");
 Ext.onReady(function(){
-//	var grid=Ext.create('Leon.menu.MenuItemGrid',{
-//		region:'west',
-//		split: true,
-//		collapsible: true,
-//		title:'菜单',
-//		width:200
-//	});
+	var grid=Ext.create('Leon.genTest.MenuItemGrid',{
+		region:'west',
+		split: true,
+		collapsible: true,
+		title:'菜单',
+		width:200
+	});
 
 	var tree=Ext.create('Leon.genTest.MenuItemTreeQuery',{
 		title:'菜单树',
@@ -26,7 +26,7 @@ Ext.onReady(function(){
 	
 	var viewPort=Ext.create('Ext.container.Viewport',{
 		layout:'border',
-		items:[tree,form]
+		items:[grid,tree,form]
 	});
 
 });

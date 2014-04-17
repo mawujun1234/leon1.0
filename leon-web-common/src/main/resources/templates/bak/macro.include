@@ -27,7 +27,7 @@
       <#if propertyColumn.isBaseType==true ||  propertyColumn.isIdProperty==true>
 		<#if propertyColumn.jsType=='date'>
 		{dataIndex:'${propertyColumn.property}',text:'${propertyColumn.label!propertyColumn.property}',xtype: 'datecolumn',   format:'Y-m-d'
-		<#if editable=="true">
+		<#if editable==true>
 			,renderer: Ext.util.Format.dateRenderer('Y-m-d'),
 			,editor: {
                 xtype: 'datefield',
@@ -38,7 +38,7 @@
 		}<#if propertyColumn_has_next>,</#if>
 		<#elseif propertyColumn.jsType=='int' || propertyColumn.jsType=='float'>
 		{dataIndex:'${propertyColumn.property}',text:'${propertyColumn.label!propertyColumn.property}',xtype: 'numbercolumn', format:'0.00'
-		<#if editable=="true">
+		<#if editable==true>
 			,editor: {
                 xtype: 'numberfield',
                 selectOnFocus:true,
@@ -48,7 +48,7 @@
 		}<#if propertyColumn_has_next>,</#if>
 		<#else>
 		{dataIndex:'${propertyColumn.property}',text:'${propertyColumn.label!propertyColumn.property}'
-		<#if editable=="true">
+		<#if editable==true>
 		<#if (propertyColumn.showModel!"")=='checkcolumn'>
 			,xtype: 'checkcolumn'
 			,stopSelection: false
@@ -84,7 +84,7 @@
 		</#if>
 	  <#elseif propertyColumn.isConstantType==true>
 	  {dataIndex:'${propertyColumn.property}',text:'${propertyColumn.label!propertyColumn.property}'
-	  <#if editable=="true">
+	  <#if editable==true>
 	  	,editor:{
 	        xtype:'constantcombo',
             fieldLabel:'${propertyColumn.property}',
@@ -94,7 +94,7 @@
 	  </#if>
 	  <#else>
 		{dataIndex:'${propertyColumn.property}',text:'${propertyColumn.label!propertyColumn.property}'
-		<#if editable=="true">
+		<#if editable==true>
 		<#if (propertyColumn.showModel!"")=='checkcolumn'>
 			,xtype: 'checkcolumn'
 			,stopSelection: false
@@ -131,7 +131,7 @@
 	 </#list>   
 </#macro>
 <#macro generateGridStore userModel extjsClassName>
-<#if userModel=="true">
+<#if userModel==true>
 Ext.create('Ext.data.Store',{
 	autoSync:false,
     pageSize:50,
