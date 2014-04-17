@@ -219,7 +219,7 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
                 //console.log(form.getRecord().get("fun_id"));
                 //当清空关联的功能的时候
                 if(!form.getRecord().get("fun_id")){
-                	form.getRecord().setFun({});
+                	form.getRecord().setFun(null);
                 }
                 
 				form.getRecord().save({

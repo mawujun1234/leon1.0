@@ -18,7 +18,7 @@ public class ReportCodeHelper {
 	//我们只取35-125的数据,从#开始，到~结束，，还排除了!和",因为双引号会引出莫名其妙的问题
 	protected final static String sperator="~";
 	//protected final static String ="~";
-	protected final static int min=35;
+	protected final static int min=97;
 	protected final static int max=125;
 	protected final static String minStr=(char)min+"";
 	

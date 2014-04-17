@@ -236,7 +236,7 @@ Ext.define('Leon.${module}.${simpleClassName}Tree', {
 		newnode.set("id",null);
 		me.copyNode=newnode;
     },
-    onCut:function(){
+    onCut:function(node){
     	var me=this;
     	var node=node||me.getSelectionModel( ).getLastSelected( );
 		if(node.isRoot()){
@@ -266,8 +266,8 @@ Ext.define('Leon.${module}.${simpleClassName}Tree', {
 		    me.copyNode.set('parent_id',parent.get("id"));
 		    me.copyNode.save({
 				success: function(record, operation) {
+					parent.set('leaf',false);
 					me.getStore().reload({node:parent});
-					parent.expand();
 				}
 			});
 		} else {
@@ -281,25 +281,25 @@ Ext.define('Leon.${module}.${simpleClassName}Tree', {
 				//orginalParent=
 			}
 			
-			me.copyNode.set('parent_id',parent.get("id"));
-			me.copyNode.setParent(parent);
-			
-			if(me.copyNode.hasChildNodes( ) ){
-				me.copyNode.removeAll();
-				me.copyNode.collapse();
-				me.copyNode.leaf=false;
+			var params={
+				id:me.copyNode.get("id"),
+				parent_id:parent.get("id"),
+				oldParent_id:orginalParent.get("id")
 			}
-			orginalParent.removeChild(me.copyNode,false);
-			parent.appendChild(me.copyNode);
-			me.copyNode.save({
-				params:{isUpdateParent:true,oldParent_id:orginalParent.get("id")},
-				success: function(record, operation) {
-					me.getStore().reload({node:parent,success:function(){
-					//	me.getStore().reload({node:orginalParent});
+			Ext.Ajax.request({
+				url:Ext.ContextPath+"/menuItem/cut",
+				method:'POST',
+				params:params,
+				success:function(response){
+					parent.set('leaf',false);
+					me.getStore().reload({node:parent,callback:function(){
+					}});
+					me.getStore().reload({node:orginalParent,callback:function(){
 					}});
 				}
 			});
 			delete me.copyNode.cut;
+			delete me.copyNode;
 		}
     },
     onReload:function(node){

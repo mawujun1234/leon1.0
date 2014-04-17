@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mawujun.exception.BusinessException;
+import com.mawujun.fun.BussinessType;
 import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;
 import com.mawujun.repository.BaseRepository;
@@ -112,6 +114,17 @@ public class MenuItemService extends AbstractService<MenuItem, String> {//extend
 //		}
 		
 		return menuitem;
+	}
+	
+	public MenuItem cut(String id,String parent_id,String oldParent_id,String menuId) {
+		MenuItem parent=this.get(parent_id);
+		parent.setLeaf(false);
+		MenuItem menuItem=this.get(id);
+		
+		menuItem.setParent(parent);
+		
+		this.getRepository().update(menuItem);
+		return menuItem;
 	}
 
 	

@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html>
   <head>
     
-    <title>功能管理</title>
+    <title>菜单管理</title>
     <base href="">
     
 	<meta http-equiv="pragma" content="no-cache">

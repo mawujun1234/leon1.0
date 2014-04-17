@@ -44,7 +44,7 @@ public class MenuItemController {
 		List<MenuItem> menuItems=menuItemService.query(Cnd.select().andEquals(M.MenuItem.menu.id, menuId).andEquals(M.MenuItem.parent.id, "root".equals(id)?null:id));
 
 		JsonConfigHolder.setFilterPropertys(MenuItem.class,M.MenuItem.parent.name(),M.MenuItem.menu.name());
-		//JsonConfigHolder.setFilterPropertys("parent,menu",MenuItem.class);
+
 		return menuItems;
 	}
 	
@@ -72,10 +72,22 @@ public class MenuItemController {
 	@ResponseBody
 	public MenuItem create(HttpServletRequest request,@RequestBody MenuItem menuItem,String menuId) throws IOException{		
 		menuItem.setMenu(new Menu(menuId));
+		if(menuItem.getParent()!=null && "root".equals(menuItem.getParent().getId())){
+			menuItem.setParent(null);
+		}
 		menuItemService.create(menuItem);
 		appenPngCls(request,menuItem.getIconCls(),menuItem.getIconCls32());
 		//JsonConfigHolder.setFilterPropertys("children",MenuItem.class);
 		return menuItem;
+	}
+	
+	@RequestMapping("/menuItem/cut")
+	@ResponseBody
+	public MenuItem cut(String id,String parent_id,String oldParent_id,String menuId) throws IOException{	
+		if("root".equals(parent_id)){
+			parent_id=null;
+		}
+		return menuItemService.cut(id, parent_id, oldParent_id, menuId);
 	}
 	
 	@RequestMapping("/menuItem/createByFun")
@@ -94,7 +106,7 @@ public class MenuItemController {
 		
 		menuItemService.update(menuItem);
 		
-		//JsonConfigHolder.setFilterPropertys("children",MenuItem.class);
+		JsonConfigHolder.setFilterPropertys(MenuItem.class,M.MenuItem.parent.name(),M.MenuItem.menu.name());
 		 return menuItem;
 	}
 	

@@ -1302,6 +1302,7 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 		if(cnd.getFrom()==null){
 			cnd.setFrom(classMetadata.getEntityName());
 		}
+		cnd.setSqlType(SqlType.SELECT);
 		cnd.joinHql( builder);
 		
 		

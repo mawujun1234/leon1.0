@@ -51,14 +51,14 @@ Ext.onReady(function(){
 
 	});
 	
-	var createModule = new Ext.Action({
-		    text: '新增菜单',
-		    handler: function(){
-		    	
-		    },
-		    iconCls: 'fun-module-add'
-	});
-    tree.addAction(createModule,0);
+//	var createModule = new Ext.Action({
+//		    text: '新增菜单',
+//		    handler: function(){
+//		    	
+//		    },
+//		    iconCls: 'fun-module-add'
+//	});
+//    tree.addAction(createModule,0);
     var editModule = new Ext.Action({
 		    text: '编辑',
 		    handler: function(){
