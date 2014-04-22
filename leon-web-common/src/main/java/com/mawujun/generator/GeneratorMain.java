@@ -23,7 +23,7 @@ public class GeneratorMain {
 
 			
 		
-		generatorService.generatorFile(Fun.class,FtlFile.Controller.toString(),"D:",new ExtenConfig());	
+		generatorService.generatorFile(Fun.class,FtlFile.JsGridQuery.toString(),"D:",new ExtenConfig());	
 		
 		//String str="";
 		//str=generatorService.generatorToString(MenuItem.class,FtlFile.JsModel.toString(),null);	
@@ -91,8 +91,9 @@ public class GeneratorMain {
 		JspApp("${simpleClassName}App.jsp.ftl"),
 		JsTree("${simpleClassName}Tree.js.ftl"),
 		JsTreeQuery("${simpleClassName}TreeQuery.js.ftl"),
-		JsForm("${simpleClassName}Form.js.ftl"),
-		JsGrid("${simpleClassName}Grid.js.ftl");
+		JsForm("${simpleClassNameJsGridQuery}Form.js.ftl"),
+		JsGrid("${simpleClassName}Grid.js.ftl"),
+		JsGridQuery("${simpleClassName}GridQuery.js.ftl");
 		
 		private String fileName;
 		FtlFile(String fileName){

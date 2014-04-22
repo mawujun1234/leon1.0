@@ -18,9 +18,9 @@ public class ReportCodeHelper {
 	//我们只取35-125的数据,从#开始，到~结束，，还排除了!和",因为双引号会引出莫名其妙的问题
 	protected final static String sperator="~";
 	//protected final static String ="~";
-	protected final static int min=97;
+	private  static int min=97;
 	protected final static int max=125;
-	protected final static String minStr=(char)min+"";
+	private static String minStr=(char)min+"";
 	
 	/**
 	 * 产生的标准是每个节点有3位符号
@@ -134,6 +134,13 @@ public class ReportCodeHelper {
 		}
 		
 		return ArrayUtils.toString(codes, sperator);
+	}
+	public static int getMin() {
+		return min;
+	}
+	public static void setMin(int min) {
+		ReportCodeHelper.min = min;
+		minStr=(char)min+"";
 	}
 
 }

@@ -2,11 +2,19 @@ package com.mawujun.utils.help;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class ReportCodeHelperTest {
+	
+	@BeforeClass
+	public static void before(){
+		ReportCodeHelper.setMin(35);
+	}
 	//@Test  
 	public void generate3(){
+		ReportCodeHelper.setMin(35);
 		 assertEquals(48,"0".charAt(0));
 		 assertEquals(49,"1".charAt(0));
 		 assertEquals(57,"9".charAt(0));

@@ -57,7 +57,7 @@ public class MenuItemService extends AbstractService<MenuItem, String> {//extend
 			//WhereInfo whereinfo=WhereInfo.parse("parent.id", entity.getParent().getId());
 			reportCode=this.getRepository().queryMax(M.MenuItem.reportCode,Cnd.where().andEquals(M.MenuItem.parent.id, entity.getParent().getId()));
 		}
-		//获取父节点的reportcode
+		获取父节点的reportcode
 		
 		String newReportCode=ReportCodeHelper.generate3((String)reportCode);
 		entity.setReportCode(newReportCode);

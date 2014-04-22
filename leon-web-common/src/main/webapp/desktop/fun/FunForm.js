@@ -27,19 +27,6 @@ Ext.define('Leon.desktop.fun.FunForm',{
        var me = this;
       
        me.items= [
-//       		{
-//	            fieldLabel: 'parent_id',
-//
-//	            name: 'parent_id',
-//	            readOnly:true
-//	        },{
-//	            fieldLabel: '上级名称',
-//	            //afterLabelTextTpl: me.required,
-//	            name: 'parent_text',
-//	            readOnly:true
-//	            //allowBlank: false,
-//	            //tooltip: 'Enter your first name'
-//	        },
        		{
 	            fieldLabel: 'id',
 	            //afterLabelTextTpl: me.required,
@@ -74,12 +61,6 @@ Ext.define('Leon.desktop.fun.FunForm',{
 			    value:true,
 			    name:'isEnable'
 			},{
-	            fieldLabel: '界面元素id',
-	            //afterLabelTextTpl: me.required,
-	            name: 'elementId',
-	            readOnly:true,
-	            afterLabelTextTpl:'<span class="icons_help" data-qtip="主要用于界面元素的显示控制，例如界面元素按钮的id=testId,这里也设置成testid，把这个功能授予某个用户的时候，这个用户就能看到这个按钮了,注意要具有唯一性">&nbsp;&nbsp;&nbsp;&nbsp;</span>'
-	        },{
 	            fieldLabel: 'url',
 	            name: 'url',
 	            readOnly:true,

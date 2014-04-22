@@ -1,4 +1,5 @@
 Ext.require('Leon.common.IconWindow');
+Ext.require('Leon.desktop.fun.FunGridQuery');
 Ext.define('Leon.desktop.menu.MenuItemForm',{
 	extend:'Ext.form.Panel',
 	requires: [
@@ -245,16 +246,11 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
 	},
 	showFunTree:function(showTarget,fun_id_txt,fun_text_txt){
 		var me=this;
-		var tree=Ext.create('Leon.desktop.fun.FunTree',{
-			autoInitSimpleAction:false,
-			width:400,
+		var tree=Ext.create('Leon.desktop.fun.FunGridQuery',{
+			width:600,
 			height:500
 		});
 		tree.on("itemdblclick",function(view,record,index,e){
-			if(record.get("funEnum")=="module"){
-				Ext.Msg.alert("消息","请选择功能节点!");
-				return;
-			}
 			
 			fun_id_txt.setValue(record.get("id"));
 			fun_text_txt.setValue(record.get("text"));
