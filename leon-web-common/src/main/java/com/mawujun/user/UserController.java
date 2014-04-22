@@ -148,7 +148,8 @@ public class UserController {
 	@ResponseBody
 	public List<FunVO> queryFun(String userId){	
 		JsonConfigHolder.setRootName("children");
-		return userRoleService.queryFun(userId); 
+		//return userRoleService.queryFun(userId); 
+		return null;
 	}
 
 }

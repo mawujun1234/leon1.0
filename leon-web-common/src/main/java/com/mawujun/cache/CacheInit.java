@@ -12,8 +12,8 @@ public class CacheInit {
 		RoleService roleService=(RoleService)SpringContextHolder.getBean(RoleService.class);
 		roleService.initCache();
 		
-		FunService funService=(FunService)SpringContextHolder.getBean(FunService.class);
-		funService.initCache();
+		//FunService funService=(FunService)SpringContextHolder.getBean(FunService.class);
+		//funService.initCache();
 		
 		MenuItemService menuItemService=(MenuItemService)SpringContextHolder.getBean(MenuItemService.class);
 		menuItemService.initCache();

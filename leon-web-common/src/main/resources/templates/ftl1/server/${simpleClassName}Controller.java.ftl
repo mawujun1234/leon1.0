@@ -53,7 +53,7 @@ public class ${simpleClassName}Controller {
 	@ResponseBody
 	public Page queryPage(Integer start,Integer limit,String sampleName){
 		Page page=Page.getInstance(start,limit);//.addParam(M.${simpleClassName}.sampleName, "%"+sampleName+"%");
-		return queryPage(page);
+		return ${simpleClassNameFirstLower}Service.queryPage(page);
 	}
 
 	@RequestMapping("/${simpleClassNameFirstLower}/query")

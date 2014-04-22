@@ -61,7 +61,7 @@ public class RoleFunService extends AbstractService<RoleFun, String> {
 
 		Role role=roleService.get(roleFun.getRole().getId());
 		role.addFun(roleFun);
-		roleFun.getFun().getCode();//不能删除，用来初始化fun的
+		//roleFun.getFun().getCode();//不能删除，用来初始化fun的
 		return id;
 		//更新spring security中的权限信息
 		//Fun fun=funService.get(roleFun.getFun().getId());
@@ -79,7 +79,7 @@ public class RoleFunService extends AbstractService<RoleFun, String> {
 		super.delete(roleFun);
 		role.removeFun(roleFun);
 		
-		roleFun.getFun().getCode();//不能删除，用来初始化fun的
+		//roleFun.getFun().getCode();//不能删除，用来初始化fun的
 		//更新spring security中的权限信息
 		//Fun fun=funService.get(roleFun.getFun().getId());
 		//filterInvocationSecurityMetadataSourceImpl.removeConfigAttribute(fun.getUrl(), roleId);

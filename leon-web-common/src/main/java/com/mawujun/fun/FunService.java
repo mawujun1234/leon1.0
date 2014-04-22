@@ -36,15 +36,15 @@ public class FunService extends AbstractService<Fun, String> {
 
 	@Override
 	public void delete(Fun entity) {
-		//判断是否具有子节点
-		//WhereInfo whereinfo=WhereInfo.parse("parent.id", entity.getId());
-		//int childs=this.queryCount(whereinfo);
-		Fun fun=this.get(entity.getId());//Fun缓存了
-		//int childs=fun.getChildren().size();
-		long childs=super.queryCount(Cnd.select().andEquals(M.Fun.parent.id, fun.getId()));
-		if(childs>0){
-			throw new BusinessException("存在子节点，不能删除。",WebCommonExceptionCode3.EXISTS_CHILDREN);
-		}
+//		//判断是否具有子节点
+//		//WhereInfo whereinfo=WhereInfo.parse("parent.id", entity.getId());
+//		//int childs=this.queryCount(whereinfo);
+//		Fun fun=this.get(entity.getId());//Fun缓存了
+//		//int childs=fun.getChildren().size();
+//		long childs=super.queryCount(Cnd.select().andEquals(M.Fun.parent.id, fun.getId()));
+//		if(childs>0){
+//			throw new BusinessException("存在子节点，不能删除。",WebCommonExceptionCode3.EXISTS_CHILDREN);
+//		}
 		
 
 		//menuItemService.delete(fun);
@@ -53,33 +53,33 @@ public class FunService extends AbstractService<Fun, String> {
 			throw new BusinessException("有菜单挂钩，不能删除。",WebCommonExceptionCode3.EXISTS_CHILDREN);
 		}
 		
-		super.delete(fun);
+		super.delete(entity);
 		
 		
 	}
 	
-//	public String getMaxReportCode(String parent_id){
-//		//获取父节点的reportcode
-//		//WhereInfo whereinfo=WhereInfo.parse("parent.id", parent_id);
-//		//Object reportCode=this.queryMax("reportCode",whereinfo);
-//		String newReportCode=ReportCodeHelper.generate3((String)reportCode);
-//		return newReportCode;
+////	public String getMaxReportCode(String parent_id){
+////		//获取父节点的reportcode
+////		//WhereInfo whereinfo=WhereInfo.parse("parent.id", parent_id);
+////		//Object reportCode=this.queryMax("reportCode",whereinfo);
+////		String newReportCode=ReportCodeHelper.generate3((String)reportCode);
+////		return newReportCode;
+////	}
+//	public String create(Fun entity) {
+//		Fun parent=entity.getParent()==null?null:this.get(entity.getParent().getId());
+//		if(parent!=null && parent.getFunEnum()==FunEnum.fun && !entity.isFun()){
+//			throw new BusinessException("功能不能增加模块节点");
+//		}
+//		entity.setParent(parent);
+//		if(parent!=null){
+//			parent.setLeaf(false);
+//			super.update(parent);
+//		}
+//		
+//		return super.create(entity);
+//
+//		//return entity;
 //	}
-	public String create(Fun entity) {
-		Fun parent=entity.getParent()==null?null:this.get(entity.getParent().getId());
-		if(parent!=null && parent.getFunEnum()==FunEnum.fun && !entity.isFun()){
-			throw new BusinessException("功能不能增加模块节点");
-		}
-		entity.setParent(parent);
-		if(parent!=null){
-			parent.setLeaf(false);
-			super.update(parent);
-		}
-		
-		return super.create(entity);
-
-		//return entity;
-	}
 	/**
 	 * 
 	 * @author mawujun email:16064988@163.com qq:16064988
@@ -103,13 +103,13 @@ public class FunService extends AbstractService<Fun, String> {
 	}
 
 
-	public void initCache(){
-		List<Fun> funes=super.queryAll();//super.query(whereinfo);
-		for(Fun fun:funes){
-			//if(fun.getFunEnum()==FunEnum.fun){
-			Hibernate.initialize(fun.getParent());
-				//super.initLazyProperty(fun.getChildren());
-			//}	
-		}
-	}
+//	public void initCache(){
+//		List<Fun> funes=super.queryAll();//super.query(whereinfo);
+//		for(Fun fun:funes){
+//			//if(fun.getFunEnum()==FunEnum.fun){
+//			Hibernate.initialize(fun.getParent());
+//				//super.initLazyProperty(fun.getChildren());
+//			//}	
+//		}
+//	}
 }

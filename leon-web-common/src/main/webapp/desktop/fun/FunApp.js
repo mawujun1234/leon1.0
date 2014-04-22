@@ -1,73 +1,87 @@
-Ext.require('Leon.desktop.fun.FunTree');
+//Ext.require('Leon.desktop.fun.FunTree');
+Ext.require('Leon.desktop.fun.FunGrid')
 Ext.require('Leon.desktop.fun.FunForm');
 Ext.require('Leon.common.ux.ConstantCombo');
 Ext.require('Leon.desktop.help.HelpPanel');
 //Ext.require('Leon.common.ux.BaseAjax');//這個必須要加的
 //Ext.require('Leon.common.ux.BaseTree');//這個必須要加的
 Ext.onReady(function(){
-	var tree=Ext.create('Leon.desktop.fun.FunTree',{
+//	var tree=Ext.create('Leon.desktop.fun.FunTree',{
+//		region:'west',
+//		split: true,
+//		collapsible: true,
+//		title:'功能树',
+//		width:400
+//	});
+//	//tree.removeActionAt(0);
+//	//tree.removeAction("create");
+//	tree.disableAction("create");
+//	var createModule = new Ext.Action({
+//		    text: '新增模块',
+//		    handler: function(){
+//		    	var parent=tree.getSelectionModel( ).getLastSelected( )||tree.getRootNode( );    
+//				if(parent.get("funEnum")=="fun"){
+//					Ext.Msg.alert("消息","功能下面不能增加模块节点!");
+//					return;
+//				}
+//		    	tree.onCreate({text:'新模块','funEnum':'module'});
+//		    },
+//		    iconCls: 'fun-module-add'
+//	});
+//    tree.addAction(createModule,0);
+//    var createFun = new Ext.Action({
+//		text: '新增功能',
+//		handler: function(){
+//			var parent=tree.getSelectionModel( ).getLastSelected( )||tree.getRootNode( );    
+////			if(parent.get("funEnum")=="fun"){
+////				Ext.Msg.alert("消息","功能不能增加下级节点!");
+////				return;
+////			}
+//		    tree.onCreate({text:'新功能','funEnum':'fun',isEnable:true,leaf:true});
+//		},
+//		iconCls: 'fun-fun-add'
+//	});
+//    tree.addAction(createFun,1);
+//    var editModule = new Ext.Action({
+//		    text: '编辑',
+//		    handler: function(){
+//		    	
+//		    	form.down("button#save").enable();
+//		    },
+//		    iconCls: 'form-update-button'
+//	});
+//    tree.addAction(editModule,2);
+
+	var grid=Ext.create('Leon.desktop.fun.FunGrid',{
 		region:'west',
 		split: true,
-		collapsible: true,
-		title:'功能树',
-		width:400
+		width:450
 	});
-	//tree.removeActionAt(0);
-	//tree.removeAction("create");
-	tree.disableAction("create");
-	var createModule = new Ext.Action({
-		    text: '新增模块',
-		    handler: function(){
-		    	var parent=tree.getSelectionModel( ).getLastSelected( )||tree.getRootNode( );    
-				if(parent.get("funEnum")=="fun"){
-					Ext.Msg.alert("消息","功能下面不能增加模块节点!");
-					return;
-				}
-		    	tree.onCreate({text:'新模块','funEnum':'module'});
-		    },
-		    iconCls: 'fun-module-add'
-	});
-    tree.addAction(createModule,0);
-    var createFun = new Ext.Action({
-		text: '新增功能',
-		handler: function(){
-			var parent=tree.getSelectionModel( ).getLastSelected( )||tree.getRootNode( );    
-//			if(parent.get("funEnum")=="fun"){
-//				Ext.Msg.alert("消息","功能不能增加下级节点!");
-//				return;
-//			}
-		    tree.onCreate({text:'新功能','funEnum':'fun',isEnable:true,leaf:true});
-		},
-		iconCls: 'fun-fun-add'
-	});
-    tree.addAction(createFun,1);
-    var editModule = new Ext.Action({
-		    text: '编辑',
-		    handler: function(){
-		    	
-		    	form.down("button#save").enable();
-		    },
-		    iconCls: 'form-update-button'
-	});
-    tree.addAction(editModule,2);
-
     
 	var form=Ext.create('Leon.desktop.fun.FunForm',{
 		title:'表单',
 		region:'center'
 	});
-	tree.on('itemclick',function(view,record,item,index){
-		//alert(1);
-		if(record.get("funEnum")=='module'){
-			form.getForm().findField("url").hide();
-		} else {
-			form.getForm().findField("url").show();
-		}
-		form.getForm().loadRecord(record);
-
-		helpPanel.setFunId(record.getId());
-		tabPanel.getEl().unmask();
+	grid.form=form;
+	form.grid=grid;
+	grid.on('itemclick',function(view,record,item,index){
+		var basicFoem=form.getForm();
+		basicFoem.loadRecord(record);
+		//tabPanel.getEl().unmask();
 	});
+	
+//	tree.on('itemclick',function(view,record,item,index){
+//		//alert(1);
+//		if(record.get("funEnum")=='module'){
+//			form.getForm().findField("url").hide();
+//		} else {
+//			form.getForm().findField("url").show();
+//		}
+//		form.getForm().loadRecord(record);
+//
+//		helpPanel.setFunId(record.getId());
+//		tabPanel.getEl().unmask();
+//	});
 	
 	var helpPanel=Ext.create('Leon.desktop.help.HelpPanel',{
 		title:'帮助文档'
@@ -83,7 +97,7 @@ Ext.onReady(function(){
 	    ],
 	    listeners:{
 	    	render:function(tabPanel){
-	    		tabPanel.getEl().mask();
+	    		//tabPanel.getEl().mask();
 	    	}
 	    	
 	    }
@@ -91,7 +105,7 @@ Ext.onReady(function(){
 	
 	var viewPort=Ext.create('Ext.container.Viewport',{
 		layout:'border',
-		items:[tree,tabPanel]
+		items:[grid,tabPanel]
 	});
 
 });

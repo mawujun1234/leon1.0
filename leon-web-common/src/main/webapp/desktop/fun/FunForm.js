@@ -106,9 +106,10 @@ Ext.define('Leon.desktop.fun.FunForm',{
 					});
 				},
 				enable:function(b){
-					var fields=b.up('form').getForm().getFields( );
+					var form=b.up('form');
+					var fields=form.getForm().getFields( );
 					fields.each(function(items){
-						if(items.getName()=='id'){
+						if(items.getName()=='id' && !form.createAction){
 							items.setReadOnly(true);
 						}else{
 							items.setReadOnly(false);
@@ -116,7 +117,7 @@ Ext.define('Leon.desktop.fun.FunForm',{
 					});
 				}
 			},
-            handler: function(b) {
+            handler: function(btn) {
             	var form=this.up('form');
                 if(!form.getForm().isValid()) {
                 	return;
@@ -124,7 +125,9 @@ Ext.define('Leon.desktop.fun.FunForm',{
                 form.getForm().updateRecord();
 				form.getRecord().save({
 					success: function(record, operation) {
-						b.disable();
+						btn.disable();
+						
+						form.grid.getStore().reload();
 					}
 				});
 				
@@ -140,7 +143,7 @@ Ext.define('Leon.desktop.fun.FunForm',{
 //        }
         ];
        
-        me.addEvents("created");
+       //me.addEvents("created");
        me.callParent();
 	}
 });

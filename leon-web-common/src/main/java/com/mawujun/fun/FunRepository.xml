@@ -19,4 +19,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	)
 	and o.parent_id=#{parent_id}
     </select>
+    
+    
+    <select id="queryPage" parameterType="map" resultType="com.mawujun.fun.Fun">	
+    	select * from LEON_FUN
+    </select>
 </mapper>

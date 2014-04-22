@@ -106,71 +106,71 @@ public class UserRoleService extends AbstractService<UserRole, UserRolePK> {
 	}
 	
 	
-	/**
-	 * gen
-	 * @author mawujun email:16064988@163.com qq:16064988
-	 * @param userId
-	 * @return
-	 */
-	public List<FunVO> queryFun(String userId){	
-		List<Map<String,Object>> funIdRoleIds = userRepository.queryFun(userId);//super.queryList("queryFun", userId);
-		// 组装出role树
-		Map<String,FunVO> parentKeys=new HashMap<String,FunVO>();
-		List<FunVO> rootFuns = new ArrayList<FunVO>();
-		for (Map<String,Object> funMap : funIdRoleIds) {
-			//funes.add(funService.get(funId.toString()));
-			
-			
-			String role_id=funMap.get("role_id").toString();
-			Fun leaf=funService.get(funMap.get("fun_id").toString());
-			
-			if(parentKeys.get(leaf.getId()) !=null){//表示这个功能能已经添加过了
-				Fun fun=parentKeys.get(leaf.getId());
-				fun.addRoleName(roleService.get(role_id).getName());
-				continue;
-			}
-			FunVO fun=new FunVO();
-			BeanUtils.copyProperties(leaf, fun, new String[]{M.Fun.parent.name()});
-			fun.addRoleName(roleService.get(role_id).getName());
-			
-			if(leaf.getParent()!=null){
-				List<Fun> ancestores=leaf.findAncestors();
-				int i=0;
-				for(Fun ancestor:ancestores){
-					FunVO ancestorNew=null;
-					if(parentKeys.containsKey(ancestor.getId())){
-						ancestorNew=parentKeys.get(ancestor.getId());
-					} else {
-						ancestorNew=new FunVO();
-						BeanUtils.copyProperties(ancestor, ancestorNew, new String[]{"children","parent"});
-						ancestorNew.setExpanded(true);
-						parentKeys.put(ancestorNew.getId(), ancestorNew);
-						if(ancestorNew.isLeaf()){
-							ancestorNew.addRoleName(roleService.get(role_id).getName());
-						}
-					}
-					if(i==0){
-						
-						ancestorNew.addChild(fun);
-					} else {
-						ancestorNew.addChild(parentKeys.get(ancestores.get(i-1).getId()));
-					}
-					i++;
-					if(i==ancestores.size() && !rootFuns.contains(ancestorNew)){
-						//添加从哪个角色来
-						//ancestorNew.addRoleName(roleService.get(role_id).getName());
-						rootFuns.add(ancestorNew);
-					}
-				}
-			} else {
-				
-				rootFuns.add(fun);
-				parentKeys.put(fun.getId(), fun);
-			}
-			
-		}
-		return rootFuns;
-	}
+//	/**
+//	 * gen
+//	 * @author mawujun email:16064988@163.com qq:16064988
+//	 * @param userId
+//	 * @return
+//	 */
+//	public List<FunVO> queryFun(String userId){	
+//		List<Map<String,Object>> funIdRoleIds = userRepository.queryFun(userId);//super.queryList("queryFun", userId);
+//		// 组装出role树
+//		Map<String,FunVO> parentKeys=new HashMap<String,FunVO>();
+//		List<FunVO> rootFuns = new ArrayList<FunVO>();
+//		for (Map<String,Object> funMap : funIdRoleIds) {
+//			//funes.add(funService.get(funId.toString()));
+//			
+//			
+//			String role_id=funMap.get("role_id").toString();
+//			Fun leaf=funService.get(funMap.get("fun_id").toString());
+//			
+//			if(parentKeys.get(leaf.getId()) !=null){//表示这个功能能已经添加过了
+//				Fun fun=parentKeys.get(leaf.getId());
+//				fun.addRoleName(roleService.get(role_id).getName());
+//				continue;
+//			}
+//			FunVO fun=new FunVO();
+//			BeanUtils.copyProperties(leaf, fun, new String[]{M.Fun.parent.name()});
+//			fun.addRoleName(roleService.get(role_id).getName());
+//			
+//			if(leaf.getParent()!=null){
+//				List<Fun> ancestores=leaf.findAncestors();
+//				int i=0;
+//				for(Fun ancestor:ancestores){
+//					FunVO ancestorNew=null;
+//					if(parentKeys.containsKey(ancestor.getId())){
+//						ancestorNew=parentKeys.get(ancestor.getId());
+//					} else {
+//						ancestorNew=new FunVO();
+//						BeanUtils.copyProperties(ancestor, ancestorNew, new String[]{"children","parent"});
+//						ancestorNew.setExpanded(true);
+//						parentKeys.put(ancestorNew.getId(), ancestorNew);
+//						if(ancestorNew.isLeaf()){
+//							ancestorNew.addRoleName(roleService.get(role_id).getName());
+//						}
+//					}
+//					if(i==0){
+//						
+//						ancestorNew.addChild(fun);
+//					} else {
+//						ancestorNew.addChild(parentKeys.get(ancestores.get(i-1).getId()));
+//					}
+//					i++;
+//					if(i==ancestores.size() && !rootFuns.contains(ancestorNew)){
+//						//添加从哪个角色来
+//						//ancestorNew.addRoleName(roleService.get(role_id).getName());
+//						rootFuns.add(ancestorNew);
+//					}
+//				}
+//			} else {
+//				
+//				rootFuns.add(fun);
+//				parentKeys.put(fun.getId(), fun);
+//			}
+//			
+//		}
+//		return rootFuns;
+//	}
 
 	@Override
 	public UserRoleRepository getRepository() {

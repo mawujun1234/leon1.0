@@ -1,5 +1,6 @@
 package com.mawujun.fun;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -24,24 +26,28 @@ import org.springframework.util.StringUtils;
 
 import com.mawujun.annotation.Label;
 import com.mawujun.exten.TreeNode;
+import com.mawujun.repository.idEntity.IdEntity;
 
 @Entity
 @Table(name="leon_Fun")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)  
-public class Fun extends TreeNode{
+public class Fun implements IdEntity<String>,Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	@Label(name="助记码")
-	@Column(length=20)
-	@Size(max=20)
-	private String code;//助记码
+	@Id
+	private String id;
 	
-	@Label(name="界面元素id")
-	@Column(length=80)
-	private String elementId;//助记码
+//	@Label(name="助记码")
+//	@Column(length=20)
+//	@Size(max=20)
+//	private String code;//助记码
+//	
+//	@Label(name="界面元素id")
+//	@Column(length=80)
+//	private String elementId;//助记码
 	
 	@Column(length=20)
 	@Label(name="名称")
@@ -60,8 +66,6 @@ public class Fun extends TreeNode{
 	@Column(length=100)
 	private String helpContent;//存放的是html内容的地址
 	
-//	@Column(length=36)
-//	private String menuItemId;//当创建Fun时，自动创建MenuItem的时候，自动创建的menuItem的id
 	
 	@Transient
 	private String roleNames;
@@ -72,12 +76,12 @@ public class Fun extends TreeNode{
 	})
 	private BussinessType bussinessType;//业务类型
 	
-	@Enumerated(EnumType.STRING)
-	private FunEnum funEnum;//是模块还是功能
+//	@Enumerated(EnumType.STRING)
+//	private FunEnum funEnum;//是模块还是功能
 	
 	
-	@ManyToOne(fetch=FetchType.LAZY)
-	private Fun parent;
+//	@ManyToOne(fetch=FetchType.LAZY)
+//	private Fun parent;
 	
 //	@OneToMany(mappedBy="parent",fetch=FetchType.LAZY,cascade=CascadeType.REFRESH)
 //	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)  
@@ -108,32 +112,32 @@ public class Fun extends TreeNode{
 		this.url = url;
 	}
 
-	public String getCode() {
-		return code;
-	}
-	public void setCode(String code) {
-		this.code = code;
-	}
+//	public String getCode() {
+//		return code;
+//	}
+//	public void setCode(String code) {
+//		this.code = code;
+//	}
 //	public List<Fun> getChildren() {
 //		return children;
 //	}
 //	public void setChildren(List<Fun> children) {
 //		this.children = children;
 //	}
-
-	/**
-	 * 获取所有的父级
-	 * @author mawujun email:16064988@163.com qq:16064988
-	 * @return
-	 */
-	public List<Fun> findAncestors() {
-		List<Fun> pcategory=new ArrayList<Fun>();
-		if(this.getParent()!=null){
-			pcategory.add(this.getParent());
-			pcategory.addAll(this.getParent().findAncestors());
-		}
-		return pcategory;
-	}
+//
+//	/**
+//	 * 获取所有的父级
+//	 * @author mawujun email:16064988@163.com qq:16064988
+//	 * @return
+//	 */
+//	public List<Fun> findAncestors() {
+//		List<Fun> pcategory=new ArrayList<Fun>();
+//		if(this.getParent()!=null){
+//			pcategory.add(this.getParent());
+//			pcategory.addAll(this.getParent().findAncestors());
+//		}
+//		return pcategory;
+//	}
 //	public List<Fun> findSiblings() {
 //		List<Fun> children=new ArrayList<Fun>();
 //		List<Fun> allCHild=this.getParent().getChildren();
@@ -146,14 +150,14 @@ public class Fun extends TreeNode{
 //		}
 //		return children;
 //	}
-	
-	public Fun getParent() {
-		return parent;
-	}
-
-	public void setParent(Fun parent) {
-		this.parent = parent;
-	}
+//	
+//	public Fun getParent() {
+//		return parent;
+//	}
+//
+//	public void setParent(Fun parent) {
+//		this.parent = parent;
+//	}
 
 	public String getHelpContent() {
 		return helpContent;
@@ -162,36 +166,36 @@ public class Fun extends TreeNode{
 	public void setHelpContent(String helpContent) {
 		this.helpContent = helpContent;
 	}
-	public FunEnum getFunEnum() {
-		return funEnum;
-	}
-	public void setFunEnum(String funEnum) {
-		if(StringUtils.hasText(funEnum)){
-			this.funEnum = FunEnum.valueOf(funEnum);
-		}		
-	}
-	public void setFunEnum(FunEnum funEnum) {
-		this.funEnum = funEnum;
-	}
+//	public FunEnum getFunEnum() {
+//		return funEnum;
+//	}
+//	public void setFunEnum(String funEnum) {
+//		if(StringUtils.hasText(funEnum)){
+//			this.funEnum = FunEnum.valueOf(funEnum);
+//		}		
+//	}
+//	public void setFunEnum(FunEnum funEnum) {
+//		this.funEnum = funEnum;
+//	}
 	
-	public String getIconCls() {
-		//System.out.println(funEnum);
-		if(FunEnum.module==funEnum){
-			return "fun-module-iconCls";
-		} else if(FunEnum.fun==funEnum){
-			return "fun-fun-iconCls";
-		}
-		return null;
-	}
+//	public String getIconCls() {
+//		//System.out.println(funEnum);
+//		if(FunEnum.module==funEnum){
+//			return "fun-module-iconCls";
+//		} else if(FunEnum.fun==funEnum){
+//			return "fun-fun-iconCls";
+//		}
+//		return null;
+//	}
 
-	public boolean isFun() {
-		if(FunEnum.module==funEnum){
-			return false;
-		} else if(FunEnum.fun==funEnum){
-			return true;
-		}
-		return false;
-	}
+//	public boolean isFun() {
+//		if(FunEnum.module==funEnum){
+//			return false;
+//		} else if(FunEnum.fun==funEnum){
+//			return true;
+//		}
+//		return false;
+//	}
 	public BussinessType getBussinessType() {
 		return bussinessType;
 	}
@@ -216,20 +220,30 @@ public class Fun extends TreeNode{
 	public void setIsEnable(Boolean isEnable) {
 		this.isEnable = isEnable;
 	}
-//	@Override
-//	public Boolean isLeaf() {
-//		return isLeaf;
+////	@Override
+////	public Boolean isLeaf() {
+////		return isLeaf;
+////	}
+////	@Override
+////	public void setLeaf(Boolean isLeaf) {
+////		super.setLeaf(isLeaf);
+////		this.isLeaf = isLeaf;
+////	}
+//	public String getElementId() {
+//		return elementId;
 //	}
-//	@Override
-//	public void setLeaf(Boolean isLeaf) {
-//		super.setLeaf(isLeaf);
-//		this.isLeaf = isLeaf;
+//	public void setElementId(String elementId) {
+//		this.elementId = elementId;
 //	}
-	public String getElementId() {
-		return elementId;
+	@Override
+	public void setId(String id) {
+		// TODO Auto-generated method stub
+		this.id=id;
 	}
-	public void setElementId(String elementId) {
-		this.elementId = elementId;
+	@Override
+	public String getId() {
+		// TODO Auto-generated method stub
+		return this.id;
 	}
 
 

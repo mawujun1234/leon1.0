@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.mawujun.fun.Fun;
 import com.mawujun.menu.Menu;
 import com.mawujun.menu.MenuItem;
 
@@ -22,7 +23,7 @@ public class GeneratorMain {
 
 			
 		
-		generatorService.generatorFile(MenuItem.class,FtlFile.JsGrid.toString(),"D:",new ExtenConfig());	
+		generatorService.generatorFile(Fun.class,FtlFile.Controller.toString(),"D:",new ExtenConfig());	
 		
 		//String str="";
 		//str=generatorService.generatorToString(MenuItem.class,FtlFile.JsModel.toString(),null);	

@@ -16,6 +16,7 @@ import com.mawujun.user.login.UserDetailsImpl;
 import com.mawujun.utils.M;
 import com.mawujun.utils.SecurityContextHolder;
 import com.mawujun.utils.StringUtils;
+import com.mawujun.utils.page.Page;
 
 /**
  * 
@@ -27,40 +28,39 @@ public class FunController {
 	@Autowired
 	private FunService funService;
 
-	/**
-	 * 桌面程序中把菜单按权限读取出来
-	 * @return
-	 */
-	@RequestMapping("/fun/query")
-	@ResponseBody
-	public List<Fun> query(String id){
-//		WhereInfo whereinfo=WhereInfo.parse("parent.id", id);
+//	/**
+//	 * 桌面程序中把菜单按权限读取出来
+//	 * @return
+//	 */
+//	@RequestMapping("/fun/query")
+//	@ResponseBody
+//	public List<Fun> query(String id){
+////		WhereInfo whereinfo=WhereInfo.parse("parent.id", id);
+////		if("root".equals(id)){
+////			whereinfo=WhereInfo.parse("parent.id", "is",null);
+////		}
+//		//List<Fun> funes=funService.query(whereinfo);
+//		Cnd cnd=Cnd.select();
 //		if("root".equals(id)){
-//			whereinfo=WhereInfo.parse("parent.id", "is",null);
+//			cnd.andIsNull(M.Fun.parent.id);
+//		} else {
+//			cnd.andEquals(M.Fun.parent.id, id);
 //		}
-		//List<Fun> funes=funService.query(whereinfo);
-		Cnd cnd=Cnd.select();
-		if("root".equals(id)){
-			cnd.andIsNull(M.Fun.parent.id);
-		} else {
-			cnd.andEquals(M.Fun.parent.id, id);
-		}
-		List<Fun> funes=funService.query(cnd);
-		JsonConfigHolder.setFilterPropertys(M.Fun.parent.name());
-		//JsonConfigHolder.setRootName("children");
-		return funes;
-	}
+//		List<Fun> funes=funService.query(cnd);
+//		JsonConfigHolder.setFilterPropertys(M.Fun.parent.name());
+//		//JsonConfigHolder.setRootName("children");
+//		return funes;
+//	}
 	/**
 	 * 一次性读取出所有的节点数据,构建出了整棵树
 	 * @return
 	 */
-	@RequestMapping("/fun/queryAll")
+	@RequestMapping("/fun/query")
 	@ResponseBody
-	public List<Fun> queryAll(){	
+	public Page query(Integer start,Integer limit){	
 		
-		JsonConfigHolder.setFilterPropertys(M.Fun.parent.name());
-		JsonConfigHolder.setRootName("children");
-		return funService.queryAll();
+		Page page=Page.getInstance(start,limit);//.addParam(M.Fun.sampleName, "%"+sampleName+"%");
+		return funService.queryPage(page);
 		
 	}
 	@RequestMapping("/fun/load")
@@ -75,16 +75,23 @@ public class FunController {
 //		if(true){
 //			throw new RuntimeException("测试一场日志");
 //		}
-		funService.create(fun);
+		funService.createOrUpdate(fun);
 		return fun;
 	}
 	
 	@RequestMapping("/fun/update")
 	@ResponseBody
-	public Fun update(@RequestBody Fun fun,Boolean isUpdateParent,String oldParent_id){		
-		 funService.update(fun,isUpdateParent,oldParent_id);
+	public Fun update(@RequestBody Fun fun){		
+		funService.createOrUpdate(fun);
 		 return fun;
 	}
+	
+//	@RequestMapping("/fun/update")
+//	@ResponseBody
+//	public Fun update(@RequestBody Fun fun,Boolean isUpdateParent,String oldParent_id){		
+//		 funService.update(fun,isUpdateParent,oldParent_id);
+//		 return fun;
+//	}
 	
 	@RequestMapping("/fun/destroy")
 	@ResponseBody

@@ -99,7 +99,7 @@ public class MenuItemService extends AbstractService<MenuItem, String> {//extend
 		menuitem.setFun(fun);
 		menuitem.setParent(parent);
 		menuitem.setMenu(parent==null?menuService.get(menuId):parent.getMenu());
-		menuitem.setIconCls(fun.getIconCls());
+		//menuitem.setIconCls(fun.getIconCls());
 		menuitem.setLeaf(true);
 		super.create(menuitem);
 		

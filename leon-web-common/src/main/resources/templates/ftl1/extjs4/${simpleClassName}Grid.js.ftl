@@ -43,13 +43,13 @@ Ext.define('Leon.${module}.${simpleClassName}Grid',{
 			autoSync:false,
 			pageSize:50,
 			model: 'Leon.${module}.${simpleClassName}',
-			autoLoad:false
+			autoLoad:true
 	  });
 	  <#else>
 	  me.store=Ext.create('Ext.data.Store',{
 			autoSync:false,
 			pageSize:50,
-			autoLoad:false,
+			autoLoad:true,
 			proxy:{
 				type: 'ajax',
 			    url : Ext.ContextPath+'/${simpleClassNameFirstLower}/query',
@@ -81,26 +81,26 @@ Ext.define('Leon.${module}.${simpleClassName}Grid',{
 			itemId:'create',
 			handler: function(btn){
 				var grid=btn.up("grid");
-		    	var modelName=grid.model||grid.getStore().getProxy( ).getModel().getName( );
-		
-				var model=Ext.createModel(modelName,{
-				        	//id:''
+				var modelName=grid.model||grid.getStore().getProxy( ).getModel().getName( );
+				var model=Ext.createModel(modelName,{      	//id:''
 				});
 				model.phantom =true;
-				grid.getStore().insert(0, model);
+				grid.form.getForm().loadRecord(model);//form是在app中定义的grid.form=form;
+				grid.form.down("button#save").enable();
+				
 			},
 			iconCls: 'form-add-button'
 		},{
 			text: '更新',
 			itemId:'update',
-			handler: function(){
+			handler: function(btn){
 				var grid=btn.up("grid");
 			},
 			iconCls: 'form-update-button'
 		},{
 			text: '删除',
 			itemId:'destroy',
-			handler: function(){
+			handler: function(btn){
 				var grid=btn.up("grid");
 		    	Ext.Msg.confirm("删除",'确定要删除吗?', function(btn, text){
 					if (btn == 'yes'){
@@ -119,7 +119,7 @@ Ext.define('Leon.${module}.${simpleClassName}Grid',{
 			text: '刷新',
 			itemId:'reload',
 			disabled:me.disabledAction,
-			handler: function(){
+			handler: function(btn){
 				var grid=btn.up("grid");
 				grid.getStore().reload();
 			},
