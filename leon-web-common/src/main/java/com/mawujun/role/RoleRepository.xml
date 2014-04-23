@@ -20,5 +20,20 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		where a.id=b.fun_id
 		order by a.id
     </select>
-
+    
+    
+    <select id="queryFun" resultType="map" parameterType="map">
+    	SELECT a.*,case when b.fun_id is null then 'false' else 'true' end as active
+    	FROM leon_Fun a left join leon_Role_Fun b
+		on a.id=b.fun_id
+		where b.role_id=#{role_id}
+    </select>
+    <!-- 
+    <select id="queryFun_count" resultType="Integer" parameterType="map">
+    	SELECT count(*)
+    	FROM leon_Fun a left join leon_Role_Fun b
+		on a.id=b.fun_id
+		where b.role_id=#{role_id}
+    </select>
+ -->
 </mapper>

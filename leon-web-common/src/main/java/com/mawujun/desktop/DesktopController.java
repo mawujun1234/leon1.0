@@ -57,9 +57,11 @@ public class DesktopController {
 			for(QuickStart quickStart:quickStarts){
 				//快速启动的数据是放在，一登陆就渲染呢？还是等点击的时候延迟加载。
 				MenuItem leaf=menuItemService.get(quickStart.getId().getMenuItemId());
-				MenuItemVO vo=BeanUtils.copyOrCast(leaf, MenuItemVO.class);
-				vo.setFunId(leaf.getFun()!=null?leaf.getFun().getId():null);
-				desktopConfig.addQuickstart(vo);
+				if(leaf!=null){
+					MenuItemVO vo=BeanUtils.copyOrCast(leaf, MenuItemVO.class);
+					vo.setFunId(leaf.getFun()!=null?leaf.getFun().getId():null);
+					desktopConfig.addQuickstart(vo);
+				}
 			}
 			
 		}

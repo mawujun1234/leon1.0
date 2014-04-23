@@ -15,6 +15,7 @@ import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository1.IRepository;
 import com.mawujun.service.AbstractService;
 import com.mawujun.utils.RoleCacheHolder;
+import com.mawujun.utils.page.Page;
 import com.mawujun.utils.page.WhereInfo;
 
 @Service
@@ -37,6 +38,18 @@ public class RoleService extends AbstractService<Role, String> {
 		}
 		
 		this.get(entity.getId()).setName(entity.getName());
+	}
+	
+	public Page queryFun(Page page){
+//		//h还要读出父类的权限
+//		Role role=roleRepository.get(roleId);
+//		Set<RoleFun> roleFuns=role.getFunes();
+//		
+//		for (RoleFun roleFun:roleFuns){
+//			System.out.println(roleFun.getId());
+//		}
+		
+		return this.getRepository().queryFun(page);
 	}
 	
 	

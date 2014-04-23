@@ -6,5 +6,16 @@
 <mapper namespace="com.mawujun.repository1.EntityTestMapper" >
 	<select id="queryPage" parameterType="map" resultType="map">
 		select * from t_EntityTest
+		<where>
+			<if test="firstName!=null">
+				firstName like #{firstName}
+			</if>
+		</where>
+	</select>
+	
+	<select id="queryPage1" parameterType="map" resultType="map">
+		select * from t_EntityTest
+		where firstName like #{firstName}
+
 	</select>
 </mapper>

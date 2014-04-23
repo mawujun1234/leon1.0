@@ -59,19 +59,22 @@ Ext.onReady(function(){
     	}
     	
     	roleId=record.get('id');
-    	Ext.Ajax.request({
-    		url:Ext.ContextPath+'/roleFun/query',
-    		method:'POST',
-    		params:{roleId:roleId},
-    		success:function(response){
-    			//console.log(response.responseText);
-    			var obj=Ext.decode(response.responseText);
-    			//alert(obj.root);
-    			roleFunTree.checkingFunes(obj.root);
-    			roleFunTree.roleId=roleId;
-    			tabPanel.unmask();
-    		}   		
-    	});
+    	roleFunTree.getStore().load({params:{roleId:roleId}});
+    	tabPanel.unmask();
+    	
+//    	Ext.Ajax.request({
+//    		url:Ext.ContextPath+'/roleFun/query',
+//    		method:'POST',
+//    		params:{roleId:roleId},
+//    		success:function(response){
+//    			//console.log(response.responseText);
+//    			var obj=Ext.decode(response.responseText);
+//    			//alert(obj.root);
+//    			roleFunTree.checkingFunes(obj.root);
+//    			roleFunTree.roleId=roleId;
+//    			tabPanel.unmask();
+//    		}   		
+//    	});
 
     	//roleMutexGrid.currentRole=record;
     	//roleMutexGrid.getStore().load({params:{ownId:record.getId(),roleRoleEnum:'mutex'}});
@@ -80,61 +83,61 @@ Ext.onReady(function(){
     });
    
     
-	var roleFunTree=Ext.create('Leon.desktop.role.RoleFunTree',{title:'权限'});
-	roleFunTree.on('checkchange',function(node,checked){
-		var fromParent=node.get("fromParent");
-		//alert(fromParent+"这里要给出提示，是否要覆盖父角色的权限。");
-		if(fromParent){
-		  var r=confirm("确定要覆盖父角色的权限设置吗?")
-		  if (r==true) {
-		    checked=true;	
-		  } else{
-		    //checked=false;
-		  	return;
-		  }
-
-		  
-		}
-    	var url=Ext.ContextPath+'/roleFun/create';
-    	var params={};
-    	var isDestroy=false;
-    	if(!checked){
-    		isDestroy=true;
-    		url=Ext.ContextPath+'/roleFun/destroy';
-    		params={
-    			roleId:roleId,
-	    		funId:node.getId()
-    		};
-    		//alert('删除还没有做');
-    	} else {
-    		
-    		params ={
-	    		roleId:roleId,
-	    		funId:node.getId(),
-	    		permissionEnum:'PUBLIC'
-	    	}
-    	}
-     	Ext.Ajax.request({
-    		url:url,
-    		method:'POST',
-    		params :params,
-    		success:function(response){
-    			var obj=Ext.decode(response.responseText);
-    			node.set('permissionEnum',params.permissionEnum);
-    			
-    			if(fromParent && !isDestroy){
-					node.set('checked',true);
-					node.set('fromParent',false);
-				}
-    			if(isDestroy){
-    				node.roleAssociation=null;
-    			} else {
-    				node.roleAssociation=obj.root;
-    			}
-    			//alert(node.roleAssociation);
-    		}   		
-    	});
-    });
+//	var roleFunTree=Ext.create('Leon.desktop.role.RoleFunTree',{title:'权限'});
+//	roleFunTree.on('checkchange',function(node,checked){
+//		var fromParent=node.get("fromParent");
+//		//alert(fromParent+"这里要给出提示，是否要覆盖父角色的权限。");
+//		if(fromParent){
+//		  var r=confirm("确定要覆盖父角色的权限设置吗?")
+//		  if (r==true) {
+//		    checked=true;	
+//		  } else{
+//		    //checked=false;
+//		  	return;
+//		  }
+//
+//		  
+//		}
+//    	var url=Ext.ContextPath+'/roleFun/create';
+//    	var params={};
+//    	var isDestroy=false;
+//    	if(!checked){
+//    		isDestroy=true;
+//    		url=Ext.ContextPath+'/roleFun/destroy';
+//    		params={
+//    			roleId:roleId,
+//	    		funId:node.getId()
+//    		};
+//    		//alert('删除还没有做');
+//    	} else {
+//    		
+//    		params ={
+//	    		roleId:roleId,
+//	    		funId:node.getId(),
+//	    		permissionEnum:'PUBLIC'
+//	    	}
+//    	}
+//     	Ext.Ajax.request({
+//    		url:url,
+//    		method:'POST',
+//    		params :params,
+//    		success:function(response){
+//    			var obj=Ext.decode(response.responseText);
+//    			node.set('permissionEnum',params.permissionEnum);
+//    			
+//    			if(fromParent && !isDestroy){
+//					node.set('checked',true);
+//					node.set('fromParent',false);
+//				}
+//    			if(isDestroy){
+//    				node.roleAssociation=null;
+//    			} else {
+//    				node.roleAssociation=obj.root;
+//    			}
+//    			//alert(node.roleAssociation);
+//    		}   		
+//    	});
+//    });
     
 //取消了互斥角色，因为互斥角色判断太麻烦了，而且用到的可能性更小
 //    var roleMutexGrid=Ext.create('Leon.desktop.role.RoleRoleGrid',{
@@ -142,6 +145,10 @@ Ext.onReady(function(){
 //    	roleRoleEnum:'mutex',
 //    	currentRole:null
 //    });
+
+
+	var roleFunTree=Ext.create('Leon.desktop.role.RoleFunGrid',{title:'权限'});
+
 
 	var tabPanel=Ext.create('Ext.tab.Panel', {
 		region:'center',

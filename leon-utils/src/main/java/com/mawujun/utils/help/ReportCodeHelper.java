@@ -142,5 +142,8 @@ public class ReportCodeHelper {
 		ReportCodeHelper.min = min;
 		minStr=(char)min+"";
 	}
+	public static String getSperator() {
+		return sperator;
+	}
 
 }

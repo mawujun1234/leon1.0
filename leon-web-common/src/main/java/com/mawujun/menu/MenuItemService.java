@@ -52,16 +52,7 @@ public class MenuItemService extends AbstractService<MenuItem, String> {//extend
 
 	
 	public String create(MenuItem entity) {
-		Object reportCode=null;
-		if(entity.getParent()!=null){
-			//WhereInfo whereinfo=WhereInfo.parse("parent.id", entity.getParent().getId());
-			reportCode=this.getRepository().queryMax(M.MenuItem.reportCode,Cnd.where().andEquals(M.MenuItem.parent.id, entity.getParent().getId()));
-		}
-		获取父节点的reportcode
-		
-		String newReportCode=ReportCodeHelper.generate3((String)reportCode);
-		entity.setReportCode(newReportCode);
-		
+		updateReportCode(entity);
 		entity.setParent(entity.getParent()==null?null:this.get(entity.getParent().getId()));
 		entity.setLeaf(true);
 		//MenuItem parnet=this.get(entity.getParent().getId());
@@ -69,9 +60,33 @@ public class MenuItemService extends AbstractService<MenuItem, String> {//extend
 			entity.getParent().setLeaf(false);
 		}
 		
-		return this.getRepository().create(entity);
-		
-		
+		return this.getRepository().create(entity);	
+	}
+	
+	private void updateReportCode(MenuItem entity) {
+		// 获取所有子节点中的最大值
+		Object reportCode = null;
+		if (entity.getParent() != null) {
+			// WhereInfo whereinfo=WhereInfo.parse("parent.id",
+			// entity.getParent().getId());
+			reportCode = this.getRepository().queryMax(
+					M.MenuItem.reportCode,
+					Cnd.where().andEquals(M.MenuItem.parent.id,
+							entity.getParent().getId()));
+
+			// 获取父节点的reportcode
+			if (reportCode == null) {
+				MenuItem parent = this.getRepository().get(
+						entity.getParent().getId());
+				reportCode = parent + ReportCodeHelper.getSperator()
+						+ ReportCodeHelper.generate3(null);
+				entity.setReportCode((String) reportCode);
+			} else {
+				String newReportCode = ReportCodeHelper
+						.generate3((String) reportCode);
+				entity.setReportCode(newReportCode);
+			}
+		}
 	}
 	public void update(MenuItem entity) {
 		MenuItem exists=this.get(entity.getId());
@@ -88,33 +103,33 @@ public class MenuItemService extends AbstractService<MenuItem, String> {//extend
 
 		super.delete(item);
 	}
-	public MenuItem create(String funId,String parentId,String menuId) {
-		//throw new BusinessException("c测试");
-		Fun fun=funService.get(funId);
-		MenuItem parent=this.get(parentId);
-		
-		MenuItem menuitem = new MenuItem();
-		menuitem.setText(fun.getText());
-		//menuitem.setReportCode(fun.getReportCode());
-		menuitem.setFun(fun);
-		menuitem.setParent(parent);
-		menuitem.setMenu(parent==null?menuService.get(menuId):parent.getMenu());
-		//menuitem.setIconCls(fun.getIconCls());
-		menuitem.setLeaf(true);
-		super.create(menuitem);
-		
-		if(parent!=null){
-			parent.setLeaf(false);
-			super.update(parent);
-		}
-		
-
+//	public MenuItem create(String funId,String parentId,String menuId) {
+//		//throw new BusinessException("c测试");
+//		Fun fun=funService.get(funId);
+//		MenuItem parent=this.get(parentId);
+//		
+//		MenuItem menuitem = new MenuItem();
+//		menuitem.setText(fun.getText());
+//		//menuitem.setReportCode(fun.getReportCode());
+//		menuitem.setFun(fun);
+//		menuitem.setParent(parent);
+//		menuitem.setMenu(parent==null?menuService.get(menuId):parent.getMenu());
+//		//menuitem.setIconCls(fun.getIconCls());
+//		menuitem.setLeaf(true);
+//		super.create(menuitem);
+//		
 //		if(parent!=null){
-//			parent.addChild(menuitem);
+//			parent.setLeaf(false);
+//			super.update(parent);
 //		}
-		
-		return menuitem;
-	}
+//		
+//
+////		if(parent!=null){
+////			parent.addChild(menuitem);
+////		}
+//		
+//		return menuitem;
+//	}
 	
 	public MenuItem cut(String id,String parent_id,String oldParent_id,String menuId) {
 		MenuItem parent=this.get(parent_id);
@@ -122,6 +137,8 @@ public class MenuItemService extends AbstractService<MenuItem, String> {//extend
 		MenuItem menuItem=this.get(id);
 		
 		menuItem.setParent(parent);
+		
+		updateReportCode(menuItem);
 		
 		this.getRepository().update(menuItem);
 		return menuItem;

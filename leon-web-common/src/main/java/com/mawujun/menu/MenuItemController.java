@@ -90,14 +90,14 @@ public class MenuItemController {
 		return menuItemService.cut(id, parent_id, oldParent_id, menuId);
 	}
 	
-	@RequestMapping("/menuItem/createByFun")
-	@ResponseBody
-	public MenuItem create(String funId,String parentId,String menuId){		
-		
-		MenuItem menuItem=menuItemService.create(funId,parentId,menuId);
-		//JsonConfigHolder.setFilterPropertys("children",MenuItem.class);
-		return menuItem;
-	}
+//	@RequestMapping("/menuItem/createByFun")
+//	@ResponseBody
+//	public MenuItem create(String funId,String parentId,String menuId){		
+//		
+//		MenuItem menuItem=menuItemService.create(funId,parentId,menuId);
+//		//JsonConfigHolder.setFilterPropertys("children",MenuItem.class);
+//		return menuItem;
+//	}
 	
 	@RequestMapping("/menuItem/update")
 	@ResponseBody

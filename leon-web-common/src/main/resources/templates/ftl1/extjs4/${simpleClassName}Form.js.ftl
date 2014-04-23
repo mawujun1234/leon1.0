@@ -103,7 +103,7 @@ Ext.define('Leon.${module}.${simpleClassName}Form',{
             iconCls:'form-save-button',
             formBind: true,
             //jsonSubmit:true
-            handler: function() {
+            handler: function(btn) {
             	var form=this.up('form');
                 if(!form.getForm().isValid()) {
                 	return;
@@ -111,7 +111,7 @@ Ext.define('Leon.${module}.${simpleClassName}Form',{
                 form.getForm().updateRecord();
 				form.getRecord().save({
 					success: function(record, operation) {
-
+						btn.disable();
 					}
 				});
             }

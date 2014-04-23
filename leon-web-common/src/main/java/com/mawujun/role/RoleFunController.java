@@ -47,8 +47,8 @@ public class RoleFunController {
 //	}
 	
 	
-	@RequestMapping("/roleFun/query")
-	@ResponseBody
+	//@RequestMapping("/roleFun/query")
+	//@ResponseBody
 	public List<Map<String,Object>>  queryRoleFun(String roleId){
 		Set<RoleFun> roleFunes=roleFunService.query(roleId);
 		List<Map<String,Object>> funes=new ArrayList<Map<String,Object>>();
@@ -75,8 +75,8 @@ public class RoleFunController {
 	@Resource(name="roleFunObservers")
 	List<RoleFunObserver>  roleFunObservers;
 	
-	@RequestMapping("/roleFun/create")
-	@ResponseBody
+	//@RequestMapping("/roleFun/create")
+	//@ResponseBody
 	public RoleFun create(String roleId,String funId,String permissionEnum){
 		//继承的权限如何覆盖和取消。
 		//父角色的权限不能取消，当修改权限属性的时候，如果发现时父权限，就新建一个权限
@@ -93,8 +93,8 @@ public class RoleFunController {
 		return roleFun;
 	}
 	
-	@RequestMapping("/roleFun/update")
-	@ResponseBody
+	//@RequestMapping("/roleFun/update")
+	//@ResponseBody
 	public RoleFun update(String roleId,String funId,String permissionEnum){
 		
 		RoleFun roleFun=roleFunService.update( roleId, funId, permissionEnum);
@@ -102,8 +102,8 @@ public class RoleFunController {
 		return roleFun;
 	}
 	
-	@RequestMapping("/roleFun/destroy")
-	@ResponseBody
+	//@RequestMapping("/roleFun/destroy")
+	//@ResponseBody
 	public RoleFun destroy(String roleId,String funId){
 		RoleFun roleFun=roleFunService.delete(roleId,funId);
 		notifyObservers(roleFun.getRole(),roleFun.getFun(),false);

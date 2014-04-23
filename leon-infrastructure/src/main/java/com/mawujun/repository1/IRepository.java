@@ -25,4 +25,5 @@ public interface IRepository<T, ID extends Serializable> extends IHibernateDao<T
 	 * @return
 	 */
 	public Page queryPage(Page page);
+	public Page queryPage1(Page page);
 }

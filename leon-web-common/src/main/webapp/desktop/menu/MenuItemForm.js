@@ -203,7 +203,7 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
 					});
 				}
 			},
-            handler: function() {
+            handler: function(btn) {
             	var form=this.up('form');
                 if(!form.getForm().isValid()) {
                 	return;
@@ -226,7 +226,7 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
 				form.getRecord().save({
 					success: function(record, operation) {
 						me.fireEvent('createOrupdate',me,record);
-						b.disable();
+						btn.disable();
 					}
 				});
             }

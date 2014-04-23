@@ -1,6 +1,10 @@
 package com.mawujun.role;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.utils.M;
+import com.mawujun.utils.T;
+import com.mawujun.utils.page.Page;
 import com.mawujun.utils.page.WhereInfo;
 
 @Controller
@@ -74,6 +80,35 @@ public class RoleController {
 		roleService.delete(role);
 		return role;
 	}
+	
+	@RequestMapping("/role/queryFun")
+	@ResponseBody
+	public Page  queryFun(Integer start,Integer limit,String roleId){
+		
+		return roleService.queryFun(Page.getInstance(start, limit).addParam(T.leon_Role_Fun.role_id, roleId));
+//		Set<RoleFun> roleFunes=roleService.queryFun(roleId);
+//		List<Map<String,Object>> funes=new ArrayList<Map<String,Object>>();
+//		
+//		for (RoleFun roleFun:roleFunes){
+//			Map<String,Object> map=new HashMap<String,Object>();
+//			map.put("funId", roleFun.getFun().getId());
+//
+////			map.put("permissionEnum", roleFun.getPermissionEnum().toString());
+////			//来源还没有做
+////			StringBuffer buffer=new StringBuffer("");
+////			for(RoleSource roleSource:roleFun.getRoleSources()){
+////				buffer.append(roleSource.getName());
+////				buffer.append(",");
+////			}
+////			map.put("roleSources", buffer);
+////			map.put("fromParent", roleFun.isFromParent());
+//			
+//			funes.add(map);
+//		}
+//		return funes;
+	}
+	
+	
 //	@RequestMapping("/role/queryMutex")
 //	@ResponseBody
 //	public Set<Role> queryMutex(String ownId) {

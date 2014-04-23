@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 import org.apache.ibatis.builder.MapperBuilderAssistant;
 import org.apache.ibatis.builder.StaticSqlSource;
+import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.scripting.defaults.RawSqlSource;
@@ -16,6 +17,7 @@ import org.apache.ibatis.scripting.xmltags.DynamicSqlSource;
 import org.apache.ibatis.scripting.xmltags.IfSqlNode;
 import org.apache.ibatis.scripting.xmltags.MixedSqlNode;
 import org.apache.ibatis.scripting.xmltags.SqlNode;
+import org.apache.ibatis.scripting.xmltags.StaticTextSqlNode;
 import org.apache.ibatis.scripting.xmltags.TextSqlNode;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.RowBounds;
@@ -507,7 +509,7 @@ public class MybatisRepository  {
 			 int i=0;
 			 boolean removeSelectBool=true;
 			 for(SqlNode node:contentsOrginal){
-				 if(node instanceof TextSqlNode){
+				 if(node instanceof StaticTextSqlNode){//TextSqlNode
 					 String sql=(String) ReflectionUtils.getFieldValue(node, "text");
 					 //只对第一个select子句进行转换,忽略子查询中的select
 					 if(removeSelectBool){
@@ -621,6 +623,11 @@ public class MybatisRepository  {
 				 false,//resultOrdered,
 				 mappedStatement.getKeyGenerator(), 
 				 null, null, mappedStatement.getDatabaseId(), mappedStatement.getLang());
+		
+//		MappedStatement aa=configuration.getMappedStatement(statement+"_count");
+//		BoundSql boundSql = aa.getBoundSql(parameterObject);
+//		mappedStatement.getConfiguration().newParameterHandler(configuration, parameterObject, boundSql);
+//		configuration.
 	}
 	/**
 	 * 根据已经有的select语句自动构建求总数的sql,注意还要去掉order by等语句 用来提高sql效率
@@ -634,7 +641,7 @@ public class MybatisRepository  {
 			return;
 		}
 		MappedStatement mappedStatement=configuration.getMappedStatement(statement);
-
+		
 		SqlSource sqlSourceOrginal=mappedStatement.getSqlSource();//RawSqlSource
 		if(sqlSourceOrginal instanceof RawSqlSource){
 			handlerRawSqlSource(statement,configuration,mappedStatement,sqlSourceOrginal);

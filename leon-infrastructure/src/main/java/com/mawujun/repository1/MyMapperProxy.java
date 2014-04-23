@@ -72,6 +72,7 @@ public class MyMapperProxy<T> extends MapperProxy<T> {
 			return invokeByHibernate(proxy, method, args);
 		} else {
 			Class[] paramTypes=method.getParameterTypes();
+			//如果是分页的话
 			if(paramTypes.length==1 && paramTypes[0]==Page.class && method.getReturnType()==Page.class){
 				return mybatisRepository.selectPage(namespace+"."+method.getName(), (Page)args[0]);
 			} else {
