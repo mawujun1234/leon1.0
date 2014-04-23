@@ -444,60 +444,45 @@ public class Repository1Test  extends DbunitBaseRepositoryTest{
 //		assertEquals(1,entitys.getTotalPages());
 //	}
 //	
-	@Test
-	public void queryPageMybatis() {
-		Page page=Page.getInstance().setStart(1).setPageSize(1);
-		page=entityTestMapper.queryPage(page);
-		assertEquals(1,page.getResultSize());
-		assertEquals(3,page.getTotal());
-		assertEquals(3,page.getTotalPages());
-		assertEquals(1,page.getStart());
-		assertEquals(1,page.getPageSize());
-		assertEquals(1,page.getPageNo());
-		assertEquals(1,page.getPrePageNo());
-		assertEquals(2,page.getNextPageNo());
-		
-		Page page2=Page.getInstance().setStart(2).setPageSize(1);
-		page2=entityTestMapper.queryPage(page2);
-		assertEquals(1,page2.getResultSize());
-		assertEquals(3,page2.getTotal());
-		assertEquals(3,page2.getTotalPages());
-		assertEquals(2,page2.getStart());
-		assertEquals(1,page2.getPageSize());
-		assertEquals(2,page2.getPageNo());
-		assertEquals(1,page2.getPrePageNo());
-		assertEquals(3,page2.getNextPageNo());
-		
-		Page page3=Page.getInstance().setStart(3).setPageSize(1);
-		page3=entityTestMapper.queryPage(page3);
-		assertEquals(0,page3.getResultSize());
-		assertEquals(3,page3.getTotal());
-		assertEquals(3,page3.getTotalPages());
-		assertEquals(3,page3.getStart());
-		assertEquals(1,page3.getPageSize());
-		assertEquals(3,page3.getPageNo());
-		assertEquals(2,page3.getPrePageNo());
-		assertEquals(3,page3.getNextPageNo());
-		
-		
-		
-		Page page4=Page.getInstance().setStart(1).setPageSize(1).addParam("firstName", "%admin%");
-		page4=entityTestMapper.queryPage(page4);
-		assertEquals(1,page4.getResultSize());
-		assertEquals(3,page4.getTotal());
-		assertEquals(3,page4.getTotalPages());
-		assertEquals(1,page4.getStart());
-		assertEquals(1,page4.getPageSize());
-		assertEquals(1,page4.getPageNo());
-		assertEquals(1,page4.getPrePageNo());
-		assertEquals(2,page4.getNextPageNo());
-		
-	}
-	
 //	@Test
-//	public void queryPage1Mybatis() {//DefaultSqlSession  SimpleExecutor PreparedStatementHandler BaseStatementHandler
+//	public void queryPageMybatis() {
+//		Page page=Page.getInstance().setStart(1).setPageSize(1);
+//		page=entityTestMapper.queryPage(page);
+//		assertEquals(1,page.getResultSize());
+//		assertEquals(3,page.getTotal());
+//		assertEquals(3,page.getTotalPages());
+//		assertEquals(1,page.getStart());
+//		assertEquals(1,page.getPageSize());
+//		assertEquals(1,page.getPageNo());
+//		assertEquals(1,page.getPrePageNo());
+//		assertEquals(2,page.getNextPageNo());
+//		
+//		Page page2=Page.getInstance().setStart(2).setPageSize(1);
+//		page2=entityTestMapper.queryPage(page2);
+//		assertEquals(1,page2.getResultSize());
+//		assertEquals(3,page2.getTotal());
+//		assertEquals(3,page2.getTotalPages());
+//		assertEquals(2,page2.getStart());
+//		assertEquals(1,page2.getPageSize());
+//		assertEquals(2,page2.getPageNo());
+//		assertEquals(1,page2.getPrePageNo());
+//		assertEquals(3,page2.getNextPageNo());
+//		
+//		Page page3=Page.getInstance().setStart(3).setPageSize(1);
+//		page3=entityTestMapper.queryPage(page3);
+//		assertEquals(0,page3.getResultSize());
+//		assertEquals(3,page3.getTotal());
+//		assertEquals(3,page3.getTotalPages());
+//		assertEquals(3,page3.getStart());
+//		assertEquals(1,page3.getPageSize());
+//		assertEquals(3,page3.getPageNo());
+//		assertEquals(2,page3.getPrePageNo());
+//		assertEquals(3,page3.getNextPageNo());
+//		
+//		
+//		
 //		Page page4=Page.getInstance().setStart(1).setPageSize(1).addParam("firstName", "%admin%");
-//		page4=entityTestMapper.queryPage1(page4);
+//		page4=entityTestMapper.queryPage(page4);
 //		assertEquals(1,page4.getResultSize());
 //		assertEquals(3,page4.getTotal());
 //		assertEquals(3,page4.getTotalPages());
@@ -506,5 +491,20 @@ public class Repository1Test  extends DbunitBaseRepositoryTest{
 //		assertEquals(1,page4.getPageNo());
 //		assertEquals(1,page4.getPrePageNo());
 //		assertEquals(2,page4.getNextPageNo());
+//		
 //	}
+	
+	@Test
+	public void queryPage1Mybatis() {//DefaultSqlSession  SimpleExecutor PreparedStatementHandler BaseStatementHandler
+		Page page4=Page.getInstance().setStart(1).setPageSize(1).addParam("firstName", "%admin%");
+		page4=entityTestMapper.queryPage1(page4);
+		assertEquals(1,page4.getResultSize());
+		assertEquals(3,page4.getTotal());
+		assertEquals(3,page4.getTotalPages());
+		assertEquals(1,page4.getStart());
+		assertEquals(1,page4.getPageSize());
+		assertEquals(1,page4.getPageNo());
+		assertEquals(1,page4.getPrePageNo());
+		assertEquals(2,page4.getNextPageNo());
+	}
 }

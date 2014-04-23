@@ -4,7 +4,7 @@ import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 import net.sf.json.processors.JsonValueProcessor;
 
-import com.mawujun.utils.ReflectionUtils;
+import com.mawujun.utils.ReflectUtils;
 
 public class AssociateEntryGetIdJsonValueProcessor implements JsonValueProcessor {
 	
@@ -48,13 +48,13 @@ public class AssociateEntryGetIdJsonValueProcessor implements JsonValueProcessor
 			return null;
 		}
 		if(associateOnlyId){
-			if(ReflectionUtils.getMethod(value.getClass(), "getId")!=null){
+			if(ReflectUtils.getMethod(value.getClass(), "getId")!=null){
 				JSONObject jsonObject =jsonObject= new JSONObject();
-				jsonObject.put("id", ReflectionUtils.invokeGetterMethod(value, "id"));
+				jsonObject.put("id", ReflectUtils.invokeGetterMethod(value, "id"));
 				return jsonObject;
-			}else if(ReflectionUtils.getMethod(value.getClass(), "getID")!=null	){
+			}else if(ReflectUtils.getMethod(value.getClass(), "getID")!=null	){
 				JSONObject jsonObject =jsonObject= new JSONObject();
-				jsonObject.put("id", ReflectionUtils.invokeGetterMethod(value, "ID"));
+				jsonObject.put("id", ReflectUtils.invokeGetterMethod(value, "ID"));
 				return jsonObject;
 			}
 		}

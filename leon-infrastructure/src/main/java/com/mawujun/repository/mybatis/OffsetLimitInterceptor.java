@@ -49,6 +49,7 @@ public class OffsetLimitInterceptor implements Interceptor{
 	static int RESULT_HANDLER_INDEX = 3;
 	
 	Dialect dialect;
+	private String dialectClass;
 	
 	public Object intercept(Invocation invocation) throws Throwable {
 		processIntercept(invocation.getArgs());
@@ -115,13 +116,22 @@ public class OffsetLimitInterceptor implements Interceptor{
 
 	public void setProperties(Properties properties) {
 		String dialectClass = new PropertiesUtils(properties).getRequiredString("dialectClass");
-		try {
-			dialect = (Dialect)Class.forName(dialectClass).newInstance();
-		} catch (Exception e) {
-			throw new RuntimeException("cannot create dialect instance by dialectClass:"+dialectClass,e);
-		} 
-		//System.out.println(OffsetLimitInterceptor.class.getSimpleName()+".dialect="+dialectClass);
+//		try {
+//			dialect = (Dialect)Class.forName(dialectClass).newInstance();
+//		} catch (Exception e) {
+//			throw new RuntimeException("cannot create dialect instance by dialectClass:"+dialectClass,e);
+//		} 
+//		//System.out.println(OffsetLimitInterceptor.class.getSimpleName()+".dialect="+dialectClass);
+		setDialectClass(dialectClass);
 	}
+	 public void setDialectClass(String dialectClass) {
+			this.dialectClass = dialectClass;
+			try {
+				dialect = (Dialect) Class.forName(dialectClass).newInstance();
+			} catch (Exception e) {
+				throw new RuntimeException("cannot create dialect instance by dialectClass:"+ dialectClass, e);
+			}
+		}
 	
 	public static class BoundSqlSqlSource implements SqlSource {
 		BoundSql boundSql;

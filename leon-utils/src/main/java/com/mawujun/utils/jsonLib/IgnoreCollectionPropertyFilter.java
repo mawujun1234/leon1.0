@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 
 import net.sf.json.util.PropertyFilter;
 
-import com.mawujun.utils.ReflectionUtils;
+import com.mawujun.utils.ReflectUtils;
 
 public class IgnoreCollectionPropertyFilter implements PropertyFilter {
 	
@@ -25,14 +25,14 @@ public class IgnoreCollectionPropertyFilter implements PropertyFilter {
 		// 如果return true,忽略值为null的属性
 		if (value == null)
 			return false;
-		if(ReflectionUtils.isBaseType(value)){
+		if(ReflectUtils.isBaseType(value)){
 			return false;
 		}
 		if(ignoreAllAssociate){
 			return true;
 		}
 		if(ignoreCollection){
-			if(ReflectionUtils.isCollectionMap(value)){
+			if(ReflectUtils.isCollectionMap(value)){
 				return true;
 			}
 //			try {

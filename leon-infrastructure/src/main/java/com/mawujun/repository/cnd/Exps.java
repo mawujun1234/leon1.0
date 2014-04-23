@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import com.mawujun.utils.BeanUtils;
-import com.mawujun.utils.ReflectionUtils;
+import com.mawujun.utils.ReflectUtils;
 import com.mawujun.utils.StringUtils;
 
 
@@ -137,11 +137,11 @@ public abstract class Exps {
 	}
 
 	private static SqlExpression _evalRange(String name, Object value) {
-		if (ReflectionUtils.isInt(value))
+		if (ReflectUtils.isInt(value))
 			//return inInt(name, Castors.me().castTo(value, int[].class));
 			return inInt(name, BeanUtils.copyOrCast(value, int[].class));
 
-		else if (ReflectionUtils.isLong(value))
+		else if (ReflectUtils.isLong(value))
 			//return inLong(name, Castors.me().castTo(value, long[].class));
 			return inLong(name, BeanUtils.copyOrCast(value, long[].class));
 

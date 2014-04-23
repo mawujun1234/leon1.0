@@ -19,7 +19,7 @@ import net.sf.json.util.CycleDetectionStrategy;
 import net.sf.json.util.JSONUtils;
 import net.sf.json.util.PropertySetStrategy;
 
-import com.mawujun.utils.ReflectionUtils;
+import com.mawujun.utils.ReflectUtils;
 import com.mawujun.utils.StringUtils;
 import com.mawujun.utils.page.QueryResult;
 
@@ -188,14 +188,14 @@ public class JSONObjectUtils {
 			clssSet=typeMap.get(bean.getClass());
 			
 		} else {
-			Field[] fields=ReflectionUtils.getAllDeclaredFields(bean.getClass());
+			Field[] fields=ReflectUtils.getAllDeclaredFields(bean.getClass());
 			try {
 				
 				for (Field field : fields) {
 					//如果是基本类型，string,集合类型的话，跳过，否则就注册进去
-					if(ReflectionUtils.isBaseType(field.getType()) 
-							|| ReflectionUtils.containInterface(field.getType(), Collection.class)
-							|| ReflectionUtils.containInterface(field.getType(), Map.class)){
+					if(ReflectUtils.isBaseType(field.getType()) 
+							|| ReflectUtils.containInterface(field.getType(), Collection.class)
+							|| ReflectUtils.containInterface(field.getType(), Map.class)){
 						continue;
 					} else {
 						//过滤掉自己定义的实体类

@@ -15,7 +15,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
 
-import com.mawujun.utils.ReflectionUtils;
+import com.mawujun.utils.ReflectUtils;
 
 
 
@@ -75,7 +75,7 @@ public class DymincReloadActionImp extends DymincReloadAction{
             if(filePath!=null && !"".equals(filePath)){
             	List<Resource> list=new ArrayList<Resource>();
 
-            	Resource[] mapperLocations=(Resource[])ReflectionUtils.getFieldValue(sqlSessionFactoryBean, "mapperLocations");
+            	Resource[] mapperLocations=(Resource[])ReflectUtils.getFieldValue(sqlSessionFactoryBean, "mapperLocations");
             	for(Resource res:mapperLocations){
             		list.add(res);
             	}

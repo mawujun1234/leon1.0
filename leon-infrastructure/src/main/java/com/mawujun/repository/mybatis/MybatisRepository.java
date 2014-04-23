@@ -28,7 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mawujun.repository.idEntity.UUIDEntity;
 import com.mawujun.repository.idEntity.UUIDGenerator;
-import com.mawujun.utils.ReflectionUtils;
+import com.mawujun.utils.ReflectUtils;
 import com.mawujun.utils.page.Page;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
@@ -499,9 +499,9 @@ public class MybatisRepository  {
 	 * @param sqlSourceOrginal
 	 */
 	private void handlerDynamicSqlSource(String statement,Configuration configuration,MappedStatement mappedStatement,SqlSource sqlSourceOrginal){
-		SqlNode sqlNode=(SqlNode) ReflectionUtils.getFieldValue(sqlSourceOrginal, "rootSqlNode");
+		SqlNode sqlNode=(SqlNode) ReflectUtils.getFieldValue(sqlSourceOrginal, "rootSqlNode");
 		if(sqlNode instanceof MixedSqlNode){
-			 List<SqlNode> contentsOrginal=(List<SqlNode>) ReflectionUtils.getFieldValue(sqlNode, "contents");
+			 List<SqlNode> contentsOrginal=(List<SqlNode>) ReflectUtils.getFieldValue(sqlNode, "contents");
 			 List<SqlNode> contents=new ArrayList<SqlNode>();
 			 contents.addAll(contentsOrginal);
 			 
@@ -510,7 +510,7 @@ public class MybatisRepository  {
 			 boolean removeSelectBool=true;
 			 for(SqlNode node:contentsOrginal){
 				 if(node instanceof StaticTextSqlNode){//TextSqlNode
-					 String sql=(String) ReflectionUtils.getFieldValue(node, "text");
+					 String sql=(String) ReflectUtils.getFieldValue(node, "text");
 					 //只对第一个select子句进行转换,忽略子查询中的select
 					 if(removeSelectBool){
 						 int fromIndex=sql.toLowerCase().indexOf("from");
@@ -587,8 +587,8 @@ public class MybatisRepository  {
 	}
 
 	private void handlerRawSqlSource(String statement,Configuration configuration,MappedStatement mappedStatement,SqlSource sqlSourceOrginal){
-		StaticSqlSource sqlSource=(StaticSqlSource) ReflectionUtils.getFieldValue(sqlSourceOrginal, "sqlSource");
-		String sql=(String) ReflectionUtils.getFieldValue(sqlSource, "sql");
+		StaticSqlSource sqlSource=(StaticSqlSource) ReflectUtils.getFieldValue(sqlSourceOrginal, "sqlSource");
+		String sql=(String) ReflectUtils.getFieldValue(sqlSource, "sql");
 		 sql=removeOrders(sql);
 		 int fromIndex=sql.toLowerCase().indexOf("from");
 		 if(fromIndex>0){
@@ -729,9 +729,9 @@ public class MybatisRepository  {
 		MappedStatement mappedStatement=this.getSqlSession().getConfiguration().getMappedStatement(statement);
 
 		SqlSource sqlSourceOrginal=mappedStatement.getSqlSource();
-		SqlNode sqlNode=(SqlNode) ReflectionUtils.getFieldValue(sqlSourceOrginal, "rootSqlNode");
+		SqlNode sqlNode=(SqlNode) ReflectUtils.getFieldValue(sqlSourceOrginal, "rootSqlNode");
 		if(sqlNode instanceof MixedSqlNode){
-			 List<SqlNode> contents=(List<SqlNode>) ReflectionUtils.getFieldValue(sqlNode, "contents");
+			 List<SqlNode> contents=(List<SqlNode>) ReflectUtils.getFieldValue(sqlNode, "contents");
 			 //去掉order by语句
 			 //只要判断了order by aaa asc等等，并且以asc||desc||空白结尾的就行了，并替换掉他，如果有这个就可以了
 			 int i=0;
@@ -740,7 +740,7 @@ public class MybatisRepository  {
 			 Pattern p = Pattern.compile("order\\s*by([\\s*|,]\\w+(asc|desc|\\s*)*$)+",Pattern.CASE_INSENSITIVE);
 			 for(SqlNode node:contents){
 				 if(node instanceof TextSqlNode){
-					String sql = (String) ReflectionUtils.getFieldValue(node,"text");
+					String sql = (String) ReflectUtils.getFieldValue(node,"text");
 					Matcher m = p.matcher(sql);
 					
 					while (m.find()) {
@@ -753,7 +753,7 @@ public class MybatisRepository  {
 			 //String matchContent=null;//缓存默认的排序
 			 if(lastOrderBy>-1){
 				 SqlNode node=contents.get(lastOrderBy);
-				 String sql = (String) ReflectionUtils.getFieldValue(node,"text");
+				 String sql = (String) ReflectUtils.getFieldValue(node,"text");
 					Matcher m = p.matcher(sql);
 					StringBuffer sb = new StringBuffer();
 					while (m.find()) {
@@ -767,7 +767,7 @@ public class MybatisRepository  {
 					//System.out.println(matchContent);
 					
 					//去掉原来的order by
-					ReflectionUtils.setFieldValue(node, "text", sb.toString());	
+					ReflectUtils.setFieldValue(node, "text", sb.toString());	
 			 } 
 			//添加动态的order by
 				//<if test="orderBy!=null">${orderBy}</if>

@@ -22,7 +22,7 @@ import com.mawujun.repository.hibernate.NamingStrategy;
 import com.mawujun.repository.idEntity.IdEntity;
 import com.mawujun.repository.mybatis.MybatisRepository;
 import com.mawujun.repository.mybatis.Record;
-import com.mawujun.utils.ReflectionUtils;
+import com.mawujun.utils.ReflectUtils;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 import com.mawujun.utils.page.WhereInfo;
@@ -74,7 +74,7 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 	private MybatisRepository mybatisRepository;
 	
 	public BaseRepository() {
-		Class<T> entityClass = ReflectionUtils.getSuperClassGenricType(getClass());
+		Class<T> entityClass = ReflectUtils.getSuperClassGenricType(getClass());
 		hibernateDao=new HibernateDao<T,ID>(entityClass);
 		mybatisRepository=new MybatisRepository();
 		//namespace=entityClass.getName();

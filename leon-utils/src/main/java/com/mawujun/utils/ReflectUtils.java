@@ -31,9 +31,9 @@ import org.slf4j.LoggerFactory;
  * 
  * @author mawujun
  */
-public class ReflectionUtils {
+public class ReflectUtils {
 
-	private static Logger logger = LoggerFactory.getLogger(ReflectionUtils.class);
+	private static Logger logger = LoggerFactory.getLogger(ReflectUtils.class);
 	//private static Set<Class> baseType=new HashSet<Class>();
 
 	static {

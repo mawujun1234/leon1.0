@@ -36,7 +36,7 @@ import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.repository.cnd.SqlType;
 import com.mawujun.utils.AssertUtils;
 import com.mawujun.utils.BeanUtils;
-import com.mawujun.utils.ReflectionUtils;
+import com.mawujun.utils.ReflectUtils;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 import com.mawujun.utils.page.SortInfo;
@@ -62,7 +62,7 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 	 * public class UserDao extends HibernateDao<User, Long>
 	 */
 	public HibernateDao() {
-		this.entityClass = ReflectionUtils.getSuperClassGenricType(getClass());
+		this.entityClass = ReflectUtils.getSuperClassGenricType(getClass());
 	}
 	
 	public SessionFactory getSessionFactory() {
@@ -352,29 +352,29 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 	protected void setParams(Query query,int position,Object val) {		
 		if(val==null){
 			query.setParameter(position, null);
-		} else if (ReflectionUtils.isString(val)) {
+		} else if (ReflectUtils.isString(val)) {
 			query.setString(position, (String) val);
-		} else if (ReflectionUtils.isChar(val)) {
+		} else if (ReflectUtils.isChar(val)) {
 			query.setString(position, ((Character) val) + "");
-		} else if (ReflectionUtils.isByte(val)) {
+		} else if (ReflectUtils.isByte(val)) {
 			query.setByte(position, (Byte) val);
-		} else if (ReflectionUtils.isShort(val)) {
+		} else if (ReflectUtils.isShort(val)) {
 			query.setShort(position, (Short) val);
-		} else if (ReflectionUtils.isInt(val)) {
+		} else if (ReflectUtils.isInt(val)) {
 			query.setInteger(position, (Integer) val);
-		} else if (ReflectionUtils.isLong(val)) {
+		} else if (ReflectUtils.isLong(val)) {
 			query.setLong(position, (Long) val);
-		} else if (ReflectionUtils.isFloat(val)) {
+		} else if (ReflectUtils.isFloat(val)) {
 			query.setFloat(position, (Float) val);
-		} else if (ReflectionUtils.isDouble(val)) {
+		} else if (ReflectUtils.isDouble(val)) {
 			query.setDouble(position, (Double) val);
-		} else if (ReflectionUtils.isBoolean(val)) {
+		} else if (ReflectUtils.isBoolean(val)) {
 			query.setBoolean(position, ((Boolean) val));
-		}else if (ReflectionUtils.isBigDecimal(val)) {
+		}else if (ReflectUtils.isBigDecimal(val)) {
 			query.setBigDecimal(position, (BigDecimal) val);
-		} else if (ReflectionUtils.isOf(val, java.sql.Date.class)) {
+		} else if (ReflectUtils.isOf(val, java.sql.Date.class)) {
 			query.setDate(position, (java.sql.Date) val);
-		} else if (ReflectionUtils.isOf(val, java.util.Date.class)) {
+		} else if (ReflectUtils.isOf(val, java.util.Date.class)) {
 			query.setDate(position, (java.util.Date) val);
 		} else if (val.getClass().isArray() && val.getClass().getComponentType() == byte.class) {
 			query.setBinary(position,(byte[]) val);
@@ -989,7 +989,7 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 			//当只查一列的时候
 			if(names.size()==1){
 				List<Object> list= query.list();
-				if (ReflectionUtils.isBaseType(classM)) {
+				if (ReflectUtils.isBaseType(classM)) {
 					for (Object objs : list) {
 						M m = (M) BeanUtils.convert(objs, classM);
 						result.add(m);
@@ -1008,7 +1008,7 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 					for(Object objs:list){
 						M m=classM.newInstance();
 						for(int i=0;i<names.size();i++){
-							ReflectionUtils.setFieldValue(m, names.get(i), objs);
+							ReflectUtils.setFieldValue(m, names.get(i), objs);
 						}
 						result.add(m);
 					}
@@ -1026,14 +1026,14 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 						}
 						result.add(m);
 					}
-				} else if(ReflectionUtils.isBaseType(classM)){
+				} else if(ReflectUtils.isBaseType(classM)){
 					throw new BusinessException("不能将多个查询列，转换为一个基本类型!");
 					
 				} else {
 					for(Object[] objs:list){
 						M m=classM.newInstance();
 						for(int i=0;i<names.size();i++){
-							ReflectionUtils.setFieldValue(m, names.get(i), objs[i]);
+							ReflectUtils.setFieldValue(m, names.get(i), objs[i]);
 						}
 						result.add(m);
 					}
@@ -1223,7 +1223,7 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 		if(classM.isAssignableFrom(obj.getClass())){
 			return (M)obj;
 		}
-		if(!obj.getClass().isArray() && ReflectionUtils.isBaseType(classM)){
+		if(!obj.getClass().isArray() && ReflectUtils.isBaseType(classM)){
 			M m=(M) BeanUtils.convert(obj, classM);
 			return m;
 		} else {
@@ -1239,7 +1239,7 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 				} else {
 					M m = classM.newInstance();
 					for (int i = 0; i < names.size(); i++) {
-						ReflectionUtils.setFieldValue(m, names.get(i), ((Object[])obj)[i]);
+						ReflectUtils.setFieldValue(m, names.get(i), ((Object[])obj)[i]);
 					}
 					return m;
 				}
@@ -1631,8 +1631,8 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 
 		List<CriteriaImpl.OrderEntry> orderEntries = null;
 		try {
-			orderEntries = (List) ReflectionUtils.getFieldValue(impl, "orderEntries");
-			ReflectionUtils.setFieldValue(impl, "orderEntries", new ArrayList());
+			orderEntries = (List) ReflectUtils.getFieldValue(impl, "orderEntries");
+			ReflectUtils.setFieldValue(impl, "orderEntries", new ArrayList());
 		} catch (Exception e) {
 			logger.error("不可能抛出的异常:{}", e.getMessage());
 		}
@@ -1651,7 +1651,7 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 			c.setResultTransformer(transformer);
 		}
 		try {
-			ReflectionUtils.setFieldValue(impl, "orderEntries", orderEntries);
+			ReflectUtils.setFieldValue(impl, "orderEntries", orderEntries);
 		} catch (Exception e) {
 			logger.error("不可能抛出的异常:{}", e.getMessage());
 		}

@@ -51,7 +51,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
-import com.mawujun.utils.ReflectionUtils;
+import com.mawujun.utils.ReflectUtils;
 
 /**
  * 支持多用户切换，不单单是一个
@@ -362,7 +362,7 @@ MessageSourceAware {
             //反射更新到主用户里面去
             ArrayList<GrantedAuthority> aa=new ArrayList<GrantedAuthority>();
             aa.addAll(masterAuths);
-            ReflectionUtils.setFieldValue(marsterAuth, "authorities", aa );
+            ReflectUtils.setFieldValue(marsterAuth, "authorities", aa );
         //}
         
 

@@ -186,7 +186,7 @@ public abstract class BeanUtils extends org.apache.commons.beanutils.BeanUtils{
 		try {
 			return ConvertUtils.convert(value, toType);
 		} catch (Exception e) {
-			throw ReflectionUtils.convertReflectionExceptionToUnchecked(e);
+			throw ReflectUtils.convertReflectionExceptionToUnchecked(e);
 		}
 	}
 	
@@ -200,7 +200,7 @@ public abstract class BeanUtils extends org.apache.commons.beanutils.BeanUtils{
 		try {
 			return ConvertUtils.convert(value, toType);
 		} catch (Exception e) {
-			throw ReflectionUtils.convertReflectionExceptionToUnchecked(e);
+			throw ReflectUtils.convertReflectionExceptionToUnchecked(e);
 		}
 	}
 	/**

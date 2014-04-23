@@ -20,7 +20,7 @@ import org.hibernate.persister.entity.AbstractEntityPersister;
 
 import com.mawujun.utils.AssertUtils;
 import com.mawujun.utils.BeanUtils;
-import com.mawujun.utils.ReflectionUtils;
+import com.mawujun.utils.ReflectUtils;
 
 
 
@@ -653,7 +653,7 @@ public class Cnd implements PItem{
 	}
 	public  boolean isNotNeedQuote(Object v) {
 		
-		return ReflectionUtils.isBoolean(v) || ReflectionUtils.isPrimitiveNumber(v);
+		return ReflectUtils.isBoolean(v) || ReflectUtils.isPrimitiveNumber(v);
 	}
 	/**
 	 * 将 SQL 的字段值进行转意，可以用来防止 SQL 注入攻击
