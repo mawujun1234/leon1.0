@@ -25,7 +25,12 @@
     <select id="queryPage" resultType="com.mawujun.user.User" parameterType="map">
     	SELECT a.*
 	    FROM leon_user a
-		where a.name like #{name} 
+	    <where>
+	    	<if test="name!=null">
+	    		a.name like #{name} 
+	    	</if>
+	    </where>
+		
     </select>
     
     <select id="querySwitchUsers" resultType="com.mawujun.user.User" parameterType="String">

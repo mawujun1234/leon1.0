@@ -13,13 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mawujun.exception.BusinessException;
-import com.mawujun.fun.BussinessType;
-import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunService;
-import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository.cnd.Cnd;
-import com.mawujun.repository1.IRepository;
 import com.mawujun.service.AbstractService;
 import com.mawujun.user.login.UserDetailsImpl;
 import com.mawujun.utils.BeanUtils;
@@ -28,7 +23,6 @@ import com.mawujun.utils.Params;
 import com.mawujun.utils.StringUtils;
 import com.mawujun.utils.T;
 import com.mawujun.utils.help.ReportCodeHelper;
-import com.mawujun.utils.page.WhereInfo;
 
 @Service
 @Transactional(propagation=Propagation.REQUIRED)
@@ -143,68 +137,13 @@ public class MenuItemService extends AbstractService<MenuItem, String> {//extend
 		this.getRepository().update(menuItem);
 		return menuItem;
 	}
-
 	
-//	public List<MenuItemVO> query4Desktop(String menuId,Boolean isAdmin) {
-//
-//		//如果是管理员，可以获查看到所有的菜单
-//		//List<String> menuItemLeaf = super.queryList("query4Desktop", ParamUtils.init().add("menu_id", menuId).add("isAdmin", isAdmin),String.class);
-//		List<String> menuItemLeaf =this.getRepository().query4Desktop(ParamUtils.init().add("menu_id", menuId).add("isAdmin", isAdmin));
-//
-//		Map<String,MenuItemVO> parentKeys=new HashMap<String,MenuItemVO>();
-//		List<MenuItemVO> menuItems = new ArrayList<MenuItemVO>();
-//		for (Object menuItemIdObj: menuItemLeaf) {
-//			String menuItemId=(String)menuItemIdObj;
-//
-//			MenuItem leaf=this.get(menuItemId);
-//			
-//			if(parentKeys.get(menuItemId) !=null){//表示这个功能能已经添加过了
-//				continue;
-//			}
-//
-//			MenuItemVO vo=BeanUtils.copyOrCast(leaf, MenuItemVO.class);
-//			vo.setFunId(leaf.getFun()!=null?leaf.getFun().getId():null);
-//
-//			//对菜单进行二次开发==============
-//			extenMenuItem(leaf,vo);
-//			//===========================
-//			
-//			if(leaf.getParent()!=null){
-//				List<MenuItem> ancestores=leaf.findAncestors();
-//				int i=0;
-//				for(MenuItem ancestor:ancestores){
-//					MenuItemVO ancestorNew=null;
-//					if(parentKeys.containsKey(ancestor.getId())){
-//						ancestorNew=parentKeys.get(ancestor.getId());
-//					} else {
-//						ancestorNew=new MenuItemVO();
-//						BeanUtils.copyOrCast(ancestor, ancestorNew);
-//						parentKeys.put(ancestorNew.getId(), ancestorNew);
-//					}
-//					if(i==0){			
-//						ancestorNew.addItems(vo);
-//					} else {
-//						ancestorNew.addItems(parentKeys.get(ancestores.get(i-1).getId()));
-//					}
-//					i++;
-//					if(i==ancestores.size() && !menuItems.contains(ancestorNew)){
-//						menuItems.add(ancestorNew);
-//					}
-//				}
-//			} else {		
-//				menuItems.add(vo);
-//				parentKeys.put(vo.getId(), vo);
-//			}
-//			
-//		}
-//		return menuItems;
-//	}
-	
-	public List<MenuItemVO> query4Desktop(String menuId,Boolean isAdmin,String parentId) {
+	public List<MenuItemVO> query4Desktop(String menuId,Boolean isAdmin,String parentId,String userId) {
 
 		//如果是管理员，可以获查看到所有的菜单
 		//List<String> menuItemLeaf = super.queryList("query4Desktop", ParamUtils.init().add("menu_id", menuId).add("isAdmin", isAdmin),String.class);
-		List<String> menuItemLeaf =this.getRepository().query4Desktop(Params.init().add(T.leon_menuItem.menu_id, menuId).add("isAdmin", isAdmin).addIf(T.leon_menuItem.parent_id, parentId));
+		List<String> menuItemLeaf =this.getRepository().query4Desktop(Params.init().add(T.leon_menuItem.menu_id, menuId).add("isAdmin", isAdmin).
+				addIf(T.leon_menuItem.parent_id, parentId).add("user_id", userId));//f 用户权限根据用户名获取相应的功能
 
 		Map<String,MenuItemVO> parentKeys=new HashMap<String,MenuItemVO>();
 		List<MenuItemVO> menuItems = new ArrayList<MenuItemVO>();
@@ -224,33 +163,6 @@ public class MenuItemService extends AbstractService<MenuItem, String> {//extend
 			extenMenuItem(leaf,vo);
 			//===========================
 			menuItems.add(vo);
-			
-//			if(leaf.getParent()!=null){
-//				List<MenuItem> ancestores=leaf.findAncestors();
-//				int i=0;
-//				for(MenuItem ancestor:ancestores){
-//					MenuItemVO ancestorNew=null;
-//					if(parentKeys.containsKey(ancestor.getId())){
-//						ancestorNew=parentKeys.get(ancestor.getId());
-//					} else {
-//						ancestorNew=new MenuItemVO();
-//						BeanUtils.copyOrCast(ancestor, ancestorNew);
-//						parentKeys.put(ancestorNew.getId(), ancestorNew);
-//					}
-//					if(i==0){			
-//						ancestorNew.addItems(vo);
-//					} else {
-//						ancestorNew.addItems(parentKeys.get(ancestores.get(i-1).getId()));
-//					}
-//					i++;
-//					if(i==ancestores.size() && !menuItems.contains(ancestorNew)){
-//						menuItems.add(ancestorNew);
-//					}
-//				}
-//			} else {		
-//				menuItems.add(vo);
-//				parentKeys.put(vo.getId(), vo);
-//			}
 			
 		}
 		return menuItems;

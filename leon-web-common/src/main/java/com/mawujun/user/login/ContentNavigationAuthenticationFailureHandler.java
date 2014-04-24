@@ -17,12 +17,21 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
  */
 public class ContentNavigationAuthenticationFailureHandler extends
 		SimpleUrlAuthenticationFailureHandler {
+	public ContentNavigationAuthenticationFailureHandler() {
+		super();
+	}
+	
+	public ContentNavigationAuthenticationFailureHandler(String switchFailureUrl){
+		super(switchFailureUrl);
+	}
 
 	   public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 	            AuthenticationException exception) throws IOException, ServletException {
 		   if(HeaderAcceptUtils.isAcceptJson(request)){
 			   //response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication Failed: " + exception.getMessage());
-			   //response.setStatus(402);//Unauthorized 
+			   //response.setStatus(402);//Unauthorized c
+			   
+			   response.setCharacterEncoding("UTF-8");
 			   //认证的时候，用户名或密码错误时，返回的信息
 			   Writer writer=response.getWriter();
 				writer.write("{success:false,msg:'"+exception.getMessage()+"!'}");

@@ -6,9 +6,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.icon.IconUtils;
 import com.mawujun.repository.cnd.Cnd;
+import com.mawujun.user.login.UserDetailsImpl;
 import com.mawujun.utils.M;
-import com.mawujun.utils.page.WhereInfo;
 
 @Controller
 public class MenuItemController {
@@ -41,11 +41,23 @@ public class MenuItemController {
 		}
 		//M.MenuItem.menu_id
 		//List<MenuItem> menuItems=menuItemService.query(Cnd.select().andEquals("menu.id", menuId).andEquals("parent.id", "root".equals(id)?null:id));
+		
 		List<MenuItem> menuItems=menuItemService.query(Cnd.select().andEquals(M.MenuItem.menu.id, menuId).andEquals(M.MenuItem.parent.id, "root".equals(id)?null:id));
 
 		JsonConfigHolder.setFilterPropertys(MenuItem.class,M.MenuItem.parent.name(),M.MenuItem.menu.name());
 
 		return menuItems;
+	}
+	
+	@RequestMapping("/menuItem/query4Desktop")
+	@ResponseBody
+	public List<MenuItemVO> query4Desktop(String parentId){
+		
+		Authentication currentAuth = SecurityContextHolder.getContext().getAuthentication();
+		UserDetailsImpl userDetail=(UserDetailsImpl)currentAuth.getPrincipal();
+		
+		String menuId="default";
+		return menuItemService.query4Desktop(menuId, userDetail.isAdmin(), parentId,userDetail.getId());
 	}
 	
 	

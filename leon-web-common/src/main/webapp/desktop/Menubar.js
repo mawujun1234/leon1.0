@@ -128,9 +128,9 @@ Ext.define('Leon.desktop.Menubar', {
 				var menu = button.menu;
 				//console.log(me.text);
 				Ext.Ajax.request({
-							url : Ext.ContextPath + "/menuItem/query",
+							url : Ext.ContextPath + "/menuItem/query4Desktop",
 							params : {
-								id : button.menuItemId
+								parentId : button.menuItemId
 							},
 							method : 'post',
 							success : function(response, options) {

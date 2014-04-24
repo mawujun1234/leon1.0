@@ -4,7 +4,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com 承接各种项目 -->
-<!-- 注意文件名称为:Example_${DbName}_Mapper.xml-->
+<!-- 注意文件名称为:-->
 <mapper namespace="com.mawujun.menu.MenuItemRepository">
 	<select id="query4Desktop" resultType="String" >
     	SELECT distinct a.id
@@ -15,6 +15,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</if>
 		<if test="parent_id==null">
 			and a.parent_id is null
+		</if>
+		<!-- 不是管理员的话，就要进行权限控制,fun_id is null表示还没有和权限进行挂钩的菜单或目录-->
+		<if test="isAdmin==false">
+			and (fun_id is null or exists (SELECT d.fun_ID  FROM LEON_USER_ROLE c,LEON_ROLE_FUN d
+					where c.role_id=d.role_id and c.user_id=#{user_id}))
 		</if>
     </select>
     <!-- 用于跨iframe启动另一个窗口的时候,根据jsp获取到相应的menuItem-->

@@ -28,12 +28,13 @@ public class User extends UUIDEntity{
 	@Column(length=20)
 	private String name;
 	
-	private boolean deleted;
+	@org.hibernate.annotations.Type(type="yes_no")
+	private Boolean deleted=false;
 	private Date deletedDate;
 	@org.hibernate.annotations.Type(type="yes_no")
-	private boolean enable;
+	private Boolean enable=true;
 	@org.hibernate.annotations.Type(type="yes_no")
-	private boolean locked;
+	private Boolean locked=false;
 	
 	@Column(updatable=false)
 	private Date createDate;

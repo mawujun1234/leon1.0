@@ -19,7 +19,7 @@ Ext.define("Leon.SwitchUserWin",{
 			width:400,
 			flex: 0.3,
 			margin:'0 0 0 0',
-			standardSubmit:true,
+			standardSubmit:false,
 			items: [{
 				xtype:'textfield',
 		        fieldLabel: '用户名',
@@ -46,11 +46,16 @@ Ext.define("Leon.SwitchUserWin",{
 			    				me.getEl().mask("正在切换，请稍候...");
 				                basicform.submit({
 				                	//method:'GET',
+				                	standardSubmit:false,
+				                	headers:{ 'Accept':'application/json;'},
 				                    success: function(form, action) {
-				                       me.success(form, action);
+				                       //me.success(form, action);
+				                    	location.href=action.result.targetUrl;
 				                    },
 				                    failure: function(form, action) {
-				                        me.failure(form, action);
+				                        //me.failure(form, action);
+				                    	Ext.Msg.alert("消息","用户切换失败:"+action.result.msg);
+				                    	me.getEl().unmask();
 				                    }
 				                });
 			    			}

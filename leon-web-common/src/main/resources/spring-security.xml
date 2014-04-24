@@ -317,8 +317,8 @@
 		<beans:property name="switchUserUrl" value="/j_spring_security_switch_user" />
 		<beans:property name="exitUserUrl" value="/j_spring_security_exit_user" />
 		<beans:property name="targetUrl" value="/index.jsp" />
-		<!-- <beans:property name="switchFailureUrl" value="/loginFailure.jsp" /> 已经在contentNavigationAuthenticationFailureHandler定义好了 -->
-		<beans:property name="failureHandler" ref="contentNavigationAuthenticationFailureHandler" />
+		 <beans:property name="switchFailureUrl" value="/loginFailure.jsp" /><!-- 已经在contentNavigationAuthenticationFailureHandler定义好了
+		<beans:property name="failureHandler" ref="contentNavigationAuthenticationFailureHandler" /> -->
 	</beans:bean>
 	
 	<!-- DefaultWebInvocationPrivilegeEvaluator页面标签的权限 -->

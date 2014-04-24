@@ -16,6 +16,7 @@ import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunVO;
+import com.mawujun.utils.M;
 import com.mawujun.utils.T;
 import com.mawujun.utils.page.MatchMode;
 import com.mawujun.utils.page.Page;
@@ -46,12 +47,14 @@ public class UserController {
 	 */
 	@RequestMapping("/user/query")
 	@ResponseBody
-	public QueryResult<User> query(Integer start,Integer limit,String userName){
+	public Page query(Integer start,Integer limit,String userName){
 
-		PageRequest pageRqeust=PageRequest.init(start, limit).setSqlModel(false).addLikeWhere("name", userName,MatchMode.ANYWHERE,true);
-		QueryResult<User> users=userService.queryPage(pageRqeust);
-		//JsonConfigHolder.setRootName("children");
-		return users;
+		//PageRequest pageRqeust=PageRequest.init(start, limit).setSqlModel(false).addLikeWhere("name", userName,MatchMode.ANYWHERE,true);
+		//QueryResult<User> users=userService.queryPage(pageRqeust);
+		//return users;
+		
+		Page page=Page.getInstance(start, limit).addParam(M.User.name, userName);
+		return userService.queryPage(page);
 	}
 	/**
 	 * 一次性读取出所有的节点数据

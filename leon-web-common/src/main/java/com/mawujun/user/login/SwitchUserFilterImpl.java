@@ -91,12 +91,15 @@ MessageSourceAware {
         Assert.isTrue(successHandler != null || targetUrl != null, "You must set either a successHandler or the targetUrl");
         if (targetUrl != null) {
             Assert.isNull(successHandler, "You cannot set both successHandler and targetUrl");
-            successHandler = new SimpleUrlAuthenticationSuccessHandler(targetUrl);
+            //successHandler = new SimpleUrlAuthenticationSuccessHandler(targetUrl);
+            successHandler =new ContentNavigationAuthenticationSuccessHandler(targetUrl);
         }
 
         if (failureHandler == null) {
-            failureHandler = switchFailureUrl == null ? new SimpleUrlAuthenticationFailureHandler() :
-                new SimpleUrlAuthenticationFailureHandler(switchFailureUrl);
+//            failureHandler = switchFailureUrl == null ? new SimpleUrlAuthenticationFailureHandler() :
+//                new SimpleUrlAuthenticationFailureHandler(switchFailureUrl);
+        	failureHandler = switchFailureUrl == null ? new ContentNavigationAuthenticationFailureHandler() :
+                new ContentNavigationAuthenticationFailureHandler(switchFailureUrl);
         } else {
             Assert.isNull(switchFailureUrl, "You cannot set both a switchFailureUrl and a failureHandler");
         }
