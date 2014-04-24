@@ -16,13 +16,13 @@
     </select>
 	<!-- select语句的生成结束=============================================================================================== -->
 	
-	<select id="queryFun" resultType="record" parameterType="String">
-    	SELECT distinct  b.fun_id ,a.role_id
-	    FROM leon_user_role a,leon_role_fun b
-		where a.role_id=b.role_id and a.user_id=#{user_id}
+	<select id="queryFun" resultType="com.mawujun.fun.Fun" parameterType="map">
+    	SELECT distinct c.*
+	    FROM leon_user_role a,leon_role_fun b,leon_fun c
+		where a.role_id=b.role_id and b.fun_id=c.id and a.user_id=#{user_id}
     </select>
     
-    <select id="queryPage" resultType="com.mawujun.user.User" parameterType="String">
+    <select id="queryPage" resultType="com.mawujun.user.User" parameterType="map">
     	SELECT a.*
 	    FROM leon_user a
 		where a.name like #{name} 

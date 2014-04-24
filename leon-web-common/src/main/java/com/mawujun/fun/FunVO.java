@@ -1,7 +1,5 @@
 package com.mawujun.fun;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class FunVO extends Fun {
 	
@@ -9,17 +7,13 @@ public class FunVO extends Fun {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private List<Fun> children = new ArrayList<Fun>();
+	private Boolean active;
 
-	public void addChild(Fun child) {
-		this.children.add(child);
+	public Boolean getActive() {
+		return active;
 	}
 
-	public List<Fun> getChildren() {
-		return children;
-	}
-
-	public void setChildren(List<Fun> children) {
-		this.children = children;
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 }

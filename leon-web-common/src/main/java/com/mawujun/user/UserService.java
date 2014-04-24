@@ -15,6 +15,7 @@ import com.mawujun.repository1.IRepository;
 import com.mawujun.service.AbstractService;
 import com.mawujun.utils.M;
 import com.mawujun.utils.Params;
+import com.mawujun.utils.page.Page;
 
 @Service
 public class UserService  extends AbstractService<User, String>{
@@ -64,6 +65,10 @@ public class UserService  extends AbstractService<User, String>{
 	public int querySwitchUsersCount(String masterId,String j_username){
 		int count=this.getRepository().querySwitchUsersCount(Params.init().add("masterId", masterId).add("j_username", j_username));
 		return count;
+	}
+	
+	public Page queryFun(Page page){
+		return this.getRepository().queryFun(page);
 	}
 	@Override
 	public UserRepository getRepository() {

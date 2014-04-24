@@ -14,6 +14,7 @@ import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.user.login.SwitchUserFilterImpl;
 import com.mawujun.user.login.UserDetailsImpl;
+import com.mawujun.utils.M;
 import com.mawujun.utils.Params;
 import com.mawujun.utils.StringUtils;
 import com.mawujun.utils.page.Page;
@@ -83,7 +84,7 @@ public class SwitchUserController {
 	@RequestMapping("/destroy")
 	@ResponseBody
 	public String destroy(String masterId,String switchUserId) {
-		switchUserService.deleteBatch(Cnd.delete().andEquals("master.id", masterId).andEquals("switchUser.id", switchUserId));
+		switchUserService.deleteBatch(Cnd.delete().andEquals(M.SwitchUser.master.id, masterId).andEquals(M.SwitchUser.id, switchUserId));
 		return "成功";
 	}
 	

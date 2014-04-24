@@ -22,7 +22,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     </select>
     
     
-    <select id="queryFun" resultType="com.mawujun.role.RoleFunVO" parameterType="map">
+    <select id="queryFun" resultType="com.mawujun.fun.FunVO" parameterType="map">
     	SELECT a.*,case when b.fun_id is null then 'N' else 'Y' end as active
     	FROM leon_Fun a left join leon_Role_Fun b
 		on a.id=b.fun_id

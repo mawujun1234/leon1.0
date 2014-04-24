@@ -4,7 +4,7 @@ Ext.require('Leon.desktop.user.UserForm');
 Ext.require('Leon.desktop.role.RoleSelectPanel');
 Ext.require('Leon.desktop.parameter.ParameterUtils');
 Ext.require('Leon.desktop.user.SwitchUserGrid');
-
+Ext.require('Leon.desktop.user.UserFunGrid');
 
 Ext.onReady(function(){
 	window.queryUserByLoginName=function(params){
@@ -53,70 +53,7 @@ Ext.onReady(function(){
 	    ]
 		
 	});
-	
-//	var physicsDel = new Ext.Action({
-//		    text: '物理删除',
-//		    iconCls: 'icons_list-remove',
-//		    handler: function(){
-//		    	Ext.Msg.confirm("删除",'确定要删除吗?物理删除后，将不可恢复!', function(btn, text){
-//					if (btn == 'yes'){
-//						var user=grid.getLastSelected( );//.getLastSelected( );
-//						user.destroy({
-//							params:{physicsDel:true},
-//							success:function(){
-//								grid.getStore().reload();
-//							}
-//						});
-//					}
-//				});
-//		    }
-//	});
-//	grid.addAction(3,physicsDel);
-//	
-//	var recover = new Ext.Action({
-//		    text: '恢复',
-//		    iconCls: 'icons_arrow-step-over',
-//		    handler: function(){
-//		    	Ext.Msg.confirm("删除",'恢复被逻辑删除的用户，确定要恢复吗?', function(btn, text){
-//					if (btn == 'yes'){
-//						var user=grid.getLastSelected( );//.getLastSelected( );
-//						Ext.Ajax.request({
-//							url:Ext.ContextPath+'/user/recover',
-//							params:{id:user.getId()},
-//							success:function(){
-//								grid.getStore().reload();
-//							}
-//						});
-//						
-//					}
-//				});
-//		    }
-//	});
-//	grid.addAction(4,recover);
-//	var resetPwd = new Ext.Action({
-//		    text: '重置密码',
-//		    iconCls: 'icons_recycle',
-//		    handler: function(){
-//		    	var user=grid.getLastSelected( );
-//		    	if(!user){
-//		    		return;
-//		    	}
-//		    	Ext.Msg.prompt("重置密码",'请输入新密码:', function(btn, text){
-//					if (btn == 'ok'){
-//						//.getLastSelected( );
-//						Ext.Ajax.request({
-//							url:Ext.ContextPath+'/user/resetPwd',
-//							params:{id:user.getId(),password:text},
-//							success:function(){
-//								grid.getStore().reload();
-//							}
-//						});
-//						
-//					}
-//				},window,false,"123456");
-//		    }
-//	});
-//	grid.addAction(2,resetPwd);
+
 	
 	var nameField=Ext.create('Ext.form.field.Text',{
        	 name:'userName'
@@ -133,37 +70,13 @@ Ext.onReady(function(){
     });
     grid.addTopBar(tbar);
 	
-	
-//	var form=Ext.create('Leon.desktop.user.UserForm',{});
-//	var win=Ext.create('Ext.Window',{
-//			layout:'fit',
-//			modal:true,
-//			items:[form],
-//			listeners:{
-//				close:function(panel){
-//					grid.getStore().reload();
-//				}
-//			}
-//	});
-	
-//	//重载新增的功能，不从表格里面新增
-//	grid.onCreate=function(){
-//		var modal=Ext.createModel('Leon.desktop.user.User',{enable:true});
-//		form.getForm().loadRecord(modal);	
-//		win.show();
-//	}
-//	grid.onUpdate=function(){
-//		var modal=grid.getLastSelected();
-//		form.hidePassordField();
-//		form.getForm().loadRecord(modal);
-//		win.show();
-//	}
+
 	grid.on("itemclick",function(grid, record, item, index, e, eOpts ){
 		tabPanel.getEl().unmask();
 		userForm.loadRecord(record);
 		//selectedRoleTree.getStore().load({params:{userId:record.getId()}});
 		roleSelectedTree.reloadSelected({userId:record.getId()});
-		funTree.getStore().load({params:{userId:record.getId()}});
+		userFunGrid.getStore().load({params:{userId:record.getId()}});
 		//获取该用户的参数
 		utils.setSubjectId(record.getId());
 		
@@ -206,20 +119,23 @@ Ext.onReady(function(){
     	}
     });
 
-	var funTree=Ext.create('Leon.common.ux.BaseTree',{
-		url:Ext.ContextPath+'/user/queryFun',
-		fields:['id','text',"roleNames"],
-		defaultRootName:'children',
-		rootVisible: false,
-		//flex:1,
-		title:'拥有的权限',
-		displayField:'text'
-		,columns:[{
-			xtype:'treecolumn',dataIndex:'text',text:'名称',flex:8
-			
-		},{
-			dataIndex:'roleNames',text:'权限来源',flex:2
-		}]
+//	var userFunGrid=Ext.create('Leon.common.ux.BaseTree',{
+//		url:Ext.ContextPath+'/user/queryFun',
+//		fields:['id','text',"roleNames"],
+//		defaultRootName:'children',
+//		rootVisible: false,
+//		//flex:1,
+//		title:'拥有的权限',
+//		displayField:'text'
+//		,columns:[{
+//			xtype:'treecolumn',dataIndex:'text',text:'名称',flex:8
+//			
+//		},{
+//			dataIndex:'roleNames',text:'权限来源',flex:2
+//		}]
+//	});
+	var userFunGrid=Ext.create('Leon.desktop.user.UserFunGrid',{
+		title:'用户可用功能'
 	});
 	
 	
@@ -240,7 +156,7 @@ Ext.onReady(function(){
 	    items: [
 	    	userForm,
 	    	roleSelectedTree,
-	        funTree,
+	        userFunGrid,
 	        switchUserGrid
 	    ],
 	    listeners:{

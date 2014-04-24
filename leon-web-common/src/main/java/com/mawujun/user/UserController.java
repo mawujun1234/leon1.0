@@ -16,7 +16,9 @@ import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.fun.Fun;
 import com.mawujun.fun.FunVO;
+import com.mawujun.utils.T;
 import com.mawujun.utils.page.MatchMode;
+import com.mawujun.utils.page.Page;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 
@@ -146,10 +148,11 @@ public class UserController {
 	
 	@RequestMapping("/user/queryFun")
 	@ResponseBody
-	public List<FunVO> queryFun(String userId){	
-		JsonConfigHolder.setRootName("children");
-		//return userRoleService.queryFun(userId); 
-		return null;
+	public Page queryFun(Integer start,Integer limit,String userId){	
+		
+		//JsonConfigHolder.setRootName("children");
+		return userService.queryFun(Page.getInstance(start, limit).addParam(T.leon_user_role.UserRolePK.user_id, userId)); 
+		//return null;
 	}
 
 }

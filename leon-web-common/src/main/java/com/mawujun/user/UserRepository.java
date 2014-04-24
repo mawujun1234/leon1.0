@@ -17,4 +17,6 @@ public interface UserRepository extends IRepository<User, String> {
 	public Page querySwitchUsers(Page pages);
 	
 	public int querySwitchUsersCount(Params params);
+	
+	public Page queryFun(Page page);
 }
