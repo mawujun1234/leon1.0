@@ -11,6 +11,7 @@ import org.apache.ibatis.builder.MapperBuilderAssistant;
 import org.apache.ibatis.builder.StaticSqlSource;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
+import org.apache.ibatis.mapping.ParameterMapping;
 import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.scripting.defaults.RawSqlSource;
 import org.apache.ibatis.scripting.xmltags.DynamicSqlSource;
@@ -586,9 +587,9 @@ public class MybatisRepository  {
 		}
 	}
 
-	private void handlerRawSqlSource(String statement,Configuration configuration,MappedStatement mappedStatement,SqlSource sqlSourceOrginal){
-		StaticSqlSource sqlSource=(StaticSqlSource) ReflectUtils.getFieldValue(sqlSourceOrginal, "sqlSource");
-		String sql=(String) ReflectUtils.getFieldValue(sqlSource, "sql");
+	private void handlerRawSqlSource(String statement,Configuration configuration,MappedStatement mappedStatement,SqlSource rawSqlSourceOld){
+		StaticSqlSource sqlSourceOld=(StaticSqlSource) ReflectUtils.getFieldValue(rawSqlSourceOld, "sqlSource");
+		String sql=(String) ReflectUtils.getFieldValue(sqlSourceOld, "sql");
 		 sql=removeOrders(sql);
 		 int fromIndex=sql.toLowerCase().indexOf("from");
 		 if(fromIndex>0){
@@ -598,7 +599,13 @@ public class MybatisRepository  {
 		
 		//sqlSourceOrginal.getBoundSql(parameterObject)
 		mappedStatement.getParameterMap().getClass();
-		RawSqlSource newRawSqlSource=new RawSqlSource(configuration,sql,mappedStatement.getParameterMap().getType());
+		RawSqlSource rawSqlSourceNew=new RawSqlSource(configuration,sql,mappedStatement.getParameterMap().getType());
+		//设置参数映射的顺序
+		List<ParameterMapping> parameterMappings= (List<ParameterMapping>)ReflectUtils.getFieldValue(sqlSourceOld, "parameterMappings");
+		StaticSqlSource sqlSourceNew=(StaticSqlSource) ReflectUtils.getFieldValue(rawSqlSourceNew, "sqlSource");
+		ReflectUtils.setFieldValue(sqlSourceNew, "parameterMappings", parameterMappings);
+		
+	
 		MapperBuilderAssistant assistant=new MapperBuilderAssistant(configuration,mappedStatement.getResource());
 
 		assistant.setCurrentNamespace(mappedStatement.getId().substring(0, mappedStatement.getId().lastIndexOf('.')));
@@ -609,7 +616,7 @@ public class MybatisRepository  {
 			parameterMap=mappedStatement.getParameterMap().getId();
 		}
 		
-		assistant.addMappedStatement(statement+"_count", newRawSqlSource, 
+		assistant.addMappedStatement(statement+"_count", rawSqlSourceNew, 
 				 mappedStatement.getStatementType(), 
 				 mappedStatement.getSqlCommandType(), 
 				 mappedStatement.getFetchSize(), 

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSON;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.utils.BeanUtils;
+import com.mawujun.utils.M;
 
 @Controller
 public class ParameterSubjectController {
@@ -44,7 +45,7 @@ public class ParameterSubjectController {
 	@ResponseBody
 	public Map<String,Object> query(String subjectId,String subjectType){		
 		//把参数行列转换后，显示在form里
-		List<ParameterSubject> pses=parametersubjectService.query(Cnd.select().andEquals("id.subjectId", subjectId).andEquals("id.subjectType", subjectType));
+		List<ParameterSubject> pses=parametersubjectService.query(Cnd.select().andEquals(M.ParameterSubject.id.subjectId, subjectId).andEquals(M.ParameterSubject.id.subjectType, subjectType));
 		HashMap<String,Object> result=new HashMap<String,Object>();
 		for(ParameterSubject ps:pses){
 			//如果是数组的话，就转换成字符串

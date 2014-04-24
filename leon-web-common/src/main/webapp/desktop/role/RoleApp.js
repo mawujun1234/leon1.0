@@ -1,6 +1,7 @@
 Ext.require('Leon.desktop.role.Role');
 Ext.require('Leon.common.ux.BaseGrid');
-Ext.require('Leon.desktop.role.RoleFunTree');
+//Ext.require('Leon.desktop.role.RoleFunTree');
+Ext.require('Leon.desktop.role.RoleFunGrid')
 Ext.require('Leon.desktop.role.RoleRoleGrid');
 Ext.require('Leon.desktop.parameter.ParameterUtils');
 Ext.onReady(function(){
@@ -59,7 +60,7 @@ Ext.onReady(function(){
     	}
     	
     	roleId=record.get('id');
-    	roleFunTree.getStore().load({params:{roleId:roleId}});
+    	roleFunGrid.getStore().load({params:{roleId:roleId}});
     	tabPanel.unmask();
     	
 //    	Ext.Ajax.request({
@@ -70,8 +71,8 @@ Ext.onReady(function(){
 //    			//console.log(response.responseText);
 //    			var obj=Ext.decode(response.responseText);
 //    			//alert(obj.root);
-//    			roleFunTree.checkingFunes(obj.root);
-//    			roleFunTree.roleId=roleId;
+//    			roleFunGrid.checkingFunes(obj.root);
+//    			roleFunGrid.roleId=roleId;
 //    			tabPanel.unmask();
 //    		}   		
 //    	});
@@ -83,8 +84,8 @@ Ext.onReady(function(){
     });
    
     
-//	var roleFunTree=Ext.create('Leon.desktop.role.RoleFunTree',{title:'权限'});
-//	roleFunTree.on('checkchange',function(node,checked){
+//	var roleFunGrid=Ext.create('Leon.desktop.role.roleFunGrid',{title:'权限'});
+//	roleFunGrid.on('checkchange',function(node,checked){
 //		var fromParent=node.get("fromParent");
 //		//alert(fromParent+"这里要给出提示，是否要覆盖父角色的权限。");
 //		if(fromParent){
@@ -147,14 +148,41 @@ Ext.onReady(function(){
 //    });
 
 
-	var roleFunTree=Ext.create('Leon.desktop.role.RoleFunGrid',{title:'权限'});
+	var roleFunGrid=Ext.create('Leon.desktop.role.RoleFunGrid',{title:'权限'});
+	roleFunGrid.on('checkchange',function(checkcolumn, rowIndex, checked){
+		var fun=roleFunGrid.getStore().getAt(rowIndex);
+		var params={roleId:roleId,funId:fun.get("id"),permissionEnum:'PUBLIC'};
+		if(checked){
+      		Ext.Ajax.request({
+				url:Ext.ContextPath+'/role/addFun',
+				method:'POST',
+				params:params,
+				success:function(response){
+				    //console.log(response.responseText);
+				    //var obj=Ext.decode(response.responseText);
+				    
+				}   		
+			});
+      	} else {
+      		Ext.Ajax.request({
+				url:Ext.ContextPath+'/role/removeFun',
+				method:'POST',
+				params:params,
+				success:function(response){
+				    //console.log(response.responseText);
+				    //var obj=Ext.decode(response.responseText);
+
+				}   		
+			});
+      	}
+	});
 
 
 	var tabPanel=Ext.create('Ext.tab.Panel', {
 		region:'center',
 		split:true,
 	    activeTab: 0,
-	    items: [roleFunTree],
+	    items: [roleFunGrid],
 	    listeners:{
 	    	render:function(tabPanel){
 	    		tabPanel.mask();

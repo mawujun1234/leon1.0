@@ -15,7 +15,7 @@
 	</typeAliases>
 	
 	<plugins>
- 		<plugin interceptor="com.mawujun.repository.mybatis.OffsetLimitInterceptor">
+ 		<plugin interceptor="com.mawujun.repository.mybatis.PageInterceptor">
  			<property name="dialectClass" value="${mybatis.dialectClass}"/>
  		</plugin>
  	</plugins>

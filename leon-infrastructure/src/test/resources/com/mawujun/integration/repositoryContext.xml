@@ -59,7 +59,7 @@
 				<property name="configLocation" value="classpath:com/mawujun/integration/Configuration.xml" />
 				<property name="plugins">
 					<list>
-						<bean class="com.mawujun.repository.mybatis.OffsetLimitInterceptor">
+						<bean class="com.mawujun.repository.mybatis.PageInterceptor">
 							<property name="dialect">
 								<bean class="${${jdbc.dbName}.mybatis.dialet}"></bean>
 							</property>

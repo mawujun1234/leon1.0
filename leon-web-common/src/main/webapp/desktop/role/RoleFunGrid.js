@@ -16,7 +16,14 @@ Ext.define('Leon.desktop.role.RoleFunGrid',{
 	initComponent: function () {
       var me = this;
       me.columns=[
-      	{ xtype : 'checkcolumn', text : 'Active', dataIndex : 'active' },
+      	{ xtype : 'checkcolumn', text : 'Active', dataIndex : 'active',
+      		listeners:{
+      			checkchange:function(checkcolumn, rowIndex, checked){
+      				//
+      				me.fireEvent("checkchange",checkcolumn,rowIndex,checked);
+      			}
+      		}
+      	},
 		{dataIndex:'text',text:'名称'},
 		{dataIndex:'url',text:'地址',flex:1}
       ];
@@ -44,6 +51,7 @@ Ext.define('Leon.desktop.role.RoleFunGrid',{
 	        displayInfo: true
 	  }];
        
+	  me.addEvents("checkchange");
       me.callParent();
 	}
 });

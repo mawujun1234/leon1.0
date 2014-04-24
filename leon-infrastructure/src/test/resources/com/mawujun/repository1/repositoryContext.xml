@@ -64,7 +64,7 @@
 		<property name="sessionFactory" ref="sessionFactory" />	
 		<property name="plugins">
 			<list>
-			<bean class="com.mawujun.repository.mybatis.OffsetLimitInterceptor">
+			<bean class="com.mawujun.repository.mybatis.PageInterceptor">
 				<property name="dialectClass" value="com.mawujun.repository.mybatis.dialect.H2Dialect"></property>
 			</bean>
 			</list>

@@ -20,7 +20,8 @@ import com.mawujun.fun.FunService;
 import com.mawujun.user.login.FilterInvocationSecurityMetadataSourceImpl;
 import com.mawujun.utils.M;
 
-@Controller
+//@Controller
+@Deprecated
 public class RoleFunController {
 	@Autowired
 	private FunService funService;
