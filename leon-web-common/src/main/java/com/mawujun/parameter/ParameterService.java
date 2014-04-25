@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mawujun.exception.BusinessException;
-import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.repository1.IRepository;
 import com.mawujun.service.AbstractService;
@@ -28,7 +27,7 @@ public class ParameterService extends AbstractService<Parameter, String> {
 		return entity.getId();
 	}
 	public void delete(Parameter entity,Boolean forceDelete) {
-		if(forceDelete){
+		if(forceDelete!=null && forceDelete){
 			//删除引用了这个参数的所有主体
 			//parameterSubjectService.deleteBatch(Cnd.delete().andEquals("parameterId", entity.getId()));
 			parameterSubjectService.deleteBatch(Cnd.delete().andEquals(M.ParameterSubject.id.parameterId, entity.getId()));
@@ -73,7 +72,7 @@ public class ParameterService extends AbstractService<Parameter, String> {
 				}
 			}
 			if(!bool){
-				throw new BusinessException("查询主体<"+SubjectType.valueOf(newSubject_temp).getName()+">已经设置过参数，所以不能去除!");
+				throw new BusinessException("查询主体<"+SubjectEnum.valueOf(newSubject_temp).getName()+">已经设置过参数，所以不能去除!");
 			}
 		}
 		//判断值类型有没有变化

@@ -71,20 +71,37 @@ Ext.onReady(function(){
     grid.addTopBar(tbar);
 	
 
+    var selectedUserId="";
 	grid.on("itemclick",function(grid, record, item, index, e, eOpts ){
 		tabPanel.getEl().unmask();
 		userForm.loadRecord(record);
+		selectedUserId=record.getId();
 		//selectedRoleTree.getStore().load({params:{userId:record.getId()}});
-		roleSelectedTree.reloadSelected({userId:record.getId()});
-		userFunGrid.getStore().load({params:{userId:record.getId()}});
-		//获取该用户的参数
-		utils.setSubjectId(record.getId());
+		roleSelectedTree.reloadSelected({userId:selectedUserId});
 		
-		switchUserGrid.setMasterId(record.getId());
-		switchUserGrid.reload(record.getId());
+		//获取该用户的参数
+		utils.setSubjectId(selectedUserId);
+		
+		switchUserGrid.setMasterId(selectedUserId);
+		switchUserGrid.reload(selectedUserId);
 	});
 	var roleSelectedTree=Ext.create('Leon.desktop.role.RoleSelectPanel',{
     	url:Ext.ContextPath+'/user/queryRole',
+    	tbar:[{ xtype: 'button', text: '查看用户可用功能',iconCls:'form-search-button',handler:function(btn){
+    		var userFunGrid=Ext.create('Leon.desktop.user.UserFunGrid',{
+				
+			});
+			userFunGrid.getStore().load({params:{userId:selectedUserId}});
+			var win=Ext.create('Ext.Window',{
+				layout:'fit',
+				title:'用户可用功能',
+				modal:true,
+				height: 500,
+    			width: 400,
+				items:[userFunGrid]
+			});
+			win.show();
+    	}}],
     	listeners:{
     		addRole:function(selectedRoleTree,selectRoleNode){
     			var user=grid.getLastSelected();
@@ -134,9 +151,7 @@ Ext.onReady(function(){
 //			dataIndex:'roleNames',text:'权限来源',flex:2
 //		}]
 //	});
-	var userFunGrid=Ext.create('Leon.desktop.user.UserFunGrid',{
-		title:'用户可用功能'
-	});
+	
 	
 	
 	var switchUserGrid=Ext.create('Leon.desktop.user.SwitchUserGrid',{
@@ -156,7 +171,7 @@ Ext.onReady(function(){
 	    items: [
 	    	userForm,
 	    	roleSelectedTree,
-	        userFunGrid,
+	        //userFunGrid,
 	        switchUserGrid
 	    ],
 	    listeners:{

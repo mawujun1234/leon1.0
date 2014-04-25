@@ -46,7 +46,8 @@ public class MenuItemService extends AbstractService<MenuItem, String> {//extend
 
 	
 	public String create(MenuItem entity) {
-		updateReportCode(entity);
+		String reportCode=updateReportCode(entity.getParent()==null?null:entity.getParent().getId());
+		entity.setReportCode(reportCode);;
 		entity.setParent(entity.getParent()==null?null:this.get(entity.getParent().getId()));
 		entity.setLeaf(true);
 		//MenuItem parnet=this.get(entity.getParent().getId());
@@ -57,30 +58,32 @@ public class MenuItemService extends AbstractService<MenuItem, String> {//extend
 		return this.getRepository().create(entity);	
 	}
 	
-	private void updateReportCode(MenuItem entity) {
+	private String updateReportCode(String parentId) {
 		// 获取所有子节点中的最大值
-		Object reportCode = null;
-		if (entity.getParent() != null) {
+		String reportCode = null;
+		if (parentId != null) {
 			// WhereInfo whereinfo=WhereInfo.parse("parent.id",
 			// entity.getParent().getId());
-			reportCode = this.getRepository().queryMax(
+			reportCode = (String)this.getRepository().queryMax(
 					M.MenuItem.reportCode,
 					Cnd.where().andEquals(M.MenuItem.parent.id,
-							entity.getParent().getId()));
+							parentId));
 
 			// 获取父节点的reportcode
 			if (reportCode == null) {
-				MenuItem parent = this.getRepository().get(
-						entity.getParent().getId());
-				reportCode = parent + ReportCodeHelper.getSperator()
-						+ ReportCodeHelper.generate3(null);
-				entity.setReportCode((String) reportCode);
+				MenuItem parent = this.getRepository().get(parentId);
+				reportCode = parent + ReportCodeHelper.getSperator()+ ReportCodeHelper.generate3(null);
+				//entity.setReportCode((String) reportCode);
+				
 			} else {
-				String newReportCode = ReportCodeHelper
-						.generate3((String) reportCode);
-				entity.setReportCode(newReportCode);
+				//String newReportCode = ReportCodeHelper.generate3((String) reportCode);
+				//entity.setReportCode(newReportCode);
+				reportCode=ReportCodeHelper.generate3((String) reportCode);
 			}
+		} else {
+			reportCode= ReportCodeHelper.generate3(null);
 		}
+		return reportCode;
 	}
 	public void update(MenuItem entity) {
 		MenuItem exists=this.get(entity.getId());
@@ -126,13 +129,16 @@ public class MenuItemService extends AbstractService<MenuItem, String> {//extend
 //	}
 	
 	public MenuItem cut(String id,String parent_id,String oldParent_id,String menuId) {
+		
+		
 		MenuItem parent=this.get(parent_id);
 		parent.setLeaf(false);
 		MenuItem menuItem=this.get(id);
 		
-		menuItem.setParent(parent);
+		String reportCode=updateReportCode(parent_id);
+		menuItem.setReportCode(reportCode);
 		
-		updateReportCode(menuItem);
+		menuItem.setParent(parent);
 		
 		this.getRepository().update(menuItem);
 		return menuItem;

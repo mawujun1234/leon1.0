@@ -26,14 +26,14 @@ public class ParameterSubjectController {
 //	@RequestMapping("/parametersubject/queryShowModel")
 //	@ResponseBody
 //	public List<Map<String,String>> queryShowModel(String valueEnum){
-//		return ShowModelEnum.getShowModel(ParameterValueEnum.valueOf(valueEnum));
+//		return ShowModelEnum.getShowModel(ParameterValuesSourceEnum.valueOf(valueEnum));
 //	}
 //	
 	@RequestMapping("/parametersubject/querySubjectType")
 	@ResponseBody
 	public List<Map<String,String>> querySubjectType(){
 
-		return SubjectType.toListMap();
+		return SubjectEnum.toListMap();
 	}
 
 

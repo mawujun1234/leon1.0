@@ -13,12 +13,12 @@ import java.util.Map;
  * @author mawujun email:16064988@163.com qq:16064988
  *
  */
-public enum SubjectType {
+public enum SubjectEnum {
 	USER("用户"),POSITION("职位"),UNIT("组织单元"),
 	GROUP("用户组"),ROLE("角色"),SYSTEM("系统");
 	
 	private String name;
-	SubjectType(String name){
+	SubjectEnum(String name){
 		this.name=name;
 	}
 	
@@ -36,9 +36,9 @@ public enum SubjectType {
 	 * @return
 	 */
 	public static List<Map<String,String>> toListMap(){
-		SubjectType[] models=SubjectType.values();
+		SubjectEnum[] models=SubjectEnum.values();
 		List<Map<String,String>> list=new ArrayList<Map<String,String>>();
-		for(SubjectType model:models){
+		for(SubjectEnum model:models){
 			Map<String,String> map=new HashMap<String,String>();
 			map.put("key", model.getKey());
 			map.put("name", model.getName());

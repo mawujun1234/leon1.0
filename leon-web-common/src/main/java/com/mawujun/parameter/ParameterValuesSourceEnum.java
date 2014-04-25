@@ -5,17 +5,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public enum ParameterValueEnum {
+/**
+ * 参数数据源的形式
+ * @author mawujun email:16064988@163.com qq:16064988
+ *
+ */
+public enum ParameterValuesSourceEnum {
 	STRING("字符串"),NUMBER("数字"),
 	//EXPRESSION("表达式"),
 	BOOLEAN("布尔值"),ARRAY("数组"),DATE("日期"),TIME("时间"),
 	SCHEDULED("定时调度"),
 	//RANGE("范围"),//使用规则来替代这个，例如超出这个范围就报错
 	//SQL("sql查询"),//使用sql读取出数据
-	JAVA("java类");//使用java类去读取数据
+	JAVA("java类(动态)");//使用java类去读取数据
 	
 	private String name;
-	ParameterValueEnum(String name){
+	ParameterValuesSourceEnum(String name){
 		this.name=name;
 	}
 	
@@ -32,9 +37,9 @@ public enum ParameterValueEnum {
 	 * @return
 	 */
 	public static List<Map<String,String>> toListMap(){
-		ParameterValueEnum[] models=ParameterValueEnum.values();
+		ParameterValuesSourceEnum[] models=ParameterValuesSourceEnum.values();
 		List<Map<String,String>> list=new ArrayList<Map<String,String>>();
-		for(ParameterValueEnum model:models){
+		for(ParameterValuesSourceEnum model:models){
 			Map<String,String> map=new HashMap<String,String>();
 			map.put("key", model.getKey());
 			map.put("name", model.getName());
@@ -48,27 +53,27 @@ public enum ParameterValueEnum {
 	 * @return
 	 */
 	public ShowModelEnum[] getShowModel(){
-		if(this==ParameterValueEnum.STRING){
+		if(this==ParameterValuesSourceEnum.STRING){
 			return new ShowModelEnum[]{ShowModelEnum.TEXTFIELD};
-		} else if(this==ParameterValueEnum.NUMBER){
+		} else if(this==ParameterValuesSourceEnum.NUMBER){
 			return new ShowModelEnum[]{ShowModelEnum.NUMBERFIELD};
-//		}else if(this==ParameterValueEnum.EXPRESSION){
+//		}else if(this==ParameterValuesSourceEnum.EXPRESSION){
 //			return new ShowModelEnum[]{ShowModelEnum.TEXTFIELD};
-		}else if(this==ParameterValueEnum.BOOLEAN){
+		}else if(this==ParameterValuesSourceEnum.BOOLEAN){
 			return new ShowModelEnum[]{ShowModelEnum.COMBOBOX,ShowModelEnum.RADIOGROUP};
-		}else if(this==ParameterValueEnum.ARRAY){
+		}else if(this==ParameterValuesSourceEnum.ARRAY){
 			return new ShowModelEnum[]{ShowModelEnum.COMBOBOX,ShowModelEnum.CHECKBOXGROUP,ShowModelEnum.RADIOGROUP};
-		} else if(this==ParameterValueEnum.DATE){
+		} else if(this==ParameterValuesSourceEnum.DATE){
 			return new ShowModelEnum[]{ShowModelEnum.DATEFIELD};
-		} else if(this==ParameterValueEnum.TIME){
+		} else if(this==ParameterValuesSourceEnum.TIME){
 				return new ShowModelEnum[]{ShowModelEnum.TIMEFIELD};
-//		} else if(this==ParameterValueEnum.RANGE){
+//		} else if(this==ParameterValuesSourceEnum.RANGE){
 //			return new ShowModelEnum[]{ShowModelEnum.RANGENUMBERBOX};
-		} else if(this==ParameterValueEnum.SCHEDULED){
+		} else if(this==ParameterValuesSourceEnum.SCHEDULED){
 			return new ShowModelEnum[]{ShowModelEnum.TEXTFIELD};
-		//} else if(this==ParameterValueEnum.SQL){
+		//} else if(this==ParameterValuesSourceEnum.SQL){
 		//	return new ShowModelEnum[]{ShowModelEnum.COMBOBOX,ShowModelEnum.CHECKBOXGROUP,ShowModelEnum.RADIOGROUP};
-		} else if(this==ParameterValueEnum.JAVA){
+		} else if(this==ParameterValuesSourceEnum.JAVA){
 			return new ShowModelEnum[]{ShowModelEnum.COMBOBOX,ShowModelEnum.CHECKBOXGROUP,ShowModelEnum.RADIOGROUP};
 		}
 		return ShowModelEnum.values();

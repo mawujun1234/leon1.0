@@ -37,7 +37,7 @@ public enum ShowModelEnum {
 		return list;
 	}
 	
-	public static  List<Map<String,String>> getShowModel(ParameterValueEnum parameterValueEnum){
+	public static  List<Map<String,String>> getShowModel(ParameterValuesSourceEnum parameterValueEnum){
 		 ShowModelEnum[] models= parameterValueEnum.getShowModel();
 		 List<Map<String,String>> list=new ArrayList<Map<String,String>>();
 			for(ShowModelEnum model:models){

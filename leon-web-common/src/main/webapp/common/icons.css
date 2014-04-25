@@ -41,6 +41,9 @@
 .form-reload-button { 
     background: url(../icons/refresh.png) left top no-repeat !important; 
 }
+.form-search-button { 
+    background: url(../icons/search.png) left top no-repeat !important; 
+}
 .fun-module-iconCls { 
     background: url(../icons/package.png) left top no-repeat !important; 
 }

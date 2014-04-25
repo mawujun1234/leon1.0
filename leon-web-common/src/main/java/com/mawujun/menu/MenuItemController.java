@@ -37,7 +37,9 @@ public class MenuItemController {
 		//List<MenuItem> menuItems=menuItemService.query(whereinfo,menuIdwhereinfo);
 		
 		if(menuId==null){
-			menuId="default";
+			Authentication currentAuth = SecurityContextHolder.getContext().getAuthentication();
+			UserDetailsImpl userDetail=(UserDetailsImpl)currentAuth.getPrincipal();
+			menuId=userDetail.getMenuId();
 		}
 		//M.MenuItem.menu_id
 		//List<MenuItem> menuItems=menuItemService.query(Cnd.select().andEquals("menu.id", menuId).andEquals("parent.id", "root".equals(id)?null:id));
@@ -55,9 +57,8 @@ public class MenuItemController {
 		
 		Authentication currentAuth = SecurityContextHolder.getContext().getAuthentication();
 		UserDetailsImpl userDetail=(UserDetailsImpl)currentAuth.getPrincipal();
-		
-		String menuId="default";
-		return menuItemService.query4Desktop(menuId, userDetail.isAdmin(), parentId,userDetail.getId());
+
+		return menuItemService.query4Desktop(userDetail.getMenuId(), userDetail.isAdmin(), parentId,userDetail.getId());
 	}
 	
 	

@@ -60,16 +60,16 @@ public class ParameterSubject implements IdEntity<ParameterSubject.Id>,Serializa
 		@Column(length=36,name = "parameter_id")
 		private String parameterId;
 		@Enumerated(EnumType.STRING)
-		private SubjectType subjectType;//
+		private SubjectEnum subjectType;//
 
 		public Id() {
 		}
 		
-		public static Id getInstance(String subject_id, String parameter_id,SubjectType subjectType){
+		public static Id getInstance(String subject_id, String parameter_id,SubjectEnum subjectType){
 			return new Id(subject_id,parameter_id,subjectType);
 		}
 
-		public Id(String subject_id, String parameter_id,SubjectType subjectType) {
+		public Id(String subject_id, String parameter_id,SubjectEnum subjectType) {
 			this.subjectId = subject_id;
 			this.parameterId = parameter_id;
 			this.subjectType = subjectType;
@@ -105,11 +105,11 @@ public class ParameterSubject implements IdEntity<ParameterSubject.Id>,Serializa
 			this.parameterId = parameterId;
 		}
 
-		public SubjectType getSubjectType() {
+		public SubjectEnum getSubjectType() {
 			return subjectType;
 		}
 
-		public void setSubjectType(SubjectType subjectType) {
+		public void setSubjectType(SubjectEnum subjectType) {
 			this.subjectType = subjectType;
 		}
 

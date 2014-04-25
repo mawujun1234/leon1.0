@@ -45,7 +45,7 @@ public class Parameter  implements IdEntity<String>,Serializable{
 	
 	@Column(length=200)
 	@Enumerated(EnumType.STRING)
-	private ParameterValueEnum valueEnum;
+	private ParameterValuesSourceEnum valueEnum;
 //	@Column(length=50)
 //	private String defaultValue;
 	
@@ -100,14 +100,14 @@ public class Parameter  implements IdEntity<String>,Serializable{
 
 
 
-	public ParameterValueEnum getValueEnum() {
+	public ParameterValuesSourceEnum getValueEnum() {
 		return valueEnum;
 	}
 	public String getValueEnumName() {
 		return valueEnum==null?null:valueEnum.getName();
 	}
 
-	public void setValueEnum(ParameterValueEnum valueEnum) {
+	public void setValueEnum(ParameterValuesSourceEnum valueEnum) {
 		this.valueEnum = valueEnum;
 	}
 
@@ -135,7 +135,7 @@ public class Parameter  implements IdEntity<String>,Serializable{
 		StringBuilder builder=new StringBuilder();
 		for(String str:tempArray){
 			builder.append(",");
-			builder.append(SubjectType.valueOf(str.replace('"', ' ').trim()).getName());
+			builder.append(SubjectEnum.valueOf(str.replace('"', ' ').trim()).getName());
 		}
 		return builder.toString().substring(1);
 	}

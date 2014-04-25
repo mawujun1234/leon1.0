@@ -5,7 +5,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com 承接各种项目 -->
 <!-- 注意文件名称为:Example_${DbName}_Mapper.xml-->
-<mapper namespace="com.mawujun.parameter.ParameterSubject">
+<mapper namespace="com.mawujun.parameter.ParameterSubjectRespository">
 	<!-- 查询各个主体拥有的参数 ============================================  -->
 	<select id="query_SYSTEM" resultType="com.mawujun.parameter.ParameterSubjectVO" >
     	select '系统' as subjectName,a.* from leon_parameter_subject a where parameter_Id=#{parameter_Id} and subjectType=#{subjectType}
@@ -27,16 +27,18 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     </select>
 	<!-- 查询各个主体拥有的参数 =============================================================================================== -->
 	
-	<!-- 查询用户所属的职位，组织单元，用户组，角色============================================  -->
-	<select id="query_USER_part_of" resultType="record" parameterType="map" >
-		select b.parametervalue from (
-    	select distinct '1' AS order1,group_id as SUBJECT_ID from leon_group_user where user_id=#{user_Id}
+	<!-- 查询用户所属的职位，组织单元，用户组，角色===============================================================  -->
+	<select id="query_USER_part_of" resultType="com.mawujun.parameter.ParameterValue" parameterType="map">
+		select distinct a.SUBJECT_ID as key,b.parametervalue as value,a.order1 from (
+		select distinct '1' AS order1,id as SUBJECT_ID from leon_user where id=#{user_id}
     	UNION ALL
-    	select distinct '2' AS order1,ROLE_id  as SUBJECT_ID from leon_user_role where user_id=#{user_Id}
+    	select distinct '2' AS order1,group_id as SUBJECT_ID from leon_group_user where user_id=#{user_id}
+    	UNION ALL
+    	select distinct '3' AS order1,ROLE_id  as SUBJECT_ID from leon_user_role where user_id=#{user_id}
     	) a, LEON_PARAMETER_SUBJECT b
-    	where a.SUBJECT_ID=b.SUBJECT_ID and b.parameterid=#{parameter_Id}
+    	where a.SUBJECT_ID=b.SUBJECT_ID and b.parameter_id=#{parameter_Id}
     	order by a.order1
     </select>
 	
-	<!-- ========================================================== -->
+	<!-- ================================================================================= -->
 </mapper>

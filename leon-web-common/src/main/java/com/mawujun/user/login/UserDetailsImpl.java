@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.mawujun.user.User;
+import com.mawujun.utils.DefaultValue;
 
 public class UserDetailsImpl implements UserDetails {
 /**
@@ -18,6 +19,8 @@ public class UserDetailsImpl implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
 	private User user;
+	
+	private String menuId=DefaultValue.menuId;
 	
 	List<GrantedAuthority> authorities=new ArrayList<GrantedAuthority>();
 	
@@ -127,5 +130,13 @@ public class UserDetailsImpl implements UserDetails {
 		} else if (!this.getUsername().equals(other.getUsername()))
 			return false;
 		return true;
+	}
+
+	public String getMenuId() {
+		return menuId;
+	}
+
+	public void setMenuId(String menuId) {
+		this.menuId = menuId;
 	}
 }

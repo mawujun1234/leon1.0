@@ -16,7 +16,7 @@ import com.mawujun.utils.ArrayUtils;
 public class ReportCodeHelper {
 	//用~进行分割，这个值最大，他的值是126，字符的范围是33-126，
 	//我们只取35-125的数据,从#开始，到~结束，，还排除了!和",因为双引号会引出莫名其妙的问题
-	protected final static String sperator="~";
+	protected final static String sperator="-";
 	//protected final static String ="~";
 	private  static int min=97;
 	protected final static int max=125;

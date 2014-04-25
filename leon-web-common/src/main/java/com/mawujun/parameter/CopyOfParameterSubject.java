@@ -19,7 +19,7 @@ public class CopyOfParameterSubject extends UUIDEntity{
 	@Column(length=36)
 	private String subjectId;
 	@Enumerated(EnumType.STRING)
-	private SubjectType subjectType;//
+	private SubjectEnum subjectType;//
 	
 //	@ManyToOne(fetch=)
 //	private Parameter parameter;//参数
@@ -32,10 +32,10 @@ public class CopyOfParameterSubject extends UUIDEntity{
 	public void setSubjectId(String subjectId) {
 		this.subjectId = subjectId;
 	}
-	public SubjectType getSubjectType() {
+	public SubjectEnum getSubjectType() {
 		return subjectType;
 	}
-	public void setSubjectType(SubjectType subjectType) {
+	public void setSubjectType(SubjectEnum subjectType) {
 		this.subjectType = subjectType;
 	}
 	public String getParameterId() {

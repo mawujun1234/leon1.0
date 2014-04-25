@@ -32,6 +32,7 @@ Ext.define('Leon.desktop.user.UserForm',{
 	            afterLabelTextTpl: me.required,
 	            name: 'loginName',
 	            allowBlank: false,
+	            readOnly:true,
 	            tooltip: '请输入名称'
 	        },{
 	        	xtype:'hidden',
@@ -39,19 +40,23 @@ Ext.define('Leon.desktop.user.UserForm',{
 	            afterLabelTextTpl: me.required,
 	            name: 'password',
 	            //value:defaultPassword,
+	            readOnly:true,
 	            allowBlank: false
 	        },{
 	            fieldLabel: '姓名',
+	            readOnly:true,
 	            name: 'name'
 	            //tooltip: "请输入url"
 	        },{
 	        	xtype:'checkboxfield',
                 fieldLabel  : '是否已删除',
                 name      : 'deleted',
+                readOnly:true,
                 inputValue: 'false',
                 checked   : false
             },{
 	        	xtype:'datefield',
+	        	readOnly:true,
                 fieldLabel  : '删除日期',
                 name      : 'deletedDate',
                 format:'Y-m-d'
@@ -59,17 +64,20 @@ Ext.define('Leon.desktop.user.UserForm',{
 	        	xtype:'checkboxfield',
                 fieldLabel  : '是否锁定',
                 name      : 'locked',
+                readOnly:true,
                 inputValue: 'false',
                 checked   : false
             },{
 	        	xtype:'checkboxfield',
                 fieldLabel  : '是否可用',
+                readOnly:true,
                 name      : 'enable',
                 inputValue: 'true',
                 checked   : true
             },{
 	        	xtype:'checkboxfield',
                 fieldLabel  : '是否过期',
+                readOnly:true,
                 name      : 'accountExpired',
                 readOnly:true,
                 inputValue: 'true',
@@ -77,25 +85,48 @@ Ext.define('Leon.desktop.user.UserForm',{
             },{
 	        	xtype:'datefield',
                 fieldLabel  : '过期日期',
+                readOnly:true,
                 name      : 'expireDate',
                 format:'Y-m-d'
             },{
 	        	xtype:'datefield',
                 fieldLabel  : '最后登录时间',
+                readOnly:true,
                 name      : 'lastLoginDate',
                 format:'Y-m-d'
             },{
 	        	xtype:'datefield',
                 fieldLabel  : '创建日期',
+                readOnly:true,
                 name      : 'createDate',
                 format:'Y-m-d'
             }
 	    ];
 	    me.buttons= [{
             text: '保存',
-            
+            itemId:'save',
+            disabled :true,
             iconCls:'form-save-button',
-            handler: function() {
+            listeners:{
+				disable:function(b,e){
+					var fields=b.up('form').getForm().getFields( );
+					fields.each(function(items){
+						items.setReadOnly(true);
+					});
+				},
+				enable:function(b){
+					var form=b.up('form');
+					var fields=form.getForm().getFields( );
+					fields.each(function(items){
+						if(items.getName()=='id' && !form.createAction){
+							items.setReadOnly(true);
+						}else{
+							items.setReadOnly(false);
+						}
+					});
+				}
+			},
+            handler: function(btn) {
             	var form=this.up('form');
                 if(!form.getForm().isValid()) {
                 	return;
@@ -111,17 +142,10 @@ Ext.define('Leon.desktop.user.UserForm',{
 						} else {
 							record.commit();
 						}
-						
+						btn.disable();
 						//me.up("window").close();
 					}
 				});
-            }
-        },{
-            text: '重置',
-            iconCls:'form-reset-button',
-            handler: function() {
-            	//var copyRcd=this.up('form').getRecord( );
-                this.up('form').getForm().reset(true);
             }
         }];
        
@@ -144,10 +168,21 @@ Ext.define('Leon.desktop.user.UserForm',{
 		    handler: function(){
 		    	me.onCreate();
 		    	me.iscreateNew=true;
+		    	
+		    	me.down("button#save").enable();
 		    },
 		    iconCls: 'form-add-button'
 		});
 		tools.push(create);
+		
+	    var edit = new Ext.Action({
+		    text: '编辑',
+		    handler: function(){
+		    	me.down("button#save").enable();
+		    },
+		    iconCls: 'form-update-button'
+	    });
+		tools.push(edit);
 		
 		var destroy = new Ext.Action({
 		    text: '删除',

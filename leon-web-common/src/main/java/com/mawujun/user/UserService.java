@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.mawujun.group.GroupUserService;
 import com.mawujun.parameter.ParameterSubjectService;
-import com.mawujun.parameter.SubjectType;
+import com.mawujun.parameter.SubjectEnum;
 import com.mawujun.repository.BaseRepository;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.repository1.IRepository;
@@ -45,9 +45,9 @@ public class UserService  extends AbstractService<User, String>{
 		//删除和组的关系
 		groupUserService.deleteBatch(Cnd.delete().andEquals(M.GroupUser.id.userId, entity.getId()));
 		//删除和参数的关系
-		//parameterSubjectService.deleteBatch(Cnd.delete().andEquals("subjectId",  entity.getId()).andEquals("subjectType", SubjectType.USER));
+		//parameterSubjectService.deleteBatch(Cnd.delete().andEquals("subjectId",  entity.getId()).andEquals("subjectType", SubjectEnum.USER));
 		parameterSubjectService.deleteBatch(Cnd.delete().andEquals(M.ParameterSubject.id.subjectId,  entity.getId())
-				.andEquals(M.ParameterSubject.id.subjectType, SubjectType.USER));
+				.andEquals(M.ParameterSubject.id.subjectType, SubjectEnum.USER));
 		
 		super.delete(entity);
 	}

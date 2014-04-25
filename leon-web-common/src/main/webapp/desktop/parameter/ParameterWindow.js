@@ -84,7 +84,7 @@ Ext.define('Leon.desktop.parameter.ParameterWindow', {
 	    		handler:function(){
 	    			var layout = me.getLayout();
 		            var form=layout.getActiveItem();
-		            form.updateRecord();
+		            //form.updateRecord();
 	    			me.getLayout().setActiveItem(0);
 	    		}
 	    	},'->',{

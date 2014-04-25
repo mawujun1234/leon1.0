@@ -32,6 +32,8 @@ service层开发
 访问参数id的类是P
      生成方法是com.mawujun:leon-maven-plugin:0.0.1-SNAPSHOT:generateP
    注意要在leon-web-common的pom上要配实际的数据库驱动和地址
+   
+
 ========================================
 分页查询的时候，如果要使用自动分页的话，就使用匹配queryPage的模式	
 Cnd的快速插入，更新，查询
@@ -39,3 +41,14 @@ Cnd的快速插入，更新，查询
 =========================================
 代码生成
     使用com.mawujun.generator下面额generatorMain类
+    com.mawujun:leon-maven-plugin:0.0.1-SNAPSHOT:generateM 生成M,T类的maven命令
+    com.mawujun:leon-maven-plugin:0.0.1-SNAPSHOT:generateP，生成P类的maven命令
+    
+    
+常用工具类===========================================
+DefaultValue   
+	系统的默认值得引用，例如默认的菜单id
+ParameterHolder类
+	用来获取在某个主体上的参数值，如果是用户的话，先从用户上取参数值，如果没有，再层层递归，用户--》职位--》组织单元---》用户组---》角色---系统，会依次判断有没有值，直到获取到 有值得 
+	JavaBeanDataSource是用来动态获取参数的数据源的
+	使用方式String menuId=ParameterHolder.getUserParameterValue(user.getId(), P.menuId);

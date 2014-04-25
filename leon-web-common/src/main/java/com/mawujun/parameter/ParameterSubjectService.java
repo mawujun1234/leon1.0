@@ -38,31 +38,30 @@ public class ParameterSubjectService extends
 		}
 		return parametersubjects.length;
 	}
-	public String getParameterValue(String subjectId,SubjectType subjectType,String parameterId){
+	public String getParameterValue(String subjectId,SubjectEnum subjectType,String parameterId){
 		String result=null;
-		if(SubjectType.USER==subjectType){
+		if(SubjectEnum.USER==subjectType){
 			//如果是用户的话,要首先获取用户，再获取用户所属的职位，组织单元，用户组，角色，系统
-			Params pamras=Params.init().add("user_Id", subjectId).add("parameter_Id", parameterId);
-			List<Map<String,Object>> list=this.getRepository().query_USER_part_of(pamras);
-			for(Map<String,Object> map:list){
-				if(map.get("parametervalue")!=null){
-					return map.get("parametervalue").toString();
+			Params pamras=Params.init().add("user_id", subjectId).add("parameter_Id", parameterId);
+			List<ParameterValue> list=this.getRepository().query_USER_part_of(pamras);
+			for(ParameterValue parameterVO:list){		
+				if(parameterVO.getValue()!=null){
+					return parameterVO.getValue();
 				}
-			}
-			
+			}	
 		} else {
+			//如果不是用户，就只获取自己的值
 			result= this.queryUnique(Cnd.select().andEquals(M.ParameterSubject.id.subjectId, subjectId).andEquals(M.ParameterSubject.id.subjectType, subjectType)
 					.andEquals(M.ParameterSubject.id.parameterId, parameterId).addSelect(M.ParameterSubject.parameterValue),String.class);
-			
 		}
 		if(result==null || "".equalsIgnoreCase(result)){
-			result=getSystemParameterValue(subjectId,parameterId);
+			result=getSystemParameterValue(parameterId);
 		}
 		return result;
 	}
 	
-	public String getSystemParameterValue(String subjectId,String parameterId){
-		return this.queryUnique(Cnd.select().andEquals(M.ParameterSubject.id.subjectId, "SYSTEM").andEquals(M.ParameterSubject.id.subjectType, SubjectType.SYSTEM)
+	public String getSystemParameterValue(String parameterId){
+		return this.queryUnique(Cnd.select().andEquals(M.ParameterSubject.id.subjectId, "SYSTEM").andEquals(M.ParameterSubject.id.subjectType, SubjectEnum.SYSTEM)
 				.andEquals(M.ParameterSubject.id.parameterId, parameterId).addSelect(M.ParameterSubject.parameterValue),String.class);
 	}
 	
@@ -71,14 +70,14 @@ public class ParameterSubjectService extends
 		Params params=Params.init().put("parameter_Id", parameterId).putIf("subjectType", subjectType);
 		//return this.queryList("query_"+subjectType, params,ParameterSubjectVO.class);
 		
-		if(SubjectType.SYSTEM.toString().equals(subjectType)){
+		if(SubjectEnum.SYSTEM.toString().equals(subjectType)){
 			//return this.query(Cnd.select().andEquals("parameterId", parameterId).andEquals("subjectType", subjectType));
 			return this.getRepository().query_SYSTEM( params);
-		} else if(SubjectType.USER.toString().equals(subjectType)){
+		} else if(SubjectEnum.USER.toString().equals(subjectType)){
 			return this.getRepository().query_USER(params);
-		} else if(SubjectType.GROUP.toString().equals(subjectType)){
+		} else if(SubjectEnum.GROUP.toString().equals(subjectType)){
 			return this.getRepository().query_GROUP( params);
-		} else if(SubjectType.ROLE.toString().equals(subjectType)){
+		} else if(SubjectEnum.ROLE.toString().equals(subjectType)){
 			return this.getRepository().query_ROLE(params);
 		} else {
 			throw new BusinessException("该主题的参数配置  还没有做!!查询所有主体也还咩有做");

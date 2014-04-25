@@ -34,7 +34,7 @@ Ext.define('Leon.desktop.parameter.ParameterForm', {
             	fields:['key','name'],
             	proxy:{
             		type:'bajax',
-            		url:Ext.ContextPath+'/parameter/queryParameterValueEnum'
+            		url:Ext.ContextPath+'/parameter/queryParameterValuesSourceEnum'
             	}
             }),
             listeners:{

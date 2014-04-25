@@ -26,9 +26,9 @@ public class ReportCodeHelperTest {
 		 assertEquals("$##",ReportCodeHelper.generate3("#}}"));
 		 
 
-		 assertEquals("###~##$",ReportCodeHelper.generate3("###~###"));
-		 assertEquals("###~#$#",ReportCodeHelper.generate3("###~##}"));
-		 assertEquals("###~$##",ReportCodeHelper.generate3("###~#}}"));
+		 assertEquals("###.##$",ReportCodeHelper.generate3("###.###"));
+		 assertEquals("###.#$#",ReportCodeHelper.generate3("###.##}"));
+		 assertEquals("###.$##",ReportCodeHelper.generate3("###.#}}"));
 	}
 	
 	@Test  
@@ -40,12 +40,12 @@ public class ReportCodeHelperTest {
 		 assertEquals("$###",ReportCodeHelper.generate("}}}",4));
 		 
 
-		 assertEquals("####~###$",ReportCodeHelper.generate("####~###",4));
-		 assertEquals("####~##$#",ReportCodeHelper.generate("####~##}",4));
-		 assertEquals("####~#$##",ReportCodeHelper.generate("####~#}}",4));
-		 assertEquals("####~$###",ReportCodeHelper.generate("####~}}}",4));
+		 assertEquals("####-###$",ReportCodeHelper.generate("####-###",4));
+		 assertEquals("####-##$#",ReportCodeHelper.generate("####-##}",4));
+		 assertEquals("####-#$##",ReportCodeHelper.generate("####-#}}",4));
+		 assertEquals("####-$###",ReportCodeHelper.generate("####-}}}",4));
 		 
-		 assertEquals("#####~#$###",ReportCodeHelper.generate("#####~##}}}",4));
+		 assertEquals("#####-#$###",ReportCodeHelper.generate("#####-##}}}",4));
 	}
 	
 	//@Test(expected=ArithmeticException.class)  

@@ -12,23 +12,13 @@ import org.springframework.jdbc.core.RowMapper;
  * @author mawujun email:16064988@163.com qq:16064988
  *
  */
-public class JavaBeanDataSourceSample implements JavaBeanDataSource {
+public class MenuDataSource implements JavaBeanDataSource {
 
 	@Override
 	public List<JavaBeanKeyName> getData(JdbcTemplate jdbcTemplate) {
-//		// TODO Auto-generated method stub
-//		List<JavaBeanKeyName> list=new ArrayList<JavaBeanKeyName>();
-//		for(int i=0;i<10;i++){
-//			JavaBeanKeyName keyName=new JavaBeanKeyName();
-//			keyName.setKey(i+"");
-//			keyName.setName(i+"");
-//			list.add(keyName);
-//		}
-//		return list;
 		List<JavaBeanKeyName> list=null;
 		
 		list=(List<JavaBeanKeyName>) jdbcTemplate.query("select id as key,text as name from leon_menu", new RowMapper<JavaBeanKeyName>(){
-
 			@Override
 			public JavaBeanKeyName mapRow(ResultSet rs, int rowNum)
 					throws SQLException {
@@ -36,9 +26,7 @@ public class JavaBeanDataSourceSample implements JavaBeanDataSource {
 				keName.setKey((String)rs.getString("key"));  
 				keName.setName((String)rs.getString("name"));  
 				return keName;
-			}
-
-			
+			}	
 			
 		});
 		

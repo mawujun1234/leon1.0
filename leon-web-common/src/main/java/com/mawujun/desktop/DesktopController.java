@@ -23,7 +23,10 @@ import com.mawujun.user.login.SwitchUserFilterImpl;
 import com.mawujun.user.login.SwitchUserGrantedAuthorityImpl;
 import com.mawujun.user.login.UserDetailsImpl;
 import com.mawujun.utils.BeanUtils;
+import com.mawujun.utils.DefaultValue;
 import com.mawujun.utils.M;
+import com.mawujun.utils.P;
+import com.mawujun.utils.ParameterHolder;
 
 @Controller
 //@RequestMapping("/app")
@@ -65,8 +68,9 @@ public class DesktopController {
 			
 		}
 		
-		String menuId="default";
-		List<MenuItemVO> menuItems=menuItemService.query4Desktop(menuId,userDetail.isAdmin(),null,userDetail.getId());
+		
+		
+		List<MenuItemVO> menuItems=menuItemService.query4Desktop(userDetail.getMenuId(),userDetail.isAdmin(),null,userDetail.getId());
 		//DesktopConfig config=new DesktopConfig();
 		desktopConfig.setMenuItems(menuItems);
 		
@@ -91,7 +95,15 @@ public class DesktopController {
 	@RequestMapping("/desktop/queryMenuItem")
 	@ResponseBody
 	public MenuItemVO queryMenuItem(String jspUrl){	
-		String menuId="default";
+		//String menuId="default";
+		
+		Authentication currentAuth = SecurityContextHolder.getContext().getAuthentication();
+		UserDetailsImpl userDetail=(UserDetailsImpl)currentAuth.getPrincipal();
+		
+		String menuId=ParameterHolder.getUserParameterValue(userDetail.getId(), P.menuId);
+		if(menuId==null){
+			menuId=DefaultValue.menuId;
+		}
 		MenuItemVO vo=menuItemService.queryMenuItem(jspUrl, menuId);
 		if(vo==null){
 			throw new BusinessException("提供的jsp路径有问题，不能确定菜单项!");

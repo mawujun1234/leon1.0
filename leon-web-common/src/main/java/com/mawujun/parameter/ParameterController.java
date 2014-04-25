@@ -26,14 +26,14 @@ public class ParameterController {
 	@RequestMapping("/parameter/queryShowModel")
 	@ResponseBody
 	public List<Map<String,String>> queryShowModel(String valueEnum){
-		return ShowModelEnum.getShowModel(ParameterValueEnum.valueOf(valueEnum));
+		return ShowModelEnum.getShowModel(ParameterValuesSourceEnum.valueOf(valueEnum));
 	}
 	
-	@RequestMapping("/parameter/queryParameterValueEnum")
+	@RequestMapping("/parameter/queryParameterValuesSourceEnum")
 	@ResponseBody
-	public List<Map<String,String>> queryParameterValueEnum(){
+	public List<Map<String,String>> queryParameterValuesSourceEnum(){
 
-		return ParameterValueEnum.toListMap();
+		return ParameterValuesSourceEnum.toListMap();
 	}
 
 
@@ -63,7 +63,7 @@ public class ParameterController {
 		List<Parameter> parameters=parameterService.query(Cnd.select().andLike("subjects", subjectType).asc("sort"));
 		List<Parameter> result=new ArrayList<Parameter>();
 		for(Parameter param:parameters){
-			if(param.getValueEnum()==ParameterValueEnum.JAVA){
+			if(param.getValueEnum()==ParameterValuesSourceEnum.JAVA){
 				param.setContent(getJavaContent(param.getContent()));
 			}
 			result.add(param);
