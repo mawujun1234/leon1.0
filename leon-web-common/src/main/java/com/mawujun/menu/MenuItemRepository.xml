@@ -16,10 +16,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="parent_id==null">
 			and a.parent_id is null
 		</if>
-		<!-- 不是管理员的话，就要进行权限控制,fun_id is null表示还没有和权限进行挂钩的菜单或目录-->
+		<!-- 不是管理员的话，就要进行权限控制-->
 		<if test="isAdmin==false">
-			and (exists (SELECT b.reportcode FROM leon_menuitem b,LEON_USER_ROLE c,LEON_ROLE_FUN d
-where c.role_id=d.role_id and b.fun_id=d.fun_id and charindex(a.reportcode,b.reportcode)=1 and c.user_id=#{user_id}))
+			and exists (SELECT b.reportcode FROM leon_menuitem b,LEON_USER_ROLE c,LEON_ROLE_FUN d
+where c.role_id=d.role_id and b.fun_id=d.fun_id and charindex(a.reportcode,b.reportcode)=1 and c.user_id=#{user_id})
 		</if>
     </select>
     <!-- 用于跨iframe启动另一个窗口的时候,根据jsp获取到相应的menuItem-->

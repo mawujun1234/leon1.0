@@ -74,12 +74,12 @@ if(routeLength>0){
 	route=".";
 }
 String springPrev="/app";
-
-String funId=request.getParameter("funId");
-if(funId!=null && !"".equals(funId.trim())){
+String uri=request.getRequestURI();
+if(uri.indexOf("login.jsp")==-1 && uri.indexOf("index.jsp")==-1){
 %>
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()+springPrev %>/fun/generatorElementCss.css?funId=<%=funId%>">
-<%} %>
+<script type="text/javascript" src="<%=request.getContextPath()+springPrev %>/fun/generatorPermissionJs"></script>
+<%}%>
+
 <script type="text/javascript">
 defaultTheme = '<%=theme%>',
 

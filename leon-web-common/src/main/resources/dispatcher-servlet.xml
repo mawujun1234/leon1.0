@@ -138,6 +138,10 @@
 -->
     
 
+<bean id="freemarkerConfig"
+    class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+    <property name="templateLoaderPath" value="/" />
+</bean>
 
 <!-- 视图数据解析  可以通过三种方式，来确定返回的类型是什么-->
 	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
@@ -151,8 +155,9 @@
                    	<prop key="xml">application/xml</prop>
                    </props>
              </property> 
-             <!-- 默认展现形式 -->  
-			  <property name="defaultContentType" value="application/json"/>  
+             <!-- 默认展现形式  ,如果使用application/json这个形式，即使不加@ResponseBody也会走JsonView的线路
+			  <property name="defaultContentType" value="application/json"/> -->  
+			  <property name="defaultContentType" value="text/html"/> 
 			  <!-- 设置为true以忽略对Accept Header的支持-->
 			  <property name="ignoreAcceptHeader" value="false" />
 			  <!-- 用于开启 /userinfo/123?format=json 的支持 -->  
@@ -166,11 +171,20 @@
      	</property> 
 	  <!--  默认视图解析,加了这个后，就能同时支持jsp跳转-->
 	  <property name="viewResolvers">  
-            <list>  
-                <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">               
+            <list>       
+                <bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+                	 <property name="viewClass"  
+            value="org.springframework.web.servlet.view.freemarker.FreeMarkerView" />
+				    <property name="cache" value="true" />
+				    <property name="prefix" value="" />
+				    <property name="suffix" value=".ftl" />
+				    <property name="contentType" value="text/html; charset=UTF-8"/> 
+				</bean>
+				<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">               
                     <property name="prefix" value="/" />  
                     <property name="suffix" value=".jsp" />  
-                </bean>                          
+                </bean>
+                          
             </list>  
       </property>  
       

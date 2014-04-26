@@ -52,3 +52,9 @@ ParameterHolder类
 	用来获取在某个主体上的参数值，如果是用户的话，先从用户上取参数值，如果没有，再层层递归，用户--》职位--》组织单元---》用户组---》角色---系统，会依次判断有没有值，直到获取到 有值得 
 	JavaBeanDataSource是用来动态获取参数的数据源的
 	使用方式String menuId=ParameterHolder.getUserParameterValue(user.getId(), P.menuId);
+	
+界面元素权限控制===================================================
+hidden:!checkPermission(funId)控制按钮的展现还是隐藏，checkPermission是检查用户是否具有这个功能权限的
+
+
+

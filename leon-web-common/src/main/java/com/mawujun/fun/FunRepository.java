@@ -10,5 +10,5 @@ import com.mawujun.repository1.IRepository;
 
 @Repository
 public interface FunRepository extends IRepository<Fun, String> {
-	public List<String> queryAllDenyPageElement(Map params);
+	public List<String> queryAllowedFunId(Map params);
 }

@@ -97,9 +97,9 @@ public class FunService extends AbstractService<Fun, String> {
 	 * @param isUpdateParent
 	 * @param oldParent_id
 	 */
-	public List<String> queryAllDenyPageElement(String userId,String funId) {	
+	public List<String> queryAllowedFunId(String userId) {	
 		//return super.queryList("queryAllDenyPageElement", ParamUtils.init().add("user_id", userId).add("parent_id", funId).add("isenable", true), String.class);
-		return this.getRepository().queryAllDenyPageElement(Params.init().add("user_id", userId).add("parent_id", funId).add("isenable", true));
+		return this.getRepository().queryAllowedFunId(Params.init().add("user_id", userId).add("isenable", true));
 	}
 
 

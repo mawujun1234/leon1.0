@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.exception.BusinessException;
@@ -100,37 +102,60 @@ public class FunController {
 		return fun;
 	}
 	
-	/**
-	 * 生成界面元素的css文件，用来控制界面元素的显示和隐藏
-	 * @author mawujun email:16064988@163.com qq:16064988
-	 * @param id
-	 * @return
-	 */
-	@RequestMapping("/fun/generatorElementCss.css")
-	@ResponseBody
-	public String generatorElementCss(String funId){	
+	@RequestMapping("/fun/generatorPermissionJs")
+	//@ResponseBody
+	public ModelAndView generatorPermissionJs(){	
 		UserDetailsImpl userDetail=SecurityContextHolder.getUserDetailsImpl();
-		if(userDetail.isAdmin()){
-			//return "";
-		}
-		
-		if(!StringUtils.hasText(funId)){
-			throw new BusinessException("获取界面元素权限的时候，没有传入父功能id");
-		}
-		
-		List<String> elementIds= funService.queryAllDenyPageElement(userDetail.getId(),funId);
-		//生成css文件内容
-		StringBuilder builder=new StringBuilder();
-		//所有没有授权过的全国获取过来了，因为默认就是拒绝的
-		for(String elementId:elementIds){
-			builder.append("#"+elementId+"{display:none;}");
-		}
-		
-		JsonConfigHolder.setAutoWrap(false);
-		System.out.println(Thread.currentThread().getId()+"==========================================");
-		return builder.toString();
-		//return "#generator-2c908385412fd0e701412fd93e1d0001{display:none;}";
+		ModelAndView mv=new ModelAndView();
+		List<String> funIds= funService.queryAllowedFunId(userDetail.getId());
+		mv.addObject("funIds", funIds);
+		mv.setViewName("/desktop/fun/generatorPermissionJs");
+		return mv;
+		//return "generatorPermissionJs";	
+//		//生成css文件内容
+//		StringBuilder builder=new StringBuilder();
+//		//所有没有授权过的全国获取过来了，因为默认就是拒绝的
+//		for(String elementId:funIds){s
+//			builder.append("#"+elementId+"{display:none;}");
+//		}
+//		
+//		JsonConfigHolder.setAutoWrap(false);
+//		System.out.println(Thread.currentThread().getId()+"==========================================");
+//		return builder.toString();
+//		//return "#generator-2c908385412fd0e701412fd93e1d0001{display:none;}";
 	}
+	
+//	/**
+//	 * 生成界面元素的css文件，用来控制界面元素的显示和隐藏
+//	 * @author mawujun email:16064988@163.com qq:16064988
+//	 * @param id
+//	 * @return
+//	 */
+//	@RequestMapping("/fun/generatorElementCss.css")
+//	@ResponseBody
+//	public String generatorElementCss(String funId){	
+//		UserDetailsImpl userDetail=SecurityContextHolder.getUserDetailsImpl();
+//		if(userDetail.isAdmin()){
+//			//return "";
+//		}
+//		
+//		if(!StringUtils.hasText(funId)){
+//			throw new BusinessException("获取界面元素权限的时候，没有传入父功能id");
+//		}
+//		
+//		List<String> elementIds= funService.queryAllFunId(userDetail.getId(),funId);
+//		//生成css文件内容
+//		StringBuilder builder=new StringBuilder();
+//		//所有没有授权过的全国获取过来了，因为默认就是拒绝的
+//		for(String elementId:elementIds){
+//			builder.append("#"+elementId+"{display:none;}");
+//		}
+//		
+//		JsonConfigHolder.setAutoWrap(false);
+//		System.out.println(Thread.currentThread().getId()+"==========================================");
+//		return builder.toString();
+//		//return "#generator-2c908385412fd0e701412fd93e1d0001{display:none;}";
+//	}
 	
 	@RequestMapping("/fun/load/{id}")
 	@ResponseBody
