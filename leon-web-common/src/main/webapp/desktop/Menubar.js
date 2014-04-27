@@ -66,7 +66,8 @@ Ext.define('Leon.desktop.Menubar', {
 					model.link_url = model.url;
 					delete model.url;
 					// 如果有url，就表示可以点击
-					if (model.link_url) {
+					//if (model.link_url) {
+					if (model.leaf) {
 						model.handler = function(btn) {
 							me.desktop.createWindow({
 										title : btn.text,
@@ -87,31 +88,25 @@ Ext.define('Leon.desktop.Menubar', {
 					// 如果不是叶子节点，就开始异步加载下级节点
 					if (!model.leaf) {
 						// console.log(model.text);
-						model.menu = [{text : '正在加载...'}];
+						model.menu = [{text : '正在加载...',listeners:{
+							//scope : me,
+							render:function(btn){
+								console.log(btn.parentMenu.up("button"));
+								me.requestChildrenMenu(btn.parentMenu.up("button"));
+							}
+						}}];
 
-						// model.listeners={
-						// mouseover:me.requeChildrenMenu
-						// // ,mouseout:function(button){
-						// // console.log(button.mouseMoveOut);
-						// // if(button.mouseMoveOut){
-						// // button.hideMenu();button.blur();
-						// // button.mouseMoveOut=true;
-						// // }
-						// // //button.hideMenu();
-						// // //button.blur();
-						// // }
-						// // ,menutriggerover:function(button){
-						// // console.log(1);
-						// // button.mouseMoveOut=false;
-						// // }
-						// }
 						model.listeners = {
-							scope : me,
-							mouseover : me.requeChildrenMenu
+							scope : me
+							//mouseover : me.requestChildrenMenu
+							//menutriggerover:me.requestChildrenMenu
+							,activate:function( btn, menu, eOpts ) {
+								me.requestChildrenMenu(btn);
+							}
 						};
 
 						// 如果有下级菜单就显示为split不tton
-						model.xtype = 'splitbutton';
+						//model.xtype = 'splitbutton';
 					}
 				}
 			},
@@ -119,10 +114,10 @@ Ext.define('Leon.desktop.Menubar', {
 			 * 
 			 * @param {} button
 			 */
-			requeChildrenMenu : function(button) {
+			requestChildrenMenu : function(button) {
 				var me = this;
 				if (button.menuLoaded) {
-					button.showMenu();
+					//button.showMenu();
 					return;
 				}
 				var menu = button.menu;
@@ -139,7 +134,7 @@ Ext.define('Leon.desktop.Menubar', {
 
 								me.lazyInitMenuItem(resp.root);
 								menu.insert(2, resp.root);
-								button.showMenu();
+								//button.showMenu();
 								button.menuLoaded = true;
 							},
 							failure : function(response, options) {

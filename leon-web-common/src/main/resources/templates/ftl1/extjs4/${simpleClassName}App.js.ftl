@@ -20,11 +20,17 @@ Ext.onReady(function(){
 	});
 
 	var form=Ext.create('Leon.${module}.${simpleClassName}Form',{
-		region:'east',
+		region:'center',
 		split: true,
 		collapsible: true,
 		title:'表单',
 		width:460
+	});
+	grid.form=form;
+	form.grid=grid;
+	grid.on('itemclick',function(view,record,item,index){
+		var basicForm=form.getForm();
+		basicForm.loadRecord(record);
 	});
 	
 	var viewPort=Ext.create('Ext.container.Viewport',{

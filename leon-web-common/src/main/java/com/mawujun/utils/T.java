@@ -50,8 +50,7 @@ public static final class leon_QuickStart {
 	}
 }
 public static final class leon_Fun {
-	public static final String code="code";
-	public static final String elementId="elementId";
+	public static final String id="id";
 	public static final String text="text";
 	public static final String isEnable="isEnable";
 	public static final String url="url";
@@ -61,18 +60,6 @@ public static final class leon_Fun {
 	* 访问外键的列名，用于sql的时候，返回的是bussinessType_id
 	*/
 	public static final String bussinessType_id="bussinessType_id";
-	public static final String funEnum="funEnum";
-	/**
-	* 访问外键的列名，用于sql的时候，返回的是parent_id
-	*/
-	public static final String parent_id="parent_id";
-	public static final String icon="icon";
-	public static final String iconCls="iconCls";
-	public static final String leaf="leaf";
-	public static final String checked="checked";
-	public static final String expanded="expanded";
-	public static final String edit="edit";
-	public static final String id="id";
 }
 public static final class leon_PropertyConfig {
 	public static final String subjectName="subjectName";
@@ -144,6 +131,33 @@ public static final class leon_menuItem {
 	*/
 	public static final String parent_id="parent_id";
 	public static final String id="id";
+}
+public static final class leon_Org {
+	public static final String name="name";
+	public static final String code="code";
+	public static final String reportCode="reportCode";
+	public static final String phonenumber="phonenumber";
+	public static final String fax="fax";
+	public static final String address="address";
+	public static final String postalcode="postalcode";
+	public static final String corporation="corporation";
+	public static final String email="email";
+	public static final String web="web";
+	public static final String introduction="introduction";
+	/**
+	* 访问外键的列名，用于sql的时候，返回的是orgType_id
+	*/
+	public static final String orgType_id="orgType_id";
+	public static final String id="id";
+}
+public static final class leon_OrgDimenssion {
+	public static final String id="id";
+	public static final String name="name";
+}
+public static final class leon_OrgType {
+	public static final String id="id";
+	public static final String name="name";
+	public static final String iconCls="iconCls";
 }
 public static final class leon_Parameter {
 	public static final String id="id";

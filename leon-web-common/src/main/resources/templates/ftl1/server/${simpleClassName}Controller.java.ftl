@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
-
+import com.mawujun.repository.cnd.Cnd;
+import com.mawujun.utils.page.Page;
+import com.mawujun.utils.M;
 
 import ${basepackage}.${simpleClassName};
 import ${basepackage}.${simpleClassName}Service;
@@ -83,19 +85,19 @@ public class ${simpleClassName}Controller {
 		return ${simpleClassNameFirstLower};
 	}
 	
-	@RequestMapping("/${simpleClassNameFirstLower}/destroy")
+	@RequestMapping("/${simpleClassNameFirstLower}/deleteById")
 	@ResponseBody
-	public ${idType} destroy(${idType} id) {
-		${simpleClassNameFirstLower}Service.delete(id);
+	public ${idType} deleteById(${idType} id) {
+		${simpleClassNameFirstLower}Service.deleteById(id);
 		return id;
 	}
 	
-//	@RequestMapping("/${simpleClassNameFirstLower}/destroy")
-//	@ResponseBody
-//	public ${simpleClassName} destroy(@RequestBody ${simpleClassName} ${simpleClassNameFirstLower}) {
-//		${simpleClassNameFirstLower}Service.delete(${simpleClassNameFirstLower});
-//		return ${simpleClassNameFirstLower};
-//	}
+	@RequestMapping("/${simpleClassNameFirstLower}/destroy")
+	@ResponseBody
+	public ${simpleClassName} destroy(@RequestBody ${simpleClassName} ${simpleClassNameFirstLower}) {
+		${simpleClassNameFirstLower}Service.delete(${simpleClassNameFirstLower});
+		return ${simpleClassNameFirstLower};
+	}
 	
 	
 }

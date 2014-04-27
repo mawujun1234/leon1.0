@@ -13,7 +13,7 @@ public class SubjectRoot {
 	private String idType;
 	private String idColumnName;
 	private String idPropertyName;
-	private String idGeneratorStrategy;
+	private String idGeneratorStrategy="";
 	private String sequenceName;
 	private boolean hasResultMap;//是组件关联的时候
 	

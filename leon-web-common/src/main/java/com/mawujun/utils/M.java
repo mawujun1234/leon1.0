@@ -101,8 +101,7 @@ public static final class QuickStart {
 	}
 }
 public static final class Fun {
-	public static final String code="code";
-	public static final String elementId="elementId";
+	public static final String id="id";
 	public static final String text="text";
 	public static final String isEnable="isEnable";
 	public static final String url="url";
@@ -122,41 +121,6 @@ public static final class Fun {
 		    return "bussinessType";
 	    }
 	}
-	public static final String funEnum="funEnum";
-	 /**
-	 * 返回关联对象的属性，，以对象关联的方式(a.b这种形式)，只有一些基本属性，层级不再往下了
-	 */
-	public static final class parent {
-		public static final String code="parent.code";
-		public static final String elementId="parent.elementId";
-		public static final String text="parent.text";
-		public static final String isEnable="parent.isEnable";
-		public static final String url="parent.url";
-		public static final String helpContent="parent.helpContent";
-		public static final String roleNames="parent.roleNames";
-		public static final String funEnum="parent.funEnum";
-		public static final String icon="parent.icon";
-		public static final String iconCls="parent.iconCls";
-		public static final String leaf="parent.leaf";
-		public static final String checked="parent.checked";
-		public static final String expanded="parent.expanded";
-		public static final String edit="parent.edit";
-		public static final String id="parent.id";
-			
-	    /**
-	    * 返回的是关联类的属性名称，主要用于属性过滤的时候
-	    */
-	    public static String name(){ 
-		    return "parent";
-	    }
-	}
-	public static final String icon="icon";
-	public static final String iconCls="iconCls";
-	public static final String leaf="leaf";
-	public static final String checked="checked";
-	public static final String expanded="expanded";
-	public static final String edit="edit";
-	public static final String id="id";
 }
 public static final class PropertyConfig {
 	public static final String subjectName="subjectName";
@@ -260,21 +224,12 @@ public static final class MenuItem {
 	 * 返回关联对象的属性，，以对象关联的方式(a.b这种形式)，只有一些基本属性，层级不再往下了
 	 */
 	public static final class fun {
-		public static final String code="fun.code";
-		public static final String elementId="fun.elementId";
+		public static final String id="fun.id";
 		public static final String text="fun.text";
 		public static final String isEnable="fun.isEnable";
 		public static final String url="fun.url";
 		public static final String helpContent="fun.helpContent";
 		public static final String roleNames="fun.roleNames";
-		public static final String funEnum="fun.funEnum";
-		public static final String icon="fun.icon";
-		public static final String iconCls="fun.iconCls";
-		public static final String leaf="fun.leaf";
-		public static final String checked="fun.checked";
-		public static final String expanded="fun.expanded";
-		public static final String edit="fun.edit";
-		public static final String id="fun.id";
 			
 	    /**
 	    * 返回的是关联类的属性名称，主要用于属性过滤的时候
@@ -305,6 +260,44 @@ public static final class MenuItem {
 	    }
 	}
 	public static final String id="id";
+}
+public static final class Org {
+	public static final String name="name";
+	public static final String code="code";
+	public static final String reportCode="reportCode";
+	public static final String phonenumber="phonenumber";
+	public static final String fax="fax";
+	public static final String address="address";
+	public static final String postalcode="postalcode";
+	public static final String corporation="corporation";
+	public static final String email="email";
+	public static final String web="web";
+	public static final String introduction="introduction";
+	 /**
+	 * 返回关联对象的属性，，以对象关联的方式(a.b这种形式)，只有一些基本属性，层级不再往下了
+	 */
+	public static final class orgType {
+		public static final String id="orgType.id";
+		public static final String name="orgType.name";
+		public static final String iconCls="orgType.iconCls";
+			
+	    /**
+	    * 返回的是关联类的属性名称，主要用于属性过滤的时候
+	    */
+	    public static String name(){ 
+		    return "orgType";
+	    }
+	}
+	public static final String id="id";
+}
+public static final class OrgDimenssion {
+	public static final String id="id";
+	public static final String name="name";
+}
+public static final class OrgType {
+	public static final String id="id";
+	public static final String name="name";
+	public static final String iconCls="iconCls";
 }
 public static final class Parameter {
 	public static final String id="id";
@@ -400,21 +393,12 @@ public static final class RoleFun {
 	 * 返回关联对象的属性，，以对象关联的方式(a.b这种形式)，只有一些基本属性，层级不再往下了
 	 */
 	public static final class fun {
-		public static final String code="fun.code";
-		public static final String elementId="fun.elementId";
+		public static final String id="fun.id";
 		public static final String text="fun.text";
 		public static final String isEnable="fun.isEnable";
 		public static final String url="fun.url";
 		public static final String helpContent="fun.helpContent";
 		public static final String roleNames="fun.roleNames";
-		public static final String funEnum="fun.funEnum";
-		public static final String icon="fun.icon";
-		public static final String iconCls="fun.iconCls";
-		public static final String leaf="fun.leaf";
-		public static final String checked="fun.checked";
-		public static final String expanded="fun.expanded";
-		public static final String edit="fun.edit";
-		public static final String id="fun.id";
 			
 	    /**
 	    * 返回的是关联类的属性名称，主要用于属性过滤的时候

@@ -4,9 +4,8 @@ import java.io.IOException;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.mawujun.fun.Fun;
 import com.mawujun.menu.Menu;
-import com.mawujun.menu.MenuItem;
+import com.mawujun.org.OrgType;
 
 import freemarker.template.TemplateException;
 /**
@@ -23,13 +22,13 @@ public class GeneratorMain {
 
 			
 		
-		generatorService.generatorFile(Fun.class,FtlFile.JsGridQuery.toString(),"D:",new ExtenConfig());	
+		//generatorService.generatorFile(OrgType.class,FtlFile.JsGridQuery.toString(),"D:",new ExtenConfig());	
 		
 		//String str="";
 		//str=generatorService.generatorToString(MenuItem.class,FtlFile.JsModel.toString(),null);	
         //System.out.println(str);
 		
-		//GeneratorMain.generateAllFile(,"D:/aa/");
+		GeneratorMain.generateAllFile(OrgType.class,"D:/aa/");
 		
 		
 		
@@ -91,7 +90,7 @@ public class GeneratorMain {
 		JspApp("${simpleClassName}App.jsp.ftl"),
 		JsTree("${simpleClassName}Tree.js.ftl"),
 		JsTreeQuery("${simpleClassName}TreeQuery.js.ftl"),
-		JsForm("${simpleClassNameJsGridQuery}Form.js.ftl"),
+		JsForm("${simpleClassName}Form.js.ftl"),
 		JsGrid("${simpleClassName}Grid.js.ftl"),
 		JsGridQuery("${simpleClassName}GridQuery.js.ftl");
 		

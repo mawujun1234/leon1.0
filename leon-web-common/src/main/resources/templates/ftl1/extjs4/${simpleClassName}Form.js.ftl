@@ -101,8 +101,29 @@ Ext.define('Leon.${module}.${simpleClassName}Form',{
 	var saveButton=Ext.create('Ext.button.Button',{
             text: '保存',
             iconCls:'form-save-button',
-            formBind: true,
-            //jsonSubmit:true
+            //formBind: true,当设置这个值得时候，当表单里面有内容后，就自动会变成可执行
+            disabled :true,
+            itemId:'save',
+            listeners:{
+				disable:function(b,e){
+					
+					var fields=b.up('form').getForm().getFields( );
+					fields.each(function(items){
+						items.setReadOnly(true);
+					});
+				},
+				enable:function(b){
+					var form=b.up('form');
+					var fields=form.getForm().getFields( );
+					fields.each(function(items){
+						if(items.getName()=='id'){
+							items.setReadOnly(true);
+						}else{
+							items.setReadOnly(false);
+						}
+					});
+				}
+			},
             handler: function(btn) {
             	var form=this.up('form');
                 if(!form.getForm().isValid()) {
@@ -112,12 +133,14 @@ Ext.define('Leon.${module}.${simpleClassName}Form',{
 				form.getRecord().save({
 					success: function(record, operation) {
 						btn.disable();
+						me.fireEvent("saved");
 					}
 				});
             }
-      })
+      });
 	  me.buttons= [saveButton];    
       me.saveButton=saveButton;
+      me.addEvents("saved");
       me.callParent();
 	}
 });

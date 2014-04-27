@@ -12,7 +12,7 @@ Ext.define('Leon.${module}.${simpleClassName}Grid',{
 		stripeRows:true,
 		listeners:{
 			refresh:function(){
-				this.select(0);
+				//this.select(0);
 			}
 		}
 	},
@@ -86,6 +86,8 @@ Ext.define('Leon.${module}.${simpleClassName}Grid',{
 				});
 				model.phantom =true;
 				grid.form.getForm().loadRecord(model);//form是在app中定义的grid.form=form;
+				
+				grid.form.createAction=true;
 				grid.form.down("button#save").enable();
 				
 			},
@@ -95,6 +97,8 @@ Ext.define('Leon.${module}.${simpleClassName}Grid',{
 			itemId:'update',
 			handler: function(btn){
 				var grid=btn.up("grid");
+				
+				grid.form.down("button#save").enable();
 			},
 			iconCls: 'form-update-button'
 		},{

@@ -1,4 +1,4 @@
-<#include "/macro.include"/>
+
 <#assign simpleClassNameFirstLower = simpleClassName?uncap_first>   
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
@@ -135,6 +135,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		        )
 		    ]]>
 	    </insert>
+	   
 	</#if>
 	<!-- insert语句的生成结束=============================================================================================== -->
 
