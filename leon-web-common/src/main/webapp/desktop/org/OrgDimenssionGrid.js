@@ -1,7 +1,7 @@
-Ext.define('Leon.desktop.org.OrgTypeGrid',{
+Ext.define('Leon.desktop.org.OrgDimenssionGrid',{
 	extend:'Ext.grid.Panel',
 	requires: [
-	     'Leon.desktop.org.OrgType'
+	     'Leon.desktop.org.OrgDimenssion'
 	],
 	columnLines :true,
 	stripeRows:true,
@@ -9,7 +9,7 @@ Ext.define('Leon.desktop.org.OrgTypeGrid',{
 		stripeRows:true,
 		listeners:{
 			refresh:function(){
-				this.select(0);
+				//this.select(0);
 			}
 		}
 	},
@@ -17,14 +17,13 @@ Ext.define('Leon.desktop.org.OrgTypeGrid',{
       var me = this;
       me.columns=[
 		{dataIndex:'id',text:'id'},
-		//{dataIndex:'iconCls',text:'iconCls'},
 		{dataIndex:'name',text:'name'}
       ];
       
 	  me.store=Ext.create('Ext.data.Store',{
 			autoSync:false,
 			pageSize:50,
-			model: 'Leon.desktop.org.OrgType',
+			model: 'Leon.desktop.org.OrgDimenssion',
 			autoLoad:true
 	  });
 	  
@@ -56,6 +55,7 @@ Ext.define('Leon.desktop.org.OrgTypeGrid',{
 			itemId:'update',
 			handler: function(btn){
 				var grid=btn.up("grid");
+				
 				grid.form.down("button#save").enable();
 			},
 			iconCls: 'form-update-button'

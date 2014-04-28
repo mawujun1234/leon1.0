@@ -10,7 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.mawujun.user.User;
-import com.mawujun.utils.DefaultValue;
+import com.mawujun.utils.DefaultValues;
 
 public class UserDetailsImpl implements UserDetails {
 /**
@@ -20,7 +20,7 @@ public class UserDetailsImpl implements UserDetails {
 
 	private User user;
 	
-	private String menuId=DefaultValue.menuId;
+	private String menuId=DefaultValues.Menu_id;
 	
 	List<GrantedAuthority> authorities=new ArrayList<GrantedAuthority>();
 	

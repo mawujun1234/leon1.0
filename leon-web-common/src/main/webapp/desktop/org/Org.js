@@ -1,0 +1,22 @@
+Ext.defineModel("Leon.desktop.org.Org",{
+	extend:"Ext.data.Model",
+	idProperty:'id',
+	fields:[
+		{name:'id',type:'string'},
+		{name:'address',type:'string'},
+		{name:'code',type:'string'},
+		{name:'corporation',type:'string'},
+		{name:'email',type:'string'},
+		{name:'fax',type:'string'},
+		{name:'introduction',type:'string'},
+		{name:'name',type:'string'},
+		{name:'phonenumber',type:'string'},
+		{name:'postalcode',type:'string'},
+		{name:'reportCode',type:'string'},
+		{name:'web',type:'string'},
+		{name:'orgType_id',type:'auto'}
+	],
+	associations:[
+			{type:'belongsTo',model: 'Leon.org.OrgType',associatedName:'Orgtype'}
+	]
+});

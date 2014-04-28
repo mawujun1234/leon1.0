@@ -1,24 +1,23 @@
-<#assign simpleClassNameFirstLower = simpleClassName?uncap_first> 
-<#-- //所在模块-->
-<#assign module = basepackage?substring(basepackage?last_index_of(".")+1)> 
 /**
  * 功能的扩展，添加自定义的怎，删，改
  * 添加右键菜单，增，删，改，并且增加工具栏，增，删，改。
  * 后台的类最好继承TreeNode类，这样就可以少写很多代码
  */
-Ext.define('Leon.${module}.${simpleClassName}Tree', {
+Ext.define('Leon.desktop.org.OrgTree', {
     extend: 'Ext.tree.Panel',
-    requires:['Leon.${module}.${simpleClassName}'],
+    requires:['Leon.desktop.org.Org'],
+    displayField:'name',
     initComponent: function () {
 		var me = this;
 
         me.store = Ext.create('Ext.data.TreeStore', {
 	       	autoLoad:true,
 	       	nodeParam :'id',//传递到后台的数据，默认是node
-	       	model:'Leon.${module}.${simpleClassName}',
+	       	model:'Leon.desktop.org.Org',
 			root: {
 			    expanded: true,
-			    text:"根节点" 
+			    name:'根节点'
+			   
 			}
 		});
 		me.initAction();

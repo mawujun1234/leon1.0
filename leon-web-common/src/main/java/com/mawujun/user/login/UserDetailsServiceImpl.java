@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.user.User;
 import com.mawujun.user.UserService;
-import com.mawujun.utils.DefaultValue;
+import com.mawujun.utils.DefaultValues;
 import com.mawujun.utils.P;
 import com.mawujun.utils.ParameterHolder;
 
@@ -43,7 +43,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		//设置用户默认的菜单
 		String menuId=ParameterHolder.getUserParameterValue(user.getId(), P.menuId);
 		if(menuId==null){
-			menuId=DefaultValue.menuId;
+			menuId=DefaultValues.Menu_id;
 		}
 		aa.setMenuId(menuId);
 		

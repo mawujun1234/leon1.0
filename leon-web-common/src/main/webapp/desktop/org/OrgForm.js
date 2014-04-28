@@ -1,10 +1,7 @@
-<#assign simpleClassNameFirstLower = simpleClassName?uncap_first> 
-<#-- //所在模块-->
-<#assign module = basepackage?substring(basepackage?last_index_of(".")+1)> 
-Ext.define('Leon.${module}.${simpleClassName}Form',{
+Ext.define('Leon.desktop.org.OrgForm',{
 	extend:'Ext.form.Panel',
 	requires: [
-	     'Leon.${module}.${simpleClassName}'
+	     'Leon.desktop.org.Org'
 	],
 	fieldDefaults: {
         msgTarget: 'side',
@@ -22,48 +19,105 @@ Ext.define('Leon.${module}.${simpleClassName}Form',{
 	initComponent: function () {
        var me = this;
        me.items= [
-      <#list propertyColumns as propertyColumn>
-      <#if propertyColumn.isBaseType==true ||  propertyColumn.isIdProperty==true>
-		<#if propertyColumn.jsType=='date'>
 		{
-            fieldLabel: '${propertyColumn.label!propertyColumn.property}',
-            name: '${propertyColumn.property}',
-            readOnly:true,
-            xtype: 'datefield',
-            format: 'Y-m-d'
-        }<#if propertyColumn_has_next>,</#if>
-		<#elseif propertyColumn.jsType=='int' || propertyColumn.jsType=='float'>
-		{
-	        fieldLabel: '${propertyColumn.label!propertyColumn.property}',
+	        fieldLabel: 'id',
 	        //afterLabelTextTpl: Ext.required,
-	        name: '${propertyColumn.property}',
-	        readOnly:true,
-	        xtype:'numberfield',
-	        allowBlank: false
-	    }<#if propertyColumn_has_next>,</#if>
-		<#else>
-		{
-	        fieldLabel: '${propertyColumn.label!propertyColumn.property}',
-	        //afterLabelTextTpl: Ext.required,
-	        name: '${propertyColumn.property}',
+	        name: 'id',
 	        readOnly:true,
 	        xtype:'textfield',
 	        allowBlank: false
-	    }<#if propertyColumn_has_next>,</#if>
-		</#if>
-	  <#elseif propertyColumn.isConstantType==true>
+	    },
 		{
-	        xtype:'constantcombo',
-            fieldLabel:'${propertyColumn.label!propertyColumn.property}',
-            name: '${propertyColumn.property}',
-            readOnly:true,
-			code:'请补充完整'
-        }<#if propertyColumn_has_next>,</#if>
-	  <#elseif propertyColumn.isAssociationType==true>
-	  <#--if (propertyColumn.showModel!"")=='combobox'-->
+	        fieldLabel: 'address',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'address',
+	        readOnly:true,
+	        xtype:'textfield',
+	        allowBlank: false
+	    },
+		{
+	        fieldLabel: 'code',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'code',
+	        readOnly:true,
+	        xtype:'textfield',
+	        allowBlank: false
+	    },
+		{
+	        fieldLabel: 'corporation',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'corporation',
+	        readOnly:true,
+	        xtype:'textfield',
+	        allowBlank: false
+	    },
+		{
+	        fieldLabel: 'email',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'email',
+	        readOnly:true,
+	        xtype:'textfield',
+	        allowBlank: false
+	    },
+		{
+	        fieldLabel: 'fax',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'fax',
+	        readOnly:true,
+	        xtype:'textfield',
+	        allowBlank: false
+	    },
+		{
+	        fieldLabel: 'introduction',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'introduction',
+	        readOnly:true,
+	        xtype:'textfield',
+	        allowBlank: false
+	    },
+		{
+	        fieldLabel: 'name',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'name',
+	        readOnly:true,
+	        xtype:'textfield',
+	        allowBlank: false
+	    },
+		{
+	        fieldLabel: 'phonenumber',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'phonenumber',
+	        readOnly:true,
+	        xtype:'textfield',
+	        allowBlank: false
+	    },
+		{
+	        fieldLabel: 'postalcode',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'postalcode',
+	        readOnly:true,
+	        xtype:'textfield',
+	        allowBlank: false
+	    },
+		{
+	        fieldLabel: 'reportCode',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'reportCode',
+	        readOnly:true,
+	        xtype:'textfield',
+	        allowBlank: false
+	    },
+		{
+	        fieldLabel: 'web',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'web',
+	        readOnly:true,
+	        xtype:'textfield',
+	        allowBlank: false
+	    },
 	   {
-	  		fieldLabel: '${propertyColumn.label!propertyColumn.column}',
-		    name: '${propertyColumn.column}',
+	  		fieldLabel: 'orgType_id',
+		    name: 'orgType_id',
 		    readOnly:true,
 		    xtype:'combobox',
             typeAhead: true,
@@ -75,7 +129,7 @@ Ext.define('Leon.${module}.${simpleClassName}Form',{
 			    fields: ['id', 'name'], 
 				proxy:{
 				    type:'ajax',
-				    url:Ext.ContextPath+'${propertyColumn.property}/query',
+				    url:Ext.ContextPath+'orgType/query',
 				    reader:{
 				    	type:'json',
 				    	totalProperty:'total',
@@ -83,19 +137,7 @@ Ext.define('Leon.${module}.${simpleClassName}Form',{
 				    }
 				}
 			})
-        }<#if propertyColumn_has_next>,</#if>
-		<#else>
-		 {
-	        fieldLabel: '${propertyColumn.label!propertyColumn.property}',
-	        //afterLabelTextTpl: Ext.required,
-	        name: '${propertyColumn.property}',
-	        readOnly:true,
-	        xtype:'textfield',
-	        allowBlank: false
-	   	 }<#if propertyColumn_has_next>,</#if>
-		<#--if-->
-	  </#if>
-	  </#list>   
+        }
 	  ];   
 
 	var saveButton=Ext.create('Ext.button.Button',{

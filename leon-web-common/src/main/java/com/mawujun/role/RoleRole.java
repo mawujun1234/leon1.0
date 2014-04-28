@@ -198,10 +198,7 @@ public class RoleRole implements IdEntity<RoleRole.Id> {
 		public void setRoleRoleEnum(String roleRoleEnum) {
 			this.roleRoleEnum = roleRoleEnum;
 		}
-		
-//		public String toString(){
-//			return this.currentId+"=="+this.otherId;
-//		}
+
 	}
 
 

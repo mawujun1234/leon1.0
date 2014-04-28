@@ -11,12 +11,13 @@ Ext.onReady(function(){
 		split: true,
 		collapsible: true,
 		title:'菜单',
-		width:200
+		width:400
 	});
 
 	var tree=Ext.create('Leon.${module}.${simpleClassName}Tree',{
-		title:'菜单树',
-		region:'center'
+		title:'树',
+		width:400,
+		region:'west'
 	});
 
 	var form=Ext.create('Leon.${module}.${simpleClassName}Form',{
@@ -24,7 +25,11 @@ Ext.onReady(function(){
 		split: true,
 		collapsible: true,
 		title:'表单',
-		width:460
+		listeners:{
+			saved:function(){
+				grid.getStore().reload();
+			}
+		}
 	});
 	grid.form=form;
 	form.grid=grid;

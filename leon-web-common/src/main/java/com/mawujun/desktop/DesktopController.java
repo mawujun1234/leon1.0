@@ -23,7 +23,7 @@ import com.mawujun.user.login.SwitchUserFilterImpl;
 import com.mawujun.user.login.SwitchUserGrantedAuthorityImpl;
 import com.mawujun.user.login.UserDetailsImpl;
 import com.mawujun.utils.BeanUtils;
-import com.mawujun.utils.DefaultValue;
+import com.mawujun.utils.DefaultValues;
 import com.mawujun.utils.M;
 import com.mawujun.utils.P;
 import com.mawujun.utils.ParameterHolder;
@@ -102,7 +102,7 @@ public class DesktopController {
 		
 		String menuId=ParameterHolder.getUserParameterValue(userDetail.getId(), P.menuId);
 		if(menuId==null){
-			menuId=DefaultValue.menuId;
+			menuId=DefaultValues.Menu_id;
 		}
 		MenuItemVO vo=menuItemService.queryMenuItem(jspUrl, menuId);
 		if(vo==null){

@@ -27,14 +27,52 @@ Ext.define('Leon.desktop.org.OrgTypeForm',{
 	        xtype:'textfield',
 	        allowBlank: false
 	    },
-		{
-	        fieldLabel: 'iconCls',
-	        //afterLabelTextTpl: Ext.required,
-	        name: 'iconCls',
-	        readOnly:true,
-	        xtype:'textfield',
-	        allowBlank: false
-	    },
+	    {
+                xtype: 'fieldcontainer',
+                fieldLabel: '图标',
+                combineErrors: true,
+                msgTarget : 'side',
+                layout: 'hbox',
+                defaults: {
+                    flex: 1,
+                    hideLabel: true
+                },
+                items: [{
+                        xtype     : 'button',
+                        flex:0,
+                        width:80,
+                        
+                        text      : '选择图标',
+                        handler:function(iconButton){
+
+                        	var win=Ext.create('Leon.common.IconWindow',{
+                        		listeners:{
+                        			itemdblclick:function(win,record){
+                        				Ext.util.CSS.createStyleSheet("."+record.get("iconCls")+"{background: url("+record.get("src16")+") left top no-repeat !important;}") ;
+                        				//Ext.util.CSS.createStyleSheet("."+record.get("iconCls32")+"{background: url("+record.get("src")+") left top no-repeat !important;}") ;
+                        				
+                        				iconButton.setIconCls(record.get("iconCls") );
+                        				//iconButton.nextSibling().setValue(record.get("iconCls"));
+                        				iconButton.nextSibling().setValue(record.get("iconCls"));
+                        				win.close();
+                        			}
+                        		}
+                        	});
+                        	win.show();
+                        }
+                    },{
+                        xtype     : 'hidden',
+                        name      : 'iconCls',
+                        flex:0,
+                        fieldLabel: '图标Cls',
+                        listeners:{
+                        	change:function(field, newValue, oldValue, eOpts){
+                        		var iconButton=field.previousSibling();
+                        		iconButton.setIconCls(newValue );
+                        	}
+                        }
+                    }]
+          },
 		{
 	        fieldLabel: 'name',
 	        //afterLabelTextTpl: Ext.required,

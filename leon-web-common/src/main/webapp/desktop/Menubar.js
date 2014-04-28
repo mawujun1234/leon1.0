@@ -91,7 +91,6 @@ Ext.define('Leon.desktop.Menubar', {
 						model.menu = [{text : '正在加载...',listeners:{
 							//scope : me,
 							render:function(btn){
-								console.log(btn.parentMenu.up("button"));
 								me.requestChildrenMenu(btn.parentMenu.up("button"));
 							}
 						}}];
