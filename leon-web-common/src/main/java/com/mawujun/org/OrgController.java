@@ -4,16 +4,18 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.utils.page.Page;
+import com.mawujun.utils.DefaultValues;
 import com.mawujun.utils.M;
-
 import com.mawujun.org.Org;
 import com.mawujun.org.OrgService;
 /**
@@ -38,7 +40,11 @@ public class OrgController {
 	@RequestMapping("/org/query")
 	@ResponseBody
 	public List<Org> query(String id,String orgDimenssionId) {
-		先按维度动态生成tabpanel，这里参数也添加
+		//先按维度动态生成tabpanel，这里参数也添加
+		if(!StringUtils.hasText(orgDimenssionId)){
+			orgDimenssionId=DefaultValues.OrgDimenssion_id;
+		}
+		,
 		Cnd cnd=Cnd.select().andEquals(M.Org.id, "root".equals(id)?null:id);
 		List<Org> orges=orgService.query(cnd);
 		//JsonConfigHolder.setFilterPropertys(Org.class,M.Org.parent.name());
