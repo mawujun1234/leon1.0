@@ -114,6 +114,9 @@ public class User extends UUIDEntity{
 		this.lastLoginDate = lastLoginDate;
 	}
 	public boolean isDeleted() {
+		if(deleted==null){
+			return false;
+		}
 		return deleted;
 	}
 	public void setDeleted(boolean isDeleted) {

@@ -44,11 +44,14 @@ public class OrgController {
 		if(!StringUtils.hasText(orgDimenssionId)){
 			orgDimenssionId=DefaultValues.OrgDimenssion_id;
 		}
-		,
-		Cnd cnd=Cnd.select().andEquals(M.Org.id, "root".equals(id)?null:id);
-		List<Org> orges=orgService.query(cnd);
+		//,
+		///Cnd cnd=Cnd.select().andEquals(M.Org.id, "root".equals(id)?null:id);
+		//List<Org> orges=orgService.query(cnd);
 		//JsonConfigHolder.setFilterPropertys(Org.class,M.Org.parent.name());
-		return orges;
+		//return orges;
+		
+		return orgService.queryChildOrg(id,orgDimenssionId);
+		
 	}
 
 //	/**

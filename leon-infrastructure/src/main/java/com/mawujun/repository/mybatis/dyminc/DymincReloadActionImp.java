@@ -1,4 +1,4 @@
-package com.mawujun.repository.mybatis;
+package com.mawujun.repository.mybatis.dyminc;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +15,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
 
+import com.mawujun.repository.mybatis.MybatisRepository;
 import com.mawujun.utils.ReflectUtils;
 
 

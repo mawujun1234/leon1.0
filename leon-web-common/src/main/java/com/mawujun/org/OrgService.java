@@ -1,9 +1,12 @@
 package com.mawujun.org;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 
 
 import com.mawujun.service.AbstractService;
@@ -28,6 +31,11 @@ public class OrgService extends AbstractService<Org, String>{
 	@Override
 	public OrgRepository getRepository() {
 		return orgRepository;
+	}
+	
+	public List<Org> queryChildOrg(String id,String orgDimenssionId) { 
+		//sql还没有写好
+		return orgRepository.queryChildOrg(id, orgDimenssionId);
 	}
 
 }

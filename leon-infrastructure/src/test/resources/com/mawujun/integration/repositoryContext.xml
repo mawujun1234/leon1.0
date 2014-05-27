@@ -77,7 +77,7 @@
 					</list>
 				</property>
 	</bean>
-	<!-- 对mybatis的文件变动进行监听 -->
+	<!-- 对mybatis的文件变动进行监听 
 	<bean class="com.mawujun.repository.mybatis.FileActionListenerContanier" id="fileActionListenerContanier" init-method="afterPropertiesSet" lazy-init="false">
 			<property name="enable" value="${mybatis.file.listener.enable}"/>
 		
@@ -97,6 +97,7 @@
 				</list>
 			</property>
 	</bean>
+	-->
 		 
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" lazy-init="false" >
 			<property name="dataSource" ref="dataSource" />  

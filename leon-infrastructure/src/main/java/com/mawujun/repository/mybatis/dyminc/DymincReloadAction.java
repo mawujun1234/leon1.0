@@ -1,4 +1,4 @@
-package com.mawujun.repository.mybatis;
+package com.mawujun.repository.mybatis.dyminc;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;

@@ -1,9 +1,10 @@
 package com.mawujun.org;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.mawujun.repository1.IRepository;
-
 import com.mawujun.org.Org;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
@@ -12,6 +13,6 @@ import com.mawujun.org.Org;
  */
 @Repository
 public interface OrgRepository extends IRepository<Org, String>{
-
+	public List<Org> queryChildOrg(String id,String orgDimenssionId);
 
 }

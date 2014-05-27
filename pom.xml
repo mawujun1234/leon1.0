@@ -95,10 +95,11 @@
 	</repositories>
 
 	<dependencies>
+		<!-- http://mvnrepository.com/artifact/javax.servlet -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -405,7 +406,7 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>1.4.177</version>
+			<version>1.4.178</version>
 		</dependency>
 
 		<dependency>

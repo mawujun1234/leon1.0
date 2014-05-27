@@ -2,6 +2,8 @@ package com.mawujun.repository.mybatis;
 
 import java.io.IOException;
 
+import com.mawujun.repository.mybatis.dyminc.DymincReloadMaperEvent;
+
 public class DymincReloadMaperEventTest {
 
 	/**

@@ -1,4 +1,4 @@
-package com.mawujun.repository.mybatis;
+package com.mawujun.repository.mybatis.dyminc;
 
 
 import java.util.ArrayList;

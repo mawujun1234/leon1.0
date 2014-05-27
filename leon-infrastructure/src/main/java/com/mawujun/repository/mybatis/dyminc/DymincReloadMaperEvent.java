@@ -1,4 +1,4 @@
-package com.mawujun.repository.mybatis;
+package com.mawujun.repository.mybatis.dyminc;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

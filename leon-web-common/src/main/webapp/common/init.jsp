@@ -75,6 +75,8 @@ if(routeLength>0){
 }
 String springPrev="/app";
 String uri=request.getRequestURI();
+
+//如果是首页和登录页面，就不加载页面数据权限控制
 if(uri.indexOf("login.jsp")==-1 && uri.indexOf("index.jsp")==-1){
 %>
 <script type="text/javascript" src="<%=request.getContextPath()+springPrev %>/fun/generatorPermissionJs"></script>
