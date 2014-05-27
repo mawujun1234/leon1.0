@@ -1,4 +1,4 @@
-Ext.define('Leon.desktop.WallpaperSettings', {
+Ext.define('Leon.desktop.preferences.WallpaperSettings', {
     extend: 'Ext.window.Window',
 
     uses: [

@@ -1,4 +1,4 @@
-Ext.define('Leon.desktop.ToolbarSettings', {
+Ext.define('Leon.desktop.preferences.ToolbarSettings', {
     extend: 'Ext.window.Window',
 
     uses: [

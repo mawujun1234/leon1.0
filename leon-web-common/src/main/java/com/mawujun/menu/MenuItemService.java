@@ -66,13 +66,12 @@ public class MenuItemService extends AbstractService<MenuItem, String> {//extend
 			// entity.getParent().getId());
 			reportCode = (String)this.getRepository().queryMax(
 					M.MenuItem.reportCode,
-					Cnd.where().andEquals(M.MenuItem.parent.id,
-							parentId));
+					Cnd.where().andEquals(M.MenuItem.parent.id,parentId));
 
 			// 获取父节点的reportcode
 			if (reportCode == null) {
 				MenuItem parent = this.getRepository().get(parentId);
-				reportCode = parent + ReportCodeHelper.getSperator()+ ReportCodeHelper.generate3(null);
+				reportCode = parent.getReportCode() + ReportCodeHelper.getSperator()+ ReportCodeHelper.generate3(null);
 				//entity.setReportCode((String) reportCode);
 				
 			} else {
@@ -81,7 +80,10 @@ public class MenuItemService extends AbstractService<MenuItem, String> {//extend
 				reportCode=ReportCodeHelper.generate3((String) reportCode);
 			}
 		} else {
-			reportCode= ReportCodeHelper.generate3(null);
+			reportCode = (String)this.getRepository().queryMax(
+					M.MenuItem.reportCode,
+					Cnd.where().andIsNull(M.MenuItem.parent.id));
+			reportCode= ReportCodeHelper.generate3(reportCode);
 		}
 		return reportCode;
 	}
