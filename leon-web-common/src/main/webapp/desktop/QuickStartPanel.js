@@ -26,7 +26,6 @@ Ext.define('Leon.desktop.QuickStartPanel', {
 
 		
 		
-		
 //		me.on('render',function(panel){
 //			panel.getEl().on('mouseleave',function(){
 //				//me.btn.hideMenu();
@@ -67,9 +66,9 @@ Ext.define('Leon.desktop.QuickStartPanel', {
             itemSelector: me.shortcutItemSelector,
             store: me.shortcuts,
             style: {
-                position: 'absolute'
+                //position: 'absolute'
             },
-            x: 0, y: 0,
+           // x: 0, y: 0,
             tpl: new Ext.XTemplate(me.shortcutTpl),
             listeners:{
             	'itemclick':function(view,record,item){
@@ -77,13 +76,40 @@ Ext.define('Leon.desktop.QuickStartPanel', {
             		var params=record.data;
             		params.title=params.text;
 					me.desktop.createWindow(record.data);
-//					me.createWindow({
-//		        			title:btn.text,
-//		        			menuItemId:btn.menuItemId,
-//		        			funId:btn.funId,
-//		        			url:btn.link_url,
-//		        			iconCls:btn.iconCls
-//		        		});
+				},
+				itemcontextmenu:function(view,record, item, index,e){
+					//alert(view.parentMenu);
+					
+					
+					var menu=Ext.create('Ext.menu.Menu', {
+					    width: 100,
+					    
+					   // plain: true,
+					   // floating: false,  // usually you want this set to True (default)
+					    //renderTo: Ext.getBody(),  // usually rendered by it's containing component
+					    items: [{
+					        text: '删除('+record.get('text')+')',
+					        iconCls: 'form-delete-button',
+					        handler:function(){
+					        	Ext.Ajax.request({
+									url : Ext.ContextPath + "/desktop/deleteQuickstart",
+									params : {
+										menuItemId :record.get("id")
+									},
+									method : 'post',
+									success : function(response, options) {
+										view.getStore( ).remove(record);
+									},
+									failure : function(response, options) {
+										Ext.Msg.alert("错误", "删除失败！")
+									}
+								});
+					        }
+					    }]
+					});
+					
+					menu.showAt(e.getXY());
+					e.stopEvent( );
 				}
             }
         };

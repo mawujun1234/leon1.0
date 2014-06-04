@@ -138,6 +138,14 @@ public class DesktopController {
 		return quickStart;
 		
 	}	
+	@RequestMapping("/desktop/deleteQuickstart")
+	@ResponseBody
+	public String deleteQuickstart(String menuItemId){
+		
+		quickStartServcie.deleteById(new QuickStart.Id( SecurityContextHolder.getUserId(), menuItemId));
+		return "success";
+		
+	}	
 	@RequestMapping("/desktop/queryQuickstarts")
 	@ResponseBody
 	public List<MenuItemVO> queryQuickstarts(){
