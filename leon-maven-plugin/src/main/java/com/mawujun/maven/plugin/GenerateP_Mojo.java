@@ -71,6 +71,7 @@ public class GenerateP_Mojo extends AbstractMojo {
 		buffer.append("package com.mawujun.utils;\n");
 		buffer.append("/**\n");
 		buffer.append(" * 这个类的内容是动态添加的,不要修改他，修改了也会被覆盖的\n");
+		buffer.append(" * 里面的值是参数id，就是系统设置的各种参数的id\n");
 		buffer.append(" * @author mawujun email:16064988@163.com qq:16064988\n");
 		buffer.append(" *\n");
 		buffer.append(" */\n");

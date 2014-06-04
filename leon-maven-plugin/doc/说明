@@ -1,1 +1,14 @@
 该项目试用来生成代码的插件，具体可以在leon-web-common中以插件的形式存在
+生成领域模型属性和表的列名快速引用类的maven命令
+	com.mawujun:leon-maven-plugin:0.0.1-SNAPSHOT:generateMT
+	每次修改了领域模型的java类后，都必须重新生成下这个类
+	限制：现在属性名和列名还是相同的，关联类的id必须为xxx.id，还没有具体的做过
+访问实体的属性名的类为M
+	引用方法就是M.MenuItem.id,M.MenuItem.name
+	访问关联类的id分为hql为：M.MenuItem。menu_id
+访问表的字段名的类为T
+	引用方法就是T.MenuItem.id,T.MenuItem.name
+	访问关联类的id分为hql为：T.MenuItem。menu_id
+访问参数id的类是P
+     生成方法是com.mawujun:leon-maven-plugin:0.0.1-SNAPSHOT:generateP
+   注意要在leon-web-common的pom上要配实际的数据库驱动和地址

@@ -1,4 +1,4 @@
-
+native2ascii  h2导出来的数据使用这个工具进行转换
 #就按这个规范写，不过要先导出生成表的sql
 INSERT INTO LEON_USER(ID, CREATEDATE, DELETED, DELETEDDATE, ENABLE, EXPIREDATE, LASTIP, LASTLOGINDATE, LOCKED, LOGINNAME, NAME, PASSWORD) VALUES
 ('admin', NULL, 'N', NULL, 'Y', NULL, '0:0:0:0:0:0:0:1', TIMESTAMP '2014-05-27 15:37:55.245', 'N', 'admin', 'admin', 'admin');
@@ -44,4 +44,9 @@ INSERT INTO LEON_MENUITEM(ID, CODE, ICONCLS, ICONCLS32, JAVACLASS, LEAF, REPORTC
 ('fun_manager', '', 'menu-category-default-16', 'menu-category-default-32', '', 'Y', 'aaa-aaa', '', '功能管理', 'fun_manager', 'default', '2c908384463c40a701463c5f24810000'),
 ('menu_manager', '', 'menu-category-default-16', 'menu-category-default-32', '', 'Y', 'aaa-aab', '', '菜单管理', 'menu_manager', 'default', '2c908384463c40a701463c5f24810000');
 
+
+INSERT INTO PUBLIC.LEON_PARAMETER(ID, CONTENT, DESC, NAME, SHOWMODEL, SORT, SUBJECTS, VALIDATION, VALUEENUM) VALUES
+('menuId', 'com.mawujun.parameter.MenuDataSource', '配置使用哪个菜单', '菜单', 'COMBOBOX', 0, '["USER","POSITION","UNIT","GROUP","ROLE","SYSTEM"]', NULL, 'JAVA');
+INSERT INTO PUBLIC.LEON_PARAMETER_SUBJECT(PARAMETER_ID, SUBJECT_ID, SUBJECTTYPE, PARAMETERVALUE) VALUES
+('menuId', 'SYSTEM', 'SYSTEM', 'default');
 

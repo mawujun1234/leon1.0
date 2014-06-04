@@ -1,5 +1,6 @@
 package com.mawujun.desktop;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
+import com.mawujun.utils.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -51,7 +52,7 @@ public class DesktopController {
 		DesktopConfig desktopConfig=desktopConfigService.get(userId);
 		if(desktopConfig==null) {
 			desktopConfig=new DesktopConfig();
-		} else {
+		} //else {
 			//获取快捷方式
 			//M.QuickStart.Id.
 			//List<QuickStart> quickStarts=quickStartServcie.query(Cnd.select().andEquals("id.userId", userId));
@@ -66,10 +67,10 @@ public class DesktopController {
 				}
 			}
 			
-		}
+		//}
 		
 		
-		
+		//组装菜单
 		List<MenuItemVO> menuItems=menuItemService.query4Desktop(userDetail.getMenuId(),userDetail.isAdmin(),null,userDetail.getId());
 		//DesktopConfig config=new DesktopConfig();
 		desktopConfig.setMenuItems(menuItems);
@@ -137,5 +138,22 @@ public class DesktopController {
 		return quickStart;
 		
 	}	
-	
+	@RequestMapping("/desktop/queryQuickstarts")
+	@ResponseBody
+	public List<MenuItemVO> queryQuickstarts(){
+		List<QuickStart> quickStarts=quickStartServcie.query(Cnd.select().andEquals(M.QuickStart.id.userId, SecurityContextHolder.getUserId()));
+		
+		List<MenuItemVO> list=new ArrayList<MenuItemVO>();
+		for(QuickStart quickStart:quickStarts){
+			
+			MenuItem leaf=menuItemService.get(quickStart.getId().getMenuItemId());
+			if(leaf!=null){
+				MenuItemVO vo=BeanUtils.copyOrCast(leaf, MenuItemVO.class);
+				vo.setFunId(leaf.getFun()!=null?leaf.getFun().getId():null);
+				list.add(vo);
+			}
+		}
+		return list;
+		
+	}	
 }

@@ -76,7 +76,8 @@ Ext.define('Leon.desktop.Window', {
 		    		method:'POST',
 		    		params:{menuItemId:me.menuItemId},
 		    		success:function(response){
-		    			//alert(11);
+		    			//刷新快捷方式中的数据
+		    			window.desktop.reloadQuickStart();
 		    		}
 		    	});
 		    }

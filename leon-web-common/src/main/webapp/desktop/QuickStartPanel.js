@@ -87,5 +87,8 @@ Ext.define('Leon.desktop.QuickStartPanel', {
 				}
             }
         };
+    },
+    reloadQuickStart:function(quickstarts){
+    	this.shortcuts.loadData(quickstarts);
     }
 });

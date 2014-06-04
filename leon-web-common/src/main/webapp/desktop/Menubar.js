@@ -22,10 +22,11 @@ Ext.define('Leon.desktop.Menubar', {
 							desktop : me.desktop
 						});
 				delete me.quickstarts;
+				me.quickStartPanel=quickStartPanel;
 
 				newItems.push({
 							text : '',
-							iconCls : 'icons_arrow_inout',
+							iconCls : 'icons_application_link',
 							tooltip : '快速启动',
 							listeners : {
 				// mouseover:function(btn){

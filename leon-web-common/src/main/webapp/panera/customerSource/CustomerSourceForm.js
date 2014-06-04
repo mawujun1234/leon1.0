@@ -1,132 +1,52 @@
-Ext.define('Leon.desktop.fun.FunForm',{
+Ext.define('Leon.panera.customerSource.CustomerSourceForm',{
 	extend:'Ext.form.Panel',
 	requires: [
-	     'Leon.desktop.fun.Fun'
+	     'Leon.panera.customerSource.CustomerSource'
 	],
 	fieldDefaults: {
-            msgTarget: 'side',
-            labelWidth: 75,
-            labelAlign:'right'
+        msgTarget: 'side',
+        labelWidth: 75,
+        labelAlign:'right',
+        anchor: '90%'
     },
-    required:'<span style="color:red;font-weight:bold" data-qtip="Required">*</span>',
-    defaultType: 'textfield',
     frame: true,
     bodyPadding: '5 5 0',
-    //trackResetOnLoad:true,
-    
-    fieldDefaults: {
-            labelWidth: 75,
-            anchor: '100%'
-        },
 
-    layout: {
-            type: 'vbox',
-            align: 'stretch'  // Child items are stretched to full width
-    },
+ //   layout: {
+ //       type: 'vbox',
+ //       align: 'stretch'  // Child items are stretched to full width
+ //   },
 	initComponent: function () {
        var me = this;
-      
        me.items= [
-       		{
-	            fieldLabel: 'id',
-	            //afterLabelTextTpl: me.required,
-	            readOnly:true,
-	            name: 'id'
-	            //allowBlank: false,
-	            //tooltip: 'Enter your first name'
-	        },
-	        {
-	            fieldLabel: '名称',
-	            afterLabelTextTpl: me.required,
-	            name: 'text',
-	            readOnly:true,
-	            allowBlank: false,
-	            tooltip: '请输入名称'
-	        },{
-	        	xtype:'combobox',
-			    fieldLabel: '是否可用',
-			    afterLabelTextTpl:'<span class="icons_help" data-qtip="不可用：表示所有关联到这个功能的菜单和界面元素都看不见了，可用于临时维护。">&nbsp;&nbsp;&nbsp;&nbsp;</span>',
-			    store:  Ext.create('Ext.data.Store', {
-				    fields: ['id', 'name'],
-				    data : [
-				        {"id":true, "name":"可用"},
-				        {"id":false, "name":"不可用"}
-				    ]
-				}),
-			    queryMode: 'local',
-			    displayField: 'name',
-			    valueField: 'id',
-			    readOnly:true,
-			    editable:false,
-			    value:true,
-			    name:'isEnable'
-			},{
-	            fieldLabel: 'url',
-	            name: 'url',
-	            readOnly:true,
-	            tooltip: "请输入url"
-	        }
-	        ,{
-	        	xtype:'constantcombo',
-                fieldLabel  : '业务类型',
-                readOnly:true,
-                name: 'bussinessType',
-				code:'Fun_BussinessType'
-            }
-	    ];
-//	    me.buttons= [{
-//            text: '保存',
-//            itemId:'save',
-//            disabled :true,
-//            iconCls:'form-save-button',
-//            listeners:{
-//				disable:function(b,e){
-//					var fields=b.up('form').getForm().getFields( );
-//					fields.each(function(items){
-//						items.setReadOnly(true);
-//					});
-//				},
-//				enable:function(b){
-//					var form=b.up('form');
-//					var fields=form.getForm().getFields( );
-//					fields.each(function(items){
-//						if(items.getName()=='id' && !form.createAction){
-//							items.setReadOnly(true);
-//						}else{
-//							items.setReadOnly(false);
-//						}
-//					});
-//				}
-//			},
-//            handler: function(btn) {
-//            	var form=this.up('form');
-//                if(!form.getForm().isValid()) {
-//                	return;
-//                }
-//                form.getForm().updateRecord();
-//				form.getRecord().save({
-//					success: function(record, operation) {
-//						btn.disable();
-//						
-//						form.grid.getStore().reload();
-//					}
-//				});
-//				
-//            }
-//        }
-////        ,{
-////            text: '重置',
-////            iconCls:'form-reset-button',
-////            handler: function() {
-////            	//var copyRcd=this.up('form').getRecord( );
-////                this.up('form').getForm().reset(true);
-////            }
-////        }
-//        ];
-//       
-//       //me.addEvents("created");
-	    
-	    var saveButton=Ext.create('Ext.button.Button',{
+		{
+	        fieldLabel: 'id',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'id',
+	        readOnly:true,
+	        xtype:'hidden',
+	        allowBlank: false
+	    },
+		{
+	        fieldLabel: 'desc',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'desc',
+	        readOnly:true,
+	        xtype:'textfield',
+	        allowBlank: false
+	    },
+		{
+	        fieldLabel: 'name',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'name',
+	        readOnly:true,
+	        xtype:'textfield',
+	        allowBlank: false
+	    }
+	  ];   
+	  
+	  
+	  var saveButton=Ext.create('Ext.button.Button',{
             text: '保存',
             iconCls:'form-save-button',
             //formBind: true,当设置这个值得时候，当表单里面有内容后，就自动会变成可执行
@@ -263,8 +183,14 @@ Ext.define('Leon.desktop.fun.FunForm',{
 			},
 			iconCls: 'form-delete-button'
 		}];
-       me.callParent();
+
+	
+      me.addEvents("saved");
+      me.callParent();
 	},
+	/**
+	 * 重载父类的方法
+	 */
 	loadRecord:function(){
 		var form=this;
 		form.down("button#update").enable();

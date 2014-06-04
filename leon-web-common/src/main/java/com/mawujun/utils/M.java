@@ -294,10 +294,99 @@ public static final class OrgDimenssion {
 	public static final String id="id";
 	public static final String name="name";
 }
+public static final class OrgRelation {
+	 /**
+	 * 返回复合主键的组成，，以对象关联的方式:id
+	 */
+	public static final class id {
+		public static final String parent_id="id.parent_id";
+		public static final String child_id="id.child_id";
+		public static final String orgDimenssion_id="id.orgDimenssion_id";
+			
+	    /**
+	    * 返回的是复合主键的属性名称，主要用于属性过滤或以id来查询的时候
+	    */
+	    public static String name(){ 
+		    return "id";
+	    }
+	}
+	 /**
+	 * 返回关联对象的属性，，以对象关联的方式(a.b这种形式)，只有一些基本属性，层级不再往下了
+	 */
+	public static final class parent {
+		public static final String name="parent.name";
+		public static final String code="parent.code";
+		public static final String reportCode="parent.reportCode";
+		public static final String phonenumber="parent.phonenumber";
+		public static final String fax="parent.fax";
+		public static final String address="parent.address";
+		public static final String postalcode="parent.postalcode";
+		public static final String corporation="parent.corporation";
+		public static final String email="parent.email";
+		public static final String web="parent.web";
+		public static final String introduction="parent.introduction";
+		public static final String id="parent.id";
+			
+	    /**
+	    * 返回的是关联类的属性名称，主要用于属性过滤的时候
+	    */
+	    public static String name(){ 
+		    return "parent";
+	    }
+	}
+	 /**
+	 * 返回关联对象的属性，，以对象关联的方式(a.b这种形式)，只有一些基本属性，层级不再往下了
+	 */
+	public static final class child {
+		public static final String name="child.name";
+		public static final String code="child.code";
+		public static final String reportCode="child.reportCode";
+		public static final String phonenumber="child.phonenumber";
+		public static final String fax="child.fax";
+		public static final String address="child.address";
+		public static final String postalcode="child.postalcode";
+		public static final String corporation="child.corporation";
+		public static final String email="child.email";
+		public static final String web="child.web";
+		public static final String introduction="child.introduction";
+		public static final String id="child.id";
+			
+	    /**
+	    * 返回的是关联类的属性名称，主要用于属性过滤的时候
+	    */
+	    public static String name(){ 
+		    return "child";
+	    }
+	}
+	 /**
+	 * 返回关联对象的属性，，以对象关联的方式(a.b这种形式)，只有一些基本属性，层级不再往下了
+	 */
+	public static final class orgDimenssion {
+		public static final String id="orgDimenssion.id";
+		public static final String name="orgDimenssion.name";
+			
+	    /**
+	    * 返回的是关联类的属性名称，主要用于属性过滤的时候
+	    */
+	    public static String name(){ 
+		    return "orgDimenssion";
+	    }
+	}
+}
 public static final class OrgType {
 	public static final String id="id";
 	public static final String name="name";
 	public static final String iconCls="iconCls";
+}
+public static final class CustomerProperty {
+	public static final String name="name";
+	public static final String desc="desc";
+	public static final String id="id";
+}
+public static final class CustomerSource {
+	public static final String name="name";
+	public static final String desc="desc";
+	public static final String id="id";
 }
 public static final class Parameter {
 	public static final String id="id";

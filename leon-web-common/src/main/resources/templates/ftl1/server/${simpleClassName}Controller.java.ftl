@@ -34,9 +34,9 @@ public class ${simpleClassName}Controller {
 	 * @param id 是父节点的id
 	 * @return
 	 */
-	@RequestMapping("/${simpleClassNameFirstLower}/queryChildren")
+	@RequestMapping("/${simpleClassNameFirstLower}/query")
 	@ResponseBody
-	public List<${simpleClassName}> queryChildren(String id) {
+	public List<${simpleClassName}> query(String id) {
 		Cnd cnd=Cnd.select().andEquals(M.${simpleClassName}.parent.id, "root".equals(id)?null:id);
 		List<${simpleClassName}> ${simpleClassNameFirstLower}es=${simpleClassNameFirstLower}Service.query(cnd);
 		//JsonConfigHolder.setFilterPropertys(${simpleClassName}.class,M.${simpleClassName}.parent.name());
@@ -51,9 +51,9 @@ public class ${simpleClassName}Controller {
 	 * @param userName
 	 * @return
 	 */
-	@RequestMapping("/${simpleClassNameFirstLower}/queryPage")
+	@RequestMapping("/${simpleClassNameFirstLower}/query")
 	@ResponseBody
-	public Page queryPage(Integer start,Integer limit,String sampleName){
+	public Page query(Integer start,Integer limit,String sampleName){
 		Page page=Page.getInstance(start,limit);//.addParam(M.${simpleClassName}.sampleName, "%"+sampleName+"%");
 		return ${simpleClassNameFirstLower}Service.queryPage(page);
 	}

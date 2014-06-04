@@ -739,5 +739,19 @@ Ext.define('Leon.desktop.Desktop', {
         		}
         	}
         });
+    },
+    reloadQuickStart:function(){
+    	var me=this;
+    	 Ext.Ajax.request({
+        	url:Ext.ContextPath+"/desktop/queryQuickstarts",
+        	method:"POST",
+        	//params:params,
+        	success:function(response){
+        		var obj=Ext.decode(response.responseText);
+        		var quickstarts=obj.root;
+    			me.menubar.quickStartPanel.reloadQuickStart(quickstarts);
+        	}
+        });
+    	
     }
 });

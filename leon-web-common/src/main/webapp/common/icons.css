@@ -23,6 +23,9 @@
 .form-delete-button { 
     background: url(../icons/delete.png) left top no-repeat !important; 
 }
+.form-cancel-button { 
+    background: url(../icons/cancel.png) left top no-repeat !important; 
+}
 .form-addChild-button { 
     background: url(../icons/expand-all.gif) left top no-repeat !important; 
 }
@@ -70,7 +73,7 @@
 }
 .icons_arrow_180{background: url(../icons/arrow_180.png) left top no-repeat !important;}
 .icons_arrow{background: url(../icons/arrow.png) left top no-repeat !important;}
-.icons_arrow_inout{background: url(../icons/arrow_inout.png) left top no-repeat !important;}
+.icons_application_link{background: url(../icons/application_link.png) left top no-repeat !important;}
 .icons_user_go{background: url(../icons/user_go.png) left top no-repeat !important;}
 .icons_user_home{background: url(../icons/user_home.png) left top no-repeat !important;}
 .icons_door_in{background: url(../icons/door_in.png) left top no-repeat !important;}

@@ -17,6 +17,7 @@ public class SecurityContextHolder {
     }
 
     /**
+     * 返回spring security的SecurityContextHolder
      * Obtain the current <code>SecurityContext</code>.
      *
      * @return the security context (never <code>null</code>)
@@ -44,6 +45,14 @@ public class SecurityContextHolder {
     	Authentication currentAuth = getAuthentication();
 		UserDetailsImpl userDetail=(UserDetailsImpl)currentAuth.getPrincipal();
 		return userDetail;
+    }
+    
+    public static String getUserId(){
+    	Authentication currentAuth = getAuthentication();
+		UserDetailsImpl userDetail=(UserDetailsImpl)currentAuth.getPrincipal();
+		
+		String userId=userDetail.getId();
+		return userId;
     }
 
 }

@@ -65,8 +65,8 @@ Ext.onReady(function(){
 	grid.form=form;
 	form.grid=grid;
 	grid.on('itemclick',function(view,record,item,index){
-		var basicFoem=form.getForm();
-		basicFoem.loadRecord(record);
+		//var basicFoem=form.getForm();
+		form.loadRecord(record);
 		//tabPanel.getEl().unmask();
 	});
 	

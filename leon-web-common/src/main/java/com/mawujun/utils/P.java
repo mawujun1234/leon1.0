@@ -5,7 +5,5 @@ package com.mawujun.utils;
  *
  */
 public enum P {
-java,
-tttt,
 menuId;
 }

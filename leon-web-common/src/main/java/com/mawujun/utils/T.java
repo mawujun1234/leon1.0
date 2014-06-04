@@ -154,10 +154,43 @@ public static final class leon_OrgDimenssion {
 	public static final String id="id";
 	public static final String name="name";
 }
+public static final class leon_OrgRelation {
+	 /**
+	 * 这个是复合主键。里面的是复合组件的组成列的列名
+	 */
+	public static final class Id {
+		public static final String parent_id="parent_id";
+		public static final String child_id="child_id";
+		public static final String orgDimenssion_id="orgDimenssion_id";
+			
+	}
+	/**
+	* 访问外键的列名，用于sql的时候，返回的是parent_id
+	*/
+	public static final String parent_id="parent_id";
+	/**
+	* 访问外键的列名，用于sql的时候，返回的是child_id
+	*/
+	public static final String child_id="child_id";
+	/**
+	* 访问外键的列名，用于sql的时候，返回的是orgDimenssion_id
+	*/
+	public static final String orgDimenssion_id="orgDimenssion_id";
+}
 public static final class leon_OrgType {
 	public static final String id="id";
 	public static final String name="name";
 	public static final String iconCls="iconCls";
+}
+public static final class leon_CustomerProperty {
+	public static final String name="name";
+	public static final String desc="desc";
+	public static final String id="id";
+}
+public static final class leon_CustomerSource {
+	public static final String name="name";
+	public static final String desc="desc";
+	public static final String id="id";
 }
 public static final class leon_Parameter {
 	public static final String id="id";

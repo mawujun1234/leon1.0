@@ -102,7 +102,18 @@ Ext.define('Leon.desktop.user.UserForm',{
                 format:'Y-m-d'
             }
 	    ];
-	    me.buttons= [{
+       
+       me.tbar=me.getTbarItems();
+       
+       me.addEvents("created");
+       me.callParent();
+	},
+	hidePassordField:function(){
+		this.getForm().findField("password").hide();
+	},
+	getTbarItems:function(){
+		var me=this;
+		var tools=[{
             text: '保存',
             itemId:'save',
             disabled :true,
@@ -148,18 +159,6 @@ Ext.define('Leon.desktop.user.UserForm',{
 				});
             }
         }];
-       
-       me.tbar=me.getTbarItems();
-       
-       me.addEvents("created");
-       me.callParent();
-	},
-	hidePassordField:function(){
-		this.getForm().findField("password").hide();
-	},
-	getTbarItems:function(){
-		var me=this;
-		var tools=[];
 		
 		var create = new Ext.Action({
 		    text: '新增',

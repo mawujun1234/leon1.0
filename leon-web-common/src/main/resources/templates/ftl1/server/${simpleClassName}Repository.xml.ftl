@@ -9,7 +9,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <#macro printDollar value>${r"${"}${value}}</#macro>
 <#macro namespace>${basepackage}</#macro>
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
-<mapper namespace="<@namespace/>.${simpleClassName}">
+<mapper namespace="<@namespace/>.${simpleClassName}Repository">
 
 	<!-- insert语句的生成开始=============================================================================================== -->
 	<#-- 还有guid的生成方式没有做，这个是根据数据库的函数生成的-->

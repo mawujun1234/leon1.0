@@ -180,7 +180,7 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
 	            tooltip: "请输入scripts"
 	        }
 	    ];
-	    me.buttons= [{
+	    me.tbar= [{
             text: '保存',
             itemId:'save',
             disabled :true,

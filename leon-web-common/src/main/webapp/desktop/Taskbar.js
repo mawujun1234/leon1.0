@@ -82,7 +82,7 @@ Ext.define('Leon.desktop.Taskbar', {
             //{text:'当前用户:'+me.desktop.authMsg,xtype:'label'},'-','-',
             me.windowBar,
             '-',
-            {iconCls: 'icons_desktop-image',xtype:'button',tooltip:'显示桌面',text:'',handler:function(){
+            {iconCls: 'icons_desktop-image',xtype:'button',tooltip:'显示桌面',tooltipType :'title',text:'',handler:function(){
 	        	 me.desktop.onAllWindowMinimize();
 	        }}
         ];
