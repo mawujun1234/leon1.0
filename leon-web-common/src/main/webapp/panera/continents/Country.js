@@ -1,0 +1,13 @@
+Ext.defineModel("Leon.panera.continents.Country",{
+	extend:"Ext.data.Model",
+	idProperty:'id',
+	fields:[
+		{name:'id',type:'string'},
+		{name:'continent',type:'auto'},
+		{name:'continent_name',type:'auto'},
+		{name:'name',type:'string'},
+		{name:'name_en',type:'string'}
+	],
+	associations:[
+	]
+});

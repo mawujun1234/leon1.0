@@ -8,6 +8,7 @@ import com.mawujun.menu.Menu;
 import com.mawujun.org.Org;
 import com.mawujun.org.OrgDimenssion;
 import com.mawujun.org.OrgType;
+import com.mawujun.panera.continents.Country;
 import com.mawujun.panera.customerProperty.CustomerProperty;
 import com.mawujun.panera.customerSource.CustomerSource;
 
@@ -32,7 +33,7 @@ public class GeneratorMain {
 		//str=generatorService.generatorToString(MenuItem.class,FtlFile.JsModel.toString(),null);	
         //System.out.println(str);
 		
-		GeneratorMain.generateAllFile(CustomerProperty.class,"D:/aa/");
+		GeneratorMain.generateAllFile(Country.class,"D:/aa/");
 		
 		
 		

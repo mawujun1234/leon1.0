@@ -7,7 +7,7 @@ import javax.persistence.Table;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
 @Entity
-@Table(name="leon_CustomerSource")
+@Table(name="panera_CustomerSource")
 public class CustomerSource extends UUIDEntity{
 	
 	/**
