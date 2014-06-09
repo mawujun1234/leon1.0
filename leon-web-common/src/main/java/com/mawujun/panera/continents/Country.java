@@ -48,11 +48,12 @@ public class Country extends UUIDEntity {
 	}
 
 	public String getContinent_name() {
-		return continent_name;
+		//return continent_name;
+		return this.getContinent().getText();
 	}
 
-	public void setContinent_name(String continent_name) {
-		this.continent_name = continent_name;
-	}
+//	public void setContinent_name(String continent_name) {
+//		this.continent_name = continent_name;
+//	}
 
 }

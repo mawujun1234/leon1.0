@@ -71,9 +71,9 @@ public class CountryController {
 			countryes=countryService.query(Cnd.where().andEquals("continent", Continent.valueOf(continent)));
 
 		}
-		for(Country country:countryes){
-			country.setContinent_name(country.getContinent().getText());
-		}
+		//for(Country country:countryes){
+		//	country.setContinent_name(country.getContinent().getText());
+		//}
 		return countryes;
 	}
 	
