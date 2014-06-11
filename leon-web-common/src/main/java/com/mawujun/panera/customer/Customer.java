@@ -27,11 +27,15 @@ public class Customer extends UUIDEntity {
 	private CustomerSource customerSource;
 	@ManyToOne(fetch=FetchType.EAGER)
 	private CustomerProperty customerProperty;
-	@Column(length=200)
-	private String website;	
+	
+		
 	private Country country;
 	@Column(length=200)
 	private String address;
+	
+	@Column(length=200)
+	private String website;
+	
 	@Column(length=100)
 	private String businessPhase;
 	@Column(length=20)
@@ -45,8 +49,8 @@ public class Customer extends UUIDEntity {
 	
 	private String star;//星级，还要加很多评判的字段	
 
-	@OneToMany(mappedBy="parent",fetch=FetchType.LAZY,cascade={CascadeType.REFRESH})
-	private List<Contact> contacts;
+//	@OneToMany(mappedBy="customer",fetch=FetchType.LAZY,cascade={CascadeType.REFRESH})
+//	private List<Contact> contacts;
 	
 	
 	
