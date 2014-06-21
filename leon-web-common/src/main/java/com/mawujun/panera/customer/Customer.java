@@ -47,7 +47,138 @@ public class Customer extends UUIDEntity {
 	
 	
 	
-	private String star;//星级，还要加很多评判的字段	
+	private int star;//星级，还要加很多评判的字段	
+	private int expYear;//光带几年经验
+	private int proportion;//光带占比
+	private int customerType;//客户类型
+	private int empNum;//员工人数
+	private int buyMoney;//光带年采购额
+	private int quality;//质量档次
+	private int price;//价格档次
+	private int moq;//每单每款MOQ
+	private int paymentTerms;//付款条款
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public CustomerSource getCustomerSource() {
+		return customerSource;
+	}
+	public void setCustomerSource(CustomerSource customerSource) {
+		this.customerSource = customerSource;
+	}
+	public CustomerProperty getCustomerProperty() {
+		return customerProperty;
+	}
+	public void setCustomerProperty(CustomerProperty customerProperty) {
+		this.customerProperty = customerProperty;
+	}
+	public Country getCountry() {
+		return country;
+	}
+	public void setCountry(Country country) {
+		this.country = country;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getWebsite() {
+		return website;
+	}
+	public void setWebsite(String website) {
+		this.website = website;
+	}
+	public String getBusinessPhase() {
+		return businessPhase;
+	}
+	public void setBusinessPhase(String businessPhase) {
+		this.businessPhase = businessPhase;
+	}
+	public String getFollowNum() {
+		return followNum;
+	}
+	public void setFollowNum(String followNum) {
+		this.followNum = followNum;
+	}
+	public Date getInquiryDate() {
+		return inquiryDate;
+	}
+	public void setInquiryDate(Date inquiryDate) {
+		this.inquiryDate = inquiryDate;
+	}
+	public String getInquiryContent() {
+		return inquiryContent;
+	}
+	public void setInquiryContent(String inquiryContent) {
+		this.inquiryContent = inquiryContent;
+	}
+
+	public int getExpYear() {
+		return expYear;
+	}
+	public void setExpYear(int expYear) {
+		this.expYear = expYear;
+	}
+	public int getProportion() {
+		return proportion;
+	}
+	public void setProportion(int proportion) {
+		this.proportion = proportion;
+	}
+	public int getCustomerType() {
+		return customerType;
+	}
+	public void setCustomerType(int customerType) {
+		this.customerType = customerType;
+	}
+	public int getEmpNum() {
+		return empNum;
+	}
+	public void setEmpNum(int empNum) {
+		this.empNum = empNum;
+	}
+	public int getBuyMoney() {
+		return buyMoney;
+	}
+	public void setBuyMoney(int buyMoney) {
+		this.buyMoney = buyMoney;
+	}
+	public int getQuality() {
+		return quality;
+	}
+	public void setQuality(int quality) {
+		this.quality = quality;
+	}
+	public int getPrice() {
+		return price;
+	}
+	public void setPrice(int price) {
+		this.price = price;
+	}
+	public int getMoq() {
+		return moq;
+	}
+	public void setMoq(int moq) {
+		this.moq = moq;
+	}
+	public int getPaymentTerms() {
+		return paymentTerms;
+	}
+	public void setPaymentTerms(int paymentTerms) {
+		this.paymentTerms = paymentTerms;
+	}
+	public int getStar() {
+		return star;
+	}
+	public void setStar(int star) {
+		this.star = star;
+	}
+	
 
 //	@OneToMany(mappedBy="customer",fetch=FetchType.LAZY,cascade={CascadeType.REFRESH})
 //	private List<Contact> contacts;

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
+<mapper namespace="com.mawujun.panera.customer.CustomerRepository">
+
+	<!-- insert语句的生成开始=============================================================================================== -->
+		<!--在插入的时候id就要写上了，相当于是自定义ID-->
+		<insert id="create" parameterType="com.mawujun.panera.customer.Customer">
+			<![CDATA[
+		        INSERT INTO panera_Customer (
+		        		id ,
+		        		address ,
+		        		businessPhase ,
+		        		buyMoney ,
+		        		country ,
+		        		customerType ,
+		        		empNum ,
+		        		expYear ,
+		        		followNum ,
+		        		inquiryContent ,
+		        		inquiryDate ,
+		        		moq ,
+		        		name ,
+		        		paymentTerms ,
+		        		price ,
+		        		proportion ,
+		        		quality ,
+		        		star ,
+		        		website ,
+		        			customerProperty_id ,
+		        			customerSource_id 
+		        ) VALUES (
+		        		#{id} ,
+		        		#{address} ,
+		        		#{businessPhase} ,
+		        		#{buyMoney} ,
+		        		#{country} ,
+		        		#{customerType} ,
+		        		#{empNum} ,
+		        		#{expYear} ,
+		        		#{followNum} ,
+		        		#{inquiryContent} ,
+		        		#{inquiryDate} ,
+		        		#{moq} ,
+		        		#{name} ,
+		        		#{paymentTerms} ,
+		        		#{price} ,
+		        		#{proportion} ,
+		        		#{quality} ,
+		        		#{star} ,
+		        		#{website} ,
+		        			#{customerProperty.id} ,
+		        			#{customerSource.id} 
+		        )
+		    ]]>
+	    </insert>
+	   
+	<!-- insert语句的生成结束=============================================================================================== -->
+
+	
+
+	<!-- delete语句的生成开始=============================================================================================== -->
+	<delete id="destroy" parameterType="String">
+    <![CDATA[
+        DELETE FROM panera_Customer WHERE id=#{id}
+    ]]>
+    </delete>
+    
+  <!--  
+    <delete id="deleteByWheres">
+        DELETE FROM panera_Customer
+        <where>
+        	<foreach collection="array" index="index" item="item" separator=" and ">
+				${item.prop} ${item.op} #{item.value}
+			</foreach>
+        </where>
+    </delete>
+	 delete语句的生成结束=============================================================================================== -->
+
+	
+
+	<!-- update语句的生成开始=============================================================================================== -->
+	<update id="update" parameterType="com.mawujun.panera.customer.Customer">
+		 UPDATE panera_Customer 
+			<set>
+		         <if test="address!=null">
+		        	address = #{address} ,
+		        </if>
+		         <if test="businessPhase!=null">
+		        	businessPhase = #{businessPhase} ,
+		        </if>
+		         <if test="buyMoney!=null">
+		        	buyMoney = #{buyMoney} ,
+		        </if>
+		         <if test="country!=null">
+		        	country = #{country} ,
+		        </if>
+		         <if test="customerType!=null">
+		        	customerType = #{customerType} ,
+		        </if>
+		         <if test="empNum!=null">
+		        	empNum = #{empNum} ,
+		        </if>
+		         <if test="expYear!=null">
+		        	expYear = #{expYear} ,
+		        </if>
+		         <if test="followNum!=null">
+		        	followNum = #{followNum} ,
+		        </if>
+		         <if test="inquiryContent!=null">
+		        	inquiryContent = #{inquiryContent} ,
+		        </if>
+		         <if test="inquiryDate!=null">
+		        	inquiryDate = #{inquiryDate} ,
+		        </if>
+		         <if test="moq!=null">
+		        	moq = #{moq} ,
+		        </if>
+		         <if test="name!=null">
+		        	name = #{name} ,
+		        </if>
+		         <if test="paymentTerms!=null">
+		        	paymentTerms = #{paymentTerms} ,
+		        </if>
+		         <if test="price!=null">
+		        	price = #{price} ,
+		        </if>
+		         <if test="proportion!=null">
+		        	proportion = #{proportion} ,
+		        </if>
+		         <if test="quality!=null">
+		        	quality = #{quality} ,
+		        </if>
+		         <if test="star!=null">
+		        	star = #{star} ,
+		        </if>
+		         <if test="website!=null">
+		        	website = #{website} ,
+		        </if>
+		        	<if test="customerProperty!=null and customerProperty.id!=null">
+		        	customerProperty_id = #{customerProperty.id} ,
+		        	</if>
+		        	<if test="customerSource!=null and customerSource.id!=null">
+		        	customerSource_id = #{customerSource.id} 
+		        	</if>
+	        </set>
+        WHERE 
+        	id=#{id}    
+	</update>
+	<!-- update语句的生成结束=============================================================================================== -->
+
+	
+
+	<!-- select语句的生成开始=============================================================================================== -->	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		id,
+		        address ,
+		        businessPhase ,
+		        buyMoney ,
+		        country ,
+		        customerType ,
+		        empNum ,
+		        expYear ,
+		        followNum ,
+		        inquiryContent ,
+		        inquiryDate ,
+		        moq ,
+		        name ,
+		        paymentTerms ,
+		        price ,
+		        proportion ,
+		        quality ,
+		        star ,
+		        website ,
+		        customerProperty_id ,
+		        customerSource_id 
+	    ]]>
+	</sql>
+	<select id="queryPage" resultType="com.mawujun.panera.customer.Customer" parameterType="map">
+    	SELECT <include refid="columns" />
+	    FROM panera_Customer 
+		<where>
+			<if test="wheres!=null">
+        	<foreach collection="wheres" index="index" item="item" separator=" and ">
+				${item.prop} ${item.op} #{item.value}
+			</foreach>
+			</if>
+        </where>
+    </select>
+    
+    <select id="get" resultType="com.mawujun.panera.customer.Customer" parameterType="String">
+    	SELECT <include refid="columns" />
+	    FROM panera_Customer 
+		WHERE 
+        	id=#{id}    
+    </select>
+	<!-- select语句的生成结束=============================================================================================== -->
+</mapper>
+

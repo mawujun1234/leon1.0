@@ -1,37 +1,36 @@
-Ext.define('Leon.panera.customerProperty.CustomerForm', {
+Ext.define('Leon.panera.customer.CustomerForm', {
     extend: 'Ext.form.Panel',
     requires: [
         'Ext.data.*',
-        'Ext.form.*',
-        'KitchenSink.model.State'
+        'Ext.form.*'
     ],
     xtype: 'form-checkout',
     
     
     frame: true,
-    title: 'Complete Check Out',
+    //title: 'Complete Check Out',
     bodyPadding: 5,
     
     initComponent: function(){
         var states = new Ext.data.Store({
-            model: KitchenSink.model.State,
+            fields:['key','value'],
             proxy: {
                 type: 'memory',
                 reader: {
                     type: 'array'
                 }
             },
-            data: KitchenSink.data.DataSets.states
+            data: []
         }),
         billingStates = new Ext.data.Store({
-            model: KitchenSink.model.State,
+            fields:['key','value'],
             proxy: {
                 type: 'memory',
                 reader: {
                     type: 'array'
                 }
             },
-            data: KitchenSink.data.DataSets.states
+            data: []
         });
         
         Ext.apply(this, {
@@ -44,7 +43,7 @@ Ext.define('Leon.panera.customerProperty.CustomerForm', {
 
             items: [{
                 xtype: 'fieldset',
-                title: 'Your Contact Information',
+                title: '基本信息',
                 defaultType: 'textfield',
                 layout: 'anchor',
                 defaults: {
@@ -52,22 +51,22 @@ Ext.define('Leon.panera.customerProperty.CustomerForm', {
                 },
                 items: [{
                     xtype: 'fieldcontainer',
-                    fieldLabel: 'Name',
+                    //fieldLabel: 'Name',
                     layout: 'hbox',
                     combineErrors: true,
                     defaultType: 'textfield',
                     defaults: {
-                        hideLabel: 'true'
+                        //hideLabel: 'true'
                     },
                     items: [{
                         name: 'firstName',
-                        fieldLabel: 'First Name',
+                        fieldLabel: '客户名称',
                         flex: 2,
                         emptyText: 'First',
                         allowBlank: false
                     }, {
                         name: 'lastName',
-                        fieldLabel: 'Last Name',
+                        fieldLabel: '客户来源',
                         flex: 3,
                         margins: '0 0 0 6',
                         emptyText: 'Last',
@@ -79,13 +78,7 @@ Ext.define('Leon.panera.customerProperty.CustomerForm', {
                     defaultType: 'textfield',
                     margin: '0 0 5 0',
                     items: [{
-                        fieldLabel: 'Email Address',
-                        name: 'email',
-                        vtype: 'email',
-                        flex: 1,
-                        allowBlank: false
-                    }, {
-                        fieldLabel: 'Phone Number',
+                        fieldLabel: '客户性质',
                         labelWidth: 100,
                         name: 'phone',
                         width: 200,
@@ -93,11 +86,101 @@ Ext.define('Leon.panera.customerProperty.CustomerForm', {
                         maskRe: /[\d\-]/,
                         regex: /^\d{3}-\d{3}-\d{4}$/,
                         regexText: 'Must be in the format xxx-xxx-xxxx'
+                    },{
+                        fieldLabel: '业务阶段',
+                        name: 'email',
+                        vtype: 'email',
+                        flex: 1,
+                        allowBlank: false
+                    }]
+                }, {
+                    xtype: 'container',
+                    layout: 'hbox',
+                    defaultType: 'textfield',
+                    margin: '0 0 5 0',
+                    items: [{
+                        fieldLabel: '主动跟进次数',
+                        labelWidth: 100,
+                        name: 'phone',
+                        width: 200,
+                        emptyText: 'xxx-xxx-xxxx',
+                        maskRe: /[\d\-]/,
+                        regex: /^\d{3}-\d{3}-\d{4}$/,
+                        regexText: 'Must be in the format xxx-xxx-xxxx'
+                    },{
+                        fieldLabel: '初次询盘时间',
+                        name: 'email',
+                        vtype: 'email',
+                        flex: 1,
+                        allowBlank: false
+                    }]
+                }, {
+                    xtype: 'container',
+                    layout: 'hbox',
+                    defaultType: 'textfield',
+                    margin: '0 0 5 0',
+                    items: [{
+                        fieldLabel: '初次询盘内容',
+                        name: 'email',
+                        vtype: 'email',
+                        flex: 1,
+                        allowBlank: false
+                    }]
+                }, {
+                    xtype: 'container',
+                    layout: 'hbox',
+                    defaultType: 'textfield',
+                    margin: '0 0 5 0',
+                    items: [{
+                        fieldLabel: '网址',
+                        name: 'email',
+                        vtype: 'email',
+                        flex: 1,
+                        allowBlank: false
+                    }]
+                },{
+                    xtype: 'fieldcontainer',
+                    //fieldLabel: 'Name',
+                    layout: 'hbox',
+                    combineErrors: true,
+                    defaultType: 'textfield',
+                    defaults: {
+                        //hideLabel: 'true'
+                    },
+                    items: [{
+                        name: 'firstName',
+                        fieldLabel: '洲',
+                        flex: 2,
+                        emptyText: 'First',
+                        allowBlank: false
+                    }, {
+                        name: 'lastName',
+                        fieldLabel: '国家',
+                        flex: 3,
+                        margins: '0 0 0 6',
+                        emptyText: 'Last',
+                        allowBlank: false
+                    }]
+                },{
+                    xtype: 'fieldcontainer',
+                    //fieldLabel: 'Name',
+                    layout: 'hbox',
+                    combineErrors: true,
+                    defaultType: 'textfield',
+                    defaults: {
+                        //hideLabel: 'true'
+                    },
+                    items: [{
+                        name: 'firstName',
+                        fieldLabel: '地址',
+                        flex: 2,
+                        emptyText: 'First',
+                        allowBlank: false
                     }]
                 }]
             }, {
                 xtype: 'fieldset',
-                title: 'Mailing Address',
+                title: '客户星级',
                 defaultType: 'textfield',
                 layout: 'anchor',
                 defaults: {
