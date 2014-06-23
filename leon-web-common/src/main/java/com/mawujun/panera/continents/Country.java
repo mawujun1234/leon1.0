@@ -1,5 +1,6 @@
 package com.mawujun.panera.continents;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;

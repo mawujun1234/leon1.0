@@ -59,18 +59,33 @@ Ext.define('Leon.panera.customer.CustomerForm', {
                         //hideLabel: 'true'
                     },
                     items: [{
-                        name: 'firstName',
+                        name: 'name',
                         fieldLabel: '客户名称',
                         flex: 2,
-                        emptyText: 'First',
+                        //emptyText: 'First',
                         allowBlank: false
                     }, {
-                        name: 'lastName',
+                        name: 'customerSource_id',
                         fieldLabel: '客户来源',
-                        flex: 3,
-                        margins: '0 0 0 6',
-                        emptyText: 'Last',
-                        allowBlank: false
+                        xtype: 'combobox',
+                        store: new Ext.data.Store({
+                        	url:Ext.ContextPath+''
+				            fields:['key','value'],
+				            proxy: {
+				                type: 'memory',
+				                reader: {
+				                    type: 'array'
+				                }
+				            },
+				            data: []
+				        }),
+                        valueField: 'key',
+                        displayField: 'value',
+                        typeAhead: true,
+                        queryMode: 'remote',
+                        disabled: true,
+                        allowBlank: false,
+                        forceSelection: true
                     }]
                 }, {
                     xtype: 'container',
@@ -80,16 +95,10 @@ Ext.define('Leon.panera.customer.CustomerForm', {
                     items: [{
                         fieldLabel: '客户性质',
                         labelWidth: 100,
-                        name: 'phone',
-                        width: 200,
-                        emptyText: 'xxx-xxx-xxxx',
-                        maskRe: /[\d\-]/,
-                        regex: /^\d{3}-\d{3}-\d{4}$/,
-                        regexText: 'Must be in the format xxx-xxx-xxxx'
+                        name: 'customerProperty_id'
                     },{
                         fieldLabel: '业务阶段',
-                        name: 'email',
-                        vtype: 'email',
+                        name: 'businessPhase_id',
                         flex: 1,
                         allowBlank: false
                     }]
@@ -101,16 +110,10 @@ Ext.define('Leon.panera.customer.CustomerForm', {
                     items: [{
                         fieldLabel: '主动跟进次数',
                         labelWidth: 100,
-                        name: 'phone',
-                        width: 200,
-                        emptyText: 'xxx-xxx-xxxx',
-                        maskRe: /[\d\-]/,
-                        regex: /^\d{3}-\d{3}-\d{4}$/,
-                        regexText: 'Must be in the format xxx-xxx-xxxx'
+                        name: 'followNum'
                     },{
                         fieldLabel: '初次询盘时间',
-                        name: 'email',
-                        vtype: 'email',
+                        name: 'inquiryDate',
                         flex: 1,
                         allowBlank: false
                     }]
@@ -121,8 +124,7 @@ Ext.define('Leon.panera.customer.CustomerForm', {
                     margin: '0 0 5 0',
                     items: [{
                         fieldLabel: '初次询盘内容',
-                        name: 'email',
-                        vtype: 'email',
+                        name: 'inquiryContent',
                         flex: 1,
                         allowBlank: false
                     }]
@@ -133,10 +135,9 @@ Ext.define('Leon.panera.customer.CustomerForm', {
                     margin: '0 0 5 0',
                     items: [{
                         fieldLabel: '网址',
-                        name: 'email',
-                        vtype: 'email',
+                        name: 'website',
                         flex: 1,
-                        allowBlank: false
+                        allowBlank: true
                     }]
                 },{
                     xtype: 'fieldcontainer',
@@ -148,17 +149,15 @@ Ext.define('Leon.panera.customer.CustomerForm', {
                         //hideLabel: 'true'
                     },
                     items: [{
-                        name: 'firstName',
+                        name: 'continent_id',
                         fieldLabel: '洲',
                         flex: 2,
-                        emptyText: 'First',
                         allowBlank: false
                     }, {
-                        name: 'lastName',
+                        name: 'country_id',
                         fieldLabel: '国家',
                         flex: 3,
                         margins: '0 0 0 6',
-                        emptyText: 'Last',
                         allowBlank: false
                     }]
                 },{
@@ -171,11 +170,10 @@ Ext.define('Leon.panera.customer.CustomerForm', {
                         //hideLabel: 'true'
                     },
                     items: [{
-                        name: 'firstName',
+                        name: 'address',
                         fieldLabel: '地址',
                         flex: 2,
-                        emptyText: 'First',
-                        allowBlank: false
+                        allowBlank: true
                     }]
                 }]
             }, {

@@ -13,6 +13,8 @@ import javax.persistence.Table;
 
 
 
+import javax.persistence.Transient;
+
 import com.mawujun.panera.continents.Country;
 import com.mawujun.panera.customerProperty.CustomerProperty;
 import com.mawujun.panera.customerSource.CustomerSource;
@@ -23,13 +25,23 @@ import com.mawujun.repository.idEntity.UUIDEntity;
 public class Customer extends UUIDEntity {
 	@Column(length=100)
 	private String name;
-	@ManyToOne(fetch=FetchType.EAGER)
-	private CustomerSource customerSource;
-	@ManyToOne(fetch=FetchType.EAGER)
-	private CustomerProperty customerProperty;
+	//@ManyToOne(fetch=FetchType.EAGER)
+	//private CustomerSource customerSource;
+	@Column(length=36)
+	private String customerSource_id;
+//	@ManyToOne(fetch=FetchType.EAGER)
+//	private CustomerProperty customerProperty;
+	@Column(length=36)
+	private String customerProperty_id;
 	
 		
-	private Country country;
+//	private Country country;
+	//@Column(length=36)
+	@Transient
+	private String continent_id;
+	@Column(length=36)
+	private String country_id;
+
 	@Column(length=200)
 	private String address;
 	
@@ -37,7 +49,7 @@ public class Customer extends UUIDEntity {
 	private String website;
 	
 	@Column(length=100)
-	private String businessPhase;
+	private String businessPhase_id;
 	@Column(length=20)
 	private String followNum;//跟进次数，这个是只读的，是在跟进记录里面设置的
 	private Date inquiryDate;//初次询盘时间
@@ -57,30 +69,15 @@ public class Customer extends UUIDEntity {
 	private int price;//价格档次
 	private int moq;//每单每款MOQ
 	private int paymentTerms;//付款条款
+	
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
-	public CustomerSource getCustomerSource() {
-		return customerSource;
-	}
-	public void setCustomerSource(CustomerSource customerSource) {
-		this.customerSource = customerSource;
-	}
-	public CustomerProperty getCustomerProperty() {
-		return customerProperty;
-	}
-	public void setCustomerProperty(CustomerProperty customerProperty) {
-		this.customerProperty = customerProperty;
-	}
-	public Country getCountry() {
-		return country;
-	}
-	public void setCountry(Country country) {
-		this.country = country;
-	}
+
+
 	public String getAddress() {
 		return address;
 	}
@@ -93,12 +90,7 @@ public class Customer extends UUIDEntity {
 	public void setWebsite(String website) {
 		this.website = website;
 	}
-	public String getBusinessPhase() {
-		return businessPhase;
-	}
-	public void setBusinessPhase(String businessPhase) {
-		this.businessPhase = businessPhase;
-	}
+
 	public String getFollowNum() {
 		return followNum;
 	}
@@ -177,6 +169,37 @@ public class Customer extends UUIDEntity {
 	}
 	public void setStar(int star) {
 		this.star = star;
+	}
+	public String getCustomerSource_id() {
+		return customerSource_id;
+	}
+	public void setCustomerSource_id(String customerSource_id) {
+		this.customerSource_id = customerSource_id;
+	}
+	public String getCustomerProperty_id() {
+		return customerProperty_id;
+	}
+	public void setCustomerProperty_id(String customerProperty_id) {
+		this.customerProperty_id = customerProperty_id;
+	}
+
+	public String getContinent_id() {
+		return continent_id;
+	}
+	public void setContinent_id(String continent_id) {
+		this.continent_id = continent_id;
+	}
+	public String getCountry_id() {
+		return country_id;
+	}
+	public void setCountry_id(String country_id) {
+		this.country_id = country_id;
+	}
+	public String getBusinessPhase_id() {
+		return businessPhase_id;
+	}
+	public void setBusinessPhase_id(String businessPhase_id) {
+		this.businessPhase_id = businessPhase_id;
 	}
 	
 
