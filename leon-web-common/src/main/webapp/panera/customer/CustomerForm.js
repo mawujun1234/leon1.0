@@ -10,31 +10,11 @@ Ext.define('Leon.panera.customer.CustomerForm', {
     frame: true,
     //title: 'Complete Check Out',
     bodyPadding: 5,
-    
+    autoScroll :true,
     initComponent: function(){
-        var states = new Ext.data.Store({
-            fields:['key','value'],
-            proxy: {
-                type: 'memory',
-                reader: {
-                    type: 'array'
-                }
-            },
-            data: []
-        }),
-        billingStates = new Ext.data.Store({
-            fields:['key','value'],
-            proxy: {
-                type: 'memory',
-                reader: {
-                    type: 'array'
-                }
-            },
-            data: []
-        });
         
         Ext.apply(this, {
-            width: 550,
+            //width: 550,
             fieldDefaults: {
                 labelAlign: 'right',
                 labelWidth: 90,
@@ -69,21 +49,22 @@ Ext.define('Leon.panera.customer.CustomerForm', {
                         fieldLabel: '客户来源',
                         xtype: 'combobox',
                         store: new Ext.data.Store({
-                        	url:Ext.ContextPath+''
-				            fields:['key','value'],
+				            fields:['id','name'],
 				            proxy: {
-				                type: 'memory',
+				            	url:Ext.ContextPath+'/customerSource/query',
+				                type: 'ajax',
 				                reader: {
-				                    type: 'array'
+				                    type: 'json',
+				                    root:'root'
 				                }
-				            },
-				            data: []
+				            }
 				        }),
-                        valueField: 'key',
-                        displayField: 'value',
-                        typeAhead: true,
+                        valueField: 'id',
+                        displayField: 'name',
+                        //typeAhead: true,
                         queryMode: 'remote',
-                        disabled: true,
+                        editable:false,
+                        //disabled: true,
                         allowBlank: false,
                         forceSelection: true
                     }]
@@ -94,13 +75,51 @@ Ext.define('Leon.panera.customer.CustomerForm', {
                     margin: '0 0 5 0',
                     items: [{
                         fieldLabel: '客户性质',
-                        labelWidth: 100,
-                        name: 'customerProperty_id'
+                        name: 'customerProperty_id',
+                        xtype: 'combobox',
+                        store: new Ext.data.Store({
+				            fields:['id','name'],
+				            proxy: {
+				            	url:Ext.ContextPath+'/customerProperty/query',
+				                type: 'ajax',
+				                reader: {
+				                    type: 'json',
+				                    root:'root'
+				                }
+				            }
+				        }),
+                        valueField: 'id',
+                        displayField: 'name',
+                        //typeAhead: true,
+                        queryMode: 'remote',
+                        editable:false,
+                        //disabled: true,
+                        allowBlank: false,
+                        forceSelection: true
                     },{
                         fieldLabel: '业务阶段',
                         name: 'businessPhase_id',
                         flex: 1,
-                        allowBlank: false
+                        xtype: 'combobox',
+                        store:new Ext.data.Store({
+				            fields:['id','name'],
+				            proxy: {
+				                type: 'memory',
+				                reader: {
+				                    //type: 'array'
+				                }
+				            },
+				            data: [{id:'none',name:'未回复'},{id:'replay',name:'客户回复'},{id:'discuss',name:'讨论价格'},{id:'send',name:'送样'},{id:'deal',name:'成交'}]
+				        }),
+				        value:'none',
+				        valueField: 'id',
+                        displayField: 'name',
+                        //typeAhead: true,
+                        queryMode: 'local',
+                        editable:false,
+                        //disabled: true,
+                        allowBlank: false,
+                        forceSelection: true
                     }]
                 }, {
                     xtype: 'container',
@@ -110,10 +129,14 @@ Ext.define('Leon.panera.customer.CustomerForm', {
                     items: [{
                         fieldLabel: '主动跟进次数',
                         labelWidth: 100,
+                        //disabled: true,
+                        readOnly:true,
                         name: 'followNum'
                     },{
+                    	xtype:'datefield',
                         fieldLabel: '初次询盘时间',
                         name: 'inquiryDate',
+                        format:'Y-m-d',
                         flex: 1,
                         allowBlank: false
                     }]
@@ -123,6 +146,8 @@ Ext.define('Leon.panera.customer.CustomerForm', {
                     defaultType: 'textfield',
                     margin: '0 0 5 0',
                     items: [{
+                    	xtype     : 'textareafield',
+        				grow      : true,
                         fieldLabel: '初次询盘内容',
                         name: 'inquiryContent',
                         flex: 1,
@@ -151,14 +176,57 @@ Ext.define('Leon.panera.customer.CustomerForm', {
                     items: [{
                         name: 'continent_id',
                         fieldLabel: '洲',
-                        flex: 2,
-                        allowBlank: false
+                        xtype: 'combobox',
+                        store: new Ext.data.Store({
+				            fields:['id','name'],
+				            proxy: {
+				            	url:Ext.ContextPath+'/country/queryContinent',
+				                type: 'ajax',
+				                reader: {
+				                    type: 'json',
+				                    root:'root'
+				                }
+				            }
+				        }),
+                        valueField: 'id',
+                        displayField: 'name',
+                        //typeAhead: true,
+                        queryMode: 'remote',
+                        editable:false,
+                        //disabled: true,
+                        allowBlank: false,
+                        forceSelection: true,
+                        listeners:{
+                        	change:function(combo, newValue, oldValue){
+                        		var country=combo.nextSibling();
+                        		country.getStore().reload({params:{continent:newValue}});
+                        	}
+                        }
                     }, {
                         name: 'country_id',
                         fieldLabel: '国家',
-                        flex: 3,
-                        margins: '0 0 0 6',
-                        allowBlank: false
+                        xtype: 'combobox',
+                        store: new Ext.data.Store({
+				            fields:['id','name'],
+				            proxy: {
+				            	autoLoad:false,
+				            	url:Ext.ContextPath+'/country/query',
+				                type: 'ajax',
+				                extraParams:{continent:'none'},
+				                reader: {
+				                    type: 'json',
+				                    root:'root'
+				                }
+				            }
+				        }),
+                        valueField: 'id',
+                        displayField: 'name',
+                        //typeAhead: true,
+                        queryMode: 'remote',
+                        editable:false,
+                        //disabled: true,
+                        allowBlank: false,
+                        forceSelection: true
                     }]
                 },{
                     xtype: 'fieldcontainer',
@@ -185,145 +253,328 @@ Ext.define('Leon.panera.customer.CustomerForm', {
                     anchor: '100%'
                 },
                 items: [{
-                    labelWidth: 110,
-                    fieldLabel: 'Street Address',
-                    name: 'mailingStreet',
-                    listeners: {
-                        scope: this,
-                        change: this.onMailingAddrFieldChange
-                    },
-                    billingFieldName: 'billingStreet',
-                    allowBlank: false
-                }, {
                     xtype: 'container',
                     layout: 'hbox',
                     margin: '0 0 5 0',
                     items: [{
-                        labelWidth: 110,
-                        xtype: 'textfield',
-                        fieldLabel: 'City',
-                        name: 'mailingCity',
-                        listeners: {
-                            scope: this,
-                            change: this.onMailingAddrFieldChange
-                        },
-                        billingFieldName: 'billingCity',
+                        fieldLabel: '光带几年经验',
+                        name: 'expYear',
                         flex: 1,
-                        allowBlank: false
-                    }, {
                         xtype: 'combobox',
-                        name: 'mailingState',
-                        forceSelection: true,
-                        maxLength: 2,
-                        enforceMaxLength: true,
-                        listeners: {
-                            scope: this,
-                            change: this.onMailingAddrFieldChange
-                        },
-                        billingFieldName: 'billingState',
-                        fieldLabel: 'State',
-                        labelWidth: 50,
-                        width: 112,
-                        listConfig: {
-                            minWidth: null
-                        },
-                        store: states,
-                        valueField: 'abbr',
-                        displayField: 'abbr',
-                        typeAhead: true,
+                        store:new Ext.data.Store({
+				            fields:['id','name'],
+				            proxy: {
+				                type: 'memory',
+				                reader: {
+				                    //type: 'array'
+				                }
+				            },
+				            data: [{id:'1',name:'0年'},{id:'2',name:'1年'},{id:'3',name:'2年'},{id:'4',name:'3年'},{id:'5',name:'3年以上'}]
+				        }),
+				        valueField: 'id',
+                        displayField: 'name',
+                        //typeAhead: true,
                         queryMode: 'local',
+                        editable:false,
+                        //disabled: true,
                         allowBlank: false,
                         forceSelection: true
-                    }, {
-                        xtype: 'textfield',
-                        fieldLabel: 'Postal Code',
-                        labelWidth: 80,
-                        name: 'mailingPostalCode',
-                        listeners: {
-                            scope: this,
-                            change: this.onMailingAddrFieldChange
-                        },
-                        billingFieldName: 'billingPostalCode',
-                        width: 160,
+                    },{
+                        fieldLabel: '光带占比',
+                        name: 'proportion',
+                        flex: 1,
+                        xtype: 'combobox',
+                        store:new Ext.data.Store({
+				            fields:['id','name'],
+				            proxy: {
+				                type: 'memory',
+				                reader: {
+				                    //type: 'array'
+				                }
+				            },
+				            data: [{id:'1',name:'<10%'},{id:'2',name:'10%'},{id:'3',name:'15%'},{id:'4',name:'20%'},{id:'5',name:'30%'}]
+				        }),
+				        valueField: 'id',
+                        displayField: 'name',
+                        //typeAhead: true,
+                        queryMode: 'local',
+                        editable:false,
+                        //disabled: true,
                         allowBlank: false,
-                        maxLength: 10,
-                        enforceMaxLength: true,
-                        maskRe: /[\d\-]/,
-                        regex: /^\d{5}(\-\d{4})?$/,
-                        regexText: 'Must be in the format xxxxx or xxxxx-xxxx'
+                        forceSelection: true
+                    },{
+                        fieldLabel: '客户类型',
+                        name: 'customerType',
+                        flex: 1,
+                        xtype: 'combobox',
+                        store:new Ext.data.Store({
+				            fields:['id','name'],
+				            proxy: {
+				                type: 'memory',
+				                reader: {
+				                    //type: 'array'
+				                }
+				            },
+				            data: [{id:'1',name:'DIY'},{id:'2',name:'工程'}]
+				        }),
+				        valueField: 'id',
+                        displayField: 'name',
+                        //typeAhead: true,
+                        queryMode: 'local',
+                        editable:false,
+                        //disabled: true,
+                        allowBlank: false,
+                        forceSelection: true
+                    }]
+                },{
+                    xtype: 'container',
+                    layout: 'hbox',
+                    margin: '0 0 5 0',
+                    items: [{
+                        fieldLabel: '员工人数',
+                        name: 'empNum',
+                        flex: 1,
+                        xtype: 'combobox',
+                        store:new Ext.data.Store({
+				            fields:['id','name'],
+				            proxy: {
+				                type: 'memory',
+				                reader: {
+				                    //type: 'array'
+				                }
+				            },
+				            data: [{id:'1',name:'1+'},{id:'2',name:'10+'},{id:'3',name:'15+'},{id:'4',name:'20+'},{id:'5',name:'30+'}]
+				        }),
+				        valueField: 'id',
+                        displayField: 'name',
+                        //typeAhead: true,
+                        queryMode: 'local',
+                        editable:false,
+                        //disabled: true,
+                        allowBlank: false,
+                        forceSelection: true
+                    },{
+                        fieldLabel: '光带年采购额',
+                        name: 'buyMoney',
+                        flex: 1,
+                        xtype: 'combobox',
+                        store:new Ext.data.Store({
+				            fields:['id','name'],
+				            proxy: {
+				                type: 'memory',
+				                reader: {
+				                    //type: 'array'
+				                }
+				            },
+				            data: [{id:'1',name:'10+'},{id:'2',name:'20+'},{id:'3',name:'30+'},{id:'4',name:'40+'},{id:'5',name:'50+'}]
+				        }),
+				        valueField: 'id',
+                        displayField: 'name',
+                        //typeAhead: true,
+                        queryMode: 'local',
+                        editable:false,
+                        //disabled: true,
+                        allowBlank: false,
+                        forceSelection: true
+                    },{
+                        fieldLabel: '质量档次',
+                        name: 'quality',
+                        flex: 1,
+                        xtype: 'combobox',
+                        store:new Ext.data.Store({
+				            fields:['id','name'],
+				            proxy: {
+				                type: 'memory',
+				                reader: {
+				                    //type: 'array'
+				                }
+				            },
+				            data: [{id:'2',name:'C'},{id:'3',name:'B.C'},{id:'4',name:'A.B.H'},{id:'5',name:'A.H'}]
+				        }),
+				        valueField: 'id',
+                        displayField: 'name',
+                        //typeAhead: true,
+                        queryMode: 'local',
+                        editable:false,
+                        //disabled: true,
+                        allowBlank: false,
+                        forceSelection: true
+                    }]
+                },{
+                    xtype: 'container',
+                    layout: 'hbox',
+                    margin: '0 0 5 0',
+                    items: [{
+                        fieldLabel: '价格档次',
+                        name: 'price',
+                        flex: 1,
+                        xtype: 'combobox',
+                        store:new Ext.data.Store({
+				            fields:['id','name'],
+				            proxy: {
+				                type: 'memory',
+				                reader: {
+				                    //type: 'array'
+				                }
+				            },
+				            data: [{id:'2',name:'C'},{id:'3',name:'B.C'},{id:'4',name:'A.B'},{id:'5',name:'A.H'}]
+				        }),
+				        valueField: 'id',
+                        displayField: 'name',
+                        //typeAhead: true,
+                        queryMode: 'local',
+                        editable:false,
+                        //disabled: true,
+                        allowBlank: false,
+                        forceSelection: true
+                    },{
+                        fieldLabel: '每单每款MOQ',
+                        name: 'moq',
+                        flex: 1,
+                        xtype: 'combobox',
+                        store:new Ext.data.Store({
+				            fields:['id','name'],
+				            proxy: {
+				                type: 'memory',
+				                reader: {
+				                    //type: 'array'
+				                }
+				            },
+				            data: [{id:'1',name:'<500M'},{id:'3',name:'>=500M'},{id:'5',name:'>=1000M'}]
+				        }),
+				        valueField: 'id',
+                        displayField: 'name',
+                        //typeAhead: true,
+                        queryMode: 'local',
+                        editable:false,
+                        //disabled: true,
+                        allowBlank: false,
+                        forceSelection: true
+                    },{
+                        fieldLabel: '付款条款',
+                        name: 'paymentTerms',
+                        flex: 1,
+                        xtype: 'combobox',
+                        store:new Ext.data.Store({
+				            fields:['id','name'],
+				            proxy: {
+				                type: 'memory',
+				                reader: {
+				                    //type: 'array'
+				                }
+				            },
+				            data: [
+					            {id:'0',name:'后T/T出货后OA **天内'},
+					            {id:'1',name:'无订金 B/L提单复印件7天'},
+					            {id:'2',name:'无订金 100%出货前'},
+					            {id:'3',name:'L/C信用证45天'},
+					            {id:'4',name:'L/C信用证即期'},
+					            {id:'4',name:'前T/T 30%订金,70%出货前（空运海运都适用）'},
+					            {id:'5',name:'前T/T 100%订金'}
+				            ]
+				        }),
+				        valueField: 'id',
+                        displayField: 'name',
+                        //typeAhead: true,
+                        queryMode: 'local',
+                        editable:false,
+                        //disabled: true,
+                        allowBlank: false,
+                        forceSelection: true
                     }]
                 }]
             }, {
                 xtype: 'fieldset',
-                title: 'Billing Address',
+                title: '联系人',
                 layout: 'anchor',
                 defaults: {
-                    anchor: '100%'
+                    anchor: '100%',
+                    labelWidth: 60
                 },
                 items: [{
-                    xtype: 'checkbox',
-                    name: 'billingSameAsMailing',
-                    boxLabel: 'Same as Mailing Address?',
-                    hideLabel: true,
-                    checked: true,
-                    margin: '0 0 10 0',
-                    scope: this,
-                    handler: this.onSameAddressChange
-                }, {
-                    labelWidth: 110,
-                    xtype: 'textfield',
-                    fieldLabel: 'Street Address',
-                    name: 'billingStreet',
-                    style: (!Ext.isIE6) ? 'opacity:.3' : '',
-                    disabled: true,
-                    allowBlank: false
+                    xtype: 'container',
+                    layout: 'hbox',
+                    margin: '0 0 5 0',
+                    items: [{
+	                    xtype: 'checkbox',
+	                    name: 'defaultContact',
+	                    boxLabel: '默认联系人',
+	                    hideLabel: true,
+	                    checked: true,
+	                    //margin: '0 0 10 0',
+	                    scope: this,
+	                    handler: this.onSameAddressChange
+                	}]
                 }, {
                     xtype: 'container',
                     layout: 'hbox',
                     margin: '0 0 5 0',
                     items: [{
-                        labelWidth: 110,
+                        //labelWidth: 110,
                         xtype: 'textfield',
-                        fieldLabel: 'City',
-                        name: 'billingCity',
-                        style: (!Ext.isIE6) ? 'opacity:.3' : '',
-                        flex: 1,
-                        disabled: true,
+                        fieldLabel: '联系人',
+                        name: 'contact_name',
+                       // style: (!Ext.isIE6) ? 'opacity:.3' : '',
+                        //flex: 1,
                         allowBlank: false
                     }, {
-                        xtype: 'combobox',
-                        name: 'billingState',
-                        maxLength: 2,
-                        enforceMaxLength: true,
-                        style: (!Ext.isIE6) ? 'opacity:.3' : '',
-                        fieldLabel: 'State',
-                        labelWidth: 50,
-                        listConfig: {
-                            minWidth: null
-                        },
-                        width: 112,
-                        store: billingStates,
-                        valueField: 'abbr',
-                        displayField: 'abbr',
-                        typeAhead: true,
-                        queryMode: 'local',
-                        disabled: true,
-                        allowBlank: false,
-                        forceSelection: true
-                    }, {
+                        //labelWidth: 110,
                         xtype: 'textfield',
-                        fieldLabel: 'Postal Code',
-                        labelWidth: 80,
-                        name: 'billingPostalCode',
-                        style: (!Ext.isIE6) ? 'opacity:.3' : '',
-                        width: 160,
-                        disabled: true,
-                        allowBlank: false,
-                        maxLength: 10,
-                        enforceMaxLength: true,
-                        maskRe: /[\d\-]/,
-                        regex: /^\d{5}(\-\d{4})?$/,
-                        regexText: 'Must be in the format xxxxx or xxxxx-xxxx'
+                        fieldLabel: '职位',
+                        name: 'contact_position',
+                       // style: (!Ext.isIE6) ? 'opacity:.3' : '',
+                        //flex: 1,
+                        allowBlank: false
+                    }, {
+                        //labelWidth: 110,
+                        xtype: 'textfield',
+                        fieldLabel: '聊天账号',
+                        name: 'chatNum',
+                       // style: (!Ext.isIE6) ? 'opacity:.3' : '',
+                        //flex: 1,
+                        allowBlank: false
+                    }]
+                }, {
+                    xtype: 'container',
+                    layout: 'hbox',
+                    //margin: '0 0 5 0',
+                    items: [{
+                        labelWidth: 110,
+                        xtype: 'textfield',
+                        fieldLabel: '电话',
+                        name: 'contact_phone',
+                       // style: (!Ext.isIE6) ? 'opacity:.3' : '',
+                        flex: 1,
+                        allowBlank: false
+                    }, {
+                        labelWidth: 110,
+                        xtype: 'textfield',
+                        fieldLabel: '传真',
+                        name: 'contact_fax',
+                       // style: (!Ext.isIE6) ? 'opacity:.3' : '',
+                        flex: 1,
+                        allowBlank: false
+                    }, {
+                        labelWidth: 110,
+                        xtype: 'textfield',
+                        fieldLabel: '手机',
+                        name: 'mobile',
+                       // style: (!Ext.isIE6) ? 'opacity:.3' : '',
+                        flex: 1,
+                        allowBlank: false
+                    }]
+                }, {
+                    xtype: 'container',
+                    layout: 'hbox',
+                    	margin: '0 0 5 0',
+                    items: [{
+                        labelWidth: 110,
+                        xtype: 'textfield',
+                        fieldLabel: 'email',
+                        name: 'email',
+                       // style: (!Ext.isIE6) ? 'opacity:.3' : '',
+                        flex: 1,
+                        allowBlank: false
                     }]
                 }]
             }, {

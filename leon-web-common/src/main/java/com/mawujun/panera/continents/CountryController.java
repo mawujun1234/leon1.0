@@ -1,6 +1,8 @@
 package com.mawujun.panera.continents;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -60,9 +62,26 @@ public class CountryController {
 //		return countryService.queryPage(page);
 //	}
 
+	@RequestMapping("/country/queryContinent")
+	@ResponseBody
+	public List<Map<String,String>> queryContinent() {	
+		List<Map<String,String>> continents=new ArrayList<Map<String,String>>();
+		for(Continent continent:Continent.values()){
+			Map<String,String> map=new HashMap<String,String>();
+			map.put("id", continent.name());
+			map.put("name", continent.getText());
+			continents.add(map);
+		}
+		return continents;
+	}
+	
 	@RequestMapping("/country/query")
 	@ResponseBody
 	public List<Country> query(String continent) {	
+		//在客户的表单的时候用的
+		if("none".equals(continent)){
+			return null;
+		}
 		List<Country> countryes=new ArrayList<Country>();
 		if(continent==null || "".equalsIgnoreCase(continent)){
 			countryes=countryService.queryAll();

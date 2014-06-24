@@ -56,6 +56,7 @@ Ext.define('Leon.panera.customer.CustomerGrid',{
 				var win=Ext.create('Ext.Window',{
 					title:'新增客户',
 					modal:true,
+					autoScroll :true,
 					width:600,
 					height:600,
 					layout:'fit',
