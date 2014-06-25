@@ -269,7 +269,7 @@ Ext.define('Leon.panera.customer.CustomerForm', {
 				                    //type: 'array'
 				                }
 				            },
-				            data: [{id:'1',name:'0年'},{id:'2',name:'1年'},{id:'3',name:'2年'},{id:'4',name:'3年'},{id:'5',name:'3年以上'}]
+				            data: [{id:'1',name:'0年'},{id:'2',name:'1年'},{id:'3',name:'2年'},{id:'4',name:'3年'},{id:'5',name:'4年及以上'}]
 				        }),
 				        valueField: 'id',
                         displayField: 'name',
@@ -485,27 +485,13 @@ Ext.define('Leon.panera.customer.CustomerForm', {
                 }]
             }, {
                 xtype: 'fieldset',
-                title: '联系人',
+                title: '默认联系人',
                 layout: 'anchor',
                 defaults: {
-                    anchor: '100%',
-                    labelWidth: 60
+                    anchor: '100%'
+                    //labelWidth: 60
                 },
                 items: [{
-                    xtype: 'container',
-                    layout: 'hbox',
-                    margin: '0 0 5 0',
-                    items: [{
-	                    xtype: 'checkbox',
-	                    name: 'defaultContact',
-	                    boxLabel: '默认联系人',
-	                    hideLabel: true,
-	                    checked: true,
-	                    //margin: '0 0 10 0',
-	                    scope: this,
-	                    handler: this.onSameAddressChange
-                	}]
-                }, {
                     xtype: 'container',
                     layout: 'hbox',
                     margin: '0 0 5 0',
@@ -515,7 +501,7 @@ Ext.define('Leon.panera.customer.CustomerForm', {
                         fieldLabel: '联系人',
                         name: 'contact_name',
                        // style: (!Ext.isIE6) ? 'opacity:.3' : '',
-                        //flex: 1,
+                        flex: 1,
                         allowBlank: false
                     }, {
                         //labelWidth: 110,
@@ -523,23 +509,15 @@ Ext.define('Leon.panera.customer.CustomerForm', {
                         fieldLabel: '职位',
                         name: 'contact_position',
                        // style: (!Ext.isIE6) ? 'opacity:.3' : '',
-                        //flex: 1,
-                        allowBlank: false
-                    }, {
-                        //labelWidth: 110,
-                        xtype: 'textfield',
-                        fieldLabel: '聊天账号',
-                        name: 'chatNum',
-                       // style: (!Ext.isIE6) ? 'opacity:.3' : '',
-                        //flex: 1,
+                        flex: 1,
                         allowBlank: false
                     }]
-                }, {
+                },{
                     xtype: 'container',
                     layout: 'hbox',
-                    //margin: '0 0 5 0',
+                    margin: '0 0 5 0',
                     items: [{
-                        labelWidth: 110,
+                        //labelWidth: 110,
                         xtype: 'textfield',
                         fieldLabel: '电话',
                         name: 'contact_phone',
@@ -547,133 +525,58 @@ Ext.define('Leon.panera.customer.CustomerForm', {
                         flex: 1,
                         allowBlank: false
                     }, {
-                        labelWidth: 110,
+                        //labelWidth: 110,
+                        xtype: 'textfield',
+                        fieldLabel: '手机',
+                        name: 'contact_mobile',
+                       // style: (!Ext.isIE6) ? 'opacity:.3' : '',
+                        flex: 1,
+                        allowBlank: false
+                    }]
+                }, {
+                    xtype: 'container',
+                    layout: 'hbox',
+                    margin: '0 0 5 0',
+                    items: [{
+                        //labelWidth: 110,
+                        xtype: 'textfield',
+                        fieldLabel: '聊天账号',
+                        name: 'contact_chatNum',
+                       // style: (!Ext.isIE6) ? 'opacity:.3' : '',
+                        flex: 1,
+                        allowBlank: false
+                    },{
+                        //labelWidth: 110,
                         xtype: 'textfield',
                         fieldLabel: '传真',
                         name: 'contact_fax',
                        // style: (!Ext.isIE6) ? 'opacity:.3' : '',
                         flex: 1,
                         allowBlank: false
-                    }, {
-                        labelWidth: 110,
-                        xtype: 'textfield',
-                        fieldLabel: '手机',
-                        name: 'mobile',
-                       // style: (!Ext.isIE6) ? 'opacity:.3' : '',
-                        flex: 1,
-                        allowBlank: false
                     }]
-                }, {
-                    xtype: 'container',
-                    layout: 'hbox',
-                    	margin: '0 0 5 0',
-                    items: [{
-                        labelWidth: 110,
-                        xtype: 'textfield',
-                        fieldLabel: 'email',
-                        name: 'email',
-                       // style: (!Ext.isIE6) ? 'opacity:.3' : '',
-                        flex: 1,
-                        allowBlank: false
-                    }]
-                }]
-            }, {
-                xtype: 'fieldset',
-                title: 'Payment',
-                layout: 'anchor',
-                defaults: {
-                    anchor: '100%'
-                },
-                items: [{
-                    xtype: 'radiogroup',
-                    anchor: 'none',
-                    layout: {
-                        autoFlex: false
-                    },
-                    defaults: {
-                        name: 'ccType',
-                        margin: '0 15 0 0'
-                    },
-                    items: [{
-                        inputValue: 'visa',
-                        boxLabel: 'VISA',
-                        checked: true
-                    }, {
-                        inputValue: 'mastercard',
-                        boxLabel: 'MasterCard'
-                    }, {
-                        inputValue: 'amex',
-                        boxLabel: 'American Express'
-                    }, {
-                        inputValue: 'discover',
-                        boxLabel: 'Discover'
-                    }]
-                }, {
-                    xtype: 'textfield',
-                    name: 'ccName',
-                    fieldLabel: 'Name On Card',
-                    allowBlank: false
                 }, {
                     xtype: 'container',
                     layout: 'hbox',
                     margin: '0 0 5 0',
                     items: [{
+                        //labelWidth: 110,
                         xtype: 'textfield',
-                        name: 'ccNumber',
-                        fieldLabel: 'Card Number',
+                        fieldLabel: 'email',
+                        name: 'contact_email',
+                       // style: (!Ext.isIE6) ? 'opacity:.3' : '',
                         flex: 1,
-                        allowBlank: false,
-                        minLength: 15,
-                        maxLength: 16,
-                        enforceMaxLength: true,
-                        maskRe: /\d/
-                    }, {
-                        xtype: 'fieldcontainer',
-                        fieldLabel: 'Expiration',
-                        labelWidth: 75,
-                        layout: 'hbox',
-                        items: [{
-                            xtype: 'combobox',
-                            name: 'ccExpireMonth',
-                            displayField: 'name',
-                            valueField: 'num',
-                            queryMode: 'local',
-                            emptyText: 'Month',
-                            hideLabel: true,
-                            margins: '0 6 0 0',
-                            store: new Ext.data.Store({
-                                fields: ['name', 'num'],
-                                data: (function() {
-                                    var data = [];
-                                        Ext.Array.forEach(Ext.Date.monthNames, function(name, i) {
-                                        data[i] = {name: name, num: i + 1};
-                                    });
-                                    return data;
-                                })()
-                            }),
-                            width: 100,
-                            allowBlank: false,
-                            forceSelection: true
-                        }, {
-                            xtype: 'numberfield',
-                            name: 'ccExpireYear',
-                            hideLabel: true,
-                            width: 70,
-                            value: new Date().getFullYear(),
-                            minValue: new Date().getFullYear(),
-                            allowBlank: false
-                        }]
+                        allowBlank: false
                     }]
                 }]
             }
         ],
 
         buttons: [{
-            text: 'Reset',
+            text: '添加其他联系人',
             scope: this,
             handler: this.onResetClick
         }, {
-            text: 'Complete Purchase',
+            text: '保存',
             width: 150,
             scope: this,
             handler: this.onCompleteClick
