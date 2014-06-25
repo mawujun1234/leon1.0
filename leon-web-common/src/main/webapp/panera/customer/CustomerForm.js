@@ -497,6 +497,14 @@ Ext.define('Leon.panera.customer.CustomerForm', {
                     margin: '0 0 5 0',
                     items: [{
                         //labelWidth: 110,
+                        xtype: 'hidden',
+                        fieldLabel: '联系人id',
+                        name: 'contact_id',
+                       // style: (!Ext.isIE6) ? 'opacity:.3' : '',
+                        flex: 1,
+                        allowBlank: false
+                    },{
+                        //labelWidth: 110,
                         xtype: 'textfield',
                         fieldLabel: '联系人',
                         name: 'contact_name',
@@ -572,28 +580,63 @@ Ext.define('Leon.panera.customer.CustomerForm', {
         ],
 
         buttons: [{
-            text: '添加其他联系人',
+            text: '保存并管理其他联系人',
             scope: this,
-            handler: this.onResetClick
+            handler: this.addOtherContact
         }, {
             text: '保存',
-            width: 150,
+            //width: 150,
             scope: this,
-            handler: this.onCompleteClick
+            handler: this.onSave
         }]    
         });
         this.callParent();
     },
     
-    onResetClick: function(){
-        this.getForm().reset();
+    addOtherContact: function(customer_id){
+    	//首先添加用户，然后再弹出框来管理联系人的添加
+    	
+    	function callback(){
+        //this.getForm().reset();
+    	var grid=Ext.create('Leon.panera.customer.ContactGrid',{
+					
+		});
+		var win=Ext.create('Ext.Window',{
+			title:'联系人管理',
+			modal:true,
+			autoScroll :true,
+			width:600,
+			height:500,
+			layout:'fit',
+			items:[grid]
+		});
+		win.show();
+    	}
+    	
+    	this.onSave(callback);
     },
     
-    onCompleteClick: function(){
+    onSave: function(callBack){
         var form = this.getForm();
         if (form.isValid()) {
-            Ext.MessageBox.alert('Submitted Values', form.getValues(true));
+            //Ext.MessageBox.alert('Submitted Values', form.getValues(true));
+            form.submit({
+            	//standardSubmit :false,
+            	clientValidation: true,
+    			url: Ext.ContextPath+'/customer/create',
+    			 success: function(form, action) {
+    			 	//Ext.Msg.alert('Success', action.result.msg);
+    			 	if(callBack){
+    			 		callBack(action.result.root.id);
+    			 	}
+    			 },
+    			 failure:function(form, action){
+    			 	 Ext.Msg.alert('Failure', "保存客户失败");
+    			 }
+            });
         }
+        
+        
     },
     
     onMailingAddrFieldChange: function(field){

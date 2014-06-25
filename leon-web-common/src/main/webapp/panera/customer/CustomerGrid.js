@@ -33,9 +33,17 @@ Ext.define('Leon.panera.customer.CustomerGrid',{
 	  me.store=Ext.create('Ext.data.Store',{
 			autoSync:false,
 			pageSize:50,
-			//model: 'Leon.panera.customer.Customer',
-			fields:[],
+			model: 'Leon.panera.customer.Customer',
+			//fields:[],
 			autoLoad:true
+//			proxy: {
+//				url:Ext.ContextPath+'/customer/query',
+//				type: 'ajax',
+//				reader: {
+//				     type: 'json',
+//				     root:'root'
+//				}
+//			}
 	  });
 	  
       me.dockedItems= [{
@@ -58,7 +66,7 @@ Ext.define('Leon.panera.customer.CustomerGrid',{
 					modal:true,
 					autoScroll :true,
 					width:600,
-					height:600,
+					height:500,
 					layout:'fit',
 					items:[form]
 				});

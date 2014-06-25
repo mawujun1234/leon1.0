@@ -74,7 +74,7 @@ public class CustomerController {
 	
 	@RequestMapping("/customer/create")
 	@ResponseBody
-	public Customer create(@RequestBody Customer customer) {
+	public Customer create(Customer customer) {
 		customerService.create(customer);
 		return customer;
 	}

@@ -27,8 +27,8 @@ public class Contact extends UUIDEntity {
 	@Column(length=100)
 	private String chatNum;//聊天工具账号
 	
-	@ManyToOne(fetch=FetchType.LAZY)
-	private Customer customer;
+	//@ManyToOne(fetch=FetchType.LAZY)
+	private String customer;
 
 	public String getName() {
 		return name;
@@ -86,12 +86,13 @@ public class Contact extends UUIDEntity {
 		this.chatNum = chatNum;
 	}
 
-	public Customer getCustomer() {
+	public String getCustomer() {
 		return customer;
 	}
 
-	public void setCustomer(Customer customer) {
+	public void setCustomer(String customer) {
 		this.customer = customer;
 	}
+
 
 }

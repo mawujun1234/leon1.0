@@ -4,9 +4,11 @@ Ext.defineModel("Leon.panera.customer.Customer",{
 	fields:[
 		{name:'id',type:'string'},
 		{name:'address',type:'string'},
-		{name:'businessPhase',type:'string'},
+		{name:'businessPhase_id',type:'string'},
 		{name:'buyMoney',type:'int'},
-		{name:'country',type:'auto'},
+		{name:'country_id',type:'string'},
+		{name:'customerProperty_id',type:'string'},
+		{name:'customerSource_id',type:'string'},
 		{name:'customerType',type:'int'},
 		{name:'empNum',type:'int'},
 		{name:'expYear',type:'int'},
@@ -21,11 +23,15 @@ Ext.defineModel("Leon.panera.customer.Customer",{
 		{name:'quality',type:'int'},
 		{name:'star',type:'int'},
 		{name:'website',type:'string'},
-		{name:'customerProperty_id',type:'auto'},
-		{name:'customerSource_id',type:'auto'}
+		
+		{name:'contact_name',type:'string'},
+		{name:'contact_position',type:'string'},
+		{name:'contact_phone',type:'string'},
+		{name:'contact_mobile',type:'string'},
+		{name:'contact_chatNum',type:'string'},
+		{name:'contact_fax',type:'string'},
+		{name:'contact_email',type:'string'}
 	],
 	associations:[
-			{type:'belongsTo',model: 'Leon.panera.customerProperty.CustomerProperty',associatedName:'Customerproperty'},
-			{type:'belongsTo',model: 'Leon.panera.customerSource.CustomerSource',associatedName:'Customersource'}
 	]
 });

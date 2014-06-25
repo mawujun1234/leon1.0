@@ -182,15 +182,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    ]]>
 	</sql>
 	<select id="queryPage" resultType="com.mawujun.panera.customer.Customer" parameterType="map">
-    	SELECT <include refid="columns" />
+    	SELECT *
 	    FROM panera_Customer 
-		<where>
-			<if test="wheres!=null">
-        	<foreach collection="wheres" index="index" item="item" separator=" and ">
-				${item.prop} ${item.op} #{item.value}
-			</foreach>
-			</if>
-        </where>
     </select>
     
     <select id="get" resultType="com.mawujun.panera.customer.Customer" parameterType="String">

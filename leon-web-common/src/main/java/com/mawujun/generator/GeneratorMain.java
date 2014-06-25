@@ -9,6 +9,7 @@ import com.mawujun.org.Org;
 import com.mawujun.org.OrgDimenssion;
 import com.mawujun.org.OrgType;
 import com.mawujun.panera.continents.Country;
+import com.mawujun.panera.customer.Contact;
 import com.mawujun.panera.customer.Customer;
 import com.mawujun.panera.customerProperty.CustomerProperty;
 import com.mawujun.panera.customerSource.CustomerSource;

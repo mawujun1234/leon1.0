@@ -70,6 +70,25 @@ public class Customer extends UUIDEntity {
 	private int moq;//每单每款MOQ
 	private int paymentTerms;//付款条款
 	
+	@Transient
+	private String contact_id;
+	@Transient
+	private String contact_name;
+	@Transient
+	private String contact_position;
+	@Transient
+	private String contact_phone;
+	@Transient
+	private String contact_mobile;
+	@Transient
+	private String contact_chatNum;
+	@Transient
+	private String contact_fax;
+	@Transient
+	private String contact_email;
+	
+	
+	
 	public String getName() {
 		return name;
 	}
@@ -200,6 +219,54 @@ public class Customer extends UUIDEntity {
 	}
 	public void setBusinessPhase_id(String businessPhase_id) {
 		this.businessPhase_id = businessPhase_id;
+	}
+	public String getContact_id() {
+		return contact_id;
+	}
+	public void setContact_id(String contact_id) {
+		this.contact_id = contact_id;
+	}
+	public String getContact_name() {
+		return contact_name;
+	}
+	public void setContact_name(String contact_name) {
+		this.contact_name = contact_name;
+	}
+	public String getContact_position() {
+		return contact_position;
+	}
+	public void setContact_position(String contact_position) {
+		this.contact_position = contact_position;
+	}
+	public String getContact_phone() {
+		return contact_phone;
+	}
+	public void setContact_phone(String contact_phone) {
+		this.contact_phone = contact_phone;
+	}
+	public String getContact_mobile() {
+		return contact_mobile;
+	}
+	public void setContact_mobile(String contact_mobile) {
+		this.contact_mobile = contact_mobile;
+	}
+	public String getContact_chatNum() {
+		return contact_chatNum;
+	}
+	public void setContact_chatNum(String contact_chatNum) {
+		this.contact_chatNum = contact_chatNum;
+	}
+	public String getContact_fax() {
+		return contact_fax;
+	}
+	public void setContact_fax(String contact_fax) {
+		this.contact_fax = contact_fax;
+	}
+	public String getContact_email() {
+		return contact_email;
+	}
+	public void setContact_email(String contact_email) {
+		this.contact_email = contact_email;
 	}
 	
 
