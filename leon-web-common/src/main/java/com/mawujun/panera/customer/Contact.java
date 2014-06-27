@@ -26,9 +26,11 @@ public class Contact extends UUIDEntity {
 	private String mobile;
 	@Column(length=100)
 	private String chatNum;//聊天工具账号
+	 @org.hibernate.annotations.Type(type="yes_no")
+	private Boolean isDefault=false;
 	
 	//@ManyToOne(fetch=FetchType.LAZY)
-	private String customer;
+	private String customer_id;
 
 	public String getName() {
 		return name;
@@ -86,12 +88,20 @@ public class Contact extends UUIDEntity {
 		this.chatNum = chatNum;
 	}
 
-	public String getCustomer() {
-		return customer;
+	public Boolean getIsDefault() {
+		return isDefault;
 	}
 
-	public void setCustomer(String customer) {
-		this.customer = customer;
+	public void setIsDefault(Boolean isDefault) {
+		this.isDefault = isDefault;
+	}
+
+	public String getCustomer_id() {
+		return customer_id;
+	}
+
+	public void setCustomer_id(String customer_id) {
+		this.customer_id = customer_id;
 	}
 
 

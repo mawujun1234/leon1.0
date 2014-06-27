@@ -182,8 +182,27 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    ]]>
 	</sql>
 	<select id="queryPage" resultType="com.mawujun.panera.customer.Customer" parameterType="map">
-    	SELECT *
-	    FROM panera_Customer 
+    	SELECT  a.*,
+		b.id as contact_id ,
+		b.isDefault as contact_isDefault,
+		b.name  as  contact_name,
+		b.position   as contact_position ,
+		b.phone  as  contact_phone,
+		b.mobile  as  contact_mobile,
+		b.chatNum   as contact_chatNum ,
+		b.fax  as  contact_fax,
+		b.email as  contact_email,
+		b.isDefault as contact_isDefault,
+		c.name as customerProperty_name,
+		d.name as customerSource_name,
+		e.name as country_name,
+		e.continent as continent_id
+		FROM panera_Customer a 
+		left join PANERA_CONTACT  b on  a.id=b.customer_id and b.isdefault='Y'
+		inner join PANERA_CUSTOMERPROPERTY  c on a.customerProperty_id=c.id
+		inner join PANERA_CUSTOMERSOURCE  d on a.customerSource_id=d.id
+		inner join PANERA_COUNTRY e on a.country_id=e.id
+		where a.deleted is null
     </select>
     
     <select id="get" resultType="com.mawujun.panera.customer.Customer" parameterType="String">

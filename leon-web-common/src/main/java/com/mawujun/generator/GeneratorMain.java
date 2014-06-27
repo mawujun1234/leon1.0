@@ -35,7 +35,7 @@ public class GeneratorMain {
 		//str=generatorService.generatorToString(MenuItem.class,FtlFile.JsModel.toString(),null);	
         //System.out.println(str);
 		
-		GeneratorMain.generateAllFile(Customer.class,"D:/gen/");
+		GeneratorMain.generateAllFile(Contact.class,"D:/gen/");
 		
 		
 		

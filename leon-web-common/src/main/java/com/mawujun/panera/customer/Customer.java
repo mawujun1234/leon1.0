@@ -1,23 +1,13 @@
 package com.mawujun.panera.customer;
 
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-
-
 import javax.persistence.Transient;
 
-import com.mawujun.panera.continents.Country;
-import com.mawujun.panera.customerProperty.CustomerProperty;
-import com.mawujun.panera.customerSource.CustomerSource;
+import com.mawujun.panera.continents.Continent;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
 @Entity
@@ -29,18 +19,28 @@ public class Customer extends UUIDEntity {
 	//private CustomerSource customerSource;
 	@Column(length=36)
 	private String customerSource_id;
+	@Transient
+	private String customerSource_name;
 //	@ManyToOne(fetch=FetchType.EAGER)
 //	private CustomerProperty customerProperty;
 	@Column(length=36)
 	private String customerProperty_id;
+	@Transient
+	private String customerProperty_name;
 	
 		
 //	private Country country;
 	//@Column(length=36)
+	//@Transient
+	//@Column(length=36)
 	@Transient
 	private String continent_id;
+	
 	@Column(length=36)
 	private String country_id;
+	@Transient
+	private String country_name;
+	
 
 	@Column(length=200)
 	private String address;
@@ -50,25 +50,29 @@ public class Customer extends UUIDEntity {
 	
 	@Column(length=100)
 	private String businessPhase_id;
+	@Transient
+	private String businessPhase_name;
 	@Column(length=20)
 	private String followNum;//跟进次数，这个是只读的，是在跟进记录里面设置的
 	private Date inquiryDate;//初次询盘时间
 	@Column(length=1500)
 	private String inquiryContent;//初次询盘内容
+	 @org.hibernate.annotations.Type(type="yes_no")
+	private Boolean deleted;
 	
 	
 	
 	
-	private int star;//星级，还要加很多评判的字段	
-	private int expYear;//光带几年经验
-	private int proportion;//光带占比
-	private int customerType;//客户类型
-	private int empNum;//员工人数
-	private int buyMoney;//光带年采购额
-	private int quality;//质量档次
-	private int price;//价格档次
-	private int moq;//每单每款MOQ
-	private int paymentTerms;//付款条款
+	private Integer star;//星级，还要加很多评判的字段	
+	private Integer expYear;//光带几年经验
+	private Integer proportion;//光带占比
+	private Integer customerType;//客户类型
+	private Integer empNum;//员工人数
+	private Integer buyMoney;//光带年采购额
+	private Integer quality;//质量档次
+	private Integer price;//价格档次
+	private Integer moq;//每单每款MOQ
+	private Integer paymentTerms;//付款条款
 	
 	@Transient
 	private String contact_id;
@@ -86,9 +90,59 @@ public class Customer extends UUIDEntity {
 	private String contact_fax;
 	@Transient
 	private String contact_email;
+	@Transient
+	private Boolean contact_isDefault;
 	
-	
-	
+	//计算星级
+	public Integer calculate() {
+		Integer star=0;
+		star+=this.getExpYear();
+		star+=this.getProportion();
+		star+=this.getCustomerType();
+		star+=this.getEmpNum();
+		star+=this.getBuyMoney();
+		star+=this.getQuality();
+		star+=this.getPrice();
+		star+=this.getMoq();
+		if(this.getPaymentTerms()==400){
+			star+=4;
+		} else {
+			star+=this.getPaymentTerms();
+		}
+		
+		if(star<15){
+			return 1;
+		} else if(star>=15 && star<19){
+			return 2;
+		} else if(star>=20 && star<27){
+			return 3;
+		} else if(star>=28 && star<36){
+			return 4;
+		} else if(star>=37 ){
+			return 5;
+		}
+		return star;
+	}
+	public Contact geetContact(){
+		Contact contact=new Contact();
+		contact.setId(contact_id);
+		contact.setName(contact_name);
+		contact.setPosition(contact_position);
+		contact.setPhone(contact_phone);
+		contact.setMobile(contact_mobile);
+		contact.setChatNum(contact_chatNum);
+		contact.setFax(contact_fax);
+		contact.setEmail(contact_email);
+		contact.setIsDefault(contact_isDefault);
+		return contact;
+	}
+	public String setContinent_name() {
+		if(Continent.valueOf(this.getContinent_id())!=null){
+			return Continent.valueOf(this.getContinent_id()).getText();
+		}
+		return null;
+		
+	}
 	public String getName() {
 		return name;
 	}
@@ -129,66 +183,7 @@ public class Customer extends UUIDEntity {
 		this.inquiryContent = inquiryContent;
 	}
 
-	public int getExpYear() {
-		return expYear;
-	}
-	public void setExpYear(int expYear) {
-		this.expYear = expYear;
-	}
-	public int getProportion() {
-		return proportion;
-	}
-	public void setProportion(int proportion) {
-		this.proportion = proportion;
-	}
-	public int getCustomerType() {
-		return customerType;
-	}
-	public void setCustomerType(int customerType) {
-		this.customerType = customerType;
-	}
-	public int getEmpNum() {
-		return empNum;
-	}
-	public void setEmpNum(int empNum) {
-		this.empNum = empNum;
-	}
-	public int getBuyMoney() {
-		return buyMoney;
-	}
-	public void setBuyMoney(int buyMoney) {
-		this.buyMoney = buyMoney;
-	}
-	public int getQuality() {
-		return quality;
-	}
-	public void setQuality(int quality) {
-		this.quality = quality;
-	}
-	public int getPrice() {
-		return price;
-	}
-	public void setPrice(int price) {
-		this.price = price;
-	}
-	public int getMoq() {
-		return moq;
-	}
-	public void setMoq(int moq) {
-		this.moq = moq;
-	}
-	public int getPaymentTerms() {
-		return paymentTerms;
-	}
-	public void setPaymentTerms(int paymentTerms) {
-		this.paymentTerms = paymentTerms;
-	}
-	public int getStar() {
-		return star;
-	}
-	public void setStar(int star) {
-		this.star = star;
-	}
+
 	public String getCustomerSource_id() {
 		return customerSource_id;
 	}
@@ -267,6 +262,130 @@ public class Customer extends UUIDEntity {
 	}
 	public void setContact_email(String contact_email) {
 		this.contact_email = contact_email;
+	}
+
+	public Integer getStar() {
+		return star;
+	}
+
+	public void setStar(Integer star) {
+		this.star = star;
+	}
+
+	public Integer getExpYear() {
+		return expYear;
+	}
+
+	public void setExpYear(Integer expYear) {
+		this.expYear = expYear;
+	}
+
+	public Integer getProportion() {
+		return proportion;
+	}
+
+	public void setProportion(Integer proportion) {
+		this.proportion = proportion;
+	}
+
+	public Integer getCustomerType() {
+		return customerType;
+	}
+
+	public void setCustomerType(Integer customerType) {
+		this.customerType = customerType;
+	}
+
+	public Integer getEmpNum() {
+		return empNum;
+	}
+
+	public void setEmpNum(Integer empNum) {
+		this.empNum = empNum;
+	}
+
+	public Integer getBuyMoney() {
+		return buyMoney;
+	}
+
+	public void setBuyMoney(Integer buyMoney) {
+		this.buyMoney = buyMoney;
+	}
+
+	public Integer getQuality() {
+		return quality;
+	}
+
+	public void setQuality(Integer quality) {
+		this.quality = quality;
+	}
+
+	public Integer getPrice() {
+		return price;
+	}
+
+	public void setPrice(Integer price) {
+		this.price = price;
+	}
+
+	public Integer getMoq() {
+		return moq;
+	}
+
+	public void setMoq(Integer moq) {
+		this.moq = moq;
+	}
+
+	public Integer getPaymentTerms() {
+		return paymentTerms;
+	}
+
+	public void setPaymentTerms(Integer paymentTerms) {
+		this.paymentTerms = paymentTerms;
+	}
+
+	public String getCustomerSource_name() {
+		return customerSource_name;
+	}
+
+	public void setCustomerSource_name(String customerSource_name) {
+		this.customerSource_name = customerSource_name;
+	}
+
+	public String getCustomerProperty_name() {
+		return customerProperty_name;
+	}
+
+	public void setCustomerProperty_name(String customerProperty_name) {
+		this.customerProperty_name = customerProperty_name;
+	}
+
+	public String getCountry_name() {
+		return country_name;
+	}
+
+	public void setCountry_name(String country_name) {
+		this.country_name = country_name;
+	}
+
+	public String getBusinessPhase_name() {
+		return businessPhase_name;
+	}
+
+	public void setBusinessPhase_name(String businessPhase_name) {
+		this.businessPhase_name = businessPhase_name;
+	}
+	public Boolean getContact_isDefault() {
+		return contact_isDefault;
+	}
+	public void setContact_isDefault(Boolean contact_isDefault) {
+		this.contact_isDefault = contact_isDefault;
+	}
+	public Boolean getDeleted() {
+		return deleted;
+	}
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 	
 

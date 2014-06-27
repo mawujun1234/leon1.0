@@ -23,7 +23,7 @@ Ext.define('Leon.panera.customer.ContactForm', {
 
             items: [{
                 xtype: 'fieldset',
-                title: '默认联系人',
+                title: '联系人信息',
                 layout: 'anchor',
                 defaults: {
                     anchor: '100%'
@@ -34,10 +34,30 @@ Ext.define('Leon.panera.customer.ContactForm', {
                     layout: 'hbox',
                     margin: '0 0 5 0',
                     items: [{
+                        xtype: 'hidden',
+                        fieldLabel: '联系人id',
+                        name: 'id',
+                        flex: 1,
+                        allowBlank: false
+                    },{
+                        xtype: 'hidden',
+                        fieldLabel: '是否是默认联系人',
+                        name: 'isDefault',
+                        value:true,
+                        flex: 1,
+                        allowBlank: false
+                    },{
+                        xtype: 'hidden',
+                        fieldLabel: '客户id',
+                        name: 'customer_id',
+                        value:true,
+                        flex: 1,
+                        allowBlank: false
+                    },{
                         //labelWidth: 110,
                         xtype: 'textfield',
                         fieldLabel: '联系人',
-                        name: 'contact_name',
+                        name: 'name',
                        // style: (!Ext.isIE6) ? 'opacity:.3' : '',
                         flex: 1,
                         allowBlank: false
@@ -45,7 +65,7 @@ Ext.define('Leon.panera.customer.ContactForm', {
                         //labelWidth: 110,
                         xtype: 'textfield',
                         fieldLabel: '职位',
-                        name: 'contact_position',
+                        name: 'position',
                        // style: (!Ext.isIE6) ? 'opacity:.3' : '',
                         flex: 1,
                         allowBlank: false
@@ -58,7 +78,7 @@ Ext.define('Leon.panera.customer.ContactForm', {
                         //labelWidth: 110,
                         xtype: 'textfield',
                         fieldLabel: '电话',
-                        name: 'contact_phone',
+                        name: 'phone',
                        // style: (!Ext.isIE6) ? 'opacity:.3' : '',
                         flex: 1,
                         allowBlank: false
@@ -66,7 +86,7 @@ Ext.define('Leon.panera.customer.ContactForm', {
                         //labelWidth: 110,
                         xtype: 'textfield',
                         fieldLabel: '手机',
-                        name: 'contact_mobile',
+                        name: 'mobile',
                        // style: (!Ext.isIE6) ? 'opacity:.3' : '',
                         flex: 1,
                         allowBlank: false
@@ -79,7 +99,7 @@ Ext.define('Leon.panera.customer.ContactForm', {
                         //labelWidth: 110,
                         xtype: 'textfield',
                         fieldLabel: '聊天账号',
-                        name: 'contact_chatNum',
+                        name: 'chatNum',
                        // style: (!Ext.isIE6) ? 'opacity:.3' : '',
                         flex: 1,
                         allowBlank: false
@@ -87,7 +107,7 @@ Ext.define('Leon.panera.customer.ContactForm', {
                         //labelWidth: 110,
                         xtype: 'textfield',
                         fieldLabel: '传真',
-                        name: 'contact_fax',
+                        name: 'fax',
                        // style: (!Ext.isIE6) ? 'opacity:.3' : '',
                         flex: 1,
                         allowBlank: false
@@ -100,7 +120,7 @@ Ext.define('Leon.panera.customer.ContactForm', {
                         //labelWidth: 110,
                         xtype: 'textfield',
                         fieldLabel: 'email',
-                        name: 'contact_email',
+                        name: 'email',
                        // style: (!Ext.isIE6) ? 'opacity:.3' : '',
                         flex: 1,
                         allowBlank: false
@@ -113,52 +133,38 @@ Ext.define('Leon.panera.customer.ContactForm', {
             text: '保存',
             width: 150,
             scope: this,
-            handler: this.onCompleteClick
+            handler: this.onSave
         }]    
         });
         this.callParent();
     },
     
-    onResetClick: function(){
-        this.getForm().reset();
-    },
-    
-    onCompleteClick: function(){
+    onSave: function(callBack){
+    	var me=this;
         var form = this.getForm();
         if (form.isValid()) {
-            Ext.MessageBox.alert('Submitted Values', form.getValues(true));
+            //Ext.MessageBox.alert('Submitted Values', form.getValues(true));
+            form.submit({
+            	//standardSubmit :false,
+            	clientValidation: true,
+    			url: Ext.ContextPath+(me.update?'/contact/update':'/contact/create'),
+    			success: function(form, action) {
+    			 	if(callBack instanceof Function){
+    			 		callBack(action.result.root.id);
+    			 	}
+    			 	form.updateRecord();
+    			 	//form.getRecord().set("star",action.result.root.star);
+    			 	me.win.close();
+    			 	if(!me.update){
+    			 		me.grid.getStore().reload();
+    			 	}
+    			 },
+    			 failure:function(form, action){
+    			 	 Ext.Msg.alert('Failure', "保存客户失败");
+    			 }
+            });
         }
-    },
-    
-    onMailingAddrFieldChange: function(field){
-        var copyToBilling = this.down('[name=billingSameAsMailing]').getValue(),
-            copyField = this.down('[name=' + field.billingFieldName + ']');
-
-        if (copyToBilling) {
-            copyField.setValue(field.getValue());
-        } else {
-            copyField.clearInvalid();
-        }
-    },
-    
-    /**
-     * Enables or disables the billing address fields according to whether the checkbox is checked.
-     * In addition to disabling the fields, they are animated to a low opacity so they don't take
-     * up visual attention.
-     */
-    onSameAddressChange: function(box, checked){
-        var fieldset = box.ownerCt;
-        Ext.Array.forEach(fieldset.previousSibling().query('textfield'), this.onMailingAddrFieldChange, this);
-        Ext.Array.forEach(fieldset.query('textfield'), function(field) {
-            field.setDisabled(checked);
-            // Animate the opacity on each field. Would be more efficient to wrap them in a container
-            // and animate the opacity on just the single container element, but IE has a bug where
-            // the alpha filter does not get applied on position:relative children.
-            // This must only be applied when it is not IE6, as it has issues with opacity when cleartype
-            // is enabled
-            if (!Ext.isIE6) {
-                field.el.animate({opacity: checked ? 0.3 : 1});
-            }
-        });
+        
+        
     }
 });

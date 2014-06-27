@@ -10,7 +10,8 @@ Ext.defineModel("Leon.panera.customer.Contact",{
 		{name:'name',type:'string'},
 		{name:'phone',type:'string'},
 		{name:'position',type:'string'},
-		{name:'customer_id',type:'auto'}
+		{name:'customer_id',type:'string'},
+		{name:'isDefault',type:'boolean'}
 	],
 	associations:[
 	]

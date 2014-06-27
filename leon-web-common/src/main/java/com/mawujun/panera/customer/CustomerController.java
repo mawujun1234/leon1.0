@@ -1,21 +1,13 @@
 package com.mawujun.panera.customer;
-import java.util.List;
-
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.mawujun.utils.page.PageRequest;
-import com.mawujun.utils.page.QueryResult;
-import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
+
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.utils.page.Page;
-import com.mawujun.utils.M;
-
-import com.mawujun.panera.customer.Customer;
-import com.mawujun.panera.customer.CustomerService;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
  * @version 1.0
@@ -27,6 +19,8 @@ public class CustomerController {
 
 	@Resource
 	private CustomerService customerService;
+	@Resource
+	private ContactService contactService;
 
 
 //	/**
@@ -75,30 +69,48 @@ public class CustomerController {
 	@RequestMapping("/customer/create")
 	@ResponseBody
 	public Customer create(Customer customer) {
+		//计算星级
+		int star=customer.calculate();
+		customer.setStar(star);
+		
 		customerService.create(customer);
+		Contact contact=customer.geetContact();
+		contact.setCustomer_id(customer.getId());
+		contactService.create(contact);
+		
 		return customer;
 	}
 	
+	
+	
 	@RequestMapping("/customer/update")
 	@ResponseBody
-	public  Customer update(@RequestBody Customer customer) {
+	public  Customer update(Customer customer) {
+		//计算星级
+		int star=customer.calculate();
+		customer.setStar(star);
+				
 		customerService.update(customer);
+		contactService.update(customer.geetContact());
 		return customer;
 	}
 	
 	@RequestMapping("/customer/deleteById")
 	@ResponseBody
 	public String deleteById(String id) {
-		customerService.deleteById(id);
+		//contactService.deleteBatch(Cnd.delete().andEquals("customer.id", id));
+		//customerService.deleteById(id);
+		
+		customerService.update(Cnd.update().set("deleted", true).andEquals("id",id));
 		return id;
 	}
-	
-	@RequestMapping("/customer/destroy")
-	@ResponseBody
-	public Customer destroy(@RequestBody Customer customer) {
-		customerService.delete(customer);
-		return customer;
-	}
+//	
+//	@RequestMapping("/customer/destroy")
+//	@ResponseBody
+//	public Customer destroy(@RequestBody Customer customer) {
+//		customerService.delete(customer);
+//		return customer;
+//	}
 	
 	
 }

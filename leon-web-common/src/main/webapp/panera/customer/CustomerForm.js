@@ -12,7 +12,7 @@ Ext.define('Leon.panera.customer.CustomerForm', {
     bodyPadding: 5,
     autoScroll :true,
     initComponent: function(){
-        
+        var me=this;
         Ext.apply(this, {
             //width: 550,
             fieldDefaults: {
@@ -39,6 +39,13 @@ Ext.define('Leon.panera.customer.CustomerForm', {
                         //hideLabel: 'true'
                     },
                     items: [{
+                        name: 'id',
+                        xtype:'hidden',
+                        fieldLabel: '客户id',
+                        flex: 2,
+                        //emptyText: 'First',
+                        allowBlank: true
+                    },{
                         name: 'name',
                         fieldLabel: '客户名称',
                         flex: 2,
@@ -198,8 +205,8 @@ Ext.define('Leon.panera.customer.CustomerForm', {
                         forceSelection: true,
                         listeners:{
                         	change:function(combo, newValue, oldValue){
-                        		var country=combo.nextSibling();
-                        		country.getStore().reload({params:{continent:newValue}});
+                        		//var country=combo.nextSibling();
+                        		//country.getStore().load({params:{continent:newValue}});
                         	}
                         }
                     }, {
@@ -212,7 +219,7 @@ Ext.define('Leon.panera.customer.CustomerForm', {
 				            	autoLoad:false,
 				            	url:Ext.ContextPath+'/country/query',
 				                type: 'ajax',
-				                extraParams:{continent:'none'},
+				                //extraParams:{continent:'none'},
 				                reader: {
 				                    type: 'json',
 				                    root:'root'
@@ -226,7 +233,16 @@ Ext.define('Leon.panera.customer.CustomerForm', {
                         editable:false,
                         //disabled: true,
                         allowBlank: false,
-                        forceSelection: true
+                        forceSelection: true,
+                        listeners:{
+                        	beforequery:function(queryPlan){
+                        		var continent=queryPlan.combo.previousSibling();
+                        		if(!continent.getValue()){
+                        			return false;
+                        		}
+                        		queryPlan.combo.getStore().getProxy().extraParams={continent:continent.getValue()};
+                        	}
+                        }
                     }]
                 },{
                     xtype: 'fieldcontainer',
@@ -257,19 +273,25 @@ Ext.define('Leon.panera.customer.CustomerForm', {
                     layout: 'hbox',
                     margin: '0 0 5 0',
                     items: [{
+                        xtype: 'hidden',
+                        fieldLabel: '星级',
+                        name: 'star',
+                        flex: 1,
+                        allowBlank: false
+                    },{
                         fieldLabel: '光带几年经验',
                         name: 'expYear',
                         flex: 1,
                         xtype: 'combobox',
                         store:new Ext.data.Store({
-				            fields:['id','name'],
+				            fields:[{name:'id',type:'int'},{name:'name',type:'string'}],
 				            proxy: {
 				                type: 'memory',
 				                reader: {
 				                    //type: 'array'
 				                }
 				            },
-				            data: [{id:'1',name:'0年'},{id:'2',name:'1年'},{id:'3',name:'2年'},{id:'4',name:'3年'},{id:'5',name:'4年及以上'}]
+				            data: [{id:1,name:'0年'},{id:2,name:'1年'},{id:3,name:'2年'},{id:4,name:'3年'},{id:5,name:'4年及以上'}]
 				        }),
 				        valueField: 'id',
                         displayField: 'name',
@@ -292,7 +314,7 @@ Ext.define('Leon.panera.customer.CustomerForm', {
 				                    //type: 'array'
 				                }
 				            },
-				            data: [{id:'1',name:'<10%'},{id:'2',name:'10%'},{id:'3',name:'15%'},{id:'4',name:'20%'},{id:'5',name:'30%'}]
+				            data: [{id:1,name:'<10%'},{id:2,name:'10%'},{id:3,name:'15%'},{id:4,name:'20%'},{id:5,name:'30%'}]
 				        }),
 				        valueField: 'id',
                         displayField: 'name',
@@ -315,7 +337,7 @@ Ext.define('Leon.panera.customer.CustomerForm', {
 				                    //type: 'array'
 				                }
 				            },
-				            data: [{id:'1',name:'DIY'},{id:'2',name:'工程'}]
+				            data: [{id:1,name:'DIY'},{id:2,name:'工程'}]
 				        }),
 				        valueField: 'id',
                         displayField: 'name',
@@ -343,7 +365,7 @@ Ext.define('Leon.panera.customer.CustomerForm', {
 				                    //type: 'array'
 				                }
 				            },
-				            data: [{id:'1',name:'1+'},{id:'2',name:'10+'},{id:'3',name:'15+'},{id:'4',name:'20+'},{id:'5',name:'30+'}]
+				            data: [{id:1,name:'1+'},{id:2,name:'10+'},{id:3,name:'15+'},{id:4,name:'20+'},{id:5,name:'30+'}]
 				        }),
 				        valueField: 'id',
                         displayField: 'name',
@@ -366,7 +388,7 @@ Ext.define('Leon.panera.customer.CustomerForm', {
 				                    //type: 'array'
 				                }
 				            },
-				            data: [{id:'1',name:'10+'},{id:'2',name:'20+'},{id:'3',name:'30+'},{id:'4',name:'40+'},{id:'5',name:'50+'}]
+				            data: [{id:1,name:'10+'},{id:2,name:'20+'},{id:3,name:'30+'},{id:4,name:'40+'},{id:5,name:'50+'}]
 				        }),
 				        valueField: 'id',
                         displayField: 'name',
@@ -389,7 +411,7 @@ Ext.define('Leon.panera.customer.CustomerForm', {
 				                    //type: 'array'
 				                }
 				            },
-				            data: [{id:'2',name:'C'},{id:'3',name:'B.C'},{id:'4',name:'A.B.H'},{id:'5',name:'A.H'}]
+				            data: [{id:2,name:'C'},{id:3,name:'B.C'},{id:4,name:'A.B.H'},{id:5,name:'A.H'}]
 				        }),
 				        valueField: 'id',
                         displayField: 'name',
@@ -417,7 +439,7 @@ Ext.define('Leon.panera.customer.CustomerForm', {
 				                    //type: 'array'
 				                }
 				            },
-				            data: [{id:'2',name:'C'},{id:'3',name:'B.C'},{id:'4',name:'A.B'},{id:'5',name:'A.H'}]
+				            data: [{id:2,name:'C'},{id:3,name:'B.C'},{id:4,name:'A.B'},{id:5,name:'A.H'}]
 				        }),
 				        valueField: 'id',
                         displayField: 'name',
@@ -440,7 +462,7 @@ Ext.define('Leon.panera.customer.CustomerForm', {
 				                    //type: 'array'
 				                }
 				            },
-				            data: [{id:'1',name:'<500M'},{id:'3',name:'>=500M'},{id:'5',name:'>=1000M'}]
+				            data: [{id:1,name:'<500M'},{id:3,name:'>=500M'},{id:5,name:'>=1000M'}]
 				        }),
 				        valueField: 'id',
                         displayField: 'name',
@@ -464,13 +486,13 @@ Ext.define('Leon.panera.customer.CustomerForm', {
 				                }
 				            },
 				            data: [
-					            {id:'0',name:'后T/T出货后OA **天内'},
-					            {id:'1',name:'无订金 B/L提单复印件7天'},
-					            {id:'2',name:'无订金 100%出货前'},
-					            {id:'3',name:'L/C信用证45天'},
-					            {id:'4',name:'L/C信用证即期'},
-					            {id:'4',name:'前T/T 30%订金,70%出货前（空运海运都适用）'},
-					            {id:'5',name:'前T/T 100%订金'}
+					            {id:0,name:'后T/T出货后OA **天内'},
+					            {id:1,name:'无订金 B/L提单复印件7天'},
+					            {id:2,name:'无订金 100%出货前'},
+					            {id:3,name:'L/C信用证45天'},
+					            {id:400,name:'L/C信用证即期'},
+					            {id:4,name:'前T/T 30%订金,70%出货前（空运海运都适用）'},
+					            {id:5,name:'前T/T 100%订金'}
 				            ]
 				        }),
 				        valueField: 'id',
@@ -496,11 +518,16 @@ Ext.define('Leon.panera.customer.CustomerForm', {
                     layout: 'hbox',
                     margin: '0 0 5 0',
                     items: [{
-                        //labelWidth: 110,
                         xtype: 'hidden',
                         fieldLabel: '联系人id',
                         name: 'contact_id',
-                       // style: (!Ext.isIE6) ? 'opacity:.3' : '',
+                        flex: 1,
+                        allowBlank: false
+                    },{
+                        xtype: 'hidden',
+                        fieldLabel: '是否是默认联系人',
+                        name: 'contact_isDefault',
+                        value:true,
                         flex: 1,
                         allowBlank: false
                     },{
@@ -582,8 +609,15 @@ Ext.define('Leon.panera.customer.CustomerForm', {
         buttons: [{
             text: '保存并管理其他联系人',
             scope: this,
-            handler: this.addOtherContact
+            hidden:me.update,
+            handler: this.saveAndManagerOtherContact
         }, {
+            text: '其他联系人管理',
+            scope: this,
+            iconCls:'role-role-iconCls',
+            hidden:!me.update,
+            handler: this.managerOtherContact
+        },{
             text: '保存',
             //width: 150,
             scope: this,
@@ -593,13 +627,33 @@ Ext.define('Leon.panera.customer.CustomerForm', {
         this.callParent();
     },
     
-    addOtherContact: function(customer_id){
+    saveAndManagerOtherContact: function(){
     	//首先添加用户，然后再弹出框来管理联系人的添加
-    	
+    	var me=this;
     	function callback(){
+	        //this.getForm().reset();
+	    	var grid=Ext.create('Leon.panera.customer.ContactGrid',{
+					customer_id:me.getRecord().getId()	
+			});
+			var win=Ext.create('Ext.Window',{
+				title:'联系人管理',
+				modal:true,
+				autoScroll :true,
+				width:600,
+				height:500,
+				layout:'fit',
+				items:[grid]
+			});
+			win.show();
+    	}
+    	
+    	this.onSave(callback);
+    },
+    managerOtherContact: function(){
         //this.getForm().reset();
+    	var me=this;
     	var grid=Ext.create('Leon.panera.customer.ContactGrid',{
-					
+			customer_id:me.getRecord().getId()
 		});
 		var win=Ext.create('Ext.Window',{
 			title:'联系人管理',
@@ -611,24 +665,23 @@ Ext.define('Leon.panera.customer.CustomerForm', {
 			items:[grid]
 		});
 		win.show();
-    	}
-    	
-    	this.onSave(callback);
     },
     
     onSave: function(callBack){
+    	var me=this;
         var form = this.getForm();
         if (form.isValid()) {
             //Ext.MessageBox.alert('Submitted Values', form.getValues(true));
             form.submit({
             	//standardSubmit :false,
             	clientValidation: true,
-    			url: Ext.ContextPath+'/customer/create',
-    			 success: function(form, action) {
-    			 	//Ext.Msg.alert('Success', action.result.msg);
-    			 	if(callBack){
+    			url: Ext.ContextPath+(me.update?'/customer/update':'/customer/create'),
+    			success: function(form, action) {
+    			 	if(callBack instanceof Function){
     			 		callBack(action.result.root.id);
     			 	}
+    			 	form.updateRecord();
+    			 	form.getRecord().set("star",action.result.root.star);
     			 },
     			 failure:function(form, action){
     			 	 Ext.Msg.alert('Failure', "保存客户失败");

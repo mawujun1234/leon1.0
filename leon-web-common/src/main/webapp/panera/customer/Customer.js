@@ -6,9 +6,14 @@ Ext.defineModel("Leon.panera.customer.Customer",{
 		{name:'address',type:'string'},
 		{name:'businessPhase_id',type:'string'},
 		{name:'buyMoney',type:'int'},
+		{name:'continent_id',type:'string'},
+		{name:'continent_name',type:'string'},
 		{name:'country_id',type:'string'},
+		{name:'country_name',type:'string'},
 		{name:'customerProperty_id',type:'string'},
+		{name:'customerProperty_name',type:'string'},
 		{name:'customerSource_id',type:'string'},
+		{name:'customerSource_name',type:'string'},
 		{name:'customerType',type:'int'},
 		{name:'empNum',type:'int'},
 		{name:'expYear',type:'int'},
@@ -24,13 +29,15 @@ Ext.defineModel("Leon.panera.customer.Customer",{
 		{name:'star',type:'int'},
 		{name:'website',type:'string'},
 		
+		{name:'contact_id',type:'string'},
 		{name:'contact_name',type:'string'},
 		{name:'contact_position',type:'string'},
 		{name:'contact_phone',type:'string'},
 		{name:'contact_mobile',type:'string'},
 		{name:'contact_chatNum',type:'string'},
 		{name:'contact_fax',type:'string'},
-		{name:'contact_email',type:'string'}
+		{name:'contact_email',type:'string'},
+		{name:'isDefault',type:'boolean'}
 	],
 	associations:[
 	]
