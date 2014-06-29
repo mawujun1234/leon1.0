@@ -1143,7 +1143,21 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 	}
 	public Long queryCount(Cnd cnd) {
 		cnd.setSqlType(SqlType.SELECT);
-		StringBuilder builder=new StringBuilder("select count(*)   ");
+		cnd.setCount(true);
+		//StringBuilder builder=new StringBuilder("select count(*)   ");
+		StringBuilder builder=new StringBuilder("");
+//		if(cnd.getSelectItems()!=null && cnd.getSelectItems().getNames().size()>0){
+//			builder.append(" select count(");
+//			//sb.append(" new map(");
+//			for (String obi : cnd.getSelectItems().getNames()) {
+//				//sb.append(obi+" as "+obi+",");
+//				builder.append(obi+",");
+//			}
+//			builder.setCharAt(builder.length() - 1, ')');
+//			builder.append(" ");
+//		} else {
+//			builder.append("select count(*)   ");
+//		}
 		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
 		if(cnd.getFrom()==null){
 			cnd.setFrom(classMetadata.getEntityName());

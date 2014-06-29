@@ -2,7 +2,10 @@ Ext.define('Leon.panera.customer.CustomerGrid',{
 	extend:'Ext.grid.Panel',
 	requires: [
 	     //'Leon.panera.customer.Customer'
-		'Leon.panera.customer.CustomerForm'
+		'Leon.panera.customer.CustomerForm',
+		'Leon.panera.customer.Followup',
+		'Leon.panera.customer.ContactGrid',
+		'Leon.panera.customer.FollowupGrid'
 	],
 	columnLines :true,
 	stripeRows:true,
@@ -25,7 +28,7 @@ Ext.define('Leon.panera.customer.CustomerGrid',{
 		{dataIndex:'country_name',text:'国家'},
 		{dataIndex:'customerProperty_name',text:'客户性质'},
 		{dataIndex:'inquiryDate',text:'初次询盘时间',xtype: 'datecolumn',   format:'Y-m-d'},
-		{dataIndex:'contactNum',text:'主动联系次数'},
+		{dataIndex:'followupNum',text:'跟进次数'},
 		{dataIndex:'businessPhase_id',text:'业务阶段'},
 		{dataIndex:'star',text:'客户星级'}
       ];
@@ -90,7 +93,8 @@ Ext.define('Leon.panera.customer.CustomerGrid',{
 					return;
 				}
 				var form=Ext.create('Leon.panera.customer.CustomerForm',{
-					update:true
+					update:true,
+					grid:grid
 				});
 				form.loadRecord(record);
 				
@@ -179,6 +183,31 @@ Ext.define('Leon.panera.customer.CustomerGrid',{
 					title:'联系人管理',
 					modal:true,
 					autoScroll :true,
+					width:600,
+					height:500,
+					layout:'fit',
+					items:[grid]
+				});
+				win.show();
+            }
+        }, {
+            text: '往来跟进记录',
+            iconCls:'followup_icons',
+            handler: function(btn){
+            	var grid=btn.up("grid");
+				var record=grid.getSelectionModel( ).getLastSelected( );
+				if(!record){
+					Ext.Msg.alert("消息","请先选择一个顾客.");
+					return;
+				}
+				
+		    	var grid=Ext.create('Leon.panera.customer.FollowupGrid',{
+					customer_id:record.getId()
+				});
+				var win=Ext.create('Ext.Window',{
+					title:'往来跟进记录',
+					modal:true,
+					//autoScroll :true,
 					width:600,
 					height:500,
 					layout:'fit',

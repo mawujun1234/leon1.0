@@ -8,6 +8,7 @@ public class SelectItems  implements SqlExpression{
 	private List<String> names=new ArrayList<String>();
 	
 	private boolean isDistinct=false;
+	private boolean isCount=false;
 
 
 	public List<String> getNames() {
@@ -25,6 +26,9 @@ public class SelectItems  implements SqlExpression{
 	public void joinHql(StringBuilder sb) {
 		if (!names.isEmpty()) {
 			sb.append(" select ");
+			if(isCount){
+				sb.append("count(");
+			}
 			if(this.isDistinct){
 				sb.append("distinct ");
 			}
@@ -35,8 +39,23 @@ public class SelectItems  implements SqlExpression{
 			}
 			sb.setCharAt(sb.length() - 1, ' ');
 			//sb.append(") "); 
-		} else
-			;// OK,无需添加.
+			if(isCount){
+				sb.append(") ");
+			}
+		} else {
+			if(isCount){
+				sb.append(" select count(*) ");
+			} 
+//			else { 这块以后要改，联合Repository
+//				
+//				if(this.isDistinct){
+//					sb.append(" select distinct * ");
+//				} else {
+//					sb.append(" select * ");
+//				}
+//			}
+		}
+			
 	}
 
 	public boolean isDistinct() {
@@ -64,6 +83,14 @@ public class SelectItems  implements SqlExpression{
 	public SqlExpression setNot(boolean not) {
 		// TODO Auto-generated method stub
 		return this;
+	}
+
+	public boolean isCount() {
+		return isCount;
+	}
+
+	public void setCount(boolean isCount) {
+		this.isCount = isCount;
 	}
 
 }

@@ -17,7 +17,7 @@ Ext.defineModel("Leon.panera.customer.Customer",{
 		{name:'customerType',type:'int'},
 		{name:'empNum',type:'int'},
 		{name:'expYear',type:'int'},
-		{name:'followNum',type:'string'},
+		{name:'followupNum',type:'int'},
 		{name:'inquiryContent',type:'string'},
 		{name:'inquiryDate',type:'date', dateFormat: 'Y-m-d'},
 		{name:'moq',type:'int'},

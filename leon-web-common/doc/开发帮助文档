@@ -4,7 +4,8 @@
 	方案一：使用数据库结构更简单啊，直接从数据库一直到展现层就可以了，关联数据的获取，通过重新查询或者写sql来达到目的，获取单个对象的时候，常常需要重组
 	方案二：在领域层使用领域模型,但当把领域模型传递到前台的界面的时候，就转换为数据库模型Contact的name属性就变成contact_id(属性_属性),还要获取name呢，那也转换为contact_name
 		如果是前端到ontroller，那就反过来做，自动代码生成也改成这样
-
+		
+Cnd类，添加count，max等方法,集成hibernateDao等,。类似于Cnd.count().andGT("age", 20)
 
 
 先王本地maven中导入 ojdbc.jar和Jnotify.jar

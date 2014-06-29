@@ -182,7 +182,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    ]]>
 	</sql>
 	<select id="queryPage" resultType="com.mawujun.panera.customer.Customer" parameterType="map">
-    	SELECT  a.*,
+SELECT  a.*,
 		b.id as contact_id ,
 		b.isDefault as contact_isDefault,
 		b.name  as  contact_name,
@@ -196,12 +196,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		c.name as customerProperty_name,
 		d.name as customerSource_name,
 		e.name as country_name,
-		e.continent as continent_id
+		e.continent as continent_id,
+		f.followupNum 
 		FROM panera_Customer a 
 		left join PANERA_CONTACT  b on  a.id=b.customer_id and b.isdefault='Y'
 		inner join PANERA_CUSTOMERPROPERTY  c on a.customerProperty_id=c.id
 		inner join PANERA_CUSTOMERSOURCE  d on a.customerSource_id=d.id
 		inner join PANERA_COUNTRY e on a.country_id=e.id
+                left join (select customer_id ,count(id) followupNum from panera_Followup group by customer_id ) f on a.id=f.customer_id 
 		where a.deleted is null
     </select>
     

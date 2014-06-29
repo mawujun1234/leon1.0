@@ -149,6 +149,7 @@ Ext.define('Leon.panera.customer.ContactForm', {
             	clientValidation: true,
     			url: Ext.ContextPath+(me.update?'/contact/update':'/contact/create'),
     			success: function(form, action) {
+    				Ext.Msg.alert('消息', "保存成功");
     			 	if(callBack instanceof Function){
     			 		callBack(action.result.root.id);
     			 	}
@@ -160,7 +161,7 @@ Ext.define('Leon.panera.customer.ContactForm', {
     			 	}
     			 },
     			 failure:function(form, action){
-    			 	 Ext.Msg.alert('Failure', "保存客户失败");
+    			 	 //Ext.Msg.alert('Failure', "保存客户失败");
     			 }
             });
         }

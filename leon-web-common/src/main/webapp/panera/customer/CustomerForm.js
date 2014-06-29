@@ -134,16 +134,18 @@ Ext.define('Leon.panera.customer.CustomerForm', {
                     defaultType: 'textfield',
                     margin: '0 0 5 0',
                     items: [{
-                        fieldLabel: '主动跟进次数',
+                        fieldLabel: '跟进次数',
                         labelWidth: 100,
                         //disabled: true,
+                        emptyText: '自动统计',
                         readOnly:true,
-                        name: 'followNum'
+                        name: 'followupNum'
                     },{
                     	xtype:'datefield',
                         fieldLabel: '初次询盘时间',
                         name: 'inquiryDate',
                         format:'Y-m-d',
+                        editable:false,
                         flex: 1,
                         allowBlank: false
                     }]
@@ -677,14 +679,19 @@ Ext.define('Leon.panera.customer.CustomerForm', {
             	clientValidation: true,
     			url: Ext.ContextPath+(me.update?'/customer/update':'/customer/create'),
     			success: function(form, action) {
+    				Ext.Msg.alert('消息', "保存成功");
     			 	if(callBack instanceof Function){
     			 		callBack(action.result.root.id);
     			 	}
     			 	form.updateRecord();
     			 	form.getRecord().set("star",action.result.root.star);
+    			 	me.win.close();
+    			 	if(!me.update){
+    			 		me.grid.getStore().reload();
+    			 	}
     			 },
     			 failure:function(form, action){
-    			 	 Ext.Msg.alert('Failure', "保存客户失败");
+    			 	 //Ext.Msg.alert('Failure', "保存客户失败");
     			 }
             });
         }

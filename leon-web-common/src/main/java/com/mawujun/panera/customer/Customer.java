@@ -52,8 +52,9 @@ public class Customer extends UUIDEntity {
 	private String businessPhase_id;
 	@Transient
 	private String businessPhase_name;
-	@Column(length=20)
-	private String followNum;//跟进次数，这个是只读的，是在跟进记录里面设置的
+	//@Column(length=20)
+	@Transient
+	private Integer followupNum;//跟进次数，这个是只读的，是在跟进记录里面设置的
 	private Date inquiryDate;//初次询盘时间
 	@Column(length=1500)
 	private String inquiryContent;//初次询盘内容
@@ -164,12 +165,6 @@ public class Customer extends UUIDEntity {
 		this.website = website;
 	}
 
-	public String getFollowNum() {
-		return followNum;
-	}
-	public void setFollowNum(String followNum) {
-		this.followNum = followNum;
-	}
 	public Date getInquiryDate() {
 		return inquiryDate;
 	}
@@ -386,6 +381,12 @@ public class Customer extends UUIDEntity {
 	}
 	public void setDeleted(Boolean deleted) {
 		this.deleted = deleted;
+	}
+	public Integer getFollowupNum() {
+		return followupNum;
+	}
+	public void setFollowupNum(Integer followupNum) {
+		this.followupNum = followupNum;
 	}
 	
 

@@ -109,7 +109,7 @@ public class Repository1Test  extends DbunitBaseRepositoryTest{
 		Cnd cnd=Cnd.insert().set("firstName", "ma").set("lastName", "wujun").set("email", "160649888@163.com").set("id", 4).set("version", 1);
 		entityTestMapper.create(cnd);
 		
-		long count= entityTestMapper.queryCount(Cnd.select());
+		long count= entityTestMapper.queryCount(Cnd.count());
 		
 		assertEquals(4, count);
 		//assertEquals(new Integer(4), entity.getId());
@@ -366,7 +366,14 @@ public class Repository1Test  extends DbunitBaseRepositoryTest{
 
 	@Test
 	public void queryCount() {
-		Cnd cnd=Cnd.select().andGT("age", 20).andLike("firstName", "admin").andIn("lastName", "123","1234");
+		Cnd cnd=Cnd.count().andGT("age", 20).andLike("firstName", "admin").andIn("lastName", "123","1234");
+		
+		Long counts=entityTestMapper.queryCount(cnd);
+		assertEquals(new Long(2),counts);
+	}
+	@Test
+	public void queryCountProperty() {
+		Cnd cnd=Cnd.count("id").andGT("age", 20).andLike("firstName", "admin").andIn("lastName", "123","1234");
 		
 		Long counts=entityTestMapper.queryCount(cnd);
 		assertEquals(new Long(2),counts);

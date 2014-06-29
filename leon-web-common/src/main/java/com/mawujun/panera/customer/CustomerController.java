@@ -19,8 +19,7 @@ public class CustomerController {
 
 	@Resource
 	private CustomerService customerService;
-	@Resource
-	private ContactService contactService;
+	
 
 
 //	/**
@@ -69,14 +68,8 @@ public class CustomerController {
 	@RequestMapping("/customer/create")
 	@ResponseBody
 	public Customer create(Customer customer) {
-		//计算星级
-		int star=customer.calculate();
-		customer.setStar(star);
 		
 		customerService.create(customer);
-		Contact contact=customer.geetContact();
-		contact.setCustomer_id(customer.getId());
-		contactService.create(contact);
 		
 		return customer;
 	}
@@ -86,12 +79,7 @@ public class CustomerController {
 	@RequestMapping("/customer/update")
 	@ResponseBody
 	public  Customer update(Customer customer) {
-		//计算星级
-		int star=customer.calculate();
-		customer.setStar(star);
-				
 		customerService.update(customer);
-		contactService.update(customer.geetContact());
 		return customer;
 	}
 	

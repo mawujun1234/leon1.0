@@ -565,7 +565,18 @@ public class RepositoryTest extends DbunitBaseRepositoryTest {
 	@Test
 	public void testQueryCountCnd() {
 		Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
-		Cnd cnd=Cnd.select().andGT("age", 20).andLike("firstName", "admin").andIn("lastName", "123","1234");
+		Cnd cnd=Cnd.count().andGT("age", 20).andLike("firstName", "admin").andIn("lastName", "123","1234");
+		
+		int counts=repository.queryCount(cnd);
+		tx.commit();
+		assertEquals(2,counts);
+		//assertEquals(1,entitys.getTotalPages());
+	}
+	
+	@Test
+	public void testQueryCountCndProperty() {
+		Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
+		Cnd cnd=Cnd.count("id").andGT("age", 20).andLike("firstName", "admin").andIn("lastName", "123","1234");
 		
 		int counts=repository.queryCount(cnd);
 		tx.commit();

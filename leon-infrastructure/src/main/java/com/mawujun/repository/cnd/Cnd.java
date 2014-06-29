@@ -91,6 +91,11 @@ public class Cnd implements PItem{
 		
 		return cnd;
 	}
+	public static Cnd count() {
+		Cnd cnd=Cnd.select();
+		cnd.getSelectItems().setCount(true);
+		return cnd;
+	}
 	/**
 	 * Cnd.select("id","name").distinct().andEquals("name", "1");
 	 * Cnd.select()设置SqlType为SELECT
@@ -103,6 +108,12 @@ public class Cnd implements PItem{
 			cnd.addSelect(selNames);
 		}
 		return cnd;
+	}
+	public static Cnd count(String... selNames) {
+		Cnd cnd=Cnd.select(selNames);
+		cnd.getSelectItems().setCount(true);
+		return cnd;
+		
 	}
 	/**
 	 * 是用于对象模型
@@ -409,6 +420,20 @@ public class Cnd implements PItem{
 	public Cnd distinct() {
 		
 		selectItems.setDistinct(true);
+		return this;
+	}
+//	/**
+//	 * 设置为count语句
+//	 * Cnd.select().addSelect("id","name").count().andEquals("name", "1");
+//	 * @author mawujun 16064988@qq.com 
+//	 * @return
+//	 */
+//	public Cnd count() {	
+//		selectItems.setCount(true);
+//		return this;
+//	}
+	public Cnd setCount(boolean bool) {	
+		selectItems.setCount(bool);
 		return this;
 	}
 	
