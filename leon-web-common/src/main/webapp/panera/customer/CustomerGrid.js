@@ -20,7 +20,8 @@ Ext.define('Leon.panera.customer.CustomerGrid',{
 	initComponent: function () {
       var me = this;
       me.columns=[
-		{dataIndex:'id',text:'id'},
+		//{dataIndex:'id',text:'id'},
+      	{xtype: 'rownumberer'},
 		{dataIndex:'name',text:'公司名'},
 		{dataIndex:'contact_name',text:'联系人'},
 		{dataIndex:'contact_email',text:'邮箱'},
@@ -58,7 +59,7 @@ Ext.define('Leon.panera.customer.CustomerGrid',{
 	        displayInfo: true
 	  }];
 	  
-	  me.tbar=	[{
+	  var actionBUttons=	[{
 			text: '新增',
 			//itemId:'reload',
 			//disabled:me.disabledAction,
@@ -215,16 +216,48 @@ Ext.define('Leon.panera.customer.CustomerGrid',{
 				});
 				win.show();
             }
-        },{
-			text: '刷新',
+        }];
+		
+		var queryItems=[];
+		var nameField=Ext.create('Ext.form.field.Text',{
+			emptyText:'请输入公司名称'
+		});
+		queryItems.push(nameField);
+		
+		var contact_nameField=Ext.create('Ext.form.field.Text',{
+			emptyText:'请输入联系人'
+		});
+		queryItems.push(contact_nameField);
+		
+		var contact_emailField=Ext.create('Ext.form.field.Text',{
+			emptyText:'请输入email'
+		});
+		queryItems.push(contact_emailField);
+		
+		queryItems.push({
+			text: '查询',
 			itemId:'reload',
 			//disabled:me.disabledAction,
 			handler: function(btn){
 				var grid=btn.up("grid");
-				grid.getStore().reload();
+				
+				var params={
+					name:nameField.getValue(),
+					contact_name:contact_nameField.getValue(),
+					contact_email:contact_emailField.getValue()
+				}
+				grid.getStore().load({params:params});
 			},
 			iconCls: 'form-reload-button'
-		}]
+		});
+		me.tbar={
+			 xtype: 'container',
+ 			defaults: {anchor: '0'},
+  			defaultType: 'toolbar',
+ 			layout: 'anchor',
+			items:[{xtyle:'toolbar',items:actionBUttons},{xtype:'toolbar',items:queryItems}]
+		}
+
        
       me.callParent();
 	}

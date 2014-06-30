@@ -182,7 +182,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    ]]>
 	</sql>
 	<select id="queryPage" resultType="com.mawujun.panera.customer.Customer" parameterType="map">
-SELECT  a.*,
+		SELECT  a.*,
 		b.id as contact_id ,
 		b.isDefault as contact_isDefault,
 		b.name  as  contact_name,
@@ -205,6 +205,15 @@ SELECT  a.*,
 		inner join PANERA_COUNTRY e on a.country_id=e.id
                 left join (select customer_id ,count(id) followupNum from panera_Followup group by customer_id ) f on a.id=f.customer_id 
 		where a.deleted is null
+		<if test="name!=null">
+			and a.name like '%${name}%'
+		</if>
+		<if test="contact_name!=null">
+			and b.name like '%${contact_name}%'
+		</if>
+		<if test="contact_email!=null">
+			and b.email like '%${contact_email}%'
+		</if>
     </select>
     
     <select id="get" resultType="com.mawujun.panera.customer.Customer" parameterType="String">

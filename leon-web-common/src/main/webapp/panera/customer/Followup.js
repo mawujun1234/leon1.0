@@ -6,11 +6,13 @@ Ext.defineModel("Leon.panera.customer.Followup",{
 		{name:'content',type:'string'},
 		{name:'createDate',type:'date', dateFormat: 'Y-m-d'},
 		{name:'customer_id',type:'string'},
+		{name:'customer_name',type:'string'},
 		{name:'feedbackContetnt',type:'string'},
 		{name:'feedbackDate',type:'date', dateFormat: 'Y-m-d'},
 		{name:'method',type:'string'},
 		{name:'nextContent',type:'string'},
-		{name:'nextDate',type:'date', dateFormat: 'Y-m-d'}
+		{name:'nextDate',type:'date', dateFormat: 'Y-m-d'},
+		{name:'nextHandled',type:'boolean'}
 	],
 	associations:[
 	]

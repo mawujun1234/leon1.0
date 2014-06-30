@@ -28,4 +28,10 @@ where c.role_id=d.role_id and b.fun_id=d.fun_id and charindex(a.reportcode,b.rep
 	    FROM leon_MenuItem a,leon_fun  b
 		where a.menu_id=#{menuId}  and a.fun_id=b.id and b.url=#{jspUrl}
     </select>
+    
+    <select id="queryAutostarts" resultType="com.mawujun.menu.MenuItemVO" >
+    	SELECT a.*,b.url
+	    FROM leon_MenuItem a,leon_fun  b
+		where a.menu_id=#{menuId}  and a.fun_id=b.id and a.autostart='Y'
+    </select>
 </mapper>

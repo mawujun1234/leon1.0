@@ -13,6 +13,7 @@ Ext.defineModel("Leon.desktop.menu.MenuItem",{
 		{name:'iconCls32',type:'string',defaultValue:'menu-category-default-32'},
 		{name:'reportCode',type:'string'},
 		{name:'isAutoCreate',type:'boolean'},
+		{name:'autostart',type:'boolean'},
 		{name:'url',type:'string'}//是从功能里面来的
 		,{name:'fun_id',type:'auto'}
 		,{name:'menu_id',type:'auto'}

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.repository.cnd.Cnd;
+import com.mawujun.utils.M;
 import com.mawujun.utils.page.Page;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
@@ -47,8 +48,8 @@ public class CustomerController {
 	 */
 	@RequestMapping("/customer/query")
 	@ResponseBody
-	public Page query(Integer start,Integer limit,String sampleName){
-		Page page=Page.getInstance(start,limit);//.addParam(M.Customer.sampleName, "%"+sampleName+"%");
+	public Page query(Integer start,Integer limit,String name,String contact_name,String contact_email){
+		Page page=Page.getInstance(start,limit).addParam("name", name).addParam("contact_name", contact_name).addParam("contact_email", contact_email);
 		return customerService.queryPage(page);
 	}
 

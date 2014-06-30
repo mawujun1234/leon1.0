@@ -53,6 +53,19 @@ public class FollowupController {
 		return followupes;
 	}
 	
+	/**
+	 * 查找到期的任务
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param customer_id
+	 * @return
+	 */
+	@RequestMapping("/followup/remind")
+	@ResponseBody
+	public List<Followup> remind() {	
+		List<Followup> followupes=followupService.remind();
+		return followupes;
+	}
+	
 
 	@RequestMapping("/followup/load")
 	public Followup load(String id) {

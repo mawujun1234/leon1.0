@@ -69,7 +69,8 @@ public class Page {
 		return this;
 	}
 	/**
-	 * 调用这个方法，就默认参数Map类型的
+	 * 调用这个方法，就默认参数Map类型的,
+	 * 默认null和空字符串不会添加进去
 	 * 和setParams是冲突的，只能选一个
 	 * @author mawujun email:160649888@163.com qq:16064988
 	 * @param key
@@ -77,6 +78,9 @@ public class Page {
 	 * @return
 	 */
 	public Page addParam(String key,Object value) {
+		if(value==null || "".equals(value)){
+			return this;
+		}
 		if(this.params==null || !(this.params instanceof Map)){
 			this.params=new HashMap<String,Object>();
 		}

@@ -141,6 +141,22 @@ Ext.define('Leon.desktop.Desktop', {
             me.setWallpaper(wallpaper, me.wallpaperStretch);
         }
         
+        
+       
+        me.on("render",function(panel){
+        	if (panel.autostarts && panel.autostarts.length>0) {
+        		// window.desktop
+        		for(var i=0;i<panel.autostarts.length;i++){
+        			var btn=panel.autostarts[i];
+        			panel.createWindow({
+	        			title:btn.text,
+			        	url:btn.url,
+			        	iconCls:btn.iconCls
+		        	});
+        		}
+        		
+        	}
+        })
        
     },
     showSwitchUserWin:function(){
@@ -354,8 +370,10 @@ Ext.define('Leon.desktop.Desktop', {
     	if(config.url.lastIndexOf('.js')==config.url.length-3){
 			//就使用js来作为url的话，就实例化这个url，
     		//接着判断这个对象是否是window对象，如果是，就直接show，否则就封装在window中
+    		//console.log(config.url);
     		Ext.Loader.loadScript({
-    			url:'..'+config.url,
+    			//url:'..'+config.url,
+    			url:Ext.JspContextPath+config.url,
     			onLoad:function(options){
     				//console.dir(options);
     				var className=config.url.substring(1,config.url.length-3);

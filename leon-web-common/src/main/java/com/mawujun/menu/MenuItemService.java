@@ -176,6 +176,17 @@ public class MenuItemService extends AbstractService<MenuItem, String> {//extend
 		return menuItems;
 	}
 	
+	public List<MenuItemVO> queryAutostarts(String menuId,String userId) {
+//		List<MenuItemVO> list=new ArrayList<MenuItemVO>();
+//		MenuItem menuItem=menuItemRepository.get("2c90838446eab7800146eb3892030001");
+//		MenuItemVO vo=BeanUtils.copyOrCast(menuItem, MenuItemVO.class);
+//		vo.setFunId(menuItem.getFun()!=null?menuItem.getFun().getId():null);
+//		list.add(vo);
+		
+		Map params=Params.init().add("menuId", menuId);
+		return menuItemRepository.queryAutostarts(params);
+	}
+	
 	private void extenMenuItem(MenuItem leaf,MenuItemVO vo){
 		if(StringUtils.hasText(leaf.getJavaClass())){
 			try {

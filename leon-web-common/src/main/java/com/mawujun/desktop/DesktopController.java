@@ -76,6 +76,10 @@ public class DesktopController {
 		desktopConfig.setMenuItems(menuItems);
 		
 		
+		//自动启动
+		desktopConfig.setAutostarts(menuItemService.queryAutostarts(userDetail.getMenuId(), userId));
+		
+		
 		Collection<? extends GrantedAuthority> authorities = currentAuth.getAuthorities();
 
 		for (GrantedAuthority auth : authorities) {
@@ -84,6 +88,8 @@ public class DesktopController {
 				desktopConfig.addSwitchUser(auth.getAuthority().replaceFirst(SwitchUserFilterImpl.ROLE_PREVIOUS_ADMINISTRATOR+"_", ""));
 			}
 		}
+		
+		
 		
 		
 		

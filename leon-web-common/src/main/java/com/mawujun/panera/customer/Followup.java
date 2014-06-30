@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.mawujun.repository.idEntity.UUIDEntity;
 
@@ -30,8 +31,14 @@ public class Followup extends UUIDEntity {
 	private Date nextDate;//计划下一次跟进时间
 	@Column(length=1000)
 	private String nextContent;
+	@org.hibernate.annotations.Type(type="yes_no")
+	private Boolean nextHandled=false;
 	
+	
+	@Column(length=36)
 	private String customer_id;
+	@Transient
+	private String customer_name;
 	
 	public Date getCreateDate() {
 		return createDate;
@@ -81,6 +88,18 @@ public class Followup extends UUIDEntity {
 	}
 	public void setFeedbackContetnt(String feedbackContetnt) {
 		this.feedbackContetnt = feedbackContetnt;
+	}
+	public String getCustomer_name() {
+		return customer_name;
+	}
+	public void setCustomer_name(String customer_name) {
+		this.customer_name = customer_name;
+	}
+	public Boolean getNextHandled() {
+		return nextHandled;
+	}
+	public void setNextHandled(Boolean nextHandled) {
+		this.nextHandled = nextHandled;
 	}
 	
 

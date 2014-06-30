@@ -13,5 +13,7 @@ public interface MenuItemRepository extends IRepository<MenuItem, String> {
 
 	public List<String> query4Desktop(Map params);
 	public List<MenuItemVO> queryMenuItem(Map params);
+	
+	public List<MenuItemVO> queryAutostarts(Map params);
 
 }

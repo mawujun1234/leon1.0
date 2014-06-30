@@ -118,9 +118,11 @@ Ext.define('Leon.panera.customer.FollowupForm',{
             	format: 'Y-m-d',
                 fieldLabel: '下次跟进时间',
                 name: 'nextDate',
-                       // style: (!Ext.isIE6) ? 'opacity:.3' : '',
-                //flex: 1,
                 allowBlank: true
+            },{
+                xtype: 'checkbox',
+                fieldLabel: '已处理',
+                name: 'nextHandled'
             }]
       }, {
                 xtype: 'container',

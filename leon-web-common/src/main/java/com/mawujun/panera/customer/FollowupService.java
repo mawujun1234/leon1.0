@@ -1,9 +1,14 @@
 package com.mawujun.panera.customer;
 
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+
 
 
 import com.mawujun.service.AbstractService;
@@ -28,6 +33,10 @@ public class FollowupService extends AbstractService<Followup, String>{
 	@Override
 	public FollowupRepository getRepository() {
 		return followupRepository;
+	}
+	
+	public List<Followup> remind() {
+		return followupRepository.remind(new Date());
 	}
 
 }

@@ -1,7 +1,7 @@
 /**
  * 弹出窗的个性化设置
  */
-Ext.define('Leon.desktop.preferences.WindowSettings', {
+Ext.define('Leon.desktop.preferences.WindowSetting', {
     extend: 'Ext.window.Window',
 
     uses: [

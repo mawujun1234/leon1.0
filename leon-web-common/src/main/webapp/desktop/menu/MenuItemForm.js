@@ -165,6 +165,10 @@ Ext.define('Leon.desktop.menu.MenuItemForm',{
 	            //allowBlank: false,
 	            //tooltip: '请输入名称'
 	        },{
+	            fieldLabel: '自动启动',
+	            xtype:'checkbox',
+	            name: 'autostart'
+	        },{
 	            fieldLabel: 'java扩展',
 	            name: 'javaClass',
 	            readOnly:true,

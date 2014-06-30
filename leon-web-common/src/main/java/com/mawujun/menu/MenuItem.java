@@ -49,6 +49,8 @@ public class MenuItem extends UUIDEntity {
 	private String iconCls32;
 	@Column(length=40)
 	private String reportCode;//等级关系代码
+	@org.hibernate.annotations.Type(type="yes_no")
+	private Boolean autostart=false;//是否自动启动
 	
 	@org.hibernate.annotations.Type(type="yes_no")
 	private Boolean leaf=false;
@@ -192,6 +194,16 @@ public class MenuItem extends UUIDEntity {
 
 	public void setIconCls32(String iconCls32) {
 		this.iconCls32 = iconCls32;
+	}
+
+
+	public Boolean getAutostart() {
+		return autostart;
+	}
+
+
+	public void setAutostart(Boolean autostart) {
+		this.autostart = autostart;
 	}
 	
 //	public boolean isAutoCreate(){

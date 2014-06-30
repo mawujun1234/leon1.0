@@ -53,6 +53,9 @@ public class DesktopConfig implements IdEntity<String>,Serializable{
 	@Transient
 	private List<MenuItemVO> quickstarts;
 	
+	@Transient
+	private List<MenuItemVO> autostarts;//自动启动
+	
 	public Set<String> getSwitchUsers() {
 		return switchUsers;
 	}
@@ -142,6 +145,12 @@ public class DesktopConfig implements IdEntity<String>,Serializable{
 			this.quickstarts=new ArrayList<MenuItemVO>();
 		}
 		this.quickstarts.add(quickstart);
+	}
+	public List<MenuItemVO> getAutostarts() {
+		return autostarts;
+	}
+	public void setAutostarts(List<MenuItemVO> autostarts) {
+		this.autostarts = autostarts;
 	}
 
 }
