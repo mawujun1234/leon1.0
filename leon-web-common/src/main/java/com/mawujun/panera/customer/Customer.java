@@ -59,7 +59,7 @@ public class Customer extends UUIDEntity {
 	@Column(length=1500)
 	private String inquiryContent;//初次询盘内容
 	 @org.hibernate.annotations.Type(type="yes_no")
-	private Boolean deleted;
+	private Boolean deleted=false;
 	
 	
 	
@@ -135,6 +135,7 @@ public class Customer extends UUIDEntity {
 		contact.setFax(contact_fax);
 		contact.setEmail(contact_email);
 		contact.setIsDefault(contact_isDefault);
+		contact.setCustomer_id(this.getId());
 		return contact;
 	}
 	public String setContinent_name() {

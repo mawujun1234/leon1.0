@@ -17,48 +17,138 @@ Ext.onReady(function(){
 		    }
 		});
 	chart_store.load({params:{dimession:"continent",meausre:"customer_num"}});
-	var chart = Ext.create('Ext.chart.Chart', {
-		region:'center',
-        animate: true,
-        shadow: true,
-        store: chart_store,
-        axes: [{
-            type: 'Numeric',
-            position: 'left',
-            fields: ['data'],
-            title: '客户数',
-            grid: true
-           // minimum: 0,
-           // maximum: 100
-        }, {
-            type: 'Category',
-            position: 'bottom',
-            fields: ['name'],
-            title: 'Months',
-            label: {
-                rotate: {
-                    degrees: 270
-                }
-            }
-        }],
-        series: [{
-            type: 'column',
-            axis: 'left',
-            gutter: 80,
-            xField: 'name',
-            yField: ['data'],
-            tips: {
-                trackMouse: true,
-                renderer: function(storeItem, item) {
-                    this.setTitle(storeItem.get('name'));
-                    this.update(storeItem.get('data'));
-                }
-            },
-            style: {
-                fill: '#38B8BF'
-            }
-        }]
+	function getChart(type){
+		type=type?type:'column';
+		if(type=='column'){
+			var chart = Ext.create('Ext.chart.Chart', {
+				region:'center',
+		        animate: true,
+		        shadow: true,
+		        store: chart_store,
+		        axes: [{
+		            type: 'Numeric',
+		            position: 'left',
+		            fields: ['data'],
+		            title: '客户数',
+		            grid: true
+		           // minimum: 0,
+		           // maximum: 100
+		        }, {
+		            type: 'Category',
+		            position: 'bottom',
+		            fields: ['name'],
+		            title: '维度',
+		            label: {
+		                rotate: {
+		                    degrees: 270
+		                }
+		            }
+		        }],
+		        series: [{
+		            type: 'column',
+		            axis: 'left',
+		            gutter: 80,
+		            xField: 'name',
+		            yField: ['data'],
+		            tips: {
+		                trackMouse: true,
+		                width:100,
+		                renderer: function(storeItem, item) {
+		                    this.setTitle(storeItem.get('name'));
+		                    this.update(storeItem.get('data'));
+		                }
+		            },
+		            style: {
+		                fill: '#38B8BF'
+		            },
+		            listeners: {
+		                'itemclick': function() {
+		                       // alert(1);
+		                }
+		        	}
+		        }]
+		    });
+		     return chart;
+		} else {
+			    var chart = Ext.create('Ext.chart.Chart', {
+			        xtype: 'chart',
+			        animate: true,
+			        store: chart_store,
+			        shadow: true,
+			        legend: {
+			            position: 'right'
+			        },
+			        insetPadding: 60,
+			        theme: 'Base:gradients',
+			        series: [{
+			            type: 'pie',
+			            field: 'data',
+			            showInLegend: true,
+			            //donut: donut,
+			            tips: {
+			                trackMouse: true,
+			                width:100,
+			                renderer: function(storeItem, item) {
+			                    //calculate percentage.
+			                    var total = 0;
+			                    chart_store.each(function(rec) {
+			                        total += rec.get('data');
+			                    });
+			                    //this.setTitle(storeItem.get('name') + '</br>占比: ' + Math.round(storeItem.get('data') / total * 100) + '%'+ '</br>客户数: ' + Math.round(storeItem.get('data') ));
+			                    this.setTitle('</br>占比: ' + Math.round(storeItem.get('data') / total * 100) + '%'+ '</br>客户数: ' + Math.round(storeItem.get('data') ));
+
+			                }
+			            },
+			            highlight: {
+			                segment: {
+			                    margin: 20
+			                }
+			            },
+			            label: {
+			                field: 'name',
+			                display: 'rotate',
+			                contrast: true,
+			                font: '18px Arial'
+			            }
+			        }]
+			    });
+			    return chart;
+		}
+	}
+    var toolbar=Ext.create('Ext.toolbar.Toolbar',{
+    	items:[{
+	        xtype: 'radiogroup',
+	        fieldLabel: '显示样式',
+	        // Arrange radio buttons into two columns, distributed vertically
+	        //columns: 2,
+	        labelWidth:60,
+	        vertical: true,
+	        width:200,
+	        items: [
+	            { boxLabel: '柱状图', name: 'showType', inputValue: 'column', checked: true },
+	            { boxLabel: '饼图', name: 'showType', inputValue: 'pie'}
+	        ],
+	        listeners:{
+	        	change:function( radiogroup, newValue, oldValue){
+	        		//console.dir(newValue);
+	        		//alert(newValue);
+	        		var newChart=getChart(newValue.showType);
+	        		var oldChart=centerPanel.items.get(0);
+	        		centerPanel.remove(oldChart);
+	        		centerPanel.add(newChart);
+	        		centerPanel.updateLayout();
+	        	}
+	        }
+	    }]
     });
+    var centerPanel=Ext.create('Ext.panel.Panel',{
+		//layout:'border',
+		tbar:toolbar,
+		split:true,
+		region:'center',
+		layout:'fit',
+		items:[getChart()]
+	});
 	
 //==============================================================================================================	
 	var dimession=Ext.create('Ext.grid.Panel',{
@@ -137,7 +227,7 @@ Ext.onReady(function(){
 	
 	var viewPort=Ext.create('Ext.container.Viewport',{
 		layout:'border',
-		items:[westPanel,chart]
+		items:[westPanel,centerPanel]
 	});
 
 });

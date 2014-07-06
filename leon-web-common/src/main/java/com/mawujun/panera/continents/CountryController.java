@@ -105,6 +105,7 @@ public class CountryController {
 	@RequestMapping("/country/create")
 	@ResponseBody
 	public Country create(@RequestBody Country country) {
+		country.setContinent_name(country.getContinent().getText());
 		countryService.create(country);
 		return country;
 	}
@@ -112,6 +113,7 @@ public class CountryController {
 	@RequestMapping("/country/update")
 	@ResponseBody
 	public  Country update(@RequestBody Country country) {
+		country.setContinent_name(country.getContinent().getText());
 		countryService.update(country);
 		return country;
 	}

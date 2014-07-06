@@ -10,38 +10,50 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
 @Controller
 public class ReportController {
-
+	String jsonStr="{id:'none',name:'未回复'},{id:'replay',name:'客户回复'},{id:'discuss',name:'讨论价格'},{id:'send',name:'送样'},{id:'deal',name:'成交'}";
 	@Resource
 	private CustomerRepository customerRepository;
 	
 	@RequestMapping("/report/getData")
-	public List<Map<String,Object>> getData(String dimession,String meausre){
-		List<Map<String,Object>> list=new ArrayList<Map<String,Object>>();
+	public List<ReportEntity> getData(String dimession,String meausre){
+		List<ReportEntity> list=new ArrayList<ReportEntity>();
 		if("continent".equalsIgnoreCase(dimession)){
-			for(int i=0;i<5;i++){
-				Map<String,Object> map=new HashMap<String,Object>();
-				map.put("name", "continent"+i);
-				map.put("data", i+Math.random()*10);
-				list.add(map);
-			}
+			list=  customerRepository.queryByContinent();
+
 		} else if("country".equalsIgnoreCase(dimession)){
-			for(int i=0;i<10;i++){
-				Map<String,Object> map=new HashMap<String,Object>();
-				map.put("name", "country"+i);
-				map.put("data", i+Math.random()*10);
-				list.add(map);
-			}	
+			list= customerRepository.queryByCountry();
 			
 		} else if("businessPhase".equalsIgnoreCase(dimession)){
-			
+			list=  customerRepository.queryByBusinessPhase();
+
+			for(ReportEntity reportEntity:list){
+				if("none".equals(reportEntity.getId())){
+					reportEntity.setName("未回复");
+				} else if("replay".equals(reportEntity.getId())){
+					reportEntity.setName("客户回复");
+				}else if("discuss".equals(reportEntity.getId())){
+					reportEntity.setName("讨论价格");
+				}else if("send".equals(reportEntity.getId())){
+					reportEntity.setName("送样");
+				}else if("deal".equals(reportEntity.getId())){
+					reportEntity.setName("成交");
+				}
+				
+			}
 		} else if("customerSource".equalsIgnoreCase(dimession)){
-			
+			list=  customerRepository.queryByCustomerSource();
 		} else if("customerProperty".equalsIgnoreCase(dimession)){
-			
+			list=  customerRepository.queryByCustomerProperty();
 		} else if("star".equalsIgnoreCase(dimession)){
-			
+			list=  customerRepository.queryByStar();
+			for(ReportEntity reportEntity:list){
+				reportEntity.setName(reportEntity.getId()+"星");
+			}
 		}
 		return list;
 		

@@ -207,8 +207,8 @@ Ext.define('Leon.panera.customer.CustomerForm', {
                         forceSelection: true,
                         listeners:{
                         	change:function(combo, newValue, oldValue){
-                        		//var country=combo.nextSibling();
-                        		//country.getStore().load({params:{continent:newValue}});
+                        		var country=combo.nextSibling();
+                        		country.getStore().load({params:{continent:newValue}});
                         	}
                         }
                     }, {

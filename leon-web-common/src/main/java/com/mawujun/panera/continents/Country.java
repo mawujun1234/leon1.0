@@ -17,11 +17,14 @@ import com.mawujun.repository.idEntity.UUIDEntity;
 @Entity
 @Table(name="panera_Country")
 public class Country extends UUIDEntity {
+	@Column(length=36)
 	private String name_en;
+	@Column(length=36)
 	private String name;
 	@Enumerated(EnumType.STRING)
 	private Continent continent;
-	@Transient
+	//@Transient
+	@Column(length=36)
 	private String continent_name;
 
 	public String getName_en() {
@@ -53,8 +56,8 @@ public class Country extends UUIDEntity {
 		return this.getContinent().getText();
 	}
 
-//	public void setContinent_name(String continent_name) {
-//		this.continent_name = continent_name;
-//	}
+	public void setContinent_name(String continent_name) {
+		this.continent_name = continent_name;
+	}
 
 }

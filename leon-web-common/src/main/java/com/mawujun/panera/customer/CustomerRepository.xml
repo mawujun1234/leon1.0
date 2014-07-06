@@ -204,7 +204,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		inner join PANERA_CUSTOMERSOURCE  d on a.customerSource_id=d.id
 		inner join PANERA_COUNTRY e on a.country_id=e.id
                 left join (select customer_id ,count(id) followupNum from panera_Followup group by customer_id ) f on a.id=f.customer_id 
-		where a.deleted is null
+		where a.deleted ='N'
 		<if test="name!=null">
 			and a.name like '%${name}%'
 		</if>
@@ -223,5 +223,38 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         	id=#{id}    
     </select>
 	<!-- select语句的生成结束=============================================================================================== -->
+	<select id="queryByContinent" resultType="com.mawujun.panera.customer.ReportEntity" >
+		SELECT b.continent as id,b.continent_name as name,count(a.id) as data FROM PANERA_CUSTOMER a inner join PANERA_COUNTRY b
+		on a.country_id=b.id
+		group by b.continent,b.continent_name
+	</select>
+	
+	<select id="queryByCountry" resultType="com.mawujun.panera.customer.ReportEntity" >
+		SELECT b.id as id,b.name as name,count(a.id) as data FROM PANERA_CUSTOMER a inner join PANERA_COUNTRY b
+		on a.country_id=b.id
+		group by b.id,b.name
+	</select>
+
+	<select id="queryByBusinessPhase" resultType="com.mawujun.panera.customer.ReportEntity" >
+		SELECT a.businessPhase_id as id,a.businessPhase_id as name,count(a.id) as data FROM PANERA_CUSTOMER a
+		group by  a.businessPhase_id
+	</select>
+	
+	<select id="queryByCustomerSource" resultType="com.mawujun.panera.customer.ReportEntity" >
+		SELECT b.id as id,b.name as name,count(a.id) as data FROM PANERA_CUSTOMER a inner join PANERA_CUSTOMERSOURCE  b
+		on a.customerSource_id=b.id
+		group by b.id,b.name
+	</select>
+	
+	<select id="queryByCustomerProperty" resultType="com.mawujun.panera.customer.ReportEntity" >
+		SELECT b.id as id,b.name as name,count(a.id) as data FROM PANERA_CUSTOMER a inner join PANERA_CUSTOMERPROPERTY  b
+		on a.customerProperty_id=b.id
+		group by b.id,b.name
+	</select>
+	
+	<select id="queryByStar" resultType="com.mawujun.panera.customer.ReportEntity" >
+		SELECT a.star as id,a.star as name,count(a.id) as data FROM PANERA_CUSTOMER a 
+		group by a.star 
+	</select>
 </mapper>
 
