@@ -81,7 +81,7 @@ Ext.define('Leon.desktop.parameter.ParameterForm', {
 		    items: []
 		},{
             fieldLabel: '描述',
-            name: 'desc'
+            name: 'description'
         }],
 	initComponent:function(){
 		var me=this;

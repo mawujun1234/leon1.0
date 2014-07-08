@@ -10,7 +10,7 @@ import com.mawujun.panera.customerProperty.CustomerProperty;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
 @Entity
-@Table(name="panera_Contact")
+@Table(name="panera_contact")
 public class Contact extends UUIDEntity {
 	@Column(length=100)
 	private String name;

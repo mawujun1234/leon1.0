@@ -48,8 +48,10 @@ public class CustomerController {
 	 */
 	@RequestMapping("/customer/query")
 	@ResponseBody
-	public Page query(Integer start,Integer limit,String name,String contact_name,String contact_email){
-		Page page=Page.getInstance(start,limit).addParam("name", name).addParam("contact_name", contact_name).addParam("contact_email", contact_email);
+	public Page query(Integer start,Integer limit,String name,String contact_name,String contact_email,Boolean deleted){
+		Page page=Page.getInstance(start,limit).addParam("name", name).addParam("contact_name", contact_name)
+				.addParam("contact_email", contact_email)
+				.addParam("deleted", deleted==null?false:deleted);
 		return customerService.queryPage(page);
 	}
 

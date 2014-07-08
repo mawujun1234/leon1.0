@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import com.mawujun.repository.idEntity.IdEntity;
 
 @Entity
-@Table(name = "leon_QuickStart")
+@Table(name = "leon_quickstart")
 public class QuickStart implements IdEntity<QuickStart.Id>,Serializable {
 
 	/**

@@ -1,0 +1,15 @@
+http://developer.baidu.com/console#bae/service!appid=3081764
+http://developer.baidu.com/wiki/index.php?title=docs/cplat/bae/mysql#MySQL.E7.A7.81.E6.9C.89.E6.9C.8D.E5.8A.A1
+
+1:打包war，别忘记拷贝ext-4
+2:运行mvn install，生成prod的项目
+3:注意leon.prod.properties要改成连接到bae上的数据库
+
+1:下载jdk，http://java.com/zh_CN/，并配置java_home
+2:下载tomcat，并安装
+	http://tomcat.apache.org/ 下载tomcat7版本的
+3： 修改TOMCAT_HOME/bin/catalina.sh
+	在echo Using CATALINA_BASE:   "%CATALINA_BASE%"之前加入下面的行：
+	 set "JAVA_OPTS=-server -Xms800m -Xmx800m  -XX:MaxNewSize=256m "
+	 上面的800m是根据你机器的物理内存得出来的，不要超过物理内存的80%,最少512M
+5：运行	 TOMCAT_HOME/bin/目录下的startup.sh

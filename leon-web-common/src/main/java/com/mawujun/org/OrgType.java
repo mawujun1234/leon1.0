@@ -8,7 +8,7 @@ import javax.persistence.Table;
 import com.mawujun.repository.idEntity.IdEntity;
 
 @Entity
-@Table(name="leon_OrgType")
+@Table(name="leon_orgtype")
 public class OrgType implements IdEntity<String> {
 	/**
 	 * 

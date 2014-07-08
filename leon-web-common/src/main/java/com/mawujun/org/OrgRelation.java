@@ -16,7 +16,7 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name="leon_OrgRelation")
+@Table(name="leon_orgrelation")
 public class OrgRelation {
 	@EmbeddedId
 	private Id id = new Id();

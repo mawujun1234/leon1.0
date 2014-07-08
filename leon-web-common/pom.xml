@@ -21,6 +21,15 @@
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 			</resource>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.properties</include>
+					<include>**/*.xml</include>
+				</includes>
+				<!-- 是否替换资源中的属性-->
+				<filtering>true</filtering>
+			</resource>
 		</resources>
 
 		<plugins>
@@ -40,8 +49,8 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.4</version>
 				<configuration>
-					<!-- 为了发布到百度开发平台上，容量太大所以去掉extjs么人吧extjs单独发布到百度平台上了http://extj1234.duapp.com/ -->
-					<warSourceExcludes>ext-4/**</warSourceExcludes>
+					<!-- 为了发布到百度开发平台上，容量太大所以去掉extjs么人吧extjs单独发布到百度平台上了http://extj1234.duapp.com/ 
+					<warSourceExcludes>ext-4/**</warSourceExcludes>-->
 				</configuration>
 			</plugin>
 			
@@ -201,12 +210,20 @@
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.3</version>
 		</dependency>
-
+<!-- 
 		<dependency>
 			<groupId>org.fusesource</groupId>
 			<artifactId>sigar</artifactId>
 			<version>1.6.4</version>
 		</dependency>
+		 -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.31</version>
+		</dependency>
+
+		
 	</dependencies>
 
 

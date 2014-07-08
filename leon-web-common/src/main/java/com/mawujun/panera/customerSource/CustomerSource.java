@@ -7,7 +7,7 @@ import javax.persistence.Table;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
 @Entity
-@Table(name="panera_CustomerSource")
+@Table(name="panera_customersource")
 public class CustomerSource extends UUIDEntity{
 	
 	/**
@@ -19,7 +19,7 @@ public class CustomerSource extends UUIDEntity{
 	private String name;
 	
 	@Column(length=400)
-	private String desc;
+	private String description;
 
 	public String getName() {
 		return name;
@@ -29,12 +29,14 @@ public class CustomerSource extends UUIDEntity{
 		this.name = name;
 	}
 
-	public String getDesc() {
-		return desc;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setDescription(String description) {
+		this.description = description;
 	}
+
+
 
 }

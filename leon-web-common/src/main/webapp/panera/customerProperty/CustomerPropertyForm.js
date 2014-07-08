@@ -27,21 +27,21 @@ Ext.define('Leon.panera.customerProperty.CustomerPropertyForm',{
 	        xtype:'hidden',
 	        allowBlank: false
 	    },
-		{
-	        fieldLabel: 'desc',
-	        //afterLabelTextTpl: Ext.required,
-	        name: 'desc',
+	    {
+	        fieldLabel: '名称',
+	        afterLabelTextTpl: Ext.required,
+	        name: 'name',
 	        readOnly:true,
 	        xtype:'textfield',
 	        allowBlank: false
 	    },
 		{
-	        fieldLabel: 'name',
+	        fieldLabel: '描述',
 	        //afterLabelTextTpl: Ext.required,
-	        name: 'name',
+	        name: 'description',
 	        readOnly:true,
 	        xtype:'textfield',
-	        allowBlank: false
+	        allowBlank: true
 	    }
 	  ];   
 	  

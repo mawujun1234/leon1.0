@@ -7,8 +7,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <!-- 注意文件名称为:-->
 <mapper namespace="com.mawujun.org.OrgRepository">
 	<select id="queryChildOrg" resultType="com.mawujun.org.Org" >
-    	SELECT distinct a.id
-	    FROM leon_Org a
+    	select distinct a.id
+	    from leon_org a
 		where a.menu_id=#{menu_id}  
 		
     </select>

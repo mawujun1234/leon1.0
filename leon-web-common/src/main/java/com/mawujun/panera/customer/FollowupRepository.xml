@@ -8,7 +8,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 	<select id="remind" resultType="com.mawujun.panera.customer.Followup">
     	SELECT a.*,b.name as customer_name
-	    FROM panera_Followup a,PANERA_CUSTOMER b
+	    FROM panera_followup a,panera_customer b
 	    where a.CUSTOMER_ID =b.id and a.nextDate &lt;=#{nowDate}
 		and a.nextHandled  &lt;&gt;'Y'
     </select>

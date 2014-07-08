@@ -13,7 +13,7 @@ import com.mawujun.annotation.Label;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
 @Entity
-@Table(name="leon_ConstantItem",uniqueConstraints={
+@Table(name="leon_constantitem",uniqueConstraints={
 		@UniqueConstraint(columnNames = {"code","constant_id"})
 })
 public class ConstantItem extends UUIDEntity {

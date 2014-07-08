@@ -152,6 +152,7 @@ Ext.define('Leon.panera.customer.FollowupForm',{
         var form = this.getForm();
         if (form.isValid()) {
             //Ext.MessageBox.alert('Submitted Values', form.getValues(true));
+        	console.log(me.update);
             form.submit({
             	//standardSubmit :false,
             	clientValidation: true,
@@ -159,10 +160,13 @@ Ext.define('Leon.panera.customer.FollowupForm',{
     			success: function(form, action) {
     				Ext.Msg.alert('消息', "保存成功");
     				me.getForm().findField("id").setValue(action.result.root.id);
+    				//me.getForm().setValues(action.result.root);
     			 	form.updateRecord();
     			 	if(!me.update){
     			 		me.grid.getStore().reload();
+    			 		me.update=true;
     			 	}
+    			 	
     			 },
     			 failure:function(form, action){
     			 	 //Ext.Msg.alert('Failure', "保存客户失败");

@@ -35,11 +35,11 @@ Ext.define('Leon.panera.continents.CountryGrid',{
 	  
 	  
 
-	  var continents={
+	  var continents=Ext.create('Ext.form.RadioGroup',{
 			width:500,
 			labelWidth:60,
 			labelAlign:'right',
-            xtype: 'radiogroup',
+            //xtype: 'radiogroup',
             fieldLabel: '五大洲',
             //cls: 'x-check-group-alt',
             items: [
@@ -55,7 +55,7 @@ Ext.define('Leon.panera.continents.CountryGrid',{
 					grid.getStore().reload({params:{continent:newValue.continent}});
             	}
             }
-		};
+		});
 		
 		var addContryButton={
             text: '添加国家',
@@ -67,7 +67,7 @@ Ext.define('Leon.panera.continents.CountryGrid',{
             	var form=new Leon.panera.continents.CountryForm();
             	
             	var model=Ext.createModel('Leon.panera.continents.Country',{ 
-            		
+            		continent:continents.getValue().continent
 				});
 				model.phantom =true;
 				form.getForm().loadRecord(model);

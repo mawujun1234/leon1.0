@@ -8,15 +8,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.mawujun.role.RoleRepository">
 	<select id="queryByRole" resultType="com.mawujun.role.Role" parameterType="map">
     	SELECT a.*
-	    FROM leon_Role a,leon_role_role b
+	    FROM leon_role a,leon_role_role b
 		where a.id=b.current_id and b.other_id=#{otherId} and b.roleRoleEnum=#{roleRoleEnum}
 		order by a.id
     </select>
 	
 	<!--用于FilterInvocationSecurityMetadataSourceImpl-->
 	<select id="queryRoleUrl" resultType="record">
-    	SELECT a.url,b.role_Id
-	    FROM leon_Fun a,leon_Role_Fun b
+    	select a.url,b.role_id
+	    from leon_fun a,leon_role_fun b
 		where a.id=b.fun_id
 		order by a.id
     </select>
@@ -24,7 +24,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     
     <select id="queryFun" resultType="com.mawujun.fun.FunVO" parameterType="map">
     	SELECT a.*,case when b.fun_id is null then 'N' else 'Y' end as active
-    	FROM leon_Fun a left join leon_Role_Fun b
+    	FROM leon_fun a left join leon_role_fun b
 		on a.id=b.fun_id
 		and b.role_id=#{role_id}
     </select>

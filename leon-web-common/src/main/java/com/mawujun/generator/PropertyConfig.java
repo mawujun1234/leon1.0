@@ -12,7 +12,7 @@ import com.mawujun.repository.idEntity.UUIDEntity;
  *
  */
 @Entity
-@Table(name="leon_PropertyConfig")
+@Table(name="leon_propertyconfig")
 public class PropertyConfig extends UUIDEntity {
 	/**
 	 * 

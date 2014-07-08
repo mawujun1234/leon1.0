@@ -4,7 +4,7 @@ Ext.define('Leon.desktop.parameter.JavaForm', {
 	
 	defaults: { 
 		labelAlign:'right',
-		labelWidth:60,
+		labelWidth:60
 	},
 	
 	defaultType: 'textfield',

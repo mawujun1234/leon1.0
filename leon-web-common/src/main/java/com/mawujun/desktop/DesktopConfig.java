@@ -16,7 +16,7 @@ import com.mawujun.menu.MenuItemVO;
 import com.mawujun.repository.idEntity.IdEntity;
 
 @Entity
-@Table(name="leon_DesktopConfig")
+@Table(name="leon_desktopconfig")
 public class DesktopConfig implements IdEntity<String>,Serializable{
 	/**
 	 * 

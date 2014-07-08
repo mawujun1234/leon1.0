@@ -57,8 +57,10 @@ Ext.define('Leon.panera.customer.FollowupGrid',{
 			text: '新增',
 			//itemId:'reload',
 			handler: function(btn){
+				var grid=btn.up("grid");
 				var form=Ext.create('Leon.panera.customer.FollowupForm',{
-					update:false
+					update:false,
+					grid:grid
 				});
 				var record=new Leon.panera.customer.Contact({
 					customer_id:me.customer_id
@@ -69,8 +71,9 @@ Ext.define('Leon.panera.customer.FollowupGrid',{
 				var win=Ext.create('Ext.Window',{
 					title:'新增往来跟进记录',
 					modal:true,
+					constrainHeader:true,
 					autoScroll :true,
-					width:600,
+					width:700,
 					height:400,
 					layout:'fit',
 					items:[form]
@@ -84,31 +87,14 @@ Ext.define('Leon.panera.customer.FollowupGrid',{
 			//itemId:'reload',
 			//disabled:me.disabledAction,
 			handler: function(btn){
-				var grid=btn.up("grid");
-				var record=grid.getSelectionModel( ).getLastSelected( );
-				if(!record){
-					Ext.Msg.alert("消息","请先选择一个联系方式.");
-					return;
-				}
-				var form=Ext.create('Leon.panera.customer.FollowupForm',{
-					update:true,
-					grid:grid
-				});
-				form.loadRecord(record);
+//				var grid=btn.up("grid");
+//				var record=grid.getSelectionModel( ).getLastSelected( );
+//				if(!record){
+//					Ext.Msg.alert("消息","请先选择一个联系方式.");
+//					return;
+//				}
+				me.showUpdateForm();
 				
-				
-				var win=Ext.create('Ext.Window',{
-					title:'更新往来跟进记录',
-					modal:true,
-					autoScroll :true,
-					width:600,
-					height:400,
-					layout:'fit',
-					items:[form]
-				});
-				form.win=win;
-				
-				win.show();
 			},
 			iconCls: 'form-update-button'
 		},{
@@ -142,8 +128,41 @@ Ext.define('Leon.panera.customer.FollowupGrid',{
 				grid.getStore().reload();
 			},
 			iconCls: 'form-reload-button'
-		}]
+		}];
+		me.on("itemdblclick",function(view,record, item, index){
+			me.showUpdateForm(record);
+		});
        
       me.callParent();
+	},
+	showUpdateForm:function(record){
+		var grid=this;
+		if(!record){
+			var record=grid.getSelectionModel( ).getLastSelected( );
+			if(!record){
+				Ext.Msg.alert("消息","请先选择一个联系方式.");
+				return;
+			}
+		}
+		var form=Ext.create('Leon.panera.customer.FollowupForm',{
+			update:true,
+			grid:grid
+		});
+		form.loadRecord(record);
+				
+				
+		var win=Ext.create('Ext.Window',{
+			title:'更新往来跟进记录',
+			modal:true,
+			constrainHeader:true,
+			autoScroll :true,
+			width:700,
+			height:400,
+			layout:'fit',
+			items:[form]
+		});
+		form.win=win;
+				
+		win.show();
 	}
 });

@@ -83,11 +83,12 @@ public class CustomerService extends AbstractService<Customer, String>{
 		//计算星级
 				int star=customer.calculate();
 				customer.setStar(star);
+				super.update(customer);
 						
 				Contact contact=customer.geetContact();
 				contact.setCustomer_id(customer.getId());
 				contactService.update(contact);
-				super.update(customer);
+				
 	}
 
 }

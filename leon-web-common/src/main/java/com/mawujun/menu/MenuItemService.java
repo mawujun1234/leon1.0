@@ -131,10 +131,12 @@ public class MenuItemService extends AbstractService<MenuItem, String> {//extend
 //	}
 	
 	public MenuItem cut(String id,String parent_id,String oldParent_id,String menuId) {
+		MenuItem parent=null;
+		if(parent_id!=null){
+			parent=this.get(parent_id);
+			parent.setLeaf(false);
+		}
 		
-		
-		MenuItem parent=this.get(parent_id);
-		parent.setLeaf(false);
 		MenuItem menuItem=this.get(id);
 		
 		String reportCode=updateReportCode(parent_id);

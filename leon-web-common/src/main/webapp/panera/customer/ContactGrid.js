@@ -78,31 +78,13 @@ Ext.define('Leon.panera.customer.ContactGrid',{
 			//itemId:'reload',
 			//disabled:me.disabledAction,
 			handler: function(btn){
-				var grid=btn.up("grid");
-				var record=grid.getSelectionModel( ).getLastSelected( );
-				if(!record){
-					Ext.Msg.alert("消息","请先选择一个联系方式.");
-					return;
-				}
-				var form=Ext.create('Leon.panera.customer.ContactForm',{
-					update:true,
-					grid:grid
-				});
-				form.loadRecord(record);
-				
-				
-				var win=Ext.create('Ext.Window',{
-					title:'更新联系方式',
-					modal:true,
-					autoScroll :true,
-					width:600,
-					height:300,
-					layout:'fit',
-					items:[form]
-				});
-				form.win=win;
-				
-				win.show();
+//				var grid=btn.up("grid");
+//				var record=grid.getSelectionModel( ).getLastSelected( );
+//				if(!record){
+//					Ext.Msg.alert("消息","请先选择一个联系方式.");
+//					return;
+//				}
+				me.showUpdateForm();
 			},
 			iconCls: 'form-update-button'
 		},{
@@ -155,8 +137,39 @@ Ext.define('Leon.panera.customer.ContactGrid',{
 				grid.getStore().reload();
 			},
 			iconCls: 'form-reload-button'
-		}]
-       
+		}];
+       me.on("itemdblclick",function(view,record, item, index){
+			me.showUpdateForm(record);
+		});
       me.callParent();
+	},
+	showUpdateForm:function(record){
+		var grid=this;
+		if(!record){
+			var record=grid.getSelectionModel( ).getLastSelected( );
+			if(!record){
+				Ext.Msg.alert("消息","请先选择一个联系方式.");
+				return;
+			}
+		}
+		var form=Ext.create('Leon.panera.customer.ContactForm',{
+					update:true,
+					grid:grid
+				});
+				form.loadRecord(record);
+				
+				
+				var win=Ext.create('Ext.Window',{
+					title:'更新联系方式',
+					modal:true,
+					autoScroll :true,
+					width:600,
+					height:300,
+					layout:'fit',
+					items:[form]
+				});
+				form.win=win;
+				
+				win.show();
 	}
 });

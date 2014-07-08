@@ -11,8 +11,10 @@ import com.mawujun.panera.continents.Continent;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
 @Entity
-@Table(name="panera_Customer")
+@Table(name="panera_customer")
 public class Customer extends UUIDEntity {
+	@Column(length=100)
+	private String code;
 	@Column(length=100)
 	private String name;
 	//@ManyToOne(fetch=FetchType.EAGER)
@@ -113,11 +115,11 @@ public class Customer extends UUIDEntity {
 		
 		if(star<15){
 			return 1;
-		} else if(star>=15 && star<19){
+		} else if(star>=15 && star<20){
 			return 2;
-		} else if(star>=20 && star<27){
+		} else if(star>=20 && star<28){
 			return 3;
-		} else if(star>=28 && star<36){
+		} else if(star>=28 && star<37){
 			return 4;
 		} else if(star>=37 ){
 			return 5;
@@ -388,6 +390,12 @@ public class Customer extends UUIDEntity {
 	}
 	public void setFollowupNum(Integer followupNum) {
 		this.followupNum = followupNum;
+	}
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
 	}
 	
 

@@ -7,8 +7,9 @@
 		
 Cnd类，添加count，max等方法,集成hibernateDao等,。类似于Cnd.count().andGT("age", 20)
 
-
-先王本地maven中导入 ojdbc.jar和Jnotify.jar
+=======================================================
+数据库名都用小写，类似于@Table(name="leon_user")，@Table(name="leon_switchuser")
+并且在xml中写sql的时候的表名也都用小写
 ==================================================================
 打开h2数据库的开发环境的时候地址填写
   因为是使用h2的文件形式，所以要指定文件jdbc:h2:file:E:\eclipse\workspace\leon\leon-web-common\leon;AUTO_SERVER=TRUE，具体查看“a总括.docx

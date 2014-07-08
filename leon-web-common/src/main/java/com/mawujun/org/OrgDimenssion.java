@@ -8,7 +8,7 @@ import javax.persistence.Table;
 import com.mawujun.repository.idEntity.IdEntity;
 
 @Entity
-@Table(name="leon_OrgDimenssion")
+@Table(name="leon_orgdimenssion")
 public class OrgDimenssion  implements IdEntity<String> {
 	private static final long serialVersionUID = 1L;
 	@Id

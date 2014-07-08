@@ -8,7 +8,7 @@ import javax.persistence.Table;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
 @Entity
-@Table(name="leon_SwitchUser")
+@Table(name="leon_switchuser")
 public class SwitchUser extends UUIDEntity{
 	
 	/**

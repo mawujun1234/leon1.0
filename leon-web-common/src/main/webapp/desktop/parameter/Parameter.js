@@ -3,7 +3,7 @@ Ext.defineModel("Leon.desktop.parameter.Parameter",{
 	fields:[
 		{name:'id',type:'auto'},
 		{name:'name',type:'string'},
-		{name:'desc',type:'string'},
+		{name:'description',type:'string'},
 		{name:'showModel',type:'string'},
 		{name:'showModelName',type:'string'},
 		{name:'valueEnum',type:'string'},

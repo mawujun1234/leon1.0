@@ -18,7 +18,7 @@ import com.mawujun.repository.idEntity.UUIDEntity;
  *
  */
 @Entity
-@Table(name="leon_ConstantType")
+@Table(name="leon_constanttype")
 public class ConstantType extends UUIDEntity {
 	/**
 	 * 

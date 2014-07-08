@@ -13,7 +13,7 @@ import com.mawujun.repository.idEntity.UUIDEntity;
 import com.mawujun.role.Role;
 
 @Entity
-@Table(name="leon_User")
+@Table(name="leon_user")
 public class User extends UUIDEntity{
 
 	/**

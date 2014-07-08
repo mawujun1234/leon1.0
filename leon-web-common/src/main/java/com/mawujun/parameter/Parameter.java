@@ -18,7 +18,7 @@ import com.alibaba.fastjson.JSON;
 import com.mawujun.repository.idEntity.IdEntity;
 
 @Entity
-@Table(name="leon_Parameter")
+@Table(name="leon_parameter")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE) 
 public class Parameter  implements IdEntity<String>,Serializable{
 	
@@ -34,7 +34,7 @@ public class Parameter  implements IdEntity<String>,Serializable{
 	@Column(length=50)
 	private String name;
 	@Column(length=200)
-	private String desc;
+	private String description;
 	
 	
 	
@@ -79,13 +79,6 @@ public class Parameter  implements IdEntity<String>,Serializable{
 		this.name = name;
 	}
 
-	public String getDesc() {
-		return desc;
-	}
-
-	public void setDesc(String desc) {
-		this.desc = desc;
-	}
 
 	public ShowModelEnum getShowModel() {
 		return showModel;
@@ -158,6 +151,14 @@ public class Parameter  implements IdEntity<String>,Serializable{
 
 	public void setValidation(String validation) {
 		this.validation = validation;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 

@@ -15,7 +15,7 @@ import com.mawujun.repository.idEntity.UUIDEntity;
  *
  */
 @Entity
-@Table(name="panera_Followup")
+@Table(name="panera_followup")
 public class Followup extends UUIDEntity {
 	private Date createDate;//等级时间
 	@Column(length=30)

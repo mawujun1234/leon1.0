@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
 @Entity
-@Table(name="leon_Org")
+@Table(name="leon_org")
 public class Org extends UUIDEntity {
 	
 	/**

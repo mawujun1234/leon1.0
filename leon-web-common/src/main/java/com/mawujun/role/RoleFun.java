@@ -23,7 +23,7 @@ import com.mawujun.repository.idEntity.UUIDEntity;
 
 
 @Entity
-@Table(name = "leon_Role_Fun")
+@Table(name = "leon_role_fun")
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)  
 public class RoleFun extends UUIDEntity{

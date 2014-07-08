@@ -21,7 +21,7 @@ import com.mawujun.fun.Fun;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
 @Entity
-@Table(name="leon_menuItem")
+@Table(name="leon_menuitem")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)  
 public class MenuItem extends UUIDEntity {
 
@@ -38,9 +38,10 @@ public class MenuItem extends UUIDEntity {
 	@Column(length=80)
 	private String javaClass;
 	@Label(name="代码")
-	@Lob 
-	@Basic(fetch = FetchType.EAGER) 
-	@Column(columnDefinition="CLOB", nullable=true) 
+	//@Lob 
+	//@Basic(fetch = FetchType.EAGER) 
+	//@Column(columnDefinition="CLOB", nullable=true) 
+	@Column(length=3000)
 	private String scripts;
 	@Label(name="图标")
 	@Column(length=40)

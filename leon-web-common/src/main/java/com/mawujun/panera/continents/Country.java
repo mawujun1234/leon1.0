@@ -15,7 +15,7 @@ import com.mawujun.repository.idEntity.UUIDEntity;
  *
  */
 @Entity
-@Table(name="panera_Country")
+@Table(name="panera_country")
 public class Country extends UUIDEntity {
 	@Column(length=36)
 	private String name_en;

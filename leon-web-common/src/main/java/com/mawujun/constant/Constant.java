@@ -24,7 +24,7 @@ import com.mawujun.repository.idEntity.UUIDEntity;
  *
  */
 @Entity
-@Table(name="leon_Constant")
+@Table(name="leon_constant")
 public class Constant extends UUIDEntity {
 	
 	/**

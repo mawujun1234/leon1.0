@@ -22,7 +22,6 @@
 		<module>leon-infrastructure</module>
 		<!-- <module>leon-example</module> -->
 		<module>leon-web-common</module>
-		<module>leon-extjs</module>
     	<module>leon-maven-plugin</module>
   </modules>
 

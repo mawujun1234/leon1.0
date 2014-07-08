@@ -28,12 +28,13 @@ Ext.define('Leon.panera.continents.CountryForm',{
 	        allowBlank: false
 	    },
 		{
-	        fieldLabel: 'continent',
+	        fieldLabel: '洲',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'continent',
 	        //readOnly:true,
 	        xtype:'combo',
-	        //allowBlank: false,
+	        afterLabelTextTpl: Ext.required,
+	        allowBlank: false,
 	        queryMode: 'local',
 		    displayField: 'name',
 		    valueField: 'id',
@@ -51,20 +52,21 @@ Ext.define('Leon.panera.continents.CountryForm',{
 	        })
 	    },
 		{
-	        fieldLabel: 'name',
+	        fieldLabel: '名称',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'name',
 	        //readOnly:true,
 	        xtype:'textfield',
+	        afterLabelTextTpl: Ext.required,
 	        allowBlank: false
 	    },
 		{
-	        fieldLabel: 'name_en',
+	        fieldLabel: '名称_英文',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'name_en',
 	        //readOnly:true,
 	        xtype:'textfield',
-	        allowBlank: false
+	        allowBlank: true
 	    }
 	  ];   
 	  

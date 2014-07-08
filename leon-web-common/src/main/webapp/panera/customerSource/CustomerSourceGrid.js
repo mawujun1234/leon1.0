@@ -16,9 +16,10 @@ Ext.define('Leon.panera.customerSource.CustomerSourceGrid',{
 	initComponent: function () {
       var me = this;
       me.columns=[
-		{dataIndex:'id',text:'id'},
-		{dataIndex:'desc',text:'desc'},
-		{dataIndex:'name',text:'name'}
+		//{dataIndex:'id',text:'id'},
+		
+		{dataIndex:'name',text:'名称'},
+		{dataIndex:'description',text:'描述',flex:1}
       ];
       
 	  me.store=Ext.create('Ext.data.Store',{

@@ -33,7 +33,7 @@ import com.mawujun.fun.Fun;
 import com.mawujun.utils.RoleCacheHolder;
 
 @Entity
-@Table(name="leon_Role")
+@Table(name="leon_role")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)  
 public class Role extends TreeNode {
 

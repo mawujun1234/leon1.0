@@ -3,6 +3,7 @@ Ext.defineModel("Leon.panera.customer.Customer",{
 	idProperty:'id',
 	fields:[
 		{name:'id',type:'string'},
+		{name:'code',type:'string'},
 		{name:'address',type:'string'},
 		{name:'businessPhase_id',type:'string'},
 		{name:'buyMoney',type:'int'},
@@ -28,6 +29,7 @@ Ext.defineModel("Leon.panera.customer.Customer",{
 		{name:'quality',type:'int'},
 		{name:'star',type:'int'},
 		{name:'website',type:'string'},
+		{name:'deleted',type:'boolean'},
 		
 		{name:'contact_id',type:'string'},
 		{name:'contact_name',type:'string'},

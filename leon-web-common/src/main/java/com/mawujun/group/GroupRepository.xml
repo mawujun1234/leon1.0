@@ -7,8 +7,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <!-- 注意文件名称为:Example_${DbName}_Mapper.xml-->
 <mapper namespace="com.mawujun.group.GroupRepository">
 	<select id="queryUser" resultType="com.mawujun.user.User" parameterType="map">
-    	SELECT a.*
-	    FROM leon_user a,leon_group_user b
+    	select a.*
+	    from leon_user a,leon_group_user b
 		where a.id=b.user_id and b.group_id=#{group_id}
 		<if  test="name!=null">
 			and a.name like #{name}
@@ -16,8 +16,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     </select>
     
     <select id="queryRole" resultType="com.mawujun.role.Role" parameterType="String">
-    	SELECT a.*
-	    FROM leon_role a,leon_group_role b
+    	select a.*
+	    from leon_role a,leon_group_role b
 		where a.id=b.role_id and b.group_id=#{group_id}
     </select>
 	

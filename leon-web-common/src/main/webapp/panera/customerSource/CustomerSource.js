@@ -3,7 +3,7 @@ Ext.defineModel("Leon.panera.customerSource.CustomerSource",{
 	idProperty:'id',
 	fields:[
 		{name:'id',type:'string'},
-		{name:'desc',type:'string'},
+		{name:'description',type:'string'},
 		{name:'name',type:'string'}
 	],
 	associations:[

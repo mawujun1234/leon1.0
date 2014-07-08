@@ -60,6 +60,7 @@ Ext.define('Leon.panera.customer.ContactForm', {
                         name: 'name',
                        // style: (!Ext.isIE6) ? 'opacity:.3' : '',
                         flex: 1,
+                        afterLabelTextTpl: Ext.required,
                         allowBlank: false
                     }, {
                         //labelWidth: 110,
@@ -68,7 +69,7 @@ Ext.define('Leon.panera.customer.ContactForm', {
                         name: 'position',
                        // style: (!Ext.isIE6) ? 'opacity:.3' : '',
                         flex: 1,
-                        allowBlank: false
+                        allowBlank: true
                     }]
                 },{
                     xtype: 'container',
@@ -81,6 +82,7 @@ Ext.define('Leon.panera.customer.ContactForm', {
                         name: 'phone',
                        // style: (!Ext.isIE6) ? 'opacity:.3' : '',
                         flex: 1,
+                        afterLabelTextTpl: Ext.required,
                         allowBlank: false
                     }, {
                         //labelWidth: 110,
@@ -89,7 +91,7 @@ Ext.define('Leon.panera.customer.ContactForm', {
                         name: 'mobile',
                        // style: (!Ext.isIE6) ? 'opacity:.3' : '',
                         flex: 1,
-                        allowBlank: false
+                        allowBlank: true
                     }]
                 }, {
                     xtype: 'container',
@@ -102,7 +104,7 @@ Ext.define('Leon.panera.customer.ContactForm', {
                         name: 'chatNum',
                        // style: (!Ext.isIE6) ? 'opacity:.3' : '',
                         flex: 1,
-                        allowBlank: false
+                        allowBlank: true
                     },{
                         //labelWidth: 110,
                         xtype: 'textfield',
@@ -110,7 +112,7 @@ Ext.define('Leon.panera.customer.ContactForm', {
                         name: 'fax',
                        // style: (!Ext.isIE6) ? 'opacity:.3' : '',
                         flex: 1,
-                        allowBlank: false
+                        allowBlank: true
                     }]
                 }, {
                     xtype: 'container',
@@ -123,6 +125,7 @@ Ext.define('Leon.panera.customer.ContactForm', {
                         name: 'email',
                        // style: (!Ext.isIE6) ? 'opacity:.3' : '',
                         flex: 1,
+                        afterLabelTextTpl: Ext.required,
                         allowBlank: false
                     }]
                 }]

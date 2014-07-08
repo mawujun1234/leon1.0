@@ -29,7 +29,7 @@ import com.mawujun.exten.TreeNode;
 import com.mawujun.repository.idEntity.IdEntity;
 
 @Entity
-@Table(name="leon_Fun")
+@Table(name="leon_fun")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)  
 public class Fun implements IdEntity<String>,Serializable{
 	/**

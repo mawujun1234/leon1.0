@@ -27,21 +27,23 @@ Ext.define('Leon.panera.customerSource.CustomerSourceForm',{
 	        xtype:'hidden',
 	        allowBlank: false
 	    },
+		
 		{
-	        fieldLabel: 'desc',
-	        //afterLabelTextTpl: Ext.required,
-	        name: 'desc',
-	        readOnly:true,
-	        xtype:'textfield',
-	        allowBlank: false
-	    },
-		{
-	        fieldLabel: 'name',
+	        fieldLabel: '名称',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'name',
 	        readOnly:true,
 	        xtype:'textfield',
+	        afterLabelTextTpl: Ext.required,
 	        allowBlank: false
+	    },
+	    {
+	        fieldLabel: '描述',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'description',
+	        readOnly:true,
+	        xtype:'textfield',
+	        allowBlank: true
 	    }
 	  ];   
 	  
