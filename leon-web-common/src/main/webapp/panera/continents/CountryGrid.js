@@ -40,14 +40,15 @@ Ext.define('Leon.panera.continents.CountryGrid',{
 			labelWidth:60,
 			labelAlign:'right',
             //xtype: 'radiogroup',
-            fieldLabel: '五大洲',
+            fieldLabel: '洲',
             //cls: 'x-check-group-alt',
             items: [
                 {boxLabel: '欧洲', name: 'continent', inputValue:'Europe'},
                 {boxLabel: '亚洲', name: 'continent', inputValue: 'Asia'},
                 {boxLabel: '大洋洲', name: 'continent', inputValue: 'Oceania'},
                 {boxLabel: '非洲', name: 'continent', inputValue: 'Africa'},
-                {boxLabel: '亚洲', name: 'continent', inputValue: 'America'}
+                {boxLabel: '北美洲', name: 'continent', inputValue: 'NorthAmerica'},
+                {boxLabel: '南美洲', name: 'continent', inputValue: 'SouthAmerica'}
             ],
             listeners:{
             	'change':function(radiogroup, newValue, oldValue){

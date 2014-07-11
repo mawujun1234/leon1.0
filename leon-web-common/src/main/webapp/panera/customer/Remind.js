@@ -111,6 +111,12 @@ Ext.define('Leon.panera.customer.Remind', {
 		    }
 		}]
        
+		if(me.execuMethod){
+			me.execuIframeMethod();
+		}
         return grid;
+    },
+    execuIframeMethod:function(){
+    	this.store.reload();
     }
 });

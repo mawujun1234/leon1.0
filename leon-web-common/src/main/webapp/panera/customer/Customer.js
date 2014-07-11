@@ -30,6 +30,7 @@ Ext.defineModel("Leon.panera.customer.Customer",{
 		{name:'star',type:'int'},
 		{name:'website',type:'string'},
 		{name:'deleted',type:'boolean'},
+		{name:'createDate',type:'date', dateFormat: 'Y-m-d'},
 		
 		{name:'contact_id',type:'string'},
 		{name:'contact_name',type:'string'},

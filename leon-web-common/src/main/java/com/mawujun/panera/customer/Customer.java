@@ -62,6 +62,8 @@ public class Customer extends UUIDEntity {
 	private String inquiryContent;//初次询盘内容
 	 @org.hibernate.annotations.Type(type="yes_no")
 	private Boolean deleted=false;
+	 
+	 private Date createDate;
 	
 	
 	
@@ -271,7 +273,7 @@ public class Customer extends UUIDEntity {
 	}
 
 	public Integer getExpYear() {
-		return expYear;
+		return expYear==null?0:expYear;
 	}
 
 	public void setExpYear(Integer expYear) {
@@ -279,7 +281,7 @@ public class Customer extends UUIDEntity {
 	}
 
 	public Integer getProportion() {
-		return proportion;
+		return proportion==null?0:proportion;
 	}
 
 	public void setProportion(Integer proportion) {
@@ -287,7 +289,7 @@ public class Customer extends UUIDEntity {
 	}
 
 	public Integer getCustomerType() {
-		return customerType;
+		return customerType==null?0:customerType;
 	}
 
 	public void setCustomerType(Integer customerType) {
@@ -295,7 +297,7 @@ public class Customer extends UUIDEntity {
 	}
 
 	public Integer getEmpNum() {
-		return empNum;
+		return empNum==null?0:empNum;
 	}
 
 	public void setEmpNum(Integer empNum) {
@@ -303,7 +305,7 @@ public class Customer extends UUIDEntity {
 	}
 
 	public Integer getBuyMoney() {
-		return buyMoney;
+		return buyMoney==null?0:buyMoney;
 	}
 
 	public void setBuyMoney(Integer buyMoney) {
@@ -311,7 +313,7 @@ public class Customer extends UUIDEntity {
 	}
 
 	public Integer getQuality() {
-		return quality;
+		return quality==null?0:quality;
 	}
 
 	public void setQuality(Integer quality) {
@@ -319,7 +321,7 @@ public class Customer extends UUIDEntity {
 	}
 
 	public Integer getPrice() {
-		return price;
+		return price==null?0:price;
 	}
 
 	public void setPrice(Integer price) {
@@ -327,7 +329,7 @@ public class Customer extends UUIDEntity {
 	}
 
 	public Integer getMoq() {
-		return moq;
+		return moq==null?0:moq;
 	}
 
 	public void setMoq(Integer moq) {
@@ -335,7 +337,7 @@ public class Customer extends UUIDEntity {
 	}
 
 	public Integer getPaymentTerms() {
-		return paymentTerms;
+		return paymentTerms==null?0:paymentTerms;
 	}
 
 	public void setPaymentTerms(Integer paymentTerms) {
@@ -396,6 +398,12 @@ public class Customer extends UUIDEntity {
 	}
 	public void setCode(String code) {
 		this.code = code;
+	}
+	public Date getCreateDate() {
+		return createDate;
+	}
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
 	}
 	
 

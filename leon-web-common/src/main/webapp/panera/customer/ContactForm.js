@@ -82,8 +82,8 @@ Ext.define('Leon.panera.customer.ContactForm', {
                         name: 'phone',
                        // style: (!Ext.isIE6) ? 'opacity:.3' : '',
                         flex: 1,
-                        afterLabelTextTpl: Ext.required,
-                        allowBlank: false
+                        //afterLabelTextTpl: Ext.required,
+                        allowBlank: true
                     }, {
                         //labelWidth: 110,
                         xtype: 'textfield',
@@ -122,6 +122,7 @@ Ext.define('Leon.panera.customer.ContactForm', {
                         //labelWidth: 110,
                         xtype: 'textfield',
                         fieldLabel: 'email',
+                        vtype:'email',
                         name: 'email',
                        // style: (!Ext.isIE6) ? 'opacity:.3' : '',
                         flex: 1,

@@ -13,6 +13,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		and a.nextHandled  &lt;&gt;'Y'
     </select>
     
+    <select id="queryUpdatePlanNum" resultType="long">
+    	SELECT count(a.id)
+	    FROM panera_followup a,panera_customer b
+	    where a.CUSTOMER_ID =b.id and a.nextDate &lt;=#{nowDate}
+		and a.nextHandled  &lt;&gt;'Y'
+    </select>
+    
 
 	<!-- select语句的生成结束=============================================================================================== -->
 </mapper>

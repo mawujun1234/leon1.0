@@ -1,4 +1,5 @@
 package com.mawujun.panera.customer;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -7,13 +8,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.utils.page.Page;
 import com.mawujun.utils.M;
-
 import com.mawujun.panera.customer.Followup;
 import com.mawujun.panera.customer.FollowupService;
 /**
@@ -98,6 +99,27 @@ public class FollowupController {
 	public Followup destroy(@RequestBody Followup followup) {
 		followupService.delete(followup);
 		return followup;
+	}
+	
+	/**
+	 * 统计当前用户，需要计划的数量
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @return
+	 */
+	@RequestMapping("/followup/queryUpdatePlanNum")
+	@ResponseBody
+	public Long queryUpdatePlanNum() {	
+		Long num=followupService.queryUpdatePlanNum();
+		return num;
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	}
 	
 	

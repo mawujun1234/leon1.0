@@ -46,7 +46,8 @@ Ext.define('Leon.panera.continents.CountryForm',{
 			         {id: 'Asia', name: '亚洲'},
 			         {id: 'Oceania', name: '大洋洲'},
 			         {id: 'Africa', name: '非洲'},
-			         {id: 'America', name: '亚洲'}
+			         {id: 'NorthAmerica', name: '北美洲'},
+			         {id: 'SouthAmerica', name: '南美洲'}
 			    ]
 			    
 	        })

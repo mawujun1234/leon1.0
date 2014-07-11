@@ -1,11 +1,14 @@
 package com.mawujun.panera.customer;
 
+import java.util.Date;
+
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 
 
 
@@ -42,6 +45,7 @@ public class CustomerService extends AbstractService<Customer, String>{
 	}
 	
 	public String create(Customer customer) {
+		customer.setCreateDate(new Date());
 		//检查是否重复了
 		//先检查名称是否相同
 		Long count=0L;
@@ -49,6 +53,13 @@ public class CustomerService extends AbstractService<Customer, String>{
 		if(count>0){
 			throw new BusinessException("客户已经存在,已经存在相同的客户名称。");
 		}
+		if(customer.getCode()!=null && !"".equalsIgnoreCase(customer.getCode().trim())){
+			count=customerRepository.queryCount(Cnd.count("id").andEquals("code", customer.getCode()));
+			if(count>0){
+				throw new BusinessException("客户编号已经存在。");
+			}
+		}
+		
 		
 		//如果email是gmail.com或者是@yahoo.com就进行全局的匹配，否者就只进行域名的匹配
 		String email=customer.getContact_email();

@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
 import com.mawujun.service.AbstractService;
 
 
@@ -39,4 +40,7 @@ public class FollowupService extends AbstractService<Followup, String>{
 		return followupRepository.remind(new Date());
 	}
 
+	public Long queryUpdatePlanNum() {
+		return followupRepository.queryUpdatePlanNum(new Date());
+	}
 }

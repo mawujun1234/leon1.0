@@ -17,21 +17,41 @@ Ext.define('Leon.panera.customer.CustomerGrid',{
 			}
 		}
 	},
+//	plugins: [
+//        Ext.create('Ext.ux.grid.plugin.Selectabale', {})
+//    ],
+	plugins: [
+        Ext.create('Ext.grid.plugin.CellEditing', {
+            clicksToEdit: 1
+        })
+    ],
 	initComponent: function () {
       var me = this;
       me.columns=[
 		//{dataIndex:'id',text:'id'},
       	{xtype: 'rownumberer'},
-      	{dataIndex:'name',text:'客户编号',flex:1,renderer:function(value,metaData ,record){
+      	{dataIndex:'code',text:'客户编号',flex:1,renderer:function(value,metaData ,record){
       		if(record.get('deleted')){
       			return '<span style="color:red;">'+value+'(已删除)</span>';
       		} else {
       			return value;
       		}
-      	}},
-		{dataIndex:'name',text:'客户名称',flex:1},
+      	},editor:{
+			xtype:'textfield',
+			selectOnFocus:true,
+			readOnly:true
+		}},
+		{dataIndex:'name',text:'客户名称',flex:1,editor:{
+			xtype:'textfield',
+			selectOnFocus:true,
+			readOnly:true
+		}},
 		{dataIndex:'contact_name',text:'联系人'},
-		{dataIndex:'contact_email',text:'邮箱'},
+		{dataIndex:'contact_email',text:'邮箱',editor:{
+			xtype:'textfield',
+			selectOnFocus:true,
+			readOnly:true
+		}},
 		//{dataIndex:'continent_id',text:'洲'},
 		{dataIndex:'country_name',text:'国家'},
 		{dataIndex:'customerProperty_name',text:'客户性质'},
@@ -56,7 +76,8 @@ Ext.define('Leon.panera.customer.CustomerGrid',{
       		} else {
       			return value;
       		}
-      	}}
+      	}},
+      	{dataIndex:'createDate',text:'创建时间',xtype: 'datecolumn',   format:'Y-m-d'},
       ];
       
 	  me.store=Ext.create('Ext.data.Store',{
@@ -201,6 +222,35 @@ Ext.define('Leon.panera.customer.CustomerGrid',{
 				win.show();
             }
         }];
+        var planButton=Ext.create("Ext.button.Button",{
+        	text: '当天需跟进计划有*个',
+            //iconCls:'followup_icons',
+        	icon:'../../icons/award_star_bronze_1.png',
+            handler: function(btn){
+            	top.desktop.showWindowByJspPath("/panera/customer/Remind.js",function(){
+            	
+            	});
+            }
+        });
+        actionBUttons.push(planButton);
+        
+         var updatePlanButton = function () {
+         	 Ext.Ajax.request({
+				url:Ext.ContextPath+"/followup/queryUpdatePlanNum",
+				success:function(response){
+					var obj=Ext.decode(response.responseText);
+					planButton.setText("当天需跟进计划有<span style='color:red'>"+obj.root+"</span>个");
+				}
+			 });
+		     
+		 }
+		
+		 var runner = new Ext.util.TaskRunner();
+		 var task = runner.start({
+		     run: updatePlanButton,
+		     interval: 5000
+		 });
+        
 		
 		var queryItems=[];
 		var nameField=Ext.create('Ext.form.field.Text',{

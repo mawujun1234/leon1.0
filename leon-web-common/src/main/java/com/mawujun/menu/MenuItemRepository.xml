@@ -26,7 +26,7 @@ where c.role_id=d.role_id and b.fun_id=d.fun_id and charindex(a.reportcode,b.rep
 	<select id="queryMenuItem" resultType="com.mawujun.menu.MenuItemVO" >
     	select a.*
 	    from leon_menuitem a,leon_fun  b
-		where a.menu_id=#{menuid}  and a.fun_id=b.id and b.url=#{jspurl}
+		where a.menu_id=#{menuId}  and a.fun_id=b.id and b.url=#{jspUrl}
     </select>
     
     <select id="queryAutostarts" resultType="com.mawujun.menu.MenuItemVO" >

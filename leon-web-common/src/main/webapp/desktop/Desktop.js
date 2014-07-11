@@ -167,6 +167,7 @@ Ext.define('Leon.desktop.Desktop', {
     },
     /**
      * 主要用于两个窗口Window之间进行协同的
+     * top.desktop.showWindowByJspPath(....);
      * execuMethod 是一个对象，例如
      * {
      * 	methodName:'queryByName',
@@ -180,7 +181,10 @@ Ext.define('Leon.desktop.Desktop', {
 		//如果已经存在这个窗口，就显示已经存在的窗口
     	if(this.windows.containsKey(jspUrl)){
     		var win=this.windows.get(jspUrl);
-    		win.execuIframeMethod(execuMethod);
+    		if(win.execuIframeMethod){
+    			win.execuIframeMethod(execuMethod);
+    		}
+    		
     		return this.restoreWindow(win);
     	}
 

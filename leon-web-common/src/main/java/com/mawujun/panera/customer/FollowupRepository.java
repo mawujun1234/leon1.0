@@ -15,5 +15,6 @@ import com.mawujun.panera.customer.Followup;
 @Repository
 public interface FollowupRepository extends IRepository<Followup, String>{
 	public List<Followup> remind(Date nowDate);
+	public Long queryUpdatePlanNum(Date nowDate);
 
 }

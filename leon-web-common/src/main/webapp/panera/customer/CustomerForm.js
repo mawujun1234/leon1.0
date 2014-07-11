@@ -50,8 +50,8 @@ Ext.define('Leon.panera.customer.CustomerForm', {
                         fieldLabel: '客户编号',
                         //flex: 1,
                         //emptyText: 'First',
-                        afterLabelTextTpl: Ext.required,
-                        allowBlank: false
+                        //afterLabelTextTpl: Ext.required,
+                        allowBlank: true
                     },{
                         name: 'name',
                         fieldLabel: '客户名称',
@@ -354,11 +354,11 @@ Ext.define('Leon.panera.customer.CustomerForm', {
                         //labelWidth: 110,
                         xtype: 'textfield',
                         fieldLabel: '电话',
-                        afterLabelTextTpl: Ext.required,
+                        //afterLabelTextTpl: Ext.required,
                         name: 'contact_phone',
                        // style: (!Ext.isIE6) ? 'opacity:.3' : '',
                         flex: 1,
-                        allowBlank: false
+                        allowBlank: true
                     }, {
                         //labelWidth: 110,
                         xtype: 'textfield',
@@ -398,6 +398,7 @@ Ext.define('Leon.panera.customer.CustomerForm', {
                         xtype: 'textfield',
                         fieldLabel: 'email',
                         name: 'contact_email',
+                        vtype:'email',
                        // style: (!Ext.isIE6) ? 'opacity:.3' : '',
                         flex: 1,
                          afterLabelTextTpl: Ext.required,
@@ -735,10 +736,16 @@ Ext.define('Leon.panera.customer.CustomerForm', {
     			 	}
     			 	form.updateRecord();
     			 	form.getRecord().set("star",action.result.root.star);
-    			 	me.win.close();
+    			 	
     			 	if(!me.update){
     			 		me.grid.getStore().reload();
+    			 	} else {
+    			 		form.getRecord().set("country_name",form.findField("country_id").getRawValue());
+    			 		form.getRecord().set("customerProperty_name",form.findField("customerProperty_id").getRawValue());
+    			 		//form.getRecord().set("businessPhase_id",action.result.root.star);
     			 	}
+    			 	me.win.close();
+    			 	
     			 },
     			 failure:function(form, action){
     			 	 //Ext.Msg.alert('Failure', "保存客户失败");

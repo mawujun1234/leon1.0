@@ -2,6 +2,7 @@ Ext.require("Leon.panera.customer.Customer");
 Ext.require("Leon.panera.customer.CustomerGrid");
 //Ext.require("Leon.panera.customer.CustomerTree");
 //Ext.require("Leon.panera.customer.CustomerForm");
+
 Ext.onReady(function(){
 	var grid=Ext.create('Leon.panera.customer.CustomerGrid',{
 		region:'center'
@@ -36,3 +37,4 @@ Ext.onReady(function(){
 	});
 
 });
+

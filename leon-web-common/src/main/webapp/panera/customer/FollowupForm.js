@@ -166,7 +166,7 @@ Ext.define('Leon.panera.customer.FollowupForm',{
     			 		me.grid.getStore().reload();
     			 		me.update=true;
     			 	}
-    			 	
+    			 	me.win.close();
     			 },
     			 failure:function(form, action){
     			 	 //Ext.Msg.alert('Failure', "保存客户失败");

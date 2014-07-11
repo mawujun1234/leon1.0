@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
+import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.utils.page.Page;
 import com.mawujun.utils.M;
@@ -106,6 +107,10 @@ public class CountryController {
 	@ResponseBody
 	public Country create(@RequestBody Country country) {
 		country.setContinent_name(country.getContinent().getText());
+		Long count=countryService.queryCount(Cnd.count().andEquals("name", country.getName()));
+		if(count>0){
+			throw new BusinessException("已经存在该国家");
+		}
 		countryService.create(country);
 		return country;
 	}
