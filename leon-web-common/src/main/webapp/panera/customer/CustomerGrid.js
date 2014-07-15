@@ -46,7 +46,11 @@ Ext.define('Leon.panera.customer.CustomerGrid',{
 			selectOnFocus:true,
 			readOnly:true
 		}},
-		{dataIndex:'contact_name',text:'联系人'},
+		{dataIndex:'contact_name',text:'联系人',editor:{
+			xtype:'textfield',
+			selectOnFocus:true,
+			readOnly:true
+		}},
 		{dataIndex:'contact_email',text:'邮箱',editor:{
 			xtype:'textfield',
 			selectOnFocus:true,
@@ -77,7 +81,7 @@ Ext.define('Leon.panera.customer.CustomerGrid',{
       			return value;
       		}
       	}},
-      	{dataIndex:'createDate',text:'创建时间',xtype: 'datecolumn',   format:'Y-m-d'},
+      	{dataIndex:'createDate',text:'创建时间',xtype: 'datecolumn',   format:'Y-m-d'}
       ];
       
 	  me.store=Ext.create('Ext.data.Store',{
@@ -254,9 +258,10 @@ Ext.define('Leon.panera.customer.CustomerGrid',{
 		
 		var queryItems=[];
 		var nameField=Ext.create('Ext.form.field.Text',{
-			emptyText:'请输入公司名称'
+			emptyText:'请输入客户名称'
 		});
 		queryItems.push(nameField);
+		me.nameField=nameField;
 		
 		var contact_nameField=Ext.create('Ext.form.field.Text',{
 			emptyText:'请输入联系人'

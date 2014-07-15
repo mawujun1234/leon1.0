@@ -36,8 +36,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="deleted==false">
 			 a.deleted ='N'
 		</if>
-		<if test="name!=null">
-			and a.name like '%${name}%'
+		<if test="customer_name!=null">
+			and a.name like '%${customer_name}%'
 		</if>
 		<if test="contact_name!=null">
 			and b.name like '%${contact_name}%'

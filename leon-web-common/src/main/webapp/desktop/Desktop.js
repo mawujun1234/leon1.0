@@ -173,6 +173,13 @@ Ext.define('Leon.desktop.Desktop', {
      * 	methodName:'queryByName',
      *  params:{a:1,b:2}
      * }
+     * 
+     * 然后再jspUrl指定的页面中建立queryByName的方法
+     * Ext.onReady(function(){
+		 window.queryByName=function(params){
+			alert(1);
+		};
+	   }
      * @param {} jspUrl
      * @param {} execuMethod
      */
@@ -197,6 +204,7 @@ Ext.define('Leon.desktop.Desktop', {
 				var obj=Ext.decode(response.responseText);
 				var btn=obj.root;
 				win=me.createWindow({
+					menuItemId:btn.id,
 		        	title:btn.text,
 		        	url:btn.url,
 		        	iconCls:btn.iconCls,

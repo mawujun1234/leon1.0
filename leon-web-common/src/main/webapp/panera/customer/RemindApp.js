@@ -1,31 +1,13 @@
-/**
- * 弹出窗的个性化设置
- */
-Ext.define('Leon.panera.customer.Remind', {
-    extend: 'Ext.window.Window',
-	requires: [
-		'Ext.ux.PreviewPlugin',
-		'Leon.panera.customer.FollowupForm'
-	],
-    uses: [
-    ],
 
-    layout: 'fit',
-    title: '往来跟进计划提醒',
-    modal: false,
-    width: 640,
-    height: 480,
-    border: false,
 
-    initComponent: function () {
-        var me = this;
-		var grid=me.createGrid();
-		me.items=[grid];
+Ext.require("Leon.panera.customer.Remind");
 
-        me.callParent();
-    },
+Ext.onReady(function(){
 
-    createGrid: function() {
+	
+	
+	
+	var    createGrid= function() {
         var me = this;
         var store=Ext.create('Ext.data.Store',{
 			autoSync:false,
@@ -99,7 +81,7 @@ Ext.define('Leon.panera.customer.Remind', {
 //				win.show();
 				top.desktop.showWindowByJspPath("/panera/customer/CustomerApp.jsp",{
 					methodName:"queryCustomer",
-					params:{customer_name:record.get("customer_name")}
+					params:{customer_id:record.get("customer_id")}
 				});
 				
 			
@@ -120,8 +102,11 @@ Ext.define('Leon.panera.customer.Remind', {
 			me.execuIframeMethod();
 		}
         return grid;
-    },
-    execuIframeMethod:function(){
-    	this.store.reload();
     }
+
+    var viewPort=Ext.create('Ext.container.Viewport',{
+		layout:'fit',
+		items:[createGrid()]
+	});
 });
+

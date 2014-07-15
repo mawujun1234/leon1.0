@@ -146,7 +146,8 @@ Ext.define('Leon.desktop.Window', {
 		var iframe=this.items.getAt(0);
 		var windoww=iframe.getWin(); //iframe里的window对象
 		//var  func=eval(me.execuMethod.method);
-		//alert(windoww[execuMethod.methodName]);
+		//alert(execuMethod.methodName);
+		//alert(windoww.queryCustomer);
 		windoww[execuMethod.methodName](execuMethod.params);
 	}
 
