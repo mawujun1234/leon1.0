@@ -115,7 +115,9 @@ public class Customer extends UUIDEntity {
 			star+=this.getPaymentTerms();
 		}
 		
-		if(star<15){
+		if(star==0){
+			return 0;
+		} else if(star>0 && star<15){
 			return 1;
 		} else if(star>=15 && star<20){
 			return 2;

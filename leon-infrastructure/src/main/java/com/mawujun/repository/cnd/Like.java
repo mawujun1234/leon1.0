@@ -16,7 +16,7 @@ public class Like extends AbstractSqlExpression {
 
 	private String value;
 
-	private boolean ignoreCase;
+	private boolean ignoreCase=true;
 
 	private String left;
 

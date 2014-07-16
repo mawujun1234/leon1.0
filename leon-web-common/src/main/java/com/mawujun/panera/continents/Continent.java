@@ -8,7 +8,7 @@ package com.mawujun.panera.continents;
 public enum Continent {
 	
 	
-	Asia("亚洲"),Europe("欧洲"),Oceania("大洋洲"),Africa("非洲"),NorthAmerica("北美洲"),SouthAmerica("南洲");
+	Asia("亚洲"),Europe("欧洲"),Oceania("大洋洲"),Africa("非洲"),NorthAmerica("北美洲"),SouthAmerica("南美洲");
 	
 	private String text;
 	private Continent(String name) {

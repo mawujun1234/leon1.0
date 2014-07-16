@@ -28,7 +28,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		f.followupNum 
 		FROM panera_customer a 
 		left join panera_contact  b on  a.id=b.customer_id and b.isdefault='Y'
-		inner join panera_customerproperty  c on a.customerProperty_id=c.id
+		left join panera_customerproperty  c on a.customerProperty_id=c.id
 		inner join panera_customersource  d on a.customerSource_id=d.id
 		inner join panera_country e on a.country_id=e.id
                 left join (select customer_id ,count(id) followupNum from panera_followup group by customer_id ) f on a.id=f.customer_id 
