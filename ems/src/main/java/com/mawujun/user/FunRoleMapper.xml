@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mawujun.user.FunRoleMapper">
+	<select id="list" parameterType="string" resultType="com.mawujun.user.FunRole">
+		select * from ems_funrole where
+		<choose>
+			<when test="parentId!=null">
+				parentid=#{parentId}
+			</when>
+			<otherwise>
+				parentid is null
+			</otherwise>
+		</choose>
+	</select>
+
+	<update id="update">
+		update ems_funrole set text=#{text},memo=#{memo,jdbcType=VARCHAR} where id=#{id}
+	</update>
+
+	<insert id="save" parameterType="com.mawujun.user.FunRole">
+		insert into ems_funrole(id,text,parentId,leaf,memo) values(#{id},#{text},#{parentId,jdbcType=VARCHAR},#{leaf},#{memo,jdbcType=VARCHAR})
+	</insert>
+
+	<delete id="delete">
+		delete ems_funrole where id=#{id}
+	</delete>
+<!-- 为配置常用按钮进行查询 -->
+	<select id="listNav4Comm" parameterType="map" resultType="com.mawujun.user.NavNode">
+		select a.*,decode(leaf,1,decode(b.navigation_id,null,0,1),null) as checked
+		from ems_navigation a left join ems_navigation_funrole b
+		on a.id=b.navigation_id and b.funRole_id=#{funRole_id}  
+		where
+		<choose>
+			<when test="parentId!=null">
+				 a.parentid=#{parentId}
+			</when>
+			<otherwise>
+				 a.parentid is null
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="listNav4Checked" parameterType="map" resultType="com.mawujun.user.NavNode">
+		select a.*,decode(leaf,1,decode(b.navigation_id,null,0,1),null) as checked
+		from ems_navigation a left join ems_navigation_funrole b
+		on a.id=b.navigation_id and b.funRole_id=#{funRole_id}  
+		where
+		<choose>
+			<when test="parentId!=null">
+				 a.parentid=#{parentId}
+			</when>
+			<otherwise>
+				 a.parentid is null
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="checkedNavigation" parameterType="com.mawujun.user.FunRole">
+		insert into ems_navigation_funrole(navigation_id,funRole_id) values(#{navigation_id},#{funRole_id})
+	</insert>
+
+	<delete id="unCheckedNavigation">
+		delete ems_navigation_funrole where navigation_id=#{navigation_id} and funRole_id=#{funRole_id}
+	</delete>
+	<select id="selectAllCheckedNav" parameterType="string" resultType="string">
+		select navigation_id from ems_navigation_funrole where funRole_id=#{funRole_id} 
+	</select>
+	<delete id="deleteLeftNavication">
+		delete ems_navigation_funrole where  funRole_id=#{funRole_id} 
+	</delete>
+	
+</mapper>

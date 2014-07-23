@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mawujun.user.NavigationMapper">
+	<select id="get" parameterType="string" resultType="com.mawujun.user.NavNode">
+		select * from ems_navigation where id=#{id}
+	</select>
+	<select id="getMaxReportCode" parameterType="string" resultType="string">
+		select max(reportcode) from ems_navigation where 
+		<choose>
+			<when test="parentId!=null">
+				parentid=#{parentId}
+			</when>
+			<otherwise>
+				parentid is null
+			</otherwise>
+		</choose>
+	</select>
+	<select id="loadNaviT" parameterType="string" resultType="com.mawujun.user.NavNode">
+		
+		select distinct a.* from
+		(
+		select * from ems_navigation where
+		<choose>
+			<when test="parentId!=null">
+				parentid=#{parentId}
+			</when>
+			<otherwise>
+				parentid is null
+			</otherwise>
+		</choose>
+		) a
+		inner join
+		(select aa.* 
+		from EMS_NAVIGATION aa, ems_navigation_funrole a, ems_funrole_user c
+		where a.funrole_id=c.funrole_id and c.user_id=#{user_id}  and aa.id=a.navigation_id
+		) b on INSTR(b.reportcode,a.reportcode)=1
+	</select>
+	<select id="loadNaviT4admin" parameterType="string" resultType="com.mawujun.user.NavNode">
+		
+		select * from ems_navigation where
+		<choose>
+			<when test="parentId!=null">
+				parentid=#{parentId}
+			</when>
+			<otherwise>
+				parentid is null
+			</otherwise>
+		</choose>
+	</select>
+	<insert id="checkedNavigation" >
+		insert into EMS_NAVIGATION_USER(navigation_id,user_id) values(#{navigation_id},#{user_id})
+	</insert>
+
+	<delete id="unCheckedNavigation">
+		delete EMS_NAVIGATION_USER where navigation_id=#{navigation_id} and user_id=#{user_id}
+	</delete>
+	
+	<select id="getLeftNavi" parameterType="string" resultType="com.mawujun.user.NavNode">
+		select distinct a.id,a.text,a.link,a.reportcode
+		from ems_navigation a inner join EMS_NAVIGATION_USER b
+		on a.id=b.navigation_id  and b.user_id=#{user_id}
+		order by a.reportcode
+	</select>
+	
+	
+	
+	<select id="list" parameterType="string" resultType="com.mawujun.user.NavNode">
+		select * from ems_navigation where
+		<choose>
+			<when test="parentId!=null">
+				parentid=#{parentId}
+			</when>
+			<otherwise>
+				parentid is null
+			</otherwise>
+		</choose>
+	</select>
+
+	<update id="update">
+		update ems_navigation set text=#{text},link=#{link,jdbcType=VARCHAR},memo=#{memo,jdbcType=VARCHAR} where id=#{id}
+	</update>
+
+	<insert id="save" parameterType="com.mawujun.user.NavNode">
+		insert into ems_navigation(id,text,link,parentId,leaf,memo,reportCode) values(#{id},#{text},#{link,jdbcType=VARCHAR},#{parentId,jdbcType=VARCHAR},#{leaf},#{memo,jdbcType=VARCHAR},#{reportCode})
+	</insert>
+
+	<delete id="delete">
+		delete ems_navigation where id=#{id}
+	</delete>
+
+	
+</mapper>

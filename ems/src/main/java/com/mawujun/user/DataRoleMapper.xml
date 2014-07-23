@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mawujun.user.DataRoleMapper">
+	<select id="list" parameterType="string" resultType="com.mawujun.user.DataRole">
+		select * from ems_datarole where
+		<choose>
+			<when test="parentId!=null">
+				parentid=#{parentId}
+			</when>
+			<otherwise>
+				parentid is null
+			</otherwise>
+		</choose>
+	</select>
+
+	<update id="update">
+		update ems_datarole set text=#{text},memo=#{memo,jdbcType=VARCHAR} where id=#{id}
+	</update>
+
+	<insert id="save" parameterType="com.mawujun.user.DataRole">
+		insert into ems_datarole(id,text,parentId,leaf,memo) values(#{id},#{text},#{parentId,jdbcType=VARCHAR},#{leaf},#{memo,jdbcType=VARCHAR})
+	</insert>
+
+	<delete id="delete">
+		delete ems_datarole where id=#{id}
+	</delete>
+
+	<!-- <select id="loadNaviLsit" parameterType="string"></select> <update 
+		id="updateNaviL"> </update> <insert id="saveNaviL"></insert> <delete id="deleteNaviL"></delete> -->
+</mapper>

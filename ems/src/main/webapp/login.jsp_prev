@@ -1,0 +1,304 @@
+<%@ page contentType="text/html;charset=utf-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<SCRIPT src="scripts/prototype.js" type=text/javascript></SCRIPT>
+<SCRIPT src="scripts/Utils.js" type=text/javascript></SCRIPT>
+<SCRIPT src="scripts/Dialog.js" type=text/javascript></SCRIPT>
+<title>登记簿联网平台--登录</title>
+<style type="text/css">
+/*base init*/
+* {
+	margin: 0px;
+	padding: 0px;
+}
+/*首页 样式*/
+body {
+	background: url(images/loginBg.gif) repeat-x
+}
+
+#header {
+	height: 176px;
+	width: 1000px;
+}
+
+#big_logo {
+	height: 259px;
+	width: 1000px;
+	background: url(images/loginContent.gif) no-repeat;
+}
+
+#login_model {
+	width: 1000px;
+	height: 32px;
+	line-height: 32px;
+	background: #F0F1F1;
+	font-size: 12px;
+	text-align: center;
+}
+
+#login_model input {
+	width: 60px;
+	vertical-align: middle;
+}
+
+#login_model img {
+	margin-left: 5px;
+	vertical-align: middle;
+	cursor: pointer;
+}
+/*容器*/
+#container {
+	width: 1002px;
+	margin: 0 auto;
+}
+/*容器--脚*/
+#footer {
+	position: relative;
+	margin-top: 80px;
+	padding: 5px;
+	font-size: 12px;
+	color: #666;
+}
+
+#footer a {
+	cursor: pointer;
+}
+
+#footer a:hover {
+	text-decoration: underline;
+	color: #06C;
+}
+
+#footer img {
+	margin: 0 5px;
+}
+
+#footer .p1 {
+	height: 15px;
+	line-height: 13px;
+	text-align: center;
+}
+
+#footer .p2 {
+	height: 15px;
+	margin-top: 5px;
+	line-height: 13px;
+	text-align: center;
+}
+
+#footer .redColor {
+	color: red;
+}
+
+#footer #companyLogo {
+	position: absolute;
+	top: 5px;
+	right: 100px;
+	cursor: pointer;
+}
+
+#error_msg {
+	text-align: left;
+	position: relative;
+	padding: 0px;
+	font-size: 12px;
+}
+
+#error_msg span {
+	color:red;
+}
+
+</style>
+</head>
+
+<SCRIPT language=JavaScript type=text/JavaScript>
+	
+   	window.onload = function()
+    {
+    	document.loginForm.UserName.focus();
+    }
+	 //验证信息
+	function validateFrm()
+	{
+		if($("input_username").value.trim() == "")
+		{
+		    $("input_username").focus();
+			new HintDialog($("input_username"), "用户名不能为空！");
+		    return false;
+		}
+		
+		if($("input_password").value.trim() == "")
+		{
+			$("input_password").focus();
+			new HintDialog($("input_password"), "密码不能为空！");
+			return false;
+		}
+
+		
+		if($("input_verifCode").value.trim() == "")
+		{
+			$("input_verifCode").focus();
+			new HintDialog($("input_verifCode"), "验证码不能为空！");
+			return false;
+		}
+		return true;
+	}
+
+	 function reloadImage(url) 
+	 {  
+	   document.loginForm.img1.src=url+'?'+Math.random();
+	 }
+	 
+	 function style_text_f(e_, style_s)
+	 {/* shawl.qiu code, return default, func:none */
+	   if(!style_s)return;
+	   if(window.HTMLElement) return e_.setAttribute("style", style_s);
+	   else return e_.style.cssText = style_s;
+	 }/* function style_text_f(e_, style_s) */ 
+    </SCRIPT>
+<body>
+	<!-- container start-->
+	<div id="container">
+		<div id="header"></div>
+		<div id="content">
+			<div id="big_logo"></div>
+			<div id="login_model">
+			<FORM id=loginForm name=loginForm action="sysLogin" method=post>
+				用户名：<input type="text" name="UserName" id=input_username value="admin" /> 
+				密码：    <input type="password" name="passWord" id="input_password" value="admin" /> 
+				验证码：<input type="text" name="ValidateCode"  id="input_verifCode" />
+				<span>
+					<img id="img1" ,name="img1" align="absmiddle" alt="看不清,换一张？点击更新验证码"
+						style="vertical-align: middle;" title="看不清,换一张？点击更新验证码"
+						style="cursor:hand" height="20" width="50" src="validateCode.jsp" />
+				</span>
+				<span>
+					<a href="javascript:reloadImage('validateCode.jsp');">看不清，换一张！</a> 
+				</span>
+				<img src="images/loginBtn.gif" alt="登录" id="btn_login" /> 
+				<img src="images/resetBtn.gif" alt="重置" id="btn_reset" />
+				<img src="images/registerBtn.gif" alt="注册" id="btn_register" style="display:none" />
+				</FORM>
+			</div>
+			<div id="error_msg">
+				<span>
+				<%-- <s:property value="loginMsg" escape="false" />--%>
+				</span>
+			</div>
+		</div>
+		<div id="footer">
+			<p class="p1">
+				<span id="not_login" class="redColor">系统不能登录</span> 
+				<span id="install_driver"><a>请安装驱动程序</a> </span> 
+				<span id="moreHelp"><a>更多帮助</a></span>
+				<span id="telphone" class="redColor">客服电话:0574-0000000</span>
+			</p>
+			<p class="p2">
+				<span id="zwgk"><a>政务公开</a> </span><img src="images/separator.jpg" />
+				<span id="bszn"><a>办事指南</a> </span><img src="images/separator.jpg" />
+				<span id="gywm"><a>关于我们</a> </span><img src="images/separator.jpg" />
+				<span id="lxwm"><a>联系我们</a> </span><img src="images/separator.jpg" />
+				<span id="fwtk"><a>服务条款</a> </span><img src="images/separator.jpg" />
+				<span id="ysq"><a>隐私权</a> </span>
+			</p>
+			<div id="companyLogo">
+				<img src="images/loginLogo.gif" alt="东奥集团" />
+			</div>
+		</div>
+	</div>
+<TABLE cellSpacing=0 cellPadding=0 border=0>
+<TBODY>
+	<TR>
+		<TD id=tdloading></TD>
+		<TD>
+		</TD>
+	</TR>
+</TBODY>
+</TABLE>
+	<!-- container end-->
+<SCRIPT>
+    function ReturnDefault()
+    {
+        var objTop = window.top.document;
+        var iframeList = objTop.getElementsByTagName("IFRAME");
+        for(var i=0;i<iframeList.length;i++)
+        {
+            var url = iframeList[i].contentWindow.document.URL.toLowerCase();
+            if(url.indexOf("login.html")>-1){
+                window.top.location.href = "login.html";
+            }
+                
+        }
+    }
+    ReturnDefault();
+    
+    $("tdloading").style.width = $("input_username").offsetWidth + "px";
+    
+	//用户名验证
+	$("input_username").onblur=function(){
+			var username = $(this).value;
+			//对用户名和密码进行验证
+			if(!username){
+				style_text_f($(this),"border:1px solid red");
+				return;
+			}else{
+				style_text_f($(this),"border:1px solid white");
+			}							 
+	};
+	
+	//密码验证
+	$("input_password").onblur=function(){
+			var password = $(this).value;
+			//对用户名和密码进行验证
+			if(!password){
+				style_text_f($(this),"border:1px solid red");
+				return;
+			}else{
+				var pwd_length = password.length;
+				if(pwd_length<4){
+					style_text_f($(this),"border:1px solid red");
+					return;
+				}else if(pwd_length>20){
+					style_text_f($(this),"border:1px solid red");
+					return;
+				}else{
+					style_text_f($(this),"border:1px solid white");
+				};
+			}	
+	};
+	//验证码验证
+	$("input_verifCode").onblur=function(){
+			var verifCode = $(this).value;
+			//对用户名和密码进行验证
+			if(!verifCode){
+				style_text_f($(this),"border:1px solid red");
+				return;
+			}else{
+				style_text_f($(this),"border:1px solid white");
+			}	
+	};
+	$("btn_register").onclick=function(){
+	  alert("后期研发中...");
+	}
+	$("btn_reset").onclick=function(){
+		document.loginForm.reset();
+	}
+	$("btn_login").onclick=function(){
+		if(validateFrm()){
+			document.loginForm.submit();
+		}
+	}
+	$("img1").onclick=function(){
+		reloadImage('validateCode.jsp');
+	}
+    document.onkeydown = function(e){
+        if(!e) e = window.event;//火狐中是 window.event
+        if((e.keyCode || e.which) == 13){
+        	$("btn_login").click();
+        }
+    }
+</SCRIPT>
+</body>
+</html>
