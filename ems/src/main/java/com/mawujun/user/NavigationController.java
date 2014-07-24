@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
-public class NavigationAction {
+public class NavigationController {
 	//rivate static final String SUCCESS="success";
 	
 	//系统参数
 	//private HttpServletRequest request;
 	//private String jsonString;
 	
-	@Resource(name="service.nav")
-	NavigationServiceImpl navigationService;
+	@Resource(name="navigationService")
+	NavigationService navigationService;
 	
 	
 	
@@ -192,26 +192,26 @@ public class NavigationAction {
 
 	@RequestMapping("/nav/loadNaviT.do")
 	@ResponseBody
-	public List<NavNode> loadNaviT(String node,Boolean showChecked) {
+	public List<Navigation> loadNaviT(String node,Boolean showChecked) {
 		if("root".equals(node)){
 			node=null;
 		}
 
 		Subject subject=SecurityUtils.getSubject();
 		String username=subject.getPrincipal().toString();
-		List<NavNode> list=null;
+		List<Navigation> list=null;
 		if("admin".equals(username)){
 			list= navigationService.loadNaviT4admin(username,node);
 		} else {
-			list= navigationService.loadNaviT(username,node);
+			list= navigationService.loadNaviT(node);
 		}
 		if(showChecked!=null && showChecked){//如果是叶子节点就加上checked，并且如果选择了的话checked=true
 			
-			List<NavNode> leftList=navigationService.getLeftNavi(username);
-			for(NavNode map:list){	
+			List<Navigation> leftList=navigationService.getLeftNavi();
+			for(Navigation map:list){	
 				if((Boolean)map.isLeaf()){
 					map.setChecked(false);
-					for(NavNode navNode:leftList){
+					for(Navigation navNode:leftList){
 						if(navNode.getId().equals(map.getId())){
 							//map.put("checked", true);
 							map.setChecked(true);
@@ -240,11 +240,11 @@ public class NavigationAction {
 	
 	@RequestMapping("/nav/getleftnavi.do")
 	@ResponseBody
-	public List<NavNode> getLeftNavi() {
-		Subject subject=SecurityUtils.getSubject();
-		String username=subject.getPrincipal().toString();
-		List<NavNode> list= navigationService.getLeftNavi(username);
-		for(NavNode node:list){
+	public List<Navigation> getLeftNavi() {
+		//Subject subject=SecurityUtils.getSubject();
+		//String username=subject.getPrincipal().toString();
+		List<Navigation> list= navigationService.getLeftNavi();
+		for(Navigation node:list){
 			node.setId(node.getId()+"_leftFunction");
 		}
 		return list;
@@ -265,7 +265,7 @@ public class NavigationAction {
 
 	@RequestMapping("/nav/save.do")
 	@ResponseBody
-	public String save(NavNode node) {
+	public String save(Navigation node) {
 		if("root".equals(node.getParentId())){
 			node.setParentId(null);
 		}
@@ -274,7 +274,7 @@ public class NavigationAction {
 	}
 	@RequestMapping("/nav/update.do")
 	@ResponseBody
-	public String update(NavNode node) {
+	public String update(Navigation node) {
 		navigationService.update(node);
 		return "success";
 	}

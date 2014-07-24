@@ -7,31 +7,31 @@
 <!-- 注意文件名称为:Example_${DbName}_Mapper.xml-->
 <mapper namespace="com.mawujun.user.UserRepository">
 	<select id="getByUsername" parameterType="string" resultType="com.mawujun.user.User">
-		select * from ems_user where username=#{username}
+		select * from sys_user where username=#{username}
 	</select>
 	<select id="findPermissions" parameterType="string" resultType="string">
-		select distinct d.link from ems_funrole_user a,ems_user b,ems_navigation_funrole c,ems_navigation d
+		select distinct d.link from ems_funrole_user a,sys_user b,ems_navigation_funrole c,ems_navigation d
 		where  c.navigation_id=d.id and c.funrole_id=a.funrole_id
 		and a.user_id=b.id and b.username=#{username}
 	</select>
 	
 	<select id="list" parameterType="string" resultType="com.mawujun.user.User">
-		select * from ems_user
+		select * from sys_user
 	</select>
 
 	<update id="update">
-		update ems_user set name=#{name},phone=#{phone,jdbcType=VARCHAR} where id=#{id}
+		update sys_user set name=#{name},phone=#{phone,jdbcType=VARCHAR} where id=#{id}
 	</update>
 
 	<insert id="save" parameterType="com.mawujun.user.User">
-		insert into ems_user(id,username,password,name,phone) values(#{id},#{username},#{password,jdbcType=VARCHAR},#{name},#{phone,jdbcType=VARCHAR})
+		insert into sys_user(id,username,password,name,phone) values(#{id},#{username},#{password,jdbcType=VARCHAR},#{name},#{phone,jdbcType=VARCHAR})
 	</insert>
 
 	<delete id="delete">
-		delete ems_user where id=#{id}
+		delete sys_user where id=#{id}
 	</delete>
 	<update id="changePwd">
-		update ems_user set password=#{password_new} where username=#{username} and password=${password_old}
+		update sys_user set password=#{password_new} where username=#{username} and password=${password_old}
 	</update>
 
 

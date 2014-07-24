@@ -10,28 +10,28 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service("service.dataRole")
+@Service("dataRoleService")
 @Transactional
-public class DataRoleServiceImpl {
-	@Resource(name="mapper.dataRole")
-	private DataRoleMapper dateRoleMapper;
+public class DataRoleService {
+	@Resource(name="dataRoleRepository")
+	private DataRoleRepository dataRoleRepository;
 	
 	public String save(DataRole dataRole){
 		dataRole.setId(UUID.randomUUID().toString());
 		
-		dateRoleMapper.save(dataRole);
+		dataRoleRepository.save(dataRole);
 		return dataRole.getId();
 	}
 	public String update(DataRole dataRole){
-		dateRoleMapper.update(dataRole);
+		dataRoleRepository.update(dataRole);
 		return dataRole.getId();
 	}
 	public void delete(String id){
-		dateRoleMapper.delete(id);
+		dataRoleRepository.delete(id);
 	}
 	public List<DataRole> list(String parentId){
 		Map<String,Object> param=new HashMap<String,Object>();
 		param.put("parentId", parentId);
-		return dateRoleMapper.list(param);
+		return dataRoleRepository.list(param);
 	}
 }

@@ -62,7 +62,7 @@ public class Customer extends UUIDEntity {
 	private String inquiryContent;//初次询盘内容
 	 @org.hibernate.annotations.Type(type="yes_no")
 	private Boolean deleted=false;
-	 
+	 @Column(updatable=false)
 	 private Date createDate;
 	
 	

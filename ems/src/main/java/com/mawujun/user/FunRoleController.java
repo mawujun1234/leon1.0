@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class FunRoleAction {
+public class FunRoleController {
 
-	@Resource(name="service.funRole")
-	FunRoleServiceImpl funRoleServiceImpl;
+	@Resource(name="funRoleService")
+	FunRoleService funRoleService;
 	
 	@RequestMapping("/funRole/list.do")
 	@ResponseBody
@@ -21,7 +21,7 @@ public class FunRoleAction {
 			node=null;
 		}
 
-		return funRoleServiceImpl.list(node);
+		return funRoleService.list(node);
 	}
 
 	@RequestMapping("/funRole/save.do")
@@ -31,48 +31,48 @@ public class FunRoleAction {
 			node.setParentId(null);
 		}
 		node.setLeaf(true);
-		funRoleServiceImpl.save(node);
+		funRoleService.save(node);
 		return "success";
 	}
 	@RequestMapping("/funRole/update.do")
 	@ResponseBody
 	public String update(FunRole node) {
-		funRoleServiceImpl.update(node);
+		funRoleService.update(node);
 		return "success";
 	}
 	@RequestMapping("/funRole/delete.do")
 	@ResponseBody
 	public String delete(String id) {
-		funRoleServiceImpl.delete(id);
+		funRoleService.delete(id);
 		return "success";
 	}
 	
 	@RequestMapping("/funRole/listNav4Comm.do")
 	@ResponseBody
-	public List<NavNode> listNav4Comm(String node,String funRole_id) {
+	public List<Navigation> listNav4Comm(String node,String funRole_id) {
 		if("root".equals(node)){
 			node=null;
 		}
 
-		return funRoleServiceImpl.listNav4Comm(node,funRole_id);
+		return funRoleService.listNav4Comm(node,funRole_id);
 	}
 	@RequestMapping("/funRole/listNav4Checked.do")
 	@ResponseBody
-	public List<NavNode> listNav4Checked(String node,String funRole_id) {
+	public List<Navigation> listNav4Checked(String node,String funRole_id) {
 		if("root".equals(node)){
 			node=null;
 		}
 
-		return funRoleServiceImpl.listNav4Checked(node,funRole_id);
+		return funRoleService.listNav4Checked(node,funRole_id);
 	}
 	
 	@RequestMapping("/funRole/checkchange.do")
 	@ResponseBody
 	public String checkchange(String navigation_id,String funRole_id,Boolean checked) {
 		if(checked){
-			funRoleServiceImpl.checkedNavigation(navigation_id, funRole_id);
+			funRoleService.checkedNavigation(navigation_id, funRole_id);
 		} else {
-			funRoleServiceImpl.unCheckedNavigation(navigation_id, funRole_id);
+			funRoleService.unCheckedNavigation(navigation_id, funRole_id);
 		}
 		return "success";
 
@@ -85,6 +85,6 @@ public class FunRoleAction {
 	@RequestMapping("/funRole/selectAllCheckedNav.do")
 	@ResponseBody
 	public List<String> selectAllCheckedNav(String funRole_id) {
-		return funRoleServiceImpl.selectAllCheckedNav(funRole_id);
+		return funRoleService.selectAllCheckedNav(funRole_id);
 	}
 }

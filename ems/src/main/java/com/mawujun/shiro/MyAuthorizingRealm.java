@@ -43,7 +43,7 @@ public class MyAuthorizingRealm extends AuthorizingRealm {
 	        	//MyAuthenticationInfo aa=new MyAuthenticationInfo(user,user.getPassword(),getName());
 	        	//aa.setLoginTime(new Date());
 	        	//return aa;
-	        	// user.setLoginDate(new Date());
+	        	user.setLoginDate(new Date());
 	            return new SimpleAuthenticationInfo(user,user.getPassword(),getName() ); 
 	         } 
 	      } 

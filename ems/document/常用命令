@@ -1,0 +1,7 @@
+数据库的导入，导出
+	导出ems的表和数据: exp system/system@ems file=E:\eclipse\workspace\leon\ems\document\dmp\daochu.dmp owner=(ems)
+	导入到新的数据库:imp ems/ems@ems   file=E:\eclipse\workspace\leon\ems\document\dmp\daochu.dmp full=Y
+	
+	drop user ems cascade 删除用户和用户拥有的表
+	create user ems identified by ems;
+	grant dba,connect,resource to ems;

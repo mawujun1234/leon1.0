@@ -10,50 +10,33 @@ import javax.persistence.Table;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
 @Entity
-@Table(name="ems_user")
+@Table(name="sys_user")
 public class User extends UUIDEntity{
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	@Column(length=20)
-	private String loginName;
-	@Column(length=20,updatable=false)
+	@Column(length=30)
+	private String username;
+	@Column(length=30)
 	private String password;
-	@Column(length=20)
+	@Column(length=15)
 	private String name;
+	@Column(length=20)
+	private String phone;
+	@Column(length=50)
+	private String email;
+	@Column(length=100)
+	private String address;
+	@Column(nullable=false)
+	private Integer type=0;//类型。0：仓管员或管理员等.非操作员。1:操作员
+	private Date loginDate;
 	
-	@org.hibernate.annotations.Type(type="yes_no")
-	private Boolean deleted=false;
-	private Date deletedDate;
-	@org.hibernate.annotations.Type(type="yes_no")
-	private Boolean enable=true;
-	@org.hibernate.annotations.Type(type="yes_no")
-	private Boolean locked=false;
-	
-	@Column(updatable=false)
-	private Date createDate;
-	private Date expireDate;
-	
-	private Date lastLoginDate;
-	private String lastIp;
-	
-	public User(){}
-	
-	public User(String id){
-		this.id=id;
+	public String toString(){
+		return username;
 	}
 	
-//	@Transient
-//	private Set<Role> roles;
-	
-	public String getLoginName() {
-		return loginName;
+	public String getUsername() {
+		return username;
 	}
-	public void setLoginName(String loginName) {
-		this.loginName = loginName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	public String getPassword() {
 		return password;
@@ -67,70 +50,36 @@ public class User extends UUIDEntity{
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public boolean isEnable() {
-		return enable;
+	public String getPhone() {
+		return phone;
 	}
-	public boolean isAdmin() {
-		return "admin".equalsIgnoreCase(loginName);
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
-	public boolean isAccountExpired() {
-		if(expireDate!=null){
-			if(expireDate.getTime()<(new Date()).getTime()){
-				return true;
-			}
-		}
-		return false;
+	public String getEmail() {
+		return email;
 	}
-
-	public void setEnable(boolean isEnable) {
-		this.enable = isEnable;
+	public void setEmail(String email) {
+		this.email = email;
 	}
-	public boolean isLocked() {
-		return locked;
+	public String getAddress() {
+		return address;
 	}
-	public void setLocked(boolean isLocked) {
-		this.locked = isLocked;
+	public void setAddress(String address) {
+		this.address = address;
 	}
-	public Date getCreateDate() {
-		return createDate;
+	public Integer getType() {
+		return type;
 	}
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
+	public void setType(Integer type) {
+		this.type = type;
 	}
-	public Date getExpireDate() {
-		return expireDate;
+	public Date getLoginDate() {
+		return loginDate;
 	}
-	public void setExpireDate(Date expireDate) {
-		this.expireDate = expireDate;
+	public void setLoginDate(Date loginDate) {
+		this.loginDate = loginDate;
 	}
-	public Date getLastLoginDate() {
-		return lastLoginDate;
-	}
-	public void setLastLoginDate(Date lastLoginDate) {
-		this.lastLoginDate = lastLoginDate;
-	}
-	public boolean isDeleted() {
-		if(deleted==null){
-			return false;
-		}
-		return deleted;
-	}
-	public void setDeleted(boolean isDeleted) {
-		this.deleted = isDeleted;
-	}
-	public Date getDeletedDate() {
-		return deletedDate;
-	}
-	public void setDeletedDate(Date deletedDate) {
-		this.deletedDate = deletedDate;
-	}
-
-	public String getLastIp() {
-		return lastIp;
-	}
-
-	public void setLastIp(String lastIp) {
-		this.lastIp = lastIp;
-	}
+	
+	
 }

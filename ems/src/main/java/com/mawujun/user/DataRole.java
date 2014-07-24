@@ -1,15 +1,36 @@
 package com.mawujun.user;
 
-public class DataRole {
-	private String id;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.mawujun.repository.idEntity.UUIDEntity;
+
+@Entity
+@Table(name="sys_DataRole")
+public class DataRole  extends UUIDEntity {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Column(length=30)
 	private String text;
-
-
-	private String parentId;
+	@org.hibernate.annotations.Type(type="yes_no")
 	private boolean leaf; // 是否为叶子结点
+	@Column(length=100)
 	private String memo;
+	@Column(length=36)
+	private String parentId;
 	
-	private Boolean checked;
+	@Transient
+	private String cls; // 显示的样式，file、folder
+	@Transient
+	private String iconCls; // 结点图标样式
+	
+	@Transient
+	private Boolean checked;//用于界面上显示的
 	
 
 	public Boolean getChecked() {
@@ -77,8 +98,5 @@ public class DataRole {
 		this.iconCls = iconCls;
 	}
 
-	private String cls; // 显示的样式，file、folder
-
-	private String iconCls; // 结点图标样式
 	
 }

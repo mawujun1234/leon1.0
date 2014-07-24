@@ -39,7 +39,7 @@ public class LoginAction
             //req.setAttribute("error", error);  
             //req.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(req, resp);  
         	JsonConfigHolder.setErrorsValue(error);
-        	//JsonConfigHolder.setSuccessValue(successValue);
+        	JsonConfigHolder.setSuccessValue(false);
         	return error;
         } else {//登录成功  
             //req.getRequestDispatcher("/WEB-INF/jsp/loginSuccess.jsp").forward(req, resp);  

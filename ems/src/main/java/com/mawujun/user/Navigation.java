@@ -1,19 +1,42 @@
 package com.mawujun.user;
 
-public class NavNode {
-	private String id;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.mawujun.repository.idEntity.UUIDEntity;
+
+@Entity
+@Table(name="sys_Navigation")
+public class Navigation  extends UUIDEntity {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@Column(length=30)
 	private String text;
+	@Column(length=100)
 	private String link;
-
-
+	@Column(length=36)
 	private String parentId;
-	private boolean leaf; // 是否为叶子结点
+	@org.hibernate.annotations.Type(type="yes_no")
+	private Boolean leaf; // 是否为叶子结点
+	@Column(length=200)
 	private String memo;
+	@Column(length=30)
 	private String reportCode;
 	
-	//private List<NavNode> children
+	@Transient
+	private String cls; // 显示的样式，file、folder
+	@Transient
+	private String iconCls; // 结点图标样式
 	
-	private Boolean checked;
+//	//private List<Navigation> children
+//	
+	@Transient
+	private Boolean checked;//用于界面上显示的
 
 	public String getLink() {
 		return link;
@@ -28,14 +51,6 @@ public class NavNode {
 
 	public void setMemo(String memo) {
 		this.memo = memo;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 
@@ -55,11 +70,11 @@ public class NavNode {
 		this.parentId = parentId;
 	}
 
-	public boolean isLeaf() {
+	public Boolean isLeaf() {
 		return leaf;
 	}
 
-	public void setLeaf(boolean leaf) {
+	public void setLeaf(Boolean leaf) {
 		this.leaf = leaf;
 	}
 
@@ -79,17 +94,8 @@ public class NavNode {
 		this.iconCls = iconCls;
 	}
 
-	private String cls; // 显示的样式，file、folder
 
-	private String iconCls; // 结点图标样式
 
-	public Boolean getChecked() {
-		return checked;
-	}
-
-	public void setChecked(Boolean checked) {
-		this.checked = checked;
-	}
 
 	public String getReportCode() {
 		return reportCode;
@@ -97,6 +103,14 @@ public class NavNode {
 
 	public void setReportCode(String reportCode) {
 		this.reportCode = reportCode;
+	}
+
+	public Boolean getChecked() {
+		return checked;
+	}
+
+	public void setChecked(Boolean checked) {
+		this.checked = checked;
 	}
 	
 }

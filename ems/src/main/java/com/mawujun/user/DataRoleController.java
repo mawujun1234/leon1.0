@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class DataRoleAction {
+public class DataRoleController {
 
-	@Resource(name="dataRoleServiceImpl")
-	DataRoleServiceImpl dataRoleServiceImpl;
+	@Resource(name="dataRoleService")
+	DataRoleService dataRoleService;
 	
 	@RequestMapping("/dataRole/list.do")
 	@ResponseBody
@@ -21,7 +21,7 @@ public class DataRoleAction {
 			node=null;
 		}
 
-		return dataRoleServiceImpl.list(node);
+		return dataRoleService.list(node);
 	}
 
 	@RequestMapping("/dataRole/save.do")
@@ -31,19 +31,19 @@ public class DataRoleAction {
 			node.setParentId(null);
 		}
 		node.setLeaf(true);
-		dataRoleServiceImpl.save(node);
+		dataRoleService.save(node);
 		return "success";
 	}
 	@RequestMapping("/dataRole/update.do")
 	@ResponseBody
 	public String update(DataRole node) {
-		dataRoleServiceImpl.update(node);
+		dataRoleService.update(node);
 		return "success";
 	}
 	@RequestMapping("/dataRole/delete.do")
 	@ResponseBody
 	public String delete(String id) {
-		dataRoleServiceImpl.delete(id);
+		dataRoleService.delete(id);
 		return "success";
 	}
 }

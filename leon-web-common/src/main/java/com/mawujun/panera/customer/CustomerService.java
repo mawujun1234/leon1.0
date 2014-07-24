@@ -47,7 +47,7 @@ public class CustomerService extends AbstractService<Customer, String>{
 	public String create(Customer customer) {
 		customer.setCreateDate(new Date());
 		
-		checkDuplicate(customer);
+		checkDuplicate(customer,false);
 //		//检查是否重复了
 //		//先检查名称是否相同
 //		Long count=0L;
@@ -93,16 +93,24 @@ public class CustomerService extends AbstractService<Customer, String>{
 		return customer.getId();
 	}
 	
-	public void checkDuplicate(Customer customer){
+	public void checkDuplicate(Customer customer,boolean update){
 		//检查是否重复了
 				//先检查名称是否相同
 				Long count=0L;
-				count=customerRepository.queryCount(Cnd.count("id").andEquals("name", customer.getName()));
+				Cnd cnd=Cnd.count("id").andEquals("name", customer.getName());
+				if(update){
+					cnd.andNotEquals("id", customer.getId());
+				}
+				count=customerRepository.queryCount(cnd);
 				if(count>0){
 					throw new BusinessException("客户已经存在,已经存在相同的客户名称。");
 				}
 				if(customer.getCode()!=null && !"".equalsIgnoreCase(customer.getCode().trim())){
-					count=customerRepository.queryCount(Cnd.count("id").andEquals("code", customer.getCode()));
+					cnd=Cnd.count("id").andEquals("code", customer.getCode());
+					if(update){
+						cnd.andNotEquals("id", customer.getId());
+					}
+					count=customerRepository.queryCount(cnd);
 					if(count>0){
 						throw new BusinessException("客户编号已经存在。");
 					}
@@ -113,13 +121,21 @@ public class CustomerService extends AbstractService<Customer, String>{
 				String email=customer.getContact_email();
 				
 				if(email.toLowerCase().indexOf("@gmail.com")!=-1 || email.toLowerCase().indexOf("@yahoo.com")!=-1){
-					count=contactService.queryCount(Cnd.count("id").andEquals("email", email));
+					cnd=Cnd.count("id").andEquals("email", email);
+					if(update){
+						cnd.andNotEquals("customer_id", customer.getId());
+					}
+					count=contactService.queryCount(cnd);
 					if(count>0){
 						throw new BusinessException("客户已经存在,已经存在相同的邮箱。");
 					}
 				} else {
 					String emails[]=email.split("@");
-					count=contactService.queryCount(Cnd.count("id").andLike("email", "%"+emails[emails.length-1]));
+					cnd=Cnd.count("id").andLike("email", "%"+emails[emails.length-1]);
+					if(update){
+						cnd.andNotEquals("customer_id", customer.getId());
+					}
+					count=contactService.queryCount(cnd);
 					if(count>0){
 						throw new BusinessException("客户已经存在,已经存在相同的邮箱后缀。");
 					}
@@ -127,7 +143,7 @@ public class CustomerService extends AbstractService<Customer, String>{
 	}
 	
 	public  void update(Customer customer) {
-		checkDuplicate(customer);
+		checkDuplicate(customer,true);
 		
 		//计算星级
 				int star=customer.calculate();

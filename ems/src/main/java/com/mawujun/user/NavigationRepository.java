@@ -4,18 +4,20 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import com.mawujun.repository1.IRepository;
 
-public interface NavigationMapper extends IRepository<NavNode, String>{
-	public NavNode get(String id);
+@Repository
+public interface NavigationRepository extends IRepository<Navigation, String>{
+	public Navigation get(String id);
 	public String getMaxReportCode(@Param("parentId") String parentId);
 	/**
 	 * 新增头顶的菜单
 	 * @return
 	 */
-	public void save(NavNode node);
-	public void update(NavNode node);
+	public void save(Navigation node);
+	public void update(Navigation node);
 	/**
 	 * 删除头顶的菜单
 	 * @return
@@ -26,11 +28,11 @@ public interface NavigationMapper extends IRepository<NavNode, String>{
 	 * 获取头顶的菜单
 	 * @return
 	 */
-	public List<NavNode> loadNaviT(Map<String,Object> param);
-	public List<NavNode> loadNaviT4admin(Map<String,Object> param);
+	public List<Navigation> loadNaviT(Map<String,Object> param);
+	public List<Navigation> loadNaviT4admin(Map<String,Object> param);
 	public void checkedNavigation(Map<String,Object> param);
 	public void unCheckedNavigation(Map<String,Object> param);
 	
 	
-	public List<NavNode> getLeftNavi(String user_id);
+	public List<Navigation> getLeftNavi(String user_id);
 }

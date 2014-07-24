@@ -159,7 +159,10 @@ Ext.define('Ext.ux.ms.loginDialog',{
 	            		  waitMsg : '正在登录......', 
 	            		  url : Ext.ContextPath+'/login.do', 
 	            		  success : function(form, action) {
-	            			  window.location.href = 'index.jsp';
+	            		  	if(action.result.success){
+	            		  		window.location.href = 'index.jsp';
+	            		  	}
+	            			  //
 	            		  }, 
 	            		  failure : function(form, action) {
 		            		  form.reset();

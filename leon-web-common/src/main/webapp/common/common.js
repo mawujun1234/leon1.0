@@ -45,9 +45,9 @@ Ext.Ajax.on({
 				var data = Ext.decode(text);
 				if (data && data.success==false) {
 					//top.Ext.MessageBox.alert("错误", "加载数据时发生错误<br/>错误码:"+ status + "<br/>错误信息:" + data.message);
-					top.Ext.MessageBox.alert("错误", "错误信息:" + data.msg);
+					top.Ext.MessageBox.alert("错误",  data.msg);
 				} else {
-					top.Ext.MessageBox.alert("错误", "错误信息:" + text);
+					top.Ext.MessageBox.alert("错误",  text);
 				}
 
 				break;
