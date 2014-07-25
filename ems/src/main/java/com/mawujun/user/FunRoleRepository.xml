@@ -26,7 +26,7 @@
 	</delete>
 <!-- 为配置常用按钮进行查询 -->
 	<select id="listNav4Comm" parameterType="map" resultType="com.mawujun.user.Navigation">
-		select a.*,decode(leaf,1,decode(b.navigation_id,null,0,1),null) as checked
+		select a.*,decode(leaf,'Y',decode(b.navigation_id,null,'N','Y'),null) as checked
 		from sys_navigation a left join sys_navigation_funrole b
 		on a.id=b.navigation_id and b.funRole_id=#{funRole_id}  
 		where

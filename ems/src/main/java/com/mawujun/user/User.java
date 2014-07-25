@@ -14,7 +14,7 @@ import com.mawujun.repository.idEntity.UUIDEntity;
 public class User extends UUIDEntity{
 	@Column(length=30)
 	private String username;
-	@Column(length=30)
+	@Column(length=30,updatable=false)
 	private String password;
 	@Column(length=15)
 	private String name;

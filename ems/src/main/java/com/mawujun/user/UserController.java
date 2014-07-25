@@ -5,6 +5,7 @@ import java.util.List;
 
 
 
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
+import com.mawujun.exception.BusinessException;
 
 /**
  * 
@@ -27,8 +29,8 @@ public class UserController {
 	//@Autowired
 	//private UserRoleService userRoleService;
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+	//@Autowired
+	//private PasswordEncoder passwordEncoder;
 //	@Resource(name="service.user")
 //	UserServiceImpl userServiceImpl;
 	
@@ -54,6 +56,9 @@ public class UserController {
 	@RequestMapping("/user/delete.do")
 	@ResponseBody
 	public String delete(String id) {
+		if("admin".equalsIgnoreCase(id)){
+			throw new BusinessException("管理员账号不能删除!");
+		}
 		userService.deleteById(id);
 		return "success";
 	}
