@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.mawujun.repository1.IRepository;
 import com.mawujun.service.AbstractService;
+import com.mawujun.utils.page.Page;
 
 @Service
 public class UserService  extends AbstractService<User, String>{
@@ -59,10 +60,10 @@ public class UserService  extends AbstractService<User, String>{
 		param.put("password_new", password_new);
 		return userRepository.changePwd(param);
 	}
-	public List<User> list( ){
-		Map<String,Object> param=new HashMap<String,Object>();
+	public List<User> listUserByFunRole(String funrole_id){
+		//Map<String,Object> param=new HashMap<String,Object>();
 		//param.put("parentId", parentId);
-		return userRepository.list(param);
+		return userRepository.listUserByFunRole(funrole_id);
 	}
 	
 	public List<FunRole> listFunRole(String parentId,String user_id) {

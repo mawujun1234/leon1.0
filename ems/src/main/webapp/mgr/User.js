@@ -1,0 +1,17 @@
+Ext.defineModel("Ems.mgr.User",{
+	extend:"Ext.data.Model",
+	fields:[
+		{name:'id',type:'auto'},
+		{name:'loginName',type:'string'},
+		{name:'password',type:'string'},
+		{name:'name',type:'string'},
+		{name:'deleted',type:'boolean'},
+		{name:'deletedDate',type:'date'},
+		{name:'enable',type:'boolean'},
+		{name:'locked',type:'boolean'},
+		{name:'accountExpired',type:'boolean'},
+		{name:'createDate',type:'date'},
+		{name:'expireDate',type:'date'},
+		{name:'lastLoginDate',type:'date'}
+	]
+});

@@ -60,7 +60,7 @@
 				<artifactId>tomcat6-maven-plugin</artifactId>
 				<version>2.1</version>
 				<configuration>
-					<port>8083</port>
+					<port>8084</port>
 					<path>/</path>
 					<uriEncoding>utf-8</uriEncoding>
 					<contextReloadable>false</contextReloadable>
@@ -123,10 +123,10 @@
 					<targetMDir>${basedir}\src\main\java\com\mawujun\utils</targetMDir>	
 					
 					
-					<driverClassName>org.h2.Driver</driverClassName>
-					<url>jdbc:h2:file:E:\eclipse\workspace\leon\leon-web-common\leon;AUTO_SERVER=TRUE</url>
-					<username>sa</username>
-					<password></password>
+					<driverClassName>oracle.jdbc.driver.OracleDriver</driverClassName>
+					<url>jdbc:oracle:thin:@127.0.0.1:1521:ems</url>
+					<username>ems</username>
+					<password>ems</password>
 				</configuration>
 				
 	
@@ -183,12 +183,18 @@
 			<version>1.2</version>
 			<scope>runtime</scope>
 		</dependency>
-<!-- -->
+<!-- 
 		<dependency>
 			<groupId>ojdbc6.jar</groupId>
 			<artifactId>ojdbc6</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		-->
+		<dependency>
+	  		<groupId>com.oracle</groupId>
+	  		<artifactId>ojdbc6</artifactId>
+	  		<version>11.2</version>
+	  	</dependency>
  
 		<dependency>
 			<groupId>commons-fileupload</groupId>

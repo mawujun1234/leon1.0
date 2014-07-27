@@ -34,7 +34,7 @@ public class ${simpleClassName}Controller {
 	 * @param id 是父节点的id
 	 * @return
 	 */
-	@RequestMapping("/${simpleClassNameFirstLower}/query")
+	@RequestMapping("/${simpleClassNameFirstLower}/query.do")
 	@ResponseBody
 	public List<${simpleClassName}> query(String id) {
 		Cnd cnd=Cnd.select().andEquals(M.${simpleClassName}.parent.id, "root".equals(id)?null:id);
@@ -51,14 +51,14 @@ public class ${simpleClassName}Controller {
 	 * @param userName
 	 * @return
 	 */
-	@RequestMapping("/${simpleClassNameFirstLower}/query")
+	@RequestMapping("/${simpleClassNameFirstLower}/query.do")
 	@ResponseBody
 	public Page query(Integer start,Integer limit,String sampleName){
 		Page page=Page.getInstance(start,limit);//.addParam(M.${simpleClassName}.sampleName, "%"+sampleName+"%");
 		return ${simpleClassNameFirstLower}Service.queryPage(page);
 	}
 
-	@RequestMapping("/${simpleClassNameFirstLower}/query")
+	@RequestMapping("/${simpleClassNameFirstLower}/query.do")
 	@ResponseBody
 	public List<${simpleClassName}> query() {	
 		List<${simpleClassName}> ${simpleClassNameFirstLower}es=${simpleClassNameFirstLower}Service.queryAll();
@@ -66,33 +66,33 @@ public class ${simpleClassName}Controller {
 	}
 	
 
-	@RequestMapping("/${simpleClassNameFirstLower}/load")
+	@RequestMapping("/${simpleClassNameFirstLower}/load.do")
 	public ${simpleClassName} load(${idType} id) {
 		return ${simpleClassNameFirstLower}Service.get(id);
 	}
 	
-	@RequestMapping("/${simpleClassNameFirstLower}/create")
+	@RequestMapping("/${simpleClassNameFirstLower}/create.do")
 	@ResponseBody
 	public ${simpleClassName} create(@RequestBody ${simpleClassName} ${simpleClassNameFirstLower}) {
 		${simpleClassNameFirstLower}Service.create(${simpleClassNameFirstLower});
 		return ${simpleClassNameFirstLower};
 	}
 	
-	@RequestMapping("/${simpleClassNameFirstLower}/update")
+	@RequestMapping("/${simpleClassNameFirstLower}/update.do")
 	@ResponseBody
 	public  ${simpleClassName} update(@RequestBody ${simpleClassName} ${simpleClassNameFirstLower}) {
 		${simpleClassNameFirstLower}Service.update(${simpleClassNameFirstLower});
 		return ${simpleClassNameFirstLower};
 	}
 	
-	@RequestMapping("/${simpleClassNameFirstLower}/deleteById")
+	@RequestMapping("/${simpleClassNameFirstLower}/deleteById.do")
 	@ResponseBody
 	public ${idType} deleteById(${idType} id) {
 		${simpleClassNameFirstLower}Service.deleteById(id);
 		return id;
 	}
 	
-	@RequestMapping("/${simpleClassNameFirstLower}/destroy")
+	@RequestMapping("/${simpleClassNameFirstLower}/destroy.do")
 	@ResponseBody
 	public ${simpleClassName} destroy(@RequestBody ${simpleClassName} ${simpleClassNameFirstLower}) {
 		${simpleClassNameFirstLower}Service.delete(${simpleClassNameFirstLower});

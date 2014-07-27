@@ -3,7 +3,7 @@
 <html>
   <head>
     <title>登录</title>
-    <%@ include file="utils/meta.inc"%>
+    <%@include file="common/init.jsp" %>
     <script type="text/javascript" src="scripts/login.js"></script>
 	<style type="text/css">
 	  .icon-docs{

@@ -19,31 +19,50 @@ Ext.onReady(function() {
 					});
 
 			var tree = Ext.create('Ext.tree.Panel', {
-						title : 'TreeGrid',
+						//title : 'TreeGrid',
 						width : 300,
 						region : 'west',
 						// rootVisible: false,
 
 						store : treeStore,
-						tools : [{
-									type : 'refresh',
-									tooltip : '刷新',
+						tbar : [{
+									iconCls:'form-reload-button',
+									text : '刷新',
 									handler : function() {
 										treeStore.reload({node:selectedNode?selectedNode:tree.getRootNode()});
 									}
 								}, {
-									type : 'plus',
-									tooltip : '添加',
+									iconCls:'form-add-button',
+									text : '添加',
 									handler : addNav
 								}, {
-									type : 'minus',
-									tooltip : '删除',
+									iconCls:'form-delete-button',
+									text : '删除',
 									handler : deleteNav
 								}, {
-									type : 'gear',
-									tooltip : '编辑',
+									iconCls:'form-update-button',
+									text : '编辑',
 									handler : modifNav
-								}],
+						}],
+//						tools : [{
+//									type : 'refresh',
+//									tooltip : '刷新',
+//									handler : function() {
+//										treeStore.reload({node:selectedNode?selectedNode:tree.getRootNode()});
+//									}
+//								}, {
+//									type : 'plus',
+//									tooltip : '添加',
+//									handler : addNav
+//								}, {
+//									type : 'minus',
+//									tooltip : '删除',
+//									handler : deleteNav
+//								}, {
+//									type : 'gear',
+//									tooltip : '编辑',
+//									handler : modifNav
+//								}],
 				listeners:{
 					itemclick:function(tree, record, item, index, e){
 						selectedNode=record;
@@ -189,7 +208,7 @@ Ext.onReady(function() {
 //			}
 			Ext.create('Ext.container.Viewport', {
 						layout : 'border',
-						padding : '5px',
+						//padding : '5px',
 						renderTo : 'view-port',
 						style : 'background-color:#FFFFFF',
 						items : [tree, nav_form]

@@ -1,0 +1,13 @@
+Ext.defineModel("Ems.baseinfo.EquipmentType",{
+	extend:"Ext.data.Model",
+	idProperty:'id',
+	fields:[
+		{name:'id',type:'string'},
+		{name:'levl',type:'int'},
+		{name:'status',type:'int'},
+		{name:'text',type:'string'},
+		{name:'parent_id',type:'string'}
+	],
+	associations:[
+	]
+});

@@ -3,7 +3,7 @@
 <html>
   <head>
     <title>用户单位</title>
-    <%@ include file="../../utils/meta.inc"%>
+    <%@include file="../common/init.jsp" %>
     <script type="text/javascript" src="../widgetutils.js"></script>
     <script type="text/javascript" src="role.js"></script>
 	<style type="text/css">

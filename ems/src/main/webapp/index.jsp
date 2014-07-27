@@ -4,7 +4,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>奥维生产调度平台</title>
-<%@ include file="utils/meta.inc"%>
+<%-- include file="utils/meta.inc" --%>
+<%@include file="common/init.jsp" %>
 <!-- CSS 文件配置 -->
 <link rel="stylesheet" type="text/css"href="css/index.css" />
 <link rel="stylesheet" type="text/css"href="css/about.css" />

@@ -3,7 +3,7 @@
 <html>
   <head>
     <title>用户单位</title>
-    <%@ include file="../../utils/meta.inc"%>
+    <%@include file="../common/init.jsp" %>
     <script type="text/javascript" src="dataRole.js"></script>
 	<style type="text/css">
 		.icon-add {

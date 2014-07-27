@@ -3,6 +3,7 @@ package com.mawujun.user;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.mawujun.repository1.IRepository;
@@ -11,11 +12,11 @@ import com.mawujun.utils.Params;
 
 @Repository
 public interface UserRepository extends IRepository<User, String> {
-	public User getByUsername(String username);
+	public User getByUsername(@Param("username")String username);
 	public void save(User user);
 	public void update(User user);
 	public void delete(String id);
-	public List<User> list(Map<String,Object> param);
+	public List<User> listUserByFunRole(@Param("funrole_id")String funrole_id);
 	public int changePwd(Map<String,Object> param);
 	
 	public List<FunRole> listFunRole(Map<String,Object> param);

@@ -6,8 +6,12 @@ import java.util.List;
 
 
 
+
+
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -16,6 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.exception.BusinessException;
+import com.mawujun.utils.M;
+import com.mawujun.utils.page.Page;
 
 /**
  * 
@@ -36,8 +42,14 @@ public class UserController {
 	
 	@RequestMapping("/user/list.do")
 	@ResponseBody
-	public List<User> list( ) {
-		return userService.queryAll();
+	public Page list(Integer start,Integer limit,String name ) {
+		Page page=Page.getInstance(start, limit).addParam(M.User.name, StringUtils.hasText(name)?"%"+name+"%":null);
+		return userService.queryPage(page);
+	}
+	@RequestMapping("/user/listUserByFunRole.do")
+	@ResponseBody
+	public List<User> listUserByFunRole(String funrole_id){
+		return userService.listUserByFunRole(funrole_id);
 	}
 
 	@RequestMapping("/user/save.do")
