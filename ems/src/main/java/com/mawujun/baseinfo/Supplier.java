@@ -2,6 +2,7 @@ package com.mawujun.baseinfo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.mawujun.repository.idEntity.IdEntity;
@@ -9,6 +10,7 @@ import com.mawujun.repository.idEntity.IdEntity;
 @Entity
 @Table(name="ems_brand")
 public class Supplier implements IdEntity<String>{
+	@Id
 	@Column(length=3)
 	private String id;
 	@Column(length=30)

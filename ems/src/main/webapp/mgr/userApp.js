@@ -105,6 +105,8 @@ Ext.onReady(function() {
 				user_form.getForm().setValues({username:'',name:'',phone:''});
 				save_btn.setDisabled(false);
 				edit_btn.setDisabled(true);
+				
+				tabPanel.setActiveTab(0);
 			}
 			function deleteUser(){
 				if(!selectedNode) {

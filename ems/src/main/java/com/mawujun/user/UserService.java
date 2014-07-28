@@ -11,6 +11,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mawujun.exception.BusinessException;
 import com.mawujun.repository1.IRepository;
 import com.mawujun.service.AbstractService;
 import com.mawujun.utils.page.Page;
@@ -38,9 +39,12 @@ public class UserService  extends AbstractService<User, String>{
 	 }
 	
 	public String save(User user){
+		if(this.getByUsername(user.getUsername())!=null){
+			throw new BusinessException("已经存在相同的用户名");
+		}
 		user.setId(UUID.randomUUID().toString());
 		
-		userRepository.save(user);
+		userRepository.create(user);
 		return user.getId();
 	}
 //	public String update(User user){

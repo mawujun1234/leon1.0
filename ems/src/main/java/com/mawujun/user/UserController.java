@@ -56,7 +56,7 @@ public class UserController {
 	@ResponseBody
 	public String save(User user) {
 		user.setPassword("0");
-		userService.create(user);
+		userService.save(user);
 		return "success";
 	}
 	@RequestMapping("/user/update.do")
