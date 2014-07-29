@@ -4,9 +4,9 @@
 /**
  * 主要是用来查询的
  */
-Ext.define('Leon.${module}.${simpleClassName}TreeQuery', {
+Ext.define('Ems.${module}.${simpleClassName}TreeQuery', {
     extend: 'Ext.tree.Panel',
-    requires:['Leon.${module}.${simpleClassName}'],
+    requires:['Ems.${module}.${simpleClassName}'],
     initComponent: function () {
 		var me = this;
 
@@ -14,7 +14,7 @@ Ext.define('Leon.${module}.${simpleClassName}TreeQuery', {
         me.store = Ext.create('Ext.data.TreeStore', {
 	       	autoLoad:true,
 	       	nodeParam :'id',//传递到后台的数据，默认是node
-	       	model:'Leon.${module}.${simpleClassName}',
+	       	model:'Ems.${module}.${simpleClassName}',
 			root: {
 			    expanded: true,
 			    text:"根节点" 

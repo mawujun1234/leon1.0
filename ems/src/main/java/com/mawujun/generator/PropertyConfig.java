@@ -11,8 +11,8 @@ import com.mawujun.repository.idEntity.UUIDEntity;
  * @author mawujun 16064988@qq.com  
  *
  */
-@Entity
-@Table(name="leon_propertyconfig")
+//@Entity
+//@Table(name="leon_propertyconfig")
 public class PropertyConfig extends UUIDEntity {
 	/**
 	 * 

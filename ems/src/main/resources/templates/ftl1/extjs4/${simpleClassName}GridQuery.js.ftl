@@ -1,10 +1,10 @@
 <#assign simpleClassNameFirstLower = simpleClassName?uncap_first> 
 <#-- //所在模块-->
 <#assign module = basepackage?substring(basepackage?last_index_of(".")+1)>
-Ext.define('Leon.${module}.${simpleClassName}GridQuery',{
+Ext.define('Ems.${module}.${simpleClassName}GridQuery',{
 	extend:'Ext.grid.Panel',
 	requires: [
-	     'Leon.${module}.${simpleClassName}'
+	     'Ems.${module}.${simpleClassName}'
 	],
 	columnLines :true,
 	stripeRows:true,
@@ -42,7 +42,7 @@ Ext.define('Leon.${module}.${simpleClassName}GridQuery',{
 	  me.store=Ext.create('Ext.data.Store',{
 			autoSync:false,
 			pageSize:50,
-			model: 'Leon.${module}.${simpleClassName}',
+			model: 'Ems.${module}.${simpleClassName}',
 			autoLoad:true
 	  });
 	  <#else>

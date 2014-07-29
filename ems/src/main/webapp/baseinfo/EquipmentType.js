@@ -6,6 +6,7 @@ Ext.defineModel("Ems.baseinfo.EquipmentType",{
 		{name:'levl',type:'int'},
 		{name:'status',type:'int'},
 		{name:'text',type:'string'},
+		{name:'unit',type:'string'},
 		{name:'parent_id',type:'string'}
 	],
 	associations:[

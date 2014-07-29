@@ -201,6 +201,7 @@ Ext.define('Leon.${module}.${simpleClassName}Form',{
 				var form=btn.up("form");
 				var grid=form.grid;
 				
+				form.createAction=false;
 				form.down("button#save").show();
 				form.down("button#cancel").show();
 				var buttons=form.query("button[cls~=fla_form_action]");

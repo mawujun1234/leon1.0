@@ -8,7 +8,7 @@ import javax.persistence.Table;
 import com.mawujun.repository.idEntity.IdEntity;
 
 @Entity
-@Table(name="ems_brand")
+@Table(name="ems_supplier")
 public class Supplier implements IdEntity<String>{
 	@Id
 	@Column(length=3)
@@ -22,7 +22,8 @@ public class Supplier implements IdEntity<String>{
 	@Column(length=100)
 	private String memo;
 	@org.hibernate.annotations.Type(type="yes_no")
-	private Boolean status;
+	private Boolean status=true;
+	
 	public String getId() {
 		return id;
 	}

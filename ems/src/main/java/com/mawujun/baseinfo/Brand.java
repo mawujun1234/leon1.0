@@ -16,7 +16,7 @@ public class Brand implements IdEntity<String>{
 	@Column(length=30)
 	private String name;
 	@org.hibernate.annotations.Type(type="yes_no")
-	private Boolean status;
+	private Boolean status=true;
 	
 	public String getId() {
 		return id;

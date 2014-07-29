@@ -1,27 +1,110 @@
 package com.mawujun.utils;
 public final class T {
+public static final class ems_area {
+	public static final String name="name";
+	public static final String workunit_id="workunit_id";
+	public static final String id="id";
+}
+public static final class ems_brand {
+	public static final String id="id";
+	public static final String name="name";
+	public static final String status="status";
+}
+public static final class ems_customer {
+	public static final String name="name";
+	public static final String memo="memo";
+	public static final String status="status";
+	public static final String id="id";
+}
+public static final class ems_customer_contact {
+	public static final String contact="contact";
+	public static final String phone="phone";
+	public static final String mobile="mobile";
+	public static final String position="position";
+	public static final String email="email";
+	public static final String fax="fax";
+	public static final String address="address";
+	public static final String postcode="postcode";
+	public static final String id="id";
+}
 public static final class ems_equipmentprod {
 	public static final String id="id";
 	public static final String text="text";
 	public static final String status="status";
-	public static final String level="level";
-	/**
-	* 访问外键的列名，用于sql的时候，返回的是parent_id
-	*/
+	public static final String levl="levl";
 	public static final String parent_id="parent_id";
+	public static final String leaf="leaf";
+	public static final String unit="unit";
 }
-
+public static final class ems_equipmentsubtype {
+	public static final String id="id";
+	public static final String text="text";
+	public static final String status="status";
+	public static final String levl="levl";
+	public static final String parent_id="parent_id";
+	public static final String leaf="leaf";
+	public static final String unit="unit";
+}
 public static final class ems_equipmenttype {
 	public static final String id="id";
 	public static final String text="text";
 	public static final String status="status";
-	public static final String level="level";
+	public static final String levl="levl";
+	public static final String parent_id="parent_id";
+	public static final String leaf="leaf";
+	public static final String unit="unit";
 }
-public static final class leon_propertyconfig {
-	public static final String subjectName="subjectName";
-	public static final String property="property";
-	public static final String label="label";
-	public static final String showModel="showModel";
+public static final class ems_pole {
+	public static final String name="name";
+	public static final String address="address";
+	public static final String longitude="longitude";
+	public static final String latitude="latitude";
+	public static final String customer_id="customer_id";
+	public static final String status="status";
+	public static final String id="id";
+}
+public static final class ems_store {
+	public static final String name="name";
+	public static final String memo="memo";
+	public static final String status="status";
+	public static final String id="id";
+}
+public static final class ems_supplier {
+	public static final String id="id";
+	public static final String name="name";
+	public static final String sname="sname";
+	public static final String website="website";
+	public static final String memo="memo";
+	public static final String status="status";
+}
+public static final class ems_supplier_contact {
+	public static final String contact="contact";
+	public static final String phone="phone";
+	public static final String mobile="mobile";
+	public static final String position="position";
+	public static final String email="email";
+	public static final String fax="fax";
+	public static final String address="address";
+	public static final String postcode="postcode";
+	public static final String supplier_id="supplier_id";
+	public static final String id="id";
+}
+public static final class ems_workunit {
+	public static final String name="name";
+	public static final String memo="memo";
+	public static final String status="status";
+	public static final String id="id";
+}
+public static final class ems_workunit_contact {
+	public static final String contact="contact";
+	public static final String phone="phone";
+	public static final String mobile="mobile";
+	public static final String position="position";
+	public static final String email="email";
+	public static final String fax="fax";
+	public static final String address="address";
+	public static final String postcode="postcode";
+	public static final String workunit_id="workunit_id";
 	public static final String id="id";
 }
 public static final class sys_DataRole {

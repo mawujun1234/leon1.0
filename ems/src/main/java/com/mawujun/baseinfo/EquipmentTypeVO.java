@@ -21,6 +21,10 @@ public class EquipmentTypeVO {
 	@Transient
 	private Boolean leaf;
 	
+	//单位：台，个
+	@Column(length=10)
+	private String unit;
+	
 	public String getId() {
 		return id;
 	}
@@ -57,6 +61,12 @@ public class EquipmentTypeVO {
 	}
 	public void setLeaf(Boolean leaf) {
 		this.leaf = leaf;
+	}
+	public String getUnit() {
+		return unit;
+	}
+	public void setUnit(String unit) {
+		this.unit = unit;
 	}
 
 }

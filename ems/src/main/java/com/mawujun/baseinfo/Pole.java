@@ -19,6 +19,9 @@ public class Pole extends UUIDEntity {
 	private String latitude;//纬度
 	
 	private String customer_id;
+	
+	@org.hibernate.annotations.Type(type="yes_no")
+	private Boolean status=true;
 
 	public String getName() {
 		return name;
@@ -58,6 +61,14 @@ public class Pole extends UUIDEntity {
 
 	public void setCustomer_id(String customer_id) {
 		this.customer_id = customer_id;
+	}
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
 	}
 
 }

@@ -1,10 +1,10 @@
 <#assign simpleClassNameFirstLower = simpleClassName?uncap_first> 
 <#-- //所在模块-->
 <#assign module = basepackage?substring(basepackage?last_index_of(".")+1)> 
-Ext.define('Leon.${module}.${simpleClassName}Form',{
+Ext.define('Ems.${module}.${simpleClassName}Form',{
 	extend:'Ext.form.Panel',
 	requires: [
-	     'Leon.${module}.${simpleClassName}'
+	     'Ems.${module}.${simpleClassName}'
 	],
 	fieldDefaults: {
         msgTarget: 'side',
@@ -201,6 +201,7 @@ Ext.define('Leon.${module}.${simpleClassName}Form',{
 				var form=btn.up("form");
 				var grid=form.grid;
 				
+				form.createAction=false;
 				form.down("button#save").show();
 				form.down("button#cancel").show();
 				var buttons=form.query("button[cls~=fla_form_action]");

@@ -26,6 +26,8 @@ public class WorkUnitContact extends UUIDEntity {
 	private String address;
 	@Column(length=15)
 	private String postcode;
+	@Column(length=36)
+	private String workunit_id;
 	
 	
 	
@@ -77,6 +79,12 @@ public class WorkUnitContact extends UUIDEntity {
 	}
 	public void setPostcode(String postcode) {
 		this.postcode = postcode;
+	}
+	public String getWorkunit_id() {
+		return workunit_id;
+	}
+	public void setWorkunit_id(String workunit_id) {
+		this.workunit_id = workunit_id;
 	}
 
 

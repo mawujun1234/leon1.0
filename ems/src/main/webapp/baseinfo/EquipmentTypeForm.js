@@ -38,6 +38,14 @@ Ext.define('Ems.baseinfo.EquipmentTypeForm',{
 	        allowBlank: false
 	    },
 	    {
+	        fieldLabel: '单位',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'unit',
+	        //readOnly:true,
+	        xtype:'textfield',
+	        allowBlank: true
+	    },
+	    {
 	        fieldLabel: '父编码',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'parent_id',

@@ -3,7 +3,8 @@
 7.24今天把菜单权限弄好
 8。5前把基础资料完成。
 
-
+为老的ems专门建一个数据库ems1，这样表明就不会冲突了
+作业单位的账号密码设置，还是在系统中新建一个用户，然后是否允许他负责的组呢？还是在联系方式里建立账号密码。还是一个组一个账号密码？
 设计好领域模型,然后把大类，品牌，供应商，片区，客户等基础信息完成
 新增用户的时候用户名不能重复
 
@@ -11,22 +12,11 @@
 删除品名的是否，判断有没有设备在使用，如果没有就删除，否则就修改status
 删除小类，判断有没有品名在使用，否则就修改status
 删除大类也是同一个道理
+所有基础信息类都要做这样的判断，如果设备中引用了，删除的时候就设置为失效
 
 
 (完成)大类小类品名创建物化视图，并测试点那个增加，减少大类小类的数据的时候是否会同步进行变化
-CREATE MATERIALIZED VIEW mv_ems_equipmenttype
-BUILD IMMEDIATE
-refresh force 
-ON COMMIT
-as
-select a.id as type_id,b.id as subtype_id,c.id as prod_id,
-a.text as type_text,b.text as subtype_text,a.text as prod_text
-from ems_equipmenttype a,ems_equipmentsubtype b,ems_equipmentprod c
-where a.id=b.parent_id and b.id=c.parent_id;
 
-select * from mv_ems_equipmenttype
-
-DROP MATERIALIZED VIEW mv_ems_equipmenttype
 
 (完成)把模板的url都改成.do结尾的
 

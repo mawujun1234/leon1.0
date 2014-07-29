@@ -10,9 +10,21 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
 
+
+
+
+
+
+
+import com.mawujun.baseinfo.Brand;
 import com.mawujun.baseinfo.EquipmentProd;
 import com.mawujun.baseinfo.EquipmentSubtype;
 import com.mawujun.baseinfo.EquipmentType;
+import com.mawujun.baseinfo.Store;
+import com.mawujun.baseinfo.Supplier;
+import com.mawujun.baseinfo.SupplierContact;
+import com.mawujun.baseinfo.WorkUnit;
+import com.mawujun.baseinfo.WorkUnitContact;
 import com.mawujun.user.User;
 
 import freemarker.template.TemplateException;
@@ -36,7 +48,7 @@ public class GeneratorMain {
 		//str=generatorService.generatorToString(MenuItem.class,FtlFile.JsModel.toString(),null);	
         //System.out.println(str);
 		
-		GeneratorMain.generateAllFile(EquipmentProd.class,"D:/gen/");
+		GeneratorMain.generateAllFile(WorkUnitContact.class,"D:/gen/");
 		
 		
 		

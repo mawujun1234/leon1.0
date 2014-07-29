@@ -11,3 +11,19 @@
 	drop user ems cascade 删除用户和用户拥有的表
 	create user ems identified by ems;
 	grant dba,connect,resource to ems;
+	
+	
+	
+  CREATE MATERIALIZED VIEW mv_ems_equipmenttype
+BUILD IMMEDIATE
+refresh force 
+ON COMMIT
+as
+select a.id as type_id,b.id as subtype_id,c.id as prod_id,
+a.text as type_text,b.text as subtype_text,c.text as prod_text,c.unit
+from ems_equipmenttype a,ems_equipmentsubtype b,ems_equipmentprod c
+where a.id=b.parent_id and b.id=c.parent_id;
+
+select * from mv_ems_equipmenttype
+
+DROP MATERIALIZED VIEW mv_ems_equipmenttype

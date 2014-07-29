@@ -6,16 +6,16 @@
  * 添加右键菜单，增，删，改，并且增加工具栏，增，删，改。
  * 后台的类最好继承TreeNode类，这样就可以少写很多代码
  */
-Ext.define('Leon.${module}.${simpleClassName}Tree', {
+Ext.define('Ems.${module}.${simpleClassName}Tree', {
     extend: 'Ext.tree.Panel',
-    requires:['Leon.${module}.${simpleClassName}'],
+    requires:['Ems.${module}.${simpleClassName}'],
     initComponent: function () {
 		var me = this;
 
         me.store = Ext.create('Ext.data.TreeStore', {
 	       	autoLoad:true,
 	       	nodeParam :'id',//传递到后台的数据，默认是node
-	       	model:'Leon.${module}.${simpleClassName}',
+	       	model:'Ems.${module}.${simpleClassName}',
 			root: {
 			    expanded: true,
 			    text:"根节点" 

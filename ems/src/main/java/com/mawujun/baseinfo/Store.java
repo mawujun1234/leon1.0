@@ -13,6 +13,8 @@ public class Store extends UUIDEntity {
 	private String name;
 	@Column(length=100)
 	private String memo;
+	@org.hibernate.annotations.Type(type="yes_no")
+	private Boolean status=true;
 	
 	public String getName() {
 		return name;
@@ -25,5 +27,11 @@ public class Store extends UUIDEntity {
 	}
 	public void setMemo(String memo) {
 		this.memo = memo;
+	}
+	public Boolean getStatus() {
+		return status;
+	}
+	public void setStatus(Boolean status) {
+		this.status = status;
 	}
 }

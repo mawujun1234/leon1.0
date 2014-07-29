@@ -1,12 +1,12 @@
 <#assign simpleClassNameFirstLower = simpleClassName?uncap_first> 
 <#-- //所在模块-->
 <#assign module = basepackage?substring(basepackage?last_index_of(".")+1)> 
-Ext.require("Leon.${module}.${simpleClassName}");
-Ext.require("Leon.${module}.${simpleClassName}Grid");
-Ext.require("Leon.${module}.${simpleClassName}Tree");
-Ext.require("Leon.${module}.${simpleClassName}Form");
+Ext.require("Ems.${module}.${simpleClassName}");
+Ext.require("Ems.${module}.${simpleClassName}Grid");
+Ext.require("Ems.${module}.${simpleClassName}Tree");
+Ext.require("Ems.${module}.${simpleClassName}Form");
 Ext.onReady(function(){
-	var grid=Ext.create('Leon.${module}.${simpleClassName}Grid',{
+	var grid=Ext.create('Ems.${module}.${simpleClassName}Grid',{
 		region:'west',
 		split: true,
 		collapsible: true,
@@ -14,13 +14,13 @@ Ext.onReady(function(){
 		width:400
 	});
 
-	var tree=Ext.create('Leon.${module}.${simpleClassName}Tree',{
+	var tree=Ext.create('Ems.${module}.${simpleClassName}Tree',{
 		title:'树',
 		width:400,
 		region:'west'
 	});
 
-	var form=Ext.create('Leon.${module}.${simpleClassName}Form',{
+	var form=Ext.create('Ems.${module}.${simpleClassName}Form',{
 		region:'center',
 		split: true,
 		//collapsible: true,

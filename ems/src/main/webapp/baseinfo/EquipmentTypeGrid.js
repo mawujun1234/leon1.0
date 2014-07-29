@@ -24,7 +24,8 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 		},
 		//{dataIndex:'level',text:'level',xtype: 'numbercolumn', format:'0.00'},
 		//{dataIndex:'status',text:'status',xtype: 'numbercolumn', format:'0.00'},
-		{dataIndex:'text',text:'名称',flex:1}
+		{dataIndex:'text',text:'名称',flex:1},
+		{dataIndex:'unit',text:'单位',flex:1}
       ];
       
 	  me.store=Ext.create('Ext.data.Store',{
@@ -35,16 +36,16 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 	  });
 	  me.store.getProxy().extraParams ={isGrid:true}
 	  
-	  me.tbar=	[{
-			text: '刷新',
-			itemId:'reload',
-			disabled:me.disabledAction,
-			handler: function(btn){
-				var grid=btn.up("grid");
-				grid.getStore().reload();
-			},
-			iconCls: 'form-reload-button'
-		}]
+//	  me.tbar=	[{
+//			text: '刷新',
+//			itemId:'reload',
+//			disabled:me.disabledAction,
+//			handler: function(btn){
+//				var grid=btn.up("grid");
+//				grid.getStore().reload();
+//			},
+//			iconCls: 'form-reload-button'
+//		}]
        
 	  me.initAction();
       me.callParent();
@@ -148,6 +149,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 		var win=new Ext.window.Window({
 			items:[form],
 			layout:'fit',
+			closeAction:'destroy',
 			width:300,
 			height:200,
 			modal:true
@@ -155,16 +157,6 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 		//form.win=win
 		win.show();
 
-//		child.save({
-//			success: function(record, operation) {
-//				parent.set('leaf',false);
-//				parent.appendChild(child);
-//				//alert(1);
-////				parent.leaf=false;
-////				me.getStore().reload({node:parent});
-////				parent.expand();
-//			}
-//		});
     },
     onUpdate:function(){
     	var me=this;
@@ -192,6 +184,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 		var win=new Ext.window.Window({
 			items:[form],
 			layout:'fit',
+			closeAction:'destroy',
 			width:300,
 			height:200,
 			modal:true
@@ -226,22 +219,6 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 							me.getStore().remove(record);
 						}
 					});
-//				   ///var parent=node.parentNode;
-//				   record.destroy({
-//				   	  callback : function(records,operation,success) {
-//				        	//alert(record.get("levl"));
-//				        	if(record.get("levl")!=3){
-//				        		//var node=me.tree.getStore().getNodeById(record.get("id")+"_"+record.get("levl"));
-//				        		//me.tree.getStore().remove(node);
-//				        		//alert(1);
-//				        		var parent=me.tree.getSelectionModel( ).getLastSelected( )||me.tree.getRootNode( );   
-//				        		//alert(parent);
-//				        		me.tree.getStore().reload({node:parent});
-//				        	}
-//				        	me.getStore().reload();
-//				        	
-//				      }
-//				});
 			}
 		});
     },

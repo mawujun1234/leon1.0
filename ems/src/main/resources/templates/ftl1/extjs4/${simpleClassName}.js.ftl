@@ -1,7 +1,7 @@
 <#assign simpleClassNameFirstLower = simpleClassName?uncap_first> 
 <#-- //所在模块-->
 <#assign module = basepackage?substring(basepackage?last_index_of(".")+1)> 
-Ext.defineModel("Leon.${module}.${simpleClassName}",{
+Ext.defineModel("Ems.${module}.${simpleClassName}",{
 	extend:"Ext.data.Model",
 	idProperty:'${idPropertyName}',
 	fields:[
@@ -22,9 +22,9 @@ Ext.defineModel("Leon.${module}.${simpleClassName}",{
 	associations:[
 		<#list propertyColumns as propertyColumn>
 		<#if propertyColumn.isAssociationType==true>
-			{type:'belongsTo',model: 'Leon.${propertyColumn.basepackage?substring(propertyColumn.basepackage?last_index_of(".")+1)}.${propertyColumn.javaTypeClassName}',associatedName:'${propertyColumn.property?capitalize}'}<#if propertyColumn_has_next>,</#if>
+			{type:'belongsTo',model: 'Ems.${propertyColumn.basepackage?substring(propertyColumn.basepackage?last_index_of(".")+1)}.${propertyColumn.javaTypeClassName}',associatedName:'${propertyColumn.property?capitalize}'}<#if propertyColumn_has_next>,</#if>
 		<#elseif propertyColumn.isCollectionType==true>
-			{type:'hasMany',model: 'Leon.${propertyColumn.basepackage?substring(propertyColumn.basepackage?last_index_of(".")+1)}.${propertyColumn.javaTypeClassName}',,associatedName:'${propertyColumn.property}'}<#if propertyColumn_has_next>,</#if>
+			{type:'hasMany',model: 'Ems.${propertyColumn.basepackage?substring(propertyColumn.basepackage?last_index_of(".")+1)}.${propertyColumn.javaTypeClassName}',,associatedName:'${propertyColumn.property}'}<#if propertyColumn_has_next>,</#if>
 		</#if>
 		</#list>
 	]

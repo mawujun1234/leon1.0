@@ -14,6 +14,7 @@ import com.mawujun.repository.idEntity.IdEntity;
 @Table(name="ems_equipmentprod")
 public class EquipmentProd  extends EquipmentTypeVO implements IdEntity<String>{
 	
+	
 //	@Id
 //	@Column(length=2)
 //	private String id;
