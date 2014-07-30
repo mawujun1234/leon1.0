@@ -7,13 +7,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.utils.page.Page;
 import com.mawujun.utils.M;
-
 import com.mawujun.baseinfo.Supplier;
 import com.mawujun.baseinfo.SupplierService;
 /**
@@ -100,5 +100,9 @@ public class SupplierController {
 		return supplier;
 	}
 	
-	
+	@RequestMapping("/supplier/querySupplier.do")
+	@ResponseBody
+	public List<Supplier> queryProd(String name) {
+		return supplierService.query(Cnd.select().andLike(M.Supplier.name, name));	
+	}
 }

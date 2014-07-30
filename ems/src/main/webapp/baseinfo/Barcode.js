@@ -1,0 +1,24 @@
+Ext.defineModel("Ems.baseinfo.Barcode",{
+	extend:"Ext.data.Model",
+	idProperty:'ecode',
+	fields:[
+		{name:'ecode',type:'string'},
+		{name:'brand_id',type:'string'},
+		{name:'brand_name',type:'string'},
+		{name:'prod_id',type:'string'},
+		{name:'prod_name',type:'string'},
+		{name:'ymd',type:'string'},
+		{name:'status',type:'bool'},
+		{name:'style',type:'string'},
+		{name:'subtype_id',type:'string'},
+		{name:'subtype_name',type:'string'},
+		{name:'supplier_id',type:'string'},
+		{name:'supplier_name',type:'string'},
+		{name:'serialNum',type:'int'},
+		{name:'unitPrice',type:'float'},
+		{name:'totalprice',type:'int'}
+		
+	],
+	associations:[
+	]
+});

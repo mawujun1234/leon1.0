@@ -5,6 +5,18 @@ public static final class ems_area {
 	public static final String workunit_id="workunit_id";
 	public static final String id="id";
 }
+public static final class ems_barcode {
+	public static final String ecode="ecode";
+	public static final String subtype_id="subtype_id";
+	public static final String prod_id="prod_id";
+	public static final String brand_id="brand_id";
+	public static final String supplier_id="supplier_id";
+	public static final String ymd="ymd";
+	public static final String serialNum="serialNum";
+	public static final String style="style";
+	public static final String unitPrice="unitPrice";
+	public static final String status="status";
+}
 public static final class ems_brand {
 	public static final String id="id";
 	public static final String name="name";
@@ -27,6 +39,19 @@ public static final class ems_customer_contact {
 	public static final String postcode="postcode";
 	public static final String id="id";
 }
+public static final class ems_equipment {
+	public static final String ecode="ecode";
+	public static final String subtype_id="subtype_id";
+	public static final String prod_id="prod_id";
+	public static final String brand_id="brand_id";
+	public static final String supplier_id="supplier_id";
+	public static final String style="style";
+	public static final String datebuying="datebuying";
+	public static final String unitPrice="unitPrice";
+	public static final String isnew="isnew";
+	public static final String memo="memo";
+	public static final String status="status";
+}
 public static final class ems_equipmentprod {
 	public static final String id="id";
 	public static final String text="text";
@@ -35,6 +60,10 @@ public static final class ems_equipmentprod {
 	public static final String parent_id="parent_id";
 	public static final String leaf="leaf";
 	public static final String unit="unit";
+}
+public static final class ems_equipmentstatus {
+	public static final String status="status";
+	public static final String name="name";
 }
 public static final class ems_equipmentsubtype {
 	public static final String id="id";

@@ -54,13 +54,13 @@ public abstract class BeanUtils extends org.apache.commons.beanutils.BeanUtils{
 	 * 2：BeanUtils.copyOrCast(map, Product.class);把map对象里的值拷贝到类里面
 	 */
 	public static <T> T copyOrCast(Object source, Class<T> destinationClass) {
-		Class fromType=source.getClass();
-		if (fromType == destinationClass || destinationClass == null || fromType == null)
-			return (T) source;
-		if (fromType.getName().equals(destinationClass.getName()))
-			return (T) source;
-		if (destinationClass.isAssignableFrom(fromType))
-			return (T) source;
+//		Class fromType=source.getClass();
+//		if (fromType == destinationClass || destinationClass == null || fromType == null)
+//			return (T) source;
+//		if (fromType.getName().equals(destinationClass.getName()))
+//			return (T) source;
+//		if (destinationClass.isAssignableFrom(fromType))
+//			return (T) source;
 		return dozer.map(source, destinationClass);
 	}
 

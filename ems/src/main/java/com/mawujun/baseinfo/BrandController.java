@@ -7,13 +7,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.utils.page.Page;
 import com.mawujun.utils.M;
-
 import com.mawujun.baseinfo.Brand;
 import com.mawujun.baseinfo.BrandService;
 /**
@@ -98,6 +98,18 @@ public class BrandController {
 	public Brand destroy(@RequestBody Brand brand) {
 		brandService.delete(brand);
 		return brand;
+	}
+	
+	/**
+	 * 用于combobox
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param name
+	 * @return
+	 */
+	@RequestMapping("/brand/queryBrand.do")
+	@ResponseBody
+	public List<Brand> queryProd(String name) {
+		return brandService.query(Cnd.select().andLike(M.Brand.name, name));	
 	}
 	
 	

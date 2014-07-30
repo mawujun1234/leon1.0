@@ -18,6 +18,7 @@ public class Pole extends UUIDEntity {
 	@Column(length=15)
 	private String latitude;//纬度
 	
+	@Column(length=36)
 	private String customer_id;
 	
 	@org.hibernate.annotations.Type(type="yes_no")

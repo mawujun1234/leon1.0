@@ -60,6 +60,36 @@ Ext.Ajax.on({
 //	}
 });
 
+Ext.define('Ext.column.Container', {
+		extend:'Ext.container.Container',  
+	    alias:'widget.columnbox',
+	    layout:'column',
+	    columnSize:2,
+	    frame:false,
+	    border:false,
+	    initComponent: function(){
+	    	var defaultsItem={columnWidth:1/this.columnSize,border:false};
+	    	if(this.defaults){
+	    		Ext.apply(defaultsItem,this.defaults)
+	    	}
+	    	Ext.apply(this, {
+	    		defaults:defaultsItem,
+	    		listeners:{
+	    			add:function(container,c,i,e){
+	    				if(i>0){
+	    					Ext.apply(c,{
+	    						margin:'0 0 0 5px'
+	    					})
+	    				}
+	    			}
+	    		}
+	    	});
+	    	//Ext.D.column.Container.superclass.initComponent.call(this);
+	    	this.callParent();
+	    }
+});
+
+
 /**
  * 添加了，createModel，专门用来创建具有关联关系的model实例
  */

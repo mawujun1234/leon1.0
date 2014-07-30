@@ -123,5 +123,28 @@ public class EquipmentTypeController {
 		return equipmentType;
 	}
 	
+	/**
+	 * 用于combobox
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param name
+	 * @return
+	 */
+	@RequestMapping("/equipmentType/querySubtype.do")
+	@ResponseBody
+	public List<EquipmentSubtype> querySubtype(String name) {
+		return equipmentSubtypeService.query(Cnd.select().andLike(M.EquipmentSubtype.text, name));	
+	}
+	/**
+	 * 用于combobox
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param name
+	 * @return
+	 */
+	@RequestMapping("/equipmentType/queryProd.do")
+	@ResponseBody
+	public List<EquipmentProd> queryProd(String name) {
+		return equipmentProdService.query(Cnd.select().andLike(M.EquipmentProd.text, name));	
+	}
+	
 	
 }

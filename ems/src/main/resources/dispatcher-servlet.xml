@@ -213,7 +213,7 @@
                  <prop key="errors/500">500</prop>   
                  <prop key="errors/503">503</prop>     
                  <prop key="errors/404">404</prop>  
-                 <prop key="exceptionJsonView">503</prop>     
+                 <prop key="jsonView">503</prop>     
              </props>     
          </property> 
           <!-- 设置日志输出级别，不定义则默认不输出警告等错误日志信息 -->    

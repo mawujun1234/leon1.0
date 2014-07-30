@@ -11,6 +11,7 @@ import com.mawujun.repository.idEntity.UUIDEntity;
 public class Customer extends UUIDEntity {
 	@Column(length=30)
 	private String name;
+	private Integer type;//0 :企业1：机关
 	@Column(length=100)
 	private String memo;
 	@org.hibernate.annotations.Type(type="yes_no")
@@ -32,6 +33,12 @@ public class Customer extends UUIDEntity {
 	}
 	public void setStatus(Boolean status) {
 		this.status = status;
+	}
+	public Integer getType() {
+		return type;
+	}
+	public void setType(Integer type) {
+		this.type = type;
 	}
 
 }

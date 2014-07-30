@@ -26,6 +26,10 @@ public class CustomerContact extends UUIDEntity {
 	private String address;
 	@Column(length=15)
 	private String postcode;
+	
+	@Column(length=36)
+	private String customer_id;
+	
 	public String getContact() {
 		return contact;
 	}
@@ -73,6 +77,12 @@ public class CustomerContact extends UUIDEntity {
 	}
 	public void setPostcode(String postcode) {
 		this.postcode = postcode;
+	}
+	public String getCustomer_id() {
+		return customer_id;
+	}
+	public void setCustomer_id(String customer_id) {
+		this.customer_id = customer_id;
 	}
 
 

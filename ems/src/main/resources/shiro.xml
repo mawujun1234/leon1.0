@@ -64,7 +64,7 @@
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
 
 	<bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
-		
+		<!-- <property name="cacheManagerConfigFile" value="classpath:org/apache/shiro/cache/ehcache/ehcache.xml"></property> -->
 	</bean>
 
 	<bean id="formAuthenticationFilter" class="org.apache.shiro.web.filter.authc.FormAuthenticationFilter" />

@@ -12,7 +12,8 @@ public class EquipmentTypeVO {
 	private String id;
 	@Column(length=30)
 	private String text;
-	private Integer status;
+	@org.hibernate.annotations.Type(type="yes_no")
+	private Boolean status=true;
 	
 	@Column(updatable=false)
 	private Integer levl;
@@ -36,12 +37,6 @@ public class EquipmentTypeVO {
 	}
 	public void setText(String text) {
 		this.text = text;
-	}
-	public Integer getStatus() {
-		return status;
-	}
-	public void setStatus(Integer status) {
-		this.status = status;
 	}
 
 	public String getParent_id() {
@@ -67,6 +62,12 @@ public class EquipmentTypeVO {
 	}
 	public void setUnit(String unit) {
 		this.unit = unit;
+	}
+	public Boolean getStatus() {
+		return status;
+	}
+	public void setStatus(Boolean status) {
+		this.status = status;
 	}
 
 }

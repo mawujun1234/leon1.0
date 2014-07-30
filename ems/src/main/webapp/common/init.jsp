@@ -54,7 +54,7 @@ Ext.JspContextPath="<%=request.getContextPath()%>";
 Ext.QuickTips.init();
 
 
-Ext.ns('Leon');
+Ext.ns('Ems');
 Ext.Loader.setConfig({
 	enabled: true,
 	paths:{

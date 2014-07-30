@@ -21,11 +21,11 @@ public class BeanPropertiesCopyTest {
 	 public void copyOrCast() throws Exception {
 		
 		
-		Integer bb= BeanUtils.copyOrCast(1, Integer.class);
-		assertEquals((Integer)1, bb);
+//		Integer bb= BeanUtils.copyOrCast(1, Integer.class);
+//		assertEquals((Integer)1, bb);
 		
-		String aa= BeanUtils.copyOrCast("aa", String.class);
-		assertEquals("aa", aa);
+//		String aa= BeanUtils.copyOrCast("aa", String.class);
+//		assertEquals("aa", aa);
 
 		//
 		Map map=new HashMap();

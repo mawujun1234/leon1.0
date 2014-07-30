@@ -16,7 +16,13 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
 
+
+
+
+import com.mawujun.baseinfo.Barcode;
 import com.mawujun.baseinfo.Brand;
+import com.mawujun.baseinfo.Customer;
+import com.mawujun.baseinfo.CustomerContact;
 import com.mawujun.baseinfo.EquipmentProd;
 import com.mawujun.baseinfo.EquipmentSubtype;
 import com.mawujun.baseinfo.EquipmentType;
@@ -48,7 +54,7 @@ public class GeneratorMain {
 		//str=generatorService.generatorToString(MenuItem.class,FtlFile.JsModel.toString(),null);	
         //System.out.println(str);
 		
-		GeneratorMain.generateAllFile(WorkUnitContact.class,"D:/gen/");
+		GeneratorMain.generateAllFile(CustomerContact.class,"D:/gen/");
 		
 		
 		

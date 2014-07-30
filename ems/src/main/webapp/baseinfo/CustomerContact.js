@@ -1,0 +1,18 @@
+Ext.defineModel("Ems.baseinfo.CustomerContact",{
+	extend:"Ext.data.Model",
+	idProperty:'id',
+	fields:[
+		{name:'id',type:'string'},
+		{name:'address',type:'string'},
+		{name:'contact',type:'string'},
+		{name:'customer_id',type:'string'},
+		{name:'email',type:'string'},
+		{name:'fax',type:'string'},
+		{name:'mobile',type:'string'},
+		{name:'phone',type:'string'},
+		{name:'position',type:'string'},
+		{name:'postcode',type:'string'}
+	],
+	associations:[
+	]
+});
