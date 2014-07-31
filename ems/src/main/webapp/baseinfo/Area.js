@@ -1,0 +1,13 @@
+Ext.defineModel("Ems.baseinfo.Area",{
+	extend:"Ext.data.Model",
+	idProperty:'id',
+	fields:[
+		{name:'id',type:'string'},
+		{name:'memo',type:'string'},
+		{name:'name',type:'string'},
+		{name:'workunit_id',type:'string'},
+		{name:'workunit_name',type:'string'}
+	],
+	associations:[
+	]
+});

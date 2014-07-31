@@ -19,18 +19,23 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
 
-import com.mawujun.baseinfo.Barcode;
+
+
+
+import com.mawujun.baseinfo.Area;
 import com.mawujun.baseinfo.Brand;
 import com.mawujun.baseinfo.Customer;
 import com.mawujun.baseinfo.CustomerContact;
 import com.mawujun.baseinfo.EquipmentProd;
 import com.mawujun.baseinfo.EquipmentSubtype;
 import com.mawujun.baseinfo.EquipmentType;
+import com.mawujun.baseinfo.Pole;
 import com.mawujun.baseinfo.Store;
 import com.mawujun.baseinfo.Supplier;
 import com.mawujun.baseinfo.SupplierContact;
 import com.mawujun.baseinfo.WorkUnit;
 import com.mawujun.baseinfo.WorkUnitContact;
+import com.mawujun.store.Barcode;
 import com.mawujun.user.User;
 
 import freemarker.template.TemplateException;
@@ -54,7 +59,7 @@ public class GeneratorMain {
 		//str=generatorService.generatorToString(MenuItem.class,FtlFile.JsModel.toString(),null);	
         //System.out.println(str);
 		
-		GeneratorMain.generateAllFile(CustomerContact.class,"D:/gen/");
+		GeneratorMain.generateAllFile(Area.class,"D:/gen/");
 		
 		
 		

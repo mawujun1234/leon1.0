@@ -95,10 +95,15 @@ public class WorkUnitController {
 	
 	@RequestMapping("/workUnit/destroy.do")
 	@ResponseBody
-	public WorkUnit destroy(@RequestBody WorkUnit workUnit) {
+	public WorkUnit destroy(WorkUnit workUnit) {
 		workUnitService.delete(workUnit);
 		return workUnit;
 	}
 	
-	
+	@RequestMapping("/workUnit/queryCombo.do")
+	@ResponseBody
+	public List<WorkUnit> query(String name) {	
+		List<WorkUnit> workUnites=workUnitService.query(Cnd.select().andLike(M.WorkUnit.name, name));
+		return workUnites;
+	}
 }

@@ -14,10 +14,10 @@ Ext.onReady(function(){
 	grid.on('itemclick',function(view,record,item,index){
 		
 		customercontactgrid.customer_id=record.get("id");
-		customercontactgrid.getStore().load({params:{customer_id:record.get("id")}});
+		customercontactgrid.getStore().load({params:{customer_id:record.get("id")}})
 		
 		poleGrid.customer_id=record.get("id");
-		poleGrid.getStore().load({params:{customer_id:record.get("id")}});
+		poleGrid.getStore().load({params:{customer_id:record.get("id")}})
 	});
 	var customercontactgrid=Ext.create('Ems.baseinfo.CustomerContactGrid',{
 		region:'north',

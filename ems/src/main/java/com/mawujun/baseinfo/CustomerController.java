@@ -100,5 +100,10 @@ public class CustomerController {
 		return customer;
 	}
 	
-	
+//	@RequestMapping("/customer/queryPole.do")
+//	@ResponseBody
+//	public List<Customer> query() {	
+//		List<Customer> customeres=customerService.queryAll();
+//		return customeres;
+//	}
 }

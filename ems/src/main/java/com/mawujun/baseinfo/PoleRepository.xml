@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
+<mapper namespace="com.mawujun.baseinfo.PoleRepository">
+
+	
+	<select id="queryPage" resultType="com.mawujun.baseinfo.Pole" parameterType="map">
+    	SELECT *
+	    FROM ems_pole 
+	    <where>
+	    	<if test="filterContainArea==true">
+	    		area_id is null
+	    	</if>
+	    </where>
+    </select>
+    
+    <update id="savePoles">
+	  	update ems_pole set area_id=#{area_id} where id=#{pole_id}
+	</update>
+	<update id="deletePoles">
+	  	update ems_pole set area_id=null where id=#{pole_id}
+	</update>
+   
+</mapper>
+

@@ -100,5 +100,10 @@ public class StoreController {
 		return store;
 	}
 	
-	
+	@RequestMapping("/store/queryCombo.do")
+	@ResponseBody
+	public List<Store> queryCombo() {	
+		List<Store> storees=storeService.queryAll();
+		return storees;
+	}
 }

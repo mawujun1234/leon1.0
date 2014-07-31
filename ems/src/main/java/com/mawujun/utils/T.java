@@ -2,7 +2,9 @@ package com.mawujun.utils;
 public final class T {
 public static final class ems_area {
 	public static final String name="name";
+	public static final String memo="memo";
 	public static final String workunit_id="workunit_id";
+	public static final String workunit_name="workunit_name";
 	public static final String id="id";
 }
 public static final class ems_barcode {
@@ -16,6 +18,7 @@ public static final class ems_barcode {
 	public static final String style="style";
 	public static final String unitPrice="unitPrice";
 	public static final String status="status";
+	public static final String isInStore="isInStore";
 }
 public static final class ems_brand {
 	public static final String id="id";
@@ -24,6 +27,7 @@ public static final class ems_brand {
 }
 public static final class ems_customer {
 	public static final String name="name";
+	public static final String type="type";
 	public static final String memo="memo";
 	public static final String status="status";
 	public static final String id="id";
@@ -37,6 +41,7 @@ public static final class ems_customer_contact {
 	public static final String fax="fax";
 	public static final String address="address";
 	public static final String postcode="postcode";
+	public static final String customer_id="customer_id";
 	public static final String id="id";
 }
 public static final class ems_equipment {
@@ -85,10 +90,14 @@ public static final class ems_equipmenttype {
 }
 public static final class ems_pole {
 	public static final String name="name";
+	public static final String province="province";
+	public static final String city="city";
+	public static final String area="area";
 	public static final String address="address";
 	public static final String longitude="longitude";
 	public static final String latitude="latitude";
 	public static final String customer_id="customer_id";
+	public static final String area_id="area_id";
 	public static final String status="status";
 	public static final String id="id";
 }

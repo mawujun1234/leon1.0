@@ -11,8 +11,16 @@ import com.mawujun.repository.idEntity.UUIDEntity;
 public class Pole extends UUIDEntity {
 	@Column(length=60)
 	private String name;
-	@Column(length=100)
-	private String address;
+	@Column(length=20)
+	private String province;
+	@Column(length=20)
+	private String city;
+	@Column(length=20)
+	private String area;//区/县
+	@Column(length=50)
+	private String address;//详细地址
+	
+	
 	@Column(length=15)
 	private String longitude;//经度
 	@Column(length=15)
@@ -20,6 +28,9 @@ public class Pole extends UUIDEntity {
 	
 	@Column(length=36)
 	private String customer_id;
+	
+	@Column(length=36)
+	private String area_id;
 	
 	@org.hibernate.annotations.Type(type="yes_no")
 	private Boolean status=true;
@@ -70,6 +81,38 @@ public class Pole extends UUIDEntity {
 
 	public void setStatus(Boolean status) {
 		this.status = status;
+	}
+
+	public String getProvince() {
+		return province;
+	}
+
+	public void setProvince(String province) {
+		this.province = province;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getArea() {
+		return area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
+	}
+
+	public String getArea_id() {
+		return area_id;
+	}
+
+	public void setArea_id(String area_id) {
+		this.area_id = area_id;
 	}
 
 }

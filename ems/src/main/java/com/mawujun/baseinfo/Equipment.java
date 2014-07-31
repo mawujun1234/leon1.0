@@ -38,6 +38,8 @@ public class Equipment implements IdEntity<String>{
 
 	//外键于表EquipmentStatus
 	private Integer status=1;//1表示是在库
+	@Column(updatable=false)
+	private Date fisData;//first in stock date第一次入库时间
 	
 	
 //	private String ;
@@ -124,5 +126,10 @@ public class Equipment implements IdEntity<String>{
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-
+	public Date getFisData() {
+		return fisData;
+	}
+	public void setFisData(Date fisData) {
+		this.fisData = fisData;
+	}
 }

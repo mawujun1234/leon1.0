@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
+<mapper namespace="com.mawujun.baseinfo.AreaRepository">
+
+	<select id="queryAllWithWorkunit" resultType="com.mawujun.baseinfo.Area" parameterType="map">
+    	SELECT a.*,b.name as workunit_name
+	    FROM ems_area a,ems_workunit b 
+		where a.workunit_id=b.id
+    </select>
+  
+</mapper>
+

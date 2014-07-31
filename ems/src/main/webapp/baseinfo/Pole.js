@@ -1,0 +1,18 @@
+Ext.defineModel("Ems.baseinfo.Pole",{
+	extend:"Ext.data.Model",
+	idProperty:'id',
+	fields:[
+		{name:'id',type:'string'},
+		{name:'address',type:'string'},
+		{name:'area',type:'string'},
+		{name:'city',type:'string'},
+		{name:'customer_id',type:'string'},
+		{name:'latitude',type:'string'},
+		{name:'longitude',type:'string'},
+		{name:'name',type:'string'},
+		{name:'province',type:'string'},
+		{name:'status',type:'bool'}
+	],
+	associations:[
+	]
+});
