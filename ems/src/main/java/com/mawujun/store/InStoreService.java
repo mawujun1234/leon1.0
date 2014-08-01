@@ -45,6 +45,8 @@ public class InStoreService extends AbstractService<InStore, String>{
 	private EquipmentRepository equipmentRepository;
 	@Autowired
 	private BarcodeRepository barcodeRepository;
+	@Autowired
+	private StoreEquipmentRepository storeEquipmentRepository;
 	
 	SimpleDateFormat ymdHmsDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
 	
@@ -63,17 +65,17 @@ public class InStoreService extends AbstractService<InStore, String>{
 		String instore_id=ymdHmsDateFormat.format(new Date());
 		InStore inStore=new InStore();
 		inStore.setId(instore_id);
-		inStore.setInDate(new Date());
+		inStore.setOperateDate(new Date());
 		inStore.setMemo(equipments[0].getMemo());
 		inStore.setStore_id(equipments[0].getStore_id());
-		inStore.setStoreman_id(ShiroUtils.getAuthenticationInfo().getId());
+		inStore.setOperater(ShiroUtils.getAuthenticationInfo().getId());
 		inStore.setType(1);
 		inStoreRepository.create(inStore);
 				
 		//插入设备表,同时设置仓库，入库时间，是否新设备
 		for(Equipment equipment:equipments){
 			equipment.setFisData(new Date());
-			equipment.setLastInDate(new Date());
+			//equipment.setLastInDate(new Date());
 			equipment.setStatus(1);
 			equipment.setIsnew(true);
 			equipment.setMemo("");
@@ -81,7 +83,14 @@ public class InStoreService extends AbstractService<InStore, String>{
 			//修改条码状态
 			barcodeRepository.update(Cnd.update().set(M.Barcode.isInStore, true).andEquals(M.Barcode.ecode, equipment.getEcode()));
 			
-			//插入入库明细
+			//建立设备仓库的关系
+			StoreEquipment storeEquipment=new StoreEquipment();
+			storeEquipment.setEcode(equipment.getEcode());
+			storeEquipment.setInStore_id(instore_id);
+			storeEquipment.setStore_id(equipment.getStore_id());
+			storeEquipmentRepository.create(storeEquipment);
+			
+			//插入入库单明细
 			InStoreList inStoreList=new InStoreList();
 			inStoreList.setEncode(equipment.getEcode());
 			inStoreList.setInStore_id(instore_id);

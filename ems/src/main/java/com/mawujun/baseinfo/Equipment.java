@@ -29,7 +29,7 @@ public class Equipment implements IdEntity<String>{
 	@Column(length=50)
 	private String style;//型号
 	
-	private Date lastInDate;//最新一次入库时间
+	//private Date lastInDate;//最新一次入库时间
 	@Column(precision=10,scale=2)
 	private Double unitPrice;//价格
 	@org.hibernate.annotations.Type(type="yes_no")
@@ -41,8 +41,8 @@ public class Equipment implements IdEntity<String>{
 	private Integer status=0;//1表示是在库
 	@Column(updatable=false)
 	private Date fisData;//first in stock date第一次入库时间
-	@Column(length=36)
-	private String store_id;//仓库id，所属仓库
+//	@Column(length=36)
+//	private String store_id;//仓库id，所属仓库
 	
 	
 	@Transient
@@ -55,6 +55,8 @@ public class Equipment implements IdEntity<String>{
 	private String brand_name;
 	@Transient
 	private String supplier_name;
+	@Transient
+	private String store_id;
 	@Transient
 	private String store_name;
 	@Transient
@@ -201,10 +203,5 @@ public class Equipment implements IdEntity<String>{
 	public void setIsInStore(Boolean isInStore) {
 		this.isInStore = isInStore;
 	}
-	public Date getLastInDate() {
-		return lastInDate;
-	}
-	public void setLastInDate(Date lastInDate) {
-		this.lastInDate = lastInDate;
-	}
+
 }
