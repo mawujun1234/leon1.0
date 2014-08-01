@@ -8,7 +8,8 @@ import javax.persistence.Table;
 import com.mawujun.repository.idEntity.IdEntity;
 
 /**
- * 1：在库
+ * 0:未入库
+ * 1：已入库
  * 2:正常出库(等待安装)
  * 3:使用中
  * 4:损坏----实施人员把换下来的设备标记为损坏

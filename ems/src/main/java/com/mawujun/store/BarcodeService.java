@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 
@@ -40,6 +41,7 @@ import com.mawujun.store.Barcode.BarcodeKey;
 import com.mawujun.utils.BeanUtils;
 import com.mawujun.utils.M;
 import com.mawujun.utils.StringUtils;
+import com.mawujun.baseinfo.Equipment;
 import com.mawujun.exception.BusinessException;
 
 
@@ -144,6 +146,13 @@ public class BarcodeService extends AbstractService<Barcode, String>{
 		code.append(barcode.getSubtype_id()+ barcode.getProd_id()+ barcode.getBrand_id()+barcode.getSupplier_id()+y2md
 				+StringUtils.leftPad(serialNum+"", 3, "0"));
 		return code.toString();
+	}
+	
+	public Barcode getBarcodeByEcode(String ecode) {
+		Barcode barcode= barcodeRepository.getBarcodeByEcode(ecode);
+		return barcode;
+		
+		
 	}
 
 }

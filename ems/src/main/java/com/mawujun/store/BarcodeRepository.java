@@ -1,7 +1,9 @@
 package com.mawujun.store;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import com.mawujun.baseinfo.Equipment;
 import com.mawujun.repository1.IRepository;
 import com.mawujun.store.Barcode;
 /**
@@ -11,6 +13,6 @@ import com.mawujun.store.Barcode;
  */
 @Repository
 public interface BarcodeRepository extends IRepository<Barcode, String>{
-
+	public Barcode getBarcodeByEcode(@Param("ecode")String ecode);
 
 }
