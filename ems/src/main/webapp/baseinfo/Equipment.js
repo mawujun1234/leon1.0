@@ -22,7 +22,11 @@ Ext.defineModel("Ems.baseinfo.Equipment",{
 		{name:'unitPrice',type:'float'},
 		
 		{name:'inStore_type',type:'string'},
-		{name:'isInStore',type:'string'}
+		{name:'isInStore',type:'string'},
+		//出库的时候用的
+		{name:'workUnit_id',type:'string'},
+		{name:'workUnit_name',type:'string'},
+		{name:'outStore_type',type:'string'}
 		
 	],
 	associations:[

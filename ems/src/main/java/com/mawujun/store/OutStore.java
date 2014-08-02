@@ -20,9 +20,9 @@ public class OutStore   implements IdEntity<String>{
 	private String operater;//仓管id
 	private Date operateDate;//入库时间
 	@Column(length=36)
-	private String workunit_id;//出库仓库id
+	private String workUnit_id;//作业单位
 	
-	private Integer type;//出库类型 1：设备领用
+	private Integer type;//出库类型 1：设备领用，2：维修出库
 	@Column(length=100)
 	private String memo;
 	
@@ -37,13 +37,6 @@ public class OutStore   implements IdEntity<String>{
 	}
 	public void setStore_id(String store_id) {
 		this.store_id = store_id;
-	}
-
-	public String getWorkunit_id() {
-		return workunit_id;
-	}
-	public void setWorkunit_id(String workunit_id) {
-		this.workunit_id = workunit_id;
 	}
 	public Integer getType() {
 		return type;
@@ -68,6 +61,12 @@ public class OutStore   implements IdEntity<String>{
 	}
 	public void setOperateDate(Date operateDate) {
 		this.operateDate = operateDate;
+	}
+	public String getWorkUnit_id() {
+		return workUnit_id;
+	}
+	public void setWorkUnit_id(String workUnit_id) {
+		this.workUnit_id = workUnit_id;
 	}
 
 }

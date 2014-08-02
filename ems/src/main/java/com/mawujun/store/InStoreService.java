@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
 import com.mawujun.baseinfo.Equipment;
 import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.repository.cnd.Cnd;
@@ -60,14 +61,12 @@ public class InStoreService extends AbstractService<InStore, String>{
 	 * @author mawujun email:160649888@163.com qq:16064988
 	 * @param equipments
 	 */
-	public void newInStore(Equipment[] equipments) {
+	public void newInStore(Equipment[] equipments,InStore inStore) {
 		//插入入库单
 		String instore_id=ymdHmsDateFormat.format(new Date());
-		InStore inStore=new InStore();
+		//InStore inStore=new InStore();
 		inStore.setId(instore_id);
 		inStore.setOperateDate(new Date());
-		inStore.setMemo(equipments[0].getMemo());
-		inStore.setStore_id(equipments[0].getStore_id());
 		inStore.setOperater(ShiroUtils.getAuthenticationInfo().getId());
 		inStore.setType(1);
 		inStoreRepository.create(inStore);
@@ -87,7 +86,7 @@ public class InStoreService extends AbstractService<InStore, String>{
 			StoreEquipment storeEquipment=new StoreEquipment();
 			storeEquipment.setEcode(equipment.getEcode());
 			storeEquipment.setInStore_id(instore_id);
-			storeEquipment.setStore_id(equipment.getStore_id());
+			storeEquipment.setStore_id(inStore.getStore_id());
 			storeEquipmentRepository.create(storeEquipment);
 			
 			//插入入库单明细

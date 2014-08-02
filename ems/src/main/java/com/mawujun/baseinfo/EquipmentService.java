@@ -33,5 +33,9 @@ public class EquipmentService extends AbstractService<Equipment, String>{
 	}
 
 	
+	public Equipment getEquipmentByEcode(String ecode) {
+		return equipmentRepository.getEquipmentByEcode(ecode);
+	}
+
 	
 }

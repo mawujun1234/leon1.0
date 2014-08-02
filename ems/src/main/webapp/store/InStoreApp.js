@@ -105,7 +105,7 @@ Ext.onReady(function(){
 		labelAlign:'right',
 		labelWidth:55,
 		fieldLabel: '经办人',
-		name:'storeman_id',
+		name:'operater',
 		readOnly:true,
 		allowBlank:false,
 		value:loginUsername
@@ -115,7 +115,7 @@ Ext.onReady(function(){
 		labelAlign:'right',
 		fieldLabel: '时间',
 		labelWidth:55,
-		name:'inDate',
+		name:'operateDate',
 		readOnly:true,
 		allowBlank:false,
 		value:Ext.Date.format(new Date(),'Y-m-d')
@@ -157,15 +157,14 @@ Ext.onReady(function(){
 					success : function(response) {//加载成功的处理函数   
 						var ret=Ext.decode(response.responseText);
 						if(ret.success){
-							if(ret.root.isInStore==true){//这是新设备入库的情况
+							if(ret.root.status!=0){//这是新设备入库的情况
 								Ext.Msg.alert("消息","该设备为非新增设备,不能添加到入库列表.");
 								return;
 							}
 							//为新增的equipment添加仓库等其他信息
 							ret.root.store_id=store_combox.getValue();
 							ret.root.store_name=store_combox.getRawValue();
-							ret.root.memo=memo_textfield.getValue();
-							ret.root.inStore_type=type_radio.getValue().type;
+							
 							var scanrecord = Ext.create('Ems.baseinfo.Equipment', ret.root);
 
 							ecode_textfield.setValue("");
@@ -202,7 +201,7 @@ Ext.onReady(function(){
 	
 	var equipStore = Ext.create('Ext.data.Store', {
         autoDestroy: true,
-        model: 'Ems.store.Equipment',
+        model: 'Ems.baseinfo.Equipment',
         proxy: {
             type: 'memory'
         }
@@ -316,17 +315,19 @@ Ext.onReady(function(){
             	equipStore.each(function(record){
             		equipments.push(record.data);
             	});
-            	
+            	//ret.root.memo=memo_textfield.getValue();
+							//ret.root.inStore_type=type_radio.getValue().type;
 				Ext.Ajax.request({
 					url:Ext.ContextPath+'/inStore/newInStore.do',
 					method:'POST',
 					timeout:600000000,
 					headers:{ 'Content-Type':'application/json;charset=UTF-8'},
+					params:{memo:memo_textfield.getValue(),type:type_radio.getValue().type,store_id:store_combox.getValue()},
 					jsonData:equipments,
 					//params:{jsonStr:Ext.encode(equiplist)},
 					success:function(response){
 						var obj=Ext.decode(response.responseText);
-						
+						store_id_temp=null;
 						Ext.Msg.alert("消息","入库完成!");
 						equipStore.removeAll();
 						Ext.getBody().unmask();

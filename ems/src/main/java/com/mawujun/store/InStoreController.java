@@ -104,22 +104,28 @@ public class InStoreController {
 		inStoreService.delete(inStore);
 		return inStore;
 	}
-	
+	/**
+	 * 主要用于新品入库的时候
+	 * @author mawujun 16064988@qq.com 
+	 * @param ecode
+	 * @return
+	 */
 	@RequestMapping("/inStore/getEquipFromBarcode.do")
 	@ResponseBody
 	public Equipment getEquipFromBarcode(String ecode) {	
 		Barcode barcode= barcodeService.getBarcodeByEcode(ecode);
 		barcode.setStatus(null);
 		Equipment equipment= BeanUtils.copyOrCast(barcode, Equipment.class);
-		equipment.setStatus(0);
+		equipment.setStatus(barcode.getIsInStore()?255:0);//设备如果已经入过库了，就设置为255，否则就使用0
 		return equipment;
 	}
 	
 	
 	@RequestMapping("/inStore/newInStore.do")
 	@ResponseBody
-	public String newInStore(@RequestBody Equipment[] equipments) throws  IOException{
-		inStoreService.newInStore(equipments);
+	//public String newInStore(@RequestBody Equipment[] equipments,String memo,String inStore_type,String store_id) throws  IOException{
+	public String newInStore(@RequestBody Equipment[] equipments,InStore inStore) throws  IOException{
+		inStoreService.newInStore(equipments,inStore);
 		return "success";
 	}
 }

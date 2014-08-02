@@ -45,8 +45,8 @@ public class Equipment implements IdEntity<String>{
 //	private String store_id;//仓库id，所属仓库
 	
 	
-	@Transient
-	private Integer inStore_type;//在入库的时候用来接受web界面的数据的,入库单中使用
+//	@Transient
+//	private Integer inStore_type;//在入库的时候用来接受web界面的数据的,入库单中使用
 	@Transient
 	private String subtype_name;
 	@Transient
@@ -61,6 +61,14 @@ public class Equipment implements IdEntity<String>{
 	private String store_name;
 	@Transient
 	private Boolean isInStore;//这个条码是否已经入过库了。是barcode中的条码的状态
+	
+	//=======入库的时候
+	@Transient
+	private String workUnit_id;
+	@Transient
+	private String workUnit_name;
+//	@Transient
+//	private Integer outStore_type;
 
 	
 	
@@ -191,17 +199,24 @@ public class Equipment implements IdEntity<String>{
 //	public void setIsInStore(Boolean isInStore) {
 //		this.isInStore = isInStore;
 //	}
-	public Integer getInStore_type() {
-		return inStore_type;
-	}
-	public void setInStore_type(Integer inStore_type) {
-		this.inStore_type = inStore_type;
-	}
+
 	public Boolean getIsInStore() {
 		return isInStore;
 	}
 	public void setIsInStore(Boolean isInStore) {
 		this.isInStore = isInStore;
+	}
+	public String getWorkUnit_id() {
+		return workUnit_id;
+	}
+	public void setWorkUnit_id(String workUnit_id) {
+		this.workUnit_id = workUnit_id;
+	}
+	public String getWorkUnit_name() {
+		return workUnit_name;
+	}
+	public void setWorkUnit_name(String workUnit_name) {
+		this.workUnit_name = workUnit_name;
 	}
 
 }
