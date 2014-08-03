@@ -1,6 +1,4 @@
-package com.mawujun.baseinfo;
-
-import java.util.List;
+package com.mawujun.store;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,12 +6,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 
-
 import com.mawujun.service.AbstractService;
 
 
-import com.mawujun.baseinfo.WorkUnit;
-import com.mawujun.baseinfo.WorkUnitRepository;
+import com.mawujun.store.WorkUnitEquipment;
+import com.mawujun.store.WorkUnitEquipmentRepository;
 
 
 /**
@@ -23,18 +20,14 @@ import com.mawujun.baseinfo.WorkUnitRepository;
  */
 @Service
 @Transactional(propagation=Propagation.REQUIRED)
-public class WorkUnitService extends AbstractService<WorkUnit, String>{
+public class WorkUnitEquipmentService extends AbstractService<WorkUnitEquipment, String>{
 
 	@Autowired
-	private WorkUnitRepository workUnitRepository;
+	private WorkUnitEquipmentRepository workUnitEquipmentRepository;
 	
 	@Override
-	public WorkUnitRepository getRepository() {
-		return workUnitRepository;
-	}
-	
-	public List<Equipment> queryEquipments(String workUnit_id) {
-		return workUnitRepository.queryEquipments(workUnit_id);
+	public WorkUnitEquipmentRepository getRepository() {
+		return workUnitEquipmentRepository;
 	}
 
 }

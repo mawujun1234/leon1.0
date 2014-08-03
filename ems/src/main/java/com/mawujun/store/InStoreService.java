@@ -87,6 +87,7 @@ public class InStoreService extends AbstractService<InStore, String>{
 			storeEquipment.setEcode(equipment.getEcode());
 			storeEquipment.setInStore_id(instore_id);
 			storeEquipment.setStore_id(inStore.getStore_id());
+			storeEquipment.setNum(1);
 			storeEquipmentRepository.create(storeEquipment);
 			
 			//插入入库单明细

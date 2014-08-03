@@ -1,9 +1,11 @@
 package com.mawujun.baseinfo;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.mawujun.repository1.IRepository;
-
 import com.mawujun.baseinfo.Store;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
@@ -13,5 +15,6 @@ import com.mawujun.baseinfo.Store;
 @Repository
 public interface StoreRepository extends IRepository<Store, String>{
 
-
+	public List<Equipment> queryEquipments_total(Equipment equipment) ;
+	public List<Equipment> queryEquipments(Equipment equipment) ;
 }

@@ -22,6 +22,8 @@ public class StoreEquipment  extends UUIDEntity{
 	private String ecode;
 	@Column(length=15)
 	private String inStore_id;//入库单号
+	
+	private Integer num;//产品的库存数量
 //	//下面的都是最新一次的入库
 //		private Date inDate;//入库时间
 //	private Integer inStore_type;//入库类型 1：新品入库，2：设备返库，3：维修入库
@@ -44,6 +46,12 @@ public class StoreEquipment  extends UUIDEntity{
 	}
 	public void setInStore_id(String inStore_id) {
 		this.inStore_id = inStore_id;
+	}
+	public Integer getNum() {
+		return num;
+	}
+	public void setNum(Integer num) {
+		this.num = num;
 	}
 	
 

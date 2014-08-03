@@ -7,13 +7,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.utils.page.Page;
 import com.mawujun.utils.M;
-
 import com.mawujun.baseinfo.WorkUnit;
 import com.mawujun.baseinfo.WorkUnitService;
 /**
@@ -111,5 +111,12 @@ public class WorkUnitController {
 		}
 		//List<WorkUnit> workUnites=workUnitService.query(Cnd.select().andLike(M.WorkUnit.name, name));
 		return workUnites;
+	}
+	
+	@RequestMapping("/workUnit/queryEquipments.do")
+	@ResponseBody
+	public List<Equipment> queryEquipments(String workUnit_id) {	
+		List<Equipment> equipments=workUnitService.queryEquipments(workUnit_id);
+		return equipments;
 	}
 }

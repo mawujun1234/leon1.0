@@ -19,6 +19,7 @@ http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/
 删除大类也是同一个道理
 所有基础信息类都要做这样的判断，如果设备中引用了，删除的时候就设置为失效,包括客户
 
+设备出库中，进行设备库存查询时，的sql进行优化，看选择了几个表就关联几个表，动态生成相应的sql
 制作一个grid里弹出window的form的模板，并且把java和extjs文件的目录区分开来
 xml的ftl修改一下，只有queryPage的，其他都弄成注释的好了，简单点
 

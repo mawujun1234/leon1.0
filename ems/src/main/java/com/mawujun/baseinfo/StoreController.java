@@ -7,13 +7,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.utils.page.Page;
 import com.mawujun.utils.M;
-
 import com.mawujun.baseinfo.Store;
 import com.mawujun.baseinfo.StoreService;
 /**
@@ -105,5 +105,20 @@ public class StoreController {
 	public List<Store> queryCombo() {	
 		List<Store> storees=storeService.queryAll();
 		return storees;
+	}
+	
+	/**
+	 * 
+	 * @author mawujun 16064988@qq.com 
+	 * @param equipment
+	 * @param level //level=1:表示查询的是汇总数据
+	 * @return
+	 */
+	@RequestMapping("/store/queryEquipments.do")
+	@ResponseBody
+	//public List<Equipment> queryEquipments(String store_id,String subtype_id,String prod_id,String brand_id,String supplier_id) {	
+	public List<Equipment> queryEquipments(Equipment equipment,Integer level) {	
+		List<Equipment> equipments=storeService.queryEquipments(equipment,level);
+		return equipments;
 	}
 }

@@ -1,9 +1,13 @@
 package com.mawujun.baseinfo;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+
 
 
 import com.mawujun.service.AbstractService;
@@ -30,4 +34,14 @@ public class StoreService extends AbstractService<Store, String>{
 		return storeRepository;
 	}
 
+	public List<Equipment> queryEquipments(Equipment equipment,Integer level) {
+		if(level==1){
+			return storeRepository.queryEquipments_total(equipment);
+		} else if(level==2){
+			return storeRepository.queryEquipments(equipment);
+		} else {
+			return null;
+		}
+		
+	}
 }

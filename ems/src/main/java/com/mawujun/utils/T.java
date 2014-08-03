@@ -43,6 +43,7 @@ public static final class ems_equipment {
 	public static final String memo="memo";
 	public static final String status="status";
 	public static final String fisData="fisData";
+	public static final String num="num";
 	public static final String subtype_name="subtype_name";
 	public static final String prod_name="prod_name";
 	public static final String brand_name="brand_name";
@@ -190,6 +191,7 @@ public static final class ems_storeequipment {
 	public static final String store_id="store_id";
 	public static final String ecode="ecode";
 	public static final String inStore_id="inStore_id";
+	public static final String num="num";
 	public static final String id="id";
 }
 public static final class ems_workunitequipment {

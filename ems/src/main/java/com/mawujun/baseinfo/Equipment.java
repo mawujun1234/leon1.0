@@ -43,6 +43,8 @@ public class Equipment implements IdEntity<String>{
 	private Date fisData;//first in stock date第一次入库时间
 //	@Column(length=36)
 //	private String store_id;//仓库id，所属仓库
+	@Transient
+	private Integer num;
 	
 	
 //	@Transient
@@ -217,6 +219,12 @@ public class Equipment implements IdEntity<String>{
 	}
 	public void setWorkUnit_name(String workUnit_name) {
 		this.workUnit_name = workUnit_name;
+	}
+	public Integer getNum() {
+		return num;
+	}
+	public void setNum(Integer num) {
+		this.num = num;
 	}
 
 }
