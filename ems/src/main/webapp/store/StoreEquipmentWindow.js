@@ -58,8 +58,8 @@ Ext.define('Ems.store.StoreEquipmentWindow',{
 			    }
 		   })
 	    }); 
-	    store_combox.setRawValue(me.store_name);
-	    store_combox.setValue(me.store_id);
+	    var store_model=Ext.createModel(store_combox.getStore().model.getName( ),{id:me.store_id,name:me.store_name});
+	    store_combox.setValue(store_model);
 	    
 		
 	    var subtype_combox=Ext.create('Ems.baseinfo.SubtypeCombo',{
@@ -140,7 +140,8 @@ Ext.define('Ems.store.StoreEquipmentWindow',{
 	    	]
 		});
 		equip_grid.on('cellclick',function(grid, td, cellIndex, record, tr, rowIndex, e){
-			alert(cellIndex);
+			alert(equip_grid.columns );
+			return;
 			equip_store.load({params:{
 					store_id:store_combox.getValue(),
 					subtype_id:subtype_combox.getValue(),
