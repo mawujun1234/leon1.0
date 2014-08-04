@@ -82,6 +82,7 @@ Ext.define('Ems.store.StoreEquipmentWindow',{
 			labelWidth:40,
 			minChars:-1
 		});
+		var level=1;
 		var button=Ext.create("Ext.button.Button",{
 			text:'查询',
 			margin:'0 0 0 5',
@@ -93,11 +94,12 @@ Ext.define('Ems.store.StoreEquipmentWindow',{
 					prod_id:prod_combox.getValue(),
 					brand_id:brand_combox.getValue(),
 					supplier_id:supplier_combox.getValue(),
-					level:1
+					level:level
 				}
 			  });
 			}
 		});
+		
 		var equip_grid=Ext.create('Ext.grid.Panel',{
 			//flex:1,
 			tbar:{
@@ -113,16 +115,27 @@ Ext.define('Ems.store.StoreEquipmentWindow',{
 			},
 			store:equip_store,
 	    	columns: [Ext.create('Ext.grid.RowNumberer'),
-	    	          {header: '设备类型', dataIndex: 'subtype_name',width:120},
-	    	          {header: '品名', dataIndex: 'prod_name'},
-	    	          {header: '数量', dataIndex: 'num',width:70,renderer:function(value){
-	    	          	return "<a href='javascript:void(0);'>"+value+"</a>"
+	    	          {header: '设备类型', dataIndex: 'subtype_name',width:120,renderer:function(value,metaData,record,rowIndex){
+	    	          	if(record.get("subtype_id")=="total"){
+	    	          		return "<a href='javascript:void(0);'>"+value+"</a>";
+	    	          	} else {
+	    	          		return value;
+	    	          	}
 	    	          }},
+	    	          {header: '品名', dataIndex: 'prod_name'},
+	    	          
 	    	          {header: '设备型号', dataIndex: 'style',width:120,hidden:true},
 	    	          {header: '品牌', dataIndex: 'brand_name',width:120,hidden:true},
 	    	          {header: '供应商', dataIndex: 'supplier_name',hidden:true},     
-	    	          {header: '单价(元)', dataIndex: 'unitPrice',width:70,hidden:true},
-	    	          {header: '状态', dataIndex: 'status',width:60,hidden:true,renderer:function(value){
+	    	          {header: '单价(元)', dataIndex: 'unitPrice',width:70,hidden:true,renderer:function(value,metaData,record,rowIndex){
+	    	          	if(record.get("subtype_id")=="total"){
+	    	          		return "";
+	    	          	}
+	    	          }},
+	    	          {header: '状态', dataIndex: 'status',width:60,hidden:true,renderer:function(value,metaData,record,rowIndex){
+	    	          	if(record.get("subtype_id")=="total"){
+	    	          		return "";
+	    	          	}
 	    	          	if(value==0){
 	    	          		return '<font color="red">未入库</font>';
 	    	          	} else if(value==1){
@@ -136,20 +149,73 @@ Ext.define('Ems.store.StoreEquipmentWindow',{
 	    	          	} else {
 	    	          		return "";
 	    	          	}
+	    	          }},
+	    	          {header: '数量', dataIndex: 'num',width:70,renderer:function(value,metaData,record,rowIndex){
+	    	          	if(level==2){
+	    	          		return value;
+	    	          	} else {
+	    	          		return "<a href='javascript:void(0);'>"+value+"</a>";
+	    	          	}
+	    	          	
 	    	          }}
 	    	]
 		});
 		equip_grid.on('cellclick',function(grid, td, cellIndex, record, tr, rowIndex, e){
-			alert(equip_grid.columns );
-			return;
-			equip_store.load({params:{
-					store_id:store_combox.getValue(),
-					subtype_id:subtype_combox.getValue(),
-					prod_id:prod_combox.getValue(),
-					brand_id:brand_combox.getValue(),
-					supplier_id:supplier_combox.getValue(),
-					level:2
-			}});
+			//alert(equip_grid.columns );
+			var columns=equip_grid.columns;
+			//alert(columns[cellIndex].dataIndex);
+			//console.log(level);
+			
+			var dataIndex=equip_grid.headerCt.getHeaderAtIndex(cellIndex).dataIndex;
+			//console.log(dataIndex);
+			if(level==1&&dataIndex=="num"){
+				level=2;
+				equip_store.load({params:{
+						store_id:store_combox.getValue(),
+						subtype_id:subtype_combox.getValue(),
+						prod_id:prod_combox.getValue(),
+						brand_id:brand_combox.getValue(),
+						supplier_id:supplier_combox.getValue(),
+						level:level
+				},
+				callback:function(records, operation, success){
+					
+					for(var i=0;i<columns.length;i++){
+						//console.log(columns[i].dataIndex);
+						if(columns[i].dataIndex=="num"){
+							//columns[i].hide();
+						} else{
+							columns[i].show();
+						}
+					}
+				}});
+			}
+
+			if(level==2&&equip_store.getAt(rowIndex).get("subtype_id")=="total"&&dataIndex=="subtype_name"){
+				level=1;
+				equip_store.load({params:{
+						store_id:store_combox.getValue(),
+						subtype_id:subtype_combox.getValue(),
+						prod_id:prod_combox.getValue(),
+						brand_id:brand_combox.getValue(),
+						supplier_id:supplier_combox.getValue(),
+						level:level
+				},
+				callback:function(records, operation, success){
+					
+					for(var i=0;i<columns.length;i++){
+						//console.log(columns[i].dataIndex);
+						var dataIndex=columns[i].dataIndex;
+						if(dataIndex=="num" ||dataIndex=="subtype_name" || dataIndex=="prod_name"){
+							//columns[i].hide();
+						} else{
+							columns[i].hide();
+						}
+					}
+				}});
+			}
+
+
 		});
 		
 		me.items=[equip_grid];

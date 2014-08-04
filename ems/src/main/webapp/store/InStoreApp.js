@@ -81,6 +81,10 @@ Ext.onReady(function(){
 			focus:function(){
 				//alert(type_radio.getValue());
 				//console.dir(type_radio.getValue());
+				if(type_radio.getValue().type!=1){
+					alert("设备返库和维修入库还没有做!");
+					return;
+				}
 				if(!type_radio.getValue().type){
 					Ext.Msg.alert("消息","请先选择入库类型!");
 					return;

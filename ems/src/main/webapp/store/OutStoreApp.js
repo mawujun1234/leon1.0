@@ -161,12 +161,17 @@ Ext.onReady(function(){
 			focus:function(){
 				//alert(type_radio.getValue());
 				//console.dir(type_radio.getValue());
+				//alert(type_radio.getValue().type);
+				if(type_radio.getValue().type==2){
+					alert("设备维修出库还没有做!");
+					return;
+				}
 				if(!type_radio.getValue().type){
 					Ext.Msg.alert("消息","请先选择出库类型!");
 					return;
 				}
 				if(!workUnit_combox.getValue()){
-					Ext.Msg.alert("消息","请先选择工作组!");
+					Ext.Msg.alert("消息","请先选择作业单位!");
 					return;
 				}
 			},

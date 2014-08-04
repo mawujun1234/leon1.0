@@ -38,7 +38,17 @@ public class StoreService extends AbstractService<Store, String>{
 		if(level==1){
 			return storeRepository.queryEquipments_total(equipment);
 		} else if(level==2){
-			return storeRepository.queryEquipments(equipment);
+			List<Equipment> list= storeRepository.queryEquipments(equipment);
+			Equipment total=new Equipment();
+			total.setSubtype_id("total");
+			total.setSubtype_name("<b>合计:</b>");
+			int total_num=0;
+			for(Equipment equi_temp:list){
+				total_num+=equi_temp.getNum();
+			}
+			total.setNum(total_num);
+			list.add(total);
+			return list;
 		} else {
 			return null;
 		}

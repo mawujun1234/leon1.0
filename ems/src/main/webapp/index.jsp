@@ -66,10 +66,10 @@
 			<tr>
 				<td>
 					<div style="float:right; margin-top:30px;margin-right:10px;color: #CCC;">
-				        <a href="javascript:login();void(0);" target="_self" style="padding:5px">切换用户</a> |
-				        <a href="javascript:changePwd();void(0);" target="_self" style="padding:5px">修改密码</a> |
-				        <a href="javascript:showSselLeftNavWin();void(0);" target="_self" style="padding:5px">选择常用功能</a> |
-				        <a href="logout.do" style="padding:5px">退出</a>
+				        <a href="javascript:login();void(0);" target="_self" style="padding:5px;color: black;">切换用户</a> |
+				        <a href="javascript:changePwd();void(0);" target="_self" style="padding:5px;color: black;">修改密码</a> |
+				        <a href="javascript:showSselLeftNavWin();void(0);" target="_self" style="padding:5px;color: black;">选择常用功能</a> |
+				        <a href="logout.do" style="padding:5px;color: black;">退出</a>
 				    </div>
 					<table width="513" border="0" cellpadding="0" cellspacing="0">
 						<tr>
