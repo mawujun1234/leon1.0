@@ -59,7 +59,7 @@ Ext.define('Ems.baseinfo.StoreForm',{
 	        name: 'memo',
 	        readOnly:true,
 	        xtype:'textfield',
-	        allowBlank: false
+	        allowBlank: true
 	    }
 	  ];   
 	  

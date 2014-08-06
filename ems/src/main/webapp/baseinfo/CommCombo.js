@@ -12,20 +12,20 @@ Ext.define('Ems.baseinfo.SubtypeCombo',{
     queryParam: 'name',
     queryMode: 'remote',
     name:'subtype_id',
-    triggerAction: 'query',
-    trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
-    trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
-	onTrigger1Click : function(){
-	    var me = this;
-	    me.setValue('');
-	},
+//    triggerAction: 'query',
+//    trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
+//    trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
+//	onTrigger1Click : function(){
+//	    var me = this;
+//	    me.setValue('');
+//	},
 	initComponent: function () {
        var me = this;
        var store=Ext.create('Ext.data.Store', {
 		    fields: ['id', 'text'],
 		    proxy:{
 		    	type:'ajax',
-		    	url:Ext.ContextPath+"/equipmentType/querySubtype.do",
+		    	url:Ext.ContextPath+"/equipmentType/querySubtypeCombo.do",
 		    	reader:{
 		    		type:'json',
 		    		root:'root'
@@ -51,23 +51,28 @@ Ext.define('Ems.baseinfo.ProdCombo',{
     queryParam: 'name',
     queryMode: 'remote',
     name:'prod_id',
-    triggerAction: 'query',
-    trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
-    trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
-	onTrigger1Click : function(){
-	    var me = this;
-	    me.setValue('');
-	},
+//    triggerAction: 'query',
+//    trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
+//    trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
+//	onTrigger1Click : function(){
+//	    var me = this;
+//	    me.setValue('');
+//	},
 	initComponent: function () {
        var me = this;
 	   var store=Ext.create('Ext.data.Store', {
 		    fields: ['id', 'text'],
 		    proxy:{
 		    	type:'ajax',
-		    	url:Ext.ContextPath+"/equipmentType/queryProd.do",
+		    	url:Ext.ContextPath+"/equipmentType/queryProdCombo.do",
 		    	reader:{
 		    		type:'json',
 		    		root:'root'
+		    	}
+		    },
+		    listeners:{
+		    	beforeload:function(store){
+		    	
 		    	}
 		    }
 	   });
@@ -88,14 +93,14 @@ Ext.define('Ems.baseinfo.BrandCombo',{
     
     queryParam: 'name',
     queryMode: 'remote',
-    name:'brand_id',
-    triggerAction: 'query',
-    trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
-    trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
-	onTrigger1Click : function(){
-	    var me = this;
-	    me.setValue('');
-	},
+//    name:'brand_id',
+//    triggerAction: 'query',
+//    trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
+//    trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
+//	onTrigger1Click : function(){
+//	    var me = this;
+//	    me.setValue('');
+//	},
 	initComponent: function () {
        var me = this;
 	   var store=Ext.create('Ext.data.Store', {
@@ -126,14 +131,14 @@ Ext.define('Ems.baseinfo.SupplierCombo',{
     
     queryParam: 'name',
     queryMode: 'remote',
-    name:'supplier_id',
-    triggerAction: 'query',
-    trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
-    trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
-	onTrigger1Click : function(){
-	    var me = this;
-	    me.setValue('');
-	},
+//    name:'supplier_id',
+//    triggerAction: 'query',
+//    trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
+//    trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
+//	onTrigger1Click : function(){
+//	    var me = this;
+//	    me.setValue('');
+//	},
 	initComponent: function () {
        var me = this;
 	   var store=Ext.create('Ext.data.Store', {       		

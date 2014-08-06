@@ -1,30 +1,30 @@
 Ext.require("Ems.store.Barcode");
-Ext.require("Ems.store.WorkUnitEquipmentWindow");
-Ext.require("Ems.store.StoreEquipmentWindow");
+Ext.require("Ems.install.WorkUnitEquipmentWindow");
+Ext.require("Ems.install.StoreEquipmentWindow");
 //Ext.require("Ems.store.BarcodeForm");
 Ext.onReady(function(){
-	var type_radio=Ext.create('Ext.form.RadioGroup',{
-            //xtype      : 'fieldcontainer',
-            fieldLabel : '<b>出库类型</b>',
-            labelAlign:'right',
-            labelWidth:60,
-            allowBlank:false,
-            //width:200,
-            defaultType: 'radiofield',
-            defaults: {flex: 1},
-            layout: 'hbox',
-            items: [
-                {
-                    boxLabel  : '设备领用',
-                    name      : 'type',
-                    inputValue: '1'
-                }, {
-                    boxLabel  : '设备维修',
-                    name      : 'type',
-                    inputValue: '2'
-                }
-            ]
-     });
+//	var type_radio=Ext.create('Ext.form.RadioGroup',{
+//            //xtype      : 'fieldcontainer',
+//            fieldLabel : '<b>出库类型</b>',
+//            labelAlign:'right',
+//            labelWidth:60,
+//            allowBlank:false,
+//            //width:200,
+//            defaultType: 'radiofield',
+//            defaults: {flex: 1},
+//            layout: 'hbox',
+//            items: [
+//                {
+//                    boxLabel  : '设备领用',
+//                    name      : 'type',
+//                    inputValue: '1'
+//                }, {
+//                    boxLabel  : '设备维修',
+//                    name      : 'type',
+//                    inputValue: '2'
+//                }
+//            ]
+//     });
      var store_combox=Ext.create('Ext.form.field.ComboBox',{
 	        fieldLabel: '<b>仓库</b>',
 	        labelAlign:'right',
@@ -71,7 +71,7 @@ Ext.onReady(function(){
 	});
 	//显示某个作业单位的手持设备情况
 	function showStoreEquipment(store_id,store_name) {
-		var win=Ext.create('Ems.store.StoreEquipmentWindow',{
+		var win=Ext.create('Ems.install.StoreEquipmentWindow',{
 			title:'库存设备情况',
 			width:800,
 			height:400,
@@ -130,7 +130,7 @@ Ext.onReady(function(){
 	});
 	//显示某个作业单位的手持设备情况
 	function showWorkUnitEquipment(workUnit_id) {
-		var win=Ext.create('Ems.store.WorkUnitEquipmentWindow',{
+		var win=Ext.create('Ems.install.WorkUnitEquipmentWindow',{
 			title:'作业单位手持设备情况',
 			width:800,
 			height:400,
@@ -141,6 +141,17 @@ Ext.onReady(function(){
 		});
 		win.show();	
 	}
+	
+	var requestnum_textfield=Ext.create('Ext.form.field.Number',{
+		labelAlign:'right',
+		labelWidth:55,
+		fieldLabel: '<b>请领数</b>',
+		name:'requestnum',
+		width:110,
+		readOnly:false,
+		allowBlank:false
+	});
+	
 	
 	var ecode_length=19;
 	var ecode_textfield=Ext.create('Ext.form.field.Text',{
@@ -162,14 +173,14 @@ Ext.onReady(function(){
 				//alert(type_radio.getValue());
 				//console.dir(type_radio.getValue());
 				//alert(type_radio.getValue().type);
-				if(type_radio.getValue().type==2){
-					alert("设备维修出库还没有做!");
-					return;
-				}
-				if(!type_radio.getValue().type){
-					Ext.Msg.alert("消息","请先选择出库类型!");
-					return;
-				}
+//				if(type_radio.getValue().type==2){
+//					alert("设备维修出库还没有做!");
+//					return;
+//				}
+//				if(!type_radio.getValue().type){
+//					Ext.Msg.alert("消息","请先选择出库类型!");
+//					return;
+//				}
 				if(!workUnit_combox.getValue()){
 					Ext.Msg.alert("消息","请先选择作业单位!");
 					return;
@@ -246,7 +257,7 @@ Ext.onReady(function(){
 			  // form.load({
 		   	Ext.Ajax.request({
 					params : {ecode:newValue},//传递参数   
-					url : Ext.ContextPath+'/outStore/getEquipmentByEcode.do',//请求的url地址   
+					url : Ext.ContextPath+'/installOut/getEquipmentByEcode.do',//请求的url地址   
 					method : 'GET',//请求方式   
 					success : function(response) {//加载成功的处理函数   
 						var ret=Ext.decode(response.responseText);
@@ -395,7 +406,7 @@ Ext.onReady(function(){
             align:'stretch'
         },
         defaults:{margins:'0 0 5 0',border:false},
-        items:[{xtype:'form',items:[{xtype:'fieldcontainer',layout: 'hbox',items:[type_radio,store_combox,queryStoEquip_button,workUnit_combox,queryWorkUnitEquip_button,ecode_textfield,clear_button]},
+        items:[{xtype:'form',items:[{xtype:'fieldcontainer',layout: 'hbox',items:[store_combox,queryStoEquip_button,workUnit_combox,queryWorkUnitEquip_button,requestnum_textfield,ecode_textfield,clear_button]},
                                     {xtype:'fieldcontainer',layout: 'hbox',items:[storeman_textfield,inDate_textfield,memo_textfield]}
 		            		        //{xtype:'columnbox',columnSize:4,items:[{xtype:'listcombox',url:Ext.ContextPath+'/dataExtra/stockList.do',itemId:'stock_field',fieldLabel:'库房',name:'stid',allowBlank:false,emptyText:'未选择库房',labelAlign:'right'},{xtype:'textfield',name:'stmemo',fieldLabel:'库房描述',columnWidth:3/4,labelAlign:'right'}]}
 		            		        ]},
@@ -405,8 +416,8 @@ Ext.onReady(function(){
         equip_grid,
         {html:'<HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=3>'},
         //{html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;库房人员应当根据采购单，对设备分类后，一次对同类设备批量“添加”入库，直到所有采购单设备根据设备类型都已经“添加”到入库清单后，可以选择“下一步”，进入到二维码生成步骤'}],
-        {html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;一次入库只能选择一个仓库'}],
-        buttons:[{text:'入库',handler:function(btn){
+        {html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;'}],
+        buttons:[{text:'领用出库',handler:function(btn){
             if (equipStore.getCount()> 0) { 
             	Ext.getBody().mask("正在入库....");
             	var equipments = new Array();
@@ -415,11 +426,11 @@ Ext.onReady(function(){
             	});
             	
 				Ext.Ajax.request({
-					url:Ext.ContextPath+'/outStore/equipmentOutStore.do',
+					url:Ext.ContextPath+'/installOut/equipmentOutStore.do',
 					method:'POST',
 					timeout:600000000,
 					headers:{ 'Content-Type':'application/json;charset=UTF-8'},
-					params:{memo:memo_textfield.getValue(),store_id:store_combox.getValue(),workUnit_id:workUnit_combox.getValue(),type:type_radio.getValue().type},
+					params:{memo:memo_textfield.getValue(),store_id:store_combox.getValue(),workUnit_id:workUnit_combox.getValue(),requestnum:requestnum_textfield.getValue()},
 					jsonData:equipments,
 					//params:{jsonStr:Ext.encode(equiplist)},
 					success:function(response){
@@ -427,7 +438,7 @@ Ext.onReady(function(){
 						workUnit_id_temp=null;
 						var obj=Ext.decode(response.responseText);
 						
-						Ext.Msg.alert("消息","入库完成!");
+						Ext.Msg.alert("消息","领用出库完成!");
 						equipStore.removeAll();
 						Ext.getBody().unmask();
 					}

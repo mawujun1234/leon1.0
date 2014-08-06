@@ -17,8 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
 import com.mawujun.baseinfo.Equipment;
 import com.mawujun.baseinfo.EquipmentRepository;
+import com.mawujun.install.StoreEquipment;
+import com.mawujun.install.StoreEquipmentRepository;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 
@@ -68,7 +71,7 @@ public class InStoreService extends AbstractService<InStore, String>{
 		inStore.setId(instore_id);
 		inStore.setOperateDate(new Date());
 		inStore.setOperater(ShiroUtils.getAuthenticationInfo().getId());
-		inStore.setType(1);
+		//inStore.setType(1);
 		inStoreRepository.create(inStore);
 				
 		//插入设备表,同时设置仓库，入库时间，是否新设备

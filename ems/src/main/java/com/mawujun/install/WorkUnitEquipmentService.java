@@ -1,4 +1,4 @@
-package com.mawujun.store;
+package com.mawujun.install;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -6,11 +6,12 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 
+
+import com.mawujun.install.WorkUnitEquipment;
+import com.mawujun.install.WorkUnitEquipmentRepository;
 import com.mawujun.service.AbstractService;
 
 
-import com.mawujun.store.WorkUnitEquipment;
-import com.mawujun.store.WorkUnitEquipmentRepository;
 
 
 /**

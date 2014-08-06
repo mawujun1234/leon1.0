@@ -1,4 +1,4 @@
-package com.mawujun.store;
+package com.mawujun.install;
 
 import java.util.Date;
 
@@ -9,9 +9,14 @@ import javax.persistence.Table;
 
 import com.mawujun.repository.idEntity.IdEntity;
 
+/**
+ * 设备领用单
+ * @author mawujun email:16064988@163.com qq:16064988
+ *
+ */
 @Entity
-@Table(name="ems_outstore")
-public class OutStore   implements IdEntity<String>{
+@Table(name="ems_installout")
+public class InstallOut   implements IdEntity<String>{
 	@Id
 	@Column(length=15)
 	private String id;//出库单号，年日日时分秒
@@ -22,7 +27,10 @@ public class OutStore   implements IdEntity<String>{
 	@Column(length=36)
 	private String workUnit_id;//作业单位
 	
-	private Integer type;//出库类型 1：设备领用，2：维修出库
+	//请求数量
+	private Integer requestnum;
+	
+	//private Integer type;//出库类型 1：设备领用，2：维修出库
 	@Column(length=100)
 	private String memo;
 	
@@ -38,12 +46,7 @@ public class OutStore   implements IdEntity<String>{
 	public void setStore_id(String store_id) {
 		this.store_id = store_id;
 	}
-	public Integer getType() {
-		return type;
-	}
-	public void setType(Integer type) {
-		this.type = type;
-	}
+
 	public String getMemo() {
 		return memo;
 	}
@@ -67,6 +70,12 @@ public class OutStore   implements IdEntity<String>{
 	}
 	public void setWorkUnit_id(String workUnit_id) {
 		this.workUnit_id = workUnit_id;
+	}
+	public Integer getRequestnum() {
+		return requestnum;
+	}
+	public void setRequestnum(Integer requestnum) {
+		this.requestnum = requestnum;
 	}
 
 }

@@ -1,4 +1,5 @@
 package com.mawujun.baseinfo;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -11,10 +12,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
+import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.utils.page.Page;
 import com.mawujun.utils.BeanUtils;
 import com.mawujun.utils.M;
+import com.mawujun.utils.StringUtils;
 import com.mawujun.baseinfo.EquipmentType;
 import com.mawujun.baseinfo.EquipmentTypeService;
 /**
@@ -86,10 +89,22 @@ public class EquipmentTypeController {
 			if("root".equalsIgnoreCase(equipmentType.getParent_id())){
 				equipmentType.setParent_id(null);
 			}
+			Long count=equipmentTypeService.queryCount(Cnd.select().andEquals(M.EquipmentType.id, equipmentType.getId()));
+			if(count>0){
+				throw new BusinessException("编码已经存在");
+			}
 			equipmentTypeService.createOrUpdate(BeanUtils.copyOrCast(equipmentType, EquipmentType.class));
 		} else if(equipmentType.getLevl()==2){
+			Long count=equipmentSubtypeService.queryCount(Cnd.select().andEquals(M.EquipmentSubtype.id, equipmentType.getId()));
+			if(count>0){
+				throw new BusinessException("编码已经存在");
+			}
 			equipmentSubtypeService.createOrUpdate(BeanUtils.copyOrCast(equipmentType, EquipmentSubtype.class));
 		} else if(equipmentType.getLevl()==3){
+			Long count=equipmentProdService.queryCount(Cnd.select().andEquals(M.EquipmentProd.id, equipmentType.getId()));
+			if(count>0){
+				throw new BusinessException("编码已经存在");
+			}
 			equipmentProdService.createOrUpdate(BeanUtils.copyOrCast(equipmentType, EquipmentProd.class));
 		}
 		return equipmentType;
@@ -129,9 +144,9 @@ public class EquipmentTypeController {
 	 * @param name
 	 * @return
 	 */
-	@RequestMapping("/equipmentType/querySubtype.do")
+	@RequestMapping("/equipmentType/querySubtypeCombo.do")
 	@ResponseBody
-	public List<EquipmentSubtype> querySubtype(String name) {
+	public List<EquipmentSubtype> querySubtype(String equipmentType_id,String name) {
 		return equipmentSubtypeService.query(Cnd.select().andLike(M.EquipmentSubtype.text, name));	
 	}
 	/**
@@ -140,10 +155,13 @@ public class EquipmentTypeController {
 	 * @param name
 	 * @return
 	 */
-	@RequestMapping("/equipmentType/queryProd.do")
+	@RequestMapping("/equipmentType/queryProdCombo.do")
 	@ResponseBody
-	public List<EquipmentProd> queryProd(String name) {
-		return equipmentProdService.query(Cnd.select().andLike(M.EquipmentProd.text, name));	
+	public List<EquipmentProd> queryProd(String equipmentSubtype_id,String name) {
+		if(!StringUtils.hasText(equipmentSubtype_id)){
+			return new ArrayList<EquipmentProd>();
+		}
+		return equipmentProdService.query(Cnd.select().andLike(M.EquipmentProd.text, name).andEquals(M.EquipmentProd.parent_id, equipmentSubtype_id));	
 	}
 	
 	

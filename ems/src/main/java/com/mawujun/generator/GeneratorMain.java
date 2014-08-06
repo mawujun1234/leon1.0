@@ -28,6 +28,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
 
+
 import com.mawujun.baseinfo.Area;
 import com.mawujun.baseinfo.Brand;
 import com.mawujun.baseinfo.Customer;
@@ -42,12 +43,12 @@ import com.mawujun.baseinfo.Supplier;
 import com.mawujun.baseinfo.SupplierContact;
 import com.mawujun.baseinfo.WorkUnit;
 import com.mawujun.baseinfo.WorkUnitContact;
+import com.mawujun.install.InstallOut;
+import com.mawujun.install.InstallOutList;
+import com.mawujun.install.WorkUnitEquipment;
 import com.mawujun.store.Barcode;
 import com.mawujun.store.InStore;
 import com.mawujun.store.InStoreList;
-import com.mawujun.store.OutStore;
-import com.mawujun.store.OutStoreList;
-import com.mawujun.store.WorkUnitEquipment;
 import com.mawujun.user.User;
 
 import freemarker.template.TemplateException;

@@ -34,6 +34,11 @@ import com.mawujun.utils.ReflectUtils;
  * DAO 是使用一个好呢，还是继承好，建立一个独立的DAO，他用来快速访问
  * 用来存放where和orderby的数据
  * 
+ * 还不支持
+ * Cnd.update().set(M.StoreEquipment.num, M.StoreEquipment.num+"-1").andEquals(M.StoreEquipment.ecode, equipment.getEcode())
+			.andEquals(M.StoreEquipment.store_id, outStore.getStore_id())
+			M.StoreEquipment.num+"-1"这种方式
+ * 
  * @author mawujun email:16064988@163.com qq:16064988
  *
  */

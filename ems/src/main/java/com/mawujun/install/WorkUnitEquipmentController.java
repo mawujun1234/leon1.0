@@ -1,4 +1,4 @@
-package com.mawujun.store;
+package com.mawujun.install;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -7,15 +7,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
+import com.mawujun.install.WorkUnitEquipment;
+import com.mawujun.install.WorkUnitEquipmentService;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.utils.page.Page;
 import com.mawujun.utils.M;
-
-import com.mawujun.store.WorkUnitEquipment;
-import com.mawujun.store.WorkUnitEquipmentService;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
  * @version 1.0

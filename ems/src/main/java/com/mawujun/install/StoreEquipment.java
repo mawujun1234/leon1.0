@@ -1,4 +1,4 @@
-package com.mawujun.store;
+package com.mawujun.install;
 
 import java.util.Date;
 

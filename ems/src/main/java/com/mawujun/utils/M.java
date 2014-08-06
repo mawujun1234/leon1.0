@@ -142,6 +142,33 @@ public static final class WorkUnitContact {
 	public static final String workunit_id="workunit_id";
 	public static final String id="id";
 }
+public static final class InstallOut {
+	public static final String id="id";
+	public static final String store_id="store_id";
+	public static final String operater="operater";
+	public static final String operateDate="operateDate";
+	public static final String workUnit_id="workUnit_id";
+	public static final String requestnum="requestnum";
+	public static final String memo="memo";
+}
+public static final class InstallOutList {
+	public static final String installOut_id="installOut_id";
+	public static final String ecode="ecode";
+	public static final String id="id";
+}
+public static final class StoreEquipment {
+	public static final String store_id="store_id";
+	public static final String ecode="ecode";
+	public static final String inStore_id="inStore_id";
+	public static final String num="num";
+	public static final String id="id";
+}
+public static final class WorkUnitEquipment {
+	public static final String workunit_id="workunit_id";
+	public static final String ecode="ecode";
+	public static final String outStore_id="outStore_id";
+	public static final String id="id";
+}
 public static final class Barcode {
 	public static final String ecode="ecode";
 	public static final String subtype_id="subtype_id";
@@ -165,39 +192,11 @@ public static final class InStore {
 	public static final String store_id="store_id";
 	public static final String operater="operater";
 	public static final String operateDate="operateDate";
-	public static final String type="type";
 	public static final String memo="memo";
 }
 public static final class InStoreList {
 	public static final String inStore_id="inStore_id";
 	public static final String encode="encode";
-	public static final String id="id";
-}
-public static final class OutStore {
-	public static final String id="id";
-	public static final String store_id="store_id";
-	public static final String operater="operater";
-	public static final String operateDate="operateDate";
-	public static final String workUnit_id="workUnit_id";
-	public static final String type="type";
-	public static final String memo="memo";
-}
-public static final class OutStoreList {
-	public static final String outStore_id="outStore_id";
-	public static final String ecode="ecode";
-	public static final String id="id";
-}
-public static final class StoreEquipment {
-	public static final String store_id="store_id";
-	public static final String ecode="ecode";
-	public static final String inStore_id="inStore_id";
-	public static final String num="num";
-	public static final String id="id";
-}
-public static final class WorkUnitEquipment {
-	public static final String workunit_id="workunit_id";
-	public static final String ecode="ecode";
-	public static final String outStore_id="outStore_id";
 	public static final String id="id";
 }
 public static final class DataRole {

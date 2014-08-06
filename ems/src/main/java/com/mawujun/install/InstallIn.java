@@ -1,4 +1,4 @@
-package com.mawujun.store;
+package com.mawujun.install;
 
 import java.util.Date;
 
@@ -9,18 +9,24 @@ import javax.persistence.Table;
 
 import com.mawujun.repository.idEntity.IdEntity;
 
+/**
+ * 设备返回 单
+ * @author mawujun email:16064988@163.com qq:16064988
+ *
+ */
 @Entity
-@Table(name="ems_instore")
-public class InStore  implements IdEntity<String>{
+@Table(name="ems_installin")
+public class InstallIn   implements IdEntity<String>{
 	@Id
 	@Column(length=15)
-	private String id;//入库单号，年日日时分秒
+	private String id;//设备返回单号，年日日时分秒
 	@Column(length=36)
-	private String store_id;
-	@Column(length=36)
+	private String store_id;//返回仓库id
 	private String operater;//仓管id
 	private Date operateDate;//入库时间
-	//private Integer type;//入库类型 1：新品入库，2：设备返库，3：维修入库
+	@Column(length=36)
+	private String workUnit_id;//作业单位
+
 	@Column(length=100)
 	private String memo;
 	
@@ -55,4 +61,11 @@ public class InStore  implements IdEntity<String>{
 	public void setOperateDate(Date operateDate) {
 		this.operateDate = operateDate;
 	}
+	public String getWorkUnit_id() {
+		return workUnit_id;
+	}
+	public void setWorkUnit_id(String workUnit_id) {
+		this.workUnit_id = workUnit_id;
+	}
+
 }

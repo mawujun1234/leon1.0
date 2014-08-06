@@ -1,26 +1,22 @@
-package com.mawujun.store;
+package com.mawujun.install;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.hibernate.SessionFactory;
+import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
-
-import org.springframework.web.bind.annotation.RequestBody;
-
 import com.mawujun.baseinfo.Equipment;
 import com.mawujun.baseinfo.EquipmentRepository;
+import com.mawujun.controller.spring.SpringContextHolder;
+import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
-
-
 import com.mawujun.shiro.ShiroUtils;
-import com.mawujun.store.OutStore;
-import com.mawujun.store.OutStoreRepository;
 import com.mawujun.utils.M;
 
 
@@ -31,12 +27,12 @@ import com.mawujun.utils.M;
  */
 @Service
 @Transactional(propagation=Propagation.REQUIRED)
-public class OutStoreService extends AbstractService<OutStore, String>{
+public class InstallOutService extends AbstractService<InstallOut, String>{
 
 	@Autowired
-	private OutStoreRepository outStoreRepository;
+	private InstallOutRepository outStoreRepository;
 	@Autowired
-	private OutStoreListRepository outStoreListRepository;
+	private InstallOutListRepository outStoreListRepository;
 	@Autowired
 	private EquipmentRepository equipmentRepository;
 	@Autowired
@@ -47,18 +43,18 @@ public class OutStoreService extends AbstractService<OutStore, String>{
 	SimpleDateFormat ymdHmsDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
 	
 	@Override
-	public OutStoreRepository getRepository() {
+	public InstallOutRepository getRepository() {
 		return outStoreRepository;
 	}
 
-	public void equipOutStore(Equipment[] equipments, OutStore outStore) {
+	public void equipOutStore(Equipment[] equipments, InstallOut outStore) {
 		// 插入入库单
 		String instore_id = ymdHmsDateFormat.format(new Date());
 		// InStore inStore=new InStore();
 		outStore.setId(instore_id);
 		outStore.setOperateDate(new Date());
 		outStore.setOperater(ShiroUtils.getAuthenticationInfo().getId());
-		outStore.setType(1);
+		//outStore.setType(1);
 		outStoreRepository.create(outStore);
 		
 		for(Equipment equipment:equipments){
@@ -73,13 +69,14 @@ public class OutStoreService extends AbstractService<OutStore, String>{
 			workUnitEquipmentRepository.create(workUnitEquipment);
 			
 			//把仓库中的该设备移除
-			storeEquipmentRepository.update(Cnd.update().set(M.StoreEquipment.num, M.StoreEquipment.num+"-1").andEquals(M.StoreEquipment.ecode, equipment.getEcode())
-					.andEquals(M.StoreEquipment.store_id, outStore.getStore_id()));
+//			storeEquipmentRepository.update(Cnd.update().set(M.StoreEquipment.num, M.StoreEquipment.num+"-1").andEquals(M.StoreEquipment.ecode, equipment.getEcode())
+//					.andEquals(M.StoreEquipment.store_id, outStore.getStore_id()));
+			storeEquipmentRepository.updateNum(outStore.getStore_id(), equipment.getEcode());
 			
 			//插入入库单明细
-			OutStoreList inStoreList=new OutStoreList();
+			InstallOutList inStoreList=new InstallOutList();
 			inStoreList.setEcode(equipment.getEcode());
-			inStoreList.setOutStore_id(instore_id);
+			inStoreList.setInstallOut_id(instore_id);
 			outStoreListRepository.create(inStoreList);
 		}
 	}

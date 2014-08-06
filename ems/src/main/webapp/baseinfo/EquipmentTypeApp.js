@@ -26,6 +26,8 @@ Ext.onReady(function(){
 		} else if(record.get("levl")==2){
 			grid.setTitle("品名");
 		}
+		var aa=grid.getSelectionModel( ).getLastSelected( );
+		console.dir(aa);
 		grid.getStore().load({params:{
 			id:record.get("id").split("_")[0],
 			levl:record.get("levl")

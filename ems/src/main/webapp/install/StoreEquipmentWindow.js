@@ -1,7 +1,7 @@
 /**
  * 作业单位的手持设备情况
  */
-Ext.define('Ems.store.StoreEquipmentWindow',{
+Ext.define('Ems.install.StoreEquipmentWindow',{
 	extend:'Ext.window.Window',
 	requires: [
 	     'Ems.baseinfo.Equipment'

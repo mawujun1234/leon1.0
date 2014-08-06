@@ -9,7 +9,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 		stripeRows:true,
 		listeners:{
 			refresh:function(){
-				this.select(0);
+				//this.select(0);
 			}
 		}
 	},
@@ -160,7 +160,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
     },
     onUpdate:function(){
     	var me=this;
-    	var record=me.getSelectionModel( ).getLastSelected( );
+    	var record=me.getSelectionModel().getLastSelected( );
 		if(!record){
 			Ext.Msg.alert("消息","请先选择类型!");	
 			return;
@@ -198,10 +198,12 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
     	var me=this;
     	var record=me.getSelectionModel( ).getLastSelected( );
 
+    	//console.dir(record);
 		if(!record){
-		    Ext.Msg.alert("消息","请先选择类型");	
+		    Ext.Msg.alert("消息","请先选择一条记录");	
 			return;
 		}
+		//return;
 
 		Ext.Msg.confirm("删除",'确定要删除吗?', function(btn, text){
 				if (btn == 'yes'){
@@ -217,6 +219,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 							me.tree.getStore().reload({node:parent});
 							
 							me.getStore().remove(record);
+							//me.select(0);
 						}
 					});
 			}

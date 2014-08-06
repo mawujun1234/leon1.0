@@ -3,32 +3,32 @@ Ext.require("Ems.baseinfo.Equipment");
 //Ext.require("Ems.store.BarcodeTree");
 //Ext.require("Ems.store.BarcodeForm");
 Ext.onReady(function(){
-	var type_radio=Ext.create('Ext.form.RadioGroup',{
-            //xtype      : 'fieldcontainer',
-            fieldLabel : '<b>入库类型</b>',
-            labelAlign:'right',
-            labelWidth:60,
-            allowBlank:false,
-            //width:200,
-            defaultType: 'radiofield',
-            defaults: {flex: 1},
-            layout: 'hbox',
-            items: [
-                {
-                    boxLabel  : '新设备入库',
-                    name      : 'type',
-                    inputValue: '1'
-                }, {
-                    boxLabel  : '设备返库',
-                    name      : 'type',
-                    inputValue: '2'
-                }, {
-                    boxLabel  : '维修入库',
-                    name      : 'type',
-                    inputValue: '3'
-                }
-            ]
-     });
+//	var type_radio=Ext.create('Ext.form.RadioGroup',{
+//            //xtype      : 'fieldcontainer',
+//            fieldLabel : '<b>入库类型</b>',
+//            labelAlign:'right',
+//            labelWidth:60,
+//            allowBlank:false,
+//            //width:200,
+//            defaultType: 'radiofield',
+//            defaults: {flex: 1},
+//            layout: 'hbox',
+//            items: [
+//                {
+//                    boxLabel  : '新设备入库',
+//                    name      : 'type',
+//                    inputValue: '1'
+//                }, {
+//                    boxLabel  : '设备返库',
+//                    name      : 'type',
+//                    inputValue: '2'
+//                }, {
+//                    boxLabel  : '维修入库',
+//                    name      : 'type',
+//                    inputValue: '3'
+//                }
+//            ]
+//     });
         
 	var store_combox=Ext.create('Ext.form.field.ComboBox',{
 	        fieldLabel: '<b>仓库</b>',
@@ -81,14 +81,14 @@ Ext.onReady(function(){
 			focus:function(){
 				//alert(type_radio.getValue());
 				//console.dir(type_radio.getValue());
-				if(type_radio.getValue().type!=1){
-					alert("设备返库和维修入库还没有做!");
-					return;
-				}
-				if(!type_radio.getValue().type){
-					Ext.Msg.alert("消息","请先选择入库类型!");
-					return;
-				}
+//				if(type_radio.getValue().type!=1){
+//					alert("设备返库和维修入库还没有做!");
+//					return;
+//				}
+//				if(!type_radio.getValue().type){
+//					Ext.Msg.alert("消息","请先选择入库类型!");
+//					return;
+//				}
 				if(!store_combox.getValue()){
 					Ext.Msg.alert("消息","请先选择仓库!");
 					return;
@@ -301,7 +301,7 @@ Ext.onReady(function(){
             align:'stretch'
         },
         defaults:{margins:'0 0 5 0',border:false},
-        items:[{xtype:'form',items:[{xtype:'fieldcontainer',layout: 'hbox',items:[type_radio,store_combox,ecode_textfield,clear_button]},
+        items:[{xtype:'form',items:[{xtype:'fieldcontainer',layout: 'hbox',items:[store_combox,ecode_textfield,clear_button]},
                                     {xtype:'fieldcontainer',layout: 'hbox',items:[storeman_textfield,inDate_textfield,memo_textfield]}
 		            		        //{xtype:'columnbox',columnSize:4,items:[{xtype:'listcombox',url:Ext.ContextPath+'/dataExtra/stockList.do',itemId:'stock_field',fieldLabel:'库房',name:'stid',allowBlank:false,emptyText:'未选择库房',labelAlign:'right'},{xtype:'textfield',name:'stmemo',fieldLabel:'库房描述',columnWidth:3/4,labelAlign:'right'}]}
 		            		        ]},
@@ -326,7 +326,7 @@ Ext.onReady(function(){
 					method:'POST',
 					timeout:600000000,
 					headers:{ 'Content-Type':'application/json;charset=UTF-8'},
-					params:{memo:memo_textfield.getValue(),type:type_radio.getValue().type,store_id:store_combox.getValue()},
+					params:{memo:memo_textfield.getValue(),store_id:store_combox.getValue()},
 					jsonData:equipments,
 					//params:{jsonStr:Ext.encode(equiplist)},
 					success:function(response){

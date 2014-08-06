@@ -34,6 +34,8 @@ public class EquipmentTypeService extends AbstractService<EquipmentType, String>
 	private EquipmentTypeRepository equipmentTypeRepository;
 	@Autowired
 	private EquipmentSubtypeRepository equipmentSubtypeRepository;
+	@Autowired
+	private EquipmentProdRepository equipmentProdRepository;
 	
 	@Override
 	public EquipmentTypeRepository getRepository() {

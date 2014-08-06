@@ -37,11 +37,18 @@ Ext.onReady(function(){
 	
 	var subtype_combox=Ext.create('Ems.baseinfo.SubtypeCombo',{
 		labelAlign:'right',
-		minChars:-1//表示默认点击的时候就查询出所有的数据
+		minChars:-1,
+		listeners:{
+			change:function(field,newValue, oldValue){
+				prod_combox.clearValue( );
+				prod_combox.getStore().getProxy().extraParams={equipmentSubtype_id:newValue};
+				prod_combox.getStore().reload();
+			}
+		}
 	});
 	var prod_combox=Ext.create('Ems.baseinfo.ProdCombo',{
-		labelAlign:'right'
-		,minChars:-1
+		labelAlign:'right',
+		minChars:-1	
 	});
 	var brand_combox=Ext.create('Ems.baseinfo.BrandCombo',{
 		labelAlign:'right'
@@ -154,7 +161,8 @@ Ext.onReady(function(){
             align:'stretch'
         },
         defaults:{margins:'0 0 5 0',border:false},
-        items:[{xtype:'form',items:[{xtype:'columnbox',columnSize:4,items:[subtype_combox,prod_combox,brand_combox,supplier_combox]},
+        items:[{xtype:'form',items:[
+        							{xtype:'columnbox',columnSize:4,items:[subtype_combox,prod_combox,brand_combox,supplier_combox]},
                                     {xtype:'columnbox',columnSize:4,items:[
                                     	{xtype:'textfield',itemId:'style_field',fieldLabel:'型号',name:'style',minValue:1,labelWidth:100,allowBlank:false,labelAlign:'right',value:1},
                                     	{xtype:'numberfield',itemId:'serialNum_field',fieldLabel:'入库数目',name:'serialNum',minValue:1,labelWidth:100,allowBlank:false,labelAlign:'right',value:1},
@@ -167,7 +175,6 @@ Ext.onReady(function(){
         {layout:{type:'hbox',algin:'stretch'},items:[{flex:1,border:false,html:'<HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=3>'},{xtype:'button',text:'添加',handler:addEquip,width:70,iconCls:'icon-add',margin:'0 5px 0 5px'}]},
         equip_grid,
         {html:'<HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=3>'},
-        //{html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;库房人员应当根据采购单，对设备分类后，一次对同类设备批量“添加”入库，直到所有采购单设备根据设备类型都已经“添加”到入库清单后，可以选择“下一步”，进入到二维码生成步骤'}],
         {html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;条码的生成规则是: 小类(2)+品名(2)+品牌(3)+供应商(3)+日期(6)+流水号(3)，按“导出”，导出条码'}],
         buttons:[{text:'导出',handler:function(btn){
             if (equipStore.getCount()> 0) { 

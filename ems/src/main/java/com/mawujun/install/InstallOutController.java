@@ -1,4 +1,4 @@
-package com.mawujun.store;
+package com.mawujun.install;
 import java.io.IOException;
 import java.util.List;
 
@@ -14,23 +14,23 @@ import com.mawujun.utils.page.QueryResult;
 import com.mawujun.baseinfo.Equipment;
 import com.mawujun.baseinfo.EquipmentService;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
+import com.mawujun.install.InstallOut;
+import com.mawujun.install.InstallOutService;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.utils.page.Page;
 import com.mawujun.utils.BeanUtils;
 import com.mawujun.utils.M;
-import com.mawujun.store.OutStore;
-import com.mawujun.store.OutStoreService;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
  * @version 1.0
  * @since 1.0
  */
 @Controller
-//@RequestMapping("/outStore")
-public class OutStoreController {
+//@RequestMapping("/installOut")
+public class InstallOutController {
 
 	@Resource
-	private OutStoreService outStoreService;
+	private InstallOutService outStoreService;
 	@Resource
 	private EquipmentService equipmentService;
 
@@ -40,12 +40,12 @@ public class OutStoreController {
 //	 * @param id 是父节点的id
 //	 * @return
 //	 */
-//	@RequestMapping("/outStore/query.do")
+//	@RequestMapping("/installOut/query.do")
 //	@ResponseBody
-//	public List<OutStore> query(String id) {
+//	public List<InstallOut> query(String id) {
 //		Cnd cnd=Cnd.select().andEquals(M.OutStore.parent.id, "root".equals(id)?null:id);
-//		List<OutStore> outStorees=outStoreService.query(cnd);
-//		//JsonConfigHolder.setFilterPropertys(OutStore.class,M.OutStore.parent.name());
+//		List<InstallOut> outStorees=outStoreService.query(cnd);
+//		//JsonConfigHolder.setFilterPropertys(InstallOut.class,M.OutStore.parent.name());
 //		return outStorees;
 //	}
 //
@@ -57,50 +57,50 @@ public class OutStoreController {
 //	 * @param userName
 //	 * @return
 //	 */
-//	@RequestMapping("/outStore/query.do")
+//	@RequestMapping("/installOut/query.do")
 //	@ResponseBody
 //	public Page query(Integer start,Integer limit,String sampleName){
 //		Page page=Page.getInstance(start,limit);//.addParam(M.OutStore.sampleName, "%"+sampleName+"%");
 //		return outStoreService.queryPage(page);
 //	}
 
-	@RequestMapping("/outStore/query.do")
+	@RequestMapping("/installOut/query.do")
 	@ResponseBody
-	public List<OutStore> query() {	
-		List<OutStore> outStorees=outStoreService.queryAll();
+	public List<InstallOut> query() {	
+		List<InstallOut> outStorees=outStoreService.queryAll();
 		return outStorees;
 	}
 	
 
-	@RequestMapping("/outStore/load.do")
-	public OutStore load(String id) {
+	@RequestMapping("/installOut/load.do")
+	public InstallOut load(String id) {
 		return outStoreService.get(id);
 	}
 	
-	@RequestMapping("/outStore/create.do")
+	@RequestMapping("/installOut/create.do")
 	@ResponseBody
-	public OutStore create(@RequestBody OutStore outStore) {
+	public InstallOut create(@RequestBody InstallOut outStore) {
 		outStoreService.create(outStore);
 		return outStore;
 	}
 	
-	@RequestMapping("/outStore/update.do")
+	@RequestMapping("/installOut/update.do")
 	@ResponseBody
-	public  OutStore update(@RequestBody OutStore outStore) {
+	public  InstallOut update(@RequestBody InstallOut outStore) {
 		outStoreService.update(outStore);
 		return outStore;
 	}
 	
-	@RequestMapping("/outStore/deleteById.do")
+	@RequestMapping("/installOut/deleteById.do")
 	@ResponseBody
 	public String deleteById(String id) {
 		outStoreService.deleteById(id);
 		return id;
 	}
 	
-	@RequestMapping("/outStore/destroy.do")
+	@RequestMapping("/installOut/destroy.do")
 	@ResponseBody
-	public OutStore destroy(@RequestBody OutStore outStore) {
+	public InstallOut destroy(@RequestBody InstallOut outStore) {
 		outStoreService.delete(outStore);
 		return outStore;
 	}
@@ -111,7 +111,7 @@ public class OutStoreController {
 	 * @param ecode
 	 * @return
 	 */
-	@RequestMapping("/outStore/getEquipmentByEcode.do")
+	@RequestMapping("/installOut/getEquipmentByEcode.do")
 	@ResponseBody
 	public Equipment getEquipmentByEcode(String ecode) {	
 		Equipment equipment= equipmentService.getEquipmentByEcode(ecode);
@@ -129,10 +129,10 @@ public class OutStoreController {
 	 * @return
 	 * @throws IOException
 	 */
-	@RequestMapping("/outStore/equipmentOutStore.do")
+	@RequestMapping("/installOut/equipmentOutStore.do")
 	@ResponseBody
 	//public String equipOutStore(@RequestBody Equipment[] equipments,String store_id,String workUnit_id,String type,String memo) {
-	public String equipOutStore(@RequestBody Equipment[] equipments, OutStore outStore) { 
+	public String equipOutStore(@RequestBody Equipment[] equipments, InstallOut outStore) { 
 		//inStoreService.newInStore(equipments);
 		outStoreService.equipOutStore(equipments, outStore);
 		return "success";
