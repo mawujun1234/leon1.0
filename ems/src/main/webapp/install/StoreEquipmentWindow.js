@@ -132,23 +132,16 @@ Ext.define('Ems.install.StoreEquipmentWindow',{
 	    	          		return "";
 	    	          	}
 	    	          }},
-	    	          {header: '状态', dataIndex: 'status',width:60,hidden:true,renderer:function(value,metaData,record,rowIndex){
+	    	          {header: '状态', dataIndex: 'status',width:100,hidden:true,renderer:function(value,metaData,record,rowIndex){
 	    	          	if(record.get("subtype_id")=="total"){
 	    	          		return "";
 	    	          	}
-	    	          	if(value==0){
-	    	          		return '<font color="red">未入库</font>';
-	    	          	} else if(value==1){
-	    	          		return "已入库";
-	    	          	} else if(value==2){
-	    	          		return "正常出库(等待安装)";
-	    	          	} else if(value==4){
-	    	          		return "损坏";
-	    	          	} else if(value==9){
-	    	          		return "维修后出库";
+
+	    	          	if(value==4 || value==5){
+	    	          		return '<font color="red">'+equipmentStatus[value]+'</font>';
 	    	          	} else {
-	    	          		return "";
-	    	          	}
+	    	          		return equipmentStatus[value];
+	    	          	} 
 	    	          }},
 	    	          {header: '数量', dataIndex: 'num',width:70,renderer:function(value,metaData,record,rowIndex){
 	    	          	if(level==2){

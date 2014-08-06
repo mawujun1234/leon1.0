@@ -331,20 +331,12 @@ Ext.onReady(function(){
     	          
     	          //{header: 'stid', dataIndex: 'stid',hideable:false,hidden:true},
     	         // {header: '库房', dataIndex: 'stock',width:120},
-    	          {header: '状态', dataIndex: 'status',width:60,renderer:function(value){
-    	          	if(value==0){
-    	          		return '<font color="red">未入库</font>';
-    	          	} else if(value==1){
-    	          		return "已入库";
-    	          	} else if(value==2){
-    	          		return "正常出库(等待安装)";
-    	          	} else if(value==4){
-    	          		return '<font color="red">损坏</font>';
-    	          	} else if(value==9){
-    	          		return "维修后出库";
-    	          	} else {
-    	          		return "";
-    	          	}
+    	          {header: '状态', dataIndex: 'status',width:100,renderer:function(value){
+    	          	  if(value==4 || value==5){
+	    	          	return '<font color="red">'+equipmentStatus[value]+'</font>';
+	    	          } else {
+	    	          		return equipmentStatus[value];
+	    	          } 
     	          }},
     	          { header:'操作',
 	                xtype: 'actioncolumn',

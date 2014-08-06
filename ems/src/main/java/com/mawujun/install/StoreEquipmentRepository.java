@@ -11,5 +11,5 @@ import com.mawujun.repository1.IRepository;
  */
 @Repository
 public interface StoreEquipmentRepository extends IRepository<StoreEquipment, String>{
-	public void updateNum(@Param("store_id")String store_id,@Param("ecode")String ecode);
+	public void updateNum(@Param("store_id")String store_id,@Param("ecode")String ecode,@Param("num")String num);
 }

@@ -12,6 +12,7 @@ Pole的地址看能不能换成百度地图的地址，行政区域划分，现�
 http://www.stats.gov.cn/tjsj/tjbz/xzqhdm/201401/t20140116_501070.html
 http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/
 就是说先手工写死在系统中，等空一点的时候，再弄一个数据库
+手持设备表WorkUnitEquipment也需要增加一个字段num，表示该设备持有的数量，因为会有没有条码的设备，这个时候就有数量的概念饿了
 
 --等产品出来后，再做
 删除品名的是否，判断有没有设备在使用，如果没有就删除，否则就修改status
@@ -22,6 +23,7 @@ http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/
 设备出库中，进行设备库存查询时，的sql进行优化，看选择了几个表就关联几个表，动态生成相应的sql
 制作一个grid里弹出window的form的模板，并且把java和extjs文件的目录区分开来
 xml的ftl修改一下，只有queryPage的，其他都弄成注释的好了，简单点
+所有的下来框，当发现只有一个下拉选项的时候，就自动选择
 
 
 (完成)设计好领域模型,然后把大类，品牌，供应商，片区，客户等基础信息完成

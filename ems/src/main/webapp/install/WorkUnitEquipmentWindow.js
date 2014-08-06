@@ -42,19 +42,11 @@ Ext.define('Ems.install.WorkUnitEquipmentWindow',{
 	    	          //{header: 'stid', dataIndex: 'stid',hideable:false,hidden:true},
 	    	         // {header: '库房', dataIndex: 'stock',width:120},
 	    	          {header: '状态', dataIndex: 'status',width:60,renderer:function(value){
-	    	          	if(value==0){
-	    	          		return '<font color="red">未入库</font>';
-	    	          	} else if(value==1){
-	    	          		return "已入库";
-	    	          	} else if(value==2){
-	    	          		return "正常出库(等待安装)";
-	    	          	} else if(value==4){
-	    	          		return "损坏";
-	    	          	} else if(value==9){
-	    	          		return "维修后出库";
-	    	          	} else {
-	    	          		return "";
-	    	          	}
+	    	          	  if(value==4 || value==5){
+		    	          	return '<font color="red">'+equipmentStatus[value]+'</font>';
+		    	          } else {
+		    	          		return equipmentStatus[value];
+		    	          } 
 	    	          }}
 	    	]
 		});

@@ -64,14 +64,14 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 			//把设备绑定到作业单位上面
 			WorkUnitEquipment workUnitEquipment=new WorkUnitEquipment();
 			workUnitEquipment.setEcode(equipment.getEcode());
-			workUnitEquipment.setOutStore_id(instore_id);
+			workUnitEquipment.setOutStore_id(instore_id);//不是唯一主键
 			workUnitEquipment.setWorkunit_id(outStore.getWorkUnit_id());
 			workUnitEquipmentRepository.create(workUnitEquipment);
 			
 			//把仓库中的该设备移除
 //			storeEquipmentRepository.update(Cnd.update().set(M.StoreEquipment.num, M.StoreEquipment.num+"-1").andEquals(M.StoreEquipment.ecode, equipment.getEcode())
 //					.andEquals(M.StoreEquipment.store_id, outStore.getStore_id()));
-			storeEquipmentRepository.updateNum(outStore.getStore_id(), equipment.getEcode());
+			storeEquipmentRepository.updateNum(outStore.getStore_id(), equipment.getEcode(),M.StoreEquipment.num+"-1");
 			
 			//插入入库单明细
 			InstallOutList inStoreList=new InstallOutList();
