@@ -18,7 +18,7 @@ import com.mawujun.repository.idEntity.UUIDEntity;
 public class StoreEquipment  extends UUIDEntity{
 	@Column(length=36)
 	private String store_id;
-	@Column(length=20)
+	@Column(length=25)
 	private String ecode;
 	@Column(length=15)
 	private String inStore_id;//入库单号

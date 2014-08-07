@@ -93,7 +93,7 @@ Ext.define('Ems.baseinfo.BrandCombo',{
     
     queryParam: 'name',
     queryMode: 'remote',
-//    name:'brand_id',
+    name:'brand_id',
 //    triggerAction: 'query',
 //    trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
 //    trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
@@ -131,7 +131,7 @@ Ext.define('Ems.baseinfo.SupplierCombo',{
     
     queryParam: 'name',
     queryMode: 'remote',
-//    name:'supplier_id',
+    name:'supplier_id',
 //    triggerAction: 'query',
 //    trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
 //    trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',

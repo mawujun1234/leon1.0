@@ -13,7 +13,7 @@ import com.mawujun.repository.idEntity.IdEntity;
 @Table(name="ems_barcode",uniqueConstraints = {@UniqueConstraint(columnNames={"subtype_id", "prod_id","brand_id","supplier_id","ymd","serialNum"})})
 public class Barcode implements IdEntity<String>{
 	@Id
-	@Column(length=20)
+	@Column(length=25)
 	private String ecode;//条码 小类(2)+品名(2)+品牌(3)+供应商(3)+年月日(6)+流水号(3)=19位
 //	@Column(length=2)
 //	private String type_id;//类型id

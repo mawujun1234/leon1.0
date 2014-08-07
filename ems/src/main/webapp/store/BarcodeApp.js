@@ -164,7 +164,7 @@ Ext.onReady(function(){
         items:[{xtype:'form',items:[
         							{xtype:'columnbox',columnSize:4,items:[subtype_combox,prod_combox,brand_combox,supplier_combox]},
                                     {xtype:'columnbox',columnSize:4,items:[
-                                    	{xtype:'textfield',itemId:'style_field',fieldLabel:'型号',name:'style',minValue:1,labelWidth:100,allowBlank:false,labelAlign:'right',value:1},
+                                    	{xtype:'textfield',itemId:'style_field',fieldLabel:'型号',name:'style',labelWidth:100,allowBlank:false,labelAlign:'right',value:1},
                                     	{xtype:'numberfield',itemId:'serialNum_field',fieldLabel:'入库数目',name:'serialNum',minValue:1,labelWidth:100,allowBlank:false,labelAlign:'right',value:1},
                                     	{xtype:'numberfield',itemId:'unitprice_field',fieldLabel:'单价(元)',name:'unitPrice',minValue:0,labelWidth:100,listeners:{change:countTotal},allowBlank:false,labelAlign:'right'},
 										totalprice_display

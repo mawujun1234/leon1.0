@@ -62,7 +62,7 @@ Ext.onReady(function(){
 			    }
 		   })
 	    });
-	var ecode_length=19;
+	var ecode_length=21;
 	var ecode_textfield=Ext.create('Ext.form.field.Text',{
 		labelAlign:'right',
 		name:'encode',

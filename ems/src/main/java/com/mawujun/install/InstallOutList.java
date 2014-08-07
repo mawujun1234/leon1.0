@@ -15,7 +15,7 @@ public class InstallOutList  extends UUIDEntity {
 	private static final long serialVersionUID = 1L;
 	@Column(length=15)
 	private String installOut_id;//入库单id
-	@Column(length=20)
+	@Column(length=25)
 	private String ecode;//设备编码
 
 	public String getEcode() {
