@@ -8,7 +8,7 @@ import javax.persistence.Transient;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
 @Entity
-@Table(name="sys_DataRole")
+@Table(name="sys_datarole")
 public class DataRole  extends UUIDEntity {
 	/**
 	 * 

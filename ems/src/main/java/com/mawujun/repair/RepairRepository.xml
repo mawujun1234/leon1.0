@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
+<mapper namespace="com.mawujun.repair.RepairRepository">
+
+	<!-- insert语句的生成开始=============================================================================================== -->
+	<!-- insert语句的生成结束=============================================================================================== -->
+
+	
+
+	<!-- delete语句的生成开始=============================================================================================== -->
+	<delete id="destroy" parameterType="String">
+    <![CDATA[
+        DELETE FROM sys_repair WHERE id=#{id}
+    ]]>
+    </delete>
+    
+  <!--  
+    <delete id="deleteByWheres">
+        DELETE FROM sys_repair
+        <where>
+        	<foreach collection="array" index="index" item="item" separator=" and ">
+				${item.prop} ${item.op} #{item.value}
+			</foreach>
+        </where>
+    </delete>
+	 delete语句的生成结束=============================================================================================== -->
+
+	
+
+	<!-- update语句的生成开始=============================================================================================== -->
+	<update id="update" parameterType="com.mawujun.repair.Repair">
+		 UPDATE sys_repair 
+			<set>
+		         <if test="ecode!=null">
+		        	ecode = #{ecode} ,
+		        </if>
+		         <if test="rpa_id!=null">
+		        	rpa_id = #{rpa_id} ,
+		        </if>
+		         <if test="rpa_in_date!=null">
+		        	rpa_in_date = #{rpa_in_date} ,
+		        </if>
+		         <if test="rpa_in_oper_id!=null">
+		        	rpa_in_oper_id = #{rpa_in_oper_id} ,
+		        </if>
+		         <if test="rpa_out_date!=null">
+		        	rpa_out_date = #{rpa_out_date} ,
+		        </if>
+		         <if test="rpa_out_oper_id!=null">
+		        	rpa_out_oper_id = #{rpa_out_oper_id} ,
+		        </if>
+		         <if test="rpa_type!=null">
+		        	rpa_type = #{rpa_type} ,
+		        </if>
+		         <if test="status!=null">
+		        	status = #{status} ,
+		        </if>
+		         <if test="str_in_date!=null">
+		        	str_in_date = #{str_in_date} ,
+		        </if>
+		         <if test="str_in_id!=null">
+		        	str_in_id = #{str_in_id} ,
+		        </if>
+		         <if test="str_in_oper_id!=null">
+		        	str_in_oper_id = #{str_in_oper_id} ,
+		        </if>
+		         <if test="str_out_date!=null">
+		        	str_out_date = #{str_out_date} ,
+		        </if>
+		         <if test="str_out_id!=null">
+		        	str_out_id = #{str_out_id} ,
+		        </if>
+		         <if test="str_out_oper_id!=null">
+		        	str_out_oper_id = #{str_out_oper_id} 
+		        </if>
+	        </set>
+        WHERE 
+        	id=#{id}    
+	</update>
+	<!-- update语句的生成结束=============================================================================================== -->
+
+	
+
+	<!-- select语句的生成开始=============================================================================================== -->	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		id,
+		        ecode ,
+		        rpa_id ,
+		        rpa_in_date ,
+		        rpa_in_oper_id ,
+		        rpa_out_date ,
+		        rpa_out_oper_id ,
+		        rpa_type ,
+		        status ,
+		        str_in_date ,
+		        str_in_id ,
+		        str_in_oper_id ,
+		        str_out_date ,
+		        str_out_id ,
+		        str_out_oper_id 
+	    ]]>
+	</sql>
+	<select id="queryPage" resultType="com.mawujun.repair.Repair" parameterType="map">
+    	SELECT <include refid="columns" />
+	    FROM sys_repair 
+		<where>
+			<if test="wheres!=null">
+        	<foreach collection="wheres" index="index" item="item" separator=" and ">
+				${item.prop} ${item.op} #{item.value}
+			</foreach>
+			</if>
+        </where>
+    </select>
+    
+    <select id="get" resultType="com.mawujun.repair.Repair" parameterType="String">
+    	SELECT <include refid="columns" />
+	    FROM sys_repair 
+		WHERE 
+        	id=#{id}    
+    </select>
+	<!-- select语句的生成结束=============================================================================================== -->
+</mapper>
+

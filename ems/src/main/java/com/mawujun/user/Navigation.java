@@ -8,7 +8,7 @@ import javax.persistence.Transient;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
 @Entity
-@Table(name="sys_Navigation")
+@Table(name="sys_navigation")
 public class Navigation  extends UUIDEntity {
 	
 	/**

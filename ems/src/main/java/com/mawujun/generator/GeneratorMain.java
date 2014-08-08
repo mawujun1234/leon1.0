@@ -30,6 +30,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
 
+
 import com.mawujun.baseinfo.Area;
 import com.mawujun.baseinfo.Brand;
 import com.mawujun.baseinfo.Customer;
@@ -48,6 +49,7 @@ import com.mawujun.install.InstallIn;
 import com.mawujun.install.InstallOut;
 import com.mawujun.install.InstallOutList;
 import com.mawujun.install.WorkUnitEquipment;
+import com.mawujun.repair.Repair;
 import com.mawujun.store.Barcode;
 import com.mawujun.store.InStore;
 import com.mawujun.store.InStoreList;
@@ -74,7 +76,7 @@ public class GeneratorMain {
 		//str=generatorService.generatorToString(MenuItem.class,FtlFile.JsModel.toString(),null);	
         //System.out.println(str);
 		
-		GeneratorMain.generateAllFile(InstallIn.class,"D:/gen/");
+		GeneratorMain.generateAllFile(Repair.class,"D:/gen/");
 		
 		
 		
