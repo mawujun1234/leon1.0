@@ -5,6 +5,8 @@ Ext.defineModel("Ems.baseinfo.Store",{
 		{name:'id',type:'string'},
 		{name:'memo',type:'string'},
 		{name:'name',type:'string'},
+		{name:'type',type:'int'},
+		{name:'type_name',type:'string'},
 		{name:'status',type:'bool'}
 	],
 	associations:[

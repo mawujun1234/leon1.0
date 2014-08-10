@@ -147,7 +147,7 @@ public class EquipmentTypeController {
 	@RequestMapping("/equipmentType/querySubtypeCombo.do")
 	@ResponseBody
 	public List<EquipmentSubtype> querySubtype(String equipmentType_id,String name) {
-		return equipmentSubtypeService.query(Cnd.select().andLike(M.EquipmentSubtype.text, name));	
+		return equipmentSubtypeService.query(Cnd.select().andEquals(M.EquipmentSubtype.status, true).andLike(M.EquipmentSubtype.text, name));	
 	}
 	/**
 	 * 用于combobox
@@ -161,7 +161,7 @@ public class EquipmentTypeController {
 		if(!StringUtils.hasText(equipmentSubtype_id)){
 			return new ArrayList<EquipmentProd>();
 		}
-		return equipmentProdService.query(Cnd.select().andLike(M.EquipmentProd.text, name).andEquals(M.EquipmentProd.parent_id, equipmentSubtype_id));	
+		return equipmentProdService.query(Cnd.select().andEquals(M.EquipmentProd.status, true).andLike(M.EquipmentProd.text, name).andEquals(M.EquipmentProd.parent_id, equipmentSubtype_id));	
 	}
 	
 	

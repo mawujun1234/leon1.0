@@ -11,10 +11,22 @@ import com.mawujun.repository.idEntity.UUIDEntity;
 public class Store extends UUIDEntity {
 	@Column(length=30)
 	private String name;
+	
+	private Integer type;//1:仓库，2：维修中心
 	@Column(length=100)
 	private String memo;
 	@org.hibernate.annotations.Type(type="yes_no")
 	private Boolean status=true;
+	
+	public String getType_name() {
+		if(this.getType()==1){
+			return "仓库";
+		} else if(this.getType()==2){
+			return "维修中心";
+		} else {
+			return null;
+		}
+	}
 	
 	public String getName() {
 		return name;
@@ -33,5 +45,11 @@ public class Store extends UUIDEntity {
 	}
 	public void setStatus(Boolean status) {
 		this.status = status;
+	}
+	public Integer getType() {
+		return type;
+	}
+	public void setType(Integer type) {
+		this.type = type;
 	}
 }

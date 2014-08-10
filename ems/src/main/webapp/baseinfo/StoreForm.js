@@ -54,6 +54,25 @@ Ext.define('Ems.baseinfo.StoreForm',{
 			    name:'status'
 		},
 		{
+	        	xtype:'combobox',
+			    fieldLabel: '类型',
+			    store:  Ext.create('Ext.data.Store', {
+				    fields: ['id', 'name'],
+				    data : [
+				        {"id":1, "name":"仓库"},
+				        {"id":2, "name":"维修中心"}
+				    ]
+				}),
+			    queryMode: 'local',
+			    displayField: 'name',
+			    valueField: 'id',
+			    readOnly:true,
+			    editable:false,
+			    name:'type',
+			    //value:"1"
+			    allowBlank: false
+		},
+		{
 	        fieldLabel: '描述',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'memo',

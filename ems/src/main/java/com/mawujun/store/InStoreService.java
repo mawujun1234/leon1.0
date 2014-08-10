@@ -88,7 +88,7 @@ public class InStoreService extends AbstractService<InStore, String>{
 			//建立设备仓库的关系
 			StoreEquipment storeEquipment=new StoreEquipment();
 			storeEquipment.setEcode(equipment.getEcode());
-			storeEquipment.setInStore_id(instore_id);
+			//storeEquipment.setInStore_id(instore_id);
 			storeEquipment.setStore_id(inStore.getStore_id());
 			storeEquipment.setNum(1);
 			storeEquipmentRepository.create(storeEquipment);

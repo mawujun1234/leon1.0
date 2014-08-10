@@ -100,6 +100,7 @@ public static final class Pole {
 }
 public static final class Store {
 	public static final String name="name";
+	public static final String type="type";
 	public static final String memo="memo";
 	public static final String status="status";
 	public static final String id="id";
@@ -142,6 +143,20 @@ public static final class WorkUnitContact {
 	public static final String workunit_id="workunit_id";
 	public static final String id="id";
 }
+public static final class InstallIn {
+	public static final String id="id";
+	public static final String store_id="store_id";
+	public static final String operater="operater";
+	public static final String operateDate="operateDate";
+	public static final String workUnit_id="workUnit_id";
+	public static final String memo="memo";
+}
+public static final class InstallInList {
+	public static final String installIn_id="installIn_id";
+	public static final String ecode="ecode";
+	public static final String isBad="isBad";
+	public static final String id="id";
+}
 public static final class InstallOut {
 	public static final String id="id";
 	public static final String store_id="store_id";
@@ -168,6 +183,23 @@ public static final class WorkUnitEquipment {
 	public static final String ecode="ecode";
 	public static final String outStore_id="outStore_id";
 	public static final String id="id";
+}
+public static final class Repair {
+	public static final String id="id";
+	public static final String ecode="ecode";
+	public static final String str_out_oper_id="str_out_oper_id";
+	public static final String str_out_date="str_out_date";
+	public static final String str_out_id="str_out_id";
+	public static final String rpa_id="rpa_id";
+	public static final String rpa_in_oper_id="rpa_in_oper_id";
+	public static final String rpa_in_date="rpa_in_date";
+	public static final String rpa_out_oper_id="rpa_out_oper_id";
+	public static final String rpa_out_date="rpa_out_date";
+	public static final String str_in_oper_id="str_in_oper_id";
+	public static final String str_in_date="str_in_date";
+	public static final String str_in_id="str_in_id";
+	public static final String rpa_type="rpa_type";
+	public static final String status="status";
 }
 public static final class Barcode {
 	public static final String ecode="ecode";

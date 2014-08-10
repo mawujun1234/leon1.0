@@ -54,6 +54,7 @@ Ext.onReady(function(){
 		    	fields: ['id', 'name'],
 			    proxy:{
 			    	type:'ajax',
+			    	extraParams:{type:1},
 			    	url:Ext.ContextPath+"/store/queryCombo.do",
 			    	reader:{
 			    		type:'json',
@@ -62,15 +63,16 @@ Ext.onReady(function(){
 			    }
 		   })
 	    });
-	var ecode_length=21;
+
 	var ecode_textfield=Ext.create('Ext.form.field.Text',{
 		labelAlign:'right',
 		name:'encode',
 		fieldLabel: '输入设备条码',
-		minLength:ecode_length,
-		maxLength:ecode_length,
-		length:ecode_length,
-		//width:200,
+		minLength:Ext.ecode_length,
+		maxLength:Ext.ecode_length,
+		length:Ext.ecode_length,
+		labelWidth:80,
+		width:240,
 		allowBlank:false,
 		listeners:{
 			blur:function(f,e){
@@ -151,7 +153,7 @@ Ext.onReady(function(){
 		}
 		
 		var form= step1.down('form').getForm();
-		if(newValue.length>=ecode_length){
+		if(newValue.length>=Ext.ecode_length){
 		   if(field.isValid()){
 			  // form.load({
 		   	Ext.Ajax.request({
@@ -182,7 +184,7 @@ Ext.onReady(function(){
 								}
 							});
 							if(exist){
-								Ext.MessageBoxEx('提示','该设备已经存在');
+								Ext.Msg.alert('提示','该设备已经存在');
 							}else{
 								equipStore.insert(0, scanrecord);				
 							}						
@@ -227,19 +229,11 @@ Ext.onReady(function(){
     	          //{header: 'stid', dataIndex: 'stid',hideable:false,hidden:true},
     	         // {header: '库房', dataIndex: 'stock',width:120},
     	          {header: '状态', dataIndex: 'status',width:100,renderer:function(value){
-    	          	if(value==0){
-    	          		return '<font color="red">未入库</font>';
-    	          	} else if(value==1){
-    	          		return "已入库";
-    	          	} else if(value==2){
-    	          		return "正常出库(等待安装)";
-    	          	} else if(value==4){
-    	          		return "损坏";
-    	          	} else if(value==9){
-    	          		return "维修后出库";
-    	          	} else {
-    	          		return "";
-    	          	}
+    	          	  if(value==4 || value==5){
+	    	          	return '<font color="red">'+equipmentStatus[value]+'</font>';
+	    	          } else {
+	    	          		return equipmentStatus[value];
+	    	          } 
     	          }},
     	          { header:'操作',
 	                xtype: 'actioncolumn',
@@ -334,6 +328,9 @@ Ext.onReady(function(){
 						store_id_temp=null;
 						Ext.Msg.alert("消息","入库完成!");
 						equipStore.removeAll();
+						Ext.getBody().unmask();
+					},
+					failure:function(){
 						Ext.getBody().unmask();
 					}
 				});

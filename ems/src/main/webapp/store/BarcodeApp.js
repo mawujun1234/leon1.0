@@ -202,6 +202,9 @@ Ext.onReady(function(){
 		            		record.set("status",true);
 		            	});
 						Ext.getBody().unmask();
+					},
+					failure:function(){
+						Ext.getBody().unmask();
 					}
 				});
             }else{

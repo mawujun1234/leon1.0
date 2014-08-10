@@ -10,13 +10,14 @@ import javax.persistence.Table;
 import com.mawujun.repository.idEntity.IdEntity;
 
 @Entity
-@Table(name="sys_repair")
+@Table(name="ems_repair")
 public class Repair  implements IdEntity<String>{
 	@Id
-	@Column(length=15)
+	@Column(length=18)
 	private String id;
 	@Column(length=25)
 	private String ecode;
+	
 	@Column(length=36)
 	private String str_out_oper_id;//仓库出库的操作人
 	private Date str_out_date;//仓库出库时间，也是维修单创建日期
@@ -39,8 +40,14 @@ public class Repair  implements IdEntity<String>{
 	@Column(length=36) 
 	private String str_in_id;//入库仓库
 	
-	private Integer rpa_type;//维修类型，维修 (1)还是外修(2)
-	private Integer status=1;//状态
+	private Integer rpa_type=1;//维修类型，维修 (1)还是外修(2)
+	private Integer status=RepairStatus.One.getValue();//状态
+	@Column(length=500) 
+	private String broken_memo;//故障描述
+	@Column(length=500) 
+	private String broken_reson;//故障原因
+	@Column(length=500) 
+	private String memo;
 	
 	
 	public String getId() {
@@ -132,6 +139,24 @@ public class Repair  implements IdEntity<String>{
 	}
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+	public String getBroken_memo() {
+		return broken_memo;
+	}
+	public void setBroken_memo(String broken_memo) {
+		this.broken_memo = broken_memo;
+	}
+	public String getBroken_reson() {
+		return broken_reson;
+	}
+	public void setBroken_reson(String broken_reson) {
+		this.broken_reson = broken_reson;
+	}
+	public String getMemo() {
+		return memo;
+	}
+	public void setMemo(String memo) {
+		this.memo = memo;
 	}
 
 }

@@ -25,6 +25,7 @@ Ext.define('Ems.baseinfo.StoreGrid',{
 				return "无效";
 			}
 		}},
+		{dataIndex:'type_name',text:'类型'},
 		{dataIndex:'memo',text:'注释'}
       ];
       

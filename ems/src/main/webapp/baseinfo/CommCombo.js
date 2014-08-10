@@ -107,7 +107,7 @@ Ext.define('Ems.baseinfo.BrandCombo',{
 		    fields: ['id', 'name'],
 		    proxy:{
 		    	type:'ajax',
-		    	url:Ext.ContextPath+"/brand/queryBrand.do",
+		    	url:Ext.ContextPath+"/brand/queryBrandCombo.do",
 		    	reader:{
 		    		type:'json',
 		    		root:'root'
@@ -145,7 +145,7 @@ Ext.define('Ems.baseinfo.SupplierCombo',{
 		    fields: ['id', 'name'],
 		    proxy:{
 		    	type:'ajax',
-		    	url:Ext.ContextPath+"/supplier/querySupplier.do",
+		    	url:Ext.ContextPath+"/supplier/querySupplierCombo.do",
 		    	reader:{
 		    		type:'json',
 		    		root:'root'

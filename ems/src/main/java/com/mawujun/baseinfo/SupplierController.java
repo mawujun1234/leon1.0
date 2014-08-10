@@ -100,9 +100,9 @@ public class SupplierController {
 		return supplier;
 	}
 	
-	@RequestMapping("/supplier/querySupplier.do")
+	@RequestMapping("/supplier/querySupplierCombo.do")
 	@ResponseBody
-	public List<Supplier> queryProd(String name) {
-		return supplierService.query(Cnd.select().andLike(M.Supplier.name, name));	
+	public List<Supplier> querySupplierComboS(String name) {
+		return supplierService.query(Cnd.select().andEquals(M.Supplier.status, true).andLike(M.Supplier.name, name));	
 	}
 }

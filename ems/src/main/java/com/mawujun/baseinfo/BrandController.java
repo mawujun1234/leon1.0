@@ -106,10 +106,10 @@ public class BrandController {
 	 * @param name
 	 * @return
 	 */
-	@RequestMapping("/brand/queryBrand.do")
+	@RequestMapping("/brand/queryBrandCombo.do")
 	@ResponseBody
-	public List<Brand> queryProd(String name) {
-		return brandService.query(Cnd.select().andLike(M.Brand.name, name));	
+	public List<Brand> queryBrandCombo(String name) {
+		return brandService.query(Cnd.select().andEquals(M.Brand.status, true).andLike(M.Brand.name, name));	
 	}
 	
 	

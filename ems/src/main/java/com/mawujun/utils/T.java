@@ -100,6 +100,7 @@ public static final class ems_pole {
 }
 public static final class ems_store {
 	public static final String name="name";
+	public static final String type="type";
 	public static final String memo="memo";
 	public static final String status="status";
 	public static final String id="id";
@@ -142,6 +143,20 @@ public static final class ems_workunit_contact {
 	public static final String workunit_id="workunit_id";
 	public static final String id="id";
 }
+public static final class ems_installin {
+	public static final String id="id";
+	public static final String store_id="store_id";
+	public static final String operater="operater";
+	public static final String operateDate="operateDate";
+	public static final String workUnit_id="workUnit_id";
+	public static final String memo="memo";
+}
+public static final class ems_installinlist {
+	public static final String installIn_id="installIn_id";
+	public static final String ecode="ecode";
+	public static final String isBad="isBad";
+	public static final String id="id";
+}
 public static final class ems_installout {
 	public static final String id="id";
 	public static final String store_id="store_id";
@@ -168,6 +183,23 @@ public static final class ems_workunitequipment {
 	public static final String ecode="ecode";
 	public static final String outStore_id="outStore_id";
 	public static final String id="id";
+}
+public static final class ems_repair {
+	public static final String id="id";
+	public static final String ecode="ecode";
+	public static final String str_out_oper_id="str_out_oper_id";
+	public static final String str_out_date="str_out_date";
+	public static final String str_out_id="str_out_id";
+	public static final String rpa_id="rpa_id";
+	public static final String rpa_in_oper_id="rpa_in_oper_id";
+	public static final String rpa_in_date="rpa_in_date";
+	public static final String rpa_out_oper_id="rpa_out_oper_id";
+	public static final String rpa_out_date="rpa_out_date";
+	public static final String str_in_oper_id="str_in_oper_id";
+	public static final String str_in_date="str_in_date";
+	public static final String str_in_id="str_in_id";
+	public static final String rpa_type="rpa_type";
+	public static final String status="status";
 }
 public static final class ems_barcode {
 	public static final String ecode="ecode";
@@ -199,7 +231,7 @@ public static final class ems_instorelist {
 	public static final String encode="encode";
 	public static final String id="id";
 }
-public static final class sys_DataRole {
+public static final class sys_datarole {
 	public static final String text="text";
 	public static final String leaf="leaf";
 	public static final String memo="memo";
@@ -209,7 +241,7 @@ public static final class sys_DataRole {
 	public static final String checked="checked";
 	public static final String id="id";
 }
-public static final class sys_FunRole {
+public static final class sys_funrole {
 	public static final String text="text";
 	public static final String leaf="leaf";
 	public static final String memo="memo";
@@ -219,7 +251,7 @@ public static final class sys_FunRole {
 	public static final String checked="checked";
 	public static final String id="id";
 }
-public static final class sys_Navigation {
+public static final class sys_navigation {
 	public static final String text="text";
 	public static final String link="link";
 	public static final String parentId="parentId";

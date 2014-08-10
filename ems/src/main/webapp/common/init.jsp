@@ -77,5 +77,6 @@ var equipmentStatus={
 	9:'维修后已出库',
 	30:'报废'
 }
+Ext.ecode_length=21;
 </script>
 

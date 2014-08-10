@@ -7,3 +7,6 @@
 			String hql=Cnd.update().set(M.StoreEquipment.num, M.StoreEquipment.num+"-1").andEquals(M.StoreEquipment.ecode, equipment.getEcode())
 			.andEquals(M.StoreEquipment.store_id, outStore.getStore_id()).toHql(classMetadata);
 			
+			
+GeneratorMain增加一个按照VO生成grid，的方法，而不是一定要有表明等
+			

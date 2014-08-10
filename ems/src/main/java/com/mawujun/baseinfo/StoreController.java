@@ -102,8 +102,12 @@ public class StoreController {
 	
 	@RequestMapping("/store/queryCombo.do")
 	@ResponseBody
-	public List<Store> queryCombo() {	
-		List<Store> storees=storeService.queryAll();
+	public List<Store> queryCombo(Integer type) {	
+		Cnd cnd=Cnd.select().andEquals(M.Store.status, true);
+		if(type!=null){
+			cnd.andEquals(M.Store.type, type);
+		}
+		List<Store> storees=storeService.query(cnd);
 		return storees;
 	}
 	

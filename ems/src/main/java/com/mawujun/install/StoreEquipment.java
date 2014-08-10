@@ -20,8 +20,8 @@ public class StoreEquipment  extends UUIDEntity{
 	private String store_id;
 	@Column(length=25)
 	private String ecode;
-	@Column(length=15)
-	private String inStore_id;//入库单号
+//	@Column(length=15)
+//	private String inStore_id;//入库单号
 	
 	private Integer num;//产品的库存数量
 //	//下面的都是最新一次的入库
@@ -40,12 +40,6 @@ public class StoreEquipment  extends UUIDEntity{
 	}
 	public void setEcode(String ecode) {
 		this.ecode = ecode;
-	}
-	public String getInStore_id() {
-		return inStore_id;
-	}
-	public void setInStore_id(String inStore_id) {
-		this.inStore_id = inStore_id;
 	}
 	public Integer getNum() {
 		return num;
