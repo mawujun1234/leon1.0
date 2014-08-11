@@ -33,7 +33,7 @@ Ext.define('Ems.repair.MgrRepairGrid',{
       me.columns=[
 		{dataIndex:'id',text:'维修单号',width:120},
 		{dataIndex:'ecode',text:'条码',width:140},
-		{dataIndex:'str_out_name',text:'仓库'},
+		{dataIndex:'str_out_name',text:'发货仓库'},
 		{dataIndex:'rpa_type_name',text:'维修类型',width:60},
 		{dataIndex:'status_name',text:'状态'},
 		{dataIndex:'str_out_date',text:'出仓时间',xtype: 'datecolumn',   format:'Y-m-d'},
@@ -75,15 +75,15 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 	  
 	  
 	  var store_combox=Ext.create('Ext.form.field.ComboBox',{
-	        fieldLabel: '<b>仓库</b>',
+	        fieldLabel: '<b>发货仓库</b>',
 	        labelAlign:'right',
-            labelWidth:40,
+            labelWidth:60,
 	        //xtype:'combobox',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'store_id',
 		    displayField: 'name',
 		    valueField: 'id',
-	        allowBlank: false,
+	        //allowBlank: false,
 	        store:Ext.create('Ext.data.Store', {
 		    	fields: ['id', 'name'],
 			    proxy:{
@@ -107,7 +107,7 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 	        name: 'rpa_id',
 		    displayField: 'name',
 		    valueField: 'id',
-	        allowBlank: false,
+	        //allowBlank: false,
 	        store:Ext.create('Ext.data.Store', {
 		    	fields: ['id', 'name'],
 			    proxy:{
@@ -186,7 +186,7 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 		name:'encode',
 		labelWidth:60,
 		width:220,
-		disabled:true,
+		//disabled:true,
 		fieldLabel: '扫描选择',
 		minLength:Ext.ecode_length,
 		maxLength:Ext.ecode_length,
@@ -219,46 +219,88 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 	  //入库按钮
 	  var str_in_button=Ext.create("Ext.button.Button",{
 			text:'入库',
-			disabled:true,
+			//disabled:true,
 			margin:'0 0 0 5',
 			icon:Ext.ContextPath+"/icons/database_copy.png",
 			handler:function(){
-				var rpa_id=repair_combox.getValue();
-				var records=me.getSelectionModel( ).getSelection( );
-				if(records && records.length>0){
-					//var ids=[];
-					//var ecodes=[];
-					var repairs=[];
-					for(var i=0;i<records.length;i++){
-						repairs.push({
-							ecode:records[i].get("ecode"),
-							id:records[i].get("id"),
-							rpa_id:rpa_id,
-							str_out_id:records[i].get("str_out_id")
-						});
-						//ids.push(records[i].get("id"));
-						//ecodes.push(records[i].get("ecode"));
-					}
-					Ext.getBody().mask("正在执行,请稍候.....");
-					Ext.Ajax.request({
-						url:Ext.ContextPath+'/repair/storeInStore.do',
-						method:'POST',
-						timeout:600000000,
-						//headers:{ 'Content-Type':'application/json;charset=UTF-8'},
-						//params:{ids:ids,ecodes:ecodes,rpa_id:rpa_id},
-						jsonData:repairs,
-						//params:{jsonStr:Ext.encode(equiplist)},
-						success:function(response){
-							var obj=Ext.decode(response.responseText);		
-							//Ext.Msg.alert("消息","维修中心入库完成!");
-							Ext.getBody().unmask();
-							me.getStore().reload();
-						},
-						failure:function(){
-							Ext.getBody().unmask();
+				//先选择仓库，弹出框
+				var from=Ext.create('Ext.form.Panel',{
+					frame:true,
+					items:[{
+				        fieldLabel: '<b>选择仓库</b>',
+				        labelAlign:'right',
+			            labelWidth:70,
+				        xtype:'combobox',
+				        afterLabelTextTpl: Ext.required,
+				        name: 'str_in_id',
+				        itemId:'str_in_id',
+					    displayField: 'name',
+					    valueField: 'id',
+				        allowBlank: false,
+				        store:Ext.create('Ext.data.Store', {
+					    	fields: ['id', 'name'],
+						    proxy:{
+						    	type:'ajax',
+						    	extraParams:{type:1},
+						    	url:Ext.ContextPath+"/store/queryCombo.do",
+						    	reader:{
+						    		type:'json',
+						    		root:'root'
+						    	}
+						    }
+					   })
+				  }],
+				  buttons:[{
+				  	text:'确定',
+				  	handler:function(){
+				  		var str_in_id=from.down("combobox#str_in_id");
+						var records=me.getSelectionModel( ).getSelection( );
+						if(records && records.length>0){
+							var repairs=[];
+							for(var i=0;i<records.length;i++){
+								repairs.push({
+									ecode:records[i].get("ecode"),
+									id:records[i].get("id"),
+									rpa_id:records[i].get("rpa_id"),
+									str_in_id:str_in_id.getValue()
+								});
+								//ids.push(records[i].get("id"));
+								//ecodes.push(records[i].get("ecode"));
+							}
+							Ext.getBody().mask("正在执行,请稍候.....");
+							Ext.Ajax.request({
+								url:Ext.ContextPath+'/repair/storeInStore.do',
+								method:'POST',
+								timeout:600000000,
+								//headers:{ 'Content-Type':'application/json;charset=UTF-8'},
+								//params:{ids:ids,ecodes:ecodes,rpa_id:rpa_id},
+								jsonData:repairs,
+								//params:{jsonStr:Ext.encode(equiplist)},
+								success:function(response){
+									var obj=Ext.decode(response.responseText);		
+									//Ext.Msg.alert("消息","维修中心入库完成!");
+									Ext.getBody().unmask();
+									me.getStore().reload();
+									win.close();
+								},
+								failure:function(){
+									Ext.getBody().unmask();
+								}
+							});
 						}
-					});
-				}
+				  	}
+				  }]
+				});
+				var win=Ext.create('Ext.window.Window',{
+					layout:'fit',
+					title:'选择入库仓库',
+					modal:true,
+					width:260,
+					items:[from]
+				});
+				win.show();
+				
+				
 			}
 	  });
 	  me.tbar={

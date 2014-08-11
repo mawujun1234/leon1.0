@@ -15,7 +15,7 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 	},
 	pageSize:50,
 	selModel:new Ext.selection.CheckboxModel({
-		checkOnly:true,
+		//checkOnly:true,
 		showHeaderCheckbox:false,//防止点全选，去选择
 		renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
 			if(record.get("status")==1 ||record.get("status")==2 ){
@@ -33,12 +33,13 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
       me.columns=[
 		{dataIndex:'id',text:'维修单号',width:120},
 		{dataIndex:'ecode',text:'条码',width:140},
-		{dataIndex:'str_out_name',text:'仓库'},
+		{dataIndex:'str_out_name',text:'发货仓库'},
 		{dataIndex:'rpa_type_name',text:'维修类型',width:60},
 		{dataIndex:'status_name',text:'状态'},
 		{dataIndex:'str_out_date',text:'出仓时间',xtype: 'datecolumn',   format:'Y-m-d'},
 		{dataIndex:'rpa_name',text:'维修中心'},
 		{dataIndex:'rpa_in_date',text:'入维时间',xtype: 'datecolumn',   format:'Y-m-d'},
+		{dataIndex:'rpa_user_id',text:'维修人'},
 		//{dataIndex:'rpa_in_oper_id',text:'rpa_in_oper_id'},
 		{dataIndex:'rpa_out_date',text:'出维时间',xtype: 'datecolumn',   format:'Y-m-d'},
 		//{dataIndex:'rpa_out_oper_id',text:'rpa_out_oper_id'},
@@ -75,7 +76,7 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 	  
 	  
 	  var store_combox=Ext.create('Ext.form.field.ComboBox',{
-	        fieldLabel: '<b>仓库</b>',
+	        fieldLabel: '仓库',
 	        labelAlign:'right',
             labelWidth:40,
 	        //xtype:'combobox',
@@ -83,7 +84,7 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 	        name: 'store_id',
 		    displayField: 'name',
 		    valueField: 'id',
-	        allowBlank: false,
+	        //allowBlank: false,
 	        store:Ext.create('Ext.data.Store', {
 		    	fields: ['id', 'name'],
 			    proxy:{
@@ -248,15 +249,6 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 			margin:'0 0 0 5',
 			disabled:true,
 			icon:Ext.ContextPath+"/icons/database_copy.png",
-//			listeners:{
-//				render:function(btn){
-//					if(status_combo.getValue()==1 && repair_combox.getValue()){
-//						btn.enable();
-//					} else {
-//						btn.disable();
-//					}
-//				}
-//			},
 			handler:function(btn){
 
 				var rpa_id=repair_combox.getValue();
@@ -305,17 +297,43 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 			margin:'0 0 0 5',
 			disabled:true,
 			icon:Ext.ContextPath+"/icons/database_go.png",
-//			listeners:{
-//				render:function(btn){
-//					if(status_combo.getValue()==2){
-//						btn.enable();
-//					} else {
-//						btn.disable();
-//					}
-//				}
-//			},
 			handler:function(btn){
-				
+				var rpa_id=repair_combox.getValue();
+				var records=me.getSelectionModel( ).getSelection( );
+				if(records && records.length>0){
+					//var ids=[];
+					//var ecodes=[];
+					var repairs=[];
+					for(var i=0;i<records.length;i++){
+						repairs.push({
+							ecode:records[i].get("ecode"),
+							id:records[i].get("id"),
+							rpa_id:rpa_id,
+							str_out_id:records[i].get("str_out_id")
+						});
+						//ids.push(records[i].get("id"));
+						//ecodes.push(records[i].get("ecode"));
+					}
+					Ext.getBody().mask("正在执行,请稍候.....");
+					Ext.Ajax.request({
+						url:Ext.ContextPath+'/repair/repairOutStore.do',
+						method:'POST',
+						timeout:600000000,
+						//headers:{ 'Content-Type':'application/json;charset=UTF-8'},
+						//params:{ids:ids,ecodes:ecodes,rpa_id:rpa_id},
+						jsonData:repairs,
+						//params:{jsonStr:Ext.encode(equiplist)},
+						success:function(response){
+							var obj=Ext.decode(response.responseText);		
+							//Ext.Msg.alert("消息","维修中心入库完成!");
+							Ext.getBody().unmask();
+							me.getStore().reload();
+						},
+						failure:function(){
+							Ext.getBody().unmask();
+						}
+					});
+				}
 			}
 	  });
 	  me.tbar={
@@ -332,16 +350,29 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 
        
 	
-	  me.onAdd('itemdbclick',me.recordDbclick);
+	  me.on('itemdblclick',me.recordDbclick);
       me.callParent();
 	},
 	recordDbclick:function(view, record, item, index, e){
-		var form=Ext.create('Ems.repair.RepairForm',{});
+		
+		var form=Ext.create('Ems.repair.RepairForm',{
+			listeners:{
+				saved:function(){
+					win.close();				
+				}
+			}
+		});
+		
+
+		//record.set('rpa_user_id',loginUsername);
 		form.loadRecord(record);
 		var win=Ext.create('Ext.window.Window',{
+			title:'编辑维修单',
 			layout:'fit',
+			width:500,
 			items:[form]
 		});
 		win.show();
+		
 	}
 });
