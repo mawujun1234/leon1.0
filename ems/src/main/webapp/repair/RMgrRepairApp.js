@@ -1,6 +1,6 @@
 Ext.require("Ems.repair.Repair");
 Ext.require("Ems.repair.RMgrRepairGrid");
-//Ext.require("Ems.repair.RepairTree");
+Ext.require("Ems.repair.RepairForm");
 //Ext.require("Ems.repair.RepairForm");
 Ext.onReady(function(){
 	var grid=Ext.create('Ems.repair.RMgrRepairGrid',{
@@ -33,6 +33,7 @@ Ext.onReady(function(){
 //		//var basicForm=form.getForm();
 //		form.loadRecord(record);
 //	});
+
 	
 	var viewPort=Ext.create('Ext.container.Viewport',{
 		layout:'fit',

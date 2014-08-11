@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
+<mapper namespace="com.mawujun.install.InstallInRepository">
+
+	<select id="getInstallInByEcode" resultType="com.mawujun.install.InstallIn">
+    	select * from ems_installin a
+		where a.id=(select max(installin_id) from ems_installinlist where ecode=#{ecode})
+    </select> 
+</mapper>
+

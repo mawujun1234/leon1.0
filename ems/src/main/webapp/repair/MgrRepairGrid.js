@@ -181,14 +181,84 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 					status:status_combo.getValue()
 				}
 	 });
-	  
+	 var ecode_textfield=Ext.create('Ext.form.field.Text',{
+		labelAlign:'right',
+		name:'encode',
+		labelWidth:60,
+		width:220,
+		disabled:true,
+		fieldLabel: '扫描选择',
+		minLength:Ext.ecode_length,
+		maxLength:Ext.ecode_length,
+		length:Ext.ecode_length,
+		//width:200,
+		//allowBlank:false
+		listeners:{
+			change:function(textfield, newValue, oldValue){
+				if(newValue.length<Ext.ecode_length){
+					return;
+				}
+				var flag=true;
+				me.store.each(function(record){
+					//flag=true;
+					if(record.get("ecode")==newValue){
+						flag=false;
+						me.getSelectionModel( ).select(record,true);
+						return;
+					} 
+				});
+				
+				if(flag){
+					Ext.Msg.alert("消息","该设备状态不是'发往维修中心'和'维修中'或者该设备在下一页,请注意");	
+				}
+				ecode_textfield.setValue("");
+				ecode_textfield.clearInvalid( );
+			}
+		}
+	  });
 	  //入库按钮
 	  var str_in_button=Ext.create("Ext.button.Button",{
 			text:'入库',
+			disabled:true,
 			margin:'0 0 0 5',
 			icon:Ext.ContextPath+"/icons/database_copy.png",
 			handler:function(){
-				
+				var rpa_id=repair_combox.getValue();
+				var records=me.getSelectionModel( ).getSelection( );
+				if(records && records.length>0){
+					//var ids=[];
+					//var ecodes=[];
+					var repairs=[];
+					for(var i=0;i<records.length;i++){
+						repairs.push({
+							ecode:records[i].get("ecode"),
+							id:records[i].get("id"),
+							rpa_id:rpa_id,
+							str_out_id:records[i].get("str_out_id")
+						});
+						//ids.push(records[i].get("id"));
+						//ecodes.push(records[i].get("ecode"));
+					}
+					Ext.getBody().mask("正在执行,请稍候.....");
+					Ext.Ajax.request({
+						url:Ext.ContextPath+'/repair/storeInStore.do',
+						method:'POST',
+						timeout:600000000,
+						//headers:{ 'Content-Type':'application/json;charset=UTF-8'},
+						//params:{ids:ids,ecodes:ecodes,rpa_id:rpa_id},
+						jsonData:repairs,
+						//params:{jsonStr:Ext.encode(equiplist)},
+						success:function(response){
+							var obj=Ext.decode(response.responseText);		
+							//Ext.Msg.alert("消息","维修中心入库完成!");
+							Ext.getBody().unmask();
+							me.getStore().reload();
+						},
+						failure:function(){
+							Ext.getBody().unmask();
+						}
+					});
+				}
 			}
 	  });
 	  me.tbar={
@@ -199,20 +269,11 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 		items: [{
 			items: [store_combox,repair_combox,str_out_date_start,str_out_date_end,status_combo,query_button] // toolbar 1
 		}, {
-			items: [str_in_button] // toolbar 2
+			items: [ecode_textfield,str_in_button] // toolbar 2
 		}]
 	}	
 	  
-//	  [{
-//			text: '查询',
-//			itemId:'reload',
-//			disabled:me.disabledAction,
-//			handler: function(btn){
-//				var grid=btn.up("grid");
-//				grid.getStore().reload();
-//			},
-//			iconCls: 'form-reload-button'
-//		}]
+
        
       me.callParent();
 	}

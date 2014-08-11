@@ -18,6 +18,15 @@ public class Repair  implements IdEntity<String>{
 	@Column(length=25)
 	private String ecode;
 	
+	//下面三行是在创建的时候填的，故障描述是实施人员填的
+	private Date repair_date;//报修时间
+	@Column(length=36) 
+	private String workunit_id;//报修人,就是维修小组
+	@Column(length=15)
+	private String installIn_id;//实施人员入库的单子
+	@Column(length=500) 
+	private String broken_memo;//故障描述
+	
 	@Column(length=36)
 	private String str_out_oper_id;//仓库出库的操作人
 	private Date str_out_date;//仓库出库时间，也是维修单创建日期
@@ -26,6 +35,8 @@ public class Repair  implements IdEntity<String>{
 	
 	@Column(length=36) 
 	private String rpa_id;//维修中心id
+	@Column(length=36) 
+	private String rpa_user_id;//维修人
 	
 	@Column(length=36) 
 	private String rpa_in_oper_id;//维修中心入库人
@@ -33,6 +44,8 @@ public class Repair  implements IdEntity<String>{
 	@Column(length=36) 
 	private String rpa_out_oper_id;//维修中心出库的操作人
 	private Date rpa_out_date;//维修中心出库时间
+	
+	
 	
 	@Column(length=36) 
 	private String str_in_oper_id;//仓库入库的操作人
@@ -42,8 +55,7 @@ public class Repair  implements IdEntity<String>{
 	
 	private Integer rpa_type=1;//维修类型，维修 (1)还是外修(2)
 	private Integer status=RepairStatus.One.getValue();//状态
-	@Column(length=500) 
-	private String broken_memo;//故障描述
+	
 	@Column(length=500) 
 	private String broken_reson;//故障原因
 	@Column(length=500) 
@@ -157,6 +169,30 @@ public class Repair  implements IdEntity<String>{
 	}
 	public void setMemo(String memo) {
 		this.memo = memo;
+	}
+	public String getWorkunit_id() {
+		return workunit_id;
+	}
+	public void setWorkunit_id(String workunit_id) {
+		this.workunit_id = workunit_id;
+	}
+	public Date getRepair_date() {
+		return repair_date;
+	}
+	public void setRepair_date(Date repair_date) {
+		this.repair_date = repair_date;
+	}
+	public String getInstallIn_id() {
+		return installIn_id;
+	}
+	public void setInstallIn_id(String installIn_id) {
+		this.installIn_id = installIn_id;
+	}
+	public String getRpa_user_id() {
+		return rpa_user_id;
+	}
+	public void setRpa_user_id(String rpa_user_id) {
+		this.rpa_user_id = rpa_user_id;
 	}
 
 }

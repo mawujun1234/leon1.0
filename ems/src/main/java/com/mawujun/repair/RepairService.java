@@ -24,6 +24,8 @@ import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.Store;
 import com.mawujun.baseinfo.StoreRepository;
 import com.mawujun.exception.BusinessException;
+import com.mawujun.install.InstallIn;
+import com.mawujun.install.InstallInRepository;
 import com.mawujun.install.StoreEquipment;
 import com.mawujun.install.StoreEquipmentRepository;
 import com.mawujun.repair.Repair;
@@ -48,6 +50,8 @@ public class RepairService extends AbstractService<Repair, String>{
 	private StoreEquipmentRepository storeEquipmentRepository;
 	@Autowired
 	private EquipmentRepository equipmentRepository;
+	@Autowired
+	private InstallInRepository installInRepository;
 	
 	SimpleDateFormat ymdHmsDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
 	@Override
@@ -58,6 +62,13 @@ public class RepairService extends AbstractService<Repair, String>{
 	
 	public RepairVO getRepairVOByEcode(String ecode) {
 		RepairVO repairvo= repairRepository.getRepairVOByEcode(ecode);
+		//获取报修人的相关信息，和报修单id
+		InstallIn installIn=installInRepository.getInstallInByEcode(ecode);
+		repairvo.setWorkunit_id(installIn.getWorkUnit_id());
+		repairvo.setRepair_date(installIn.getOperateDate());
+		repairvo.setInstallIn_id(installIn.getId());
+		//获取任务单的id和其中的故障描述,这里要考虑是否把任务单号直接放置在InstallInList里面
+		
 		return repairvo;	
 	}
 	
@@ -124,9 +135,37 @@ public class RepairService extends AbstractService<Repair, String>{
 		
 		
 	}
+	/**
+	 * 维修中心出库
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param ids
+	 * @param ecodes
+	 */
+	public void repairOutStore(Repair[] repairs){
+		for(Repair repair:repairs){
+			//修改设备状态为"返库途中"
+			equipmentRepository.update(Cnd.update().set(M.Equipment.status, 9).andEquals(M.Equipment.ecode, repair.getEcode()));
+			//维修单的状态也改为"返库途中"
+			repairRepository.update(Cnd.update().set(M.Repair.status, RepairStatus.Three.getValue()).andEquals(M.Repair.id, repair.getId()));
+		}
+	}
 	
-	public void repairOutStore(String[] ids,String[] ecodes){
-		
+	/**
+	 * 仓库入库
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param ids
+	 * @param ecodes
+	 */
+	public void storeInStore(Repair[] repairs){
+		for(Repair repair:repairs){
+			//修改设备状态为"已入库"
+			equipmentRepository.update(Cnd.update().set(M.Equipment.status, 1).andEquals(M.Equipment.ecode, repair.getEcode()));
+			//维修单的状态也改为"完成"
+			repairRepository.update(Cnd.update().set(M.Repair.status, RepairStatus.Four.getValue()).andEquals(M.Repair.id, repair.getId()));
+			//设备从维修中心挂到仓库中
+			storeEquipmentRepository.updateNum(repair.getRpa_id(), repair.getEcode(), "num-1");
+			storeEquipmentRepository.updateNum(repair.getStr_out_id(), repair.getEcode(), "num=1");
+		}
 	}
 	
 }

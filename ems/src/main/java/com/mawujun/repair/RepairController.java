@@ -170,7 +170,23 @@ public class RepairController {
 	 */
 	@RequestMapping("/repair/repairOutStore.do")
 	@ResponseBody
-	public String repairOutStore(String[] ids,String[] ecodes){
+	public String repairOutStore(@RequestBody Repair[] repairs){
+		repairService.repairOutStore(repairs);
+		return "success";
+	}
+	
+	/**
+	 * 维修完返库，仓库入库
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param start
+	 * @param limit
+	 * @param userName
+	 * @return
+	 */
+	@RequestMapping("/repair/storeInStore.do")
+	@ResponseBody
+	public String storeInStore(@RequestBody Repair[] repairs){
+		repairService.storeInStore(repairs);
 		return "success";
 	}
 	

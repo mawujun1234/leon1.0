@@ -329,18 +329,19 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 			items: [ecode_textfield,str_in_button,str_out_button] // toolbar 2
 		}]
 	}	
-	  
-//	  [{
-//			text: '查询',
-//			itemId:'reload',
-//			disabled:me.disabledAction,
-//			handler: function(btn){
-//				var grid=btn.up("grid");
-//				grid.getStore().reload();
-//			},
-//			iconCls: 'form-reload-button'
-//		}]
+
        
+	
+	  me.onAdd('itemdbclick',me.recordDbclick);
       me.callParent();
+	},
+	recordDbclick:function(view, record, item, index, e){
+		var form=Ext.create('Ems.repair.RepairForm',{});
+		form.loadRecord(record);
+		var win=Ext.create('Ext.window.Window',{
+			layout:'fit',
+			items:[form]
+		});
+		win.show();
 	}
 });
