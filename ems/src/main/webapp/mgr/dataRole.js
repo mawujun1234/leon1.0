@@ -19,31 +19,50 @@ Ext.onReady(function() {
 					});
 
 			var tree = Ext.create('Ext.tree.Panel', {
-						title : 'TreeGrid',
+						//title : '数据角色',
 						width : 300,
 						region : 'west',
 						// rootVisible: false,
 
 						store : treeStore,
-						tools : [{
-									type : 'refresh',
-									tooltip : '刷新',
-									handler : function() {
-										treeStore.reload({node:tree.getRootNode()});
-									}
-								}, {
-									type : 'plus',
-									tooltip : '添加',
-									handler : addNav
-								}, {
-									type : 'minus',
-									tooltip : '删除',
-									handler : deleteNav
-								}, {
-									type : 'gear',
-									tooltip : '编辑',
-									handler : modifNav
-								}],
+						tbar: [{
+							iconCls:'form-reload-button',
+							text : '刷新',
+							handler : function() {
+								treeStore.reload({node:tree.getRootNode()});
+							}
+						}, {
+							iconCls:'form-add-button',
+							text : '添加',
+							handler : addNav
+						}, {
+							iconCls:'form-delete-button',
+							text : '删除',
+							handler : deleteNav
+						}, {
+							iconCls:'form-update-button',
+							text : '编辑',
+							handler : modifNav
+						}],
+//						tools : [{
+//									type : 'refresh',
+//									tooltip : '刷新',
+//									handler : function() {
+//										treeStore.reload({node:tree.getRootNode()});
+//									}
+//								}, {
+//									type : 'plus',
+//									tooltip : '添加',
+//									handler : addNav
+//								}, {
+//									type : 'minus',
+//									tooltip : '删除',
+//									handler : deleteNav
+//								}, {
+//									type : 'gear',
+//									tooltip : '编辑',
+//									handler : modifNav
+//								}],
 				listeners:{
 					itemclick:function(treeview, record, item, index, e){
 						selectedNode=record;
@@ -190,7 +209,7 @@ Ext.onReady(function() {
 			
 			Ext.create('Ext.container.Viewport', {
 						layout : 'border',
-						padding : '5px',
+						//padding : '5px',
 						renderTo : 'view-port',
 						style : 'background-color:#FFFFFF',
 						items : [tree, tabPanel]

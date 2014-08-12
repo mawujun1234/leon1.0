@@ -100,14 +100,24 @@ public class StoreController {
 		return store;
 	}
 	
+	/**
+	 * 
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param type 
+	 * @return
+	 */
 	@RequestMapping("/store/queryCombo.do")
 	@ResponseBody
 	public List<Store> queryCombo(Integer type) {	
-		Cnd cnd=Cnd.select().andEquals(M.Store.status, true);
-		if(type!=null){
-			cnd.andEquals(M.Store.type, type);
+//		Cnd cnd=Cnd.select().andEquals(M.Store.status, true);
+//		if(type!=null){
+//			cnd.andEquals(M.Store.type, type);
+//		}
+		//List<Store> storees=storeService.query(cnd);
+		if(type==null){
+			type=1;
 		}
-		List<Store> storees=storeService.query(cnd);
+		List<Store> storees=storeService.queryCombo(type);
 		return storees;
 	}
 	

@@ -152,42 +152,41 @@ Ext.define('Ext.ux.ms.loginDialog',{
         this.callParent(arguments); 
     } ,
    login:function(){
-   	var form=this.form;
-        	 var loginform=form.getForm();
-                   if(loginform.isValid()){
-                	  loginform.submit({ 
-	            		  waitMsg : '正在登录......', 
-	            		  url : Ext.ContextPath+'/login.do', 
-	            		  success : function(form, action) {
-	            		  	if(action.result.success){
-	            		  		window.location.href = 'index.jsp';
-	            		  	}
-	            			  //
-	            		  }, 
-	            		  failure : function(form, action) {
-		            		  form.reset();
-						        switch (action.failureType) {
-						            case Ext.form.Action.CLIENT_INVALID:
+   		var form=this.form;
+        var loginform=form.getForm();
+        if(loginform.isValid()){
+             loginform.submit({ 
+	            waitMsg : '正在登录......', 
+	            url : Ext.ContextPath+'/login.do', 
+	            success : function(form, action) {
+	            	if(action.result.success){
+	            		 window.location.href = 'index.jsp';
+	            	}
+	            }, 
+	            failure : function(form, action) {
+		            form.reset();
+					switch (action.failureType) {
+						case Ext.form.Action.CLIENT_INVALID:
 									    //客户端数据验证失败的情况下，例如客户端验证邮件格式不正确的情况下提交表单  
-									    ShowMessage('提示','数据错误，非法提交');  
-						                break;
-						            case Ext.form.Action.CONNECT_FAILURE:
+						ShowMessage('提示','数据错误，非法提交');  
+						    break;
+						case Ext.form.Action.CONNECT_FAILURE:
 									    //服务器指定的路径链接不上时  
-									    ShowMessage('连接错误','指定路径连接错误!'); 
+							ShowMessage('连接错误','指定路径连接错误!'); 
 						                break;
-						            case Ext.form.Action.SERVER_INVALID:
+						case Ext.form.Action.SERVER_INVALID:
 						            	//服务器端你自己返回success为false时  
-									     ShowMessage('友情提示', action.result.root);	
-									     break;
-									default:
+							ShowMessage('友情提示', action.result.root);	
+							break;
+						default:
 										 //其它类型的错误  
-			                             ShowMessage('警告', '服务器数据传输失败：'+action.response.responseText); 
-									     break;
-						       }
-	            		  }
+			                ShowMessage('警告', '服务器数据传输失败：'+action.response.responseText); 
+							break;
+						}
+	            	}
 	            		  
-	            		});
-                   }
+	           });
+           }
         }
 });
 function ShowMessage(title,msg){

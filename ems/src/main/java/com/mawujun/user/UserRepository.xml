@@ -10,16 +10,15 @@
 	<select id="queryPage" resultType="com.mawujun.user.User" parameterType="map">
     	SELECT a.*
 	    FROM sys_user a
-	    <where>
-	    	<if test="name!=null">
-	    		a.name like #{name} or a.username like #{name}
-	    	</if>
-	    </where>
+	    where 1=1
+	    <if test="name!=null">
+	    	and a.name like #{name} or a.username like #{name}
+	    </if>
 		
     </select>
     
 	<select id="getByUsername" parameterType="string" resultType="com.mawujun.user.User">
-		select * from sys_user where username=#{username}
+		select * from sys_user where username=#{username} and status='Y'
 	</select>
 	<select id="findPermissions" parameterType="string" resultType="string">
 		select distinct d.link from sys_funrole_user a,sys_user b,sys_navigation_funrole c,sys_navigation d
@@ -77,7 +76,7 @@
 	</delete>
 	
 	
-	
+	<!-- 
 	<select id="listDataRole" parameterType="map" resultType="com.mawujun.user.DataRole">
 		select a.* ,decode(a.leaf,'Y',decode(b.DataRole_id,null,'N','Y'),null) as checked
 		from sys_DataRole a left join sys_DataRole_user b
@@ -106,7 +105,7 @@
 	<delete id="deleteAllDataRole">
 		delete sys_DataRole_user where  user_id=#{user_id} 
 	</delete>
-	
+	 -->
 	
 	
 	<select id="listUserByFunRole" parameterType="String" resultType="com.mawujun.user.User">

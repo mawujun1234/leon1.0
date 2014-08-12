@@ -123,7 +123,7 @@ public class RepairService extends AbstractService<Repair, String>{
 			storeEquipmentRepository.updateNum(repair.getStr_out_id(), repair.getEcode(), "num-1");
 			//维修中心数据要添加了
 			Long count=storeEquipmentRepository.queryCount(Cnd.count(M.StoreEquipment.id).andEquals(M.StoreEquipment.ecode, repair.getEcode())
-					.andEquals(M.StoreEquipment.inStore_id, repair.getRpa_id()));
+					.andEquals(M.StoreEquipment.store_id, repair.getRpa_id()));
 			if(count>0){
 				storeEquipmentRepository.updateNum(repair.getRpa_id(), repair.getEcode(), "num+1");
 			} else {

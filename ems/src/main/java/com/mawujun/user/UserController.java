@@ -2,18 +2,10 @@ package com.mawujun.user;
 
 import java.util.List;
 
-
-
-
-
-
-
-
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -117,32 +109,47 @@ public class UserController {
 	}
 	
 	
-	///////////////////////////////////////////////
-	@RequestMapping("/user/listDataRole.do")
-	@ResponseBody
-	public List<DataRole> listDataRole(String node,String user_id) {
-		if("root".equals(node)){
-			node=null;
-		}
-
-		return userService.listDataRole(node,user_id);
-	}
+//	///////////////////////////////////////////////
+//	@RequestMapping("/user/listDataRole.do")
+//	@ResponseBody
+//	public List<DataRole> listDataRole(String node,String user_id) {
+//		if("root".equals(node)){
+//			node=null;
+//		}
+//
+//		return userService.listDataRole(node,user_id);
+//	}
+//	
+//	@RequestMapping("/user/checkchangeDataRole.do")
+//	@ResponseBody
+//	public String checkchangeDataRole(String user_id,String dataRole_id,Boolean checked) {
+//		if(checked){
+//			userService.checkedDataRole(user_id, dataRole_id);
+//		} else {
+//			userService.unCheckedDataRole(user_id, dataRole_id);
+//		}
+//		return "success";
+//
+//	}
+//	
+//	@RequestMapping("/user/selectAllCheckedDataRole.do")
+//	@ResponseBody
+//	public List<String> selectAllCheckedDataRole(String user_id) {
+//		return userService.selectAllCheckedDataRole(user_id);
+//	}
 	
-	@RequestMapping("/user/checkchangeDataRole.do")
+	
+	@RequestMapping("/user/checkchangeStore.do")
 	@ResponseBody
-	public String checkchangeDataRole(String user_id,String dataRole_id,Boolean checked) {
-		if(checked){
-			userService.checkedDataRole(user_id, dataRole_id);
-		} else {
-			userService.unCheckedDataRole(user_id, dataRole_id);
-		}
+	public String checkchangeStore(String user_id,String store_id,Boolean checked) {
+		userService.checkchangeStore(user_id, store_id, checked);
 		return "success";
 
 	}
 	
-	@RequestMapping("/user/selectAllCheckedDataRole.do")
+	@RequestMapping("/user/selectAllCheckedStore.do")
 	@ResponseBody
-	public List<String> selectAllCheckedDataRole(String user_id) {
-		return userService.selectAllCheckedDataRole(user_id);
+	public List<String> selectAllCheckedStore(String user_id) {
+		return userService.selectAllCheckedStore(user_id);
 	}
 }

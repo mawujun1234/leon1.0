@@ -33,6 +33,7 @@ service层开发
     Boolean字段使用    @org.hibernate.annotations.Type(type="yes_no"),数据库存储为Y或N,用Y和N来替代true或false，mybatis查询的时候也是这么处理的
              基本类型都使用包装类，例如int使用Integer，float使用Float
             枚举类型要加上@Enumerated(EnumType.STRING)
+   @Table(name="sys_userstore",uniqueConstraints = {@UniqueConstraint(columnNames={"month", "day"})})
 生成领域模型属性和表的列名快速引用类的maven命令
 	com.mawujun:leon-maven-plugin:0.0.1-SNAPSHOT:generateMT
 	每次修改了领域模型的java类后，都必须重新生成下这个类

@@ -39,7 +39,7 @@ Ext.onReady(function() {
 	
 	var naviPanel=Ext.create("Ext.ms.navi.Panel",{
 		contentEl:'div-left',
-	    title:'功能列表',
+	    title:'常用功能',
 	    region:'west',
 	    //url:Ext.ContextPath+"/getnavi.do",
 	    url:Ext.ContextPath+"/nav/getleftnavi.do",

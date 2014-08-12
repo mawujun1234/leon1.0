@@ -7,8 +7,6 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.mawujun.repository1.IRepository;
-import com.mawujun.utils.page.Page;
-import com.mawujun.utils.Params;
 
 @Repository
 public interface UserRepository extends IRepository<User, String> {
@@ -26,12 +24,15 @@ public interface UserRepository extends IRepository<User, String> {
 	public void deleteAllFunRole(String user_id);
 	
 	
-	public List<DataRole> listDataRole(Map<String,Object> param);
-	public void checkedDataRole(Map<String,Object> param);
-	public void unCheckedDataRole(Map<String,Object> param);
-	public List<String> selectAllCheckedDataRole(String user_id);
-	public void deleteAllDataRole(String user_id);
+	//public List<DataRole> listDataRole(Map<String,Object> param);
+	//public void checkedDataRole(Map<String,Object> param);
+	//public void unCheckedDataRole(Map<String,Object> param);
+	//public List<String> selectAllCheckedDataRole(String user_id);
+	//public void deleteAllDataRole(String user_id);
 	
 	 public List<String> findRoles(String username);
 	 public List<String> findPermissions(String username); 
+	 
+	 
+	 public List<String> selectAllCheckedStore(String user_id);
 }

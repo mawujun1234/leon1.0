@@ -5,7 +5,7 @@
 	imp system/test@xe fromuser=hkb touser=hkb_new file=c:\orabackup\hkbfull.dmp
 	空表不能导出的问题：http://www.2cto.com/database/201211/166179.html
 		alter system set deferred_segment_creation=false scope=both;
-	
+	http://huanyue.iteye.com/blog/533982
 	
 	
 	drop user ems cascade 删除用户和用户拥有的表

@@ -166,7 +166,7 @@ Ext.onReady(function(){
                                     {xtype:'columnbox',columnSize:4,items:[
                                     	{xtype:'textfield',itemId:'style_field',fieldLabel:'型号',name:'style',labelWidth:100,allowBlank:false,labelAlign:'right',value:1},
                                     	{xtype:'numberfield',itemId:'serialNum_field',fieldLabel:'入库数目',name:'serialNum',minValue:1,labelWidth:100,allowBlank:false,labelAlign:'right',value:1},
-                                    	{xtype:'numberfield',itemId:'unitprice_field',fieldLabel:'单价(元)',name:'unitPrice',minValue:0,labelWidth:100,listeners:{change:countTotal},allowBlank:false,labelAlign:'right'},
+                                    	{xtype:'numberfield',itemId:'unitprice_field',fieldLabel:'单价(元)',name:'unitPrice',minValue:0,labelWidth:100,listeners:{change:countTotal},allowBlank:true,labelAlign:'right'},
 										totalprice_display
 									  ]
 									}
@@ -175,7 +175,7 @@ Ext.onReady(function(){
         {layout:{type:'hbox',algin:'stretch'},items:[{flex:1,border:false,html:'<HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=3>'},{xtype:'button',text:'添加',handler:addEquip,width:70,iconCls:'icon-add',margin:'0 5px 0 5px'}]},
         equip_grid,
         {html:'<HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=3>'},
-        {html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;条码的生成规则是: 小类(2)+品名(2)+品牌(3)+供应商(3)+日期(6)+流水号(3)，按“导出”，导出条码'}],
+        {html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;条码的生成规则是: 小类(3)+品名(2)+品牌(3)+供应商(3)+日期(6)+流水号(3)，按“导出”，导出条码'}],
         buttons:[{text:'导出',handler:function(btn){
             if (equipStore.getCount()> 0) { 
             	Ext.getBody().mask("正在导出....");

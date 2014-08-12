@@ -137,6 +137,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 
 		var child=values.isModel?values:Ext.createModel(parent.self.getName(),values);
 		var form=new Ems.baseinfo.EquipmentTypeForm({
+			isSubetype:initValue.levl==2?true:false,
 			listeners:{
 				saved:function(){
 					win.close();
@@ -167,6 +168,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 		}
 		
 		var form=new Ems.baseinfo.EquipmentTypeForm({
+			isSubetype:record.get("levl")==2?true:false,
 			listeners:{
 				saved:function(){
 					//form.updateRecord();

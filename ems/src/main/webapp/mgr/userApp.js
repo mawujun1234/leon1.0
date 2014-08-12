@@ -1,3 +1,4 @@
+Ext.require("Ems.mgr.StoreGrid")
 Ext.onReady(function() {
 	
 		var selectedNode;
@@ -85,7 +86,7 @@ Ext.onReady(function() {
 		    			edit_btn.setDisabled(false);
 		    			
 		    			refreshSelectedFunRole();
-		    			refreshSelectedDataRole();
+		    			refreshSelectedStore();
 					}
 				},
 				dockedItems: [{
@@ -140,6 +141,7 @@ Ext.onReady(function() {
 				save_btn.setDisabled(false);
 				edit_btn.setDisabled(true);
 				user_form.update=true;
+				tabPanel.setActiveTab(0);
 			}
 //========================================================================================
 			
@@ -285,81 +287,136 @@ Ext.onReady(function() {
 				});
 			}
 			
-//数据角色=====================================================================
-			var dataRoleStore = Ext.create('Ext.data.TreeStore', {
-				fields:['id','text','leaf','parentId','memo'],
-						proxy : {
-							type : 'ajax',
-							url : Ext.ContextPath + '/user/listDataRole.do',
-							reader : {
-								type : 'json',
-								root : 'root'
-							}
-						},
-						root : {
-							text : '数据角色',
-							id : 'root',
-							expanded : true
-						},
-						listeners:{
-							beforeload:function( store){
-								if(!selectedNode){
-									//Ext.Msg.alert("消息","请先选择功能角色!");
-									return false;
-								}
-								 store.getProxy().extraParams=Ext.apply(store.getProxy().extraParams,{
-				    				user_id:selectedNode.get("id")
-				    			});
-							}
-						}
-					});
-
-			var dataRoleTree = Ext.create('Ext.tree.Panel', {
-				title:'选择数据角色',
-				store : dataRoleStore,
-				listeners:{
-					checkchange:function(node, checked){
-						var params={
-							user_id:selectedNode.get("id"),
-							dataRole_id:node.get("id"),
-							checked:checked
-						};
-						Ext.Ajax.request({
-							url:Ext.ContextPath+"/user/checkchangeDataRole.do",
-							params:params,
-							method:'POST',
-							success:function(response){
-								
-							}
-							
-						});
-					}
-				}
-			});
+////数据角色=====================================================================
+//			var dataRoleStore = Ext.create('Ext.data.TreeStore', {
+//				fields:['id','text','leaf','parentId','memo'],
+//						proxy : {
+//							type : 'ajax',
+//							url : Ext.ContextPath + '/user/listDataRole.do',
+//							reader : {
+//								type : 'json',
+//								root : 'root'
+//							}
+//						},
+//						root : {
+//							text : '数据角色',
+//							id : 'root',
+//							expanded : true
+//						},
+//						listeners:{
+//							beforeload:function( store){
+//								if(!selectedNode){
+//									//Ext.Msg.alert("消息","请先选择功能角色!");
+//									return false;
+//								}
+//								 store.getProxy().extraParams=Ext.apply(store.getProxy().extraParams,{
+//				    				user_id:selectedNode.get("id")
+//				    			});
+//							}
+//						}
+//					});
+//
+//			var dataRoleTree = Ext.create('Ext.tree.Panel', {
+//				title:'选择数据角色',
+//				store : dataRoleStore,
+//				listeners:{
+//					checkchange:function(node, checked){
+//						var params={
+//							user_id:selectedNode.get("id"),
+//							dataRole_id:node.get("id"),
+//							checked:checked
+//						};
+//						Ext.Ajax.request({
+//							url:Ext.ContextPath+"/user/checkchangeDataRole.do",
+//							params:params,
+//							method:'POST',
+//							success:function(response){
+//								
+//							}
+//							
+//						});
+//					}
+//				}
+//			});
+//			
+//			function refreshSelectedDataRole() {
+//				Ext.Ajax.request({
+//					url:Ext.ContextPath+"/user/selectAllCheckedDataRole.do",
+//					params:{user_id:selectedNode.get("id")},
+//					method:'POST',
+//					success:function(response){
+//						var obj=Ext.decode(response.responseText).root;
+//						dataRoleStore.getRootNode( ).cascadeBy(function(node){	
+//							if(node.isLeaf( )){		
+//								node.set({checked:false});
+//								for(var i=0;i<obj.length;i++){
+//	
+//									if(node.get("id")==obj[i]){
+//										node.set({checked:true});
+//									}
+//								}
+//							}
+//						});
+//					}
+//							
+//				});
+//			}
 			
-			function refreshSelectedDataRole() {
+//选择访问的仓库
+	var store_grid=Ext.create('Ems.mgr.StoreGrid',{
+		title:'仓库权限',
+		listeners:{
+			select:function(selModel, record, index){
+				var params={
+					user_id:selectedNode.get("id"),
+					store_id:record.get("id"),
+					checked:true
+				};
 				Ext.Ajax.request({
-					url:Ext.ContextPath+"/user/selectAllCheckedDataRole.do",
-					params:{user_id:selectedNode.get("id")},
+					url:Ext.ContextPath+"/user/checkchangeStore.do",
+					params:params,
 					method:'POST',
 					success:function(response){
-						var obj=Ext.decode(response.responseText).root;
-						dataRoleStore.getRootNode( ).cascadeBy(function(node){	
-							if(node.isLeaf( )){		
-								node.set({checked:false});
-								for(var i=0;i<obj.length;i++){
-	
-									if(node.get("id")==obj[i]){
-										node.set({checked:true});
-									}
-								}
-							}
-						});
+								
+					}
+							
+				});
+			},
+			deselect:function(selModel, record, index){
+				var params={
+					user_id:selectedNode.get("id"),
+					store_id:record.get("id"),
+					checked:false
+				};
+				Ext.Ajax.request({
+					url:Ext.ContextPath+"/user/checkchangeStore.do",
+					params:params,
+					method:'POST',
+					success:function(response){
+								
 					}
 							
 				});
 			}
-			
+		}
+	});
+	function refreshSelectedStore() {
+		Ext.Ajax.request({
+			url:Ext.ContextPath+"/user/selectAllCheckedStore.do",
+			params:{user_id:selectedNode.get("id")},
+			method:'POST',
+			success:function(response){
+				var selectedIds=Ext.decode(response.responseText).root;
+				var store=store_grid.getStore();//.getRange();
+				var selected=[];
+				for(var i=0;i<selectedIds.length;i++){
+					selected.push(store.getById(selectedIds[i]));
+				}
+				store_grid.getSelectionModel().select(selected,false,true);	
+			}
+							
+		});		
+	}		
 			
 			var tabPanel=Ext.create('Ext.tab.Panel',{
 				region:'center',
@@ -368,8 +425,9 @@ Ext.onReady(function() {
 			    //collapsed:false,
 			    //collapseMode: 'mini',
 			    //hideCollapseTool: true,
-				items:[user_form,funRoleTree,dataRoleTree]
+				items:[user_form,funRoleTree,store_grid]
 			});
+			
 			
 			Ext.create('Ext.container.Viewport', {
 						layout : 'border',
@@ -377,5 +435,5 @@ Ext.onReady(function() {
 						renderTo : 'view-port',
 						style : 'background-color:#FFFFFF',
 						items : [userGrid, tabPanel]
-					});
-		});
+			});
+});

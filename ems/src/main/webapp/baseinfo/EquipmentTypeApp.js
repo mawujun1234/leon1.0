@@ -20,11 +20,11 @@ Ext.onReady(function(){
 	
 	tree.on("itemclick",function(panel,record, item, index, e){
 		if(record.get("levl")==0){
-			grid.setTitle("大类");
+			grid.setTitle("大类管理");
 		} else if(record.get("levl")==1){
-			grid.setTitle("小类");
+			grid.setTitle("\""+record.get("text")+"\"下的所有小类");
 		} else if(record.get("levl")==2){
-			grid.setTitle("品名");
+			grid.setTitle("\""+record.get("text")+"\"下的所有品名");
 		}
 		var aa=grid.getSelectionModel( ).getLastSelected( );
 		console.dir(aa);

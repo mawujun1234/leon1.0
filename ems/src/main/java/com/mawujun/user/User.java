@@ -12,6 +12,10 @@ import com.mawujun.repository.idEntity.UUIDEntity;
 @Entity
 @Table(name="sys_user")
 public class User extends UUIDEntity{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Column(length=30)
 	private String username;
 	@Column(length=30,updatable=false)
@@ -27,6 +31,8 @@ public class User extends UUIDEntity{
 	@Column(nullable=false)
 	private Integer type=0;//类型。0：仓管员或管理员等.非操作员。1:操作员
 	private Date loginDate;
+	@org.hibernate.annotations.Type(type="yes_no")
+	private Boolean status=true;
 	
 	public String toString(){
 		return username;
@@ -79,6 +85,14 @@ public class User extends UUIDEntity{
 	}
 	public void setLoginDate(Date loginDate) {
 		this.loginDate = loginDate;
+	}
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
 	}
 	
 	

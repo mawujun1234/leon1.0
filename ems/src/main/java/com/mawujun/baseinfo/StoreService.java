@@ -10,9 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
+
 import com.mawujun.service.AbstractService;
 
 
+import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.baseinfo.Store;
 import com.mawujun.baseinfo.StoreRepository;
 
@@ -53,5 +56,9 @@ public class StoreService extends AbstractService<Store, String>{
 			return null;
 		}
 		
+	}
+	
+	public List<Store> queryCombo(Integer type){
+		return storeRepository.queryCombo(ShiroUtils.getAuthenticationInfo().getId(),type);
 	}
 }

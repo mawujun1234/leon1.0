@@ -20,12 +20,12 @@ Ext.define('Ems.baseinfo.EquipmentTypeForm',{
        var me = this;
        me.items= [
 		{
-	        fieldLabel: '编码(2)',
+	        fieldLabel: '编码',
 	        afterLabelTextTpl: Ext.required,
 	        name: 'id',
-	        minLength:2,
-	        maxLength:2,
-	        length:2,
+	        minLength:me.isSubetype?3:2,
+	        maxLength:me.isSubetype?3:2,
+	        length:me.isSubetype?3:2,
 	        xtype:'textfield',
 	        allowBlank: false
 	    },
