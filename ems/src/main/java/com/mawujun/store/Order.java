@@ -9,18 +9,18 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.mawujun.repository.idEntity.IdEntity;
+import com.mawujun.repository.idEntity.UUIDEntity;
 
 @Entity
 @Table(name="ems_order")
-public class Order implements IdEntity<String>,Serializable {
+public class Order extends UUIDEntity {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	@Id
 	@Column(length=25)
-	private String id;//订单号
+	private String orderId;//订单号
 	@Column(length=36)
 	private String store_id;
 	@Column(length=2)
@@ -109,13 +109,6 @@ public class Order implements IdEntity<String>,Serializable {
 	public void setUnitPrice(Double unitPrice) {
 		this.unitPrice = unitPrice;
 	}
-		
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
 	public String getStore_id() {
 		return store_id;
 	}
@@ -159,6 +152,16 @@ public class Order implements IdEntity<String>,Serializable {
 
 	public void setOperater(String operater) {
 		this.operater = operater;
+	}
+
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
 	}
 	
 	

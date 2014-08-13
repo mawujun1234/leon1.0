@@ -1,9 +1,12 @@
 package com.mawujun.store;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 
 
 import com.mawujun.service.AbstractService;
@@ -28,6 +31,10 @@ public class OrderService extends AbstractService<Order, String>{
 	@Override
 	public OrderRepository getRepository() {
 		return orderRepository;
+	}
+	
+	public List<OrderVO> query(String orderId) {	
+		return orderRepository.query(orderId);
 	}
 
 }

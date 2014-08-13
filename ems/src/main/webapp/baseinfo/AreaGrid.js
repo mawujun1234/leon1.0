@@ -162,7 +162,11 @@ Ext.define('Ems.baseinfo.AreaGrid',{
 		form.getForm().loadRecord(record);
 		//var ids=record.get("id").split("_");
 		//form.getForm().findField("id").setValue(ids[0]);
-		form.getForm().findField("workunit_id").setRawValue(record.get("workunit_name"));
+		var workunit=Ext.create('Ems.baseinfo.Area',{
+			id:record.get("workunit_id"),
+			name:record.get("workunit_name")
+		});
+		form.getForm().findField("workunit_id").setValue(workunit);
 		
 		var win=new Ext.window.Window({
 			items:[form],

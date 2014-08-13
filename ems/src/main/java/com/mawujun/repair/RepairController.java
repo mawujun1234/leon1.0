@@ -18,7 +18,8 @@ import com.mawujun.utils.BeanUtils;
 import com.mawujun.utils.M;
 import com.mawujun.repair.Repair;
 import com.mawujun.repair.RepairService;
-import com.mawujun.store.Barcode;
+
+import destory.Barcode;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
  * @version 1.0

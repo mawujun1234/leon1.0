@@ -1,4 +1,4 @@
-package com.mawujun.store;
+package destory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -27,17 +27,18 @@ import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.shiro.ShiroUtils;
-import com.mawujun.store.Barcode;
-import com.mawujun.store.BarcodeService;
 import com.mawujun.utils.page.Page;
 import com.mawujun.utils.CacheMgr;
 import com.mawujun.utils.M;
+
+import destory.Barcode;
+import destory.BarcodeService;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
  * @version 1.0
  * @since 1.0
  */
-@Controller
+//@Controller
 //@RequestMapping("/barcode")
 public class BarcodeController {
 

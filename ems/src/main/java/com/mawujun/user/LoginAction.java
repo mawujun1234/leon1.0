@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 
-@Controller
+//@Controller
 public class LoginAction 
 {   
 	@RequestMapping("/login.do")

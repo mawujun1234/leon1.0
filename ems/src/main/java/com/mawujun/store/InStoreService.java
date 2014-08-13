@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
 import com.mawujun.baseinfo.Equipment;
 import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.install.StoreEquipment;
@@ -30,6 +31,8 @@ import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.store.InStore;
 import com.mawujun.store.InStoreRepository;
 import com.mawujun.utils.M;
+
+import destory.BarcodeRepository;
 
 
 /**

@@ -310,6 +310,10 @@ Ext.define('Ext.ms.header.Toolbar',{
 		   	    method:'post',
 		           success : function(response, options){
 		               var resp = Ext.decode(response.responseText);
+		               if(!resp.success){
+		               		top.location.href=Ext.ContextPath+resp.root;
+		               		return;
+		               }
 		               //updateItems(resp.navi);
 		               me.items.each(function(item,index,length){
 			    			if(index>1&&index<length-3)
@@ -358,6 +362,10 @@ Ext.define('Ext.ms.header.Toolbar',{
 		   	    method:'post',
 		           success : function(response, options){
 		               var resp = Ext.decode(response.responseText);
+		               if(!resp.success){
+		               		top.location.href=Ext.ContextPath+resp.root;
+		               		return;
+		               }
 		               //updateItems(resp.navi);
 		               menu.removeAll();
 		               updateItems(menu,resp.root);

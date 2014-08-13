@@ -18,6 +18,10 @@ public class OrderVO extends Order {
 	@Transient
 	private String store_name;
 	
+	private Integer printNum=0;//要打印的数量
+	
+	private Boolean exportStatus=false;//有
+	
 	public String getSubtype_name() {
 		return subtype_name;
 	}
@@ -47,6 +51,18 @@ public class OrderVO extends Order {
 	}
 	public void setStore_name(String store_name) {
 		this.store_name = store_name;
+	}
+	public Integer getPrintNum() {
+		return printNum;
+	}
+	public void setPrintNum(Integer printNum) {
+		this.printNum = printNum;
+	}
+	public Boolean getExportStatus() {
+		return exportStatus;
+	}
+	public void setExportStatus(Boolean exportStatus) {
+		this.exportStatus = exportStatus;
 	}
 	
 }

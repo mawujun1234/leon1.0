@@ -16,7 +16,6 @@ import com.mawujun.service.AbstractService;
 
 
 import com.mawujun.shiro.ShiroUtils;
-import com.mawujun.store.Barcode;
 import com.mawujun.utils.M;
 import com.mawujun.utils.StringUtils;
 import com.mawujun.utils.page.Page;
@@ -31,6 +30,8 @@ import com.mawujun.install.StoreEquipmentRepository;
 import com.mawujun.repair.Repair;
 import com.mawujun.repair.RepairRepository;
 import com.mawujun.repository.cnd.Cnd;
+
+import destory.Barcode;
 
 
 /**

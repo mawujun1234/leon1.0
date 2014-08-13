@@ -33,6 +33,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
 
+
 import com.mawujun.baseinfo.Area;
 import com.mawujun.baseinfo.Brand;
 import com.mawujun.baseinfo.Customer;
@@ -53,12 +54,12 @@ import com.mawujun.install.InstallOutList;
 import com.mawujun.install.WorkUnitEquipment;
 import com.mawujun.repair.Repair;
 import com.mawujun.repair.RepairVO;
-import com.mawujun.store.Barcode;
 import com.mawujun.store.InStore;
 import com.mawujun.store.InStoreList;
 import com.mawujun.store.Order;
 import com.mawujun.user.User;
 
+import destory.Barcode;
 import freemarker.template.TemplateException;
 /**
  * 生成代码的主类，以ExtenConfig_开头的类，是用来控制代码生成的，因为可能存在在不同的情况下，生成的代码会不一样，有个性化的需求，但大部分一样。

@@ -19,6 +19,9 @@ import com.mawujun.utils.BeanUtils;
 import com.mawujun.utils.M;
 import com.mawujun.store.InStore;
 import com.mawujun.store.InStoreService;
+
+import destory.Barcode;
+import destory.BarcodeService;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
  * @version 1.0

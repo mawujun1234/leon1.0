@@ -237,6 +237,22 @@ public static final class InStoreList {
 	public static final String encode="encode";
 	public static final String id="id";
 }
+public static final class Order {
+	public static final String orderId="orderId";
+	public static final String store_id="store_id";
+	public static final String type_id="type_id";
+	public static final String subtype_id="subtype_id";
+	public static final String prod_id="prod_id";
+	public static final String brand_id="brand_id";
+	public static final String supplier_id="supplier_id";
+	public static final String style="style";
+	public static final String unitPrice="unitPrice";
+	public static final String orderNum="orderNum";
+	public static final String totalNum="totalNum";
+	public static final String orderDate="orderDate";
+	public static final String operater="operater";
+	public static final String id="id";
+}
 public static final class DataRole {
 	public static final String text="text";
 	public static final String leaf="leaf";

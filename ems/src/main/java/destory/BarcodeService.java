@@ -1,4 +1,4 @@
-package com.mawujun.store;
+package destory;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,18 +31,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 
 
-import com.mawujun.store.Barcode;
-import com.mawujun.store.BarcodeRepository;
-import com.mawujun.store.Barcode.BarcodeKey;
 import com.mawujun.utils.BeanUtils;
 import com.mawujun.utils.M;
 import com.mawujun.utils.StringUtils;
 import com.mawujun.baseinfo.Equipment;
 import com.mawujun.exception.BusinessException;
+
+import destory.Barcode;
+import destory.BarcodeRepository;
+import destory.Barcode.BarcodeKey;
 
 
 /**
@@ -50,8 +52,8 @@ import com.mawujun.exception.BusinessException;
  * @version 1.0
  * @since 1.0
  */
-@Service
-@Transactional(propagation=Propagation.REQUIRED)
+//@Service
+//@Transactional(propagation=Propagation.REQUIRED)
 public class BarcodeService extends AbstractService<Barcode, String>{
 
 	@Autowired

@@ -1,14 +1,32 @@
 package com.mawujun.store;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mawujun.exception.BusinessException;
+import com.mawujun.repository.cnd.Cnd;
+import com.mawujun.utils.BeanUtils;
+import com.mawujun.utils.M;
+import com.mawujun.utils.StringUtils;
 import com.mawujun.utils.page.Page;
+
+import destory.Barcode.BarcodeKey;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
  * @version 1.0
@@ -54,8 +72,8 @@ public class OrderController {
 
 	@RequestMapping("/order/query.do")
 	@ResponseBody
-	public List<Order> query() {	
-		List<Order> orderes=orderService.queryAll();
+	public List<OrderVO> query(String orderId) {	
+		List<OrderVO> orderes=orderService.query(orderId);
 		return orderes;
 	}
 	
@@ -65,12 +83,12 @@ public class OrderController {
 		return orderService.get(id);
 	}
 	
-	@RequestMapping("/order/create.do")
-	@ResponseBody
-	public Order create(@RequestBody Order order) {
-		orderService.create(order);
-		return order;
-	}
+//	@RequestMapping("/order/create.do")
+//	@ResponseBody
+//	public Order create(@RequestBody Order order) {
+//		orderService.create(order);
+//		return order;
+//	}
 	
 	@RequestMapping("/order/update.do")
 	@ResponseBody
@@ -93,5 +111,69 @@ public class OrderController {
 		return order;
 	}
 	
+	@RequestMapping("/order/create.do")
+	@ResponseBody
+	public String export(@RequestBody Order[] orderes) throws  IOException{
+		Long count=orderService.queryCount(Cnd.count(M.Order.orderId).andEquals(M.Order.orderId, orderes[0].getOrderId()));
+		if(count!=null && count>0){
+			throw new BusinessException("该订单号已经存在");
+		}
+
+		orderService.createBatch(orderes);
+		return "success";
+	}
+	
+	@RequestMapping("/order/exportBarcode.do")
+	@ResponseBody
+	public String export(HttpServletRequest request,HttpServletResponse response,@RequestBody OrderVO[] orderVOs) throws  IOException{
+
+		
+		List<String> results=new ArrayList<String>();
+		results=getBarCodeList(orderVOs);
+
+		String contextPath=request.getSession().getServletContext().getRealPath("/");
+		
+		String fileName="barcode("+orderVOs[0].getOrderId()+").txt";
+		String filePath="temp"+File.separatorChar+fileName;
+		String path=contextPath+filePath;
+		File file=new File(path);
+		if(!file.exists()){
+			//File temp=new File(contextPath+"temp");
+			if (!file.getParentFile().exists()) {
+				file.getParentFile().mkdir();
+			}
+			file.createNewFile();
+		}
+		FileWriter writer = new FileWriter(file, false);
+		for(String ecode:results){
+			writer.append(ecode+"\r\n");
+		} 
+	    writer.close();
+
+	    //return "/"+filePath.replace(File.separatorChar, '/');
+	    return fileName;
+	}
+	
+	SimpleDateFormat y2mdDateFormat=new SimpleDateFormat("yyMMdd");
+	public List<String> getBarCodeList(OrderVO[] orderVOs) {
+		String y2md=y2mdDateFormat.format(new Date());//年月日
+		List<String> ecodes=new ArrayList<String>();
+		for(OrderVO orderVO:orderVOs){
+			int nums = orderVO.getPrintNum();
+			for (int i = 0; i < nums; i++) {
+				String code = generateBarcode(orderVO, i, y2md);
+				ecodes.add(code);
+			}
+		}
+
+		return ecodes;
+	}
+	private String generateBarcode(OrderVO orderVO, Integer serialNum, String y2md) {
+		StringBuilder code = new StringBuilder();
+		//org.apache.commons.lang.StringUtils.leftPad(index+"", 4, "0");
+		code.append(orderVO.getSubtype_id()+ orderVO.getProd_id()+"-"+ orderVO.getBrand_id()+orderVO.getSupplier_id()+"-"+y2md
+				+StringUtils.leftPad(serialNum+"", 4, "0"));
+		return code.toString();
+	}
 	
 }

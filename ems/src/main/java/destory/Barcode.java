@@ -1,4 +1,4 @@
-package com.mawujun.store;
+package destory;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,8 +9,8 @@ import javax.persistence.UniqueConstraint;
 
 import com.mawujun.repository.idEntity.IdEntity;
 
-@Entity
-@Table(name="ems_barcode",uniqueConstraints = {@UniqueConstraint(columnNames={"subtype_id", "prod_id","brand_id","supplier_id","ymd","serialNum"})})
+//@Entity
+//@Table(name="ems_barcode",uniqueConstraints = {@UniqueConstraint(columnNames={"subtype_id", "prod_id","brand_id","supplier_id","ymd","serialNum"})})
 public class Barcode implements IdEntity<String>{
 	@Id
 	@Column(length=25)
