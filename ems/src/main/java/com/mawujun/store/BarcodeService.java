@@ -144,7 +144,7 @@ public class BarcodeService extends AbstractService<Barcode, String>{
 		StringBuilder code = new StringBuilder();
 		//org.apache.commons.lang.StringUtils.leftPad(index+"", 4, "0");
 		code.append(barcode.getSubtype_id()+ barcode.getProd_id()+"-"+ barcode.getBrand_id()+barcode.getSupplier_id()+"-"+y2md
-				+StringUtils.leftPad(serialNum+"", 3, "0"));
+				+StringUtils.leftPad(serialNum+"", 4, "0"));
 		return code.toString();
 	}
 	

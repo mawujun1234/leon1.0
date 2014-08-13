@@ -1,42 +1,70 @@
-Ext.require("Ems.store.Barcode");
-//Ext.require("Ems.store.BarcodeGrid");
-//Ext.require("Ems.store.BarcodeTree");
-//Ext.require("Ems.store.BarcodeForm");
+Ext.require("Ems.store.Order");
+//Ext.require("Ems.store.OrderGrid");
+//Ext.require("Ems.store.OrderTree");
+//Ext.require("Ems.store.OrderForm");
 Ext.onReady(function(){
-//	var grid=Ext.create('Ems.store.BarcodeGrid',{
-//		region:'west',
-//		split: true,
-//		collapsible: true,
-//		title:'XXX表格',
-//		width:400
-//	});
-//
-//	var tree=Ext.create('Ems.store.BarcodeTree',{
-//		title:'树',
-//		width:400,
-//		region:'west'
-//	});
-//
-//	var form=Ext.create('Ems.store.BarcodeForm',{
-//		region:'center',
-//		split: true,
-//		//collapsible: true,
-//		title:'表单',
-//		listeners:{
-//			saved:function(){
-//				grid.getStore().reload();
-//			}
-//		}
-//	});
-//	grid.form=form;
-//	form.grid=grid;
-//	grid.on('itemclick',function(view,record,item,index){
-//		//var basicForm=form.getForm();
-//		form.loadRecord(record);
-//	});
+	var order_id=Ext.create('Ext.form.field.Text',{
+		fieldLabel:'订单号',
+		name:'id',
+		labelWidth:50,
+		allowBlank:false,
+		labelAlign:'right'
+	});
+	var store_combox=Ext.create('Ext.form.field.ComboBox',{
+	        fieldLabel: '入库仓库',
+	        labelAlign:'right',
+            labelWidth:60,
+	        //xtype:'combobox',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'store_id',
+		    displayField: 'name',
+		    valueField: 'id',
+		    //queryParam: 'name',
+    		//queryMode: 'remote',
+    		//triggerAction: 'query',
+    		//minChars:-1,
+		    //trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
+		    //trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
+			//onTrigger1Click : function(){
+			//    var me = this;
+			//    me.setValue('');
+			//},
+	        allowBlank: false,
+	        store:Ext.create('Ext.data.Store', {
+		    	fields: ['id', 'name'],
+			    proxy:{
+			    	type:'ajax',
+			    	extraParams:{type:1},
+			    	url:Ext.ContextPath+"/store/queryCombo.do",
+			    	reader:{
+			    		type:'json',
+			    		root:'root'
+			    	}
+			    }
+		   })
+	});	
+	
+	var orderDate=Ext.create('Ext.form.field.Date',{
+		fieldLabel: '订购日期',
+		labelWidth:60,
+        name: 'orderDate',
+        format:'Y-m-d',
+        value: new Date() 
+	});
+	var operater=Ext.create('Ext.form.field.Text',{
+		labelAlign:'right',
+		labelWidth:55,
+		fieldLabel: '经办人',
+		name:'operater',
+		readOnly:true,
+		allowBlank:false,
+		value:loginUsername
+	});
+	
 	
 	var subtype_combox=Ext.create('Ems.baseinfo.SubtypeCombo',{
 		labelAlign:'right',
+		labelWidth:50,
 		minChars:-1,
 		listeners:{
 			change:function(field,newValue, oldValue){
@@ -63,7 +91,7 @@ Ext.onReady(function(){
 	});
 	var equipStore = Ext.create('Ext.data.Store', {
         autoDestroy: true,
-        model: 'Ems.store.Barcode',
+        model: 'Ems.store.Order',
         proxy: {
             type: 'memory'
         }
@@ -136,7 +164,7 @@ Ext.onReady(function(){
         var form=equipform.getForm();
 		if(form.isValid()){
 			var obj=form.getValues();
-		    var record=new Ext.create('Ems.store.Barcode',{
+		    var record=new Ext.create('Ems.store.Order',{
 	            subtype_id:obj.subtype_id,
 	            subtype_name:subtype_combox.getRawValue(),
 	            prod_id:obj.prod_id,
@@ -162,15 +190,16 @@ Ext.onReady(function(){
         },
         defaults:{margins:'0 0 5 0',border:false},
         items:[{xtype:'form',items:[
-        							{xtype:'columnbox',columnSize:4,items:[subtype_combox,prod_combox,brand_combox,supplier_combox]},
-                                    {xtype:'columnbox',columnSize:4,items:[
-                                    	{xtype:'textfield',itemId:'style_field',fieldLabel:'型号',name:'style',labelWidth:100,allowBlank:false,labelAlign:'right'},
+        							{xtype:'fieldcontainer',layout: 'hbox',items:[order_id,store_combox,orderDate,operater]},
+        							{xtype:'fieldcontainer',layout: 'hbox',items:[subtype_combox,prod_combox,brand_combox,supplier_combox]},
+                                    {xtype:'fieldcontainer',layout: 'hbox',items:[
+                                    	{xtype:'textfield',itemId:'style_field',fieldLabel:'型号',name:'style',labelWidth:50,allowBlank:false,labelAlign:'right'},
                                     	{xtype:'numberfield',itemId:'serialNum_field',fieldLabel:'入库数目',name:'serialNum',minValue:1,labelWidth:100,allowBlank:false,labelAlign:'right',value:1},
                                     	{xtype:'numberfield',itemId:'unitprice_field',fieldLabel:'单价(元)',name:'unitPrice',minValue:0,labelWidth:100,listeners:{change:countTotal},allowBlank:true,labelAlign:'right'},
 										totalprice_display
 									  ]
 									}
-		            		        //{xtype:'columnbox',columnSize:4,items:[{xtype:'listcombox',url:Ext.ContextPath+'/dataExtra/stockList.do',itemId:'stock_field',fieldLabel:'库房',name:'stid',allowBlank:false,emptyText:'未选择库房',labelAlign:'right'},{xtype:'textfield',name:'stmemo',fieldLabel:'库房描述',columnWidth:3/4,labelAlign:'right'}]}
+		            		       
 		            		        ]},
         {layout:{type:'hbox',algin:'stretch'},items:[{flex:1,border:false,html:'<HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=3>'},{xtype:'button',text:'添加',handler:addEquip,width:70,iconCls:'icon-add',margin:'0 5px 0 5px'}]},
         equip_grid,

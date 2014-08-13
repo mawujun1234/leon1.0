@@ -212,6 +212,22 @@ Ext.define('Ext.ms.doc.Panel',{
 	                //iconCls: Docs.icons[cls]
 	            });
         	}else{
+//        		var iframe=new Ext.ux.IFrame({  
+//                    //xtype: 'uxiframe',  
+//                    id: id,  
+//                    title: title,  
+//                    //iconCls: record.data.iconCls,  
+//                    closable: true,  
+//                    layout: 'fit',  
+//                    loadMask: '页面加载中...',  
+//                    border: false 
+//                });
+//                
+//        		var p = this.add(iframe);
+//        		p.on('afterrender',function(){
+//        			iframe.load(Ext.ContextPath+link); 
+//        		});
+                
 	            var p = this.add({
 	            	xtype:'docpage',
 	                id: id,

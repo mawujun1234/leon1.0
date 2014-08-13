@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page language="java" import="java.util.*,com.mawujun.shiro.*" pageEncoding="UTF-8"%>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html>
   <head>
     
-    <title>Repair</title>
+    <title>Barcode</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -22,7 +22,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	
 	<%@include file="../../common/init.jsp" %>
-	<script type="text/javascript" src="MgrRepairApp.js"></script>
+	<script type="text/javascript" src="../baseinfo/CommCombo.js"></script>
+	<script type="text/javascript" src="OrderApp.js"></script>
+	<script type="text/javascript">
+		var loginUsername='<%=ShiroUtils.getName()%>';
+	</script>
   </head>
   
   <body>

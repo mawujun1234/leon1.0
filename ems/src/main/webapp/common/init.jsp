@@ -17,6 +17,7 @@ String extjscontextPath=request.getContextPath();
 
 <link id="theme" rel="stylesheet" type="text/css" href="<%=extjscontextPath%>/ext-4.2.1/resources/css/ext-all.css" />
 <script type="text/javascript" src="<%=extjscontextPath%>/ext-4.2.1/bootstrap.js"></script>
+<%-- <script type="text/javascript" src="<%=extjscontextPath%>/ext-4.2.1/ext-all.js"></script>--%>
 <script type="text/javascript" src="<%=extjscontextPath%>/ext-4.2.1/locale/ext-lang-zh_CN.js"></script>
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/common/common.js"></script>
@@ -64,6 +65,9 @@ Ext.Loader.setConfig({
 	}
 });
 
+Ext.ecode_length=23;
+
+
 var equipmentStatus={
 	0:'未入库',
 	1:'已入库',
@@ -77,6 +81,5 @@ var equipmentStatus={
 	9:'维修后已出库',
 	30:'报废'
 }
-Ext.ecode_length=22;
 </script>
 
