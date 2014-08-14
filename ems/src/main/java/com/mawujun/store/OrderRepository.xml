@@ -16,8 +16,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		where a.orderNo=#{orderNo}   
     </select>
     
+    <!--a0.status作为Equipment的状态 -->
     <select id="getEquipFromBarcode" resultType="com.mawujun.baseinfo.EquipmentVO" parameterType="String">
-    	select a0.ecode,a0.order_id,
+    	select a0.ecode,a0.order_id,a0.status,
 		a.brand_id,
 		a.prod_id,
 		a.style,
@@ -31,7 +32,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		inner join ems_equipmentprod c on a.prod_id=c.id
 		inner join ems_brand d on a.brand_id=d.id
 		inner join ems_supplier e on a.supplier_id=e.id
-		where a0.ecode=#{ecode}   
+		where a0.ecode=#{ecode}  
     </select>
 	<!-- select语句的生成结束=============================================================================================== -->
 	

@@ -17,6 +17,8 @@ public class Barcode implements IdEntity<String>{
 	private String order_id;//订单明细的id
 	@Column(length=8)
 	private String ymd;//年月日，也可以说是批次
+
+	private Integer status=0;//0:未入库，1：已入库
 	@Override
 	public void setId(String id) {
 		// TODO Auto-generated method stub
@@ -44,6 +46,12 @@ public class Barcode implements IdEntity<String>{
 	}
 	public void setYmd(String ymd) {
 		this.ymd = ymd;
+	}
+	public Integer getStatus() {
+		return status;
+	}
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 }

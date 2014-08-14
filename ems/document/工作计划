@@ -3,11 +3,12 @@
 询问：无线扫描怎么做？
 	1：是先扫描然后导出来，
 	2：还是直接扫描入库，出库
-	
-已经入过库的产品呢还可以入库，没有做判断
+
 配置jrebel，使之能工作
-入库的时候记得要往订单表里面写入数据，累计入库多少了。
-	而且注意大批量入库的情况，例如1000件入库的时候
+-noverify  
+-javaagent:D:/jrebel-5.6.1-crack/jrebel.jar  
+-Drebel.dirs=E:\eclipse\workspace\leon\leon-web-common\target\classes
+-Drebel.disable_update=true
 
 发布到war的时候压缩js和csshttp://name327.iteye.com/blog/1921988
 打开速度慢，可能是被shiro拦截了，看看是不是，web.xml是否拦截什么内容
