@@ -1,4 +1,4 @@
-Ext.require("Ems.store.Barcode");
+//Ext.require("Ems.store.Barcode");
 Ext.require("Ems.baseinfo.Equipment");
 //Ext.require("Ems.store.BarcodeTree");
 //Ext.require("Ems.store.BarcodeForm");
@@ -72,7 +72,7 @@ Ext.onReady(function(){
 		maxLength:Ext.ecode_length,
 		length:Ext.ecode_length,
 		labelWidth:80,
-		width:240,
+		width:250,
 		allowBlank:false,
 		listeners:{
 			blur:function(f,e){
@@ -187,7 +187,8 @@ Ext.onReady(function(){
 								Ext.Msg.alert('提示','该设备已经存在');
 							}else{
 								equipStore.insert(0, scanrecord);				
-							}						
+							}		
+							store_combox.disable();
 						}
 					}
 //					failure : function(response) {//加载失败的处理函数   
@@ -216,6 +217,7 @@ Ext.onReady(function(){
 		flex:1,
 		store:equipStore,
     	columns: [Ext.create('Ext.grid.RowNumberer'),
+    			  {header: '条码', dataIndex: 'ecode',width:120},
     	          {header: '设备类型', dataIndex: 'subtype_name',width:120},
     	          {header: '品名', dataIndex: 'prod_name'},
     	          {header: '品牌', dataIndex: 'brand_name',width:120},
@@ -223,11 +225,7 @@ Ext.onReady(function(){
     	          {header: '设备型号', dataIndex: 'style',width:120},
     	          {header: '仓库', dataIndex: 'store_name'},
     	          //{header: '数量', dataIndex: 'serialNum',width:70},
-    	          {header: '单价(元)', dataIndex: 'unitPrice',width:70},
-    	          
-    	          
-    	          //{header: 'stid', dataIndex: 'stid',hideable:false,hidden:true},
-    	         // {header: '库房', dataIndex: 'stock',width:120},
+  
     	          {header: '状态', dataIndex: 'status',width:100,renderer:function(value){
     	          	  if(value==4 || value==5){
 	    	          	return '<font color="red">'+equipmentStatus[value]+'</font>';
@@ -251,17 +249,18 @@ Ext.onReady(function(){
 	                    }
 	                }]
 	            }],
-        tbar:['<pan id="toolbar-title-text">当前入库记录</span>','->',
-              {text:'清空设备',
-        	   iconCls:'icon-clearall',
-        	   handler:function(){
-        		   Ext.MessageBox.confirm('确认', '您确认要清除所有记录吗?', function(btn){
-								            	if(btn=='yes'){
-								            		equipStore.removeAll();
-								            	}
-					});
-        	   }
-        }]
+        tbar:['<pan id="toolbar-title-text">当前入库记录</span>','->'
+//              {text:'清空设备',
+//        	   iconCls:'icon-clearall',
+//        	   handler:function(){
+//        		   Ext.MessageBox.confirm('确认', '您确认要清除所有记录吗?', function(btn){
+//								            	if(btn=='yes'){
+//								            		equipStore.removeAll();
+//								            	}
+//					});
+//        	   }
+//        	}
+        	]	
 	});
 	
 	
@@ -329,6 +328,7 @@ Ext.onReady(function(){
 						Ext.Msg.alert("消息","入库完成!");
 						equipStore.removeAll();
 						Ext.getBody().unmask();
+						store_combox.enable();
 					},
 					failure:function(){
 						Ext.getBody().unmask();

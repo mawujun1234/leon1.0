@@ -37,12 +37,12 @@ public class StoreService extends AbstractService<Store, String>{
 		return storeRepository;
 	}
 
-	public List<Equipment> queryEquipments(Equipment equipment,Integer level) {
+	public List<EquipmentVO> queryEquipments(Equipment equipment,Integer level) {
 		if(level==1){
 			return storeRepository.queryEquipments_total(equipment);
 		} else if(level==2){
-			List<Equipment> list= storeRepository.queryEquipments(equipment);
-			Equipment total=new Equipment();
+			List<EquipmentVO> list= storeRepository.queryEquipments(equipment);
+			EquipmentVO total=new EquipmentVO();
 			total.setSubtype_id("total");
 			total.setSubtype_name("<b>合计:</b>");
 			int total_num=0;

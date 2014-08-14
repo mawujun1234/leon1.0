@@ -21,6 +21,7 @@ Ext.defineModel("Ems.baseinfo.Equipment",{
 		{name:'store_name',type:'string'},
 		{name:'unitPrice',type:'float'},
 		{name:'num',type:'int'},
+		{name:'order_id',type:'string'},
 		
 		{name:'inStore_type',type:'string'},
 		{name:'isInStore',type:'string'},

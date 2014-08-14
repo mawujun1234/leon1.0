@@ -2,6 +2,9 @@ package com.mawujun.store;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,8 +36,10 @@ public class InStoreService extends AbstractService<InStore, String>{
 	private InStoreListRepository inStoreListRepository;
 	@Autowired
 	private EquipmentRepository equipmentRepository;
+//	@Autowired
+//	private BarcodeRepository barcodeRepository;
 	@Autowired
-	private BarcodeRepository barcodeRepository;
+	private OrderRepository orderRepository;
 	@Autowired
 	private StoreEquipmentRepository storeEquipmentRepository;
 	
@@ -59,7 +64,8 @@ public class InStoreService extends AbstractService<InStore, String>{
 		inStore.setOperater(ShiroUtils.getAuthenticationInfo().getId());
 		//inStore.setType(1);
 		inStoreRepository.create(inStore);
-				
+		
+		Map<String,Integer> totalnumMap=new HashMap<String,Integer>();
 		//插入设备表,同时设置仓库，入库时间，是否新设备
 		for(Equipment equipment:equipments){
 			equipment.setFisData(new Date());
@@ -70,8 +76,16 @@ public class InStoreService extends AbstractService<InStore, String>{
 			equipmentRepository.create(equipment);
 			////修改条码状态
 			//barcodeRepository.update(Cnd.update().set(M.Barcode.isInStore, true).andEquals(M.Barcode.ecode, equipment.getEcode()));
+			//更新订单明细中的累计入库数量
+			//orderRepository.updateTotalNum(equipment.getOrder_id(), M.Order.totalNum+"+1");
+			if(totalnumMap.containsKey(equipment.getOrder_id())){
+				totalnumMap.put(equipment.getOrder_id(), totalnumMap.get(equipment.getOrder_id())+1);
+			} else {
+				totalnumMap.put(equipment.getOrder_id(), 1);
+			}
 			
-			//建立设备仓库的关系
+			
+			//建立设备仓库的关系,就是把设备房到仓库中
 			StoreEquipment storeEquipment=new StoreEquipment();
 			storeEquipment.setEcode(equipment.getEcode());
 			//storeEquipment.setInStore_id(instore_id);
@@ -86,6 +100,9 @@ public class InStoreService extends AbstractService<InStore, String>{
 			inStoreListRepository.create(inStoreList);
 		}
 		
+		for(Entry<String,Integer> entry:totalnumMap.entrySet()){
+			orderRepository.updateTotalNum(entry.getKey(), M.Order.totalNum+"+"+entry.getValue());
+		}
 		
 	}
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 import com.mawujun.utils.M;
@@ -109,6 +110,17 @@ public class OrderService extends AbstractService<Order, String>{
 		}
 		return maxsd;
 		
+	}
+	
+	/**
+	 * 新品入库的时候，扫描设备获取设备的相关信息
+	 * @author mawujun 16064988@qq.com 
+	 * @param ecode
+	 * @return
+	 */
+	public EquipmentVO getEquipFromBarcode(String ecode) {
+		EquipmentVO vo=orderRepository.getEquipFromBarcode(ecode);
+		return vo;
 	}
 
 }

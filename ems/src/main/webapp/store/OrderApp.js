@@ -10,39 +10,39 @@ Ext.onReady(function(){
 		allowBlank:false,
 		labelAlign:'right'
 	});
-	var store_combox=Ext.create('Ext.form.field.ComboBox',{
-	        fieldLabel: '入库仓库',
-	        labelAlign:'right',
-            labelWidth:60,
-	        //xtype:'combobox',
-	        //afterLabelTextTpl: Ext.required,
-	        name: 'store_id',
-		    displayField: 'name',
-		    valueField: 'id',
-		    //queryParam: 'name',
-    		//queryMode: 'remote',
-    		//triggerAction: 'query',
-    		//minChars:-1,
-		    //trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
-		    //trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
-			//onTrigger1Click : function(){
-			//    var me = this;
-			//    me.setValue('');
-			//},
-	        allowBlank: false,
-	        store:Ext.create('Ext.data.Store', {
-		    	fields: ['id', 'name'],
-			    proxy:{
-			    	type:'ajax',
-			    	extraParams:{type:1},
-			    	url:Ext.ContextPath+"/store/queryCombo.do",
-			    	reader:{
-			    		type:'json',
-			    		root:'root'
-			    	}
-			    }
-		   })
-	});	
+//	var store_combox=Ext.create('Ext.form.field.ComboBox',{
+//	        fieldLabel: '入库仓库',
+//	        labelAlign:'right',
+//            labelWidth:60,
+//	        //xtype:'combobox',
+//	        //afterLabelTextTpl: Ext.required,
+//	        name: 'store_id',
+//		    displayField: 'name',
+//		    valueField: 'id',
+//		    //queryParam: 'name',
+//    		//queryMode: 'remote',
+//    		//triggerAction: 'query',
+//    		//minChars:-1,
+//		    //trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
+//		    //trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
+//			//onTrigger1Click : function(){
+//			//    var me = this;
+//			//    me.setValue('');
+//			//},
+//	        allowBlank: false,
+//	        store:Ext.create('Ext.data.Store', {
+//		    	fields: ['id', 'name'],
+//			    proxy:{
+//			    	type:'ajax',
+//			    	extraParams:{type:1},
+//			    	url:Ext.ContextPath+"/store/queryCombo.do",
+//			    	reader:{
+//			    		type:'json',
+//			    		root:'root'
+//			    	}
+//			    }
+//		   })
+//	});	
 	
 	var orderDate=Ext.create('Ext.form.field.Date',{
 		fieldLabel: '订购日期',
@@ -168,8 +168,8 @@ Ext.onReady(function(){
 	            supplier_id:obj.supplier_id,
 	            supplier_name:supplier_combox.getRawValue(),
 	            style:obj.style,
-	            store_id:store_combox.getValue(),
-	            store_name:store_combox.getRawValue(),
+	            //store_id:store_combox.getValue(),
+	            //store_name:store_combox.getRawValue(),
 	            orderNum:obj.orderNum,
 	            unitPrice:obj.unitPrice,
 	            totalprice:obj.totalprice,
@@ -179,7 +179,7 @@ Ext.onReady(function(){
 			equipStore.add(record);
 			//订单号和仓库变味不可编辑
 			order_no.disable();
-			store_combox.disable();
+			//store_combox.disable();
 		}
 	}
 	
@@ -191,7 +191,7 @@ Ext.onReady(function(){
         },
         defaults:{margins:'0 0 5 0',border:false},
         items:[{xtype:'form',items:[
-        							{xtype:'fieldcontainer',layout: 'hbox',items:[order_no,store_combox,orderDate,operater]},
+        							{xtype:'fieldcontainer',layout: 'hbox',items:[order_no,orderDate,operater]},
         							{xtype:'fieldcontainer',layout: 'hbox',items:[subtype_combox,prod_combox,brand_combox,supplier_combox]},
                                     {xtype:'fieldcontainer',layout: 'hbox',items:[
                                     	{xtype:'textfield',itemId:'style_field',fieldLabel:'型号',name:'style',labelWidth:50,allowBlank:false,labelAlign:'right'},
@@ -232,7 +232,7 @@ Ext.onReady(function(){
 								orderDate:new Date()
 						    });
 						    order_no.enable();
-							store_combox.enable();
+							//store_combox.enable();
 							var equipform=step1.down('form');
 							equipform.getForm().loadRecord(record);
 						}

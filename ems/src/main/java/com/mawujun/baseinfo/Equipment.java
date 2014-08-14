@@ -28,6 +28,8 @@ public class Equipment implements IdEntity<String>{
 	private String supplier_id;//供应商id
 	@Column(length=50)
 	private String style;//型号
+	@Column(length=36)
+	private String order_id;//订单明细id
 	
 	//private Date lastInDate;//最新一次入库时间
 	@Column(precision=10,scale=2)
@@ -49,26 +51,7 @@ public class Equipment implements IdEntity<String>{
 	
 //	@Transient
 //	private Integer inStore_type;//在入库的时候用来接受web界面的数据的,入库单中使用
-	@Transient
-	private String subtype_name;
-	@Transient
-	private String prod_name;
-	@Transient
-	private String brand_name;
-	@Transient
-	private String supplier_name;
-	@Transient
-	private String store_id;
-	@Transient
-	private String store_name;
-	@Transient
-	private Boolean isInStore;//这个条码是否已经入过库了。是barcode中的条码的状态
-	
-	//=======入库的时候
-	@Transient
-	private String workUnit_id;
-	@Transient
-	private String workUnit_name;
+
 //	@Transient
 //	private Integer outStore_type;
 
@@ -158,73 +141,18 @@ public class Equipment implements IdEntity<String>{
 	public void setFisData(Date fisData) {
 		this.fisData = fisData;
 	}
-	public String getStore_id() {
-		return store_id;
-	}
-	public void setStore_id(String store_id) {
-		this.store_id = store_id;
-	}
-
-	public String getSubtype_name() {
-		return subtype_name;
-	}
-	public void setSubtype_name(String subtype_name) {
-		this.subtype_name = subtype_name;
-	}
-	public String getProd_name() {
-		return prod_name;
-	}
-	public void setProd_name(String prod_name) {
-		this.prod_name = prod_name;
-	}
-	public String getBrand_name() {
-		return brand_name;
-	}
-	public void setBrand_name(String brand_name) {
-		this.brand_name = brand_name;
-	}
-	public String getSupplier_name() {
-		return supplier_name;
-	}
-	public void setSupplier_name(String supplier_name) {
-		this.supplier_name = supplier_name;
-	}
-	public String getStore_name() {
-		return store_name;
-	}
-	public void setStore_name(String store_name) {
-		this.store_name = store_name;
-	}
-//	public Boolean getIsInStore() {
-//		return isInStore;
-//	}
-//	public void setIsInStore(Boolean isInStore) {
-//		this.isInStore = isInStore;
-//	}
-
-	public Boolean getIsInStore() {
-		return isInStore;
-	}
-	public void setIsInStore(Boolean isInStore) {
-		this.isInStore = isInStore;
-	}
-	public String getWorkUnit_id() {
-		return workUnit_id;
-	}
-	public void setWorkUnit_id(String workUnit_id) {
-		this.workUnit_id = workUnit_id;
-	}
-	public String getWorkUnit_name() {
-		return workUnit_name;
-	}
-	public void setWorkUnit_name(String workUnit_name) {
-		this.workUnit_name = workUnit_name;
-	}
+	
 	public Integer getNum() {
 		return num;
 	}
 	public void setNum(Integer num) {
 		this.num = num;
+	}
+	public String getOrder_id() {
+		return order_id;
+	}
+	public void setOrder_id(String order_id) {
+		this.order_id = order_id;
 	}
 
 }

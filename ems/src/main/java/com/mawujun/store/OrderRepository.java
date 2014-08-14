@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.repository1.IRepository;
 import com.mawujun.store.Order;
 /**
@@ -16,4 +17,8 @@ import com.mawujun.store.Order;
 public interface OrderRepository extends IRepository<Order, String>{
 
 	public List<OrderVO> query(@Param("orderNo")String orderNo);
+	
+	public EquipmentVO getEquipFromBarcode(@Param("ecode")String ecode);
+	
+	public void updateTotalNum(@Param("order_id")String order_id,@Param("totalNum")String totalNum);
 }
