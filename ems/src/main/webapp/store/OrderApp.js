@@ -3,9 +3,9 @@ Ext.require("Ems.store.Order");
 //Ext.require("Ems.store.OrderTree");
 //Ext.require("Ems.store.OrderForm");
 Ext.onReady(function(){
-	var order_id=Ext.create('Ext.form.field.Text',{
+	var order_no=Ext.create('Ext.form.field.Text',{
 		fieldLabel:'订单号',
-		name:'orderId',
+		name:'orderNo',
 		labelWidth:50,
 		allowBlank:false,
 		labelAlign:'right'
@@ -158,7 +158,7 @@ Ext.onReady(function(){
 		if(form.isValid()){
 			var obj=form.getValues();
 		    var record=new Ext.create('Ems.store.Order',{
-		    	orderId:order_id.getValue(),
+		    	orderNo:order_no.getValue(),
 	            subtype_id:obj.subtype_id,
 	            subtype_name:subtype_combox.getRawValue(),
 	            prod_id:obj.prod_id,
@@ -168,7 +168,7 @@ Ext.onReady(function(){
 	            supplier_id:obj.supplier_id,
 	            supplier_name:supplier_combox.getRawValue(),
 	            style:obj.style,
-	            store_id:obj.store_id,
+	            store_id:store_combox.getValue(),
 	            store_name:store_combox.getRawValue(),
 	            orderNum:obj.orderNum,
 	            unitPrice:obj.unitPrice,
@@ -178,7 +178,7 @@ Ext.onReady(function(){
 		    })
 			equipStore.add(record);
 			//订单号和仓库变味不可编辑
-			order_id.disable();
+			order_no.disable();
 			store_combox.disable();
 		}
 	}
@@ -191,7 +191,7 @@ Ext.onReady(function(){
         },
         defaults:{margins:'0 0 5 0',border:false},
         items:[{xtype:'form',items:[
-        							{xtype:'fieldcontainer',layout: 'hbox',items:[order_id,store_combox,orderDate,operater]},
+        							{xtype:'fieldcontainer',layout: 'hbox',items:[order_no,store_combox,orderDate,operater]},
         							{xtype:'fieldcontainer',layout: 'hbox',items:[subtype_combox,prod_combox,brand_combox,supplier_combox]},
                                     {xtype:'fieldcontainer',layout: 'hbox',items:[
                                     	{xtype:'textfield',itemId:'style_field',fieldLabel:'型号',name:'style',labelWidth:50,allowBlank:false,labelAlign:'right'},
@@ -223,17 +223,21 @@ Ext.onReady(function(){
 					//params:{jsonStr:Ext.encode(equiplist)},
 					success:function(response){
 						var obj=Ext.decode(response.responseText);
-						equipStore.removeAll();
-						
-						var record=new Ext.create('Ems.store.Order',{
-							operater:loginUsername,
-							orderDate:new Date()
-					    });
-					    order_id.enable();
-						store_combox.enable();
-						var equipform=step1.down('form');
-						equipform.getForm().loadRecord(record);
+						if(obj.success){
+							Ext.Msg.alert("消息","成功");
+							equipStore.removeAll();
+							
+							var record=new Ext.create('Ems.store.Order',{
+								operater:loginUsername,
+								orderDate:new Date()
+						    });
+						    order_no.enable();
+							store_combox.enable();
+							var equipform=step1.down('form');
+							equipform.getForm().loadRecord(record);
+						}
 						Ext.getBody().unmask();
+						
 					},
 					failure:function(){
 						Ext.getBody().unmask();

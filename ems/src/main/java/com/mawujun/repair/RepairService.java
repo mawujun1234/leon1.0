@@ -9,29 +9,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import org.springframework.web.bind.annotation.RequestBody;
-
-import com.mawujun.service.AbstractService;
-
-
-import com.mawujun.shiro.ShiroUtils;
-import com.mawujun.utils.M;
-import com.mawujun.utils.StringUtils;
-import com.mawujun.utils.page.Page;
 import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.Store;
 import com.mawujun.baseinfo.StoreRepository;
-import com.mawujun.exception.BusinessException;
 import com.mawujun.install.InstallIn;
 import com.mawujun.install.InstallInRepository;
 import com.mawujun.install.StoreEquipment;
 import com.mawujun.install.StoreEquipmentRepository;
-import com.mawujun.repair.Repair;
-import com.mawujun.repair.RepairRepository;
 import com.mawujun.repository.cnd.Cnd;
-
-import destory.Barcode;
+import com.mawujun.service.AbstractService;
+import com.mawujun.shiro.ShiroUtils;
+import com.mawujun.utils.M;
+import com.mawujun.utils.StringUtils;
+import com.mawujun.utils.page.Page;
 
 
 /**

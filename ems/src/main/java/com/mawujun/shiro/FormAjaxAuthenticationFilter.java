@@ -16,6 +16,21 @@ import org.apache.shiro.web.util.WebUtils;
  */
 public class FormAjaxAuthenticationFilter extends FormAuthenticationFilter {
 
+	
+	/**
+	 * 如果是ajax请求就不保存这个，因为ajax请求后，会返回json，而不是跳转到页面
+	 */
+    protected void saveRequest(ServletRequest request) {
+//    	String accept=((HttpServletRequest)request).getHeader("Accept");
+//    	if(accept!=null && accept.indexOf("application/json")==-1){
+//    		WebUtils.saveRequest(request);
+//    	} 
+    	//只保存请求jsp的路径
+    	String uri=((HttpServletRequest)request).getRequestURI();
+    	if(uri.lastIndexOf(".jsp")!=-1){
+    		WebUtils.saveRequest(request);
+    	}
+    }
     protected void redirectToLogin(ServletRequest request, ServletResponse response) throws IOException {
     	String accept=((HttpServletRequest)request).getHeader("Accept");
     	if(accept!=null && accept.indexOf("application/json")!=-1){

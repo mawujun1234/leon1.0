@@ -1,28 +1,12 @@
 package com.mawujun.baseinfo;
-import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.mawujun.utils.page.PageRequest;
-import com.mawujun.utils.page.QueryResult;
-import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
-import com.mawujun.repository.cnd.Cnd;
-import com.mawujun.utils.page.Page;
-import com.mawujun.utils.BeanUtils;
-import com.mawujun.utils.M;
-import com.mawujun.baseinfo.Equipment;
-import com.mawujun.baseinfo.EquipmentService;
-
-import destory.Barcode;
-import destory.BarcodeService;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
  * @version 1.0
@@ -35,8 +19,6 @@ public class EquipmentController {
 	@Resource
 	private EquipmentService equipmentService;
 	
-	@Resource
-	private BarcodeService barcodeService;
 
 
 //	/**

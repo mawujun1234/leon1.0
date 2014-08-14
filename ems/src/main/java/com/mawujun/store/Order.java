@@ -20,7 +20,7 @@ public class Order extends UUIDEntity {
 	 */
 	private static final long serialVersionUID = 1L;
 	@Column(length=25)
-	private String orderId;//订单号
+	private String orderNo;//订单号
 	@Column(length=36)
 	private String store_id;
 	@Column(length=2)
@@ -155,14 +155,13 @@ public class Order extends UUIDEntity {
 	}
 
 
-	public String getOrderId() {
-		return orderId;
+	public String getOrderNo() {
+		return orderNo;
 	}
 
 
-	public void setOrderId(String orderId) {
-		this.orderId = orderId;
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
 	}
-	
 	
 }

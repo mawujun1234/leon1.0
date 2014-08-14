@@ -1,9 +1,9 @@
 Ext.require("Ems.store.Order");
 
 Ext.onReady(function(){
-	var order_id=Ext.create('Ext.form.field.Text',{
+	var order_no=Ext.create('Ext.form.field.Text',{
 		fieldLabel:'订单号',
-		name:'orderId',
+		name:'orderNo',
 		labelWidth:50,
 		allowBlank:false,
 		labelAlign:'right'
@@ -75,7 +75,7 @@ Ext.onReady(function(){
 									var obj=Ext.decode(response.responseText);
 									
 									
-									var test =window.open(Ext.ContextPath+"/barcode/download.do?fileName="+obj.root, "_blank");//这个方法就直接把这个TXT以浏览器的方式打开了 
+									var test =window.open(Ext.ContextPath+"/order/downloadBarcode.do?fileName="+obj.root, "_blank");//这个方法就直接把这个TXT以浏览器的方式打开了 
 
 					            	record.set("exportStatus",true);
 									Ext.getBody().unmask();
@@ -107,11 +107,11 @@ Ext.onReady(function(){
 		}
 	});
 	function addEquip(){
-		if(!order_id.getValue()){
+		if(!order_no.getValue()){
 			alert("请先输入订单号!");
 			return;
 		}
-		equipStore.load({params:{orderId:order_id.getValue()}});
+		equipStore.load({params:{orderNo:order_no.getValue()}});
 	}
 	
 	var step1=Ext.create('Ext.panel.Panel',{
@@ -122,7 +122,7 @@ Ext.onReady(function(){
         },
         defaults:{margins:'0 0 5 0',border:false},
         items:[{xtype:'form',items:[
-        							{xtype:'fieldcontainer',layout: 'hbox',items:[order_id,query_button]}
+        							{xtype:'fieldcontainer',layout: 'hbox',items:[order_no,query_button]}
         							//{xtype:'fieldcontainer',layout: 'hbox',items:[subtype_combox,prod_combox,brand_combox,supplier_combox]},
 //                                    {xtype:'fieldcontainer',layout: 'hbox',items:[
 //                                    	{xtype:'textfield',itemId:'style_field',fieldLabel:'型号',name:'style',labelWidth:50,allowBlank:false,labelAlign:'right'},
@@ -158,7 +158,7 @@ Ext.onReady(function(){
 									var obj=Ext.decode(response.responseText);
 									
 									
-									var test =window.open(Ext.ContextPath+"/barcode/download.do?fileName="+obj.root, "_blank");//这个方法就直接把这个TXT以浏览器的方式打开了 
+									var test =window.open(Ext.ContextPath+"/order/downloadBarcode.do?fileName="+obj.root, "_blank");//这个方法就直接把这个TXT以浏览器的方式打开了 
 									//for(var i=0;i<orderVOs.length;i++){
 									//	orderVOs[i].set("exportStatus",true);
 									//}

@@ -1,14 +1,11 @@
 package com.mawujun.store;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
+import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -21,12 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
-import com.mawujun.utils.BeanUtils;
 import com.mawujun.utils.M;
-import com.mawujun.utils.StringUtils;
-import com.mawujun.utils.page.Page;
-
-import destory.Barcode.BarcodeKey;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
  * @version 1.0
@@ -72,8 +64,8 @@ public class OrderController {
 
 	@RequestMapping("/order/query.do")
 	@ResponseBody
-	public List<OrderVO> query(String orderId) {	
-		List<OrderVO> orderes=orderService.query(orderId);
+	public List<OrderVO> query(String orderNo) {	
+		List<OrderVO> orderes=orderService.query(orderNo);
 		return orderes;
 	}
 	
@@ -114,7 +106,7 @@ public class OrderController {
 	@RequestMapping("/order/create.do")
 	@ResponseBody
 	public String export(@RequestBody Order[] orderes) throws  IOException{
-		Long count=orderService.queryCount(Cnd.count(M.Order.orderId).andEquals(M.Order.orderId, orderes[0].getOrderId()));
+		Long count=orderService.queryCount(Cnd.count(M.Order.orderNo).andEquals(M.Order.orderNo, orderes[0].getOrderNo()));
 		if(count!=null && count>0){
 			throw new BusinessException("该订单号已经存在");
 		}
@@ -125,15 +117,15 @@ public class OrderController {
 	
 	@RequestMapping("/order/exportBarcode.do")
 	@ResponseBody
-	public String export(HttpServletRequest request,HttpServletResponse response,@RequestBody OrderVO[] orderVOs) throws  IOException{
+	public String exportBarcode(HttpServletRequest request,HttpServletResponse response,@RequestBody OrderVO[] orderVOs) throws  IOException{
 
 		
 		List<String> results=new ArrayList<String>();
-		results=getBarCodeList(orderVOs);
+		results=orderService.getBarCodeList(orderVOs);
 
 		String contextPath=request.getSession().getServletContext().getRealPath("/");
 		
-		String fileName="barcode("+orderVOs[0].getOrderId()+").txt";
+		String fileName="barcode("+orderVOs[0].getOrderNo()+").txt";
 		String filePath="temp"+File.separatorChar+fileName;
 		String path=contextPath+filePath;
 		File file=new File(path);
@@ -154,26 +146,33 @@ public class OrderController {
 	    return fileName;
 	}
 	
-	SimpleDateFormat y2mdDateFormat=new SimpleDateFormat("yyMMdd");
-	public List<String> getBarCodeList(OrderVO[] orderVOs) {
-		String y2md=y2mdDateFormat.format(new Date());//年月日
-		List<String> ecodes=new ArrayList<String>();
-		for(OrderVO orderVO:orderVOs){
-			int nums = orderVO.getPrintNum();
-			for (int i = 0; i < nums; i++) {
-				String code = generateBarcode(orderVO, i, y2md);
-				ecodes.add(code);
-			}
-		}
+	@RequestMapping("/order/downloadBarcode.do")
+	//@ResponseBody
+	public void downloadBarcode(HttpServletRequest request,HttpServletResponse response,String fileName) throws  IOException{
+		String contextPath=request.getSession().getServletContext().getRealPath("/");
+		String filePath="temp"+File.separatorChar+fileName;
+		String path=contextPath+filePath;
+		File file=new File(path);
+		//FileReader reader=new FileReader(file);
+		FileInputStream in=new FileInputStream(file);
 
-		return ecodes;
+		response.setHeader("content-disposition","attachment; filename="+fileName);
+		//response.setContentType("application/octet-stream");
+		response.setContentType("text/plain; charset=gb2312");
+		
+		OutputStream  out = response.getOutputStream();
+		int n;
+		byte b[]=new byte[1024];
+		while((n=in.read(b))!=-1){
+			out.write(b,0,n);
+		}
+		in.close();
+		
+		out.flush();
+		out.close();
+		
+
 	}
-	private String generateBarcode(OrderVO orderVO, Integer serialNum, String y2md) {
-		StringBuilder code = new StringBuilder();
-		//org.apache.commons.lang.StringUtils.leftPad(index+"", 4, "0");
-		code.append(orderVO.getSubtype_id()+ orderVO.getProd_id()+"-"+ orderVO.getBrand_id()+orderVO.getSupplier_id()+"-"+y2md
-				+StringUtils.leftPad(serialNum+"", 4, "0"));
-		return code.toString();
-	}
+
 	
 }

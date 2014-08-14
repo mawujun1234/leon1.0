@@ -2,7 +2,8 @@ Ext.defineModel("Ems.store.Order",{
 	extend:"Ext.data.Model",
 	idProperty:'id',
 	fields:[
-		{name:'orderId',type:'string'},
+		{name:'id',type:'string'},
+		{name:'orderNo',type:'string'},
 		{name:'brand_id',type:'string'},
 		{name:'operater',type:'string'},
 		{name:'orderDate',type:'date', dateFormat: 'Y-m-d'},

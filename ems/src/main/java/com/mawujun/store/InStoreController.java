@@ -9,19 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.mawujun.utils.page.PageRequest;
-import com.mawujun.utils.page.QueryResult;
 import com.mawujun.baseinfo.Equipment;
-import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
-import com.mawujun.repository.cnd.Cnd;
-import com.mawujun.utils.page.Page;
 import com.mawujun.utils.BeanUtils;
-import com.mawujun.utils.M;
-import com.mawujun.store.InStore;
-import com.mawujun.store.InStoreService;
-
-import destory.Barcode;
-import destory.BarcodeService;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
  * @version 1.0
@@ -33,8 +22,8 @@ public class InStoreController {
 
 	@Resource
 	private InStoreService inStoreService;
-	@Resource
-	private BarcodeService barcodeService;
+//	@Resource
+//	private BarcodeService barcodeService;
 
 //
 //	/**
@@ -107,21 +96,21 @@ public class InStoreController {
 		inStoreService.delete(inStore);
 		return inStore;
 	}
-	/**
-	 * 主要用于新品入库的时候
-	 * @author mawujun 16064988@qq.com 
-	 * @param ecode
-	 * @return
-	 */
-	@RequestMapping("/inStore/getEquipFromBarcode.do")
-	@ResponseBody
-	public Equipment getEquipFromBarcode(String ecode) {	
-		Barcode barcode= barcodeService.getBarcodeByEcode(ecode);
-		barcode.setStatus(null);
-		Equipment equipment= BeanUtils.copyOrCast(barcode, Equipment.class);
-		equipment.setStatus(barcode.getIsInStore()?255:0);//设备如果已经入过库了，就设置为255，否则就使用0
-		return equipment;
-	}
+//	/**
+//	 * 主要用于新品入库的时候
+//	 * @author mawujun 16064988@qq.com 
+//	 * @param ecode
+//	 * @return
+//	 */
+//	@RequestMapping("/inStore/getEquipFromBarcode.do")
+//	@ResponseBody
+//	public Equipment getEquipFromBarcode(String ecode) {	
+//		Barcode barcode= barcodeService.getBarcodeByEcode(ecode);
+//		barcode.setStatus(null);
+//		Equipment equipment= BeanUtils.copyOrCast(barcode, Equipment.class);
+//		equipment.setStatus(barcode.getIsInStore()?255:0);//设备如果已经入过库了，就设置为255，否则就使用0
+//		return equipment;
+//	}
 	
 	
 	@RequestMapping("/inStore/newInStore.do")

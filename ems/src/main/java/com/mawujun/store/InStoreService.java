@@ -8,31 +8,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
-
-
-
-
-
-
-
-
-
-
 import com.mawujun.baseinfo.Equipment;
 import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.install.StoreEquipment;
 import com.mawujun.install.StoreEquipmentRepository;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
-
-
 import com.mawujun.shiro.ShiroUtils;
-import com.mawujun.store.InStore;
-import com.mawujun.store.InStoreRepository;
 import com.mawujun.utils.M;
-
-import destory.BarcodeRepository;
 
 
 /**
@@ -85,8 +68,8 @@ public class InStoreService extends AbstractService<InStore, String>{
 			equipment.setIsnew(true);
 			equipment.setMemo("");
 			equipmentRepository.create(equipment);
-			//修改条码状态
-			barcodeRepository.update(Cnd.update().set(M.Barcode.isInStore, true).andEquals(M.Barcode.ecode, equipment.getEcode()));
+			////修改条码状态
+			//barcodeRepository.update(Cnd.update().set(M.Barcode.isInStore, true).andEquals(M.Barcode.ecode, equipment.getEcode()));
 			
 			//建立设备仓库的关系
 			StoreEquipment storeEquipment=new StoreEquipment();

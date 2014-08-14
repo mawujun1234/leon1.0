@@ -209,21 +209,17 @@ public static final class Repair {
 }
 public static final class Barcode {
 	public static final String ecode="ecode";
+	public static final String order_id="order_id";
+	public static final String ymd="ymd";
+}
+public static final class Barcode_MaxNum {
 	public static final String subtype_id="subtype_id";
 	public static final String prod_id="prod_id";
 	public static final String brand_id="brand_id";
 	public static final String supplier_id="supplier_id";
 	public static final String ymd="ymd";
-	public static final String serialNum="serialNum";
-	public static final String style="style";
-	public static final String unitPrice="unitPrice";
-	public static final String status="status";
-	public static final String isInStore="isInStore";
-	public static final String subtype_name="subtype_name";
-	public static final String prod_name="prod_name";
-	public static final String brand_name="brand_name";
-	public static final String supplier_name="supplier_name";
-	public static final String store_name="store_name";
+	public static final String num="num";
+	public static final String id="id";
 }
 public static final class InStore {
 	public static final String id="id";
@@ -238,7 +234,7 @@ public static final class InStoreList {
 	public static final String id="id";
 }
 public static final class Order {
-	public static final String orderId="orderId";
+	public static final String orderNo="orderNo";
 	public static final String store_id="store_id";
 	public static final String type_id="type_id";
 	public static final String subtype_id="subtype_id";

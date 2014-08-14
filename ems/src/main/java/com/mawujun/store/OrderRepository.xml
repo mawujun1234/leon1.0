@@ -13,7 +13,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		inner join ems_brand d on a.brand_id=d.id
 		inner join ems_supplier e on a.supplier_id=e.id
 		inner join ems_store f on a.store_id=f.id
-		where a.orderId=#{orderId}   
+		where a.orderNo=#{orderNo}   
     </select>
 	<!-- select语句的生成结束=============================================================================================== -->
 </mapper>
