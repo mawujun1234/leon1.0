@@ -13,6 +13,7 @@ Ext.define('Ems.install.StoreEquipmentWindow',{
 		var me=this;
 		var equip_store=Ext.create('Ext.data.Store',{
 			//fields:[],
+			pageSize:50,
 			autoLoad:false,
 			model:'Ems.baseinfo.Equipment',
 			proxy:{
@@ -146,7 +147,13 @@ Ext.define('Ems.install.StoreEquipmentWindow',{
 	    	          	}
 	    	          	
 	    	          }}
-	    	]
+	    	],
+	    	bbar:[{
+		        xtype: 'pagingtoolbar',
+		        store: equip_store,  
+		        //dock: 'bottom',
+		        displayInfo: true
+		  }]
 		});
 		equip_grid.on('cellclick',function(grid, td, cellIndex, record, tr, rowIndex, e){
 			//alert(equip_grid.columns );

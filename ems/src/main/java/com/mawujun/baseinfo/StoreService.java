@@ -13,10 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
+
 import com.mawujun.service.AbstractService;
 
 
 import com.mawujun.shiro.ShiroUtils;
+import com.mawujun.utils.page.Page;
 import com.mawujun.baseinfo.Store;
 import com.mawujun.baseinfo.StoreRepository;
 
@@ -38,11 +41,16 @@ public class StoreService extends AbstractService<Store, String>{
 		return storeRepository;
 	}
 
-	public List<EquipmentVO> queryEquipments(EquipmentVO equipmentVO,Integer level) {
+	public List<EquipmentVO> queryEquipments(EquipmentVO equipmentVO,Integer level,Integer start,Integer limit) {
 		if(level==1){
 			return storeRepository.queryEquipments_total(equipmentVO);
 		} else if(level==2){
-			List<EquipmentVO> list= storeRepository.queryEquipments(equipmentVO);
+			Page page=new Page();
+			page.setStart(start);
+			page.setPageSize(limit);
+			page.setParams(equipmentVO);
+			Page result=storeRepository.queryEquipments(page);
+			List<EquipmentVO> list= result.getResult();
 			EquipmentVO total=new EquipmentVO();
 			total.setSubtype_id("total");
 			total.setSubtype_name("<b>合计:</b>");
