@@ -131,8 +131,8 @@ public class StoreController {
 	@RequestMapping("/store/queryEquipments.do")
 	@ResponseBody
 	//public List<Equipment> queryEquipments(String store_id,String subtype_id,String prod_id,String brand_id,String supplier_id) {	
-	public List<EquipmentVO> queryEquipments(Equipment equipment,Integer level) {	
-		List<EquipmentVO> equipments=storeService.queryEquipments(equipment,level);
+	public List<EquipmentVO> queryEquipments(EquipmentVO equipmentVO,Integer level) {	
+		List<EquipmentVO> equipments=storeService.queryEquipments(equipmentVO,level);
 		return equipments;
 	}
 }

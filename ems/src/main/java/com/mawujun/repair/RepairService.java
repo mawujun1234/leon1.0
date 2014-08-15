@@ -51,18 +51,24 @@ public class RepairService extends AbstractService<Repair, String>{
 	}
 	
 	
-	public RepairVO getRepairVOByEcode(String ecode) {
-		RepairVO repairvo= repairRepository.getRepairVOByEcode(ecode);
+	public RepairVO getRepairVOByEcode(String ecode,String store_id) {
+		RepairVO repairvo= repairRepository.getRepairVOByEcode(ecode,store_id);
 		//获取报修人的相关信息，和报修单id
 		InstallIn installIn=installInRepository.getInstallInByEcode(ecode);
-		repairvo.setWorkunit_id(installIn.getWorkUnit_id());
-		repairvo.setRepair_date(installIn.getOperateDate());
-		repairvo.setInstallIn_id(installIn.getId());
+		if(installIn!=null){
+			repairvo.setWorkunit_id(installIn.getWorkUnit_id());
+			repairvo.setRepair_date(installIn.getOperateDate());
+			repairvo.setInstallIn_id(installIn.getId());
+		}
+
 		//获取任务单的id和其中的故障描述,这里要考虑是否把任务单号直接放置在InstallInList里面
-		
 		return repairvo;	
 	}
-	
+	/**
+	 * 创建维修单
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param repairs
+	 */
 	public void newRepair(Repair[] repairs) {
 		String id_prev=ymdHmsDateFormat.format(new Date());
 		String oper_id=ShiroUtils.getAuthenticationInfo().getId();
@@ -107,7 +113,8 @@ public class RepairService extends AbstractService<Repair, String>{
 			//修改设备状态为“维修中”
 			equipmentRepository.update(Cnd.update().set(M.Equipment.status, 7).andEquals(M.Equipment.ecode, repair.getEcode()));
 			//修改维修单状态为"维修中"
-			repairRepository.update(Cnd.update().set(M.Repair.rpa_in_oper_id, oper_id)
+			repairRepository.update(Cnd.update()
+					.set(M.Repair.rpa_in_oper_id, oper_id)
 					.set(M.Repair.rpa_in_date, new Date())
 					.set(M.Repair.status, RepairStatus.Two.getValue()).andEquals(M.Repair.id, repair.getId()));
 			//把设备中参仓库，移到 维修中心来,原来的仓库减1，维修中心如果没有该设备，就添加该设备，否则就加1
@@ -154,7 +161,7 @@ public class RepairService extends AbstractService<Repair, String>{
 	 * @param ids
 	 * @param ecodes
 	 */
-	public void storeInStore(Repair[] repairs){
+	public void storeInStore(Repair[] repairs,String str_in_id){
 		String oper_id=ShiroUtils.getAuthenticationInfo().getId();
 		for(Repair repair:repairs){
 			//修改设备状态为"已入库"

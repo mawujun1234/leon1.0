@@ -4,38 +4,38 @@ Ext.require("Ems.repair.Repair");
 //Ext.require("Ems.store.BarcodeForm");
 Ext.onReady(function(){
         
-//	var store_combox=Ext.create('Ext.form.field.ComboBox',{
-//	        fieldLabel: '<b>仓库</b>',
-//	        labelAlign:'right',
-//            labelWidth:55,
-//	        //xtype:'combobox',
-//	        //afterLabelTextTpl: Ext.required,
-//	        name: 'str_out_id',
-//		    displayField: 'name',
-//		    valueField: 'id',
-//		    //queryParam: 'name',
-//    		//queryMode: 'remote',
-//    		//triggerAction: 'query',
-//    		//minChars:-1,
-//		    //trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
-//		    //trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
-//			//onTrigger1Click : function(){
-//			//    var me = this;
-//			//    me.setValue('');
-//			//},
-//	        allowBlank: false,
-//	        store:Ext.create('Ext.data.Store', {
-//		    	fields: ['id', 'name'],
-//			    proxy:{
-//			    	type:'ajax',
-//			    	url:Ext.ContextPath+"/store/queryCombo.do",
-//			    	reader:{
-//			    		type:'json',
-//			    		root:'root'
-//			    	}
-//			    }
-//		   })
-//	});
+	var store_combox=Ext.create('Ext.form.field.ComboBox',{
+	        fieldLabel: '<b>仓库</b>',
+	        labelAlign:'right',
+            labelWidth:55,
+	        //xtype:'combobox',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'str_out_id',
+		    displayField: 'name',
+		    valueField: 'id',
+		    //queryParam: 'name',
+    		//queryMode: 'remote',
+    		//triggerAction: 'query',
+    		//minChars:-1,
+		    //trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
+		    //trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
+			//onTrigger1Click : function(){
+			//    var me = this;
+			//    me.setValue('');
+			//},
+	        allowBlank: false,
+	        store:Ext.create('Ext.data.Store', {
+		    	fields: ['id', 'name'],
+			    proxy:{
+			    	type:'ajax',
+			    	url:Ext.ContextPath+"/store/queryCombo.do",
+			    	reader:{
+			    		type:'json',
+			    		root:'root'
+			    	}
+			    }
+		   })
+	});
 	var repair_combox=Ext.create('Ext.form.field.ComboBox',{
 	        fieldLabel: '<b>维修中心</b>',
 	        labelAlign:'right',
@@ -76,8 +76,9 @@ Ext.onReady(function(){
 		minLength:Ext.ecode_length,
 		maxLength:Ext.ecode_length,
 		length:Ext.ecode_length,
+		selectOnFocus:true,
 		labelWidth:80,
-		width:240,
+		width:250,
 		allowBlank:false,
 		listeners:{
 			blur:function(f,e){
@@ -145,7 +146,7 @@ Ext.onReady(function(){
 //		if(!store_id_temp){
 //			store_id_temp=store_combox.getValue();
 //		} else if(store_id_temp!=store_combox.getValue()){
-//			Ext.Msg.alert("消息","对不起，一次入库只能选择一个仓库.");
+//			Ext.Msg.alert("消息","对不起，一次出库只能选择一个仓库.");
 //			ecode_textfield.setValue("");
 //			ecode_textfield.clearInvalid( );
 //			return;
@@ -156,7 +157,7 @@ Ext.onReady(function(){
 		   if(field.isValid()){
 			  // form.load({
 		   	Ext.Ajax.request({
-					params : {ecode:newValue},//传递参数   
+					params : {ecode:newValue,store_id:store_combox.getValue()},//传递参数   
 					url : Ext.ContextPath+'/repair/getRepairVOByEcode.do',//请求的url地址   
 					method : 'GET',//请求方式   
 					success : function(response) {//加载成功的处理函数   
@@ -167,8 +168,8 @@ Ext.onReady(function(){
 								return;
 							}
 							//为新增的equipment添加仓库等其他信息
-							//ret.root.str_out_id=store_combox.getValue();
-							//ret.root.str_out_name=store_combox.getRawValue();
+							ret.root.str_out_id=store_combox.getValue();
+							ret.root.str_out_name=store_combox.getRawValue();
 							ret.root.rpa_id=repair_combox.getValue();
 							ret.root.rpa_name=repair_combox.getRawValue();
 							
@@ -188,7 +189,8 @@ Ext.onReady(function(){
 								Ext.Msg.alert('提示','该设备已经存在');
 							}else{
 								equipStore.insert(0, scanrecord);				
-							}						
+							}			
+							store_combox.disabled();
 						}
 					}
 //					failure : function(response) {//加载失败的处理函数   
@@ -217,6 +219,7 @@ Ext.onReady(function(){
 		flex:1,
 		store:equipStore,
     	columns: [Ext.create('Ext.grid.RowNumberer'),
+    			  {header: '条码', dataIndex: 'ecode',width:130},
     	          {header: '设备类型', dataIndex: 'subtype_name',width:120},
     	          {header: '品名', dataIndex: 'prod_name'},
     	          {header: '品牌', dataIndex: 'brand_name',width:120},
@@ -254,13 +257,13 @@ Ext.onReady(function(){
 	                }]
 	            }],
         tbar:['<pan id="toolbar-title-text">当前入库记录</span>','->',
-              {text:'清空设备',
+              {text:'清空列表中设备',
         	   iconCls:'icon-clearall',
         	   handler:function(){
         		   Ext.MessageBox.confirm('确认', '您确认要清除所有记录吗?', function(btn){
-								            	if(btn=='yes'){
-								            		equipStore.removeAll();
-								            	}
+						if(btn=='yes'){
+							equipStore.removeAll();
+						}
 					});
         	   }
         }]
@@ -276,7 +279,7 @@ Ext.onReady(function(){
             align:'stretch'
         },
         defaults:{margins:'0 0 5 0',border:false},
-        items:[{xtype:'form',items:[{xtype:'fieldcontainer',layout: 'hbox',items:[repair_combox,ecode_textfield,clear_button]},
+        items:[{xtype:'form',items:[{xtype:'fieldcontainer',layout: 'hbox',items:[store_combox,repair_combox,ecode_textfield,clear_button]},
                                     {xtype:'fieldcontainer',layout: 'hbox',items:[storeman_textfield,inDate_textfield]}
 		            		        //{xtype:'columnbox',columnSize:4,items:[{xtype:'listcombox',url:Ext.ContextPath+'/dataExtra/stockList.do',itemId:'stock_field',fieldLabel:'库房',name:'stid',allowBlank:false,emptyText:'未选择库房',labelAlign:'right'},{xtype:'textfield',name:'stmemo',fieldLabel:'库房描述',columnWidth:3/4,labelAlign:'right'}]}
 		            		        ]},
@@ -302,13 +305,13 @@ Ext.onReady(function(){
 					headers:{ 'Content-Type':'application/json;charset=UTF-8'},
 					//params:{store_id:store_combox.getValue()},
 					jsonData:equipments,
-					//params:{jsonStr:Ext.encode(equiplist)},
 					success:function(response){
 						var obj=Ext.decode(response.responseText);
-						store_id_temp=null;
+						//store_id_temp=null;
 						Ext.Msg.alert("消息","维修单创建成功!");
 						equipStore.removeAll();
 						Ext.getBody().unmask();
+						store_combox.enable();
 					},
 					failure:function(){
 						Ext.getBody().unmask();

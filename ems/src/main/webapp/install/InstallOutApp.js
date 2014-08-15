@@ -1,4 +1,4 @@
-Ext.require("Ems.store.Barcode");
+//Ext.require("Ems.store.Barcode");
 Ext.require("Ems.install.WorkUnitEquipmentWindow");
 Ext.require("Ems.install.StoreEquipmentWindow");
 //Ext.require("Ems.store.BarcodeForm");
@@ -161,8 +161,9 @@ Ext.onReady(function(){
 		minLength:Ext.ecode_length,
 		maxLength:Ext.ecode_length,
 		length:Ext.ecode_length,
+		selectOnFocus:true,
 		labelWidth:80,
-		width:240,
+		width:250,
 		allowBlank:false,
 		listeners:{
 			blur:function(f,e){
@@ -327,7 +328,6 @@ Ext.onReady(function(){
     	          {header: '仓库', dataIndex: 'store_name'},
     	          //{header: '作业单位', dataIndex: 'workUnit_name'},
     	          //{header: '数量', dataIndex: 'serialNum',width:70},
-    	          {header: '单价(元)', dataIndex: 'unitPrice',width:70},
     	          
     	          
     	          //{header: 'stid', dataIndex: 'stid',hideable:false,hidden:true},

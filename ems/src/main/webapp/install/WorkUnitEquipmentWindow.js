@@ -38,7 +38,6 @@ Ext.define('Ems.install.WorkUnitEquipmentWindow',{
 	    	          {header: '设备型号', dataIndex: 'style',width:120},
 	    	          //{header: '仓库', dataIndex: 'store_name'},
 	    	          //{header: '数量', dataIndex: 'serialNum',width:70},
-	    	          {header: '单价(元)', dataIndex: 'unitPrice',width:70},
 	    	          //{header: 'stid', dataIndex: 'stid',hideable:false,hidden:true},
 	    	         // {header: '库房', dataIndex: 'stock',width:120},
 	    	          {header: '状态', dataIndex: 'status',width:60,renderer:function(value){

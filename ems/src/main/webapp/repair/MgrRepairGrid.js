@@ -185,12 +185,13 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 		labelAlign:'right',
 		name:'encode',
 		labelWidth:60,
-		width:220,
+		width:230,
 		//disabled:true,
 		fieldLabel: '扫描选择',
 		minLength:Ext.ecode_length,
 		maxLength:Ext.ecode_length,
 		length:Ext.ecode_length,
+		selectOnFocus:true,
 		//width:200,
 		//allowBlank:false
 		listeners:{
@@ -223,6 +224,11 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 			margin:'0 0 0 5',
 			icon:Ext.ContextPath+"/icons/database_copy.png",
 			handler:function(){
+				var records=me.getSelectionModel( ).getSelection( );
+				if(!records || records.length==0){
+					Ext.Msg.alert("消息","请先选择要入库的设备");
+					return;
+				}
 				//先选择仓库，弹出框
 				var from=Ext.create('Ext.form.Panel',{
 					frame:true,
@@ -254,7 +260,7 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 				  	text:'确定',
 				  	handler:function(){
 				  		var str_in_id=from.down("combobox#str_in_id");
-						var records=me.getSelectionModel( ).getSelection( );
+						
 						if(records && records.length>0){
 							var repairs=[];
 							for(var i=0;i<records.length;i++){
@@ -262,7 +268,7 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 									ecode:records[i].get("ecode"),
 									id:records[i].get("id"),
 									rpa_id:records[i].get("rpa_id"),
-									str_in_id:str_in_id.getValue()
+									str_in_id:records[i].get("str_out_id")//入库仓库和发货仓库要一致
 								});
 								//ids.push(records[i].get("id"));
 								//ecodes.push(records[i].get("ecode"));
@@ -273,7 +279,7 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 								method:'POST',
 								timeout:600000000,
 								//headers:{ 'Content-Type':'application/json;charset=UTF-8'},
-								//params:{ids:ids,ecodes:ecodes,rpa_id:rpa_id},
+								params:{str_in_id:str_in_id.getValue()},
 								jsonData:repairs,
 								//params:{jsonStr:Ext.encode(equiplist)},
 								success:function(response){

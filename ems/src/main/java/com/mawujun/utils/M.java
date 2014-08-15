@@ -1,5 +1,22 @@
 package com.mawujun.utils;
 public final class M {
+public static final class Adjust {
+	public static final String id="id";
+	public static final String status="status";
+	public static final String store_out_id="store_out_id";
+	public static final String store_in_id="store_in_id";
+	public static final String createDate="createDate";
+	public static final String creater="creater";
+	public static final String overDate="overDate";
+	public static final String overer="overer";
+}
+public static final class AdjustList {
+	public static final String adjust_id="adjust_id";
+	public static final String ecode="ecode";
+	public static final String out_num="out_num";
+	public static final String in_num="in_num";
+	public static final String id="id";
+}
 public static final class Area {
 	public static final String name="name";
 	public static final String memo="memo";
@@ -38,21 +55,13 @@ public static final class Equipment {
 	public static final String brand_id="brand_id";
 	public static final String supplier_id="supplier_id";
 	public static final String style="style";
+	public static final String order_id="order_id";
 	public static final String unitPrice="unitPrice";
 	public static final String isnew="isnew";
 	public static final String memo="memo";
 	public static final String status="status";
 	public static final String fisData="fisData";
 	public static final String num="num";
-	public static final String subtype_name="subtype_name";
-	public static final String prod_name="prod_name";
-	public static final String brand_name="brand_name";
-	public static final String supplier_name="supplier_name";
-	public static final String store_id="store_id";
-	public static final String store_name="store_name";
-	public static final String isInStore="isInStore";
-	public static final String workUnit_id="workUnit_id";
-	public static final String workUnit_name="workUnit_name";
 }
 public static final class EquipmentProd {
 	public static final String id="id";
@@ -207,10 +216,20 @@ public static final class Repair {
 	public static final String broken_reson="broken_reson";
 	public static final String memo="memo";
 }
+public static final class Scrap {
+	public static final String id="id";
+	public static final String ecode="ecode";
+	public static final String reason="reason";
+	public static final String residual="residual";
+	public static final String operater="operater";
+	public static final String operateDate="operateDate";
+	public static final String repair_id="repair_id";
+}
 public static final class Barcode {
 	public static final String ecode="ecode";
 	public static final String order_id="order_id";
 	public static final String ymd="ymd";
+	public static final String status="status";
 }
 public static final class Barcode_MaxNum {
 	public static final String subtype_id="subtype_id";

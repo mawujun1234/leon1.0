@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.mawujun.repair.Scrap;
 import com.mawujun.store.Order;
 
 import freemarker.template.TemplateException;
@@ -27,7 +28,7 @@ public class GeneratorMain {
 		//str=generatorService.generatorToString(MenuItem.class,FtlFile.JsModel.toString(),null);	
         //System.out.println(str);
 		
-		GeneratorMain.generateAllFile(Order.class,"D:/gen/");
+		GeneratorMain.generateAllFile(Scrap.class,"D:/gen/");
 		
 		
 		

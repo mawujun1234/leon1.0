@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mawujun.exception.BusinessException;
 import com.mawujun.utils.page.Page;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
@@ -95,8 +96,8 @@ public class RepairController {
 	
 	@RequestMapping("/repair/getRepairVOByEcode.do")
 	@ResponseBody
-	public RepairVO getRepairVOByEcode(String ecode) {	
-		RepairVO repairvo= repairService.getRepairVOByEcode(ecode);
+	public RepairVO getRepairVOByEcode(String ecode,String store_id) {	
+		RepairVO repairvo= repairService.getRepairVOByEcode(ecode,store_id);
 		repairvo.setStatus(RepairStatus.One.getValue());
 		return repairvo;
 	}
@@ -173,8 +174,13 @@ public class RepairController {
 	 */
 	@RequestMapping("/repair/storeInStore.do")
 	@ResponseBody
-	public String storeInStore(@RequestBody Repair[] repairs){
-		repairService.storeInStore(repairs);
+	public String storeInStore(@RequestBody Repair[] repairs,String str_in_id){
+		for(Repair repair:repairs){
+			if(str_in_id==null || !str_in_id.equalsIgnoreCase(repair.getStr_in_id())){
+				throw new BusinessException("产品要发往的仓库和要入库的仓库部一致!");
+			}
+		}
+		repairService.storeInStore(repairs,str_in_id);
 		return "success";
 	}
 	

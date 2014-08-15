@@ -15,8 +15,8 @@ import com.mawujun.baseinfo.Store;
 @Repository
 public interface StoreRepository extends IRepository<Store, String>{
 
-	public List<EquipmentVO> queryEquipments_total(Equipment equipment) ;
-	public List<EquipmentVO> queryEquipments(Equipment equipment) ;
+	public List<EquipmentVO> queryEquipments_total(EquipmentVO equipmentVO) ;
+	public List<EquipmentVO> queryEquipments(EquipmentVO equipmentVO) ;
 	
 	
 	public List<Store> queryCombo(@Param("user_id")String user_id,@Param("type")Integer type);

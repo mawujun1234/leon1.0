@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
 import com.mawujun.service.AbstractService;
 
 
@@ -37,11 +38,11 @@ public class StoreService extends AbstractService<Store, String>{
 		return storeRepository;
 	}
 
-	public List<EquipmentVO> queryEquipments(Equipment equipment,Integer level) {
+	public List<EquipmentVO> queryEquipments(EquipmentVO equipmentVO,Integer level) {
 		if(level==1){
-			return storeRepository.queryEquipments_total(equipment);
+			return storeRepository.queryEquipments_total(equipmentVO);
 		} else if(level==2){
-			List<EquipmentVO> list= storeRepository.queryEquipments(equipment);
+			List<EquipmentVO> list= storeRepository.queryEquipments(equipmentVO);
 			EquipmentVO total=new EquipmentVO();
 			total.setSubtype_id("total");
 			total.setSubtype_name("<b>合计:</b>");

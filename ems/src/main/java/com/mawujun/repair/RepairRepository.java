@@ -14,6 +14,6 @@ import com.mawujun.utils.page.Page;
 @Repository
 public interface RepairRepository extends IRepository<Repair, String>{
 
-	public RepairVO getRepairVOByEcode(@Param("ecode")String ecode);
+	public RepairVO getRepairVOByEcode(@Param("ecode")String ecode,@Param("store_id")String store_id);
 	public Page storeQuery(Page page);
 }

@@ -95,6 +95,8 @@ Ext.define('Ems.repair.RepairForm',{
                     items: [{
                         name: 'rpa_in_date',
                         fieldLabel: '入维时间',
+                        xtype:'datefield',
+                        format:'Y-m-d',
                         flex: 1,
                         //emptyText: 'First',
                         readOnly:true,
