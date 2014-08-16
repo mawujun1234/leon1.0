@@ -1,4 +1,6 @@
 package com.mawujun.repair;
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.exception.BusinessException;
+import com.mawujun.user.User;
 import com.mawujun.utils.page.Page;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
@@ -98,6 +101,9 @@ public class RepairController {
 	@ResponseBody
 	public RepairVO getRepairVOByEcode(String ecode,String store_id) {	
 		RepairVO repairvo= repairService.getRepairVOByEcode(ecode,store_id);
+		if(repairvo==null){
+			throw new BusinessException("对不起，该条码对应的设备不存在，或者该设备挂在其他仓库中!");
+		}
 		repairvo.setStatus(RepairStatus.One.getValue());
 		return repairvo;
 	}
@@ -116,6 +122,16 @@ public class RepairController {
 		return "success";
 	}
 	
+	@RequestMapping("/repair/storeMgrQuery.do")
+	@ResponseBody
+	public Page storeMgrQuery(Integer start,Integer limit, String str_out_id,String rpa_id,String str_out_date_start,String str_out_date_end
+			,String ecode,Integer status){
+		Page page=Page.getInstance(start,limit);//.addParam(M.Repair.sampleName, "%"+sampleName+"%");
+		page.addParam("str_out_id", str_out_id).addParam("rpa_id", rpa_id).addParam("str_out_date_start", str_out_date_start).addParam("str_out_date_end", str_out_date_end)
+		.addParam("ecode", ecode).addParam("status", status);
+		return repairService.storeMgrQuery(page);
+	}
+	
 	/**
 	 * 仓库进行管理的时候进行的查询
 	 * @author mawujun email:16064988@163.com qq:16064988
@@ -124,14 +140,33 @@ public class RepairController {
 	 * @param userName
 	 * @return
 	 */
-	@RequestMapping("/repair/storeQuery.do")
+	@RequestMapping("/repair/repairInQuery.do")
 	@ResponseBody
-	public Page storeQuery(Integer start,Integer limit, String str_out_id,String rpa_id,String str_out_date_start,String str_out_date_end
+	public Page repairInQuery(Integer start,Integer limit, String str_out_id,String rpa_id,String str_out_date_start,String str_out_date_end
 			,String ecode,Integer status){
 		Page page=Page.getInstance(start,limit);//.addParam(M.Repair.sampleName, "%"+sampleName+"%");
 		page.addParam("str_out_id", str_out_id).addParam("rpa_id", rpa_id).addParam("str_out_date_start", str_out_date_start).addParam("str_out_date_end", str_out_date_end)
 		.addParam("ecode", ecode).addParam("status", status);
-		return repairService.storeQuery(page);
+		return repairService.repairInQuery(page);
+	}
+
+	
+	/**
+	 * 仓库进行管理的时候进行的查询
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param start
+	 * @param limit
+	 * @param userName
+	 * @return
+	 */
+	@RequestMapping("/repair/repairMgrQuery.do")
+	@ResponseBody
+	public Page repairMgrQuery(Integer start,Integer limit, String str_out_id,String rpa_id,String rpa_in_date_start,String rpa_in_date_end
+			,String ecode,Integer status){
+		Page page=Page.getInstance(start,limit);//.addParam(M.Repair.sampleName, "%"+sampleName+"%");
+		page.addParam("str_out_id", str_out_id).addParam("rpa_id", rpa_id).addParam("rpa_in_date_start", rpa_in_date_start).addParam("rpa_in_date_end", rpa_in_date_end)
+		.addParam("ecode", ecode).addParam("status", status);
+		return repairService.repairMgrQuery(page);
 	}
 	
 	/**
@@ -183,5 +218,7 @@ public class RepairController {
 		repairService.storeInStore(repairs,str_in_id);
 		return "success";
 	}
+	
+
 	
 }

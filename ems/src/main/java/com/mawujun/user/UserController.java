@@ -150,15 +150,15 @@ public class UserController {
 	
 	@RequestMapping("/user/checkchangeStore.do")
 	@ResponseBody
-	public String checkchangeStore(String user_id,String store_id,Boolean checked) {
-		userService.checkchangeStore(user_id, store_id, checked);
+	public String checkchangeStore(String user_id,String store_id,Boolean checked,String type) {
+		userService.checkchangeStore(user_id, store_id,checked, type);
 		return "success";
 
 	}
 	
 	@RequestMapping("/user/selectAllCheckedStore.do")
 	@ResponseBody
-	public List<String> selectAllCheckedStore(String user_id) {
+	public List<UserStore> selectAllCheckedStore(String user_id) {
 		return userService.selectAllCheckedStore(user_id);
 	}
 	

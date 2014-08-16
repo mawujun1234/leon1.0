@@ -19,6 +19,7 @@ import com.mawujun.install.StoreEquipmentRepository;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 import com.mawujun.shiro.ShiroUtils;
+import com.mawujun.user.User;
 import com.mawujun.utils.M;
 import com.mawujun.utils.StringUtils;
 import com.mawujun.utils.page.Page;
@@ -88,10 +89,43 @@ public class RepairService extends AbstractService<Repair, String>{
 		}
 		
 	}
-	
-	public Page storeQuery(Page page){
+	public Page storeMgrQuery(Page page){
 		List<Store> stores=storeRepository.queryAll();
-		Page results=repairRepository.storeQuery(page);
+		Page results=repairRepository.storeMgrQuery(page);
+		List<RepairVO> list=results.getResult();
+		for(RepairVO repairVO:list){
+			for(Store store:stores){
+				if(store.getId().equals(repairVO.getStr_out_id())){
+					repairVO.setStr_out_name(store.getName());
+				} else if(store.getId().equals(repairVO.getRpa_id())){
+					repairVO.setRpa_name(store.getName());
+				} else if(store.getId().equals(repairVO.getStr_in_id())){
+					repairVO.setStr_in_name(store.getName());
+				}
+			}
+		}
+		return results;
+	}
+	public Page repairInQuery(Page page){
+		List<Store> stores=storeRepository.queryAll();
+		Page results=repairRepository.repairInQuery(page);
+		List<RepairVO> list=results.getResult();
+		for(RepairVO repairVO:list){
+			for(Store store:stores){
+				if(store.getId().equals(repairVO.getStr_out_id())){
+					repairVO.setStr_out_name(store.getName());
+				} else if(store.getId().equals(repairVO.getRpa_id())){
+					repairVO.setRpa_name(store.getName());
+				} else if(store.getId().equals(repairVO.getStr_in_id())){
+					repairVO.setStr_in_name(store.getName());
+				}
+			}
+		}
+		return results;
+	}
+	public Page repairMgrQuery(Page page){
+		List<Store> stores=storeRepository.queryAll();
+		Page results=repairRepository.repairMgrQuery(page);
 		List<RepairVO> list=results.getResult();
 		for(RepairVO repairVO:list){
 			for(Store store:stores){
@@ -190,5 +224,7 @@ public class RepairService extends AbstractService<Repair, String>{
 			
 		}
 	}
+	
+
 	
 }

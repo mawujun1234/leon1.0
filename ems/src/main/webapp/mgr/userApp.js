@@ -1,4 +1,4 @@
-Ext.require("Ems.mgr.StoreGrid")
+Ext.require("Ems.mgr.UserStoreGrid")
 Ext.onReady(function() {
 	
 		var selectedNode;
@@ -363,14 +363,15 @@ Ext.onReady(function() {
 //			}
 			
 //选择访问的仓库
-	var store_grid=Ext.create('Ems.mgr.StoreGrid',{
+	var store_grid=Ext.create('Ems.mgr.UserStoreGrid',{
 		title:'仓库权限',
 		listeners:{
-			select:function(selModel, record, index){
+			storeSelect:function(record, type){
 				var params={
 					user_id:selectedNode.get("id"),
-					store_id:record.get("id"),
-					checked:true
+					store_id:record.get("store_id"),
+					checked:true,
+					type:type
 				};
 				Ext.Ajax.request({
 					url:Ext.ContextPath+"/user/checkchangeStore.do",
@@ -382,11 +383,12 @@ Ext.onReady(function() {
 							
 				});
 			},
-			deselect:function(selModel, record, index){
+			storeDeselect:function( record, type){
 				var params={
 					user_id:selectedNode.get("id"),
-					store_id:record.get("id"),
-					checked:false
+					store_id:record.get("store_id"),
+					checked:false,
+					type:type
 				};
 				Ext.Ajax.request({
 					url:Ext.ContextPath+"/user/checkchangeStore.do",
@@ -401,21 +403,22 @@ Ext.onReady(function() {
 		}
 	});
 	function refreshSelectedStore() {
-		Ext.Ajax.request({
-			url:Ext.ContextPath+"/user/selectAllCheckedStore.do",
-			params:{user_id:selectedNode.get("id")},
-			method:'POST',
-			success:function(response){
-				var selectedIds=Ext.decode(response.responseText).root;
-				var store=store_grid.getStore();//.getRange();
-				var selected=[];
-				for(var i=0;i<selectedIds.length;i++){
-					selected.push(store.getById(selectedIds[i]));
-				}
-				store_grid.getSelectionModel().select(selected,false,true);	
-			}
-							
-		});		
+		store_grid.getStore().load({params:{user_id:selectedNode.get("id")}});
+//		Ext.Ajax.request({
+//			url:Ext.ContextPath+"/user/selectAllCheckedStore.do",
+//			params:{user_id:selectedNode.get("id")},
+//			method:'POST',
+//			success:function(response){
+////				var selectedIds=Ext.decode(response.responseText).root;
+////				var store=store_grid.getStore();//.getRange();
+////				var selected=[];
+////				for(var i=0;i<selectedIds.length;i++){
+////					selected.push(store.getById(selectedIds[i]));
+////				}
+////				store_grid.getSelectionModel().select(selected,false,true);	
+//			}
+//							
+//		});		
 	}		
 			
 			var tabPanel=Ext.create('Ext.tab.Panel',{

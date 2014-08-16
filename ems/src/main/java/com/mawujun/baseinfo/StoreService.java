@@ -2,6 +2,7 @@ package com.mawujun.baseinfo;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -15,10 +16,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
+
+
 import com.mawujun.service.AbstractService;
 
 
 import com.mawujun.shiro.ShiroUtils;
+import com.mawujun.user.User;
 import com.mawujun.utils.page.Page;
 import com.mawujun.baseinfo.Store;
 import com.mawujun.baseinfo.StoreRepository;
@@ -67,7 +72,11 @@ public class StoreService extends AbstractService<Store, String>{
 		
 	}
 	
-	public List<Store> queryCombo(Integer type){
-		return storeRepository.queryCombo(ShiroUtils.getAuthenticationInfo().getId(),type);
+	public List<Store> queryCombo(Integer type,Boolean look,Boolean edit){
+		return storeRepository.queryCombo(ShiroUtils.getAuthenticationInfo().getId(),type,look,edit);
+	}
+	
+	public List<User> queryUsersByStore(String store_id,Boolean look,Boolean edit) {
+		return storeRepository.queryUsersByStore(store_id,look,edit);
 	}
 }

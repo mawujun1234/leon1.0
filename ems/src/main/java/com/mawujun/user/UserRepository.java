@@ -34,5 +34,5 @@ public interface UserRepository extends IRepository<User, String> {
 	 public List<String> findPermissions(String username); 
 	 
 	 
-	 public List<String> selectAllCheckedStore(String user_id);
+	 public List<UserStore> selectAllCheckedStore(String user_id);
 }

@@ -54,7 +54,7 @@ Ext.onReady(function(){
 		    	fields: ['id', 'name'],
 			    proxy:{
 			    	type:'ajax',
-			    	extraParams:{type:1},
+			    	extraParams:{type:1,edit:true},
 			    	url:Ext.ContextPath+"/store/queryCombo.do",
 			    	reader:{
 			    		type:'json',

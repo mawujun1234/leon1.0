@@ -28,6 +28,7 @@ Ext.onReady(function(){
 		    	fields: ['id', 'name'],
 			    proxy:{
 			    	type:'ajax',
+			    	extraParams:{type:1,edit:true},
 			    	url:Ext.ContextPath+"/store/queryCombo.do",
 			    	reader:{
 			    		type:'json',
@@ -60,7 +61,7 @@ Ext.onReady(function(){
 		    	fields: ['id', 'name'],
 			    proxy:{
 			    	type:'ajax',
-			    	extraParams:{type:2},
+			    	extraParams:{type:2,look:true},
 			    	url:Ext.ContextPath+"/store/queryCombo.do",
 			    	reader:{
 			    		type:'json',
@@ -190,7 +191,7 @@ Ext.onReady(function(){
 							}else{
 								equipStore.insert(0, scanrecord);				
 							}			
-							store_combox.disabled();
+							store_combox.disable();
 						}
 					}
 //					failure : function(response) {//加载失败的处理函数   

@@ -56,7 +56,7 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 			autoLoad:false,
 			proxy:{
 				actionMethods:{read:'POST'},
-				url:Ext.ContextPath+'/repair/storeQuery.do',
+				url:Ext.ContextPath+'/repair/storeMgrQuery.do',
 				type:'ajax',
 				reader:{
 					type:'json',
@@ -88,7 +88,7 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 		    	fields: ['id', 'name'],
 			    proxy:{
 			    	type:'ajax',
-			    	extraParams:{type:1},
+			    	extraParams:{type:1,edit:true},
 			    	url:Ext.ContextPath+"/store/queryCombo.do",
 			    	reader:{
 			    		type:'json',
@@ -112,7 +112,7 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 		    	fields: ['id', 'name'],
 			    proxy:{
 			    	type:'ajax',
-			    	extraParams:{type:2},
+			    	extraParams:{type:2,look:true},
 			    	url:Ext.ContextPath+"/store/queryCombo.do",
 			    	reader:{
 			    		type:'json',
@@ -123,7 +123,7 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 	  }); 
 	  
 	  var str_out_date_start=Ext.create('Ext.form.field.Date',{
-	  	fieldLabel: '入库时间范围',
+	  	fieldLabel: '出仓时间',
 	  	labelWidth:70,
 	  	format:'Y-m-d',
         //name: 'str_out_date_start',
@@ -166,8 +166,8 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 				me.store.load({params:{
 					str_out_id:store_combox.getValue(),
 					rpa_id:repair_combox.getValue(),
-					str_out_date_start: Ext.Date.format(new Date(str_out_date_start.getValue()),'Y-m-d'),
-					str_out_date_end: Ext.Date.format(new Date(str_out_date_end.getValue()),'Y-m-d'),
+					str_out_date_start: str_out_date_start.getRawValue(),
+					str_out_date_end: str_out_date_end.getRawValue(),
 					status:status_combo.getValue()
 				}
 			  });

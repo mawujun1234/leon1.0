@@ -49,7 +49,7 @@ Ext.onReady(function(){
 		    	fields: ['id', 'name'],
 			    proxy:{
 			    	type:'ajax',
-			    	extraParams:{type:1},
+			    	extraParams:{type:1,edit:true},
 			    	url:Ext.ContextPath+"/store/queryCombo.do",
 			    	reader:{
 			    		type:'json',
@@ -258,7 +258,7 @@ Ext.onReady(function(){
 		   if(field.isValid()){
 			  // form.load({
 		   	Ext.Ajax.request({
-					params : {ecode:newValue},//传递参数   
+					params : {ecode:newValue,store_id:store_combox.getValue()},//传递参数   
 					url : Ext.ContextPath+'/installOut/getEquipmentByEcode.do',//请求的url地址   
 					method : 'GET',//请求方式   
 					success : function(response) {//加载成功的处理函数   

@@ -52,8 +52,8 @@ public class Repair  implements IdEntity<String>{
 	private Date str_in_date;//仓库入库时间，也就是维修好后的入库时间
 	@Column(length=36) 
 	private String str_in_id;//入库仓库
-	
-	private Integer rpa_type=1;//维修类型，维修 (1)还是外修(2)
+	@Column(length=8) 
+	private String rpa_type="innerrpa";//维修类型，维修 (innerrpa)还是外修(outrpa)
 	private Integer status=RepairStatus.One.getValue();//状态
 	
 	@Column(length=500) 
@@ -140,12 +140,7 @@ public class Repair  implements IdEntity<String>{
 	public void setStr_in_id(String str_in_id) {
 		this.str_in_id = str_in_id;
 	}
-	public Integer getRpa_type() {
-		return rpa_type;
-	}
-	public void setRpa_type(Integer rpa_type) {
-		this.rpa_type = rpa_type;
-	}
+
 	public Integer getStatus() {
 		return status;
 	}
@@ -193,6 +188,12 @@ public class Repair  implements IdEntity<String>{
 	}
 	public void setRpa_user_id(String rpa_user_id) {
 		this.rpa_user_id = rpa_user_id;
+	}
+	public String getRpa_type() {
+		return rpa_type;
+	}
+	public void setRpa_type(String rpa_type) {
+		this.rpa_type = rpa_type;
 	}
 
 }

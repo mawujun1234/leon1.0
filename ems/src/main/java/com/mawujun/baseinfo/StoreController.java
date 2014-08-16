@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mawujun.user.User;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
@@ -108,7 +109,7 @@ public class StoreController {
 	 */
 	@RequestMapping("/store/queryCombo.do")
 	@ResponseBody
-	public List<Store> queryCombo(Integer type) {	
+	public List<Store> queryCombo(Integer type,Boolean look,Boolean edit) {	
 //		Cnd cnd=Cnd.select().andEquals(M.Store.status, true);
 //		if(type!=null){
 //			cnd.andEquals(M.Store.type, type);
@@ -117,7 +118,7 @@ public class StoreController {
 		if(type==null){
 			type=1;
 		}
-		List<Store> storees=storeService.queryCombo(type);
+		List<Store> storees=storeService.queryCombo(type,look,edit);
 		return storees;
 	}
 	
@@ -134,5 +135,19 @@ public class StoreController {
 	public List<EquipmentVO> queryEquipments(EquipmentVO equipmentVO,Integer level,Integer start,Integer limit) {	
 		List<EquipmentVO> equipments=storeService.queryEquipments(equipmentVO,level,start,limit);
 		return equipments;
+	}
+	
+	/**
+	 * 获取指定维修中心下的操作员名单
+	 * @author mawujun 16064988@qq.com 
+	 * @param repairs
+	 * @param str_in_id
+	 * @return
+	 */
+	@RequestMapping("/store/queryRUsers.do")
+	@ResponseBody
+	public List<User> queryUsersByStore(String store_id,Boolean look,Boolean edit){
+		
+		return storeService.queryUsersByStore(store_id,look,edit);
 	}
 }

@@ -17,9 +17,9 @@ public class RepairVO extends Repair {
 	private String equipment_status;
 	
 	public String getRpa_type_name() {
-		if(this.getRpa_type()==1){
+		if("innerrpa".equals(this.getRpa_type())){
 			return "维修";
-		} else if(this.getRpa_type()==2){
+		} else if("outrpa".equals(this.getRpa_type())){
 			return "外修";
 		} else {
 			return null;

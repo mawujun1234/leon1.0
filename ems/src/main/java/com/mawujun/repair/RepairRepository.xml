@@ -18,7 +18,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		where a.ecode=#{ecode} and g.id=#{store_id}
     </select> 
     
-    <select id="storeQuery" resultType="com.mawujun.repair.RepairVO" parameterType="map">
+    <select id="storeMgrQuery" resultType="com.mawujun.repair.RepairVO" parameterType="map">
     	select * from ems_repair a
 		<where>
 			<if test="str_out_id!=null">
@@ -27,8 +27,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="rpa_id!=null">
 				and a.rpa_id=#{rpa_id}
 			</if>
-			<if test="str_out_date_start!=null and str_out_date_end!=null">
-				and a.str_out_date between to_date(#{str_out_date_start},'yyyy-mm-dd') and to_date(#{str_out_date_end},'yyyy-mm-dd')
+			<if test="str_out_date_start!=null ">
+				and to_char(a.str_out_date,'yyyy-mm-dd') &gt;= #{str_out_date_start}
+			</if>
+			<if test="str_out_date_end!=null">
+				and to_char(a.str_out_date,'yyyy-mm-dd') &lt;= #{str_out_date_end}
 			</if>
 			<if test="ecode!=null">
 				and a.ecode=#{ecodes}
@@ -39,5 +42,56 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</where>
 		order by status
     </select>
+    <select id="repairInQuery" resultType="com.mawujun.repair.RepairVO" parameterType="map">
+    	select * from ems_repair a
+		<where>
+			<if test="str_out_id!=null">
+				and a.str_out_id=#{str_out_id}
+			</if>
+			<if test="rpa_id!=null">
+				and a.rpa_id=#{rpa_id}
+			</if>
+			<if test="str_out_date_start!=null ">
+				and to_char(a.str_out_date,'yyyy-mm-dd') &gt;= #{str_out_date_start}
+			</if>
+			<if test="str_out_date_end!=null">
+				and to_char(a.str_out_date,'yyyy-mm-dd') &lt;= #{str_out_date_end}
+			</if>
+			<if test="ecode!=null">
+				and a.ecode=#{ecodes}
+			</if>
+			<if test="status!=null">
+				and a.status=#{status}
+			</if>
+		</where>
+		order by status
+    </select>
+    
+    <select id="repairMgrQuery" resultType="com.mawujun.repair.RepairVO" parameterType="map">
+    	select * from ems_repair a
+		<where>
+			<if test="str_out_id!=null">
+				and a.str_out_id=#{str_out_id}
+			</if>
+			<if test="rpa_id!=null">
+				and a.rpa_id=#{rpa_id}
+			</if>
+			<if test="rpa_in_date_start!=null ">
+				and to_char(a.rpa_in_date,'yyyy-mm-dd') &gt;= #{rpa_in_date_start}
+			</if>
+			<if test="rpa_in_date_end!=null">
+				and to_char(a.rpa_in_date,'yyyy-mm-dd') &lt;= #{rpa_in_date_end}
+			</if>
+			<if test="ecode!=null">
+				and a.ecode=#{ecodes}
+			</if>
+			<if test="status!=null">
+				and a.status=#{status}
+			</if>
+		</where>
+		order by status
+    </select>
+    
+
 </mapper>
 

@@ -55,6 +55,30 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     
     <select id="queryCombo" resultType="com.mawujun.baseinfo.Store">
     	select a.* from ems_store a,sys_userstore b where a.id=b.store_id and b.user_id=#{user_id} and a.status='Y' and a.type=#{type}
+    	<if test="look==true">
+    		and b.look='Y'
+    	</if>
+    	<if test="edit==true">
+    		and b.edit='Y'
+    	</if>
+    	<if test="edit!=true and look!=true">
+    		and 1!=1
+    	</if>
+    	 
+    </select>
+    
+    <select id="queryUsersByStore" resultType="com.mawujun.baseinfo.Store">
+    	select a.* from sys_user a,sys_userstore b 
+    	where a.id=b.user_id and b.store_id=#{store_id} and a.status='Y'
+    	<if test="look==true">
+    		and b.look='Y'
+    	</if>
+    	<if test="edit==true">
+    		and b.edit='Y'
+    	</if>
+    	<if test="edit!=true and look!=true">
+    		and 1!=1
+    	</if>
     </select>
    
 </mapper>

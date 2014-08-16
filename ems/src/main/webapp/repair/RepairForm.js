@@ -106,8 +106,23 @@ Ext.define('Ems.repair.RepairForm',{
                         fieldLabel: '维修人',
                         flex: 1,
                         afterLabelTextTpl: Ext.required,
+                        xtype:'combobox',
+                        displayField: 'name',
+		    			valueField: 'id',
                         readOnly:false,
-                        allowBlank: false
+                        allowBlank: false,
+                        store:Ext.create('Ext.data.Store', {
+					    	fields: ['id', 'name'],
+						    proxy:{
+						    	type:'ajax',
+						    	extraParams:{store_id:me.rpa_id,edit:true},
+						    	url:Ext.ContextPath+'/store/queryRUsers.do',
+						    	reader:{
+						    		type:'json',
+						    		root:'root'
+						    	}
+						    }
+					   })
                     }]
      },{
                     xtype: 'fieldcontainer',
@@ -125,6 +140,33 @@ Ext.define('Ems.repair.RepairForm',{
                         readOnly:false,
                         allowBlank: true
                     }]
+     },{
+                    xtype: 'fieldcontainer',
+                    //fieldLabel: 'Name',
+                    layout: 'hbox',
+                    combineErrors: true,
+                    defaultType: 'textfield',
+                    defaults: {
+                        //hideLabel: 'true'
+                    },
+                    items: [{
+				        fieldLabel: '维修类型',
+				        labelAlign:'right',
+			            //labelWidth:60,
+				        xtype:'combobox',
+				        //afterLabelTextTpl: Ext.required,
+				        name: 'rpa_type',
+					    displayField: 'name',
+					    valueField: 'id',
+					    //value:"1",
+				        //allowBlank: false,
+				        store:Ext.create('Ext.data.Store', {
+					    	fields: ['id', 'name'],
+						    data:[{id:"innerrpa",name:"维修"},{id:"outrpa",name:"外修"}]
+					   }),
+					   listeners:{
+					   }
+				  }]
      },{
                     xtype: 'fieldcontainer',
                     //fieldLabel: 'Name',
@@ -193,14 +235,6 @@ Ext.define('Ems.repair.RepairForm',{
 	        fieldLabel: 'rpa_out_oper_id',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'rpa_out_oper_id',
-	        readOnly:true,
-	        xtype:'hidden',
-	        allowBlank: false
-	    },
-		{
-	        fieldLabel: 'rpa_type',
-	        //afterLabelTextTpl: Ext.required,
-	        name: 'rpa_type',
 	        readOnly:true,
 	        xtype:'hidden',
 	        allowBlank: false
@@ -276,6 +310,7 @@ Ext.define('Ems.repair.RepairForm',{
 				});
             }
       });
+      me.saveButton=saveButton;
       me.buttons=[saveButton];
       me.addEvents("saved");
       

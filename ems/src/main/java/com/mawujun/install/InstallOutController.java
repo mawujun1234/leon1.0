@@ -14,6 +14,7 @@ import com.mawujun.utils.page.QueryResult;
 import com.mawujun.baseinfo.Equipment;
 import com.mawujun.baseinfo.EquipmentService;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
+import com.mawujun.exception.BusinessException;
 import com.mawujun.install.InstallOut;
 import com.mawujun.install.InstallOutService;
 import com.mawujun.repository.cnd.Cnd;
@@ -113,11 +114,12 @@ public class InstallOutController {
 	 */
 	@RequestMapping("/installOut/getEquipmentByEcode.do")
 	@ResponseBody
-	public Equipment getEquipmentByEcode(String ecode) {	
-		Equipment equipment= equipmentService.getEquipmentByEcode(ecode);
+	public Equipment getEquipmentByEcode(String ecode,String store_id) {	
+		Equipment equipment= equipmentService.getEquipmentByEcode(ecode,store_id);
 		if(equipment==null){
-			equipment=new Equipment();
-			equipment.setStatus(0);
+			//equipment=new Equipment();
+			//equipment.setStatus(0);
+			throw new BusinessException("对不起，该条码对应的设备不存在，或者该设备挂在其他仓库中!");
 		}
 		return equipment;
 	}

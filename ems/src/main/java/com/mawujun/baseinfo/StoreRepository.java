@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.mawujun.repository1.IRepository;
+import com.mawujun.user.User;
 import com.mawujun.utils.page.Page;
 import com.mawujun.baseinfo.Store;
 /**
@@ -20,5 +21,6 @@ public interface StoreRepository extends IRepository<Store, String>{
 	public Page queryEquipments(Page page) ;
 	
 	
-	public List<Store> queryCombo(@Param("user_id")String user_id,@Param("type")Integer type);
+	public List<Store> queryCombo(@Param("user_id")String user_id,@Param("type")Integer type,@Param("look")Boolean look,@Param("edit")Boolean edit);
+	public List<User> queryUsersByStore(@Param("store_id")String store_id,@Param("look")Boolean look,@Param("edit")Boolean edit);
 }

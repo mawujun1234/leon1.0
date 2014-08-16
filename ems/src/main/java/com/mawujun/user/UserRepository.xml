@@ -115,4 +115,12 @@
 		where
 		 b.funrole_id=#{funrole_id}
 	</select>
+	
+	<select id="selectAllCheckedStore" parameterType="String" resultType="com.mawujun.user.UserStore">
+		select a.user_id,a.look,a.edit ,b.name as store_name,b.status as store_status,b.type as store_type,b.id as store_id
+		from sys_userstore a right join ems_store b
+		on a.store_id=b.id 
+		and
+		a.user_id=#{user_id}
+	</select>
 </mapper>

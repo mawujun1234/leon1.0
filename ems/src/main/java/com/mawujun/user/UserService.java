@@ -133,24 +133,46 @@ public class UserService  extends AbstractService<User, String>{
 //		return userRepository.selectAllCheckedDataRole(user_id);
 //	}
 	
-	public void checkchangeStore(String user_id,String store_id,Boolean checked) {
-		if(checked==true){
-			UserStore userStore=new UserStore();
+	public void checkchangeStore(String user_id,String store_id,Boolean checked,String type) {
+		UserStore userStore=userStoreRepository.queryUnique(Cnd.select().andEquals(M.UserStore.store_id, store_id).andEquals(M.UserStore.user_id, user_id));
+		if(userStore==null){
+			userStore=new UserStore();
 			userStore.setStore_id(store_id);
 			userStore.setUser_id(user_id);
+			if("look".endsWith(type)){
+				userStore.setLook(checked);
+				userStore.setEdit(false);
+			}
+			if("edit".endsWith(type)){
+				userStore.setLook(false);
+				userStore.setEdit(checked);
+				if(checked){
+					userStore.setLook(true);
+				}
+			}
 			userStoreRepository.create(userStore);
-		} else if(checked==false){
-			userStoreRepository.deleteBatch(Cnd.delete().andEquals(M.UserStore.store_id, store_id).andEquals(M.UserStore.user_id, user_id));
+		} else {
+			if("look".endsWith(type)){
+				userStore.setLook(checked);
+			}
+			if("edit".endsWith(type)){
+				userStore.setEdit(checked);
+				if(checked){
+					userStore.setLook(true);
+				}
+			}
 		}
+		
 	}
 	
-	public List<String> selectAllCheckedStore(String user_id) {
-		List<UserStore> userStores=userStoreRepository.query(Cnd.select().andEquals(M.UserStore.user_id, user_id));
-		List<String> storeIds=new ArrayList<String>();
-		for(UserStore userStore:userStores){
-			storeIds.add(userStore.getStore_id());
-		}
-		return storeIds;
+	public List<UserStore> selectAllCheckedStore(String user_id) {
+		List<UserStore> userStores=userRepository.selectAllCheckedStore(user_id);//selectAllCheckedStore(Cnd.select().andEquals(M.UserStore.user_id, user_id));
+		return userStores;
+//		List<String> storeIds=new ArrayList<String>();
+//		for(UserStore userStore:userStores){
+//			storeIds.add(userStore.getStore_id());
+//		}
+//		return storeIds;
 	}
 	
 	
