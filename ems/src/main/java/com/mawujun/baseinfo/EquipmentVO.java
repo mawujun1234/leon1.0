@@ -19,8 +19,7 @@ public class EquipmentVO extends Equipment {
 	private Boolean isInStore;//这个条码是否已经入过库了。是barcode中的条码的状态
 	
 	//=======入库的时候
-	@Transient
-	private String workUnit_id;
+	
 	@Transient
 	private String workUnit_name;
 	
@@ -65,12 +64,6 @@ public class EquipmentVO extends Equipment {
 	}
 	public void setIsInStore(Boolean isInStore) {
 		this.isInStore = isInStore;
-	}
-	public String getWorkUnit_id() {
-		return workUnit_id;
-	}
-	public void setWorkUnit_id(String workUnit_id) {
-		this.workUnit_id = workUnit_id;
 	}
 	public String getWorkUnit_name() {
 		return workUnit_name;

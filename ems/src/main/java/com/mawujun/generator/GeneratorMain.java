@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.mawujun.adjust.Adjust;
+import com.mawujun.adjust.AdjustList;
 import com.mawujun.repair.Scrap;
 import com.mawujun.store.Order;
 import com.mawujun.user.UserStore;
@@ -29,7 +31,7 @@ public class GeneratorMain {
 		//str=generatorService.generatorToString(MenuItem.class,FtlFile.JsModel.toString(),null);	
         //System.out.println(str);
 		
-		GeneratorMain.generateAllFile(Scrap.class,"D:/gen/");
+		GeneratorMain.generateAllFile(AdjustList.class,"D:/gen/");
 		
 		
 		

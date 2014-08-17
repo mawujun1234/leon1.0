@@ -1,12 +1,9 @@
-package com.mawujun.repair;
+package com.mawujun.adjust;
 
-
-public class RepairVO extends Repair {
-	private String rpa_name;
+public class AdjustVO extends Adjust {
 	private String str_in_name;
 	private String str_out_name;
-//	private String rpa_type_name;
-//	private String status_name;
+	private String ecode;//用于在前台出库的时候
 	
 	
 	private String brand_name;
@@ -15,26 +12,6 @@ public class RepairVO extends Repair {
 	private String supplier_name;
 	private String equipment_style;
 	private String equipment_status;
-	
-	private String scrap_id;//报废单的单号
-	
-
-	public String getStatus_name() {
-		for(RepairStatus repairstatus:RepairStatus.values()) {
-			if(repairstatus.getValue()==this.getStatus()){
-				return repairstatus.getName();
-			}
-		}
-		return null;
-	}
-
-	
-	public String getRpa_name() {
-		return rpa_name;
-	}
-	public void setRpa_name(String rpa_name) {
-		this.rpa_name = rpa_name;
-	}
 	public String getStr_in_name() {
 		return str_in_name;
 	}
@@ -46,6 +23,12 @@ public class RepairVO extends Repair {
 	}
 	public void setStr_out_name(String str_out_name) {
 		this.str_out_name = str_out_name;
+	}
+	public String getEcode() {
+		return ecode;
+	}
+	public void setEcode(String ecode) {
+		this.ecode = ecode;
 	}
 	public String getBrand_name() {
 		return brand_name;
@@ -71,23 +54,16 @@ public class RepairVO extends Repair {
 	public void setSupplier_name(String supplier_name) {
 		this.supplier_name = supplier_name;
 	}
-	public String getEquipment_status() {
-		return equipment_status;
-	}
-	public void setEquipment_status(String equipment_status) {
-		this.equipment_status = equipment_status;
-	}
 	public String getEquipment_style() {
 		return equipment_style;
 	}
 	public void setEquipment_style(String equipment_style) {
 		this.equipment_style = equipment_style;
 	}
-	public String getScrap_id() {
-		return scrap_id;
+	public String getEquipment_status() {
+		return equipment_status;
 	}
-	public void setScrap_id(String scrap_id) {
-		this.scrap_id = scrap_id;
+	public void setEquipment_status(String equipment_status) {
+		this.equipment_status = equipment_status;
 	}
-	
 }

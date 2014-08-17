@@ -61,7 +61,15 @@ public class Repair  implements IdEntity<String>{
 	@Column(length=500) 
 	private String memo;
 	
-	
+	public String getRpa_type_name() {
+		if("innerrpa".equals(this.getRpa_type())){
+			return "维修";
+		} else if("outrpa".equals(this.getRpa_type())){
+			return "外修";
+		} else {
+			return null;
+		}
+	}
 	public String getId() {
 		return id;
 	}

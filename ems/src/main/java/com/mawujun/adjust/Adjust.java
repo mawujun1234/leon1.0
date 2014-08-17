@@ -24,17 +24,22 @@ public class Adjust implements IdEntity<String>{
 	private String status;//edit,carry,over
 	
 	@Column(length=36)
-	private String store_out_id;//出库仓库
-	
-	private String store_in_id;//入库仓库
-	
-	private Date createDate;//创建时间
+	private String str_out_id;//出库仓库
+	private Date str_out_date;//创建时间
 	@Column(length=36)
-	private String creater;//创建人
-	
-	private Date overDate;//结束的时间,入库时间
+	private String str_out_oper_id;//创建人
 	@Column(length=36)
-	private String overer;//入库的人
+	private String str_in_id;//入库仓库
+	private Date str_in_date;//结束的时间,入库时间
+	@Column(length=36)
+	private String str_in_oper_id;//入库的人
+	@Column(length=500)
+	private String memo;
+	
+	public String getStatus_name() {
+		return AdjustStatus.valueOf(this.getStatus()).getName();
+	}
+	
 	public String getId() {
 		return id;
 	}
@@ -47,41 +52,49 @@ public class Adjust implements IdEntity<String>{
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public String getStore_out_id() {
-		return store_out_id;
+	
+	public String getMemo() {
+		return memo;
 	}
-	public void setStore_out_id(String store_out_id) {
-		this.store_out_id = store_out_id;
+	public void setMemo(String memo) {
+		this.memo = memo;
 	}
-	public String getStore_in_id() {
-		return store_in_id;
+	public String getStr_out_id() {
+		return str_out_id;
 	}
-	public void setStore_in_id(String store_in_id) {
-		this.store_in_id = store_in_id;
+	public void setStr_out_id(String str_out_id) {
+		this.str_out_id = str_out_id;
 	}
-	public Date getCreateDate() {
-		return createDate;
+	public Date getStr_out_date() {
+		return str_out_date;
 	}
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
+	public void setStr_out_date(Date str_out_date) {
+		this.str_out_date = str_out_date;
 	}
-	public String getCreater() {
-		return creater;
+	public String getStr_out_oper_id() {
+		return str_out_oper_id;
 	}
-	public void setCreater(String creater) {
-		this.creater = creater;
+	public void setStr_out_oper_id(String str_out_oper_id) {
+		this.str_out_oper_id = str_out_oper_id;
 	}
-	public Date getOverDate() {
-		return overDate;
+	public String getStr_in_id() {
+		return str_in_id;
 	}
-	public void setOverDate(Date overDate) {
-		this.overDate = overDate;
+	public void setStr_in_id(String str_in_id) {
+		this.str_in_id = str_in_id;
 	}
-	public String getOverer() {
-		return overer;
+	public Date getStr_in_date() {
+		return str_in_date;
 	}
-	public void setOverer(String overer) {
-		this.overer = overer;
+	public void setStr_in_date(Date str_in_date) {
+		this.str_in_date = str_in_date;
 	}
+	public String getStr_in_oper_id() {
+		return str_in_oper_id;
+	}
+	public void setStr_in_oper_id(String str_in_oper_id) {
+		this.str_in_oper_id = str_in_oper_id;
+	}
+
 
 }

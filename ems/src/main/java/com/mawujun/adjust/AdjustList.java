@@ -13,6 +13,9 @@ public class AdjustList extends UUIDEntity{
 	private String ecode;
 	private Integer out_num=1;//申请出库的数量
 	private Integer in_num=1;//入库的数量
+	@org.hibernate.annotations.Type(type="yes_no")
+	private Boolean status=false;//是否已经入库，true表示已经入库
+	
 	public String getAdjust_id() {
 		return adjust_id;
 	}
@@ -36,5 +39,11 @@ public class AdjustList extends UUIDEntity{
 	}
 	public void setIn_num(Integer in_num) {
 		this.in_num = in_num;
+	}
+	public Boolean getStatus() {
+		return status;
+	}
+	public void setStatus(Boolean status) {
+		this.status = status;
 	}
 }

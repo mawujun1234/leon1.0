@@ -43,8 +43,11 @@ public class Equipment implements IdEntity<String>{
 	private Integer status=0;//1表示是在库
 	@Column(updatable=false)
 	private Date fisData;//first in stock date第一次入库时间
-//	@Column(length=36)
-//	private String store_id;//仓库id，所属仓库
+	@Column(length=36)
+	private String store_id;//仓库id，所属仓库
+	@Column(length=36)
+	private String workUnit_id;//作业单位id，所属的作业单位，和store_id，同时只能有一个有值
+	
 	@Transient
 	private Integer num;
 	
@@ -153,6 +156,18 @@ public class Equipment implements IdEntity<String>{
 	}
 	public void setOrder_id(String order_id) {
 		this.order_id = order_id;
+	}
+	public String getStore_id() {
+		return store_id;
+	}
+	public void setStore_id(String store_id) {
+		this.store_id = store_id;
+	}
+	public String getWorkUnit_id() {
+		return workUnit_id;
+	}
+	public void setWorkUnit_id(String workUnit_id) {
+		this.workUnit_id = workUnit_id;
 	}
 
 }

@@ -178,27 +178,27 @@ public abstract class BeanUtils extends org.apache.commons.beanutils.BeanUtils{
 	 * @param value 待转换的字符串.
 	 * @param toType 转换目标类型.
 	 */
-	public static Object convert(String value, Class<?> toType) {
+	public static <T> T convert(String value, Class<T> toType) {
 		//如果类型相同，就不转换了
 		if(toType==String.class){
-			return value;
+			return (T)value;
 		}
 		try {
-			return ConvertUtils.convert(value, toType);
+			return (T)ConvertUtils.convert(value, toType);
 		} catch (Exception e) {
 			throw ReflectUtils.convertReflectionExceptionToUnchecked(e);
 		}
 	}
 	
-	public static Object convert(Object value, Class<?> toType) {
+	public static <T> T convert(Object value, Class<T> toType) {
 		//如果类型相同，就不转换了
 		if(value.getClass()==toType){
-			return value;
+			return (T)value;
 		}
 		
 		
 		try {
-			return ConvertUtils.convert(value, toType);
+			return (T)ConvertUtils.convert(value, toType);
 		} catch (Exception e) {
 			throw ReflectUtils.convertReflectionExceptionToUnchecked(e);
 		}
@@ -209,8 +209,8 @@ public abstract class BeanUtils extends org.apache.commons.beanutils.BeanUtils{
 	 * @param toType
 	 * @return
 	 */
-	public static Object convert(String[] values, Class<?> toType) {
-		return ConvertUtils.convert(values, toType);
+	public static <T> T convert(String[] values, Class<T> toType) {
+		return (T)ConvertUtils.convert(values, toType);
 	}
 	
 	 /**

@@ -3,18 +3,20 @@ public final class T {
 public static final class ems_adjust {
 	public static final String id="id";
 	public static final String status="status";
-	public static final String store_out_id="store_out_id";
-	public static final String store_in_id="store_in_id";
-	public static final String createDate="createDate";
-	public static final String creater="creater";
-	public static final String overDate="overDate";
-	public static final String overer="overer";
+	public static final String str_out_id="str_out_id";
+	public static final String str_out_date="str_out_date";
+	public static final String str_out_oper_id="str_out_oper_id";
+	public static final String str_in_id="str_in_id";
+	public static final String str_in_date="str_in_date";
+	public static final String str_in_oper_id="str_in_oper_id";
+	public static final String memo="memo";
 }
 public static final class ems_adjustlist {
 	public static final String adjust_id="adjust_id";
 	public static final String ecode="ecode";
 	public static final String out_num="out_num";
 	public static final String in_num="in_num";
+	public static final String status="status";
 	public static final String id="id";
 }
 public static final class ems_area {
@@ -61,6 +63,8 @@ public static final class ems_equipment {
 	public static final String memo="memo";
 	public static final String status="status";
 	public static final String fisData="fisData";
+	public static final String store_id="store_id";
+	public static final String workUnit_id="workUnit_id";
 	public static final String num="num";
 }
 public static final class ems_equipmentprod {
@@ -315,6 +319,11 @@ public static final class sys_user {
 public static final class sys_userstore {
 	public static final String user_id="user_id";
 	public static final String store_id="store_id";
+	public static final String look="look";
+	public static final String edit="edit";
+	public static final String store_name="store_name";
+	public static final String store_status="store_status";
+	public static final String store_type="store_type";
 	public static final String id="id";
 }
 }

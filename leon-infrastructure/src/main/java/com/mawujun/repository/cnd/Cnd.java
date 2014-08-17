@@ -679,7 +679,8 @@ public class Cnd implements PItem{
 		else if (isNotNeedQuote(v))
 			return escapeFieldValue(v.toString());
 		else
-			return new StringBuilder("'").append(escapeFieldValue(BeanUtils.copyOrCast(v, String.class))).append('\'');
+			//return new StringBuilder("'").append(escapeFieldValue(BeanUtils.copyOrCast(v, String.class))).append('\'');
+			return new StringBuilder("'").append(escapeFieldValue(BeanUtils.convert(v, String.class))).append('\'');
 	}
 	public  boolean isNotNeedQuote(Object v) {
 		
