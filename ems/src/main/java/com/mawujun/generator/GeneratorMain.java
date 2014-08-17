@@ -29,7 +29,7 @@ public class GeneratorMain {
 		//str=generatorService.generatorToString(MenuItem.class,FtlFile.JsModel.toString(),null);	
         //System.out.println(str);
 		
-		GeneratorMain.generateAllFile(UserStore.class,"D:/gen/");
+		GeneratorMain.generateAllFile(Scrap.class,"D:/gen/");
 		
 		
 		

@@ -19,8 +19,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     </select> 
     
     <select id="storeMgrQuery" resultType="com.mawujun.repair.RepairVO" parameterType="map">
-    	select * from ems_repair a
+    	select a.*,b.id as scrap_id from ems_repair a left join ems_scrap b on a.id=b.repair_id
+    	
 		<where>
+			
 			<if test="str_out_id!=null">
 				and a.str_out_id=#{str_out_id}
 			</if>
@@ -39,6 +41,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="status!=null">
 				and a.status=#{status}
 			</if>
+			<if test="only_have_scap==true">
+	    		and b.id is not null
+	    	</if>
 		</where>
 		order by status
     </select>
@@ -68,7 +73,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     </select>
     
     <select id="repairMgrQuery" resultType="com.mawujun.repair.RepairVO" parameterType="map">
-    	select * from ems_repair a
+    	select a.*,b.id as scrap_id from ems_repair a left join ems_scrap b on a.id=b.repair_id
 		<where>
 			<if test="str_out_id!=null">
 				and a.str_out_id=#{str_out_id}
@@ -88,6 +93,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="status!=null">
 				and a.status=#{status}
 			</if>
+			<if test="only_have_scap==true">
+	    		and b.id is not null
+	    	</if>
 		</where>
 		order by status
     </select>

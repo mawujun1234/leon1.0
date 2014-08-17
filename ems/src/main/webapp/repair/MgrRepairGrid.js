@@ -1,7 +1,8 @@
 Ext.define('Ems.repair.MgrRepairGrid',{
 	extend:'Ext.grid.Panel',
 	requires: [
-	     'Ems.repair.Repair'
+	     'Ems.repair.Repair',
+	     'Ems.repair.ScrapForm'
 	],
 	columnLines :true,
 	stripeRows:true,
@@ -31,6 +32,42 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 	initComponent: function () {
       var me = this;
       me.columns=[
+      	    { header:'报废',
+	        xtype: 'actioncolumn',
+	        width: 40,
+	        dataIndex:'scrap_id',
+	        items: [{ 
+	             isDisabled:function(view,rowIndex ,colIndex ,item ,record ){
+	             	var status=record.get("status");
+	             	var scrap_id=record.get("scrap_id");
+	             	if(status==5 || scrap_id){
+	             		return false;
+	             	}
+	             	return true;
+	             },
+	             getClass:function(v,metadata,record,rowIndex ,colIndex ,store ){
+	             	if(record.get("status")==5){
+	             		return "scrap_edit";
+	             	}
+	             	if(record.get("scrap_id")){
+	             		return "scrap_look";
+	             	}
+	             	return "";
+	             },
+	             getTip:function(value,metadata ,record,rowIndex ,colIndex ,store ){
+	             	if(value && record.get("status")==5){
+	             		return "确认报废单";
+	             	}
+	             	return '查看报废单';
+	             },
+	             handler: function(grid, rowIndex, colIndex) {
+	                  var record = grid.getStore().getAt(rowIndex);
+
+	                  me.makeSureScrapEquipment(record);
+	                  
+	             }
+	        }]
+	    },
 		{dataIndex:'id',text:'维修单号',width:120},
 		{dataIndex:'ecode',text:'条码',width:140},
 		{dataIndex:'str_out_name',text:'发货仓库'},
@@ -124,7 +161,8 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 	  
 	  var str_out_date_start=Ext.create('Ext.form.field.Date',{
 	  	fieldLabel: '出仓时间',
-	  	labelWidth:70,
+	  	labelWidth:50,
+	  	width:150,
 	  	format:'Y-m-d',
         //name: 'str_out_date_start',
         value:  Ext.Date.add(new Date(), Ext.Date.DAY, -7)
@@ -133,15 +171,12 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 	  	fieldLabel: '到',
 	  	format:'Y-m-d',
 	  	labelWidth:15,
+	  	labelWidth:15,
         //name: 'str_out_date_end',
         value: new Date()
 	  });
 	  
-//	  var container_repair_over=Ext.create('Ext.form.field.Checkbox',{
-//	  	labelWidth:60,
-//	  	fieldLabel: '包含完成',
-//	  	checked:false
-//	  });
+	 
 	  var status_combo=Ext.create('Ext.form.field.ComboBox',{
 	        fieldLabel: '状态',
 	        labelAlign:'right',
@@ -154,10 +189,14 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 	        allowBlank: false,
 	        store:Ext.create('Ext.data.Store', {
 		    	fields: ['id', 'name'],
-			    data:[{id:"1",name:"发往维修中心"},{id:"2",name:"维修中"},{id:"3",name:"返库途中"},{id:"4",name:"完成"}]
+			    data:[{id:"",name:"所有"},{id:"1",name:"发往维修中心"},{id:"2",name:"维修中"},{id:"3",name:"返库途中"},{id:"4",name:"完成"},{id:"5",name:"报废确认中"}]
 		   })
 	  }); 
-	  
+	  var only_have_scap_checkbox=Ext.create('Ext.form.field.Checkbox',{
+	  	labelWidth:50,
+	  	fieldLabel: '只含报废',
+	  	checked:false
+	  });
 	  var query_button=Ext.create("Ext.button.Button",{
 			text:'查询',
 			margin:'0 0 0 5',
@@ -168,7 +207,8 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 					rpa_id:repair_combox.getValue(),
 					str_out_date_start: str_out_date_start.getRawValue(),
 					str_out_date_end: str_out_date_end.getRawValue(),
-					status:status_combo.getValue()
+					status:status_combo.getValue(),
+					only_have_scap:only_have_scap_checkbox.getValue()
 				}
 			  });
 			}
@@ -315,7 +355,7 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 		defaults: {anchor: '0'},
 		defaultType: 'toolbar',
 		items: [{
-			items: [store_combox,repair_combox,str_out_date_start,str_out_date_end,status_combo,query_button] // toolbar 1
+			items: [store_combox,repair_combox,str_out_date_start,str_out_date_end,status_combo,only_have_scap_checkbox,query_button] // toolbar 1
 		}, {
 			items: [ecode_textfield,str_in_button] // toolbar 2
 		}]
@@ -324,5 +364,48 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 
        
       me.callParent();
+	},
+	makeSureScrapEquipment:function(repair){//报废设备
+		var form=Ext.create('Ems.repair.ScrapForm',{
+			storeer:true,
+			listeners:{
+				makeSureScrap:function(){
+					repair.set("status",4);
+					repair.set("status_name",'完成');
+					win.close();
+				}
+			}					
+		});
+		
+		
+		var win=Ext.create('Ext.window.Window',{
+			title:'确认报废单',
+			layout:'fit',
+			modal:true,
+			width:500,
+			items:[form]
+		});
+		//form.win=win;
+		if(repair.get("status")!=5){
+			form.makeSureScrapButton.hide();
+			win.setTitle("查看报废单(不能编辑)");
+	    }
+			
+		Ext.Ajax.request({
+			url:Ext.ContextPath+'/scrap/loadByRepair_id.do',
+			method:'POST',
+			params:{repair_id:repair.get("id")},
+			success:function(response){
+				var obj=Ext.decode(response.responseText);
+				if(obj.success){
+					var scrap=Ext.create('Ems.repair.Scrap',obj.root);
+					form.loadRecord(scrap);
+				} else {
+					Ext.Msg.alert("消息","没有对应的报废单，或者后台出错了");
+					return;
+				}
+				win.show();
+			}
+		});
 	}
 });

@@ -125,10 +125,11 @@ public class RepairController {
 	@RequestMapping("/repair/storeMgrQuery.do")
 	@ResponseBody
 	public Page storeMgrQuery(Integer start,Integer limit, String str_out_id,String rpa_id,String str_out_date_start,String str_out_date_end
-			,String ecode,Integer status){
+			,String ecode,Integer status,Boolean only_have_scap){
 		Page page=Page.getInstance(start,limit);//.addParam(M.Repair.sampleName, "%"+sampleName+"%");
 		page.addParam("str_out_id", str_out_id).addParam("rpa_id", rpa_id).addParam("str_out_date_start", str_out_date_start).addParam("str_out_date_end", str_out_date_end)
-		.addParam("ecode", ecode).addParam("status", status);
+		.addParam("ecode", ecode).addParam("status", status)
+		.addParam("only_have_scap", only_have_scap);
 		return repairService.storeMgrQuery(page);
 	}
 	
@@ -162,10 +163,11 @@ public class RepairController {
 	@RequestMapping("/repair/repairMgrQuery.do")
 	@ResponseBody
 	public Page repairMgrQuery(Integer start,Integer limit, String str_out_id,String rpa_id,String rpa_in_date_start,String rpa_in_date_end
-			,String ecode,Integer status){
+			,String ecode,Integer status,Boolean only_have_scap){
 		Page page=Page.getInstance(start,limit);//.addParam(M.Repair.sampleName, "%"+sampleName+"%");
 		page.addParam("str_out_id", str_out_id).addParam("rpa_id", rpa_id).addParam("rpa_in_date_start", rpa_in_date_start).addParam("rpa_in_date_end", rpa_in_date_end)
-		.addParam("ecode", ecode).addParam("status", status);
+		.addParam("ecode", ecode).addParam("status", status)
+		.addParam("only_have_scap", only_have_scap);
 		return repairService.repairMgrQuery(page);
 	}
 	

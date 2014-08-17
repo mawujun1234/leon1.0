@@ -6,16 +6,17 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import com.mawujun.repository.idEntity.IdEntity;
 
 /**
- * 报废单
+ * 报废单,一张维修单，只有一张报废单
  * @author mawujun email:16064988@163.com qq:16064988
  *
  */
 @Entity
-@Table(name="ems_scrap")
+@Table(name="ems_scrap",uniqueConstraints=@UniqueConstraint(columnNames={"repair_id"}))
 public class Scrap implements IdEntity<String>{
 	@Id
 	@Column(length=18)

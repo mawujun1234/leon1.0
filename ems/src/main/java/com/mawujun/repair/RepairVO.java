@@ -16,6 +16,8 @@ public class RepairVO extends Repair {
 	private String equipment_style;
 	private String equipment_status;
 	
+	private String scrap_id;//报废单的单号
+	
 	public String getRpa_type_name() {
 		if("innerrpa".equals(this.getRpa_type())){
 			return "维修";
@@ -88,6 +90,12 @@ public class RepairVO extends Repair {
 	}
 	public void setEquipment_style(String equipment_style) {
 		this.equipment_style = equipment_style;
+	}
+	public String getScrap_id() {
+		return scrap_id;
+	}
+	public void setScrap_id(String scrap_id) {
+		this.scrap_id = scrap_id;
 	}
 	
 }

@@ -1,4 +1,6 @@
 package com.mawujun.repair;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -8,8 +10,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
+import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.utils.M;
+import com.mawujun.utils.StringUtils;
 import com.mawujun.utils.page.Page;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
@@ -22,7 +27,7 @@ public class ScrapController {
 
 	@Resource
 	private ScrapService scrapService;
-
+	
 
 //	/**
 //	 * 请按自己的需求修改
@@ -70,6 +75,7 @@ public class ScrapController {
 	@RequestMapping("/scrap/create.do")
 	@ResponseBody
 	public Scrap create(@RequestBody Scrap scrap) {
+		
 		scrapService.create(scrap);
 		return scrap;
 	}
@@ -95,5 +101,36 @@ public class ScrapController {
 		return scrap;
 	}
 	
+	@RequestMapping("/scrap/loadByRepair_id.do")
+	public Scrap loadByRepair_id(String repair_id) {
+		Scrap scrap= scrapService.queryUnique(Cnd.select().andEquals(M.Scrap.repair_id, repair_id));
+		if(scrap==null){
+			//throw new BusinessException("当前维修单还没有创建报废单");
+			JsonConfigHolder.setSuccessValue(false);
+			JsonConfigHolder.setMsg("当前维修单还没有创建报废单");
+		}
+		return scrap;
+	}
+	/**
+	 * 维修中心确认报废单，开始走报废流程
+	 * @author mawujun 16064988@qq.com 
+	 * @param scrap
+	 * @return
+	 */
+	@RequestMapping("/scrap/scrap.do")
+	public Scrap scrap(Scrap scrap) {
+		return scrapService.scrap(scrap);
+	}
+	
+	/**
+	 * 仓管确认报废单，结束报废流程和维修流程
+	 * @author mawujun 16064988@qq.com 
+	 * @param scrap
+	 * @return
+	 */
+	@RequestMapping("/scrap/makeSureScrap.do")
+	public Scrap makeSureScrap(Scrap scrap) {
+		return scrapService.makeSureScrap(scrap);
+	}
 	
 }

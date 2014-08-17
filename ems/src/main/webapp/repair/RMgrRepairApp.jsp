@@ -26,6 +26,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript">
 		var loginUsername='<%=ShiroUtils.getName()%>';
 	</script>
+	
+	<style>
+		
+		.repair_edit{
+			 background: url(../icons/application_form_edit.png) left top no-repeat !important;  
+		}
+		.repair_look{
+			 background: url(../icons/application_form_magnify.png) left top no-repeat !important;  
+		}
+		.scrap_edit{
+			 background: url(../icons/book_edit.png) left top no-repeat !important;  
+		}
+		.scrap_look{
+			 background: url(../icons/book_magnify.png) left top no-repeat !important;  
+		}
+		
+	</style>
   </head>
   
   <body>
