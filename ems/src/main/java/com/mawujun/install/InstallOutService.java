@@ -35,10 +35,6 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 	private InstallOutListRepository outStoreListRepository;
 	@Autowired
 	private EquipmentRepository equipmentRepository;
-	@Autowired
-	private WorkUnitEquipmentRepository workUnitEquipmentRepository;
-	@Autowired
-	private StoreEquipmentRepository storeEquipmentRepository;
 	
 	SimpleDateFormat ymdHmsDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
 	
@@ -59,19 +55,25 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 		
 		for(Equipment equipment:equipments){
 			//更新设备状态为出库待安装
-			equipmentRepository.update(Cnd.update().set(M.Equipment.status, 2).andEquals(M.Equipment.ecode, equipment.getEcode()));
-			
 			//把设备绑定到作业单位上面
-			WorkUnitEquipment workUnitEquipment=new WorkUnitEquipment();
-			workUnitEquipment.setEcode(equipment.getEcode());
-			workUnitEquipment.setOutStore_id(instore_id);//不是唯一主键
-			workUnitEquipment.setWorkunit_id(outStore.getWorkUnit_id());
-			workUnitEquipmentRepository.create(workUnitEquipment);
-			
 			//把仓库中的该设备移除
-//			storeEquipmentRepository.update(Cnd.update().set(M.StoreEquipment.num, M.StoreEquipment.num+"-1").andEquals(M.StoreEquipment.ecode, equipment.getEcode())
-//					.andEquals(M.StoreEquipment.store_id, outStore.getStore_id()));
-			storeEquipmentRepository.updateNum(outStore.getStore_id(), equipment.getEcode(),M.StoreEquipment.num+"-1");
+			equipmentRepository.update(Cnd.update().set(M.Equipment.status, 2)
+					.set(M.Equipment.workUnit_id, outStore.getWorkUnit_id())
+					.set(M.Equipment.store_id, null)
+					.andEquals(M.Equipment.ecode, equipment.getEcode()));
+			
+			
+			
+//			WorkUnitEquipment workUnitEquipment=new WorkUnitEquipment();
+//			workUnitEquipment.setEcode(equipment.getEcode());
+//			workUnitEquipment.setOutStore_id(instore_id);//不是唯一主键
+//			workUnitEquipment.setWorkunit_id(outStore.getWorkUnit_id());
+//			workUnitEquipmentRepository.create(workUnitEquipment);
+//			
+//			//把仓库中的该设备移除
+////			storeEquipmentRepository.update(Cnd.update().set(M.StoreEquipment.num, M.StoreEquipment.num+"-1").andEquals(M.StoreEquipment.ecode, equipment.getEcode())
+////					.andEquals(M.StoreEquipment.store_id, outStore.getStore_id()));
+//			storeEquipmentRepository.updateNum(outStore.getStore_id(), equipment.getEcode(),M.StoreEquipment.num+"-1");
 			
 			//插入入库单明细
 			InstallOutList inStoreList=new InstallOutList();

@@ -59,11 +59,12 @@ public class StoreService extends AbstractService<Store, String>{
 			EquipmentVO total=new EquipmentVO();
 			total.setSubtype_id("total");
 			total.setSubtype_name("<b>合计:</b>");
-			int total_num=0;
-			for(Equipment equi_temp:list){
-				total_num+=equi_temp.getNum();
-			}
-			total.setNum(total_num);
+//			int total_num=0;
+//			for(Equipment equi_temp:list){
+//				total_num+=equi_temp.getNum();
+//			}
+//			total.setNum(total_num);
+			total.setNum(list.size());
 			list.add(total);
 			return list;
 		} else {

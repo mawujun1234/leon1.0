@@ -184,12 +184,6 @@ public static final class ems_installoutlist {
 	public static final String ecode="ecode";
 	public static final String id="id";
 }
-public static final class ems_storeequipment {
-	public static final String store_id="store_id";
-	public static final String ecode="ecode";
-	public static final String num="num";
-	public static final String id="id";
-}
 public static final class ems_workunitequipment {
 	public static final String workunit_id="workunit_id";
 	public static final String ecode="ecode";

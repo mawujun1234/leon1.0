@@ -48,8 +48,7 @@ public class Equipment implements IdEntity<String>{
 	@Column(length=36)
 	private String workUnit_id;//作业单位id，所属的作业单位，和store_id，同时只能有一个有值
 	
-	@Transient
-	private Integer num;
+
 	
 	
 //	@Transient
@@ -145,12 +144,6 @@ public class Equipment implements IdEntity<String>{
 		this.fisData = fisData;
 	}
 	
-	public Integer getNum() {
-		return num;
-	}
-	public void setNum(Integer num) {
-		this.num = num;
-	}
 	public String getOrder_id() {
 		return order_id;
 	}

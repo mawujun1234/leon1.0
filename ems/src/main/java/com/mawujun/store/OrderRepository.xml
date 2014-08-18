@@ -6,13 +6,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
 <mapper namespace="com.mawujun.store.OrderRepository">
     <select id="query" resultType="com.mawujun.store.OrderVO" parameterType="String">
-    	SELECT a.*,b.text as subtype_name,c.text as prod_name,d.name as brand_name,d.name as supplier_name,f.name as store_name
+    	SELECT a.*,b.text as subtype_name,c.text as prod_name,d.name as brand_name,d.name as supplier_name
 	    FROM ems_order a
 	    inner join ems_equipmentsubtype b on a.subtype_id=b.id
 		inner join ems_equipmentprod c on a.prod_id=c.id
 		inner join ems_brand d on a.brand_id=d.id
 		inner join ems_supplier e on a.supplier_id=e.id
-		inner join ems_store f on a.store_id=f.id
 		where a.orderNo=#{orderNo}   
     </select>
     

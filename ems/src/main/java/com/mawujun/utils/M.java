@@ -184,12 +184,6 @@ public static final class InstallOutList {
 	public static final String ecode="ecode";
 	public static final String id="id";
 }
-public static final class StoreEquipment {
-	public static final String store_id="store_id";
-	public static final String ecode="ecode";
-	public static final String num="num";
-	public static final String id="id";
-}
 public static final class WorkUnitEquipment {
 	public static final String workunit_id="workunit_id";
 	public static final String ecode="ecode";

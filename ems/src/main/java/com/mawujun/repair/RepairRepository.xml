@@ -13,9 +13,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		inner join ems_equipmentprod c on a.prod_id=c.id
 		inner join ems_brand d on a.brand_id=d.id
 		inner join ems_supplier e on a.supplier_id=e.id
-		inner join ems_storeequipment f on a.ecode=f.ecode
-		inner join ems_store g on f.store_id=g.id
-		where a.ecode=#{ecode} and g.id=#{store_id} and f.num>0
+		inner join ems_store g on a.store_id=g.id
+		where a.ecode=#{ecode} and g.id=#{store_id}
     </select> 
     
     <select id="storeMgrQuery" resultType="com.mawujun.repair.RepairVO" parameterType="map">

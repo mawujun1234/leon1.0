@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.mawujun.repository1.IRepository;
+import com.mawujun.baseinfo.Equipment;
 import com.mawujun.install.InstallIn;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
@@ -13,5 +14,13 @@ import com.mawujun.install.InstallIn;
 @Repository
 public interface InstallInRepository extends IRepository<InstallIn, String>{
 
+	/**
+	 * 获取保修单的相关信息
+	 * @author mawujun 16064988@qq.com 
+	 * @param ecode
+	 * @return
+	 */
 	public InstallIn getInstallInByEcode(@Param("ecode")String ecode);
+	
+	public Equipment getEquipmentByEcode(@Param("ecode")String ecode,@Param("workunit_id")String workunit_id);
 }

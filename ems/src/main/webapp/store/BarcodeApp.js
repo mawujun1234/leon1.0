@@ -137,6 +137,7 @@ Ext.onReady(function(){
         equip_grid,
         {html:'<HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=3>'},
         {html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;条码的生成规则是: 小类(3)+品名(2)+'-'+品牌(3)+供应商(3)+'-'+日期(6)+流水号(4)，按“导出”，导出条码'}],
+        
         buttons:[{text:'导出',handler:function(btn){
             if (equipStore.getCount()> 0) { 
             	Ext.getBody().mask("正在保存....");

@@ -38,10 +38,6 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 	private EquipmentRepository equipmentRepository;
 	@Autowired
 	private InstallInListRepository installInListRepository;
-	@Autowired
-	private StoreEquipmentRepository storeEquipmentRepository;
-	@Autowired
-	private WorkUnitEquipmentRepository workUnitEquipmentRepository;
 	
 	SimpleDateFormat ymdHmsDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
 	
@@ -49,6 +45,11 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 	public InstallInRepository getRepository() {
 		return installInRepository;
 	}
+	
+	public Equipment getEquipmentByEcode(String ecode,String workunit_id) {
+		return installInRepository.getEquipmentByEcode(ecode,workunit_id);
+	}
+	
 	
 	public void equipmentInStore(Equipment[] equipments, InstallIn installin) { 
 		String instore_id = ymdHmsDateFormat.format(new Date());
@@ -66,23 +67,24 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 			list.setInstallIn_id(instore_id);
 			
 			//如果设备状态时损坏，就把设备状态改为 入库待维修，否则就修改为在库
+			//把设备挂到相应的仓库上
+			//同时减持设备挂在作业单位
 			if(equipment.getStatus()==4){
 				list.setIsBad(true);
-				equipmentRepository.update(Cnd.update().set(M.Equipment.status, 5).andEquals(M.Equipment.ecode, equipment.getEcode()));
+				equipmentRepository.update(Cnd.update().set(M.Equipment.status, 5)
+						.set(M.Equipment.store_id, installin.getStore_id())
+						.set(M.Equipment.workUnit_id,null)
+						.andEquals(M.Equipment.ecode, equipment.getEcode()));
 			} else {
 				list.setIsBad(false);
-				equipmentRepository.update(Cnd.update().set(M.Equipment.status, 1).andEquals(M.Equipment.ecode, equipment.getEcode()));
+				equipmentRepository.update(Cnd.update().set(M.Equipment.status, 1)
+						.set(M.Equipment.store_id, installin.getStore_id())
+						.set(M.Equipment.workUnit_id,null)
+						.andEquals(M.Equipment.ecode, equipment.getEcode()));
 			}
 			
 			//添加明细
 			installInListRepository.create(list);
-			
-			//仓库增加这一设备
-			storeEquipmentRepository.updateNum(installin.getStore_id(), equipment.getEcode(),M.StoreEquipment.num+"+1");
-			
-			//手持减掉这一个设备,因为一个设备，只会唯一存在，所以只需要使用encode就可以了
-			workUnitEquipmentRepository.deleteBatch(Cnd.delete().andEquals(M.WorkUnitEquipment.ecode, equipment.getEcode()));
-					//.andEquals(M.WorkUnitEquipment.workunit_id, installin.getWorkUnit_id()));
 			
 			
 		}

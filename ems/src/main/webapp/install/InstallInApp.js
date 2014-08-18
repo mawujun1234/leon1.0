@@ -236,8 +236,8 @@ Ext.onReady(function(){
 		   if(field.isValid()){
 			  // form.load({
 		   	Ext.Ajax.request({
-					params : {ecode:newValue},//传递参数   
-					url : Ext.ContextPath+'/installOut/getEquipmentByEcode.do',//请求的url地址   
+					params : {ecode:newValue,workunit_id:workUnit_combox.getValue()},//传递参数   
+					url : Ext.ContextPath+'/installIn/getEquipmentByEcode.do',//请求的url地址   
 					method : 'GET',//请求方式   
 					success : function(response) {//加载成功的处理函数   
 						var ret=Ext.decode(response.responseText);

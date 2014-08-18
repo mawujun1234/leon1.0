@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 import com.mawujun.baseinfo.Equipment;
+import com.mawujun.baseinfo.EquipmentService;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
+import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.utils.page.Page;
 import com.mawujun.utils.M;
@@ -28,6 +30,8 @@ public class InstallInController {
 
 	@Resource
 	private InstallInService installInService;
+	@Resource
+	private EquipmentService equipmentService;
 
 
 //	/**
@@ -99,6 +103,18 @@ public class InstallInController {
 	public InstallIn destroy(@RequestBody InstallIn installIn) {
 		installInService.delete(installIn);
 		return installIn;
+	}
+	
+	@RequestMapping("/installIn/getEquipmentByEcode.do")
+	@ResponseBody
+	public Equipment getEquipmentByEcode(String ecode,String workunit_id) {
+		Equipment equipment= installInService.getEquipmentByEcode(ecode,workunit_id);
+		if(equipment==null){
+			//equipment=new Equipment();
+			//equipment.setStatus(0);
+			throw new BusinessException("对不起，该条码对应的设备不存在，或者该设备挂在其他作业单位或已经入库了!");
+		}
+		return equipment;
 	}
 	
 	@RequestMapping("/installIn/equipmentInStore.do")
