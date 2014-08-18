@@ -7,8 +7,8 @@
 		alter system set deferred_segment_creation=false scope=both;
 	http://huanyue.iteye.com/blog/533982
 	
-	
-	drop user ems cascade 删除用户和用户拥有的表
+	删除用户和用户拥有的表
+	drop user ems cascade 
 	create user ems identified by ems;
 	grant dba,connect,resource to ems;
 	

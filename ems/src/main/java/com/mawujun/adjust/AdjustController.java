@@ -76,39 +76,51 @@ public class AdjustController {
 		return adjustService.queryPage(page);
 	}
 	
+	/**
+	 * 调拨单查询的时候，查询明细数据
+	 * @author mawujun 16064988@qq.com 
+	 * @param adjust_id
+	 * @return
+	 */
+	@RequestMapping("/adjust/queryList.do")
+	@ResponseBody
+	public List<AdjustListVO> queryList(String adjust_id) {	
+		return adjustService.queryList(adjust_id);
+	}
+	
 
-	@RequestMapping("/adjust/load.do")
-	public Adjust load(String id) {
-		return adjustService.get(id);
-	}
-	
-	@RequestMapping("/adjust/create.do")
-	@ResponseBody
-	public Adjust create(@RequestBody Adjust adjust) {
-		adjustService.create(adjust);
-		return adjust;
-	}
-	
-	@RequestMapping("/adjust/update.do")
-	@ResponseBody
-	public  Adjust update(@RequestBody Adjust adjust) {
-		adjustService.update(adjust);
-		return adjust;
-	}
-	
-	@RequestMapping("/adjust/deleteById.do")
-	@ResponseBody
-	public String deleteById(String id) {
-		adjustService.deleteById(id);
-		return id;
-	}
-	
-	@RequestMapping("/adjust/destroy.do")
-	@ResponseBody
-	public Adjust destroy(@RequestBody Adjust adjust) {
-		adjustService.delete(adjust);
-		return adjust;
-	}
+//	@RequestMapping("/adjust/load.do")
+//	public Adjust load(String id) {
+//		return adjustService.get(id);
+//	}
+//	
+//	@RequestMapping("/adjust/create.do")
+//	@ResponseBody
+//	public Adjust create(@RequestBody Adjust adjust) {
+//		adjustService.create(adjust);
+//		return adjust;
+//	}
+//	
+//	@RequestMapping("/adjust/update.do")
+//	@ResponseBody
+//	public  Adjust update(@RequestBody Adjust adjust) {
+//		adjustService.update(adjust);
+//		return adjust;
+//	}
+//	
+//	@RequestMapping("/adjust/deleteById.do")
+//	@ResponseBody
+//	public String deleteById(String id) {
+//		adjustService.deleteById(id);
+//		return id;
+//	}
+//	
+//	@RequestMapping("/adjust/destroy.do")
+//	@ResponseBody
+//	public Adjust destroy(@RequestBody Adjust adjust) {
+//		adjustService.delete(adjust);
+//		return adjust;
+//	}
 	
 	@RequestMapping("/adjust/getAdjustVOByEcode.do")
 	@ResponseBody
@@ -140,7 +152,7 @@ public class AdjustController {
 		return adjustService.query4InStr(page);
 	}
 	/**
-	 * 获取调拨单明细
+	 * 在调拨入库的时候，获取调拨单明细
 	 * @author mawujun 16064988@qq.com 
 	 * @param adjust_id
 	 * @return
@@ -164,16 +176,16 @@ public class AdjustController {
 		return "success";
 	}
 	
-	/**
-	 * 当按全部入库按钮的时候，当要入库的数量和实际要入库的数量不一致的时候，要给出提醒
-	 * @author mawujun 16064988@qq.com 
-	 * @return
-	 */
-	@RequestMapping("/adjust/allInStr.do")
-	@ResponseBody
-	public String allInStr(@RequestBody AdjustList[] adjustLists,String str_in_id) {	
-		adjustService.allInStr(adjustLists,str_in_id);	
-		return "success";
-	}
+//	/**
+//	 * 当按全部入库按钮的时候，当要入库的数量和实际要入库的数量不一致的时候，要给出提醒
+//	 * @author mawujun 16064988@qq.com 
+//	 * @return
+//	 */
+//	@RequestMapping("/adjust/allInStr.do")
+//	@ResponseBody
+//	public String allInStr(@RequestBody AdjustList[] adjustLists,String str_in_id) {	
+//		adjustService.allInStr(adjustLists,str_in_id);	
+//		return "success";
+//	}
 	
 }

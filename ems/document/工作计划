@@ -4,7 +4,7 @@
 
 
 
-
+Cnd的sum的功能加上，AdjustService的partInStr方法中可以应用
 
 调拨单的全部入库还没有做，部分入库还没测试，调拨单查询就简单点，弄些查询条件就可以了
 	当部分入库后，调拨单已经选择的就不能取消选择了，这个时候要有一个标志位status=true就表示已经入库了
@@ -25,7 +25,7 @@ equipment的状态看看能不能转换成equipmentStatus
 每次出库建立单据的时候，都建立一个临时的单据，当进来的时候可以恢复到最近的一次单据数据.或者说是直接存入数据库，多弄个保存，就是临时保存在另外一个地方，等需要的时候再放进去
 创建维修单的时候，获取任务单的id和其中的故障描述,这里要考虑是否把任务单号直接放置在InstallInList里面，如果没有任务单，就设置为null
 两个tab页同时打开就报错
-AdjustService和RepairService中关于获取仓库，然后循环获取仓库名称的地方，把获取仓库改成放到缓存中query4InStr
+AdjustService和RepairService中关于获取仓库，然后循环获取仓库名称的地方，把获取仓库改成放到缓存中query4InStr,queryPage
 
 
 配置jrebel，使之能工作

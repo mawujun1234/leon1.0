@@ -34,16 +34,16 @@ Ext.define('Ems.adjust.AdjustGrid',{
 			autoSync:false,
 			pageSize:50,
 			model: 'Ems.adjust.Adjust',
-			autoLoad:true
-//			proxy:{
-//				type:'ajax',
-//				actionMethods:{read:'POST'},
-//				url:Ext.ContextPath+'/adjust/query4InStr.do',
-//				reader:{
-//					type:'json',
-//					root:'root'
-//				}
-//			}
+			autoLoad:true,
+			proxy:{
+				type:'ajax',
+				actionMethods:{read:'POST'},
+				url:Ext.ContextPath+'/adjust/query4InStr.do',
+				reader:{
+					type:'json',
+					root:'root'
+				}
+			}
 	  });
 	  
       me.dockedItems= [{

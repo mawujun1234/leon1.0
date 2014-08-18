@@ -124,11 +124,11 @@ public class AdjustService extends AbstractService<Adjust, String>{
 	public void partInStr(AdjustList[] adjustLists,String str_in_id) {
 		//获取当前调拨下的设备总数,本来应该是sum的，但现在是sum和count一样的
 		Long out_num_total=adjustListRepository.queryCount(Cnd.count(M.AdjustList.id).andEquals(M.AdjustList.adjust_id, adjustLists[0].getAdjust_id()));
-		int total=0;
+		//int total=0;
 		for(AdjustList adjustList:adjustLists) {
 			adjustList.setStatus(true);
 			adjustList.setIn_num(1);
-			total++;
+			//total++;
 			adjustListRepository.update(adjustList);
 			
 			//同时更改设备状态，从A仓库到B仓库
@@ -137,23 +137,43 @@ public class AdjustService extends AbstractService<Adjust, String>{
 			equipmentRepository.update(Cnd.update().set(M.Equipment.status, 1).set(M.Equipment.store_id, str_in_id).andEquals(M.Equipment.ecode, adjustList.getEcode()));
 		}
 		//这个时候就表示是都选择了，修改整个调拨单的状态
-		if(out_num_total==total){
-			adjustRepository.update(Cnd.update().set(M.Adjust.status, AdjustStatus.over).andEquals(M.AdjustList.adjust_id, adjustLists[0].getAdjust_id()));
+		if(adjustRepository.sumInnumByadjust_id(adjustLists[0].getAdjust_id())==out_num_total){
+			adjustRepository.update(Cnd.update().set(M.Adjust.status, AdjustStatus.over).andEquals(M.Adjust.id, adjustLists[0].getAdjust_id()));
 		}
 		
 		
 	}
-	/**
-	 * 当按全部入库按钮的时候，当要入库的数量和实际要入库的数量不一致的时候，要给出提醒，如果还是要强制入库，就表示某个设备丢失了
-	 * @author mawujun 16064988@qq.com 
-	 * @return
-	 */
-	public void allInStr(AdjustList[] adjustLists,String str_in_id) {
-		Long out_num_total=adjustListRepository.queryCount(Cnd.count(M.AdjustList.id).andEquals(M.AdjustList.adjust_id, adjustLists[0].getAdjust_id()));
-		if(adjustLists.length!=out_num_total){
-			throw new BusinessException("设备没有全部到货，确定要结束这个调拨单吗?");
-		}
+//	/**
+//	 * 当按全部入库按钮的时候，当要入库的数量和实际要入库的数量不一致的时候，要给出提醒，如果还是要强制入库，就表示某个设备丢失了
+//	 * @author mawujun 16064988@qq.com 
+//	 * @return
+//	 */
+//	public void allInStr(AdjustList[] adjustLists,String str_in_id) {
+//		Long out_num_total=adjustListRepository.queryCount(Cnd.count(M.AdjustList.id).andEquals(M.AdjustList.adjust_id, adjustLists[0].getAdjust_id()));
+//		if(adjustLists.length!=out_num_total){
+//			throw new BusinessException("设备没有全部到货，确定要结束这个调拨单吗?");
+//		}
+//		
+//	}
+	
+	public Page queryPage(Page page) {
+		List<Store> stores=storeRepository.queryAll();
 		
+		Page results=adjustRepository.queryPage(page);
+		List<AdjustVO> list=results.getResult();
+		for(AdjustVO adjustVO:list){
+			for(Store store:stores){
+				if(store.getId().equals(adjustVO.getStr_out_id())){
+					adjustVO.setStr_out_name(store.getName());
+				} else if(store.getId().equals(adjustVO.getStr_in_id())){
+					adjustVO.setStr_in_name(store.getName());
+				}
+			}
+		}
+		return results;
+	}
+	public List<AdjustListVO> queryList(String adjust_id) {
+		return adjustRepository.query4InStrList(adjust_id);
 	}
 
 }

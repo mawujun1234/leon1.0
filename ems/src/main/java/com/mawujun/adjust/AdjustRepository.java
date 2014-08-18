@@ -21,4 +21,6 @@ public interface AdjustRepository extends IRepository<Adjust, String>{
 	
 	public Page query4InStr(Page page);
 	public List<AdjustListVO> query4InStrList(@Param("adjust_id")String adjust_id);
+	
+	public Long sumInnumByadjust_id(@Param("adjust_id")String adjust_id);
 }

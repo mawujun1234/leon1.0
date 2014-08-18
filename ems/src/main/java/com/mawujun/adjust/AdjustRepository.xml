@@ -16,13 +16,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     </select> 
 
 	<select id="query4InStr" resultType="com.mawujun.adjust.AdjustVO" parameterType="map">
-		select a.* from ems_adjust a
+		select a.* from ems_adjust a where a.status='carry'
 	</select>
 	
 	<!-- 获取调拨单明细-->
 	<select id="query4InStrList" resultType="com.mawujun.adjust.AdjustListVO" parameterType="java.lang.String">
-    	select a.ecode,a.style as equipment_style,a.status as equipment_status,b.text as subtype_name,c.text as prod_name,d.name as brand_name,d.name as supplier_name 
-    	,f.adjust_id,f.out_num,f.in_num,f.status
+    	select f.*,a.style as equipment_style,a.status as equipment_status,b.text as subtype_name,c.text as prod_name,d.name as brand_name,d.name as supplier_name 
     	from ems_equipment a
 		inner join ems_equipmentsubtype b on a.subtype_id=b.id
 		inner join ems_equipmentprod c on a.prod_id=c.id
@@ -31,5 +30,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		inner join ems_adjustlist f on a.ecode=f.ecode
 		where f.adjust_id=#{adjust_id}
     </select> 
+    
+    <select id="sumInnumByadjust_id" resultType="long"  parameterType="java.lang.String">
+    	select sum(in_num) from ems_adjustlist where adjust_id=#{adjust_id}
+    </select>
+    
+    <select id="queryPage" resultType="com.mawujun.adjust.AdjustVO" parameterType="map">
+		select a.* from ems_adjust a
+	</select>
 </mapper>
 

@@ -1,9 +1,9 @@
 Ext.require("Ems.adjust.Adjust");
-Ext.require("Ems.adjust.AdjustInGrid");
-Ext.require("Ems.adjust.AdjustListInGrid");
+Ext.require("Ems.adjust.AdjustGrid");
+Ext.require("Ems.adjust.AdjustListGrid");
 //Ext.require("Ems.adjust.AdjustForm");
 Ext.onReady(function(){
-	var grid=Ext.create('Ems.adjust.AdjustInGrid',{
+	var grid=Ext.create('Ems.adjust.AdjustGrid',{
 		region:'west',
 		split: true,
 		collapsible: true,
@@ -11,7 +11,7 @@ Ext.onReady(function(){
 		width:400
 	});
 
-	var gridList=Ext.create('Ems.adjust.AdjustListInGrid',{
+	var gridList=Ext.create('Ems.adjust.AdjustListGrid',{
 		region:'center',
 		//split: true,
 		//collapsible: true,
@@ -20,7 +20,6 @@ Ext.onReady(function(){
 	
 	grid.on('itemclick',function(view,record,item,index){
 		gridList.getStore().load({params:{adjust_id:record.get("id")}});
-		gridList.str_in_id=record.get("str_in_id");
 	});
 	
 	var viewPort=Ext.create('Ext.container.Viewport',{

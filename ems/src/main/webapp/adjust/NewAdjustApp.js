@@ -261,6 +261,8 @@ Ext.onReady(function(){
         		   Ext.MessageBox.confirm('确认', '您确认要清除所有记录吗?', function(btn){
 						if(btn=='yes'){
 							equipStore.removeAll();
+							store_out_combox.enable();
+							store_in_combox.enable();
 						}
 					});
         	   }
