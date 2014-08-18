@@ -184,7 +184,7 @@ Ext.onReady(function(){
 		name:'operater',
 		readOnly:true,
 		allowBlank:false,
-		value:loginUsername
+		value:loginName
 	});
 	
 	var inDate_textfield=Ext.create('Ext.form.field.Text',{
@@ -272,7 +272,9 @@ Ext.onReady(function(){
 								Ext.Msg.alert('提示','该设备已经存在');
 							}else{
 								equipStore.insert(0, scanrecord);				
-							}						
+							}
+							workUnit_combox.disable();
+							store_combox.disable();
 						}
 					}
 //					failure : function(response) {//加载失败的处理函数   
@@ -338,13 +340,15 @@ Ext.onReady(function(){
 	                }]
 	            }],
         tbar:['<pan id="toolbar-title-text">当前入库记录</span>','->',
-              {text:'清空设备',
+              {text:'清空选择的设备',
         	   iconCls:'icon-clearall',
         	   handler:function(){
         		   Ext.MessageBox.confirm('确认', '您确认要清除所有记录吗?', function(btn){
-								            	if(btn=='yes'){
-								            		equipStore.removeAll();
-								            	}
+						if(btn=='yes'){
+							equipStore.removeAll();
+							workUnit_combox.enable();
+							store_combox.enable();
+						}
 					});
         	   }
         }]
@@ -416,6 +420,9 @@ Ext.onReady(function(){
 						Ext.Msg.alert("消息","设备返库完成!");
 						equipStore.removeAll();
 						Ext.getBody().unmask();
+						
+						workUnit_combox.enable();
+						store_combox.enable();
 					},
 					failure:function(){
 						Ext.getBody().unmask();

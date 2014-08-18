@@ -24,7 +24,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<%@include file="../../common/init.jsp" %>
 	<script type="text/javascript" src="NewRepairApp.js"></script>
 	<script type="text/javascript">
-		var loginUsername='<%=ShiroUtils.getName()%>';
+		var loginName='<%=ShiroUtils.getName()%>';
+		var loginUserId='<%=ShiroUtils.getAuthenticationInfo().getId()%>';
 	</script>
   </head>
   

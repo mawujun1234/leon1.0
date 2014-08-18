@@ -15,5 +15,5 @@ import com.mawujun.baseinfo.WorkUnit;
 @Repository
 public interface WorkUnitRepository extends IRepository<WorkUnit, String>{
 
-	public List<Equipment> queryEquipments(@Param("workUnit_id")String workUnit_id);
+	public List<EquipmentVO> queryEquipments(@Param("workUnit_id")String workUnit_id);
 }

@@ -121,7 +121,7 @@ Ext.onReady(function(){
 		name:'operater',
 		readOnly:true,
 		allowBlank:false,
-		value:loginUsername
+		value:loginName
 	});
 	
 	var inDate_textfield=Ext.create('Ext.form.field.Text',{
@@ -173,7 +173,7 @@ Ext.onReady(function(){
 							ret.root.str_out_name=store_out_combox.getRawValue();
 							ret.root.str_in_id=store_in_combox.getValue();
 							ret.root.str_in_name=store_in_combox.getRawValue();
-							ret.root.str_out_oper_id=storeman_textfield.getValue();
+	
 							
 							var scanrecord = Ext.create('Ems.adjust.Adjust', ret.root);
 

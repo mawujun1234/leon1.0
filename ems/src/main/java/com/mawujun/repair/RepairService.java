@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.Store;
 import com.mawujun.baseinfo.StoreRepository;
+import com.mawujun.exception.BusinessException;
 import com.mawujun.install.InstallIn;
 import com.mawujun.install.InstallInRepository;
 import com.mawujun.repository.cnd.Cnd;
@@ -49,6 +50,9 @@ public class RepairService extends AbstractService<Repair, String>{
 	
 	public RepairVO getRepairVOByEcode(String ecode,String store_id) {
 		RepairVO repairvo= repairRepository.getRepairVOByEcode(ecode,store_id);
+		if(repairvo==null){
+			throw new BusinessException("该设备不在该仓库");
+		}
 		//获取报修人的相关信息，和报修单id
 		InstallIn installIn=installInRepository.getInstallInByEcode(ecode);
 		if(installIn!=null){

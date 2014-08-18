@@ -30,6 +30,7 @@ import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 
 
+import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.BeanUtils;
 import com.mawujun.utils.M;
 import com.mawujun.utils.page.Page;
@@ -75,6 +76,7 @@ public class AdjustService extends AbstractService<Adjust, String>{
 		adjust.setId(ymdHmsDateFormat.format(new Date()));
 		adjust.setStr_out_date(new Date());
 		adjust.setStatus(AdjustStatus.carry.toString());
+		adjust.setStr_in_oper_id(ShiroUtils.getAuthenticationInfo().getId());
 		adjustRepository.create(adjust);
 		
 		

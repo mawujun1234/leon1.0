@@ -29,7 +29,7 @@ Ext.define('Ems.install.WorkUnitEquipmentWindow',{
 			flex:1,
 			store:equip_store,
 	    	columns: [Ext.create('Ext.grid.RowNumberer'),
-	    			{header: '条码', dataIndex: 'ecode',width:130},
+	    			{header: '条码', dataIndex: 'ecode',width:150},
 	    	          {header: '设备类型', dataIndex: 'subtype_name',width:120},
 	    	          {header: '品名', dataIndex: 'prod_name'},
 	    	          {header: '供应商', dataIndex: 'supplier_name'},

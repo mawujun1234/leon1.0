@@ -115,8 +115,8 @@ public class WorkUnitController {
 	
 	@RequestMapping("/workUnit/queryEquipments.do")
 	@ResponseBody
-	public List<Equipment> queryEquipments(String workUnit_id) {	
-		List<Equipment> equipments=workUnitService.queryEquipments(workUnit_id);
+	public List<EquipmentVO> queryEquipments(String workUnit_id) {	
+		List<EquipmentVO> equipments=workUnitService.queryEquipments(workUnit_id);
 		return equipments;
 	}
 }

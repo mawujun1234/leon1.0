@@ -58,7 +58,7 @@ Ext.onReady(function(){
 		name:'operater',
 		readOnly:true,
 		allowBlank:false,
-		value:loginUsername
+		value:loginName
 	});
 	
 	
@@ -174,7 +174,7 @@ Ext.onReady(function(){
 	            unitPrice:obj.unitPrice,
 	            totalprice:obj.totalprice,
 	            orderDate:orderDate.getValue(),
-	            operater:operater.getValue()
+	            operater:loginUserId
 		    })
 			equipStore.add(record);
 			//订单号和仓库变味不可编辑
@@ -228,7 +228,7 @@ Ext.onReady(function(){
 							equipStore.removeAll();
 							
 							var record=new Ext.create('Ems.store.Order',{
-								operater:loginUsername,
+								operater:loginUserId,
 								orderDate:new Date()
 						    });
 						    order_no.enable();

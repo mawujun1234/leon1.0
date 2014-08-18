@@ -5,7 +5,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
 <mapper namespace="com.mawujun.baseinfo.WorkUnitRepository">
-	<select id="queryEquipments" resultType="com.mawujun.baseinfo.Equipment" parameterType="java.lang.String">
+	<select id="queryEquipments" resultType="com.mawujun.baseinfo.EquipmentVO" parameterType="java.lang.String">
     	select a.*,b.text as subtype_name,c.text as prod_name,d.name as brand_name,e.name as supplier_name 
     	from (select x.* from ems_equipment x where x.workUnit_id=#{workUnit_id}) a
 		inner join ems_equipmentsubtype b on a.subtype_id=b.id

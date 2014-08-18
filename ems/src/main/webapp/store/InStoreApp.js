@@ -115,7 +115,7 @@ Ext.onReady(function(){
 		name:'operater',
 		readOnly:true,
 		allowBlank:false,
-		value:loginUsername
+		value:loginName
 	});
 	
 	var inDate_textfield=Ext.create('Ext.form.field.Text',{

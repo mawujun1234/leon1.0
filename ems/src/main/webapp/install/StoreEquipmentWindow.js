@@ -101,6 +101,15 @@ Ext.define('Ems.install.StoreEquipmentWindow',{
 			  });
 			}
 		});
+		equip_store.load({params:{
+					store_id:store_combox.getValue(),
+					subtype_id:subtype_combox.getValue(),
+					prod_id:prod_combox.getValue(),
+					brand_id:brand_combox.getValue(),
+					supplier_id:supplier_combox.getValue(),
+					level:level
+				}
+			  });
 		
 		var equip_grid=Ext.create('Ext.grid.Panel',{
 			//flex:1,

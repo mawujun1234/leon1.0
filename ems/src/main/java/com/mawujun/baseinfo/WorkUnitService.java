@@ -33,7 +33,7 @@ public class WorkUnitService extends AbstractService<WorkUnit, String>{
 		return workUnitRepository;
 	}
 	
-	public List<Equipment> queryEquipments(String workUnit_id) {
+	public List<EquipmentVO> queryEquipments(String workUnit_id) {
 		return workUnitRepository.queryEquipments(workUnit_id);
 	}
 
