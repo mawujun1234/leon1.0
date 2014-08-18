@@ -39,6 +39,7 @@ import com.mawujun.adjust.AdjustRepository;
 import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.Store;
 import com.mawujun.baseinfo.StoreRepository;
+import com.mawujun.exception.BusinessException;
 
 
 /**
@@ -143,11 +144,15 @@ public class AdjustService extends AbstractService<Adjust, String>{
 		
 	}
 	/**
-	 * 当按全部入库按钮的时候，当要入库的数量和实际要入库的数量不一致的时候，要给出提醒
+	 * 当按全部入库按钮的时候，当要入库的数量和实际要入库的数量不一致的时候，要给出提醒，如果还是要强制入库，就表示某个设备丢失了
 	 * @author mawujun 16064988@qq.com 
 	 * @return
 	 */
 	public void allInStr(AdjustList[] adjustLists,String str_in_id) {
+		Long out_num_total=adjustListRepository.queryCount(Cnd.count(M.AdjustList.id).andEquals(M.AdjustList.adjust_id, adjustLists[0].getAdjust_id()));
+		if(adjustLists.length!=out_num_total){
+			throw new BusinessException("设备没有全部到货，确定要结束这个调拨单吗?");
+		}
 		
 	}
 
