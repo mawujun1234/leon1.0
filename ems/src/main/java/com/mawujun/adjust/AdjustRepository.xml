@@ -37,6 +37,23 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     
     <select id="queryPage" resultType="com.mawujun.adjust.AdjustVO" parameterType="map">
 		select a.* from ems_adjust a
+		<where>
+			<if test="str_out_id!=null">
+				and a.str_out_id=#{str_out_id}
+			</if>
+			<if test="str_in_id!=null">
+				and a.str_in_id=#{str_in_id}
+			</if>
+			<if test="str_out_date_start!=null ">
+				and to_char(a.str_out_date,'yyyy-mm-dd') &gt;= #{str_out_date_start}
+			</if>
+			<if test="str_out_date_end!=null">
+				and to_char(a.str_out_date,'yyyy-mm-dd') &lt;= #{str_out_date_end}
+			</if>
+			<if test="status!=null">
+				and a.status=#{status}
+			</if>
+		</where>
 	</select>
 </mapper>
 

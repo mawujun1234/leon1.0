@@ -1,4 +1,4 @@
-Ext.define('Ems.adjust.AdjustListGrid',{
+Ext.define('Ems.adjust.AdjustListInGrid',{
 	extend:'Ext.grid.Panel',
 	requires: [
 	     'Ems.adjust.AdjustList'

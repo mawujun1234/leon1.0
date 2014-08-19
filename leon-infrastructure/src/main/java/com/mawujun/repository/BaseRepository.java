@@ -320,6 +320,22 @@ public abstract class BaseRepository<T extends IdEntity<ID>, ID extends Serializ
 	public Object queryMax(String property,Cnd cnd) {
 		return hibernateDao.queryMax(property,cnd);
 	}
+	public Object queryMax(Cnd cnd) {
+		return hibernateDao.queryMax(cnd);
+	}
+	
+	public Object queryMin(String property,Cnd cnd) {
+		return hibernateDao.queryMin(property,cnd);
+	}
+	public Object queryMin(Cnd cnd) {
+		return hibernateDao.queryMin(cnd);
+	}
+	public Object querySum(Cnd cnd) {
+		return hibernateDao.querySum(cnd);
+	}
+	public Object queryAvg(Cnd cnd) {
+		return hibernateDao.queryAvg(cnd);
+	}
 	//=============================
 	
 	

@@ -637,6 +637,59 @@ public class RepositoryTest extends DbunitBaseRepositoryTest {
 		assertEquals((Integer)3,entitys);
 		//assertEquals(1,entitys.getTotalPages());
 	}
+	@Test
+	public void testQueryMaxCnd1() {
+		Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
+		Cnd cnd=Cnd.max("id").andIn("id", 1,2,3);//.andLike("firstName", "admin").andIn("lastName", "123","1234");
+		
+		Object entitys=repository.queryMax(cnd);
+		tx.commit();
+		assertEquals((Integer)3,entitys);
+		//assertEquals(1,entitys.getTotalPages());
+	}
+	
+	@Test
+	public void testQueryMinCnd() {
+		Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
+		Cnd cnd=Cnd.select().andIn("id", 1,2,3);//.andLike("firstName", "admin").andIn("lastName", "123","1234");
+		
+		Object entitys=repository.queryMin("id",cnd);
+		tx.commit();
+		assertEquals((Integer)1,entitys);
+		//assertEquals(1,entitys.getTotalPages());
+	}
+	@Test
+	public void testQueryMinCnd1() {
+		Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
+		Cnd cnd=Cnd.min("id").andIn("id", 1,2,3);//.andLike("firstName", "admin").andIn("lastName", "123","1234");
+		
+		Object entitys=repository.queryMin(cnd);
+		tx.commit();
+		assertEquals((Integer)1,entitys);
+		//assertEquals(1,entitys.getTotalPages());
+	}
+	@Test
+	public void testQuerySumCnd() {
+		Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
+		Cnd cnd=Cnd.sum("id").andIn("id", 1,2,3);//.andLike("firstName", "admin").andIn("lastName", "123","1234");
+		
+		Object entitys=repository.queryMin(cnd);
+		tx.commit();
+		assertEquals(6L,entitys);
+		//assertEquals(1,entitys.getTotalPages());
+	}
+	
+	@Test
+	public void testQueryAvgCnd() {
+		Transaction tx = sessionFactory.getCurrentSession().beginTransaction(); 
+		Cnd cnd=Cnd.avg("id").andIn("id", 1,2,3);//.andLike("firstName", "admin").andIn("lastName", "123","1234");
+		
+		Object entitys=repository.queryAvg(cnd);
+		tx.commit();
+		assertEquals(2.0,entitys);
+		//assertEquals(1,entitys.getTotalPages());
+	}
+
 	
 	@Test
 	public void testQueryPageByMybatis() {

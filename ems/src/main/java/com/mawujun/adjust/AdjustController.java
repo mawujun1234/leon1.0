@@ -71,8 +71,15 @@ public class AdjustController {
 	 */
 	@RequestMapping("/adjust/query.do")
 	@ResponseBody
-	public Page query(Integer start,Integer limit) {	
+	public Page query(Integer start,Integer limit,String str_out_id,String str_in_id,String str_out_date_start,String str_out_date_end,String status) {	
 		Page page=Page.getInstance(start,limit);	
+		page.addParam("str_out_id", str_out_id);
+		page.addParam("str_in_id", str_in_id);
+		page.addParam("str_out_date_start", str_out_date_start);
+		page.addParam("str_out_date_end", str_out_date_end);
+		page.addParam("status", status);
+		
+		
 		return adjustService.queryPage(page);
 	}
 	

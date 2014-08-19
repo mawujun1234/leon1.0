@@ -1143,7 +1143,7 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 	}
 	public Long queryCount(Cnd cnd) {
 		cnd.setSqlType(SqlType.SELECT);
-		cnd.setCount(true);
+		cnd.setCount();
 		//StringBuilder builder=new StringBuilder("select count(*)   ");
 		StringBuilder builder=new StringBuilder("");
 //		if(cnd.getSelectItems()!=null && cnd.getSelectItems().getNames().size()>0){
@@ -1331,6 +1331,30 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 		query.setResultTransformer(CriteriaSpecification.ROOT_ENTITY);
 		return query.uniqueResult();
 	}
+	public Object queryMax(Cnd cnd) {
+		cnd.setSqlType(SqlType.SELECT);
+		StringBuilder builder=new StringBuilder("");
+		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
+		if(cnd.getFrom()==null){
+			cnd.setFrom(classMetadata.getEntityName());
+		}
+		cnd.joinHql(builder);
+		
+		
+
+		Object[] params = new Object[cnd.paramCount()];
+		int paramsCount = cnd.joinParams( null, params, 0);
+		
+		Session session = this.getSession();
+		Query query = session.createQuery(builder.toString());
+		
+		setParamsByCnd(query,cnd,classMetadata);
+		query.setResultTransformer(CriteriaSpecification.ROOT_ENTITY);
+		//return ((Long)query.uniqueResult()).intValue();
+		Object result=query.uniqueResult();
+		return result;
+	}
+	
 	public Object queryMin(String property,Cnd cnd) {
 		StringBuilder builder=new StringBuilder("select min("+property+") ");
 		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
@@ -1352,6 +1376,78 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 		query.setResultTransformer(CriteriaSpecification.ROOT_ENTITY);
 		return query.uniqueResult();
 	}
+	
+	public Object queryMin(Cnd cnd) {
+		cnd.setSqlType(SqlType.SELECT);
+		StringBuilder builder=new StringBuilder("");
+		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
+		if(cnd.getFrom()==null){
+			cnd.setFrom(classMetadata.getEntityName());
+		}
+		cnd.joinHql(builder);
+		
+		
+
+		Object[] params = new Object[cnd.paramCount()];
+		int paramsCount = cnd.joinParams( null, params, 0);
+		
+		Session session = this.getSession();
+		Query query = session.createQuery(builder.toString());
+		
+		setParamsByCnd(query,cnd,classMetadata);
+		query.setResultTransformer(CriteriaSpecification.ROOT_ENTITY);
+		//return ((Long)query.uniqueResult()).intValue();
+		Object result=query.uniqueResult();
+		return result;
+	}
+	
+	public Object querySum(Cnd cnd) {
+		cnd.setSqlType(SqlType.SELECT);
+		StringBuilder builder=new StringBuilder("");
+		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
+		if(cnd.getFrom()==null){
+			cnd.setFrom(classMetadata.getEntityName());
+		}
+		cnd.joinHql(builder);
+		
+		
+
+		Object[] params = new Object[cnd.paramCount()];
+		int paramsCount = cnd.joinParams( null, params, 0);
+		
+		Session session = this.getSession();
+		Query query = session.createQuery(builder.toString());
+		
+		setParamsByCnd(query,cnd,classMetadata);
+		query.setResultTransformer(CriteriaSpecification.ROOT_ENTITY);
+		//return ((Long)query.uniqueResult()).intValue();
+		Object result=query.uniqueResult();
+		return result;
+	}
+	public Object queryAvg(Cnd cnd) {
+		cnd.setSqlType(SqlType.SELECT);
+		StringBuilder builder=new StringBuilder("");
+		AbstractEntityPersister classMetadata=(AbstractEntityPersister)this.getSessionFactory().getClassMetadata(entityClass);
+		if(cnd.getFrom()==null){
+			cnd.setFrom(classMetadata.getEntityName());
+		}
+		cnd.joinHql(builder);
+		
+		
+
+		Object[] params = new Object[cnd.paramCount()];
+		int paramsCount = cnd.joinParams( null, params, 0);
+		
+		Session session = this.getSession();
+		Query query = session.createQuery(builder.toString());
+		
+		setParamsByCnd(query,cnd,classMetadata);
+		query.setResultTransformer(CriteriaSpecification.ROOT_ENTITY);
+		//return ((Long)query.uniqueResult()).intValue();
+		Object result=query.uniqueResult();
+		return result;
+	}
+	
 	
 	private void whereInfo2Criterion(Criteria criteria,WhereInfo... whereInfos) {
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);    //设置ENTITY级的DISTINCT模式，根实体

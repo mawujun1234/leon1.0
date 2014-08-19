@@ -477,6 +477,47 @@ public class CndTest  extends DbunitBaseRepositoryTest {
 		Cnd cnd0=Cnd.select().andNotLike("firstName","E1",true).orNotLike("firstName","E1",true).desc("firstName").addSelect("firstName","id").distinct();
 		assertEquals(" select distinct firstName,id from com.mawujun.repository.EntityTest WHERE  NOT LOWER(firstName) LIKE LOWER('%E1%') OR  NOT LOWER(firstName) LIKE LOWER('%E1%') ORDER BY firstName DESC  ",cnd0.toHql(classMetadata));
 	}
+	
+	@Test
+	public void sum() {
+		AbstractEntityPersister classMetadata=(AbstractEntityPersister)sessionFactory.getClassMetadata(EntityTest.class);
+		
+		Cnd cnd0=Cnd.sum("age");
+		assertEquals(" select sum(age) from com.mawujun.repository.EntityTest",cnd0.toHql(classMetadata));
+		cnd0=Cnd.sum("age+version");
+		assertEquals(" select sum(age+version) from com.mawujun.repository.EntityTest",cnd0.toHql(classMetadata));
+		
+	}
+	@Test
+	public void avg() {
+		AbstractEntityPersister classMetadata=(AbstractEntityPersister)sessionFactory.getClassMetadata(EntityTest.class);
+		
+		Cnd cnd0=Cnd.avg("age");
+		assertEquals(" select avg(age) from com.mawujun.repository.EntityTest",cnd0.toHql(classMetadata));
+		cnd0=Cnd.avg("age+version");
+		assertEquals(" select avg(age+version) from com.mawujun.repository.EntityTest",cnd0.toHql(classMetadata));
+		
+	}
+	@Test
+	public void max() {
+		AbstractEntityPersister classMetadata=(AbstractEntityPersister)sessionFactory.getClassMetadata(EntityTest.class);
+		
+		Cnd cnd0=Cnd.max("age");
+		assertEquals(" select max(age) from com.mawujun.repository.EntityTest",cnd0.toHql(classMetadata));
+		cnd0=Cnd.max("age+version");
+		assertEquals(" select max(age+version) from com.mawujun.repository.EntityTest",cnd0.toHql(classMetadata));
+		
+	}
+	@Test
+	public void min() {
+		AbstractEntityPersister classMetadata=(AbstractEntityPersister)sessionFactory.getClassMetadata(EntityTest.class);
+		
+		Cnd cnd0=Cnd.min("age");
+		assertEquals(" select min(age) from com.mawujun.repository.EntityTest",cnd0.toHql(classMetadata));
+		cnd0=Cnd.min("age+version");
+		assertEquals(" select min(age+version) from com.mawujun.repository.EntityTest",cnd0.toHql(classMetadata));
+		
+	}
 
 	@Test
 	public void insert() {

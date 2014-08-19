@@ -8,7 +8,10 @@ public class SelectItems  implements SqlExpression{
 	private List<String> names=new ArrayList<String>();
 	
 	private boolean isDistinct=false;
-	private boolean isCount=false;
+//	private boolean isCount=false;
+//	private boolean isSum=false;
+	
+	private SelectAggreFun selectAggreFun;
 
 
 	public List<String> getNames() {
@@ -25,36 +28,69 @@ public class SelectItems  implements SqlExpression{
 	@Override
 	public void joinHql(StringBuilder sb) {
 		if (!names.isEmpty()) {
-			sb.append(" select ");
-			if(isCount){
+			if(SelectAggreFun.count==selectAggreFun){
+				sb.append(" select ");
 				sb.append("count(");
-			}
-			if(this.isDistinct){
-				sb.append("distinct ");
-			}
-			//sb.append(" new map(");
-			for (String obi : names) {
-				//sb.append(obi+" as "+obi+",");
-				sb.append(obi+",");
-			}
-			sb.setCharAt(sb.length() - 1, ' ');
-			//sb.append(") "); 
-			if(isCount){
+				if(this.isDistinct){
+					sb.append("distinct ");
+				}
+				for (String obi : names) {
+					//sb.append(obi+" as "+obi+",");
+					sb.append(obi+",");
+				}
+				sb.setCharAt(sb.length() - 1, ' ');
 				sb.append(") ");
+			} else if(SelectAggreFun.sum==selectAggreFun){
+				sb.append(" select sum("+names.get(0)+") ");
+			} else if(SelectAggreFun.avg==selectAggreFun){
+				sb.append(" select avg("+names.get(0)+") ");
+			} else if(SelectAggreFun.max==selectAggreFun){
+				sb.append(" select max("+names.get(0)+") ");
+			} else if(SelectAggreFun.min==selectAggreFun){
+				sb.append(" select min("+names.get(0)+") ");
+			} else {
+				sb.append(" select ");
+				if(this.isDistinct){
+					sb.append("distinct ");
+				}
+				for (String obi : names) {
+					//sb.append(obi+" as "+obi+",");
+					sb.append(obi+",");
+				}
+				sb.setCharAt(sb.length() - 1, ' ');
 			}
+			
 		} else {
-			if(isCount){
+			if(SelectAggreFun.count==selectAggreFun){
 				sb.append(" select count(*) ");
-			} 
-//			else { 这块以后要改，联合Repository
-//				
-//				if(this.isDistinct){
-//					sb.append(" select distinct * ");
-//				} else {
-//					sb.append(" select * ");
-//				}
-//			}
+			}  
 		}
+		
+//		if (!names.isEmpty()) {
+//			sb.append(" select ");
+//			if(isCount){
+//				sb.append("count(");
+//			}
+//			if(this.isDistinct){
+//				sb.append("distinct ");
+//			}
+//			//sb.append(" new map(");
+//			for (String obi : names) {
+//				//sb.append(obi+" as "+obi+",");
+//				sb.append(obi+",");
+//			}
+//			sb.setCharAt(sb.length() - 1, ' ');
+//			//sb.append(") "); 
+//			if(isCount){
+//				sb.append(") ");
+//			}
+//		} else {
+//			if(isCount){
+//				sb.append(" select count(*) ");
+//			}  else if(isSum){
+//				sb.append(" select sum("+names.get(0)+") ");
+//			}
+//		}
 			
 	}
 
@@ -85,12 +121,11 @@ public class SelectItems  implements SqlExpression{
 		return this;
 	}
 
-	public boolean isCount() {
-		return isCount;
+	public SelectAggreFun getSelectAggreFun() {
+		return selectAggreFun;
 	}
 
-	public void setCount(boolean isCount) {
-		this.isCount = isCount;
+	public void setSelectAggreFun(SelectAggreFun selectAggreFun) {
+		this.selectAggreFun = selectAggreFun;
 	}
-
 }

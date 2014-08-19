@@ -96,11 +96,6 @@ public class Cnd implements PItem{
 		
 		return cnd;
 	}
-	public static Cnd count() {
-		Cnd cnd=Cnd.select();
-		cnd.getSelectItems().setCount(true);
-		return cnd;
-	}
 	/**
 	 * Cnd.select("id","name").distinct().andEquals("name", "1");
 	 * Cnd.select()设置SqlType为SELECT
@@ -114,12 +109,51 @@ public class Cnd implements PItem{
 		}
 		return cnd;
 	}
+	public static Cnd count() {
+		Cnd cnd=Cnd.select();
+		cnd.getSelectItems().setSelectAggreFun(SelectAggreFun.count);
+		return cnd;
+	}
 	public static Cnd count(String... selNames) {
 		Cnd cnd=Cnd.select(selNames);
-		cnd.getSelectItems().setCount(true);
+		cnd.getSelectItems().setSelectAggreFun(SelectAggreFun.count);
 		return cnd;
 		
 	}
+	/**
+	 * 注意测试 sum(col1+col2)的情况
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param column
+	 * @return
+	 */
+	public static Cnd sum(String column) {
+		Cnd cnd=Cnd.select(column);
+		cnd.getSelectItems().setSelectAggreFun(SelectAggreFun.sum);
+		return cnd;
+		
+	}
+	
+	public static Cnd avg(String column) {
+		Cnd cnd=Cnd.select(column);
+		cnd.getSelectItems().setSelectAggreFun(SelectAggreFun.avg);
+		return cnd;
+		
+	}
+	
+	public static Cnd max(String column) {
+		Cnd cnd=Cnd.select(column);
+		cnd.getSelectItems().setSelectAggreFun(SelectAggreFun.max);
+		return cnd;
+		
+	}
+	
+	public static Cnd min(String column) {
+		Cnd cnd=Cnd.select(column);
+		cnd.getSelectItems().setSelectAggreFun(SelectAggreFun.min);
+		return cnd;
+		
+	}
+
 	/**
 	 * 是用于对象模型
 	 * @author mawujun 16064988@qq.com 
@@ -437,8 +471,8 @@ public class Cnd implements PItem{
 //		selectItems.setCount(true);
 //		return this;
 //	}
-	public Cnd setCount(boolean bool) {	
-		selectItems.setCount(bool);
+	public Cnd setCount() {	
+		selectItems.setSelectAggreFun(SelectAggreFun.count);
 		return this;
 	}
 	

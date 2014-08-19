@@ -68,7 +68,11 @@ public interface IHibernateDao <T, ID extends Serializable>{
 	
 	public Long queryCount(Cnd cnd);
 	public Object queryMax(String property,Cnd cnd);
+	public Object queryMax(Cnd cnd);
 	public Object queryMin(String property,Cnd cnd);
+	public Object queryMin(Cnd cnd);
+	public Object querySum(Cnd cnd);
+	public Object queryAvg(Cnd cnd);
 	/**
 	 * 返回第一个对象
 	 * @author mawujun email:mawujun1234@163.com qq:16064988

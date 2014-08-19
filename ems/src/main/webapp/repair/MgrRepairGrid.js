@@ -209,8 +209,8 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 					str_out_date_end: str_out_date_end.getRawValue(),
 					status:status_combo.getValue(),
 					only_have_scap:only_have_scap_checkbox.getValue()
-				}
-			  });
+				  }
+			    });
 			}
 	  });
 	  me.store.load({params:{

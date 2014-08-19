@@ -123,7 +123,9 @@ public class AdjustService extends AbstractService<Adjust, String>{
 	 */
 	public void partInStr(AdjustList[] adjustLists,String str_in_id) {
 		//获取当前调拨下的设备总数,本来应该是sum的，但现在是sum和count一样的
-		Long out_num_total=adjustListRepository.queryCount(Cnd.count(M.AdjustList.id).andEquals(M.AdjustList.adjust_id, adjustLists[0].getAdjust_id()));
+		//Long out_num_total=adjustListRepository.queryCount(Cnd.count(M.AdjustList.id).andEquals(M.AdjustList.adjust_id, adjustLists[0].getAdjust_id()));
+		Long out_num_total=(Long)adjustListRepository.querySum(Cnd.sum(M.AdjustList.out_num).andEquals(M.AdjustList.adjust_id, adjustLists[0].getAdjust_id()));
+		
 		//int total=0;
 		for(AdjustList adjustList:adjustLists) {
 			adjustList.setStatus(true);
@@ -137,7 +139,9 @@ public class AdjustService extends AbstractService<Adjust, String>{
 			equipmentRepository.update(Cnd.update().set(M.Equipment.status, 1).set(M.Equipment.store_id, str_in_id).andEquals(M.Equipment.ecode, adjustList.getEcode()));
 		}
 		//这个时候就表示是都选择了，修改整个调拨单的状态
-		if(adjustRepository.sumInnumByadjust_id(adjustLists[0].getAdjust_id())==out_num_total){
+		Long in_num_total=(Long)adjustListRepository.querySum(Cnd.sum(M.AdjustList.in_num).andEquals(M.AdjustList.adjust_id, adjustLists[0].getAdjust_id()));
+		//if(adjustRepository.sumInnumByadjust_id(adjustLists[0].getAdjust_id())==out_num_total){
+		if(in_num_total==out_num_total){
 			adjustRepository.update(Cnd.update().set(M.Adjust.status, AdjustStatus.over).andEquals(M.Adjust.id, adjustLists[0].getAdjust_id()));
 		}
 		

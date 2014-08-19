@@ -195,6 +195,7 @@ Ext.onReady(function(){
 	var clear_button=Ext.create('Ext.button.Button',{
 		text:'清除',
 		margin:'0 0 0 5',
+		icon:'../icons/delRole.png',
 		handler:function(){
 			ecode_textfield.setValue('');
 		}
