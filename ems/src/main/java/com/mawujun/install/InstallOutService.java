@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mawujun.baseinfo.Equipment;
 import com.mawujun.baseinfo.EquipmentRepository;
+import com.mawujun.baseinfo.EquipmentStatus;
 import com.mawujun.controller.spring.SpringContextHolder;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
@@ -57,7 +58,7 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 			//更新设备状态为出库待安装
 			//把设备绑定到作业单位上面
 			//把仓库中的该设备移除
-			equipmentRepository.update(Cnd.update().set(M.Equipment.status, 2)
+			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.out_storage.getValue())
 					.set(M.Equipment.workUnit_id, outStore.getWorkUnit_id())
 					.set(M.Equipment.store_id, null)
 					.andEquals(M.Equipment.ecode, equipment.getEcode()));

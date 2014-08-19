@@ -1,5 +1,12 @@
 package com.mawujun.baseinfo;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import com.mawujun.repository.idEntity.IdEntity;
+
 /**
  * 0:未入库
  * 1：已入库
@@ -19,30 +26,35 @@ package com.mawujun.baseinfo;
  * @author mawujun email:16064988@163.com qq:16064988
  *
  */
-public enum EquipmentStatus {
-	no_storage(0,"未入库"),
-	in_storage(1,"已入库"),
-	out_storage(2,"正常出库(等待安装)"),
-	using(3,"使用中"),
-	breakdown(4,"损坏"),
-	wait_for_repair(5,"入库待维修"),
-	to_repair(6,"发往维修中心"),
-	outside_repairing(7,"外修中"),
-	inner_repairing(8,"维修中"),
-	out_repair(9,"维修后已出库"),
-	in_transit(10,"在途"),
-	scrapped(30,"报废");
-	
-	private int value;
+//@Entity
+//@Table(name="ems_equipmentstatus")
+public class EquipmentStatus1 implements IdEntity<Integer>{
+	@Id
+	private Integer status;
+	@Column(length=20)
 	private String name;
-	EquipmentStatus(int value,String name){
-		this.value=value;
-		this.name=name;
+	
+	public Integer getStatus() {
+		return status;
 	}
-	public int getValue() {
-		return value;
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 	public String getName() {
 		return name;
 	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	@Override
+	public void setId(Integer id) {
+		// TODO Auto-generated method stub
+		this.status=id;
+	}
+	@Override
+	public Integer getId() {
+		// TODO Auto-generated method stub
+		return status;
+	}
+
 }

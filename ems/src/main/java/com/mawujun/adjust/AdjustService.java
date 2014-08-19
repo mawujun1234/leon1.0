@@ -37,6 +37,7 @@ import com.mawujun.utils.page.Page;
 import com.mawujun.adjust.Adjust;
 import com.mawujun.adjust.AdjustRepository;
 import com.mawujun.baseinfo.EquipmentRepository;
+import com.mawujun.baseinfo.EquipmentStatus;
 import com.mawujun.baseinfo.Store;
 import com.mawujun.baseinfo.StoreRepository;
 import com.mawujun.exception.BusinessException;
@@ -90,7 +91,7 @@ public class AdjustService extends AbstractService<Adjust, String>{
 			adjustListRepository.create(adjustList);
 			
 			//修改设备状态为"在途"
-			equipmentRepository.update(Cnd.update().set(M.Equipment.status, 10).andEquals(M.Equipment.ecode, adjustVO.getEcode()));
+			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.in_transit.getValue()).andEquals(M.Equipment.ecode, adjustVO.getEcode()));
 		}
 		//
 	}
@@ -136,7 +137,7 @@ public class AdjustService extends AbstractService<Adjust, String>{
 			//同时更改设备状态，从A仓库到B仓库
 			//同时修改设备状态
 			//修改设备状态为"在库"
-			equipmentRepository.update(Cnd.update().set(M.Equipment.status, 1).set(M.Equipment.store_id, str_in_id).andEquals(M.Equipment.ecode, adjustList.getEcode()));
+			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.in_storage.getValue()).set(M.Equipment.store_id, str_in_id).andEquals(M.Equipment.ecode, adjustList.getEcode()));
 		}
 		//这个时候就表示是都选择了，修改整个调拨单的状态
 		Long in_num_total=(Long)adjustListRepository.querySum(Cnd.sum(M.AdjustList.in_num).andEquals(M.AdjustList.adjust_id, adjustLists[0].getAdjust_id()));

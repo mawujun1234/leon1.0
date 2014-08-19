@@ -19,6 +19,7 @@ import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.M;
 import com.mawujun.baseinfo.Equipment;
 import com.mawujun.baseinfo.EquipmentRepository;
+import com.mawujun.baseinfo.EquipmentStatus;
 import com.mawujun.install.InstallIn;
 import com.mawujun.install.InstallInRepository;
 
@@ -71,13 +72,13 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 			//同时减持设备挂在作业单位
 			if(equipment.getStatus()==4){
 				list.setIsBad(true);
-				equipmentRepository.update(Cnd.update().set(M.Equipment.status, 5)
+				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.wait_for_repair.getValue())
 						.set(M.Equipment.store_id, installin.getStore_id())
 						.set(M.Equipment.workUnit_id,null)
 						.andEquals(M.Equipment.ecode, equipment.getEcode()));
 			} else {
 				list.setIsBad(false);
-				equipmentRepository.update(Cnd.update().set(M.Equipment.status, 1)
+				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.in_storage.getValue())
 						.set(M.Equipment.store_id, installin.getStore_id())
 						.set(M.Equipment.workUnit_id,null)
 						.andEquals(M.Equipment.ecode, equipment.getEcode()));

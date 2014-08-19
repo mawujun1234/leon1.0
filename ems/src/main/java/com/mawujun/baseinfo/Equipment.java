@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -49,20 +51,16 @@ public class Equipment implements IdEntity<String>{
 	private String workUnit_id;//作业单位id，所属的作业单位，和store_id，同时只能有一个有值
 	
 
+//	public String getStatus_name() {
+//		for(EquipmentStatus status:EquipmentStatus.values()){
+//			if(status.getValue()==this.getStatus()){
+//				return status.getName();
+//			}
+//		}
+//		return null;
+//	}
 	
-	
-//	@Transient
-//	private Integer inStore_type;//在入库的时候用来接受web界面的数据的,入库单中使用
 
-//	@Transient
-//	private Integer outStore_type;
-
-	
-	
-//	private String ;
-//	private String ;
-//	private String ;
-//	private String ;
 	
 	@Override
 	public void setId(String id) {

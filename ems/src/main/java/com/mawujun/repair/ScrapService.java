@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.mawujun.baseinfo.EquipmentRepository;
+import com.mawujun.baseinfo.EquipmentStatus;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 import com.mawujun.utils.M;
@@ -59,7 +60,7 @@ public class ScrapService extends AbstractService<Scrap, String>{
 	
 	public Scrap makeSureScrap(Scrap scrap) {
 		//修改设备状态为报废
-		equipmentRepository.update(Cnd.update().set(M.Equipment.status, 30).andEquals(M.Equipment.ecode, scrap.getEcode()));
+		equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.scrapped.getValue()).andEquals(M.Equipment.ecode, scrap.getEcode()));
 		
 		//同时结束维修单--为完成
 		repairRepository.update(Cnd.update().set(M.Repair.status, RepairStatus.Four.getValue()).andEquals(M.Repair.id, scrap.getRepair_id()));

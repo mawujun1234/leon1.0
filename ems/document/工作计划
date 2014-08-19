@@ -6,7 +6,6 @@
 
 
 
-equipment的状态看看能不能转换成equipmentStatus
 打包改成使用maven的profile进行打包，现在就进行测试
 ems_equipment和大小雷的物化视图，尽快测试，做好，然后修改所有的地方
 维修单管理界面，一进去就显示的单据，没有按照用户进去所能看到的仓库的权限进过滤。
@@ -69,6 +68,7 @@ xml的ftl修改一下，只有queryPage的，其他都弄成注释的好了，�
 
 
 
+(完成)equipment的状态看看能不能转换成equipmentStatus
 (完成)Cnd的sum的功能加上，AdjustService的partInStr方法中可以应用
 (完成)是否要直接把StoreEquipment这个类去掉，让设备直接关联仓库，新建一个表作为设备的流转历史记录保存下来，因为不可能直接整合了,没人会关心设备的流转历史吧
 (完成)所以首先把storeEquipment这个表去掉
