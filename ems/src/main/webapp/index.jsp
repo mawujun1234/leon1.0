@@ -16,9 +16,9 @@
 <script type="text/javascript" src="scripts/SelLeftNav.js" charset="UTF-8"></script>
 <script type="text/javascript" src="scripts/frame.js" charset="UTF-8"></script>
 <script type="text/javascript" src="scripts/index.js" charset="UTF-8"></script>
-<!-- 
+<!-- -->
 <script type="text/javascript" src="ext-4.2.1/examples/ux/IFrame.js" charset="UTF-8"></script>
--->
+
 <style type="text/css">
   .icon-docs{
 	 	background-image:url(images/tabs.gif) !important;

@@ -9173,6 +9173,9 @@ Ext.supports = {
             identity: 'RightMargin',
             fn: function(doc, div) {
                 var view = doc.defaultView;
+				if(view.getComputedStyle(div.firstChild.firstChild, null)==null){
+					view=doc.body;
+				}
                 return !(view && view.getComputedStyle(div.firstChild.firstChild, null).marginRight != '0px');
             }
         },

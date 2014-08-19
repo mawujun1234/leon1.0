@@ -6,12 +6,17 @@
 
 
 
-打包改成使用maven的profile进行打包，现在就进行测试
+打包改成使用maven的profile进行打包，现在就进行测试,注意调整日志级别
+发布到war的时候压缩js和csshttp://name327.iteye.com/blog/1921988
+打开速度慢，可能是被shiro拦截了，看看是不是，web.xml是否拦截什么内容，在IE10和chrome中速度挺快，FF反而慢
+两个tab页同时打开就报错,使用extjs自己带的frame试验一下,这个原因是firefox的bug
+
+
 ems_equipment和大小雷的物化视图，尽快测试，做好，然后修改所有的地方
 维修单管理界面，一进去就显示的单据，没有按照用户进去所能看到的仓库的权限进过滤。
 调拨单也要按用户可以访问的仓库进行过滤出相应的单据
-BeanUtils中关于dozer部分的测试。copyOrCast当想把子类转换为父类的时候报错
-store等combox变成自动获取，并且获取第一个
+store等combox变成自动获取，并且获取第一个，所有的下来框，当发现只有一个下拉选项的时候，就自动选择
+设备出库中，进行设备库存查询时，的sql进行优化，看选择了几个表就关联几个表，动态生成相应的sql
 
 
 
@@ -19,22 +24,26 @@ store等combox变成自动获取，并且获取第一个
 新品入库建立缓存，每次烧苗设备后，都缓存在后台，提交的时候，同意把缓存提交了。
 每次出库建立单据的时候，都建立一个临时的单据，当进来的时候可以恢复到最近的一次单据数据.或者说是直接存入数据库，多弄个保存，就是临时保存在另外一个地方，等需要的时候再放进去
 创建维修单的时候，获取任务单的id和其中的故障描述,这里要考虑是否把任务单号直接放置在InstallInList里面，如果没有任务单，就设置为null
-两个tab页同时打开就报错
 AdjustService和RepairService中关于获取仓库，然后循环获取仓库名称的地方，把获取仓库改成放到缓存中query4InStr,queryPage
 
 
-配置jrebel，使之能工作
--noverify  
--javaagent:D:/jrebel-5.6.1-crack/jrebel.jar  
--Drebel.dirs=E:\eclipse\workspace\leon\leon-web-common\target\classes
--Drebel.disable_update=true
 
-发布到war的时候压缩js和csshttp://name327.iteye.com/blog/1921988
-打开速度慢，可能是被shiro拦截了，看看是不是，web.xml是否拦截什么内容
+
+--等产品出来后，再做
+删除品名的是否，判断有没有设备在使用，如果没有就删除，否则就修改status
+删除小类，判断有没有品名在使用，否则就修改status
+删除大类也是同一个道理
+所有基础信息类都要做这样的判断，如果设备中引用了，删除的时候就设置为失效,包括客户
+
+============================================================
 代码生成添加，主从结构的代码生成，主从结构的形式的各式代码
 Cnd增加sum,等聚合函数的用法
+制作一个grid里弹出window的form的模板，并且把java和extjs文件的目录区分开来
+xml的ftl修改一下，只有queryPage的，其他都弄成注释的好了，简单点
+BeanUtils中关于dozer部分的测试。copyOrCast当想把子类转换为父类的时候报错
 
-========整合  不能设置条码的工作的问题
+
+===============================================================整合  不能设置条码的工作的问题
 1：设备的状态跟踪就不能做了，不能跟踪每个设备的状态了，而是每一类型的设备状态
 
 
@@ -55,19 +64,20 @@ http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/
 就是说先手工写死在系统中，等空一点的时候，再弄一个数据库
 手持设备表WorkUnitEquipment也需要增加一个字段num，表示该设备持有的数量，因为会有没有条码的设备，这个时候就有数量的概念饿了
 
---等产品出来后，再做
-删除品名的是否，判断有没有设备在使用，如果没有就删除，否则就修改status
-删除小类，判断有没有品名在使用，否则就修改status
-删除大类也是同一个道理
-所有基础信息类都要做这样的判断，如果设备中引用了，删除的时候就设置为失效,包括客户
-
-设备出库中，进行设备库存查询时，的sql进行优化，看选择了几个表就关联几个表，动态生成相应的sql
-制作一个grid里弹出window的form的模板，并且把java和extjs文件的目录区分开来
-xml的ftl修改一下，只有queryPage的，其他都弄成注释的好了，简单点
-所有的下来框，当发现只有一个下拉选项的时候，就自动选择
 
 
 
+
+
+
+
+
+
+(完成)配置jrebel，使之能工作
+-noverify  
+-javaagent:D:/jrebel-5.6.1-crack/jrebel.jar  
+-Drebel.dirs=E:\eclipse\workspace\leon\leon-web-common\target\classes
+-Drebel.disable_update=true
 (完成)equipment的状态看看能不能转换成equipmentStatus
 (完成)Cnd的sum的功能加上，AdjustService的partInStr方法中可以应用
 (完成)是否要直接把StoreEquipment这个类去掉，让设备直接关联仓库，新建一个表作为设备的流转历史记录保存下来，因为不可能直接整合了,没人会关心设备的流转历史吧

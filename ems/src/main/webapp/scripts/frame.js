@@ -5,54 +5,6 @@ Ext.define('Ext.ms.navi.Panel',{
     	var config=[];
     	var me=this;
     	if(this.url){
-//	    	Ext.define('service', {
-//	    	    extend: 'Ext.data.Model',
-//	    	    fields: [
-//	    	        {name: 'id', type: 'string'},
-//	    	        {name: 'text',  type: 'string'},
-//	    	        {name: 'link',   type: 'string'},
-//	    	        {name: 'loadType', type: 'string'},
-//	    	        {name: 'flex', type: 'int'}
-//	    	    ]
-//	    	});
-//	    	Ext.define('serviceGroup', {
-//	    	    extend: 'Ext.data.Model',
-//	    	    fields: [
-//	    	        {name: 'id', type: 'string'},
-//	    	        {name: 'text',  type: 'string'},
-//	    	        {name: 'link',   type: 'string'},
-//	    	        {name: 'loadType', type: 'string'},
-//	    	        {name:'items', type:'service'}
-//	    	    ]
-//	    	});
-//	    	
-//	    	this.store = Ext.create('Ext.data.Store', {
-//	    	    model: 'serviceGroup',
-//	    	    proxy: {
-//	    	        type: 'ajax',
-//	    	        url : this.url
-//	    	    },
-//	    	    autoLoad: true
-//	    	});
-//	    	var config=[];
-//	    	this.store.addListener('load',function(s,r,success,o,e){
-//				this.remove(0);
-//				if(r.length>0){
-//					config=r[0].get('items');
-//					this.add(
-//				        Ext.apply({
-//			                layout: {
-//			                    type:'vbox',
-//			                    padding:'5',
-//			                    align:'stretch'
-//			                },
-//			                id:'button-box',
-//			                defaults:{margins:'0 0 5 0', xtype:'naviButton',handler:this.clickAction},
-//			                items:config
-//				        })
-//				    );
-//				}
-//	    	},this);
     		
     		Ext.Ajax.request({
 				url:this.url,
@@ -199,6 +151,7 @@ Ext.define('Ext.ms.doc.Panel',{
         var scls = cls.split('.');
         var id = 'docs-' + scls.join('-');
         var tab = this.getComponent(id);
+        
         if(tab){
             this.setActiveTab(tab);
         }else{
@@ -212,29 +165,31 @@ Ext.define('Ext.ms.doc.Panel',{
 	                //iconCls: Docs.icons[cls]
 	            });
         	}else{
-//        		var iframe=new Ext.ux.IFrame({  
-//                    //xtype: 'uxiframe',  
-//                    id: id,  
-//                    title: title,  
-//                    //iconCls: record.data.iconCls,  
-//                    closable: true,  
-//                    layout: 'fit',  
-//                    loadMask: '页面加载中...',  
-//                    border: false 
-//                });
-//                
-//        		var p = this.add(iframe);
-//        		p.on('afterrender',function(){
-//        			iframe.load(Ext.ContextPath+link); 
-//        		});
+        		var iframe=new Ext.ux.IFrame({  
+                    //xtype: 'uxiframe',  
+                    id: id,  
+                    title: title,  
+                    //iconCls: record.data.iconCls,  
+                    closable: true,  
+                    layout: 'fit',  
+                    loadMask: '页面加载中...',  
+                    border: false 
+                });
                 
-	            var p = this.add({
-	            	xtype:'docpage',
-	                id: id,
-	                cclass : cls+'.'+title,
-	                html: '<iframe src="'+Ext.ContextPath+link+'" frameborder="0" width="100%" height="100%"></iframe>'
-	                //iconCls: Docs.icons[cls]
-	            });
+        		var p = this.add(iframe);
+        		p.on('afterrender',function(){
+        			iframe.load(Ext.ContextPath+link); 
+        			//console.log(Ext.ContextPath+link);
+        		});
+        		
+                
+//	            var p = this.add({
+//	            	xtype:'docpage',
+//	                id: id,
+//	                cclass : cls+'.'+title,
+//	                html: '<iframe src="'+Ext.ContextPath+link+'" frameborder="0" width="100%" height="100%"></iframe>'
+//	                //iconCls: Docs.icons[cls]
+//	            });
         	}
             this.setActiveTab(p);
         }
