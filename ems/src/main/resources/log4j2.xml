@@ -20,7 +20,7 @@
     <Logger name="jdbc.resultset" level="OFF" additivity="true"></Logger>
     <Logger name="jdbc.connection" level="OFF" additivity="true"></Logger>
     
-    <Root level="debug">
+    <Root level="${log4j2.level}">
       <AppenderRef ref="STDOUT"/>
     </Root>
   </Loggers>

@@ -6,7 +6,8 @@
 
 
 
-打包改成使用maven的profile进行打包，现在就进行测试,注意调整日志级别
+(完成)打包改成使用maven的profile进行打包，现在就进行测试,注意调整日志级别
+
 发布到war的时候压缩js和csshttp://name327.iteye.com/blog/1921988
 打开速度慢，可能是被shiro拦截了，看看是不是，web.xml是否拦截什么内容，在IE10和chrome中速度挺快，FF反而慢
 	http://www.iteye.com/topic/1118207?page=2 可以自己制作一个安装包，使用chrome
