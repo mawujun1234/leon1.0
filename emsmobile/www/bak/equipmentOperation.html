@@ -1,0 +1,43 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<meta charset="utf-8">
+<title>jQuery Mobile Web App</title>
+<link href="jquery.mobile/jquery.mobile-1.4.2.min.css" rel="stylesheet" type="text/css"/>
+<script src="jquery.mobile/jquery.js" type="text/javascript"></script>
+<script src="jquery.mobile/jquery.mobile-1.4.2.min.js" type="text/javascript"></script>
+<style type="text/css">
+
+</style>
+</head> 
+<body> 
+
+<div data-role="page" id="page">
+	<div data-role="header" data-position="fixed">    
+        <a href="#" data-icon="delete">退出</a> 
+        <h1>进行中</h1>
+        <a href="message.html" data-icon="info" data-ajax="false">消息(5)</a>
+	</div>
+	<div role="main" class="ui-content">
+        <a href="install.html" data-ajax="false" class="ui-btn" data-icon="mail">新安装</a>	
+        <a href="update.html" data-ajax="false" class="ui-btn" data-icon="bullets">更新替换</a>	
+        <a href="maintenance.html" data-ajax="false" class="ui-btn" >日常维护</a>
+        <a href="repair.html" data-ajax="false" class="ui-btn" >故障维护</a>		
+	</div>
+	<div data-role="footer"  data-id="footernav" data-position="fixed" data-tap-toggle="false">
+		<div data-role="navbar">  
+            <ul>  
+                <li><a href="index.html" data-icon="home" data-ajax="false">任务信息</a></li>  
+                 <li><a href="equipmentOperation.html" data-icon="grid" data-ajax="false" class="ui-btn-active">设备处理</a></li>
+                <li><a href="setting.html" data-icon="gear" data-ajax="false">系统设置</a></li>  
+            </ul>  
+        </div>  
+	</div>
+</div>
+
+
+
+
+
+</body>
+</html>

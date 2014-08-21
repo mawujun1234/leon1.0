@@ -1,0 +1,8 @@
+滑出菜单  Slider Panel，
+http://www.dotblogs.com.tw/jqmdesigner/archive/2014/06/09/145454.aspx
+http://sc.chinaz.com/jiaoben/130423512680.htm#down
+
+和滑出新建任务功能
+ 先完成滑动滑出的功能，然后使用网格布局，弄成和QQ一样，是横向布局布满整个屏幕，同时遮罩
+
+任务列表下拉才去读取数据的功能

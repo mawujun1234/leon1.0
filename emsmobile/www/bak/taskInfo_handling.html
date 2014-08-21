@@ -1,0 +1,42 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<meta charset="utf-8">
+<title>jQuery Mobile Web App</title>
+<link href="jquery.mobile/jquery.mobile-1.4.2.min.css" rel="stylesheet" type="text/css"/>
+<script src="jquery.mobile/jquery.js" type="text/javascript"></script>
+<script src="jquery.mobile/jquery.mobile-1.4.2.min.js" type="text/javascript"></script>
+</head> 
+<body> 
+
+<div data-role="page" id="page">
+	<div data-role="header">
+    	<a href="#" class="ui-btn" data-rel="back" data-theme="c">返回</a>
+		<h1>处理中任务详情</h1>
+	</div>
+	<div role="main" class="ui-content">	
+		<div class="ui-field-contain">
+            <label for="id">任务编号:</label>
+            <input readonly type="text" name="id" id="id" placeholder="Text input" value="201234568">
+            <label for="unit">单位:</label>
+            <input readonly type="text" name="unit" id="unit" placeholder="Text input" value="奥维集团">
+            <label for="pole">杆位:</label>
+            <input readonly type="text" name="pole" id="pole" placeholder="Text input" value="石碶街道XX路">
+        	<label for="memo">描述:</label>
+    		<textarea readonly cols="40" rows="16" name="memo" id="memo" data-mini="true">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</textarea>
+            <label for="type">类型:</label>
+            <input readonly type="text" name="type" id="type" placeholder="Text input" value="XXXXXX">
+            <label for="createTime">时间:</label>
+            <input readonly type="text" name="createTime" id="createTime" placeholder="Text input" value="2014-3-19">
+            <div class="ui-field-contain"  align="center">
+            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-check">完成</button> 
+            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-delete">放弃</button>
+            </div>
+
+        </div>		
+	</div>
+</div>
+
+
+</body>
+</html>

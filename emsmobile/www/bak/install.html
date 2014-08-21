@@ -1,0 +1,96 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<meta charset="utf-8">
+<title>jQuery Mobile Web App</title>
+<script type="text/javascript" src="cordova.js"></script>
+<link href="jquery.mobile/jquery.mobile-1.4.2.min.css" rel="stylesheet" type="text/css"/>
+<script src="jquery.mobile/jquery.js" type="text/javascript"></script>
+<script src="jquery.mobile/jquery.mobile-1.4.2.min.js" type="text/javascript"></script>
+</head> 
+<body> 
+
+<div data-role="page" id="page">
+	<div data-role="header">
+    	<a href="#" class="ui-btn ui-corner-all" data-rel="back" data-theme="c">返回</a>
+        <h1>设备新安装</h1>
+         
+	</div>
+	<div role="main" class="ui-content">
+       
+        <input type="text" name="textinput-1" id="textinput-1" readonly  value="" placeholder="请扫描...">
+         <a href="#" class="ui-btn ui-corner-all ui-btn-inline" id="scan">扫描新设备</a>
+
+        <textarea cols="40" rows="8" name="textarea" id="textarea" placeholder="请填写设备安装描述"></textarea>
+        
+         <!-- 当扫描后并且有任务和这个设备匹填写相应的任务信息
+        或者根据设备的条码，获取这个设备的单位，所在杆位等信息，然后自动填写下面的任务单信息，因为是新安装，没有相应的杆位信息，需要自己去填写
+        -->
+        <div class="ui-field-contain">
+            <label for="id">任务编号:</label>
+            <input readonly type="text" name="id" id="id" placeholder="只读" value="">
+            <label for="unit">单位:</label>
+            <input  type="text" name="unit" id="unit" placeholder="请输入" value="">
+            <label for="pole">杆位:</label>
+            <input  type="text" name="pole" id="pole" placeholder="请输入" value="">
+        	<label for="memo">描述:</label>
+    		<textarea  cols="40" rows="16" name="memo" id="memo" data-mini="true"></textarea>
+            <label for="type">类型:</label>
+            <input  type="text" name="type" id="type" placeholder="请输入" value="">
+            <label for="createTime">时间:</label>
+            <input  type="text" name="createTime" id="createTime" placeholder="请输入" value="">
+         </div>	
+         
+        <a href="#page2" class="ui-btn ui-corner-all" data-icon="info" >确定</a>
+	</div>
+	
+</div>
+
+<div data-role="page" id="page2">
+	<div data-role="header">
+    	<a href="#page"class="ui-btn" data-rel="back" data-theme="c">返回</a>
+		<h1>新建任务信息</h1>
+	</div>
+	<div role="main" class="ui-content">	
+		<div class="ui-field-contain">
+            <label for="id">任务编号:</label>
+            <input  type="text" name="id" id="id" placeholder="请输入" value="201234568">
+            <label for="unit">单位:</label>
+            <input  type="text" name="unit" id="unit" placeholder="请输入" value="奥维集团">
+            <label for="pole">杆位:</label>
+            <input  type="text" name="pole" id="pole" placeholder="请输入" value="石碶街道XX路">
+        	<label for="memo">描述:</label>
+    		<textarea  cols="40" rows="16" name="memo" id="memo" data-mini="true">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</textarea>
+            <label for="type">类型:</label>
+            <input  type="text" name="type" id="type" placeholder="请输入" value="XXXXXX">
+            <label for="createTime">时间:</label>
+            <input  type="text" name="createTime" id="createTime" placeholder="请输入" value="2014-3-19">
+			<div class="ui-field-contain"  align="center">
+             
+            <button class="ui-shadow ui-btn ui-corner-all ui-btn-icon-left">保存</button>
+            </div>
+         </div>	
+     </div>	
+</div>
+
+
+<script type="text/javascript">
+$('#scan').bind('click', function() { 
+	//navigator.notification.alert(1);
+	cordova.plugins.barcodeScanner.scan(
+		      function (result) {
+		    	//alert("We got a barcode\n" +
+  		          //     "Result: " + result.text + "\n" +
+  		          //      "Format: " + result.format + "\n" +
+  		          //      "Cancelled: " + result.cancelled);
+  		          $('#textinput-1').val(result.text);
+		      }, 
+		      function (error) {
+		          alert("Scanning failed: " + error);
+		      }
+		   ); 
+});
+</script>
+
+</body>
+</html>

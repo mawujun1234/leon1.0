@@ -1,0 +1,86 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<meta charset="utf-8">
+<title>jQuery Mobile Web App</title>
+<link href="jquery.mobile/jquery.mobile-1.4.2.min.css" rel="stylesheet" type="text/css"/>
+<script src="jquery.mobile/jquery.js" type="text/javascript"></script>
+<script src="jquery.mobile/jquery.mobile-1.4.2.min.js" type="text/javascript"></script>
+</head> 
+<body> 
+
+<div data-role="page" id="page">
+	<div data-role="header" data-position="fixed">
+    	<a href="message.html" data-icon="info" data-ajax="false">消息(5)</a>
+        <h1>进行中</h1>
+        <a href="#" data-icon="delete">退出</a> 
+	</div>
+	<div role="main" class="ui-content">
+    	<ul data-role="listview" data-count-theme="b" data-inset="true">
+            <li>
+    			<h2>客服电话:057411111111(点击拨打)</h2>
+    			<p></p>
+            </li>
+            <li>
+                <div class="ui-grid-a">
+                        <div class="ui-block-a"  style="padding-top:15px;">开启wifi同步数据</div>
+                        <div class="ui-block-b" class="ui-li-count">
+                        <select name="flip2" id="flip2" data-role="slider" >
+                            <option value="off">Off</option>
+                            <option value="on">On</option>
+                        </select>
+                		</div>
+                </div>
+            </li>
+          
+        </ul>
+	</div>
+	<div data-role="footer" data-position="fixed" data-id="footernav" data-position="fixed" data-tap-toggle="false">
+		<div data-role="navbar">  
+            <ul>  
+                <li><a href="index.html" data-icon="home" data-ajax="false">任务信息</a></li>  
+                 <li><a href="equipmentOperation.html" data-icon="grid" data-ajax="false">设备处理</a></li>
+                <li><a href="setting.html" data-icon="gear" data-ajax="false" class="ui-btn-active">系统设置</a></li>    
+            </ul>  
+        </div>  
+	</div>
+</div>
+
+<div data-role="page" id="page2">
+	<div data-role="header">
+		<h1>Page Two</h1>
+	</div>
+	<div role="main" class="ui-content">	
+		Content		
+	</div>
+	<div data-role="footer">
+		<h4>Page Footer</h4>
+	</div>
+</div>
+
+<div data-role="page" id="page3">
+	<div data-role="header">
+		<h1>Page Three</h1>
+	</div>
+	<div role="main" class="ui-content">	
+		Content		
+	</div>
+	<div data-role="footer">
+		<h4>Page Footer</h4>
+	</div>
+</div>
+
+<div data-role="page" id="page4">
+	<div data-role="header">
+		<h1>Page Four</h1>
+	</div>
+	<div role="main" class="ui-content">	
+		Content		
+	</div>
+	<div data-role="footer">
+		<h4>Page Footer</h4>
+	</div>
+</div>
+
+</body>
+</html>
