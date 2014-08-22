@@ -17,6 +17,11 @@ public class WorkUnit extends UUIDEntity {
 	@org.hibernate.annotations.Type(type="yes_no")
 	private Boolean status=true;
 	
+	@Column(length=30)
+	private String loginName;
+	@Column(length=30)
+	private String password;
+	
 	public String getName() {
 		return name;
 	}
@@ -34,6 +39,18 @@ public class WorkUnit extends UUIDEntity {
 	}
 	public void setStatus(Boolean status) {
 		this.status = status;
+	}
+	public String getLoginName() {
+		return loginName;
+	}
+	public void setLoginName(String loginName) {
+		this.loginName = loginName;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 }

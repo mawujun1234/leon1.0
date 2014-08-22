@@ -30,10 +30,28 @@ Ext.define('Ems.baseinfo.WorkUnitForm',{
 		
 		{
 	        fieldLabel: '名称',
-	        //afterLabelTextTpl: Ext.required,
+	        afterLabelTextTpl: Ext.required,
 	        name: 'name',
 	        readOnly:true,
 	        xtype:'textfield',
+	        allowBlank: false
+	    },
+	    {
+	        fieldLabel: '账号',
+	        afterLabelTextTpl: Ext.required,
+	        name: 'loginName',
+	        readOnly:true,
+	        xtype:'textfield',
+	        allowBlank: false
+	    },
+	    {
+	        fieldLabel: '密码(默认:0)',
+	        afterLabelTextTpl: Ext.required,
+	        name: 'password',
+	        readOnly:true,
+	        xtype:'textfield',
+	        inputType:'password',
+	        value:0,
 	        allowBlank: false
 	    },
 		{
@@ -143,6 +161,7 @@ Ext.define('Ems.baseinfo.WorkUnitForm',{
 				var grid=form.grid;//是在WorkUnitApp.js中把引用授予的
 				var modelName=grid.model||grid.getStore().getProxy( ).getModel().getName( );
 				var model=Ext.createModel(modelName,{      	//id:''
+					password:0,
 					status:true
 				});
 				model.phantom =true;

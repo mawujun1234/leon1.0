@@ -19,14 +19,14 @@ Ext.define('Ems.baseinfo.WorkUnitGrid',{
 		//{dataIndex:'id',text:'id'},
 		
 		{dataIndex:'name',text:'名称',flex:1},
+		{dataIndex:'loginName',text:'登陆名'},
 		{dataIndex:'status',text:'状态',renderer:function(value){
 			if(value){
 				return "有效";
 			} else {
 				return "无效";
 			}
-		}},
-		{dataIndex:'memo',text:'描述'}
+		}}
       ];
       
 	  me.store=Ext.create('Ext.data.Store',{

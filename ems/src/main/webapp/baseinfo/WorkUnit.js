@@ -5,7 +5,9 @@ Ext.defineModel("Ems.baseinfo.WorkUnit",{
 		{name:'id',type:'string'},
 		{name:'memo',type:'string'},
 		{name:'name',type:'string'},
-		{name:'status',type:'bool'}
+		{name:'status',type:'bool'},
+		{name:'loginName',type:'string'},
+		{name:'password',type:'string'}
 	],
 	associations:[
 	]
