@@ -65,7 +65,6 @@ public static final class ems_equipment {
 	public static final String fisData="fisData";
 	public static final String store_id="store_id";
 	public static final String workUnit_id="workUnit_id";
-	public static final String num="num";
 }
 public static final class ems_equipmentprod {
 	public static final String id="id";
@@ -75,10 +74,6 @@ public static final class ems_equipmentprod {
 	public static final String parent_id="parent_id";
 	public static final String leaf="leaf";
 	public static final String unit="unit";
-}
-public static final class ems_equipmentstatus {
-	public static final String status="status";
-	public static final String name="name";
 }
 public static final class ems_equipmentsubtype {
 	public static final String id="id";
@@ -142,6 +137,8 @@ public static final class ems_workunit {
 	public static final String name="name";
 	public static final String memo="memo";
 	public static final String status="status";
+	public static final String loginName="loginName";
+	public static final String password="password";
 	public static final String id="id";
 }
 public static final class ems_workunit_contact {
@@ -182,12 +179,6 @@ public static final class ems_installout {
 public static final class ems_installoutlist {
 	public static final String installOut_id="installOut_id";
 	public static final String ecode="ecode";
-	public static final String id="id";
-}
-public static final class ems_workunitequipment {
-	public static final String workunit_id="workunit_id";
-	public static final String ecode="ecode";
-	public static final String outStore_id="outStore_id";
 	public static final String id="id";
 }
 public static final class ems_repair {

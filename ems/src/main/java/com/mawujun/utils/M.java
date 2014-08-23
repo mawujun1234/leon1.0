@@ -65,7 +65,6 @@ public static final class Equipment {
 	public static final String fisData="fisData";
 	public static final String store_id="store_id";
 	public static final String workUnit_id="workUnit_id";
-	public static final String num="num";
 }
 public static final class EquipmentProd {
 	public static final String id="id";
@@ -75,10 +74,6 @@ public static final class EquipmentProd {
 	public static final String parent_id="parent_id";
 	public static final String leaf="leaf";
 	public static final String unit="unit";
-}
-public static final class EquipmentStatus {
-	public static final String status="status";
-	public static final String name="name";
 }
 public static final class EquipmentSubtype {
 	public static final String id="id";
@@ -142,6 +137,8 @@ public static final class WorkUnit {
 	public static final String name="name";
 	public static final String memo="memo";
 	public static final String status="status";
+	public static final String loginName="loginName";
+	public static final String password="password";
 	public static final String id="id";
 }
 public static final class WorkUnitContact {
@@ -182,12 +179,6 @@ public static final class InstallOut {
 public static final class InstallOutList {
 	public static final String installOut_id="installOut_id";
 	public static final String ecode="ecode";
-	public static final String id="id";
-}
-public static final class WorkUnitEquipment {
-	public static final String workunit_id="workunit_id";
-	public static final String ecode="ecode";
-	public static final String outStore_id="outStore_id";
 	public static final String id="id";
 }
 public static final class Repair {

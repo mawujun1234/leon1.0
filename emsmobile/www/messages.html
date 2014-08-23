@@ -7,6 +7,7 @@
 <link href="jquery.mobile/jquery.mobile-1.4.3.min.css" rel="stylesheet" type="text/css"/>
 <script src="jquery.mobile/jquery-2.1.1.min.js" type="text/javascript"></script>
 <script src="jquery.mobile/jquery.mobile-1.4.3.min.js" type="text/javascript"></script>
+<script src="js/main.js" type="text/javascript"></script>
 <style type="text/css">
 
 </style>
@@ -28,11 +29,49 @@
                 <li>
                 </li>
                 <li>
-                <a href="#" class="ui-icon-edit">
+                <a href="#updatePassword" class="ui-icon-edit" data-rel="popup" data-position-to="window" data-transition="pop">
                 	修改密码
                 </a>    
                 </li>
             </ul>
+        </div>
+        <div data-role="popup" id="updatePassword" class="ui-corner-all">
+        	<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+            <form id="formUpdatePassword" style="padding:10px 20px;">
+            	<h3>请输入新密码:</h3>
+                <input type="password" name="password" id="password"  placeholder="新密码" data-theme="a" class="required">
+                <input type="password" name="password_repeat" id="password_repeat"  placeholder="再次输入" data-theme="a" class="required">
+                <div id="formUpdatePassword_errorMsg" style="color:red;height:36px;font-weight:bold;">
+            
+            	</div>
+                <button type="submit" id="formUpdatePassword_submit" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">确定</button>
+            </form>
+            <script type="text/javascript">
+				$(function() {
+					$("#formUpdatePassword_submit").bind("click", function(event) {
+						event.preventDefault();
+						var values=$("formUpdatePassword").serialize();
+						if(!values.password || !values.password_repeat){
+							$("#formUpdatePassword_submit").html("请输入新密码!");
+						} else if(values.password!=values.password_repeat){
+							$("#formUpdatePassword_submit").html("两次输入的密码不一致!");
+						}
+						alert("还差页面间的参数传递，例如用户名的获取，是放在什么地方呢？");
+						return;
+						$.post($.ContextPath+"/mobile/updatePassword.do",values,function(data,textStatus) {
+							//var data=jQuery.parseJSON(response);
+							if(data.success==true){
+								$.mobile.pageContainer.pagecontainer('change', "about.html", {
+								  transition: 'flow',
+								  reload    : true
+								});
+							 }else{
+								$("#errorMsg").html(data.root);
+							 }
+						});
+					});
+				})
+			</script>
         </div>
         <h1>消息提醒</h1>
 	</div>
@@ -67,12 +106,14 @@
     <div data-role="footer" id="footernav"  data-id="footernav" data-position="fixed" data-tap-toggle="false">
 		<div data-role="navbar">  
             <ul>  
-                <li><a href="messages.html"  data-icon="mail" data-ajax="false" data-transition="slide" class="ui-btn-active">消息提醒</a></li>  
-                <li><a href="taskes.html"  data-icon="bullets" data-ajax="false" data-transition="slide">任务列表</a></li>  
-                <li><a href="reports.html" data-icon="star" data-ajax="false" data-transition="slide">报表</a></li>  
+                <li><a href="messages.html"  data-icon="mail" data-ajax="true" data-transition="slide" class="ui-btn-active">消息提醒</a></li>  
+                <li><a href="taskes.html"  data-icon="bullets" data-ajax="true" data-transition="slide">任务列表</a></li>  
+                <li><a href="reports.html" data-icon="star" data-ajax="true" data-transition="slide">报表</a></li>  
             </ul>  
         </div>  
 	</div>
+    
+
 	
 </div>
 

@@ -7,6 +7,7 @@
 <link href="jquery.mobile/jquery.mobile-1.4.3.min.css" rel="stylesheet" type="text/css"/>
 <script src="jquery.mobile/jquery-2.1.1.min.js" type="text/javascript"></script>
 <script src="jquery.mobile/jquery.mobile-1.4.3.min.js" type="text/javascript"></script>
+<script src="js/main.js" type="text/javascript"></script>
 <style type="text/css">
 .secondNavbar-glyphish-example .ui-btn { padding-top: 40px !important; }
 .secondNavbar-glyphish-example .ui-btn:after { width: 34px!important; height: 34px!important; margin-left: -15px !important; box-shadow: none!important; -moz-box-shadow: none!important; -webkit-box-shadow: none!important; -webkit-border-radius: 0 !important; border-radius: 0 !important; }
@@ -175,9 +176,9 @@ function closeBg() {
 	<div data-role="footer" id="footernav"  data-id="footernav" data-position="fixed" data-tap-toggle="false">
 		<div data-role="navbar">  
             <ul>  
-                <li><a href="messages.html"  data-icon="mail" data-ajax="false" data-transition="slide">消息提醒</a></li>  
-                <li><a href="taskes.html" class="ui-btn-active" data-icon="bullets" data-ajax="false" data-transition="slide">任务列表</a></li>  
-                <li><a href="reports.html" data-icon="star" data-ajax="false" data-transition="slide">报表</a></li>  
+                <li><a href="messages.html"  data-icon="mail" data-ajax="true" data-transition="slide">消息提醒</a></li>  
+                <li><a href="taskes.html" data-icon="bullets" data-ajax="true" data-transition="slide" class="ui-btn-active" >任务列表</a></li>  
+                <li><a href="reports.html" data-icon="star" data-ajax="true" data-transition="slide">报表</a></li>  
             </ul>  
         </div>  
 	</div>

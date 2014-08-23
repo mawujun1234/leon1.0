@@ -3,15 +3,27 @@ http://www.dotblogs.com.tw/jqmdesigner/archive/2014/06/09/145454.aspx
 http://sc.chinaz.com/jiaoben/130423512680.htm#down
 Dreamweaver 代码提示 CTRL+h
 
+
+jquery和cordover的会话如何保持。
+尾部工具栏的动画效果出来了，但是有时候效果会出问题，点中的导航按钮没有被选中
+
+登陆页面
+	json解析问题，使用反斜杠来使用双引号。2最外面的是单引号，里面的是双引号，看fastjson的配置
+手机端登陆，使用jquery进行登录，登录后跳转 http://www.oschina.net/question/101738_29271
+	表单验证http://jackyrong.iteye.com/blog/1310312  http://jqueryvalidation.org/
+密码修改,用户名和会话的保持怎么做
+
 建立各个页面之间的跳转
 弄好后，生成apk在手机上试验一下
 之后建立数据模型
 
 扫描的设备列表长按可以删除
 
-登陆页面
-手机端登陆
-密码修改
+记住密码的功能，应该是通过app来实现的而不是cookie，所以暂时先去掉
+	http://jinnianshilongnian.iteye.com/blog/2031823
+
+
+
 
 系统启动时的页面，flash...的那个页面
 

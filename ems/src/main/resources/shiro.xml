@@ -31,6 +31,7 @@
 			<value>
 				/=anon
 				/login.jsp*=anon
+				/mobile/login.do*=anon
 				/unauthorized.jsp*=anon
 				/login.do*=anon
 				/logout.do*=anon
@@ -51,6 +52,11 @@
 		</property>
 	</bean>
 
+
+
+	
+	
+	
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 		<property name="realm" ref="myShiroRealm" />
 	</bean>
@@ -58,6 +64,7 @@
 	<bean id="myShiroRealm" class="com.mawujun.shiro.MyAuthorizingRealm">
 		<!-- userService 用来实现用户名密码的查询 -->
 		<property name="userService" ref="userService" />
+		<property name="workUnitService" ref="workUnitService" />
 		<property name="cacheManager" ref="shiroCacheManager" />
 	</bean>
 
@@ -69,6 +76,8 @@
 <!--  
 	<bean id="formAuthenticationFilter" class="org.apache.shiro.web.filter.authc.FormAuthenticationFilter" />
 	-->
-	<bean id="formAuthenticationFilter" class="com.mawujun.shiro.FormAjaxAuthenticationFilter" />
+	<bean id="formAuthenticationFilter" class="com.mawujun.shiro.FormAjaxAuthenticationFilter">
+		
+	</bean>
 	<bean id="uRLPermissionsFilter" class="com.mawujun.shiro.URLPermissionsFilter" />  
 </beans>

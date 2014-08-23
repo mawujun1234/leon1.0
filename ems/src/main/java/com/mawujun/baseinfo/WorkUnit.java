@@ -3,11 +3,12 @@ package com.mawujun.baseinfo;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import com.mawujun.repository.idEntity.UUIDEntity;
 
 @Entity
-@Table(name="ems_workunit")
+@Table(name="ems_workunit",uniqueConstraints=@UniqueConstraint(columnNames={"loginName"}))
 public class WorkUnit extends UUIDEntity {
 	@Column(length=30)
 	private String name;

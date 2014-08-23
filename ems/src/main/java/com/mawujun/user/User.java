@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.mawujun.repository.idEntity.UUIDEntity;
 
@@ -33,6 +34,10 @@ public class User extends UUIDEntity{
 	private Date loginDate;
 	@org.hibernate.annotations.Type(type="yes_no")
 	private Boolean status=true;
+	
+	//判断是不是worunit的账号
+	@Transient
+	private Boolean isWorkunit=false;
 	
 	public String toString(){
 		return username;
@@ -93,6 +98,14 @@ public class User extends UUIDEntity{
 
 	public void setStatus(Boolean status) {
 		this.status = status;
+	}
+
+	public Boolean getIsWorkunit() {
+		return isWorkunit;
+	}
+
+	public void setIsWorkunit(Boolean isWorkunit) {
+		this.isWorkunit = isWorkunit;
 	}
 	
 	

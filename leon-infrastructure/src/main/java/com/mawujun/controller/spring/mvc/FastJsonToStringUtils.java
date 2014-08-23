@@ -33,7 +33,7 @@ public class FastJsonToStringUtils {
 		serializer.setDateFormat(JsonConfigHolder.getDatePattern());
 		//SerializerFeature[] features = {SerializerFeature.UseISO8601DateFormat, SerializerFeature.UseSingleQuotes }; 
 		serializer.config(SerializerFeature.WriteDateUseDateFormat,true);//SerializerFeature.WriteDateUseDateFormat
-		serializer.config(SerializerFeature.UseSingleQuotes,true);//SerializerFeature.
+		serializer.config(SerializerFeature.UseSingleQuotes,false);//true:返回的json属性中使用单引号
 		serializer.config(SerializerFeature.SkipTransientField,true);
 		serializer.config(SerializerFeature.WriteEnumUsingToString,true);
 		serializer.config(SerializerFeature.WriteMapNullValue,JsonConfigHolder.getWriteMapNullValue());
