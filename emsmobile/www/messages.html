@@ -61,8 +61,10 @@
 						}
 						//alert("还差页面间的参数传递，例如用户名的获取，是放在什么地方呢？");
 						//return;
+						//var data=jQuery.parseJSON("{success:false,reasons:{code:'noLogin'},root:'/login.jsp'}");
+						//return;
 						$.post($.ContextPath+"/mobile/updatePassword.do",values,function(data,textStatus) {
-							//var data=jQuery.parseJSON(response);
+							//
 							if(data.success==true){
 								$.mobile.pageContainer.pagecontainer('change', "about.html", {
 								  transition: 'flow',
@@ -109,7 +111,7 @@
     <div data-role="footer" id="footernav"  data-id="footernav" data-position="fixed" data-tap-toggle="false">
 		<div data-role="navbar">  
             <ul>  
-                <li><a href="messages.html"  data-icon="mail" data-ajax="true" data-transition="slide" class="ui-btn-active">消息提醒</a></li>  
+                <li><a href="index.html"  data-icon="mail" data-ajax="true" data-transition="slide" class="ui-btn-active">消息提醒</a></li>  
                 <li><a href="taskes.html"  data-icon="bullets" data-ajax="true" data-transition="slide">任务列表</a></li>  
                 <li><a href="reports.html" data-icon="star" data-ajax="true" data-transition="slide">报表</a></li>  
             </ul>  

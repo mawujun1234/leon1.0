@@ -32,6 +32,7 @@
 				/=anon
 				/login.jsp*=anon
 				/mobile/login.do*=anon
+				/www/*.html*=anon
 				/unauthorized.jsp*=anon
 				/login.do*=anon
 				/logout.do*=anon

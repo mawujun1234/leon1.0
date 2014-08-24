@@ -1,5 +1,8 @@
 package com.mawujun.mobile.login;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -33,7 +36,7 @@ public class MobileLoginController {
 	private static Logger logger = LogManager.getLogger(MobileLoginController.class.getName());
 	@RequestMapping("/mobile/login.do")
 	@ResponseBody
-	public String logIn(HttpServletRequest request,HttpServletResponse response,String loginName,String password,Boolean rememberMe){
+	public Reason logIn(HttpServletRequest request,HttpServletResponse response,String loginName,String password,Boolean rememberMe){
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		response.addHeader("Access-Control-Allow-Methods","GET,POST,OPTIONS"); 
 		//response.addHeader("Access-Control-Allow-Headers", "Content-type,hello");
@@ -43,6 +46,9 @@ public class MobileLoginController {
 		MobileUsernamePasswordToken token = new MobileUsernamePasswordToken(loginName, password); 
 		token.setRememberMe(rememberMe==null?false:rememberMe);
 		//subject.login(token);
+		
+		Map<String,String> result=new HashMap<String,String>();
+		
 		String error=null;
 		try {  
             subject.login(token);  
@@ -57,12 +63,14 @@ public class MobileLoginController {
             //其他错误，比如锁定，如果想单独处理请单独catch处理  
             error = "账号或密码错误!";  
         }  
+		JsonConfigHolder.setRootName("reasons");
         if(error != null) {//出错了，返回登录页面  
             //req.setAttribute("error", error);  
             //req.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(req, resp);  
         	JsonConfigHolder.setErrorsValue(error);
         	JsonConfigHolder.setSuccessValue(false);
-        	return error;
+        	
+        	return Reason.getInstance().setReason(error);
         } else {//登录成功  
             //req.getRequestDispatcher("/WEB-INF/jsp/loginSuccess.jsp").forward(req, resp); 
         	 String successUrl = null;
@@ -71,16 +79,16 @@ public class MobileLoginController {
                  successUrl = savedRequest.getRequestUrl();
              }
              if(successUrl==null){
-            	 successUrl="/index.jsp";
+            	 successUrl="/message.html";
              }
-        	return successUrl;
+             return Reason.getInstance().setReason("成功");
         }  
 		
 	}
 	
 	@RequestMapping("/mobile/updatePassword.do")
 	@ResponseBody
-	public String updatePassword(HttpServletRequest request,HttpServletResponse response,String password,Boolean password_repeat){
+	public String updatePassword(HttpServletRequest request,HttpServletResponse response,String password,String password_repeat){
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		response.addHeader("Access-Control-Allow-Methods","GET,POST,OPTIONS"); 
 		User user=ShiroUtils.getAuthenticationInfo();

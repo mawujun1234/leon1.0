@@ -33,8 +33,9 @@ public class FormAjaxAuthenticationFilter extends FormAuthenticationFilter {
     }
     protected void redirectToLogin(ServletRequest request, ServletResponse response) throws IOException {
     	String accept=((HttpServletRequest)request).getHeader("Accept");
+
     	if(accept!=null && accept.indexOf("application/json")!=-1){
-    		response.getWriter().write("{success:false,root:'"+this.getLoginUrl()+"'}");
+    		response.getWriter().write("{\"success\":false,\"reasons\":{\"code\":\"noLogin\"},\"root\":\""+this.getLoginUrl()+"\"}");
     		response.getWriter().close();
     	} else {
     		String loginUrl = getLoginUrl();

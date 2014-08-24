@@ -30,7 +30,14 @@
 				<!-- 是否替换资源中的属性-->
 				<filtering>true</filtering>
 			</resource>
+			
+			<resource>
+				<directory>${basedir}/../emsmobile/www </directory>
+				<targetPath>${basedir}/src/main/webapp/www</targetPath>
+			</resource>
 		</resources>
+		
+		
 
 		<plugins>
 		 <plugin>

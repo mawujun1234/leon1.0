@@ -57,7 +57,7 @@ $(function() {
 	 $("#formLogin").validate({ 
 		submitHandler: function(form) { 
 			//console.log("Call Login Action"); 
-			var values=$(form).serialize();
+			var values=$(form).serializeJson();
 			$.post($.ContextPath+"/mobile/login.do",values,function(response,textStatus) {
 				//var data=jQuery.parseJSON(response);
 				var data=response;
@@ -67,10 +67,9 @@ $(function() {
 								  transition: 'slide',
 								  reload    : true
 					});
-                 }else{
-					
+                 }else{	
                     //$.mobile.changePage("content/loginfalse.html","slidedown", true, true);
-					$("#errorMsg").html(data.root);
+					$("#errorMsg").html(data.reasons.reason);
                  }
 			});
 		} 
