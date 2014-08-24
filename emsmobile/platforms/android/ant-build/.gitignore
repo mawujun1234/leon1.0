@@ -1,0 +1,17 @@
+/classes
+/dexedLibs
+/res
+/rsLibs
+/rsObj
+/AndroidManifest.cordova.xml
+/AndroidManifest.xml.d
+/build.prop
+/classes.dex
+/classes.dex.d
+/emsmobile-debug-unaligned.apk
+/emsmobile-debug-unaligned.apk.d
+/emsmobile-debug.apk
+/emsmobile.ap_
+/emsmobile.ap_.d
+/proguard.txt
+/R.txt
