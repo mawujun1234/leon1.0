@@ -24,7 +24,7 @@ Ext.define('Ems.baseinfo.WorkUnitGrid',{
 			if(value){
 				return "有效";
 			} else {
-				return "无效";
+				return "<span style='color:red'>无效</>";
 			}
 		}}
       ];

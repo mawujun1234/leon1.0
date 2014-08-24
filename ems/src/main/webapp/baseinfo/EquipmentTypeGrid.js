@@ -25,7 +25,14 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 		//{dataIndex:'level',text:'level',xtype: 'numbercolumn', format:'0.00'},
 		//{dataIndex:'status',text:'status',xtype: 'numbercolumn', format:'0.00'},
 		{dataIndex:'text',text:'名称',flex:1},
-		{dataIndex:'unit',text:'单位',flex:1}
+		{dataIndex:'unit',text:'单位',flex:1},
+		{dataIndex:'status',text:'状态',renderer:function(value){
+			if(value){
+				return "有效";
+			} else {
+				return "<span style='color:red'>无效</>";
+			}
+		}}
       ];
       
 	  me.store=Ext.create('Ext.data.Store',{

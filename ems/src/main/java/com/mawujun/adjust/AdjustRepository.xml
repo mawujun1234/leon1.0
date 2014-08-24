@@ -17,6 +17,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 	<select id="query4InStr" resultType="com.mawujun.adjust.AdjustVO" parameterType="map">
 		select a.* from ems_adjust a where a.status='carry'
+		and a.str_in_id in (select store_id from sys_userstore c where c.user_id=#{user_id} and c.edit='Y')
 	</select>
 	
 	<!-- 获取调拨单明细-->
@@ -29,6 +30,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		inner join ems_supplier e on a.supplier_id=e.id
 		inner join ems_adjustlist f on a.ecode=f.ecode
 		where f.adjust_id=#{adjust_id}
+		
     </select> 
     
     <select id="sumInnumByadjust_id" resultType="long"  parameterType="java.lang.String">
@@ -38,6 +40,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     <select id="queryPage" resultType="com.mawujun.adjust.AdjustVO" parameterType="map">
 		select a.* from ems_adjust a
 		<where>
+			and a.str_out_id in (select store_id from sys_userstore c where c.user_id=#{user_id} and c.look='Y')
 			<if test="str_out_id!=null">
 				and a.str_out_id=#{str_out_id}
 			</if>

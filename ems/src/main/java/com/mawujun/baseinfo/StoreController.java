@@ -87,17 +87,19 @@ public class StoreController {
 		return store;
 	}
 	
-	@RequestMapping("/store/deleteById.do")
-	@ResponseBody
-	public String deleteById(String id) {
-		storeService.deleteById(id);
-		return id;
-	}
+//	@RequestMapping("/store/deleteById.do")
+//	@ResponseBody
+//	public String deleteById(String id) {
+//		storeService.deleteById(id);
+//		return id;
+//	}
 	
 	@RequestMapping("/store/destroy.do")
 	@ResponseBody
 	public Store destroy(@RequestBody Store store) {
-		storeService.delete(store);
+		//storeService.delete(store);
+		store.setStatus(false);
+		storeService.update(store);
 		return store;
 	}
 	

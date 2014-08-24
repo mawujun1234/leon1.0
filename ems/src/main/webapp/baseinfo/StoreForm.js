@@ -69,7 +69,7 @@ Ext.define('Ems.baseinfo.StoreForm',{
 			    readOnly:true,
 			    editable:false,
 			    name:'type',
-			    //value:"1"
+			    value:1,
 			    allowBlank: false
 		},
 		{
@@ -161,7 +161,8 @@ Ext.define('Ems.baseinfo.StoreForm',{
 				var grid=form.grid;//是在StoreApp.js中把引用授予的
 				var modelName=grid.model||grid.getStore().getProxy( ).getModel().getName( );
 				var model=Ext.createModel(modelName,{      	//id:''
-					status:true
+					status:true,
+					type:1
 				});
 				model.phantom =true;
 				form.getForm().loadRecord(model);//form是在app中定义的grid.form=form;
@@ -211,11 +212,7 @@ Ext.define('Ems.baseinfo.StoreForm',{
 						form.down("button#update").disable();
 						form.down("button#destroy").disable();
 						form.getForm().reset();
-						grid.getStore().sync({
-							failure:function(){
-								grid.getStore().reload();
-							}
-						});
+						grid.getStore().reload();
 					}
 				});
 			},

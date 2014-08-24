@@ -22,7 +22,7 @@ Ext.define('Ems.baseinfo.StoreGrid',{
 			if(value){
 				return "有效";
 			} else {
-				return "无效";
+				return "<span style='color:red'>无效</>";
 			}
 		}},
 		{dataIndex:'type_name',text:'类型'},

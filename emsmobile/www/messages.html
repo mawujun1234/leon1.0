@@ -37,27 +37,30 @@
         </div>
         <div data-role="popup" id="updatePassword" class="ui-corner-all">
         	<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
-            <form id="formUpdatePassword" style="padding:10px 20px;">
+            <form id="form_UpdatePassword" style="padding:10px 20px;">
             	<h3>请输入新密码:</h3>
                 <input type="password" name="password" id="password"  placeholder="新密码" data-theme="a" class="required">
                 <input type="password" name="password_repeat" id="password_repeat"  placeholder="再次输入" data-theme="a" class="required">
-                <div id="formUpdatePassword_errorMsg" style="color:red;height:36px;font-weight:bold;">
+                <div id="form_UpdatePassword_errorMsg" style="color:red;height:36px;font-weight:bold;">
             
             	</div>
-                <button type="submit" id="formUpdatePassword_submit" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">确定</button>
+                <button type="submit" id="form_UpdatePassword_submit" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">确定</button>
             </form>
             <script type="text/javascript">
 				$(function() {
-					$("#formUpdatePassword_submit").bind("click", function(event) {
+					$("#form_UpdatePassword_submit").bind("click", function(event) {
 						event.preventDefault();
-						var values=$("formUpdatePassword").serialize();
+						var values=$("#form_UpdatePassword").serializeJson();
+						//console.dir(values);
 						if(!values.password || !values.password_repeat){
-							$("#formUpdatePassword_submit").html("请输入新密码!");
+							$("#form_UpdatePassword_errorMsg").html("请输入新密码!");
+							return;
 						} else if(values.password!=values.password_repeat){
-							$("#formUpdatePassword_submit").html("两次输入的密码不一致!");
+							$("#form_UpdatePassword_errorMsg").html("两次输入的密码不一致!");
+							return;
 						}
-						alert("还差页面间的参数传递，例如用户名的获取，是放在什么地方呢？");
-						return;
+						//alert("还差页面间的参数传递，例如用户名的获取，是放在什么地方呢？");
+						//return;
 						$.post($.ContextPath+"/mobile/updatePassword.do",values,function(data,textStatus) {
 							//var data=jQuery.parseJSON(response);
 							if(data.success==true){

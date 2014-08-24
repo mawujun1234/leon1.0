@@ -48,12 +48,12 @@ public class EquipmentTypeService extends AbstractService<EquipmentType, String>
 	
 	public void delete(EquipmentType entity) {
 		//this
-		Long count=equipmentSubtypeRepository.queryCount(Cnd.select().andEquals(M.EquipmentSubtype.parent_id, entity.getId()));
+		Long count=equipmentSubtypeRepository.queryCount(Cnd.select().andEquals(M.EquipmentSubtype.parent_id, entity.getId()).andEquals(M.EquipmentSubtype.status, true));
 		if(count>0){
 			throw new BusinessException("存在小类,不能删除!");
 		}
 		
-		this.getRepository().delete(entity);
+		this.getRepository().update(Cnd.update().set(M.EquipmentType.status, false).andEquals(M.EquipmentType.id, entity.getId()));
 	}
 
 }

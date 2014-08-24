@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.exception.BusinessException;
+import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.user.User;
 import com.mawujun.utils.page.Page;
 /**
@@ -130,6 +131,8 @@ public class RepairController {
 		page.addParam("str_out_id", str_out_id).addParam("rpa_id", rpa_id).addParam("str_out_date_start", str_out_date_start).addParam("str_out_date_end", str_out_date_end)
 		.addParam("ecode", ecode).addParam("status", status)
 		.addParam("only_have_scap", only_have_scap);
+		page.addParam("user_id", ShiroUtils.getAuthenticationInfo().getId());
+		//page.addParam("edit", true);
 		return repairService.storeMgrQuery(page);
 	}
 	
@@ -148,6 +151,7 @@ public class RepairController {
 		Page page=Page.getInstance(start,limit);//.addParam(M.Repair.sampleName, "%"+sampleName+"%");
 		page.addParam("str_out_id", str_out_id).addParam("rpa_id", rpa_id).addParam("str_out_date_start", str_out_date_start).addParam("str_out_date_end", str_out_date_end)
 		.addParam("ecode", ecode).addParam("status", status);
+		page.addParam("user_id", ShiroUtils.getAuthenticationInfo().getId());
 		return repairService.repairInQuery(page);
 	}
 
@@ -168,6 +172,7 @@ public class RepairController {
 		page.addParam("str_out_id", str_out_id).addParam("rpa_id", rpa_id).addParam("rpa_in_date_start", rpa_in_date_start).addParam("rpa_in_date_end", rpa_in_date_end)
 		.addParam("ecode", ecode).addParam("status", status)
 		.addParam("only_have_scap", only_have_scap);
+		page.addParam("user_id", ShiroUtils.getAuthenticationInfo().getId());
 		return repairService.repairMgrQuery(page);
 	}
 	

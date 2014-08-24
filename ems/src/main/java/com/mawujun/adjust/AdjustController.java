@@ -15,6 +15,7 @@ import com.mawujun.exception.BusinessException;
 import com.mawujun.repair.RepairStatus;
 import com.mawujun.repair.RepairVO;
 import com.mawujun.repository.cnd.Cnd;
+import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.page.Page;
 import com.mawujun.utils.M;
 import com.mawujun.adjust.Adjust;
@@ -79,7 +80,7 @@ public class AdjustController {
 		page.addParam("str_out_date_end", str_out_date_end);
 		page.addParam("status", status);
 		
-		
+		page.addParam("user_id", ShiroUtils.getAuthenticationInfo().getId());
 		return adjustService.queryPage(page);
 	}
 	
@@ -156,6 +157,7 @@ public class AdjustController {
 	@ResponseBody
 	public Page query4InStr(Integer start,Integer limit) {	
 		Page page=Page.getInstance(start,limit);	
+		page.addParam("user_id", ShiroUtils.getAuthenticationInfo().getId());
 		return adjustService.query4InStr(page);
 	}
 	/**

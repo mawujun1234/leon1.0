@@ -211,11 +211,12 @@ Ext.define('Ems.baseinfo.SupplierForm',{
 						form.down("button#update").disable();
 						form.down("button#destroy").disable();
 						form.getForm().reset();
-						grid.getStore().sync({
-							failure:function(){
-								grid.getStore().reload();
-							}
-						});
+//						grid.getStore().sync({
+//							failure:function(){
+//								grid.getStore().reload();
+//							}
+//						});
+						grid.getStore().reload();
 					}
 				});
 			},

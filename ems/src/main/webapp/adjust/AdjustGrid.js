@@ -50,7 +50,7 @@ Ext.define('Ems.adjust.AdjustGrid',{
 	  var out_store_combox=Ext.create('Ext.form.field.ComboBox',{
 	        fieldLabel: '<b>发货仓库</b>',
 	        labelAlign:'right',
-            labelWidth:50,
+            labelWidth:55,
 	        //xtype:'combobox',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'store_id',
@@ -74,7 +74,7 @@ Ext.define('Ems.adjust.AdjustGrid',{
 	  var in_store_combox=Ext.create('Ext.form.field.ComboBox',{
 	        fieldLabel: '<b>入库仓库</b>',
 	        labelAlign:'right',
-            labelWidth:50,
+            labelWidth:55,
 	        //xtype:'combobox',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'rpa_id',

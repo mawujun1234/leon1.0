@@ -85,18 +85,20 @@ public class BrandController {
 		brandService.createOrUpdate(brand);
 		return brand;
 	}
-	
-	@RequestMapping("/brand/deleteById.do")
-	@ResponseBody
-	public String deleteById(String id) {
-		brandService.deleteById(id);
-		return id;
-	}
+//	
+//	@RequestMapping("/brand/deleteById.do")
+//	@ResponseBody
+//	public String deleteById(String id) {
+//		brandService.deleteById(id);
+//		return id;
+//	}
 	
 	@RequestMapping("/brand/destroy.do")
 	@ResponseBody
 	public Brand destroy(@RequestBody Brand brand) {
-		brandService.delete(brand);
+		//brandService.delete(brand);
+		brand.setStatus(false);
+		brandService.update(brand);
 		return brand;
 	}
 	

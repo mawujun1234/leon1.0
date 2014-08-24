@@ -22,7 +22,7 @@ Ext.define('Ems.baseinfo.BrandGrid',{
 			if(value){
 				return "有效";
 			} else {
-				return "无效";
+				return "<span style='color:red'>无效</>";
 			}
 		}}
       ];

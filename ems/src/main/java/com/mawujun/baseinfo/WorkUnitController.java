@@ -86,17 +86,19 @@ public class WorkUnitController {
 		return workUnit;
 	}
 	
-	@RequestMapping("/workUnit/deleteById.do")
-	@ResponseBody
-	public String deleteById(String id) {
-		workUnitService.deleteById(id);
-		return id;
-	}
+//	@RequestMapping("/workUnit/deleteById.do")
+//	@ResponseBody
+//	public String deleteById(String id) {
+//		workUnitService.deleteById(id);
+//		return id;
+//	}
 	
 	@RequestMapping("/workUnit/destroy.do")
 	@ResponseBody
 	public WorkUnit destroy(WorkUnit workUnit) {
-		workUnitService.delete(workUnit);
+		//workUnitService.delete(workUnit);
+		workUnit.setStatus(false);
+		workUnitService.update(workUnit);
 		return workUnit;
 	}
 	

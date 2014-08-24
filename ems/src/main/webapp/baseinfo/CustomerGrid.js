@@ -23,7 +23,7 @@ Ext.define('Ems.baseinfo.CustomerGrid',{
 			if(value){
 				return "有效";
 			} else {
-				return "无效";
+				return "<span style='color:red'>无效</>";
 			}
 		}},
 		{dataIndex:'type',text:'type',xtype: 'numbercolumn', renderer:function(value){
@@ -214,7 +214,8 @@ Ext.define('Ems.baseinfo.CustomerGrid',{
 							//var parent=me.tree.getSelectionModel( ).getLastSelected( )||me.tree.getRootNode( );  
 							//me.tree.getStore().reload({node:parent});
 							
-							me.getStore().remove(record);
+							//me.getStore().remove(record);
+							me.getStore().reload();
 						}
 					});
 			}

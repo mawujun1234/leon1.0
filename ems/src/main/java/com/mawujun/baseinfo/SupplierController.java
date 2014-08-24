@@ -86,17 +86,19 @@ public class SupplierController {
 		return supplier;
 	}
 	
-	@RequestMapping("/supplier/deleteById.do")
-	@ResponseBody
-	public String deleteById(String id) {
-		supplierService.deleteById(id);
-		return id;
-	}
+//	@RequestMapping("/supplier/deleteById.do")
+//	@ResponseBody
+//	public String deleteById(String id) {
+//		supplierService.deleteById(id);
+//		return id;
+//	}
 	
 	@RequestMapping("/supplier/destroy.do")
 	@ResponseBody
 	public Supplier destroy(@RequestBody Supplier supplier) {
-		supplierService.delete(supplier);
+		//supplierService.delete(supplier);
+		supplier.setStatus(false);
+		supplierService.update(supplier);
 		return supplier;
 	}
 	

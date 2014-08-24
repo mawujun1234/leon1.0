@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.shiro.MobileUsernamePasswordToken;
+import com.mawujun.shiro.ShiroUtils;
+import com.mawujun.user.User;
 
 /**
  * 主要用在移动端的
@@ -74,5 +76,15 @@ public class MobileLoginController {
         	return successUrl;
         }  
 		
+	}
+	
+	@RequestMapping("/mobile/updatePassword.do")
+	@ResponseBody
+	public String updatePassword(HttpServletRequest request,HttpServletResponse response,String password,Boolean password_repeat){
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.addHeader("Access-Control-Allow-Methods","GET,POST,OPTIONS"); 
+		User user=ShiroUtils.getAuthenticationInfo();
+		String aa=user.getUsername();
+		return "success";
 	}
 }

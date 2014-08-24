@@ -21,7 +21,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	select a.*,b.id as scrap_id from ems_repair a left join ems_scrap b on a.id=b.repair_id
     	
 		<where>
-			
+			a.str_out_id in (select store_id from sys_userstore c where c.user_id=#{user_id} and c.edit='Y')
 			<if test="str_out_id!=null">
 				and a.str_out_id=#{str_out_id}
 			</if>
@@ -49,6 +49,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     <select id="repairInQuery" resultType="com.mawujun.repair.RepairVO" parameterType="map">
     	select * from ems_repair a
 		<where>
+			a.rpa_id in (select store_id from sys_userstore c where c.user_id=#{user_id} and c.edit='Y')
 			<if test="str_out_id!=null">
 				and a.str_out_id=#{str_out_id}
 			</if>
@@ -74,6 +75,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     <select id="repairMgrQuery" resultType="com.mawujun.repair.RepairVO" parameterType="map">
     	select a.*,b.id as scrap_id from ems_repair a left join ems_scrap b on a.id=b.repair_id
 		<where>
+			a.rpa_id in (select store_id from sys_userstore c where c.user_id=#{user_id} and c.edit='Y')
 			<if test="str_out_id!=null">
 				and a.str_out_id=#{str_out_id}
 			</if>

@@ -65,13 +65,15 @@ public class EquipmentTypeController {
 			Cnd cnd=Cnd.select().andEquals(M.EquipmentSubtype.parent_id, "root".equals(id)?null:id);
 			equipmentTypees=equipmentProdService.query(cnd);
 		}
-		
+		//防止编码重复
 		if(isGrid==null || isGrid==false){
 			for(int i=0;i<equipmentTypees.size();i++){
 				EquipmentTypeVO obj=(EquipmentTypeVO)equipmentTypees.get(i);
+				//为树上的节点带上编号
+				obj.setText(obj.getText()+"("+obj.getId()+")");
 				obj.setId(obj.getId()+"_"+obj.getLevl());
 			}
-		}
+		} 
 
 
 		return equipmentTypees;
