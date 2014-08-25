@@ -289,6 +289,24 @@ public class JsonConfigHolder {
 		threadLocal.get().setTotal(total);
 	}
 	
+	public static Boolean getJsonp() {
+		return threadLocal.get().getJsonp();
+	}
+	public static void setJsonp(Boolean jsonp) {
+		threadLocal.get().setJsonp(jsonp);
+	}
+	public static String getJsonpCallback() {
+		return threadLocal.get().getJsonpCallback();
+	}
+	/**
+	 * 同时会调用setJsonp(true);表示着是jsonp的请求
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param jsonpCallback
+	 */
+	public static void setJsonpCallback(String jsonpCallback) {
+		threadLocal.get().setJsonp(true);
+		threadLocal.get().setJsonpCallback(jsonpCallback);
+	}
 	
 	private static class ToJsonConfig {
 		public transient Boolean autoWrap=true;//自动封装为某种格式
@@ -321,6 +339,11 @@ public class JsonConfigHolder {
 		public transient Map extProperties;
 		
 		public transient Boolean writeMapNullValue=true;//是否输出为null的内容
+		
+		//jsonp的请求,设置为true，就表示要以jsonp的形式返回
+		public transient Boolean jsonp=false;
+		public transient String jsonpCallback;//回调函数
+		
 		
 		
 		public String getFilterPropertysName() {
@@ -487,6 +510,18 @@ public class JsonConfigHolder {
 		}
 		public void setTotal(Integer total) {
 			this.total = total;
+		}
+		public Boolean getJsonp() {
+			return jsonp;
+		}
+		public void setJsonp(Boolean jsonp) {
+			this.jsonp = jsonp;
+		}
+		public String getJsonpCallback() {
+			return jsonpCallback;
+		}
+		public void setJsonpCallback(String jsonpCallback) {
+			this.jsonpCallback = jsonpCallback;
 		}
 		
 	}

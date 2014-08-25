@@ -22,6 +22,11 @@ import com.mawujun.repository.hibernate.HibernateUtils;
 import com.mawujun.repository.idEntity.IdEntity;
 import com.mawujun.utils.page.QueryResult;
 
+/**
+ * 同时也支持jsonp
+ * @author mawujun email:16064988@163.com qq:16064988
+ *
+ */
 public class FastJsonToStringUtils {
 	
 	private static JSONSerializer getJSONSerializer(Object object){
@@ -65,7 +70,8 @@ public class FastJsonToStringUtils {
 				}
 	
 				jsonString=replaceJsonPath(jsonString);
-				
+				//判断是否支持jsonp
+				jsonString=wrapJsonp(jsonString);
 				//FileCopyUtils.copy(jsonString, new OutputStreamWriter(outputMessage.getBody(), charset));
 				return jsonString;
 		} else {
@@ -112,8 +118,17 @@ public class FastJsonToStringUtils {
 			String jsonString=serializer.toString();
 			jsonString=replaceJsonPath(jsonString);
 			jsonString=doExtProperties(jsonString);
+			//判断是否支持jsonp
+			jsonString=wrapJsonp(jsonString);
 			return jsonString;
 		}
+	}
+	
+	public static String wrapJsonp(String jsonString){
+		if(JsonConfigHolder.getJsonp()){
+			jsonString=JsonConfigHolder.getJsonpCallback()+"("+jsonString+")";
+		}
+		return jsonString;
 	}
 	
 	/**

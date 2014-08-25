@@ -381,13 +381,12 @@ public class SpringMVCController_no_autoWarp_Test {
 		.andExpect(jsonPath("$.age").value(16));
 	}
 	
-//	@Test
-//	public void testRtnStr1() throws Exception{
-//		this.mockMvc.perform(get("/test/testRtnStr1.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
-//		//.andExpect(status().isServiceUnavailable())
-//		.andExpect(content().contentType("application/json"))
-//		.andExpect(jsonPath("$.name").value("ma1"))
-//		.andExpect(jsonPath("$.age").value(161));
-//	}
+	@Test
+	public void testJSONP() throws Exception{
+		this.mockMvc.perform(get("/test/testJSONP.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
+		//.andExpect(status().isServiceUnavailable())
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
+		.andExpect(content().string("jsonCllback({name:'ma',age:16})"));
+	}
 	
 }

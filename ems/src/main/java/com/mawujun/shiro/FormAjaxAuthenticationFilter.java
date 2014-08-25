@@ -33,10 +33,17 @@ public class FormAjaxAuthenticationFilter extends FormAuthenticationFilter {
     }
     protected void redirectToLogin(ServletRequest request, ServletResponse response) throws IOException {
     	String accept=((HttpServletRequest)request).getHeader("Accept");
+    	//如果是移动端的请求
+		String jsonpCallback=request.getParameter("jsonpCallback");
+		if(jsonpCallback!=null){
+			response.getWriter().write(jsonpCallback+"({\"success\":false,\"reasons\":{\"code\":\"noLogin\"},\"root\":\""+this.getLoginUrl()+"\"})");
+    		response.getWriter().close();
+    		return;
+		}
 
     	if(accept!=null && accept.indexOf("application/json")!=-1){
     		response.getWriter().write("{\"success\":false,\"reasons\":{\"code\":\"noLogin\"},\"root\":\""+this.getLoginUrl()+"\"}");
-    		response.getWriter().close();
+        	response.getWriter().close();		
     	} else {
     		String loginUrl = getLoginUrl();
             WebUtils.issueRedirect(request, response, loginUrl);

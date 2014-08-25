@@ -362,5 +362,14 @@ public class SpringMVCController_autoWarp {
 		String json="{name:'ma',age:16}";
 		return json;
 	}
+	
+	@RequestMapping("/autoWarp/testJSONP.do")
+	@ResponseBody
+	public String testJSONP(){
+		//JsonConfigHolder.setJsonp(true);
+		JsonConfigHolder.setJsonpCallback("jsonCllback");
+		String json="{name:'ma',age:16}";
+		return json;
+	}
 
 }

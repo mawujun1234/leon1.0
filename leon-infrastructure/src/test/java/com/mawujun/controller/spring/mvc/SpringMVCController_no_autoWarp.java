@@ -342,10 +342,12 @@ public class SpringMVCController_no_autoWarp {
 		return json;
 	}
 	
-//	@RequestMapping("/test/testRtnStr1.do")
-//	public String testRtnStr1(){
-//		JsonConfigHolder.setAutoWrap(false);
-//		String json="{name:'ma1',age:161}";
-//		return json;
-//	}
+	@RequestMapping("/test/testJSONP.do")
+	@ResponseBody
+	public String testJSONP(){
+		JsonConfigHolder.setAutoWrap(false);
+		JsonConfigHolder.setJsonpCallback("jsonCllback");
+		String json="{name:'ma',age:16}";
+		return json;
+	}
 }

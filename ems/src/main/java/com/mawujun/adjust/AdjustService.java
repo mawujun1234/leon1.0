@@ -74,7 +74,7 @@ public class AdjustService extends AbstractService<Adjust, String>{
 	
 	public void newAdjuest(AdjustVO[] adjuestVOs) {
 		//创建调拨单
-		Adjust adjust=BeanUtils.convert(adjuestVOs[0], Adjust.class);//adjuestVOs[0];//每条记录的主单内容都是一样的
+		Adjust adjust=BeanUtils.copyOrCast(adjuestVOs[0], Adjust.class);//adjuestVOs[0];//每条记录的主单内容都是一样的
 		adjust.setId(ymdHmsDateFormat.format(new Date()));
 		adjust.setStr_out_date(new Date());
 		adjust.setStatus(AdjustStatus.carry.toString());

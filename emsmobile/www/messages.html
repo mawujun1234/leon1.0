@@ -11,6 +11,7 @@
 <style type="text/css">
 
 </style>
+
 </head> 
 <body> 
 
@@ -19,23 +20,23 @@
     	<a href="#left-menu" data-icon="gear" data-iconpos="notext"></a> 
         <div id="left-menu" data-role="panel" data-position="left"  data-display="overlay" data-position-fixed="true">
        		<ul data-role="listview" >
-                <li data-icon="false">
-                <a href="#">
-                    <img src="img/workunit.gif">
-                	<h2>aaaaaaa</h2>
-                	<p>XXX片区</p>
-                </a>
+                <li data-icon="false" id="left-menu-first-li">
+                    <!----><img src="img/workunit.gif">
+                	<h2>账号</h2>
+                	<p>XXX工作组</p>
+                   <p>登陆时间</p>
                 </li>
                 <li>
+                	 
                 </li>
                 <li>
-                <a href="#updatePassword" class="ui-icon-edit" data-rel="popup" data-position-to="window" data-transition="pop">
+                <a href="#popup_updatePassword" class="ui-icon-edit" data-rel="popup" data-position-to="window" data-transition="pop">
                 	修改密码
                 </a>    
                 </li>
             </ul>
         </div>
-        <div data-role="popup" id="updatePassword" class="ui-corner-all">
+        <div data-role="popup" id="popup_updatePassword" class="ui-corner-all">
         	<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
             <form id="form_UpdatePassword" style="padding:10px 20px;">
             	<h3>请输入新密码:</h3>
@@ -48,6 +49,15 @@
             </form>
             <script type="text/javascript">
 				$(function() {
+					if(!sessionStorage.getItem("user")){
+						location.href="login.html";
+						return;
+					}
+					var user=$.parseJSON(sessionStorage.getItem("user"));
+					$( "#left-menu" ).on( "panelbeforeopen", function( event, ui ) {
+						$("#left-menu-first-li").html('<img src="img/workunit.gif"><h2>'+user.username+'</h2><p>'+user.name+'</p><p>'+user.loginDate+'</p>');
+					} );
+					
 					$("#form_UpdatePassword_submit").bind("click", function(event) {
 						event.preventDefault();
 						var values=$("#form_UpdatePassword").serializeJson();
@@ -59,25 +69,39 @@
 							$("#form_UpdatePassword_errorMsg").html("两次输入的密码不一致!");
 							return;
 						}
-						//alert("还差页面间的参数传递，例如用户名的获取，是放在什么地方呢？");
-						//return;
-						//var data=jQuery.parseJSON("{success:false,reasons:{code:'noLogin'},root:'/login.jsp'}");
-						//return;
-						$.post($.ContextPath+"/mobile/updatePassword.do",values,function(data,textStatus) {
-							//
+						
+						$.showLoader("正在处理....");
+						$.ajax({   
+							url : $.ServerPath+"/mobile/updatePassword.do",  
+							data:values,
+							dataType : "jsonp",//数据类型为jsonp  数  
+							success : function(data){  
+								if(data.success==true){
+									$( "#popup_updatePassword" ).popup( "close");
+								 }else{
+									if(data.reasons.code=="noLogin"){
+										location.href="login.html";
+										return;
+									} 
+									$("#errorMsg").html(data.reasons.reason);
+								 }
+								 $.hideLoader();  
+							}	
+						});   
+						/**--
+						$.post($.ServerPath+"/mobile/updatePassword.do",values,function(data,textStatus) {
 							if(data.success==true){
-								$.mobile.pageContainer.pagecontainer('change', "about.html", {
-								  transition: 'flow',
-								  reload    : true
-								});
+								$( "#popup_updatePassword" ).popup( "close");
 							 }else{
 								$("#errorMsg").html(data.root);
 							 }
+							 $.hideLoader();
 						});
+						**/
 					});
 				})
 			</script>
-        </div>
+        </div><!-- #updatePassword-->
         <h1>消息提醒</h1>
 	</div>
 	<div role="main" class="ui-content">

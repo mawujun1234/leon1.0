@@ -64,21 +64,28 @@ public class URLPermissionsFilter extends PermissionsAuthorizationFilter {
 //            } else {
 //                WebUtils.toHttp(response).sendError(HttpServletResponse.SC_UNAUTHORIZED);
 //            }
-        	 String unauthorizedUrl = getUnauthorizedUrl();
-        	String accept=((HttpServletRequest)request).getHeader("Accept");
-
-        	if(accept!=null && accept.indexOf("application/json")!=-1){
-        		response.getWriter().write("{\"success\":false,\"reasons\":{\"code\":\"noPermission\"},\"root\":\""+unauthorizedUrl+"\"}");
+        	String jsonpCallback=request.getParameter("jsonpCallback");
+    		if(jsonpCallback!=null){
+    			response.getWriter().write(jsonpCallback+"({\"success\":false,\"reasons\":{\"code\":\"noPermission\"},\"root\":\"没有权限\"})");
         		response.getWriter().close();
-        	} else {
-             
-              //SHIRO-142 - ensure that redirect _or_ error code occurs - both cannot happen due to response commit:
-              if (StringUtils.hasText(unauthorizedUrl)) {
-                  WebUtils.issueRedirect(request, response, unauthorizedUrl);
-              } else {
-                  WebUtils.toHttp(response).sendError(HttpServletResponse.SC_UNAUTHORIZED);
-              }
-        	}
+    		} else {
+    			String unauthorizedUrl = getUnauthorizedUrl();
+            	String accept=((HttpServletRequest)request).getHeader("Accept");
+
+            	if(accept!=null && accept.indexOf("application/json")!=-1){
+            		response.getWriter().write("{\"success\":false,\"reasons\":{\"code\":\"noPermission\"},\"root\":\""+unauthorizedUrl+"\"}");
+                	response.getWriter().close();
+            	} else {
+                 
+                  //SHIRO-142 - ensure that redirect _or_ error code occurs - both cannot happen due to response commit:
+                  if (StringUtils.hasText(unauthorizedUrl)) {
+                      WebUtils.issueRedirect(request, response, unauthorizedUrl);
+                  } else {
+                      WebUtils.toHttp(response).sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                  }
+            	}
+    		}
+        
         }
         return false;
     }

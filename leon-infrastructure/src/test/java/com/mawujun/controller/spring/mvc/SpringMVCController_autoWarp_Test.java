@@ -53,7 +53,7 @@ public class SpringMVCController_autoWarp_Test {
     private ServletWebRequest webRequest;
     
     private MockMvc mockMvc; 
-
+    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); 
 
 	
 	@Test
@@ -124,7 +124,7 @@ public class SpringMVCController_autoWarp_Test {
 		//.andExpect(content().string("{\"fieldErrors\":[{\"path\":\"title\",\"msg\":\"The title cannot be empty.\"}]}"));
 
 	}
-	DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
+	 
 	@Test
 	public void queryModel() throws Exception {
 		this.mockMvc.perform(get("/autoWarp/queryModel.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
@@ -408,4 +408,14 @@ public class SpringMVCController_autoWarp_Test {
 		.andExpect(jsonPath("total").value(1));
 	}
 	
+	@Test
+	public void testJSONP() throws Exception{
+		this.mockMvc.perform(get("/autoWarp/testJSONP.do").accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8"))
+		.andExpect(status().isOk())
+		.andExpect(content().encoding("UTF-8"))
+		.andExpect(content().contentType("application/json;charset=UTF-8"))
+		.andExpect(content().string("jsonCllback({\"root\":\"{name:'ma',age:16}\",\"total\":1,\"success\":true})"));
+		return;
+	}
+
 }

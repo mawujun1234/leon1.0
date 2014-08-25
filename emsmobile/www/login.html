@@ -58,20 +58,24 @@ $(function() {
 		submitHandler: function(form) { 
 			//console.log("Call Login Action"); 
 			var values=$(form).serializeJson();
-			$.post($.ContextPath+"/mobile/login.do",values,function(response,textStatus) {
-				//var data=jQuery.parseJSON(response);
-				var data=response;
-				if(data.success==true){
-                    //$.mobile.changePage("messages.html","slidedown", true, true);
-					$.mobile.pageContainer.pagecontainer('change', "messages.html", {
-								  transition: 'slide',
-								  reload    : true
-					});
-                 }else{	
-                    //$.mobile.changePage("content/loginfalse.html","slidedown", true, true);
-					$("#errorMsg").html(data.reasons.reason);
-                 }
-			});
+			$.showLoader("正在处理....");
+			$.ajax({   
+				url : $.ServerPath+"/mobile/login.do",  
+				data:values,
+				dataType : "jsonp",//数据类型为jsonp  数  
+				success : function(data){  
+					if(data.success==true){
+						sessionStorage.setItem("user",JSON.stringify(data.root));
+						$.mobile.pageContainer.pagecontainer('change', "messages.html", {
+							transition: 'slide',
+							reload    : true
+						});
+					}else{
+						$("#errorMsg").html(data.reasons.reason);
+					}
+						$.hideLoader();  
+				}	
+			});   
 		} 
 	}); 
 	/**

@@ -44,8 +44,12 @@ public class StringHttpMessageConverterImpl extends StringHttpMessageConverter {
 	protected void writeInternal(String s, HttpOutputMessage outputMessage) throws IOException {
 		if(JsonConfigHolder.getAutoWrap()){
 			s= FastJsonToStringUtils.getJsonString(s);
-		}
+		} else if(JsonConfigHolder.getJsonp()){//判断是不是使用jsonp返回
+			s=FastJsonToStringUtils.wrapJsonp(s);
+		} 
+		
 		super.writeInternal(s, outputMessage);
+		JsonConfigHolder.remove();
 	}
 	
 }
