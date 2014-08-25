@@ -61,8 +61,7 @@ $(function() {
 			$.showLoader("正在处理....");
 			$.ajax({   
 				url : $.ServerPath+"/mobile/login.do",  
-				data:values,
-				dataType : "jsonp",//数据类型为jsonp  数  
+				data:values,  
 				success : function(data){  
 					if(data.success==true){
 						sessionStorage.setItem("user",JSON.stringify(data.root));
@@ -73,7 +72,7 @@ $(function() {
 					}else{
 						$("#errorMsg").html(data.reasons.reason);
 					}
-						$.hideLoader();  
+					$.hideLoader();  
 				}	
 			});   
 		} 

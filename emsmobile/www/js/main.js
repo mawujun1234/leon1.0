@@ -1,7 +1,9 @@
 // JavaScript Document
-$.ServerPath="http://172.16.3.4:8084";
+$.ServerPath="http://192.168.1.100:8084";
 $.ajaxSetup({
-	jsonp: "jsonpCallback",//所有的jsonp都使用这个回调函数
+	jsonp: "jsonpCallback",//使用浏览器进行测试的时候用的，如果安装到手机，就注释掉
+	dataType:'jsonp',//使用浏览器进行测试的时候用的，如果安装到手机就注释掉
+	type:'POST',
 	headers:{
 		Accept:"application/json;"
 	},

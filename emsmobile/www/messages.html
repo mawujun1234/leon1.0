@@ -73,8 +73,7 @@
 						$.showLoader("正在处理....");
 						$.ajax({   
 							url : $.ServerPath+"/mobile/updatePassword.do",  
-							data:values,
-							dataType : "jsonp",//数据类型为jsonp  数  
+							data:values,  
 							success : function(data){  
 								if(data.success==true){
 									$( "#popup_updatePassword" ).popup( "close");

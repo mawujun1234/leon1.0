@@ -99,6 +99,7 @@ public class MobileLoginController {
 	@RequestMapping("/mobile/updatePassword.do")
 	@ResponseBody
 	public String updatePassword(String jsonpCallback,String password,String password_repeat){
+		取消掉jsonpCallback，然后把www放到同个项目里好了
 		JsonConfigHolder.setJsonpCallback(jsonpCallback);
 		User user=ShiroUtils.getAuthenticationInfo();
 		String loginName=user.getUsername();
