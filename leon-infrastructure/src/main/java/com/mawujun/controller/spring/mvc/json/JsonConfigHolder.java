@@ -301,9 +301,12 @@ public class JsonConfigHolder {
 	/**
 	 * 同时会调用setJsonp(true);表示着是jsonp的请求
 	 * @author mawujun email:160649888@163.com qq:16064988
-	 * @param jsonpCallback
+	 * @param jsonpCallback 如果参数为null，将不能启动jsonp的数据分装
 	 */
 	public static void setJsonpCallback(String jsonpCallback) {
+		if(jsonpCallback==null || "".equalsIgnoreCase(jsonpCallback)){
+			return;
+		}
 		threadLocal.get().setJsonp(true);
 		threadLocal.get().setJsonpCallback(jsonpCallback);
 	}
