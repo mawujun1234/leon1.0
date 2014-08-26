@@ -42,7 +42,7 @@ public class MobileLoginController {
 	private WorkUnitService workUnitService;
 	@RequestMapping("/mobile/login.do")
 	@ResponseBody
-	public User logIn(HttpServletRequest request,HttpServletResponse response,String jsonpCallback,String loginName,String password,Boolean rememberMe){
+	public User logIn(HttpServletRequest request,HttpServletResponse response ,String loginName,String password,Boolean rememberMe){
 		//response.setHeader("Access-Control-Allow-Origin", "*");
 		//response.addHeader("Access-Control-Allow-Methods","GET,POST,OPTIONS"); 
 		//response.addHeader("Access-Control-Allow-Headers", "Content-type,hello");
@@ -70,7 +70,7 @@ public class MobileLoginController {
             error = "账号或密码错误!";  
         }  
 		//JsonConfigHolder.setRootName("reasons");
-		JsonConfigHolder.setJsonpCallback(jsonpCallback);
+		//JsonConfigHolder.setJsonpCallback(jsonpCallback);
         if(error != null) {//出错了，返回登录页面  
             //req.setAttribute("error", error);  
             //req.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(req, resp);  
@@ -98,9 +98,9 @@ public class MobileLoginController {
 	
 	@RequestMapping("/mobile/updatePassword.do")
 	@ResponseBody
-	public String updatePassword(String jsonpCallback,String password,String password_repeat){
-		取消掉jsonpCallback，然后把www放到同个项目里好了
-		JsonConfigHolder.setJsonpCallback(jsonpCallback);
+	public String updatePassword(String password,String password_repeat){
+		//取消掉jsonpCallback，然后把www放到同个项目里好了
+		//JsonConfigHolder.setJsonpCallback(jsonpCallback);
 		User user=ShiroUtils.getAuthenticationInfo();
 		String loginName=user.getUsername();
 		workUnitService.update(Cnd.update().set(M.WorkUnit.password, password).andEquals(M.WorkUnit.loginName, loginName));	

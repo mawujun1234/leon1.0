@@ -10,6 +10,8 @@ import java.util.Map;
  * 在前台往后台返回数据的时候，的配置文件,
  * 在使用的时候一定要建立一个Filter对JsonConfigHolder进行清理，即调用JsonConfigHolder.remove()方法，
  * 因为很多web服务器都使用了线程池，线程使用后是不会销毁的，这样的话，这个对象就会被别的线程使用了，就会存在冲突。
+ * 
+ * 同时也支持jsonp，只要调用JsonConfigHolder.setJsonpCallback(jsonpCallback);
  * @author mawujun email:mawujun1234@163.com qq:16064988
  *
  */

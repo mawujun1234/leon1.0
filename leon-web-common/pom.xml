@@ -124,7 +124,21 @@
 						<version>0.0.1-SNAPSHOT</version>
 					</dependency>
 		        </dependencies>
-		        
+		        <executions>
+		        	<execution>
+		        		<id>generateMT</id>
+		        		<goals>
+		        			<goal>generateMT</goal>
+		        		</goals> 
+		        	</execution>
+		        	
+					<execution>
+						<id>generateP</id>
+						<goals>
+		        			<goal>generateP</goal>
+		        		</goals> 
+					</execution>
+		        </executions>
 		        <configuration>
 					<classpathDirectorys>
 						<classpathDirectory>${project.build.outputDirectory}</classpathDirectory>

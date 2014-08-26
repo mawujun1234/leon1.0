@@ -299,6 +299,7 @@ public static final class sys_user {
 	public static final String type="type";
 	public static final String loginDate="loginDate";
 	public static final String status="status";
+	public static final String isWorkunit="isWorkunit";
 	public static final String id="id";
 }
 public static final class sys_userstore {

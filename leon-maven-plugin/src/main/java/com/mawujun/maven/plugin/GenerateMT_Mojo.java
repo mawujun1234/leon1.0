@@ -55,13 +55,15 @@ import javax.persistence.Table;
 /**
  * 根据领域模型来生成D类和T类的代码，可以在开发当中直接使用D。User。name这样引用属性,
  * 也可以用T。leon_User.name这样引用列名
+ * 
+ * 这两个插件就是需要手动执行命令的
  * 扩展功能：
  * 1：在执行这个命令后，就可以执行监听功能，当文件变动后，就自动进行变化
  * 
- * 
+ *  
  * 
  */
-@Mojo( name = "generateMT")
+@Mojo( name = "generateMT", defaultPhase = LifecyclePhase.PROCESS_CLASSES)
 public class GenerateMT_Mojo extends AbstractMojo
 {
     /**

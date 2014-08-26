@@ -1,7 +1,6 @@
 package com.mawujun.user;
 
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -17,7 +16,6 @@ import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.repository1.IRepository;
 import com.mawujun.service.AbstractService;
 import com.mawujun.utils.M;
-import com.mawujun.utils.page.Page;
 
 @Service
 public class UserService  extends AbstractService<User, String>{

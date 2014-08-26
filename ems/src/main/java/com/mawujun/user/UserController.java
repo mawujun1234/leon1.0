@@ -33,8 +33,7 @@ import com.mawujun.utils.page.Page;
 public class UserController {
 	@Autowired
 	private UserService userService;
-	//@Autowired
-	//private UserRoleService userRoleService;
+
 
 	//@Autowired
 	//private PasswordEncoder passwordEncoder;

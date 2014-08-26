@@ -23,8 +23,7 @@
 		<!-- <module>leon-example</module> -->
 		<module>leon-web-common</module>
     	<module>leon-maven-plugin</module>
-    <module>ems</module>
-    <module>emsmobileemulator</module>
+    	<module>ems</module>
   </modules>
 
 	<profiles>
@@ -55,7 +54,7 @@
 	</profiles>
 
 	<build>
-		<!-- 搜索 src/main/resources的文件，�?{profiles.active}值替换成真正的�?，即上面<profiles>定义的�?-->
+		<!-- 搜索 src/main/resources的文件，�?{profiles.active}值替换成真正的�?，即上面<profiles>定义的�?-->
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
@@ -90,7 +89,7 @@
 		</plugins>
 	</build>
 
-	<!-- 这个是临时的，为org.aspectj�?.8.0.M1版本使用的，dbqbroker,ems项目中叶有这个配�?-->
+	<!-- 这个是临时的，为org.aspectj�?.8.0.M1版本使用的，dbqbroker,ems项目中叶有这个配�?-->
 	<repositories>
 		<repository>
 			<id>opencast-public</id>
@@ -126,7 +125,7 @@
 			<artifactId>aspectjweaver</artifactId>
 			<version>1.8.0.M1</version><!-- <version>1.7.4</version> -->
 		</dependency>
-		<!-- 刚注释掉�?-->
+		<!-- 刚注释掉�?-->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
@@ -226,7 +225,7 @@
 
 
 
-		<!-- ======================================持久�?=========================================================== -->
+		<!-- ======================================持久�?=========================================================== -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
@@ -321,7 +320,7 @@
 
 
 
-		<!-- mvc层面要用到的jar�?=============================================================== -->
+		<!-- mvc层面要用到的jar�?=============================================================== -->
 
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
@@ -364,7 +363,7 @@
 
 
 
-		<!-- apache common系列的代�?========================================================= -->
+		<!-- apache common系列的代�?========================================================= -->
 		<dependency>
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>

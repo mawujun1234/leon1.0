@@ -20,7 +20,8 @@
     <groupId>junit</groupId>
     <artifactId>junit</artifactId>
     <version>4.11</version>
-</dependency>
+    <scope>test</scope>
+  </dependency>
 
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -43,11 +44,11 @@
         <scope>test</scope>
     </dependency>
      -->
-     <dependency>
-    <groupId>org.apache.maven.plugin-testing</groupId>
-    <artifactId>maven-plugin-testing-harness</artifactId>
-    <version>3.1.0</version>
-</dependency>
+    <dependency>
+	    <groupId>org.apache.maven.plugin-testing</groupId>
+	    <artifactId>maven-plugin-testing-harness</artifactId>
+	    <version>3.1.0</version>
+	</dependency>
 <!-- maven -->
     <dependency>
       <groupId>org.apache.maven</groupId>

@@ -30,12 +30,6 @@
 				<!-- 是否替换资源中的属性-->
 				<filtering>true</filtering>
 			</resource>
-			<!-- 
-			<resource>
-				<directory>${basedir}/../emsmobile/www </directory>
-				<targetPath>${basedir}/src/main/webapp/www</targetPath>
-			</resource>
-			 -->
 		</resources>
 		
 		
@@ -79,7 +73,7 @@
 
 			
 			<!-- jrebel热替换功能的插件  http://zeroturnaround.com/forums/topic/jrebel-maven-plugin-not-available-in-eclipse-juno-solved/ 
-				https://github.com/ktoso/maven-git-commit-id-plugin/issues/22 http://update.zeroturnaround.com/update-site/ -->
+				https://github.com/ktoso/maven-git-commit-id-plugin/issues/22 http://update.zeroturnaround.com/update-site/ 
 			<plugin>
 				<groupId>org.zeroturnaround</groupId>
 				<artifactId>jrebel-maven-plugin</artifactId>
@@ -93,8 +87,8 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
-
+			</plugin>-->
+			
 			<plugin>
 				<groupId>com.mawujun</groupId>
 				<artifactId>leon-maven-plugin</artifactId>
@@ -118,6 +112,44 @@
 					</dependency>
 		        </dependencies>
 		        
+		        <executions>
+		        	<execution>
+		        		<id>generateMT</id>
+		        		<goals>
+		        			<goal>generateMT</goal>
+		        		</goals> 
+		        		<!--<configuration>
+		        			<classpathDirectorys>
+								<classpathDirectory>${project.build.outputDirectory}</classpathDirectory>
+							</classpathDirectorys>
+							<packageNames>
+								<packageName>com.mawujun</packageName>
+							</packageNames>
+							<excludePackageNames>
+								<excludePackageName>com.mawujun.monitor.system</excludePackageName>
+							</excludePackageNames>
+		        			<targetMDir>${basedir}\src\main\java\com\mawujun\utils</targetMDir>	
+		        			<driverClassName>oracle.jdbc.driver.OracleDriver</driverClassName>
+							<url>jdbc:oracle:thin:@127.0.0.1:1521:ems</url>
+							<username>ems</username>
+							<password>ems</password>
+		        		</configuration>-->
+		        	</execution>
+		        	
+					<execution>
+						<id>copy</id>
+						<goals>
+		        			<goal>copy</goal>
+		        		</goals> 
+		        		<!-- 
+						<configuration>
+							<sourceDirectory>${basedir}/../emsmobile/www</sourceDirectory>
+							<destinationDirectory>${basedir}/src/main/webapp/www</destinationDirectory>
+						</configuration>
+						 -->
+					</execution>
+		        </executions>
+		         
 		        <configuration>
 					<classpathDirectorys>
 						<classpathDirectory>${project.build.outputDirectory}</classpathDirectory>
@@ -131,15 +163,14 @@
 					<targetMDir>${basedir}\src\main\java\com\mawujun\utils</targetMDir>	
 					
 					
-					<driverClassName>oracle.jdbc.driver.OracleDriver</driverClassName>
-					<url>jdbc:oracle:thin:@127.0.0.1:1521:ems</url>
-					<username>ems</username>
-					<password>ems</password>
+					<!-- copy的配置 -->
+					<sourceDirectory>${basedir}/../emsmobile/www</sourceDirectory>
+					<destinationDirectory>${basedir}/src/main/webapp/www</destinationDirectory>
 				</configuration>
-				
+				 
 	
 			</plugin>
- 			
+			
 		</plugins>
 	</build>
 	<dependencies>
