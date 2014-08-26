@@ -1,0 +1,151 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<meta charset="utf-8">
+<title>消息</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="jquery.mobile/jquery.mobile-1.4.3.min.css" rel="stylesheet" type="text/css"/>
+<script src="jquery.mobile/jquery-2.1.1.min.js" type="text/javascript"></script>
+<script src="jquery.mobile/jquery.mobile-1.4.3.min.js" type="text/javascript"></script>
+<script src="js/main.js" type="text/javascript"></script>
+<style type="text/css">
+
+</style>
+
+</head> 
+<body> 
+
+<div data-role="page" id="page">
+	<div data-role="header" data-position="fixed">
+    	<a href="#left-menu" data-icon="gear" data-iconpos="notext"></a> 
+        <div id="left-menu" data-role="panel" data-position="left"  data-display="overlay" data-position-fixed="true">
+       		<ul data-role="listview" >
+                <li data-icon="false" id="left-menu-first-li">
+                    <!----><img src="img/workunit.gif">
+                	<h2>账号</h2>
+                	<p>XXX工作组</p>
+                   <p>登陆时间</p>
+                </li>
+                <li>
+                	 
+                </li>
+                <li>
+                <a href="#popup_updatePassword" class="ui-icon-edit" data-rel="popup" data-position-to="window" data-transition="pop">
+                	修改密码
+                </a>    
+                </li>
+            </ul>
+        </div>
+        <div data-role="popup" id="popup_updatePassword" class="ui-corner-all">
+        	<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+            <form id="form_UpdatePassword" style="padding:10px 20px;">
+            	<h3>请输入新密码:</h3>
+                <input type="password" name="password" id="password"  placeholder="新密码" data-theme="a" class="required">
+                <input type="password" name="password_repeat" id="password_repeat"  placeholder="再次输入" data-theme="a" class="required">
+                <div id="form_UpdatePassword_errorMsg" style="color:red;height:36px;font-weight:bold;">
+            
+            	</div>
+                <button type="submit" id="form_UpdatePassword_submit" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">确定</button>
+            </form>
+            <script type="text/javascript">
+				$(function() {
+					if(!sessionStorage.getItem("user")){
+						location.href="login.html";
+						return;
+					}
+					var user=$.parseJSON(sessionStorage.getItem("user"));
+					$( "#left-menu" ).on( "panelbeforeopen", function( event, ui ) {
+						$("#left-menu-first-li").html('<img src="img/workunit.gif"><h2>'+user.username+'</h2><p>'+user.name+'</p><p>'+user.loginDate+'</p>');
+					} );
+					
+					$("#form_UpdatePassword_submit").bind("click", function(event) {
+						event.preventDefault();
+						var values=$("#form_UpdatePassword").serializeJson();
+						//console.dir(values);
+						if(!values.password || !values.password_repeat){
+							$("#form_UpdatePassword_errorMsg").html("请输入新密码!");
+							return;
+						} else if(values.password!=values.password_repeat){
+							$("#form_UpdatePassword_errorMsg").html("两次输入的密码不一致!");
+							return;
+						}
+						
+						$.showLoader("正在处理....");
+						$.ajax({   
+							url : $.ServerPath+"/mobile/updatePassword.do",  
+							data:values,
+							dataType : "jsonp",//数据类型为jsonp  数  
+							success : function(data){  
+								if(data.success==true){
+									$( "#popup_updatePassword" ).popup( "close");
+								 }else{
+									if(data.reasons.code=="noLogin"){
+										location.href="login.html";
+										return;
+									} 
+									$("#errorMsg").html(data.reasons.reason);
+								 }
+								 $.hideLoader();  
+							}	
+						});   
+						/**--
+						$.post($.ServerPath+"/mobile/updatePassword.do",values,function(data,textStatus) {
+							if(data.success==true){
+								$( "#popup_updatePassword" ).popup( "close");
+							 }else{
+								$("#errorMsg").html(data.root);
+							 }
+							 $.hideLoader();
+						});
+						**/
+					});
+				})
+			</script>
+        </div><!-- #updatePassword-->
+        <h1>消息提醒</h1>
+	</div>
+	<div role="main" class="ui-content">
+    	 <ul data-role="listview" data-count-theme="b" data-inset="true">
+        	 <li data-role="list-divider">超时提醒<span class="ui-li-count" style="color:#FFF;background-color:#F00;border-color:#F00">new</span></li>
+            <li>
+    			<p>任务XXXXXX已经超时，请处理</p>
+    			<p>2014-3-20</p>
+            </li>
+            
+            <li data-role="list-divider">超时提醒<span class="ui-li-count" style="color:#FFF;background-color:#F00;border-color:#F00">new</span></li>
+            <li>
+    			<p>任务XXXXXX已经超时，请处理</p>
+    			<p>2014-3-20</p>
+            </li>
+            
+            <li data-role="list-divider">任务结束</li>
+            <li>
+    			<p>20140822</p>
+    			<p>杆位:GGGGGGG</p>
+            </li>
+            <li data-role="list-divider">任务结束</li>
+            <li>
+    			<p>20140822</p>
+    			<p>杆位:石碶街道春节路</p>
+            </li>
+        </ul>			
+			
+	</div>
+    
+    <div data-role="footer" id="footernav"  data-id="footernav" data-position="fixed" data-tap-toggle="false">
+		<div data-role="navbar">  
+            <ul>  
+                <li><a href="index.html"  data-icon="mail" data-ajax="true" data-transition="slide" class="ui-btn-active">消息提醒</a></li>  
+                <li><a href="taskes.html"  data-icon="bullets" data-ajax="true" data-transition="slide">任务列表</a></li>  
+                <li><a href="reports.html" data-icon="star" data-ajax="true" data-transition="slide">报表</a></li>  
+            </ul>  
+        </div>  
+	</div>
+    
+
+	
+</div>
+
+
+</body>
+</html>

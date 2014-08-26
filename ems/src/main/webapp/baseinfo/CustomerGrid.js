@@ -26,7 +26,7 @@ Ext.define('Ems.baseinfo.CustomerGrid',{
 				return "<span style='color:red'>无效</>";
 			}
 		}},
-		{dataIndex:'type',text:'type',xtype: 'numbercolumn', renderer:function(value){
+		{dataIndex:'type',text:'类型',xtype: 'numbercolumn', renderer:function(value){
 			if(value==0){
 				return "机关";
 			} else {

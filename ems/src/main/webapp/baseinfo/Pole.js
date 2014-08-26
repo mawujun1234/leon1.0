@@ -11,7 +11,9 @@ Ext.defineModel("Ems.baseinfo.Pole",{
 		{name:'longitude',type:'string'},
 		{name:'name',type:'string'},
 		{name:'province',type:'string'},
-		{name:'status',type:'bool'}
+		{name:'status',type:'string'},
+		
+		{name:'status_name',type:'string'}
 	],
 	associations:[
 	]

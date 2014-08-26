@@ -2,6 +2,8 @@ package com.mawujun.baseinfo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
 import com.mawujun.repository.idEntity.UUIDEntity;
@@ -32,9 +34,20 @@ public class Pole extends UUIDEntity {
 	@Column(length=36)
 	private String area_id;
 	
-	@org.hibernate.annotations.Type(type="yes_no")
-	private Boolean status=true;
+//	@org.hibernate.annotations.Type(type="yes_no")
+//	private Boolean status=true;
+	
+	@Column(length=15)
+	@Enumerated(EnumType.STRING)
+	private PoleStatus status;
 
+	public String getStatus_name() {
+		if(status==null){
+			return null;
+		}
+		return status.getName();
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -75,14 +88,6 @@ public class Pole extends UUIDEntity {
 		this.customer_id = customer_id;
 	}
 
-	public Boolean getStatus() {
-		return status;
-	}
-
-	public void setStatus(Boolean status) {
-		this.status = status;
-	}
-
 	public String getProvince() {
 		return province;
 	}
@@ -113,6 +118,14 @@ public class Pole extends UUIDEntity {
 
 	public void setArea_id(String area_id) {
 		this.area_id = area_id;
+	}
+
+	public PoleStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(PoleStatus status) {
+		this.status = status;
 	}
 
 }

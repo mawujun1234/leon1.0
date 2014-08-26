@@ -33,6 +33,13 @@ Ext.define('Ems.baseinfo.PoleForm',{
 	        xtype:'hidden',
 	        allowBlank: false
 	    },
+	     {
+	        fieldLabel: 'status',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'status',      
+	        xtype:'hidden',
+	        allowBlank: false
+	    },
 	    {
 	        fieldLabel: '名称',
 	        //afterLabelTextTpl: Ext.required,
@@ -121,26 +128,7 @@ Ext.define('Ems.baseinfo.PoleForm',{
 	        name: 'latitude',      
 	        xtype:'textfield',
 	        allowBlank: true
-	    },
-		{
-	        	xtype:'combobox',
-			    fieldLabel: '状态',
-			    store:  Ext.create('Ext.data.Store', {
-				    fields: ['id', 'name'],
-				    data : [
-				        {"id":true, "name":"有效"},
-				        {"id":false, "name":"无效"}
-				    ]
-				}),
-			    queryMode: 'local',
-			    displayField: 'name',
-			    valueField: 'id',
-			    
-			    editable:false,
-			    allowBlank:false,
-			    value:true,
-			    name:'status'
-		}
+	    }
 	  ];   
 	  
 	  

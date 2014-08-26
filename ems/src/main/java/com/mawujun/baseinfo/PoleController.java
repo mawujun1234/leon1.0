@@ -80,6 +80,7 @@ public class PoleController {
 	@RequestMapping("/pole/create.do")
 	@ResponseBody
 	public Pole create(@RequestBody Pole pole) {
+		pole.setStatus(PoleStatus.uninstall);
 		poleService.create(pole);
 		return pole;
 	}
