@@ -304,7 +304,7 @@ Ext.onReady(function(){
 		flex:1,
 		store:equipStore,
     	columns: [Ext.create('Ext.grid.RowNumberer'),
-    			  {header: '条码', dataIndex: 'ecode',width:120},
+    			  {header: '条码', dataIndex: 'ecode',width:150},
     	          {header: '设备类型', dataIndex: 'subtype_name',width:120},
     	          {header: '品名', dataIndex: 'prod_name'},
     	          {header: '品牌', dataIndex: 'brand_name',width:120},

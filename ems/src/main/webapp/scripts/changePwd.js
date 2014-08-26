@@ -32,7 +32,7 @@ Ext.define('Ext.ux.ms.changePwdwin',{
             }, 
             items:[{ 
                 xtype: 'textfield', 
-                fieldLabel: '源密码',
+                fieldLabel: '原密码',
                 name:'password_old',
                // fieldCls:'key',
                 blankText : '密码不能为空', 

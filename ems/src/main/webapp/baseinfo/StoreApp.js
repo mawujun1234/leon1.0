@@ -7,7 +7,7 @@ Ext.onReady(function(){
 		region:'west',
 		split: true,
 		collapsible: true,
-		title:'XXX表格',
+		title:'仓库列表',
 		width:400
 	});
 

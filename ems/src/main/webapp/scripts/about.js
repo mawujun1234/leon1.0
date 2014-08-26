@@ -18,7 +18,7 @@ Ext.define('Ext.ux.ms.aboutDialog', {
      cls                : 'x-aboutDialog',
      modal              : true,
      resizable          : false,
-     title              : '关于RETP',
+     title              : '关于',
      width              : 488,
      height             : Ext.isIE? 350:343,
      isXXL              : false,
@@ -48,15 +48,15 @@ Ext.define('Ext.ux.ms.aboutDialog', {
                         html    : '<p style="text-align:right;" mce_style="text-align:right;">' +  
 		                        '当前版本：' +  
 		                        this.AppVersion +  
-		                        '<br />Powered by ExtJs UI Engine<br /> ---- version:' + this.ExtVersion +
+		                        //'<br />Powered by ExtJs UI Engine<br /> ---- version:' + this.ExtVersion +
 		                        '</p>' +  
 		                        '<p>' +  
 		                        '数字化视频监控服务调度系统<br />' +  
-		                        this.AppText +  
+		                        //this.AppText +  
 		                        '</p><br />' +  
 		                        '<p>' +  
-		                        'RETP采用java技术开发，并以Extjs+Ajax技术做为系统界面及交互手段' +  
-		                        '提供安全，美观，灵活高效的解决方案' +  
+		                        'RETP采用java技术开发' +  
+		                        '' +  
 		                        '</p>'  
                     }, {  
                          tag  : 'div',

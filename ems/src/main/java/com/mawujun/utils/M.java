@@ -181,6 +181,36 @@ public static final class InstallOutList {
 	public static final String ecode="ecode";
 	public static final String id="id";
 }
+public static final class Message {
+	public static final String content="content";
+	public static final String type="type";
+	public static final String createDate="createDate";
+	public static final String readDate="readDate";
+	public static final String id="id";
+}
+public static final class Task {
+	public static final String id="id";
+	public static final String memo="memo";
+	public static final String type="type";
+	public static final String status="status";
+	public static final String pole_id="pole_id";
+	public static final String workunit_id="workunit_id";
+	public static final String customer_id="customer_id";
+	public static final String createDate="createDate";
+	public static final String startHandDate="startHandDate";
+	public static final String submitDate="submitDate";
+	public static final String approveDate="approveDate";
+	public static final String completeDate="completeDate";
+	public static final String hitchType="hitchType";
+	public static final String hitchReason="hitchReason";
+}
+public static final class TaskEquipmentList {
+	public static final String task_id="task_id";
+	public static final String ecode="ecode";
+	public static final String scanDate="scanDate";
+	public static final String type="type";
+	public static final String id="id";
+}
 public static final class Repair {
 	public static final String id="id";
 	public static final String ecode="ecode";

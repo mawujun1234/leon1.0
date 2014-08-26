@@ -8,7 +8,7 @@ Ext.onReady(function(){
 		region:'west',
 		split: true,
 		collapsible: true,
-		title:'XXX表格',
+		title:'客户列表',
 		width:400
 	});
 	grid.on('itemclick',function(view,record,item,index){

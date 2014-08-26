@@ -7,7 +7,7 @@ Ext.onReady(function(){
 		region:'west',
 		split: true,
 		collapsible: true,
-		title:'XXX表格',
+		title:'品牌列表',
 		width:400
 	});
 
