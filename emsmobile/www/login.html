@@ -73,7 +73,11 @@ $(function() {
 						$("#errorMsg").html(data.reasons.reason);
 					}
 					$.hideLoader();  
-				}	
+				},
+				error:function(jqxhq){  
+					$("#errorMsg").html('网络异常或服务停止了');  
+					$.hideLoader(); 
+				}  
 			});   
 		} 
 	}); 

@@ -18,11 +18,30 @@ Ext.define('Ems.baseinfo.PoleGrid',{
       var me = this;
       me.columns=[
 		//{dataIndex:'id',text:'id'},
+        {xtype: 'rownumberer'},
+        {dataIndex:'status',text:'状态',width:40,menuDisabled:true,renderer : function(value,metadata, record, rowIndex, columnIndex, store) {
+      	   metadata.tdAttr = "data-qtip='" + record.get("status_name")+ "'";
+		   if (value == 'uninstall') {
+		    return "<img src='../icons/help_circle_blue.png' />";
+		   } else if (value == 'installing'){
+		    return "<img src='./icons/circle_blue.png' />";
+		   }else if (value == 'using'){
+		    return "<img src='./icons/circle_green.png' />";
+		   }else if (value == 'hitch'){
+		    return "<img src='./icons/circle_yellow.png' />";
+		   }else if (value == 'cancel'){
+		    return "<img src='./icons/circle_red.png' />";
+		   }
+		   return record.get("status_name");
+		 }
+		},
       	{dataIndex:'name',text:'杆位名称',width:160},
-      	{dataIndex:'province',text:'地址',flex:1,renderer:function(value,metaData ,record){
-      		return value+record.get("city")+record.get("area")+record.get("address")
+      	{dataIndex:'province',text:'地址',flex:1,renderer:function(value,metadata ,record){
+      		var aaa=value+record.get("city")+record.get("area")+record.get("address");
+      		metadata.tdAttr = "data-qtip='" + aaa+ "'";
+      		return aaa;
       	}},
-      	{dataIndex:'status_name',text:'状态'},
+   		
 //      	{dataIndex:'city',text:'city'},
 //      	{dataIndex:'area',text:'area'},
 //		{dataIndex:'address',text:'address'},

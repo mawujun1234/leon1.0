@@ -7,13 +7,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.utils.page.Page;
 import com.mawujun.utils.M;
-
 import com.mawujun.baseinfo.Customer;
 import com.mawujun.baseinfo.CustomerService;
 /**
@@ -98,6 +98,13 @@ public class CustomerController {
 	public Customer destroy(@RequestBody Customer customer) {
 		customerService.delete(customer);
 		return customer;
+	}
+	
+	@RequestMapping("/customer/queryCombo.do")
+	@ResponseBody
+	public List<Customer> queryCombo(String name) {	
+		
+		return customerService.query(Cnd.select().andEquals(M.Customer.status, true).andLike(M.Customer.name, name));	
 	}
 	
 //	@RequestMapping("/customer/queryPole.do")

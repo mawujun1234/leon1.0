@@ -1,8 +1,8 @@
 // JavaScript Document
-$.ServerPath="http://192.168.1.100:8084";
+$.ServerPath="http://localhost:8084";
 $.ajaxSetup({
-	jsonp: "jsonpCallback",//使用浏览器进行测试的时候用的，如果安装到手机，就注释掉
-	dataType:'jsonp',//使用浏览器进行测试的时候用的，如果安装到手机就注释掉
+	//jsonp: "jsonpCallback",//使用浏览器进行测试的时候用的，如果安装到手机，就注释掉
+	//dataType:'jsonp',//使用浏览器进行测试的时候用的，如果安装到手机就注释掉
 	type:'POST',
 	headers:{
 		Accept:"application/json;"
@@ -24,6 +24,7 @@ $.ajaxSetup({
 		alert('网络异常或服务停止了');  
 		$.hideLoader(); 
 	}  
+	
 });
 //将form的值序列化为json
 (function($){

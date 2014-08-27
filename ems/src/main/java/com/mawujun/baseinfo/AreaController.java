@@ -7,13 +7,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.utils.page.Page;
 import com.mawujun.utils.M;
-
 import com.mawujun.baseinfo.Area;
 import com.mawujun.baseinfo.AreaService;
 /**
@@ -129,6 +129,13 @@ public class AreaController {
 		}
 		poleService.deletePoles(area_id, pole_ids);
 		return "success";
+	}
+	
+	@RequestMapping("/area/queryCombo.do")
+	@ResponseBody
+	public List<Area> queryCombo(String name) {	
+		
+		return areaService.query(Cnd.select().andLike(M.Area.name, name));	
 	}
 	
 }

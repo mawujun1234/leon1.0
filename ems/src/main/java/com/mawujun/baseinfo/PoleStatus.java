@@ -6,7 +6,7 @@ package com.mawujun.baseinfo;
  *
  */
 public enum PoleStatus {
-	uninstall("未安装"),installing("安装中"),using("使用中"),cancel("取消");
+	uninstall("未安装"),installing("安装中"),using("使用中"),hitch("有损坏"),cancel("取消");
 	private String name;
 	PoleStatus(String name){
 		this.name=name;

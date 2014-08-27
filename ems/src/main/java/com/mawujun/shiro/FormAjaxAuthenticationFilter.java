@@ -42,6 +42,7 @@ public class FormAjaxAuthenticationFilter extends FormAuthenticationFilter {
 		}
 
     	if(accept!=null && accept.indexOf("application/json")!=-1){
+    		response.setContentType(accept);
     		response.getWriter().write("{\"success\":false,\"reasons\":{\"code\":\"noLogin\"},\"root\":\""+this.getLoginUrl()+"\"}");
         	response.getWriter().close();		
     	} else {

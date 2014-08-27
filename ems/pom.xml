@@ -73,7 +73,7 @@
 
 			
 			<!-- jrebel热替换功能的插件  http://zeroturnaround.com/forums/topic/jrebel-maven-plugin-not-available-in-eclipse-juno-solved/ 
-				https://github.com/ktoso/maven-git-commit-id-plugin/issues/22 http://update.zeroturnaround.com/update-site/ 
+				https://github.com/ktoso/maven-git-commit-id-plugin/issues/22 http://update.zeroturnaround.com/update-site/ -->
 			<plugin>
 				<groupId>org.zeroturnaround</groupId>
 				<artifactId>jrebel-maven-plugin</artifactId>
@@ -87,7 +87,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>-->
+			</plugin>
 			
 			<plugin>
 				<groupId>com.mawujun</groupId>
@@ -115,10 +115,10 @@
 		        <executions>
 		        	<execution>
 		        		<id>generateMT</id>
-		        		<goals>
+		        		<!--<goals>
 		        			<goal>generateMT</goal>
 		        		</goals> 
-		        		<!--<configuration>
+		        		<configuration>
 		        			<classpathDirectorys>
 								<classpathDirectory>${project.build.outputDirectory}</classpathDirectory>
 							</classpathDirectorys>
@@ -138,10 +138,10 @@
 		        	
 					<execution>
 						<id>copy</id>
-						<goals>
+						<!--<goals>
 		        			<goal>copy</goal>
 		        		</goals> 
-		        		<!-- 
+		        		 
 						<configuration>
 							<sourceDirectory>${basedir}/../emsmobile/www</sourceDirectory>
 							<destinationDirectory>${basedir}/src/main/webapp/www</destinationDirectory>

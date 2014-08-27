@@ -73,6 +73,7 @@ public class URLPermissionsFilter extends PermissionsAuthorizationFilter {
             	String accept=((HttpServletRequest)request).getHeader("Accept");
 
             	if(accept!=null && accept.indexOf("application/json")!=-1){
+            		response.setContentType(accept);
             		response.getWriter().write("{\"success\":false,\"reasons\":{\"code\":\"noPermission\"},\"root\":\""+unauthorizedUrl+"\"}");
                 	response.getWriter().close();
             	} else {

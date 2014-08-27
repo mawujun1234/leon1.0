@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
+<mapper namespace="com.mawujun.mobile.task.TaskRepository">
+	<select id="queryPoles" resultType="com.mawujun.baseinfo.PoleVO" parameterType="map">
+    	select 
+		a.*,
+		b.name as area_name,
+		c.id as workunit_id,
+		c.name as workunit_name,
+		d.name as customer_name
+		from EMS_pole a 
+		inner join ems_area b on  a.area_id=b.id
+		inner join Ems_Workunit c on b.workunit_id=c.id
+		inner join ems_customer d on a.customer_id=d.id
+		<where>
+			<if test="customer_id!=null">
+				and a.customer_id=#{customer_id}
+			</if>
+			<if test="area_id!=null">
+				and a.area_id=#{area_id}
+			</if>
+			<if test="workunit_id!=null">
+				and b.workunit_id=#{workunit_id}
+			</if>
+			<if test="pole_name!=null">
+				and a.name like #{pole_name}
+			</if>
+		</where>
+    </select>
+    
+    
+    <select id="queryPage" resultType="com.mawujun.mobile.task.Task" parameterType="map">
+    	select * from ems_task
+    </select>
+</mapper>
+

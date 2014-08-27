@@ -126,7 +126,8 @@ Ext.define('Ext.ux.ms.loginDialog',{
 	            url : Ext.ContextPath+'/login.do', 
 	            success : function(form, action) {
 	            	if(action.result.success){
-	            		 window.location.href = Ext.ContextPath+action.result.root;//'index.jsp';
+	            		 //window.location.href = Ext.ContextPath+action.result.root;//'index.jsp';
+	            		window.location.href = Ext.ContextPath+'/index.jsp';
 	            	}
 	            }, 
 	            failure : function(form, action) {
