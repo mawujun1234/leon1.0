@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.utils.page.PageRequest;
@@ -104,7 +105,7 @@ public class WorkUnitController {
 	
 	@RequestMapping("/workUnit/queryCombo.do")
 	@ResponseBody
-	public List<WorkUnit> query(String name) {	
+	public List<WorkUnit> queryCombo(@RequestParam("name") String name) {	
 		List<WorkUnit> workUnites=null;
 		if(name==null){
 			workUnites=workUnitService.queryAll();

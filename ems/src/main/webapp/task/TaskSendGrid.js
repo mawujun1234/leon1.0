@@ -166,7 +166,7 @@ Ext.define('Ems.task.TaskSendGrid',{
 			    proxy:{
 			    	type:'ajax',
 			    	//extraParams:{type:1,edit:true},
-			    	url:Ext.ContextPath+"/workunit/queryCombo.do",
+			    	url:Ext.ContextPath+"/workUnit/queryCombo.do",
 			    	reader:{
 			    		type:'json',
 			    		root:'root'
