@@ -240,7 +240,7 @@ Ext.define('Ext.ms.header.Toolbar',{
 		}
 		itemArray.push('->');
 		itemArray.push('-');
-		itemArray.push({text:'帮助',iconCls:'icon-help',menu:[{text:'关于RETP',iconCls:'icon-about',handler:showAbout}]});
+		itemArray.push({text:'帮助',iconCls:'icon-help',menu:[{text:'操作手册',icon:Ext.ContextPath+'/icons/page_white_word.png',handler:downloadManual},{text:'关于RETP',iconCls:'icon-about',handler:showAbout}]});
  
 		Ext.apply(this,{
 			items: itemArray
@@ -259,6 +259,10 @@ Ext.define('Ext.ms.header.Toolbar',{
 			   }
 			  aboutD.show();
 		   }
+		   
+		function downloadManual(){
+			   window.open(Ext.ContextPath+"/nav/downloadManual.do", "_blank");
+		}
     	this.showMemu=function(){
 		   	 Ext.Ajax.request({    
 		   	    url:this.naviUrl, 

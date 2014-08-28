@@ -53,8 +53,11 @@
 				<configuration>
 					<!-- 为了发布到百度开发平台上，容量太大所以去掉extjs么人吧extjs单独发布到百度平台上了http://extj1234.duapp.com/ 
 					<warSourceExcludes>ext-4/**</warSourceExcludes>-->
+					
 				</configuration>
 			</plugin>
+			
+
 			
 			
 			<plugin>
@@ -268,5 +271,10 @@
 		<version>2.8.3</version>
 	</dependency>
 		
+	<dependency>
+		<groupId>org.apache.poi</groupId>
+		<artifactId>poi</artifactId>
+		<version>3.10.1</version>
+	</dependency>
 	</dependencies>
 </project>

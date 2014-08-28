@@ -1,12 +1,46 @@
 Ext.require("Ems.store.Order");
 
 Ext.onReady(function(){
-	var order_no=Ext.create('Ext.form.field.Text',{
-		fieldLabel:'订单号',
-		name:'orderNo',
-		labelWidth:50,
-		allowBlank:false,
-		labelAlign:'right'
+//	var order_no=Ext.create('Ext.form.field.Text',{
+//		fieldLabel:'订单号',
+//		name:'orderNo',
+//		labelWidth:50,
+//		allowBlank:false,
+//		labelAlign:'right'
+//	});
+	
+	var order_no=Ext.create('Ext.form.field.ComboBox',{
+	        fieldLabel: '订单号',
+	        labelAlign:'right',
+            labelWidth:60,
+	        //xtype:'combobox',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'store_id',
+		    displayField: 'name',
+		    valueField: 'id',
+		    //queryParam: 'name',
+    		//queryMode: 'remote',
+    		//triggerAction: 'query',
+    		//minChars:-1,
+		    //trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
+		    //trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
+			//onTrigger1Click : function(){
+			//    var me = this;
+			//    me.setValue('');
+			//},
+	        allowBlank: false,
+	        store:Ext.create('Ext.data.Store', {
+		    	fields: ['id', 'name'],
+			    proxy:{
+			    	type:'ajax',
+			    	extraParams:{type:1,edit:true},
+			    	url:Ext.ContextPath+"/order/queryUncomplete.do",
+			    	reader:{
+			    		type:'json',
+			    		root:'root'
+			    	}
+			    }
+		   })
 	});
 	
 	var query_button=Ext.create('Ext.Button',{xtype:'button',text:'查询',handler:addEquip,width:70,iconCls:'form-search-button',margin:'0 5px 0 5px'});

@@ -1,9 +1,15 @@
 package com.mawujun.user;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -285,5 +291,33 @@ public class NavigationController {
 		return "success";
 	}
 	
+	@RequestMapping("/nav/downloadManual.do")
+	//@ResponseBody
+	public void downloadManual(HttpServletRequest request,HttpServletResponse response,String fileName) throws  IOException{
+		String contextPath=request.getSession().getServletContext().getRealPath("/");
+		//String filePath="temp"+File.separatorChar+fileName;
+		fileName="操作手册.docx";
+		String path=contextPath+File.separatorChar+fileName;
+		File file=new File(path);
+		//FileReader reader=new FileReader(file);
+		FileInputStream in=new FileInputStream(file);
+
+		response.setHeader("content-disposition","attachment; filename="+new String(fileName.getBytes("UTF-8"),"ISO8859-1"));
+		response.setContentType("application/vnd.ms-word;charset=uft-8");
+		//response.setContentType("text/plain; charset=gb2312");
+		
+		OutputStream  out = response.getOutputStream();
+		int n;
+		byte b[]=new byte[1024];
+		while((n=in.read(b))!=-1){
+			out.write(b,0,n);
+		}
+		in.close();
+		
+		out.flush();
+		out.close();
+		
+
+	}
 	
 }

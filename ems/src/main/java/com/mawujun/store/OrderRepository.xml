@@ -5,6 +5,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
 <mapper namespace="com.mawujun.store.OrderRepository">
+	<select id="queryUncompleteOrderno" resultType="string" parameterType="String">
+    	SELECT distinct a.orderNo
+	    FROM ems_order a,sys_userstore b
+		where a.store_id=b.store_id and b.user_id=#{user_id} and b.edit='Y' and a.ordernum!=a.totalnum
+    </select>
+    
     <select id="query" resultType="com.mawujun.store.OrderVO" parameterType="String">
     	SELECT a.*,b.text as subtype_name,c.text as prod_name,d.name as brand_name,d.name as supplier_name
 	    FROM ems_order a
@@ -33,12 +39,19 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		inner join ems_supplier e on a.supplier_id=e.id
 		where a0.ecode=#{ecode}  
     </select>
-	<!-- select语句的生成结束=============================================================================================== -->
+
 	
 	<select id="updateTotalNum">
     	update ems_order 
     	set totalNum=${totalNum}
     	where id=#{order_id}
     </select> 
+    
+    
+	<!-- 打印条码的时候，获取要打印的范围 -->    
+    <select id="getBarcodesRange" resultType="com.mawujun.store.BarcodeVO" parameterType="map">
+    	select a.style,b.ecode from ems_Order a,ems_Barcode b 
+    	where a.id=b.order_id and a.id=#{order_id} and b.seqnum &gt; #{startNum} and b.seqnum &lt;= #{endNum}
+    </select>
 </mapper>
 

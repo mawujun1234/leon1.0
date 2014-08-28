@@ -1,16 +1,23 @@
 package com.mawujun.store;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -70,11 +77,11 @@ public class OrderController {
 	}
 	
 
-	@RequestMapping("/order/load.do")
-	public Order load(String id) {
-		return orderService.get(id);
-	}
-	
+//	@RequestMapping("/order/load.do")
+//	public Order load(String id) {
+//		return orderService.get(id);
+//	}
+//	
 //	@RequestMapping("/order/create.do")
 //	@ResponseBody
 //	public Order create(@RequestBody Order order) {
@@ -82,36 +89,43 @@ public class OrderController {
 //		return order;
 //	}
 	
-	@RequestMapping("/order/update.do")
-	@ResponseBody
-	public  Order update(@RequestBody Order order) {
-		orderService.update(order);
-		return order;
-	}
+//	@RequestMapping("/order/update.do")
+//	@ResponseBody
+//	public  Order update(@RequestBody Order order) {
+//		orderService.update(order);
+//		return order;
+//	}
+//	
+//	@RequestMapping("/order/deleteById.do")
+//	@ResponseBody
+//	public String deleteById(String id) {
+//		orderService.deleteById(id);
+//		return id;
+//	}
+//	
+//	@RequestMapping("/order/destroy.do")
+//	@ResponseBody
+//	public Order destroy(@RequestBody Order order) {
+//		orderService.delete(order);
+//		return order;
+//	}
 	
-	@RequestMapping("/order/deleteById.do")
+	/**
+	 * 查询该用户可以编辑的仓库的所有订单
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @return
+	 */
+	@RequestMapping("/order/queryUncomplete.do")
 	@ResponseBody
-	public String deleteById(String id) {
-		orderService.deleteById(id);
-		return id;
-	}
-	
-	@RequestMapping("/order/destroy.do")
-	@ResponseBody
-	public Order destroy(@RequestBody Order order) {
-		orderService.delete(order);
-		return order;
+	public List<Map<String,String>> queryUncomplete() {	
+		
+		return orderService.queryUncompleteOrderno();
 	}
 	
 	@RequestMapping("/order/create.do")
 	@ResponseBody
-	public String export(@RequestBody Order[] orderes) throws  IOException{
-		Long count=orderService.queryCount(Cnd.count(M.Order.orderNo).andEquals(M.Order.orderNo, orderes[0].getOrderNo()));
-		if(count!=null && count>0){
-			throw new BusinessException("该订单号已经存在");
-		}
-
-		orderService.createBatch(orderes);
+	public String create(@RequestBody Order[] orderes) throws  IOException{
+		orderService.create(orderes);
 		return "success";
 	}
 	
@@ -120,12 +134,12 @@ public class OrderController {
 	public String exportBarcode(HttpServletRequest request,HttpServletResponse response,@RequestBody OrderVO[] orderVOs) throws  IOException{
 
 		
-		List<String> results=new ArrayList<String>();
+		List<BarcodeVO> results=new ArrayList<BarcodeVO>();
 		results=orderService.getBarCodeList(orderVOs);
 
 		String contextPath=request.getSession().getServletContext().getRealPath("/");
 		
-		String fileName="barcode("+orderVOs[0].getOrderNo()+").txt";
+		String fileName="barcode("+orderVOs[0].getOrderNo()+").xls";
 		String filePath="temp"+File.separatorChar+fileName;
 		String path=contextPath+filePath;
 		File file=new File(path);
@@ -136,15 +150,59 @@ public class OrderController {
 			}
 			file.createNewFile();
 		}
-		FileWriter writer = new FileWriter(file, false);
-		for(String ecode:results){
-			writer.append(ecode+"\r\n");
-		} 
-	    writer.close();
+		
+
+        HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
+        HSSFSheet hssfSheet = hssfWorkbook.createSheet("二维码");
+        for(int i=0;i<results.size();i++){
+        	BarcodeVO barcodeVO=results.get(i);
+        	
+        	HSSFRow hssfRow = hssfSheet.createRow(i);
+        	HSSFCell cell0 = hssfRow.createCell(0);
+        	cell0.setCellValue(barcodeVO.getEcode());
+        	HSSFCell cell1 = hssfRow.createCell(1);
+        	cell1.setCellValue(barcodeVO.getStyle());
+        	 
+        }
+        OutputStream out = new FileOutputStream(file);
+        hssfWorkbook.write(out);
+        out.close();
+
 
 	    //return "/"+filePath.replace(File.separatorChar, '/');
 	    return fileName;
 	}
+	
+//	@RequestMapping("/order/exportBarcode.do")
+//	@ResponseBody
+//	public String exportBarcode(HttpServletRequest request,HttpServletResponse response,@RequestBody OrderVO[] orderVOs) throws  IOException{
+//
+//		
+//		List<String> results=new ArrayList<String>();
+//		results=orderService.getBarCodeList(orderVOs);
+//
+//		String contextPath=request.getSession().getServletContext().getRealPath("/");
+//		
+//		String fileName="barcode("+orderVOs[0].getOrderNo()+").txt";
+//		String filePath="temp"+File.separatorChar+fileName;
+//		String path=contextPath+filePath;
+//		File file=new File(path);
+//		if(!file.exists()){
+//			//File temp=new File(contextPath+"temp");
+//			if (!file.getParentFile().exists()) {
+//				file.getParentFile().mkdir();
+//			}
+//			file.createNewFile();
+//		}
+//		FileWriter writer = new FileWriter(file, false);
+//		for(String ecode:results){
+//			writer.append(ecode+"\r\n");
+//		} 
+//	    writer.close();
+//
+//	    //return "/"+filePath.replace(File.separatorChar, '/');
+//	    return fileName;
+//	}
 	
 	@RequestMapping("/order/downloadBarcode.do")
 	//@ResponseBody
@@ -157,8 +215,8 @@ public class OrderController {
 		FileInputStream in=new FileInputStream(file);
 
 		response.setHeader("content-disposition","attachment; filename="+fileName);
-		//response.setContentType("application/octet-stream");
-		response.setContentType("text/plain; charset=gb2312");
+		response.setContentType("application/vnd.ms-excel;charset=uft-8");
+		//response.setContentType("text/plain; charset=gb2312");
 		
 		OutputStream  out = response.getOutputStream();
 		int n;
