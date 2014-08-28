@@ -24,7 +24,8 @@ Ext.defineModel("Ems.store.Order",{
 		{name:'supplier_name',type:'string'},
 		{name:'store_name',type:'string'},
 		{name:'printNum',type:'int'},
-		{name:'exportStatus',type:'bool'}
+		{name:'exportStatus',type:'bool'},
+		{name:'status_name',type:'string'}
 	],
 	associations:[
 	]

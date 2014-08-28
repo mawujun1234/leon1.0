@@ -5,10 +5,10 @@ package com.mawujun.mobile.task;
  * @author mawujun email:16064988@qq.com qq:16064988
  *
  */
-public enum TaskStatusEnum {
+public enum TaskStatus {
 	newTask("新任务"),read("已阅"),handling("处理中"),submited("已提交"),complete("完成");
 	private String name;
-	TaskStatusEnum(String name){
+	TaskStatus(String name){
 		this.name=name;
 	}
 }

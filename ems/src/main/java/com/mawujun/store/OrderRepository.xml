@@ -5,6 +5,26 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
 <mapper namespace="com.mawujun.store.OrderRepository">
+
+	<select id="queryMain" resultType="com.mawujun.store.OrderVO" parameterType="map">
+    	select a.* from ems_Order a
+    	<where>
+    		and a.store_id in (select store_id from sys_userstore c where c.user_id=#{user_id} and c.look='Y')
+    		<if test="store_id!=null">
+    			and a.store_id=#{store_id}
+    		</if>
+    		<if test="date_start!=null">
+    			and a.orderDate &gt;=#{date_start}
+    		</if>
+    		<if test="date_end!=null">
+    			and a.orderDate &lt;=#{date_end}
+    		</if>
+    		<if test="orderNo!=null">
+    			and a.orderNo like #{orderNo}
+    		</if>
+    	</where>
+    </select>
+    
 	<select id="queryUncompleteOrderno" resultType="string" parameterType="String">
     	SELECT distinct a.orderNo
 	    FROM ems_order a,sys_userstore b

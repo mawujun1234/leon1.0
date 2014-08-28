@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +26,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
+import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.M;
+import com.mawujun.utils.page.Page;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
  * @version 1.0
@@ -68,7 +71,35 @@ public class OrderController {
 //		Page page=Page.getInstance(start,limit);//.addParam(M.Order.sampleName, "%"+sampleName+"%");
 //		return orderService.queryPage(page);
 //	}
+	
+	/**
+	 * 根据订单号，查询所有的订单明细
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param orderNo
+	 * @return
+	 */
+	@RequestMapping("/order/queryMain.do")
+	@ResponseBody
+	public Page queryMain(Integer start,Integer limit,String store_id,Date date_start,Date date_end,String orderNo) {
+		Page page=Page.getInstance(start,limit);
+		page.addParam(M.Order.store_id, store_id);
+		if(orderNo!=null && !"".equals(orderNo.trim())){
+			page.addParam(M.Order.orderNo, "%"+orderNo+"%");
+		}
+		
+		page.addParam("date_start", date_start);
+		page.addParam("date_end", date_end);
+		page.addParam("user_id", ShiroUtils.getAuthenticationInfo().getId());
+		Page orderes=orderService.queryMain(page);
+		return orderes;
+	}
 
+	/**
+	 * 根据订单号，查询所有的订单明细
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param orderNo
+	 * @return
+	 */
 	@RequestMapping("/order/query.do")
 	@ResponseBody
 	public List<OrderVO> query(String orderNo) {	

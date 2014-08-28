@@ -13,6 +13,22 @@ Ext.define('Ems.task.TaskSendGrid',{
 			}
 		}
 	},
+	pageSize:50,
+	selModel:new Ext.selection.CheckboxModel({
+		//checkOnly:true,
+		showHeaderCheckbox:true//防止点全选，去选择
+//		renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+//			alert(record.get("status")+"测试在没有复选框的时候，getSelect会不会选择");
+//			if(record.get("status")!='installing' && !record.get("status")=='cancel' ){
+//				var baseCSSPrefix = Ext.baseCSSPrefix;
+//		        metaData.tdCls = baseCSSPrefix + 'grid-cell-special ' + baseCSSPrefix + 'grid-cell-row-checker';
+//		        return '<div class="' + baseCSSPrefix + 'grid-row-checker">&#160;</div>';
+//			} else {
+//				return "";
+//			}
+//	        
+//	    }
+	}),
 	initComponent: function () {
       var me = this;
       me.columns=[
@@ -44,7 +60,7 @@ Ext.define('Ems.task.TaskSendGrid',{
       
 	  me.store=Ext.create('Ext.data.Store',{
 			autoSync:false,
-			pageSize:50,
+			pageSize:me.pageSize,
 			model: 'Ems.baseinfo.Pole',
 			autoLoad:true,
 			proxy:{
@@ -193,13 +209,110 @@ Ext.define('Ems.task.TaskSendGrid',{
 				me.getStore().load({params:{
 					customer_id:customer_combox.getValue(),
 					pole_name:pole_textfield.getValue(),
-					area_id:area_combox.getId(),
+					area_id:area_combox.getValue(),
 					workunit_id:workunit_combox.getValue()
 				}});
 			}
 		});
 		
-		me.tbar=[customer_combox,area_combox,workunit_combox,pole_textfield,query_button];
+		var install_button=Ext.create('Ext.button.Button',{
+			text:'发送安装任务',
+			margin:'0 0 0 5',
+			icon:'../images/install.png',
+			handler:function(){
+				var records=me.getSelectionModel().getSelection();
+				if(!records || records.length==0){
+					alert("请先选择杆位");
+					return;
+				}
+				
+				if(records.length==1){
+					var values=records[0].getData();
+					
+					values.pole_name=values.name;
+					values.pole_address=values.province+values.city+values.area+values.address;
+					values.type="newInstall";
+					var record=Ext.create('Ems.task.Task',values);
+					
+					var form=Ext.create('Ems.task.TaskForm',{});
+					form.loadRecord(record);
+					
+					var win=Ext.create('Ext.Window',{
+		        		layout:'fit',
+		        		width:450,
+		        		title:'发送安装任务',
+		        		height:420,
+		        		items:[form],
+		        		modal:true
+		        	});
+		        	win.show();
+					
+				} else {
+					Ext.Msg.confirm("提醒","只会为对'未安装'的杆位发送安装任务,选'是'进行发送",function(btn){
+						if(btn=='yes'){
+						
+						}
+					});
+				}
+				
+			}
+		});
+		
+		var repair_button=Ext.create('Ext.button.Button',{
+			text:'发送维修/维护任务',
+			margin:'0 0 0 5',
+			icon:'../images/repair.png',
+			handler:function(){
+				if(!records || records.length==0){
+					alert("请先选择杆位");
+					return;
+				}
+				if(records.length==1){
+					Ems.task.TaskForm
+				} else {
+					Ext.Msg.confirm("提醒","只会为对'使用中','有损坏'的杆位发送维修/维护任务,选'是'进行发送",function(btn){
+						if(btn=='yes'){
+						
+						}
+					});
+				}
+				
+			}
+		});
+		
+		var patrol_button=Ext.create('Ext.button.Button',{
+			text:'发送巡检任务',
+			margin:'0 0 0 5',
+			icon:'../images/patrols.png',
+			handler:function(){
+				if(!records || records.length==0){
+					alert("请先选择杆位");
+					return;
+				}
+				if(records.length==1){
+					Ems.task.TaskForm
+				} else {
+					Ext.Msg.confirm("提醒","只会为对'使用中','有损坏'的杆位发送巡检任务,选'是'进行发送",function(btn){
+						if(btn=='yes'){
+						
+						}
+					});
+				}
+				
+			}
+		});
+		
+		me.tbar={
+			xtype: 'container',
+			layout: 'anchor',
+			defaults: {anchor: '0'},
+			defaultType: 'toolbar',
+			items: [{
+				items: [customer_combox,area_combox,workunit_combox,pole_textfield,query_button] // toolbar 1
+			}, {
+				items: [install_button,repair_button,patrol_button] // toolbar 2
+			}]
+		  }	
 		
 	}
 });

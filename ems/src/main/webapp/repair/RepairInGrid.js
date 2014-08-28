@@ -335,7 +335,7 @@ Ext.define('Ems.repair.RepairInGrid',{
 		}, {
 			items: [ecode_textfield,str_in_button] // toolbar 2
 		}]
-	}	
+	  }	
 
        
 	

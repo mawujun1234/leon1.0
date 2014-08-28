@@ -13,13 +13,17 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.mawujun.adjust.AdjustVO;
 import com.mawujun.baseinfo.EquipmentVO;
+import com.mawujun.baseinfo.Store;
+import com.mawujun.baseinfo.StoreRepository;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.M;
 import com.mawujun.utils.StringUtils;
+import com.mawujun.utils.page.Page;
 
 
 /**
@@ -37,12 +41,29 @@ public class OrderService extends AbstractService<Order, String>{
 	private Barcode_MaxNumRepository barcode_MaxNumRepository;
 	@Autowired
 	private BarcodeRepository barcodeRepository;
+	@Autowired
+	private StoreRepository storeRepository;
 	
 	@Override
 	public OrderRepository getRepository() {
 		return orderRepository;
 	}
 	
+	public Page queryMain(Page page) {
+		Page results=orderRepository.queryMain(page);
+		List<Store> stores=storeRepository.queryAll();
+		
+		List<OrderVO> list=results.getResult();
+		for(OrderVO orderVO:list){
+			for(Store store:stores){
+				if(store.getId().equals(orderVO.getStore_id())){
+					orderVO.setStore_name(store.getName());
+				}
+			}
+		}
+		
+		return results;
+	}
 	public List<OrderVO> query(String orderNo) {	
 		return orderRepository.query(orderNo);
 	}

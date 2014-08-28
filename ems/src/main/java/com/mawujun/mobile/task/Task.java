@@ -20,17 +20,25 @@ public class Task implements IdEntity<String> {
 	@Column(length=500)
 	private String memo;//任务描述
 	@Enumerated(EnumType.STRING)
-	private TaskTypeEnum type;//任务类型
+	private TaskType type;//任务类型
 	@Enumerated(EnumType.STRING)
 	@Column(length=15)
-	private TaskStatusEnum status;//任务状态
+	private TaskStatus status;//任务状态
 	
 	@Column(length=36)
 	private String pole_id;
+	@Column(length=50)
+	private String pole_name;
+	@Column(length=100)
+	private String pole_address;
 	@Column(length=36)
 	private String workunit_id;
+	@Column(length=50)
+	private String workunit_name;
 	@Column(length=36)
 	private String customer_id;
+	@Column(length=50)
+	private String customer_name;
 	
 	
 	private Date createDate;//创建时间
@@ -54,16 +62,16 @@ public class Task implements IdEntity<String> {
 	public void setMemo(String memo) {
 		this.memo = memo;
 	}
-	public TaskTypeEnum getType() {
+	public TaskType getType() {
 		return type;
 	}
-	public void setType(TaskTypeEnum type) {
+	public void setType(TaskType type) {
 		this.type = type;
 	}
-	public TaskStatusEnum getStatus() {
+	public TaskStatus getStatus() {
 		return status;
 	}
-	public void setStatus(TaskStatusEnum status) {
+	public void setStatus(TaskStatus status) {
 		this.status = status;
 	}
 	public String getPole_id() {
@@ -125,6 +133,30 @@ public class Task implements IdEntity<String> {
 	}
 	public void setHitchReason(String hitchReason) {
 		this.hitchReason = hitchReason;
+	}
+	public String getPole_name() {
+		return pole_name;
+	}
+	public void setPole_name(String pole_name) {
+		this.pole_name = pole_name;
+	}
+	public String getPole_address() {
+		return pole_address;
+	}
+	public void setPole_address(String pole_address) {
+		this.pole_address = pole_address;
+	}
+	public String getWorkunit_name() {
+		return workunit_name;
+	}
+	public void setWorkunit_name(String workunit_name) {
+		this.workunit_name = workunit_name;
+	}
+	public String getCustomer_name() {
+		return customer_name;
+	}
+	public void setCustomer_name(String customer_name) {
+		this.customer_name = customer_name;
 	}
 	
 	

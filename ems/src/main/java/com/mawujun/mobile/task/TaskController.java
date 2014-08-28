@@ -62,19 +62,7 @@ public class TaskController {
 		Page page=Page.getInstance(start,limit);//.addParam(M.Task.sampleName, "%"+sampleName+"%");
 		return taskService.queryPage(page);
 	}
-
-//	@RequestMapping("/task/query.do")
-//	@ResponseBody
-//	public List<Task> query() {	
-//		List<Task> taskes=taskService.queryAll();
-//		return taskes;
-//	}
 	
-
-	@RequestMapping("/task/load.do")
-	public Task load(String id) {
-		return taskService.get(id);
-	}
 	
 	@RequestMapping("/task/create.do")
 	@ResponseBody
@@ -83,26 +71,47 @@ public class TaskController {
 		return task;
 	}
 	
-	@RequestMapping("/task/update.do")
-	@ResponseBody
-	public  Task update(@RequestBody Task task) {
-		taskService.update(task);
-		return task;
-	}
-	
-	@RequestMapping("/task/deleteById.do")
-	@ResponseBody
-	public String deleteById(String id) {
-		taskService.deleteById(id);
-		return id;
-	}
-	
-	@RequestMapping("/task/destroy.do")
-	@ResponseBody
-	public Task destroy(@RequestBody Task task) {
-		taskService.delete(task);
-		return task;
-	}
+
+//	@RequestMapping("/task/query.do")
+//	@ResponseBody
+//	public List<Task> query() {	
+//		List<Task> taskes=taskService.queryAll();
+//		return taskes;
+//	}
+//	
+//
+//	@RequestMapping("/task/load.do")
+//	public Task load(String id) {
+//		return taskService.get(id);
+//	}
+//	
+//	@RequestMapping("/task/create.do")
+//	@ResponseBody
+//	public Task create(@RequestBody Task task) {
+//		taskService.create(task);
+//		return task;
+//	}
+//	
+//	@RequestMapping("/task/update.do")
+//	@ResponseBody
+//	public  Task update(@RequestBody Task task) {
+//		taskService.update(task);
+//		return task;
+//	}
+//	
+//	@RequestMapping("/task/deleteById.do")
+//	@ResponseBody
+//	public String deleteById(String id) {
+//		taskService.deleteById(id);
+//		return id;
+//	}
+//	
+//	@RequestMapping("/task/destroy.do")
+//	@ResponseBody
+//	public Task destroy(@RequestBody Task task) {
+//		taskService.delete(task);
+//		return task;
+//	}
 	
 	
 }

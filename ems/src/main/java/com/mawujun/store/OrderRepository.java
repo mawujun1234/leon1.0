@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.repository1.IRepository;
 import com.mawujun.store.Order;
+import com.mawujun.utils.page.Page;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
  * @version 1.0
@@ -17,6 +18,7 @@ import com.mawujun.store.Order;
 @Repository
 public interface OrderRepository extends IRepository<Order, String>{
 
+	public Page queryMain(Page page);
 	public List<String> queryUncompleteOrderno(@Param("user_id")String user_id);
 	
 	public List<OrderVO> query(@Param("orderNo")String orderNo);

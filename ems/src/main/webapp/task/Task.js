@@ -15,7 +15,12 @@ Ext.defineModel("Ems.task.Task",{
 		{name:'status',type:'auto'},
 		{name:'submitDate',type:'date', dateFormat: 'Y-m-d'},
 		{name:'type',type:'auto'},
-		{name:'workunit_id',type:'string'}
+		{name:'workunit_id',type:'string'},
+		
+		{name:'pole_address',type:'string'},
+		{name:'customer_name',type:'string'},
+		{name:'pole_name',type:'string'},
+		{name:'workunit_name',type:'string'}
 	],
 	associations:[
 	]
