@@ -11,4 +11,7 @@ public enum TaskStatus {
 	TaskStatus(String name){
 		this.name=name;
 	}
+	public String getName() {
+		return name;
+	}
 }

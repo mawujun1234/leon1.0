@@ -99,6 +99,36 @@ function closeBg() {
     $("#fullbg").hide();
 }
 
+//---获取任务信息
+$.ajax({   
+	url : $.ServerPath+"/task/mobile/query.do",  
+	data:{start:0,limit:20},  
+	success : function(data){
+		if(data.success==true){
+			var root=data.root;
+			var html="";
+			for(var i=0;i<root.length;i++){
+				html+='<li>'+
+				'<a href="install.html"  data-ajax="false" data-transition="slide" >'+
+					'<img src="img/install.png">'+
+					'<h2>新安装</h2>'+
+					'<p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>'+
+					'<p class="ui-li-aside"><strong>8.21 6:24</strong></p>'+
+					'<p class="ui-li-count" style="color:#FFF;background-color:#F00;">new</p>'+
+				'</a>'
+			}
+			$("#taskes_list").html(html);
+			$('#taskes_list').listview('refresh');
+		}else{
+			//$("#errorMsg").html(data.reasons.reason);
+		}
+			$.hideLoader();  
+		},
+		error:function(jqxhq){  
+			$("#errorMsg").html('网络异常或服务停止了');  
+			$.hideLoader(); 
+		}  
+});   
 </script>
 </head> 
 <body> 
@@ -143,16 +173,18 @@ function closeBg() {
         </div>
     </div>
 	<div role="main" class="ui-content">
-		<ul data-role="listview"  data-filter="true" data-filter-placeholder="请输入...">
-            <li><a href="install.html"  data-ajax="false" data-transition="slide" >
-                <img src="img/install.png">
+		<ul data-role="listview" id="taskes_list">
+            <li>
+            <a href="install.html"  data-ajax="false" data-transition="slide" >
+                <img src="img/install.png" >
                 <h2>新安装</h2>
                 <p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
                 <p class="ui-li-aside"><strong>8.21 6:24</strong></p>
                 <p class="ui-li-count" style="color:#FFF;background-color:#F00;">new</p>
             </a>
             </li>
-            <li><a href="repair.html" data-ajax="false" data-transition="flip">
+            <li>
+            <a href="repair.html" data-ajax="false" data-transition="flip">
                 <img src="img/repair.png">
                 <h2>维修</h2>
                 <p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
@@ -160,7 +192,8 @@ function closeBg() {
                 <p class="ui-li-count" style="color:#FFF;background-color:#F00;">new</p>
             </a>
             </li>
-            <li><a href="patrols.html" data-ajax="false" data-transition="fade">
+            <li>
+            <a href="patrols.html" data-ajax="false" data-transition="fade">
                 <img src="img/patrols.png">
                 <h2>巡检</h2>
                 <p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>

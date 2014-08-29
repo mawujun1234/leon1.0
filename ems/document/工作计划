@@ -2,9 +2,25 @@
 
 
 
-
-
-
+左边菜单能不能做成缓存，并且通用的形式，然后加载过来，就是做成通用的形式，不要每个页面都复制一次的那种
+下拉刷新 
+	http://lab.cubiq.org/iscroll5/demos/infinite/ 这个就是无限下拉的例子，问题在于如何更新内容。里面是更新cache
+	http://www.gafish.net/api/iScroll.html#caseIscroll
+	http://iscrolljs.com/
+	
+	http://iscrolljs.com/#refresh 当有任务来的时候自动刷新功能，相关
+	function updateContent (el, data) {
+		el.innerHTML = data;//在这个方法里面进行内容的填充修改，组装成html的形式
+	}
+	dataset: requestData,//这个就是后台返回的数组数据
+	
+	
+jqueyr mobile的样式修改，不要用灰黑色的
+点击新建任务的时候，使用data-ref=“dialog”并且隐藏后面的内容的效果，累世这里http://www.w3school.com.cn/jquerymobile/
+新建安装任务
+新建维修/维护任务
+新建巡检任务
+任务取消
 有时间做一个清表的sql，清除所有的表中没有必要的数据，星期7的时候做
 
 

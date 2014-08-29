@@ -1,11 +1,16 @@
 package com.mawujun.mobile.task;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 
+
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.mawujun.service.AbstractService;
 
@@ -31,8 +36,19 @@ public class TaskService extends AbstractService<Task, String>{
 	public TaskRepository getRepository() {
 		return taskRepository;
 	}
+	
+	SimpleDateFormat ymdHmsDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
 
 	public Page queryPoles(Page page) {
 		return taskRepository.queryPoles(page);
+	}
+	
+	public String create(Task task) {
+		Date createDate=new Date();
+		task.setCreateDate(createDate);
+		task.setStatus(TaskStatus.newTask);
+		task.setId(ymdHmsDateFormat.format(createDate)+"-001");
+		super.create(task);
+		return task.getId();
 	}
 }

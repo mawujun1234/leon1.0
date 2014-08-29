@@ -19,12 +19,12 @@
 	<div data-role="header" data-position="fixed">
     	<a href="#left-menu" data-icon="gear" data-iconpos="notext"></a> 
         <div id="left-menu" data-role="panel" data-position="left"  data-display="overlay" data-position-fixed="true">
-       		<ul data-role="listview" >
+       		<ul data-role="listview" id="left-menu-listview">
                 <li data-icon="false" id="left-menu-first-li">
-                    <!----><img src="img/workunit.gif">
+                    <!--<img src="img/workunit.gif">
                 	<h2>账号</h2>
                 	<p>XXX工作组</p>
-                   <p>登陆时间</p>
+                   <p>登陆时间</p>-->
                 </li>
                 <li>
                 	 
@@ -36,7 +36,7 @@
                 </li>
             </ul>
         </div>
-        <div data-role="popup" id="popup_updatePassword" class="ui-corner-all">
+        <div data-role="popup" id="popup_updatePassword" class="ui-corner-all" data-overlay-theme="b">
         	<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
             <form id="form_UpdatePassword" style="padding:10px 20px;">
             	<h3>请输入新密码:</h3>
@@ -56,6 +56,7 @@
 					var user=$.parseJSON(sessionStorage.getItem("user"));
 					$( "#left-menu" ).on( "panelbeforeopen", function( event, ui ) {
 						$("#left-menu-first-li").html('<img src="img/workunit.gif"><h2>'+user.username+'</h2><p>'+user.name+'</p><p>'+user.loginDate+'</p>');
+						$("#left-menu-listview").listview('refresh');
 					} );
 					
 					$("#form_UpdatePassword_submit").bind("click", function(event) {

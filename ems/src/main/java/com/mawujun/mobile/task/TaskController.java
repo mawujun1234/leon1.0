@@ -47,7 +47,31 @@ public class TaskController {
 		}
 		return taskService.queryPoles(page);
 	}
-
+//
+//	/**
+//	 * 这是基于分页的几种写法,的例子，请按自己的需求修改
+//	 * @author mawujun email:16064988@163.com qq:16064988
+//	 * @param start
+//	 * @param limit
+//	 * @param userName
+//	 * @return
+//	 */
+//	@RequestMapping("/task/query.do")
+//	@ResponseBody
+//	public Page query(Integer start,Integer limit,String sampleName){
+//		Page page=Page.getInstance(start,limit);//.addParam(M.Task.sampleName, "%"+sampleName+"%");
+//		return taskService.queryPage(page);
+//	}
+	
+	
+	@RequestMapping("/task/create.do")
+	@ResponseBody
+	public Task create(@RequestBody Task task) {
+		taskService.create(task);
+		return task;
+	}
+	
+	
 	/**
 	 * 这是基于分页的几种写法,的例子，请按自己的需求修改
 	 * @author mawujun email:16064988@163.com qq:16064988
@@ -56,19 +80,11 @@ public class TaskController {
 	 * @param userName
 	 * @return
 	 */
-	@RequestMapping("/task/query.do")
+	@RequestMapping("/task/mobile/query.do")
 	@ResponseBody
-	public Page query(Integer start,Integer limit,String sampleName){
+	public Page mobile_query(Integer start,Integer limit,String sampleName){
 		Page page=Page.getInstance(start,limit);//.addParam(M.Task.sampleName, "%"+sampleName+"%");
 		return taskService.queryPage(page);
-	}
-	
-	
-	@RequestMapping("/task/create.do")
-	@ResponseBody
-	public Task create(@RequestBody Task task) {
-		taskService.create(task);
-		return task;
 	}
 	
 

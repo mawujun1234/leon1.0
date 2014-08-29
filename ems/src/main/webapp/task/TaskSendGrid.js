@@ -1,3 +1,4 @@
+Ext.require('Ems.task.TaskForm');
 Ext.define('Ems.task.TaskSendGrid',{
 	extend:'Ext.grid.Panel',
 	requires: [
@@ -15,7 +16,7 @@ Ext.define('Ems.task.TaskSendGrid',{
 	},
 	pageSize:50,
 	selModel:new Ext.selection.CheckboxModel({
-		//checkOnly:true,
+		checkOnly:true,
 		showHeaderCheckbox:true//防止点全选，去选择
 //		renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
 //			alert(record.get("status")+"测试在没有复选框的时候，getSelect会不会选择");
@@ -47,7 +48,16 @@ Ext.define('Ems.task.TaskSendGrid',{
 		   }
 		   return record.get("status_name");
 		 }},
-		{dataIndex:'name',text:'杆位名称'},
+		{dataIndex:'name',text:'杆位名称',renderer:function(value,metadata ,record){
+			if(record.get("task_type")=="newInstall"){
+				 return "<img src='../images/install.png' />&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);'>"+value+"</a>";
+			} else if(record.get("task_type")=="repair"){
+				 return "<img src='../images/repair.png' />&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);'>"+value+"</a>";
+			} else if(record.get("task_type")=="patrol"){
+				 return "<img src='../images/patrols.png' />&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);'>"+value+"</a>";
+			}
+			return value;
+		}},
 		{dataIndex:'province',text:'地址',flex:1,renderer:function(value,metadata ,record){
       		var aaa=value+record.get("city")+record.get("area")+record.get("address");
       		metadata.tdAttr = "data-qtip='" + aaa+ "'";
@@ -79,7 +89,13 @@ Ext.define('Ems.task.TaskSendGrid',{
 	        dock: 'bottom',
 	        displayInfo: true
 	  }];
-       
+      
+	  me.on('cellclick',function(view, td, cellIndex, record, tr, rowIndex, e, eOpts){
+	  	//alert(cellIndex);
+	  	if(cellIndex==2){
+	  		me.showTaskForm(record,record.get("task_type"))
+	  	}
+	  });
 	  me.initToolbar();
       me.callParent();
 	},
@@ -227,25 +243,11 @@ Ext.define('Ems.task.TaskSendGrid',{
 				}
 				
 				if(records.length==1){
-					var values=records[0].getData();
-					
-					values.pole_name=values.name;
-					values.pole_address=values.province+values.city+values.area+values.address;
-					values.type="newInstall";
-					var record=Ext.create('Ems.task.Task',values);
-					
-					var form=Ext.create('Ems.task.TaskForm',{});
-					form.loadRecord(record);
-					
-					var win=Ext.create('Ext.Window',{
-		        		layout:'fit',
-		        		width:450,
-		        		title:'发送安装任务',
-		        		height:420,
-		        		items:[form],
-		        		modal:true
-		        	});
-		        	win.show();
+					if(records[0].get("status")!="uninstall"){
+						alert("只有'未安装'状态的杆位，才能发送新安装任务!");
+						return;
+					}
+					me.showTaskForm(records[0],"newInstall");
 					
 				} else {
 					Ext.Msg.confirm("提醒","只会为对'未安装'的杆位发送安装任务,选'是'进行发送",function(btn){
@@ -263,12 +265,18 @@ Ext.define('Ems.task.TaskSendGrid',{
 			margin:'0 0 0 5',
 			icon:'../images/repair.png',
 			handler:function(){
+				var records=me.getSelectionModel().getSelection();
 				if(!records || records.length==0){
 					alert("请先选择杆位");
 					return;
 				}
 				if(records.length==1){
-					Ems.task.TaskForm
+					var pole_status=records[0].get("status");
+					if(pole_status!="using" && pole_status!="hitch"){
+						alert("只有'使用中','有损坏'状态的杆位，才能发送维修/维护任务!");
+						return;
+					}
+					me.showTaskForm(records[0],"repair");
 				} else {
 					Ext.Msg.confirm("提醒","只会为对'使用中','有损坏'的杆位发送维修/维护任务,选'是'进行发送",function(btn){
 						if(btn=='yes'){
@@ -285,12 +293,18 @@ Ext.define('Ems.task.TaskSendGrid',{
 			margin:'0 0 0 5',
 			icon:'../images/patrols.png',
 			handler:function(){
+				var records=me.getSelectionModel().getSelection();
 				if(!records || records.length==0){
 					alert("请先选择杆位");
 					return;
 				}
 				if(records.length==1){
-					Ems.task.TaskForm
+					var pole_status=records[0].get("status");
+					if(pole_status!="using" && pole_status!="hitch"){
+						alert("只有'使用中','有损坏'状态的杆位，才能发送巡任务!");
+						return;
+					}
+					me.showTaskForm(records[0],"patrol");
 				} else {
 					Ext.Msg.confirm("提醒","只会为对'使用中','有损坏'的杆位发送巡检任务,选'是'进行发送",function(btn){
 						if(btn=='yes'){
@@ -314,5 +328,53 @@ Ext.define('Ems.task.TaskSendGrid',{
 			}]
 		  }	
 		
+	},
+	showTaskForm:function(pole,task_type){
+		var pole_values=pole.getData();
+	
+					var values={};
+					values.pole_id=pole_values.id
+					values.pole_name=pole_values.name;
+					values.pole_address=pole_values.province+pole_values.city+pole_values.area+pole_values.address;
+					
+					values.customer_id=pole_values.customer_id;
+					values.customer_name=pole_values.customer_name;
+					values.workunit_id=pole_values.workunit_id;
+					values.workunit_name=pole_values.workunit_name;
+					values.type=task_type;
+					var title="发送任务";
+					//如果存在，表明该杆位已经存在任务关联了，所以直接设置这几个值
+					var showSendButton=true;
+					if(pole.get('task_status')){
+						values.status=pole.get('task_status');
+						values.status_name=pole.get('task_status_name');
+						values.memo=pole.get('task_memo');
+						showSendButton=false;//标识我现在只是查看这个任务的状态
+						title="查看任务详情";
+					}
+					var record=Ext.create('Ems.task.Task',values);
+					var form=Ext.create('Ems.task.TaskForm',{
+						url:Ext.ContextPath+'/task/create.do',
+						showSendButton:showSendButton,
+						listeners:{
+							sended:function(){
+								win.close();
+							}
+						}
+					});
+					//var record=me.showTaskForm(records[0]);
+					//record.set("type","newInstall");
+					form.loadRecord(record);
+					
+					var win=Ext.create('Ext.Window',{
+		        		layout:'fit',
+		        		width:450,
+		        		title:title,
+		        		height:420,
+		        		items:[form],
+		        		modal:true
+		        	});
+		        	win.show();
+		return record;
 	}
 });

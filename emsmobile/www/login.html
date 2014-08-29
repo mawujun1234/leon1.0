@@ -70,14 +70,14 @@ $(function() {
 							reload    : true
 						});
 					}else{
-						$("#errorMsg").html(data.reasons.reason);
+						//$("#errorMsg").html(data.reasons.reason);
+						if(data.reasons.code=="noLogin"){
+							location.href="login.html";
+							return;
+						}
 					}
 					$.hideLoader();  
-				},
-				error:function(jqxhq){  
-					$("#errorMsg").html('网络异常或服务停止了');  
-					$.hideLoader(); 
-				}  
+				}
 			});   
 		} 
 	}); 

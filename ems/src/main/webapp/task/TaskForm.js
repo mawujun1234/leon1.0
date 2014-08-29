@@ -86,6 +86,14 @@ Ext.define('Ems.task.TaskForm',{
 	        xtype:'hidden',
 	        allowBlank: false
 	    },
+	    {
+	        fieldLabel: '状态',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'status_name',
+	        readOnly:true,
+	        xtype:me.showSendButton?'hidden':'textfield',
+	        allowBlank: true
+	    },
 		{
 	        fieldLabel: '任务描述',
 	        afterLabelTextTpl: Ext.required,
@@ -167,19 +175,23 @@ Ext.define('Ems.task.TaskForm',{
             text: '发送',
             iconCls:'form-save-button',
             //formBind: true,当设置这个值得时候，当表单里面有内容后，就自动会变成可执行
-            hidden :false,
+            hidden :!me.showSendButton,
 
             handler: function(btn) {
             	var form=this.up('form');
                 if(!form.getForm().isValid()) {
                 	return;
                 }
+                form.getEl().mask("正在执行...");
                 form.getForm().updateRecord();
 				form.getRecord().save({
 					success: function(record, operation) {
 
-						
-						me.fireEvent("sended");
+						form.getEl().unmask();
+						me.fireEvent("sended",form);
+					},
+					failure:function(){
+						form.getEl().unmask();
 					}
 				});
             }

@@ -15,8 +15,8 @@ import com.mawujun.repository.idEntity.IdEntity;
 @Table(name="ems_task")
 public class Task implements IdEntity<String> {
 	@Id
-	@Column(length=15)
-	private String id;//年月日+4位流水号
+	@Column(length=20)
+	private String id;//yyyyMMddHHmmss+3位流水号
 	@Column(length=500)
 	private String memo;//任务描述
 	@Enumerated(EnumType.STRING)
