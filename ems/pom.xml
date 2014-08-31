@@ -49,10 +49,9 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>2.4</version>
 				<configuration>
 	
-					<warSourceExcludes>www/**/*.*,**/*.js,**/*.css</warSourceExcludes>					
+					<warSourceExcludes>www/**/*.*,**/*.js,**/*.css</warSourceExcludes>				
 				</configuration>
 			</plugin>
 			
@@ -81,8 +80,8 @@
 	                <excludes>  
 	                    <exclude>**/*.min.js</exclude>  
 	                    <exclude>**/*-min.js</exclude>  
-	                    <exclude>ext-4.2.1/**/*.js</exclude>  
-	                    <exclude>ext-4.2.1/**/*.css</exclude>  
+	                    <!-- <exclude>ext-4.2.1/**/*.js</exclude>  
+	                    <exclude>ext-4.2.1/**/*.css</exclude>   -->
 	                    <exclude>www/**/*.*</exclude>  
 	                </excludes>  
 	                <encoding>utf8</encoding>  
