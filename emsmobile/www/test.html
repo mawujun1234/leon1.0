@@ -1,0 +1,129 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<meta charset="utf-8">
+<title>消息</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="jquery.mobile/jquery.mobile-1.4.3.min.css" rel="stylesheet" type="text/css"/>
+<script src="jquery.mobile/jquery-2.1.1.min.js" type="text/javascript"></script>
+<script src="jquery.mobile/jquery.mobile-1.4.3.min.js" type="text/javascript"></script>
+<style type="text/css">
+
+</style>
+
+</head> 
+<body> 
+
+<div data-role="page" id="page">
+	<div data-role="header" data-position="fixed">
+    	<a href="#left-menu" data-rel="popup" data-transition="slidedown"  data-icon="gear" data-iconpos="notext"></a> 
+        <div id="left-menu" data-role="popup"  data-theme="a"  data-tolerance="0,0"  >
+       		<ul data-role="listview" id="left-menu-listview" >
+                <li data-icon="false" id="left-menu-first-li">
+                    <img src="img/workunit.gif">
+                	<h2>账号</h2>
+                	<p>XXX工作组</p>
+                   <p>登陆时间</p>
+                </li>
+                <li>
+                	 
+                </li>
+                <li>
+                <a href="#popup_updatePassword" class="ui-icon-edit" data-rel="popup" data-position-to="window" data-transition="pop">
+                	修改密码
+                </a>    
+                </li>
+            </ul>
+        </div>
+
+        <div data-role="popup" id="popup_updatePassword" class="ui-corner-all" data-overlay-theme="b">
+        	<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+            <form id="form_UpdatePassword" style="padding:10px 20px;">
+            	<h3>请输入新密码:</h3>
+                <input type="password" name="password" id="password"  placeholder="新密码" data-theme="a" class="required">
+                <input type="password" name="password_repeat" id="password_repeat"  placeholder="再次输入" data-theme="a" class="required">
+                <div id="form_UpdatePassword_errorMsg" style="color:red;height:36px;font-weight:bold;">
+            
+            	</div>
+                <button type="submit" id="form_UpdatePassword_submit" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">确定</button>
+            </form>
+            <script type="text/javascript">
+				$(function() {
+					//var user=$.parseJSON(sessionStorage.getItem("user"));
+					$( "#left-menu" ).on( "panelbeforeopen", function( event, ui ) {
+						//$("#left-menu-first-li").html('<img src="img/workunit.gif"><h2>'+user.username+'</h2><p>'+user.name+'</p><p>'+user.loginDate+'</p>');
+						//$("#left-menu-listview").listview('refresh');
+					} );
+					
+					$("#form_UpdatePassword_submit").bind("click", function(event) {
+						event.preventDefault();
+						var values=$("#form_UpdatePassword").serializeJson();
+						//console.dir(values);
+						if(!values.password || !values.password_repeat){
+							$("#form_UpdatePassword_errorMsg").html("请输入新密码!");
+							return;
+						} else if(values.password!=values.password_repeat){
+							$("#form_UpdatePassword_errorMsg").html("两次输入的密码不一致!");
+							return;
+						}
+						
+						$.showLoader("正在处理....");
+						//$( "#popup_updatePassword" ).popup( "disable");
+						$.ajax({   
+							url : $.ServerPath+"/mobile/updatePassword.do",  
+							data:values,  
+							success : function(data){  
+								$.hideLoader(); 
+								if(data.success==true){
+									$( "#popup_updatePassword" ).popup( "close");
+								 }else{
+									if(data.reasons.code=="noLogin"){
+										location.href="login.html";
+										return;
+									} 
+									$("#errorMsg").html(data.reasons.reason);
+								 }
+								  
+							}	
+						});   
+					});
+				})
+			</script>
+        </div><!-- #updatePassword-->
+        
+        <script type="application/javascript">
+			$('#left-menu').on('popupbeforeposition',function(){
+				var h=$(window).height();
+				$('#left-menu').css("height",h);
+			})
+		</script>
+        <h1>消息提醒</h1>
+	</div>
+    <script type="application/javascript">
+	$(document).ready(function(e) {
+        $("#aaaaaaaa").on("tap",function(event){
+			console.dir(event);
+		});
+    });
+	</script>
+	<div data-role="content" id="aaaaaaaa">
+    	
+	</div>
+    
+    <div data-role="footer" id="footernav"  data-id="footernav" data-position="fixed" data-tap-toggle="false">
+		<div data-role="navbar">  
+            <ul>  
+                <li><a href="messages.html"  data-icon="mail" data-ajax="true" data-transition="slide" class="ui-btn-active ui-state-persist">消息提醒</a></li>  
+                <li><a href="taskes.html"  data-icon="bullets" data-ajax="true" data-transition="slide">任务列表</a></li>  
+                <li><a href="reports.html" data-icon="star" data-ajax="true" data-transition="slide">报表</a></li>  
+            </ul>  
+        </div>  
+	</div>
+    
+
+	
+</div>
+
+
+</body>
+</html>

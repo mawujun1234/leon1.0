@@ -97,7 +97,7 @@ Ext.onReady(function(){
 	                    tooltip: '导出',
 	                    handler: function(grid, rowIndex, colIndex) {
 	                    	var record=equipStore.getAt(rowIndex);
-	                    	
+	                    	Ext.getBody().mask("正在导出......");
 	                        Ext.Ajax.request({
 								url:Ext.ContextPath+'/order/exportBarcode.do',
 								method:'POST',

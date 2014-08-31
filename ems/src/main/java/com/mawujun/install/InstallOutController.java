@@ -13,6 +13,7 @@ import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 import com.mawujun.baseinfo.Equipment;
 import com.mawujun.baseinfo.EquipmentService;
+import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.install.InstallOut;
@@ -114,8 +115,8 @@ public class InstallOutController {
 	 */
 	@RequestMapping("/installOut/getEquipmentByEcode.do")
 	@ResponseBody
-	public Equipment getEquipmentByEcode(String ecode,String store_id) {	
-		Equipment equipment= equipmentService.getEquipmentByEcode(ecode,store_id);
+	public EquipmentVO getEquipmentByEcode(String ecode,String store_id) {	
+		EquipmentVO equipment= equipmentService.getEquipmentByEcode(ecode,store_id);
 		if(equipment==null){
 			//equipment=new Equipment();
 			//equipment.setStatus(0);

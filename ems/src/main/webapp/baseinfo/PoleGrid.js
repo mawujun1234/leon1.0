@@ -149,7 +149,7 @@ Ext.define('Ems.baseinfo.PoleGrid',{
 		
 		var data=form.getValues();
 		data.customer_id=me.customer_id;
-		data.status=true;
+		data.status="uninstall";
 		var record=new Ems.baseinfo.Pole(data);    
 		form.getForm().loadRecord(record);
 		var win=new Ext.window.Window({

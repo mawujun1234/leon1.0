@@ -64,9 +64,6 @@
 }
 </style>
 <script type="application/javascript">
-$(document).ready(function(e) {
-	    
-});
 
 var secondNavbarIsHide=true;
 function toggleSecondNavbar(){	
@@ -99,36 +96,46 @@ function closeBg() {
     $("#fullbg").hide();
 }
 
-//---获取任务信息
-$.ajax({   
-	url : $.ServerPath+"/task/mobile/query.do",  
-	data:{start:0,limit:20},  
-	success : function(data){
-		if(data.success==true){
-			var root=data.root;
-			var html="";
-			for(var i=0;i<root.length;i++){
-				html+='<li>'+
-				'<a href="install.html"  data-ajax="false" data-transition="slide" >'+
-					'<img src="img/install.png">'+
-					'<h2>新安装</h2>'+
-					'<p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>'+
-					'<p class="ui-li-aside"><strong>8.21 6:24</strong></p>'+
-					'<p class="ui-li-count" style="color:#FFF;background-color:#F00;">new</p>'+
-				'</a>'
+
+$(document).ready(function(e) {
+	//---获取任务信息
+	$.ajax({   
+		url : $.ServerPath+"/task/mobile/query.do",  
+		data:{start:0,limit:20},  
+		success : function(data){
+			if(data.success==true){
+				var root=data.root;
+				var html="";
+				for(var i=0;i<root.length;i++){
+					html+='<li>'+
+					'<a href="install.html"  data-ajax="false" data-transition="slide" >'+
+						'<img src="img/install.png">'+
+						'<h2>新安装</h2>'+
+						'<p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>'+
+						'<p class="ui-li-aside"><strong>8.21 6:24</strong></p>'+
+						'<p class="ui-li-count" style="color:#FFF;background-color:#F00;">new</p>'+
+					'</a>'
+				}
+				$("#taskes_list").html(html);
+				$('#taskes_list').listview('refresh');
+			}else{
+				//$("#errorMsg").html(data.reasons.reason);
 			}
-			$("#taskes_list").html(html);
-			$('#taskes_list').listview('refresh');
-		}else{
-			//$("#errorMsg").html(data.reasons.reason);
-		}
-			$.hideLoader();  
-		},
-		error:function(jqxhq){  
-			$("#errorMsg").html('网络异常或服务停止了');  
-			$.hideLoader(); 
-		}  
-});   
+				$.hideLoader();  
+			},
+			error:function(jqxhq){  
+				$("#errorMsg").html('网络异常或服务停止了');  
+				$.hideLoader(); 
+			}  
+	});  
+	
+	//获取silder 菜单的信息
+	$('#left-menu-contanier').load("leftMenu.html",null,function(){
+		$('#left-menu-contanier').enhanceWithin();
+	});  
+	
+	  
+});
 </script>
 </head> 
 <body> 
@@ -136,24 +143,7 @@ $.ajax({
 <div data-role="page" id="page">
 	<div id="header" data-role="header" data-position="fixed" data-theme="f">
         <a href="#left-menu" data-icon="gear" data-iconpos="notext"></a> 
-        <div id="left-menu" data-role="panel" data-position="left"  data-display="overlay" data-position-fixed="true">
-       		<ul data-role="listview" >
-                <li data-icon="false">
-                <a href="#">
-                    <img src="img/workunit.gif">
-                	<h2>aaaaaaa</h2>
-                	<p>XXX片区</p>
-                </a>
-                </li>
-                <li>
-                </li>
-                <li>
-                <a href="#" class="ui-icon-edit">
-                	修改密码
-                </a>    
-                </li>
-            </ul>
-        </div>
+        <div id="left-menu-contanier"></div>
         <div  data-role="controlgroup" data-type="horizontal" align="center">
             <input type="radio" name="radio-choice-h-2" id="radio-choice-h-2a" value="working" checked="checked">
             <label for="radio-choice-h-2a">当前</label>
@@ -209,9 +199,9 @@ $.ajax({
 	<div data-role="footer" id="footernav"  data-id="footernav" data-position="fixed" data-tap-toggle="false">
 		<div data-role="navbar">  
             <ul>  
-                <li><a href="messages.html"  data-icon="mail" data-ajax="true" data-transition="slide">消息提醒</a></li>  
-                <li><a href="taskes.html" data-icon="bullets" data-ajax="true" data-transition="slide" class="ui-btn-active ui-state-persist" >任务列表</a></li>  
-                <li><a href="reports.html" data-icon="star" data-ajax="true" data-transition="slide">报表</a></li>  
+                <li><a href="messages.html"  data-icon="mail" data-ajax="false" data-transition="slide">消息提醒</a></li>  
+                <li><a href="taskes.html" data-icon="bullets" data-ajax="false" data-transition="slide" class="ui-btn-active ui-state-persist" >任务列表</a></li>  
+                <li><a href="reports.html" data-icon="star" data-ajax="false" data-transition="slide">报表</a></li>  
             </ul>  
         </div>  
 	</div>

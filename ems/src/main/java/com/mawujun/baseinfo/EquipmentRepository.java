@@ -13,5 +13,5 @@ import com.mawujun.baseinfo.Equipment;
 @Repository
 public interface EquipmentRepository extends IRepository<Equipment, String>{
 
-	public Equipment getEquipmentByEcode(@Param("ecode")String ecode,@Param("store_id")String store_id);
+	public EquipmentVO getEquipmentByEcode(@Param("ecode")String ecode,@Param("store_id")String store_id);
 }

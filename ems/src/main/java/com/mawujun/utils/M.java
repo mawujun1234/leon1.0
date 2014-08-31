@@ -194,8 +194,12 @@ public static final class Task {
 	public static final String type="type";
 	public static final String status="status";
 	public static final String pole_id="pole_id";
+	public static final String pole_name="pole_name";
+	public static final String pole_address="pole_address";
 	public static final String workunit_id="workunit_id";
+	public static final String workunit_name="workunit_name";
 	public static final String customer_id="customer_id";
+	public static final String customer_name="customer_name";
 	public static final String createDate="createDate";
 	public static final String startHandDate="startHandDate";
 	public static final String submitDate="submitDate";
@@ -248,7 +252,7 @@ public static final class Barcode {
 	public static final String ecode="ecode";
 	public static final String order_id="order_id";
 	public static final String ymd="ymd";
-	public static final String status="status";
+	public static final String seqNum="seqNum";
 }
 public static final class Barcode_MaxNum {
 	public static final String subtype_id="subtype_id";

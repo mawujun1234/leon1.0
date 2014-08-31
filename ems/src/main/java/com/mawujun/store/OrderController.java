@@ -170,7 +170,7 @@ public class OrderController {
 
 		String contextPath=request.getSession().getServletContext().getRealPath("/");
 		
-		String fileName="barcode("+orderVOs[0].getOrderNo()+").xls";
+		String fileName="qrcode("+orderVOs[0].getOrderNo()+").xls";
 		String filePath="temp"+File.separatorChar+fileName;
 		String path=contextPath+filePath;
 		File file=new File(path);
@@ -185,8 +185,15 @@ public class OrderController {
 
         HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
         HSSFSheet hssfSheet = hssfWorkbook.createSheet("二维码");
-        for(int i=0;i<results.size();i++){
-        	BarcodeVO barcodeVO=results.get(i);
+        
+        HSSFRow hssfRow0 = hssfSheet.createRow(0);
+    	HSSFCell cell00 = hssfRow0.createCell(0);
+    	cell00.setCellValue("条码");
+    	HSSFCell cell011 = hssfRow0.createCell(1);
+    	cell011.setCellValue("型号");
+    	
+        for(int i=1;i<=results.size();i++){
+        	BarcodeVO barcodeVO=results.get(i-1);
         	
         	HSSFRow hssfRow = hssfSheet.createRow(i);
         	HSSFCell cell0 = hssfRow.createCell(0);

@@ -7,9 +7,24 @@
 * 在测试的时候，所有的请求全部使用jsonp协议的形式进行请求，因为存在跨域的问题，除非把html代码放到leon同个项目中。
 * 在手机上进行访问的时候，可以使用普通的ajax进行访问，就像同个域里面一样
 
+设想=============
+	1:当前任务的时候，有界面过滤功能，一次性全部读出来
+	2：历史信息的时候有后台过滤，并且使用上拉，下拉的功能
+
 http://localhost:8085/www/login.html
 
+下拉刷新 
+	http://lab.cubiq.org/iscroll5/demos/infinite/ 这个就是无限下拉的例子，问题在于如何更新内容。里面是更新cache
+	http://www.gafish.net/api/iScroll.html#caseIscroll
+	http://iscrolljs.com/
+	
+	http://iscrolljs.com/#refresh 当有任务来的时候自动刷新功能，相关
+	function updateContent (el, data) {
+		el.innerHTML = data;//在这个方法里面进行内容的填充修改，组装成html的形式
+	}
+	dataset: requestData,//这个就是后台返回的数组数据
 
+记住用户名的功能，cookie或者是localestorge
 (完成)1:修改密码的后台功能完成
 (完成)2：显示账号，所属工作组，登录时间等，这个要在手机端测试过
 (完成)3：任务管理模块设计，杆位添加状态：新建，安装中，已安装，取消

@@ -9,6 +9,11 @@ import javax.persistence.Table;
 
 import com.mawujun.repository.idEntity.IdEntity;
 
+/**
+ * 维修单
+ * @author mawujun 16064988@qq.com  
+ *
+ */
 @Entity
 @Table(name="ems_repair")
 public class Repair  implements IdEntity<String>{

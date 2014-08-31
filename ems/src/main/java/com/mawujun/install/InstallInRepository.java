@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import com.mawujun.repository1.IRepository;
 import com.mawujun.baseinfo.Equipment;
+import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.install.InstallIn;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
@@ -22,5 +23,5 @@ public interface InstallInRepository extends IRepository<InstallIn, String>{
 	 */
 	public InstallIn getInstallInByEcode(@Param("ecode")String ecode);
 	
-	public Equipment getEquipmentByEcode(@Param("ecode")String ecode,@Param("workunit_id")String workunit_id);
+	public EquipmentVO getEquipmentByEcode(@Param("ecode")String ecode,@Param("workunit_id")String workunit_id);
 }

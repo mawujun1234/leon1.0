@@ -20,6 +20,7 @@ import com.mawujun.utils.M;
 import com.mawujun.baseinfo.Equipment;
 import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.EquipmentStatus;
+import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.install.InstallIn;
 import com.mawujun.install.InstallInRepository;
 
@@ -47,7 +48,7 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 		return installInRepository;
 	}
 	
-	public Equipment getEquipmentByEcode(String ecode,String workunit_id) {
+	public EquipmentVO getEquipmentByEcode(String ecode,String workunit_id) {
 		return installInRepository.getEquipmentByEcode(ecode,workunit_id);
 	}
 	

@@ -33,7 +33,7 @@ public class EquipmentService extends AbstractService<Equipment, String>{
 	}
 
 	
-	public Equipment getEquipmentByEcode(String ecode,String store_id) {
+	public EquipmentVO getEquipmentByEcode(String ecode,String store_id) {
 		return equipmentRepository.getEquipmentByEcode(ecode,store_id);
 	}
 

@@ -9,22 +9,33 @@ $.ajaxSetup({
 	},
 	/****/
 	complete: function(jqXHR,textStatus ){
-		//alert(jqXHR.responseText);
-		var data=$.parseJSON(jqXHR.responseText);
-		if(!data.success){
-			if(data.reasons.code=="noLogin"){
-				location.href="login.html";
-				return;
+		var contentType=jqXHR.getResponseHeader("Content-Type");
+		if(contentType.indexOf("application/json")!=-1){
+			//统一处理后台返回的信息
+			var data=$.parseJSON(jqXHR.responseText);
+			if(!data.success){
+				if(data.reasons.code=="noLogin"){
+					//location.href="login.html";
+					return;
+				}
 			}
 		}
-		
 	},
 	
-	error:function(jqxhq){  
+	error:function(jqXHR){  
 		alert('网络异常或服务停止了');  
 		$.hideLoader(); 
 	}  
 	
+});
+$(function() {
+	if(location.href.indexOf("login.html")!=-1){
+		return;
+	}
+	if(!sessionStorage.getItem("user")){
+		location.href="login.html";
+		return;
+	}
 });
 //将form的值序列化为json
 (function($){

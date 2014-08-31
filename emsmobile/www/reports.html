@@ -11,30 +11,22 @@
 <style type="text/css">
 
 </style>
+
+
+<script type="application/javascript">
+$(document).ready(function(e) {
+    $('#left-menu-contanier').load("leftMenu.html",null,function(){
+		$('#left-menu-contanier').enhanceWithin();
+	});
+});
+</script>
 </head> 
 <body> 
 
 <div data-role="page" id="page">
 	<div data-role="header" data-position="fixed">
     	<a href="#left-menu" data-icon="gear" data-iconpos="notext"></a> 
-        <div id="left-menu" data-role="panel" data-position="left"  data-display="overlay" data-position-fixed="true">
-       		<ul data-role="listview" >
-                <li data-icon="false">
-                <a href="#">
-                    <img src="img/workunit.gif">
-                	<h2>aaaaaaa</h2>
-                	<p>XXX片区</p>
-                </a>
-                </li>
-                <li>
-                </li>
-                <li>
-                <a href="#" class="ui-icon-edit">
-                	修改密码
-                </a>    
-                </li>
-            </ul>
-        </div>
+        <div id="left-menu-contanier"></div>
         <h1>报表</h1>
 	</div>
 	<div role="main" class="ui-content">
@@ -50,9 +42,9 @@
     <div data-role="footer" id="footernav"  data-id="footernav" data-position="fixed" data-tap-toggle="false">
 		<div data-role="navbar">  
             <ul>  
-                <li><a href="messages.html"  data-icon="mail" data-ajax="true" data-transition="slide">消息提醒</a></li>  
-                <li><a href="taskes.html"  data-icon="bullets" data-ajax="true" data-transition="slide">任务列表</a></li>  
-                <li><a href="reports.html" data-icon="star" data-ajax="true" data-transition="slide"  class="ui-btn-active ui-state-persist">报表</a></li>  
+                <li><a href="messages.html"  data-icon="mail" data-ajax="false" data-transition="slide">消息提醒</a></li>  
+                <li><a href="taskes.html"  data-icon="bullets" data-ajax="false" data-transition="slide">任务列表</a></li>  
+                <li><a href="reports.html" data-icon="star" data-ajax="false" data-transition="slide"  class="ui-btn-active ui-state-persist">报表</a></li>  
             </ul>  
         </div>  
 	</div>
