@@ -28,16 +28,17 @@ public class CacheMgr {
 		ValueWrapper element = cache.get(key);
 		if(element==null){
 			cache.put(key, new HashMap<String,EquipmentVO>());
+			element=cache.get(key);
 		}
-		((Map<String,EquipmentVO>)cache.get(key)).put(value.getEcode(), value);
+		((Map<String,EquipmentVO>)element.get()).put(value.getEcode(), value);
 		
 	}
 	public void removeQrcode(EquipKey key,String ecode){		
 		Cache cache = cacheManager.getCache("qrcodeCache");
 		ValueWrapper element = cache.get(key);
 		if(element!=null){
-			((Map<String,EquipmentVO>)element).remove(ecode);
-			if(((Map<String,EquipmentVO>)element).size()==0){
+			((Map<String,EquipmentVO>)element.get()).remove(ecode);
+			if(((Map<String,EquipmentVO>)element.get()).size()==0){
 				cache.evict(key);
 			}
 		}
