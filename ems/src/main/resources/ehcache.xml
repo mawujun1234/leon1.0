@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>  
 <ehcache>  
   <!--如果缓存中的对象存储超过指定的缓存数量的对象存储的磁盘地址-->  
-  <diskStore path="D:/ehcache"/>  
+  <diskStore path="java.io.tmpdir/shiro-ehcache"/>  
   
   <!-- 默认cache：如果没有对应的特定区域的缓存，就使用默认缓存 -->  
   <defaultCache maxElementsInMemory="10000"  
@@ -9,13 +9,28 @@
                 timeToIdleSeconds="300"    
                 timeToLiveSeconds="600"  
                 overflowToDisk="false"/>  
-  <!-- 指定区域cache：通过name指定，name对应到Hibernate中的区域名即可 
-  <cache name="cn.javass.h3test.model.UserModel"  
+  <!-- 整合shiro的，拷贝自classpath:org/apache/shiro/cache/ehcache/ehcache.xml -->              
+   <cache name="shiro-activeSessionCache"
+           maxElementsInMemory="10000"
+           overflowToDisk="true"
+           eternal="true"
+           timeToLiveSeconds="0"
+           timeToIdleSeconds="0"
+           diskPersistent="true"
+           diskExpiryThreadIntervalSeconds="600"/>
+
+    <cache name="org.apache.shiro.realm.text.PropertiesRealm-0-accounts"
+           maxElementsInMemory="1000"
+           eternal="true"
+           overflowToDisk="true"/>
+           
+  <!-- 指定区域cache：通过name指定，name对应到Hibernate中的区域名即可  --> 
+  <cache name="qrcodeCache"  
                 eternal="false"  
-                maxElementsInMemory="100"  
-                timeToIdleSeconds="1200"  
-                timeToLiveSeconds="1200"  
+                maxElementsInMemory="1000"  
+                timeToIdleSeconds="0"  
+                timeToLiveSeconds="86400"  
                 overflowToDisk="false">  
-  </cache>  --> 
+  </cache> 
   
 </ehcache> 

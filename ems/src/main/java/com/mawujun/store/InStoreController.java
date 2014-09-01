@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.baseinfo.Equipment;
 import com.mawujun.baseinfo.EquipmentVO;
+import com.mawujun.cache.CacheMgr;
+import com.mawujun.cache.EquipKey;
+import com.mawujun.cache.EquipScanType;
 import com.mawujun.utils.BeanUtils;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
@@ -25,6 +28,8 @@ public class InStoreController {
 	private InStoreService inStoreService;
 	@Resource
 	private OrderService orderService;
+	@Resource
+	private CacheMgr cacheMgr;
 
 //
 //	/**
@@ -105,12 +110,28 @@ public class InStoreController {
 	 */
 	@RequestMapping("/inStore/getEquipFromBarcode.do")
 	@ResponseBody
-	public EquipmentVO getEquipFromBarcode(String ecode) {	
+	public EquipmentVO getEquipFromBarcode(String ecode,String store_id) {	
 		EquipmentVO equipmentVO= orderService.getEquipFromBarcode(ecode);
-		//barcode.setStatus(null);
-		//Equipment equipment= BeanUtils.copyOrCast(barcode, Equipment.class);
-		//equipment.setStatus(barcode.getIsInStore()?255:0);//设备如果已经入过库了，就设置为255，否则就使用0
-		return equipmentVO;
+		
+		if(equipmentVO!=null){
+			cacheMgr.putQrcode(EquipKey.getInstance(EquipScanType.newInStore, store_id), equipmentVO);
+			return equipmentVO;
+		} else {
+			return new EquipmentVO();
+		}
+		
+	}
+	@RequestMapping("/inStore/removeEquipFromCache.do")
+	@ResponseBody
+	public String removeEquipFromCache(String ecode,String store_id) {	
+		cacheMgr.removeQrcode(EquipKey.getInstance(EquipScanType.newInStore, store_id),ecode);
+		return "success";
+	}
+	@RequestMapping("/inStore/clearEquipFromCache.do")
+	@ResponseBody
+	public String clearEquipFromCache(String store_id) {	
+		cacheMgr.clearQrcode(EquipKey.getInstance(EquipScanType.newInStore, store_id));
+		return "success";
 	}
 	
 	

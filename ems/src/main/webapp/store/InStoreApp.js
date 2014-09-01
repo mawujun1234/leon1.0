@@ -159,7 +159,7 @@ Ext.onReady(function(){
 		   if(field.isValid()){
 			  // form.load({
 		   	Ext.Ajax.request({
-					params : {ecode:newValue},//传递参数   
+					params : {ecode:newValue,store_id:store_combox.getValue()},//传递参数   
 					url : Ext.ContextPath+'/inStore/getEquipFromBarcode.do',//请求的url地址   
 					method : 'GET',//请求方式   
 					success : function(response) {//加载成功的处理函数   
@@ -193,11 +193,6 @@ Ext.onReady(function(){
 							store_combox.disable();
 						}
 					}
-//					failure : function(response) {//加载失败的处理函数   
-//						Ext.Msg.alert('提示', '设备加载失败：'+ response.responseText);
-//						ecode_textfield.setValue("");
-//						ecode_textfield.clearInvalid( );
-//					}
 				});
 		   }
 		}else{
@@ -210,6 +205,7 @@ Ext.onReady(function(){
 	
 	var equipStore = Ext.create('Ext.data.Store', {
         autoDestroy: true,
+        pageSize:50,
         model: 'Ems.baseinfo.Equipment',
         proxy: {
             type: 'memory'
@@ -242,27 +238,56 @@ Ext.onReady(function(){
 	                    icon   : '../images/delete.gif',  // Use a URL in the icon config
 	                    tooltip: '删除',
 	                    handler: function(grid, rowIndex, colIndex) {
-	                        var rec = equipStore.getAt(rowIndex);
+	                        var record = equipStore.getAt(rowIndex);
 	                        Ext.MessageBox.confirm('确认', '您确认要删除该记录吗?', function(btn){
 	                        	if(btn=='yes'){
-	                        		equipStore.remove(rec);
+	                        		
+	                        		Ext.Ajax.request({
+										params : {ecode:record.get("ecode"),store_id:store_combox.getValue()},//传递参数   
+										url : Ext.ContextPath+'/inStore/removeEquipFromCache.do',//请求的url地址   
+										method : 'GET',//请求方式   
+										success : function(response) {//加载成功的处理函数   
+											var ret=Ext.decode(response.responseText);
+											if(ret.success){
+												equipStore.remove(record);
+											}
+										}
+									});
 	                        	}
 	                        });
 	                    }
 	                }]
 	            }],
-        tbar:['<pan id="toolbar-title-text">当前入库记录</span>','->'
-//              {text:'清空设备',
-//        	   iconCls:'icon-clearall',
-//        	   handler:function(){
-//        		   Ext.MessageBox.confirm('确认', '您确认要清除所有记录吗?', function(btn){
-//								            	if(btn=='yes'){
-//								            		equipStore.removeAll();
-//								            	}
-//					});
-//        	   }
-//        	}
-        	]	
+        tbar:['<pan id="toolbar-title-text">当前入库记录</span>','->',
+              {text:'清空所选记录',
+        	   iconCls:'icon-clearall',
+        	   handler:function(){
+        		   Ext.MessageBox.confirm('确认', '您确认要清除所有记录吗?', function(btn){
+					   if(btn=='yes'){
+							
+							Ext.Ajax.request({
+								params : {store_id:store_combox.getValue()},//传递参数   
+								url : Ext.ContextPath+'/inStore/clearEquipFromCache.do',//请求的url地址   
+								method : 'GET',//请求方式   
+								success : function(response) {//加载成功的处理函数   
+									var ret=Ext.decode(response.responseText);
+									if(ret.success){
+										equipStore.removeAll();
+										store_combox.enable();
+									}
+								}
+							});
+						}
+					});
+        	   }
+        	}
+        ],
+        bbar:{
+	        xtype: 'pagingtoolbar',
+	        store: equipStore,  
+	        dock: 'bottom',
+	        displayInfo: true
+	  }
 	});
 	
 	
