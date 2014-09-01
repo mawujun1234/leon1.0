@@ -59,7 +59,7 @@
 			<plugin>  
 	            <groupId>net.alchim31.maven</groupId>  
 	            <artifactId>yuicompressor-maven-plugin</artifactId>  
-	            <!--  <version>1.3.0</version>  -->
+	            <!--   <version>1.3.0</version> -->
 	    		
                 <executions>
                 	<!-- 这里报错没关系，如果不加的话，不会在mvn install的时候运行这个插件,那就要手工运行了--> 

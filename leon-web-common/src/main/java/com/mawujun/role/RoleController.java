@@ -93,7 +93,7 @@ public class RoleController {
 	@ResponseBody
 	public Page  queryFun(Integer start,Integer limit,String roleId){
 		
-		return roleService.queryFun(Page.getInstance(start, limit).addParam(T.leon_Role_Fun.role_id, roleId));
+		return roleService.queryFun(Page.getInstance(start, limit).addParam(T.leon_role_fun.role_id, roleId));
 	}
 
 	@RequestMapping("/role/addFun")

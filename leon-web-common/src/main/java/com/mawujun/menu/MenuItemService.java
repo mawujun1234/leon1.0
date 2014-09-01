@@ -152,8 +152,8 @@ public class MenuItemService extends AbstractService<MenuItem, String> {//extend
 
 		//如果是管理员，可以获查看到所有的菜单
 		//List<String> menuItemLeaf = super.queryList("query4Desktop", ParamUtils.init().add("menu_id", menuId).add("isAdmin", isAdmin),String.class);
-		List<String> menuItemLeaf =this.getRepository().query4Desktop(Params.init().add(T.leon_menuItem.menu_id, menuId).add("isAdmin", isAdmin).
-				addIf(T.leon_menuItem.parent_id, parentId).add("user_id", userId));//f 用户权限根据用户名获取相应的功能
+		List<String> menuItemLeaf =this.getRepository().query4Desktop(Params.init().add(T.leon_menuitem.menu_id, menuId).add("isAdmin", isAdmin).
+				addIf(T.leon_menuitem.parent_id, parentId).add("user_id", userId));//f 用户权限根据用户名获取相应的功能
 
 		Map<String,MenuItemVO> parentKeys=new HashMap<String,MenuItemVO>();
 		List<MenuItemVO> menuItems = new ArrayList<MenuItemVO>();
