@@ -83,6 +83,10 @@ public static final class DesktopConfig {
 	* 这里一般是集合属性，返回的是quickstarts
 	*/
 	public static final String quickstarts="quickstarts";
+	/**
+	* 这里一般是集合属性，返回的是autostarts
+	*/
+	public static final String autostarts="autostarts";
 }
 public static final class QuickStart {
 	 /**
@@ -204,6 +208,7 @@ public static final class MenuItem {
 	public static final String iconCls="iconCls";
 	public static final String iconCls32="iconCls32";
 	public static final String reportCode="reportCode";
+	public static final String autostart="autostart";
 	public static final String leaf="leaf";
 	 /**
 	 * 返回关联对象的属性，，以对象关联的方式(a.b这种形式)，只有一些基本属性，层级不再往下了
@@ -249,6 +254,7 @@ public static final class MenuItem {
 		public static final String iconCls="parent.iconCls";
 		public static final String iconCls32="parent.iconCls32";
 		public static final String reportCode="parent.reportCode";
+		public static final String autostart="parent.autostart";
 		public static final String leaf="parent.leaf";
 		public static final String id="parent.id";
 			
@@ -378,20 +384,92 @@ public static final class OrgType {
 	public static final String name="name";
 	public static final String iconCls="iconCls";
 }
+public static final class Country {
+	public static final String name_en="name_en";
+	public static final String name="name";
+	public static final String continent="continent";
+	public static final String continent_name="continent_name";
+	public static final String id="id";
+}
+public static final class Contact {
+	public static final String name="name";
+	public static final String position="position";
+	public static final String email="email";
+	public static final String phone="phone";
+	public static final String fax="fax";
+	public static final String mobile="mobile";
+	public static final String chatNum="chatNum";
+	public static final String isDefault="isDefault";
+	public static final String customer_id="customer_id";
+	public static final String id="id";
+}
+public static final class Customer {
+	public static final String code="code";
+	public static final String name="name";
+	public static final String customerSource_id="customerSource_id";
+	public static final String customerSource_name="customerSource_name";
+	public static final String customerProperty_id="customerProperty_id";
+	public static final String customerProperty_name="customerProperty_name";
+	public static final String continent_id="continent_id";
+	public static final String country_id="country_id";
+	public static final String country_name="country_name";
+	public static final String address="address";
+	public static final String website="website";
+	public static final String businessPhase_id="businessPhase_id";
+	public static final String businessPhase_name="businessPhase_name";
+	public static final String followupNum="followupNum";
+	public static final String inquiryDate="inquiryDate";
+	public static final String inquiryContent="inquiryContent";
+	public static final String deleted="deleted";
+	public static final String createDate="createDate";
+	public static final String star="star";
+	public static final String expYear="expYear";
+	public static final String proportion="proportion";
+	public static final String customerType="customerType";
+	public static final String empNum="empNum";
+	public static final String buyMoney="buyMoney";
+	public static final String quality="quality";
+	public static final String price="price";
+	public static final String moq="moq";
+	public static final String paymentTerms="paymentTerms";
+	public static final String contact_id="contact_id";
+	public static final String contact_name="contact_name";
+	public static final String contact_position="contact_position";
+	public static final String contact_phone="contact_phone";
+	public static final String contact_mobile="contact_mobile";
+	public static final String contact_chatNum="contact_chatNum";
+	public static final String contact_fax="contact_fax";
+	public static final String contact_email="contact_email";
+	public static final String contact_isDefault="contact_isDefault";
+	public static final String id="id";
+}
+public static final class Followup {
+	public static final String createDate="createDate";
+	public static final String method="method";
+	public static final String content="content";
+	public static final String feedbackDate="feedbackDate";
+	public static final String feedbackContetnt="feedbackContetnt";
+	public static final String nextDate="nextDate";
+	public static final String nextContent="nextContent";
+	public static final String nextHandled="nextHandled";
+	public static final String customer_id="customer_id";
+	public static final String customer_name="customer_name";
+	public static final String id="id";
+}
 public static final class CustomerProperty {
 	public static final String name="name";
-	public static final String desc="desc";
+	public static final String description="description";
 	public static final String id="id";
 }
 public static final class CustomerSource {
 	public static final String name="name";
-	public static final String desc="desc";
+	public static final String description="description";
 	public static final String id="id";
 }
 public static final class Parameter {
 	public static final String id="id";
 	public static final String name="name";
-	public static final String desc="desc";
+	public static final String description="description";
 	public static final String showModel="showModel";
 	public static final String valueEnum="valueEnum";
 	public static final String content="content";

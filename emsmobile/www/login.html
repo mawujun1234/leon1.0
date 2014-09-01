@@ -65,10 +65,11 @@ $(function() {
 				success : function(data){  
 					if(data.success==true){
 						sessionStorage.setItem("user",JSON.stringify(data.root));
-						$.mobile.pageContainer.pagecontainer('change', "messages.html", {
-							transition: 'slide',
-							reload    : true
-						});
+						//$.mobile.pageContainer.pagecontainer('change', "messages.html", {
+						//	transition: 'slide',
+						//	reload    : true
+						//});
+						location.href="messages.html";
 					}else{
 						//$("#errorMsg").html(data.reasons.reason);
 						if(data.reasons.code=="noLogin"){
