@@ -29,7 +29,8 @@ Ext.onReady(function(){
 //                }
 //            ]
 //     });
-        
+	
+    var checkDate=(new Date()).getTime();
 	var store_combox=Ext.create('Ext.form.field.ComboBox',{
 	        fieldLabel: '<b>仓库</b>',
 	        labelAlign:'right',
@@ -159,7 +160,7 @@ Ext.onReady(function(){
 		   if(field.isValid()){
 			  // form.load({
 		   	Ext.Ajax.request({
-					params : {ecode:newValue,store_id:store_combox.getValue()},//传递参数   
+					params : {ecode:newValue,store_id:store_combox.getValue(),checkDate:checkDate},//传递参数   
 					url : Ext.ContextPath+'/inStore/getEquipFromBarcode.do',//请求的url地址   
 					method : 'GET',//请求方式   
 					success : function(response) {//加载成功的处理函数   
@@ -178,19 +179,30 @@ Ext.onReady(function(){
 							ecode_textfield.setValue("");
 							ecode_textfield.clearInvalid( );
 
-							var exist=false;
-							equipStore.each(function(record){
-								if(newValue==record.get('ecode')){
-								    exist=true;
-								    return !exist;
-								}
-							});
-							if(exist){
-								Ext.Msg.alert('提示','该设备已经存在');
-							}else{
+//							var exist=false;
+//							equipStore.each(function(record){
+//								if(newValue==record.get('ecode')){
+//								    exist=true;
+//								    return !exist;
+//								}
+//							});
+//							if(exist){
+//								Ext.Msg.alert('提示','该设备已经存在');
+//							}else{
 								equipStore.insert(0, scanrecord);				
-							}		
+//							}		
 							store_combox.disable();
+							
+							if(equipStore.getCount()>=pageSize+20){
+								//永远获取第一页
+								equipStore.getProxy().extraParams={store_id:store_combox.getValue(),checkDate:checkDate};
+								//equipStore.load({params:{start:0,limit:pageSize}})
+								equip_grid.getDockedItems('toolbar[dock="bottom"]')[0].moveFirst( );
+							}
+						} else {
+							Ext.Msg.alert("消息",ret.msg);
+							ecode_textfield.setValue("");
+							ecode_textfield.clearInvalid( );
 						}
 					}
 				});
@@ -202,15 +214,26 @@ Ext.onReady(function(){
 	
 	//==========================================================================================
 	
-	
+	var pageSize=50;
 	var equipStore = Ext.create('Ext.data.Store', {
         autoDestroy: true,
-        pageSize:50,
+        pageSize:pageSize,
         model: 'Ems.baseinfo.Equipment',
+//        proxy: {
+//            type: 'memory'
+//        }
+        autoLoad:false,
         proxy: {
-            type: 'memory'
-        }
+	        type: 'ajax',
+	        url: '/inStore/queryEquipFromCache.do',  // url that will load data with respect to start and limit params
+	        reader: {
+	            type: 'json',
+	            root: 'root',
+	            totalProperty: 'total'
+	        }
+	    }
     });
+
 	var equip_grid=Ext.create('Ext.grid.Panel',{
 		flex:1,
 		store:equipStore,
@@ -243,7 +266,7 @@ Ext.onReady(function(){
 	                        	if(btn=='yes'){
 	                        		
 	                        		Ext.Ajax.request({
-										params : {ecode:record.get("ecode"),store_id:store_combox.getValue()},//传递参数   
+										params : {ecode:record.get("ecode"),store_id:store_combox.getValue(),checkDate:checkDate},//传递参数   
 										url : Ext.ContextPath+'/inStore/removeEquipFromCache.do',//请求的url地址   
 										method : 'GET',//请求方式   
 										success : function(response) {//加载成功的处理函数   
@@ -266,7 +289,7 @@ Ext.onReady(function(){
 					   if(btn=='yes'){
 							
 							Ext.Ajax.request({
-								params : {store_id:store_combox.getValue()},//传递参数   
+								params : {store_id:store_combox.getValue(),checkDate:checkDate},//传递参数   
 								url : Ext.ContextPath+'/inStore/clearEquipFromCache.do',//请求的url地址   
 								method : 'GET',//请求方式   
 								success : function(response) {//加载成功的处理函数   
@@ -274,6 +297,7 @@ Ext.onReady(function(){
 									if(ret.success){
 										equipStore.removeAll();
 										store_combox.enable();
+										equip_grid.getDockedItems('toolbar[dock="bottom"]')[0].moveFirst( );
 									}
 								}
 							});
@@ -346,7 +370,7 @@ Ext.onReady(function(){
 					method:'POST',
 					timeout:600000000,
 					headers:{ 'Content-Type':'application/json;charset=UTF-8'},
-					params:{memo:memo_textfield.getValue(),store_id:store_combox.getValue()},
+					params:{memo:memo_textfield.getValue(),store_id:store_combox.getValue(),checkDate:checkDate},
 					jsonData:equipments,
 					//params:{jsonStr:Ext.encode(equiplist)},
 					success:function(response){

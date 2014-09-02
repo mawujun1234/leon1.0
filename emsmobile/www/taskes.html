@@ -7,6 +7,7 @@
 <link href="jquery.mobile/jquery.mobile-1.4.3.min.css" rel="stylesheet" type="text/css"/>
 <script src="jquery.mobile/jquery-2.1.1.min.js" type="text/javascript"></script>
 <script src="jquery.mobile/jquery.mobile-1.4.3.min.js" type="text/javascript"></script>
+<script src="iscroll/build/iscroll.js" type="text/javascript"></script>
 <script src="js/main.js" type="text/javascript"></script>
 <style type="text/css">
 .secondNavbar-glyphish-example .ui-btn { padding-top: 40px !important; }
@@ -137,6 +138,17 @@ $(document).ready(function(e) {
 	  
 });
 </script>
+
+<!-- 下拉刷新的js-->
+<script type="application/javascript">
+ var myScroll ;
+$(document).ready(function(e) {
+    myScroll = new IScroll('#page_content',{
+		scrollbars: true	, useTransition: true
+	});
+	
+});
+</script>
 </head> 
 <body> 
 
@@ -162,9 +174,9 @@ $(document).ready(function(e) {
             </ul>
         </div>
     </div>
-	<div role="main" class="ui-content">
+	<div role="main" class="ui-content" id="page_content">
 		<ul data-role="listview" id="taskes_list">
-            <li>
+           <!-- --> <li>
             <a href="install.html"  data-ajax="false" data-transition="slide" >
                 <img src="img/install.png" >
                 <h2>新安装</h2>
@@ -190,6 +202,7 @@ $(document).ready(function(e) {
                 <p class="ui-li-aside"><strong>8.21 6:24</strong></p>
             </a>
             </li>
+           
         </ul> 
 	</div>
     <!-- jQuery 遮罩层 -->

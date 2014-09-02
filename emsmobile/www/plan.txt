@@ -18,34 +18,15 @@ http://localhost:8085/www/login.html
 	http://www.gafish.net/api/iScroll.html#caseIscroll
 	http://iscrolljs.com/
 	
-	http://iscrolljs.com/#refresh 当有任务来的时候自动刷新功能，相关
-	function updateContent (el, data) {
-		el.innerHTML = data;//在这个方法里面进行内容的填充修改，组装成html的形式
-	}
-	dataset: requestData,//这个就是后台返回的数组数据
-
-记住用户名的功能，cookie或者是localestorge
-(完成)1:修改密码的后台功能完成
-(完成)2：显示账号，所属工作组，登录时间等，这个要在手机端测试过
-(完成)3：任务管理模块设计，杆位添加状态：新建，安装中，已安装，取消
-4：任务分发的功能
-
-(完成)jquery的统一异常处理
-
-(完成)试后台重启后，是否会要求重新登录
-(完成，自己好了)尾部工具栏的动画效果出来了，但是有时候效果会出问题，点中的导航按钮没有被选中
-(完成)changePage具有showLoadMsg的参数，看看能不能放进去
-(完成)$.mobile.showPageLoadingMsg("e", "Loading...", true);http://www.apkbus.com/blog-13638-53485.html
-头等内容
 	
+	http://lab.cubiq.org/iscroll5/demos/bounce-easing/ 这个更合适，上啦，下拉都有框
+	http://www.gafish.net/api/demo/pull-to-refresh/index.html 这个例子最适合了
+	当有任务来的时候自动刷新功能，相关http://iscrolljs.com/#refresh 
 
-(完成)登陆页面
-	json解析问题，使用反斜杠来使用双引号。2最外面的是单引号，里面的是双引号，看fastjson的配置
-(完成)手机端登陆，使用jquery进行登录，登录后跳转 http://www.oschina.net/question/101738_2927
-	表单验证http://jackyrong.iteye.com/blog/1310312  http://jqueryvalidation.org/
-(完成)密码修改,用户名和会话的保持怎么做
+4：任务分发的功能
+记住用户名的功能，cookie或者是localestorge
 
-监听android的返回键按钮，点返回键的时候，就提示退出。
+监听android的返回键按钮，当在三个主页面上点返回键的时候，就提示退出，否则就退到前一个页面去。
 服务端地址设置
 
 建立各个页面之间的跳转
@@ -74,6 +55,27 @@ http://localhost:8085/www/login.html
 程序的更新提醒，当后台的程序有更新后，要提示前台进行修改
 扫描设备后先缓存在前台先，也就是说要同步字典
 jquery的页面模板，等需要的时候才去加载，例如login.html只有最重要的一段内容，没有表
+
+
+完成)1:修改密码的后台功能完成
+(完成)2：显示账号，所属工作组，登录时间等，这个要在手机端测试过
+(完成)3：任务管理模块设计，杆位添加状态：新建，安装中，已安装，取消
+
+
+(完成)jquery的统一异常处理
+
+(完成)试后台重启后，是否会要求重新登录
+(完成，自己好了)尾部工具栏的动画效果出来了，但是有时候效果会出问题，点中的导航按钮没有被选中
+(完成)changePage具有showLoadMsg的参数，看看能不能放进去
+(完成)$.mobile.showPageLoadingMsg("e", "Loading...", true);http://www.apkbus.com/blog-13638-53485.html
+头等内容
+	
+
+(完成)登陆页面
+	json解析问题，使用反斜杠来使用双引号。2最外面的是单引号，里面的是双引号，看fastjson的配置
+(完成)手机端登陆，使用jquery进行登录，登录后跳转 http://www.oschina.net/question/101738_2927
+	表单验证http://jackyrong.iteye.com/blog/1310312  http://jqueryvalidation.org/
+(完成)密码修改,用户名和会话的保持怎么做
 
 (完成)fastjson返回具有双引号的json，默认是双引
 (完成)滑出菜单  Slider Panel，

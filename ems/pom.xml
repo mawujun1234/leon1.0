@@ -14,7 +14,7 @@
   <name>ems Maven Webapp</name>
   <url>http://maven.apache.org</url>
   <build>
-		
+		<finalName>ems</finalName>
 		<!-- 进行profile的切换 -->
 		<resources>
 			<resource>
@@ -50,7 +50,6 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
-	
 					<warSourceExcludes>www/**/*.*,**/*.js,**/*.css</warSourceExcludes>				
 				</configuration>
 			</plugin>
@@ -64,7 +63,7 @@
                 <executions>
                 	<!-- 这里报错没关系，如果不加的话，不会在mvn install的时候运行这个插件,那就要手工运行了--> 
                 	<execution>  
-	                    <phase>process-resources</phase>  
+	                    <phase>prepare-package</phase>  
 	                    <goals>  
 	                        <goal>compress</goal>  
 	                    </goals>  
@@ -176,6 +175,7 @@
 		        	
 					<execution>
 						<id>copy</id>
+						
 						<goals>
 		        			<goal>copy</goal>
 		        		</goals> 

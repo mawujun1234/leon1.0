@@ -20,7 +20,7 @@ public class Barcode implements IdEntity<String>{
 	
 	private Integer seqNum;//序号，就是从1开始，用于在导出条码的时候获取哪个范围的条码
 
-	//private Integer status=0;//0:未入库，1：已入库
+	private Integer status=0;//0:未入库，1：已入库
 	@Override
 	public void setId(String id) {
 		// TODO Auto-generated method stub
@@ -55,6 +55,12 @@ public class Barcode implements IdEntity<String>{
 	}
 	public void setSeqNum(Integer seqNum) {
 		this.seqNum = seqNum;
+	}
+	public Integer getStatus() {
+		return status;
+	}
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 }

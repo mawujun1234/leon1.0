@@ -42,7 +42,7 @@ public class Equipment implements IdEntity<String>{
 	private String memo;
 
 	//外键于表EquipmentStatus
-	private Integer status=0;//1表示是在库
+	private Integer status=0;//1:表示是在库
 	@Column(updatable=false)
 	private Date fisData;//first in stock date第一次入库时间
 	@Column(length=36)

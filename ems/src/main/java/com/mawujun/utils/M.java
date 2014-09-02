@@ -253,6 +253,7 @@ public static final class Barcode {
 	public static final String order_id="order_id";
 	public static final String ymd="ymd";
 	public static final String seqNum="seqNum";
+	public static final String status="status";
 }
 public static final class Barcode_MaxNum {
 	public static final String subtype_id="subtype_id";

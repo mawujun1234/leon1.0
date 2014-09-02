@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mawujun.baseinfo.Equipment;
 import com.mawujun.baseinfo.EquipmentRepository;
+import com.mawujun.baseinfo.EquipmentStatus;
+import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.M;
@@ -33,8 +35,8 @@ public class InStoreService extends AbstractService<InStore, String>{
 	private InStoreListRepository inStoreListRepository;
 	@Autowired
 	private EquipmentRepository equipmentRepository;
-//	@Autowired
-//	private BarcodeRepository barcodeRepository;
+	@Autowired
+	private BarcodeRepository barcodeRepository;
 	@Autowired
 	private OrderRepository orderRepository;
 	
@@ -65,7 +67,7 @@ public class InStoreService extends AbstractService<InStore, String>{
 		for(Equipment equipment:equipments){
 			equipment.setFisData(new Date());
 			//equipment.setLastInDate(new Date());
-			equipment.setStatus(1);
+			equipment.setStatus(EquipmentStatus.in_storage.getValue());
 			equipment.setIsnew(true);
 			equipment.setStore_id(inStore.getStore_id());
 			equipment.setMemo("");
@@ -86,6 +88,9 @@ public class InStoreService extends AbstractService<InStore, String>{
 			inStoreList.setEncode(equipment.getEcode());
 			inStoreList.setInStore_id(instore_id);
 			inStoreListRepository.create(inStoreList);
+			
+			//更新条码的状态
+			barcodeRepository.update(Cnd.update().set(M.Barcode.status, 1).andEquals(M.Barcode.ecode, equipment.getEcode()));
 		}
 		
 		for(Entry<String,Integer> entry:totalnumMap.entrySet()){

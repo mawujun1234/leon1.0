@@ -5,15 +5,28 @@
       如果没有问题，我就把这些基础数据导出，并且保存，下次就不用再录入了
 2：接着拿些订单数据进行测试(价格的敏感信息可以随便)，2,3天进行测试，新品入库和打印机这块
 
-新品入库的时候，数据量很大的时候的缓存设计，每扫一个就去后台存储下，当下次进来的时候，就把上次的单据给显示出来，并且点清除的话，就把这个临时单据给清除掉
-有时间做一个清表的sql，清除所有的表中没有必要的数据，星期7的时候做
 
-缓存获取不到，而且还没有进行测试
-缓存的冲突问题如何解决。
-	
 明天看看能不能手动的添加杆位，任务进行管理调整的功能。手动制造数据
 
-<pluginExecution>
+<?xml version="1.0" encoding="UTF-8"?>
+<lifecycleMappingMetadata>
+  <pluginExecutions>
+    <pluginExecution>
+      <pluginExecutionFilter>
+        <groupId>org.zeroturnaround</groupId>
+        <artifactId>jrebel-maven-plugin</artifactId>
+        <versionRange>1.1.5</versionRange>
+        <goals>
+          <goal>generate</goal>
+        </goals>
+      </pluginExecutionFilter>
+      
+      <action>
+        <ignore />
+      </action>
+    </pluginExecution>
+    
+    <pluginExecution>
     <pluginExecutionFilter>
         <groupId>com.mawujun</groupId>
 		<artifactId>leon-maven-plugin</artifactId>
@@ -43,6 +56,8 @@
         <ignore />
       </action>
     </pluginExecution>
+  </pluginExecutions>
+</lifecycleMappingMetadata>
 用例编写，把移动端的按照规则编写出来看下。
 
 
@@ -114,8 +129,13 @@ http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/
 
 
 
-
-
+(完成)新品入库的时候，数据量很大的时候的缓存设计，每扫一个就去后台存储下，当下次进来的时候，就把上次的单据给显示出来，并且点清除的话，就把这个临时单据给清除掉
+(完成)有时间做一个清表的sql，清除所有的表中没有必要的数据，星期7的时候做
+(完成)缓存获取不到，而且还没有进行测试
+(完成)按顺序进行排序，
+(完成)设备是否存在，在后台还要进行判断
+(完成)还可以按分页按钮进行分页
+(完成)缓存的冲突问题如何解决。
 (完成)打包改成使用maven的profile进行打包，现在就进行测试,注意调整日志级别
 
 (完成)发布到war的时候压缩js和css http://name327.iteye.com/blog/1921988

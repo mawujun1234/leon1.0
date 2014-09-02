@@ -1,9 +1,12 @@
 package com.mawujun.store;
+import java.beans.IntrospectionException;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.BeansException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +17,9 @@ import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.cache.CacheMgr;
 import com.mawujun.cache.EquipKey;
 import com.mawujun.cache.EquipScanType;
+import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.utils.BeanUtils;
+import com.mawujun.utils.page.Page;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
  * @version 1.0
@@ -28,6 +33,7 @@ public class InStoreController {
 	private InStoreService inStoreService;
 	@Resource
 	private OrderService orderService;
+
 	@Resource
 	private CacheMgr cacheMgr;
 
@@ -110,11 +116,19 @@ public class InStoreController {
 	 */
 	@RequestMapping("/inStore/getEquipFromBarcode.do")
 	@ResponseBody
-	public EquipmentVO getEquipFromBarcode(String ecode,String store_id) {	
-		EquipmentVO equipmentVO= orderService.getEquipFromBarcode(ecode);
+	public EquipmentVO getEquipFromBarcode(String ecode,String store_id,Long checkDate) {	
+		EquipKey key=EquipKey.getInstance(EquipScanType.newInStore, store_id,checkDate);
+		EquipmentVO equipmentVO=cacheMgr.getQrcode(key, ecode);
+		if(equipmentVO!=null){
+			JsonConfigHolder.setSuccessValue(false);
+			JsonConfigHolder.setMsg("设备已经存在!");
+			return equipmentVO;
+		}
+		equipmentVO= orderService.getEquipFromBarcode(ecode);
 		
 		if(equipmentVO!=null){
-			cacheMgr.putQrcode(EquipKey.getInstance(EquipScanType.newInStore, store_id), equipmentVO);
+			
+			cacheMgr.putQrcode(key, equipmentVO);
 			return equipmentVO;
 		} else {
 			return new EquipmentVO();
@@ -123,23 +137,51 @@ public class InStoreController {
 	}
 	@RequestMapping("/inStore/removeEquipFromCache.do")
 	@ResponseBody
-	public String removeEquipFromCache(String ecode,String store_id) {	
-		cacheMgr.removeQrcode(EquipKey.getInstance(EquipScanType.newInStore, store_id),ecode);
+	public String removeEquipFromCache(String ecode,String store_id,Long checkDate) {	
+		cacheMgr.removeQrcode(EquipKey.getInstance(EquipScanType.newInStore, store_id,checkDate),ecode);
 		return "success";
 	}
 	@RequestMapping("/inStore/clearEquipFromCache.do")
 	@ResponseBody
-	public String clearEquipFromCache(String store_id) {	
-		cacheMgr.clearQrcode(EquipKey.getInstance(EquipScanType.newInStore, store_id));
+	public String clearEquipFromCache(String store_id,Long checkDate) {	
+		cacheMgr.clearQrcode(EquipKey.getInstance(EquipScanType.newInStore, store_id,checkDate));
 		return "success";
+	}
+	/**
+	 * 查询缓存中的数据
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param store_id
+	 * @return
+	 */
+	@RequestMapping("/inStore/queryEquipFromCache.do")
+	@ResponseBody
+	public Page queryEquipFromCache(String store_id,Integer start,Integer limit,Long checkDate) {	
+		Page list=cacheMgr.getQrcodes(EquipKey.getInstance(EquipScanType.newInStore, store_id,checkDate),start,limit);
+		if(list==null){
+			return new Page();
+		}
+		return list;
 	}
 	
 	
 	@RequestMapping("/inStore/newInStore.do")
 	@ResponseBody
 	//public String newInStore(@RequestBody Equipment[] equipments,String memo,String inStore_type,String store_id) throws  IOException{
-	public String newInStore(@RequestBody Equipment[] equipments,InStore inStore) throws  IOException{
-		inStoreService.newInStore(equipments,inStore);
+	public String newInStore(@RequestBody Equipment[] equipments,InStore inStore,Long checkDate) throws  IOException, IllegalAccessException, InvocationTargetException, BeansException, IntrospectionException{
+		//inStoreService.newInStore(equipments,inStore);
+		EquipKey key=EquipKey.getInstance(EquipScanType.newInStore, inStore.getStore_id(),checkDate);
+		EquipmentVO[] equipmentVOs=cacheMgr.getQrcodesAll(key);
+		equipments=new Equipment[equipmentVOs.length];
+		int i=0;
+		for(EquipmentVO equipmentVO:equipmentVOs){
+			//org.apache.commons.beanutils.BeanUtils.copyProperties(dest, orig);
+			equipments[i]=new Equipment();
+			BeanUtils.copyExcludeNull(equipmentVO,equipments[i]);
+			i++;
+		}
+		inStoreService.newInStore(equipments, inStore);
+		
+		cacheMgr.clearQrcode(key);
 		return "success";
 	}
 }
