@@ -13,6 +13,7 @@
 
 http://localhost:8085/www/login.html
 
+4：任务分发的功能
 
 先把主要的下拉刷新，上拉重新加载完成，然后再做个性化的提示
 下拉刷新 
@@ -24,15 +25,16 @@ http://localhost:8085/www/login.html
 	http://lab.cubiq.org/iscroll5/demos/bounce-easing/ 这个更合适，上啦，下拉都有框
 	http://www.gafish.net/api/demo/pull-to-refresh/index.html 这个例子最适合了
 	当有任务来的时候自动刷新功能，相关http://iscrolljs.com/#refresh 
-	
+	handleEvent是处理整个事件的方法
 	_start方法是开始的方法，当数据少于多少的时候，没有触发这个方法里的某个事件，或者所以导致没有下拉到
 	_move方法应该就拖动的方法
 	_end方法是结束方法，
+	_translate方法应该就是实现，下拉变形的内容，还不是很确定 deltaY就可以了
 	
 	问题：1:当屏幕没有充满的时候，下拉没有效果，可能是_pos方法中的x,y获取到还是为0，0，所以滚动不了
 		2:当拉大最下面的时候，弹回去的时候，没有弹到底部
 
-4：任务分发的功能
+
 记住用户名的功能，cookie或者是localestorge
 
 监听android的返回键按钮，当在三个主页面上点返回键的时候，就提示退出，否则就退到前一个页面去。
