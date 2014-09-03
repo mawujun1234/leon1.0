@@ -7,7 +7,7 @@
 <link href="jquery.mobile/jquery.mobile-1.4.3.min.css" rel="stylesheet" type="text/css"/>
 <script src="jquery.mobile/jquery-2.1.1.min.js" type="text/javascript"></script>
 <script src="jquery.mobile/jquery.mobile-1.4.3.min.js" type="text/javascript"></script>
-<script src="iscroll/build/iscroll.js" type="text/javascript"></script>
+<script src="js/main.js" type="text/javascript"></script>
 <style type="text/css">
 .secondNavbar-glyphish-example .ui-btn { padding-top: 40px !important; }
 .secondNavbar-glyphish-example .ui-btn:after { width: 34px!important; height: 34px!important; margin-left: -15px !important; box-shadow: none!important; -moz-box-shadow: none!important; -webkit-box-shadow: none!important; -webkit-border-radius: 0 !important; border-radius: 0 !important; }
@@ -121,7 +121,7 @@ $(document).ready(function(e) {
 			}else{
 				//$("#errorMsg").html(data.reasons.reason);
 			}
-				//$.hideLoader();  
+				$.hideLoader();  
 			},
 			error:function(jqxhq){  
 				$("#errorMsg").html('网络异常或服务停止了');  
@@ -130,98 +130,18 @@ $(document).ready(function(e) {
 	});  
 	
 	//获取silder 菜单的信息
-	//$('#left-menu-contanier').load("leftMenu.html",null,function(){
-	//	$('#left-menu-contanier').enhanceWithin();
-	//});  
+	$('#left-menu-contanier').load("leftMenu.html",null,function(){
+		$('#left-menu-contanier').enhanceWithin();
+	});  
 	
 	  
 });
 </script>
-
-<!-- 下拉刷新的js-->
-<script type="application/javascript">
-var myScroll;
-
-$(document).ready(function(e) {
-    myScroll = new IScroll('#page_content',{
-		scrollbars: false	,
-		scrollX: false,
-		
-		useTransition: true
-	});
-	myScroll.on('beforeScrollStart', function(){
-		console.log("滚动之前");
-		console.log(this.y>>0);
-	});
-	myScroll.on('scrollCancel', function(){
-		console.log("滚动取消");
-	});
-	myScroll.on('scrollStart', function(){
-		console.log("滚动开始");
-	});
-	myScroll.on('scroll', function(){
-		console.log("滚动ing");
-	});
-	myScroll.on('scrollEnd', function(){
-		console.log("滚动结束");
-		var target=$("#footernav").get(0).offsetTop;
-		console.log(target);
-		
-		//javascript:myScroll.scrollToElement(document.querySelector('#scroller li:nth-child(50)'), 1200, null, null, IScroll.utils.ease.elastic)
-		//有效,可以进行滚动
-		//myScroll.scrollTo(0, 100,1000, IScroll.utils.ease.elastic);
-	});
-	//myScroll = new IScroll('#page_content', { bounceEasing: 'elastic', bounceTime: 1200 });
-	
-});
-document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-</script>
-<style type="text/css">
-
-#scroller {
-	position: absolute;
-	z-index: 1;
-	-webkit-tap-highlight-color: rgba(0,0,0,0);
-	width: 100%;
-	-webkit-transform: translateZ(0);
-	-moz-transform: translateZ(0);
-	-ms-transform: translateZ(0);
-	-o-transform: translateZ(0);
-	transform: translateZ(0);
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	-webkit-text-size-adjust: none;
-	-moz-text-size-adjust: none;
-	-ms-text-size-adjust: none;
-	-o-text-size-adjust: none;
-	text-size-adjust: none;
-}
-#scroller ul {
-	width: 100%;
-}
-
-
-#page_content {
-	position: absolute;
-	z-index: 1;
-	top: 50px;
-	bottom: 50px;
-	left: 0;
-	width: 100%;
-	background: #ccc;
-	overflow: hidden;
-}
-
-
-</style>
 </head> 
 <body> 
 
 <div data-role="page" id="page">
-	<div id="header" data-role="header" data-position="fixed" data-theme="f" style="border-bottom:hidden;">
+	<div id="header" data-role="header" data-position="fixed" data-theme="f">
         <a href="#left-menu" data-icon="gear" data-iconpos="notext"></a> 
         <div id="left-menu-contanier"></div>
         <div  data-role="controlgroup" data-type="horizontal" align="center">
@@ -242,11 +162,9 @@ document.addEventListener('touchmove', function (e) { e.preventDefault(); }, fal
             </ul>
         </div>
     </div>
-	<div role="main" class="ui-content" id="page_content">
-    <div id="scroller">
-
+	<div role="main" class="ui-content">
 		<ul data-role="listview" id="taskes_list">
-           <!-- --> <li>
+           <!-- <li>
             <a href="install.html"  data-ajax="false" data-transition="slide" >
                 <img src="img/install.png" >
                 <h2>新安装</h2>
@@ -272,81 +190,8 @@ document.addEventListener('touchmove', function (e) { e.preventDefault(); }, fal
                 <p class="ui-li-aside"><strong>8.21 6:24</strong></p>
             </a>
             </li>
-             <li>
-            <a href="patrols.html" data-ajax="false" data-transition="fade">
-                <img src="img/patrols.png">
-                <h2>巡检</h2>
-                <p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
-                <p class="ui-li-aside"><strong>8.21 6:24</strong></p>
-            </a>
-            </li>
-             <li>
-            <a href="patrols.html" data-ajax="false" data-transition="fade">
-                <img src="img/patrols.png">
-                <h2>巡检</h2>
-                <p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
-                <p class="ui-li-aside"><strong>8.21 6:24</strong></p>
-            </a>
-            </li>
-             <li>
-            <a href="patrols.html" data-ajax="false" data-transition="fade">
-                <img src="img/patrols.png">
-                <h2>巡检</h2>
-                <p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
-                <p class="ui-li-aside"><strong>8.21 6:24</strong></p>
-            </a>
-            </li>
-             <li>
-            <a href="patrols.html" data-ajax="false" data-transition="fade">
-                <img src="img/patrols.png">
-                <h2>巡检</h2>
-                <p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
-                <p class="ui-li-aside"><strong>8.21 6:24</strong></p>
-            </a>
-            </li>
-             <li>
-            <a href="patrols.html" data-ajax="false" data-transition="fade">
-                <img src="img/patrols.png">
-                <h2>巡检</h2>
-                <p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
-                <p class="ui-li-aside"><strong>8.21 6:24</strong></p>
-            </a>
-            </li> 
-            <li>
-            <a href="patrols.html" data-ajax="false" data-transition="fade">
-                <img src="img/patrols.png">
-                <h2>巡检</h2>
-                <p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
-                <p class="ui-li-aside"><strong>8.21 6:24</strong></p>
-            </a>
-            </li>
-             <li>
-            <a href="patrols.html" data-ajax="false" data-transition="fade">
-                <img src="img/patrols.png">
-                <h2>巡检</h2>
-                <p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
-                <p class="ui-li-aside"><strong>8.21 6:24</strong></p>
-            </a>
-            </li>
-             <li>
-            <a href="patrols.html" data-ajax="false" data-transition="fade">
-                <img src="img/patrols.png">
-                <h2>巡检</h2>
-                <p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
-                <p class="ui-li-aside"><strong>8.21 6:24</strong></p>
-            </a>
-            </li>
-             <li>
-            <a href="patrols.html" data-ajax="false" data-transition="fade">
-                <img src="img/patrols.png">
-                <h2>巡检</h2>
-                <p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
-                <p class="ui-li-aside"><strong>8.21 6:24</strong></p>
-            </a>
-            </li>
-           
+            -->
         </ul> 
-    </div>
 	</div>
     <!-- jQuery 遮罩层 -->
 	<div id="fullbg"  onClick="toggleSecondNavbar();"></div>

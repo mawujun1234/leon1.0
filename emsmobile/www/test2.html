@@ -143,42 +143,14 @@ $(document).ready(function(e) {
 var myScroll;
 
 $(document).ready(function(e) {
-    myScroll = new IScroll('#page_content',{
-		scrollbars: false	,
-		scrollX: false,
-		
-		useTransition: true
-	});
-	myScroll.on('beforeScrollStart', function(){
-		console.log("滚动之前");
-		console.log(this.y>>0);
-	});
-	myScroll.on('scrollCancel', function(){
-		console.log("滚动取消");
-	});
-	myScroll.on('scrollStart', function(){
-		console.log("滚动开始");
-	});
-	myScroll.on('scroll', function(){
-		console.log("滚动ing");
-	});
-	myScroll.on('scrollEnd', function(){
-		console.log("滚动结束");
-		var target=$("#footernav").get(0).offsetTop;
-		console.log(target);
-		
-		//javascript:myScroll.scrollToElement(document.querySelector('#scroller li:nth-child(50)'), 1200, null, null, IScroll.utils.ease.elastic)
-		//有效,可以进行滚动
-		//myScroll.scrollTo(0, 100,1000, IScroll.utils.ease.elastic);
-	});
-	//myScroll = new IScroll('#page_content', { bounceEasing: 'elastic', bounceTime: 1200 });
+
 	
 });
-document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+
 </script>
 <style type="text/css">
 
-#scroller {
+#scroller1 {
 	position: absolute;
 	z-index: 1;
 	-webkit-tap-highlight-color: rgba(0,0,0,0);
@@ -199,21 +171,6 @@ document.addEventListener('touchmove', function (e) { e.preventDefault(); }, fal
 	-o-text-size-adjust: none;
 	text-size-adjust: none;
 }
-#scroller ul {
-	width: 100%;
-}
-
-
-#page_content {
-	position: absolute;
-	z-index: 1;
-	top: 50px;
-	bottom: 50px;
-	left: 0;
-	width: 100%;
-	background: #ccc;
-	overflow: hidden;
-}
 
 
 </style>
@@ -221,7 +178,7 @@ document.addEventListener('touchmove', function (e) { e.preventDefault(); }, fal
 <body> 
 
 <div data-role="page" id="page">
-	<div id="header" data-role="header" data-position="fixed" data-theme="f" style="border-bottom:hidden;">
+	<div id="header" data-role="header" data-position="fixed" data-theme="f">
         <a href="#left-menu" data-icon="gear" data-iconpos="notext"></a> 
         <div id="left-menu-contanier"></div>
         <div  data-role="controlgroup" data-type="horizontal" align="center">
@@ -311,8 +268,7 @@ document.addEventListener('touchmove', function (e) { e.preventDefault(); }, fal
                 <p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
                 <p class="ui-li-aside"><strong>8.21 6:24</strong></p>
             </a>
-            </li> 
-            <li>
+            </li> <li>
             <a href="patrols.html" data-ajax="false" data-transition="fade">
                 <img src="img/patrols.png">
                 <h2>巡检</h2>

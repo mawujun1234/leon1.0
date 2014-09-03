@@ -146,30 +146,10 @@ $(document).ready(function(e) {
     myScroll = new IScroll('#page_content',{
 		scrollbars: false	,
 		scrollX: false,
-		
 		useTransition: true
 	});
-	myScroll.on('beforeScrollStart', function(){
-		console.log("滚动之前");
-		console.log(this.y>>0);
-	});
-	myScroll.on('scrollCancel', function(){
-		console.log("滚动取消");
-	});
-	myScroll.on('scrollStart', function(){
-		console.log("滚动开始");
-	});
-	myScroll.on('scroll', function(){
-		console.log("滚动ing");
-	});
 	myScroll.on('scrollEnd', function(){
-		console.log("滚动结束");
-		var target=$("#footernav").get(0).offsetTop;
-		console.log(target);
-		
-		//javascript:myScroll.scrollToElement(document.querySelector('#scroller li:nth-child(50)'), 1200, null, null, IScroll.utils.ease.elastic)
-		//有效,可以进行滚动
-		//myScroll.scrollTo(0, 100,1000, IScroll.utils.ease.elastic);
+		alert("已经到最后了");
 	});
 	//myScroll = new IScroll('#page_content', { bounceEasing: 'elastic', bounceTime: 1200 });
 	

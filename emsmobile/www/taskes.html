@@ -144,7 +144,8 @@ $(document).ready(function(e) {
  var myScroll ;
 $(document).ready(function(e) {
     myScroll = new IScroll('#page_content',{
-		scrollbars: true	, useTransition: true
+		scrollbars: true	,
+		useTransition: true
 	});
 	
 });
@@ -175,6 +176,7 @@ $(document).ready(function(e) {
         </div>
     </div>
 	<div role="main" class="ui-content" id="page_content">
+    <div id="scroller">
 		<ul data-role="listview" id="taskes_list">
            <!-- --> <li>
             <a href="install.html"  data-ajax="false" data-transition="slide" >
@@ -204,6 +206,7 @@ $(document).ready(function(e) {
             </li>
            
         </ul> 
+    </div>
 	</div>
     <!-- jQuery 遮罩层 -->
 	<div id="fullbg"  onClick="toggleSecondNavbar();"></div>
