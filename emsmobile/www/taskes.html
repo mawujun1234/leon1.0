@@ -286,14 +286,15 @@ $(document).ready(function(e) {
 				if(data.success==true){	
 					var root=data.root;
 					var html="";
-					for(var i=0;i<root.length;i++){
-						html+='<div data-role="collapsible">'+
-						'<h4>20012-235652-201408221234:摄像头</h4>'+
-						'<p>华为:摄像头>高清摄像头>型号</p>'+
+					//for(var i=0;i<root.length;i++){
+					html+='<div data-role="collapsible">'+
+						'<h4>'+root.ecode+':'+root.style+'</h4>'+
+						'<p>'+root.brand_name+':'+root.subtype_name+'>'+root.prod_name+'>'+root.supplier_name+'</p>'+
 						'</div>'
-					}
-					//$("#page_install_equipments_list").html(html).listview('refresh');
-					//$('#taskes_list_'+status).listview('refresh');
+					//}
+					//alert(html);
+					$("#page_install_equipments_list").append(html).enhanceWithin();//.html(html);//.enhanceWithin()
+
 				}
 				$.hideLoader();  
 			},

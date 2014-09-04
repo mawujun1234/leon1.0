@@ -13,56 +13,7 @@
 
 明天看看能不能手动的添加杆位，任务进行管理调整的功能。手动制造数据
 
-<?xml version="1.0" encoding="UTF-8"?>
-<lifecycleMappingMetadata>
-  <pluginExecutions>
-    <pluginExecution>
-      <pluginExecutionFilter>
-        <groupId>org.zeroturnaround</groupId>
-        <artifactId>jrebel-maven-plugin</artifactId>
-        <versionRange>1.1.5</versionRange>
-        <goals>
-          <goal>generate</goal>
-        </goals>
-      </pluginExecutionFilter>
-      
-      <action>
-        <ignore />
-      </action>
-    </pluginExecution>
-    
-    <pluginExecution>
-    <pluginExecutionFilter>
-        <groupId>com.mawujun</groupId>
-		<artifactId>leon-maven-plugin</artifactId>
-		<versionRange>[0.0.1-SNAPSHOT,)</versionRange> 		
-        <goals>
-          <goal>generateMT</goal>
-          <goal>copy</goal>
-        </goals>
-      </pluginExecutionFilter>
-      
-      <action>
-        <ignore />
-      </action>
-    </pluginExecution>
-    
-    <pluginExecution>
-    	<pluginExecutionFilter>
-        <groupId>net.alchim31.maven</groupId>  
-	    <artifactId>yuicompressor-maven-plugin</artifactId> 
-	    <versionRange>[1.3.0,)</versionRange> 
-        <goals>
-          <goal>compress</goal>
-        </goals>
-      </pluginExecutionFilter>
-      
-      <action>
-        <ignore />
-      </action>
-    </pluginExecution>
-  </pluginExecutions>
-</lifecycleMappingMetadata>
+
 用例编写，把移动端的按照规则编写出来看下。
 
 
