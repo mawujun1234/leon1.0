@@ -39,7 +39,17 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     
     
     <select id="queryPage" resultType="com.mawujun.mobile.task.Task" parameterType="map">
-    	select * from ems_task
+    	select * from ems_task a
+    	where a.workunit_id=#{workunit_id}
+    	<if test="status=='working'">
+    		and a.status in ('newTask','read','handling')
+    	</if>
+    	<if test="status=='confirm'">
+    		and a.status ='submited'
+    	</if>
+    	<if test="status=='complete'">
+    		and a.status ='complete'
+    	</if>
     </select>
 </mapper>
 

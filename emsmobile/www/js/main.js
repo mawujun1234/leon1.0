@@ -1,5 +1,6 @@
 // JavaScript Document
 $.ServerPath="http://localhost:8084";
+$.ecodeLength=16;
 $.ajaxSetup({
 	//jsonp: "jsonpCallback",//使用浏览器进行测试的时候用的，如果安装到手机，就注释掉
 	//dataType:'jsonp',//使用浏览器进行测试的时候用的，如果安装到手机就注释掉
@@ -13,9 +14,9 @@ $.ajaxSetup({
 		if(contentType.indexOf("application/json")!=-1){
 			//统一处理后台返回的信息
 			var data=$.parseJSON(jqXHR.responseText);
-			if(!data.success){
+			if(!data.success && data.reasons){
 				if(data.reasons.code=="noLogin"){
-					//location.href="login.html";
+					location.href="login.html";
 					return;
 				}
 			}
@@ -78,3 +79,17 @@ function hideLoader()
     $.mobile.loading('hide');
 }
 $.hideLoader=hideLoader;
+
+
+$.getUrlParam = function(string) {  
+        var obj = new Object();  
+        if (string.indexOf("?") != -1) {  
+            var string = string.substr(string.indexOf("?") + 1);  
+            var strs = string.split("&");  
+            for (var i = 0; i < strs.length; i++) {  
+                var tempArr = strs[i].split("=");  
+                obj[tempArr[0]] = tempArr[1];  
+            }  
+        }  
+        return obj;  
+}  

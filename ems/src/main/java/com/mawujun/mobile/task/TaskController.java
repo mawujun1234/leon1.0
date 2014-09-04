@@ -1,5 +1,7 @@
 package com.mawujun.mobile.task;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -7,13 +9,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
+import com.mawujun.baseinfo.EquipmentService;
+import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
+import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
+import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.page.Page;
 import com.mawujun.utils.M;
-
 import com.mawujun.mobile.task.Task;
 import com.mawujun.mobile.task.TaskService;
 /**
@@ -27,6 +33,9 @@ public class TaskController {
 
 	@Resource
 	private TaskService taskService;
+	
+	@Resource
+	private EquipmentService equipmentService;
 
 
 	/**
@@ -82,9 +91,25 @@ public class TaskController {
 	 */
 	@RequestMapping("/task/mobile/query.do")
 	@ResponseBody
-	public Page mobile_query(Integer start,Integer limit,String sampleName){
+	public Page mobile_query(Integer start,Integer limit,String status,String searchStr){
 		Page page=Page.getInstance(start,limit);//.addParam(M.Task.sampleName, "%"+sampleName+"%");
+		page.addParam(M.Task.status, status);
+		page.addParam(M.Task.workunit_id, ShiroUtils.getAuthenticationInfo().getId());
 		return taskService.queryPage(page);
+	}
+	
+	@RequestMapping("/task/mobile/getEquipmentInfo.do")
+	@ResponseBody
+	public EquipmentVO getEquipmentInfo(String ecode){
+		EquipmentVO equipmentVO=equipmentService.getEquipmentInfo(ecode);
+		
+		//Map<String,String> map=new HashMap<String,String>();
+		//map.put("prod_name", value);
+		//map.put("style", value);
+		if(equipmentVO==null){
+			throw new BusinessException("没有这个设备");
+		}
+		return equipmentVO;
 	}
 	
 

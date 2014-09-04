@@ -105,7 +105,7 @@ public class WorkUnitController {
 	
 	@RequestMapping("/workUnit/queryCombo.do")
 	@ResponseBody
-	public List<WorkUnit> queryCombo(@RequestParam("name") String name) {	
+	public List<WorkUnit> queryCombo(String name) {	
 		List<WorkUnit> workUnites=null;
 		if(name==null){
 			workUnites=workUnitService.queryAll();

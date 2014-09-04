@@ -65,7 +65,7 @@ Ext.Loader.setConfig({
 	}
 });
 
-Ext.ecode_length=23;
+Ext.ecode_length=16;
 
 
 var equipmentStatus={

@@ -142,7 +142,7 @@ public class OrderController {
 //	}
 	
 	/**
-	 * 查询该用户可以编辑的仓库的所有订单
+	 * 查询该用户可以编辑的仓库的所有订单,而且订单还咩有全部入库
 	 * @author mawujun email:160649888@163.com qq:16064988
 	 * @return
 	 */
@@ -191,6 +191,14 @@ public class OrderController {
     	cell00.setCellValue("条码");
     	HSSFCell cell011 = hssfRow0.createCell(1);
     	cell011.setCellValue("型号");
+    	HSSFCell cell012= hssfRow0.createCell(2);
+    	cell012.setCellValue("品牌");
+    	HSSFCell cell013 = hssfRow0.createCell(3);
+    	cell013.setCellValue("供应商");
+    	HSSFCell cell014 = hssfRow0.createCell(4);
+    	cell014.setCellValue("小类");
+    	HSSFCell cell015 = hssfRow0.createCell(5);
+    	cell015.setCellValue("品名");
     	
         for(int i=1;i<=results.size();i++){
         	BarcodeVO barcodeVO=results.get(i-1);
@@ -200,6 +208,15 @@ public class OrderController {
         	cell0.setCellValue(barcodeVO.getEcode());
         	HSSFCell cell1 = hssfRow.createCell(1);
         	cell1.setCellValue(barcodeVO.getStyle());
+        	
+        	HSSFCell cell2 = hssfRow.createCell(2);
+        	cell2.setCellValue(barcodeVO.getBrand_name());
+        	HSSFCell cell3 = hssfRow.createCell(3);
+        	cell3.setCellValue(barcodeVO.getSupplier_name());
+        	HSSFCell cell4 = hssfRow.createCell(4);
+        	cell4.setCellValue(barcodeVO.getSubtype_name());
+        	HSSFCell cell5 = hssfRow.createCell(5);
+        	cell5.setCellValue(barcodeVO.getProd_name());
         	 
         }
         OutputStream out = new FileOutputStream(file);

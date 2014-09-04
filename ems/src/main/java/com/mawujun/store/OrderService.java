@@ -99,8 +99,11 @@ public class OrderService extends AbstractService<Order, String>{
 			orderRepository.create(order);
 			
 			//创建该订单的条码号
-			int maxsd=getMaxsd(order,y2md);
+			int maxsd=getMaxsd(order,y2md);	
 			int nums = order.getOrderNum();
+			if(maxsd+nums>9999){
+				throw new BusinessException("同一天同个小类的的设备数量不能超过9999件,请明天再录入!");
+			}
 			for (int i = 1; i <= nums; i++) {
 				String ecode = generateBarcode(order, i+maxsd, y2md);
 				//ecodes.add(ecode);
@@ -117,8 +120,8 @@ public class OrderService extends AbstractService<Order, String>{
 			barcode_MaxNumRepository.update(Cnd.update().set(M.Barcode_MaxNum.num, nums+maxsd)
 					.andEquals(M.Barcode_MaxNum.subtype_id, order.getSubtype_id())
 					.andEquals(M.Barcode_MaxNum.prod_id, order.getProd_id())
-					.andEquals(M.Barcode_MaxNum.brand_id, order.getBrand_id())
-					.andEquals(M.Barcode_MaxNum.supplier_id, order.getSupplier_id())
+					//.andEquals(M.Barcode_MaxNum.brand_id, order.getBrand_id())
+					//.andEquals(M.Barcode_MaxNum.supplier_id, order.getSupplier_id())
 					.andEquals(M.Barcode_MaxNum.ymd,y2md)
 					.andEquals(M.Barcode_MaxNum.num,maxsd));//用num做条件，是放置并发的时候，出现覆盖
 			
@@ -146,37 +149,7 @@ public class OrderService extends AbstractService<Order, String>{
 		return result;
 	}
 	
-	
-	
-//	public List<String> getBarCodeList(OrderVO[] orderVOs) {
-//		String y2md=y2mdDateFormat.format(new Date());//年月日
-//		List<String> ecodes=new ArrayList<String>();
-//		for(OrderVO orderVO:orderVOs){
-//			int maxsd=getMaxsd(orderVO,y2md);
-//			
-//			int nums = orderVO.getPrintNum()+maxsd;
-//			for (int i = maxsd; i < nums; i++) {
-//				String ecode = generateBarcode(orderVO, i, y2md);
-//				ecodes.add(ecode);
-//				//保存这个订单明细下所有生成过的条码
-//				Barcode bar=new Barcode();
-//				bar.setEcode(ecode);
-//				bar.setOrder_id(orderVO.getId());
-//				bar.setYmd(y2md);
-//				barcodeRepository.create(bar);
-//			}
-//			//保存今天的这个订单号的最大致
-//			barcode_MaxNumRepository.update(Cnd.update().set(M.Barcode_MaxNum.num, nums)
-//					.andEquals(M.Barcode_MaxNum.subtype_id, orderVO.getSubtype_id())
-//					.andEquals(M.Barcode_MaxNum.prod_id, orderVO.getProd_id())
-//					.andEquals(M.Barcode_MaxNum.brand_id, orderVO.getBrand_id())
-//					.andEquals(M.Barcode_MaxNum.supplier_id, orderVO.getSupplier_id())
-//					.andEquals(M.Barcode_MaxNum.ymd,y2md)
-//					.andEquals(M.Barcode_MaxNum.num, maxsd));//用num做条件，是放置并发的时候，出现覆盖
-//		}
-//
-//		return ecodes;
-//	}
+
 	/**
 	 * 流水码必须要4位，因为同个小类，品名，供应商，品牌，不同的仓库，同一天会进行同时入库
 	 * @author mawujun email:160649888@163.com qq:16064988
@@ -187,16 +160,18 @@ public class OrderService extends AbstractService<Order, String>{
 	 */
 	private String generateBarcode(Order orderVO, int serialNum, String y2md) {
 		StringBuilder code = new StringBuilder();
-		//org.apache.commons.lang.StringUtils.leftPad(index+"", 4, "0");
-		code.append(orderVO.getSubtype_id()+ orderVO.getProd_id()+"-"+ orderVO.getBrand_id()+orderVO.getSupplier_id()+"-"+y2md
+
+//		code.append(orderVO.getSubtype_id()+ orderVO.getProd_id()+"-"+ orderVO.getBrand_id()+orderVO.getSupplier_id()+"-"+y2md
+//				+StringUtils.leftPad(serialNum+"", 4, "0"));
+		code.append(orderVO.getSubtype_id()+ orderVO.getProd_id()+"-"+y2md
 				+StringUtils.leftPad(serialNum+"", 4, "0"));
 		return code.toString();
 	}
 	private int getMaxsd(Order orderVO,String y2md){
 		Cnd cnd=Cnd.where().andEquals(M.Barcode_MaxNum.subtype_id, orderVO.getSubtype_id())
 				.andEquals(M.Barcode_MaxNum.prod_id, orderVO.getProd_id())
-				.andEquals(M.Barcode_MaxNum.brand_id, orderVO.getBrand_id())
-				.andEquals(M.Barcode_MaxNum.supplier_id, orderVO.getSupplier_id())
+				//.andEquals(M.Barcode_MaxNum.brand_id, orderVO.getBrand_id())
+				//.andEquals(M.Barcode_MaxNum.supplier_id, orderVO.getSupplier_id())
 				.andEquals(M.Barcode_MaxNum.ymd,y2md);
 		
 		Integer maxsd=(Integer)barcode_MaxNumRepository.queryMax(M.Barcode_MaxNum.num, cnd);
@@ -205,8 +180,8 @@ public class OrderService extends AbstractService<Order, String>{
 			Barcode_MaxNum maxnum=new Barcode_MaxNum();
 			maxnum.setSubtype_id(orderVO.getSubtype_id());
 			maxnum.setProd_id(orderVO.getProd_id());
-			maxnum.setBrand_id(orderVO.getBrand_id());
-			maxnum.setSupplier_id(orderVO.getSupplier_id());
+			//maxnum.setBrand_id(orderVO.getBrand_id());
+			//maxnum.setSupplier_id(orderVO.getSupplier_id());
 			maxnum.setYmd(y2md);
 			maxnum.setNum(maxsd);
 			barcode_MaxNumRepository.create(maxnum);
@@ -214,6 +189,28 @@ public class OrderService extends AbstractService<Order, String>{
 		return maxsd;
 		
 	}
+//	private int getMaxsd(Order orderVO,String y2md){
+//		Cnd cnd=Cnd.where().andEquals(M.Barcode_MaxNum.subtype_id, orderVO.getSubtype_id())
+//				.andEquals(M.Barcode_MaxNum.prod_id, orderVO.getProd_id())
+//				.andEquals(M.Barcode_MaxNum.brand_id, orderVO.getBrand_id())
+//				.andEquals(M.Barcode_MaxNum.supplier_id, orderVO.getSupplier_id())
+//				.andEquals(M.Barcode_MaxNum.ymd,y2md);
+//		
+//		Integer maxsd=(Integer)barcode_MaxNumRepository.queryMax(M.Barcode_MaxNum.num, cnd);
+//		if(maxsd==null){
+//			maxsd=0;
+//			Barcode_MaxNum maxnum=new Barcode_MaxNum();
+//			maxnum.setSubtype_id(orderVO.getSubtype_id());
+//			maxnum.setProd_id(orderVO.getProd_id());
+//			maxnum.setBrand_id(orderVO.getBrand_id());
+//			maxnum.setSupplier_id(orderVO.getSupplier_id());
+//			maxnum.setYmd(y2md);
+//			maxnum.setNum(maxsd);
+//			barcode_MaxNumRepository.create(maxnum);
+//		}
+//		return maxsd;
+//		
+//	}
 	
 	/**
 	 * 新品入库的时候，扫描设备获取设备的相关信息
