@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <title>任务列表</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="text/javascript" src="cordova.js"></script>
 <link href="jquery.mobile/jquery.mobile-1.4.3.min.css" rel="stylesheet" type="text/css"/>
 <script src="jquery.mobile/jquery-2.1.1.min.js" type="text/javascript"></script>
 <script src="jquery.mobile/jquery.mobile-1.4.3.min.js" type="text/javascript"></script>
@@ -169,17 +170,10 @@ $(document).ready(function(e) {
 		changeTaskesStatus(status);
 	});
 	
-	//$("#page_taskes").pagecontainer({
-	 // create: function( event, ui ) {
-		 	//获取silder 菜单的信息
-			$('#left-menu-contanier').load("leftMenu.html",null,function(){
-				$('#left-menu-contanier').enhanceWithin();
-			}); 
-	//  }
-	//});
-	 
-	
-	
+	//初始化滑出菜单
+	htmlobj=$.ajax({url:"leftMenu.html",async:false});
+  	$("#left-menu-contanier").html(htmlobj.responseText).trigger('create');
+
 });
 </script>
 
@@ -269,8 +263,9 @@ $(document).ready(function(e) {
   		          //     "Result: " + result.text + "\n" +
   		          //      "Format: " + result.format + "\n" +
   		          //      "Cancelled: " + result.cancelled);
-  		    	$('#page_install_scan_textfield').val(result.text);
+  		    	//$('#page_install_scan_textfield').val(result.text);
 				//同时去后台获取设备信息
+				getEquipmentInfo(result.text);
 		    }, 
 		    function (error) {
 		     	alert("Scanning failed: " + error);

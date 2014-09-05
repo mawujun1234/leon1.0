@@ -15,9 +15,9 @@
 
 <script type="application/javascript">
 $(document).ready(function(e) {
-    $('#left-menu-contanier').load("leftMenu.html",null,function(){
-		$('#left-menu-contanier').enhanceWithin();
-	});
+    //初始化滑出菜单
+	htmlobj=$.ajax({url:"leftMenu.html",async:false});
+  	$("#left-menu-contanier").html(htmlobj.responseText).trigger('create');
 });
 </script>
 </head> 

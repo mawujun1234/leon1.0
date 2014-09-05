@@ -14,9 +14,9 @@
 
 <script type="application/javascript">
 $(document).ready(function(e) {
-    $('#left-menu-contanier').load("leftMenu.html",null,function(){
-		$('#left-menu-contanier').enhanceWithin();
-	});
+    //初始化滑出菜单
+	htmlobj=$.ajax({url:"leftMenu.html",async:false});
+  	$("#left-menu-contanier").html(htmlobj.responseText).trigger('create');
 });
 </script>
 </head> 
@@ -46,6 +46,21 @@ $(document).ready(function(e) {
             <li>
     			<p>20140822</p>
     			<p>杆位:GGGGGGG</p>
+            </li>
+            <li data-role="list-divider">任务结束</li>
+            <li>
+    			<p>20140822</p>
+    			<p>杆位:石碶街道春节路</p>
+            </li>
+            <li data-role="list-divider">任务结束</li>
+            <li>
+    			<p>20140822</p>
+    			<p>杆位:石碶街道春节路</p>
+            </li>
+            <li data-role="list-divider">任务结束</li>
+            <li>
+    			<p>20140822</p>
+    			<p>杆位:石碶街道春节路</p>
             </li>
             <li data-role="list-divider">任务结束</li>
             <li>
