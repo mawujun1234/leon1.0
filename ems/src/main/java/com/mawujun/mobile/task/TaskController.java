@@ -97,7 +97,26 @@ public class TaskController {
 		page.addParam(M.Task.workunit_id, ShiroUtils.getAuthenticationInfo().getId());
 		return taskService.queryPage(page);
 	}
-	
+	/**
+	 * 查询某个人物下的设备挂载情况
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param task_id
+	 * @return
+	 */
+	@RequestMapping("/task/mobile/queryTaskEquipmentInfos.do")
+	@ResponseBody
+	public List<EquipmentVO> queryTaskEquipmentInfos(String task_id){
+		List<EquipmentVO> equipmentVOs=taskService.queryTaskEquipmentInfos(task_id);
+		
+		
+		return equipmentVOs;
+	}
+	/**
+	 * 获取某个设备的信息，主要用于扫描的额时候
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param ecode
+	 * @return
+	 */
 	@RequestMapping("/task/mobile/getEquipmentInfo.do")
 	@ResponseBody
 	public EquipmentVO getEquipmentInfo(String ecode){
@@ -110,6 +129,19 @@ public class TaskController {
 			throw new BusinessException("没有这个设备");
 		}
 		return equipmentVO;
+	}
+	
+	/**
+	 * 移动端的设备进行保存
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param task
+	 * @return
+	 */
+	@RequestMapping("/task/mobile/save.do")
+	@ResponseBody
+	public String save(String task_id,String[] ecodes) {
+		taskService.save(task_id,ecodes);
+		return "success";
 	}
 	
 

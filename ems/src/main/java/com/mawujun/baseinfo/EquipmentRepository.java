@@ -1,5 +1,7 @@
 package com.mawujun.baseinfo;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -16,4 +18,5 @@ public interface EquipmentRepository extends IRepository<Equipment, String>{
 	public EquipmentVO getEquipmentByEcode(@Param("ecode")String ecode,@Param("store_id")String store_id);
 	
 	public EquipmentVO getEquipmentInfo(@Param("ecode")String ecode);
+
 }

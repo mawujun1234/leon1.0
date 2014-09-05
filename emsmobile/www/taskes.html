@@ -249,7 +249,7 @@ $(document).ready(function(e) {
     		<textarea readonly cols="40" rows="16" id="page_install_memo" placeholder="只读" data-mini="true"></textarea>
          </div>	
          <a href="#" class="ui-btn ui-corner-all" id="page_install_scan_button">扫描新设备</a>
-         <input type="text" id="page_install_scan_textfield"   value="" placeholder="请扫描或手动输入...">
+         <input type="text" id="page_install_scan_textfield" name="scan_textfield"  value="" placeholder="请扫描或手动输入...">
          <div id="page_install_equipments_list">
          	
           </div>
@@ -277,7 +277,46 @@ $(document).ready(function(e) {
 		    }
 		); 
 	});
-	
+	//渲染设备列表
+	function renderEquipmentInfo(obj){
+		var html="";
+		var root=obj;
+		if(!(obj instanceof Array)){
+			root=[obj];
+		} 
+		for(var i=0;i<root.length;i++){
+			html+='<div data-role="collapsible">'+
+				'<h4>'+root[i].ecode+':'+root[i].style+'</h4>'+
+				'<p>'+root[i].brand_name+':'+root[i].subtype_name+'>'+root[i].prod_name+'>'+root[i].supplier_name+'</p>'+
+				'</div>';	
+		}
+		
+		$("#page_install_equipments_list").append(html).enhanceWithin();//.html(html);//.enhanceWithin()
+		$("#page_install_equipments_list [data-role='collapsible']").bind( "taphold", function(event){
+			window.equipmentInfoCollapsible=event.target;
+			$( "#popupArrow" ).popup( "open", { positionTo:event.target,transition: "pop" } );
+    		event.preventDefault();
+		});
+		//return html;
+	}
+	function queryTaskEquipmentInfos(task_id){
+		$.ajax({   
+			url : $.ServerPath+"/task/mobile/queryTaskEquipmentInfos.do",  
+			data:{task_id:task_id},  
+			success : function(data){
+				if(data.success==true){	
+					var root=data.root;
+					renderEquipmentInfo(root);
+				}
+				$.hideLoader();  
+			},
+			error:function(jqxhq){  
+				//$("#errorMsg").html('网络异常或服务停止了'); 
+				alert("没有这个设备!"); 
+				$.hideLoader(); 
+			}  
+		});
+	}
 	function getEquipmentInfo(ecode){
 		$.ajax({   
 			url : $.ServerPath+"/task/mobile/getEquipmentInfo.do",  
@@ -285,16 +324,12 @@ $(document).ready(function(e) {
 			success : function(data){
 				if(data.success==true){	
 					var root=data.root;
-					var html="";
-					//for(var i=0;i<root.length;i++){
-					html+='<div data-role="collapsible">'+
-						'<h4>'+root.ecode+':'+root.style+'</h4>'+
-						'<p>'+root.brand_name+':'+root.subtype_name+'>'+root.prod_name+'>'+root.supplier_name+'</p>'+
-						'</div>'
-					//}
-					//alert(html);
-					$("#page_install_equipments_list").append(html).enhanceWithin();//.html(html);//.enhanceWithin()
-
+					if(root.status!==2){
+						alert("设备没有不是'安装出库'状态，不能进行安装!");
+						return;
+					}
+					renderEquipmentInfo(root);
+					
 				}
 				$.hideLoader();  
 			},
@@ -306,8 +341,17 @@ $(document).ready(function(e) {
 		});
 	}
 
+	function deleteEquipmentInfo(){
+		window.equipmentInfoCollapsible.remove();
+		$( "#popupArrow" ).popup( "close");
+		window.equipmentInfoCollapsible=null;
+	}
 </script>
+<div data-role="popup" id="popupArrow" data-arrow="b" data-theme="b">
+	<a href="#" data-role="button" onClick="deleteEquipmentInfo();">删除</a>
 </div>
+</div>
+
 <script type="application/javascript">
 $(document).ready(function(e) {
 
@@ -320,17 +364,16 @@ $(document).ready(function(e) {
 			$("#page_install_pole_name").val(params.pole_name);  
 			$("#page_install_memo").val(params.memo);
 			sessionStorage.taskInfoParamStr=null;
+			//初始化设备列表信息
+			queryTaskEquipmentInfos(params.id);
 		}  	
 	});
 
-	//换成一类的的textfield，用class来标识
-	//还要进行设备状态的判断
-	$("#page_install_scan_textfield").keyup(function(event){
+	$("input[name='scan_textfield']").keyup(function(event){
 	  	if(event.target.value.length==$.ecodeLength){
 			getEquipmentInfo(event.target.value);
 			event.target.value="";
-		}
-		
+		}	
 	});
 	
 });

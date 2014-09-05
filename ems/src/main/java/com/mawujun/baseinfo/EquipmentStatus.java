@@ -22,7 +22,7 @@ package com.mawujun.baseinfo;
 public enum EquipmentStatus {
 	no_storage(0,"未入库"),
 	in_storage(1,"已入库"),
-	out_storage(2,"正常出库(等待安装)"),
+	out_storage(2,"安装出库"),
 	using(3,"使用中"),
 	breakdown(4,"损坏"),
 	wait_for_repair(5,"入库待维修"),

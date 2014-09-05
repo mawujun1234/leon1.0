@@ -2,6 +2,7 @@ package com.mawujun.mobile.task;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 
 
+import com.mawujun.utils.M;
 import com.mawujun.utils.page.Page;
+import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.mobile.task.Task;
 import com.mawujun.mobile.task.TaskRepository;
 
@@ -31,6 +35,8 @@ public class TaskService extends AbstractService<Task, String>{
 
 	@Autowired
 	private TaskRepository taskRepository;
+	@Autowired
+	private TaskEquipmentListRepository taskEquipmentListRepository;
 	
 	@Override
 	public TaskRepository getRepository() {
@@ -51,4 +57,16 @@ public class TaskService extends AbstractService<Task, String>{
 		super.create(task);
 		return task.getId();
 	}
+
+	public List<EquipmentVO> queryTaskEquipmentInfos(String task_id) {
+		return taskRepository.queryTaskEquipmentInfos(task_id);
+	}
+	
+	public void save(String task_id,String[] ecodes) {
+		taskEquipmentListRepository.deleteBatch(Cnd.delete().andEquals(M.TaskEquipmentList.task_id, task_id));
+		//for(String,ecodes){
+			
+		//}
+	}
+	
 }

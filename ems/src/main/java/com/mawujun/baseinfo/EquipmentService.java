@@ -1,5 +1,7 @@
 package com.mawujun.baseinfo;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -41,5 +43,4 @@ public class EquipmentService extends AbstractService<Equipment, String>{
 		return equipmentRepository.getEquipmentInfo(ecode);
 	}
 
-	
 }
