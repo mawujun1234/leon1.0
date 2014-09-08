@@ -2,7 +2,9 @@ package com.mawujun.mobile.task;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,9 +66,19 @@ public class TaskService extends AbstractService<Task, String>{
 	
 	public void save(String task_id,String[] ecodes) {
 		taskEquipmentListRepository.deleteBatch(Cnd.delete().andEquals(M.TaskEquipmentList.task_id, task_id));
-		//for(String,ecodes){
+		Set<String> existinsert=new HashSet<String>();
+		for(String ecode:ecodes){
+			if(existinsert.contains(ecode)){
+				continue;//防止一个设备多次扫描的情况，在这里进行过滤掉
+			}
+			TaskEquipmentList tel=new TaskEquipmentList();
+			tel.setEcode(ecode);
+			tel.setTask_id(task_id);
+			tel.setType(TaskListTypeEnum.install);
+			taskEquipmentListRepository.create(tel);
 			
-		//}
+			existinsert.add(ecode);
+		}
 	}
 	
 }

@@ -251,11 +251,35 @@ $(document).ready(function(e) {
             <textarea cols="40" rows="8" name="textarea" id="textarea" placeholder="请填写设备安装描述"></textarea>
          -->
          <div class="ui-field-contain"  align="center">
-            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left">保存</button>
+            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" onClick="save();">保存</button>
             <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left">提交</button>
          </div>
 	</div>
     <script type="text/javascript">
+	function save(){
+		var values=[];
+		$("#page_install_equipments_list [data-role='collapsible']").each(function(index, element) {
+            values.push($(this).attr("ecode"));
+        });
+		//alert(values);
+		$.showLoader("正在保存....");
+		var params={
+			task_id:$("#page_install_id").val(),
+			ecodes:	values
+		};
+		$.ajax({   
+			url : $.ServerPath+"/task/mobile/save.do",  
+			data:params,  
+			success : function(data){
+				if(data.success==true){	
+					//var root=data.root;
+					//zrenderEquipmentInfo(root);
+				}
+				$.hideLoader();  
+			}
+		});
+		
+	}
 	$('#page_install_scan_button').bind('click', function() { 
 		cordova.plugins.barcodeScanner.scan(
 			function (result) {
@@ -280,7 +304,7 @@ $(document).ready(function(e) {
 			root=[obj];
 		} 
 		for(var i=0;i<root.length;i++){
-			html+='<div data-role="collapsible">'+
+			html+='<div data-role="collapsible" ecode="'+root[i].ecode+'">'+
 				'<h4>'+root[i].ecode+':'+root[i].style+'</h4>'+
 				'<p>'+root[i].brand_name+':'+root[i].subtype_name+'>'+root[i].prod_name+'>'+root[i].supplier_name+'</p>'+
 				'</div>';	

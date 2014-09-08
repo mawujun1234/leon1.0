@@ -1,6 +1,6 @@
 // JavaScript Document
-//$.ServerPath="http://localhost:8084";
-$.ServerPath="http://172.16.3.4:8084";
+$.ServerPath="http://localhost:8084";
+//$.ServerPath="http://172.16.3.4:8084";
 $.ecodeLength=16;
 $.ajaxSetup({
 	//jsonp: "jsonpCallback",//使用浏览器进行测试的时候用的，如果安装到手机，就注释掉
@@ -25,7 +25,21 @@ $.ajaxSetup({
 	},
 	
 	error:function(jqXHR){  
-		alert('网络异常或服务停止了');  
+		var contentType=jqXHR.getResponseHeader("Content-Type");
+		if(contentType.indexOf("application/json")!=-1){
+			//统一处理后台返回的信息
+			var data=$.parseJSON(jqXHR.responseText);
+			if(!data.success && data.reasons){
+				if(data.reasons.code=="noLogin"){
+					location.href="login.html";
+					return;
+				}
+			} else if(!data.success) {
+				alert(data.msg); 
+			}
+		} else {
+			alert('网络异常或服务停止了');  
+		}
 		$.hideLoader(); 
 	}  
 	

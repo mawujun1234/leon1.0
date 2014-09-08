@@ -140,6 +140,7 @@ public class TaskController {
 	@RequestMapping("/task/mobile/save.do")
 	@ResponseBody
 	public String save(String task_id,String[] ecodes) {
+		jquery 2 json地方有文图，，不能将数组正确的转换
 		taskService.save(task_id,ecodes);
 		return "success";
 	}
