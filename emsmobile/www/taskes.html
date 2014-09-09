@@ -389,8 +389,11 @@ $(document).ready(function(e) {
 
 	function deleteEquipmentInfo(){
 		//选择了设备
-		window.equipmentInfoCollapsible.remove();
+		
+		$(window.equipmentInfoCollapsible).remove();
+		alert(window.equipmentInfoCollapsible);
 		$( "#popupArrow" ).popup( "close");
+		alert(2);
 		window.equipmentInfoCollapsible=null;
 	}
 </script>

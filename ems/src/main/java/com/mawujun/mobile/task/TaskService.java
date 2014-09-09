@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.EquipmentStatus;
 import com.mawujun.baseinfo.EquipmentVO;
+import com.mawujun.baseinfo.PoleRepository;
+import com.mawujun.baseinfo.PoleStatus;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 import com.mawujun.utils.M;
@@ -35,6 +37,8 @@ public class TaskService extends AbstractService<Task, String>{
 	private TaskEquipmentListRepository taskEquipmentListRepository;
 	@Autowired
 	private EquipmentRepository equipmentRepository;
+	@Autowired
+	private PoleRepository poleRepository;
 	
 	@Override
 	public TaskRepository getRepository() {
@@ -63,6 +67,10 @@ public class TaskService extends AbstractService<Task, String>{
 	 */
 	public void confirm(String id) {
 		taskRepository.update(Cnd.update().set(M.Task.status, TaskStatus.complete).set(M.Task.completeDate, new Date()).andEquals(M.Task.id, id));
+		
+		Task task=taskRepository.get(id);
+		//修改杆位状态为"已安装"
+		poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.using).andEquals(M.Pole.id, task.getPole_id()));
 	}
 	
 	
@@ -72,8 +80,12 @@ public class TaskService extends AbstractService<Task, String>{
 	}
 
 	public List<EquipmentVO> mobile_queryTaskEquipmentInfos(String task_id) {
+		Task task=taskRepository.get(task_id);
 		//任务查看过后，就修改状态为“已阅”,只有任务状态为 newTask的才会被修改
 		taskRepository.update(Cnd.update().set(M.Task.status, TaskStatus.handling).andEquals(M.Task.id, task_id).andEquals(M.Task.status, TaskStatus.newTask));
+		//修改杆位状态为"安装中"
+		poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.installing).andEquals(M.Pole.id, task.getPole_id()));
+		
 		return taskRepository.mobile_queryTaskEquipmentInfos(task_id);
 	}
 	
@@ -98,6 +110,7 @@ public class TaskService extends AbstractService<Task, String>{
 	}
 	
 	public void mobile_submit(String task_id,String[] ecodes) {
+		
 		//全部重新保存，因为不知道哪些是更新过的
 		taskEquipmentListRepository.deleteBatch(Cnd.delete().andEquals(M.TaskEquipmentList.task_id, task_id));
 		Set<String> existinsert=new HashSet<String>();
@@ -120,6 +133,8 @@ public class TaskService extends AbstractService<Task, String>{
 		
 		//修改任务状态为"已提交"
 		taskRepository.update(Cnd.update().set(M.Task.status, TaskStatus.submited).set(M.Task.submitDate, new Date()).andEquals(M.Task.id, task_id));
+		
+		
 	}
 	
 }
