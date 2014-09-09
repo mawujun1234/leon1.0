@@ -120,13 +120,14 @@ function queryTasks(status){
 				for(var i=0;i<root.length;i++){
 					var taskInfoParamStr='?id='+root[i].id+'&pole_name='+root[i].pole_name+'&memo='+root[i].memo;
 					//alert(taskInfoParamStr);
+					
 					html+='<li>'+
 					'<a href="#page_install" onclick="sessionStorage.taskInfoParamStr=\''+taskInfoParamStr+'\'" data-transition="slide" >'+
 						'<img src="img/install.png">'+
 						'<h2>新安装</h2>'+
 						'<p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>'+
 						'<p class="ui-li-aside"><strong>8.21 6:24</strong></p>'+
-						'<p class="ui-li-count" style="color:#FFF;background-color:#F00;">new</p>'+
+						((root[i].status!="newTask")?'':'<p class="ui-li-count" style="color:#FFF;background-color:#F00;">new</p>')+
 					'</a>'+
 					'</li>'
 				}
@@ -251,22 +252,20 @@ $(document).ready(function(e) {
             <textarea cols="40" rows="8" name="textarea" id="textarea" placeholder="请填写设备安装描述"></textarea>
          -->
          <div class="ui-field-contain"  align="center">
-            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" onClick="save();">保存</button>
-            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left">提交</button>
+            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" onClick="saveTask();">保存</button>
+            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" onClick="submitTask();">提交</button>
          </div>
 	</div>
     <script type="text/javascript">
-	function save(){
-		var values=[];
-		$("#page_install_equipments_list [data-role='collapsible']").each(function(index, element) {
-            values.push($(this).attr("ecode"));
-        });
-		//alert(values);
+	function saveTask(){
 		$.showLoader("正在保存....");
-		var params={
-			task_id:$("#page_install_id").val(),
-			ecodes:	values
-		};
+		
+		var params="&task_id="+$("#page_install_id").val();
+		$("#page_install_equipments_list [data-role='collapsible']").each(function(index, element) {
+            //values.push($(this).attr("ecode"));
+			params+="&ecodes="+$(this).attr("ecode");
+        });
+		/****/
 		$.ajax({   
 			url : $.ServerPath+"/task/mobile/save.do",  
 			data:params,  
@@ -274,11 +273,34 @@ $(document).ready(function(e) {
 				if(data.success==true){	
 					//var root=data.root;
 					//zrenderEquipmentInfo(root);
+					//history.back();
+					
 				}
 				$.hideLoader();  
 			}
-		});
+		});	
+	}
+	function submitTask(){
+		$.showLoader("正在提交....");
 		
+		var params="&task_id="+$("#page_install_id").val();
+		$("#page_install_equipments_list [data-role='collapsible']").each(function(index, element) {
+			params+="&ecodes="+$(this).attr("ecode");
+        });
+		/****/
+		$.ajax({   
+			url : $.ServerPath+"/task/mobile/submit.do",  
+			data:params,  
+			success : function(data){
+				if(data.success==true){	
+					var previous = $(':mobile-pagecontainer').pagecontainer( "getActivePage" ).prev('[data-role=page]');
+					$.mobile.changePage(previous, { 
+						  transition: 'slide',
+						  reverse: true });
+				}
+				$.hideLoader();  
+			}
+		});	
 	}
 	$('#page_install_scan_button').bind('click', function() { 
 		cordova.plugins.barcodeScanner.scan(
@@ -297,7 +319,7 @@ $(document).ready(function(e) {
 		); 
 	});
 	//渲染设备列表
-	function renderEquipmentInfo(obj){
+	function renderEquipmentInfo(obj,coverHtml){
 		var html="";
 		var root=obj;
 		if(!(obj instanceof Array)){
@@ -309,8 +331,13 @@ $(document).ready(function(e) {
 				'<p>'+root[i].brand_name+':'+root[i].subtype_name+'>'+root[i].prod_name+'>'+root[i].supplier_name+'</p>'+
 				'</div>';	
 		}
-		
-		$("#page_install_equipments_list").append(html).enhanceWithin();//.html(html);//.enhanceWithin()
+		if(coverHtml){
+			//覆盖已经有的html
+			$("#page_install_equipments_list").html(html).enhanceWithin();
+		} else {
+			$("#page_install_equipments_list").append(html).enhanceWithin();
+		}
+		//.html(html);//.enhanceWithin()
 		$("#page_install_equipments_list [data-role='collapsible']").bind( "taphold", function(event){
 			window.equipmentInfoCollapsible=event.target;
 			$( "#popupArrow" ).popup( "open", { positionTo:event.target,transition: "pop" } );
@@ -325,7 +352,7 @@ $(document).ready(function(e) {
 			success : function(data){
 				if(data.success==true){	
 					var root=data.root;
-					renderEquipmentInfo(root);
+					renderEquipmentInfo(root,true);
 				}
 				$.hideLoader();  
 			},
@@ -361,13 +388,14 @@ $(document).ready(function(e) {
 	}
 
 	function deleteEquipmentInfo(){
+		//选择了设备
 		window.equipmentInfoCollapsible.remove();
 		$( "#popupArrow" ).popup( "close");
 		window.equipmentInfoCollapsible=null;
 	}
 </script>
 <div data-role="popup" id="popupArrow" data-arrow="b" data-theme="b">
-	<a href="#" data-role="button" onClick="deleteEquipmentInfo();">删除</a>
+	<a href="javascript:void(0);" data-role="button" onClick="deleteEquipmentInfo();">删除</a>
 </div>
 </div>
 

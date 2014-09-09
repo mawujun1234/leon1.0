@@ -1,7 +1,5 @@
 package com.mawujun.mobile.task;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -10,18 +8,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.mawujun.utils.page.PageRequest;
-import com.mawujun.utils.page.QueryResult;
 import com.mawujun.baseinfo.EquipmentService;
 import com.mawujun.baseinfo.EquipmentVO;
-import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.exception.BusinessException;
-import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.shiro.ShiroUtils;
-import com.mawujun.utils.page.Page;
 import com.mawujun.utils.M;
-import com.mawujun.mobile.task.Task;
-import com.mawujun.mobile.task.TaskService;
+import com.mawujun.utils.page.Page;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
  * @version 1.0
@@ -55,6 +47,25 @@ public class TaskController {
 			page.addParam("pole_name", "%"+pole_name+"%");
 		}
 		return taskService.queryPoles(page);
+	}
+	
+	@RequestMapping("/task/query.do")
+	@ResponseBody
+	public Page query(Integer start,Integer limit,String customer_id,String status,String workunit_id,String pole_name) {
+		Page page=Page.getInstance(start,limit);
+		page.addParam("customer_id", customer_id);
+		page.addParam("status", status);
+		page.addParam("workunit_id", workunit_id);
+		if(pole_name!=null){
+			page.addParam("pole_name", "%"+pole_name+"%");
+		}
+		return taskService.queryPage(page);
+	}
+	@RequestMapping("/task/confirm.do")
+	@ResponseBody
+	public String confirm(String id) {
+		taskService.confirm(id);
+		return "success";
 	}
 //
 //	/**
@@ -95,19 +106,18 @@ public class TaskController {
 		Page page=Page.getInstance(start,limit);//.addParam(M.Task.sampleName, "%"+sampleName+"%");
 		page.addParam(M.Task.status, status);
 		page.addParam(M.Task.workunit_id, ShiroUtils.getAuthenticationInfo().getId());
-		return taskService.queryPage(page);
+		return taskService.mobile_queryPage(page);
 	}
 	/**
-	 * 查询某个人物下的设备挂载情况
+	 * 查询某个任务下的设备挂载情况
 	 * @author mawujun email:160649888@163.com qq:16064988
 	 * @param task_id
 	 * @return
 	 */
 	@RequestMapping("/task/mobile/queryTaskEquipmentInfos.do")
 	@ResponseBody
-	public List<EquipmentVO> queryTaskEquipmentInfos(String task_id){
-		List<EquipmentVO> equipmentVOs=taskService.queryTaskEquipmentInfos(task_id);
-		
+	public List<EquipmentVO> mobile_queryTaskEquipmentInfos(String task_id){
+		List<EquipmentVO> equipmentVOs=taskService.mobile_queryTaskEquipmentInfos(task_id);
 		
 		return equipmentVOs;
 	}
@@ -139,9 +149,23 @@ public class TaskController {
 	 */
 	@RequestMapping("/task/mobile/save.do")
 	@ResponseBody
-	public String save(String task_id,String[] ecodes) {
-		jquery 2 json地方有文图，，不能将数组正确的转换
-		taskService.save(task_id,ecodes);
+	public String mobile_save(String task_id,String[] ecodes) {
+		//jquery 2 json地方有文图，，不能将数组正确的转换
+		taskService.mobile_save(task_id,ecodes);
+		return "success";
+	}
+	
+	/**
+	 * 移动端的设备进行保存
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param task
+	 * @return
+	 */
+	@RequestMapping("/task/mobile/submit.do")
+	@ResponseBody
+	public String mobile_submit(String task_id,String[] ecodes) {
+		//jquery 2 json地方有文图，，不能将数组正确的转换
+		taskService.mobile_save(task_id,ecodes);
 		return "success";
 	}
 	

@@ -18,5 +18,6 @@ import com.mawujun.mobile.task.Task;
 public interface TaskRepository extends IRepository<Task, String>{
 	public Page queryPoles(Page page);
 	
-	public List<EquipmentVO> queryTaskEquipmentInfos(@Param("task_id")String task_id);
+	public Page mobile_queryPage(Page page) ;
+	public List<EquipmentVO> mobile_queryTaskEquipmentInfos(@Param("task_id")String task_id);
 }

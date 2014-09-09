@@ -203,7 +203,6 @@ public static final class Task {
 	public static final String createDate="createDate";
 	public static final String startHandDate="startHandDate";
 	public static final String submitDate="submitDate";
-	public static final String approveDate="approveDate";
 	public static final String completeDate="completeDate";
 	public static final String hitchType="hitchType";
 	public static final String hitchReason="hitchReason";

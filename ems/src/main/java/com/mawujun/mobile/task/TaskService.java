@@ -11,19 +11,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
-
-import org.springframework.web.bind.annotation.RequestBody;
-
+import com.mawujun.baseinfo.EquipmentRepository;
+import com.mawujun.baseinfo.EquipmentStatus;
+import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
-
-
 import com.mawujun.utils.M;
 import com.mawujun.utils.page.Page;
-import com.mawujun.baseinfo.EquipmentVO;
-import com.mawujun.mobile.task.Task;
-import com.mawujun.mobile.task.TaskRepository;
 
 
 /**
@@ -39,6 +33,8 @@ public class TaskService extends AbstractService<Task, String>{
 	private TaskRepository taskRepository;
 	@Autowired
 	private TaskEquipmentListRepository taskEquipmentListRepository;
+	@Autowired
+	private EquipmentRepository equipmentRepository;
 	
 	@Override
 	public TaskRepository getRepository() {
@@ -59,12 +55,29 @@ public class TaskService extends AbstractService<Task, String>{
 		super.create(task);
 		return task.getId();
 	}
-
-	public List<EquipmentVO> queryTaskEquipmentInfos(String task_id) {
-		return taskRepository.queryTaskEquipmentInfos(task_id);
+	/**
+	 * 管理人员 确认任务单
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param id
+	 * @return
+	 */
+	public void confirm(String id) {
+		taskRepository.update(Cnd.update().set(M.Task.status, TaskStatus.complete).set(M.Task.completeDate, new Date()).andEquals(M.Task.id, id));
 	}
 	
-	public void save(String task_id,String[] ecodes) {
+	
+	
+	public Page mobile_queryPage(Page page) {
+		return this.getRepository().mobile_queryPage(page);
+	}
+
+	public List<EquipmentVO> mobile_queryTaskEquipmentInfos(String task_id) {
+		//任务查看过后，就修改状态为“已阅”,只有任务状态为 newTask的才会被修改
+		taskRepository.update(Cnd.update().set(M.Task.status, TaskStatus.handling).andEquals(M.Task.id, task_id).andEquals(M.Task.status, TaskStatus.newTask));
+		return taskRepository.mobile_queryTaskEquipmentInfos(task_id);
+	}
+	
+	public void mobile_save(String task_id,String[] ecodes) {
 		taskEquipmentListRepository.deleteBatch(Cnd.delete().andEquals(M.TaskEquipmentList.task_id, task_id));
 		Set<String> existinsert=new HashSet<String>();
 		for(String ecode:ecodes){
@@ -77,8 +90,36 @@ public class TaskService extends AbstractService<Task, String>{
 			tel.setType(TaskListTypeEnum.install);
 			taskEquipmentListRepository.create(tel);
 			
+			
 			existinsert.add(ecode);
 		}
+		//修改任务状态为"处理中"
+		taskRepository.update(Cnd.update().set(M.Task.status, TaskStatus.handling).set(M.Task.startHandDate,new Date()).andEquals(M.Task.id, task_id));
+	}
+	
+	public void mobile_submit(String task_id,String[] ecodes) {
+		//全部重新保存，因为不知道哪些是更新过的
+		taskEquipmentListRepository.deleteBatch(Cnd.delete().andEquals(M.TaskEquipmentList.task_id, task_id));
+		Set<String> existinsert=new HashSet<String>();
+		for(String ecode:ecodes){
+			if(existinsert.contains(ecode)){
+				continue;//防止一个设备多次扫描的情况，在这里进行过滤掉
+			}
+			TaskEquipmentList tel=new TaskEquipmentList();
+			tel.setEcode(ecode);
+			tel.setTask_id(task_id);
+			tel.setType(TaskListTypeEnum.install);
+			taskEquipmentListRepository.create(tel);
+			
+			
+			existinsert.add(ecode);
+			//修改设备为“使用中”
+			//修改设备为旧设备
+			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using.getValue()).set(M.Equipment.isnew, false).andEquals(M.Equipment.ecode, ecode));		
+		}
+		
+		//修改任务状态为"已提交"
+		taskRepository.update(Cnd.update().set(M.Task.status, TaskStatus.submited).set(M.Task.submitDate, new Date()).andEquals(M.Task.id, task_id));
 	}
 	
 }

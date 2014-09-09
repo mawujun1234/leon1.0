@@ -44,12 +44,24 @@ public class Task implements IdEntity<String> {
 	private Date createDate;//创建时间
 	private Date startHandDate;//开始处理时间，第一次保存的时候
 	private Date submitDate;//提交时间
-	private Date approveDate;//管理人员审批时间
+	//private Date approveDate;//管理人员审批时间
 	private Date completeDate;//完成时间
 	
 	private String hitchType;//故障类型
 	private String hitchReason;//故障原因，也用来存放维护内容
 	
+	public String getType_name() {
+		if(this.getType()!=null){
+			return this.getType().getName();
+		}
+		return null;
+	}
+	public String getStatus_name() {
+		if(this.getStatus()!=null){
+			return this.getStatus().getName();
+		}
+		return null;
+	}
 	public String getId() {
 		return id;
 	}
@@ -110,12 +122,7 @@ public class Task implements IdEntity<String> {
 	public void setSubmitDate(Date submitDate) {
 		this.submitDate = submitDate;
 	}
-	public Date getApproveDate() {
-		return approveDate;
-	}
-	public void setApproveDate(Date approveDate) {
-		this.approveDate = approveDate;
-	}
+
 	public Date getCompleteDate() {
 		return completeDate;
 	}

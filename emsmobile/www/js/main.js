@@ -5,6 +5,8 @@ $.ecodeLength=16;
 $.ajaxSetup({
 	//jsonp: "jsonpCallback",//使用浏览器进行测试的时候用的，如果安装到手机，就注释掉
 	//dataType:'jsonp',//使用浏览器进行测试的时候用的，如果安装到手机就注释掉
+	// contentType: "application/json", 表示请求的数据是数据流
+	//dataType: 'json',  要求后台返回json，和设置了headers是同个道理
 	type:'POST',
 	headers:{
 		Accept:"application/json;"
