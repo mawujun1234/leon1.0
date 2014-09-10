@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.baseinfo.EquipmentService;
 import com.mawujun.baseinfo.EquipmentVO;
+import com.mawujun.baseinfo.Pole;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.M;
@@ -46,7 +47,16 @@ public class TaskController {
 		if(pole_name!=null){
 			page.addParam("pole_name", "%"+pole_name+"%");
 		}
-		return taskService.queryPoles(page);
+		Page result= taskService.queryPoles(page);
+		
+		//因为一个杆位会有多个任务
+		int i=0;
+		for(Object obj:result.getResult()){
+			Pole pole=(Pole)obj;
+			pole.setId(pole.getId()+"-"+i);
+			i++;
+		}
+		return result;
 	}
 	
 	@RequestMapping("/task/query.do")
@@ -84,11 +94,18 @@ public class TaskController {
 //	}
 	
 	
+//	@RequestMapping("/task/create.do")
+//	@ResponseBody
+//	public Task create(@RequestBody Task task) {
+//		taskService.create(new Task[]{task});
+//		return task;
+//	}
+	
 	@RequestMapping("/task/create.do")
 	@ResponseBody
-	public Task create(@RequestBody Task task) {
-		taskService.create(task);
-		return task;
+	public String create(@RequestBody Task[] taskes) {
+		taskService.create(taskes);
+		return "success";
 	}
 	
 	

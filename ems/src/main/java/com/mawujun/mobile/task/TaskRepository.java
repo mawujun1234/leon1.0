@@ -16,6 +16,7 @@ import com.mawujun.mobile.task.Task;
  */
 @Repository
 public interface TaskRepository extends IRepository<Task, String>{
+	public String queryMax_id(@Param("createDate")String createDate);
 	public Page queryPoles(Page page);
 	
 	public Page mobile_queryPage(Page page) ;

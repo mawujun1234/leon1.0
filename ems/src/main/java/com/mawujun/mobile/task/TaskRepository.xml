@@ -5,6 +5,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
 <mapper namespace="com.mawujun.mobile.task.TaskRepository">
+	<select id="queryMax_id" resultType="string" parameterType="map">
+    	select max(id) from ems_task a
+    	where to_char(a.createDate,'yyyymmdd')=#{createDate}
+    </select>
+    
 	<select id="queryPoles" resultType="com.mawujun.baseinfo.PoleVO" parameterType="map">
     	select 
 		a.*,

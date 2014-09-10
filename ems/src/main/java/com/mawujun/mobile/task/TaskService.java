@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -45,19 +46,38 @@ public class TaskService extends AbstractService<Task, String>{
 		return taskRepository;
 	}
 	
-	SimpleDateFormat ymdHmsDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
+	SimpleDateFormat ymdHmsDateFormat=new SimpleDateFormat("yyyyMMdd");
 
 	public Page queryPoles(Page page) {
 		return taskRepository.queryPoles(page);
 	}
 	
-	public String create(Task task) {
+	public void create(Task[] taskes) {
 		Date createDate=new Date();
-		task.setCreateDate(createDate);
-		task.setStatus(TaskStatus.newTask);
-		task.setId(ymdHmsDateFormat.format(createDate)+"-001");
-		super.create(task);
-		return task.getId();
+		//获取当天的id的最大值
+		String max_id_str=taskRepository.queryMax_id(ymdHmsDateFormat.format(createDate));
+		Integer max_id=1;
+		if(max_id_str==null){
+			max_id=1;
+		} else {
+			max_id_str=max_id_str.split("-")[1];
+			max_id=(Integer.parseInt(max_id_str)+1);
+		}
+		//max_id=StringUtils.leftPad(max_id, 4, '0');
+		for(Task task:taskes){
+			task.setCreateDate(createDate);
+			task.setStatus(TaskStatus.newTask);
+			task.setId(ymdHmsDateFormat.format(createDate)+"-"+StringUtils.leftPad(max_id+"", 4, '0'));
+			super.create(task);
+			max_id++;
+			
+			//修改改为状态
+			//如果是新安装的设备，那就改为安装中
+			if(task.getType()==TaskType.newInstall){
+				poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.installing).andEquals(M.Pole.id, task.getPole_id()));
+			}
+			
+		}
 	}
 	/**
 	 * 管理人员 确认任务单
@@ -70,7 +90,10 @@ public class TaskService extends AbstractService<Task, String>{
 		
 		Task task=taskRepository.get(id);
 		//修改杆位状态为"已安装"
-		poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.using).andEquals(M.Pole.id, task.getPole_id()));
+		if(task.getType()==TaskType.newInstall){
+			poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.using).andEquals(M.Pole.id, task.getPole_id()));
+		}
+		
 	}
 	
 	
@@ -80,11 +103,12 @@ public class TaskService extends AbstractService<Task, String>{
 	}
 
 	public List<EquipmentVO> mobile_queryTaskEquipmentInfos(String task_id) {
-		Task task=taskRepository.get(task_id);
+		
 		//任务查看过后，就修改状态为“已阅”,只有任务状态为 newTask的才会被修改
 		taskRepository.update(Cnd.update().set(M.Task.status, TaskStatus.handling).andEquals(M.Task.id, task_id).andEquals(M.Task.status, TaskStatus.newTask));
 		//修改杆位状态为"安装中"
-		poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.installing).andEquals(M.Pole.id, task.getPole_id()));
+		//Task task=taskRepository.get(task_id);
+		//poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.installing).andEquals(M.Pole.id, task.getPole_id()));
 		
 		return taskRepository.mobile_queryTaskEquipmentInfos(task_id);
 	}
