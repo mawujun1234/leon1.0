@@ -6,6 +6,12 @@
 	reasons.code:'noLogin':表示没有登录
 * 在测试的时候，所有的请求全部使用jsonp协议的形式进行请求，因为存在跨域的问题，除非把html代码放到leon同个项目中。
 * 在手机上进行访问的时候，可以使用普通的ajax进行访问，就像同个域里面一样
+*要添加的插件
+	cordova plugin add org.apache.cordova.dialogs
+		cordova plugin rm org.apache.cordova.dialogs
+	cordova plugin add E:\eclipse\mobiles\plugins\barcodeScanner
+		cordova plugin rm com.phonegap.plugins.barcodescanner
+
 
 设想=============
 	1:当前任务的时候，有界面过滤功能，一次性全部读出来
@@ -20,12 +26,13 @@ http://localhost:8085/www/login.html
 	(完成)发送维修任务
 	维修任务流程
 消息发送流程
+	超时任务提醒功能，分为自动提醒和人工提醒,先做自动提醒吧，功能先写死了，24小时提醒一次
 
+地理位置上报，接收，记录
+底部菜单的提醒，例如一共有多少个任务，气泡提醒
+任务查看功能的权限还没有进行控制,已经完成和确认的任务就不能进行编辑了
+任务列表下拉才去读取数据的功能
 
-扫描连续扫描的问题(没有测试成功)
-退出的功能
-	三个主页上按返回按钮，退出应用程序
-任务查看功能的权限还没有进行控制
 
 任务搜索，跳到专门的页面去搜索，搜索结果页只显示在那个页面，这样各个列表中的数据就可以缓存了，不用再去后台查了
 	只通过手动或自动进行刷新
@@ -34,7 +41,7 @@ http://localhost:8085/www/login.html
 使用ajax和window.history.pushState无刷新改变页面内容和地址栏URL
 	http://blog.csdn.net/chen052210123/article/details/7481578
 
-气泡提示看看能不能更圆
+
 刷新功能可以参考知乎日报的刷新，只在头部出现一个刷新的框
 先把主要的下拉刷新，上拉重新加载完成，然后再做个性化的提示
 下拉刷新 
@@ -58,18 +65,18 @@ http://localhost:8085/www/login.html
 
 记住用户名的功能，cookie或者是localestorge
 
-
-扫描的设备列表长按可以删除
+(暂停)扫描连续扫描的问题(没有测试成功)
+(完成)退出的功能
+	三个主页上按返回按钮，退出应用程序
+(完成)扫描的设备列表长按可以删除
 
 记住密码的功能，应该是通过app来实现的而不是cookie，所以暂时先去掉
 	http://jinnianshilongnian.iteye.com/blog/2031823
 
 
 
-
+气泡提示看看能不能更圆
 系统启动时的页面，flash...的那个页面
-
-底部菜单的提醒，例如一共有多少个任务，气泡提醒
 任务列表下拉才去读取数据的功能
 整个项目的色调改一下，改成淡蓝色的那种形式,这块可能要全部重新定制下
 	图标的灰色背景和这个应该也有关系

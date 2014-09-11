@@ -96,6 +96,13 @@ public class MobileLoginController {
 		
 	}
 	
+	@RequestMapping("/mobile/logout.do")
+	@ResponseBody
+	public String logout(){
+		Subject subject = SecurityUtils.getSubject(); 
+		subject.logout();
+		return "logout";
+	}
 	@RequestMapping("/mobile/updatePassword.do")
 	@ResponseBody
 	public String updatePassword(String password,String password_repeat){

@@ -110,3 +110,36 @@ $.getUrlParam = function(string) {
         }  
         return obj;  
 }  
+
+$(function(){
+	document.addEventListener("deviceready", function(){
+		document.addEventListener("backbutton", function(){
+			var activePage=$(':mobile-pagecontainer').pagecontainer( "getActivePage" );
+			//所有独立的html的第一个页面都取名为page_homepage，这样就可以统一处理了
+			if(activePage.is('#page_homepage')){
+                //navigator.app.exitApp();
+				navigator.notification.confirm(
+					'你确定要退出?',
+					function (buttonIndex) {
+					  if (buttonIndex === 1) {
+						$.ajax({   
+							url : $.ServerPath+"/mobile/logout.do",   
+							success : function(data){
+							}
+						});	
+						navigator.app.exitApp();
+					  }
+					},
+					'退出',
+					['确定','取消']
+				);
+            }else {
+				navigator.app.backHistory();
+			}
+
+			
+		}, false);//backbutton
+		
+	}, false); //deviceready
+	
+});
