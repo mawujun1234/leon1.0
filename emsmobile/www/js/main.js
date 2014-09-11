@@ -128,6 +128,7 @@ $(function(){
 							}
 						});	
 						navigator.app.exitApp();
+						navigator.geolocation.clearWatch(watchID);
 					  }
 					},
 					'退出',
@@ -136,10 +137,48 @@ $(function(){
             }else {
 				navigator.app.backHistory();
 			}
-
-			
+			//进入后5秒后开始发送地理信息
+			if(sessionStorage.getItem("user") && !sessionStorage.getItem("watchID")){
+				setTimeout("uploadGeolocation",5000);
+			}
 		}, false);//backbutton
 		
+		
+		
+		
 	}, false); //deviceready
+	
+	function uploadGeolocation(){
+		
+		alert(uuid);
+		//sessionStorage.setItem("user",JSON.stringify(data.root));
+		var user=$.parseJSON(sessionStorage.getItem("user"));
+		var uuid=device.uuid;
+		alert(uuid);
+		//获取设备的地理位置
+		var watchID = navigator.geolocation.watchPosition(
+			function(position){
+				var params={};
+				params.longitude=position.coords.longitude;
+				params.latitude=position.coords.latitude;
+				params.loginName=user.username;
+				params.uuid=uuid;
+				
+				$.ajax({   
+					url : $.ServerPath+"/geolocation/mobile/upload.do",
+					data:params,   
+					success : function(data){
+					}
+				});	
+			}, 
+			function(error){
+				 //alert('code: '    + error.code    + '\n' +
+          		//'message: ' + error.message + '\n');
+			}, 
+			{ timeout: 30000 }
+		);	
+		//用来控制应用只发送一个请求
+		sessionStorage.setItem("watchID",watchID);
+	}
 	
 });

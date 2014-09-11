@@ -15,6 +15,10 @@
                         {
                             "xml": "<feature name=\"Notification\"><param name=\"android-package\" value=\"org.apache.cordova.dialogs.Notification\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Device\"><param name=\"android-package\" value=\"org.apache.cordova.device.Device\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -106,6 +110,16 @@
                         },
                         {
                             "xml": "<uses-permission android:name=\"android.permission.BROADCAST_STICKY\" />",
+                            "count": 1
+                        }
+                    ],
+                    "/*": [
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\" />",
                             "count": 1
                         }
                     ]
@@ -600,6 +614,12 @@
             "PACKAGE_NAME": "com.mawujun.mobile"
         },
         "org.apache.cordova.dialogs": {
+            "PACKAGE_NAME": "com.mawujun.mobile"
+        },
+        "org.apache.cordova.device": {
+            "PACKAGE_NAME": "com.mawujun.mobile"
+        },
+        "org.apache.cordova.geolocation": {
             "PACKAGE_NAME": "com.mawujun.mobile"
         }
     },

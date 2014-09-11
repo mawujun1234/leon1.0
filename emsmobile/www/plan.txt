@@ -11,6 +11,8 @@
 		cordova plugin rm org.apache.cordova.dialogs
 	cordova plugin add E:\eclipse\mobiles\plugins\barcodeScanner
 		cordova plugin rm com.phonegap.plugins.barcodescanner
+	cordova plugin add org.apache.cordova.device
+	cordova plugin add org.apache.cordova.geolocation
 
 
 设想=============
@@ -28,8 +30,9 @@ http://localhost:8085/www/login.html
 消息发送流程
 	超时任务提醒功能，分为自动提醒和人工提醒,先做自动提醒吧，功能先写死了，24小时提醒一次
 
-地理位置上报，接收，记录
-底部菜单的提醒，例如一共有多少个任务，气泡提醒
+地理位置上报，接收，记录,当最小化的时候，是否也可以发送地理位置，而且一个账号会有多个纪录，因为会有多个人在用
+	一个应用只发生一次，并且只有登录后才会发送
+底部菜单的提醒，例如一共有多少个新任务，气泡提醒，在登陆的时候就获取到，并且传递到其他三个页面中
 任务查看功能的权限还没有进行控制,已经完成和确认的任务就不能进行编辑了
 任务列表下拉才去读取数据的功能
 
