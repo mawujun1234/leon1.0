@@ -1,6 +1,7 @@
 // JavaScript Document
 //$.ServerPath="http://localhost:8084";
-$.ServerPath="http://172.16.3.4:8084";
+//$.ServerPath="http://172.16.3.4:8084";
+$.ServerPath="http://192.168.1.100:8084";
 $.ecodeLength=16;
 $.ajaxSetup({
 	//jsonp: "jsonpCallback",//使用浏览器进行测试的时候用的，如果安装到手机，就注释掉
@@ -128,7 +129,7 @@ $(function(){
 							}
 						});	
 						navigator.app.exitApp();
-						navigator.geolocation.clearWatch(watchID);
+						//navigator.geolocation.clearWatch(watchID);
 					  }
 					},
 					'退出',
@@ -137,27 +138,25 @@ $(function(){
             }else {
 				navigator.app.backHistory();
 			}
-			//进入后5秒后开始发送地理信息
-			if(sessionStorage.getItem("user") && !sessionStorage.getItem("watchID")){
-				setTimeout("uploadGeolocation",5000);
-			}
+			
 		}, false);//backbutton
 		
-		
+		//进入后5秒后开始发送地理信息
+		if(sessionStorage.getItem("user") && !sessionStorage.getItem("watchID")){
+			setTimeout(uploadGeolocation,5000);
+		}
 		
 		
 	}, false); //deviceready
 	
 	function uploadGeolocation(){
-		
-		alert(uuid);
 		//sessionStorage.setItem("user",JSON.stringify(data.root));
 		var user=$.parseJSON(sessionStorage.getItem("user"));
 		var uuid=device.uuid;
-		alert(uuid);
 		//获取设备的地理位置
 		var watchID = navigator.geolocation.watchPosition(
 			function(position){
+				alert(position.coords.longitude);
 				var params={};
 				params.longitude=position.coords.longitude;
 				params.latitude=position.coords.latitude;
@@ -172,10 +171,9 @@ $(function(){
 				});	
 			}, 
 			function(error){
-				 //alert('code: '    + error.code    + '\n' +
-          		//'message: ' + error.message + '\n');
+				 alert('code: '    + error.code    + '\n' +'message: ' + error.message + '\n');
 			}, 
-			{ timeout: 30000 }
+			{ maximumAge: 3000, timeout: 30000, enableHighAccuracy: true  }
 		);	
 		//用来控制应用只发送一个请求
 		sessionStorage.setItem("watchID",watchID);

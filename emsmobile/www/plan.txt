@@ -7,12 +7,14 @@
 * 在测试的时候，所有的请求全部使用jsonp协议的形式进行请求，因为存在跨域的问题，除非把html代码放到leon同个项目中。
 * 在手机上进行访问的时候，可以使用普通的ajax进行访问，就像同个域里面一样
 *要添加的插件
+	cordova plugin add E:\eclipse\mobile\plugins\barcodeScanner
+		cordova plugin rm com.phonegap.plugins.barcodescanner
 	cordova plugin add org.apache.cordova.dialogs
 		cordova plugin rm org.apache.cordova.dialogs
-	cordova plugin add E:\eclipse\mobiles\plugins\barcodeScanner
-		cordova plugin rm com.phonegap.plugins.barcodescanner
 	cordova plugin add org.apache.cordova.device
+		cordova plugin rm org.apache.cordova.device
 	cordova plugin add org.apache.cordova.geolocation
+		cordova plugin rm org.apache.cordova.geolocation
 
 
 设想=============
