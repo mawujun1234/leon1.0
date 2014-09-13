@@ -23,7 +23,7 @@ delete ems_pole;
 delete ems_customer_contact;
 delete ems_customer;
 delete ems_message;
-delete sys_userstore;----ÓÃ»§¿É·ÃÎÊµÄ²Ö¿â
+delete sys_userstore;----ç”¨æˆ·å¯è®¿é—®çš„ä»“åº“
 delete ems_store;
 delete ems_supplier_contact;
 delete ems_supplier;
@@ -37,11 +37,11 @@ delete sys_datarole;
 delete sys_funrole_user;
 delete sys_funrole;
 delete sys_navigation_funrole;
---sys_navigation Õâ¸öÊÂ²»ÄÜÉ¾³ıµÄ£¬ÊÇ²Ëµ¥
+--sys_navigation è¿™ä¸ªäº‹ä¸èƒ½åˆ é™¤çš„ï¼Œæ˜¯èœå•
 delete sys_navigation_user;
 delete sys_user;
 commit;
----³õÊ¼»¯Êı¾İ
+---åˆå§‹åŒ–æ•°æ®
 alter table SYS_USER disable all triggers;
 delete from SYS_USER;
 commit;
@@ -52,72 +52,88 @@ alter table SYS_NAVIGATION disable all triggers;
 delete from SYS_NAVIGATION;
 commit;
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('60b66baf-8966-4dc6-bc90-90e83f6295e4', 'Y', '/adjust/NewAdjustApp.jsp', null, '9f1b4ba5-0d1f-44f2-a75d-0fc69071e473', 'aah-aaa', 'µ÷²¦³ö¿â');
+values ('60b66baf-8966-4dc6-bc90-90e83f6295e4', 'Y', '/adjust/NewAdjustApp.jsp', null, '9f1b4ba5-0d1f-44f2-a75d-0fc69071e473', 'aah-aaa', 'è°ƒæ‹¨å‡ºåº“');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('f8db4523-ee8d-4488-88c7-cdf4b9ce7b7b', 'Y', '/adjust/AdjustApp.jsp', null, '9f1b4ba5-0d1f-44f2-a75d-0fc69071e473', 'aah-aac', 'µ÷²¦µ¥²éÑ¯');
+values ('f8db4523-ee8d-4488-88c7-cdf4b9ce7b7b', 'Y', '/adjust/AdjustApp.jsp', null, '9f1b4ba5-0d1f-44f2-a75d-0fc69071e473', 'aah-aac', 'è°ƒæ‹¨å•æŸ¥è¯¢');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('ba44722c-adb9-4136-b460-12ef480419c9', 'N', null, null, null, 'aab', 'ÏµÍ³¹ÜÀí');
+values ('ba44722c-adb9-4136-b460-12ef480419c9', 'N', null, null, null, 'aab', 'ç³»ç»Ÿç®¡ç†');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('9a4f1de9-dce5-4b95-9f48-8df90fcc3cf2', 'Y', '/mgr/navigation.jsp', null, 'ba44722c-adb9-4136-b460-12ef480419c9', 'aab-aab', '²Ëµ¥¹ÜÀí');
+values ('9a4f1de9-dce5-4b95-9f48-8df90fcc3cf2', 'Y', '/mgr/navigation.jsp', null, 'ba44722c-adb9-4136-b460-12ef480419c9', 'aab-aab', 'èœå•ç®¡ç†');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('9b22214d-a376-43fb-b75c-440b5168eef6', 'Y', '/store/BarcodeApp.jsp', null, 'd7624421-6323-4bc7-a28f-6f011f771a57', 'aac-aaf', 'ÌõÂëµ¼³ö');
+values ('9b22214d-a376-43fb-b75c-440b5168eef6', 'Y', '/store/BarcodeApp.jsp', null, 'd7624421-6323-4bc7-a28f-6f011f771a57', 'aac-aaf', 'æ¡ç å¯¼å‡º');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('1aacef02-7c01-4464-a02b-f164f97ffa2e', 'Y', '/baseinfo/EquipmentTypeApp.jsp', null, 'aeb4c40f-e8d4-414d-b2a1-f7b1dea80aaf', 'aaa-aab', 'Éè±¸ÀàĞÍ');
+values ('1aacef02-7c01-4464-a02b-f164f97ffa2e', 'Y', '/baseinfo/EquipmentTypeApp.jsp', null, 'aeb4c40f-e8d4-414d-b2a1-f7b1dea80aaf', 'aaa-aab', 'è®¾å¤‡ç±»å‹');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('aeb4c40f-e8d4-414d-b2a1-f7b1dea80aaf', 'N', null, null, null, 'aaa', '»ù´¡ĞÅÏ¢Î¬»¤');
+values ('aeb4c40f-e8d4-414d-b2a1-f7b1dea80aaf', 'N', null, null, null, 'aaa', 'åŸºç¡€ä¿¡æ¯ç»´æŠ¤');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('09fcb219-41d7-44b3-a70c-71ef061342d2', 'Y', '/mgr/funRole.jsp', null, 'ba44722c-adb9-4136-b460-12ef480419c9', 'aab-aac', '¹¦ÄÜ½ÇÉ«');
+values ('09fcb219-41d7-44b3-a70c-71ef061342d2', 'Y', '/mgr/funRole.jsp', null, 'ba44722c-adb9-4136-b460-12ef480419c9', 'aab-aac', 'åŠŸèƒ½è§’è‰²');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('2d512aa7-9fa4-4e0c-ae51-2258e476b89e', 'Y', '/baseinfo/StoreApp.jsp', null, 'aeb4c40f-e8d4-414d-b2a1-f7b1dea80aaf', 'aaa-aaa', '¿â·¿ĞÅÏ¢');
+values ('2d512aa7-9fa4-4e0c-ae51-2258e476b89e', 'Y', '/baseinfo/StoreApp.jsp', null, 'aeb4c40f-e8d4-414d-b2a1-f7b1dea80aaf', 'aaa-aaa', 'åº“æˆ¿ä¿¡æ¯');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('9a4359ea-8050-4f71-b433-e31f19284294', 'Y', '/baseinfo/WorkUnitApp.jsp', null, 'aeb4c40f-e8d4-414d-b2a1-f7b1dea80aaf', 'aaa-aac', '×÷Òµµ¥Î»');
+values ('9a4359ea-8050-4f71-b433-e31f19284294', 'Y', '/baseinfo/WorkUnitApp.jsp', null, 'aeb4c40f-e8d4-414d-b2a1-f7b1dea80aaf', 'aaa-aac', 'ä½œä¸šå•ä½');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('83293cbe-071f-4902-a15d-9c52120cfe7a', 'Y', '/baseinfo/SupplierApp.jsp', null, 'aeb4c40f-e8d4-414d-b2a1-f7b1dea80aaf', 'aaa-aad', '¹©Ó¦ÉÌ');
+values ('83293cbe-071f-4902-a15d-9c52120cfe7a', 'Y', '/baseinfo/SupplierApp.jsp', null, 'aeb4c40f-e8d4-414d-b2a1-f7b1dea80aaf', 'aaa-aad', 'ä¾›åº”å•†');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('5ac203f7-8d5b-40ea-8654-e951594db6a8', 'Y', '/baseinfo/CustomerApp.jsp', null, 'aeb4c40f-e8d4-414d-b2a1-f7b1dea80aaf', 'aaa-aae', '¿Í»§ĞÅÏ¢');
+values ('5ac203f7-8d5b-40ea-8654-e951594db6a8', 'Y', '/baseinfo/CustomerApp.jsp', null, 'aeb4c40f-e8d4-414d-b2a1-f7b1dea80aaf', 'aaa-aae', 'å®¢æˆ·ä¿¡æ¯');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('f4912aac-52ae-4f23-a017-c8f495eaccab', 'Y', '/mgr/userApp.jsp', null, 'ba44722c-adb9-4136-b460-12ef480419c9', 'aab-aae', 'ÓÃ»§¹ÜÀí');
+values ('f4912aac-52ae-4f23-a017-c8f495eaccab', 'Y', '/mgr/userApp.jsp', null, 'ba44722c-adb9-4136-b460-12ef480419c9', 'aab-aae', 'ç”¨æˆ·ç®¡ç†');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('d7624421-6323-4bc7-a28f-6f011f771a57', 'N', null, null, null, 'aac', 'ĞÂÉè±¸Èë¿â');
+values ('d7624421-6323-4bc7-a28f-6f011f771a57', 'N', null, null, null, 'aac', 'æ–°è®¾å¤‡å…¥åº“');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('3b3f70b6-621c-4026-b2f5-57e5451fa6cd', 'Y', '/store/InStoreApp.jsp', null, 'd7624421-6323-4bc7-a28f-6f011f771a57', 'aac-aaa', 'ĞÂÉè±¸Èë¿â');
+values ('3b3f70b6-621c-4026-b2f5-57e5451fa6cd', 'Y', '/store/InStoreApp.jsp', null, 'd7624421-6323-4bc7-a28f-6f011f771a57', 'aac-aaa', 'æ–°è®¾å¤‡å…¥åº“');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('ca8be663-0055-4786-8590-ea788c065be0', 'Y', '/baseinfo/AreaApp.jsp', null, 'aeb4c40f-e8d4-414d-b2a1-f7b1dea80aaf', 'aaa-aaf', 'Æ¬Çø¹ÜÀí');
+values ('ca8be663-0055-4786-8590-ea788c065be0', 'Y', '/baseinfo/AreaApp.jsp', null, 'aeb4c40f-e8d4-414d-b2a1-f7b1dea80aaf', 'aaa-aaf', 'ç‰‡åŒºç®¡ç†');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('6424df74-c571-4a10-aa39-d358e9743781', 'N', null, null, null, 'aae', 'ÈÎÎñµ÷¶È¹ÜÀí');
+values ('6424df74-c571-4a10-aa39-d358e9743781', 'N', null, null, null, 'aae', 'ä»»åŠ¡è°ƒåº¦ç®¡ç†');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('373d4584-3767-4311-9825-9ab95c031db8', 'Y', '/task/TaskSendApp.jsp', null, '6424df74-c571-4a10-aa39-d358e9743781', 'aae-aaa', 'ÈÎÎñÏÂ·¢');
+values ('373d4584-3767-4311-9825-9ab95c031db8', 'Y', '/task/TaskSendApp.jsp', null, '6424df74-c571-4a10-aa39-d358e9743781', 'aae-aaa', 'ä»»åŠ¡ä¸‹å‘');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('dd2f0178-bc59-422e-ae96-0af92bc6cc0c', 'Y', null, null, '6424df74-c571-4a10-aa39-d358e9743781', 'aae-aab', 'ÈÎÎñ²éÑ¯¹ÜÀí');
+values ('dd2f0178-bc59-422e-ae96-0af92bc6cc0c', 'Y', null, null, '6424df74-c571-4a10-aa39-d358e9743781', 'aae-aab', 'ä»»åŠ¡æŸ¥è¯¢ç®¡ç†');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
 values ('f0861a7e-597e-4886-9a14-b83a37d74150', 'Y', null, null, 'f54d8775-74fa-43c0-b2ff-df5549be60b4', 'aae-aac-aab', 'eeee');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('b96d7f0c-d4f4-42b3-b0be-4db2f200245a', 'Y', '/baseinfo/BrandApp.jsp', null, 'aeb4c40f-e8d4-414d-b2a1-f7b1dea80aaf', 'aaa-aag', 'Æ·ÅÆ¹ÜÀí');
+values ('b96d7f0c-d4f4-42b3-b0be-4db2f200245a', 'Y', '/baseinfo/BrandApp.jsp', null, 'aeb4c40f-e8d4-414d-b2a1-f7b1dea80aaf', 'aaa-aag', 'å“ç‰Œç®¡ç†');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('763ce28f-13d0-491d-b7c9-ef859fbcc7c1', 'N', null, null, null, 'aaf', '°²    ×°');
+values ('763ce28f-13d0-491d-b7c9-ef859fbcc7c1', 'N', null, null, null, 'aaf', 'å®‰    è£…');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('fd84ac77-d4a5-4615-adaa-3336198e82ca', 'N', null, null, null, 'aag', 'Î¬    ĞŞ');
+values ('fd84ac77-d4a5-4615-adaa-3336198e82ca', 'N', null, null, null, 'aag', 'ç»´    ä¿®');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('9f1b4ba5-0d1f-44f2-a75d-0fc69071e473', 'N', null, null, null, 'aah', 'µ÷    ²¦');
+values ('9f1b4ba5-0d1f-44f2-a75d-0fc69071e473', 'N', null, null, null, 'aah', 'è°ƒ    æ‹¨');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('43ea18c3-4d58-4ad0-9817-28db7199993c', 'Y', '/install/InstallOutApp.jsp', null, '763ce28f-13d0-491d-b7c9-ef859fbcc7c1', 'aaf-aaa', 'Éè±¸ÁìÓÃ');
+values ('43ea18c3-4d58-4ad0-9817-28db7199993c', 'Y', '/install/InstallOutApp.jsp', null, '763ce28f-13d0-491d-b7c9-ef859fbcc7c1', 'aaf-aaa', 'è®¾å¤‡é¢†ç”¨');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('3f70509f-8ec2-4d6b-b4ba-499eaa99a4e5', 'Y', '/install/InstallInApp.jsp', null, '763ce28f-13d0-491d-b7c9-ef859fbcc7c1', 'aaf-aab', 'Éè±¸·µ¿â');
+values ('3f70509f-8ec2-4d6b-b4ba-499eaa99a4e5', 'Y', '/install/InstallInApp.jsp', null, '763ce28f-13d0-491d-b7c9-ef859fbcc7c1', 'aaf-aab', 'è®¾å¤‡è¿”åº“');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('a690500f-8b13-4fd9-8385-0fd9c6608092', 'Y', '/repair/NewRepairApp.jsp', null, 'fd84ac77-d4a5-4615-adaa-3336198e82ca', 'aag-aaa', 'Éú³ÉÎ¬ĞŞµ¥');
+values ('a690500f-8b13-4fd9-8385-0fd9c6608092', 'Y', '/repair/NewRepairApp.jsp', null, 'fd84ac77-d4a5-4615-adaa-3336198e82ca', 'aag-aaa', 'ç”Ÿæˆç»´ä¿®å•');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('a2e03a62-3d0c-438c-96ef-d9ffc0d11a0c', 'Y', '/repair/MgrRepairApp.jsp', null, 'fd84ac77-d4a5-4615-adaa-3336198e82ca', 'aag-aab', 'Î¬ĞŞµ¥¹ÜÀí');
+values ('a2e03a62-3d0c-438c-96ef-d9ffc0d11a0c', 'Y', '/repair/MgrRepairApp.jsp', null, 'fd84ac77-d4a5-4615-adaa-3336198e82ca', 'aag-aab', 'ç»´ä¿®å•ç®¡ç†');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('c8786484-7c1b-47a5-8350-98174d23ce1a', 'Y', '/repair/RMgrRepairApp.jsp', null, 'fd84ac77-d4a5-4615-adaa-3336198e82ca', 'aag-aac', 'Î¬ĞŞµ¥¹ÜÀí(Î¬)');
+values ('c8786484-7c1b-47a5-8350-98174d23ce1a', 'Y', '/repair/RMgrRepairApp.jsp', null, 'fd84ac77-d4a5-4615-adaa-3336198e82ca', 'aag-aac', 'ç»´ä¿®å•ç®¡ç†(ç»´)');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('a8cd3a69-fcab-40b3-a4b0-5743ac53be46', 'Y', '/store/OrderApp.jsp', null, 'd7624421-6323-4bc7-a28f-6f011f771a57', 'aac-aag', '¶©µ¥Â¼Èë');
+values ('a8cd3a69-fcab-40b3-a4b0-5743ac53be46', 'Y', '/store/OrderApp.jsp', null, 'd7624421-6323-4bc7-a28f-6f011f771a57', 'aac-aag', 'è®¢å•å½•å…¥');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('40794406-4ac1-4712-a6d6-f825f22b5114', 'Y', '/repair/RepairInApp.jsp', null, 'fd84ac77-d4a5-4615-adaa-3336198e82ca', 'aag-aad', 'Î¬ĞŞÈë¿â(Î¬)');
+values ('40794406-4ac1-4712-a6d6-f825f22b5114', 'Y', '/repair/RepairInApp.jsp', null, 'fd84ac77-d4a5-4615-adaa-3336198e82ca', 'aag-aad', 'ç»´ä¿®å…¥åº“(ç»´)');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('d272130c-8d1a-4043-8baf-24a8b465473e', 'Y', '/adjust/AdjustInApp.jsp', null, '9f1b4ba5-0d1f-44f2-a75d-0fc69071e473', 'aah-aad', 'µ÷²¦Èë¿â');
+values ('d272130c-8d1a-4043-8baf-24a8b465473e', 'Y', '/adjust/AdjustInApp.jsp', null, '9f1b4ba5-0d1f-44f2-a75d-0fc69071e473', 'aah-aad', 'è°ƒæ‹¨å…¥åº“');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('e25d2f00-41f8-488f-9d97-7c88fb909a7e', 'Y', '/store/OrderQueryApp.jsp', null, 'd7624421-6323-4bc7-a28f-6f011f771a57', 'aac-aah', '¶©µ¥ÀúÊ·²éÑ¯');
+values ('e25d2f00-41f8-488f-9d97-7c88fb909a7e', 'Y', '/store/OrderQueryApp.jsp', null, 'd7624421-6323-4bc7-a28f-6f011f771a57', 'aac-aah', 'è®¢å•å†å²æŸ¥è¯¢');
 commit;
+
+
+alter table EMS_OVERTIME disable all triggers;
+prompt Deleting EMS_OVERTIME...
+delete from EMS_OVERTIME;
+commit;
+prompt Loading EMS_OVERTIME...
+insert into EMS_OVERTIME (id, handling, read)
+values ('overtime', 1440, 1440);
+commit;
+prompt 1 records loaded
+prompt Enabling triggers for EMS_OVERTIME...
+alter table EMS_OVERTIME enable all triggers;
+set feedback on
+set define on
+prompt Done.
 
 
 

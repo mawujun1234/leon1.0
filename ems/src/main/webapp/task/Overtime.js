@@ -1,0 +1,11 @@
+Ext.defineModel("Ems.task.Overtime",{
+	extend:"Ext.data.Model",
+	idProperty:'id',
+	fields:[
+		{name:'id',type:'string'},
+		{name:'handling',type:'int'},
+		{name:'read',type:'int'}
+	],
+	associations:[
+	]
+});

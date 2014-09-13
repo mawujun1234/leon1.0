@@ -182,10 +182,17 @@ public static final class ems_installoutlist {
 	public static final String id="id";
 }
 public static final class ems_message {
-	public static final String content="content";
+	public static final String task_id="task_id";
 	public static final String type="type";
+	public static final String isNew="isNew";
+	public static final String content="content";
 	public static final String createDate="createDate";
 	public static final String readDate="readDate";
+	public static final String id="id";
+}
+public static final class ems_overtime {
+	public static final String read="read";
+	public static final String handling="handling";
 	public static final String id="id";
 }
 public static final class ems_task {

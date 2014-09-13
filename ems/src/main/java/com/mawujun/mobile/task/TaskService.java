@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import com.mawujun.baseinfo.PoleRepository;
 import com.mawujun.baseinfo.PoleStatus;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
+import com.mawujun.utils.AssertUtils;
 import com.mawujun.utils.M;
 import com.mawujun.utils.page.Page;
 
@@ -105,7 +107,7 @@ public class TaskService extends AbstractService<Task, String>{
 	public List<EquipmentVO> mobile_queryTaskEquipmentInfos(String task_id) {
 		
 		//任务查看过后，就修改状态为“已阅”,只有任务状态为 newTask的才会被修改
-		taskRepository.update(Cnd.update().set(M.Task.status, TaskStatus.handling).andEquals(M.Task.id, task_id).andEquals(M.Task.status, TaskStatus.newTask));
+		taskRepository.update(Cnd.update().set(M.Task.status, TaskStatus.read).andEquals(M.Task.id, task_id).andEquals(M.Task.status, TaskStatus.newTask));
 		//修改杆位状态为"安装中"
 		//Task task=taskRepository.get(task_id);
 		//poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.installing).andEquals(M.Pole.id, task.getPole_id()));
@@ -115,6 +117,11 @@ public class TaskService extends AbstractService<Task, String>{
 	
 	public void mobile_save(String task_id,String[] ecodes) {
 		taskEquipmentListRepository.deleteBatch(Cnd.delete().andEquals(M.TaskEquipmentList.task_id, task_id));
+		//修改任务状态为"处理中",无论哪种任务类型
+		taskRepository.update(Cnd.update().set(M.Task.status, TaskStatus.handling).set(M.Task.startHandDate,new Date()).andEquals(M.Task.id, task_id));
+		if(ecodes==null){
+			return;
+		}
 		Set<String> existinsert=new HashSet<String>();
 		for(String ecode:ecodes){
 			if(existinsert.contains(ecode)){
@@ -129,11 +136,12 @@ public class TaskService extends AbstractService<Task, String>{
 			
 			existinsert.add(ecode);
 		}
-		//修改任务状态为"处理中"
-		taskRepository.update(Cnd.update().set(M.Task.status, TaskStatus.handling).set(M.Task.startHandDate,new Date()).andEquals(M.Task.id, task_id));
+		
 	}
 	
-	public void mobile_submit(String task_id,String[] ecodes) {
+	public void mobile_submit(String task_id,String task_type,String[] ecodes) {
+		AssertUtils.notNull(task_type);
+		AssertUtils.notEmpty(ecodes);
 		
 		//全部重新保存，因为不知道哪些是更新过的
 		taskEquipmentListRepository.deleteBatch(Cnd.delete().andEquals(M.TaskEquipmentList.task_id, task_id));
@@ -150,13 +158,29 @@ public class TaskService extends AbstractService<Task, String>{
 			
 			
 			existinsert.add(ecode);
-			//修改设备为“使用中”
-			//修改设备为旧设备
-			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using.getValue()).set(M.Equipment.isnew, false).andEquals(M.Equipment.ecode, ecode));		
+			//修改设备为“使用中”,修改设备为旧设备
+			//equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using.getValue()).set(M.Equipment.isnew, false).andEquals(M.Equipment.ecode, ecode));		
+			if(TaskType.newInstall.toString().equals(task_type)){
+				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using.getValue()).set(M.Equipment.isnew, false).andEquals(M.Equipment.ecode, ecode));	
+			} else if(TaskType.repair.toString().equals(task_type)){
+				//如果设备是使用中，就修改为已损坏，如果是安装出库，就修改为使用中，同时修改设备为旧设备
+				
+				//替换下来的设备
+				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.breakdown.getValue()).andEquals(M.Equipment.ecode, ecode)
+						.andEquals(M.Equipment.status, EquipmentStatus.using.getValue()));	
+				
+				//要安装上去的设备
+				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using.getValue()).set(M.Equipment.isnew, false)
+						.andEquals(M.Equipment.ecode, ecode)
+						.andEquals(M.Equipment.status, EquipmentStatus.out_storage.getValue()));	
+			} else if(TaskType.patrol.toString().equals(task_type)){
+				
+			}
 		}
 		
 		//修改任务状态为"已提交"
 		taskRepository.update(Cnd.update().set(M.Task.status, TaskStatus.submited).set(M.Task.submitDate, new Date()).andEquals(M.Task.id, task_id));
+		
 		
 		
 	}

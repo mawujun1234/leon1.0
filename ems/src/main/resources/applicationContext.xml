@@ -51,4 +51,8 @@
      p:cacheManager-ref="cacheManagerFactory"/>
 
 
+	<task:executor id="executor" pool-size="2" />  
+    <task:scheduler id="scheduler" pool-size="5" />  
+	<task:annotation-driven executor="executor" scheduler="scheduler" />
+
 </beans>

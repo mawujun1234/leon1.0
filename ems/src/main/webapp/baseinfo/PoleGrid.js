@@ -24,13 +24,13 @@ Ext.define('Ems.baseinfo.PoleGrid',{
 		   if (value == 'uninstall') {
 		    return "<img src='../icons/help_circle_blue.png' />";
 		   } else if (value == 'installing'){
-		    return "<img src='./icons/circle_blue.png' />";
+		    return "<img src='../icons/circle_blue.png' />";
 		   }else if (value == 'using'){
-		    return "<img src='./icons/circle_green.png' />";
+		    return "<img src='../icons/circle_green.png' />";
 		   }else if (value == 'hitch'){
-		    return "<img src='./icons/circle_yellow.png' />";
+		    return "<img src='../icons/circle_yellow.png' />";
 		   }else if (value == 'cancel'){
-		    return "<img src='./icons/circle_red.png' />";
+		    return "<img src='../icons/circle_red.png' />";
 		   }
 		   return record.get("status_name");
 		 }

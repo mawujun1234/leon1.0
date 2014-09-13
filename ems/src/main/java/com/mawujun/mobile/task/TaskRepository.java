@@ -21,4 +21,7 @@ public interface TaskRepository extends IRepository<Task, String>{
 	
 	public Page mobile_queryPage(Page page) ;
 	public List<EquipmentVO> mobile_queryTaskEquipmentInfos(@Param("task_id")String task_id);
+	
+	public List<Task> queryReadOvertimeTask(@Param("read")Integer read) ;
+	public List<Task> queryHandlingOvertimeTask(@Param("handling")Integer handling) ;
 }

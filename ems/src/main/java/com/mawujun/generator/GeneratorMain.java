@@ -6,6 +6,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.mawujun.adjust.Adjust;
 import com.mawujun.adjust.AdjustList;
+import com.mawujun.mobile.message.Message;
+import com.mawujun.mobile.task.Overtime;
 import com.mawujun.mobile.task.Task;
 import com.mawujun.mobile.task.TaskEquipmentList;
 import com.mawujun.repair.Scrap;
@@ -33,7 +35,7 @@ public class GeneratorMain {
 		//str=generatorService.generatorToString(MenuItem.class,FtlFile.JsModel.toString(),null);	
         //System.out.println(str);
 		
-		GeneratorMain.generateAllFile(TaskEquipmentList.class,"D:/gen/");
+		GeneratorMain.generateAllFile(Message.class,"D:/gen/");
 		
 		
 		

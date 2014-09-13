@@ -118,29 +118,14 @@ function queryTasks(status){
 				var root=data.root;
 				var html="";
 				for(var i=0;i<root.length;i++){
-					var taskInfoParamStr='?id='+root[i].id+'&pole_name='+root[i].pole_name+'&memo='+root[i].memo+'&type='+root[i].type;
+					var taskInfoParamStr='?id='+root[i].id+'&pole_name='+root[i].pole_name+'&memo='+root[i].memo;
 					//alert(taskInfoParamStr);
-					var page_id="";
-					var h2_title="";
-					var img="";
-					if("newInstall"==root[i].type){
-						page_id="page_install";
-						h2_title="新安装";
-						img="img/install.png";
-					} else if("repair"==root[i].type){
-						page_id="page_repair";
-						h2_title="维修/维护";
-						img="img/repair.png";
-					} else if("patrol"==root[i].type){
-						page_id="page_patrol";
-						h2_title="巡检";
-						img="img/patrols.png";
-					}
-					html+='<li id="li_'+root[i].id+'">'+
-					'<a href="#'+page_id+'" onclick="sessionStorage.taskInfoParamStr=\''+taskInfoParamStr+'\'" data-transition="slide" >'+
-						'<img src="'+img+'">'+
-						'<h2>'+h2_title+':'+root[i].pole_name+'</h2>'+
-						'<p>地址:'+root[i].pole_address+'</p>'+
+					
+					html+='<li>'+
+					'<a href="#page_install" onclick="sessionStorage.taskInfoParamStr=\''+taskInfoParamStr+'\'" data-transition="slide" >'+
+						'<img src="img/install.png">'+
+						'<h2>新安装</h2>'+
+						'<p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>'+
 						'<p class="ui-li-aside"><strong>8.21 6:24</strong></p>'+
 						((root[i].status!="newTask")?'':'<p class="ui-li-count" style="color:#FFF;background-color:#F00;">new</p>')+
 					'</a>'+
@@ -256,9 +241,9 @@ $(document).ready(function(e) {
             <label for="pole">杆位:</label>
             <input readonly type="text" id="page_install_pole_name" placeholder="只读" value="">
         	<label  for="memo">任务描述:</label>
-    		<textarea readonly id="page_install_memo" placeholder="只读" data-mini="true"></textarea>
+    		<textarea readonly cols="40" rows="16" id="page_install_memo" placeholder="只读" data-mini="true"></textarea>
          </div>	
-         <a href="#" class="ui-btn ui-corner-all" id="page_install_scan_button" name="scan_button">扫描新设备</a>
+         <a href="#" class="ui-btn ui-corner-all" id="page_install_scan_button">扫描新设备</a>
          <input type="text" id="page_install_scan_textfield" name="scan_textfield"  value="" placeholder="请扫描或手动输入...">
          <div id="page_install_equipments_list">
          	
@@ -267,122 +252,16 @@ $(document).ready(function(e) {
             <textarea cols="40" rows="8" name="textarea" id="textarea" placeholder="请填写设备安装描述"></textarea>
          -->
          <div class="ui-field-contain"  align="center">
-            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="saveTask">保存</button>
-            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="submitTask">提交</button>
+            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" onClick="saveTask();">保存</button>
+            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" onClick="submitTask();">提交</button>
          </div>
 	</div>
     <script type="text/javascript">
-
-	</script>
-    <div data-role="popup" id="popupArrow" data-arrow="b" data-theme="b">
-        <a href="javascript:void(0);" data-role="button" name="deleteEquipmentInfo">删除</a>
-    </div>
-</div>
-
-<div data-role="page" id="page_repair">
-	<div data-role="header">
-    	<a href="#page_homepage" class="ui-btn ui-corner-all" data-rel="back" data-theme="c">返回</a>
-        <h1></h1> 
-	</div>
-	<div role="main" class="ui-content">
-        <div class="ui-field-contain">
-            <label for="id">任务编号:</label>
-            <input type="text"  id="page_repair_id" placeholder="只读" value="">
-            <label for="pole">杆位:</label>
-            <input readonly type="text" id="page_repair_pole_name" placeholder="只读" value="">
-        	<label  for="memo">任务描述:</label>
-    		<textarea readonly  id="page_repair_memo" placeholder="只读" data-mini="true"></textarea>
-         </div>	
-         <select name="select-choice-a" id="select-choice-a" data-native-menu="false">
-        	<option>请选择故障类型</option>
-            <option value="standard">摄像头遮挡</option>
-            <option value="rush">设备损坏</option>
-        </select>
-
-        <select name="select-choice-a" id="select-choice-b" data-native-menu="false">
-        	<option>请选择原因模板</option>
-            <option value="standard">YYYYYY</option>
-            <option value="rush">YY</option>
-        </select>
-        <textarea  name="textarea" id="textarea" placeholder="请填写设备故障原因情况"></textarea>
-         <a href="#" class="ui-btn ui-corner-all" name="scan_button">扫描设备</a>
-         <input type="text" name="scan_textfield"  value="" placeholder="请扫描或手动输入...">
-         <div id="page_repair_equipments_list">
-         	
-          </div>
-         <div class="ui-field-contain"  align="center">
-            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="saveTask">保存</button>
-            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="submitTask">提交</button>
-         </div>
-	</div>
-    <script type="text/javascript">
-
-	</script>
-    <div data-role="popup" id="page_repair_deleteEquipmentInfo_popup" data-arrow="b" data-theme="b">
-        <a href="javascript:void(0);" data-role="button" name="deleteEquipmentInfo">删除</a>
-    </div>
-</div>
-
-<div data-role="page" id="page_patrol">
-
-	<div data-role="header">
-    	<a href="#page_homepage" class="ui-btn ui-corner-all" data-rel="back" data-theme="c">返回</a>
-        <h1></h1> 
-	</div>
-	<div role="main" class="ui-content">
-        <div class="ui-field-contain">
-            <label for="id">任务编号:</label>
-            <input type="text"  id="page_patrol_id" placeholder="只读" value="">
-            <label for="pole">杆位:</label>
-            <input readonly type="text" id="page_patrol_pole_name" placeholder="只读" value="">
-        	<label  for="memo">任务描述:</label>
-    		<textarea readonly  id="page_patrol_memo" placeholder="只读" data-mini="true"></textarea>
-         </div>	
-         <a href="#" class="ui-btn ui-corner-all" name="scan_button">扫描设备</a>
-         <input type="text" name="scan_textfield"  value="" placeholder="请扫描或手动输入...">
-         <div id="page_patrol_equipments_list">
-         	
-          </div>
-         <div class="ui-field-contain"  align="center">
-            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="saveTask">保存</button>
-            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="submitTask">提交</button>
-         </div>
-	</div>
-    <script type="text/javascript">
-
-	</script>
-    <div data-role="popup" id="page_patrol_deleteEquipmentInfo_popup" data-arrow="b" data-theme="b">
-        <a href="javascript:void(0);" data-role="button" name="deleteEquipmentInfo">删除</a>
-    </div>
-</div>
-
-<script type="application/javascript">
-$(document).ready(function(e) {
-	
-	$( document).on( "pagecontainershow", function( event, ui ) {
-		
-		if (sessionStorage.taskInfoParamStr!='null') {
-			var page_id=ui.toPage.attr("id");
-			//从url中解析参数  
-			var params = $.getUrlParam(sessionStorage.taskInfoParamStr);  
-			window.taskInfoParam=params;
-			taskInfoParam.page_id=page_id; 
-			$("#"+page_id+"_id").val(params.id);  
-			$("#"+page_id+"_pole_name").val(params.pole_name);  
-			$("#"+page_id+"_memo").val(params.memo);
-			sessionStorage.taskInfoParamStr=null;
-			//初始化设备列表信息
-			queryTaskEquipmentInfos(params.id);
-		}  	
-	});
-	
 	function saveTask(){
 		$.showLoader("正在保存....");
 		
-		//var params="&task_id="+$("#page_install_id").val();
-		var params="&task_id="+taskInfoParam.id;
-		var page_id=taskInfoParam.page_id;
-		$("#"+page_id+"_equipments_list [data-role='collapsible']").each(function(index, element) {
+		var params="&task_id="+$("#page_install_id").val();
+		$("#page_install_equipments_list [data-role='collapsible']").each(function(index, element) {
             //values.push($(this).attr("ecode"));
 			params+="&ecodes="+$(this).attr("ecode");
         });
@@ -392,6 +271,9 @@ $(document).ready(function(e) {
 			data:params,  
 			success : function(data){
 				if(data.success==true){	
+					//var root=data.root;
+					//zrenderEquipmentInfo(root);
+					//history.back();
 					
 				}
 				$.hideLoader();  
@@ -400,11 +282,9 @@ $(document).ready(function(e) {
 	}
 	function submitTask(){
 		$.showLoader("正在提交....");
-
-		//var params="&task_id="+$("#page_install_id").val();
-		var params="&task_id="+taskInfoParam.id+"&task_type="+taskInfoParam.type;
-		var page_id=taskInfoParam.page_id;
-		$("#"+page_id+"_equipments_list [data-role='collapsible']").each(function(index, element) {
+		
+		var params="&task_id="+$("#page_install_id").val();
+		$("#page_install_equipments_list [data-role='collapsible']").each(function(index, element) {
 			params+="&ecodes="+$(this).attr("ecode");
         });
 		/****/
@@ -413,19 +293,31 @@ $(document).ready(function(e) {
 			data:params,  
 			success : function(data){
 				if(data.success==true){	
-					//var previous = $(':mobile-pagecontainer').pagecontainer( "getActivePage" ).prev('[data-role=page]');
-					$.mobile.changePage("#page_homepage", { 
+					var previous = $(':mobile-pagecontainer').pagecontainer( "getActivePage" ).prev('[data-role=page]');
+					$.mobile.changePage(previous, { 
 						  transition: 'slide',
 						  reverse: true });
-					//并且刷新任务,或者移除该任务
-					//changeTaskesStatus("working");
-					$('#li_'+taskInfoParam.id).remove();
 				}
 				$.hideLoader();  
 			}
 		});	
 	}
-
+	$('#page_install_scan_button').bind('click', function() { 
+		cordova.plugins.barcodeScanner.scan(
+			function (result) {
+		    	//alert("We got a barcode\n" +
+  		          //     "Result: " + result.text + "\n" +
+  		          //      "Format: " + result.format + "\n" +
+  		          //      "Cancelled: " + result.cancelled);
+  		    	//$('#page_install_scan_textfield').val(result.text);
+				//同时去后台获取设备信息
+				getEquipmentInfo(result.text);
+		    }, 
+		    function (error) {
+		     	alert("Scanning failed: " + error);
+		    }
+		); 
+	});
 	//渲染设备列表
 	function renderEquipmentInfo(obj,coverHtml){
 		var html="";
@@ -433,31 +325,26 @@ $(document).ready(function(e) {
 		if(!(obj instanceof Array)){
 			root=[obj];
 		} 
-		
 		for(var i=0;i<root.length;i++){
-			//如果设备状态是手持，就是安装，如果是using就是维修或者巡检，巡检任务扫描的设备都是巡检
 			html+='<div data-role="collapsible" ecode="'+root[i].ecode+'">'+
 				'<h4>'+root[i].ecode+':'+root[i].style+'</h4>'+
 				'<p>'+root[i].brand_name+':'+root[i].subtype_name+'>'+root[i].prod_name+'>'+root[i].supplier_name+'</p>'+
 				'</div>';	
 		}
-		var page_id=taskInfoParam.page_id;
 		if(coverHtml){
 			//覆盖已经有的html
-			$("#"+page_id+"_equipments_list").html(html).enhanceWithin();
+			$("#page_install_equipments_list").html(html).enhanceWithin();
 		} else {
-			$("#"+page_id+"_equipments_list").append(html).enhanceWithin();
+			$("#page_install_equipments_list").append(html).enhanceWithin();
 		}
 		//.html(html);//.enhanceWithin()
-		$("#"+page_id+"_equipments_list [data-role='collapsible']").bind( "taphold", function(event){
+		$("#page_install_equipments_list [data-role='collapsible']").bind( "taphold", function(event){
 			window.equipmentInfoCollapsible=event.target;
-			//$( "#popupArrow" ).popup( "open", { positionTo:event.target,transition: "pop" } );
-			$( "#"+page_id+"_deleteEquipmentInfo_popup" ).popup( "open", { positionTo:event.target,transition: "pop" } );
+			$( "#popupArrow" ).popup( "open", { positionTo:event.target,transition: "pop" } );
     		event.preventDefault();
 		});
 		//return html;
 	}
-	//获取某个
 	function queryTaskEquipmentInfos(task_id){
 		$.ajax({   
 			url : $.ServerPath+"/task/mobile/queryTaskEquipmentInfos.do",  
@@ -471,12 +358,11 @@ $(document).ready(function(e) {
 			},
 			error:function(jqxhq){  
 				//$("#errorMsg").html('网络异常或服务停止了'); 
-				alert("网络异常或服务停止了"); 
+				alert("没有这个设备!"); 
 				$.hideLoader(); 
 			}  
 		});
 	}
-	//扫描的时候获取设备相关信息
 	function getEquipmentInfo(ecode){
 		$.ajax({   
 			url : $.ServerPath+"/task/mobile/getEquipmentInfo.do",  
@@ -484,14 +370,8 @@ $(document).ready(function(e) {
 			success : function(data){
 				if(data.success==true){	
 					var root=data.root;
-					if(root.status!=2 && taskInfoParam.type=='newInstall'){
+					if(root.status!==2){
 						alert("设备没有不是'安装出库'状态，不能进行安装!");
-						return;
-					} else if((root.status!=2 && root.status!=3) && taskInfoParam.type=='repair'){
-						alert("设备没有不是'安装出库','使用中'状态，不能进行扫描!");
-						return;
-					} else if(root.status!=3 && taskInfoParam.type=='patrol'){
-						alert("设备没有不是'使用中'状态，不能进行扫描!");
 						return;
 					}
 					renderEquipmentInfo(root);
@@ -511,44 +391,39 @@ $(document).ready(function(e) {
 		//选择了设备
 		
 		$(window.equipmentInfoCollapsible).remove();
-		//alert(window.equipmentInfoCollapsible);
-		var page_id=taskInfoParam.page_id;
-		$( "#"+page_id+"_deleteEquipmentInfo_popup" ).popup( "close");
-		//alert(2);
+		alert(window.equipmentInfoCollapsible);
+		$( "#popupArrow" ).popup( "close");
+		alert(2);
 		window.equipmentInfoCollapsible=null;
 	}
+</script>
+<div data-role="popup" id="popupArrow" data-arrow="b" data-theme="b">
+	<a href="javascript:void(0);" data-role="button" onClick="deleteEquipmentInfo();">删除</a>
+</div>
+</div>
+
+<script type="application/javascript">
+$(document).ready(function(e) {
+
+	$( document).on( "pagecontainershow", function( event, ui ) {
+		if (sessionStorage.taskInfoParamStr!='null') {
+			//从url中解析参数  
+			var params = $.getUrlParam(sessionStorage.taskInfoParamStr);  
+			//var page = $(e.target).find("#page_install");  
+			$("#page_install_id").val(params.id);  
+			$("#page_install_pole_name").val(params.pole_name);  
+			$("#page_install_memo").val(params.memo);
+			sessionStorage.taskInfoParamStr=null;
+			//初始化设备列表信息
+			queryTaskEquipmentInfos(params.id);
+		}  	
+	});
 
 	$("input[name='scan_textfield']").keyup(function(event){
 	  	if(event.target.value.length==$.ecodeLength){
 			getEquipmentInfo(event.target.value);
 			event.target.value="";
 		}	
-	});
-	$("a[name='scan_button']").click(function(event){
-	  	cordova.plugins.barcodeScanner.scan(
-			function (result) {
-		    	//alert("We got a barcode\n" +
-  		          //     "Result: " + result.text + "\n" +
-  		          //      "Format: " + result.format + "\n" +
-  		          //      "Cancelled: " + result.cancelled);
-				if(!result.cancelled){
-					//同时去后台获取设备信息
-					getEquipmentInfo(result.text);
-				}
-		    }, 
-		    function (error) {
-		     	alert("扫描失败: " + error);
-		    }
-		); 
-	});
-	$("a[name='deleteEquipmentInfo']").click(function(event){
-	  	deleteEquipmentInfo();
-	});
-	$("button[name='saveTask']").click(function(event){
-	  	saveTask();
-	});
-	$("button[name='submitTask']").click(function(event){
-	  	submitTask();
 	});
 	
 });

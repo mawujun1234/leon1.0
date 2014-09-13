@@ -84,5 +84,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		inner join ems_supplier e on a.supplier_id=e.id
 		inner join ems_taskequipmentlist f on a.ecode=f.ecode and f.task_id=#{task_id}
     </select> 
+    
+    
+    <select id="queryReadOvertimeTask" resultType="com.mawujun.mobile.task.Task" >
+    	select * from ems_task a
+    	where a.status='newTask' and floor(to_number(sysdate-(a.createDate+0))*24*60)>#{read}
+    </select> 
+    <select id="queryHandlingOvertimeTask" resultType="com.mawujun.mobile.task.Task" >
+    	select * from ems_task a
+    	where a.status='newTask' and floor(to_number(sysdate-(a.createDate+0))*24*60)>#{handling}
+    </select> 
 </mapper>
 

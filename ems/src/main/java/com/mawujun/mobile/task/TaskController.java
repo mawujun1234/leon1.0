@@ -1,4 +1,5 @@
 package com.mawujun.mobile.task;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -12,6 +13,7 @@ import com.mawujun.baseinfo.EquipmentService;
 import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.baseinfo.Pole;
 import com.mawujun.exception.BusinessException;
+import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.M;
 import com.mawujun.utils.page.Page;
@@ -75,6 +77,19 @@ public class TaskController {
 	@ResponseBody
 	public String confirm(String id) {
 		taskService.confirm(id);
+		return "success";
+	}
+	
+	@RequestMapping("/task/back.do")
+	@ResponseBody
+	public String backs(String id) {
+		taskService.update(Cnd.update().set(M.Task.status, TaskStatus.handling).andEquals(M.Task.id, id));
+		return "success";
+	}
+	@RequestMapping("/task/cancel.do")
+	@ResponseBody
+	public String cancel(String id) {
+		taskService.deleteBatch(Cnd.delete().andEquals(M.Task.id, id));
 		return "success";
 	}
 //
@@ -180,9 +195,9 @@ public class TaskController {
 	 */
 	@RequestMapping("/task/mobile/submit.do")
 	@ResponseBody
-	public String mobile_submit(String task_id,String[] ecodes) {
+	public String mobile_submit(String task_id,String task_type,String[] ecodes) {
 		//jquery 2 json地方有文图，，不能将数组正确的转换
-		taskService.mobile_save(task_id,ecodes);
+		taskService.mobile_submit(task_id,task_type,ecodes);
 		return "success";
 	}
 	

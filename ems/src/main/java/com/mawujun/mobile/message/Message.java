@@ -18,12 +18,19 @@ import com.mawujun.repository.idEntity.UUIDEntity;
 @Entity
 @Table(name="ems_message")
 public class Message extends UUIDEntity {
-	@Column(length=500)
-	private String content;//消息内容，杆位，任务编号等内容都写在这里
+	@Column(length=36)
+	private String task_id;
+	@Column(length=36)
+	private String workunit_id;
 	@Enumerated(EnumType.STRING)
-	private MessageType type;//消息类型
-	private Date createDate;//创建时间，任务创建的时间
-	private Date readDate;//查阅时间
+	private MessageType type;
+	@org.hibernate.annotations.Type(type="yes_no")
+	private Boolean isNew;//是否是新消息
+	@Column(length=500)
+	private String content;
+	
+	private Date createDate;
+	private Date readDate;//第一次查看时间
 	
 	
 	public String getContent() {
@@ -49,6 +56,24 @@ public class Message extends UUIDEntity {
 	}
 	public void setReadDate(Date readDate) {
 		this.readDate = readDate;
+	}
+	public String getTask_id() {
+		return task_id;
+	}
+	public void setTask_id(String task_id) {
+		this.task_id = task_id;
+	}
+	public String getWorkunit_id() {
+		return workunit_id;
+	}
+	public void setWorkunit_id(String workunit_id) {
+		this.workunit_id = workunit_id;
+	}
+	public Boolean getIsNew() {
+		return isNew;
+	}
+	public void setIsNew(Boolean isNew) {
+		this.isNew = isNew;
 	}
 
 
