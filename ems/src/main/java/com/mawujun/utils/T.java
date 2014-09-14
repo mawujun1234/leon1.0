@@ -183,6 +183,7 @@ public static final class ems_installoutlist {
 }
 public static final class ems_message {
 	public static final String task_id="task_id";
+	public static final String workunit_id="workunit_id";
 	public static final String type="type";
 	public static final String isNew="isNew";
 	public static final String content="content";

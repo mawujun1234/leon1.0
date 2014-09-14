@@ -6,9 +6,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 
+
 import com.mawujun.service.AbstractService;
 
 
+import com.mawujun.utils.page.Page;
 import com.mawujun.mobile.message.Message;
 import com.mawujun.mobile.message.MessageRepository;
 
@@ -28,6 +30,10 @@ public class MessageService extends AbstractService<Message, String>{
 	@Override
 	public MessageRepository getRepository() {
 		return messageRepository;
+	}
+	
+	public Page mobile_queryPage(Page page) {
+		return this.messageRepository.mobile_queryPage(page);
 	}
 
 }

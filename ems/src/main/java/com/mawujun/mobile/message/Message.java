@@ -32,7 +32,9 @@ public class Message extends UUIDEntity {
 	private Date createDate;
 	private Date readDate;//第一次查看时间
 	
-	
+	public String getTitle(){
+		return type.getName();
+	}
 	public String getContent() {
 		return content;
 	}

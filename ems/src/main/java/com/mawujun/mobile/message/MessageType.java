@@ -6,7 +6,7 @@ package com.mawujun.mobile.message;
  *
  */
 public enum MessageType {
-	warn("消息提醒"),//消息提醒
+	overtime("超时提醒"),//消息提醒
 	complete("任务结束");//任务结束的消息提醒
 	
 	private String name;

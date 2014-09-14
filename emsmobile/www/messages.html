@@ -14,10 +14,38 @@
 </style>
 
 <script type="application/javascript">
+function queryMessages(){
+	$.ajax({   
+		url : $.ServerPath+"/message/mobile/query.do",  
+		data:{start:0,limit:20,status:status},  
+		success : function(data){
+			var root=data.root;
+			var html="";
+			for(var i=0;i<root.length;i++){
+				var obj=root[i];
+				html+='<li data-role="list-divider">'+obj.title+(obj.isNew?'<span id="'+obj.id+'_isNew" class="ui-li-count" style="color:#FFF;background-color:#F00;border-color:#F00">未读</span></li>':'')+
+					'<li><a href="#page_message_info" onClick="changeToMessageInfo(\''+obj.id+'\',\''+obj.content+'\');">'+
+						'<p>'+obj.content+'</p>'+
+						'<p>'+obj.createDate+'</p>'+
+					'</a></li>';
+			}
+			$("#page_homepage_content_listview").html(html).listview('refresh');
+		}
+	});
+	
+}
+function changeToMessageInfo(id,content){
+	sessionStorage.messageInfo_id=id;
+	sessionStorage.messageInfo_content=content;
+}
 $(document).ready(function(e) {
     //初始化滑出菜单
 	htmlobj=$.ajax({url:"leftMenu.html",async:false});
   	$("#left-menu-contanier").html(htmlobj.responseText).trigger('create');
+	
+	queryMessages();
+
+	
 });
 </script>
 </head> 
@@ -29,19 +57,9 @@ $(document).ready(function(e) {
         <div id="left-menu-contanier"></div>
         <h1>消息提醒</h1>
 	</div>
-	<div data-role="content">
-    	 <ul data-role="listview" data-count-theme="b" data-inset="true">
-        	 <li data-role="list-divider">超时提醒<span class="ui-li-count" style="color:#FFF;background-color:#F00;border-color:#F00">未读</span></li>
-            <li>
-    			<p>任务XXXXXX已经超时，请处理</p>
-    			<p>2014-3-20</p>
-            </li>
-            
-            <li data-role="list-divider">超时提醒<span class="ui-li-count" style="color:#FFF;background-color:#F00;border-color:#F00">未读</span></li>
-            <li>
-    			<p>任务XXXXXX已经超时，请处理</p>
-    			<p>2014-3-20</p>
-            </li>
+	<div data-role="content" >
+    	 <ul data-role="listview" id="page_homepage_content_listview" data-count-theme="b" data-inset="true">
+
         </ul>			
 			
 	</div>
@@ -55,11 +73,39 @@ $(document).ready(function(e) {
             </ul>  
         </div>  
 	</div>
-    
-
-	
 </div>
 
+<div data-role="page" id="page_message_info">
+
+	<div data-role="header">
+    	<a href="#page_homepage" class="ui-btn ui-corner-all" data-rel="back" data-theme="c">返回</a>
+        <h1></h1> 
+	</div>
+	<div role="main" class="ui-content" id="page_message_info_content">
+        sdfsfsdfsdfsdfsdfsdfsdfsdf
+	</div>
+<script type="application/javascript">
+$(document).ready(function(e) {
+	$( document).on( "pagecontainershow", function( event, ui ) {	
+		if (sessionStorage.messageInfo_content && sessionStorage.messageInfo_content!='null') {
+			$("#page_message_info_content").html(sessionStorage.messageInfo_content);
+			var id=sessionStorage.messageInfo_id;
+			$.ajax({   
+				url : $.ServerPath+"/message/mobile/setReaded.do",  
+				data:{id:id},  
+				success : function(data){
+					if(data.success==true){	
+						$("#"+id+"_isNew").remove();
+					}
+					$.hideLoader();  
+				}
+			});//if
+			sessionStorage.messageInfo_content=null;
+		}  	
+	});//pagecontainershow
+});
+</script>
+</div>
 
 </body>
 </html>

@@ -88,11 +88,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     
     <select id="queryReadOvertimeTask" resultType="com.mawujun.mobile.task.Task" >
     	select * from ems_task a
-    	where a.status='newTask' and floor(to_number(sysdate-(a.createDate+0))*24*60)>#{read}
+    	where a.status='newTask' and floor(to_number(sysdate-(a.createDate+0))*24*60) &gt; #{read}
+    	and not exists (select 1 from ems_message b where a.id=b.task_id and floor(to_number((a.createdate+0)-(b.createDate+0))*24*60) &lt; #{read})
     </select> 
     <select id="queryHandlingOvertimeTask" resultType="com.mawujun.mobile.task.Task" >
     	select * from ems_task a
-    	where a.status='newTask' and floor(to_number(sysdate-(a.createDate+0))*24*60)>#{handling}
+    	where a.status='read' and floor(to_number(sysdate-(a.createDate+0))*24*60) &gt; #{handling}
+    	and not exists (select 1 from ems_message b where a.id=b.task_id and floor(to_number((a.createdate+0)-(b.createDate+0))*24*60) &lt; #{handling})
     </select> 
 </mapper>
 

@@ -183,6 +183,7 @@ public static final class InstallOutList {
 }
 public static final class Message {
 	public static final String task_id="task_id";
+	public static final String workunit_id="workunit_id";
 	public static final String type="type";
 	public static final String isNew="isNew";
 	public static final String content="content";

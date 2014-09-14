@@ -5,6 +5,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
 <mapper namespace="com.mawujun.mobile.message.MessageRepository">
-
+	<select id="mobile_queryPage" resultType="com.mawujun.mobile.message.Message" parameterType="map">
+    	select * from ems_message a
+    	where a.workunit_id=#{workunit_id}
+    </select>
 </mapper>
 
