@@ -1,7 +1,7 @@
 // JavaScript Document
 //$.ServerPath="http://localhost:8084";
-//$.ServerPath="http://172.16.3.4:8084";
-$.ServerPath="http://192.168.94.29:8084";
+$.ServerPath="http://172.16.3.4:8084";
+//$.ServerPath="http://192.168.94.29:8084";
 $.ecodeLength=16;
 $.ajaxSetup({
 	//jsonp: "jsonpCallback",//使用浏览器进行测试的时候用的，如果安装到手机，就注释掉
