@@ -61,31 +61,30 @@ public class OvertimeService extends AbstractService<Overtime, String>{
 		//System.out.println("111111111111111111111111111111111111111");
 		//首先获取过期时间
 		Overtime overtime=overtimeRepository.get("overtime");
-		//处理未阅读的任务,要按人进行发送
-		List<Task> list=taskRepository.queryReadOvertimeTask(overtime.getRead());
-		//如果已发送的怎么办，
-		for(Task task:list){
-			Message msg=new Message();
-			msg.setCreateDate(new Date());
-			msg.setIsNew(true);
-			String task_type="";
-			if(task.getType()==TaskType.newInstall){
-				task_type="新安装";
-			} else if(task.getType()==TaskType.repair){ 
-				task_type="维修";
-			} else if(task.getType()==TaskType.patrol){
-				task_type="巡检";
-			}
-			msg.setContent(task_type+"任务"+task.getId()+"已经超期，请尽快处理!");
-			msg.setTask_id(task.getId());
-			msg.setType(MessageType.overtime);
-			msg.setWorkunit_id(task.getWorkunit_id());
-			
-			messageService.create(msg);
-			
-		}
+//		//处理未阅读的任务,要按人进行发送
+//		List<Task> list=taskRepository.queryReadOvertimeTask(overtime.getRead());
+//		//如果已发送的怎么办，
+//		for(Task task:list){
+//			Message msg=new Message();
+//			msg.setCreateDate(new Date());
+//			msg.setIsNew(true);
+//			String task_type="";
+//			if(task.getType()==TaskType.newInstall){
+//				task_type="新安装";
+//			} else if(task.getType()==TaskType.repair){ 
+//				task_type="维修";
+//			} else if(task.getType()==TaskType.patrol){
+//				task_type="巡检";
+//			}
+//			msg.setContent(task_type+"任务"+task.getId()+"已经超期，请尽快处理!");
+//			msg.setTask_id(task.getId());
+//			msg.setType(MessageType.overtime);
+//			msg.setWorkunit_id(task.getWorkunit_id());
+//			
+//			messageService.create(msg);
+//		}
 		//处理未处理的任务
-		list=taskRepository.queryHandlingOvertimeTask(overtime.getHandling());
+		List<Task> list=taskRepository.queryHandlingOvertimeTask(overtime.getHandling());
 		//如果已发送的怎么办，
 		for(Task task:list){
 			Message msg=new Message();

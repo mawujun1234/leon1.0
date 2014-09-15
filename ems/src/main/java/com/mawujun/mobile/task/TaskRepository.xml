@@ -57,6 +57,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="pole_name!=null">
 				and a.pole_name like #{pole_name}
 			</if>
+			<if test="isOvertime!=null and isOvertime==true">
+				and a.status in ('newTask','read') and floor(to_number(sysdate-(a.createDate+0))*24*60) &gt; #{handling}
+			</if>
 		</where>
     </select>
     
@@ -85,15 +88,16 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		inner join ems_taskequipmentlist f on a.ecode=f.ecode and f.task_id=#{task_id}
     </select> 
     
-    
+    <!-- 
     <select id="queryReadOvertimeTask" resultType="com.mawujun.mobile.task.Task" >
     	select * from ems_task a
     	where a.status='newTask' and floor(to_number(sysdate-(a.createDate+0))*24*60) &gt; #{read}
     	and not exists (select 1 from ems_message b where a.id=b.task_id and floor(to_number((a.createdate+0)-(b.createDate+0))*24*60) &lt; #{read})
     </select> 
+     -->
     <select id="queryHandlingOvertimeTask" resultType="com.mawujun.mobile.task.Task" >
     	select * from ems_task a
-    	where a.status='read' and floor(to_number(sysdate-(a.createDate+0))*24*60) &gt; #{handling}
+    	where a.status in ('newTask','read') and floor(to_number(sysdate-(a.createDate+0))*24*60) &gt; #{handling}
     	and not exists (select 1 from ems_message b where a.id=b.task_id and floor(to_number((a.createdate+0)-(b.createDate+0))*24*60) &lt; #{handling})
     </select> 
 </mapper>

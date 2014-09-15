@@ -48,6 +48,9 @@ commit;
 insert into SYS_USER (id, address, email, logindate, name, password, phone, type, username, status)
 values ('admin', null, null, null, 'admin', 'admin', null, 0, 'admin', 'Y');
 commit;
+
+
+
 alter table SYS_NAVIGATION disable all triggers;
 delete from SYS_NAVIGATION;
 commit;
@@ -88,7 +91,7 @@ values ('6424df74-c571-4a10-aa39-d358e9743781', 'N', null, null, null, 'aae', '�
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
 values ('373d4584-3767-4311-9825-9ab95c031db8', 'Y', '/task/TaskSendApp.jsp', null, '6424df74-c571-4a10-aa39-d358e9743781', 'aae-aaa', '任务下发');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('dd2f0178-bc59-422e-ae96-0af92bc6cc0c', 'Y', null, null, '6424df74-c571-4a10-aa39-d358e9743781', 'aae-aab', '任务查询管理');
+values ('dd2f0178-bc59-422e-ae96-0af92bc6cc0c', 'Y', '/task/TaskQueryApp.jsp', null, '6424df74-c571-4a10-aa39-d358e9743781', 'aae-aab', '任务查询管理');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
 values ('f0861a7e-597e-4886-9a14-b83a37d74150', 'Y', null, null, 'f54d8775-74fa-43c0-b2ff-df5549be60b4', 'aae-aac-aab', 'eeee');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
@@ -117,23 +120,19 @@ insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
 values ('d272130c-8d1a-4043-8baf-24a8b465473e', 'Y', '/adjust/AdjustInApp.jsp', null, '9f1b4ba5-0d1f-44f2-a75d-0fc69071e473', 'aah-aad', '调拨入库');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
 values ('e25d2f00-41f8-488f-9d97-7c88fb909a7e', 'Y', '/store/OrderQueryApp.jsp', null, 'd7624421-6323-4bc7-a28f-6f011f771a57', 'aac-aah', '订单历史查询');
+insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
+values ('9b918511-5837-4d4f-a4af-7abc87a60a91', 'Y', '/task/OvertimeApp.jsp', null, '6424df74-c571-4a10-aa39-d358e9743781', 'aae-aac', '超时设置');
 commit;
+alter table SYS_NAVIGATION enable all triggers;
 
 
 alter table EMS_OVERTIME disable all triggers;
-prompt Deleting EMS_OVERTIME...
 delete from EMS_OVERTIME;
 commit;
-prompt Loading EMS_OVERTIME...
 insert into EMS_OVERTIME (id, handling, read)
 values ('overtime', 1440, 1440);
 commit;
-prompt 1 records loaded
-prompt Enabling triggers for EMS_OVERTIME...
 alter table EMS_OVERTIME enable all triggers;
-set feedback on
-set define on
-prompt Done.
 
 
 

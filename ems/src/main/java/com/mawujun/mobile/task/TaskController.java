@@ -16,6 +16,7 @@ import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.M;
+import com.mawujun.utils.StringUtils;
 import com.mawujun.utils.page.Page;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
@@ -31,6 +32,8 @@ public class TaskController {
 	
 	@Resource
 	private EquipmentService equipmentService;
+	@Resource
+	private OvertimeService overtimeService;
 
 
 	/**
@@ -46,7 +49,7 @@ public class TaskController {
 		page.addParam("customer_id", customer_id);
 		page.addParam("area_id", area_id);
 		page.addParam("workunit_id", workunit_id);
-		if(pole_name!=null){
+		if(StringUtils.hasText(pole_name)){
 			page.addParam("pole_name", "%"+pole_name+"%");
 		}
 		Page result= taskService.queryPoles(page);
@@ -63,13 +66,21 @@ public class TaskController {
 	
 	@RequestMapping("/task/query.do")
 	@ResponseBody
-	public Page query(Integer start,Integer limit,String customer_id,String status,String workunit_id,String pole_name) {
+	public Page query(Integer start,Integer limit,String customer_id,String status,String workunit_id,String pole_name,Boolean isOvertime) {
 		Page page=Page.getInstance(start,limit);
 		page.addParam("customer_id", customer_id);
 		page.addParam("status", status);
 		page.addParam("workunit_id", workunit_id);
+		
 		if(pole_name!=null){
 			page.addParam("pole_name", "%"+pole_name+"%");
+		}
+		if(isOvertime!=null && isOvertime==true){
+			page.addParam("isOvertime", true);
+			//获取超期时间
+			Overtime overtime=overtimeService.get("overtime");
+			page.addParam("handling", overtime.getHandling());
+			
 		}
 		return taskService.queryPage(page);
 	}

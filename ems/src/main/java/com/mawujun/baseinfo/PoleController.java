@@ -107,4 +107,9 @@ public class PoleController {
 	}
 	
 	
+	@RequestMapping("/pole/queryEquipments.do")
+	@ResponseBody
+	public List<Pole> queryEquipments(String id){		
+		return poleService.queryEquipments(id);
+	}
 }

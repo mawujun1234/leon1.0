@@ -46,6 +46,8 @@ public class Equipment implements IdEntity<String>{
 	private String store_id;//仓库id，所属仓库
 	@Column(length=36)
 	private String workUnit_id;//作业单位id，所属的作业单位，和store_id，同时只能有一个有值
+	@Column(length=36)
+	private String pole_id;//杆位，所属的杆位，store_id，workUnit_id，pole_id三个职能存在一个
 	
 
 //	public String getStatus_name() {
@@ -156,6 +158,12 @@ public class Equipment implements IdEntity<String>{
 	}
 	public void setWorkUnit_id(String workUnit_id) {
 		this.workUnit_id = workUnit_id;
+	}
+	public String getPole_id() {
+		return pole_id;
+	}
+	public void setPole_id(String pole_id) {
+		this.pole_id = pole_id;
 	}
 
 }

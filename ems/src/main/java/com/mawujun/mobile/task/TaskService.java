@@ -94,7 +94,11 @@ public class TaskService extends AbstractService<Task, String>{
 		//修改杆位状态为"已安装"
 		if(task.getType()==TaskType.newInstall){
 			poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.using).andEquals(M.Pole.id, task.getPole_id()));
+			
+			
 		}
+		
+		
 		
 	}
 	
@@ -142,6 +146,7 @@ public class TaskService extends AbstractService<Task, String>{
 	public void mobile_submit(String task_id,String task_type,String[] ecodes) {
 		AssertUtils.notNull(task_type);
 		AssertUtils.notEmpty(ecodes);
+		Task task=taskRepository.get(task_id);
 		
 		//全部重新保存，因为不知道哪些是更新过的
 		taskEquipmentListRepository.deleteBatch(Cnd.delete().andEquals(M.TaskEquipmentList.task_id, task_id));
@@ -161,16 +166,23 @@ public class TaskService extends AbstractService<Task, String>{
 			//修改设备为“使用中”,修改设备为旧设备
 			//equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using.getValue()).set(M.Equipment.isnew, false).andEquals(M.Equipment.ecode, ecode));		
 			if(TaskType.newInstall.toString().equals(task_type)){
-				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using.getValue()).set(M.Equipment.isnew, false).andEquals(M.Equipment.ecode, ecode));	
+				//更改设备的位置到该杆位上,把设备从昨夜单位身上移动到杆位上
+				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using.getValue()).set(M.Equipment.isnew, false)
+						.set(M.Equipment.pole_id, task.getPole_id()).set(M.Equipment.workUnit_id, null).andEquals(M.Equipment.ecode, ecode));	
 			} else if(TaskType.repair.toString().equals(task_type)){
 				//如果设备是使用中，就修改为已损坏，如果是安装出库，就修改为使用中，同时修改设备为旧设备
 				
 				//替换下来的设备
-				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.breakdown.getValue()).andEquals(M.Equipment.ecode, ecode)
+				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.breakdown.getValue())
+						.set(M.Equipment.workUnit_id, task.getWorkunit_id())
+						.set(M.Equipment.pole_id, null)
+						.andEquals(M.Equipment.ecode, ecode)
 						.andEquals(M.Equipment.status, EquipmentStatus.using.getValue()));	
 				
 				//要安装上去的设备
 				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using.getValue()).set(M.Equipment.isnew, false)
+						.set(M.Equipment.workUnit_id, null)
+						.set(M.Equipment.pole_id, task.getPole_id())
 						.andEquals(M.Equipment.ecode, ecode)
 						.andEquals(M.Equipment.status, EquipmentStatus.out_storage.getValue()));	
 			} else if(TaskType.patrol.toString().equals(task_type)){
@@ -180,7 +192,6 @@ public class TaskService extends AbstractService<Task, String>{
 		
 		//修改任务状态为"已提交"
 		taskRepository.update(Cnd.update().set(M.Task.status, TaskStatus.submited).set(M.Task.submitDate, new Date()).andEquals(M.Task.id, task_id));
-		
 		
 		
 	}

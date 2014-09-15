@@ -1,5 +1,7 @@
 package com.mawujun.baseinfo;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -26,4 +28,6 @@ public interface PoleRepository extends IRepository<Pole, String>{
 	 * @param pole_id
 	 */
 	public void deletePoles(@Param("pole_id")String pole_id);
+	
+	public List<Pole> queryEquipments(@Param("id")String id);
 }

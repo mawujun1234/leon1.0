@@ -65,6 +65,7 @@ public static final class ems_equipment {
 	public static final String fisData="fisData";
 	public static final String store_id="store_id";
 	public static final String workUnit_id="workUnit_id";
+	public static final String pole_id="pole_id";
 }
 public static final class ems_equipmentprod {
 	public static final String id="id";

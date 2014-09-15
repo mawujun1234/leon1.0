@@ -29,7 +29,7 @@ Ext.onReady(function(){
 		        name: 'read',
 		        readOnly:false,
 		        labelWidth:120,
-		        xtype:'numberfield',
+		        xtype:'hidden',
 		        //value:1440,
 		        minValue:60,
 		        allowBlank: false

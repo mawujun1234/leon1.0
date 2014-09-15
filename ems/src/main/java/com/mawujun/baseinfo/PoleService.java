@@ -1,9 +1,12 @@
 package com.mawujun.baseinfo;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 
 
 
@@ -41,5 +44,9 @@ public class PoleService extends AbstractService<Pole, String>{
 		for(int i=0;i<pole_ids.length;i++){
 			poleRepository.deletePoles(pole_ids[i]);
 		}
+	}
+	
+	public List<Pole> queryEquipments(String id){
+		return poleRepository.queryEquipments(id);
 	}
 }

@@ -103,9 +103,9 @@ Ext.define('Ems.task.TaskSendGrid',{
 	initToolbar:function(){
 		var me=this;
 		var customer_combox=Ext.create('Ext.form.field.ComboBox',{
-	        fieldLabel: '<b>客户名称</b>',
+	        fieldLabel: '客户名称',
 	        labelAlign:'right',
-            labelWidth:55,
+            labelWidth:60,
             //width:250,
 	        //xtype:'combobox',
 	        //afterLabelTextTpl: Ext.required,
@@ -138,9 +138,9 @@ Ext.define('Ems.task.TaskSendGrid',{
 	    });
 	    
 	    var area_combox=Ext.create('Ext.form.field.ComboBox',{
-	        fieldLabel: '<b>片区</b>',
+	        fieldLabel: '片区',
 	        labelAlign:'right',
-            labelWidth:55,
+            labelWidth:60,
             //width:250,
 	        //xtype:'combobox',
 	        //afterLabelTextTpl: Ext.required,
@@ -173,9 +173,9 @@ Ext.define('Ems.task.TaskSendGrid',{
 	    });
 	    
 	    var workunit_combox=Ext.create('Ext.form.field.ComboBox',{
-	        fieldLabel: '<b>作业单位</b>',
+	        fieldLabel: '作业单位',
 	        labelAlign:'right',
-            labelWidth:55,
+            labelWidth:60,
             //width:250,
 	        //xtype:'combobox',
 	        //afterLabelTextTpl: Ext.required,
@@ -210,12 +210,15 @@ Ext.define('Ems.task.TaskSendGrid',{
 	    var pole_textfield=Ext.create('Ext.form.field.Text',{
 			labelAlign:'right',
 			name:'pole_name',
-			fieldLabel: '杆位名称',
+			//fieldLabel: '杆位名称',
+			emptyText:'请输入杆位名称',
 			selectOnFocus:true,
 			labelWidth:80,
 			width:250,
 			allowBlank:true
 		});
+		
+		
 		
 		var query_button=Ext.create('Ext.button.Button',{
 			text:'查询',

@@ -2,7 +2,8 @@ Ext.define('Ems.baseinfo.PoleGrid',{
 	extend:'Ext.grid.Panel',
 	requires: [
 	     'Ems.baseinfo.Pole',
-	     'Ems.baseinfo.PoleForm'
+	     'Ems.baseinfo.PoleForm',
+	     'Ems.baseinfo.EquipmentGrid'
 	],
 	columnLines :true,
 	stripeRows:true,
@@ -118,6 +119,16 @@ Ext.define('Ems.baseinfo.PoleGrid',{
 		//me.addAction(reload);
 		actions.push(reload);
 
+		var showEquipment = new Ext.Action({
+		    text: '拥有的设备',
+		    //itemId:'reload',
+		    handler: function(){
+		    	me.onShowEquipment();
+		    },
+		    icon: '../icons/1.png'
+		});
+		actions.push(showEquipment);
+		
 		me.tbar={
 			itemId:'action_toolbar',
 			layout: {
@@ -235,5 +246,22 @@ Ext.define('Ems.baseinfo.PoleGrid',{
     onReload:function(){
     	var me=this;
     	me.getStore().reload();	      
+    },
+    onShowEquipment:function(){
+    	var me=this;
+    	var record=me.getSelectionModel( ).getLastSelected( );
+    	var grid=Ext.create('Ems.baseinfo.EquipmentGrid',{});
+    	grid.getStore().load({params:{id:record.get("id")}});
+    	var win=new Ext.window.Window({
+			items:[grid],
+			title:record.get("name")+'拥有的设备',
+			layout:'fit',
+			closeAction:'destroy',
+			width:600,
+			height:400,
+			modal:true
+		});
+		//form.win=win
+		win.show();	
     }
 });

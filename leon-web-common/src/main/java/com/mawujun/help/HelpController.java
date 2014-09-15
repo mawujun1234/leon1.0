@@ -28,7 +28,8 @@ public class HelpController {
 		//展示的时候，新建一个函数，动态的网<script id="editor">标签里面添加内容，也就是util的内容,参考buildUe方法，直接获取html内容，然后展示在标签内
 		//查看的时候直接封装成完整的html
 		//而用户查看的时候，是用一个html包围这些内容的
-		String content=new String(editorValue.getBytes("ISO-8859-1"),"UTF-8");
+		
+		String content=new String(editorValue.getBytes("ISO-8859-1"),request.getCharacterEncoding());
 		String path=request.getSession().getServletContext().getRealPath("/")+"doc"+FileUtils.FILE_SEPARATOR+funId;
 
 		FileUtils.createDir(path);
