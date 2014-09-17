@@ -18,21 +18,29 @@ Ext.define('Ems.baseinfo.EquipmentTypeForm',{
  //   },
 	initComponent: function () {
        var me = this;
+       var maxLength=me.isSubetype?3:2;
        me.items= [
 		{
 	        fieldLabel: '编码',
 	        afterLabelTextTpl: Ext.required,
 	        name: 'id',
-	        minLength:me.isSubetype?3:2,
-	        maxLength:me.isSubetype?3:2,
+	        minLength:maxLength,
+	        maxLength:maxLength,
 	        length:me.isSubetype?3:2,
 	        xtype:'textfield',
-	        allowBlank: false
+	        allowBlank: false,
+	        listeners:{
+	        	change:function(field,newValue,oldValue){
+		        	if(maxLength<newValue.length){
+		        		field.setValue(oldValue);
+		        	}
+		        }
+	        }
 	    },
 	    {
 	        fieldLabel: '名称',
 	        afterLabelTextTpl: Ext.required,
-	        name: 'text',
+	        name: 'name',
 	        //readOnly:true,
 	        xtype:'textfield',
 	        allowBlank: false
@@ -79,6 +87,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeForm',{
                 }
                 form.getForm().updateRecord();
 				form.getRecord().save({
+					url:form.url,
 					success: function(record, operation) {
 											
 						me.fireEvent("saved");

@@ -7,7 +7,7 @@ Ext.onReady(function(){
 		region:'center',
 		split: true,
 		collapsible: true,
-		title:'大类',
+		title:'品名',
 		width:400
 	});
 
@@ -19,19 +19,31 @@ Ext.onReady(function(){
 	grid.tree=tree;
 	
 	tree.on("itemclick",function(panel,record, item, index, e){
-		if(record.get("levl")==0){
-			grid.setTitle("大类管理");
-		} else if(record.get("levl")==1){
-			grid.setTitle("\""+record.get("text")+"\"下的所有小类");
-		} else if(record.get("levl")==2){
-			grid.setTitle("\""+record.get("text")+"\"下的所有品名");
+//		if(record.get("levl")==0){
+//			grid.setTitle("大类管理");
+//		} else if(record.get("levl")==1){
+//			grid.setTitle("\""+record.get("text")+"\"下的所有小类");
+//		} else if(record.get("levl")==2){
+//			grid.setTitle("\""+record.get("text")+"\"下的所有品名");
+//		}
+//		var aa=grid.getSelectionModel( ).getLastSelected( );
+//		console.dir(aa);
+//		grid.getStore().load({params:{
+//			id:record.get("id").split("_")[0],
+//			levl:record.get("levl")
+//		}});
+		
+		if(record.get("levl")==2){
+			grid.getEl().unmask();
+			var aa=grid.getSelectionModel( ).getLastSelected( );
+			grid.getStore().load({params:{
+				id:record.get("id"),//.split("_")[0],
+				levl:record.get("levl")
+			}});
+		} else {
+			grid.getEl().mask();
+			grid.getStore().removeAll();
 		}
-		var aa=grid.getSelectionModel( ).getLastSelected( );
-		console.dir(aa);
-		grid.getStore().load({params:{
-			id:record.get("id").split("_")[0],
-			levl:record.get("levl")
-		}});
 		
 	});
 //

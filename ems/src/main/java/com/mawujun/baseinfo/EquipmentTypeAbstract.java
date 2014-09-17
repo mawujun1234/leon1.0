@@ -5,13 +5,13 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 @MappedSuperclass
-public class EquipmentTypeVO {
+public class EquipmentTypeAbstract {
 
 	@Id
 	@Column(length=2)
 	private String id;
 	@Column(length=30)
-	private String text;
+	private String name;
 	@org.hibernate.annotations.Type(type="yes_no")
 	private Boolean status=true;
 	
@@ -42,12 +42,8 @@ public class EquipmentTypeVO {
 		this.id = id;
 	}
 	public String getText() {
-		return text;
+		return this.getName()+"("+this.getId()+")";
 	}
-	public void setText(String text) {
-		this.text = text;
-	}
-
 	public String getParent_id() {
 		return parent_id;
 	}
@@ -77,6 +73,14 @@ public class EquipmentTypeVO {
 	}
 	public void setStatus(Boolean status) {
 		this.status = status;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

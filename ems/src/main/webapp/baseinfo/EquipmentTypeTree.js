@@ -6,6 +6,11 @@
 Ext.define('Ems.baseinfo.EquipmentTypeTree', {
     extend: 'Ext.tree.Panel',
     requires:['Ems.baseinfo.EquipmentType','Ems.baseinfo.EquipmentTypeForm'],
+    viewConfig: {
+	    getRowClass: function(record, rowIndex, rowParams, store){
+	        return record.get("status")==true ? "" : "status_disable";
+	    }
+    },
     initComponent: function () {
 		var me = this;
 
@@ -16,6 +21,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeTree', {
 			root: {
 			    expanded: true,
 			    levl:0,
+			    status:true,
 			    text:"类型管理" 
 			},
 			listeners:{
@@ -27,90 +33,283 @@ Ext.define('Ems.baseinfo.EquipmentTypeTree', {
 				}
 			}
 		});
-		//me.initAction();
+		me.initAction();
        
 		me.callParent(arguments);
     },
 
     
-   
-     /**
-     * 就是action的itemId，例如有：create,rename,destroy,copy,cut,paste,reload等等
-     * @param {} itemIds
-     */
-    disableAction:function(itemIds){
-    	if(!Ext.isIterable(itemIds)){
-    		itemIds=[itemIds];
-    	}
-    	
-    	var items=this.contextMenu.items;
-    	items.each(function(item ,index,len ){
-    		for(var j=0;j<itemIds.length;j++){
-    			if(item.getItemId( )==itemIds[j]){
-    				item.disable();
-    				break;
-    			}
-    		}
-    	});
-    	var tbar=this.getActionTbar();//this.getDockedItems('toolbar[itemId="action_toolbar"]')[0];
-    	if(!tbar){
+//   
+//     /**
+//     * 就是action的itemId，例如有：create,rename,destroy,copy,cut,paste,reload等等
+//     * @param {} itemIds
+//     */
+//    disableAction:function(itemIds){
+//    	if(!Ext.isIterable(itemIds)){
+//    		itemIds=[itemIds];
+//    	}
+//    	
+//    	var items=this.contextMenu.items;
+//    	items.each(function(item ,index,len ){
+//    		for(var j=0;j<itemIds.length;j++){
+//    			if(item.getItemId( )==itemIds[j]){
+//    				item.disable();
+//    				break;
+//    			}
+//    		}
+//    	});
+//    	var tbar=this.getActionTbar();//this.getDockedItems('toolbar[itemId="action_toolbar"]')[0];
+//    	if(!tbar){
+//    		return;
+//    	}
+//    	items=tbar.items;
+//    	items.each(function(item ,index,len ){
+//    		for(var j=0;j<itemIds.length;j++){
+//    			if(item.getItemId( )==itemIds[j]){
+//    				item.disable();
+//    				break;
+//    			}
+//    		}
+//    	});
+//    },
+    initAction:function(){
+     	var me = this;
+     	var actions=[];
+     	
+       var create = new Ext.Action({
+		    text: '新建',
+		    itemId:'create',
+		    disabled:me.disabledAction,
+		    handler: function(b){
+		    	me.onCreate(null,b);
+		    },
+		    iconCls: 'form-add-button'
+		});
+		//me.addAction(create);
+		actions.push(create);
+		var update = new Ext.Action({
+		    text: '更新',
+		    itemId:'update',
+		    disabled:me.disabledAction,
+		    handler: function(b){
+		    	me.onUpdate(null,b);
+		    },
+		    iconCls: 'form-update-button'
+		});
+		//me.addAction(create);
+		actions.push(update);
+		
+		var destroy = new Ext.Action({
+		    text: '删除',
+		    itemId:'destroy',
+		    disabled:me.disabledAction,
+		    handler: function(){
+		    	me.onDelete();    
+		    },
+		    iconCls: 'form-delete-button'
+		});
+		//me.addAction(destroy);
+		actions.push(destroy)
+		
+		var reload = new Ext.Action({
+		    text: '刷新',
+		    itemId:'reload',
+		    handler: function(){
+		    	me.onReload();
+		    },
+		    iconCls: 'form-reload-button'
+		});
+		//me.addAction(reload);
+		actions.push(reload);
+
+		me.tbar={
+			itemId:'action_toolbar',
+			layout: {
+	               overflowHandler: 'Menu'
+	        },
+			items:actions
+			//,autoScroll:true		
+		};
+
+    },
+    onCreate:function(values,b){
+    	var me=this;
+
+    	values=values||{};
+
+    	var parent=me.getSelectionModel( ).getLastSelected( )||me.tree.getRootNode( );    
+    	if(parent.get("levl")==2){
+    		alert("小类下面不能再添加了，品名请在左边的表格里面新建!");
     		return;
     	}
-    	items=tbar.items;
-    	items.each(function(item ,index,len ){
-    		for(var j=0;j<itemIds.length;j++){
-    			if(item.getItemId( )==itemIds[j]){
-    				item.disable();
-    				break;
-    			}
-    		}
-    	});
-    },
-    /**
-     * 就是action的itemId，例如有：create,rename,destroy,copy,cut,paste,reload等等
-     * @param {} itemIds
-     */
-    enableAction:function(itemIds){
-    	if(!Ext.isIterable(itemIds)){
-    		itemIds=[itemIds];
+
+    	var parent_id=parent.get("id");
+    	if(parent_id!="root"){
+    		parent_id=parent_id;//.split("_")[0];
     	}
-    	
-    	var items=this.contextMenu.items;
-    	items.each(function(item ,index,len ){
-    		for(var j=0;j<itemIds.length;j++){
-    			if(item.getItemId( )==itemIds[j]){
-    				item.disable();
-    				break;
-    			}
-    		}
-    	});
-    	var tbar=this.getActionTbar();
-    	items=tbar.items;
-    	items.each(function(item ,index,len ){
-    		for(var j=0;j<itemIds.length;j++){
-    			if(item.getItemId( )==itemIds[j]){
-    				item.disable();
-    				break;
-    			}
-    		}
-    	});
+		var initValue={
+		    'parent_id':parent_id,
+		    status:1,
+		    text:''
+		};
+		//if(parent.get("levl")){
+			initValue.levl=parent.get("levl")+1;
+		//}
+			if(initValue.levl==2){
+				
+			}
+
+    	values=Ext.applyIf(values,initValue);
+
+		var child=values.isModel?values:Ext.createModel(parent.self.getName(),values);
+		var form=new Ems.baseinfo.EquipmentTypeForm({
+			url:Ext.ContextPath+"/equipmentType/create.do",
+			isSubetype:initValue.levl==2?true:false,
+			listeners:{
+				saved:function(){
+					win.close();
+					//me.getStore().reload();
+					me.getStore().reload({node:parent});
+				}
+			}
+		});
+		form.getForm().loadRecord(child);
+		var win=new Ext.window.Window({
+			items:[form],
+			layout:'fit',
+			closeAction:'destroy',
+			width:300,
+			height:200,
+			modal:true
+		});
+		//form.win=win
+		win.show();
+
     },
-    getContextMenu:function(){
-    	return this.contextMenu;
+    onUpdate:function(){
+    	var me=this;
+    	var record=me.getSelectionModel().getLastSelected( );
+		if(!record){
+			Ext.Msg.alert("消息","请先选择类型!");	
+			return;
+		}
+		
+		var form=new Ems.baseinfo.EquipmentTypeForm({
+			url:Ext.ContextPath+"/equipmentType/update.do",
+			isSubetype:record.get("levl")==2?true:false,
+			listeners:{
+				saved:function(){
+					//form.updateRecord();
+					win.close();
+					//alert(record.get("id")+"_"+record.get("levl"));
+					//me.tree.getStore().getNodeById(record.get("id")+"_"+record.get("levl")).set("text",record.get("text")) 
+					
+				}
+			}
+		});
+		form.getForm().loadRecord(record);
+		//var ids=record.get("id").split("_");
+		//form.getForm().findField("id").setValue(ids[0]);
+		form.getForm().findField("id").setReadOnly(true);
+		
+		var win=new Ext.window.Window({
+			items:[form],
+			layout:'fit',
+			closeAction:'destroy',
+			width:300,
+			height:200,
+			modal:true
+		});
+		//form.win=win
+		win.show();	
+		    	
+		
     },
-    actionTbar:null,
-    getActionTbar:function(){
-    	if(!this.actionTbar){
-    		this.actionTbar=this.getDockedItems('toolbar[itemId="action_toolbar"]')[0];
-    	}
-    	
-    	return this.actionTbar
+    onDelete:function(){
+    	var me=this;
+    	var record=me.getSelectionModel( ).getLastSelected( );
+
+    	//console.dir(record);
+		if(!record){
+		    Ext.Msg.alert("消息","请先选择一条记录");	
+			return;
+		}
+		//return;
+
+		Ext.Msg.confirm("删除",'确定要删除吗?', function(btn, text){
+				if (btn == 'yes'){
+					Ext.Ajax.request({
+						url:Ext.ContextPath+'/equipmentType/destroy.do',
+						params:{
+							id:record.get("id"),
+							levl:record.get("levl")
+						},
+						method:'POST',
+						success:function(){
+							var parent=record.parentNode;//me.getSelectionModel( ).getLastSelected( )||me.getRootNode( );  
+							me.getStore().reload({node:parent});
+							
+							//me.getStore().remove(record);
+							//me.select(0);
+						}
+					});
+			}
+		});
     },
-//    getContextMenuItems:function(){
-//    	return this.contextMenu.items;
-//    },
-    getLastSelected:function(){
-    	return this.getSelectionModel( ).getLastSelected( );
+    onReload:function(node){
+    	var me=this;
+    	var parent=node||me.getSelectionModel( ).getLastSelected( );
+		if(parent){
+		    me.getStore().reload({node:parent});
+		} else {
+		    me.getStore().reload();	
+		}      
     }
+//    /**
+//     * 就是action的itemId，例如有：create,rename,destroy,copy,cut,paste,reload等等
+//     * @param {} itemIds
+//     */
+//    enableAction:function(itemIds){
+//    	if(!Ext.isIterable(itemIds)){
+//    		itemIds=[itemIds];
+//    	}
+//    	
+//    	var items=this.contextMenu.items;
+//    	items.each(function(item ,index,len ){
+//    		for(var j=0;j<itemIds.length;j++){
+//    			if(item.getItemId( )==itemIds[j]){
+//    				item.disable();
+//    				break;
+//    			}
+//    		}
+//    	});
+//    	var tbar=this.getActionTbar();
+//    	items=tbar.items;
+//    	items.each(function(item ,index,len ){
+//    		for(var j=0;j<itemIds.length;j++){
+//    			if(item.getItemId( )==itemIds[j]){
+//    				item.disable();
+//    				break;
+//    			}
+//    		}
+//    	});
+//    },
+//    getContextMenu:function(){
+//    	return this.contextMenu;
+//    },
+//    actionTbar:null,
+//    getActionTbar:function(){
+//    	if(!this.actionTbar){
+//    		this.actionTbar=this.getDockedItems('toolbar[itemId="action_toolbar"]')[0];
+//    	}
+//    	
+//    	return this.actionTbar
+//    },
+////    getContextMenuItems:function(){
+////    	return this.contextMenu.items;
+////    },
+//    getLastSelected:function(){
+//    	return this.getSelectionModel( ).getLastSelected( );
+//    }
     
 });

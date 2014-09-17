@@ -5,6 +5,7 @@ Ext.defineModel("Ems.baseinfo.EquipmentType",{
 		{name:'id',type:'string'},
 		{name:'levl',type:'int'},
 		{name:'status',type:'bool'},
+		{name:'name',type:'string'},
 		{name:'text',type:'string'},
 		{name:'unit',type:'string'},
 		{name:'parent_id',type:'string'},

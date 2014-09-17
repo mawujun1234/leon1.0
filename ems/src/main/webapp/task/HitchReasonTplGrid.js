@@ -1,7 +1,8 @@
-Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
+Ext.define('Ems.task.HitchReasonTplGrid',{
 	extend:'Ext.grid.Panel',
 	requires: [
-	     'Ems.baseinfo.EquipmentType'
+	     'Ems.task.HitchReasonTpl',
+	     'Ems.task.HitchReasonTplForm'
 	],
 	columnLines :true,
 	stripeRows:true,
@@ -16,45 +17,27 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 	initComponent: function () {
       var me = this;
       me.columns=[
-		{dataIndex:'id',text:'编码',width:150
-//		,renderer:function(value){
-//			var values=value.split("_");
-//			return values[0];
-//		}
-		},
-		//{dataIndex:'level',text:'level',xtype: 'numbercolumn', format:'0.00'},
-		//{dataIndex:'status',text:'status',xtype: 'numbercolumn', format:'0.00'},
-		{dataIndex:'name',text:'名称',flex:1},
-		{dataIndex:'unit',text:'单位',flex:1},
-		{dataIndex:'status',text:'状态',renderer:function(value){
-			if(value){
-				return "有效";
-			} else {
-				return "<span style='color:red'>无效</>";
-			}
-		}}
+		{dataIndex:'id',text:'编号',xtype: 'numbercolumn', format:'0',width:60},
+		{dataIndex:'name',text:'名称'},
+		{dataIndex:'tpl',text:'模板内容',flex:1}
       ];
       
 	  me.store=Ext.create('Ext.data.Store',{
 			autoSync:false,
 			pageSize:50,
-			model: 'Ems.baseinfo.EquipmentType',
+			model: 'Ems.task.HitchReasonTpl',
 			autoLoad:true
 	  });
-	  me.store.getProxy().extraParams ={isGrid:true}
 	  
-//	  me.tbar=	[{
-//			text: '刷新',
-//			itemId:'reload',
-//			disabled:me.disabledAction,
-//			handler: function(btn){
-//				var grid=btn.up("grid");
-//				grid.getStore().reload();
-//			},
-//			iconCls: 'form-reload-button'
-//		}]
-       
-	  me.initAction();
+      me.dockedItems= [{
+	        xtype: 'pagingtoolbar',
+	        store: me.store,  
+	        dock: 'bottom',
+	        
+	        displayInfo: true
+	  }];
+	  
+	  me.initAction(); 
       me.callParent();
 	},
 	initAction:function(){
@@ -117,35 +100,10 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 		};
 
     },
-    onCreate:function(values,b){
+    onCreate:function(){
     	var me=this;
 
-    	values=values||{};
-
-    	var parent=me.tree.getSelectionModel( ).getLastSelected( )||me.tree.getRootNode( );    
-
-    	var parent_id=parent.get("id");
-    	if(parent_id!="root"){
-    		parent_id=parent_id;//.split("_")[0];
-    	}
-		var initValue={
-		    'parent_id':parent_id,
-		    status:1,
-		    text:''
-		};
-		//if(parent.get("levl")){
-			initValue.levl=parent.get("levl")+1;
-		//}
-			if(initValue.levl==2){
-				
-			}
-
-    	values=Ext.applyIf(values,initValue);
-
-		var child=values.isModel?values:Ext.createModel(parent.self.getName(),values);
-		var form=new Ems.baseinfo.EquipmentTypeForm({
-			url:Ext.ContextPath+"/equipmentType/create.do",
-			isSubetype:initValue.levl==2?true:false,
+		var form=new Ems.task.HitchReasonTplForm({
 			listeners:{
 				saved:function(){
 					win.close();
@@ -154,13 +112,19 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 				}
 			}
 		});
-		form.getForm().loadRecord(child);
+		
+		var data=form.getValues();
+		data.customer_id=me.customer_id;
+		data.status=true;
+		var record=new Ems.task.HitchReasonTpl(data);    
+		form.getForm().loadRecord(record);
 		var win=new Ext.window.Window({
 			items:[form],
 			layout:'fit',
+			title:'原因模板',
 			closeAction:'destroy',
 			width:300,
-			height:200,
+			height:400,
 			modal:true
 		});
 		//form.win=win
@@ -169,35 +133,35 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
     },
     onUpdate:function(){
     	var me=this;
-    	var record=me.getSelectionModel().getLastSelected( );
+    	
+    	var record=me.getSelectionModel( ).getLastSelected( );
 		if(!record){
-			Ext.Msg.alert("消息","请先选择类型!");	
+			Ext.Msg.alert("消息","请先选择一条记录!");	
 			return;
 		}
 		
-		var form=new Ems.baseinfo.EquipmentTypeForm({
-			url:Ext.ContextPath+"/equipmentType/update.do",
-			isSubetype:record.get("levl")==2?true:false,
+		var form=new Ems.task.HitchReasonTplForm({
 			listeners:{
 				saved:function(){
 					//form.updateRecord();
 					win.close();
-					//alert(record.get("id")+"_"+record.get("levl"));
-					//me.tree.getStore().getNodeById(record.get("id")+"_"+record.get("levl")).set("text",record.get("text")) 
 				}
 			}
 		});
 		form.getForm().loadRecord(record);
 		//var ids=record.get("id").split("_");
 		//form.getForm().findField("id").setValue(ids[0]);
-		form.getForm().findField("id").setReadOnly(true);
+		var workunit=Ext.create('Ems.task.HitchReasonTpl',{
+
+		});
 		
 		var win=new Ext.window.Window({
 			items:[form],
 			layout:'fit',
+			title:'原因模板',
 			closeAction:'destroy',
 			width:300,
-			height:200,
+			height:400,
 			modal:true
 		});
 		//form.win=win
@@ -209,20 +173,17 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
     	var me=this;
     	var record=me.getSelectionModel( ).getLastSelected( );
 
-    	//console.dir(record);
 		if(!record){
-		    Ext.Msg.alert("消息","请先选择一条记录");	
+		    Ext.Msg.alert("消息","请先选择类型");	
 			return;
 		}
-		//return;
 
 		Ext.Msg.confirm("删除",'确定要删除吗?', function(btn, text){
 				if (btn == 'yes'){
 					Ext.Ajax.request({
-						url:Ext.ContextPath+'/equipmentType/destroy.do',
+						url:Ext.ContextPath+'/hitchReasonTpl/deleteById.do',
 						params:{
-							id:record.get("id"),
-							levl:record.get("levl")
+							id:record.get("id")
 						},
 						method:'POST',
 						success:function(){
@@ -230,22 +191,13 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 							//me.tree.getStore().reload({node:parent});
 							
 							me.getStore().remove(record);
-							//me.select(0);
-							
-							//record.set("status_name","无效");
-							//record.set("status",false);
 						}
 					});
 			}
 		});
     },
-    onReload:function(node){
+    onReload:function(){
     	var me=this;
-    	var parent=node||me.getSelectionModel( ).getLastSelected( );
-		if(parent){
-		    me.getStore().reload({node:parent});
-		} else {
-		    me.getStore().reload();	
-		}      
+    	me.getStore().reload();	      
     }
 });

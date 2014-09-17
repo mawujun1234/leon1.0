@@ -69,7 +69,7 @@ public static final class Equipment {
 }
 public static final class EquipmentProd {
 	public static final String id="id";
-	public static final String text="text";
+	public static final String name="name";
 	public static final String status="status";
 	public static final String levl="levl";
 	public static final String parent_id="parent_id";
@@ -78,7 +78,7 @@ public static final class EquipmentProd {
 }
 public static final class EquipmentSubtype {
 	public static final String id="id";
-	public static final String text="text";
+	public static final String name="name";
 	public static final String status="status";
 	public static final String levl="levl";
 	public static final String parent_id="parent_id";
@@ -87,7 +87,7 @@ public static final class EquipmentSubtype {
 }
 public static final class EquipmentType {
 	public static final String id="id";
-	public static final String text="text";
+	public static final String name="name";
 	public static final String status="status";
 	public static final String levl="levl";
 	public static final String parent_id="parent_id";
@@ -191,6 +191,15 @@ public static final class Message {
 	public static final String createDate="createDate";
 	public static final String readDate="readDate";
 	public static final String id="id";
+}
+public static final class HitchReasonTpl {
+	public static final String id="id";
+	public static final String name="name";
+	public static final String tpl="tpl";
+}
+public static final class HitchType {
+	public static final String id="id";
+	public static final String name="name";
 }
 public static final class Overtime {
 	public static final String read="read";

@@ -22,7 +22,6 @@ public class OracleAutoId implements IdEntity<Long> {
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="UserSequence")
 	@SequenceGenerator(name = "UserSequence", sequenceName = "SEQ_USER", allocationSize=20)
-	@Label(name="id")
 	private Long id;
 
 	public void setId(Long id) {

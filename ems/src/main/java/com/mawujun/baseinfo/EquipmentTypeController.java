@@ -9,17 +9,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.mawujun.utils.page.PageRequest;
-import com.mawujun.utils.page.QueryResult;
-import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
-import com.mawujun.utils.page.Page;
 import com.mawujun.utils.BeanUtils;
 import com.mawujun.utils.M;
 import com.mawujun.utils.StringUtils;
-import com.mawujun.baseinfo.EquipmentType;
-import com.mawujun.baseinfo.EquipmentTypeService;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
  * @version 1.0
@@ -50,7 +44,7 @@ public class EquipmentTypeController {
 			equipmentTypees=equipmentTypeService.query(Cnd.select());
 		} else if(levl==1){
 			if(isGrid==null || isGrid==false){
-				id=id.substring(0,id.indexOf('_'));
+				//id=id.substring(0,id.indexOf('_'));
 			}
 			Cnd cnd=Cnd.select().andEquals(M.EquipmentSubtype.parent_id, "root".equals(id)?null:id);
 			equipmentTypees=equipmentSubtypeService.query(cnd);
@@ -60,32 +54,28 @@ public class EquipmentTypeController {
 			}
 		} else {
 			if(isGrid==null || isGrid==false){
-				id=id.substring(0,id.indexOf('_'));
+				//id=id.substring(0,id.indexOf('_'));
 			}
 			Cnd cnd=Cnd.select().andEquals(M.EquipmentSubtype.parent_id, "root".equals(id)?null:id);
 			equipmentTypees=equipmentProdService.query(cnd);
 		}
-		//防止编码重复
-		if(isGrid==null || isGrid==false){
-			for(int i=0;i<equipmentTypees.size();i++){
-				EquipmentTypeVO obj=(EquipmentTypeVO)equipmentTypees.get(i);
-				//为树上的节点带上编号
-				obj.setText(obj.getText()+"("+obj.getId()+")");
-				obj.setId(obj.getId()+"_"+obj.getLevl());
-			}
-		} 
+//		//防止编码重复
+//		if(isGrid==null || isGrid==false){
+//			for(int i=0;i<equipmentTypees.size();i++){
+//				EquipmentTypeAbstract obj=(EquipmentTypeAbstract)equipmentTypees.get(i);
+//				//为树上的节点带上编号
+//				//obj.setText(obj.getText()+"("+obj.getId()+")");
+//				//obj.setId(obj.getId()+"_"+obj.getLevl());
+//			}
+//		} 
 
 
 		return equipmentTypees;
 	}
 	
-	@RequestMapping("/equipmentType/update.do")
+	@RequestMapping("/equipmentType/create.do")
 	@ResponseBody
-	public  EquipmentTypeVO update(@RequestBody EquipmentTypeVO equipmentType,Integer levl) {
-
-//		if(equipmentType.getParent_id().indexOf('_')!=-1){
-//			equipmentType.setParent_id(equipmentType.getParent_id().substring(0,equipmentType.getParent_id().indexOf('_')));
-//		}
+	public  EquipmentTypeAbstract create(@RequestBody EquipmentTypeAbstract equipmentType,Integer levl) {
 		
 		if(equipmentType.getLevl()==1){
 			if("root".equalsIgnoreCase(equipmentType.getParent_id())){
@@ -95,19 +85,37 @@ public class EquipmentTypeController {
 			if(count>0){
 				throw new BusinessException("编码已经存在");
 			}
-			equipmentTypeService.createOrUpdate(BeanUtils.copyOrCast(equipmentType, EquipmentType.class));
+			equipmentTypeService.create(BeanUtils.copyOrCast(equipmentType, EquipmentType.class));
 		} else if(equipmentType.getLevl()==2){
 			Long count=equipmentSubtypeService.queryCount(Cnd.select().andEquals(M.EquipmentSubtype.id, equipmentType.getId()));
 			if(count>0){
 				throw new BusinessException("编码已经存在");
 			}
-			equipmentSubtypeService.createOrUpdate(BeanUtils.copyOrCast(equipmentType, EquipmentSubtype.class));
+			equipmentSubtypeService.create(BeanUtils.copyOrCast(equipmentType, EquipmentSubtype.class));
 		} else if(equipmentType.getLevl()==3){
 			Long count=equipmentProdService.queryCount(Cnd.select().andEquals(M.EquipmentProd.id, equipmentType.getId()));
 			if(count>0){
 				throw new BusinessException("编码已经存在");
 			}
-			equipmentProdService.createOrUpdate(BeanUtils.copyOrCast(equipmentType, EquipmentProd.class));
+			equipmentProdService.create(BeanUtils.copyOrCast(equipmentType, EquipmentProd.class));
+		}
+		return equipmentType;
+	}
+	
+	@RequestMapping("/equipmentType/update.do")
+	@ResponseBody
+	public  EquipmentTypeAbstract update(@RequestBody EquipmentTypeAbstract equipmentType,Integer levl) {
+		
+		if(equipmentType.getLevl()==1){
+			if("root".equalsIgnoreCase(equipmentType.getParent_id())){
+				equipmentType.setParent_id(null);
+			}
+
+			equipmentTypeService.update(BeanUtils.copyOrCast(equipmentType, EquipmentType.class));
+		} else if(equipmentType.getLevl()==2){
+			equipmentSubtypeService.update(BeanUtils.copyOrCast(equipmentType, EquipmentSubtype.class));
+		} else if(equipmentType.getLevl()==3){
+			equipmentProdService.update(BeanUtils.copyOrCast(equipmentType, EquipmentProd.class));
 		}
 		return equipmentType;
 	}
@@ -128,7 +136,7 @@ public class EquipmentTypeController {
 	
 	@RequestMapping("/equipmentType/destroy.do")
 	@ResponseBody
-	public EquipmentTypeVO destroy( EquipmentTypeVO equipmentType) {
+	public EquipmentTypeAbstract destroy( EquipmentTypeAbstract equipmentType) {
 		//equipmentType.setId(equipmentType.getId().substring(0,equipmentType.getId().indexOf('_')));
 		if(equipmentType.getLevl()==1){
 			equipmentTypeService.delete(BeanUtils.copyOrCast(equipmentType, EquipmentType.class));
@@ -149,7 +157,7 @@ public class EquipmentTypeController {
 	@RequestMapping("/equipmentType/querySubtypeCombo.do")
 	@ResponseBody
 	public List<EquipmentSubtype> querySubtype(String equipmentType_id,String name) {
-		return equipmentSubtypeService.query(Cnd.select().andEquals(M.EquipmentSubtype.status, true).andLike(M.EquipmentSubtype.text, name));	
+		return equipmentSubtypeService.query(Cnd.select().andEquals(M.EquipmentSubtype.status, true).andLike(M.EquipmentSubtype.name, name));	
 	}
 	/**
 	 * 用于combobox
@@ -163,7 +171,7 @@ public class EquipmentTypeController {
 		if(!StringUtils.hasText(equipmentSubtype_id)){
 			return new ArrayList<EquipmentProd>();
 		}
-		return equipmentProdService.query(Cnd.select().andEquals(M.EquipmentProd.status, true).andLike(M.EquipmentProd.text, name).andEquals(M.EquipmentProd.parent_id, equipmentSubtype_id));	
+		return equipmentProdService.query(Cnd.select().andEquals(M.EquipmentProd.status, true).andLike(M.EquipmentProd.name, name).andEquals(M.EquipmentProd.parent_id, equipmentSubtype_id));	
 	}
 	
 	

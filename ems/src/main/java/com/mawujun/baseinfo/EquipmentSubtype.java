@@ -7,7 +7,7 @@ import com.mawujun.repository.idEntity.IdEntity;
 
 @Entity
 @Table(name="ems_equipmentsubtype")
-public class EquipmentSubtype  extends EquipmentTypeVO implements IdEntity<String>{
+public class EquipmentSubtype  extends EquipmentTypeAbstract implements IdEntity<String>{
 	
 //	@Id
 //	@Column(length=2)
