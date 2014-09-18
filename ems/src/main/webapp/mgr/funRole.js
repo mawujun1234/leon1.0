@@ -54,7 +54,7 @@ Ext.onReady(function() {
 		    			
 		    			refreshSelectedNav();
 		    			
-		    			
+		    			tabPanel.getEl().unmask();
 //		    			userStore.load({
 //						    params:{
 //						        start:0,
@@ -257,131 +257,18 @@ Ext.onReady(function() {
 							
 				});
 			}
-////=================================================================		用户管理
-//			var itemsPerPage=25;
-//			var userStore = Ext.create('Ext.data.Store', {
-//				fields:['id','username','password','name','phone'],
-//				pageSize: itemsPerPage,
-//				autoLoad:false,
-//				proxy : {
-//					type : 'ajax',
-//					url : Ext.ContextPath + '/user/listUserByFunRole.do',
-//					reader : {
-//						type : 'json',
-//						root : 'root'
-//					}
-//				}
-//			});
-//
-//
-//			var userGrid = Ext.create('Ext.grid.Panel', {
-//						title : '用户管理',
-//						width : 400,
-//						region : 'west',
-//						// rootVisible: false,
-//						columns:[
-//				        	{ header: '用户名', dataIndex: 'username'},
-//				        	{ header: '姓名', dataIndex: 'name'},
-//				        	{ header: '电话', dataIndex: 'phone',flex:1}
-//						],
-//						store : userStore,
-//						tbar : [{
-//									iconCls:'form-reload-button',
-//									text : '刷新',
-//									handler : function() {
-//										userStore.reload();
-//									}
-//								}, {
-//									iconCls:'form-add-button',
-//									text : '添加',
-//									handler : addUser
-//								}, {
-//									iconCls:'form-delete-button',
-//									text : '删除',
-//									handler : deleteUser
-//								}, {
-//									iconCls:'form-update-button',
-//									text : '编辑',
-//									handler : modifUser
-//								}],
-//				listeners:{
-////					itemclick:function(gridview, record, item, index, e){
-////						selectedNode=record;
-////						user_form.loadRecord(record);
-////		    			save_btn.setDisabled(true);
-////		    			edit_btn.setDisabled(false);
-////		    			
-////		    			refreshSelectedFunRole();
-////		    			refreshSelectedDataRole();
-////					}
-//				}
-////				dockedItems: [{
-////			        xtype: 'pagingtoolbar',
-////			        store: userStore,   // same store GridPanel is using
-////			        dock: 'bottom',
-////			        displayInfo: true
-////			    }]
-//			});
-//					
-//			function addUser(){
-//				var form=Ext.create('Ems.mgr.UserForm',{
-//					update:false,
-//					grid:userGrid
-//				});
-//				var win=Ext.create('Ext.window.Window',{
-//					modal:true,
-//					items:[form]
-//				});
-//				win.show();
-//				form.win=win;
-//			}
-//			function deleteUser(){
-//				if(!selectedNode) {
-//					Ext.Msg.alert("消息","请先选择节点.");
-//					return;
-//				}
-//				Ext.Msg.confirm("消息","确定要删除吗?",function(btn){
-//					if(btn=='yes'){
-//						var record=userGrid.getSelectionModel( ).getLastSelected( );
-//						Ext.Ajax.request({
-//							url:Ext.ContextPath+"/user/delete.do",
-//							params:{id:record.get("id")},
-//							success:function(response){
-//								//userStore.reload({node:selectedNode});
-//								//userStore.remove(selectedNode);
-//								//selectedNode.remove();
-//								userStore.remove(record);
-//							}
-//							
-//						});
-//					}
-//				});
-//				
-//			}
-//			function modifUser(){
-//				var record=userGrid.getSelectionModel( ).getLastSelected( );
-//				if(!record) {
-//					Ext.Msg.alert("消息","请先选择用户.");
-//					return;
-//				}
-//				
-//				var form=Ext.create('Ems.mgr.UserForm',{
-//					update:true
-//				});
-//				forms.loadRecord(record);
-//				var win=Ext.create('Ext.window.Window',{
-//					modal:true,
-//					items:[form]
-//				});
-//				win.show();
-//				form.win=win;
-//			}
+
 			
 			
 			
 			var tabPanel=Ext.create('Ext.tab.Panel',{
 				region:'center',
-				items:[nav_form,navigationTree]
+				items:[nav_form,navigationTree],
+				listeners:{
+					render:function(tabPanel){
+						tabPanel.getEl().mask();
+					}
+				}
 			});
 			
 			Ext.create('Ext.container.Viewport', {

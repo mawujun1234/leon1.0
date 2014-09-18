@@ -87,6 +87,8 @@ Ext.onReady(function() {
 		    			
 		    			refreshSelectedFunRole();
 		    			refreshSelectedStore();
+		    			
+		    			tabPanel.getEl().unmask();
 					}
 				},
 				dockedItems: [{
@@ -428,7 +430,12 @@ Ext.onReady(function() {
 			    //collapsed:false,
 			    //collapseMode: 'mini',
 			    //hideCollapseTool: true,
-				items:[user_form,funRoleTree,store_grid]
+				items:[user_form,funRoleTree,store_grid],
+				listeners:{
+					render:function(tabPanel){
+						tabPanel.getEl().mask();
+					}
+				}
 			});
 			
 			

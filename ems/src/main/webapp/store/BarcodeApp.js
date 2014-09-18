@@ -175,13 +175,18 @@ Ext.onReady(function(){
         
         buttons:[{text:'导出',handler:function(btn){
             if (equipStore.getCount()> 0) { 
-            	Ext.getBody().mask("正在保存....");
+            	
             	var orderVOs = new Array();
             	equipStore.each(function(record){
             		if(record.get("printNum")>0){
             			orderVOs.push(record.getData());
             		}      		
             	});
+            	if(orderVOs.length==0){
+            		alert("请先输入要打印的条码数!");
+            		return;
+            	}
+            	Ext.getBody().mask("正在保存....");
             	
 				Ext.Ajax.request({
 								url:Ext.ContextPath+'/order/exportBarcode.do',
@@ -192,6 +197,7 @@ Ext.onReady(function(){
 								//params:{jsonStr:Ext.encode(equiplist)},
 								success:function(response){
 									var obj=Ext.decode(response.responseText);
+									
 									
 									
 									var test =window.open(Ext.ContextPath+"/order/downloadBarcode.do?fileName="+obj.root, "_blank");//这个方法就直接把这个TXT以浏览器的方式打开了 

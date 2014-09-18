@@ -65,7 +65,7 @@ Ext.Loader.setConfig({
 	}
 });
 
-Ext.ecode_length=16;
+Ext.ecode_length=17;
 
 
 var equipmentStatus={
@@ -79,6 +79,7 @@ var equipmentStatus={
 	7:'外修中',
 	8:'维修中 ',
 	9:'维修后已出库',
+	10:'在途',
 	30:'报废'
 }
 </script>

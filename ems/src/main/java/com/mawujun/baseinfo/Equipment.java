@@ -19,7 +19,7 @@ public class Equipment implements IdEntity<String>{
 //	private String type_id;//类型id
 	@Column(length=2)
 	private String subtype_id;//子类型id
-	@Column(length=2)
+	@Column(length=3)
 	private String prod_id;//品名id
 	@Column(length=3)
 	private String brand_id;//品牌id

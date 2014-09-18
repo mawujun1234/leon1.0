@@ -39,7 +39,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 			autoSync:false,
 			pageSize:50,
 			model: 'Ems.baseinfo.EquipmentType',
-			autoLoad:true
+			autoLoad:false
 	  });
 	  me.store.getProxy().extraParams ={isGrid:true}
 	  
@@ -145,7 +145,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 		var child=values.isModel?values:Ext.createModel(parent.self.getName(),values);
 		var form=new Ems.baseinfo.EquipmentTypeForm({
 			url:Ext.ContextPath+"/equipmentType/create.do",
-			isSubetype:initValue.levl==2?true:false,
+			isType:initValue.levl==1?true:false,
 			listeners:{
 				saved:function(){
 					win.close();
@@ -177,7 +177,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 		
 		var form=new Ems.baseinfo.EquipmentTypeForm({
 			url:Ext.ContextPath+"/equipmentType/update.do",
-			isSubetype:record.get("levl")==2?true:false,
+			isType:record.get("levl")==1?true:false,
 			listeners:{
 				saved:function(){
 					//form.updateRecord();

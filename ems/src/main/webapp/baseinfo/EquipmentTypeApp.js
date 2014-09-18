@@ -8,7 +8,12 @@ Ext.onReady(function(){
 		split: true,
 		collapsible: true,
 		title:'品名',
-		width:400
+		width:400,
+		listeners:{
+			render:function(grid){
+				grid.getEl().mask();
+			}
+		}
 	});
 
 	var tree=Ext.create('Ems.baseinfo.EquipmentTypeTree',{

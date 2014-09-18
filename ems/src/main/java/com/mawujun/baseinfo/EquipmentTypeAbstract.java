@@ -8,7 +8,7 @@ import javax.persistence.Transient;
 public class EquipmentTypeAbstract {
 
 	@Id
-	@Column(length=2)
+	@Column(length=3)
 	private String id;
 	@Column(length=30)
 	private String name;

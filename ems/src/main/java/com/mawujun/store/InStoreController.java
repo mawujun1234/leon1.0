@@ -18,6 +18,7 @@ import com.mawujun.cache.CacheMgr;
 import com.mawujun.cache.EquipKey;
 import com.mawujun.cache.EquipScanType;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
+import com.mawujun.exception.BusinessException;
 import com.mawujun.utils.BeanUtils;
 import com.mawujun.utils.page.Page;
 /**
@@ -131,7 +132,8 @@ public class InStoreController {
 			cacheMgr.putQrcode(key, equipmentVO);
 			return equipmentVO;
 		} else {
-			return new EquipmentVO();
+			//return new EquipmentVO();
+			throw new BusinessException("该条码的设备不存在!");
 		}
 		
 	}

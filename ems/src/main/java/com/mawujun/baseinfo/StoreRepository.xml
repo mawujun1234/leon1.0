@@ -6,7 +6,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
 <mapper namespace="com.mawujun.baseinfo.StoreRepository">
 	<select id="queryEquipments_total" resultType="com.mawujun.baseinfo.EquipmentVO" parameterType="com.mawujun.baseinfo.Equipment">
-    	select a.subtype_id,a.prod_id,b.text as subtype_name,c.text as prod_name,sum(a.num) as num
+    	select a.subtype_id,a.prod_id,b.name as subtype_name,c.name as prod_name,sum(a.num) as num
 	      from 
 	      (select x.*,1 as num from ems_equipment x where x.store_id=#{store_id}) a
 	    inner join ems_equipmentsubtype b on a.subtype_id=b.id
@@ -27,11 +27,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				and e.id=#{supplier_id}
 			</if>
 		</where>
-		 group by a.subtype_id,a.prod_id,b.text,c.text
+		 group by a.subtype_id,a.prod_id,b.name,c.name
     </select> 
     
     <select id="queryEquipments" resultType="com.mawujun.baseinfo.EquipmentVO" parameterType="com.mawujun.baseinfo.EquipmentVO">
-    	select a.*,b.text as subtype_name,c.text as prod_name,d.name as brand_name,e.name as supplier_name 
+    	select a.*,b.name as subtype_name,c.name as prod_name,d.name as brand_name,e.name as supplier_name 
     	from (select x.* from ems_equipment x where x.store_id=#{store_id} and x.prod_id=#{prod_id}) a 
 		inner join ems_equipmentsubtype b on a.subtype_id=b.id
 		inner join ems_equipmentprod c on a.prod_id=c.id

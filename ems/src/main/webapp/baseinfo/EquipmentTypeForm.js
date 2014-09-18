@@ -18,7 +18,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeForm',{
  //   },
 	initComponent: function () {
        var me = this;
-       var maxLength=me.isSubetype?3:2;
+       var maxLength=me.isType?2:3;
        me.items= [
 		{
 	        fieldLabel: '编码',
@@ -26,7 +26,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeForm',{
 	        name: 'id',
 	        minLength:maxLength,
 	        maxLength:maxLength,
-	        length:me.isSubetype?3:2,
+	        length:maxLength,
 	        xtype:'textfield',
 	        allowBlank: false,
 	        listeners:{
@@ -85,14 +85,19 @@ Ext.define('Ems.baseinfo.EquipmentTypeForm',{
                 if(!form.getForm().isValid()) {
                 	return;
                 }
-                form.getForm().updateRecord();
-				form.getRecord().save({
-					url:form.url,
-					success: function(record, operation) {
-											
-						me.fireEvent("saved");
-					}
-				});
+                Ext.Msg.confirm("消息","确定要保存吗?",function(btn){
+                	if(btn=='yes'){
+                		form.getForm().updateRecord();
+						form.getRecord().save({
+							url:form.url,
+							success: function(record, operation) {
+													
+								me.fireEvent("saved");
+							}
+						});
+                	}
+                });
+                
             }
       });
       
