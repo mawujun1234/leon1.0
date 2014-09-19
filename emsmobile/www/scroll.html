@@ -1,0 +1,306 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<meta charset="utf-8">
+<title>任务列表</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="jquery.mobile/jquery.mobile-1.4.3.min.css" rel="stylesheet" type="text/css"/>
+<script src="jquery.mobile/jquery-2.1.1.min.js" type="text/javascript"></script>
+<script src="jquery.mobile/jquery.mobile-1.4.3.min.js" type="text/javascript"></script>
+
+<style type="text/css">
+.secondNavbar-glyphish-example .ui-btn { padding-top: 40px !important; }
+.secondNavbar-glyphish-example .ui-btn:after { width: 34px!important; height: 34px!important; margin-left: -15px !important; box-shadow: none!important; -moz-box-shadow: none!important; -webkit-box-shadow: none!important; -webkit-border-radius: 0 !important; border-radius: 0 !important; }
+.ui-icon-install:after {
+    background-image: url("img/install.png");
+    /* Make your icon fit */
+    background-size: 34px 34px;
+	background-color:#f6f6f6;
+}
+.ui-icon-repair:after {
+    background-image: url("img/repair.png");
+    /* Make your icon fit */
+    background-size: 34px 34px;
+	background-color:#f6f6f6;
+}
+.ui-icon-patrols:after {
+    background-image: url("img/patrols.png");
+    /* Make your icon fit */
+    background-size: 34px 34px;
+	background-color:#f6f6f6;
+}
+
+
+/**
+#popupNewTaskDialog {
+  width: 100%;
+  max-width: 500px;
+  margin: 10% auto 15px auto;
+  padding: 0;
+  position: relative;
+  top: -15px;
+}
+
+#popupNewTaskDialog {
+    position: relative;
+    left: 50%;
+    width: 6em;
+    margin-left: -3em;
+    background-color: #ffa0a0;
+    border-color: black;
+}
+*/
+
+#fullbg {
+    background-color:Gray;
+    left:0px;
+    opacity:0.5;
+    position:absolute;
+    top:0px;
+    z-index:100;
+    filter:alpha(opacity=50); /* IE6 */
+    -moz-opacity:0.5; /* Mozilla */
+    -khtml-opacity:0.5; /* Safari */
+}
+</style>
+<script type="application/javascript">
+
+var secondNavbarIsHide=true;
+function toggleSecondNavbar(){	
+	$("#secondNavbar").toggle(500,function(){
+		secondNavbarIsHide=!secondNavbarIsHide;
+	});
+	if(secondNavbarIsHide){
+		var footernavZIndex=$("#footernav").css("z-index");
+		$("#footernav").css("z-index","50");
+		showBg();	
+	} else {
+		$("#footernav").css("z-index",footernavZIndex);
+		closeBg();
+	}
+}
+
+//显示灰色 jQuery 遮罩层
+function showBg() {
+    var bh = $("body").height();
+    var bw = $("body").width();
+    $("#fullbg").css({
+        height:bh,
+        width:bw,
+        display:"block"
+    });
+    $("#dialog").show();
+}
+//关闭灰色 jQuery 遮罩
+function closeBg() {
+    $("#fullbg").hide();
+}
+
+
+$(document).ready(function(e) {
+	//---获取任务信息
+	function updateTasks_list(){
+	$.ajax({   
+		url : $.ServerPath+"/task/mobile/query.do",  
+		data:{start:0,limit:20},  
+		success : function(data){
+			if(data.success==true){
+				var root=data.root;
+				var html="";
+				for(var i=0;i<root.length;i++){
+					html+='<li>'+
+					'<a href="install.html"  data-ajax="false" data-transition="slide" >'+
+						'<img src="img/install.png">'+
+						'<h2>新安装</h2>'+
+						'<p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>'+
+						'<p class="ui-li-aside"><strong>8.21 6:24</strong></p>'+
+						'<p class="ui-li-count" style="color:#FFF;background-color:#F00;">new</p>'+
+					'</a>'
+				}
+				$("#taskes_list").html(html);
+				$('#taskes_list').listview('refresh');
+			}else{
+				//$("#errorMsg").html(data.reasons.reason);
+			}
+				$.hideLoader();  
+			},
+			error:function(jqxhq){  
+				$("#errorMsg").html('网络异常或服务停止了');  
+				$.hideLoader(); 
+			}  
+	});  
+	}
+	//updateTasks_list();
+	//获取silder 菜单的信息
+	//$('#left-menu-contanier').load("leftMenu.html",null,function(){
+	//	$('#left-menu-contanier').enhanceWithin();
+	//});  
+	
+	  
+});
+</script>
+
+<!-- 下拉刷新的js-->
+<script type="application/javascript">
+$(document).ready(function(e) {
+	$(window).scroll(function(){
+	if($(window).scrollTop()==$(document).height()-$(window).height()){
+		//loadMore();
+		alert(1);
+	}
+	});
+
+});
+</script>
+<style type="text/css">
+
+</style>
+</head> 
+<body> 
+
+<div data-role="page" id="page">
+	<div id="header" data-role="header" data-position="fixed" data-theme="f" style="border-bottom:hidden;">
+        <a href="#left-menu" data-icon="gear" data-iconpos="notext"></a> 
+        <div id="left-menu-contanier"></div>
+        <div  data-role="controlgroup" data-type="horizontal" align="center">
+            <input type="radio" name="radio-choice-h-2" id="radio-choice-h-2a" value="working" checked="checked">
+            <label for="radio-choice-h-2a">当前</label>
+            <input type="radio" name="radio-choice-h-2" id="radio-choice-h-2b" value="confirm">
+            <label for="radio-choice-h-2b">确认中</label>
+            <input type="radio" name="radio-choice-h-2" id="radio-choice-h-2c" value="complete">
+            <label for="radio-choice-h-2c">已完成</label>
+        </div>
+        <!--<a href="#" data-icon="plus" data-iconpos="notext" data-ajax="false"></a>-->
+        <button href="#" data-icon="plus" data-iconpos="notext" onClick="toggleSecondNavbar();"></button>
+		<div data-role="navbar" id="secondNavbar" class="secondNavbar-glyphish-example" style="display:none;">
+        	<ul>
+            	<li><a href="#"  class="ui-icon-install ui-btn-icon-top">新安装</a></li>
+                <li><a href="#" class="ui-icon-repair ui-btn-icon-top">维修</a></li>
+                <li><a href="#" class="ui-icon-patrols ui-btn-icon-top">巡检</a></li>
+            </ul>
+        </div>
+    </div>
+	<div role="main" class="ui-content" id="page_content">
+    <div id="scroller">
+
+		<ul data-role="listview" id="taskes_list">
+           <!-- --> <li>
+            <a href="bak/install.html"  data-ajax="false" data-transition="slide" >
+                <img src="img/install.png" >
+                <h2>新安装</h2>
+                <p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
+                <p class="ui-li-aside"><strong>8.21 6:24</strong></p>
+                <p class="ui-li-count" style="color:#FFF;background-color:#F00;">new</p>
+            </a>
+            </li>
+            <li>
+            <a href="bak/repair.html" data-ajax="false" data-transition="flip">
+                <img src="img/repair.png">
+                <h2>维修</h2>
+                <p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
+                <p class="ui-li-aside"><strong>8.21 6:24</strong></p>
+                <p class="ui-li-count" style="color:#FFF;background-color:#F00;">new</p>
+            </a>
+            </li>
+            <li>
+            <a href="bak/patrols.html" data-ajax="false" data-transition="fade">
+                <img src="img/patrols.png">
+                <h2>巡检</h2>
+                <p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
+                <p class="ui-li-aside"><strong>8.21 6:24</strong></p>
+            </a>
+            </li>
+            
+             <li>
+            <a href="patrols.html" data-ajax="false" data-transition="fade">
+                <img src="img/patrols.png">
+                <h2>巡检</h2>
+                <p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
+                <p class="ui-li-aside"><strong>8.21 6:24</strong></p>
+            </a>
+            </li>
+             <li>
+            <a href="patrols.html" data-ajax="false" data-transition="fade">
+                <img src="img/patrols.png">
+                <h2>巡检</h2>
+                <p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
+                <p class="ui-li-aside"><strong>8.21 6:24</strong></p>
+            </a>
+            </li>
+             <li>
+            <a href="patrols.html" data-ajax="false" data-transition="fade">
+                <img src="img/patrols.png">
+                <h2>巡检</h2>
+                <p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
+                <p class="ui-li-aside"><strong>8.21 6:24</strong></p>
+            </a>
+            </li>
+             <li>
+            <a href="patrols.html" data-ajax="false" data-transition="fade">
+                <img src="img/patrols.png">
+                <h2>巡检</h2>
+                <p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
+                <p class="ui-li-aside"><strong>8.21 6:24</strong></p>
+            </a>
+            </li>
+             <li>
+            <a href="patrols.html" data-ajax="false" data-transition="fade">
+                <img src="img/patrols.png">
+                <h2>巡检</h2>
+                <p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
+                <p class="ui-li-aside"><strong>8.21 6:24</strong></p>
+            </a>
+            </li> 
+            <li>
+            <a href="patrols.html" data-ajax="false" data-transition="fade">
+                <img src="img/patrols.png">
+                <h2>巡检</h2>
+                <p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
+                <p class="ui-li-aside"><strong>8.21 6:24</strong></p>
+            </a>
+            </li>
+             <li>
+            <a href="patrols.html" data-ajax="false" data-transition="fade">
+                <img src="img/patrols.png">
+                <h2>巡检</h2>
+                <p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
+                <p class="ui-li-aside"><strong>8.21 6:24</strong></p>
+            </a>
+            </li>
+             <li>
+            <a href="patrols.html" data-ajax="false" data-transition="fade">
+                <img src="img/patrols.png">
+                <h2>巡检</h2>
+                <p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
+                <p class="ui-li-aside"><strong>8.21 6:24</strong></p>
+            </a>
+            </li>
+             <li>
+            <a href="patrols.html" data-ajax="false" data-transition="fade">
+                <img src="img/patrols.png">
+                <h2>巡检</h2>
+                <p>杆位:XXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
+                <p class="ui-li-aside"><strong>8.21 6:24</strong></p>
+            </a>
+            </li>
+          <!-- -->
+        </ul> 
+    </div>
+	</div>
+    <!-- jQuery 遮罩层 -->
+	<div id="fullbg"  onClick="toggleSecondNavbar();"></div>
+    
+    
+	<div data-role="footer" id="footernav"  data-id="footernav" data-position="fixed" data-tap-toggle="false">
+		<div data-role="navbar">  
+            <ul>  
+                <li><a href="messages.html"  data-icon="mail" data-ajax="false" data-transition="slide">消息提醒</a></li>  
+                <li><a href="taskes.html" data-icon="bullets" data-ajax="false" data-transition="slide" class="ui-btn-active ui-state-persist" >任务列表</a></li>  
+                <li><a href="others.html" data-icon="star" data-ajax="false" data-transition="slide">报表</a></li>  
+            </ul>  
+        </div>  
+	</div>
+</div>
+
+</body>
+</html>

@@ -56,15 +56,16 @@ public class StoreService extends AbstractService<Store, String>{
 			page.setParams(equipmentVO);
 			Page result=storeRepository.queryEquipments(page);
 			List<EquipmentVO> list= result.getResult();
+			
 			EquipmentVO total=new EquipmentVO();
 			total.setSubtype_id("total");
 			total.setSubtype_name("<b>合计:</b>");
-//			int total_num=0;
-//			for(Equipment equi_temp:list){
-//				total_num+=equi_temp.getNum();
-//			}
-//			total.setNum(total_num);
-			total.setNum(list.size());
+			int total_num=0;
+			for(EquipmentVO equi_temp:list){
+				total_num+=equi_temp.getNum();
+			}
+			total.setNum(total_num);
+
 			list.add(total);
 			return list;
 		} else {
