@@ -81,7 +81,9 @@ function toggleSecondNavbar(){
 	if(secondNavbarIsHide){
 		var footernavZIndex=$("#footernav").css("z-index");
 		$("#footernav").css("z-index","50");
+		//$("#footernav").css("z-index","50");
 		showBg();	
+		$("#dialog").show();//显示二级菜单
 	} else {
 		$("#footernav").css("z-index",footernavZIndex);
 		closeBg();
@@ -89,15 +91,17 @@ function toggleSecondNavbar(){
 }
 
 //显示灰色 jQuery 遮罩层
-function showBg() {
+function showBg(fullScreen) {
     var bh = $("body").height();
     var bw = $("body").width();
     $("#fullbg").css({
         height:bh,
         width:bw,
+		top:fullScreen?$("#page_homepage_header").height():0,
+		//zIndex:2500,
         display:"block"
     });
-    $("#dialog").show();
+    
 }
 //关闭灰色 jQuery 遮罩
 function closeBg() {
@@ -105,20 +109,23 @@ function closeBg() {
 }
 
 
+var pageParam={
+	start:0,
+	limit:20
+}
 //查询任务
-
-function queryTasks(status){
+//appendDir:append表示是要加在现有数据后面的，prepend在开头插入数据，用在定时刷新上
+function queryTasks(status,appendDir,callBack){
 	
 	$.ajax({   
 		url : $.ServerPath+"/task/mobile/query.do",  
-		data:{start:0,limit:20,status:status},  
+		data:{start:pageParam.start,limit:pageParam.limit,status:status},  
 		success : function(data){
 			if(data.success==true){
-				
 				var root=data.root;
 				var html="";
 				for(var i=0;i<root.length;i++){
-					var taskInfoParamStr='?id='+root[i].id+'&pole_name='+root[i].pole_name+'&memo='+root[i].memo+'&type='+root[i].type;
+					var taskInfoParamStr='?id='+root[i].id+'&pole_name='+root[i].pole_name+'&memo='+root[i].memo+'&type='+root[i].type+'&canEdit='+(status=="working"?true:false);
 					//alert(taskInfoParamStr);
 					var page_id="";
 					var h2_title="";
@@ -141,21 +148,34 @@ function queryTasks(status){
 						'<img src="'+img+'">'+
 						'<h2>'+h2_title+':'+root[i].pole_name+'</h2>'+
 						'<p>地址:'+root[i].pole_address+'</p>'+
-						'<p class="ui-li-aside"><strong>8.21 6:24</strong></p>'+
+						'<p class="ui-li-aside"><strong>'+root[i].createDate+'</strong></p>'+
 						((root[i].status!="newTask")?'':'<p class="ui-li-count" style="color:#FFF;background-color:#F00;">new</p>')+
 					'</a>'+
 					'</li>'
 				}
-				$("#taskes_list_"+status).html(html).listview('refresh');
-				//$('#taskes_list_'+status).listview('refresh');
+				if(appendDir=="append"){
+					$("#taskes_list_"+status).append(html).listview('refresh');
+				} else if(appendDir=="prepend"){
+					$("#taskes_list_"+status).prepend(html).listview('refresh');
+				} else {
+					$("#taskes_list_"+status).html(html).listview('refresh');
+				}
+				//下次开始获取的数据
+				pageParam.start=pageParam.start+root.length;
+				
 			}else{
 				//$("#errorMsg").html(data.reasons.reason);
 			}
-				$.hideLoader();  
+			 
+			if(callBack){
+				callBack();
+			}
 			},
 			error:function(jqxhq){  
 				$("#errorMsg").html('网络异常或服务停止了');  
-				$.hideLoader(); 
+				if(callBack){
+					callBack();
+				}
 			}  
 	});
 }
@@ -170,21 +190,44 @@ function changeTaskesStatus(status){
 	$("#taskes_list_"+status).addClass("taskes_list_display_block");
 	//如果数据已经查询过了，就不再查询了
 	if(!taskes_list_query_status[status]){
-		queryTasks(status);
+		$.showLoader("正在加载....");
+		queryTasks(status,null,function(){
+			$.hideLoader();
+			window.isLazyLoading=false;
+		});
 		taskes_list_query_status[status]=true;
 	}
 	
 }
 $(document).ready(function(e) {
-	//---获取任务信息
+	//---初始化任务信息
 	var status=$("input:checked[name='radio-choice-taskes-status']").val();
 	changeTaskesStatus(status);
 	$("input[name=radio-choice-taskes-status]").click(function(e){
 	    //var val=$("input:checked[name='radio-choice-taskes-status']").val();
 	    //当选择条件发生变化的时候
+		
 	    status=$(e.target).val();
 		changeTaskesStatus(status);
 	});
+	//到底部的时候去加在最新的数据
+	window.isLazyLoading=true;//防止二次刷新,设置为true是防止只有一个页面数据的时候，两次查询
+	$(window).scroll(function(){
+	if(!window.isLazyLoading&&($(window).scrollTop()==$(document).height()-$(window).height())){
+		window.isLazyLoading=true;
+		queryTasks(status,"append",function(){
+			window.isLazyLoading=false;
+			$.hideLoader(); 
+		});
+	}
+	});
+	//定时刷新任务,定时更新数据
+	setInterval(function(){
+		//$.showLoader("正在加载....");
+		queryTasks("working","prepend",function(){
+			//$.hideLoader();
+		});
+	 }, "600000");
 	
 	//初始化滑出菜单
 	htmlobj=$.ajax({url:"leftMenu.html",async:false});
@@ -198,10 +241,10 @@ $(document).ready(function(e) {
 <body> 
 
 <div data-role="page" id="page_homepage">
-	<div id="header" data-role="header" data-position="fixed" data-theme="f" >
+	<div id="page_homepage_header" data-role="header" data-position="fixed" data-theme="f" >
         <a href="#left-menu" data-icon="gear" data-iconpos="notext"></a> 
         <div id="left-menu-contanier"></div>
-        <div  data-role="controlgroup" data-type="horizontal" align="center">
+        <div  data-role="controlgroup" data-type="horizontal" align="center" >
             <input type="radio" name="radio-choice-taskes-status" id="radio-choice-taskes-statusa" value="working" checked="checked">
             <label for="radio-choice-taskes-statusa">当前</label>
             <input type="radio" name="radio-choice-taskes-status" id="radio-choice-taskes-statusb" value="confirm">
@@ -258,15 +301,15 @@ $(document).ready(function(e) {
         	<label  for="memo">任务描述:</label>
     		<textarea readonly id="page_install_memo" placeholder="只读" data-mini="true"></textarea>
          </div>	
-         <a href="#" class="ui-btn ui-corner-all" id="page_install_scan_button" name="scan_button">扫描新设备</a>
-         <input type="text" id="page_install_scan_textfield" name="scan_textfield"  value="" placeholder="请扫描或手动输入...">
+         <a href="#" class="ui-btn ui-corner-all actionbutton"  id="page_install_scan_button" name="scan_button">扫描新设备</a>
+         <input type="text" id="page_install_scan_textfield" class="actionbutton" name="scan_textfield"  value="" placeholder="请扫描或手动输入...">
          <div id="page_install_equipments_list">
          	
           </div>
           <!--
             <textarea cols="40" rows="8" name="textarea" id="textarea" placeholder="请填写设备安装描述"></textarea>
          -->
-         <div class="ui-field-contain"  align="center">
+         <div class="ui-field-contain actionbutton"  align="center">
             <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="saveTask">保存</button>
             <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="submitTask">提交</button>
          </div>
@@ -282,7 +325,7 @@ $(document).ready(function(e) {
 <div data-role="page" id="page_repair">
 	<div data-role="header">
     	<a href="#page_homepage" class="ui-btn ui-corner-all" data-rel="back" data-theme="c">返回</a>
-        <h1></h1> 
+        <h1>设备维修/维护</h1> 
 	</div>
 	<div role="main" class="ui-content">
         <div class="ui-field-contain">
@@ -305,12 +348,12 @@ $(document).ready(function(e) {
             <option value="rush">YY</option>
         </select>
         <textarea  name="textarea" id="textarea" placeholder="请填写设备故障原因情况"></textarea>
-         <a href="#" class="ui-btn ui-corner-all" name="scan_button">扫描设备</a>
-         <input type="text" name="scan_textfield"  value="" placeholder="请扫描或手动输入...">
+         <a href="#" class="ui-btn ui-corner-all actionbutton" name="scan_button">扫描设备</a>
+         <input type="text" name="scan_textfield" class="actionbutton"  value="" placeholder="请扫描或手动输入...">
          <div id="page_repair_equipments_list">
          	
           </div>
-         <div class="ui-field-contain"  align="center">
+         <div class="ui-field-contain actionbutton"  align="center">
             <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="saveTask">保存</button>
             <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="submitTask">提交</button>
          </div>
@@ -327,7 +370,7 @@ $(document).ready(function(e) {
 
 	<div data-role="header">
     	<a href="#page_homepage" class="ui-btn ui-corner-all" data-rel="back" data-theme="c">返回</a>
-        <h1></h1> 
+        <h1>巡检</h1> 
 	</div>
 	<div role="main" class="ui-content">
         <div class="ui-field-contain">
@@ -338,12 +381,12 @@ $(document).ready(function(e) {
         	<label  for="memo">任务描述:</label>
     		<textarea readonly  id="page_patrol_memo" placeholder="只读" data-mini="true"></textarea>
          </div>	
-         <a href="#" class="ui-btn ui-corner-all" name="scan_button">扫描设备</a>
-         <input type="text" name="scan_textfield"  value="" placeholder="请扫描或手动输入...">
+         <a href="#" class="ui-btn ui-corner-all actionbutton" name="scan_button">扫描设备</a>
+         <input type="text" name="scan_textfield" class="actionbutton"  value="" placeholder="请扫描或手动输入...">
          <div id="page_patrol_equipments_list">
          	
           </div>
-         <div class="ui-field-contain"  align="center">
+         <div class="ui-field-contain actionbutton"  align="center">
             <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="saveTask">保存</button>
             <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="submitTask">提交</button>
          </div>
@@ -367,12 +410,20 @@ $(document).ready(function(e) {
 			var params = $.getUrlParam(sessionStorage.taskInfoParamStr);  
 			window.taskInfoParam=params;
 			taskInfoParam.page_id=page_id; 
+			//alert(params.canEdit);
+			if(params.canEdit=="true"){//隐藏按钮
+				$(".actionbutton").show();
+			} else {
+				$(".actionbutton").hide();
+			}
 			$("#"+page_id+"_id").val(params.id);  
 			$("#"+page_id+"_pole_name").val(params.pole_name);  
 			$("#"+page_id+"_memo").val(params.memo);
 			sessionStorage.taskInfoParamStr=null;
 			//初始化设备列表信息
 			queryTaskEquipmentInfos(params.id);
+			
+			
 		}  	
 	});
 	

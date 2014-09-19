@@ -7,7 +7,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.mawujun.store.OrderRepository">
 
 	<select id="queryMain" resultType="com.mawujun.store.OrderVO" parameterType="map">
-    	select a.* from ems_Order a
+    	select distinct a.orderNo,store_id,orderNum,totalNum,orderDate from ems_Order a
     	<where>
     		and a.store_id in (select store_id from sys_userstore c where c.user_id=#{user_id} and c.look='Y')
     		<if test="store_id!=null">
