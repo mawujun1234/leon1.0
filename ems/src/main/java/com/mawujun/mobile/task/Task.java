@@ -47,7 +47,12 @@ public class Task implements IdEntity<String> {
 	//private Date approveDate;//管理人员审批时间
 	private Date completeDate;//完成时间
 	
+	
+	private Integer hitchType_id;//故障类型
+	@Column(length=500)
 	private String hitchType;//故障类型
+	private Integer hitchReasonTpl_id;//故障原因，也用来存放维护内容
+	@Column(length=500)
 	private String hitchReason;//故障原因，也用来存放维护内容
 	
 	public String getType_name() {
@@ -164,6 +169,18 @@ public class Task implements IdEntity<String> {
 	}
 	public void setCustomer_name(String customer_name) {
 		this.customer_name = customer_name;
+	}
+	public Integer getHitchType_id() {
+		return hitchType_id;
+	}
+	public void setHitchType_id(Integer hitchType_id) {
+		this.hitchType_id = hitchType_id;
+	}
+	public Integer getHitchReasonTpl_id() {
+		return hitchReasonTpl_id;
+	}
+	public void setHitchReasonTpl_id(Integer hitchReasonTpl_id) {
+		this.hitchReasonTpl_id = hitchReasonTpl_id;
 	}
 	
 	

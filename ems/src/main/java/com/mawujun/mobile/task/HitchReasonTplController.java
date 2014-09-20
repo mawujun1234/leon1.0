@@ -7,13 +7,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.utils.page.Page;
 import com.mawujun.utils.M;
-
+import com.mawujun.meta.MetaVersion;
+import com.mawujun.meta.MetaVersionService;
 import com.mawujun.mobile.task.HitchReasonTpl;
 import com.mawujun.mobile.task.HitchReasonTplService;
 /**
@@ -27,6 +29,8 @@ public class HitchReasonTplController {
 
 	@Resource
 	private HitchReasonTplService hitchReasonTplService;
+	@Resource
+	private MetaVersionService metaVersionService;
 
 
 //	/**
@@ -66,6 +70,16 @@ public class HitchReasonTplController {
 		return hitchReasonTples;
 	}
 	
+	@RequestMapping("/hitchReasonTpl/mobile/query.do")
+	@ResponseBody
+	public List<HitchReasonTpl> mobile_query(Integer version) {	
+		List<HitchReasonTpl> hitchReasonTples=hitchReasonTplService.queryAll();
+		
+		MetaVersion metaVersion=metaVersionService.get(HitchReasonTpl.class.getSimpleName());
+		JsonConfigHolder.addProperty("version", metaVersion==null?0:metaVersion.getVersion());
+		return hitchReasonTples;
+	}
+	
 
 	@RequestMapping("/hitchReasonTpl/load.do")
 	public HitchReasonTpl load(Integer id) {
@@ -76,6 +90,7 @@ public class HitchReasonTplController {
 	@ResponseBody
 	public HitchReasonTpl create(@RequestBody HitchReasonTpl hitchReasonTpl) {
 		hitchReasonTplService.create(hitchReasonTpl);
+		metaVersionService.update(HitchReasonTpl.class);
 		return hitchReasonTpl;
 	}
 	
@@ -83,6 +98,7 @@ public class HitchReasonTplController {
 	@ResponseBody
 	public  HitchReasonTpl update(@RequestBody HitchReasonTpl hitchReasonTpl) {
 		hitchReasonTplService.update(hitchReasonTpl);
+		metaVersionService.update(HitchReasonTpl.class);
 		return hitchReasonTpl;
 	}
 	
@@ -90,6 +106,7 @@ public class HitchReasonTplController {
 	@ResponseBody
 	public Integer deleteById(Integer id) {
 		hitchReasonTplService.deleteById(id);
+		metaVersionService.update(HitchReasonTpl.class);
 		return id;
 	}
 	

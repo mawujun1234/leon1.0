@@ -2,12 +2,15 @@ package com.mawujun.user;
 
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.mawujun.meta.MetaVersion;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
 @Entity
@@ -38,6 +41,8 @@ public class User extends UUIDEntity{
 	//判断是不是worunit的账号
 	@Transient
 	private Boolean isWorkunit=false;
+	@Transient
+	private Map<String,Integer> metaVersion;
 	
 	public String toString(){
 		return username;
@@ -107,6 +112,13 @@ public class User extends UUIDEntity{
 	public void setIsWorkunit(Boolean isWorkunit) {
 		this.isWorkunit = isWorkunit;
 	}
-	
-	
+
+	public Map<String, Integer> getMetaVersion() {
+		return metaVersion;
+	}
+
+	public void setMetaVersion(Map<String, Integer> metaVersion) {
+		this.metaVersion = metaVersion;
+	}
+
 }

@@ -70,6 +70,7 @@ Ext.define('Ems.task.HitchReasonTplGrid',{
 		var destroy = new Ext.Action({
 		    text: '删除',
 		    itemId:'destroy',
+		    hidden:true,
 		    disabled:me.disabledAction,
 		    handler: function(){
 		    	me.onDelete();    

@@ -68,6 +68,7 @@ Ext.define('Ems.task.HitchTypeGrid',{
 		var destroy = new Ext.Action({
 		    text: '删除',
 		    itemId:'destroy',
+		    hidden:true,
 		    disabled:me.disabledAction,
 		    handler: function(){
 		    	me.onDelete();    

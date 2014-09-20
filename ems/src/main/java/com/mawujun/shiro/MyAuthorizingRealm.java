@@ -1,6 +1,8 @@
 package com.mawujun.shiro;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -14,6 +16,8 @@ import org.apache.shiro.subject.PrincipalCollection;
 
 import com.mawujun.baseinfo.WorkUnit;
 import com.mawujun.baseinfo.WorkUnitService;
+import com.mawujun.meta.MetaVersion;
+import com.mawujun.meta.MetaVersionService;
 import com.mawujun.user.User;
 import com.mawujun.user.UserService;
 
@@ -21,6 +25,7 @@ public class MyAuthorizingRealm extends AuthorizingRealm {
 	
 	private UserService userService;
 	private WorkUnitService workUnitService;
+	private MetaVersionService metaVersionService;
 
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(
@@ -73,6 +78,16 @@ public class MyAuthorizingRealm extends AuthorizingRealm {
 	        	//aa.setLoginTime(new Date());
 	        	//return aa;
 	        	user.setLoginDate(new Date());
+	        	
+	        	Map<String,Integer> map=new HashMap<String,Integer>();
+	        	if(metaVersionService.queryAll()!=null){
+	        		for(MetaVersion metaVersion:metaVersionService.queryAll()){
+		        		map.put(metaVersion.getClasName(), metaVersion.getVersion());
+		        	}
+		        	user.setMetaVersion(map);
+	        	}
+	        	
+	        	
 	            return new SimpleAuthenticationInfo(user,user.getPassword(),getName() ); 
 	         } 
 	      } 
@@ -94,6 +109,14 @@ public class MyAuthorizingRealm extends AuthorizingRealm {
 
 	public void setWorkUnitService(WorkUnitService workUnitService) {
 		this.workUnitService = workUnitService;
+	}
+
+	public MetaVersionService getMetaVersionService() {
+		return metaVersionService;
+	}
+
+	public void setMetaVersionService(MetaVersionService metaVersionService) {
+		this.metaVersionService = metaVersionService;
 	}
 
 }

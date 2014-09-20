@@ -182,6 +182,10 @@ public static final class ems_installoutlist {
 	public static final String ecode="ecode";
 	public static final String id="id";
 }
+public static final class ems_metaversion {
+	public static final String clasName="clasName";
+	public static final String version="version";
+}
 public static final class ems_message {
 	public static final String task_id="task_id";
 	public static final String workunit_id="workunit_id";
@@ -222,7 +226,9 @@ public static final class ems_task {
 	public static final String startHandDate="startHandDate";
 	public static final String submitDate="submitDate";
 	public static final String completeDate="completeDate";
+	public static final String hitchType_id="hitchType_id";
 	public static final String hitchType="hitchType";
+	public static final String hitchReasonTpl_id="hitchReasonTpl_id";
 	public static final String hitchReason="hitchReason";
 }
 public static final class ems_taskequipmentlist {

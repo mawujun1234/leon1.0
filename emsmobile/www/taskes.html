@@ -227,7 +227,7 @@ $(document).ready(function(e) {
 		queryTasks("working","prepend",function(){
 			//$.hideLoader();
 		});
-	 }, "600000");
+	 }, "120000");
 	
 	//初始化滑出菜单
 	htmlobj=$.ajax({url:"leftMenu.html",async:false});
@@ -336,18 +336,14 @@ $(document).ready(function(e) {
         	<label  for="memo">任务描述:</label>
     		<textarea readonly  id="page_repair_memo" placeholder="只读" data-mini="true"></textarea>
          </div>	
-         <select name="select-choice-a" id="select-choice-a" data-native-menu="false">
+         <select name="select-choice-a" id="select-choice-hitchType" data-native-menu="false">
         	<option>请选择故障类型</option>
-            <option value="standard">摄像头遮挡</option>
-            <option value="rush">设备损坏</option>
         </select>
 
-        <select name="select-choice-a" id="select-choice-b" data-native-menu="false">
+        <select name="select-choice-a" id="select-choice-hitchReasonTpl" data-native-menu="false">
         	<option>请选择原因模板</option>
-            <option value="standard">YYYYYY</option>
-            <option value="rush">YY</option>
         </select>
-        <textarea  name="textarea" id="textarea" placeholder="请填写设备故障原因情况"></textarea>
+        <textarea  name="textarea" id="textarea-hitchReasonTpl" placeholder="请填写设备故障原因情况"></textarea>
          <a href="#" class="ui-btn ui-corner-all actionbutton" name="scan_button">扫描设备</a>
          <input type="text" name="scan_textfield" class="actionbutton"  value="" placeholder="请扫描或手动输入...">
          <div id="page_repair_equipments_list">
@@ -359,7 +355,31 @@ $(document).ready(function(e) {
          </div>
 	</div>
     <script type="text/javascript">
-
+		
+		$(function(){
+			//初始化故障类型和原因模板
+			var hitchTypes=$.tasks.getHitchType();
+			var html="";
+			for(var i=0;i<hitchTypes.length;i++){
+				html+='<option value="'+hitchTypes[i].id+'">'+hitchTypes[i].name+'</option>';
+			}
+			$("#select-choice-hitchType").append(html).trigger("create");;
+			var hitchReasonTples=$.tasks.getHitchReasonTpl();
+			html="";
+			for(var i=0;i<hitchReasonTples.length;i++){
+				html+='<option value="'+hitchReasonTples[i].id+'">'+hitchReasonTples[i].name+'</option>';
+			}
+			$("#select-choice-hitchReasonTpl").append(html).trigger("create");
+			
+			$("#select-choice-hitchReasonTpl").change(function(e){
+				for(var i=0;i<hitchReasonTples.length;i++){
+					if(hitchReasonTples[i].id==$(e.target).val()){
+						$("#textarea-hitchReasonTpl").val(hitchReasonTples[i].tpl);
+					}
+				}
+				
+			});
+		});
 	</script>
     <div data-role="popup" id="page_repair_deleteEquipmentInfo_popup" data-arrow="b" data-theme="b">
         <a href="javascript:void(0);" data-role="button" name="deleteEquipmentInfo">删除</a>
@@ -427,16 +447,27 @@ $(document).ready(function(e) {
 		}  	
 	});
 	
-	function saveTask(){
-		$.showLoader("正在保存....");
-		
+	function getSubmitParams(){
 		//var params="&task_id="+$("#page_install_id").val();
-		var params="&task_id="+taskInfoParam.id;
+		var params="&task_id="+taskInfoParam.id+"&task_type="+taskInfoParam.type;
 		var page_id=taskInfoParam.page_id;
 		$("#"+page_id+"_equipments_list [data-role='collapsible']").each(function(index, element) {
             //values.push($(this).attr("ecode"));
 			params+="&ecodes="+$(this).attr("ecode");
         });
+		
+		if(taskInfoParam.type=='repair'){
+			var hitchType_id=$("#select-choice-hitchType").val();
+			var hitchReasonTpl_id=$("#select-choice-hitchReasonTpl").val();
+			params+="&hitchType_id="+hitchType_id;
+			params+="&hitchReasonTpl_id="+hitchReasonTpl_id;
+			params+="&hitchReason="+$("#textarea-hitchReasonTpl").val();
+		}
+	}
+	function saveTask(){
+		$.showLoader("正在保存....");
+		var params=getSubmitParams();
+		
 		/****/
 		$.ajax({   
 			url : $.ServerPath+"/task/mobile/save.do",  
@@ -453,11 +484,12 @@ $(document).ready(function(e) {
 		$.showLoader("正在提交....");
 
 		//var params="&task_id="+$("#page_install_id").val();
-		var params="&task_id="+taskInfoParam.id+"&task_type="+taskInfoParam.type;
-		var page_id=taskInfoParam.page_id;
-		$("#"+page_id+"_equipments_list [data-role='collapsible']").each(function(index, element) {
-			params+="&ecodes="+$(this).attr("ecode");
-        });
+		//var params="&task_id="+taskInfoParam.id+"&task_type="+taskInfoParam.type;
+		//var page_id=taskInfoParam.page_id;
+		//$("#"+page_id+"_equipments_list [data-role='collapsible']").each(function(index, element) {
+		//	params+="&ecodes="+$(this).attr("ecode");
+        //});
+		var params=getSubmitParams();
 		/****/
 		$.ajax({   
 			url : $.ServerPath+"/task/mobile/submit.do",  
@@ -480,8 +512,8 @@ $(document).ready(function(e) {
 	//渲染设备列表
 	function renderEquipmentInfo(obj,coverHtml){
 		var html="";
-		var root=obj;
-		if(!(obj instanceof Array)){
+		var root=obj.equipmentVOs;
+		if(!(obj.equipmentVOs instanceof Array)){
 			root=[obj];
 		} 
 		
@@ -506,7 +538,14 @@ $(document).ready(function(e) {
 			$( "#"+page_id+"_deleteEquipmentInfo_popup" ).popup( "open", { positionTo:event.target,transition: "pop" } );
     		event.preventDefault();
 		});
-		//return html;
+		
+		//渲染损坏类型和损坏原因
+		if(obj.type=="repair"){
+			$("#select-choice-hitchType").val(obj.hitchType_id).selectmenu( "refresh" );
+			$("#select-choice-hitchReasonTpl").val(obj.hitchReasonTpl_id).selectmenu( "refresh" );
+			$("#textarea-hitchReasonTpl").val(obj.hitchReason);
+		}
+		
 	}
 	//获取某个
 	function queryTaskEquipmentInfos(task_id){

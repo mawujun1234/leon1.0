@@ -65,7 +65,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     
     
     <select id="mobile_queryPage" resultType="com.mawujun.mobile.task.Task" parameterType="map">
-    	select * from ems_task a
+    	select a.id,a.memo,a.type,a.status,a.pole_id,a.pole_name,a.pole_address from ems_task a
     	where a.workunit_id=#{workunit_id}
     	<if test="status=='working'">
     		and a.status in ('newTask','read','handling')

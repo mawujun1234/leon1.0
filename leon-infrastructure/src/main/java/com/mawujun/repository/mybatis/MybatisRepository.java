@@ -664,7 +664,8 @@ public class MybatisRepository  {
 	}
 	private static String removeOrders(String hql) {
 		//Pattern p = Pattern.compile("order\\s*by[\\w|\\W|\\s|\\S]*", Pattern.CASE_INSENSITIVE);
-		Pattern p = Pattern.compile("order\\s*by([\\s*|,]\\w+(asc|desc|\\s*)*)+", Pattern.CASE_INSENSITIVE);
+		//Pattern p = Pattern.compile("order\\s*by([\\s*|,]\\w+(asc|desc|\\s*)*)+", Pattern.CASE_INSENSITIVE);
+		Pattern p = Pattern.compile("order\\s*by([\\s*|,].+(asc|desc|\\s*)*)+", Pattern.CASE_INSENSITIVE);
 		Matcher m = p.matcher(hql);
 		StringBuffer sb = new StringBuffer();
 		while (m.find()) {

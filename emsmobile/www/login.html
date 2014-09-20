@@ -37,6 +37,7 @@ label.error{
             <h3>请登录:</h3>
             <input type="text" name="loginName" id="loginName"  placeholder="用户名" data-theme="a" class="required">
             <input type="password" name="password" id="password"  placeholder="密码" data-theme="a" class="required">
+            <input type="text" name="ServerIP" id="ServerIP"  placeholder="服务器地址" value="" data-theme="a" class="required">
             <!--
             <fieldset data-role="controlgroup" >
                <input type="checkbox" name="rememberMe" id="rememberMe" value="true" />
@@ -54,28 +55,53 @@ label.error{
 </div>
 <script type="text/javascript">
 $(function() { 
-	 $("#formLogin").validate({ 
+	//初始化表单的ServerPath
+	var ServerIP=localStorage.getItem("ServerIP");
+	if(!ServerIP){
+		ServerIP="122.227.163.82";
+	}
+	$("#ServerIP").val(ServerIP);
+	
+	$("#formLogin").validate({ 
 		submitHandler: function(form) { 
 			//console.log("Call Login Action"); 
 			var values=$(form).serializeJson();
 			$.showLoader("正在登陆....");
+			////获取损坏类型和损坏原因模板的版本。
+			//values.HitchType_version=$.tasks.getHitchType_version();
+			//values.HitchReasonTpl_version=$.tasks.getHitchReasonTpl_version();
+			var ServerIP=$("#ServerIP").val();
+			var ServerPath="http://"+ServerIP+":8084";
 			$.ajax({   
-				url : $.ServerPath+"/mobile/login.do",  
+				url : ServerPath+"/mobile/login.do",  
 				data:values,  
 				success : function(data){  
 					if(data.success==true){
+						//保存新的IP地址
+						localStorage.setItem("ServerIP",ServerIP);
+						$.ServerPath=ServerPath;
+
 						sessionStorage.setItem("user",JSON.stringify(data.root));
 						//$.mobile.pageContainer.pagecontainer('change', "messages.html", {
 						//	transition: 'slide',
 						//	reload    : true
 						//});
-						location.href="taskes.html";
-					}else{
-						//$("#errorMsg").html(data.reasons.reason);
-						if(data.reasons.code=="noLogin"){
-							location.href="login.html";
-							return;
+						//更新损坏类型，和损坏原因的数据
+						$.showLoader("更新字典数据....");
+						var user=data.root;
+						if(user.metaVersion==null){
+							user.metaVersion={};
 						}
+						$.tasks.updateAll(user.metaVersion.HitchType,user.metaVersion.HitchReasonTpl,function(){
+							location.href="taskes.html";
+						});
+						
+					}else{
+						$("#errorMsg").html(data.reasons.reason);
+						//if(data.reasons.code=="noLogin"){
+						////	location.href="login.html";
+						//	return;
+						//}
 					}
 					$.hideLoader();  
 				}

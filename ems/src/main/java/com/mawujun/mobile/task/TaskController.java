@@ -1,6 +1,8 @@
 package com.mawujun.mobile.task;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -149,6 +151,7 @@ public class TaskController {
 		Page page=Page.getInstance(start,limit);//.addParam(M.Task.sampleName, "%"+sampleName+"%");
 		page.addParam(M.Task.status, status);
 		page.addParam(M.Task.workunit_id, ShiroUtils.getAuthenticationInfo().getId());
+
 		return taskService.mobile_queryPage(page);
 	}
 	/**
@@ -159,10 +162,18 @@ public class TaskController {
 	 */
 	@RequestMapping("/task/mobile/queryTaskEquipmentInfos.do")
 	@ResponseBody
-	public List<EquipmentVO> mobile_queryTaskEquipmentInfos(String task_id){
-		List<EquipmentVO> equipmentVOs=taskService.mobile_queryTaskEquipmentInfos(task_id);
+	public Map<String,Object> mobile_queryTaskEquipmentInfos(String task_id){
 		
-		return equipmentVOs;
+		List<EquipmentVO> equipmentVOs=taskService.mobile_queryTaskEquipmentInfos(task_id);
+		Task task=taskService.get(task_id);
+		Map<String,Object> map=new HashMap<String,Object>();
+		map.put(M.Task.hitchReason, task.getHitchReason());
+		map.put(M.Task.hitchReasonTpl_id, task.getHitchReasonTpl_id());
+		map.put(M.Task.hitchType_id, task.getHitchType_id());
+		map.put(M.Task.type, task.getType());
+		map.put("equipmentVOs", equipmentVOs);
+		return map;
+		//return equipmentVOs;
 	}
 	/**
 	 * 获取某个设备的信息，主要用于扫描的额时候
@@ -192,9 +203,9 @@ public class TaskController {
 	 */
 	@RequestMapping("/task/mobile/save.do")
 	@ResponseBody
-	public String mobile_save(String task_id,String[] ecodes) {
+	public String mobile_save(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason,String[] ecodes) {
 		//jquery 2 json地方有文图，，不能将数组正确的转换
-		taskService.mobile_save(task_id,ecodes);
+		taskService.mobile_save(task_id,hitchType_id,hitchReasonTpl_id,hitchReason,ecodes);
 		return "success";
 	}
 	

@@ -1,7 +1,7 @@
 // JavaScript Document
 //$.ServerPath="http://localhost:8084";
-$.ServerPath="http://172.16.3.4:8084";
-//$.ServerPath="http://192.168.94.29:8084";
+//$.ServerPath="http://172.16.3.4:8084";
+$.ServerPath="http://192.168.94.19:8084";
 $.ecodeLength=16;
 $.ajaxSetup({
 	//jsonp: "jsonpCallback",//使用浏览器进行测试的时候用的，如果安装到手机，就注释掉
@@ -209,3 +209,55 @@ $(function(){
 	}
 	
 });
+
+$.tasks={
+	getHitchType:function(){
+		return JSON.parse(localStorage.getItem("HitchType"));
+	},
+	getHitchType_version:function(){
+		return localStorage.getItem("HitchType_version")?localStorage.getItem("HitchType_version"):0;
+	},
+	updateHitchType:function(){
+		$.ajax({   
+			url : $.ServerPath+"/hitchType/mobile/query.do",  
+			success : function(data){
+				localStorage.setItem("HitchType_version",data.version);
+				localStorage.setItem("HitchType",JSON.stringify(data.root));
+			}
+		});
+	},
+	getHitchReasonTpl:function(){
+		
+		return JSON.parse(localStorage.getItem("HitchReasonTpl"));
+	},
+	getHitchReasonTpl_version:function(){
+		return localStorage.getItem("HitchReasonTpl_version")?localStorage.getItem("HitchReasonTpl_version"):0;
+	},
+	updateHitchReasonTpl:function(){
+		$.ajax({   
+			url : $.ServerPath+"/hitchReasonTpl/mobile/query.do",
+			//data:params,   
+			success : function(data){
+				localStorage.setItem("HitchReasonTpl_version",data.version);
+				localStorage.setItem("HitchReasonTpl",JSON.stringify(data.root));
+				//alert(data.root);
+				//alert(localStorage.getItem("HitchReasonTpl"));
+			}
+		});
+	},
+	updateAll:function(HitchType_version,HitchReasonTpl_version,callBack){
+		if(this.getHitchType_version()!=HitchType_version){
+			this.updateHitchType();
+		}
+		
+		if(this.getHitchReasonTpl_version()!=HitchReasonTpl_version){
+			this.updateHitchReasonTpl();
+			//alert(this.getHitchReasonTpl_version()+'!='+HitchReasonTpl_version);
+		}
+		
+		if(callBack){
+			callBack();
+		}
+	}
+}
+

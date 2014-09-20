@@ -13,8 +13,8 @@
 		cordova plugin rm org.apache.cordova.dialogs
 	cordova plugin add org.apache.cordova.device
 		cordova plugin rm org.apache.cordova.device
-	cordova plugin add org.apache.cordova.geolocation
-		cordova plugin rm org.apache.cordova.geolocation
+	---cordova plugin add org.apache.cordova.geolocation
+		----cordova plugin rm org.apache.cordova.geolocation
 
 
 设想=============
@@ -23,9 +23,21 @@
 
 
 http://localhost:8085/www/login.html
+
+(完成)服务器地址弄成可以自己配置的，并且缓存在客户端，默认地址是
+
+任务下发中不显示任务信息。最多弄成弹出框，或者表示下有任务就可以了
+
 故障类型，原因模板基础等数据的维护
-	弄成缓存的判断，一般使用缓存登录的时候发现数据有变更，那就更新缓存中的内容
-	移动端的故障类型和原因模板的读取
+	(完成)弄成缓存的判断，一般使用缓存登录的时候发现数据有变更，那就更新缓存中的内容
+	(完成)移动端的故障类型和原因模板的读取
+	(完成)(完成)改成不能删除，就是隐藏删除按钮
+	(完成)提交的时候，参数的获取和保存的时候统一一下
+	提交的时候，要验证下，一些数据必须填
+	移动端点保存的时候报错，好像是参数没有传递
+	
+省市的json
+	http://lixuanbin.iteye.com/blog/1997929
 	
 分页参数要分成多个状态的，要独立出来
 	当提交任务的时候，参数的start也要发生变化

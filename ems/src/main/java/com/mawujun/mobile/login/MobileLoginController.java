@@ -42,7 +42,8 @@ public class MobileLoginController {
 	private WorkUnitService workUnitService;
 	@RequestMapping("/mobile/login.do")
 	@ResponseBody
-	public User logIn(HttpServletRequest request,HttpServletResponse response ,String loginName,String password,Boolean rememberMe){
+	public User logIn(HttpServletRequest request,HttpServletResponse response ,String loginName,String password,Boolean rememberMe
+			){
 		//response.setHeader("Access-Control-Allow-Origin", "*");
 		//response.addHeader("Access-Control-Allow-Methods","GET,POST,OPTIONS"); 
 		//response.addHeader("Access-Control-Allow-Headers", "Content-type,hello");
@@ -61,13 +62,16 @@ public class MobileLoginController {
         } catch (UnknownAccountException e) {
         	logger.error(e);
             error = "用户名/密码错误";  
+            e.printStackTrace();
         } catch (IncorrectCredentialsException e) {  
         	logger.error(e);
             error = "用户名/密码错误";  
+            e.printStackTrace();
         } catch (AuthenticationException e) {  
         	logger.error(e);
             //其他错误，比如锁定，如果想单独处理请单独catch处理  
             error = "账号或密码错误!";  
+            e.printStackTrace();
         }  
 		//JsonConfigHolder.setRootName("reasons");
 		//JsonConfigHolder.setJsonpCallback(jsonpCallback);

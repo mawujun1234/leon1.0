@@ -7,13 +7,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.utils.page.Page;
 import com.mawujun.utils.M;
-
+import com.mawujun.meta.MetaVersion;
+import com.mawujun.meta.MetaVersionService;
 import com.mawujun.mobile.task.HitchType;
 import com.mawujun.mobile.task.HitchTypeService;
 /**
@@ -27,6 +29,8 @@ public class HitchTypeController {
 
 	@Resource
 	private HitchTypeService hitchTypeService;
+	@Resource
+	private MetaVersionService metaVersionService;
 
 
 //	/**
@@ -66,6 +70,16 @@ public class HitchTypeController {
 		return hitchTypees;
 	}
 	
+	@RequestMapping("/hitchType/mobile/query.do")
+	@ResponseBody
+	public List<HitchType> mobile_query() {	
+		List<HitchType> hitchTypees=hitchTypeService.queryAll();
+		
+		MetaVersion metaVersion=metaVersionService.get(HitchType.class.getSimpleName());
+		JsonConfigHolder.addProperty("version", metaVersion==null?0:metaVersion.getVersion());
+		return hitchTypees;
+	}
+	
 
 	@RequestMapping("/hitchType/load.do")
 	public HitchType load(Integer id) {
@@ -76,6 +90,7 @@ public class HitchTypeController {
 	@ResponseBody
 	public HitchType create(@RequestBody HitchType hitchType) {
 		hitchTypeService.create(hitchType);
+		metaVersionService.update(HitchType.class);
 		return hitchType;
 	}
 	
@@ -83,6 +98,7 @@ public class HitchTypeController {
 	@ResponseBody
 	public  HitchType update(@RequestBody HitchType hitchType) {
 		hitchTypeService.update(hitchType);
+		metaVersionService.update(HitchType.class);
 		return hitchType;
 	}
 	
@@ -90,6 +106,7 @@ public class HitchTypeController {
 	@ResponseBody
 	public Integer deleteById(Integer id) {
 		hitchTypeService.deleteById(id);
+		metaVersionService.update(HitchType.class);
 		return id;
 	}
 	

@@ -67,6 +67,7 @@
 		<property name="userService" ref="userService" />
 		<property name="workUnitService" ref="workUnitService" />
 		<property name="cacheManager" ref="shiroCacheManager" />
+		<property name="metaVersionService" ref="metaVersionService" />
 	</bean>
 
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />

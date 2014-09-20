@@ -182,6 +182,10 @@ public static final class InstallOutList {
 	public static final String ecode="ecode";
 	public static final String id="id";
 }
+public static final class MetaVersion {
+	public static final String clasName="clasName";
+	public static final String version="version";
+}
 public static final class Message {
 	public static final String task_id="task_id";
 	public static final String workunit_id="workunit_id";
@@ -222,7 +226,9 @@ public static final class Task {
 	public static final String startHandDate="startHandDate";
 	public static final String submitDate="submitDate";
 	public static final String completeDate="completeDate";
+	public static final String hitchType_id="hitchType_id";
 	public static final String hitchType="hitchType";
+	public static final String hitchReasonTpl_id="hitchReasonTpl_id";
 	public static final String hitchReason="hitchReason";
 }
 public static final class TaskEquipmentList {
@@ -352,6 +358,10 @@ public static final class User {
 	public static final String loginDate="loginDate";
 	public static final String status="status";
 	public static final String isWorkunit="isWorkunit";
+	/**
+	* 这里一般是集合属性，返回的是metaVersion
+	*/
+	public static final String metaVersion="metaVersion";
 	public static final String id="id";
 }
 public static final class UserStore {

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -77,6 +78,8 @@ public class TaskService extends AbstractService<Task, String>{
 			//如果是新安装的设备，那就改为安装中
 			if(task.getType()==TaskType.newInstall){
 				poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.installing).andEquals(M.Pole.id, task.getPole_id()));
+			}else if(task.getType()==TaskType.repair){
+				poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.hitch).andEquals(M.Pole.id, task.getPole_id()));	
 			}
 			
 		}
@@ -93,9 +96,9 @@ public class TaskService extends AbstractService<Task, String>{
 		Task task=taskRepository.get(id);
 		//修改杆位状态为"已安装"
 		if(task.getType()==TaskType.newInstall){
-			poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.using).andEquals(M.Pole.id, task.getPole_id()));
-			
-			
+			poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.using).andEquals(M.Pole.id, task.getPole_id()));	
+		} else if(task.getType()==TaskType.repair){
+			poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.using).andEquals(M.Pole.id, task.getPole_id()));	
 		}
 		
 		
@@ -119,10 +122,18 @@ public class TaskService extends AbstractService<Task, String>{
 		return taskRepository.mobile_queryTaskEquipmentInfos(task_id);
 	}
 	
-	public void mobile_save(String task_id,String[] ecodes) {
+	public void mobile_save(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason,String[] ecodes) {
 		taskEquipmentListRepository.deleteBatch(Cnd.delete().andEquals(M.TaskEquipmentList.task_id, task_id));
+		
+		Task task=taskRepository.get(task_id);
+		task.setHitchType_id(hitchType_id);
+		task.setHitchReasonTpl_id(hitchReasonTpl_id);
+		task.setHitchReason(hitchReason);
+		task.setStatus(TaskStatus.handling);
+		task.setStartHandDate(new Date());
+		taskRepository.update(task);
 		//修改任务状态为"处理中",无论哪种任务类型
-		taskRepository.update(Cnd.update().set(M.Task.status, TaskStatus.handling).set(M.Task.startHandDate,new Date()).andEquals(M.Task.id, task_id));
+		//taskRepository.update(Cnd.update().set(M.Task.status, TaskStatus.handling).set(M.Task.startHandDate,new Date()).andEquals(M.Task.id, task_id));
 		if(ecodes==null){
 			return;
 		}
