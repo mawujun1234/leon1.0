@@ -133,6 +133,7 @@ Ext.onReady(function() {
     	   var cls=newTab.cclass;
     	   naviPanel.selectClass(cls);
     });
+    window.docPanel=docPanel;
     toolbar.showMemu();
     function showtab(){
         docPanel.loadPage(this.link,this.id,this.text,this.loadType);

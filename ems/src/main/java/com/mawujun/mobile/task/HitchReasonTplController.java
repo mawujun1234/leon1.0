@@ -1,5 +1,7 @@
 package com.mawujun.mobile.task;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -29,6 +31,8 @@ public class HitchReasonTplController {
 
 	@Resource
 	private HitchReasonTplService hitchReasonTplService;
+	@Resource
+	private HitchTypeService hitchTypeService;
 	@Resource
 	private MetaVersionService metaVersionService;
 
@@ -78,6 +82,34 @@ public class HitchReasonTplController {
 		MetaVersion metaVersion=metaVersionService.get(HitchReasonTpl.class.getSimpleName());
 		JsonConfigHolder.addProperty("version", metaVersion==null?0:metaVersion.getVersion());
 		return hitchReasonTples;
+	}
+	
+	/**
+	 * 同时更新故障类型和原因模板
+	 * @author mawujun 16064988@qq.com 
+	 * @param version
+	 * @return
+	 */
+	@RequestMapping("/hitchReasonTpl/mobile/queryAll.do")
+	@ResponseBody
+	public Map<String,Object> mobile_queryAll(Integer hitchType_version,Integer hitchReasonTpl_version) {
+		Map<String,Object> map=new HashMap<String,Object>();
+		
+		MetaVersion metaVersion=metaVersionService.get(HitchType.class.getSimpleName());
+		if(metaVersion.getVersion()!=hitchType_version){
+			List<HitchType> hitchTypes=hitchTypeService.queryAll();
+			map.put("hitchTypes", hitchTypes);
+			map.put("hitchType_version", metaVersion.getVersion());
+		}
+		
+		metaVersion=metaVersionService.get(HitchReasonTpl.class.getSimpleName());
+		if(metaVersion.getVersion()!=hitchReasonTpl_version){
+			List<HitchReasonTpl> hitchReasonTples=hitchReasonTplService.queryAll();
+			map.put("hitchReasonTpls", hitchReasonTples);
+			map.put("hitchReasonTpl_version", metaVersion.getVersion());
+		}	
+		
+		return map;
 	}
 	
 

@@ -92,7 +92,7 @@ $(function() {
 						if(user.metaVersion==null){
 							user.metaVersion={};
 						}
-						$.tasks.updateAll(user.metaVersion.HitchType,user.metaVersion.HitchReasonTpl,function(){
+						$.tasks.updateAll($.tasks.getHitchType_version(),$.tasks.getHitchReasonTpl_version(),function(){
 							location.href="taskes.html";
 						});
 						
@@ -103,6 +103,10 @@ $(function() {
 						//	return;
 						//}
 					}
+					$.hideLoader();  
+				},
+				error: function(){
+					$("#errorMsg").html("网络生异常或服务器没有启动!");
 					$.hideLoader();  
 				}
 			});   

@@ -12,7 +12,13 @@
                 <li>
                 <a href="#popup_updatePassword" class="ui-icon-edit" data-rel="popup" data-position-to="window" data-transition="pop">
                 	修改密码
-                </a>    
+                </a>   
+                
+                </li>
+                <li>
+                <a href="#" onClick="updateCache();" class="ui-icon-refresh" >
+                	更新缓存
+                </a>  
                 </li>
             </ul>
 
@@ -71,7 +77,13 @@
 							}	
 						});   
 					});
-				})
+				});
+				//清除设备损坏和原因模板等缓存数据
+				function updateCache(){
+					
+					$.tasks.clearAll();
+					$.tasks.updateAll();
+				}
 			</script>
         </div><!-- #updatePassword-->
 </div>

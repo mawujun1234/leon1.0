@@ -56,26 +56,27 @@ public class TaskController {
 		}
 		Page result= taskService.queryPoles(page);
 		
-		//因为一个杆位会有多个任务
-		int i=0;
-		for(Object obj:result.getResult()){
-			Pole pole=(Pole)obj;
-			pole.setId(pole.getId()+"-"+i);
-			i++;
-		}
+//		//因为一个杆位会有多个任务
+//		int i=0;
+//		for(Object obj:result.getResult()){
+//			Pole pole=(Pole)obj;
+//			pole.setId(pole.getId()+"-"+i);
+//			i++;
+//		}
 		return result;
 	}
 	
 	@RequestMapping("/task/query.do")
 	@ResponseBody
-	public Page query(Integer start,Integer limit,String customer_id,String status,String workunit_id,String pole_name,Boolean isOvertime) {
+	public Page query(Integer start,Integer limit,String customer_id,String status,String workunit_id,String pole_id,String pole_name,Boolean isOvertime) {
 		Page page=Page.getInstance(start,limit);
-		page.addParam("customer_id", customer_id);
-		page.addParam("status", status);
-		page.addParam("workunit_id", workunit_id);
+		page.addParam(M.Task.customer_id, customer_id);
+		page.addParam(M.Task.status, status);
+		page.addParam(M.Task.workunit_id, workunit_id);
+		page.addParam(M.Task.pole_id, pole_id);
 		
 		if(pole_name!=null){
-			page.addParam("pole_name", "%"+pole_name+"%");
+			page.addParam(M.Task.pole_name, "%"+pole_name+"%");
 		}
 		if(isOvertime!=null && isOvertime==true){
 			page.addParam("isOvertime", true);

@@ -358,10 +358,6 @@ public static final class User {
 	public static final String loginDate="loginDate";
 	public static final String status="status";
 	public static final String isWorkunit="isWorkunit";
-	/**
-	* 这里一般是集合属性，返回的是metaVersion
-	*/
-	public static final String metaVersion="metaVersion";
 	public static final String id="id";
 }
 public static final class UserStore {

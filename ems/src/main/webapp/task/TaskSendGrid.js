@@ -49,12 +49,8 @@ Ext.define('Ems.task.TaskSendGrid',{
 		   return record.get("status_name");
 		 }},
 		{dataIndex:'name',text:'杆位名称',renderer:function(value,metadata ,record){
-			if(record.get("task_type")=="newInstall"){
-				 return "<img src='../images/install.png' />&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);'>"+value+"</a>";
-			} else if(record.get("task_type")=="repair"){
-				 return "<img src='../images/repair.png' />&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);'>"+value+"</a>";
-			} else if(record.get("task_type")=="patrol"){
-				 return "<img src='../images/patrols.png' />&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);'>"+value+"</a>";
+			if(record.get("task_num")){
+				 return "<a href='javascript:void(0);'>("+record.get("task_num")+")"+value+"</a>";
 			}
 			return value;
 		}},
@@ -93,7 +89,23 @@ Ext.define('Ems.task.TaskSendGrid',{
 	  me.on('cellclick',function(view, td, cellIndex, record, tr, rowIndex, e, eOpts){
 	  	//alert(cellIndex);
 	  	if(cellIndex==2){
-	  		me.showTaskForm(record,record.get("task_type"))
+	  		//me.showTaskForm(record,record.get("task_type"))
+	  		//var iframe=top.window.docPanel.loadPage("/task/TaskQueryApp.jsp?callBack=query4Pole&pole_id="+record.get("id"),
+	  		//	"dd2f0178-bc59-422e-ae96-0af92bc6cc0c","任务查询管理","other");
+	  		
+	  		var iframe=top.window.docPanel.loadPage("/task/TaskQueryApp.jsp",
+	  			"dd2f0178-bc59-422e-ae96-0af92bc6cc0c","任务查询管理","other");
+	  		if(iframe){
+	  			iframe.on('load',function(){
+		  			//alert(111);
+		  			iframe.getWin().query4Pole(record.get("id"));
+		  		});
+		  		me.iframe=iframe;
+	  		} else {
+	  			me.iframe.getWin().query4Pole(record.get("id"));
+	  		}
+	  		
+	  		
 	  	}
 	  });
 	  me.initToolbar();
@@ -367,18 +379,6 @@ Ext.define('Ems.task.TaskSendGrid',{
 		return values
 	},
 	showTaskForm:function(pole,task_type){
-//		var pole_values=pole.getData();
-//	
-//					var values={};
-//					values.pole_id=pole_values.id
-//					values.pole_name=pole_values.name;
-//					values.pole_address=pole_values.province+pole_values.city+pole_values.area+pole_values.address;
-//					
-//					values.customer_id=pole_values.customer_id;
-//					values.customer_name=pole_values.customer_name;
-//					values.workunit_id=pole_values.workunit_id;
-//					values.workunit_name=pole_values.workunit_name;
-//					values.type=task_type;
 		
 		var me=this;
 		var values=me.initTask_value(pole,task_type);

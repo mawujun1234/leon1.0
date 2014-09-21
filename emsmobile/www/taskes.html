@@ -5,9 +5,9 @@
 <title>任务列表</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script type="text/javascript" src="cordova.js"></script>
-<link href="jquery.mobile/jquery.mobile-1.4.3.min.css" rel="stylesheet" type="text/css"/>
+<link href="jquery.mobile/jquery.mobile-1.4.4.min.css" rel="stylesheet" type="text/css"/>
 <script src="jquery.mobile/jquery-2.1.1.min.js" type="text/javascript"></script>
-<script src="jquery.mobile/jquery.mobile-1.4.3.min.js" type="text/javascript"></script>
+<script src="jquery.mobile/jquery.mobile-1.4.4.min.js" type="text/javascript"></script>
 <script src="js/main.js" type="text/javascript"></script>
 <style type="text/css">
 .secondNavbar-glyphish-example .ui-btn { padding-top: 40px !important; }
@@ -32,25 +32,6 @@
 }
 
 
-/**
-#popupNewTaskDialog {
-  width: 100%;
-  max-width: 500px;
-  margin: 10% auto 15px auto;
-  padding: 0;
-  position: relative;
-  top: -15px;
-}
-
-#popupNewTaskDialog {
-    position: relative;
-    left: 50%;
-    width: 6em;
-    margin-left: -3em;
-    background-color: #ffa0a0;
-    border-color: black;
-}
-*/
 
 #fullbg {
     background-color:Gray;
@@ -109,14 +90,14 @@ function closeBg() {
 }
 
 
-var pageParam={
-	start:0,
-	limit:20
-}
+window["working_pageParam"]=new Page(0,20);
+window["confirm_pageParam"]=new Page(0,20);
+window["complete_pageParam"]=new Page(0,20);
 //查询任务
+//status:working,confirm,complete
 //appendDir:append表示是要加在现有数据后面的，prepend在开头插入数据，用在定时刷新上
 function queryTasks(status,appendDir,callBack){
-	
+	pageParam =window[status+"_pageParam"];
 	$.ajax({   
 		url : $.ServerPath+"/task/mobile/query.do",  
 		data:{start:pageParam.start,limit:pageParam.limit,status:status},  
@@ -161,7 +142,8 @@ function queryTasks(status,appendDir,callBack){
 					$("#taskes_list_"+status).html(html).listview('refresh');
 				}
 				//下次开始获取的数据
-				pageParam.start=pageParam.start+root.length;
+				//pageParam.start=pageParam.start+root.length;
+				pageParam.addStart(root.length);
 				
 			}else{
 				//$("#errorMsg").html(data.reasons.reason);
@@ -359,12 +341,14 @@ $(document).ready(function(e) {
 		$(function(){
 			//初始化故障类型和原因模板
 			var hitchTypes=$.tasks.getHitchType();
+			hitchTypes=hitchTypes==null?[]:hitchTypes;
 			var html="";
 			for(var i=0;i<hitchTypes.length;i++){
 				html+='<option value="'+hitchTypes[i].id+'">'+hitchTypes[i].name+'</option>';
 			}
 			$("#select-choice-hitchType").append(html).trigger("create");;
 			var hitchReasonTples=$.tasks.getHitchReasonTpl();
+			hitchReasonTples=hitchReasonTples==null?[]:hitchReasonTples;
 			html="";
 			for(var i=0;i<hitchReasonTples.length;i++){
 				html+='<option value="'+hitchReasonTples[i].id+'">'+hitchReasonTples[i].name+'</option>';
@@ -446,28 +430,47 @@ $(document).ready(function(e) {
 			
 		}  	
 	});
-	
-	function getSubmitParams(){
+	//isSubmit：true表示是提交的时候获取参数
+	function getSubmitParams(isSubmit){
 		//var params="&task_id="+$("#page_install_id").val();
 		var params="&task_id="+taskInfoParam.id+"&task_type="+taskInfoParam.type;
 		var page_id=taskInfoParam.page_id;
+		var scaned=false;
 		$("#"+page_id+"_equipments_list [data-role='collapsible']").each(function(index, element) {
             //values.push($(this).attr("ecode"));
 			params+="&ecodes="+$(this).attr("ecode");
+			scaned=true;
         });
+		if(isSubmit&&!scaned){
+			alert("请先扫描设备!");
+			return false;
+		}
 		
 		if(taskInfoParam.type=='repair'){
 			var hitchType_id=$("#select-choice-hitchType").val();
+			if(!hitchType_id){
+				alert("请先选故障类型");
+				return false;
+			}
 			var hitchReasonTpl_id=$("#select-choice-hitchReasonTpl").val();
+			if(!hitchReasonTpl_id){
+				alert("请先选故障原因模板!");
+				return false;
+			}
 			params+="&hitchType_id="+hitchType_id;
 			params+="&hitchReasonTpl_id="+hitchReasonTpl_id;
+			
 			params+="&hitchReason="+$("#textarea-hitchReasonTpl").val();
 		}
+		return params;
 	}
 	function saveTask(){
 		$.showLoader("正在保存....");
 		var params=getSubmitParams();
-		
+		if(params==false){
+			$.hideLoader();  
+			return;
+		}
 		/****/
 		$.ajax({   
 			url : $.ServerPath+"/task/mobile/save.do",  
@@ -483,13 +486,11 @@ $(document).ready(function(e) {
 	function submitTask(){
 		$.showLoader("正在提交....");
 
-		//var params="&task_id="+$("#page_install_id").val();
-		//var params="&task_id="+taskInfoParam.id+"&task_type="+taskInfoParam.type;
-		//var page_id=taskInfoParam.page_id;
-		//$("#"+page_id+"_equipments_list [data-role='collapsible']").each(function(index, element) {
-		//	params+="&ecodes="+$(this).attr("ecode");
-        //});
-		var params=getSubmitParams();
+		var params=getSubmitParams(true);
+		if(params==false){
+			$.hideLoader();  
+			return;
+		}
 		/****/
 		$.ajax({   
 			url : $.ServerPath+"/task/mobile/submit.do",  
@@ -503,6 +504,12 @@ $(document).ready(function(e) {
 					//并且刷新任务,或者移除该任务
 					//changeTaskesStatus("working");
 					$('#li_'+taskInfoParam.id).remove();
+					//刷新待确认的任务
+					window["confirm_pageParam"].reset();
+					queryTasks("confirm",null,function(){
+						//切换confirm任务的状态,这样再点击的时候，就不会重新去查询了
+						taskes_list_query_status["confirm"]=true;
+					});
 				}
 				$.hideLoader();  
 			}

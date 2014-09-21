@@ -1,7 +1,7 @@
 // JavaScript Document
 //$.ServerPath="http://localhost:8084";
 //$.ServerPath="http://172.16.3.4:8084";
-$.ServerPath="http://192.168.94.19:8084";
+$.ServerPath="";
 $.ecodeLength=16;
 $.ajaxSetup({
 	//jsonp: "jsonpCallback",//使用浏览器进行测试的时候用的，如果安装到手机，就注释掉
@@ -55,6 +55,10 @@ $(function() {
 		location.href="login.html";
 		return;
 	}
+	
+	var ServerIP=localStorage.getItem("ServerIP");
+	var ServerPath="http://"+ServerIP+":8084";
+	$.ServerPath=ServerPath;
 });
 //将form的值序列化为json
 (function($){
@@ -245,19 +249,59 @@ $.tasks={
 			}
 		});
 	},
-	updateAll:function(HitchType_version,HitchReasonTpl_version,callBack){
-		if(this.getHitchType_version()!=HitchType_version){
-			this.updateHitchType();
-		}
-		
-		if(this.getHitchReasonTpl_version()!=HitchReasonTpl_version){
-			this.updateHitchReasonTpl();
-			//alert(this.getHitchReasonTpl_version()+'!='+HitchReasonTpl_version);
-		}
-		
-		if(callBack){
-			callBack();
-		}
+	updateAll:function(hitchType_version,hitchReasonTpl_version,callBack){
+		$.showLoader("正在更新....");
+		$.ajax({   
+			url : $.ServerPath+"/hitchReasonTpl/mobile/queryAll.do",
+			data:{
+				hitchType_version:hitchType_version,
+				hitchReasonTpl_version:hitchReasonTpl_version
+			},   
+			success : function(data){
+				if(data.root.hitchTypes){
+					localStorage.setItem("HitchType_version",data.root.hitchType_version);
+					localStorage.setItem("HitchType",JSON.stringify(data.root.hitchTypes));
+				}
+				//alert(JSON.stringify(data.root.hitchReasonTpls));
+				if(data.root.hitchReasonTpls){
+					localStorage.setItem("HitchReasonTpl_version",data.root.hitchReasonTpl_version);
+					localStorage.setItem("HitchReasonTpl",JSON.stringify(data.root.hitchReasonTpls));
+				}
+				
+				if(callBack){
+					callBack();
+				}
+				$.hideLoader();
+			}
+		});	
+	},
+	clearAll:function(){
+		localStorage.removeItem("HitchType_version");
+		localStorage.removeItem("HitchType");
+		localStorage.removeItem("HitchReasonTpl_version");
+		localStorage.removeItem("HitchReasonTpl");
 	}
 }
 
+function Page(start,limit){
+	this.start=start?start:0;
+	this.limit=limit?limit:20;
+	this.limit_reset=this.limit;
+	this.getStart=function(){
+		return this.start;	
+	}
+	this.getLimit=function(){
+		return this.limit;	
+	}
+	this.addStart=function(add){
+		this.start=this.start+add;	
+	}
+	this.subtractStart=function(subtract){
+		this.start=this.start-subtract;
+		this.start=this.start<0?0:this.start
+	}	
+	this.reset=function(){
+		this.start=0;
+		this.limit=this.limit_reset;
+	}
+}

@@ -41,8 +41,8 @@ public class User extends UUIDEntity{
 	//判断是不是worunit的账号
 	@Transient
 	private Boolean isWorkunit=false;
-	@Transient
-	private Map<String,Integer> metaVersion;
+	//@Transient
+	//private Map<String,Integer> metaVersion;
 	
 	public String toString(){
 		return username;
@@ -113,12 +113,5 @@ public class User extends UUIDEntity{
 		this.isWorkunit = isWorkunit;
 	}
 
-	public Map<String, Integer> getMetaVersion() {
-		return metaVersion;
-	}
-
-	public void setMetaVersion(Map<String, Integer> metaVersion) {
-		this.metaVersion = metaVersion;
-	}
 
 }

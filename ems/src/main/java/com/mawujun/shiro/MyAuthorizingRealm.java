@@ -79,13 +79,13 @@ public class MyAuthorizingRealm extends AuthorizingRealm {
 	        	//return aa;
 	        	user.setLoginDate(new Date());
 	        	
-	        	Map<String,Integer> map=new HashMap<String,Integer>();
-	        	if(metaVersionService.queryAll()!=null){
-	        		for(MetaVersion metaVersion:metaVersionService.queryAll()){
-		        		map.put(metaVersion.getClasName(), metaVersion.getVersion());
-		        	}
-		        	user.setMetaVersion(map);
-	        	}
+//	        	Map<String,Integer> map=new HashMap<String,Integer>();
+//	        	if(metaVersionService.queryAll()!=null){
+//	        		for(MetaVersion metaVersion:metaVersionService.queryAll()){
+//		        		map.put(metaVersion.getClasName(), metaVersion.getVersion());
+//		        	}
+//		        	user.setMetaVersion(map);
+//	        	}
 	        	
 	        	
 	            return new SimpleAuthenticationInfo(user,user.getPassword(),getName() ); 

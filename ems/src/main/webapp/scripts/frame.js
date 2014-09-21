@@ -192,6 +192,7 @@ Ext.define('Ext.ms.doc.Panel',{
 //	            });
         	}
             this.setActiveTab(p);
+            return iframe;
         }
     }
 });
