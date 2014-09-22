@@ -14,7 +14,7 @@
   <name>ems Maven Webapp</name>
   <url>http://maven.apache.org</url>
   <build>
-		<finalName>ems</finalName>
+		<finalName>ROOT</finalName>
 		<!-- 进行profile的切换 -->
 		<resources>
 			<resource>
@@ -50,7 +50,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
-					<warSourceExcludes>www/**/*.*,**/*.js,**/*.css</warSourceExcludes>				
+					<!-- <warSourceExcludes>www/**/*.*,**/*.js,**/*.css</warSourceExcludes>		 -->		
 				</configuration>
 			</plugin>
 			

@@ -96,14 +96,14 @@ public class HitchReasonTplController {
 		Map<String,Object> map=new HashMap<String,Object>();
 		
 		MetaVersion metaVersion=metaVersionService.get(HitchType.class.getSimpleName());
-		if(metaVersion.getVersion()!=hitchType_version){
+		if(metaVersion!=null && metaVersion.getVersion()!=hitchType_version){
 			List<HitchType> hitchTypes=hitchTypeService.queryAll();
 			map.put("hitchTypes", hitchTypes);
 			map.put("hitchType_version", metaVersion.getVersion());
 		}
 		
 		metaVersion=metaVersionService.get(HitchReasonTpl.class.getSimpleName());
-		if(metaVersion.getVersion()!=hitchReasonTpl_version){
+		if(metaVersion!=null && metaVersion.getVersion()!=hitchReasonTpl_version){
 			List<HitchReasonTpl> hitchReasonTples=hitchReasonTplService.queryAll();
 			map.put("hitchReasonTpls", hitchReasonTples);
 			map.put("hitchReasonTpl_version", metaVersion.getVersion());
