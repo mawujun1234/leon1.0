@@ -22,7 +22,7 @@ public class User extends UUIDEntity{
 	private static final long serialVersionUID = 1L;
 	@Column(length=30)
 	private String username;
-	@Column(length=30,updatable=false)
+	@Column(length=30)
 	private String password;
 	@Column(length=15)
 	private String name;

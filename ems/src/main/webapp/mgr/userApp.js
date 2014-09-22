@@ -105,7 +105,7 @@ Ext.onReady(function() {
 //					return;
 //				}
 				user_form.update=false;
-				user_form.getForm().setValues({username:'',name:'',phone:''});
+				user_form.getForm().setValues({username:'',password:'0',name:'',phone:''});
 				save_btn.setDisabled(false);
 				edit_btn.setDisabled(true);
 				
@@ -183,6 +183,7 @@ Ext.onReady(function() {
 			    items: [{xtype: 'hidden',name: 'id'},
 					    {fieldLabel: '用户名',name: 'username',readOnly:true},
 					    {fieldLabel: '姓名',name: 'name',readOnly:true},
+					    {fieldLabel: '密码',name: 'password',readOnly:true,inputType:'password'},
 					    {fieldLabel: '电话',name: 'phone',readOnly:true}],
 				bbar:['->',save_btn,edit_btn]
 			});
@@ -209,6 +210,7 @@ Ext.onReady(function() {
 						}
 						save_btn.setDisabled(false);
 						edit_btn.setDisabled(true);
+						alert("保存成功!");
 					}
 					
 				});
