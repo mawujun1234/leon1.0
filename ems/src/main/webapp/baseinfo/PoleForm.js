@@ -147,6 +147,7 @@ Ext.define('Ems.baseinfo.PoleForm',{
 				form.getRecord().save({
 					success: function(record, operation) {
 						me.fireEvent("saved");
+						alert("保存成功!");
 					}
 				});
             }

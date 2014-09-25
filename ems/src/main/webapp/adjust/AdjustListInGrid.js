@@ -81,6 +81,10 @@ Ext.define('Ems.adjust.AdjustListInGrid',{
 				if(newValue.length<Ext.ecode_length){
 					return;
 				}
+				if(!me.str_in_id){
+					alert("请先选择挑拨单!");
+					return;
+				}
 				//var flag=true;
 				me.store.each(function(record){
 					//flag=true;
@@ -154,6 +158,10 @@ Ext.define('Ems.adjust.AdjustListInGrid',{
 			itemId:'reload',
 			disabled:me.disabledAction,
 			handler: function(btn){
+				if(!me.str_in_id){
+					alert("请先选择挑拨单!");
+					return;
+				}
 				var grid=btn.up("grid");
 				grid.getStore().reload();
 			},

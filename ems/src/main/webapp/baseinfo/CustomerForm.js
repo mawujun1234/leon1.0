@@ -99,6 +99,7 @@ Ext.define('Ems.baseinfo.CustomerForm',{
 				form.getRecord().save({
 					success: function(record, operation) {
 						me.fireEvent("saved");
+						alert("保存成功");
 					}
 				});
             }

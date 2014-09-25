@@ -71,7 +71,7 @@ $(function() {
 			//values.HitchType_version=$.tasks.getHitchType_version();
 			//values.HitchReasonTpl_version=$.tasks.getHitchReasonTpl_version();
 			var ServerIP=$("#ServerIP").val();
-			var ServerPath="http://"+ServerIP+":8084";
+			var ServerPath="http://"+ServerIP+":"+$.ServerPort;
 			$.ajax({   
 				url : ServerPath+"/mobile/login.do",  
 				data:values,  

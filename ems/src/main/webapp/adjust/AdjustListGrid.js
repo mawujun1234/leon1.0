@@ -90,6 +90,10 @@ Ext.define('Ems.adjust.AdjustListGrid',{
 			itemId:'reload',
 			disabled:me.disabledAction,
 			handler: function(btn){
+				if(!me.adjust_id){
+					alert("请先选择挑拨单!");
+					return;
+				}
 				var grid=btn.up("grid");
 				grid.getStore().reload();
 			},

@@ -75,7 +75,7 @@ Ext.onReady(function(){
     	          {header: '设备型号', dataIndex: 'style',width:120},
     	          {header: '订单数量', dataIndex: 'orderNum',width:70},
     	          {header: '累计入库数量', dataIndex: 'totalNum',width:80},
-    	          {header: '要打印条码数*', dataIndex: 'printNum',width:80,editor: {
+    	          {header: '本次入库数量', dataIndex: 'printNum',width:80,editor: {
 	                xtype: 'numberfield',
 	                selectOnFocus:true,
 	                minValue:0,

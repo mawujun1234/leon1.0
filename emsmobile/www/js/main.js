@@ -2,7 +2,8 @@
 //$.ServerPath="http://localhost:8084";
 //$.ServerPath="http://172.16.3.4:8084";
 $.ServerPath="";
-$.ecodeLength=16;
+$.ServerPort="8080";
+$.ecodeLength=17;
 $.ajaxSetup({
 	//jsonp: "jsonpCallback",//使用浏览器进行测试的时候用的，如果安装到手机，就注释掉
 	//dataType:'jsonp',//使用浏览器进行测试的时候用的，如果安装到手机就注释掉
@@ -57,7 +58,7 @@ $(function() {
 	}
 	
 	var ServerIP=localStorage.getItem("ServerIP");
-	var ServerPath="http://"+ServerIP+":8084";
+	var ServerPath="http://"+ServerIP+":"+$.ServerPort;
 	$.ServerPath=ServerPath;
 });
 //将form的值序列化为json
@@ -285,7 +286,7 @@ $.tasks={
 
 function Page(start,limit){
 	this.start=start?start:0;
-	this.limit=limit?limit:20;
+	this.limit=limit?limit:10;
 	this.limit_reset=this.limit;
 	this.getStart=function(){
 		return this.start;	

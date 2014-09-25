@@ -189,6 +189,7 @@ Ext.define('Ems.task.TaskForm',{
 
 						form.getEl().unmask();
 						me.fireEvent("sended",form);
+						alert("发送成功!");
 					},
 					failure:function(){
 						form.getEl().unmask();

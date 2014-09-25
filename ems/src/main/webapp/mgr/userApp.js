@@ -110,6 +110,8 @@ Ext.onReady(function() {
 				edit_btn.setDisabled(true);
 				
 				tabPanel.setActiveTab(0);
+				
+				tabPanel.getEl().unmask();
 			}
 			function deleteUser(){
 				if(!selectedNode) {
@@ -171,7 +173,7 @@ Ext.onReady(function() {
 			var edit_btn=Ext.create('Ext.button.Button',{text:'编辑',iconCls:'icon-edit',disabled:true,handler:modifUser});
 			
 			var user_form = Ext.create('Ext.form.Panel', {
-			   
+			   itemId:'user_form',
 			     title:'表单(密码默认:0)',
 			    defaultType: 'textfield',
 			    trackResetOnLoad:true,
@@ -236,6 +238,7 @@ Ext.onReady(function() {
 							beforeload:function( store){
 								if(!selectedNode){
 									//Ext.Msg.alert("消息","请先选择功能角色!");
+									//alert("请先选择一个用户或保存用户!");
 									return false;
 								}
 								 store.getProxy().extraParams=Ext.apply(store.getProxy().extraParams,{
@@ -436,8 +439,16 @@ Ext.onReady(function() {
 				listeners:{
 					render:function(tabPanel){
 						tabPanel.getEl().mask();
+					},
+					tabchange:function(tabPanel, newCard, oldCard){
+						if(!selectedNode && newCard.getItemId( )!="user_form"){
+							alert("请先选择一个用户!");
+							tabPanel.setActiveTab(0);
+								//return false;
+						}
 					}
 				}
+				
 			});
 			
 			

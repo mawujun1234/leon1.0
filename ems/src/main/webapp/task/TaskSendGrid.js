@@ -282,7 +282,12 @@ Ext.define('Ems.task.TaskSendGrid',{
 								headers:{ 'Content-Type':'application/json;charset=UTF-8'},
 								url:Ext.ContextPath+"/task/create.do",
 								success:function(response){
-									me.getStore().reload();
+									var obj=Ext.decode(response.responseText);
+									if(obj.success){
+										me.getStore().reload();
+										alert("保存成功!");
+									}
+									
 								}
 							});
 						}
@@ -312,7 +317,29 @@ Ext.define('Ems.task.TaskSendGrid',{
 				} else {
 					Ext.Msg.confirm("提醒","只会为对'使用中','有损坏'的杆位发送维修/维护任务,选'是'进行发送",function(btn){
 						if(btn=='yes'){
-						
+							var taskes=[];
+							for(var i=0;i<records.length;i++){
+								if(records[i].get("status")!="using" && records[i].get("status")!="hitch"){
+									alert("杆位‘"+records[i].get("name")+"’不能发送维修任务!");
+									return;
+								}
+								taskes.push(me.initTask_value(records[i],"repair"));
+							}
+							//
+							Ext.Ajax.request({
+								method:'POST',
+								jsonData:taskes,
+								headers:{ 'Content-Type':'application/json;charset=UTF-8'},
+								url:Ext.ContextPath+"/task/create.do",
+								success:function(response){
+									var obj=Ext.decode(response.responseText);
+									if(obj.success){
+										me.getStore().reload();
+										alert("发送成功!");
+									}
+									
+								}
+							});
 						}
 					});
 				}
@@ -333,14 +360,36 @@ Ext.define('Ems.task.TaskSendGrid',{
 				if(records.length==1){
 					var pole_status=records[0].get("status");
 					if(pole_status!="using" && pole_status!="hitch"){
-						alert("只有'使用中','有损坏'状态的杆位，才能发送巡任务!");
+						alert("只有'使用中','有损坏'状态的杆位，才能发送巡检任务!");
 						return;
 					}
 					me.showTaskForm(records[0],"patrol");
 				} else {
 					Ext.Msg.confirm("提醒","只会为对'使用中','有损坏'的杆位发送巡检任务,选'是'进行发送",function(btn){
 						if(btn=='yes'){
-						
+							var taskes=[];
+							for(var i=0;i<records.length;i++){
+								if(records[i].get("status")!="using" && records[i].get("status")!="hitch"){
+									alert("杆位‘"+records[i].get("name")+"’不能发送巡检任务!");
+									return;
+								}
+								taskes.push(me.initTask_value(records[i],"patrol"));
+							}
+							//
+							Ext.Ajax.request({
+								method:'POST',
+								jsonData:taskes,
+								headers:{ 'Content-Type':'application/json;charset=UTF-8'},
+								url:Ext.ContextPath+"/task/create.do",
+								success:function(response){
+									var obj=Ext.decode(response.responseText);
+									if(obj.success){
+										me.getStore().reload();
+										alert("发送成功!");
+									}
+									
+								}
+							});
 						}
 					});
 				}

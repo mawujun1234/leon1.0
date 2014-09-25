@@ -76,6 +76,8 @@ Ext.onReady(function() {
 				nav_form.getForm().setValues({text:'',memo:'',id:'',parentId:tree.getRootNode().get("id")});
 				save_btn.setDisabled(false);
 				edit_btn.setDisabled(true);
+				
+				tabPanel.getEl().unmask();
 			}
 			function deleteNav(){
 				if(!selectedNode) {
@@ -135,6 +137,7 @@ Ext.onReady(function() {
 			var edit_btn=Ext.create('Ext.button.Button',{text:'编辑',iconCls:'icon-edit',disabled:true,handler:modifNav});
 			
 			var nav_form = Ext.create('Ext.form.Panel', {
+				itemId:'nav_form',
 			    title:'表单',
 			    split: true,
 			    collapsible: true,
@@ -267,6 +270,13 @@ Ext.onReady(function() {
 				listeners:{
 					render:function(tabPanel){
 						tabPanel.getEl().mask();
+					},
+					tabchange:function(tabPanel, newCard, oldCard){
+						if(!selectedNode && newCard.getItemId( )!="nav_form"){
+							alert("请先选择一个角色!");
+							tabPanel.setActiveTab(0);
+								//return false;
+						}
 					}
 				}
 			});

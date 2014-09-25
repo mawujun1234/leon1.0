@@ -91,12 +91,24 @@ public class EquipmentTypeController {
 			if(count>0){
 				throw new BusinessException("编码已经存在");
 			}
+			
+			EquipmentTypeAbstract aa=equipmentTypeService.get(equipmentType.getParent_id());
+			if(aa==null || aa.getStatus()==false){
+				throw new BusinessException("大类已经删除,不能再添加小类");
+			}
+			
 			equipmentSubtypeService.create(BeanUtils.copyOrCast(equipmentType, EquipmentSubtype.class));
 		} else if(equipmentType.getLevl()==3){
 			Long count=equipmentProdService.queryCount(Cnd.select().andEquals(M.EquipmentProd.id, equipmentType.getId()));
 			if(count>0){
 				throw new BusinessException("编码已经存在");
 			}
+			
+			EquipmentTypeAbstract aa=equipmentSubtypeService.get(equipmentType.getParent_id());
+			if(aa==null || aa.getStatus()==false){
+				throw new BusinessException("小类已经删除,不能再添加品名");
+			}
+			
 			equipmentProdService.create(BeanUtils.copyOrCast(equipmentType, EquipmentProd.class));
 		}
 		return equipmentType;

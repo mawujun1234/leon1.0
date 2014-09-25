@@ -98,7 +98,7 @@
 				<artifactId>tomcat6-maven-plugin</artifactId>
 				<!-- --> <version>2.1</version>
 				<configuration>
-					<port>8084</port>
+					<port>8080</port>
 					<path>/</path>
 					<uriEncoding>utf-8</uriEncoding>
 					<contextReloadable>false</contextReloadable>

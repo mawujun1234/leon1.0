@@ -118,6 +118,7 @@ Ext.define('Ems.baseinfo.CustomerContactForm',{
 				form.getRecord().save({
 					success: function(record, operation) {
 						me.fireEvent("saved");
+						alert("保存成功");
 					}
 				});
             }

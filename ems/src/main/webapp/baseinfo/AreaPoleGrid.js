@@ -161,6 +161,7 @@ Ext.define('Ems.baseinfo.AreaPoleGrid',{
 					        	//Ext.MessageBoxEx('提示','删除成功');
 					        	win.getEl().unmask();
 					        	me.getStore().reload();
+					        	alert("添加成功!");
 					        },
 					        failure : function() {
 					        	win.getEl().unmask();
