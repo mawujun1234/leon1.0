@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.mawujun.mobile" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>emsmobile</name>
+    <name>生产调度系统</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
     </description>
@@ -9,6 +9,13 @@
     </author>
     <content src="login.html" />
     <access origin="*" />
+    
+    <platform name="android">
+              <icon src="res/android/icon.png" density="ldpi" />
+              <icon src="res/android/icon.png" density="mdpi" />
+              <icon src="res/android/icon.png" density="hdpi" />
+              <icon src="res/android/icon.png" density="xhdpi" />
+     </platform>
     <!--
     <feature name="Device" >  
        <param  

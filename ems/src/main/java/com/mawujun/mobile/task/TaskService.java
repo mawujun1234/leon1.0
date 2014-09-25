@@ -170,6 +170,7 @@ public class TaskService extends AbstractService<Task, String>{
 			tel.setEcode(ecode);
 			tel.setTask_id(task_id);
 			tel.setType(TaskListTypeEnum.install);
+			kkk
 			taskEquipmentListRepository.create(tel);
 			
 			
