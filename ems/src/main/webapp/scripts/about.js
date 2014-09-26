@@ -61,7 +61,7 @@ Ext.define('Ext.ux.ms.aboutDialog', {
                     }, {  
                          tag  : 'div',
                          cls  : 'aboutDlg_btn', 
-                         html : Ext.String.format('<br /><button id="us-button" style="width:75%;margin-right:8px;">Upgrde/Support：{0}</button><button id="ok-button">OK</button>', this.AppLinkText)  
+                         html : Ext.String.format('<br /><button id="us-button" style="width:75%;margin-right:8px;">Upgrde/Support：宁波东望</button><button id="ok-button">OK</button>', this.AppLinkText)  
                     }]  
                 }]  
             }  

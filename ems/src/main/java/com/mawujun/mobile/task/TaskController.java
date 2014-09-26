@@ -32,8 +32,7 @@ public class TaskController {
 	@Resource
 	private TaskService taskService;
 	
-	@Resource
-	private EquipmentService equipmentService;
+	
 	@Resource
 	private OvertimeService overtimeService;
 
@@ -184,16 +183,9 @@ public class TaskController {
 	 */
 	@RequestMapping("/task/mobile/getEquipmentInfo.do")
 	@ResponseBody
-	public EquipmentVO getEquipmentInfo(String ecode){
-		EquipmentVO equipmentVO=equipmentService.getEquipmentInfo(ecode);
-		
-		//Map<String,String> map=new HashMap<String,String>();
-		//map.put("prod_name", value);
-		//map.put("style", value);
-		if(equipmentVO==null){
-			throw new BusinessException("没有这个设备");
-		}
-		return equipmentVO;
+	public EquipmentVO getEquipmentInfo(String ecode,String task_id){
+		return taskService.getEquipmentInfo(ecode, task_id);
+		//return equipmentVO;
 	}
 	
 	/**

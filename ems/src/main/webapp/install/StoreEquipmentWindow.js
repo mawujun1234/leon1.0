@@ -68,6 +68,13 @@ Ext.define('Ems.install.StoreEquipmentWindow',{
 			labelAlign:'right',
 			labelWidth:40,
 			minChars:-1//表示默认点击的时候就查询出所有的数据
+			,listeners:{
+				change:function(field,newValue, oldValue){
+					prod_combox.clearValue( );
+					prod_combox.getStore().getProxy().extraParams={equipmentSubtype_id:newValue};
+					prod_combox.getStore().reload();
+				}
+			}
 		});
 		var prod_combox=Ext.create('Ems.baseinfo.ProdCombo',{
 			labelAlign:'right',
@@ -84,32 +91,45 @@ Ext.define('Ems.install.StoreEquipmentWindow',{
 			labelWidth:40,
 			minChars:-1
 		});
+		
+		equip_store.on("beforeload",function(store){
+			store.getProxy().extraParams={
+				store_id:store_combox.getValue(),
+					subtype_id:subtype_combox.getValue(),
+					prod_id:prod_combox.getValue(),
+					brand_id:brand_combox.getValue(),
+					supplier_id:supplier_combox.getValue(),
+					level:level
+			};
+		});
 		var level=1;
 		var button=Ext.create("Ext.button.Button",{
 			text:'查询',
 			margin:'0 0 0 5',
 			iconCls:'form-search-button',
 			handler:function(){
-				equip_store.load({params:{
-					store_id:store_combox.getValue(),
-					subtype_id:subtype_combox.getValue(),
-					prod_id:prod_combox.getValue(),
-					brand_id:brand_combox.getValue(),
-					supplier_id:supplier_combox.getValue(),
-					level:level
-				}
-			  });
+//				equip_store.load({params:{
+//					store_id:store_combox.getValue(),
+//					subtype_id:subtype_combox.getValue(),
+//					prod_id:prod_combox.getValue(),
+//					brand_id:brand_combox.getValue(),
+//					supplier_id:supplier_combox.getValue(),
+//					level:level
+//				}
+//			  });
+				equip_store.load();
 			}
 		});
-		equip_store.load({params:{
-					store_id:store_combox.getValue(),
-					subtype_id:subtype_combox.getValue(),
-					prod_id:prod_combox.getValue(),
-					brand_id:brand_combox.getValue(),
-					supplier_id:supplier_combox.getValue(),
-					level:level
-				}
-			  });
+//		equip_store.load({params:{
+//					store_id:store_combox.getValue(),
+//					subtype_id:subtype_combox.getValue(),
+//					prod_id:prod_combox.getValue(),
+//					brand_id:brand_combox.getValue(),
+//					supplier_id:supplier_combox.getValue(),
+//					level:level
+//				}
+//			  });
+		equip_store.load();
 		
 		var equip_grid=Ext.create('Ext.grid.Panel',{
 			//flex:1,
@@ -133,7 +153,7 @@ Ext.define('Ems.install.StoreEquipmentWindow',{
 	    	          		return value;
 	    	          	}
 	    	          }},
-	    	          {header: '品名', dataIndex: 'prod_name'},
+	    	          {header: '品名', dataIndex: 'prod_name',flex:1},
 	    	          
 	    	          {header: '设备型号', dataIndex: 'style',width:120,hidden:true},
 	    	          {header: '品牌', dataIndex: 'brand_name',width:120,hidden:true},
@@ -175,14 +195,20 @@ Ext.define('Ems.install.StoreEquipmentWindow',{
 			//console.log(dataIndex);
 			if(level==1&&dataIndex=="num"){
 				level=2;
-				equip_store.load({params:{
-						store_id:store_combox.getValue(),
-						subtype_id:subtype_combox.getValue(),
-						prod_id:prod_combox.getValue()?prod_combox.getValue():record.get("prod_id"),
-						brand_id:brand_combox.getValue(),
-						supplier_id:supplier_combox.getValue(),
-						level:level
-				},
+				
+				//alert(record.get("subtype_id")+":"+record.get("subtype_name"));
+				 var store_model=Ext.createModel(subtype_combox.getStore().model.getName( ),{id:record.get("subtype_id"),text:record.get("subtype_name")});
+	    		subtype_combox.setValue(store_model);
+
+				equip_store.load({
+//				params:{
+////						store_id:store_combox.getValue(),
+////						subtype_id:subtype_combox.getValue(),
+////						prod_id:prod_combox.getValue()?prod_combox.getValue():record.get("prod_id"),
+////						brand_id:brand_combox.getValue(),
+////						supplier_id:supplier_combox.getValue(),
+////						level:level
+//				},
 				callback:function(records, operation, success){
 					
 					for(var i=0;i<columns.length;i++){
@@ -198,14 +224,16 @@ Ext.define('Ems.install.StoreEquipmentWindow',{
 
 			if(level==2&&equip_store.getAt(rowIndex).get("subtype_id")=="total"&&dataIndex=="subtype_name"){
 				level=1;
-				equip_store.load({params:{
-						store_id:store_combox.getValue(),
-						subtype_id:subtype_combox.getValue(),
-						prod_id:prod_combox.getValue(),
-						brand_id:brand_combox.getValue(),
-						supplier_id:supplier_combox.getValue(),
-						level:level
-				},
+				subtype_combox.clearValue( );
+				equip_store.load({
+//				params:{
+//						store_id:store_combox.getValue(),
+//						subtype_id:subtype_combox.getValue(),
+//						prod_id:prod_combox.getValue(),
+//						brand_id:brand_combox.getValue(),
+//						supplier_id:supplier_combox.getValue(),
+//						level:level
+//				},
 				callback:function(records, operation, success){
 					
 					for(var i=0;i<columns.length;i++){

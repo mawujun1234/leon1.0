@@ -5,6 +5,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
 <mapper namespace="com.mawujun.baseinfo.StoreRepository">
+	<!-- 库存查询的功能 -->
 	<select id="queryEquipments_total" resultType="com.mawujun.baseinfo.EquipmentVO" parameterType="com.mawujun.baseinfo.Equipment">
     	select a.subtype_id,a.prod_id,b.name as subtype_name,c.name as prod_name,sum(a.num) as num
 	      from 
@@ -29,18 +30,18 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</where>
 		 group by a.subtype_id,a.prod_id,b.name,c.name
     </select> 
-    
+    <!-- 库存查询的功能 -->
     <select id="queryEquipments" resultType="com.mawujun.baseinfo.EquipmentVO" parameterType="com.mawujun.baseinfo.EquipmentVO">
     	select a.style,b.name as subtype_name,c.name as prod_name,d.name as brand_name,e.name as supplier_name ,sum(a.num) as num
-    	from (select x.*,1 as num from ems_equipment x where x.store_id=#{store_id} and x.prod_id=#{prod_id}) a 
+    	from (select x.*,1 as num from ems_equipment x where x.store_id=#{store_id} and x.subtype_id=#{subtype_id}) a 
 		inner join ems_equipmentsubtype b on a.subtype_id=b.id
 		inner join ems_equipmentprod c on a.prod_id=c.id
 		inner join ems_brand d on a.brand_id=d.id
 		inner join ems_supplier e on a.supplier_id=e.id
 		<where>
-			<if test="subtype_id!=null and subtype_id!=''">
+			<!-- <if test="subtype_id!=null and subtype_id!=''">
 				and b.id=#{subtype_id}
-			</if>
+			</if> -->
 			<if test="prod_id!=null and prod_id!=''">
 				and c.id=#{prod_id}
 			</if>
@@ -53,6 +54,22 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</where>
 		 group by a.style,b.name ,c.name,d.name,e.name
     </select> 
+    <select id="queryEquipments_count" resultType="int" parameterType="com.mawujun.baseinfo.EquipmentVO">
+		select count(x.ecode) from ems_equipment x where x.store_id=#{store_id} and x.subtype_id=#{subtype_id}
+			<!--<if test="subtype_id!=null and subtype_id!=''">
+				and x.subtype_id=#{subtype_id}
+			</if> -->
+			<if test="prod_id!=null and prod_id!=''">
+				and c.id=#{prod_id}
+			</if>
+			<if test="brand_id!=null and brand_id!=''">
+				and x.brand_id=#{brand_id}
+			</if>
+			<if test="supplier_id!=null and supplier_id!=''">
+				and x.supplier_id=#{supplier_id}
+			</if>
+    </select> 
+    
     
     <select id="queryCombo" resultType="com.mawujun.baseinfo.Store">
     	select a.* from ems_store a,sys_userstore b where a.id=b.store_id and b.user_id=#{user_id} and a.status='Y' and a.type=#{type}
