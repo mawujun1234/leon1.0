@@ -122,4 +122,6 @@ public class WorkUnitController {
 		List<EquipmentVO> equipments=workUnitService.queryEquipments(workUnit_id);
 		return equipments;
 	}
+	
+	
 }

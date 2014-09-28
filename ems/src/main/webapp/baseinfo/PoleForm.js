@@ -33,6 +33,13 @@ Ext.define('Ems.baseinfo.PoleForm',{
 	        xtype:'hidden',
 	        allowBlank: false
 	    },
+	    {
+	        fieldLabel: 'customer_id',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'pole_id',      
+	        xtype:'hidden',
+	        allowBlank: false
+	    },
 	     {
 	        fieldLabel: 'status',
 	        //afterLabelTextTpl: Ext.required,

@@ -33,8 +33,16 @@ $(document).ready(function(e) {
 	<div role="main" class="ui-content">
     	 <ul data-role="listview" data-count-theme="b" data-inset="true">
             <li>
-    			<p>设备情况查询</p>
+            	<a href="#page_equipmentInfo">
+    			<h2>设备查询</h2>
     			<p>查询设备的状态，所属杆位等信息</p>
+                </a>
+            </li>
+            <li>
+            	<a href="#page_equipments">
+    			<h2>手持情况查询</h2>
+    			<p>查询当前用户手中持有设备的情况</p>
+                </a>
             </li>
         </ul>			
 			
@@ -49,9 +57,164 @@ $(document).ready(function(e) {
             </ul>  
         </div>  
 	</div>
-	
 </div>
 
+<div data-role="page" id="page_equipmentInfo">
+	<div data-role="header"  data-position="fixed">
+    	<a href="#page_homepage" class="ui-btn ui-corner-all" data-rel="back" data-theme="c">返回</a>
+        <h1>设备信息</h1> 
+	</div>
+	<div role="main" class="ui-content">
+    	 <a href="#" class="ui-btn ui-corner-all actionbutton" name="scan_button">扫描设备</a>
+         <input type="text" name="scan_textfield" class="actionbutton"  value="" placeholder="请扫描或手动输入...">
+        <div class="ui-field-contain">
+        	<label for="id">条码:</label>
+            <input type="text"  id="page_equipmentInfo_ecode" placeholder="只读" value="">
+       		<label for="id">状态:</label>
+            <input type="text"  id="page_equipmentInfo_status_name" placeholder="只读" value="">
+            <label for="id">小类:</label>
+            <input type="text"  id="page_equipmentInfo_subtype_name" placeholder="只读" value="">
+            <label for="pole">品名:</label>
+            <input readonly type="text" id="page_equipmentInfo_prod_name" placeholder="只读" value="">
+            <label for="pole">品牌:</label>
+            <input readonly type="text" id="page_equipmentInfo_brand_name" placeholder="只读" value="">
+            <label for="pole">供应商:</label>
+            <input readonly type="text" id="page_equipmentInfo_supplier_name" placeholder="只读" value="">
+            <label for="pole">型号:</label>
+            <input readonly type="text" id="page_equipmentInfo_style" placeholder="只读" value="">
+            <label for="pole">杆位地址:</label>
+            <input readonly type="text" id="page_equipmentInfo_pole_address" placeholder="" value="">
+            <label for="pole">作业单位:</label>
+            <input readonly type="text" id="page_equipmentInfo_workUnit_name" placeholder="" value="">	
+            <label for="pole">仓库:</label>
+            <input readonly type="text" id="page_equipmentInfo_store_name" placeholder="" value="">	
+         </div>	
+	</div>
+
+</div>
+
+<div data-role="page" id="page_equipments">
+	<div data-role="header"  data-position="fixed">
+    	<a href="#page_homepage" class="ui-btn ui-corner-all" data-rel="back" data-theme="c">返回</a>
+        <h1>持有设备信息</h1> 
+	</div>
+	<div role="main" class="ui-content">
+    	 <div id="page_equipments_list">
+         	
+         </div>
+	</div>
+    <script type="text/javascript">
+
+	</script>
+</div>
+<script type="text/javascript">
+$(document).ready(function(e) {
+	function getEquipmentInfo(ecode){
+		$.ajax({   
+			url : $.ServerPath+"/others/mobile/getEquipmentInfo.do",  
+			data:{ecode:ecode},  
+			success : function(data){
+				if(data.success==true){	
+					var root=data.root;
+					//设置到form中，循环设置
+					for(var prop in root){
+						$('#page_equipmentInfo_'+prop).val(root[prop]);
+					}
+					
+				}
+				$.hideLoader();  
+			}
+		});
+	}//getEquipmentInfo
+	$("input[name='scan_textfield']").keyup(function(event){
+	  	if(event.target.value.length==$.ecodeLength){
+			getEquipmentInfo(event.target.value);
+			event.target.value="";
+		}	
+	});
+	$("a[name='scan_button']").click(function(event){
+	  	cordova.plugins.barcodeScanner.scan(
+			function (result) {
+				if(!result.cancelled){
+					//同时去后台获取设备信息
+					getEquipmentInfo(result.text);
+				}
+		    }, 
+		    function (error) {
+		     	alert("扫描失败: " + error);
+		    }
+		); 
+	});
+	
+	//------------------------------------------------------------------------------------
+	function renderEquipmentInfo(obj,coverHtml){
+		var html="";
+		var root=obj;
+		if(!(obj instanceof Array)){
+			root=[obj];
+		} 
+		
+		for(var i=0;i<root.length;i++){
+			//如果设备状态是手持，就是安装，如果是using就是维修或者巡检，巡检任务扫描的设备都是巡检
+			html+='<div data-role="collapsible" ecode="'+root[i].ecode+'">'+
+				'<h4>'+root[i].ecode+':'+root[i].style+'</h4>'+
+				'<p>'+root[i].brand_name+':'+root[i].subtype_name+'>'+root[i].prod_name+'>'+root[i].supplier_name+'</p>'+
+				'</div>';	
+		}
+		
+		//if(coverHtml){
+			//覆盖已经有的html
+			$("#page_equipments_list").html(html).enhanceWithin();
+		//} else {
+		//	$("#"+page_id+"_equipments_list").append(html).enhanceWithin();
+		//}
+		
+/*		$("#"+page_id+"_equipments_list [data-role='collapsible']").unbind("taphold"); 
+		$("#"+page_id+"_equipments_list [data-role='collapsible']").bind( "taphold", function(event){
+			//window.equipmentInfoCollapsible=event.target;
+			//console.dir(event.target);
+			//触发的是<a>,但删除的是div，所以要parent
+			window.equipmentInfoCollapsible=$(event.target).parent().parent();
+			alert(window.equipmentInfoCollapsible);
+			
+			//$( "#popupArrow" ).popup( "open", { positionTo:event.target,transition: "pop" } );
+			$( "#"+page_id+"_deleteEquipmentInfo_popup" ).popup( "open", { positionTo:event.target,transition: "pop" } );
+    		event.preventDefault();
+		});*/
+/*		
+		//渲染损坏类型和损坏原因
+		if(obj.type=="repair"){
+			$("#select-choice-hitchType").val(obj.hitchType_id).selectmenu( "refresh" );
+			$("#select-choice-hitchReasonTpl").val(obj.hitchReasonTpl_id).selectmenu( "refresh" );
+			$("#textarea-hitchReasonTpl").val(obj.hitchReason);
+		}*/
+		
+	}
+	//获取当前用户持有的设备
+	function queryHaveEquipmentInfos(){
+		$.ajax({   
+			url : $.ServerPath+"/others/mobile/queryHaveEquipmentInfos.do",  
+			//data:{task_id:task_id},  
+			success : function(data){
+				if(data.success==true){	
+					var root=data.root;
+					renderEquipmentInfo(root,true);
+				}
+				$.hideLoader();  
+			}
+		});
+	}
+	$( document).on( "pagecontainershow", function( event, ui ) {
+		var page_id=ui.toPage.attr("id");
+		if(page_id=="page_equipments"){
+			queryHaveEquipmentInfos();
+		}
+	});
+});
+
+
+	
+</script>
 
 </body>
 </html>

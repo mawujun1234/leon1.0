@@ -148,14 +148,14 @@ public class TaskService extends AbstractService<Task, String>{
 	public void checkEquip(Task task,Equipment equipmentVO){
 		//Task task=taskRepository.get(task_id);
 		
-		//判断是不是当前用户持有的设备，否则就报错
-		if(!ShiroUtils.getAuthenticationInfo().getId().equals(equipmentVO.getWorkUnit_id())){
-			throw new BusinessException(equipmentVO.getEcode()+":该设备不是你所持有的设备,请确认!");
-		}
+		
 		
 		if(TaskType.newInstall.equals(task.getType())){
 			if(EquipmentStatus.out_storage.getValue()!=equipmentVO.getStatus()){
 				throw new BusinessException(equipmentVO.getEcode()+":该设备不是'安装出库'状态,不能安装!");
+			} else if(!ShiroUtils.getAuthenticationInfo().getId().equals(equipmentVO.getWorkUnit_id()) ){
+				//判断是不是当前用户持有的设备，否则就报错
+				throw new BusinessException(equipmentVO.getEcode()+":该设备不是你所持有的设备,请确认!");
 			}
 		} else if(TaskType.repair.equals(task.getType())){
 			//如果是using状态的设备就判断是个是这个任务关联的杆位,防止出现串号
@@ -166,8 +166,12 @@ public class TaskService extends AbstractService<Task, String>{
 				}
 			} else if(EquipmentStatus.out_storage.getValue()!=equipmentVO.getStatus()){
 				throw new BusinessException(equipmentVO.getEcode()+":该设备不是'安装出库'状态,不能安装!");
+			} else {
+				if(!ShiroUtils.getAuthenticationInfo().getId().equals(equipmentVO.getWorkUnit_id()) ){
+					//判断是不是当前用户持有的设备，否则就报错
+					throw new BusinessException(equipmentVO.getEcode()+":该设备不是你所持有的设备,请确认!");
+				}	
 			}
-			
 		} else if(TaskType.patrol.equals(task.getType())){
 			//巡检扫描的设备必须是using章台的设备，并且杆位也必须是相同的
 			if(EquipmentStatus.using.getValue()!=equipmentVO.getStatus()){
@@ -178,6 +182,9 @@ public class TaskService extends AbstractService<Task, String>{
 				}
 			}
 		}
+		
+		
+		
 				
 	}
 	public EquipmentVO getEquipmentInfo(String ecode,String task_id){

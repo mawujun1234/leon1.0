@@ -18,6 +18,8 @@ Ext.onReady(function(){
 		
 		poleGrid.customer_id=record.get("id");
 		poleGrid.getStore().load({params:{customer_id:record.get("id")}});
+		
+		panel.getEl().unmask();
 	});
 	var customercontactgrid=Ext.create('Ems.baseinfo.CustomerContactGrid',{
 		region:'north',
@@ -52,12 +54,21 @@ Ext.onReady(function(){
 //		//var basicForm=form.getForm();
 //		form.loadRecord(record);
 //	});
+
+	var panel=Ext.create('Ext.panel.Panel',{
+		region:'center',
+		layout:'border',
+		items:[customercontactgrid,poleGrid],
+		listeners:{
+			render:function(panel){
+				panel.getEl().mask();
+			}
+		}
+	});
 	
 	var viewPort=Ext.create('Ext.container.Viewport',{
 		layout:'border',
-		items:[grid,{region:'center',layout:'border',
-			items:[customercontactgrid,poleGrid]
-		}]
+		items:[grid,panel]
 	});
 
 });

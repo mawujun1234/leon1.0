@@ -19,11 +19,28 @@ public class EquipmentVO extends Equipment {
 	private Boolean isInStore;//这个条码是否已经入过库了。是barcode中的条码的状态
 	@Transient
 	private Integer num;
+	@Transient
+	private String pole_address;
+	@Transient
+	private String status_name;
 	
 	//=======入库的时候
 	
 	@Transient
 	private String workUnit_name;
+	
+//	public String getStatus_name() {
+//		if(this.getStatus()!=null){
+//			EquipmentStatus.\.valueOf(this.getStatus())
+//		}
+////		
+////		for (EquipmentStatus status : EquipmentStatus.values()) {
+////			if (status.getValue() == this.getStatus()) {
+////				return status.getName();
+////			}
+////		}
+////		return null;
+//	}
 	
 	public String getSubtype_name() {
 		return subtype_name;
@@ -78,5 +95,17 @@ public class EquipmentVO extends Equipment {
 	}
 	public void setNum(Integer num) {
 		this.num = num;
+	}
+	public String getPole_address() {
+		return pole_address;
+	}
+	public void setPole_address(String pole_address) {
+		this.pole_address = pole_address;
+	}
+	public String getStatus_name() {
+		return status_name;
+	}
+	public void setStatus_name(String status_name) {
+		this.status_name = status_name;
 	}
 }

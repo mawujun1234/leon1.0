@@ -316,8 +316,32 @@ public class NavigationController {
 		
 		out.flush();
 		out.close();
-		
-
 	}
 	
+	@RequestMapping("/nav/downloadApk.do")
+	//@ResponseBody
+	public void downloadApk(HttpServletRequest request,HttpServletResponse response,String fileName) throws  IOException{
+		String contextPath=request.getSession().getServletContext().getRealPath("/");
+		//String filePath="temp"+File.separatorChar+fileName;
+		fileName="emsmobile-debug-unaligned.apk";
+		String path=contextPath+File.separatorChar+fileName;
+		File file=new File(path);
+		//FileReader reader=new FileReader(file);
+		FileInputStream in=new FileInputStream(file);
+
+		response.setHeader("content-disposition","attachment; filename="+fileName);
+		response.setContentType("application/vnd.ms-word;charset=uft-8");
+		//response.setContentType("text/plain; charset=gb2312");
+		
+		OutputStream  out = response.getOutputStream();
+		int n;
+		byte b[]=new byte[1024];
+		while((n=in.read(b))!=-1){
+			out.write(b,0,n);
+		}
+		in.close();
+		
+		out.flush();
+		out.close();
+	}
 }

@@ -12,6 +12,7 @@ Ext.defineModel("Ems.baseinfo.Pole",{
 		{name:'name',type:'string'},
 		{name:'province',type:'string'},
 		{name:'status',type:'string'},
+		{name:'area_id',type:'string'},
 		
 		{name:'workunit_id',type:'string'},
 		{name:'status_name',type:'string'},

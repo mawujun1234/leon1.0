@@ -11,27 +11,36 @@ delete ems_adjustlist;
 delete ems_adjust;
 delete ems_repair;
 delete ems_scrap;
-------------------------------------
-delete ems_equipment;
-delete ems_equipmentprod;
-delete ems_equipmentsubtype;
-delete ems_equipmenttype;
+
 ------------------------------------
 delete ems_area;
-delete ems_brand;
-delete ems_pole;
 delete ems_customer_contact;
-delete ems_customer;
+
 delete ems_message;
 delete sys_userstore;----用户可访问的仓库
 delete ems_store;
-delete ems_supplier_contact;
-delete ems_supplier;
 delete ems_taskequipmentlist;
 delete ems_task;
 delete ems_workunit_contact;
 delete ems_workunit;
 -------------------------------------------
+delete ems_equipment;
+delete ems_equipmentprod;
+delete ems_equipmentsubtype;
+delete ems_equipmenttype;
+delete ems_brand;
+delete ems_pole;
+delete ems_supplier_contact;
+delete ems_supplier;
+delete ems_customer;
+
+delete ems_hitchtype;
+delete ems_hitchreasontpl;
+
+delete ems_message;
+delete ems_overtime;
+
+------------------------------------
 delete sys_datarole_user;
 delete sys_datarole;
 delete sys_funrole_user;
@@ -48,6 +57,8 @@ commit;
 insert into SYS_USER (id, address, email, logindate, name, password, phone, type, username, status)
 values ('admin', null, null, null, 'admin', 'admin', null, 0, 'admin', 'Y');
 commit;
+
+
 
 
 
@@ -122,6 +133,8 @@ insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
 values ('e25d2f00-41f8-488f-9d97-7c88fb909a7e', 'Y', '/store/OrderQueryApp.jsp', null, 'd7624421-6323-4bc7-a28f-6f011f771a57', 'aac-aah', '订单历史查询');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
 values ('9b918511-5837-4d4f-a4af-7abc87a60a91', 'Y', '/task/OvertimeApp.jsp', null, '6424df74-c571-4a10-aa39-d358e9743781', 'aae-aac', '超时设置');
+insert into SYS_NAVIGATION (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
+values ('4b59ebbd-c5fa-47e5-8932-1385b0912f1a', 'Y', '/task/HitchReasonTplApp.jsp', null, '6424df74-c571-4a10-aa39-d358e9743781', 'aae-aad', '故障类型/原因模板维护');
 commit;
 alter table SYS_NAVIGATION enable all triggers;
 

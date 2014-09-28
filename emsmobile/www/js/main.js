@@ -28,21 +28,27 @@ $.ajaxSetup({
 		}
 	},
 	
-	error:function(jqXHR){  
-		var contentType=jqXHR.getResponseHeader("Content-Type");
-		if(contentType.indexOf("application/json")!=-1){
-			//统一处理后台返回的信息
-			var data=$.parseJSON(jqXHR.responseText);
-			if(!data.success && data.reasons){
-				if(data.reasons.code=="noLogin"){
-					location.href="login.html";
-					return;
-				}
-			} else if(!data.success) {
-				alert(data.msg); 
-			}
-		} else {
+	error:function(jqXHR,type){ 
+		if(type=='timeout'){
 			alert('网络异常或服务停止了');  
+		}  else if(type=='parsererror'){
+			alert('数据返回类型错误'); 
+		} else {
+			var contentType=jqXHR.getResponseHeader("Content-Type");
+			if(contentType.indexOf("application/json")!=-1){
+				//统一处理后台返回的信息
+				var data=$.parseJSON(jqXHR.responseText);
+				if(!data.success && data.reasons){
+					if(data.reasons.code=="noLogin"){
+						location.href="login.html";
+						return;
+					}
+				} else if(!data.success) {
+					alert(data.msg); 
+				}
+			} else {
+				alert('网络异常或服务停止了');  
+			}
 		}
 		$.hideLoader(); 
 	}  

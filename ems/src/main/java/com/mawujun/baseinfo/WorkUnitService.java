@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 
@@ -44,4 +45,5 @@ public class WorkUnitService extends AbstractService<WorkUnit, String>{
 	public WorkUnit getByLoginName(String loginName){
 		return workUnitRepository.queryUnique(Cnd.where().andEquals(M.WorkUnit.loginName, loginName).andEquals(M.WorkUnit.status, true));
 	}
+	
 }

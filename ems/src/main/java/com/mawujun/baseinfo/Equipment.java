@@ -50,14 +50,7 @@ public class Equipment implements IdEntity<String>{
 	private String pole_id;//杆位，所属的杆位，store_id，workUnit_id，pole_id三个职能存在一个
 	
 
-//	public String getStatus_name() {
-//		for(EquipmentStatus status:EquipmentStatus.values()){
-//			if(status.getValue()==this.getStatus()){
-//				return status.getName();
-//			}
-//		}
-//		return null;
-//	}
+
 	
 
 	

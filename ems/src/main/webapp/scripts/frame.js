@@ -241,7 +241,10 @@ Ext.define('Ext.ms.header.Toolbar',{
 		}
 		itemArray.push('->');
 		itemArray.push('-');
-		itemArray.push({text:'帮助',iconCls:'icon-help',menu:[{text:'操作手册',icon:Ext.ContextPath+'/icons/page_white_word.png',handler:downloadManual},{text:'关于RETP',iconCls:'icon-about',handler:showAbout}]});
+		itemArray.push({text:'帮助',iconCls:'icon-help',menu:[
+			{text:'操作手册',icon:Ext.ContextPath+'/icons/page_white_word.png',handler:downloadManual},
+			{text:'apk下载',icon:Ext.ContextPath+'/images/android.png',handler:downloadApk},
+			{text:'关于RETP',iconCls:'icon-about',handler:showAbout}]});
  
 		Ext.apply(this,{
 			items: itemArray
@@ -263,6 +266,9 @@ Ext.define('Ext.ms.header.Toolbar',{
 		   
 		function downloadManual(){
 			   window.open(Ext.ContextPath+"/nav/downloadManual.do", "_blank");
+		}
+		function downloadApk(){
+			   window.open(Ext.ContextPath+"/nav/downloadApk.do", "_blank");
 		}
     	this.showMemu=function(){
 		   	 Ext.Ajax.request({    
