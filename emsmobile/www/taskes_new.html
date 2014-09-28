@@ -1,0 +1,20 @@
+<div data-role="page" id="page_taskes_new">
+	<div data-role="header"  data-position="fixed">
+    	<a href="taskes.html#page_homepage" class="ui-btn ui-corner-all" data-rel="back" data-theme="c">返回</a>
+        <h1>新建任务</h1> 
+	</div>
+	<div role="main" class="ui-content">
+    	 <a href="#" class="ui-btn ui-corner-all actionbutton" name="scan_button">扫描设备</a>
+         <input type="text" name="scan_textfield" class="actionbutton"  value="" placeholder="请扫描或手动输入...">
+        <div class="ui-field-contain">
+        	<label for="page_equipmentInfo_ecode">杆位:</label>
+            <input type="text"  id="page_equipmentInfo_ecode" placeholder="只读" value="">
+       		<label for="page_equipmentInfo_status_name">地址:</label>
+            <input type="text"  id="page_equipmentInfo_status_name" placeholder="只读" value="">
+            <label for="page_install_memo">任务描述:</label>
+            <textarea readonly id="page_install_memo" placeholder="只读" data-mini="true"></textarea>
+            
+         </div>	
+	</div>
+
+</div>
