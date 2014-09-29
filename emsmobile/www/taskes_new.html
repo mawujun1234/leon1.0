@@ -1,20 +1,33 @@
 <div data-role="page" id="page_taskes_new">
 	<div data-role="header"  data-position="fixed">
-    	<a href="taskes.html#page_homepage" class="ui-btn ui-corner-all" data-rel="back" data-theme="c">返回</a>
+    	<a href="#page_homepage" class="ui-btn ui-corner-all" data-rel="back" data-theme="c">返回</a>
         <h1>新建任务</h1> 
 	</div>
 	<div role="main" class="ui-content">
-    	 <a href="#" class="ui-btn ui-corner-all actionbutton" name="scan_button">扫描设备</a>
-         <input type="text" name="scan_textfield" class="actionbutton"  value="" placeholder="请扫描或手动输入...">
+    	 <a href="taskes_search_pole.html#page_taskes_search_pole" data-prefetch="true" class="ui-btn ui-corner-all actionbutton">寻找杆位</a>
         <div class="ui-field-contain">
-        	<label for="page_equipmentInfo_ecode">杆位:</label>
-            <input type="text"  id="page_equipmentInfo_ecode" placeholder="只读" value="">
-       		<label for="page_equipmentInfo_status_name">地址:</label>
-            <input type="text"  id="page_equipmentInfo_status_name" placeholder="只读" value="">
-            <label for="page_install_memo">任务描述:</label>
-            <textarea readonly id="page_install_memo" placeholder="只读" data-mini="true"></textarea>
-            
+        	<input type="hidden" id="page_taskes_new_type" value="" />
+            <input type="hidden" id="page_taskes_new_pole_id" value="" />
+        	<label for="page_taskes_new_pole_name">杆位:</label>
+            <input type="text"  id="page_taskes_new_pole_name" readonly placeholder="只读" value="">
+       		<label for="page_taskes_new_pole_address">地址:</label>
+            <input type="text"  id="page_taskes_new_pole_address" readonly placeholder="只读" value="">
+            <label for="page_taskes_new_memo">任务描述:</label>
+            <textarea id="page_taskes_new_memo" placeholder="请输入" data-mini="true"></textarea>           
          </div>	
 	</div>
+    <script type="application/javascript">
+	$(document).ready(function(e) {
+        $(document).on('pagebeforeshow', "#page_taskes_new", function (event, data) {
+			var parameters = $(this).data("url").split("?")[1];;
+			type = parameters.replace("type=","");  
+			//alert(type);
+			//var urlObj = $.mobile.path.parseUrl(data.toPage);//取到一个对象  
+			//var paramStr = urlObj.search;//对象中的参数，格式为 例： ？id=34&key=perfect&action=go 
+			$("#page_taskes_new_type").val(type);
+			
+		});
 
+    });
+	</script>
 </div>

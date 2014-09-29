@@ -1,4 +1,5 @@
 package com.mawujun.mobile.task;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mawujun.baseinfo.EquipmentService;
 import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.baseinfo.Pole;
+import com.mawujun.baseinfo.PoleService;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.shiro.ShiroUtils;
@@ -31,6 +33,8 @@ public class TaskController {
 
 	@Resource
 	private TaskService taskService;
+//	@Resource
+//	private PoleService poleService;
 	
 	
 	@Resource
@@ -214,6 +218,29 @@ public class TaskController {
 		//jquery 2 json地方有文图，，不能将数组正确的转换
 		taskService.mobile_submit(task_id,task_type,ecodes);
 		return "success";
+	}
+	
+
+	/**
+	 * 请按自己的需求修改
+	 * @author mawujun email:16064988@163.com qq:16064988
+	 * @param id 是父节点的id
+	 * @return
+	 */
+	@RequestMapping("/task/mobile/queryPoles.do")
+	@ResponseBody
+	public List<Map<String,Object>> mobile_queryPoles(String pole_name) {
+		List<Pole> list=taskService.mobile_queryPoles("%"+pole_name+"%", ShiroUtils.getAuthenticationInfo().getId());
+		List<Map<String,Object>> result=new ArrayList<Map<String,Object>>();
+		for(Pole pole:list){
+			Map<String,Object> map=new HashMap<String,Object>();
+			map.put(M.Pole.id, pole.getId());
+			map.put("pole_name", pole.getName());
+			map.put("pole_address", pole.getAddress());
+			result.add(map);
+		}
+
+		return result;
 	}
 	
 

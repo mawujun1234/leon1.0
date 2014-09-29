@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.mawujun.repository1.IRepository;
 import com.mawujun.utils.page.Page;
 import com.mawujun.baseinfo.EquipmentVO;
+import com.mawujun.baseinfo.Pole;
 import com.mawujun.mobile.task.Task;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
@@ -24,4 +25,7 @@ public interface TaskRepository extends IRepository<Task, String>{
 	
 	public List<Task> queryReadOvertimeTask(@Param("read")Integer read) ;
 	public List<Task> queryHandlingOvertimeTask(@Param("handling")Integer handling) ;
+	
+	
+	public List<Pole> mobile_queryPoles(@Param("pole_name")String pole_name,@Param("workunit_id")String workunit_id);
 }

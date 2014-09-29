@@ -19,6 +19,9 @@ import java.util.Set;
 
 
 
+
+
+
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,7 @@ import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.EquipmentService;
 import com.mawujun.baseinfo.EquipmentStatus;
 import com.mawujun.baseinfo.EquipmentVO;
+import com.mawujun.baseinfo.Pole;
 import com.mawujun.baseinfo.PoleRepository;
 import com.mawujun.baseinfo.PoleStatus;
 import com.mawujun.exception.BusinessException;
@@ -303,6 +307,10 @@ public class TaskService extends AbstractService<Task, String>{
 		taskRepository.update(Cnd.update().set(M.Task.status, TaskStatus.submited).set(M.Task.submitDate, new Date()).andEquals(M.Task.id, task_id));
 		
 		
+	}
+	
+	public List<Pole> mobile_queryPoles(String pole_name,String workunit_id) {
+		return taskRepository.mobile_queryPoles(pole_name, workunit_id);
 	}
 	
 }

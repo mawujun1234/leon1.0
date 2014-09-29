@@ -223,7 +223,7 @@ $(document).ready(function(e) {
 <body> 
 
 <div data-role="page" id="page_homepage">
-	<div id="page_homepage_header" data-role="header" data-position="fixed" data-theme="f" >
+	<div id="page_homepage_header" data-role="header" data-position="fixed"  >
         <a href="#left-menu" data-icon="gear" data-iconpos="notext"></a> 
         <div id="left-menu-contanier"></div>
         <div  data-role="controlgroup" data-type="horizontal" align="center" >
@@ -238,9 +238,9 @@ $(document).ready(function(e) {
         <button href="#" data-icon="plus" data-iconpos="notext" onClick="toggleSecondNavbar();"></button>
 		<div data-role="navbar" id="secondNavbar" class="secondNavbar-glyphish-example" style="display:none;">
         	<ul>
-            	<li><a href="taskes_new.html"  data-prefetch="true" class="ui-icon-install ui-btn-icon-top">新安装</a></li>
-                <li><a href="taskes_new.html"  data-prefetch="true" class="ui-icon-repair ui-btn-icon-top">维修</a></li>
-                <li><a href="taskes_new.html"  data-prefetch="true" class="ui-icon-patrols ui-btn-icon-top">巡检</a></li>
+            	<li><a href="taskes_new.html?type=newInstall" onClick="toggleSecondNavbar();" data-prefetch="true" class="ui-icon-install ui-btn-icon-top">新安装</a></li>
+                <li><a href="taskes_new.html?type=newInstall" onClick="toggleSecondNavbar();" data-prefetch="true" class="ui-icon-repair ui-btn-icon-top">维修</a></li>
+                <li><a href="taskes_new.html?type=newInstall" onClick="toggleSecondNavbar();" data-prefetch="true" class="ui-icon-patrols ui-btn-icon-top">巡检</a></li>
             </ul>
         </div>
     </div>
@@ -407,9 +407,9 @@ $(document).ready(function(e) {
 $(document).ready(function(e) {
 	
 	$( document).on( "pagecontainershow", function( event, ui ) {
-		
-		if (sessionStorage.taskInfoParamStr!='null') {
-			var page_id=ui.toPage.attr("id");
+		var page_id=ui.toPage.attr("id");
+		//if (sessionStorage.taskInfoParamStr!='null') {
+		if (page_id=="page_install" || page_id=="page_repair" || page_id=="page_patrol") {
 			//从url中解析参数  
 			var params = $.getUrlParam(sessionStorage.taskInfoParamStr);  
 			window.taskInfoParam=params;
@@ -648,6 +648,9 @@ $(document).ready(function(e) {
 });
 
 </script>
+
+
+<!----------------------新建任务系列--------------------------->
 
 </body>
 </html>
