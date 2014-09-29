@@ -235,8 +235,8 @@ public class TaskController {
 		for(Pole pole:list){
 			Map<String,Object> map=new HashMap<String,Object>();
 			map.put(M.Pole.id, pole.getId());
-			map.put("pole_name", pole.getName());
-			map.put("pole_address", pole.getAddress());
+			map.put("name", pole.getName());
+			map.put("address", pole.getAddress());
 			result.add(map);
 		}
 

@@ -12,11 +12,29 @@
 	<div role="main" class="ui-content">
         <p>最少输入<strong>2个字</strong>:</p>
         <form class="ui-filterable">
-            <input id="autocomplete-input" data-type="search" placeholder="Find a city...">
+            <input id="autocomplete-input" data-type="search" placeholder="输入杆位信息...">
         </form>
         <ul id="page_taskes_search_pole_autocomplete" data-role="listview" data-inset="true" data-filter="true" data-input="#autocomplete-input">
         </ul>
 	</div>
+    <script type="application/javascript">
+	function changePole(pole_id,pole_name,pole_address){
+		$("#page_taskes_new_pole_id").val(pole_id);
+		$("#page_taskes_new_pole_name").val(pole_name);
+		$("#page_taskes_new_pole_address").val(pole_address);
+		
+		//$(document).pagecontainer( "load" );
+		$(":mobile-pagecontainer").pagecontainer("change", "taskes_new.html", { 
+			//type:'POST',
+			transition:'slideup',
+			data:{
+				pole_id:pole_id,
+				pole_name:pole_name,
+				pole_address:pole_address
+			}
+		 });
+	} 
+	</script>
     <script type="application/javascript">
 	$(document).ready(function(e) {
 		$( document ).on( "pagecreate", "#page_taskes_search_pole", function() {
@@ -28,10 +46,9 @@
 					value = $input.val(),
 					html = "";
 				$ul.html( "" );
-				if ( value && value.length > 2 ) {
+				if ( value && value.length >= 2 ) {
 					$ul.html( "<li><div class='ui-loader'><span class='ui-icon ui-icon-loading'></span></div></li>" );
 					$ul.listview( "refresh" );
-
 					$.ajax({
 						url:$.ServerPath+"/task/mobile/queryPoles.do",
 						data: {
@@ -39,19 +56,20 @@
 						}
 					})
 					.then( function ( response ) {
-						alert(response.root instanceof Array);
-						console.dir(response.root);
-						$.each( response.root, function ( i, val ) {
-							console.dir(val);
-							html += "<li>" + val.pole_name + "</li>";
-						});
-						$ul.html( html );
+						var root=response.root;
+						for(var i=0;i<root.length;i++){
+							html += "<li data-filtertext='"+root[i].name+" "+root[i].address+"'>"+
+							"<a href='#' onClick='changePole(\""+root[i].id+"\",\""+root[i].name+"\",\""+root[i].address+"\");'>" + root[i].name + "</a></li>";
+						}
+						$ul.html(html );
 						$ul.listview( "refresh" );
 						$ul.trigger( "updatelayout");
 					});
 				}
 			});
-		});
-	});
+			
+			 
+		});//pagecreate
+	});//ready
 </script>
 </div>

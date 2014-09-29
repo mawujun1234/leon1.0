@@ -4,7 +4,7 @@
         <h1>新建任务</h1> 
 	</div>
 	<div role="main" class="ui-content">
-    	 <a href="taskes_search_pole.html#page_taskes_search_pole" data-prefetch="true" class="ui-btn ui-corner-all actionbutton">寻找杆位</a>
+    	 <a href="taskes_search_pole.html" data-prefetch="true" class="ui-btn ui-corner-all actionbutton">寻找杆位</a>
         <div class="ui-field-contain">
         	<input type="hidden" id="page_taskes_new_type" value="" />
             <input type="hidden" id="page_taskes_new_pole_id" value="" />
@@ -19,12 +19,22 @@
     <script type="application/javascript">
 	$(document).ready(function(e) {
         $(document).on('pagebeforeshow', "#page_taskes_new", function (event, data) {
-			var parameters = $(this).data("url").split("?")[1];;
+			alert($(this).data("url"));
+			var parameters = $(this).data("url").split("?")[1];
 			type = parameters.replace("type=","");  
-			//alert(type);
-			//var urlObj = $.mobile.path.parseUrl(data.toPage);//取到一个对象  
-			//var paramStr = urlObj.search;//对象中的参数，格式为 例： ？id=34&key=perfect&action=go 
-			$("#page_taskes_new_type").val(type);
+			window.type=type;
+			alert(type);
+			/*console.log($.mobile.path.parseUrl(data.toPage));
+			if (typeof data.toPage !== "string"){  
+				console.log("11111111111111111111111111111");
+				return;  
+			}  
+
+			var urlObj = $.mobile.path.parseUrl(data.toPage);//取到一个对象  
+			var paramStr = urlObj.search;//对象中的参数，格式为 例： ？id=34&key=perfect&action=go 
+			var params=$.getUrlParam(paramStr);
+			alert(params.type);
+			//$("#page_taskes_new_type").val(type);*/
 			
 		});
 
