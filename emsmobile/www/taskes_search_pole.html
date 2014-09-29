@@ -1,0 +1,57 @@
+<!-- http://demos.jquerymobile.com/1.4.4/listview-autocomplete-remote/      data-dom-cache="true"-->
+<div data-role="page" id="page_taskes_search_pole" >
+	<style type="text/css">
+		.ui-filter-inset {
+			margin-top: 0;
+		}
+    </style>
+	<div data-role="header"  data-position="fixed">
+    	<a href="#page_taskes_new" class="ui-btn ui-corner-all" data-rel="back" data-theme="c">返回</a>
+        <h1>搜索杆位</h1> 
+	</div>
+	<div role="main" class="ui-content">
+        <p>最少输入<strong>2个字</strong>:</p>
+        <form class="ui-filterable">
+            <input id="autocomplete-input" data-type="search" placeholder="Find a city...">
+        </form>
+        <ul id="page_taskes_search_pole_autocomplete" data-role="listview" data-inset="true" data-filter="true" data-input="#autocomplete-input">
+        </ul>
+	</div>
+    <script type="application/javascript">
+	$(document).ready(function(e) {
+		$( document ).on( "pagecreate", "#page_taskes_search_pole", function() {
+			//每次返回taskes_new.html都会重新create takes_search_pole.html，看看能不能用缓存解决这个问题
+			alert(1);
+			$( "#page_taskes_search_pole_autocomplete" ).on( "filterablebeforefilter", function ( e, data ) {
+				var $ul = $( this ),
+					$input = $( data.input ),
+					value = $input.val(),
+					html = "";
+				$ul.html( "" );
+				if ( value && value.length > 2 ) {
+					$ul.html( "<li><div class='ui-loader'><span class='ui-icon ui-icon-loading'></span></div></li>" );
+					$ul.listview( "refresh" );
+
+					$.ajax({
+						url:$.ServerPath+"/task/mobile/queryPoles.do",
+						data: {
+							pole_name: $input.val()
+						}
+					})
+					.then( function ( response ) {
+						alert(response.root instanceof Array);
+						console.dir(response.root);
+						$.each( response.root, function ( i, val ) {
+							console.dir(val);
+							html += "<li>" + val.pole_name + "</li>";
+						});
+						$ul.html( html );
+						$ul.listview( "refresh" );
+						$ul.trigger( "updatelayout");
+					});
+				}
+			});
+		});
+	});
+</script>
+</div>

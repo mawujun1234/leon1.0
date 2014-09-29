@@ -127,7 +127,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		a.*
 		from EMS_pole a 
 		inner join ems_area b on  a.area_id=b.id
-		where (a.address like #{pole_name} or a.area like #{pole_name} or a.city like #{pole_name} ) and b.wordunit_id=#{workunit_id}
+		where (a.address like #{pole_name} or a.area like #{pole_name} or a.city like #{pole_name} or a.name like  #{pole_name}) and b.workunit_id=#{workunit_id}
 		
     </select>
 </mapper>
