@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mawujun.baseinfo.Customer;
+import com.mawujun.baseinfo.CustomerService;
 import com.mawujun.baseinfo.EquipmentService;
 import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.baseinfo.Pole;
@@ -33,8 +35,10 @@ public class TaskController {
 
 	@Resource
 	private TaskService taskService;
-//	@Resource
-//	private PoleService poleService;
+	@Resource
+	private PoleService poleService;
+	@Resource
+	private CustomerService customerService;
 	
 	
 	@Resource
@@ -241,6 +245,27 @@ public class TaskController {
 		}
 
 		return result;
+	}
+	
+	@RequestMapping("/task/mobile/create.do")
+	@ResponseBody
+	public String mobile_create(String type,String memo,String pole_id) {
+		Task task=new Task();
+		task.setType(TaskType.valueOf(type));
+		task.setMemo(memo);
+		task.setPole_id(pole_id);
+		
+		Pole pole=poleService.get(pole_id);
+		task.setPole_name(pole.getName());
+		task.setPole_address(pole.getAddress());
+		task.setWorkunit_id(ShiroUtils.getAuthenticationInfo().getId());
+		task.setWorkunit_name(ShiroUtils.getName());
+		
+		Customer customer=customerService.get(pole.getCustomer_id());
+		task.setCustomer_id(customer.getId());
+		task.setCustomer_name(customer.getName());
+		taskService.create(new Task[]{task});
+		return "success";
 	}
 	
 

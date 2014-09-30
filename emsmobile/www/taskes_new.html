@@ -1,6 +1,6 @@
 <div data-role="page" id="page_taskes_new">
 	<div data-role="header"  data-position="fixed">
-    	<a href="#page_homepage" class="ui-btn ui-corner-all" data-rel="back" data-theme="c">返回</a>
+    	<a href="#page_homepage" class="ui-btn ui-corner-all" data-theme="c">返回</a>
         <h1>新建任务</h1> 
 	</div>
 	<div role="main" class="ui-content">
@@ -15,29 +15,52 @@
             <label for="page_taskes_new_memo">任务描述:</label>
             <textarea id="page_taskes_new_memo" placeholder="请输入" data-mini="true"></textarea>           
          </div>	
+         <div class="ui-field-contain actionbutton"  align="center">
+            <button class="ui-shadow ui-btn ui-corner-all ui-btn-icon-left" id="page_taskes_new_submitNewTask">提交</button>
+         </div>
 	</div>
     <script type="application/javascript">
 	$(document).ready(function(e) {
         $(document).on('pagebeforeshow', "#page_taskes_new", function (event, data) {
-			alert($(this).data("url"));
-			var parameters = $(this).data("url").split("?")[1];
-			type = parameters.replace("type=","");  
-			window.type=type;
-			alert(type);
-			/*console.log($.mobile.path.parseUrl(data.toPage));
-			if (typeof data.toPage !== "string"){  
-				console.log("11111111111111111111111111111");
-				return;  
-			}  
+			var paramStr = $(this).data("url").split("?")[1];
+			//type = parameters.replace("type=","");  
+			var params=$.getUrlParam("?"+paramStr);
+			if(params.type){
+				window.page_taskes_new_type=params.type;
+			} else {
+				//params.type=window.page_taskes_new_type;
+				$("#page_taskes_new_type").val(window.page_taskes_new_type);
+				$("#page_taskes_new_pole_id").val(params.pole_id);
+				$("#page_taskes_new_pole_name").val(params.pole_name);
+				$("#page_taskes_new_pole_address").val(params.pole_address);
+			}	
+		});//pagebeforeshow
+		
+		$("#page_taskes_new_submitNewTask").click(function(event){
+			var params={};
+			params.type=window.page_taskes_new_type;
+			params.pole_id=$("#page_taskes_new_pole_id").val();
+			params.memo=$("#page_taskes_new_memo").val();
 
-			var urlObj = $.mobile.path.parseUrl(data.toPage);//取到一个对象  
-			var paramStr = urlObj.search;//对象中的参数，格式为 例： ？id=34&key=perfect&action=go 
-			var params=$.getUrlParam(paramStr);
-			alert(params.type);
-			//$("#page_taskes_new_type").val(type);*/
-			
+			$.ajax({   
+				url : $.ServerPath+"/task/mobile/create.do",  
+				data:params,  
+				success : function(data){
+					if(data.success==true){	
+						$.mobile.changePage("#page_homepage", { 
+							  transition: 'slide',
+							  reverse: true });
+						//并且刷新任务,或者移除该任务
+						//或者手动构建li，然后动态添加到界面中，同时，别忘记更改page的参数
+						window["working_pageParam"].reset();
+						queryTasks("working",null,function(){
+							taskes_list_query_status["working"]=true;
+						});
+					}
+					$.hideLoader();  
+				}
+			});	
 		});
-
     });
 	</script>
 </div>

@@ -6,7 +6,7 @@
 		}
     </style>
 	<div data-role="header"  data-position="fixed">
-    	<a href="#page_taskes_new" class="ui-btn ui-corner-all" data-rel="back" data-theme="c">返回</a>
+    	<a href="#page_taskes_new" class="ui-btn ui-corner-all"  data-theme="c">返回</a>
         <h1>搜索杆位</h1> 
 	</div>
 	<div role="main" class="ui-content">
@@ -19,10 +19,6 @@
 	</div>
     <script type="application/javascript">
 	function changePole(pole_id,pole_name,pole_address){
-		$("#page_taskes_new_pole_id").val(pole_id);
-		$("#page_taskes_new_pole_name").val(pole_name);
-		$("#page_taskes_new_pole_address").val(pole_address);
-		
 		//$(document).pagecontainer( "load" );
 		$(":mobile-pagecontainer").pagecontainer("change", "taskes_new.html", { 
 			//type:'POST',
@@ -39,7 +35,7 @@
 	$(document).ready(function(e) {
 		$( document ).on( "pagecreate", "#page_taskes_search_pole", function() {
 			//每次返回taskes_new.html都会重新create takes_search_pole.html，看看能不能用缓存解决这个问题
-			alert(1);
+			//alert(1);
 			$( "#page_taskes_search_pole_autocomplete" ).on( "filterablebeforefilter", function ( e, data ) {
 				var $ul = $( this ),
 					$input = $( data.input ),
