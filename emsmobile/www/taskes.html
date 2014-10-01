@@ -53,9 +53,11 @@
 }
 </style>
 <script type="application/javascript">
-
+$(function(){
+	$( ":mobile-pagecontainer" ).pagecontainer( "load", "taskes_new.html", {  } );	
+})
 var secondNavbarIsHide=true;
-function toggleSecondNavbar(){	
+function toggleSecondNavbar(type){	
 	$("#secondNavbar").toggle(500,function(){
 		secondNavbarIsHide=!secondNavbarIsHide;
 	});
@@ -68,6 +70,15 @@ function toggleSecondNavbar(){
 	} else {
 		$("#footernav").css("z-index",footernavZIndex);
 		closeBg();
+	}
+	if(type){
+		//表示要进行跳转了
+		//$( ":mobile-pagecontainer" ).pagecontainer( "load", "taskes_new.html", {  } );
+		window.page_taskes_new_type=type;
+		var params={
+			type:type
+		};
+		window.page_taskes_new_params=params;
 	}
 }
 
@@ -130,7 +141,7 @@ function queryTasks(status,appendDir,callBack){
 						'<h2>'+h2_title+':'+root[i].pole_name+'</h2>'+
 						'<p>地址:'+root[i].pole_address+'</p>'+
 						'<p class="ui-li-aside"><strong>'+root[i].createDate+'</strong></p>'+
-						((root[i].status!="newTask")?'':'<p class="ui-li-count" style="color:#FFF;background-color:#F00;">new</p>')+
+						((root[i].status!="newTask")?'':'<p id="'+root[i].id+'_isNew" class="ui-li-count" style="color:#FFF;background-color:#F00;">new</p>')+
 					'</a>'+
 					'</li>'
 				}
@@ -238,9 +249,9 @@ $(document).ready(function(e) {
         <button href="#" data-icon="plus" data-iconpos="notext" onClick="toggleSecondNavbar();"></button>
 		<div data-role="navbar" id="secondNavbar" class="secondNavbar-glyphish-example" style="display:none;">
         	<ul>
-            	<li><a href="taskes_new.html?type=newInstall" onClick="toggleSecondNavbar();" data-prefetch="true" class="ui-icon-install ui-btn-icon-top">新安装</a></li>
-                <li><a href="taskes_new.html?type=newInstall" onClick="toggleSecondNavbar();" data-prefetch="true" class="ui-icon-repair ui-btn-icon-top">维修</a></li>
-                <li><a href="taskes_new.html?type=newInstall" onClick="toggleSecondNavbar();" data-prefetch="true" class="ui-icon-patrols ui-btn-icon-top">巡检</a></li>
+            	<li><a href="#page_taskes_new" onClick="toggleSecondNavbar('newInstall');"  class="ui-icon-install ui-btn-icon-top">新安装</a></li>
+                <li><a href="#page_taskes_new" onClick="toggleSecondNavbar('repair');" class="ui-icon-repair ui-btn-icon-top">维修</a></li>
+                <li><a href="#page_taskes_new" onClick="toggleSecondNavbar('patrol');" class="ui-icon-patrols ui-btn-icon-top">巡检</a></li>
             </ul>
         </div>
     </div>
@@ -426,7 +437,7 @@ $(document).ready(function(e) {
 			sessionStorage.taskInfoParamStr=null;
 			//初始化设备列表信息
 			queryTaskEquipmentInfos(params.id);
-			
+			$("#"+taskInfoParam.id+"_isNew").remove();
 			
 		}  	
 	});
@@ -646,6 +657,7 @@ $(document).ready(function(e) {
 	});
 	
 });
+
 
 </script>
 

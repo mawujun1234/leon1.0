@@ -241,6 +241,7 @@ public class TaskController {
 			map.put(M.Pole.id, pole.getId());
 			map.put("name", pole.getName());
 			map.put("address", pole.getAddress());
+			map.put("status", pole.getStatus());
 			result.add(map);
 		}
 

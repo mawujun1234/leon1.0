@@ -18,17 +18,24 @@
         </ul>
 	</div>
     <script type="application/javascript">
-	function changePole(pole_id,pole_name,pole_address){
-		//$(document).pagecontainer( "load" );
-		$(":mobile-pagecontainer").pagecontainer("change", "taskes_new.html", { 
-			//type:'POST',
-			transition:'slideup',
-			data:{
-				pole_id:pole_id,
-				pole_name:pole_name,
-				pole_address:pole_address
-			}
-		 });
+	function changePole(pole_id,pole_name,pole_address,pole_status){
+		//page_taskes_new_type是在taskes.html中定义的
+		var params=window.page_taskes_new_params;
+		if(params.type=="newInstall" && pole_status!="uninstall"){
+			alert("杆位‘"+pole_name+"’不能发送新安装任务!");
+			return;
+		} else if(params.type=="repairs" && pole_status!="using" && pole_status!="hitch"){
+			alert("只有'使用中','有损坏'状态的杆位，才能发送维修/维护任务!");
+			return;
+		} else if(params.type=="patrol" && pole_status!="using" && pole_status!="hitch"){
+			alert("只有'使用中','有损坏'状态的杆位，才能发送巡检任务!");
+			return;
+		}
+		params.pole_id=pole_id,
+		params.pole_name=pole_name,
+		params.pole_address=pole_address
+		$(document).pagecontainer( "load" );
+		
 	} 
 	</script>
     <script type="application/javascript">
@@ -55,7 +62,7 @@
 						var root=response.root;
 						for(var i=0;i<root.length;i++){
 							html += "<li data-filtertext='"+root[i].name+" "+root[i].address+"'>"+
-							"<a href='#' onClick='changePole(\""+root[i].id+"\",\""+root[i].name+"\",\""+root[i].address+"\");'>" + root[i].name + "</a></li>";
+							"<a href='#page_taskes_new' onClick='changePole(\""+root[i].id+"\",\""+root[i].name+"\",\""+root[i].address+"\",\""+root[i].status+"\");'>" + root[i].name + "</a></li>";
 						}
 						$ul.html(html );
 						$ul.listview( "refresh" );
