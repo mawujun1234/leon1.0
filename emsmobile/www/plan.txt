@@ -17,6 +17,9 @@
 		----cordova plugin rm org.apache.cordova.geolocation
 
 
+
+维修维护的时候，的维修单位为id，改成名称
+
 省市的json
 	http://lixuanbin.iteye.com/blog/1997929
 	改成自动获取
@@ -38,7 +41,7 @@
 
 
 
-订单历史查询中，增加 历史条码导出 的功能，入库批次信息
+发送任务的时候，是事前控制，还是事后控制，现在是事后控制
 一个账号是否只能是一个仓库的主管，只能对一个仓库进行出入库管理？
 
 

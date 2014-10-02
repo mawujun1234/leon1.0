@@ -208,6 +208,7 @@ $(document).ready(function(e) {
 	$(window).scroll(function(){
 	if(!window.isLazyLoading&&($(window).scrollTop()==$(document).height()-$(window).height())){
 		window.isLazyLoading=true;
+//		$("#taskes_list_"+status).append( "<li ><div class='ui-loader'><span class='ui-icon ui-icon-loading'></span></div></li>" ).listview( "refresh" );
 		queryTasks(status,"append",function(){
 			window.isLazyLoading=false;
 			$.hideLoader(); 

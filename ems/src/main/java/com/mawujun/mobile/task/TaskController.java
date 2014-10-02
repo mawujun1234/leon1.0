@@ -251,6 +251,8 @@ public class TaskController {
 	@RequestMapping("/task/mobile/create.do")
 	@ResponseBody
 	public String mobile_create(String type,String memo,String pole_id) {
+		//首先判断当前杆位上是否已经存在任务了，如果已经存在，就不能发送了
+		
 		Task task=new Task();
 		task.setType(TaskType.valueOf(type));
 		task.setMemo(memo);

@@ -50,8 +50,10 @@
 					html = "";
 				$ul.html( "" );
 				if ( value && value.length >= 2 ) {
-					$ul.html( "<li><div class='ui-loader'><span class='ui-icon ui-icon-loading'></span></div></li>" );
-					$ul.listview( "refresh" );
+/*					$ul.html( "<li ><div style='display:block;' class='ui-loader'><span class='ui-icon ui-icon-loading'></span></div></li>" );
+					$ul.listview( "refresh" );*/
+					//alert(1);
+					$.showLoader();
 					$.ajax({
 						url:$.ServerPath+"/task/mobile/queryPoles.do",
 						data: {
@@ -67,6 +69,7 @@
 						$ul.html(html );
 						$ul.listview( "refresh" );
 						$ul.trigger( "updatelayout");
+						$.hideLoader();
 					});
 				}
 			});
