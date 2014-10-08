@@ -14,7 +14,9 @@ Ext.onReady(function(){
 
 	grid.on('itemclick',function(view,record,item,index){
 		areaPoleGrid.area_id=record.get("id");
-		areaPoleGrid.getStore().load({params:{area_id:record.get("id")}})
+		
+		areaPoleGrid.getStore().getProxy().extraParams={area_id:record.get("id")};
+		areaPoleGrid.getStore().reload();
 	});
 	
 	var areaPoleGrid=Ext.create('Ems.baseinfo.AreaPoleGrid',{

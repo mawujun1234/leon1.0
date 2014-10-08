@@ -22,6 +22,8 @@ public class Task implements IdEntity<String> {
 	@Enumerated(EnumType.STRING)
 	private TaskType type;//任务类型
 	@Enumerated(EnumType.STRING)
+	private TaskCreaterType createrType;//任务创建类型是中心端发布的 还是移动端自己发布的
+	@Enumerated(EnumType.STRING)
 	@Column(length=15)
 	private TaskStatus status;//任务状态
 	
@@ -181,6 +183,12 @@ public class Task implements IdEntity<String> {
 	}
 	public void setHitchReasonTpl_id(Integer hitchReasonTpl_id) {
 		this.hitchReasonTpl_id = hitchReasonTpl_id;
+	}
+	public TaskCreaterType getCreaterType() {
+		return createrType;
+	}
+	public void setCreaterType(TaskCreaterType createrType) {
+		this.createrType = createrType;
 	}
 	
 	

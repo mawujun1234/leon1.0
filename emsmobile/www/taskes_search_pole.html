@@ -10,11 +10,15 @@
         <h1>搜索杆位</h1> 
 	</div>
 	<div role="main" class="ui-content">
-        <p>最少输入<strong>2个字</strong>:</p>
         <form class="ui-filterable">
-            <input id="autocomplete-input" data-type="search" placeholder="输入杆位信息...">
+        <table>
+        	<tr>
+            	<td width="100%"><input id="page_taskes_search_pole_input" data-type="search" placeholder="最少输2个字" ></td>
+                <td width="60"><a href="#" id="page_taskes_search_pole_button" class="ui-shadow ui-btn ui-corner-all ui-btn-inline" style="float:left;">搜索</a></td>
+            </tr>
+        </table>
         </form>
-        <ul id="page_taskes_search_pole_autocomplete" data-role="listview" data-inset="true" data-filter="true" data-input="#autocomplete-input">
+        <ul id="page_taskes_search_pole_autocomplete" data-role="listview" data-inset="true" data-input="#page_taskes_search_pole_input">
         </ul>
 	</div>
     <script type="application/javascript">
@@ -41,17 +45,17 @@
     <script type="application/javascript">
 	$(document).ready(function(e) {
 		$( document ).on( "pagecreate", "#page_taskes_search_pole", function() {
-			//每次返回taskes_new.html都会重新create takes_search_pole.html，看看能不能用缓存解决这个问题
-			//alert(1);
-			$( "#page_taskes_search_pole_autocomplete" ).on( "filterablebeforefilter", function ( e, data ) {
-				var $ul = $( this ),
-					$input = $( data.input ),
-					value = $input.val(),
-					html = "";
+			//$( "#page_taskes_search_pole_autocomplete" ).on( "filterablebeforefilter", function ( e, data ) {
+				//var $ul = $( this );
+				//var	$input = $( data.input )
+			$( "#page_taskes_search_pole_button" ).on( "click", function ( e, data ) {
+				var $ul = $( "#page_taskes_search_pole_autocomplete" );
+				var	$input = $("#page_taskes_search_pole_input")
+				var	value = $input.val()
+				var	html = "";
 				$ul.html( "" );
 				if ( value && value.length >= 2 ) {
-/*					$ul.html( "<li ><div style='display:block;' class='ui-loader'><span class='ui-icon ui-icon-loading'></span></div></li>" );
-					$ul.listview( "refresh" );*/
+
 					//alert(1);
 					$.showLoader();
 					$.ajax({
@@ -62,9 +66,15 @@
 					})
 					.then( function ( response ) {
 						var root=response.root;
+						if(!root || root.length==0){
+							$ul.html( "<li>无匹配杆位</li>" );
+							$ul.listview( "refresh" );
+							$.hideLoader();
+							return;
+						}
 						for(var i=0;i<root.length;i++){
 							html += "<li data-filtertext='"+root[i].name+" "+root[i].address+"'>"+
-							"<a href='#page_taskes_new' onClick='changePole(\""+root[i].id+"\",\""+root[i].name+"\",\""+root[i].address+"\",\""+root[i].status+"\");'>" + root[i].name + "</a></li>";
+							"<a href='#page_taskes_new' onClick='changePole(\""+root[i].id+"\",\""+root[i].name+"\",\""+root[i].address+"\",\""+root[i].status+"\");'>" + root[i].name + "<p>"+root[i].address+"</p></a></li>";
 						}
 						$ul.html(html );
 						$ul.listview( "refresh" );

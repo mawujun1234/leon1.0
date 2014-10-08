@@ -48,7 +48,7 @@ public class Pole extends UUIDEntity {
 		return status.getName();
 	}
 	
-	public String returnFullAddress() {
+	public String geetFullAddress() {
 		return this.getProvince()+this.getCity()+this.getArea()+this.getAddress();
 	}
 	

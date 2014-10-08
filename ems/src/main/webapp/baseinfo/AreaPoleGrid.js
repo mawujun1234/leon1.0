@@ -10,7 +10,7 @@ Ext.define('Ems.baseinfo.AreaPoleGrid',{
 		stripeRows:true,
 		listeners:{
 			refresh:function(){
-				this.select(0);
+				//this.select(0);
 			}
 		}
 	},

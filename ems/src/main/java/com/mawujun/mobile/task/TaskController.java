@@ -110,6 +110,10 @@ public class TaskController {
 	@RequestMapping("/task/cancel.do")
 	@ResponseBody
 	public String cancel(String id) {
+		Task task=taskService.get(id);
+		if(task.getStatus()==TaskStatus.complete){
+			throw new BusinessException("已完成的任务不能取消!");
+		}
 		taskService.deleteBatch(Cnd.delete().andEquals(M.Task.id, id));
 		return "success";
 	}
@@ -139,7 +143,10 @@ public class TaskController {
 	
 	@RequestMapping("/task/create.do")
 	@ResponseBody
-	public String create(@RequestBody Task[] taskes) {
+	public String create(@RequestBody Task[] taskes) {	
+		for(Task task:taskes){
+			task.setCreaterType(TaskCreaterType.manager);
+		}
 		taskService.create(taskes);
 		return "success";
 	}
@@ -240,7 +247,7 @@ public class TaskController {
 			Map<String,Object> map=new HashMap<String,Object>();
 			map.put(M.Pole.id, pole.getId());
 			map.put("name", pole.getName());
-			map.put("address", pole.getAddress());
+			map.put("address", pole.geetFullAddress());
 			map.put("status", pole.getStatus());
 			result.add(map);
 		}
@@ -267,6 +274,9 @@ public class TaskController {
 		Customer customer=customerService.get(pole.getCustomer_id());
 		task.setCustomer_id(customer.getId());
 		task.setCustomer_name(customer.getName());
+		
+		task.setCreaterType(TaskCreaterType.workunit);
+		
 		taskService.create(new Task[]{task});
 		return "success";
 	}

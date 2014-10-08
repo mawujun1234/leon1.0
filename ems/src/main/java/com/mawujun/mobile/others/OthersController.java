@@ -41,7 +41,7 @@ public class OthersController {
 		} else if(vo.getStore_id()!=null){
 			vo.setStore_name(storeService.get(vo.getStore_id()).getName());
 		} else if(vo.getPole_id()!=null){
-			vo.setPole_address(poleService.get(vo.getPole_id()).returnFullAddress());
+			vo.setPole_address(poleService.get(vo.getPole_id()).geetFullAddress());
 		}
 		for (EquipmentStatus status : EquipmentStatus.values()) {
 			if (status.getValue() == vo.getStatus()) {

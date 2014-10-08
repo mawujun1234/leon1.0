@@ -214,6 +214,7 @@ public static final class ems_task {
 	public static final String id="id";
 	public static final String memo="memo";
 	public static final String type="type";
+	public static final String createrType="createrType";
 	public static final String status="status";
 	public static final String pole_id="pole_id";
 	public static final String pole_name="pole_name";
