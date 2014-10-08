@@ -29,6 +29,7 @@ Ext.defineModel("Ems.repair.Repair",{
 		{name:'broken_reson',type:'string'},
 		{name:'memo',type:'string'},
 		
+		{name:'workunit_name',type:'string'},
 		{name:'rpa_name',type:'string'},
 		{name:'str_in_name',type:'string'},
 		{name:'str_out_name',type:'string'},

@@ -19,6 +19,12 @@ Ext.define('Ems.repair.RepairForm',{
 	initComponent: function () {
        var me = this;
        me.items= [{
+                        name: 'workunit_id',
+                        fieldLabel: '作业单位',
+                        flex: 1,
+                        readOnly:true,
+                        allowBlank: true
+                    },{
                     xtype: 'fieldcontainer',
                     //fieldLabel: 'Name',
                     layout: 'hbox',
@@ -31,12 +37,13 @@ Ext.define('Ems.repair.RepairForm',{
                         name: 'repair_date',
                         xtype:'datefield',
                         fieldLabel: '报修时间',
+                        format:'Y-m-d',
                         flex: 1,
                         //emptyText: 'First',
                         readOnly:true,
                         allowBlank: true
                     },{
-                        name: 'workunit_id',
+                        name: 'workunit_name',
                         fieldLabel: '作业单位',
                         flex: 1,
                         readOnly:true,
@@ -55,6 +62,7 @@ Ext.define('Ems.repair.RepairForm',{
                         name: 'broken_memo',
                         fieldLabel: '故障描述',
                         flex: 1,
+                        xtype:'textarea',
                         readOnly:true,
                         allowBlank: true
                     }]
@@ -137,6 +145,7 @@ Ext.define('Ems.repair.RepairForm',{
                         name: 'broken_reson',
                         fieldLabel: '故障原因',
                         flex: 1,
+                        xtype:'textarea',
                         readOnly:false,
                         allowBlank: true
                     }]
@@ -180,6 +189,7 @@ Ext.define('Ems.repair.RepairForm',{
                         name: 'memo',
                         fieldLabel: '备注',
                         flex: 1,
+                        xtype:'textarea',
                         readOnly:false,
                         allowBlank: true
                     }]

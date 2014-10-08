@@ -8,6 +8,8 @@ public class RepairVO extends Repair {
 //	private String rpa_type_name;
 //	private String status_name;
 	
+	private String workunit_name;
+	
 	
 	private String brand_name;
 	private String prod_name;
@@ -88,6 +90,16 @@ public class RepairVO extends Repair {
 	}
 	public void setScrap_id(String scrap_id) {
 		this.scrap_id = scrap_id;
+	}
+
+
+	public String getWorkunit_name() {
+		return workunit_name;
+	}
+
+
+	public void setWorkunit_name(String workunit_name) {
+		this.workunit_name = workunit_name;
 	}
 	
 }

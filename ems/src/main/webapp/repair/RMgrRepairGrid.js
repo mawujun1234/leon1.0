@@ -370,6 +370,7 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 		var win=Ext.create('Ext.window.Window',{
 			title:'编辑维修单',
 			layout:'fit',
+			modal:true,
 			width:500,
 			items:[form]
 		});

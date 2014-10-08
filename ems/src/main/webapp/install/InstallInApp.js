@@ -209,20 +209,14 @@ Ext.onReady(function(){
 	var store_id_temp=null;//用来判断仓库的id有没有变
 	var workUnit_id_temp=null;
 	function equipScan(field,newValue,oldValue,e){
-//		if(!stock_field.getValue()){
-//			Ext.Msg.alert("消息","请先选择仓库!");
-//			ecode_textfield.setValue("");
-//			ecode_textfield.clearInvalid( );
-//			return;
-//		}
-		if(!store_id_temp){
+		//if(!store_id_temp){
 			store_id_temp=store_combox.getValue();
-		} else if(store_id_temp!=store_combox.getValue()){
-			Ext.Msg.alert("消息","对不起，一次入库只能选择一个仓库.");
-			ecode_textfield.setValue("");workUnit_combox
-			ecode_textfield.clearInvalid( );
-			return;
-		}
+		//} else if(store_id_temp!=store_combox.getValue()){
+		//	Ext.Msg.alert("消息","对不起，一次入库只能选择一个仓库.");
+		//	ecode_textfield.setValue("");workUnit_combox
+		//	ecode_textfield.clearInvalid( );
+		//	return;
+		//}
 		if(!workUnit_id_temp){
 			workUnit_id_temp=workUnit_combox.getValue();
 		} else if(workUnit_id_temp!=workUnit_combox.getValue()){
