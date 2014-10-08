@@ -10,11 +10,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<select id="queryPage" resultType="com.mawujun.baseinfo.Pole" parameterType="map">
     	SELECT *
 	    FROM ems_pole 
-	    <where>
-	    	<if test="filterContainArea==true">
-	    		area_id is null
-	    	</if>
-	    </where>
+	    where customer_id=#{customer_id}
+	    <if test="filterContainArea==true">
+	    	and area_id is null
+	    </if>
     </select>
     
     <update id="savePoles">
