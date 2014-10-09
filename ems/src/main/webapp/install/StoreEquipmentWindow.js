@@ -197,8 +197,8 @@ Ext.define('Ems.install.StoreEquipmentWindow',{
 				level=2;
 				
 				//alert(record.get("subtype_id")+":"+record.get("subtype_name"));
-				 var store_model=Ext.createModel(subtype_combox.getStore().model.getName( ),{id:record.get("subtype_id"),text:record.get("subtype_name")});
-	    		subtype_combox.setValue(store_model);
+				 var subtype_model=Ext.createModel(subtype_combox.getStore().model.getName( ),{id:record.get("subtype_id"),text:record.get("subtype_name")});
+	    		subtype_combox.setValue(subtype_model);
 
 				equip_store.load({
 //				params:{
