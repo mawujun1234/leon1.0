@@ -224,7 +224,7 @@ public class TaskService extends AbstractService<Task, String>{
 			TaskEquipmentList tel=new TaskEquipmentList();
 			tel.setEcode(ecode);
 			tel.setTask_id(task_id);
-			tel.setType(TaskListTypeEnum.install);
+			//tel.setType(TaskListTypeEnum.install);
 			taskEquipmentListRepository.create(tel);
 			
 			
@@ -275,6 +275,7 @@ public class TaskService extends AbstractService<Task, String>{
 						.set(M.Equipment.workUnit_id, null)
 						.set(M.Equipment.store_id, null)
 						.andEquals(M.Equipment.ecode, ecode));	
+				tel.setType(TaskListTypeEnum.install);
 			} else if(TaskType.repair.toString().equals(task_type)){
 				//如果设备是使用中，就修改为已损坏，如果是安装出库，就修改为使用中，同时修改设备为旧设备
 				Equipment equp=equipments.get(ecode);

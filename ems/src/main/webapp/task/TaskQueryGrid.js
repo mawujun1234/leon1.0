@@ -45,7 +45,10 @@ Ext.define('Ems.task.TaskQueryGrid',{
 		//{dataIndex:'area_name',text:'所属片区'},
 		{dataIndex:'workunit_name',text:'作业单位'},
 		{dataIndex:'customer_name',text:'所属客户'},
-		{dataIndex:'memo',text:'任务描述'}
+		{dataIndex:'memo',text:'任务描述',flex:1,renderer:function(value,metadata,record){
+			metadata.tdAttr = "data-qtip='" + value+ "'";
+		    return value;
+		}}
       ];
       
 	  me.store=Ext.create('Ext.data.Store',{

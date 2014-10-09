@@ -23,7 +23,7 @@ public class TaskEquipmentList extends UUIDEntity {
 	private String task_id;
 	@Column(length=36)
 	private String ecode;
-	private Date scanDate;//扫描的时间
+	//private Date scanDate;//扫描的时间
 	@Enumerated(EnumType.STRING)
 	@Column(length=15)
 	private TaskListTypeEnum type;
@@ -40,12 +40,7 @@ public class TaskEquipmentList extends UUIDEntity {
 	public void setEcode(String ecode) {
 		this.ecode = ecode;
 	}
-	public Date getScanDate() {
-		return scanDate;
-	}
-	public void setScanDate(Date scanDate) {
-		this.scanDate = scanDate;
-	}
+
 	public TaskListTypeEnum getType() {
 		return type;
 	}

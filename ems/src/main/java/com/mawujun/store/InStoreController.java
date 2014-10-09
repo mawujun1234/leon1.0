@@ -127,8 +127,15 @@ public class InStoreController {
 		}
 		equipmentVO= orderService.getEquipFromBarcode(ecode);
 		
+		
 		if(equipmentVO!=null){
-			
+			if(store_id==null || !equipmentVO.getStore_id().equals(store_id)){
+				throw new BusinessException("该条码不能入库到所选择的仓库!");
+			}
+			if(equipmentVO.getStatus()!=0){//这是新设备入库的情况
+				//Ext.Msg.alert("消息","该设备为非新增设备,不能添加到入库列表.");
+				throw new BusinessException("该设备为非新增设备,不能添加到入库列表!");
+			}
 			cacheMgr.putQrcode(key, equipmentVO);
 			return equipmentVO;
 		} else {
@@ -158,6 +165,9 @@ public class InStoreController {
 	@RequestMapping("/inStore/queryEquipFromCache.do")
 	@ResponseBody
 	public Page queryEquipFromCache(String store_id,Integer start,Integer limit,Long checkDate) {	
+		if(store_id==null){
+			return new Page();
+		}
 		Page list=cacheMgr.getQrcodes(EquipKey.getInstance(EquipScanType.newInStore, store_id,checkDate),start,limit);
 		if(list==null){
 			return new Page();

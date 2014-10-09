@@ -16,6 +16,8 @@ import com.mawujun.baseinfo.StoreRepository;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.install.InstallIn;
 import com.mawujun.install.InstallInRepository;
+import com.mawujun.mobile.task.Task;
+import com.mawujun.mobile.task.TaskRepository;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 import com.mawujun.shiro.ShiroUtils;
@@ -41,6 +43,8 @@ public class RepairService extends AbstractService<Repair, String>{
 	private EquipmentRepository equipmentRepository;
 	@Autowired
 	private InstallInRepository installInRepository;
+	@Autowired
+	private TaskRepository taskRepository;
 	
 	SimpleDateFormat ymdHmsDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
 	@Override
@@ -85,6 +89,13 @@ public class RepairService extends AbstractService<Repair, String>{
 			repair.setStatus(RepairStatus.One.getValue());
 			repair.setStr_out_date(new Date());
 			repair.setStr_out_oper_id(oper_id);
+			
+			//获取故障信息和任务单号，根据条码，查询最新的任务信息
+			Task task=taskRepository.queryMaxId_ecode(repair.getEcode());
+			if(task!=null){
+				repair.setTask_id(task.getId());
+				repair.setBroken_memo(task.getHitchReason());
+			}
 			repairRepository.create(repair);	
 		}
 		
@@ -181,6 +192,16 @@ public class RepairService extends AbstractService<Repair, String>{
 	public void repairOutStore(Repair[] repairs){
 		String oper_id=ShiroUtils.getAuthenticationInfo().getId();
 		for(Repair repair:repairs){
+			repair=repairRepository.get(repair.getId());
+			//查询该维修单的维修人和故障原因有没有填写
+			if(!StringUtils.hasText(repair.getRpa_user_id())){
+				throw new BusinessException("维修单("+repair.getId()+")的维修人没有填写");
+			}
+			if(!StringUtils.hasText(repair.getBroken_reson())){
+				throw new BusinessException("维修单("+repair.getId()+")的故障原因没有填写");
+			}
+			
+			
 			//修改设备状态为"返库途中"
 			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.out_repair.getValue()).andEquals(M.Equipment.ecode, repair.getEcode()));
 			//维修单的状态也改为"返库途中"

@@ -217,16 +217,15 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 	        name: 'status',
 		    displayField: 'name',
 		    valueField: 'id',
-		    //value:"1",
-	        //allowBlank: false,
+		    
 	        store:Ext.create('Ext.data.Store', {
 		    	fields: ['id', 'name'],
 			    data:[{id:"",name:"所有"},{id:"1",name:"发往维修中心"},{id:"2",name:"维修中"},{id:"3",name:"返库途中"},{id:"4",name:"完成"},{id:"5",name:"报废确认中"}]
 		   }),
 		   listeners:{
-//		   	  change:function(combo,newValue, oldValue){
-//				
-//			  }
+		   	  //change:function(combo,newValue, oldValue){
+		   	  	
+			  //}
 		   }
 	  }); 
 	  var only_have_scap_checkbox=Ext.create('Ext.form.field.Checkbox',{
@@ -249,6 +248,13 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 					only_have_scap:only_have_scap_checkbox.getValue()
 				}
 			  });
+			  
+			  
+				if(status_combo.getValue()==2){
+					me.toggleEcodeField(true);
+				} else {
+					me.toggleEcodeField(false);
+				}
 			}
 	  });
 
@@ -259,7 +265,7 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 		name:'encode',
 		labelWidth:60,
 		width:230,
-		//disabled:true,
+		disabled:true,
 		fieldLabel: '扫描选择',
 		minLength:Ext.ecode_length,
 		maxLength:Ext.ecode_length,
@@ -288,14 +294,15 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 				ecode_textfield.setValue("");
 				ecode_textfield.clearInvalid( );
 			}
-		}
+		}	
 	  });
+	  me.ecode_textfield=ecode_textfield;
 	  
 	  //出库，维修好后出库
 	  var str_out_button=Ext.create("Ext.button.Button",{
 			text:'出库',
 			margin:'0 0 0 5',
-			//disabled:true,
+			disabled:true,
 			icon:Ext.ContextPath+"/icons/database_go.png",
 			handler:function(btn){
 				var rpa_id=repair_combox.getValue();
@@ -334,8 +341,13 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 						}
 					});
 				}
+				
+				
 			}
 	  });
+	  me.str_out_button=str_out_button;
+	  
+	  
 	  me.tbar={
 		xtype: 'container',
 		layout: 'anchor',
@@ -352,6 +364,16 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 	
 	  me.on('itemdblclick',me.recordDbclick);
       me.callParent();
+	},
+	toggleEcodeField:function(bool){
+		if(bool){
+			this.ecode_textfield.enable();
+			this.str_out_button.enable();
+		} else {
+			this.ecode_textfield.disable();	
+			this.str_out_button.disable();	
+		}
+		
 	},
 	recordDbclick:function(view, record){
 		
@@ -385,8 +407,13 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 		var form=Ext.create('Ems.repair.ScrapForm',{
 			listeners:{
 				scraped:function(){
+					alert("报废单生成成功");
 					repair.set("status",5);
 					repair.set("status_name",'报废确认中');
+					win.close();
+				},
+				saved:function(){
+					alert("保存成功");
 					win.close();
 				}
 			}					

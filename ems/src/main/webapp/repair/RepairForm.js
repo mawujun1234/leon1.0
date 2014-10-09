@@ -144,10 +144,11 @@ Ext.define('Ems.repair.RepairForm',{
                     items: [{
                         name: 'broken_reson',
                         fieldLabel: '故障原因',
+                        afterLabelTextTpl: Ext.required,
                         flex: 1,
                         xtype:'textarea',
                         readOnly:false,
-                        allowBlank: true
+                        allowBlank: false
                     }]
      },{
                     xtype: 'fieldcontainer',

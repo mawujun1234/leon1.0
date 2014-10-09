@@ -52,6 +52,7 @@
 				$("#page_taskes_new_errorMsg").html("请先选择一个杆位");
 				return;
 			}
+			params.memo=$("#page_taskes_new_memo").val();
 			$.ajax({   
 				url : $.ServerPath+"/task/mobile/create.do",  
 				data:params,  

@@ -146,14 +146,14 @@ Ext.onReady(function(){
 //			ecode_textfield.clearInvalid( );
 //			return;
 //		}
-		if(!store_id_temp){
+		//if(!store_id_temp){
 			store_id_temp=store_combox.getValue();
-		} else if(store_id_temp!=store_combox.getValue()){
-			Ext.Msg.alert("消息","对不起，一次入库只能选择一个仓库.");
-			ecode_textfield.setValue("");
-			ecode_textfield.clearInvalid( );
-			return;
-		}
+		//} else if(store_id_temp!=store_combox.getValue()){
+		//	Ext.Msg.alert("消息","对不起，一次入库只能选择一个仓库.");
+		//	ecode_textfield.setValue("");
+		//	ecode_textfield.clearInvalid( );
+		//	return;
+		//}
 		
 		var form= step1.down('form').getForm();
 		if(newValue.length>=Ext.ecode_length){
@@ -166,10 +166,7 @@ Ext.onReady(function(){
 					success : function(response) {//加载成功的处理函数   
 						var ret=Ext.decode(response.responseText);
 						if(ret.success){
-							if(ret.root.status!=0){//这是新设备入库的情况
-								Ext.Msg.alert("消息","该设备为非新增设备,不能添加到入库列表.");
-								return;
-							}
+							
 							//为新增的equipment添加仓库等其他信息
 							ret.root.store_id=store_combox.getValue();
 							ret.root.store_name=store_combox.getRawValue();

@@ -211,6 +211,12 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 					only_have_scap:only_have_scap_checkbox.getValue()
 				  }
 			    });
+			    
+			    if(status_combo.getValue()==3){
+					me.toggleEcodeField(true);
+				} else {
+					me.toggleEcodeField(false);
+				}
 			}
 	  });
 	  me.store.load({params:{
@@ -226,7 +232,7 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 		name:'encode',
 		labelWidth:60,
 		width:230,
-		//disabled:true,
+		disabled:true,
 		fieldLabel: '扫描选择',
 		minLength:Ext.ecode_length,
 		maxLength:Ext.ecode_length,
@@ -257,10 +263,11 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 			}
 		}
 	  });
+	   me.ecode_textfield=ecode_textfield;
 	  //入库按钮
 	  var str_in_button=Ext.create("Ext.button.Button",{
 			text:'入库',
-			//disabled:true,
+			disabled:true,
 			margin:'0 0 0 5',
 			icon:Ext.ContextPath+"/icons/database_copy.png",
 			handler:function(){
@@ -349,6 +356,8 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 				
 			}
 	  });
+	  me.str_in_button=str_in_button;
+	   
 	  me.tbar={
 		xtype: 'container',
 		layout: 'anchor',
@@ -364,6 +373,16 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 
        
       me.callParent();
+	},
+	toggleEcodeField:function(bool){
+		if(bool){
+			this.ecode_textfield.enable();
+			this.str_in_button.enable();
+		} else {
+			this.ecode_textfield.disable();	
+			this.str_in_button.disable();	
+		}
+		
 	},
 	makeSureScrapEquipment:function(repair){//报废设备
 		var form=Ext.create('Ems.repair.ScrapForm',{

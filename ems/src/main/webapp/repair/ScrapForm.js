@@ -62,7 +62,7 @@ Ext.define('Ems.repair.ScrapForm',{
 	    },
 		{
 	        fieldLabel: '报废原因',
-	        //afterLabelTextTpl: Ext.required,
+	        afterLabelTextTpl: Ext.required,
 	        name: 'reason',
 	        readOnly:me.storeer?true:false,
 	        grow :true,
@@ -72,7 +72,7 @@ Ext.define('Ems.repair.ScrapForm',{
 		
 		{
 	        fieldLabel: '残余值',
-	        //afterLabelTextTpl: Ext.required,
+	        afterLabelTextTpl: Ext.required,
 	        name: 'residual',
 	        readOnly:false,
 	        grow :true,

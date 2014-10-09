@@ -29,6 +29,8 @@ public class Repair  implements IdEntity<String>{
 	private String workunit_id;//报修人,就是维修小组
 	@Column(length=15)
 	private String installIn_id;//实施人员入库的单子
+	@Column(length=36) 
+	private String task_id;//故障描述
 	@Column(length=500) 
 	private String broken_memo;//故障描述
 	
@@ -207,6 +209,12 @@ public class Repair  implements IdEntity<String>{
 	}
 	public void setRpa_type(String rpa_type) {
 		this.rpa_type = rpa_type;
+	}
+	public String getTask_id() {
+		return task_id;
+	}
+	public void setTask_id(String task_id) {
+		this.task_id = task_id;
 	}
 
 }

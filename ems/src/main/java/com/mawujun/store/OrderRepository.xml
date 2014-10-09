@@ -44,6 +44,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     <!--a0.status作为Equipment的状态 -->
     <select id="getEquipFromBarcode" resultType="com.mawujun.baseinfo.EquipmentVO" parameterType="String">
     	select a0.ecode,a0.order_id,a0.status,
+    	a.store_id,
 		a.brand_id,
 		a.prod_id,
 		a.style,
@@ -52,7 +53,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		a.type_id,
 		a.unitprice
 		,b.name as subtype_name,c.name as prod_name,d.name as brand_name,e.name as supplier_name
-		from ems_barcode a0 inner join ems_order a on a0.order_id=a.id 
+		from ems_barcode a0 
+		inner join ems_order a on a0.order_id=a.id 
 		inner join ems_equipmentsubtype b on a.subtype_id=b.id
 		inner join ems_equipmentprod c on a.prod_id=c.id
 		inner join ems_brand d on a.brand_id=d.id

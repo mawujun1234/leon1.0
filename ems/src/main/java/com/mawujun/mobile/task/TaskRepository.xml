@@ -130,5 +130,16 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		where (a.address like #{pole_name} or a.area like #{pole_name} or a.city like #{pole_name} or a.name like  #{pole_name}) and b.workunit_id=#{workunit_id}
 		
     </select>
+    
+    <!-- 根据条码查找最近的关联的维修任务，获取维修任务id和故障信息 ,主要用于创建维修单的时候-->
+    <select id="queryMaxId_ecode" resultType="com.mawujun.mobile.task.Task" parameterType="string">
+    	select * from (
+			select a.*,rownum rn from ems_task a,ems_taskequipmentlist b
+			where a.id=b.task_id and  ecode=#{ecode}
+			and a.type='repair' and b.type='uninstall'
+			and a.status in('complete','submited')
+			order by a.submitDate desc
+		) t where t.rn &lt;=1  
+    </select>
 </mapper>
 

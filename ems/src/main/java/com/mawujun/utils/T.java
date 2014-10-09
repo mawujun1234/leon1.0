@@ -235,7 +235,6 @@ public static final class ems_task {
 public static final class ems_taskequipmentlist {
 	public static final String task_id="task_id";
 	public static final String ecode="ecode";
-	public static final String scanDate="scanDate";
 	public static final String type="type";
 	public static final String id="id";
 }
@@ -245,6 +244,7 @@ public static final class ems_repair {
 	public static final String repair_date="repair_date";
 	public static final String workunit_id="workunit_id";
 	public static final String installIn_id="installIn_id";
+	public static final String task_id="task_id";
 	public static final String broken_memo="broken_memo";
 	public static final String str_out_oper_id="str_out_oper_id";
 	public static final String str_out_date="str_out_date";
