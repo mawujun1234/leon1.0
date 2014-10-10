@@ -148,5 +148,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	select count(1) from ems_equipment where status not in (2,3,4)
 		and ecode in (select ecode from ems_taskequipmentlist where task_id=#{task_id})
     </select>
+    <select id="count_task_quip_status1" resultType="string" parameterType="string">
+    	select ecode from ems_equipment where status not in (2,3,4)
+		and ecode in 
+		<foreach item="item" index="index" collection="ecodes" open="(" separator="," close=")">  
+		 #{item}  
+		</foreach>
+    </select>
+    <select id="query_task_equip_list" resultType="string" parameterType="string">
+    	select ecode from ems_taskequipmentlist where task_id=#{task_id}
+    </select>
 </mapper>
 

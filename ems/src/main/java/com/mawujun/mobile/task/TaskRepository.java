@@ -21,6 +21,15 @@ public interface TaskRepository extends IRepository<Task, String>{
 	public Page queryPoles(Page page);
 	public int count_task_quip_status(@Param("task_id")String task_id);
 	/**
+	 * 返回已经入库的条码
+	 * @author mawujun 16064988@qq.com 
+	 * @param task_id
+	 * @param ecodes
+	 * @return
+	 */
+	public List<String> count_task_quip_status1(@Param("task_id")String task_id,@Param("ecodes")List<String> ecodes);
+	public List<String> query_task_equip_list(@Param("task_id")String task_id);
+	/**
 	 * 根据条码查询最新的任务信息
 	 * @author mawujun email:160649888@163.com qq:16064988
 	 * @param page

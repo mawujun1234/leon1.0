@@ -1,12 +1,14 @@
 package com.mawujun.mobile.task;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 
 
 
@@ -209,6 +211,7 @@ public class TaskService extends AbstractService<Task, String>{
 			throw new BusinessException("已提交和已完成的任务不能取消!");
 		}
 		//判断任务里面的设备是否已经如果入库，不是安装出库，手持和使用中状态就不能取消
+		//因为提交后就修改了设备的状态
 		int count=taskRepository.count_task_quip_status(id);
 		if(count>0){
 			throw new BusinessException("不能取消这个任务,里面的设备已经入库!");
@@ -218,11 +221,8 @@ public class TaskService extends AbstractService<Task, String>{
 	}
 	public void mobile_save(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason,String[] ecodes) {
 		
-//		//首先判断要删除的设备是否存在不是指定状态的设备
-//		int count=taskRepository.count_task_quip_status(task_id);
-//		if(count>0){
-//			throw new BusinessException("不能提交这个任务,因为把已经入库的设备从这个任务中给删除了!");
-//		}
+		check_equip_status(task_id,ecodes);
+		
 		taskEquipmentListRepository.deleteBatch(Cnd.delete().andEquals(M.TaskEquipmentList.task_id, task_id));
 		
 		Task task=taskRepository.get(task_id);
@@ -253,7 +253,51 @@ public class TaskService extends AbstractService<Task, String>{
 		}
 		
 	}
-	
+	/**
+	 * 这个判断主要用于，在提交后，然后又退回的时候，防止已经入过库的设备从这个任务中删除
+	 * 返回值是删除的并且已入库的条码
+	 * @author mawujun 16064988@qq.com 
+	 * @param task_id
+	 * @param ecodes
+	 */
+	private List<String> check_equip_status(String task_id ,String[] ecodes){
+		//首先判断要删除的设备是否存在不是指定状态的设备
+				//获取现有的设备和已经存在的设备的差异，判断差异设备的状态就行了
+				//查询当前任务中拥有的设备
+				List<String> eqip_list=taskRepository.query_task_equip_list(task_id);
+				//循环出删掉的设备
+				List<String> delEcodes=new ArrayList<String>();
+				
+				if(ecodes==null){
+					delEcodes=eqip_list;
+				} else {
+					boolean isDel=true;
+					for(String ecode:eqip_list){
+						isDel=true;
+						for(String newecode:ecodes){
+							if(ecode.equals(newecode)){
+								isDel=false;
+								break;
+							}
+						}
+						if(isDel){
+							delEcodes.add(ecode);
+						}
+						
+					}
+				}
+				
+				if(delEcodes.size()>0){
+					List<String> count=taskRepository.count_task_quip_status1(task_id,delEcodes);
+					if(count.size()>0){
+						throw new BusinessException("不能保存或提交,已经入库的设备不能删除!");
+					}
+					return count;
+				} else {
+					return new ArrayList<String>();
+				}
+				 
+	}
 	/**
 	 * 还要判断在安装和维修时，同个设备被扫描了两次的情况，这个时候在提交的时候还要进行判断
 	 * @author mawujun email:160649888@163.com qq:16064988
@@ -265,26 +309,40 @@ public class TaskService extends AbstractService<Task, String>{
 		AssertUtils.notNull(task_type);
 		AssertUtils.notEmpty(ecodes);
 		Task task=taskRepository.get(task_id);
+		
+		//已入库的不能删除
+		check_equip_status(task_id,ecodes);
+		
+		//List<String> instore_ecodes=
+		如果是退回，就只取还没有入库的设备进行判断(已入库的设备因为不能删除，就不需要进行判断了)，
+		如果不是退回的状态，而是正常的处理中，就需要对所有的设备进行状态判断
+		
 		//获取所有的设备
 		List<Equipment> equipments_temp=equipmentRepository.query(Cnd.select().andIn(M.Equipment.ecode, ecodes));
 		Map<String,Equipment> equipments=new HashMap<String,Equipment>();
+		boolean is_instore_ecode=false;
 		for(Equipment equ:equipments_temp){
-			//还要判断在安装和维修时，同个设备被扫描了两次的情况，这个时候在提交的时候还要进行判断
-			checkEquip(task,equ);
-			equipments.put(equ.getEcode(), equ);
+			//已入库的设备,不用进行状态检查了
+			is_instore_ecode=false;
+			for(String instore_ecode:instore_ecodes){
+				if(equ.getEcode().equals(instore_ecode)){
+					is_instore_ecode=true;
+					break;
+				}
+			}
+			if(!is_instore_ecode){
+				//还要判断在安装和维修时，同个设备被扫描了两次的情况，这个时候在提交的时候还要进行判断
+				checkEquip(task,equ);
+				equipments.put(equ.getEcode(), equ);
+			}
+			
 		}
 
-		//首先判断要删除的设备是否存在不是指定状态的设备
-		//获取现有的设备和已经存在的设备的差异，判断差异设备的状态就行了
-		....
-		int count=taskRepository.count_task_quip_status(task_id,ecodes);
-		if(count>0){
-			throw new BusinessException("不能提交这个任务,因为把已经入库的设备从这个任务中给删除了!");
-		}
+		
+		
+		
 		//全部重新保存，因为不知道哪些是更新过的
-		taskEquipmentListRepository.deleteBatch(Cnd.delete().andEquals(M.TaskEquipmentList.task_id, task_id));
-		
-		
+		taskEquipmentListRepository.deleteBatch(Cnd.delete().andEquals(M.TaskEquipmentList.task_id, task_id));			
 		Set<String> existinsert=new HashSet<String>();
 		for(String ecode:ecodes){
 			if(existinsert.contains(ecode)){

@@ -55,7 +55,7 @@ Ext.define('Ems.task.TaskQueryGrid',{
 			autoSync:false,
 			pageSize:me.pageSize,
 			model: 'Ems.task.Task',
-			autoLoad:false,
+			autoLoad:true,
 			proxy:{
 				type:'ajax',
 				url:Ext.ContextPath+'/task/query.do',

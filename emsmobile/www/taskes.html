@@ -557,7 +557,6 @@ $(document).ready(function(e) {
 			//console.dir(event.target);
 			//触发的是<a>,但删除的是div，所以要parent
 			window.equipmentInfoCollapsible=$(event.target).parent().parent();
-			alert(window.equipmentInfoCollapsible);
 			
 			//$( "#popupArrow" ).popup( "open", { positionTo:event.target,transition: "pop" } );
 			$( "#"+page_id+"_deleteEquipmentInfo_popup" ).popup( "open", { positionTo:event.target,transition: "pop" } );
