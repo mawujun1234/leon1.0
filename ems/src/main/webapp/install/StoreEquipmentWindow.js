@@ -67,6 +67,7 @@ Ext.define('Ems.install.StoreEquipmentWindow',{
 	    var subtype_combox=Ext.create('Ems.baseinfo.SubtypeCombo',{
 			labelAlign:'right',
 			labelWidth:40,
+			editable:false,
 			minChars:-1//表示默认点击的时候就查询出所有的数据
 			,listeners:{
 				change:function(field,newValue, oldValue){
@@ -79,16 +80,19 @@ Ext.define('Ems.install.StoreEquipmentWindow',{
 		var prod_combox=Ext.create('Ems.baseinfo.ProdCombo',{
 			labelAlign:'right',
 			labelWidth:40,
+			editable:false,
 			minChars:-1
 		});
 		var brand_combox=Ext.create('Ems.baseinfo.BrandCombo',{
 			labelAlign:'right',
 			labelWidth:40,
+			editable:false,
 			minChars:-1
 		});
 		var supplier_combox=Ext.create('Ems.baseinfo.SupplierCombo',{
 			labelAlign:'right',
 			labelWidth:40,
+			editable:false,
 			minChars:-1
 		});
 		

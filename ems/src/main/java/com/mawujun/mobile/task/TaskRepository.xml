@@ -141,5 +141,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			order by a.submitDate desc
 		) t where t.rn &lt;=1  
     </select>
+    
+    
+    <!-- 判断任务中的设备状态，是否存在不是安装出库，使用中和损坏状态的设备了 -->
+    <select id="count_task_quip_status" resultType="int" parameterType="string">
+    	select count(1) from ems_equipment where status not in (2,3,4)
+		and ecode in (select ecode from ems_taskequipmentlist where task_id=#{task_id})
+    </select>
 </mapper>
 

@@ -110,11 +110,7 @@ public class TaskController {
 	@RequestMapping("/task/cancel.do")
 	@ResponseBody
 	public String cancel(String id) {
-		Task task=taskService.get(id);
-		if(task.getStatus()==TaskStatus.complete){
-			throw new BusinessException("已完成的任务不能取消!");
-		}
-		taskService.deleteBatch(Cnd.delete().andEquals(M.Task.id, id));
+		taskService.cancel(id);
 		return "success";
 	}
 //

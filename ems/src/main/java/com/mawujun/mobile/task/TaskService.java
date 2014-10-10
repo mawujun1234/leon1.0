@@ -22,6 +22,8 @@ import java.util.Set;
 
 
 
+
+
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -201,7 +203,26 @@ public class TaskService extends AbstractService<Task, String>{
 		return equipmentVO;
 	}
 	
+	public void cancel(String id) {
+		Task task=this.get(id);
+		if(task.getStatus()==TaskStatus.complete){
+			throw new BusinessException("已提交和已完成的任务不能取消!");
+		}
+		//判断任务里面的设备是否已经如果入库，不是安装出库，手持和使用中状态就不能取消
+		int count=taskRepository.count_task_quip_status(id);
+		if(count>0){
+			throw new BusinessException("不能取消这个任务,里面的设备已经入库!");
+		}
+		
+		this.deleteBatch(Cnd.delete().andEquals(M.Task.id, id));
+	}
 	public void mobile_save(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason,String[] ecodes) {
+		
+//		//首先判断要删除的设备是否存在不是指定状态的设备
+//		int count=taskRepository.count_task_quip_status(task_id);
+//		if(count>0){
+//			throw new BusinessException("不能提交这个任务,因为把已经入库的设备从这个任务中给删除了!");
+//		}
 		taskEquipmentListRepository.deleteBatch(Cnd.delete().andEquals(M.TaskEquipmentList.task_id, task_id));
 		
 		Task task=taskRepository.get(task_id);
@@ -253,8 +274,17 @@ public class TaskService extends AbstractService<Task, String>{
 			equipments.put(equ.getEcode(), equ);
 		}
 
+		//首先判断要删除的设备是否存在不是指定状态的设备
+		//获取现有的设备和已经存在的设备的差异，判断差异设备的状态就行了
+		....
+		int count=taskRepository.count_task_quip_status(task_id,ecodes);
+		if(count>0){
+			throw new BusinessException("不能提交这个任务,因为把已经入库的设备从这个任务中给删除了!");
+		}
 		//全部重新保存，因为不知道哪些是更新过的
 		taskEquipmentListRepository.deleteBatch(Cnd.delete().andEquals(M.TaskEquipmentList.task_id, task_id));
+		
+		
 		Set<String> existinsert=new HashSet<String>();
 		for(String ecode:ecodes){
 			if(existinsert.contains(ecode)){

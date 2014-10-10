@@ -19,6 +19,7 @@ import com.mawujun.mobile.task.Task;
 public interface TaskRepository extends IRepository<Task, String>{
 	public String queryMax_id(@Param("createDate")String createDate);
 	public Page queryPoles(Page page);
+	public int count_task_quip_status(@Param("task_id")String task_id);
 	/**
 	 * 根据条码查询最新的任务信息
 	 * @author mawujun email:160649888@163.com qq:16064988
