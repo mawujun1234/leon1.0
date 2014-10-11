@@ -21,6 +21,7 @@ import com.mawujun.baseinfo.Equipment;
 import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.EquipmentStatus;
 import com.mawujun.baseinfo.EquipmentVO;
+import com.mawujun.exception.BusinessException;
 import com.mawujun.install.InstallIn;
 import com.mawujun.install.InstallInRepository;
 
@@ -49,7 +50,17 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 	}
 	
 	public EquipmentVO getEquipmentByEcode(String ecode,String workunit_id) {
-		return installInRepository.getEquipmentByEcode(ecode,workunit_id);
+		EquipmentVO equipment= installInRepository.getEquipmentByEcode(ecode,workunit_id);
+		if(equipment==null){
+			//equipment=new Equipment();
+			//equipment.setStatus(0);
+			throw new BusinessException("该条码对应的设备不存在，或者该设备挂在其他作业单位或已经入库了!");
+		}
+		//设备返库的时候，设备如果不是手持或损坏状态的话，就不能进行返库，说明任务没有扫描或者没有提交
+		if(equipment.getStatus()!=EquipmentStatus.out_storage.getValue() || equipment.getStatus()!=EquipmentStatus.breakdown.getValue()){
+			throw new BusinessException("设备状态不对,不是作业单位手中持有的设备!");
+		}
+		return equipment;
 	}
 	
 	

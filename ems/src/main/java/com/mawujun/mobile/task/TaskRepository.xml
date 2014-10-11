@@ -158,5 +158,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     <select id="query_task_equip_list" resultType="string" parameterType="string">
     	select ecode from ems_taskequipmentlist where task_id=#{task_id}
     </select>
+    <!-- 检查其他任务是否已经扫描过这个设备了 -->
+    <select id="query_other_task_have_scaned" resultType="string" parameterType="string">
+    	select a.id from ems_task a,ems_taskequipmentlist b 
+		where a.status in ('handling','submited')
+		and a.id=b.task_id
+		and a.workunit_id=#{workunit_id}
+		and b.ecode=#{ecode}
+    </select>
 </mapper>
 

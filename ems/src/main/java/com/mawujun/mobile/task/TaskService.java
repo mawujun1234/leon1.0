@@ -151,9 +151,10 @@ public class TaskService extends AbstractService<Task, String>{
 	
 	/**
 	 * 检查任务和设备的状态
+	 * 并且判断是不是当前用户持有的设备
 	 * @author mawujun email:160649888@163.com qq:16064988
 	 */
-	public void checkEquip(Task task,Equipment equipmentVO){
+	public void checkEquipStatus(Task task,Equipment equipmentVO){
 		//Task task=taskRepository.get(task_id);
 		
 		
@@ -201,7 +202,19 @@ public class TaskService extends AbstractService<Task, String>{
 			throw new BusinessException("没有这个设备");
 		}
 		Task task=taskRepository.get(task_id);
-		checkEquip(task,equipmentVO);
+		//
+		checkEquipStatus(task,equipmentVO);
+		//还要判断是否有其他任务扫描过这个设备了，其他还是处理中和提交状态的
+		if(!TaskType.patrol.equals(task.getType())){
+			List<String> taskes=taskRepository.query_other_task_have_scaned(ShiroUtils.getAuthenticationInfo().getId(), ecode);
+			if(taskes!=null && taskes.size()>0){
+				throw new BusinessException("任务"+taskes.get(0)+"已经扫描了这个设备");
+			}
+		}
+		
+		
+		
+		
 		return equipmentVO;
 	}
 	
@@ -220,7 +233,7 @@ public class TaskService extends AbstractService<Task, String>{
 		this.deleteBatch(Cnd.delete().andEquals(M.Task.id, id));
 	}
 	public void mobile_save(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason,String[] ecodes) {
-		
+		//已入库的不能删除
 		check_equip_status(task_id,ecodes);
 		
 		taskEquipmentListRepository.deleteBatch(Cnd.delete().andEquals(M.TaskEquipmentList.task_id, task_id));
@@ -254,7 +267,7 @@ public class TaskService extends AbstractService<Task, String>{
 		
 	}
 	/**
-	 * 这个判断主要用于，在提交后，然后又退回的时候，防止已经入过库的设备从这个任务中删除
+	 * 这个判断主要用于，//已入库的不能删除
 	 * 返回值是删除的并且已入库的条码
 	 * @author mawujun 16064988@qq.com 
 	 * @param task_id
@@ -290,7 +303,7 @@ public class TaskService extends AbstractService<Task, String>{
 				if(delEcodes.size()>0){
 					List<String> count=taskRepository.count_task_quip_status1(task_id,delEcodes);
 					if(count.size()>0){
-						throw new BusinessException("不能保存或提交,已经入库的设备不能删除!");
+						throw new BusinessException("不能保存或提交,"+count.get(0)+"已经入库不能删除!");
 					}
 					return count;
 				} else {
@@ -313,31 +326,22 @@ public class TaskService extends AbstractService<Task, String>{
 		//已入库的不能删除
 		check_equip_status(task_id,ecodes);
 		
-		//List<String> instore_ecodes=
-		如果是退回，就只取还没有入库的设备进行判断(已入库的设备因为不能删除，就不需要进行判断了)，
-		如果不是退回的状态，而是正常的处理中，就需要对所有的设备进行状态判断
-		
-		//获取所有的设备
+
+//		//获取所有的设备
+//		List<Equipment> equipments_temp=equipmentRepository.query(Cnd.select().andIn(M.Equipment.ecode, ecodes));
+//		Map<String,Equipment> equipments=new HashMap<String,Equipment>();
+//		boolean is_instore_ecode=false;
+//		for(Equipment equ:equipments_temp){
+//				//还要判断在安装和维修时，同个设备被扫描了两次的情况，这个时候在提交的时候还要进行判断
+//				checkEquip(task,equ);
+//				equipments.put(equ.getEcode(), equ);
+//			
+//		}
 		List<Equipment> equipments_temp=equipmentRepository.query(Cnd.select().andIn(M.Equipment.ecode, ecodes));
 		Map<String,Equipment> equipments=new HashMap<String,Equipment>();
-		boolean is_instore_ecode=false;
 		for(Equipment equ:equipments_temp){
-			//已入库的设备,不用进行状态检查了
-			is_instore_ecode=false;
-			for(String instore_ecode:instore_ecodes){
-				if(equ.getEcode().equals(instore_ecode)){
-					is_instore_ecode=true;
-					break;
-				}
-			}
-			if(!is_instore_ecode){
-				//还要判断在安装和维修时，同个设备被扫描了两次的情况，这个时候在提交的时候还要进行判断
-				checkEquip(task,equ);
-				equipments.put(equ.getEcode(), equ);
-			}
-			
+			equipments.put(equ.getEcode(), equ);
 		}
-
 		
 		
 		

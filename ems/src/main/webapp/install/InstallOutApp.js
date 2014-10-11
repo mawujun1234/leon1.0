@@ -237,22 +237,22 @@ Ext.onReady(function(){
 //			ecode_textfield.clearInvalid( );
 //			return;
 //		}
-		if(!store_id_temp){
+		//if(!store_id_temp){
 			store_id_temp=store_combox.getValue();
-		} else if(store_id_temp!=store_combox.getValue()){
-			Ext.Msg.alert("消息","对不起，一次入库只能选择一个仓库.");
-			ecode_textfield.setValue("");workUnit_combox
-			ecode_textfield.clearInvalid( );
-			return;
-		}
-		if(!workUnit_id_temp){
+		//} else if(store_id_temp!=store_combox.getValue()){
+		//	Ext.Msg.alert("消息","对不起，一次入库只能选择一个仓库.");
+		//	ecode_textfield.setValue("");workUnit_combox
+		//	ecode_textfield.clearInvalid( );
+		//	return;
+		//}
+		//if(!workUnit_id_temp){
 			workUnit_id_temp=workUnit_combox.getValue();
-		} else if(workUnit_id_temp!=workUnit_combox.getValue()){
-			Ext.Msg.alert("消息","对不起，一次出库库只能选择一个作业单位.");
-			ecode_textfield.setValue("");
-			ecode_textfield.clearInvalid( );
-			return;
-		}
+		//} else if(workUnit_id_temp!=workUnit_combox.getValue()){
+		//	Ext.Msg.alert("消息","对不起，一次出库库只能选择一个作业单位.");
+		//	ecode_textfield.setValue("");
+		//	ecode_textfield.clearInvalid( );
+		//	return;
+		//}
 		
 		var form= step1.down('form').getForm();
 		if(newValue.length>=Ext.ecode_length){

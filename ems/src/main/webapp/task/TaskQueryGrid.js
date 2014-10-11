@@ -33,6 +33,7 @@ Ext.define('Ems.task.TaskQueryGrid',{
 	initComponent: function () {
       var me = this;
       me.columns=[
+        {dataIndex:'id',text:'任务编号',width:100},
 		{dataIndex:'status_name',text:'状态',width:50,renderer:function(value,meta,record){
 			if(record.get("status")=='submited'){
 				return '<span style="color:red;">'+value+'</span>';

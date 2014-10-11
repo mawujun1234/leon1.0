@@ -110,11 +110,7 @@ public class InstallInController {
 	@ResponseBody
 	public EquipmentVO getEquipmentByEcode(String ecode,String workunit_id) {
 		EquipmentVO equipment= installInService.getEquipmentByEcode(ecode,workunit_id);
-		if(equipment==null){
-			//equipment=new Equipment();
-			//equipment.setStatus(0);
-			throw new BusinessException("对不起，该条码对应的设备不存在，或者该设备挂在其他作业单位或已经入库了!");
-		}
+		
 		return equipment;
 	}
 	

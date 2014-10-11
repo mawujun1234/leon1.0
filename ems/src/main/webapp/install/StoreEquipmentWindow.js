@@ -68,6 +68,7 @@ Ext.define('Ems.install.StoreEquipmentWindow',{
 			labelAlign:'right',
 			labelWidth:40,
 			editable:false,
+			hidden:true,
 			minChars:-1//表示默认点击的时候就查询出所有的数据
 			,listeners:{
 				change:function(field,newValue, oldValue){
@@ -80,6 +81,7 @@ Ext.define('Ems.install.StoreEquipmentWindow',{
 		var prod_combox=Ext.create('Ems.baseinfo.ProdCombo',{
 			labelAlign:'right',
 			labelWidth:40,
+			hidden:true,
 			editable:false,
 			minChars:-1
 		});

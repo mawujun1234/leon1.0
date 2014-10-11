@@ -593,16 +593,16 @@ $(document).ready(function(e) {
 			success : function(data){
 				if(data.success==true){	
 					var root=data.root;
-					if(root.status!=2 && taskInfoParam.type=='newInstall'){
-						alert("设备没有不是'安装出库'状态，不能进行安装!");
-						return;
-					} else if((root.status!=2 && root.status!=3) && taskInfoParam.type=='repair'){
-						alert("设备没有不是'安装出库','使用中'状态，不能进行扫描!");
-						return;
-					} else if(root.status!=3 && taskInfoParam.type=='patrol'){
-						alert("设备没有不是'使用中'状态，不能进行扫描!");
-						return;
-					}
+	//				if(root.status!=2 && taskInfoParam.type=='newInstall'){
+//						alert("设备没有不是'安装出库'状态，不能进行安装!");
+//						return;
+//					} else if((root.status!=2 && root.status!=3) && taskInfoParam.type=='repair'){
+//						alert("设备没有不是'安装出库','使用中'状态，不能进行扫描!");
+//						return;
+//					} else if(root.status!=3 && taskInfoParam.type=='patrol'){
+//						alert("设备没有不是'使用中'状态，不能进行扫描!");
+//						return;
+//					}
 					renderEquipmentInfo(root);
 					
 				}

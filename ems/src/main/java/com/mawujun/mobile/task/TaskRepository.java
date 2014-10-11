@@ -30,6 +30,14 @@ public interface TaskRepository extends IRepository<Task, String>{
 	public List<String> count_task_quip_status1(@Param("task_id")String task_id,@Param("ecodes")List<String> ecodes);
 	public List<String> query_task_equip_list(@Param("task_id")String task_id);
 	/**
+	 * 查询其他扫描过这个设备的任务列表
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param workunit_id
+	 * @param ecode
+	 * @return
+	 */
+	public List<String> query_other_task_have_scaned(@Param("workunit_id")String workunit_id,@Param("ecode")String ecode);
+	/**
 	 * 根据条码查询最新的任务信息
 	 * @author mawujun email:160649888@163.com qq:16064988
 	 * @param page
