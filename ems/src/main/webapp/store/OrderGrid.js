@@ -55,7 +55,7 @@ Ext.define('Ems.store.OrderGrid',{
 	  var store_combox=Ext.create('Ext.form.field.ComboBox',{
 	        fieldLabel: '入库仓库',
 	        labelAlign:'right',
-            labelWidth:55,
+            labelWidth:60,
 	        //xtype:'combobox',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'store_id',
@@ -79,7 +79,7 @@ Ext.define('Ems.store.OrderGrid',{
 	  
 	  var date_start=Ext.create('Ext.form.field.Date',{
 	  	fieldLabel: '时间范围',
-	  	labelWidth:50,
+	  	labelWidth:60,
 	  	width:150,
 	  	format:'Y-m-d',
         //name: 'date_start',

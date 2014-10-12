@@ -13,6 +13,7 @@ import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 import com.mawujun.baseinfo.Equipment;
 import com.mawujun.baseinfo.EquipmentService;
+import com.mawujun.baseinfo.EquipmentStatus;
 import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.exception.BusinessException;
@@ -121,6 +122,10 @@ public class InstallOutController {
 			//equipment=new Equipment();
 			//equipment.setStatus(0);
 			throw new BusinessException("对不起，该条码对应的设备不存在，或者该设备挂在其他仓库中!");
+		}
+		//设备返库的时候，设备如果不是手持或损坏状态的话，就不能进行返库，说明任务没有扫描或者没有提交
+		if(equipment.getStatus()!=EquipmentStatus.in_storage.getValue()){
+			throw new BusinessException("设备状态不是\"已入库\",不能领用该设备!");
 		}
 		return equipment;
 	}

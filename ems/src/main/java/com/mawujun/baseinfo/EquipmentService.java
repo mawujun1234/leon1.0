@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mawujun.exception.BusinessException;
 import com.mawujun.service.AbstractService;
 
 
@@ -27,7 +28,9 @@ public class EquipmentService extends AbstractService<Equipment, String>{
 
 	
 	public EquipmentVO getEquipmentByEcode(String ecode,String store_id) {
-		return equipmentRepository.getEquipmentByEcode(ecode,store_id);
+		EquipmentVO equipment =equipmentRepository.getEquipmentByEcode(ecode,store_id);
+		
+		return equipment;
 	}
 	
 	public EquipmentVO getEquipmentInfo(String ecode) {

@@ -148,6 +148,8 @@ Ext.onReady(function(){
 		labelWidth:55,
 		fieldLabel: '<b>请领数</b>',
 		name:'requestnum',
+		hidden:true,
+		value:0,
 		width:110,
 		readOnly:false,
 		allowBlank:false
