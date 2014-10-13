@@ -28,8 +28,13 @@ Ext.define('Ems.baseinfo.EquipmentTypeTree', {
 				beforeload:function(store,operation){
 					var node=operation.node;//me.getSelectionModel( ).getLastSelected( );
 					//console.dir(operation);
-					operation.params.isGrid=false;
-					operation.params.levl=node?node.get("levl"):null;
+					//operation.params.isGrid=false;
+					//operation.params.status=true;
+					//operation.params.levl=node?node.get("levl"):null;
+					store.getProxy().extraParams=Ext.apply(store.getProxy().extraParams,{
+						isGrid:false,
+						levl:node?node.get("levl"):null
+					});
 				}
 			}
 		});
@@ -122,6 +127,24 @@ Ext.define('Ems.baseinfo.EquipmentTypeTree', {
 		//me.addAction(reload);
 		actions.push(reload);
 
+		var checkbox=Ext.create('Ext.form.field.Checkbox',{
+			boxLabel  : '只有在用',
+            name      : 'status',
+             checked:true,
+            listeners:{
+            	change:function(checkbox,newValue, oldValue){
+            		//alert(newValue);
+            		//me.store.getProxy().extraParams ={isGrid:false,status:newValue};
+            		me.store.getProxy().extraParams.status=newValue;
+            		//var parent=node||me.getSelectionModel( ).getLastSelected( );
+		    		//me.getStore().reload({node:parent});
+            		me.getStore().reload();
+            		
+            	}
+            }
+		});
+		actions.push(checkbox);
+		
 		me.tbar={
 			itemId:'action_toolbar',
 			layout: {

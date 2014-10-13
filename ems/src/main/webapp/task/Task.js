@@ -22,7 +22,8 @@ Ext.defineModel("Ems.task.Task",{
 		{name:'pole_name',type:'string'},
 		{name:'workunit_name',type:'string'},
 		{name:'status_name',type:'string'},
-		{name:'type_name',type:'string'}
+		{name:'type_name',type:'string'},
+		{name:'equipList',type:'string'}
 	],
 	associations:[
 	]

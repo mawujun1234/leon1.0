@@ -38,15 +38,25 @@ public class EquipmentTypeController {
 	 */
 	@RequestMapping("/equipmentType/query.do")
 	@ResponseBody
-	public List query(String id,Integer levl,Boolean isGrid) {
+	public List query(String id,Integer levl,Boolean isGrid,Boolean status) {
+		if(status==null){
+			status=true;
+		}
 		List equipmentTypees=null;
 		if(levl==null || levl==0){
-			equipmentTypees=equipmentTypeService.query(Cnd.select());
+			Cnd cnd=Cnd.select();
+			if(status){
+				cnd.andEquals(M.EquipmentType.status, status);
+			}
+			equipmentTypees=equipmentTypeService.query(cnd);
 		} else if(levl==1){
 			if(isGrid==null || isGrid==false){
 				//id=id.substring(0,id.indexOf('_'));
 			}
 			Cnd cnd=Cnd.select().andEquals(M.EquipmentSubtype.parent_id, "root".equals(id)?null:id);
+			if(status){
+				cnd.andEquals(M.EquipmentType.status, status);
+			}
 			equipmentTypees=equipmentSubtypeService.query(cnd);
 			for(int i=0;i<equipmentTypees.size();i++){
 				EquipmentSubtype obj=(EquipmentSubtype)equipmentTypees.get(i);
@@ -57,6 +67,9 @@ public class EquipmentTypeController {
 				//id=id.substring(0,id.indexOf('_'));
 			}
 			Cnd cnd=Cnd.select().andEquals(M.EquipmentSubtype.parent_id, "root".equals(id)?null:id);
+			if(status){
+				cnd.andEquals(M.EquipmentType.status, status);
+			}
 			equipmentTypees=equipmentProdService.query(cnd);
 		}
 //		//防止编码重复

@@ -37,10 +37,17 @@ public class EquipmentProdService extends AbstractService<EquipmentProd, String>
 	}
 	
 	public void delete(EquipmentProd entity) {
+		//判断有没有设备在引用，如果有就接着下一个判断，否则就直接删除
+		Long aa=equipmentRepository.queryCount(Cnd.select().andEquals(M.Equipment.prod_id, entity.getId()));
+		if(aa>0){
+			throw new BusinessException("该品名已经被使用,不能删除!");
+		} else {
+			this.getRepository().delete(entity);
+		}
 		//this
 		Long count=equipmentRepository.queryCount(Cnd.select().andEquals(M.Equipment.prod_id, entity.getId()).andNotIn(M.Equipment.status, 0,30));
 		if(count>0){
-			throw new BusinessException("还存在设备在使用该品名,不能删除!");
+			throw new BusinessException("还存在使用中的设备在使用该品名,不能取消该品名!");
 		}
 		
 		this.getRepository().update(Cnd.update().set(M.EquipmentProd.status, false).andEquals(M.EquipmentProd.id, entity.getId()));

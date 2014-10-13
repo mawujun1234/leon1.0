@@ -20,6 +20,8 @@ public interface TaskRepository extends IRepository<Task, String>{
 	public String queryMax_id(@Param("createDate")String createDate);
 	public Page queryPoles(Page page);
 	public int count_task_quip_status(@Param("task_id")String task_id);
+	
+	public List<EquipmentVO> queryEquipList(@Param("task_id")String task_id);
 	/**
 	 * 返回已经入库的条码
 	 * @author mawujun 16064988@qq.com 

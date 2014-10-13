@@ -18,6 +18,7 @@ import com.mawujun.baseinfo.EquipmentService;
 import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.baseinfo.Pole;
 import com.mawujun.baseinfo.PoleService;
+import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.shiro.ShiroUtils;
@@ -93,6 +94,37 @@ public class TaskController {
 			
 		}
 		return taskService.queryPage(page);
+	}
+	
+	/**
+	 * 获取某个任务的设备列表
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param task_id
+	 * @return
+	 */
+	@RequestMapping("/task/queryEquipList.do")
+	@ResponseBody
+	public String queryEquipList(String task_id) {
+		List<EquipmentVO> list= taskService.queryEquipList(task_id);
+		StringBuilder builder=new StringBuilder();
+		for(EquipmentVO vo:list){
+			builder.append(vo.getEcode());
+			builder.append("|");
+			builder.append(vo.getSubtype_name());
+			builder.append("|");
+			builder.append(vo.getProd_name());
+			builder.append("|");
+			builder.append(vo.getStyle());
+			builder.append("|");
+			builder.append(vo.getBrand_name());
+			builder.append("|");
+			builder.append(vo.getSupplier_name());
+//			builder.append("|");
+//			builder.append(vo.getStatus_name());
+			builder.append("<br/>");
+		}
+		//JsonConfigHolder.setAutoWrap(false);
+		return builder.toString();
 	}
 	@RequestMapping("/task/confirm.do")
 	@ResponseBody

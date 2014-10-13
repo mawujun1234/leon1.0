@@ -51,7 +51,6 @@ public class Equipment implements IdEntity<String>{
 	
 
 
-	
 
 	
 	@Override

@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 
@@ -37,10 +38,16 @@ public class EquipmentSubtypeService extends AbstractService<EquipmentSubtype, S
 	}
 
 	public void delete(EquipmentSubtype entity) {
+		Long aa=equipmentProdRepository.queryCount(Cnd.select().andEquals(M.EquipmentProd.parent_id, entity.getId()));
+		if(aa>0){
+			throw new BusinessException("该品名已经被使用,不能删除!");
+		}else {
+			this.getRepository().delete(entity);
+		}
 		//this
 		Long count=equipmentProdRepository.queryCount(Cnd.select().andEquals(M.EquipmentProd.parent_id, entity.getId()).andEquals(M.EquipmentProd.status, true));
 		if(count>0){
-			throw new BusinessException("还存在可用的存在品名,不能删除小类!");
+			throw new BusinessException("还存在可用的品名,不能取消小类!");
 		}
 		
 		this.getRepository().update(Cnd.update().set(M.EquipmentSubtype.status, false).andEquals(M.EquipmentSubtype.id, entity.getId()));

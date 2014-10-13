@@ -151,8 +151,8 @@ Ext.onReady(function(){
 		hidden:true,
 		value:0,
 		width:110,
-		readOnly:false,
-		allowBlank:false
+		readOnly:false
+		//allowBlank:false
 	});
 	
 	

@@ -102,9 +102,7 @@ public class EquipmentVO extends Equipment {
 	public void setPole_address(String pole_address) {
 		this.pole_address = pole_address;
 	}
-	public String getStatus_name() {
-		return status_name;
-	}
+
 	public void setStatus_name(String status_name) {
 		this.status_name = status_name;
 	}

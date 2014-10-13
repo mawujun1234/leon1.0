@@ -64,6 +64,7 @@ Ext.onReady(function(){
 	
 	var subtype_combox=Ext.create('Ems.baseinfo.SubtypeCombo',{
 		labelAlign:'right',
+		allowBlank: false,
 		labelWidth:50,
 		minChars:-1,
 		listeners:{
@@ -76,15 +77,18 @@ Ext.onReady(function(){
 	});
 	var prod_combox=Ext.create('Ems.baseinfo.ProdCombo',{
 		labelAlign:'right',
+		allowBlank: false,
 		minChars:-1	
 	});
 	var brand_combox=Ext.create('Ems.baseinfo.BrandCombo',{
-		labelAlign:'right'
-		,minChars:-1
+		labelAlign:'right',
+		allowBlank: false,
+		minChars:-1
 	});
 	var supplier_combox=Ext.create('Ems.baseinfo.SupplierCombo',{
-		labelAlign:'right'
-		,minChars:-1,
+		labelAlign:'right',
+		minChars:-1,
+		allowBlank: false,
 		queryParam: 'name',
     	queryMode: 'remote',
     	triggerAction: 'query',

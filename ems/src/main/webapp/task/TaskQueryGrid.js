@@ -9,27 +9,28 @@ Ext.define('Ems.task.TaskQueryGrid',{
 	viewConfig:{
 		stripeRows:true,
 		listeners:{
-			refresh:function(){
-				//this.select(0);
+			expandBody:function(rowNode, record, expandRow){
+				Ext.Ajax.request({
+					url:Ext.ContextPath+"/task/queryEquipList.do",
+					params:{task_id:record.get("id")},
+					success:function(response){
+						var obj=Ext.decode(response.responseText);
+						record.set("equipList",obj.root);
+					}
+				});
 			}
 		}
 	},
+	plugins:[{
+        ptype: 'rowexpander',
+        rowBodyTpl : new Ext.XTemplate(
+            '' +
+            '{equipList}' +
+            ''
+        )
+    }],
 	pageSize:50,
-//	selModel:new Ext.selection.CheckboxModel({
-//		checkOnly:true,
-//		showHeaderCheckbox:true//防止点全选，去选择
-////		renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-////			alert(record.get("status")+"测试在没有复选框的时候，getSelect会不会选择");
-////			if(record.get("status")!='installing' && !record.get("status")=='cancel' ){
-////				var baseCSSPrefix = Ext.baseCSSPrefix;
-////		        metaData.tdCls = baseCSSPrefix + 'grid-cell-special ' + baseCSSPrefix + 'grid-cell-row-checker';
-////		        return '<div class="' + baseCSSPrefix + 'grid-row-checker">&#160;</div>';
-////			} else {
-////				return "";
-////			}
-////	        
-////	    }
-//	}),
+
 	initComponent: function () {
       var me = this;
       me.columns=[
@@ -40,7 +41,7 @@ Ext.define('Ems.task.TaskQueryGrid',{
 			}
 			return value;
 		}},
-		{dataIndex:'type_name',text:'任务类型',width:50},
+		{dataIndex:'type_name',text:'任务类型',width:60},
 		{dataIndex:'pole_name',text:'杆位名称'},
 		{dataIndex:'pole_address',text:'地址',flex:1},
 		//{dataIndex:'area_name',text:'所属片区'},
@@ -74,12 +75,13 @@ Ext.define('Ems.task.TaskQueryGrid',{
 	        displayInfo: true
 	  }];
       
-//	  me.on('cellclick',function(view, td, cellIndex, record, tr, rowIndex, e, eOpts){
-//	  	//alert(cellIndex);
-//	  	if(cellIndex==2){
-//	  		me.showTaskForm(record,record.get("task_type"))
-//	  	}
+//	  //双击，查看该任务涉及的设备情况
+//	  me.on('itemdblclick',function(view, record, item, index){
+//	  	
 //	  });
+	  
+	 
+      
 	  me.initToolbar();
       me.callParent();
 	},

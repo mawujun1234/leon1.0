@@ -26,6 +26,7 @@ import java.util.Set;
 
 
 
+
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +78,10 @@ public class TaskService extends AbstractService<Task, String>{
 	}
 	
 	SimpleDateFormat ymdHmsDateFormat=new SimpleDateFormat("yyyyMMdd");
+	
+	public List<EquipmentVO> queryEquipList(String task_id) {
+		return taskRepository.queryEquipList(task_id);
+	}
 
 	public Page queryPoles(Page page) {
 		return taskRepository.queryPoles(page);

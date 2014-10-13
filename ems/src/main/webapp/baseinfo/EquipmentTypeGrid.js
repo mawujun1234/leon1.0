@@ -41,7 +41,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 			model: 'Ems.baseinfo.EquipmentType',
 			autoLoad:false
 	  });
-	  me.store.getProxy().extraParams ={isGrid:true}
+	  me.store.getProxy().extraParams ={isGrid:true,status:true}
 	  
 //	  me.tbar=	[{
 //			text: '刷新',
@@ -107,6 +107,21 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 		//me.addAction(reload);
 		actions.push(reload);
 
+		var checkbox=Ext.create('Ext.form.field.Checkbox',{
+			boxLabel  : '只有在用',
+            name      : 'status',
+            //value:false,
+            checked:true,
+            listeners:{
+            	change:function(checkbox,newValue, oldValue){
+            		me.store.getProxy().extraParams ={isGrid:true,status:newValue};
+            		me.store.reload();
+            	}
+            }
+		});
+		actions.push(checkbox);
+		
+		
 		me.tbar={
 			itemId:'action_toolbar',
 			layout: {
