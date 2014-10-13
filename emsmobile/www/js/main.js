@@ -151,11 +151,18 @@ $(function(){
 			}
 			
 		}, false);//backbutton
-		
-		//进入后5秒后开始发送地理信息
+
 		if(sessionStorage.getItem("user") && !sessionStorage.getItem("watchID")){
 			//setTimeout(uploadGeolocation,2000);
 			//setInterval(uploadGeolocation1,65000);
+			cordova.plugins.locationService.getCurrentPosition(
+				function (result) {
+					alert(111);
+				}, 
+				function (error) {
+					alert("扫描失败: " + error);
+				}
+			); 
 		}
 		
 		

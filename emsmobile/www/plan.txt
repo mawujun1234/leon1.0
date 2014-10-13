@@ -13,10 +13,12 @@
 		cordova plugin rm org.apache.cordova.dialogs
 	cordova plugin add org.apache.cordova.device
 		cordova plugin rm org.apache.cordova.device
+	cordova plugin add E:\eclipse\workspace\cordova_plugins\platforms\android\geolocation
 	---cordova plugin add org.apache.cordova.geolocation
 		----cordova plugin rm org.apache.cordova.geolocation
 
 
+测试定位功能
 (完成)大小类管理中，已经删除的就不显示出来，增加一个复选框勾选是否显示
 专门查询某个设备的功能，设备情况查询功能
 
