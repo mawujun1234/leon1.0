@@ -52,12 +52,12 @@ Ext.define('Ems.task.TaskQueryGrid',{
 		    return value;
 		}}
       ];
-      
+
 	  me.store=Ext.create('Ext.data.Store',{
 			autoSync:false,
 			pageSize:me.pageSize,
 			model: 'Ems.task.Task',
-			autoLoad:false,//设置为true的时候，会和从人物下发过来的时候冲突
+			autoLoad:me.autoLoad1,
 			proxy:{
 				type:'ajax',
 				url:Ext.ContextPath+'/task/query.do',

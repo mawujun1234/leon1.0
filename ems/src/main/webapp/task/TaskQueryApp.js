@@ -3,25 +3,17 @@ Ext.require("Ems.task.TaskQueryGrid");
 //Ext.require("Ems.task.TaskTree");
 //Ext.require("Ems.task.TaskForm");
 Ext.onReady(function(){
-	function query4Pole(params){
-		//alert(params.pole_id);
-//		grid.getStore().load({params:{
-//			pole_id:params.pole_id
-//		}});
-		
-		grid.getStore().load({params:{
-			pole_id:params
-		}});
-	}
-	window.query4Pole=query4Pole;
+
 	
-	var grid=Ext.create('Ems.task.TaskQueryGrid',{
+	 grid=Ext.create('Ems.task.TaskQueryGrid',{
 		region:'west',
 		split: true,
+		autoLoad1:autoLoad,
 		//collapsible: true,
 		//title:'XXX表格',
 		width:400
 	});
+	
 
 
 

@@ -22,6 +22,32 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	
 	<%@include file="../../common/init.jsp" %>
+	<%
+	String autoLoad=request.getParameter("autoLoad");
+	if(autoLoad==null || "".equals(autoLoad.trim())){
+		autoLoad="true";
+	}
+	//String autoLoad="true";
+	%>
+	<script type="text/javascript">
+		var autoLoad=<%=autoLoad%>;
+		var grid=null;
+		function query4Pole(params){
+		
+		window.reload=function(){
+			if(!grid){
+				return;
+			}
+			grid.getStore().load({params:{
+					pole_id:params
+				}
+			});
+			clearInterval(interval);
+		}
+			var interval=setInterval("reload()",500);
+		}
+		window.query4Pole=query4Pole;
+	</script>
 	<script type="text/javascript" src="TaskQueryApp.js"></script>
   </head>
   

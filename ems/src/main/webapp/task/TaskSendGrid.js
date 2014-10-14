@@ -93,7 +93,7 @@ Ext.define('Ems.task.TaskSendGrid',{
 	  		//var iframe=top.window.docPanel.loadPage("/task/TaskQueryApp.jsp?callBack=query4Pole&pole_id="+record.get("id"),
 	  		//	"dd2f0178-bc59-422e-ae96-0af92bc6cc0c","任务查询管理","other");
 	  		
-	  		var iframe=top.window.docPanel.loadPage("/task/TaskQueryApp.jsp",
+	  		var iframe=top.window.docPanel.loadPage("/task/TaskQueryApp.jsp?autoLoad=false",
 	  			"dd2f0178-bc59-422e-ae96-0af92bc6cc0c","任务查询管理","other");
 	  		if(iframe){
 	  			iframe.on('load',function(){

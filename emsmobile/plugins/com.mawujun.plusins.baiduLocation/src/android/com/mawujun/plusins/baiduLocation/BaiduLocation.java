@@ -44,13 +44,7 @@ public class BaiduLocation  extends CordovaPlugin {
 		ERROR_MESSAGE_MAP.put(161, "表示网络定位结果");
 	};
 
-	public String getErrorMessage(int locationType) {
-		String result = ERROR_MESSAGE_MAP.get(locationType);
-		if (result == null) {
-			result = DEFAULT_ERROR_MESSAGE;
-		}
-		return result;
-	}
+
 
 	@Override
 	public boolean execute(String action, JSONArray args,
@@ -147,6 +141,13 @@ public class BaiduLocation  extends CordovaPlugin {
 		public void onReceivePoi(BDLocation poiLocation) {
 			// TODO Auto-generated method stub
 		}
+	}
+	public String getErrorMessage(int locationType) {
+		String result = ERROR_MESSAGE_MAP.get(locationType);
+		if (result == null) {
+			result = DEFAULT_ERROR_MESSAGE;
+		}
+		return result;
 	}
 
 	@Override

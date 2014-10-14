@@ -21,7 +21,7 @@
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"BaiduLocation\"><param name=\"android-package\" value=\"com.spout.phonegap.plugins.baidulocation.BaiduLocation\" /></feature>",
+                            "xml": "<feature name=\"BaiduLocation\"><param name=\"android-package\" value=\"com.mawujun.plusins.baiduLocation.BaiduLocation\" /></feature>",
                             "count": 1
                         }
                     ]
