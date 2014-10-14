@@ -3,8 +3,8 @@ package com.mawujun.shiro;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-@Component("clearErrorDataTask")
-@Lazy(value=false)
+//@Component("clearErrorDataTask")
+//@Lazy(value=false)
 public class ClearErrorDataTask {
 	
 //	@Resource(name="mapper.clearErrorDataTask")

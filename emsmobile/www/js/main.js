@@ -152,9 +152,13 @@ $(function(){
 			
 		}, false);//backbutton
 
-		if(sessionStorage.getItem("user") && !sessionStorage.getItem("watchID")){
+		//if(sessionStorage.getItem("user") && !sessionStorage.getItem("watchID")){
 			//setTimeout(uploadGeolocation,2000);
 			//setInterval(uploadGeolocation1,65000);
+			alert(cordova);
+			alert(cordova.plugins);
+			alert(cordova.plugins.locationService);
+			alert(cordova.plugins.locationService.getCurrentPosition);
 			cordova.plugins.locationService.getCurrentPosition(
 				function (result) {
 					alert(111);
@@ -163,10 +167,11 @@ $(function(){
 					alert("扫描失败: " + error);
 				}
 			); 
-		}
+		//}
 		
 		
 	}, false); //deviceready
+	
 	
 	function uploadGeolocation1() {
 		var user=$.parseJSON(sessionStorage.getItem("user"));

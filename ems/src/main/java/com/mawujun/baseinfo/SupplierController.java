@@ -14,6 +14,7 @@ import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.utils.page.Page;
 import com.mawujun.utils.M;
+import com.mawujun.utils.StringUtils;
 import com.mawujun.baseinfo.Supplier;
 import com.mawujun.baseinfo.SupplierService;
 /**
@@ -105,6 +106,12 @@ public class SupplierController {
 	@RequestMapping("/supplier/querySupplierCombo.do")
 	@ResponseBody
 	public List<Supplier> querySupplierComboS(String name) {
-		return supplierService.query(Cnd.select().andEquals(M.Supplier.status, true).andLike(M.Supplier.name, name));	
+		//System.out.println("==========================================================="+name);
+		if(StringUtils.hasText(name)){
+			return supplierService.query(Cnd.select().andEquals(M.Supplier.status, true).andLike(M.Supplier.name, name));	
+		} else {
+			return supplierService.query(Cnd.select().andEquals(M.Supplier.status, true));	
+		}
+		
 	}
 }

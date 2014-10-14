@@ -95,7 +95,7 @@
 			
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat6-maven-plugin</artifactId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
 				<!-- --> <version>2.1</version>
 				<configuration>
 					<port>8080</port>

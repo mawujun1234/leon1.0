@@ -88,17 +88,17 @@ Ext.onReady(function(){
 	var supplier_combox=Ext.create('Ems.baseinfo.SupplierCombo',{
 		labelAlign:'right',
 		minChars:-1,
-		allowBlank: false,
-		queryParam: 'name',
-    	queryMode: 'remote',
-    	triggerAction: 'query',
-    	minChars:-1,
-		trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
-		trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
-		onTrigger1Click : function(){
-			var me = this;
-			me.setValue('');
-		}
+		allowBlank: false
+//		queryParam: 'name',
+//    	queryMode: 'remote',
+//    	triggerAction: 'query',
+//    	minChars:-1,
+//		trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
+//		trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
+//		onTrigger1Click : function(){
+//			var me = this;
+//			me.setValue('');
+//		}
 	});
 	var totalprice_display=Ext.create('Ext.form.field.Display',{
 		xtype:'displayfield',fieldLabel:'总价(元)',name:'totalprice',labelWidth:100,submitValue : true,labelAlign:'right',hidden:true
