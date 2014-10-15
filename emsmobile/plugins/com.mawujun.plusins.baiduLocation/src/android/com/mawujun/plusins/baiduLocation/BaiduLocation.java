@@ -115,17 +115,15 @@ public class BaiduLocation  extends CordovaPlugin {
 				jsonObj.put("message", getErrorMessage(locationType));
 
 				switch (location.getLocType()) {
-
-				case BDLocation.TypeGpsLocation:
-					coords.put("speed", location.getSpeed());
-					coords.put("altitude", location.getAltitude());
-					jsonObj.put("SatelliteNumber",
-							location.getSatelliteNumber());
-					break;
-
-				case BDLocation.TypeNetWorkLocation:
-					jsonObj.put("addr", location.getAddrStr());
-					break;
+					case BDLocation.TypeGpsLocation:
+						coords.put("speed", location.getSpeed());
+						coords.put("altitude", location.getAltitude());
+						jsonObj.put("SatelliteNumber",location.getSatelliteNumber());
+						break;
+	
+					case BDLocation.TypeNetWorkLocation:
+						jsonObj.put("addr", location.getAddrStr());
+						break;
 				}
 
 				Log.d("BaiduLocationPlugin", "run: " + jsonObj.toString());

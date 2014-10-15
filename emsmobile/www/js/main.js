@@ -124,12 +124,57 @@ $.getUrlParam = function(string) {
 }  
 
 $(function(){
-	document.addEventListener("deviceready", function(){
-		document.addEventListener("backbutton", function(){
-			var activePage=$(':mobile-pagecontainer').pagecontainer( "getActivePage" );
+	window.uploadGeolocation=function() {
+		var user=$.parseJSON(sessionStorage.getItem("user"));
+		var uuid=device.uuid;
+		
+		//获取设备的地理位置
+		cordova.plugins.baiduLocation.getCurrentPosition(
+			function(position){
+				//alert(position.coords.longitude);
+//				//如果地址相同，就不发送了,
+//				var coords_temp=cordova.plugins.baiduLocation.coords;
+//				if(coords_temp && coords_temp.longitude==position.coords.longitude 
+//					&& coords_temp.latitude==position.coords.latitude){
+//					return;
+//				} else {
+//					cordova.plugins.baiduLocation.coords=position.coords;
+//				}
+				
+				var params={};
+				params.longitude=position.coords.longitude;
+				params.latitude=position.coords.latitude;
+				params.loginName=user.username;
+				params.uuid=uuid;
+				
+				$.ajax({   
+					url : $.ServerPath+"/geolocation/mobile/upload.do",
+					data:params,   
+					success : function(data){
+					}
+				});	
+			}, 
+			function(error){
+				alert("定位失败: " + error);
+			}
+		);	
+		
+	}//uploadGeolocation
+	//window.uploadGeolocation=uploadGeolocation;
+	
+	window.logout=function(){
+		var activePage=$(':mobile-pagecontainer').pagecontainer( "getActivePage" );
 			//所有独立的html的第一个页面都取名为page_homepage，这样就可以统一处理了
 			if(activePage.is('#page_homepage')){
-                //navigator.app.exitApp();
+				if(!navigator || !navigator.notification){//电脑上点退出的时候
+					$.ajax({   
+						url : $.ServerPath+"/mobile/logout.do",   
+						success : function(data){
+						}
+					});	
+					sessionStorage.clear();
+					location.href="login.html";
+				}
 				navigator.notification.confirm(
 					'你确定要退出?',
 					function (buttonIndex) {
@@ -139,6 +184,7 @@ $(function(){
 							success : function(data){
 							}
 						});	
+						sessionStorage.clear();
 						navigator.app.exitApp();
 						//navigator.geolocation.clearWatch(watchID);
 					  }
@@ -149,91 +195,35 @@ $(function(){
             }else {
 				navigator.app.backHistory();
 			}
+	}
+	
+//	if(sessionStorage.getItem("user") && !sessionStorage.getItem("watchID")){
+//			//setTimeout(uploadGeolocation,2000);
+//			//alert(0);
+//			var watchID=window.setInterval("uploadGeolocation()",1000*5);
+//			alert(watchID);
+//			//用来控制应用只发送一个请求
+//			sessionStorage.setItem("watchID",watchID);
+//			//uploadGeolocation();
+//	}	
+		
+	document.addEventListener("deviceready", function(){
+/*		document.addEventListener("backbutton", function(){
 			
-		}, false);//backbutton
-
+			
+		}, false);//backbutton*/
+		document.addEventListener("backbutton", logout, false);//backbutton
+		
+		//alert(sessionStorage.getItem("user") +"====" +sessionStorage.getItem("watchID"));
 		if(sessionStorage.getItem("user") && !sessionStorage.getItem("watchID")){
 			//setTimeout(uploadGeolocation,2000);
-			//setInterval(uploadGeolocation1,65000);
-			 cordova.plugins.baiduLocation.getCurrentPosition(
-				function (result) {
-					//alert(JSON.stringify(result));
-					alert(result.coords.latitude);
-					alert(result.coords.longitude);
-					$.ajax({   
-						url : $.ServerPath+"/geolocation/mobile/upload.do",
-						data:params,   
-						success : function(data){
-						}
-					});	
-				}, 
-				function (error) {
-					alert("定位失败: " + error);
-				}
-			); 
+			//alert(0);
+			var watchID=window.setInterval("uploadGeolocation()",1000*60*1);
+			//用来控制应用只发送一个请求
+			sessionStorage.setItem("watchID",watchID);
+			//uploadGeolocation();
 		}
-		
-		
 	}, false); //deviceready
-	
-	
-	function uploadGeolocation1() {
-		var user=$.parseJSON(sessionStorage.getItem("user"));
-		var uuid=device.uuid;
-		//获取设备的地理位置
-		navigator.geolocation.getCurrentPosition(
-			function(position){
-				//alert(position.coords.longitude);
-				var params={};
-				params.longitude=position.coords.longitude;
-				params.latitude=position.coords.latitude;
-				params.loginName=user.username;
-				params.uuid=uuid;
-				
-				$.ajax({   
-					url : $.ServerPath+"/geolocation/mobile/upload.do",
-					data:params,   
-					success : function(data){
-					}
-				});	
-			}, 
-			function(error){
-				//PositionError.TIMEOUT
-				 alert('code: '    + error.code    + '\n' +'message: ' + error.message + '\n');
-			},
-			{ maximumAge: 3000, timeout: 60000, enableHighAccuracy: false  }
-		);	
-	}
-	function uploadGeolocation(){
-		//sessionStorage.setItem("user",JSON.stringify(data.root));
-		var user=$.parseJSON(sessionStorage.getItem("user"));
-		var uuid=device.uuid;
-		//获取设备的地理位置
-		var watchID = navigator.geolocation.watchPosition(
-			function(position){
-				alert(position.coords.longitude);
-				var params={};
-				params.longitude=position.coords.longitude;
-				params.latitude=position.coords.latitude;
-				params.loginName=user.username;
-				params.uuid=uuid;
-				
-				$.ajax({   
-					url : $.ServerPath+"/geolocation/mobile/upload.do",
-					data:params,   
-					success : function(data){
-					}
-				});	
-			}, 
-			function(error){
-				//PositionError.TIMEOUT
-				 alert('code: '    + error.code    + '\n' +'message: ' + error.message + '\n');
-			}, 
-			{ maximumAge: 3000, timeout: 5000, enableHighAccuracy: false  }
-		);	
-		//用来控制应用只发送一个请求
-		sessionStorage.setItem("watchID",watchID);
-	}
 	
 });
 

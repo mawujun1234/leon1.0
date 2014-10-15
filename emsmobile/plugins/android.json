@@ -17,11 +17,11 @@
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"BarcodeScanner\"><param name=\"android-package\" value=\"com.mawujun.plugins.barcodescanner.BarcodeScanner\" /></feature>",
+                            "xml": "<feature name=\"BaiduLocation\"><param name=\"android-package\" value=\"com.mawujun.plusins.baiduLocation.BaiduLocation\" /></feature>",
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"BaiduLocation\"><param name=\"android-package\" value=\"com.mawujun.plusins.baiduLocation.BaiduLocation\" /></feature>",
+                            "xml": "<feature name=\"BarcodeScanner\"><param name=\"android-package\" value=\"com.mawujun.plugins.barcodescanner.BarcodeScanner\" /></feature>",
                             "count": 1
                         }
                     ]
@@ -30,6 +30,14 @@
             "AndroidManifest.xml": {
                 "parents": {
                     "/manifest/application": [
+                        {
+                            "xml": "<service android:enabled=\"true\" android:name=\"com.baidu.location.f\" android:process=\":remote\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<meta-data android:name=\"com.baidu.lbsapi.API_KEY\" android:value=\"ED0fe5c7c869da5ee4260b4006e811b8\" />",
+                            "count": 1
+                        },
                         {
                             "xml": "<activity android:clearTaskOnLaunch=\"true\" android:configChanges=\"orientation|keyboardHidden\" android:exported=\"false\" android:name=\"com.google.zxing.client.android.CaptureActivity\" android:screenOrientation=\"portrait\" android:theme=\"@android:style/Theme.NoTitleBar.Fullscreen\" android:windowSoftInputMode=\"stateAlwaysHidden\"><intent-filter><action android:name=\"com.mawujun.plugins.barcodescanner.SCAN\" /><category android:name=\"android.intent.category.DEFAULT\" /></intent-filter></activity>",
                             "count": 1
@@ -40,14 +48,6 @@
                         },
                         {
                             "xml": "<activity android:label=\"@string/share_name\" android:name=\"com.google.zxing.client.android.HelpActivity\"><intent-filter><action android:name=\"android.intent.action.VIEW\" /><category android:name=\"android.intent.category.DEFAULT\" /></intent-filter></activity>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<service android:enabled=\"true\" android:name=\"com.baidu.location.f\" android:process=\":remote\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<meta-data android:name=\"com.baidu.lbsapi.API_KEY\" android:value=\"ED0fe5c7c869da5ee4260b4006e811b8\" />",
                             "count": 1
                         }
                     ],
@@ -660,10 +660,10 @@
         "org.apache.cordova.dialogs": {
             "PACKAGE_NAME": "com.mawujun.mobile"
         },
-        "com.mawujun.plugins.barcodescanner": {
+        "com.mawujun.plusins.baiduLocation": {
             "PACKAGE_NAME": "com.mawujun.mobile"
         },
-        "com.mawujun.plusins.baiduLocation": {
+        "com.mawujun.plugins.barcodescanner": {
             "PACKAGE_NAME": "com.mawujun.mobile"
         }
     },

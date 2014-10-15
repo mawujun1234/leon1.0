@@ -62,6 +62,11 @@ $(function() {
 		ServerIP="122.227.163.82";
 	}
 	$("#ServerIP").val(ServerIP);
+	//初始化用户名
+	var loginName=localStorage.getItem("loginName");
+	if(loginName){
+		$("#loginName").val(loginName);
+	}
 	
 	$("#formLogin").validate({ 
 		submitHandler: function(form) { 
@@ -81,6 +86,9 @@ $(function() {
 						//保存新的IP地址
 						localStorage.setItem("ServerIP",ServerIP);
 						$.ServerPath=ServerPath;
+						
+						//保存用户名
+						localStorage.setItem("loginName",values.loginName);
 
 						sessionStorage.setItem("user",JSON.stringify(data.root));
 						//$.mobile.pageContainer.pagecontainer('change', "messages.html", {

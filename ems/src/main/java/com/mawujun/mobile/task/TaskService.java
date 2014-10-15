@@ -116,6 +116,26 @@ public class TaskService extends AbstractService<Task, String>{
 			
 		}
 	}
+	public void cancel(String id) {
+		Task task=this.get(id);
+		if(task.getStatus()==TaskStatus.complete){
+			throw new BusinessException("已提交和已完成的任务不能取消!");
+		}
+		//判断任务里面的设备是否已经如果入库，不是安装出库，手持和使用中状态就不能取消
+		//因为提交后就修改了设备的状态
+		int count=taskRepository.count_task_quip_status(id);
+		if(count>0){
+			throw new BusinessException("不能取消这个任务,里面的设备已经入库!");
+		}
+		//如果是新安装任务，取消，那就把状态改回 "未安装"
+		if(task.getType()==TaskType.newInstall){
+			poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.uninstall).andEquals(M.Pole.id, task.getPole_id()));
+		}else if(task.getType()==TaskType.repair){
+			//如果是维修任务，就改回正常的状态
+			poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.using).andEquals(M.Pole.id, task.getPole_id()));	
+		}
+		this.deleteBatch(Cnd.delete().andEquals(M.Task.id, id));
+	}
 	/**
 	 * 管理人员 确认任务单
 	 * @author mawujun email:160649888@163.com qq:16064988
@@ -223,20 +243,7 @@ public class TaskService extends AbstractService<Task, String>{
 		return equipmentVO;
 	}
 	
-	public void cancel(String id) {
-		Task task=this.get(id);
-		if(task.getStatus()==TaskStatus.complete){
-			throw new BusinessException("已提交和已完成的任务不能取消!");
-		}
-		//判断任务里面的设备是否已经如果入库，不是安装出库，手持和使用中状态就不能取消
-		//因为提交后就修改了设备的状态
-		int count=taskRepository.count_task_quip_status(id);
-		if(count>0){
-			throw new BusinessException("不能取消这个任务,里面的设备已经入库!");
-		}
-		
-		this.deleteBatch(Cnd.delete().andEquals(M.Task.id, id));
-	}
+	
 	public void mobile_save(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason,String[] ecodes) {
 		//已入库的不能删除
 		check_equip_status(task_id,ecodes);
