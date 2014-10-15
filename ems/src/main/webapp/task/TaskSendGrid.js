@@ -300,6 +300,7 @@ Ext.define('Ems.task.TaskSendGrid',{
 								success:function(response){
 									var obj=Ext.decode(response.responseText);
 									if(obj.success){
+										me.getSelectionModel( ).deselectAll();
 										me.getStore().reload();
 										alert("保存成功!");
 									}
@@ -358,6 +359,7 @@ Ext.define('Ems.task.TaskSendGrid',{
 								success:function(response){
 									var obj=Ext.decode(response.responseText);
 									if(obj.success){
+										me.getSelectionModel( ).deselectAll();
 										me.getStore().reload();
 										alert("发送成功!");
 									}
@@ -416,6 +418,7 @@ Ext.define('Ems.task.TaskSendGrid',{
 								success:function(response){
 									var obj=Ext.decode(response.responseText);
 									if(obj.success){
+										me.getSelectionModel( ).deselectAll();
 										me.getStore().reload();
 										alert("发送成功!");
 									}
