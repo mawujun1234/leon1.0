@@ -3,6 +3,7 @@ package com.mawujun.store;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -97,5 +98,14 @@ public class InStoreService extends AbstractService<InStore, String>{
 			orderRepository.updateTotalNum(entry.getKey(), M.Order.totalNum+"+"+entry.getValue());
 		}
 		
+	}
+	/**
+	 * 获取某个入库单中的明细数据
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param inStore_id
+	 * @return
+	 */
+	public List<InStoreListVO> queryList(String inStore_id) {
+		return inStoreRepository.queryList(inStore_id);
 	}
 }

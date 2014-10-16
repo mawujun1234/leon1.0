@@ -135,6 +135,9 @@ insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
 values ('9b918511-5837-4d4f-a4af-7abc87a60a91', 'Y', '/task/OvertimeApp.jsp', null, '6424df74-c571-4a10-aa39-d358e9743781', 'aae-aac', '超时设置');
 insert into SYS_NAVIGATION (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
 values ('4b59ebbd-c5fa-47e5-8932-1385b0912f1a', 'Y', '/task/HitchReasonTplApp.jsp', null, '6424df74-c571-4a10-aa39-d358e9743781', 'aae-aad', '故障类型/原因模板维护');
+insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
+values ('019ba77f-8348-46e9-911a-d2786e0b8f36', 'Y', '/store/InStoreQueryApp.jsp', null, 'd7624421-6323-4bc7-a28f-6f011f771a57', 'aac-aai', '入库记录查询');
+
 commit;
 alter table SYS_NAVIGATION enable all triggers;
 

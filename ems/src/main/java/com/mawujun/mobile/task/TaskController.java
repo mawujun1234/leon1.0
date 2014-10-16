@@ -207,7 +207,7 @@ public class TaskController {
 	@ResponseBody
 	public Map<String,Object> mobile_queryTaskEquipmentInfos(String task_id){
 		
-		List<EquipmentVO> equipmentVOs=taskService.mobile_queryTaskEquipmentInfos(task_id);
+		List<TaskEquipmentListVO> equipmentVOs=taskService.mobile_queryTaskEquipmentInfos(task_id);
 		Task task=taskService.get(task_id);
 		Map<String,Object> map=new HashMap<String,Object>();
 		map.put(M.Task.hitchReason, task.getHitchReason());

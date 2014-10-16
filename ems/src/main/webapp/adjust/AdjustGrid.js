@@ -129,6 +129,15 @@ Ext.define('Ems.adjust.AdjustGrid',{
 		   })
 	  }); 
 	  
+	 me.store.on("beforeload",function(store){
+		store.getProxy().extraParams={
+					str_out_id:out_store_combox.getValue(),
+					str_in_id:in_store_combox.getValue(),
+					str_out_date_start: str_out_date_start.getRawValue(),
+					str_out_date_end: str_out_date_end.getRawValue(),
+					status:status_combo.getValue()
+				  };
+	});
 	  me.tbar={
 		xtype: 'container',
 		layout: 'anchor',
@@ -143,26 +152,28 @@ Ext.define('Ems.adjust.AdjustGrid',{
 			text: '查询',
 			iconCls:'form-search-button',
 			handler: function(btn){
-				me.store.load({params:{
-					str_out_id:out_store_combox.getValue(),
-					str_in_id:in_store_combox.getValue(),
-					str_out_date_start: str_out_date_start.getRawValue(),
-					str_out_date_end: str_out_date_end.getRawValue(),
-					status:status_combo.getValue()
-				  }
-			    });
+				me.store.reload();
+//				me.store.load({params:{
+//					str_out_id:out_store_combox.getValue(),
+//					str_in_id:in_store_combox.getValue(),
+//					str_out_date_start: str_out_date_start.getRawValue(),
+//					str_out_date_end: str_out_date_end.getRawValue(),
+//					status:status_combo.getValue()
+//				  }
+//			    });
 			}
 		  }] 
 		}]
 	   };
-	   me.store.load({params:{
-					str_out_id:out_store_combox.getValue(),
-					str_in_id:in_store_combox.getValue(),
-					str_out_date_start: str_out_date_start.getRawValue(),
-					str_out_date_end: str_out_date_end.getRawValue(),
-					status:status_combo.getValue()
-				  }
-	   });
+	   me.store.load();
+//	   me.store.load({params:{
+//					str_out_id:out_store_combox.getValue(),
+//					str_in_id:in_store_combox.getValue(),
+//					str_out_date_start: str_out_date_start.getRawValue(),
+//					str_out_date_end: str_out_date_end.getRawValue(),
+//					status:status_combo.getValue()
+//				  }
+//	   });
 
        
       me.callParent();

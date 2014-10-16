@@ -29,18 +29,14 @@ public class EquipmentVO extends Equipment {
 	@Transient
 	private String workUnit_name;
 	
-//	public String getStatus_name() {
-//		if(this.getStatus()!=null){
-//			EquipmentStatus.\.valueOf(this.getStatus())
-//		}
-////		
-////		for (EquipmentStatus status : EquipmentStatus.values()) {
-////			if (status.getValue() == this.getStatus()) {
-////				return status.getName();
-////			}
-////		}
-////		return null;
-//	}
+	public String getStatus_name() {
+		for (EquipmentStatus status : EquipmentStatus.values()) {
+			if (status.getValue() == this.getStatus()) {
+				return status.getName();
+			}
+		}
+		return null;
+	}
 	
 	public String getSubtype_name() {
 		return subtype_name;

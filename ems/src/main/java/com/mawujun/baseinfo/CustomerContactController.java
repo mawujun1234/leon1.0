@@ -61,8 +61,8 @@ public class CustomerContactController {
 
 	@RequestMapping("/customerContact/query.do")
 	@ResponseBody
-	public List<CustomerContact> query() {	
-		List<CustomerContact> customerContactes=customerContactService.queryAll();
+	public List<CustomerContact> query(String customer_id) {	
+		List<CustomerContact> customerContactes=customerContactService.query(Cnd.select().andEquals(M.CustomerContact.customer_id, customer_id));
 		return customerContactes;
 	}
 	

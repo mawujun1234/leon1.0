@@ -102,6 +102,14 @@ Ext.define('Ems.store.OrderGrid',{
 		labelAlign:'right'
 	});
 	  
+	me.store.on("beforeload",function(store){
+		store.getProxy().extraParams={
+					store_id:store_combox.getValue(),
+					date_start: date_start.getRawValue(),
+					date_end: date_end.getRawValue(),
+					orderNo:order_no.getValue()
+				  };
+	});
 	  me.tbar={
 		xtype: 'container',
 		layout: 'anchor',
@@ -116,24 +124,13 @@ Ext.define('Ems.store.OrderGrid',{
 			text: '查询',
 			iconCls:'form-search-button',
 			handler: function(btn){
-				me.store.load({params:{
-					store_id:store_combox.getValue(),
-					date_start: date_start.getRawValue(),
-					date_end: date_end.getRawValue(),
-					orderNo:order_no.getValue()
-				  }
-			    });
+				me.store.reload();
 			}
 		  }] 
 		}]
 	   };
-	   me.store.load({params:{
-					store_id:store_combox.getValue(),
-					date_start: date_start.getRawValue(),
-					date_end: date_end.getRawValue(),
-					orderNo:order_no.getValue()
-			}
-	   });
+	   me.store.load();
+
 
        
       me.callParent();

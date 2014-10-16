@@ -19,7 +19,10 @@ Ext.onReady(function(){
 	});
 	
 	grid.on('itemclick',function(view,record,item,index){
-		gridList.getStore().load({params:{adjust_id:record.get("id")}});
+		//gridList.getStore().load({params:{adjust_id:record.get("id")}});
+		gridList.getStore().getProxy().extraParams={adjust_id:record.get("id")};
+		gridList.getStore().load();
+		
 		gridList.adjust_id=record.get("id");
 	});
 	

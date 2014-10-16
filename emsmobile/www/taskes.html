@@ -30,6 +30,12 @@
     background-size: 34px 34px;
 	background-color:#f6f6f6;
 }
+.ui-icon-taskes-refresh:after {
+    background-image: url("img/refresh.png");
+    /* Make your icon fit */
+    background-size: 34px 34px;
+	background-color:#f6f6f6;
+}
 
 
 
@@ -51,15 +57,25 @@
 .taskes_list_display_block{
 	display:block;
 }
+
+.longContent{
+	white-space:normal !important;
+}
+
 </style>
 <script type="application/javascript">
 $(function(){
 	$( ":mobile-pagecontainer" ).pagecontainer( "load", "taskes_new.html", {  } );	
 })
 var secondNavbarIsHide=true;
-function toggleSecondNavbar(type){	
+//切换二级菜单，type就是新建任务的类型,也可以为null
+//callback:当菜单切换完后执行的函数
+function toggleSecondNavbar(type,callback){	
 	$("#secondNavbar").toggle(500,function(){
 		secondNavbarIsHide=!secondNavbarIsHide;
+		if(callback){
+			callback();
+		}
 	});
 	if(secondNavbarIsHide){
 		var footernavZIndex=$("#footernav").css("z-index");
@@ -80,6 +96,8 @@ function toggleSecondNavbar(type){
 		};
 		window.page_taskes_new_params=params;
 	}
+	
+	
 }
 
 //显示灰色 jQuery 遮罩层
@@ -106,7 +124,7 @@ window["confirm_pageParam"]=new Page(0,20);
 window["complete_pageParam"]=new Page(0,20);
 //查询任务
 //status:working,confirm,complete
-//appendDir:append表示是要加在现有数据后面的，prepend在开头插入数据，用在定时刷新上
+//appendDir:append表示是要加在现有数据后面的，prepend在开头插入数据，用在定时刷新上,其他的值，全部刷新
 function queryTasks(status,appendDir,callBack){
 	pageParam =window[status+"_pageParam"];
 	$.ajax({   
@@ -128,7 +146,7 @@ function queryTasks(status,appendDir,callBack){
 						img="img/install.png";
 					} else if("repair"==root[i].type){
 						page_id="page_repair";
-						h2_title="维修/维护";
+						h2_title="维修";
 						img="img/repair.png";
 					} else if("patrol"==root[i].type){
 						page_id="page_patrol";
@@ -138,8 +156,9 @@ function queryTasks(status,appendDir,callBack){
 					html+='<li id="li_'+root[i].id+'">'+
 					'<a href="#'+page_id+'" onclick="sessionStorage.taskInfoParamStr=\''+taskInfoParamStr+'\'" data-transition="slide" >'+
 						'<img src="'+img+'">'+
-						'<h2>'+h2_title+':'+root[i].pole_name+'</h2>'+
-						'<p>地址:'+root[i].pole_address+'</p>'+
+						'<h2>'+root[i].id+'</h2>'+
+						'<p>'+h2_title+':'+root[i].pole_name+'</p>'+
+						'<p class="longContent">地址:'+root[i].pole_address+'</p>'+
 						'<p class="ui-li-aside"><strong>'+root[i].createDate+'</strong></p>'+
 						((root[i].status!="newTask")?'':'<p id="'+root[i].id+'_isNew" class="ui-li-count" style="color:#FFF;background-color:#F00;">new</p>')+
 					'</a>'+
@@ -190,6 +209,18 @@ function changeTaskesStatus(status){
 		});
 		taskes_list_query_status[status]=true;
 	}
+	
+}
+//点击刷新按钮，刷新任务
+function refreshTaskes(){
+	toggleSecondNavbar(null,function(){
+		var status=$("input:checked[name='radio-choice-taskes-status']").val();
+		window[status+"_pageParam"].reset();
+		queryTasks(status,null,function(){
+				window.isLazyLoading=false;
+				$.hideLoader(); 
+		});
+	});
 	
 }
 $(document).ready(function(e) {
@@ -253,6 +284,7 @@ $(document).ready(function(e) {
             	<li><a href="#page_taskes_new" onClick="toggleSecondNavbar('newInstall');"  class="ui-icon-install ui-btn-icon-top">新安装</a></li>
                 <li><a href="#page_taskes_new" onClick="toggleSecondNavbar('repair');" class="ui-icon-repair ui-btn-icon-top">维修</a></li>
                 <li><a href="#page_taskes_new" onClick="toggleSecondNavbar('patrol');" class="ui-icon-patrols ui-btn-icon-top">巡检</a></li>
+                <li><a href="#page_taskes_refresh" onClick="refreshTaskes();" class="ui-icon-taskes-refresh ui-btn-icon-top">刷新</a></li>
             </ul>
         </div>
     </div>
@@ -319,7 +351,7 @@ $(document).ready(function(e) {
 <div data-role="page" id="page_repair">
 	<div data-role="header" data-position="fixed">
     	<a href="#page_homepage" class="ui-btn ui-corner-all" data-rel="back" data-theme="c">返回</a>
-        <h1>设备维修/维护</h1> 
+        <h1>设备维修</h1> 
 	</div>
 	<div role="main" class="ui-content">
         <div class="ui-field-contain">

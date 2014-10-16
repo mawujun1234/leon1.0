@@ -45,7 +45,9 @@ Ext.define('Ems.baseinfo.AreaSelPoleWindow', {
 				    		customer_id=r.get('id');
 				    		customer_name=r.get('name');
 				    		//contactStore.load({params:{cid:cid}});
-				    		poleStore.load({params:{customer_id:customer_id,filterContainArea:true}});
+				    		poleStore.getProxy().extraParams={customer_id:customer_id,filterContainArea:true};
+				    		poleStore.reload();
+				    		//poleStore.load({params:{customer_id:customer_id,filterContainArea:true}});
 			    		}
 			    	}
 			    }

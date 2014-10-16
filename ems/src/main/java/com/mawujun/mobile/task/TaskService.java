@@ -163,7 +163,7 @@ public class TaskService extends AbstractService<Task, String>{
 		return this.getRepository().mobile_queryPage(page);
 	}
 
-	public List<EquipmentVO> mobile_queryTaskEquipmentInfos(String task_id) {
+	public List<TaskEquipmentListVO> mobile_queryTaskEquipmentInfos(String task_id) {
 		
 		//任务查看过后，就修改状态为“已阅”,只有任务状态为 newTask的才会被修改
 		taskRepository.update(Cnd.update().set(M.Task.status, TaskStatus.read).andEquals(M.Task.id, task_id).andEquals(M.Task.status, TaskStatus.newTask));

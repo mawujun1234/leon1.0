@@ -19,7 +19,9 @@ Ext.onReady(function(){
 	});
 	
 	grid.on('itemclick',function(view,record,item,index){
-		gridList.getStore().load({params:{orderNo:record.get("orderNo")}});
+		//gridList.getStore().load({params:{orderNo:record.get("orderNo")}});
+		gridList.getStore().getProxy().extraParams={orderNo:record.get("orderNo")};
+		gridList.getStore().load();
 	});
 	
 	var viewPort=Ext.create('Ext.container.Viewport',{

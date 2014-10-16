@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
+<mapper namespace="com.mawujun.store.InStoreRepository">
+	
+    <!-- 获取某个任务的设备清单 -->
+    <select id="queryPage" resultType="com.mawujun.store.InStoreVO" parameterType="map">
+    	select a.*,b.name as store_name from ems_instore a,ems_store b
+		where a.store_id=b.id 
+		<if test="operateDate_start!=null">
+			and a.operateDate &gt;=#{operateDate_start}
+		</if>
+		<if test="operateDate_end!=null">
+			and a.operateDate &lt;=#{operateDate_end}
+		</if>
+		<if test="store_id!=null and store_id!=''">
+			and a.store_id =#{store_id}
+		</if>
+    </select>
+    
+    <!-- 查询某个入库单下面的，所有入库明细 -->
+    <select id="queryList" resultType="com.mawujun.store.InStoreListVO" parameterType="string">
+    	select a.*,b.name as subtype_name,c.name as prod_name,d.name as brand_name,e.name as supplier_name from 
+    	(select f.*,a.subtype_id,a.prod_id,a.brand_id,a.supplier_id,a.style from ems_equipment a inner join ems_instorelist f on a.ecode=f.encode and f.inStore_id=#{inStore_id}) a
+		inner join ems_equipmentsubtype b on a.subtype_id=b.id
+		inner join ems_equipmentprod c on a.prod_id=c.id
+		inner join ems_brand d on a.brand_id=d.id
+		inner join ems_supplier e on a.supplier_id=e.id
+    </select>
+   
+</mapper>
+

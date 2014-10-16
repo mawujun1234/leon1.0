@@ -2,6 +2,7 @@ package com.mawujun.store;
 import java.beans.IntrospectionException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -20,6 +21,7 @@ import com.mawujun.cache.EquipScanType;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.utils.BeanUtils;
+import com.mawujun.utils.M;
 import com.mawujun.utils.page.Page;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
@@ -69,46 +71,46 @@ public class InStoreController {
 //		return inStoreService.queryPage(page);
 //	}
 
-	@RequestMapping("/inStore/query.do")
-	@ResponseBody
-	public List<InStore> query() {	
-		List<InStore> inStorees=inStoreService.queryAll();
-		return inStorees;
-	}
-	
-
-	@RequestMapping("/inStore/load.do")
-	public InStore load(String id) {
-		return inStoreService.get(id);
-	}
-	
-	@RequestMapping("/inStore/create.do")
-	@ResponseBody
-	public InStore create(@RequestBody InStore inStore) {
-		inStoreService.create(inStore);
-		return inStore;
-	}
-	
-	@RequestMapping("/inStore/update.do")
-	@ResponseBody
-	public  InStore update(@RequestBody InStore inStore) {
-		inStoreService.update(inStore);
-		return inStore;
-	}
-	
-	@RequestMapping("/inStore/deleteById.do")
-	@ResponseBody
-	public String deleteById(String id) {
-		inStoreService.deleteById(id);
-		return id;
-	}
-	
-	@RequestMapping("/inStore/destroy.do")
-	@ResponseBody
-	public InStore destroy(@RequestBody InStore inStore) {
-		inStoreService.delete(inStore);
-		return inStore;
-	}
+//	@RequestMapping("/inStore/query.do")
+//	@ResponseBody
+//	public List<InStore> query() {	
+//		List<InStore> inStorees=inStoreService.queryAll();
+//		return inStorees;
+//	}
+//	
+//
+//	@RequestMapping("/inStore/load.do")
+//	public InStore load(String id) {
+//		return inStoreService.get(id);
+//	}
+//	
+//	@RequestMapping("/inStore/create.do")
+//	@ResponseBody
+//	public InStore create(@RequestBody InStore inStore) {
+//		inStoreService.create(inStore);
+//		return inStore;
+//	}
+//	
+//	@RequestMapping("/inStore/update.do")
+//	@ResponseBody
+//	public  InStore update(@RequestBody InStore inStore) {
+//		inStoreService.update(inStore);
+//		return inStore;
+//	}
+//	
+//	@RequestMapping("/inStore/deleteById.do")
+//	@ResponseBody
+//	public String deleteById(String id) {
+//		inStoreService.deleteById(id);
+//		return id;
+//	}
+//	
+//	@RequestMapping("/inStore/destroy.do")
+//	@ResponseBody
+//	public InStore destroy(@RequestBody InStore inStore) {
+//		inStoreService.delete(inStore);
+//		return inStore;
+//	}
 	/**
 	 * 主要用于新品入库的时候
 	 * @author mawujun 16064988@qq.com 
@@ -195,5 +197,33 @@ public class InStoreController {
 		
 		cacheMgr.clearQrcode(key);
 		return "success";
+	}
+	
+	/**
+	 * 入库单报表查询
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @return
+	 */
+	@RequestMapping("/inStore/query.do")
+	@ResponseBody
+	public Page query(Integer start,Integer limit,Date operateDate_start,Date operateDate_end,String store_id) {
+		Page page=Page.getInstance(start, limit);
+		page.addParam("operateDate_start", operateDate_start);
+		page.addParam("operateDate_end", operateDate_end);
+		page.addParam(M.InStore.store_id, store_id);
+		page=inStoreService.queryPage(page);
+		return page;
+	}
+	/**
+	 * 查询某个入库单的明细
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param inStore_id
+	 * @return
+	 */
+	@RequestMapping("/inStore/queryList.do")
+	@ResponseBody
+	public List<InStoreListVO> queryList(String inStore_id) {
+		List<InStoreListVO> inStoreListes=inStoreService.queryList(inStore_id);
+		return inStoreListes;
 	}
 }

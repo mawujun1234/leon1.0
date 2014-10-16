@@ -18,6 +18,7 @@ public class InStoreList extends UUIDEntity {
 	@Column(length=25)
 	private String encode;//设备编码
 	
+	
 	public String getInStore_id() {
 		return inStore_id;
 	}
@@ -30,7 +31,6 @@ public class InStoreList extends UUIDEntity {
 	public void setEncode(String encode) {
 		this.encode = encode;
 	}
-
 	
 
 }
