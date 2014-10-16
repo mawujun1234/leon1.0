@@ -8,7 +8,7 @@ Ext.onReady(function(){
 		split: true,
 		collapsible: true,
 		title:'调拨单',
-		width:400
+		width:410
 	});
 
 	var gridList=Ext.create('Ems.adjust.AdjustListInGrid',{

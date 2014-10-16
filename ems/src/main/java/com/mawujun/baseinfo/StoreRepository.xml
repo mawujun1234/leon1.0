@@ -71,8 +71,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     </select> 
     
     
-    <select id="queryCombo" resultType="com.mawujun.baseinfo.Store">
-    	select a.* from ems_store a,sys_userstore b where a.id=b.store_id and b.user_id=#{user_id} and a.status='Y' and a.type=#{type}
+    <select id="queryCombo" resultType="com.mawujun.baseinfo.Store" parameterType="map" >
+    	select a.* from ems_store a,sys_userstore b where a.id=b.store_id and b.user_id=#{user_id} and a.status='Y' 
+    	and a.type in
+		<foreach collection="types" item="item" index="index" open="(" separator="," close=")" >
+            #{item}
+		</foreach>
     	<if test="look==true">
     		and b.look='Y'
     	</if>

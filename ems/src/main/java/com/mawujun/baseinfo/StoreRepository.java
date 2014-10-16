@@ -1,6 +1,7 @@
 package com.mawujun.baseinfo;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -21,6 +22,7 @@ public interface StoreRepository extends IRepository<Store, String>{
 	public Page queryEquipments(Page page) ;
 	
 	
-	public List<Store> queryCombo(@Param("user_id")String user_id,@Param("type")Integer type,@Param("look")Boolean look,@Param("edit")Boolean edit);
+	public List<Store> queryCombo(@Param("user_id")String user_id,@Param("types")Integer[] types,@Param("look")Boolean look,@Param("edit")Boolean edit);
+	//public List<Store> queryCombo(Map<String,Object> params);
 	public List<User> queryUsersByStore(@Param("store_id")String store_id,@Param("look")Boolean look,@Param("edit")Boolean edit);
 }

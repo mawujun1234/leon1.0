@@ -59,7 +59,8 @@ Ext.define('Ems.baseinfo.StoreForm',{
 			    store:  Ext.create('Ext.data.Store', {
 				    fields: ['id', 'name'],
 				    data : [
-				        {"id":1, "name":"仓库"},
+				        {"id":1, "name":"在建仓库"},
+				        {"id":3, "name":"备品备件库"},
 				        {"id":2, "name":"维修中心"}
 				    ]
 				}),

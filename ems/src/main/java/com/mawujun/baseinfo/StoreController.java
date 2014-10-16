@@ -12,6 +12,7 @@ import com.mawujun.user.User;
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
+import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.utils.page.Page;
 import com.mawujun.utils.M;
@@ -111,14 +112,14 @@ public class StoreController {
 	 */
 	@RequestMapping("/store/queryCombo.do")
 	@ResponseBody
-	public List<Store> queryCombo(Integer type,Boolean look,Boolean edit) {	
+	public List<Store> queryCombo(Integer[] type,Boolean look,Boolean edit) {	
 //		Cnd cnd=Cnd.select().andEquals(M.Store.status, true);
 //		if(type!=null){
 //			cnd.andEquals(M.Store.type, type);
 //		}
 		//List<Store> storees=storeService.query(cnd);
 		if(type==null){
-			type=1;
+			throw new BusinessException("请填写获取的仓库类型!");
 		}
 		List<Store> storees=storeService.queryCombo(type,look,edit);
 		return storees;

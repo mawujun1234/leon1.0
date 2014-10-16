@@ -51,7 +51,7 @@ Ext.define('Ems.install.StoreEquipmentWindow',{
 		    	fields: ['id', 'name'],
 			    proxy:{
 			    	type:'ajax',
-			    	extraParams:{type:1,look:true},
+			    	extraParams:{type:[1,3],look:true},
 			    	url:Ext.ContextPath+"/store/queryCombo.do",
 			    	reader:{
 			    		type:'json',

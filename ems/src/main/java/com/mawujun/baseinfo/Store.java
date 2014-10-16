@@ -12,7 +12,7 @@ public class Store extends UUIDEntity {
 	@Column(length=30)
 	private String name;
 	
-	private Integer type;//1:仓库，2：维修中心
+	private Integer type;//1:在建仓库，2：维修中心,3:备品备件仓库
 	@Column(length=100)
 	private String memo;
 	@org.hibernate.annotations.Type(type="yes_no")
@@ -20,9 +20,11 @@ public class Store extends UUIDEntity {
 	
 	public String getType_name() {
 		if(this.getType()==1){
-			return "仓库";
+			return "在建仓库";
 		} else if(this.getType()==2){
 			return "维修中心";
+		}else if(this.getType()==3){
+			return "备品备件库";
 		} else {
 			return null;
 		}

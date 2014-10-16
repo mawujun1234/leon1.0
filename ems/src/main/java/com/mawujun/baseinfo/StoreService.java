@@ -1,6 +1,8 @@
 package com.mawujun.baseinfo;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +21,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
+
+
 import com.mawujun.service.AbstractService;
 
 
 import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.user.User;
+import com.mawujun.utils.M;
 import com.mawujun.utils.page.Page;
 import com.mawujun.baseinfo.Store;
 import com.mawujun.baseinfo.StoreRepository;
@@ -74,7 +80,13 @@ public class StoreService extends AbstractService<Store, String>{
 		
 	}
 	
-	public List<Store> queryCombo(Integer type,Boolean look,Boolean edit){
+	public List<Store> queryCombo(Integer[] type,Boolean look,Boolean edit){
+//		Map<String,Object> params=new HashMap<String,Object>();
+//		params.put("user_id", ShiroUtils.getAuthenticationInfo().getId());
+//		params.put("look", look);
+//		params.put("edit", edit);
+//		params.put("types", type);
+//		return storeRepository.queryCombo(params);
 		return storeRepository.queryCombo(ShiroUtils.getAuthenticationInfo().getId(),type,look,edit);
 	}
 	

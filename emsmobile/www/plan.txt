@@ -18,12 +18,12 @@
 		----cordova plugin rm org.apache.cordova.geolocation
 
 
-新建仓库的时候，直接让你选 是备品备件仓库 还是在建仓库，然后可修改就可以了
-
-入库记录查询
+(完成)新建仓库的时候，直接让你选 是备品备件仓库 还是在建仓库，然后可修改就可以了
+	需要区分仓库的地方都要看看
+(完成)入库记录查询
 	insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
 	values ('019ba77f-8348-46e9-911a-d2786e0b8f36', 'Y', '/store/InStoreQueryApp.jsp', null, 'd7624421-6323-4bc7-a28f-6f011f771a57', 'aac-aai', '入库记录查询');
-还没有测试，自动分组的功能，如果成功的话，就记录到文档中	
+档中	
 
 
 专门查询某个设备的功能，设备情况查询功能

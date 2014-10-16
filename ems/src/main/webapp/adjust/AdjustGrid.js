@@ -50,7 +50,7 @@ Ext.define('Ems.adjust.AdjustGrid',{
 	  var out_store_combox=Ext.create('Ext.form.field.ComboBox',{
 	        fieldLabel: '<b>发货仓库</b>',
 	        labelAlign:'right',
-            labelWidth:55,
+            labelWidth:60,
 	        //xtype:'combobox',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'store_id',
@@ -61,7 +61,7 @@ Ext.define('Ems.adjust.AdjustGrid',{
 		    	fields: ['id', 'name'],
 			    proxy:{
 			    	type:'ajax',
-			    	extraParams:{type:1,look:true},
+			    	extraParams:{type:[1,3],look:true},
 			    	url:Ext.ContextPath+"/store/queryCombo.do",
 			    	reader:{
 			    		type:'json',
@@ -74,7 +74,7 @@ Ext.define('Ems.adjust.AdjustGrid',{
 	  var in_store_combox=Ext.create('Ext.form.field.ComboBox',{
 	        fieldLabel: '<b>入库仓库</b>',
 	        labelAlign:'right',
-            labelWidth:55,
+            labelWidth:60,
 	        //xtype:'combobox',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'rpa_id',
@@ -85,7 +85,7 @@ Ext.define('Ems.adjust.AdjustGrid',{
 		    	fields: ['id', 'name'],
 			    proxy:{
 			    	type:'ajax',
-			    	extraParams:{type:1,look:true},
+			    	extraParams:{type:[1,3],look:true},
 			    	url:Ext.ContextPath+"/store/queryCombo.do",
 			    	reader:{
 			    		type:'json',
