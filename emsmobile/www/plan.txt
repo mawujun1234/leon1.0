@@ -18,12 +18,11 @@
 		----cordova plugin rm org.apache.cordova.geolocation
 
 
-(完成)新建仓库的时候，直接让你选 是备品备件仓库 还是在建仓库，然后可修改就可以了
-	需要区分仓库的地方都要看看
-(完成)入库记录查询
+
+领用返库查询
 	insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
-	values ('019ba77f-8348-46e9-911a-d2786e0b8f36', 'Y', '/store/InStoreQueryApp.jsp', null, 'd7624421-6323-4bc7-a28f-6f011f771a57', 'aac-aai', '入库记录查询');
-档中	
+values ('5458a38a-734d-4952-b24a-b4f32ce09ff7', 'Y', '/install/InOutQueryApp.jsp', null, '763ce28f-13d0-491d-b7c9-ef859fbcc7c1', 'aaf-aac', '领用返库记录查询');
+	
 
 
 专门查询某个设备的功能，设备情况查询功能
@@ -98,6 +97,12 @@
 jquery的页面模板，等需要的时候才去加载，例如login.html只有最重要的一段内容，没有表
 设备类型等添加一个不显示 已删除数据的功能
 ======================================================================================================
+(完成)新建仓库的时候，直接让你选 是备品备件仓库 还是在建仓库，然后可修改就可以了
+	需要区分仓库的地方都要看看
+(完成)入库记录查询
+	insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
+	values ('019ba77f-8348-46e9-911a-d2786e0b8f36', 'Y', '/store/InStoreQueryApp.jsp', null, 'd7624421-6323-4bc7-a28f-6f011f771a57', 'aac-aai', '入库记录查询');
+档中	
 (完成)移动端的设备查询，状态信息没有获取出来
 (完成)界面重新排版，界面上增加任务编号
 (完成)添加登陆界面，也可以直接退出

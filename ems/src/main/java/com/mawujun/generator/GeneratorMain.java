@@ -6,6 +6,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.mawujun.adjust.Adjust;
 import com.mawujun.adjust.AdjustList;
+import com.mawujun.install.InstallIn;
+import com.mawujun.install.InstallInList;
 import com.mawujun.meta.MetaVersion;
 import com.mawujun.mobile.message.Message;
 import com.mawujun.mobile.task.HitchReasonTpl;
@@ -40,7 +42,7 @@ public class GeneratorMain {
 		//str=generatorService.generatorToString(MenuItem.class,FtlFile.JsModel.toString(),null);	
         //System.out.println(str);
 		
-		GeneratorMain.generateAllFile(InStoreList.class,"D:/gen/");
+		GeneratorMain.generateAllFile(InstallInList.class,"D:/gen/");
 		
 		
 		

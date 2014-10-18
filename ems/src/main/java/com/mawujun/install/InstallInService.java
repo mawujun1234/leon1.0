@@ -2,28 +2,23 @@ package com.mawujun.install;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import org.springframework.web.bind.annotation.RequestBody;
-
-import com.mawujun.repository.cnd.Cnd;
-import com.mawujun.service.AbstractService;
-
-
-import com.mawujun.shiro.ShiroUtils;
-import com.mawujun.utils.M;
 import com.mawujun.baseinfo.Equipment;
 import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.EquipmentStatus;
 import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.exception.BusinessException;
-import com.mawujun.install.InstallIn;
-import com.mawujun.install.InstallInRepository;
+import com.mawujun.repository.cnd.Cnd;
+import com.mawujun.service.AbstractService;
+import com.mawujun.shiro.ShiroUtils;
+import com.mawujun.utils.M;
+import com.mawujun.utils.page.Page;
 
 
 /**
@@ -103,4 +98,21 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 		}
 	}
 
+	public Page queryMain(Page page,String type) { 
+		if("in".equals(type)){
+			return installInRepository.queryMain_in(page);
+		} else if("out".equals(type)){
+			return installInRepository.queryMain_out(page);
+		}
+		return null;
+		
+	}
+	public List<InOutListVO> queryList(String inOut_id,String type) {
+		if("in".equals(type)){
+			return installInRepository.queryList_in(inOut_id);
+		} else if("out".equals(type)){
+			return installInRepository.queryList_out(inOut_id);
+		}
+		return null;
+	}
 }
