@@ -61,6 +61,7 @@ public class Repair  implements IdEntity<String>{
 	private String str_in_id;//入库仓库
 	@Column(length=8) 
 	private String rpa_type="innerrpa";//维修类型，维修 (innerrpa)还是外修(outrpa)
+	
 	private Integer status=RepairStatus.One.getValue();//状态
 	
 	@Column(length=500) 

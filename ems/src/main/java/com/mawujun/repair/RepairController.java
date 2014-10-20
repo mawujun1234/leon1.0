@@ -40,20 +40,20 @@ public class RepairController {
 //		return repaires;
 //	}
 
-	/**
-	 * 这是基于分页的几种写法,的例子，请按自己的需求修改
-	 * @author mawujun email:16064988@163.com qq:16064988
-	 * @param start
-	 * @param limit
-	 * @param userName
-	 * @return
-	 */
-	@RequestMapping("/repair/query.do")
-	@ResponseBody
-	public Page query(Integer start,Integer limit,String sampleName){
-		Page page=Page.getInstance(start,limit);//.addParam(M.Repair.sampleName, "%"+sampleName+"%");
-		return repairService.queryPage(page);
-	}
+//	/**
+//	 * 这是基于分页的几种写法,的例子，请按自己的需求修改
+//	 * @author mawujun email:16064988@163.com qq:16064988
+//	 * @param start
+//	 * @param limit
+//	 * @param userName
+//	 * @return
+//	 */
+//	@RequestMapping("/repair/query.do")
+//	@ResponseBody
+//	public Page query(Integer start,Integer limit,String sampleName){
+//		Page page=Page.getInstance(start,limit);//.addParam(M.Repair.sampleName, "%"+sampleName+"%");
+//		return repairService.queryPage(page);
+//	}
 
 //	@RequestMapping("/repair/query.do")
 //	@ResponseBody
@@ -63,10 +63,10 @@ public class RepairController {
 //	}
 //	
 
-	@RequestMapping("/repair/load.do")
-	public Repair load(String id) {
-		return repairService.get(id);
-	}
+//	@RequestMapping("/repair/load.do")
+//	public Repair load(String id) {
+//		return repairService.get(id);
+//	}
 	
 //	@RequestMapping("/repair/create.do")
 //	@ResponseBody
@@ -79,23 +79,26 @@ public class RepairController {
 	@RequestMapping("/repair/update.do")
 	@ResponseBody
 	public  Repair update(@RequestBody Repair repair) {
+//		if("".equals(repair.getRpa_type())){
+//			
+//		}
 		repairService.update(repair);
 		return repair;
 	}
 	
-	@RequestMapping("/repair/deleteById.do")
-	@ResponseBody
-	public String deleteById(String id) {
-		repairService.deleteById(id);
-		return id;
-	}
-	
-	@RequestMapping("/repair/destroy.do")
-	@ResponseBody
-	public Repair destroy(@RequestBody Repair repair) {
-		repairService.delete(repair);
-		return repair;
-	}
+//	@RequestMapping("/repair/deleteById.do")
+//	@ResponseBody
+//	public String deleteById(String id) {
+//		repairService.deleteById(id);
+//		return id;
+//	}
+//	
+//	@RequestMapping("/repair/destroy.do")
+//	@ResponseBody
+//	public Repair destroy(@RequestBody Repair repair) {
+//		repairService.delete(repair);
+//		return repair;
+//	}
 	
 	
 	@RequestMapping("/repair/getRepairVOByEcode.do")
