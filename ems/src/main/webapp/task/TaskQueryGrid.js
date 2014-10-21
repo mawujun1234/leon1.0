@@ -228,19 +228,30 @@ Ext.define('Ems.task.TaskQueryGrid',{
             //inputValue: '1'
 		});
 		
+		me.getStore().on("beforeload",function(store){
+			store.getProxy().extraParams={
+				customer_id:customer_combox.getValue(),
+				pole_name:pole_textfield.getValue(),
+					//area_id:area_combox.getValue(),
+				status:status_combox.getValue(),
+				workunit_id:workunit_combox.getValue(),
+				isOvertime:isOvertime_checkbox.getValue()
+			};
+		});
 		var query_button=Ext.create('Ext.button.Button',{
 			text:'查询',
 			margin:'0 0 0 5',
 			iconCls:'form-search-button',
 			handler:function(){
-				me.getStore().load({params:{
-					customer_id:customer_combox.getValue(),
-					pole_name:pole_textfield.getValue(),
-					//area_id:area_combox.getValue(),
-					status:status_combox.getValue(),
-					workunit_id:workunit_combox.getValue(),
-					isOvertime:isOvertime_checkbox.getValue()
-				}});
+				me.getStore().load();
+//				me.getStore().load({params:{
+//					customer_id:customer_combox.getValue(),
+//					pole_name:pole_textfield.getValue(),
+//					//area_id:area_combox.getValue(),
+//					status:status_combox.getValue(),
+//					workunit_id:workunit_combox.getValue(),
+//					isOvertime:isOvertime_checkbox.getValue()
+//				}});
 			}
 		});
 		

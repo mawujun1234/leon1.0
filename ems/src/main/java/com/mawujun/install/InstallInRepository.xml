@@ -38,7 +38,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			and a.workUnit_id =#{workUnit_id}
 		</if>
     </select>
-     <select id="queryMain_out" resultType="com.mawujun.install.InOutVO" parameterType="map">
+    <select id="queryMain_out" resultType="com.mawujun.install.InOutVO" parameterType="map">
     	select a.*,b.name as store_name,c.name as workUnit_name,'out' as type from ems_installout a,ems_store b,ems_workunit c
 		where a.store_id=b.id and a.workunit_id=c.id
 		<if test="operateDate_start!=null">

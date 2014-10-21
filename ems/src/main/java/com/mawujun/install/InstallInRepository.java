@@ -3,19 +3,19 @@ package com.mawujun.install;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
+import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.repository1.IRepository;
 import com.mawujun.utils.page.Page;
-import com.mawujun.baseinfo.Equipment;
-import com.mawujun.baseinfo.EquipmentVO;
-import com.mawujun.install.InstallIn;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
  * @version 1.0
  * @since 1.0
  */
 @Repository
+@Scope("prototype")
 public interface InstallInRepository extends IRepository<InstallIn, String>{
 
 	/**

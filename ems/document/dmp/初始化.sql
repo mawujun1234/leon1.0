@@ -139,6 +139,12 @@ insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
 values ('019ba77f-8348-46e9-911a-d2786e0b8f36', 'Y', '/store/InStoreQueryApp.jsp', null, 'd7624421-6323-4bc7-a28f-6f011f771a57', 'aac-aai', '入库记录查询');
 insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
 values ('5458a38a-734d-4952-b24a-b4f32ce09ff7', 'Y', '/install/InOutQueryApp.jsp', null, '763ce28f-13d0-491d-b7c9-ef859fbcc7c1', 'aaf-aac', '领用返库记录查询');
+insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
+values ('7291c55a-15ed-4205-959f-2065b0ee54c7', 'N', null, null, null, 'aai', '报表');
+insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
+values ('c0485251-d40b-49fd-954b-cb9591c53775', 'Y', '/report/PropertyStatusApp.jsp', null, '7291c55a-15ed-4205-959f-2065b0ee54c7', 'aai-aaa', '仓库资产情况');
+insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
+values ('d90c8adb-35da-45b1-886d-c765e3848384', 'Y', '/report/EquipmentStatusApp.jsp', null, '7291c55a-15ed-4205-959f-2065b0ee54c7', 'aai-aab', '设备状态表');
 
 commit;
 alter table SYS_NAVIGATION enable all triggers;
