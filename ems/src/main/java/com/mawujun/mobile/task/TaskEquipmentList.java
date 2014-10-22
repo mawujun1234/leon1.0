@@ -27,6 +27,8 @@ public class TaskEquipmentList extends UUIDEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(length=15)
 	private TaskListTypeEnum type;
+	//提交任务的时候设备的状态，主要用于维修的时候
+	private Integer equipment_status;
 	
 	public String getTask_id() {
 		return task_id;
@@ -46,6 +48,12 @@ public class TaskEquipmentList extends UUIDEntity {
 	}
 	public void setType(TaskListTypeEnum type) {
 		this.type = type;
+	}
+	public Integer getEquipment_status() {
+		return equipment_status;
+	}
+	public void setEquipment_status(Integer equipment_status) {
+		this.equipment_status = equipment_status;
 	}
 
 }

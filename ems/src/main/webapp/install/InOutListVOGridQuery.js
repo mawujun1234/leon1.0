@@ -17,7 +17,7 @@ Ext.define('Ems.install.InOutListVOGridQuery',{
       var me = this;
       me.columns=[
 		//{dataIndex:'id',text:'id'},
-		{dataIndex:'ecode',text:'ecode'},
+		{dataIndex:'ecode',text:'条码'},
 		//{dataIndex:'installIn_id',text:'installIn_id'},
 		//{dataIndex:'isBad',text:'isBad'}
 		{dataIndex:'subtype_name',text:'小类'},

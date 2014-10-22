@@ -20,16 +20,18 @@
 
 疑问：
 	1：维修费用和维修配件的管理现在是否已经存在了
-	2:
+	2:故障原因，维护在维修中心配置吗？
 
 设备状态表
 insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
 values ('d90c8adb-35da-45b1-886d-c765e3848384', 'Y', '/report/EquipmentStatusApp.jsp', null, '7291c55a-15ed-4205-959f-2065b0ee54c7', 'aai-aab', '设备状态表');
 创建form的表单，然后从后台获取数据
 	
+移动端添加，是否是损坏设备的判断，可以手动修改
 
 仓库资产情况未测试
 取消杆位的任务和流程
+维修的时候直接提交，错误类型等可能保存不了
 
 
 

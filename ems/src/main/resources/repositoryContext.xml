@@ -75,6 +75,7 @@
 				<property name="databaseId" value="${jdbc.dbName}"></property>
 			</bean>
 		</property>
+		<!--  -->
 		<property name="mapperLocations">
 			<list>
 				<value>classpath:/**/*_${jdbc.dbName}_Mapper.xml</value>

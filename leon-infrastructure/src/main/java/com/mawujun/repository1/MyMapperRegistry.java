@@ -1,6 +1,8 @@
 package com.mawujun.repository1;
 
 import java.lang.reflect.Field;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
 import org.apache.ibatis.binding.BindingException;
@@ -29,6 +31,12 @@ public class MyMapperRegistry extends MapperRegistry {
 		// TODO Auto-generated constructor stub
 	}
 
+	public <T> boolean hasMapper(Class<T> type) {
+		    return knownMappersNew.containsKey(type);
+	}
+	public Collection<Class<?>> getMappers() {
+		    return Collections.unmodifiableCollection(knownMappersNew.keySet());
+	}
 	@Override
 	public <T> void addMapper(Class<T> type) {
 		if (type.isInterface()) {

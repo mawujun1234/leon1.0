@@ -8,7 +8,7 @@ Ext.onReady(function(){
 		region:'west',
 		split: true,
 		collapsible: true,
-		title:'领用、出库单',
+		title:'领用,返库单',
 		width:400
 	});
 

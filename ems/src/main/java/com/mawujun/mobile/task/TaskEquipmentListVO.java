@@ -16,6 +16,8 @@ public class TaskEquipmentListVO extends TaskEquipmentList {
 	@Transient
 	private String supplier_name;
 	
+	private String style;
+	
 	
 	public String getSubtype_name() {
 		return subtype_name;
@@ -40,6 +42,12 @@ public class TaskEquipmentListVO extends TaskEquipmentList {
 	}
 	public void setSupplier_name(String supplier_name) {
 		this.supplier_name = supplier_name;
+	}
+	public String getStyle() {
+		return style;
+	}
+	public void setStyle(String style) {
+		this.style = style;
 	}
 	
 }

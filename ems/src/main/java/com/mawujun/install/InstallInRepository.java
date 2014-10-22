@@ -3,7 +3,6 @@ package com.mawujun.install;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
 import com.mawujun.baseinfo.EquipmentVO;
@@ -15,7 +14,6 @@ import com.mawujun.utils.page.Page;
  * @since 1.0
  */
 @Repository
-@Scope("prototype")
 public interface InstallInRepository extends IRepository<InstallIn, String>{
 
 	/**
@@ -26,6 +24,7 @@ public interface InstallInRepository extends IRepository<InstallIn, String>{
 	 */
 	public InstallIn getInstallInByEcode(@Param("ecode")String ecode);
 	
+	//public EquipmentVO getEquipmentByEcode(@Param("ecode")String ecode,@Param("workunit_id")String workunit_id);
 	public EquipmentVO getEquipmentByEcode(@Param("ecode")String ecode,@Param("workunit_id")String workunit_id);
 	/**
 	 * 查询领用单和返库单的数据
