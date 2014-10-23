@@ -54,6 +54,15 @@ public class TaskMonitorController {
 		}
 		
 		//开始查询数据
+		//获取作业单位拥有的杆位数
+		String sql="select c.id,c.name,count(a.id) from ems_pole a,ems_area b,ems_workunit c"
+				+ " where a.area_id=b.id and b.workunit_id=c.id "
+				+ " group by c.id,c.name ";
+		List<Map<String,Object>> polenums=jdbcTemplate.queryForList(sql);
+		for(Map<String,Object> polenum:polenums){
+			
+		}
 		
+		return null;
 	}
 }
