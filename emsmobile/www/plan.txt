@@ -21,13 +21,18 @@
 疑问：
 	1：维修费用和维修配件的管理现在是否已经存在了
 	2:故障原因，维护在维修中心配置吗？
-
-设备状态表
-insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
-values ('d90c8adb-35da-45b1-886d-c765e3848384', 'Y', '/report/EquipmentStatusApp.jsp', null, '7291c55a-15ed-4205-959f-2065b0ee54c7', 'aai-aab', '设备状态表');
-创建form的表单，然后从后台获取数据
 	
-移动端添加，是否是损坏设备的判断，可以手动修改
+维修单管理，状态选择后，自动进行查询。
+	或者点选复选框后，灰色变成可用
+
+都是以月为单位，或自定义日期查询，就是查询一段时间内的统计信息
+安装任务监控报表
+	杆位数 本期新建任务 以前新建任务 总任务数 未完成 已完成 完成率 平均完成时间 已提交未完成 提交完成率 平均提交完成时间 
+维修任务监控报表
+	当月新建任务 上月新建任务 未完成任务 已完成任务 完成率 已提交任务 已提交完成率
+巡检任务监控报表
+	杆位数 已巡检杆位数 完成率 已提交任务，已提交完成率
+
 
 仓库资产情况未测试
 取消杆位的任务和流程
@@ -104,6 +109,11 @@ values ('d90c8adb-35da-45b1-886d-c765e3848384', 'Y', '/report/EquipmentStatusApp
 jquery的页面模板，等需要的时候才去加载，例如login.html只有最重要的一段内容，没有表
 设备类型等添加一个不显示 已删除数据的功能
 ======================================================================================================
+(完成)设备状态表
+insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
+values ('d90c8adb-35da-45b1-886d-c765e3848384', 'Y', '/report/EquipmentStatusApp.jsp', null, '7291c55a-15ed-4205-959f-2065b0ee54c7', 'aai-aab', '设备状态表');
+创建form的表单，然后从后台获取数据
+(完成)移动端添加，是否是损坏设备的判断，可以手动修改
 (完成)领用返库查询
 	insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
 values ('5458a38a-734d-4952-b24a-b4f32ce09ff7', 'Y', '/install/InOutQueryApp.jsp', null, '763ce28f-13d0-491d-b7c9-ef859fbcc7c1', 'aaf-aac', '领用返库记录查询');

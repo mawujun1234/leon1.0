@@ -52,7 +52,7 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 			throw new BusinessException("该条码对应的设备不存在，或者该设备挂在其他作业单位或已经入库了!");
 		}
 		//设备返库的时候，设备如果不是手持或损坏状态的话，就不能进行返库，说明任务没有扫描或者没有提交
-		if(equipment.getStatus()!=EquipmentStatus.out_storage.getValue() || equipment.getStatus()!=EquipmentStatus.breakdown.getValue()){
+		if(equipment.getStatus()!=EquipmentStatus.out_storage.getValue() && equipment.getStatus()!=EquipmentStatus.breakdown.getValue()){
 			throw new BusinessException("设备状态不对,不是作业单位手中持有的设备!");
 		}
 		return equipment;
