@@ -16,8 +16,8 @@ public class NewInstallMonitor {
 	private Integer currt_new;// 本期新建任务
 	private Integer currt_complete;// 本期完成任务
 	private Double currt_avgcompletetime;//本期完成平均时间
-	private Integer currt_submited;//本期提交任务数
-	private Double currt_avgsubmitedtime;//本期提交平均时间
+	private Integer currt_submited;//本期提交&完成任务数
+	private Double currt_avgsubmitedtime;//本期提交&完成平均时间
 	
 	
 	private Integer total_nums;//总任务数
