@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>奥维生产调度平台</title>
+<title>宁波东望智能系统有限公司</title>
 <%-- include file="utils/meta.inc" --%>
 <%@include file="common/init.jsp" %>
 <!-- CSS 文件配置 -->
