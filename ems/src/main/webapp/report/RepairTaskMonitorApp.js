@@ -83,7 +83,7 @@ Ext.onReady(function(){
 			actions:{
 				"read":'POST'
 			},
-			url:Ext.ContextPath+"/taskmonitor/newInstall.do",
+			url:Ext.ContextPath+"/taskmonitor/repair.do",
 			reader:{
 			    type:'json',
 			    root:'root'

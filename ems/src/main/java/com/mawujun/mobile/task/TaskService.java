@@ -145,9 +145,11 @@ public class TaskService extends AbstractService<Task, String>{
 	 * @return
 	 */
 	public void confirm(String id) {
-		taskRepository.update(Cnd.update().set(M.Task.status, TaskStatus.complete).set(M.Task.completeDate, new Date()).andEquals(M.Task.id, id));
+		//taskRepository.update(Cnd.update().set(M.Task.status, TaskStatus.complete).set(M.Task.completeDate, new Date()).andEquals(M.Task.id, id));
 		
 		Task task=taskRepository.get(id);
+		task.setStatus( TaskStatus.complete);
+		task.setCompleteDate(new Date());
 		//修改杆位状态为"已安装"
 		if(task.getType()==TaskType.newInstall){
 			poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.using).andEquals(M.Pole.id, task.getPole_id()));	

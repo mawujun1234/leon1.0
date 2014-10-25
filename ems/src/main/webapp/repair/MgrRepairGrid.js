@@ -212,11 +212,7 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 				  }
 			    });
 			    
-			    if(status_combo.getValue()==3){
-					me.toggleEcodeField(true);
-				} else {
-					me.toggleEcodeField(false);
-				}
+			   
 			}
 	  });
 	  me.store.load({params:{
@@ -232,6 +228,7 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 		name:'encode',
 		labelWidth:60,
 		width:230,
+		hidden:true,
 		disabled:true,
 		fieldLabel: '扫描选择',
 		minLength:Ext.ecode_length,
@@ -294,7 +291,7 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 					    	fields: ['id', 'name'],
 						    proxy:{
 						    	type:'ajax',
-						    	extraParams:{type:1,edit:true},
+						    	extraParams:{type:[1,3],edit:true},
 						    	url:Ext.ContextPath+"/store/queryCombo.do",
 						    	reader:{
 						    		type:'json',
@@ -369,7 +366,13 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 			items: [ecode_textfield,str_in_button] // toolbar 2
 		}]
 	}	
-	  
+	   me.on('selectionchange',function(model,selected){
+       	if(selected && selected.length>0){
+       		me.toggleEcodeField(true);
+       	} else {
+       		me.toggleEcodeField(false);	
+       	}
+       });
 
        
       me.callParent();

@@ -52,7 +52,7 @@ Ext.define('Ems.baseinfo.ProdCombo',{
 	fieldLabel: '品名',
     displayField: 'text',
     valueField: 'id',
-   
+    minChars:1,
     
     queryParam: 'name',
     queryMode: 'remote',
@@ -101,7 +101,7 @@ Ext.define('Ems.baseinfo.BrandCombo',{
 	fieldLabel: '品牌',
     displayField: 'name',
     valueField: 'id',
-   
+   minChars:1,
     
     queryParam: 'name',
     queryMode: 'remote',
@@ -146,7 +146,7 @@ Ext.define('Ems.baseinfo.SupplierCombo',{
     displayField: 'name',
     valueField: 'id',
    
-    
+    minChars:1,
     queryParam: 'name',
     queryMode: 'remote',
     name:'supplier_id',

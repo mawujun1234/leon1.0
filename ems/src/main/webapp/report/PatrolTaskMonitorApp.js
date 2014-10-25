@@ -3,28 +3,28 @@
 //Ext.require("Ems.store.OrderTree");
 //Ext.require("Ems.store.OrderForm");
 Ext.onReady(function(){
-	var queryType=Ext.create('Ext.form.RadioGroup',{
-		fieldLabel: '查询方式',
-		labelWidth:60,
-		width:180,
-		items: [
-            { boxLabel: '按月', name: 'queryType', inputValue: 'month', checked: true },
-            { boxLabel: '自定义', name: 'queryType', inputValue: 'customer'}
-        ],
-        listeners:{
-        	change:function(field, newValue, oldValue){
-        		if(newValue.queryType=="month"){
-        			month_combox.show();
-        			date_start.hide();
-        			date_end.hide();
-        		} else{
-        			month_combox.hide();
-        			date_start.show();
-        			date_end.show();
-        		}
-        	}
-        }
-	});
+//	var queryType=Ext.create('Ext.form.RadioGroup',{
+//		fieldLabel: '查询方式',
+//		labelWidth:60,
+//		width:180,
+//		items: [
+//            { boxLabel: '按月', name: 'queryType', inputValue: 'month', checked: true },
+//            { boxLabel: '自定义', name: 'queryType', inputValue: 'customer'}
+//        ],
+//        listeners:{
+//        	change:function(field, newValue, oldValue){
+//        		if(newValue.queryType=="month"){
+//        			month_combox.show();
+//        			date_start.hide();
+//        			date_end.hide();
+//        		} else{
+//        			month_combox.hide();
+//        			date_start.show();
+//        			date_end.show();
+//        		}
+//        	}
+//        }
+//	});
 	var month_combox=Ext.create('Ext.form.field.ComboBox',{
 	        fieldLabel: '月份',
 	        labelAlign:'right',
@@ -65,7 +65,7 @@ Ext.onReady(function(){
 	
 	
 	var tbar=Ext.create('Ext.toolbar.Toolbar',{
-		items:[queryType,month_combox,date_start,date_end,{
+		items:[month_combox,date_start,date_end,{
 			text:'查询',
 			handler:function(){
 				
@@ -76,14 +76,13 @@ Ext.onReady(function(){
 	
 	var store=Ext.create('Ext.data.Store',{
 		autoLoad:false,
-		fields: ['id', 'name','pole_nums','currt_new','currt_complete','currt_avgcompletetime','currt_submited','currt_avgsubmitedtime','total_nums'
-		,'total_complete','total_complete_rate','total_avgcompletetime','total_submited','total_avgsubmitedtime'],
+		fields: ['id', 'name','pole_nums','patrols','patrols_rate','unpatrols'],
 		proxy:{
 			type:'ajax',
 			actions:{
 				"read":'POST'
 			},
-			url:Ext.ContextPath+"/taskmonitor/newInstall.do",
+			url:Ext.ContextPath+"/taskmonitor/patrol.do",
 			reader:{
 			    type:'json',
 			    root:'root'
@@ -92,7 +91,7 @@ Ext.onReady(function(){
 	});
 	store.on("beforeload",function(store){
 		store.getProxy().extraParams={
-			queryType:queryType.getValue(),
+			//queryType:queryType.getValue(),
 			month:month_combox.getValue(),
 			date_start:date_start.getRawValue(),
 			date_end:date_end.getRawValue()
@@ -104,17 +103,9 @@ Ext.onReady(function(){
 		columns:[
 			{ text: '作业单位',  dataIndex: 'name' },
 			{ text: '杆位数',  dataIndex: 'pole_nums' },
-			{ text: '本期新建任务',  dataIndex: 'currt_new' },
-			{ text: '本期完成任务',  dataIndex: 'currt_complete' },
-			{ text: '本期完成平均时间',  dataIndex: 'currt_avgcompletetime' },
-			{ text: '本期提交&完成任务数',  dataIndex: 'currt_submited' },
-			{ text: '本期提交&完成平均时间',  dataIndex: 'currt_avgsubmitedtime' },
-			{ text: '累计任务数',  dataIndex: 'total_nums' },
-			{ text: '累计的完成数',  dataIndex: 'total_complete' },
-			{ text: '累计完成率',  dataIndex: 'total_complete_rate' },
-			{ text: '累计平均完成时间 ',  dataIndex: 'total_avgcompletetime' },
-			{ text: '累计提交&完成任务数',  dataIndex: 'total_submited' },
-			{ text: '累计平均提交时间',  dataIndex: 'total_avgsubmitedtime' }
+			{ text: '已巡检杆位',  dataIndex: 'patrols' },
+			{ text: '完成率',  dataIndex: 'patrols_rate' },
+			{ text: '未巡检杆位',  dataIndex: 'unpatrols' }
 		]
 	});
 	

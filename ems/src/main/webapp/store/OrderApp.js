@@ -87,7 +87,7 @@ Ext.onReady(function(){
 	});
 	var supplier_combox=Ext.create('Ems.baseinfo.SupplierCombo',{
 		labelAlign:'right',
-		minChars:-1,
+		
 		allowBlank: false
 //		queryParam: 'name',
 //    	queryMode: 'remote',

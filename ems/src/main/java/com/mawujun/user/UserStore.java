@@ -73,10 +73,12 @@ public class UserStore extends UUIDEntity{
 	
 	public String getStore_typeName() {
 		if(this.getStore_type()==1){
-			return "仓库";
+			return "在建仓库";
 		} else if(this.getStore_type()==2){
 			return "维修中心";
-		} else {
+		} else if(this.getStore_type()==3){
+			return "备品备件仓库";
+		}else {
 			return null;
 		}
 	}

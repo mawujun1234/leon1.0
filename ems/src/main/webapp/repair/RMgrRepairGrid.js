@@ -250,11 +250,7 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 			  });
 			  
 			  
-				if(status_combo.getValue()==2){
-					me.toggleEcodeField(true);
-				} else {
-					me.toggleEcodeField(false);
-				}
+				
 			}
 	  });
 
@@ -265,6 +261,7 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 		name:'encode',
 		labelWidth:60,
 		width:230,
+		hidden:true,
 		disabled:true,
 		fieldLabel: '扫描选择',
 		minLength:Ext.ecode_length,
@@ -359,8 +356,14 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 			items: [ecode_textfield,str_out_button] // toolbar 2
 		}]
 	}	
-
-       
+	
+       me.on('selectionchange',function(model,selected){
+       	if(selected && selected.length>0){
+       		me.toggleEcodeField(true);
+       	} else {
+       		me.toggleEcodeField(false);	
+       	}
+       });
 	
 	  me.on('itemdblclick',me.recordDbclick);
       me.callParent();

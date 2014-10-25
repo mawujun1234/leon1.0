@@ -34,9 +34,16 @@ values ('d3a9d8f7-399d-4f40-b9e8-1c258422c84f', 'Y', '/report/TaskMonitorApp.jsp
 
 维修任务监控报表
 	当月新建任务 上月新建任务 未完成任务 已完成任务 完成率 已提交任务 已提交完成率
+	insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
+values ('3516a585-b9d3-4b31-bd27-d6c244e26848', 'Y', '/report/RepairTaskMonitorApp.jsp', null, '7291c55a-15ed-4205-959f-2065b0ee54c7', 'aai-aad', '维修任务监控报表');
+	
 巡检任务监控报表
 	杆位数 已巡检杆位数 完成率 已提交任务，已提交完成率
+insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
+values ('135f608e-3161-4680-8e73-f2f6b4a69359', 'Y', '/report/PatrolTaskMonitorApp.jsp', null, '7291c55a-15ed-4205-959f-2065b0ee54c7', 'aai-aae', '巡检任务监控报表');
 
+
+添加未巡检任务的快速查找功能，并且发送，如果有正在维修的就不发送了
 
 仓库资产情况未测试
 取消杆位的任务和流程
