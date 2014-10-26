@@ -22,28 +22,15 @@
 	1：维修费用和维修配件的管理现在是否已经存在了
 	2:故障原因，维护在维修中心配置吗？
 	
-维修单管理，状态选择后，自动进行查询。
-	或者点选复选框后，灰色变成可用
-
-都是以月为单位，或自定义日期查询，就是查询一段时间内的统计信息
-安装任务监控报表
-	杆位数 本期新建任务 以前新建任务 总任务数 未结束 已结束 完成率 平均完成时间 已提交未完成 提交完成率 平均提交完成时间 
-insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
-values ('d3a9d8f7-399d-4f40-b9e8-1c258422c84f', 'Y', '/report/TaskMonitorApp.jsp', null, '7291c55a-15ed-4205-959f-2065b0ee54c7', 'aai-aac', '安装任务监控报表');
-	
-
-维修任务监控报表
-	当月新建任务 上月新建任务 未完成任务 已完成任务 完成率 已提交任务 已提交完成率
-	insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
-values ('3516a585-b9d3-4b31-bd27-d6c244e26848', 'Y', '/report/RepairTaskMonitorApp.jsp', null, '7291c55a-15ed-4205-959f-2065b0ee54c7', 'aai-aad', '维修任务监控报表');
-	
-巡检任务监控报表
-	杆位数 已巡检杆位数 完成率 已提交任务，已提交完成率
-insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
-values ('135f608e-3161-4680-8e73-f2f6b4a69359', 'Y', '/report/PatrolTaskMonitorApp.jsp', null, '7291c55a-15ed-4205-959f-2065b0ee54c7', 'aai-aae', '巡检任务监控报表');
+在建仓库的月报表的导出功能
+在建仓库的月报表的定时功能还没有做(在月末是否会生成报表还没有检验)
 
 
-添加未巡检任务的快速查找功能，并且发送，如果有正在维修的就不发送了
+
+
+定时执行迁移到xml中，这样比较容易找到，已经有一个任务的定时执行
+
+
 
 仓库资产情况未测试
 取消杆位的任务和流程
@@ -90,7 +77,7 @@ values ('135f608e-3161-4680-8e73-f2f6b4a69359', 'Y', '/report/PatrolTaskMonitorA
 
 底部菜单的提醒，例如一共有多少个新任务，气泡提醒，在登陆的时候就获取到，并且传递到其他三个页面中
 能
-
+添加未巡检任务的快速查找功能，并且发送，如果有正在维修的就不发送了
 
 任务搜索，跳到专门的页面去搜索，搜索结果页只显示在那个页面，这样各个列表中的数据就可以缓存了，不用再去后台查了
 	只通过手动或自动进行刷
@@ -120,6 +107,23 @@ values ('135f608e-3161-4680-8e73-f2f6b4a69359', 'Y', '/report/PatrolTaskMonitorA
 jquery的页面模板，等需要的时候才去加载，例如login.html只有最重要的一段内容，没有表
 设备类型等添加一个不显示 已删除数据的功能
 ======================================================================================================
+维修单管理，状态选择后，自动进行查询。
+	或者点选复选框后，灰色变成可用
+安装任务监控报表
+	杆位数 本期新建任务 以前新建任务 总任务数 未结束 已结束 完成率 平均完成时间 已提交未完成 提交完成率 平均提交完成时间 
+insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
+values ('d3a9d8f7-399d-4f40-b9e8-1c258422c84f', 'Y', '/report/NewInstallTaskMonitorApp.jsp', null, '7291c55a-15ed-4205-959f-2065b0ee54c7', 'aai-aac', '安装任务监控报表');
+维修任务监控报表
+	当月新建任务 上月新建任务 未完成任务 已完成任务 完成率 已提交任务 已提交完成率
+	insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
+values ('3516a585-b9d3-4b31-bd27-d6c244e26848', 'Y', '/report/RepairTaskMonitorApp.jsp', null, '7291c55a-15ed-4205-959f-2065b0ee54c7', 'aai-aad', '维修任务监控报表');
+巡检任务监控报表
+	杆位数 已巡检杆位数 完成率 已提交任务，已提交完成率
+insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
+values ('135f608e-3161-4680-8e73-f2f6b4a69359', 'Y', '/report/PatrolTaskMonitorApp.jsp', null, '7291c55a-15ed-4205-959f-2065b0ee54c7', 'aai-aae', '巡检任务监控报表');
+在建工程仓库盘点月报表
+insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
+values ('298b0161-205b-4871-abb3-68c3a6e65983', 'Y', '/report/BuildDayReportApp.jsp', null, '7291c55a-15ed-4205-959f-2065b0ee54c7', 'aai-aaf', '在建工程仓库盘点月报表');
 (完成)设备状态表
 insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
 values ('d90c8adb-35da-45b1-886d-c765e3848384', 'Y', '/report/EquipmentStatusApp.jsp', null, '7291c55a-15ed-4205-959f-2065b0ee54c7', 'aai-aab', '设备状态表');

@@ -9,4 +9,5 @@
 			
 			
 GeneratorMain增加一个按照VO生成grid，的方法，而不是一定要有表明等
+GeneratorMain当使用@IdClass(BuildDayReport_PK.class) 的时候不能正常的生成脚本
 			

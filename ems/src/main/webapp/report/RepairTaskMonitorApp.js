@@ -36,6 +36,7 @@ Ext.onReady(function(){
 		    displayField: 'name',
 		    valueField: 'id',
 	        allowBlank: false,
+	        value:(new Date()).getMonth()+"",
 	        store:Ext.create('Ext.data.Store', {
 		    	fields: ['id', 'name'],
 				data:[{id:"0",name:"1月"},{id:"1",name:"2月"},{id:"2",name:"3月"},{id:"3",name:"4月"},{id:"4",name:"5月"},{id:"5",name:"6月"},{id:"6",name:"7月"},{id:"7",name:"8月"}
@@ -59,7 +60,7 @@ Ext.onReady(function(){
 	  	//editable:false,
 	  	labelWidth:15
         //name: 'str_out_date_end',
-        //value: new Date()
+        ,value: new Date()
 	});
 	
 	

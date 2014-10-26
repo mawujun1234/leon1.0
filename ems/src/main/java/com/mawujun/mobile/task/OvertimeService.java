@@ -56,8 +56,8 @@ public class OvertimeService extends AbstractService<Overtime, String>{
 	 * 每隔5分钟去扫描,判断有没有任务过期了，如果有就发消息过去
 	 * @author mawujun 16064988@qq.com
 	 */
-	@Scheduled(cron = "0 0/10 * * * ?")  
-    public void job1() {  
+	//@Scheduled(cron = "0 0/10 * * * ?")  
+    public void createOvertimeMessage() {  
 		//System.out.println("111111111111111111111111111111111111111");
 		//首先获取过期时间
 		Overtime overtime=overtimeRepository.get("overtime");

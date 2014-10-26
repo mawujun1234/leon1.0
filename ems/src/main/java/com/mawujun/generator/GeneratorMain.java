@@ -16,6 +16,7 @@ import com.mawujun.mobile.task.Overtime;
 import com.mawujun.mobile.task.Task;
 import com.mawujun.mobile.task.TaskEquipmentList;
 import com.mawujun.repair.Scrap;
+import com.mawujun.report.BuildDayReport;
 import com.mawujun.store.InStore;
 import com.mawujun.store.InStoreList;
 import com.mawujun.store.Order;
@@ -42,7 +43,7 @@ public class GeneratorMain {
 		//str=generatorService.generatorToString(MenuItem.class,FtlFile.JsModel.toString(),null);	
         //System.out.println(str);
 		
-		GeneratorMain.generateAllFile(InstallInList.class,"D:/gen/");
+		GeneratorMain.generateAllFile(BuildDayReport.class,"D:/gen/");
 		
 		
 		

@@ -26,6 +26,10 @@ public class Test {
 //		  System.out.println(sdf.format(date_start)); 
 //		  System.out.println(sdf.format(date_end)); 
 		//System.out.println((1/3)d);
+		Calendar cal=Calendar.getInstance();
+		String nowmonth_in=cal.get(Calendar.YEAR)+StringUtils.leftPad(cal.get(Calendar.MONTH)+"",2,'0');
+		cal.add(Calendar.MONTH, -1);
+		String lastmonth_in=cal.get(Calendar.YEAR)+StringUtils.leftPad(cal.get(Calendar.MONTH)+"",2,'0');
 	}
 
 }
