@@ -206,7 +206,7 @@ public class InStoreController {
 	 */
 	@RequestMapping("/inStore/query.do")
 	@ResponseBody
-	public Page query(Integer start,Integer limit,Date operateDate_start,Date operateDate_end,String store_id) {
+	public Page query(Integer start,Integer limit,String operateDate_start,String operateDate_end,String store_id) {
 		Page page=Page.getInstance(start, limit);
 		page.addParam("operateDate_start", operateDate_start);
 		page.addParam("operateDate_end", operateDate_end);

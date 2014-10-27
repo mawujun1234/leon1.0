@@ -11,10 +11,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	select a.*,b.name as store_name from ems_instore a,ems_store b
 		where a.store_id=b.id 
 		<if test="operateDate_start!=null">
-			and a.operateDate &gt;=#{operateDate_start}
+			and to_char(a.operateDate,'yyyy-mm-dd') &gt;=#{operateDate_start}
 		</if>
 		<if test="operateDate_end!=null">
-			and a.operateDate &lt;=#{operateDate_end}
+			and to_char(a.operateDate,'yyyy-mm-dd') &lt;=#{operateDate_end}
 		</if>
 		<if test="store_id!=null and store_id!=''">
 			and a.store_id =#{store_id}
