@@ -20,7 +20,7 @@ public class PatrolMonitor {
 		if(this.getPatrols()==null || this.getPatrols().intValue()==0){
 			return pole_nums;
 		}
-		return this.getPatrols().subtract(this.getPole_nums());
+		return this.getPole_nums().subtract(this.getPatrols());
 	}
 	
 	public String getPatrols_rate() {

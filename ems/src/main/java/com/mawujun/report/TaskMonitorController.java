@@ -313,7 +313,7 @@ public class TaskMonitorController {
 		List<Map<String, Object>> polenums = jdbcTemplate.queryForList(sql);
 		
 		//获取已巡检的杆位，即任务提交的杆位
-		sql="select workunit_id,count(pole_id) as patrols from ems_task where  status='submited' and type='patrol'"
+		sql="select workunit_id,count(pole_id) as patrols from ems_task where  (status='submited' or status='complete')  and type='patrol'"
 				+ " and to_char(submitDate,'yyyymmdd') between '"+format.format(date_start)+"' and '"+format.format(date_end)+"'"
 				+ " group by workunit_id";
 		List<Map<String, Object>> patrols = jdbcTemplate.queryForList(sql);
