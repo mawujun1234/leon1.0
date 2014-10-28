@@ -45,6 +45,7 @@ public class BuildDayReportService extends AbstractService<BuildDayReport, Build
 	}
 
 
+	SimpleDataFormat format=new 
 	/**
 	 * 每个月月底，定时生成报表
 	 * @author mawujun 16064988@qq.com
@@ -53,10 +54,10 @@ public class BuildDayReportService extends AbstractService<BuildDayReport, Build
 		Map<String,Object> params=new HashMap<String,Object>();
 		//获取当前月，格式为 201409
 		Calendar cal=Calendar.getInstance();
-		String nowmonth_in=cal.get(Calendar.YEAR)+StringUtils.leftPad(cal.get(Calendar.MONTH)+"",2,'0');
+		String nowday_in=cal.get(Calendar.YEAR)+StringUtils.leftPad(cal.get(Calendar.MONTH)+"",2,'0');
 		cal.add(Calendar.MONTH, -1);
 		dd
-		String lastmonth_in=cal.get(Calendar.YEAR)+StringUtils.leftPad(cal.get(Calendar.MONTH)+"",2,'0');
+		String lastdat_in=cal.get(Calendar.YEAR)+StringUtils.leftPad(cal.get(Calendar.MONTH)+"",2,'0');
 		params.put("nowday_in", nowmonth_in);
 		params.put("lastdat_in", lastmonth_in);
 		
