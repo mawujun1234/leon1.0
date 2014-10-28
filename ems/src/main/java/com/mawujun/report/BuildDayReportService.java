@@ -1,5 +1,6 @@
 package com.mawujun.report;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 
 
 
@@ -45,7 +47,7 @@ public class BuildDayReportService extends AbstractService<BuildDayReport, Build
 	}
 
 
-	SimpleDataFormat format=new 
+	SimpleDateFormat format=new SimpleDateFormat("yyyyMMdd");
 	/**
 	 * 每个月月底，定时生成报表
 	 * @author mawujun 16064988@qq.com
@@ -54,12 +56,12 @@ public class BuildDayReportService extends AbstractService<BuildDayReport, Build
 		Map<String,Object> params=new HashMap<String,Object>();
 		//获取当前月，格式为 201409
 		Calendar cal=Calendar.getInstance();
-		String nowday_in=cal.get(Calendar.YEAR)+StringUtils.leftPad(cal.get(Calendar.MONTH)+"",2,'0');
-		cal.add(Calendar.MONTH, -1);
-		dd
-		String lastdat_in=cal.get(Calendar.YEAR)+StringUtils.leftPad(cal.get(Calendar.MONTH)+"",2,'0');
-		params.put("nowday_in", nowmonth_in);
-		params.put("lastdat_in", lastmonth_in);
+		String nowday_in=format.format(cal.getTime());//cal.get(Calendar.YEAR)+StringUtils.leftPad(cal.get(Calendar.MONTH)+"",2,'0');
+		
+		cal.add(Calendar.DAY_OF_MONTH, -1);
+		String lastday_in=format.format(cal.getTime());//cal.get(Calendar.YEAR)+StringUtils.leftPad(cal.get(Calendar.MONTH)+"",2,'0');
+		params.put("nowday_in", nowday_in);
+		params.put("lastday_in", lastday_in);
 		
 		List<Store> stores=storeRepository.query(Cnd.select().andEquals(M.Store.type, 1).andEquals(M.Store.status,true ));
 		for(Store store:stores){

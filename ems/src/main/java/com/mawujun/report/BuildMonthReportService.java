@@ -1,5 +1,6 @@
 package com.mawujun.report;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +31,8 @@ public class BuildMonthReportService extends AbstractService<BuildMonthReport, B
 		// TODO Auto-generated method stub
 		return buildMonthReportRepository;
 	}
+	
+	SimpleDateFormat format=new SimpleDateFormat("yyyyMM");
 	/**
 	 * 每个月月底，定时生成报表
 	 * @author mawujun 16064988@qq.com
@@ -38,9 +41,9 @@ public class BuildMonthReportService extends AbstractService<BuildMonthReport, B
 		Map<String,Object> params=new HashMap<String,Object>();
 		//获取当前月，格式为 201409
 		Calendar cal=Calendar.getInstance();
-		String nowmonth_in=cal.get(Calendar.YEAR)+StringUtils.leftPad(cal.get(Calendar.MONTH)+"",2,'0');
+		String nowmonth_in=format.format(cal.getTime());//cal.get(Calendar.YEAR)+StringUtils.leftPad(cal.get(Calendar.MONTH)+"",2,'0');
 		cal.add(Calendar.MONTH, -1);
-		String lastmonth_in=cal.get(Calendar.YEAR)+StringUtils.leftPad(cal.get(Calendar.MONTH)+"",2,'0');
+		String lastmonth_in=format.format(cal.getTime());//cal.get(Calendar.YEAR)+StringUtils.leftPad(cal.get(Calendar.MONTH)+"",2,'0');
 		params.put("nowmonth_in", nowmonth_in);
 		params.put("lastmonth_in", lastmonth_in);
 		

@@ -20,7 +20,7 @@ import com.mawujun.repository.idEntity.IdEntity;
 public class BuildMonthReport implements IdEntity<BuildMonthReport_PK>{
 	@Id
 	@Column(length=8)
-	private Integer month;//201401这种形式
+	private Integer monthkey;//201401这种形式
 	@Id
 	@Column(length=6)
 	private String subtype_id;
@@ -55,13 +55,7 @@ public class BuildMonthReport implements IdEntity<BuildMonthReport_PK>{
 	@Column(length=500)
 	private String memo;//备注
 	
-	
-	public Integer getMonth() {
-		return month;
-	}
-	public void setMonth(Integer month) {
-		this.month = month;
-	}
+
 	public String getSubtype_id() {
 		return subtype_id;
 	}
@@ -162,12 +156,18 @@ public class BuildMonthReport implements IdEntity<BuildMonthReport_PK>{
 		// TODO Auto-generated method stub
 		BuildMonthReport_PK id=new BuildMonthReport_PK();
 		id.setBrand_id(this.getBrand_id());
-		id.setMonth(month);
+		id.setMonthkey(monthkey);
 		id.setProd_id(prod_id);
 		id.setStore_id(store_id);
 		id.setStyle(style);
 		id.setSubtype_id(subtype_id);
 		return id;
+	}
+	public Integer getMonthkey() {
+		return monthkey;
+	}
+	public void setMonthkey(Integer monthkey) {
+		this.monthkey = monthkey;
 	}
 
 }

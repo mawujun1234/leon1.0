@@ -80,7 +80,7 @@ public class TaskMonitorController {
 		sql="select workunit_id,count(id) currt_submited,"
 				+ " avg(to_date(to_char(submitDate,'yyyy-mm-dd hh24-mi-ss'),'yyyy-mm-dd hh24-mi-ss')-to_date(to_char(createDate,'yyyy-mm-dd hh24-mi-ss'),'yyyy-mm-dd hh24-mi-ss'))*24*60 currt_avgsubmitedtime"
 				+ " from ems_task "
-				+ " where  status='complete' and to_char(submitDate,'yyyymmdd') between '"+format.format(date_start)+"' and '"+format.format(date_end)+"'"
+				+ " where  (status='complete' or status='submited') and to_char(submitDate,'yyyymmdd') between '"+format.format(date_start)+"' and '"+format.format(date_end)+"'"
 						+ " and type ='newInstall'"
 				+ " group by workunit_id";
 		List<Map<String,Object>> currt_submiteds=jdbcTemplate.queryForList(sql);
@@ -207,13 +207,13 @@ public class TaskMonitorController {
 		sql="select workunit_id,count(id) currt_submited,"
 				+ " avg(to_date(to_char(submitDate,'yyyy-mm-dd hh24-mi-ss'),'yyyy-mm-dd hh24-mi-ss')-to_date(to_char(createDate,'yyyy-mm-dd hh24-mi-ss'),'yyyy-mm-dd hh24-mi-ss'))*24*60 currt_avgsubmitedtime"
 				+ " from ems_task "
-				+ " where  status='complete' and to_char(submitDate,'yyyymmdd') between '"+format.format(date_start)+"' and '"+format.format(date_end)+"'"
+				+ " where (status='complete' or status='submited') and to_char(submitDate,'yyyymmdd') between '"+format.format(date_start)+"' and '"+format.format(date_end)+"'"
 						+ " and type ='repair'"
 				+ " group by workunit_id";
 		List<Map<String,Object>> currt_submiteds=jdbcTemplate.queryForList(sql);
 		
 		
-		
+		//==============================累计相关的数量
 		sql="select workunit_id,count(id) currt_new from ems_task "
 				+ " where type ='repair'"
 				+ "group by workunit_id ";
@@ -313,7 +313,7 @@ public class TaskMonitorController {
 		List<Map<String, Object>> polenums = jdbcTemplate.queryForList(sql);
 		
 		//获取已巡检的杆位，即任务提交的杆位
-		sql="select workunit_id,count(distinct pole_id) as patrols from ems_task where  (status='submited' or status='complete')  and type='patrol'"
+		sql="select workunit_id,count(pole_id) as patrols from ems_task where  (status='submited' or status='complete')  and type='patrol'"
 				+ " and to_char(submitDate,'yyyymmdd') between '"+format.format(date_start)+"' and '"+format.format(date_end)+"'"
 				+ " group by workunit_id";
 		List<Map<String, Object>> patrols = jdbcTemplate.queryForList(sql);

@@ -73,11 +73,18 @@ Ext.onReady(function(){
 				store.reload();
 			}
 		},{
-			text:'导出excel',
+			text:'导出月报表',
 			handler:function(){
 				var params=getParams();
 				var pp=Ext.Object.toQueryString(params);
 				window.open(Ext.ContextPath+"/buildmonthreport/export.do?"+pp, "_blank");
+			}
+		},{
+			text:'导出日报表',
+			handler:function(){
+				var params=getParams();
+				var pp=Ext.Object.toQueryString(params);
+				window.open(Ext.ContextPath+"/builddayreport/export.do?"+pp, "_blank");
 			}
 		}]
 	})

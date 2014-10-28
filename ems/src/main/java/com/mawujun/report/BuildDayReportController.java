@@ -1,19 +1,32 @@
 package com.mawujun.report;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.mawujun.utils.page.PageRequest;
 import com.mawujun.utils.page.QueryResult;
+import com.mawujun.baseinfo.Store;
+import com.mawujun.baseinfo.StoreService;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.utils.page.Page;
 import com.mawujun.utils.M;
-
 import com.mawujun.report.BuildDayReport;
 import com.mawujun.report.BuildDayReportService;
 /**
@@ -27,77 +40,20 @@ public class BuildDayReportController {
 
 	@Resource
 	private BuildDayReportService buildDayReportService;
+	@Autowired
+	private StoreService storeService;
 
-
-	/**
-	 * 请按自己的需求修改
-	 * @author mawujun email:16064988@163.com qq:16064988
-	 * @param id 是父节点的id
-	 * @return
-	 */
-	@RequestMapping("/buildDayReport/query.do")
-	@ResponseBody
-	public List<BuildDayReport> query(String id) {
-		Cnd cnd=Cnd.select().andEquals(M.BuildDayReport.parent.id, "root".equals(id)?null:id);
-		List<BuildDayReport> buildDayReportes=buildDayReportService.query(cnd);
-		//JsonConfigHolder.setFilterPropertys(BuildDayReport.class,M.BuildDayReport.parent.name());
-		return buildDayReportes;
+	public List<BuildDayReport> query(String year,String month,String store_id){
+		List<BuildDayReport> list=buildDayReportService.query(Cnd.select().andEquals(M.BuildDayReport.daykey, year+month).andEquals(M.BuildDayReport.store_id, store_id));
+		
+		return list;
+		
 	}
-
-	/**
-	 * 这是基于分页的几种写法,的例子，请按自己的需求修改
-	 * @author mawujun email:16064988@163.com qq:16064988
-	 * @param start
-	 * @param limit
-	 * @param userName
-	 * @return
-	 */
-	@RequestMapping("/buildDayReport/query.do")
-	@ResponseBody
-	public Page query(Integer start,Integer limit,String sampleName){
-		Page page=Page.getInstance(start,limit);//.addParam(M.BuildDayReport.sampleName, "%"+sampleName+"%");
-		return buildDayReportService.queryPage(page);
-	}
-
-	@RequestMapping("/buildDayReport/query.do")
-	@ResponseBody
-	public List<BuildDayReport> query() {	
-		List<BuildDayReport> buildDayReportes=buildDayReportService.queryAll();
-		return buildDayReportes;
-	}
-	
-
-	@RequestMapping("/buildDayReport/load.do")
-	public BuildDayReport load(BuildDayReport_PK id) {
-		return buildDayReportService.get(id);
-	}
-	
-	@RequestMapping("/buildDayReport/create.do")
-	@ResponseBody
-	public BuildDayReport create(@RequestBody BuildDayReport buildDayReport) {
-		buildDayReportService.create(buildDayReport);
-		return buildDayReport;
-	}
-	
-	@RequestMapping("/buildDayReport/update.do")
-	@ResponseBody
-	public  BuildDayReport update(@RequestBody BuildDayReport buildDayReport) {
-		buildDayReportService.update(buildDayReport);
-		return buildDayReport;
-	}
-	
-	@RequestMapping("/buildDayReport/deleteById.do")
-	@ResponseBody
-	public BuildDayReport_PK deleteById(BuildDayReport_PK id) {
-		buildDayReportService.deleteById(id);
-		return id;
-	}
-	
-	@RequestMapping("/buildDayReport/destroy.do")
-	@ResponseBody
-	public BuildDayReport destroy(@RequestBody BuildDayReport buildDayReport) {
-		buildDayReportService.delete(buildDayReport);
-		return buildDayReport;
+	@RequestMapping("/builddayreport/export.do")
+	public void export(HttpServletResponse response,String year,String month,String store_id) throws IOException{
+		
+		
+		
 	}
 	
 	

@@ -2,6 +2,7 @@ package com.mawujun.report;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -34,7 +35,7 @@ public class BuildMonthReportController {
 	public List<BuildMonthReport> query(String year,String month,String store_id){
 		//String sql="select * from report_buildmonthreport where month='"+month+"' and store_id='"+store_id+"'";
 		
-		List<BuildMonthReport> list=buildMonthReportService.query(Cnd.select().andEquals(M.BuildMonthReport.month, year+month).andEquals(M.BuildMonthReport.store_id, store_id));
+		List<BuildMonthReport> list=buildMonthReportService.query(Cnd.select().andEquals(M.BuildMonthReport.monthkey, year+month).andEquals(M.BuildMonthReport.store_id, store_id));
 		return list;
 		
 	}
@@ -45,6 +46,43 @@ public class BuildMonthReportController {
 		return "success";
 	}
 	
+	
+	private void addRow1(Sheet sheet){
+		 Row row = sheet.createRow(1);
+		 
+		 Cell subtype_name=row.createCell(0);
+		 subtype_name.setCellValue("小类");
+		 
+		 Cell brand_name=row.createCell(1);
+		 brand_name.setCellValue("品牌");
+		 
+		 Cell style=row.createCell(2);
+		 style.setCellValue("型号");
+		 
+		 Cell prod_name=row.createCell(3);
+		 prod_name.setCellValue("品名");
+		 
+		 Cell store_name=row.createCell(4);
+		 store_name.setCellValue("仓库");
+		 
+		 Cell unit=row.createCell(5);
+		 unit.setCellValue("单位");
+		 
+		 Cell lastnum=row.createCell(6);
+		 lastnum.setCellValue("上期结余数");
+		 
+		 Cell storeinnum=row.createCell(7);
+		 storeinnum.setCellValue("本期新增数");
+		 
+		 Cell installoutnum=row.createCell(8);
+		 installoutnum.setCellValue("本期领用数");
+		 
+		 Cell nownum=row.createCell(9);
+		 nownum.setCellValue("本月结余数");
+		 
+		 Cell memo=row.createCell(10);
+		 memo.setCellValue("备注"); 
+	}
 	@RequestMapping("/buildmonthreport/export.do")
 	public void export(HttpServletResponse response,String year,String month,String store_id) throws IOException{
 		
@@ -68,10 +106,14 @@ public class BuildMonthReportController {
 		title_cell.setCellStyle(cs);
 		//和并单元格
 		sheet.addMergedRegion(new CellRangeAddress(0,(short)0,0,(short)10)); 
-		 
-		for(int i=1;i<=list.size();i++){
-			 BuildMonthReport buildDayReport=list.get(i-1);
-			 Row row = sheet.createRow(i);
+		
+		//设置第一行,设置列标题
+		addRow1(sheet);
+		
+		
+		for(int i=0;i<list.size();i++){
+			 BuildMonthReport buildDayReport=list.get(i);
+			 Row row = sheet.createRow(i+2);
 			 
 			 Cell subtype_name=row.createCell(0);
 			 subtype_name.setCellValue(buildDayReport.getSubtype_name());
@@ -92,22 +134,22 @@ public class BuildMonthReportController {
 			 unit.setCellValue(buildDayReport.getUnit());
 			 
 			 Cell lastnum=row.createCell(6);
-			 lastnum.setCellValue(buildDayReport.getLastnum());
+			 lastnum.setCellValue(buildDayReport.getLastnum()==null?0:buildDayReport.getLastnum());
 			 
 			 Cell storeinnum=row.createCell(7);
-			 storeinnum.setCellValue(buildDayReport.getStoreinnum());
+			 storeinnum.setCellValue(buildDayReport.getStoreinnum()==null?0:buildDayReport.getStoreinnum());
 			 
 			 Cell installoutnum=row.createCell(8);
-			 installoutnum.setCellValue(buildDayReport.getInstalloutnum());
+			 installoutnum.setCellValue(buildDayReport.getInstalloutnum()==null?0:buildDayReport.getInstalloutnum());
 			 
 			 Cell nownum=row.createCell(9);
-			 nownum.setCellValue(buildDayReport.getNownum());
+			 nownum.setCellValue(buildDayReport.getNownum()==null?0:buildDayReport.getNownum());
 			 
 			 Cell memo=row.createCell(10);
 			 memo.setCellValue(buildDayReport.getMemo()); 
 		 }
 		 
-		 String filename = store.getName() + "在建工程仓库盘点月报表.xls";
+		 String filename = "在建工程仓库("+store.getName()+")盘点月报表.xls";
 		 //FileOutputStream out = new FileOutputStream(filename);
 		response.setHeader("content-disposition", "attachment; filename="+ new String(filename.getBytes("UTF-8"), "ISO8859-1"));
 		response.setContentType("application/vnd.ms-excel;charset=uft-8");

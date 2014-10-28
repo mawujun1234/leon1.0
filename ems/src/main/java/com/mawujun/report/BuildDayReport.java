@@ -19,7 +19,7 @@ import com.mawujun.repository.idEntity.IdEntity;
 public class BuildDayReport  implements IdEntity<BuildDayReport_PK>{
 	@Id
 	@Column(length=8)
-	private Integer day;//20140101这种形式
+	private Integer daykey;//20140101这种形式
 	@Id
 	@Column(length=6)
 	private String subtype_id;
@@ -47,16 +47,16 @@ public class BuildDayReport  implements IdEntity<BuildDayReport_PK>{
 	@Column(length=10)
 	private String unit;//单位
 	
-	private Integer lastnum;//上期结余
-	private Integer nownum;//本期结余
-	private Integer storeinnum;//本期新增
-	private Integer installoutnum;//本期领用
+	private Integer lastnum;//上期结余,昨天结余
+	private Integer nownum;//本期结余，今天结余
+	private Integer storeinnum;//本期新增,今天新增
+	private Integer installoutnum;//本期领用，今天领用
 	@Column(length=500)
 	private String memo;//备注
 	
 	//==========================下面就是每天的数据
-	private Integer day_in;
-	private Integer day_out;
+	//private Integer day_in;
+	//private Integer day_out;
 	
 //	private Integer day1_in;
 //	private Integer day1_out;	
@@ -222,29 +222,19 @@ public class BuildDayReport  implements IdEntity<BuildDayReport_PK>{
 		// TODO Auto-generated method stub
 		BuildDayReport_PK id=new BuildDayReport_PK();
 		id.setBrand_id(this.getBrand_id());
-		id.setDay(day);
+		id.setDaykey(daykey);
 		id.setProd_id(prod_id);
 		id.setStore_id(store_id);
 		id.setStyle(style);
 		id.setSubtype_id(subtype_id);
 		return id;
 	}
-	public Integer getDay() {
-		return day;
+
+	public Integer getDaykey() {
+		return daykey;
 	}
-	public void setDay(Integer day) {
-		this.day = day;
+	public void setDaykey(Integer daykey) {
+		this.daykey = daykey;
 	}
-	public Integer getDay_in() {
-		return day_in;
-	}
-	public void setDay_in(Integer day_in) {
-		this.day_in = day_in;
-	}
-	public Integer getDay_out() {
-		return day_out;
-	}
-	public void setDay_out(Integer day_out) {
-		this.day_out = day_out;
-	}
+
 }

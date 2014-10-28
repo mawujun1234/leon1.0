@@ -5,7 +5,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
 <mapper namespace="com.mawujun.report.BuildDayReportRepository">
-	<parameterMap type="map" id="proc_buildmonthreportMap">  
+	<parameterMap type="map" id="proc_builddayreportMap">  
 	   <parameter property="store_id_in" jdbcType="VARCHAR" mode="IN"/>  
 	   <parameter property="nowday_in" jdbcType="VARCHAR" mode="IN"/>  
 	   <parameter property="lastdat_in" jdbcType="VARCHAR" mode="IN"/>  

@@ -9,7 +9,7 @@ public class BuildMonthReport_PK  implements Serializable{
 	 */
 	private static final long serialVersionUID = 123L;
 
-	private Integer month;//201401这种形式
+	private Integer monthkey;//201401这种形式
 
 	private String subtype_id;
 
@@ -28,7 +28,7 @@ public class BuildMonthReport_PK  implements Serializable{
 	public BuildMonthReport_PK(Integer month, String subtype_id, String prod_id,
 			String brand_id, String style, String store_id) {
 		super();
-		this.month = month;
+		this.monthkey = month;
 		this.subtype_id = subtype_id;
 		this.prod_id = prod_id;
 		this.brand_id = brand_id;
@@ -36,13 +36,6 @@ public class BuildMonthReport_PK  implements Serializable{
 		this.store_id = store_id;
 	}
 
-	public Integer getMonth() {
-		return month;
-	}
-
-	public void setMonth(Integer month) {
-		this.month = month;
-	}
 
 	public String getSubtype_id() {
 		return subtype_id;
@@ -94,7 +87,7 @@ public class BuildMonthReport_PK  implements Serializable{
 		int result = 1;
 		result = prime * result
 				+ ((brand_id == null) ? 0 : brand_id.hashCode());
-		result = prime * result + ((month == null) ? 0 : month.hashCode());
+		result = prime * result + ((monthkey == null) ? 0 : monthkey.hashCode());
 		result = prime * result + ((prod_id == null) ? 0 : prod_id.hashCode());
 		result = prime * result
 				+ ((store_id == null) ? 0 : store_id.hashCode());
@@ -118,10 +111,10 @@ public class BuildMonthReport_PK  implements Serializable{
 				return false;
 		} else if (!brand_id.equals(other.brand_id))
 			return false;
-		if (month == null) {
-			if (other.month != null)
+		if (monthkey == null) {
+			if (other.monthkey != null)
 				return false;
-		} else if (!month.equals(other.month))
+		} else if (!monthkey.equals(other.monthkey))
 			return false;
 		if (prod_id == null) {
 			if (other.prod_id != null)
@@ -144,6 +137,12 @@ public class BuildMonthReport_PK  implements Serializable{
 		} else if (!subtype_id.equals(other.subtype_id))
 			return false;
 		return true;
+	}
+	public Integer getMonthkey() {
+		return monthkey;
+	}
+	public void setMonthkey(Integer monthkey) {
+		this.monthkey = monthkey;
 	}
 
 }

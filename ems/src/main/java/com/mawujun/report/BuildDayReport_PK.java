@@ -9,7 +9,7 @@ public class BuildDayReport_PK  implements Serializable{
 	 */
 	private static final long serialVersionUID = 123L;
 
-	private Integer day;//20140101这种形式
+	private Integer daykey;//20140101这种形式
 
 	private String subtype_id;
 
@@ -28,7 +28,7 @@ public class BuildDayReport_PK  implements Serializable{
 	public BuildDayReport_PK(Integer day, String subtype_id, String prod_id,
 			String brand_id, String style, String store_id) {
 		super();
-		this.day = day;
+		this.daykey = day;
 		this.subtype_id = subtype_id;
 		this.prod_id = prod_id;
 		this.brand_id = brand_id;
@@ -86,7 +86,7 @@ public class BuildDayReport_PK  implements Serializable{
 		int result = 1;
 		result = prime * result
 				+ ((brand_id == null) ? 0 : brand_id.hashCode());
-		result = prime * result + ((day == null) ? 0 : day.hashCode());
+		result = prime * result + ((daykey == null) ? 0 : daykey.hashCode());
 		result = prime * result + ((prod_id == null) ? 0 : prod_id.hashCode());
 		result = prime * result
 				+ ((store_id == null) ? 0 : store_id.hashCode());
@@ -110,10 +110,10 @@ public class BuildDayReport_PK  implements Serializable{
 				return false;
 		} else if (!brand_id.equals(other.brand_id))
 			return false;
-		if (day == null) {
-			if (other.day != null)
+		if (daykey == null) {
+			if (other.daykey != null)
 				return false;
-		} else if (!day.equals(other.day))
+		} else if (!daykey.equals(other.daykey))
 			return false;
 		if (prod_id == null) {
 			if (other.prod_id != null)
@@ -137,11 +137,12 @@ public class BuildDayReport_PK  implements Serializable{
 			return false;
 		return true;
 	}
-	public Integer getDay() {
-		return day;
+	public Integer getDaykey() {
+		return daykey;
 	}
-	public void setDay(Integer day) {
-		this.day = day;
+	public void setDaykey(Integer daykey) {
+		this.daykey = daykey;
 	}
+
 
 }

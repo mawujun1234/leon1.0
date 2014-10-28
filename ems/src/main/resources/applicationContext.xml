@@ -58,8 +58,10 @@
 	-->
 	<task:scheduled-tasks>   
         <task:scheduled ref="overtimeService" method="createOvertimeMessage" cron="0 0/10 * * * ?"/> 
-        <!-- 每个月的最后一天执行0 0 22 L * ?-->
-        <task:scheduled ref="buildMonthReportService" method="createBuildMonthReport" cron="0 10 0 1 * ?"/>   
+        <!-- 每个月的最后一天执行0 10 0 1 * ?  ,在代码中要调整成前一天的，别忘记了-->
+        <task:scheduled ref="buildMonthReportService" method="createBuildMonthReport" cron="0 39 19 * * ?"/>  
+        <!-- 每天执行一次0 30 22 * * ?-->
+        <task:scheduled ref="buildDayReportService" method="createBuildDayReport" cron="0 28 19 * * ?"/>     
 	</task:scheduled-tasks> 
 
 
