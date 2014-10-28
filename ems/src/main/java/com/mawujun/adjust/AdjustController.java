@@ -8,18 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.mawujun.utils.page.PageRequest;
-import com.mawujun.utils.page.QueryResult;
-import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.exception.BusinessException;
-import com.mawujun.repair.RepairStatus;
-import com.mawujun.repair.RepairVO;
-import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.page.Page;
-import com.mawujun.utils.M;
-import com.mawujun.adjust.Adjust;
-import com.mawujun.adjust.AdjustService;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
  * @version 1.0

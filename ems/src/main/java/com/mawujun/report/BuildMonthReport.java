@@ -6,20 +6,21 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
 
+import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.idEntity.IdEntity;
 
 /**
- * 在建工程日报表
- * @author mawujun email:16064988@qq.com qq:16064988
+ * 在建工程仓库盘点月报
+ * @author mawujun 16064988@qq.com  
  *
  */
 @Entity
-@Table(name="report_builddayreport")
-@IdClass(BuildDayReport_PK.class)  
-public class BuildDayReport  implements IdEntity<BuildDayReport_PK>{
+@Table(name="report_buildmonthreport")
+@IdClass(BuildMonthReport_PK.class)  
+public class BuildMonthReport implements IdEntity<BuildMonthReport_PK>{
 	@Id
 	@Column(length=8)
-	private Integer day;//20140101这种形式
+	private Integer month;//201401这种形式
 	@Id
 	@Column(length=6)
 	private String subtype_id;
@@ -47,81 +48,20 @@ public class BuildDayReport  implements IdEntity<BuildDayReport_PK>{
 	@Column(length=10)
 	private String unit;//单位
 	
-	private Integer lastnum;//上期结余
-	private Integer nownum;//本期结余
-	private Integer storeinnum;//本期新增
-	private Integer installoutnum;//本期领用
+	private Integer lastnum;//上月结余
+	private Integer nownum;//本月结余
+	private Integer storeinnum;//新增
+	private Integer installoutnum;//领用
 	@Column(length=500)
 	private String memo;//备注
 	
-	//==========================下面就是每天的数据
-	private Integer day_in;
-	private Integer day_out;
 	
-//	private Integer day1_in;
-//	private Integer day1_out;	
-//	private Integer day2_in;
-//	private Integer day2_out;
-//	private Integer day3_in;
-//	private Integer day3_out;
-//	private Integer day4_in;
-//	private Integer day4_out;
-//	private Integer day5_in;
-//	private Integer day5_out;
-//	private Integer day6_in;
-//	private Integer day6_out;
-//	private Integer day7_in;
-//	private Integer day7_out;
-//	private Integer day8_in;
-//	private Integer day8_out;
-//	private Integer day9_in;
-//	private Integer day9_out;
-//	private Integer day10_in;
-//	private Integer day10_out;
-//	private Integer day11_in;
-//	private Integer day11_out;
-//	private Integer day12_in;
-//	private Integer day12_out;
-//	private Integer day13_in;
-//	private Integer day13_out;
-//	private Integer day14_in;
-//	private Integer day14_out;
-//	private Integer day15_in;
-//	private Integer day15_out;
-//	private Integer day16_in;
-//	private Integer day16_out;
-//	private Integer day17_in;
-//	private Integer day17_out;
-//	private Integer day18_in;
-//	private Integer day18_out;
-//	private Integer day19_in;
-//	private Integer day19_out;
-//	private Integer day20_in;
-//	private Integer day20_out;
-//	private Integer day21_in;
-//	private Integer day21_out;
-//	private Integer day22_in;
-//	private Integer day22_out;
-//	private Integer day23_in;
-//	private Integer day23_out;
-//	private Integer day24_in;
-//	private Integer day24_out;
-//	private Integer day25_in;
-//	private Integer day25_out;
-//	private Integer day26_in;
-//	private Integer day26_out;
-//	private Integer day27_in;
-//	private Integer day27_out;
-//	private Integer day28_in;
-//	private Integer day28_out;
-//	private Integer day29_in;
-//	private Integer day29_out;
-//	private Integer day30_in;
-//	private Integer day30_out;
-//	private Integer day31_in;
-//	private Integer day31_out;
-//	
-
+	public Integer getMonth() {
+		return month;
+	}
+	public void setMonth(Integer month) {
+		this.month = month;
+	}
 	public String getSubtype_id() {
 		return subtype_id;
 	}
@@ -213,38 +153,21 @@ public class BuildDayReport  implements IdEntity<BuildDayReport_PK>{
 		this.memo = memo;
 	}
 	@Override
-	public void setId(BuildDayReport_PK id) {
+	public void setId(BuildMonthReport_PK id) {
 		// TODO Auto-generated method stub
 		//throw new BusinessException("这个还没有做，现在还不需要做");
 	}
 	@Override
-	public BuildDayReport_PK getId() {
+	public BuildMonthReport_PK getId() {
 		// TODO Auto-generated method stub
-		BuildDayReport_PK id=new BuildDayReport_PK();
+		BuildMonthReport_PK id=new BuildMonthReport_PK();
 		id.setBrand_id(this.getBrand_id());
-		id.setDay(day);
+		id.setMonth(month);
 		id.setProd_id(prod_id);
 		id.setStore_id(store_id);
 		id.setStyle(style);
 		id.setSubtype_id(subtype_id);
 		return id;
 	}
-	public Integer getDay() {
-		return day;
-	}
-	public void setDay(Integer day) {
-		this.day = day;
-	}
-	public Integer getDay_in() {
-		return day_in;
-	}
-	public void setDay_in(Integer day_in) {
-		this.day_in = day_in;
-	}
-	public Integer getDay_out() {
-		return day_out;
-	}
-	public void setDay_out(Integer day_out) {
-		this.day_out = day_out;
-	}
+
 }

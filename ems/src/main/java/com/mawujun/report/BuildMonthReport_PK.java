@@ -2,14 +2,14 @@ package com.mawujun.report;
 
 import java.io.Serializable;
 
-public class BuildDayReport_PK  implements Serializable{
+public class BuildMonthReport_PK  implements Serializable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 123L;
 
-	private Integer day;//20140101这种形式
+	private Integer month;//201401这种形式
 
 	private String subtype_id;
 
@@ -22,18 +22,26 @@ public class BuildDayReport_PK  implements Serializable{
 	private String store_id;//仓库id，所属仓库
 
 	
-	public BuildDayReport_PK() {  
+	public BuildMonthReport_PK() {  
         super();
     } 
-	public BuildDayReport_PK(Integer day, String subtype_id, String prod_id,
+	public BuildMonthReport_PK(Integer month, String subtype_id, String prod_id,
 			String brand_id, String style, String store_id) {
 		super();
-		this.day = day;
+		this.month = month;
 		this.subtype_id = subtype_id;
 		this.prod_id = prod_id;
 		this.brand_id = brand_id;
 		this.style = style;
 		this.store_id = store_id;
+	}
+
+	public Integer getMonth() {
+		return month;
+	}
+
+	public void setMonth(Integer month) {
+		this.month = month;
 	}
 
 	public String getSubtype_id() {
@@ -86,7 +94,7 @@ public class BuildDayReport_PK  implements Serializable{
 		int result = 1;
 		result = prime * result
 				+ ((brand_id == null) ? 0 : brand_id.hashCode());
-		result = prime * result + ((day == null) ? 0 : day.hashCode());
+		result = prime * result + ((month == null) ? 0 : month.hashCode());
 		result = prime * result + ((prod_id == null) ? 0 : prod_id.hashCode());
 		result = prime * result
 				+ ((store_id == null) ? 0 : store_id.hashCode());
@@ -104,16 +112,16 @@ public class BuildDayReport_PK  implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BuildDayReport_PK other = (BuildDayReport_PK) obj;
+		BuildMonthReport_PK other = (BuildMonthReport_PK) obj;
 		if (brand_id == null) {
 			if (other.brand_id != null)
 				return false;
 		} else if (!brand_id.equals(other.brand_id))
 			return false;
-		if (day == null) {
-			if (other.day != null)
+		if (month == null) {
+			if (other.month != null)
 				return false;
-		} else if (!day.equals(other.day))
+		} else if (!month.equals(other.month))
 			return false;
 		if (prod_id == null) {
 			if (other.prod_id != null)
@@ -136,12 +144,6 @@ public class BuildDayReport_PK  implements Serializable{
 		} else if (!subtype_id.equals(other.subtype_id))
 			return false;
 		return true;
-	}
-	public Integer getDay() {
-		return day;
-	}
-	public void setDay(Integer day) {
-		this.day = day;
 	}
 
 }

@@ -49,6 +49,19 @@ delete sys_navigation_funrole;
 --sys_navigation 这个事不能删除的，是菜单
 delete sys_navigation_user;
 delete sys_user;
+
+
+delete ems_taskequipmentlist;
+delete ems_task;
+delete ems_geolocation;
+delete ems_hitchreasontpl;
+delete ems_hitchtype;
+delete ems_message;
+delete ems_metaversion;
+
+
+delete report_builddayreport;
+delete report_buildmonthreport;
 commit;
 ---初始化数据
 alter table SYS_USER disable all triggers;
@@ -145,6 +158,14 @@ insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
 values ('c0485251-d40b-49fd-954b-cb9591c53775', 'Y', '/report/PropertyStatusApp.jsp', null, '7291c55a-15ed-4205-959f-2065b0ee54c7', 'aai-aaa', '仓库资产情况');
 insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
 values ('d90c8adb-35da-45b1-886d-c765e3848384', 'Y', '/report/EquipmentStatusApp.jsp', null, '7291c55a-15ed-4205-959f-2065b0ee54c7', 'aai-aab', '设备状态表');
+insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
+values ('298b0161-205b-4871-abb3-68c3a6e65983', 'Y', '/report/BuildDayReportApp.jsp', null, '7291c55a-15ed-4205-959f-2065b0ee54c7', 'aai-aaf', '在建工程仓库盘点月报表');
+insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
+values ('135f608e-3161-4680-8e73-f2f6b4a69359', 'Y', '/report/PatrolTaskMonitorApp.jsp', null, '7291c55a-15ed-4205-959f-2065b0ee54c7', 'aai-aae', '巡检任务监控报表');
+	insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
+values ('3516a585-b9d3-4b31-bd27-d6c244e26848', 'Y', '/report/RepairTaskMonitorApp.jsp', null, '7291c55a-15ed-4205-959f-2065b0ee54c7', 'aai-aad', '维修任务监控报表');
+insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
+values ('d3a9d8f7-399d-4f40-b9e8-1c258422c84f', 'Y', '/report/NewInstallTaskMonitorApp.jsp', null, '7291c55a-15ed-4205-959f-2065b0ee54c7', 'aai-aac', '安装任务监控报表');
 
 commit;
 alter table SYS_NAVIGATION enable all triggers;

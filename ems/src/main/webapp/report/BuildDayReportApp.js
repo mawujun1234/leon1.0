@@ -54,7 +54,7 @@ Ext.onReady(function(){
 		    	fields: ['id', 'name'],
 			    proxy:{
 			    	type:'ajax',
-			    	extraParams:{type:3,look:true},
+			    	extraParams:{type:1,look:true},
 			    	url:Ext.ContextPath+"/store/queryCombo.do",
 			    	reader:{
 			    		type:'json',
@@ -72,6 +72,13 @@ Ext.onReady(function(){
 				
 				store.reload();
 			}
+		},{
+			text:'导出excel',
+			handler:function(){
+				var params=getParams();
+				var pp=Ext.Object.toQueryString(params);
+				window.open(Ext.ContextPath+"/buildmonthreport/export.do?"+pp, "_blank");
+			}
 		}]
 	})
 	
@@ -84,7 +91,7 @@ Ext.onReady(function(){
 			actions:{
 				"read":'POST'
 			},
-			url:Ext.ContextPath+"/builddayreport/query.do",
+			url:Ext.ContextPath+"/buildmonthreport/query.do",
 			reader:{
 			    type:'json',
 			    root:'root'
@@ -92,7 +99,8 @@ Ext.onReady(function(){
 		},
 		groupField: 'subtype_name'
 	});
-	store.on("beforeload",function(store){
+	
+	function getParams(){
 		var params={
 			year:year_combox.getValue(),
 			month:month_combox.getValue(),
@@ -110,6 +118,10 @@ Ext.onReady(function(){
 			Exg.Msg.alert("提醒","请先选择仓库!");
 			return;
 		}
+		return params;
+	}
+	store.on("beforeload",function(store){
+		var params=getParams();
 		store.getProxy().extraParams=params;
 	});
 	var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
@@ -194,7 +206,7 @@ Ext.onReady(function(){
 		var params=record.getData();
 		delete params.id;
 		Ext.Ajax.request({
-			url:Ext.ContextPath+'/builddayreport/updateMemo.do',
+			url:Ext.ContextPath+'/buildmonthreport/updateMemo.do',
 			method:'POST',
 			params:params,
 			success:function(response){

@@ -282,7 +282,7 @@ public static final class Scrap {
 	public static final String operateDate="operateDate";
 	public static final String repair_id="repair_id";
 }
-public static final class BuildDayReport {
+public static final class BuildMonthReport {
 	public static final String month="month";
 	public static final String subtype_id="subtype_id";
 	public static final String subtype_name="subtype_name";

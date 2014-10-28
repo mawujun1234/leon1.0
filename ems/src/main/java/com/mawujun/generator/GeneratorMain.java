@@ -17,6 +17,7 @@ import com.mawujun.mobile.task.Task;
 import com.mawujun.mobile.task.TaskEquipmentList;
 import com.mawujun.repair.Scrap;
 import com.mawujun.report.BuildDayReport;
+import com.mawujun.report.BuildMonthReport;
 import com.mawujun.store.InStore;
 import com.mawujun.store.InStoreList;
 import com.mawujun.store.Order;
