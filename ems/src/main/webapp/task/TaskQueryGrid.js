@@ -44,7 +44,9 @@ Ext.define('Ems.task.TaskQueryGrid',{
 		{dataIndex:'type_name',text:'任务类型',width:60},
 		{dataIndex:'pole_name',text:'杆位名称'},
 		{dataIndex:'pole_address',text:'地址',flex:1},
-		//{dataIndex:'area_name',text:'所属片区'},
+		{dataIndex:'createDate',text:'创建时间', renderer: Ext.util.Format.dateRenderer('Y-m-d')},
+		{dataIndex:'submitDate',text:'提交时间', renderer: Ext.util.Format.dateRenderer('Y-m-d')},
+		{dataIndex:'completeDate',text:'完成时间', renderer: Ext.util.Format.dateRenderer('Y-m-d')},
 		{dataIndex:'workunit_name',text:'作业单位'},
 		{dataIndex:'customer_name',text:'所属客户'},
 		{dataIndex:'memo',text:'任务描述',flex:1,renderer:function(value,metadata,record){
@@ -168,16 +170,16 @@ Ext.define('Ems.task.TaskQueryGrid',{
 	        name: 'workunit_id',
 		    displayField: 'name',
 		    valueField: 'id',
-		    queryParam: 'name',
-    		queryMode: 'remote',
-    		triggerAction: 'query',
-    		minChars:-1,
-		    trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
-		    trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
-			onTrigger1Click : function(){
-			    var me = this;
-			    me.setValue('');
-			},
+//		    queryParam: 'name',
+//    		queryMode: 'remote',
+//    		triggerAction: 'query',
+//    		minChars:-1,
+//		    trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
+//		    trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
+//			onTrigger1Click : function(){
+//			    var me = this;
+//			    me.setValue('');
+//			},
 	        //allowBlank: false,
 	        store:Ext.create('Ext.data.Store', {
 		    	fields: ['id', 'name'],

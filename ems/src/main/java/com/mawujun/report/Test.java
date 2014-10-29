@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.h2.engine.SysProperties;
+
 import com.mawujun.utils.StringUtils;
 
 public class Test {
@@ -26,10 +28,18 @@ public class Test {
 //		  System.out.println(sdf.format(date_start)); 
 //		  System.out.println(sdf.format(date_end)); 
 		//System.out.println((1/3)d);
+		SimpleDateFormat format=new SimpleDateFormat("yyyyMM");
 		Calendar cal=Calendar.getInstance();
-		String nowmonth_in=cal.get(Calendar.YEAR)+StringUtils.leftPad(cal.get(Calendar.MONTH)+"",2,'0');
+		cal.set(Calendar.MONTH, 10);
+		cal.set(Calendar.DAY_OF_MONTH, 1);
+		int day=cal.get(Calendar.DAY_OF_MONTH);
+		if(day==1){
+			cal.add(Calendar.DAY_OF_MONTH, -1);
+		}
+		String nowmonth_in=format.format(cal.getTime());
 		cal.add(Calendar.MONTH, -1);
-		String lastmonth_in=cal.get(Calendar.YEAR)+StringUtils.leftPad(cal.get(Calendar.MONTH)+"",2,'0');
+		String lastmonth_in=format.format(cal.getTime());
+		System.out.println("aaaaaaaaaaa");
 	}
 
 }
