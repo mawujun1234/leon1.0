@@ -8,7 +8,7 @@ begin
   select name into store_name from ems_store where id=store_id_in;
   
   --清除要插入的月份的数据
-  delete report_buildmonthreport where monthkey=nowmonth_in;
+  delete report_buildmonthreport where monthkey=nowmonth_in and store_id=store_id_in;
   
   --首先插入key的数据,防止当某个仓库，没有没有库存的时候，就查不出数据了，还有就是这个型号的刚好今天领完了，没有库存，那也不会显示了
   for rec in (
@@ -75,14 +75,27 @@ end;
 
 
 ---------------------------------------------------在建仓库，
-create or replace procedure proc_builddayreport(store_id_in in varchar2,nowday_in in varchar2,lastday_in in varchar2)
+--用来初始化化，历史没有录入的数据，录入开始日期和结束日期
+--call proc_initbuilddayreport('2c90838a48f27b350148f2a91b81000d','201409','20141001','20141030');
+--lastmonth_in上个月，startday_in这个月的开始日期，endday_in这个月的结束日期
+create or replace procedure proc_initbuilddayreport(store_id_in in varchar2,lastmonth_in in varchar2,startday_in in varchar2,endday_in in varchar2)
+as
+begin
+  for v_date in startday_in .. endday_in LOOP
+    proc_builddayreport(store_id_in,v_date,lastmonth_in);
+  END LOOP;
+end;
+
+
+--第三个参数是上个月的月份,用来获取上期数据
+create or replace procedure proc_builddayreport(store_id_in in varchar2,nowday_in in varchar2,lastmonth_in in varchar2)
 as
   store_name varchar2(30);
 begin
   select name into store_name from ems_store where id=store_id_in;
 
   --清除要插入的日期的数据
-  delete report_builddayreport where daykey=nowday_in;
+  delete report_builddayreport where daykey=nowday_in and store_id=store_id_in;
   --首先插入key的数据,防止当某个仓库，没有没有库存的时候，就查不出数据了，还有就是这个型号的刚好今天领完了，没有库存，那也不会显示了
   for rec in (
     select distinct a.subtype_id,a.prod_id,a.brand_id,a.store_id,a.style,b.name as subtype_name,c.name as prod_name,c.unit,d.name as brand_name--,count(a.ecode) as nownum
@@ -112,8 +125,8 @@ begin
     where a.subtype_id=rec.subtype_id and a.prod_id=rec.prod_id and a.brand_id=rec.brand_id and a.store_id=rec.store_id and a.style=rec.style and a.daykey=nowday_in;
   end loop;
 
-  --上期结余数
-  for rec in(select * from report_builddayreport where daykey=lastday_in)
+  --上期结余数,获取的是上个月的结余数量，从月报表中获取
+  for rec in(select * from report_buildmonthreport where monthkey=lastmonth_in)
   loop
     update report_builddayreport a set a.lastnum=rec.nownum
     where a.subtype_id=rec.subtype_id and a.prod_id=rec.prod_id and a.brand_id=rec.brand_id and a.store_id=rec.store_id and a.style=rec.style and daykey=nowday_in;

@@ -8,7 +8,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<parameterMap type="map" id="proc_builddayreportMap">  
 	   <parameter property="store_id_in" jdbcType="VARCHAR" mode="IN"/>  
 	   <parameter property="nowday_in" jdbcType="VARCHAR" mode="IN"/>  
-	   <parameter property="lastdat_in" jdbcType="VARCHAR" mode="IN"/>  
+	   <parameter property="lastmonth_in" jdbcType="VARCHAR" mode="IN"/>  
 	</parameterMap>  
 	<update id="proc_builddayreport" parameterMap="proc_builddayreportMap" statementType="CALLABLE">  
        {call proc_builddayreport(?, ?, ?)}  

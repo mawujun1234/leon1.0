@@ -58,10 +58,12 @@ public class BuildDayReportService extends AbstractService<BuildDayReport, Build
 		Calendar cal=Calendar.getInstance();
 		String nowday_in=format.format(cal.getTime());//cal.get(Calendar.YEAR)+StringUtils.leftPad(cal.get(Calendar.MONTH)+"",2,'0');
 		
-		cal.add(Calendar.DAY_OF_MONTH, -1);
-		String lastday_in=format.format(cal.getTime());//cal.get(Calendar.YEAR)+StringUtils.leftPad(cal.get(Calendar.MONTH)+"",2,'0');
+		//cal.add(Calendar.DAY_OF_MONTH, -1);
+		//String lastday_in=format.format(cal.getTime());//cal.get(Calendar.YEAR)+StringUtils.leftPad(cal.get(Calendar.MONTH)+"",2,'0');
+		cal.add(Calendar.MONTH, -1);
+		String lastmonth_in=cal.get(Calendar.YEAR)+StringUtils.leftPad(cal.get(Calendar.MONTH)+"",2,'0');
 		params.put("nowday_in", nowday_in);
-		params.put("lastday_in", lastday_in);
+		params.put("lastmonth_in", lastmonth_in);
 		
 		List<Store> stores=storeRepository.query(Cnd.select().andEquals(M.Store.type, 1).andEquals(M.Store.status,true ));
 		for(Store store:stores){

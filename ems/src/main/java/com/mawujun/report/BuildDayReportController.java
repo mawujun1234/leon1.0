@@ -47,21 +47,69 @@ public class BuildDayReportController {
 	private StoreService storeService;
 	SimpleDateFormat format=new SimpleDateFormat("yyyyMMdd");
 	
+//	public Map<BuildDayReport,Map<String,Integer>> query(String year,String month,String store_id) throws IllegalAccessException, InvocationTargetException{
+//		//计算今天到目前为止的数据，就是计算当前为止的日报数据
+//		buildDayReportService.createBuildDayReport();
+//		
+//		//先获取今天的数据
+//		Integer today_key=Integer.parseInt(format.format(new Date()));
+//		List<BuildDayReport> today_list=buildDayReportService.query(Cnd.select()
+//				.andEquals(M.BuildDayReport.daykey, today_key)
+//				.andEquals(M.BuildDayReport.store_id, store_id));
+//		Map<BuildDayReport,Map<String,Integer>> result=new HashMap<BuildDayReport,Map<String,Integer>>();
+//		//先初始化出result的key数据
+//		for(BuildDayReport buildDayReport:today_list){
+//			Map<String,Integer> vo= new HashMap<String,Integer>();
+//			result.put(buildDayReport,new HashMap<String,Integer>());
+//		}
+//		
+//		//这获取的是到今天为止的数据
+//		List<BuildDayReport> list=buildDayReportService.query(Cnd.select()
+//				.andGTE(M.BuildDayReport.daykey, Long.parseLong(year+month+"01"))
+//				.andLTE(M.BuildDayReport.daykey, Long.parseLong(year+month+"31"))
+//				.andEquals(M.BuildDayReport.store_id, store_id));
+//		
+//		Map<String,Integer> vo=null;
+//		for(BuildDayReport buildDayReport:list){
+//			//这里的前提是，数据库中，每一个小类的数据都已经存在了
+//			for(BuildDayReport today:result.keySet()){
+//				BuildDayReport_PK pk=buildDayReport.getId();
+//				pk.setDaykey(today_key);//把日期设置为今天，然后再比较是不是同一行
+//				if(pk.equals(today.getId())){//如果是同一个小类，同一个....下面的数据的话，就合并成一行
+//					vo=result.get( today);
+//				}
+//			}
+////			if(result.containsKey(buildDayReport)){
+////				vo=result.get(buildDayReport);
+////			} else {
+////				vo= new HashMap<String,Integer>();
+////				result.put(buildDayReport,vo);
+////			}
+//			//然后把值设置到对应的字段中
+//			Integer day=Integer.parseInt((buildDayReport.getDaykey()+"").substring(6));
+//			vo.put("day"+day+"_in", buildDayReport.getStoreinnum()==null?0:buildDayReport.getStoreinnum());
+//			vo.put("day"+day+"_out", buildDayReport.getInstalloutnum()==null?0:buildDayReport.getInstalloutnum());
+//		}
+//		
+//		return result;
+//		
+//	}
+	
 	public Map<BuildDayReport,Map<String,Integer>> query(String year,String month,String store_id) throws IllegalAccessException, InvocationTargetException{
 		//计算今天到目前为止的数据，就是计算当前为止的日报数据
 		buildDayReportService.createBuildDayReport();
-		f
-		//先获取今天的数据
-		Integer today_key=Integer.parseInt(format.format(new Date()));
-		List<BuildDayReport> today_list=buildDayReportService.query(Cnd.select()
-				.andEquals(M.BuildDayReport.daykey, today_key)
-				.andEquals(M.BuildDayReport.store_id, store_id));
-		Map<BuildDayReport,Map<String,Integer>> result=new HashMap<BuildDayReport,Map<String,Integer>>();
-		//先初始化出result的key数据
-		for(BuildDayReport buildDayReport:today_list){
-			Map<String,Integer> vo= new HashMap<String,Integer>();
-			result.put(buildDayReport,new HashMap<String,Integer>());
-		}
+		
+//		//先获取今天的数据
+//		Integer today_key=Integer.parseInt(format.format(new Date()));
+//		List<BuildDayReport> today_list=buildDayReportService.query(Cnd.select()
+//				.andEquals(M.BuildDayReport.daykey, today_key)
+//				.andEquals(M.BuildDayReport.store_id, store_id));
+//		Map<BuildDayReport,Map<String,Integer>> result=new HashMap<BuildDayReport,Map<String,Integer>>();
+//		//先初始化出result的key数据
+//		for(BuildDayReport buildDayReport:today_list){
+//			Map<String,Integer> vo= new HashMap<String,Integer>();
+//			result.put(buildDayReport,new HashMap<String,Integer>());
+//		}
 		
 		//这获取的是到今天为止的数据
 		List<BuildDayReport> list=buildDayReportService.query(Cnd.select()
@@ -69,22 +117,20 @@ public class BuildDayReportController {
 				.andLTE(M.BuildDayReport.daykey, Long.parseLong(year+month+"31"))
 				.andEquals(M.BuildDayReport.store_id, store_id));
 		
+		Map<BuildDayReport,Map<String,Integer>> result=new HashMap<BuildDayReport,Map<String,Integer>>();
+		//索引map,用来获取key
+		Map<BuildDayReport_PK,BuildDayReport> temp=new HashMap<BuildDayReport_PK,BuildDayReport>();
 		Map<String,Integer> vo=null;
 		for(BuildDayReport buildDayReport:list){
-			//这里的前提是，数据库中，每一个小类的数据都已经存在了
-			for(BuildDayReport today:result.keySet()){
-				BuildDayReport_PK pk=buildDayReport.getId();
-				pk.setDaykey(today_key);//把日期设置为今天，然后再比较是不是同一行
-				if(pk.equals(today.getId())){//如果是同一个小类，同一个....下面的数据的话，就合并成一行
-					vo=result.get( pk);
-				}
+			BuildDayReport_PK pk_noday=buildDayReport.getId();
+			pk_noday.setDaykey(null);
+			if(temp.containsKey(pk_noday)){
+				vo=result.get(temp.get(pk_noday));
+			} else {
+				vo= new HashMap<String,Integer>();
+				result.put(buildDayReport,vo);
+				temp.put(pk_noday, buildDayReport);
 			}
-//			if(result.containsKey(buildDayReport)){
-//				vo=result.get(buildDayReport);
-//			} else {
-//				vo= new HashMap<String,Integer>();
-//				result.put(buildDayReport,vo);
-//			}
 			//然后把值设置到对应的字段中
 			Integer day=Integer.parseInt((buildDayReport.getDaykey()+"").substring(6));
 			vo.put("day"+day+"_in", buildDayReport.getStoreinnum()==null?0:buildDayReport.getStoreinnum());
@@ -109,6 +155,10 @@ public class BuildDayReportController {
 		day_style.setAlignment(CellStyle.ALIGN_CENTER);
 		day_style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
 		day_style.setWrapText(true);//自动换行
+		day_style.setBorderTop(CellStyle.BORDER_THIN);
+		day_style.setBorderBottom(CellStyle.BORDER_THIN);
+		day_style.setBorderLeft(CellStyle.BORDER_THIN);
+		day_style.setBorderRight(CellStyle.BORDER_THIN);
 		
 		//合并单元格的行
 		Row row1 = sheet.createRow(1);
@@ -121,6 +171,9 @@ public class BuildDayReportController {
 			Cell cell11=row1.createCell(cellnum-1);
 			cell11.setCellValue(j);
 			cell11.setCellStyle(day_style);
+			
+			Cell cell12=row1.createCell(cellnum);
+			cell12.setCellStyle(day_style);
 		}
 		//=================================================================================== 
 		
@@ -166,7 +219,7 @@ public class BuildDayReportController {
 		 installoutnum.setCellStyle(day_style);
 		 
 		 Cell nownum=row1.createCell(9);
-		 nownum.setCellValue("本月结余数");
+		 nownum.setCellValue("本期结余数");
 		 nownum.setCellStyle(day_style);
 		 
 		 //====================================================		 
@@ -179,6 +232,10 @@ public class BuildDayReportController {
 		in_style.setFont(in_font);
 		in_style.setAlignment(CellStyle.ALIGN_CENTER);
 		in_style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		in_style.setBorderTop(CellStyle.BORDER_THIN);
+		in_style.setBorderBottom(CellStyle.BORDER_THIN);
+		in_style.setBorderLeft(CellStyle.BORDER_THIN);
+		in_style.setBorderRight(CellStyle.BORDER_THIN);
 		// title_cell.setCellStyle(in_style);
 
 		// 领用数的样式
@@ -190,7 +247,12 @@ public class BuildDayReportController {
 		out_style.setFont(out_font);
 		out_style.setAlignment(CellStyle.ALIGN_CENTER);
 		out_style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		out_style.setBorderTop(CellStyle.BORDER_THIN);
+		out_style.setBorderBottom(CellStyle.BORDER_THIN);
+		out_style.setBorderLeft(CellStyle.BORDER_THIN);
+		out_style.setBorderRight(CellStyle.BORDER_THIN);
 		// title_cell.setCellStyle(out_style);
+		
 		cellnum=cellstartnum;
 		Row row2 = sheet.createRow(2);
 		
@@ -226,6 +288,7 @@ public class BuildDayReportController {
 		
 		 Cell memo=row2.createCell(++cellnum);
 		 memo.setCellValue("备注"); 
+		 memo.setCellStyle(day_style);
 		 
 		 //冻结行和列
 		 sheet.createFreezePane(cellstartnum+1, 3);
@@ -311,7 +374,7 @@ public class BuildDayReportController {
 			 installoutnum.setCellFormula(formulas[1].toString().replaceAll("=", (rownum+1)+""));
 			 //本月结余 上期+本期新增+本期领用
 			 Cell nownum=row.createCell(9);
-			 nownum.setCellValue(buildDayReport.getNownum()==null?0:buildDayReport.getNownum());
+			 //nownum.setCellValue(buildDayReport.getNownum()==null?0:buildDayReport.getNownum());
 			 nownum.setCellFormula("SUM("+CellReference.convertNumToColString(6)+(rownum+1)+
 					 ","+CellReference.convertNumToColString(7)+(rownum+1)+
 					 ","+CellReference.convertNumToColString(8)+(rownum+1)+")");

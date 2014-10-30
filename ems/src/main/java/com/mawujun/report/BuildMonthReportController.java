@@ -14,6 +14,7 @@ import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -113,7 +114,8 @@ public class BuildMonthReportController {
 		
 		for(int i=0;i<list.size();i++){
 			 BuildMonthReport buildDayReport=list.get(i);
-			 Row row = sheet.createRow(i+2);
+			 int rownum=i+2;
+			 Row row = sheet.createRow(rownum);
 			 
 			 Cell subtype_name=row.createCell(0);
 			 subtype_name.setCellValue(buildDayReport.getSubtype_name());
@@ -141,9 +143,12 @@ public class BuildMonthReportController {
 			 
 			 Cell installoutnum=row.createCell(8);
 			 installoutnum.setCellValue(buildDayReport.getInstalloutnum()==null?0:buildDayReport.getInstalloutnum());
-			 
+			 //本月结余数
 			 Cell nownum=row.createCell(9);
-			 nownum.setCellValue(buildDayReport.getNownum()==null?0:buildDayReport.getNownum());
+			 //nownum.setCellValue(buildDayReport.getNownum()==null?0:buildDayReport.getNownum());
+			 nownum.setCellFormula("SUM("+CellReference.convertNumToColString(6)+(rownum+1)+
+					 ","+CellReference.convertNumToColString(7)+(rownum+1)+
+					 ","+CellReference.convertNumToColString(8)+(rownum+1)+")");
 			 
 			 Cell memo=row.createCell(10);
 			 memo.setCellValue(buildDayReport.getMemo()); 
