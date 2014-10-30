@@ -54,73 +54,6 @@ public class BuildDayReport  implements IdEntity<BuildDayReport_PK>{
 	@Column(length=500)
 	private String memo;//备注
 	
-	//==========================下面就是每天的数据
-	//private Integer day_in;
-	//private Integer day_out;
-	
-//	private Integer day1_in;
-//	private Integer day1_out;	
-//	private Integer day2_in;
-//	private Integer day2_out;
-//	private Integer day3_in;
-//	private Integer day3_out;
-//	private Integer day4_in;
-//	private Integer day4_out;
-//	private Integer day5_in;
-//	private Integer day5_out;
-//	private Integer day6_in;
-//	private Integer day6_out;
-//	private Integer day7_in;
-//	private Integer day7_out;
-//	private Integer day8_in;
-//	private Integer day8_out;
-//	private Integer day9_in;
-//	private Integer day9_out;
-//	private Integer day10_in;
-//	private Integer day10_out;
-//	private Integer day11_in;
-//	private Integer day11_out;
-//	private Integer day12_in;
-//	private Integer day12_out;
-//	private Integer day13_in;
-//	private Integer day13_out;
-//	private Integer day14_in;
-//	private Integer day14_out;
-//	private Integer day15_in;
-//	private Integer day15_out;
-//	private Integer day16_in;
-//	private Integer day16_out;
-//	private Integer day17_in;
-//	private Integer day17_out;
-//	private Integer day18_in;
-//	private Integer day18_out;
-//	private Integer day19_in;
-//	private Integer day19_out;
-//	private Integer day20_in;
-//	private Integer day20_out;
-//	private Integer day21_in;
-//	private Integer day21_out;
-//	private Integer day22_in;
-//	private Integer day22_out;
-//	private Integer day23_in;
-//	private Integer day23_out;
-//	private Integer day24_in;
-//	private Integer day24_out;
-//	private Integer day25_in;
-//	private Integer day25_out;
-//	private Integer day26_in;
-//	private Integer day26_out;
-//	private Integer day27_in;
-//	private Integer day27_out;
-//	private Integer day28_in;
-//	private Integer day28_out;
-//	private Integer day29_in;
-//	private Integer day29_out;
-//	private Integer day30_in;
-//	private Integer day30_out;
-//	private Integer day31_in;
-//	private Integer day31_out;
-//	
 
 	public String getSubtype_id() {
 		return subtype_id;
@@ -212,13 +145,77 @@ public class BuildDayReport  implements IdEntity<BuildDayReport_PK>{
 	public void setMemo(String memo) {
 		this.memo = memo;
 	}
+	
+	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((brand_id == null) ? 0 : brand_id.hashCode());
+		result = prime * result + ((daykey == null) ? 0 : daykey.hashCode());
+		result = prime * result + ((prod_id == null) ? 0 : prod_id.hashCode());
+		result = prime * result
+				+ ((store_id == null) ? 0 : store_id.hashCode());
+		result = prime * result + ((style == null) ? 0 : style.hashCode());
+		result = prime * result
+				+ ((subtype_id == null) ? 0 : subtype_id.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		BuildDayReport other = (BuildDayReport) obj;
+		if (brand_id == null) {
+			if (other.brand_id != null)
+				return false;
+		} else if (!brand_id.equals(other.brand_id))
+			return false;
+		if (daykey == null) {
+			if (other.daykey != null)
+				return false;
+		} else if (!daykey.equals(other.daykey))
+			return false;
+		if (prod_id == null) {
+			if (other.prod_id != null)
+				return false;
+		} else if (!prod_id.equals(other.prod_id))
+			return false;
+		if (store_id == null) {
+			if (other.store_id != null)
+				return false;
+		} else if (!store_id.equals(other.store_id))
+			return false;
+		if (style == null) {
+			if (other.style != null)
+				return false;
+		} else if (!style.equals(other.style))
+			return false;
+		if (subtype_id == null) {
+			if (other.subtype_id != null)
+				return false;
+		} else if (!subtype_id.equals(other.subtype_id))
+			return false;
+		return true;
+	}
+	//private BuildDayReport_PK id;
 	@Override
 	public void setId(BuildDayReport_PK id) {
 		// TODO Auto-generated method stub
 		//throw new BusinessException("这个还没有做，现在还不需要做");
+		//this.id=id;
 	}
 	@Override
 	public BuildDayReport_PK getId() {
+//		if(id!=null){
+//			return id;
+//		}
 		// TODO Auto-generated method stub
 		BuildDayReport_PK id=new BuildDayReport_PK();
 		id.setBrand_id(this.getBrand_id());
@@ -229,6 +226,7 @@ public class BuildDayReport  implements IdEntity<BuildDayReport_PK>{
 		id.setSubtype_id(subtype_id);
 		return id;
 	}
+	
 
 	public Integer getDaykey() {
 		return daykey;
