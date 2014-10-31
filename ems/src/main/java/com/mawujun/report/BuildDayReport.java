@@ -47,10 +47,10 @@ public class BuildDayReport  implements IdEntity<BuildDayReport_PK>{
 	@Column(length=10)
 	private String unit;//单位
 	
-	private Integer lastnum;//上期结余,昨天结余
-	private Integer nownum;//本期结余，今天结余
-	private Integer storeinnum;//本期新增,今天新增
-	private Integer installoutnum;//本期领用，今天领用
+	private Integer lastnum;//上期结余,上个月结余
+	private Integer nownum;//本期结余，今天结余，这个在数据库也存在，但是excel中是计算出来的
+	private Integer storeinnum;//本期新增,这个月内所有新增
+	private Integer installoutnum;//本期领用，这个月内所有领用项目累加
 	@Column(length=500)
 	private String memo;//备注
 	

@@ -49,7 +49,7 @@ public class BuildMonthReport implements IdEntity<BuildMonthReport_PK>{
 	private String unit;//单位
 	
 	private Integer lastnum;//上月结余
-	private Integer nownum;//本月结余
+	private Integer nownum;//本月结余，这个在数据库也存在，但是excel中是计算出来的
 	private Integer storeinnum;//新增
 	private Integer installoutnum;//领用
 	@Column(length=500)
