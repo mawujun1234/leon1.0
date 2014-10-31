@@ -26,8 +26,8 @@ public class SparepartMonthReportController {
 		return list;
 		
 	}
-	@RequestMapping("/sparepartmonthreport/updateMemo.do")
-	public String updateMemo(SparepartMonthReport sparepartMonthReport){
+	@RequestMapping("/sparepartmonthreport/update.do")
+	public String update(SparepartMonthReport sparepartMonthReport){
 		sparepartMonthReportService.update(sparepartMonthReport);
 		return "success";
 	}

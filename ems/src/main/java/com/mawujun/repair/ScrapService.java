@@ -13,6 +13,7 @@ import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.EquipmentStatus;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
+import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.M;
 import com.mawujun.utils.StringUtils;
 
@@ -50,6 +51,8 @@ public class ScrapService extends AbstractService<Scrap, String>{
 	//如果报废单还没有建立，就先建立报废单，如果已经建立过了，就走下面的流程
 	public Scrap scrap(Scrap scrap) {
 		if(!StringUtils.hasText(scrap.getId())){
+			scrap.setScrpReqDate(new Date());
+			scrap.setScrpReqOper(ShiroUtils.getAuthenticationInfo().getId());
 			this.create(scrap);
 		}
 		//把维修单状态改为"报废中"
@@ -62,8 +65,17 @@ public class ScrapService extends AbstractService<Scrap, String>{
 		//修改设备状态为报废
 		equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.scrapped.getValue()).andEquals(M.Equipment.ecode, scrap.getEcode()));
 		
-		//同时结束维修单--为完成
-		repairRepository.update(Cnd.update().set(M.Repair.status, RepairStatus.Four.getValue()).andEquals(M.Repair.id, scrap.getRepair_id()));
+		Date date=new Date();
+		scrap.setOperateDate(date);
+		scrap.setScrpReqOper(ShiroUtils.getAuthenticationInfo().getId());
+		this.update(scrap);
+		
+		//同时结束维修单--报废
+		Repair repair=repairRepository.get(scrap.getRepair_id());
+		repair.setStatus(RepairStatus.Six.getValue());
+		repair.setScrapDate(date);
+		repairRepository.update(repair);
+		//repairRepository.update(Cnd.update().set(M.Repair.status, RepairStatus.Six.getValue()).andEquals(M.Repair.id, scrap.getRepair_id()));
 		return scrap;
 	}
 

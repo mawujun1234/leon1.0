@@ -5,13 +5,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
 <mapper namespace="com.mawujun.report.SparepartMonthReportRepository">
-	<parameterMap type="map" id="proc_buildsparepartmonthreportMap">  
+	<parameterMap type="map" id="proc_sparepartmonthreportMap">  
 	   <parameter property="store_id_in" jdbcType="VARCHAR" mode="IN"/>  
 	   <parameter property="nowmonth_in" jdbcType="VARCHAR" mode="IN"/>  
 	   <parameter property="lastmonth_in" jdbcType="VARCHAR" mode="IN"/>  
 	</parameterMap>  
-	<update id="proc_buildsparepartmonthreport" parameterMap="proc_buildsparepartmonthreportMap" statementType="CALLABLE">  
-       {call proc_buildsparepartmonthreport(?, ?, ?)}  
+	<update id="proc_sparepartmonthreport" parameterMap="proc_sparepartmonthreportMap" statementType="CALLABLE">  
+       {call proc_sparepartmonthreport(?, ?, ?)}  
    </update> 
 </mapper>
 

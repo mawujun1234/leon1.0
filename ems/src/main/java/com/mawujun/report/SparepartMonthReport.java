@@ -42,9 +42,8 @@ public class SparepartMonthReport implements IdEntity<SparepartMonthReport_PK>{
 	@Column(length=10)
 	private String unit;//单位
 	
-	private Integer fixednum;//额定数量，预先定的数量
+	private Integer fixednum;//额定数量，预先定的数量，手工填的
 	private Integer lastnum;//上月结余
-	private Integer nownum;//本月结余
 	private Integer purchasenum;//采购新增
 	private Integer oldnum;//旧品新增,旧品新增，指的是取消某个杆位退回的数量
 	private Integer installoutnum;//本期领用
@@ -53,7 +52,8 @@ public class SparepartMonthReport implements IdEntity<SparepartMonthReport_PK>{
 	private Integer repairoutnum;//维修出库数量
 	private Integer adjustoutnum;//借用数，就是调拨出库数量
 	private Integer adjustinnum;//返还数，就是调拨入库的数量
-	private Integer supplementnum;//增补数
+	private Integer nownum;//本月结余
+	private Integer supplementnum;//增补数，也是手工填的
 	@Column(length=500)
 	private String memo;//备注
 	

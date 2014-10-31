@@ -270,6 +270,7 @@ public static final class ems_repair {
 	public static final String str_in_id="str_in_id";
 	public static final String rpa_type="rpa_type";
 	public static final String status="status";
+	public static final String scrapDate="scrapDate";
 	public static final String broken_reson="broken_reson";
 	public static final String memo="memo";
 }
@@ -278,6 +279,8 @@ public static final class ems_scrap {
 	public static final String ecode="ecode";
 	public static final String reason="reason";
 	public static final String residual="residual";
+	public static final String scrpReqOper="scrpReqOper";
+	public static final String scrpReqDate="scrpReqDate";
 	public static final String operater="operater";
 	public static final String operateDate="operateDate";
 	public static final String repair_id="repair_id";
@@ -332,7 +335,6 @@ public static final class report_sparepartmonthreport {
 	public static final String unit="unit";
 	public static final String fixednum="fixednum";
 	public static final String lastnum="lastnum";
-	public static final String nownum="nownum";
 	public static final String purchasenum="purchasenum";
 	public static final String oldnum="oldnum";
 	public static final String installoutnum="installoutnum";
@@ -341,6 +343,7 @@ public static final class report_sparepartmonthreport {
 	public static final String repairoutnum="repairoutnum";
 	public static final String adjustoutnum="adjustoutnum";
 	public static final String adjustinnum="adjustinnum";
+	public static final String nownum="nownum";
 	public static final String supplementnum="supplementnum";
 	public static final String memo="memo";
 }

@@ -41,9 +41,9 @@ Ext.onReady(function(){
 	});	
 	
 	var store_combox=Ext.create('Ext.form.field.ComboBox',{
-	        fieldLabel: '在建仓库',
+	        fieldLabel: '备品备件仓库',
 	        labelAlign:'right',
-            labelWidth:60,
+            labelWidth:80,
 	        //xtype:'combobox',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'store_id',
@@ -54,7 +54,7 @@ Ext.onReady(function(){
 		    	fields: ['id', 'name'],
 			    proxy:{
 			    	type:'ajax',
-			    	extraParams:{type:1,look:true},
+			    	extraParams:{type:3,look:true},
 			    	url:Ext.ContextPath+"/store/queryCombo.do",
 			    	reader:{
 			    		type:'json',
@@ -77,28 +77,28 @@ Ext.onReady(function(){
 			handler:function(){
 				var params=getParams();
 				var pp=Ext.Object.toQueryString(params);
-				window.open(Ext.ContextPath+"/buildmonthreport/export.do?"+pp, "_blank");
+				window.open(Ext.ContextPath+"/sparepartmonthreport/export.do?"+pp, "_blank");
 			}
 		},{
 			text:'导出日报表',
 			handler:function(){
 				var params=getParams();
 				var pp=Ext.Object.toQueryString(params);
-				window.open(Ext.ContextPath+"/builddayreport/export.do?"+pp, "_blank");
+				window.open(Ext.ContextPath+"/sparepartmonthreport/export.do?"+pp, "_blank");
 			}
 		}]
 	})
 	
 	var store=Ext.create('Ext.data.Store',{
 		autoLoad:false,
-		fields: ['monthkey', 'subtype_id','subtype_name','prod_id','prod_name','brand_id','brand_name','style','store_id','store_name','unit'
-			,'lastnum','nownum','storeinnum','installoutnum','memo'],
+		fields: ['monthkey', 'subtype_id','subtype_name','prod_id','prod_name','brand_id','brand_name','style','store_id','store_name','unit','memo'
+			,'fixednum','lastnum','nownum','purchasenum','oldnum','installoutnum','repairinnum','scrapoutnum','repairoutnum','adjustoutnum','adjustinnum','supplementnum'],
 		proxy:{
 			type:'ajax',
 			actions:{
 				"read":'POST'
 			},
-			url:Ext.ContextPath+"/buildmonthreport/query.do",
+			url:Ext.ContextPath+"/sparepartmonthreport/query.do",
 			reader:{
 			    type:'json',
 			    root:'root'
@@ -175,26 +175,72 @@ Ext.onReady(function(){
             sortable: true,
             dataIndex: 'unit'
         	},{
-            header: '上月结余数',
+            header: '额定数量*',
+            sortable: true,
+            dataIndex: 'fixednum',
+            summaryType: 'sum',
+            field: {
+                xtype: 'numberfield'
+            }
+        	},{
+            header: '上月结余',
             sortable: true,
             dataIndex: 'lastnum',
             summaryType: 'sum'
         	},{
-            header: '本月新增',
+            header: '采购新增',
             sortable: true,
-            dataIndex: 'storeinnum',
+            dataIndex: 'purchasenum',
             summaryType: 'sum'
         	},{
-            header: '本月领用',
+            header: '旧品新增',
+            sortable: true,
+            dataIndex: 'oldnum',
+            summaryType: 'sum'
+            
+        	},{
+            header: '本期领用',
             sortable: true,
             dataIndex: 'installoutnum',
+            summaryType: 'sum'
+        	},{
+            header: '本期维修返还',
+            sortable: true,
+            dataIndex: 'repairinnum',
+            summaryType: 'sum'
+        	},{
+            header: '报废出库数量',
+            sortable: true,
+            dataIndex: 'scrapoutnum',
+            summaryType: 'sum'
+        	},{
+            header: '维修出库数量',
+            sortable: true,
+            dataIndex: 'repairoutnum',
+            summaryType: 'sum'
+        	},{
+            header: '借用数',
+            sortable: true,
+            dataIndex: 'adjustoutnum',
+            summaryType: 'sum'
+        	},{
+            header: '返还数',
+            sortable: true,
+            dataIndex: 'adjustinnum',
             summaryType: 'sum'
         	},{
             header: '本月结余',
             sortable: true,
             dataIndex: 'nownum',
             summaryType: 'sum'
-            
+        	},{
+            header: '增补数量*',
+            sortable: true,
+            dataIndex: 'supplementnum',
+            summaryType: 'sum',
+            field: {
+                xtype: 'numberfield'
+            }
         	},{
             header: '备注*',
             sortable: true,
@@ -213,7 +259,7 @@ Ext.onReady(function(){
 		var params=record.getData();
 		delete params.id;
 		Ext.Ajax.request({
-			url:Ext.ContextPath+'/buildmonthreport/updateMemo.do',
+			url:Ext.ContextPath+'/sparepartmonthreport/update.do',
 			method:'POST',
 			params:params,
 			success:function(response){

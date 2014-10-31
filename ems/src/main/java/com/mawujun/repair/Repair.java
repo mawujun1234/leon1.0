@@ -64,6 +64,8 @@ public class Repair  implements IdEntity<String>{
 	
 	private Integer status=RepairStatus.One.getValue();//状态
 	
+	private Date scrapDate;//如果这个维修单的设备报废了，那就填写报废时间
+	
 	@Column(length=500) 
 	private String broken_reson;//故障原因
 	@Column(length=500) 
@@ -216,6 +218,12 @@ public class Repair  implements IdEntity<String>{
 	}
 	public void setTask_id(String task_id) {
 		this.task_id = task_id;
+	}
+	public Date getScrapDate() {
+		return scrapDate;
+	}
+	public void setScrapDate(Date scrapDate) {
+		this.scrapDate = scrapDate;
 	}
 
 }

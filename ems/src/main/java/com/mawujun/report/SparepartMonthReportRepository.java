@@ -8,5 +8,5 @@ import com.mawujun.repository1.IRepository;
 
 @Repository
 public interface SparepartMonthReportRepository extends IRepository<SparepartMonthReport, SparepartMonthReport_PK>{
-	public void proc_buildsparepartmonthreport(Map<String,Object> params);
+	public void proc_sparepartmonthreport(Map<String,Object> params);
 }

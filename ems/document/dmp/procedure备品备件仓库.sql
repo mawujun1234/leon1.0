@@ -1,4 +1,18 @@
-create or replace procedure proc_buildsparepartmonthreport(store_id_in in varchar2,nowmonth_in in varchar2,lastmonth_in in varchar2)
+----计算所有备品备件仓库，当前时间的库存
+--call proc_initsparepartmonth_all('201410','201409')
+create or replace procedure proc_initsparepartmonth_all(nowmonth_in in varchar2,lastmonth_in in varchar2)
+as
+begin
+  for rec in (
+    select * from ems_store where type=3 and status='Y'
+  ) LOOP
+    proc_sparepartmonthreport(rec.id,nowmonth_in,lastmonth_in);
+  END LOOP;
+end;
+
+
+
+create or replace procedure proc_sparepartmonthreport(store_id_in in varchar2,nowmonth_in in varchar2,lastmonth_in in varchar2)
 as
   store_name varchar2(30);
 begin
@@ -42,19 +56,19 @@ begin
     where a.subtype_id=rec.subtype_id and a.prod_id=rec.prod_id and a.brand_id=rec.brand_id and a.store_id=rec.store_id and a.style=rec.style and monthkey=nowmonth_in;
   end loop;
   
-  --入库数量
+  --本期采购新增
   for rec in(
-    select c.subtype_id,c.prod_id,c.brand_id,c.style,a.store_id,count(b.encode) as storeinnum from 
+    select c.subtype_id,c.prod_id,c.brand_id,c.style,a.store_id,count(b.encode) as purchasenum from 
     ems_instore a, ems_instorelist b,ems_equipment c
     where a.id=b.instore_id and b.encode=c.ecode and a.store_id=store_id_in and  to_char(a.operatedate,'yyyymm') =nowmonth_in
     group by c.subtype_id,c.prod_id,c.brand_id,c.style,a.store_id
   )
   loop
-    update report_sparepartmonthreport a set a.storeinnum=rec.storeinnum
+    update report_sparepartmonthreport a set a.purchasenum=rec.purchasenum
     where a.subtype_id=rec.subtype_id and a.prod_id=rec.prod_id and a.brand_id=rec.brand_id and a.store_id=rec.store_id and a.style=rec.style and monthkey=nowmonth_in;
   end loop;
   
-  --领用数量
+  --本期领用数量
   for rec in (
     select c.subtype_id,c.prod_id,c.brand_id,c.style,a.store_id,count(b.ecode) as installoutnum from 
     ems_installout a, ems_installoutlist b,ems_equipment c
@@ -63,6 +77,62 @@ begin
   )
   loop
     update report_sparepartmonthreport a set a.installoutnum=-rec.installoutnum
+    where a.subtype_id=rec.subtype_id and a.prod_id=rec.prod_id and a.brand_id=rec.brand_id and a.store_id=rec.store_id and a.style=rec.style and monthkey=nowmonth_in;
+  end loop;
+  
+  --本期维修返库数,维修好后返库的数量
+  for rec in (
+    select c.subtype_id,c.prod_id,c.brand_id,c.style,a.str_in_id as store_id,count(a.ecode) as repairinnum from 
+    ems_repair a,ems_equipment c
+    where  a.ecode=c.ecode and a.str_in_id=store_id_in and  to_char(a.str_in_date,'yyyymm') =nowmonth_in
+    group by c.subtype_id,c.prod_id,c.brand_id,c.style,a.str_in_id  
+  ) loop
+    update report_sparepartmonthreport a set a.repairinnum=rec.repairinnum
+    where a.subtype_id=rec.subtype_id and a.prod_id=rec.prod_id and a.brand_id=rec.brand_id and a.store_id=rec.store_id and a.style=rec.style and monthkey=nowmonth_in;
+  end loop;
+  ----报废出库，只取报废确认(维修单状态为6)了的数量，并且这个维修单是从这个仓库出去的
+  for rec in (
+    select c.subtype_id,c.prod_id,c.brand_id,c.style,a.str_out_id as store_id,count(a.ecode) as scrapoutnum from 
+    ems_repair a,ems_equipment c
+    where  a.ecode=c.ecode and a.str_out_id=store_id_in and  to_char(a.scrapDate,'yyyymm') =nowmonth_in and a.status='6'
+    group by c.subtype_id,c.prod_id,c.brand_id,c.style,a.str_out_id
+  ) loop
+    update report_sparepartmonthreport a set a.scrapoutnum=-rec.scrapoutnum
+    where a.subtype_id=rec.subtype_id and a.prod_id=rec.prod_id and a.brand_id=rec.brand_id and a.store_id=rec.store_id and a.style=rec.style and monthkey=nowmonth_in;
+  end loop;
+  
+  
+  ----维修出库，不管维修出库的时间，还在维修中就算在里面,报废确认中的数量也算在这里
+  for rec in (
+    select c.subtype_id,c.prod_id,c.brand_id,c.style,a.str_out_id as store_id,count(a.ecode) as repairoutnum from 
+    ems_repair a,ems_equipment c
+    where  a.ecode=c.ecode and a.str_out_id=store_id_in  and a.status not in ('4','6')
+    group by c.subtype_id,c.prod_id,c.brand_id,c.style,a.str_out_id
+  ) loop
+    update report_sparepartmonthreport a set a.repairoutnum=-rec.repairoutnum
+    where a.subtype_id=rec.subtype_id and a.prod_id=rec.prod_id and a.brand_id=rec.brand_id and a.store_id=rec.store_id and a.style=rec.style and monthkey=nowmonth_in;
+  end loop;
+  
+  ---本期借用数，即调拨出库的数量，从本仓库出去的数量
+  for rec in (
+    select c.subtype_id,c.prod_id,c.brand_id,c.style,a.str_out_id as store_id,count(b.ecode) as adjustoutnum from 
+    ems_adjust a, ems_adjustlist b,ems_equipment c
+    where a.id=b.adjust_id and b.ecode=c.ecode and a.str_out_id=store_id_in and  to_char(a.str_out_date,'yyyymm') =nowmonth_in
+    group by c.subtype_id,c.prod_id,c.brand_id,c.style,a.str_out_id  
+  ) loop
+    update report_sparepartmonthreport a set a.adjustoutnum=-rec.adjustoutnum
+    where a.subtype_id=rec.subtype_id and a.prod_id=rec.prod_id and a.brand_id=rec.brand_id and a.store_id=rec.store_id and a.style=rec.style and monthkey=nowmonth_in;
+  end loop;
+  
+  
+  --本期归还数，调到这个仓库的数据
+   for rec in (
+    select c.subtype_id,c.prod_id,c.brand_id,c.style,a.str_in_id as store_id,count(b.ecode) as adjustinnum from 
+    ems_adjust a, ems_adjustlist b,ems_equipment c
+    where a.id=b.adjust_id and b.ecode=c.ecode and a.str_in_id=store_id_in and  to_char(a.str_in_date,'yyyymm') =nowmonth_in
+    group by c.subtype_id,c.prod_id,c.brand_id,c.style,a.str_in_id
+  ) loop
+    update report_sparepartmonthreport a set a.adjustinnum=rec.adjustinnum
     where a.subtype_id=rec.subtype_id and a.prod_id=rec.prod_id and a.brand_id=rec.brand_id and a.store_id=rec.store_id and a.style=rec.style and monthkey=nowmonth_in;
   end loop;
   

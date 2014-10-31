@@ -28,9 +28,14 @@ public class Scrap implements IdEntity<String>{
 	@Column(length=500)
 	private String residual;//残余值
 
+	@Column(length=50,updatable=false)
+	private String scrpReqOper;//报废申请人
+	@Column(updatable=false)
+	private Date scrpReqDate;//报废申请时间
+	
 	@Column(length=50)
-	private String operater;//报废人
-	private Date operateDate;//报废时间
+	private String operater;//报废确认人
+	private Date operateDate;//报废确认时间
 	
 	@Column(length=18)
 	private String repair_id;//报废单对应的维修单
@@ -89,5 +94,21 @@ public class Scrap implements IdEntity<String>{
 
 	public void setRepair_id(String repair_id) {
 		this.repair_id = repair_id;
+	}
+
+	public String getScrpReqOper() {
+		return scrpReqOper;
+	}
+
+	public void setScrpReqOper(String scrpReqOper) {
+		this.scrpReqOper = scrpReqOper;
+	}
+
+	public Date getScrpReqDate() {
+		return scrpReqDate;
+	}
+
+	public void setScrpReqDate(Date scrpReqDate) {
+		this.scrpReqDate = scrpReqDate;
 	}
 }

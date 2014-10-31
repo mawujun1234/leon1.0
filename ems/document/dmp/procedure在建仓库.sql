@@ -1,3 +1,16 @@
+----计算所有在建仓库，当前时间的库存
+--call proc_initbuildmonthreport_all('201410','201409')
+create or replace procedure proc_initbuildmonthreport_all(nowmonth_in in varchar2,lastmonth_in in varchar2)
+as
+begin
+  for rec in (
+    select * from ems_store where type=1 and status='Y'
+  ) LOOP
+    proc_buildmonthreport(rec.id,nowmonth_in,lastmonth_in);
+  END LOOP;
+end;
+
+
 --call proc_buildmonthreport('2c90838448b957570148b9675f460003','201410','201409')
 --select * from report_buildmonthreport
 --在建仓库的盘点月报表  存储过程
@@ -76,6 +89,18 @@ end;
 
 ---------------------------------------------------在建仓库，
 --用来初始化化，历史没有录入的数据，录入开始日期和结束日期
+--初始化所有在建仓库的日报表
+--call proc_initbuilddayreport_all('201409','20141001','20141030');
+create or replace procedure proc_initbuilddayreport_all(lastmonth_in in varchar2,startday_in in varchar2,endday_in in varchar2)
+as
+begin
+  for rec in (
+    select * from ems_store where type=1 and status='Y'
+  ) LOOP
+    proc_initbuilddayreport(rec.id,lastmonth_in,startday_in,endday_in);
+  END LOOP;
+end;
+
 --call proc_initbuilddayreport('2c90838a48f27b350148f2a91b81000d','201409','20141001','20141030');
 --lastmonth_in上个月，startday_in这个月的开始日期，endday_in这个月的结束日期
 create or replace procedure proc_initbuilddayreport(store_id_in in varchar2,lastmonth_in in varchar2,startday_in in varchar2,endday_in in varchar2)

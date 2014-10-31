@@ -59,47 +59,47 @@ public class ScrapController {
 //		return scrapService.queryPage(page);
 //	}
 
-	@RequestMapping("/scrap/query.do")
-	@ResponseBody
-	public List<Scrap> query() {	
-		List<Scrap> scrapes=scrapService.queryAll();
-		return scrapes;
-	}
-	
-
-	@RequestMapping("/scrap/load.do")
-	public Scrap load(String id) {
-		return scrapService.get(id);
-	}
-	
-	@RequestMapping("/scrap/create.do")
-	@ResponseBody
-	public Scrap create(@RequestBody Scrap scrap) {
-		
-		scrapService.create(scrap);
-		return scrap;
-	}
-	
+//	@RequestMapping("/scrap/query.do")
+//	@ResponseBody
+//	public List<Scrap> query() {	
+//		List<Scrap> scrapes=scrapService.queryAll();
+//		return scrapes;
+//	}
+//	
+//
+//	@RequestMapping("/scrap/load.do")
+//	public Scrap load(String id) {
+//		return scrapService.get(id);
+//	}
+//	
+//	@RequestMapping("/scrap/create.do")
+//	@ResponseBody
+//	public Scrap create(@RequestBody Scrap scrap) {
+//		
+//		scrapService.create(scrap);
+//		return scrap;
+//	}
+//	
 	@RequestMapping("/scrap/update.do")
 	@ResponseBody
 	public  Scrap update(@RequestBody Scrap scrap) {
 		scrapService.update(scrap);
 		return scrap;
 	}
-	
-	@RequestMapping("/scrap/deleteById.do")
-	@ResponseBody
-	public String deleteById(String id) {
-		scrapService.deleteById(id);
-		return id;
-	}
-	
-	@RequestMapping("/scrap/destroy.do")
-	@ResponseBody
-	public Scrap destroy(@RequestBody Scrap scrap) {
-		scrapService.delete(scrap);
-		return scrap;
-	}
+//	
+//	@RequestMapping("/scrap/deleteById.do")
+//	@ResponseBody
+//	public String deleteById(String id) {
+//		scrapService.deleteById(id);
+//		return id;
+//	}
+//	
+//	@RequestMapping("/scrap/destroy.do")
+//	@ResponseBody
+//	public Scrap destroy(@RequestBody Scrap scrap) {
+//		scrapService.delete(scrap);
+//		return scrap;
+//	}
 	
 	@RequestMapping("/scrap/loadByRepair_id.do")
 	public Scrap loadByRepair_id(String repair_id) {

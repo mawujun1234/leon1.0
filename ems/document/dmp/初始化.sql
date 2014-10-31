@@ -166,6 +166,9 @@ values ('135f608e-3161-4680-8e73-f2f6b4a69359', 'Y', '/report/PatrolTaskMonitorA
 values ('3516a585-b9d3-4b31-bd27-d6c244e26848', 'Y', '/report/RepairTaskMonitorApp.jsp', null, '7291c55a-15ed-4205-959f-2065b0ee54c7', 'aai-aad', '维修任务监控报表');
 insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
 values ('d3a9d8f7-399d-4f40-b9e8-1c258422c84f', 'Y', '/report/NewInstallTaskMonitorApp.jsp', null, '7291c55a-15ed-4205-959f-2065b0ee54c7', 'aai-aac', '安装任务监控报表');
+insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
+values ('13117a83-edab-4a12-87f4-f5ead730166d', 'Y', '/report/SparepartMonthReportApp.jsp', null, '7291c55a-15ed-4205-959f-2065b0ee54c7', 'aai-aag', '备品备件仓管盘点月报表');
+
 
 commit;
 alter table SYS_NAVIGATION enable all triggers;
