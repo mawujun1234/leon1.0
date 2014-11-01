@@ -39,94 +39,36 @@ import com.mawujun.utils.ReflectUtils;
  * @since 1.0
  */
 @Controller
-//@RequestMapping("/buildDayReport")
-public class BuildDayReportController {
+//@RequestMapping("/sparepartdayreport")
+public class SparepartDayReportController {
 
 	@Resource
-	private BuildDayReportService buildDayReportService;
+	private SparepartDayReportService sparepartDayReportService;
 	@Autowired
 	private StoreService storeService;
 	SimpleDateFormat format=new SimpleDateFormat("yyyyMMdd");
+
 	
-//	public Map<BuildDayReport,Map<String,Integer>> query(String year,String month,String store_id) throws IllegalAccessException, InvocationTargetException{
-//		//计算今天到目前为止的数据，就是计算当前为止的日报数据
-//		buildDayReportService.createBuildDayReport();
-//		
-//		//先获取今天的数据
-//		Integer today_key=Integer.parseInt(format.format(new Date()));
-//		List<BuildDayReport> today_list=buildDayReportService.query(Cnd.select()
-//				.andEquals(M.BuildDayReport.daykey, today_key)
-//				.andEquals(M.BuildDayReport.store_id, store_id));
-//		Map<BuildDayReport,Map<String,Integer>> result=new HashMap<BuildDayReport,Map<String,Integer>>();
-//		//先初始化出result的key数据
-//		for(BuildDayReport buildDayReport:today_list){
-//			Map<String,Integer> vo= new HashMap<String,Integer>();
-//			result.put(buildDayReport,new HashMap<String,Integer>());
-//		}
-//		
-//		//这获取的是到今天为止的数据
-//		List<BuildDayReport> list=buildDayReportService.query(Cnd.select()
-//				.andGTE(M.BuildDayReport.daykey, Long.parseLong(year+month+"01"))
-//				.andLTE(M.BuildDayReport.daykey, Long.parseLong(year+month+"31"))
-//				.andEquals(M.BuildDayReport.store_id, store_id));
-//		
-//		Map<String,Integer> vo=null;
-//		for(BuildDayReport buildDayReport:list){
-//			//这里的前提是，数据库中，每一个小类的数据都已经存在了
-//			for(BuildDayReport today:result.keySet()){
-//				BuildDayReport_PK pk=buildDayReport.getId();
-//				pk.setDaykey(today_key);//把日期设置为今天，然后再比较是不是同一行
-//				if(pk.equals(today.getId())){//如果是同一个小类，同一个....下面的数据的话，就合并成一行
-//					vo=result.get( today);
-//				}
-//			}
-////			if(result.containsKey(buildDayReport)){
-////				vo=result.get(buildDayReport);
-////			} else {
-////				vo= new HashMap<String,Integer>();
-////				result.put(buildDayReport,vo);
-////			}
-//			//然后把值设置到对应的字段中
-//			Integer day=Integer.parseInt((buildDayReport.getDaykey()+"").substring(6));
-//			vo.put("day"+day+"_in", buildDayReport.getStoreinnum()==null?0:buildDayReport.getStoreinnum());
-//			vo.put("day"+day+"_out", buildDayReport.getInstalloutnum()==null?0:buildDayReport.getInstalloutnum());
-//		}
-//		
-//		return result;
-//		
-//	}
-	
-	public Map<BuildDayReport,Map<String,Integer>> query(String year,String month,String store_id) throws IllegalAccessException, InvocationTargetException{
+	public Map<SparepartDayReport,Map<String,Integer>> query(String year,String month,String store_id) throws IllegalAccessException, InvocationTargetException{
 		//计算今天到目前为止的数据，就是计算当前为止的日报数据
-		buildDayReportService.createBuildDayReport();
+		sparepartDayReportService.createSparepartDayReport();
 		
-//		//先获取今天的数据
-//		Integer today_key=Integer.parseInt(format.format(new Date()));
-//		List<BuildDayReport> today_list=buildDayReportService.query(Cnd.select()
-//				.andEquals(M.BuildDayReport.daykey, today_key)
-//				.andEquals(M.BuildDayReport.store_id, store_id));
-//		Map<BuildDayReport,Map<String,Integer>> result=new HashMap<BuildDayReport,Map<String,Integer>>();
-//		//先初始化出result的key数据
-//		for(BuildDayReport buildDayReport:today_list){
-//			Map<String,Integer> vo= new HashMap<String,Integer>();
-//			result.put(buildDayReport,new HashMap<String,Integer>());
-//		}
 		
 		//这获取的是到今天为止的数据
-		List<BuildDayReport> list=buildDayReportService.query(Cnd.select()
-				.andGTE(M.BuildDayReport.daykey, Long.parseLong(year+month+"01"))
-				.andLTE(M.BuildDayReport.daykey, Long.parseLong(year+month+"31"))
-				.andEquals(M.BuildDayReport.store_id, store_id)
-				.asc(M.BuildDayReport.subtype_id)
-				.asc(M.BuildDayReport.prod_id)
-				.asc(M.BuildDayReport.brand_id)
-				.asc(M.BuildDayReport.style));
+		List<SparepartDayReport> list=sparepartDayReportService.query(Cnd.select()
+				.andGTE(M.SparepartDayReport.daykey, Long.parseLong(year+month+"01"))
+				.andLTE(M.SparepartDayReport.daykey, Long.parseLong(year+month+"31"))
+				.andEquals(M.SparepartDayReport.store_id, store_id)
+				.asc(M.SparepartDayReport.subtype_id)
+				.asc(M.SparepartDayReport.prod_id)
+				.asc(M.SparepartDayReport.brand_id)
+				.asc(M.SparepartDayReport.style));
 		
-		Map<BuildDayReport,Map<String,Integer>> result=new HashMap<BuildDayReport,Map<String,Integer>>();
+		Map<SparepartDayReport,Map<String,Integer>> result=new HashMap<SparepartDayReport,Map<String,Integer>>();
 		//索引map,用来获取key
-		Map<DayInventory_PK,BuildDayReport> temp=new HashMap<DayInventory_PK,BuildDayReport>();
+		Map<DayInventory_PK,SparepartDayReport> temp=new HashMap<DayInventory_PK,SparepartDayReport>();
 		Map<String,Integer> vo=null;
-		for(BuildDayReport buildDayReport:list){
+		for(SparepartDayReport buildDayReport:list){
 			DayInventory_PK pk_noday=buildDayReport.getId();
 			pk_noday.setDaykey(null);
 			if(temp.containsKey(pk_noday)){
@@ -138,7 +80,7 @@ public class BuildDayReportController {
 			}
 			//然后把值设置到对应的字段中
 			Integer day=Integer.parseInt((buildDayReport.getDaykey()+"").substring(6));
-			vo.put("day"+day+"_in", buildDayReport.getStoreinnum()==null?0:buildDayReport.getStoreinnum());
+			//vo.put("day"+day+"_in", buildDayReport.getStoreinnum()==null?0:buildDayReport.getStoreinnum());
 			vo.put("day"+day+"_out", buildDayReport.getInstalloutnum()==null?0:buildDayReport.getInstalloutnum());
 		}
 		
@@ -310,11 +252,11 @@ public class BuildDayReportController {
 		
 	//}
 	//
-	@RequestMapping("/builddayreport/export.do")
+	@RequestMapping("/sparepartdayreport/export.do")
 	public void export(HttpServletResponse response,String year,String month,String store_id) throws IOException, IllegalAccessException, InvocationTargetException{
 		
 		Store store=storeService.get(store_id);
-		Map<BuildDayReport,Map<String,Integer>> result=query(year,month,store_id);
+		Map<SparepartDayReport,Map<String,Integer>> result=query(year,month,store_id);
 		
 		HSSFWorkbook wb =new HSSFWorkbook();
 		Sheet sheet = wb.createSheet();
@@ -340,8 +282,8 @@ public class BuildDayReportController {
 		
 		//for(int i=0;i<list.size();i++){
 		int i=0;
-		for(Entry<BuildDayReport,Map<String,Integer>> entry:result.entrySet()){
-			BuildDayReport buildDayReport=entry.getKey();//list.get(i);
+		for(Entry<SparepartDayReport,Map<String,Integer>> entry:result.entrySet()){
+			SparepartDayReport buildDayReport=entry.getKey();//list.get(i);
 			int rownum=i+3;
 			 Row row = sheet.createRow(rownum);
 			 i++;
@@ -371,7 +313,7 @@ public class BuildDayReportController {
 			 
 			 //本期新增数
 			 Cell storeinnum=row.createCell(7);
-			 storeinnum.setCellValue(buildDayReport.getStoreinnum()==null?0:buildDayReport.getStoreinnum());
+			 //storeinnum.setCellValue(buildDayReport.getStoreinnum()==null?0:buildDayReport.getStoreinnum());
 			 storeinnum.setCellFormula(formulas[0].toString().replaceAll("=", (rownum+1)+""));
 			 
 			 Cell installoutnum=row.createCell(8);

@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mawujun.baseinfo.Store;
 import com.mawujun.baseinfo.StoreRepository;
+import com.mawujun.inventory.MonthInventory_PK;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.repository1.IRepository;
 import com.mawujun.service.AbstractService;
@@ -21,13 +22,13 @@ import com.mawujun.utils.M;
 
 @Service
 @Transactional(propagation=Propagation.REQUIRED)
-public class BuildMonthReportService extends AbstractService<BuildMonthReport, BuildMonthReport_PK>{
+public class BuildMonthReportService extends AbstractService<BuildMonthReport, MonthInventory_PK>{
 	@Autowired
 	private BuildMonthReportRepository buildMonthReportRepository;
 	@Autowired
 	private StoreRepository storeRepository;
 	@Override
-	public IRepository<BuildMonthReport, BuildMonthReport_PK> getRepository() {
+	public IRepository<BuildMonthReport, MonthInventory_PK> getRepository() {
 		// TODO Auto-generated method stub
 		return buildMonthReportRepository;
 	}

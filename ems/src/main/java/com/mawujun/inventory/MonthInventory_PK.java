@@ -1,8 +1,8 @@
-package com.mawujun.report;
+package com.mawujun.inventory;
 
 import java.io.Serializable;
 
-public class BuildMonthReport_PK  implements Serializable{
+public class MonthInventory_PK  implements Serializable{
 
 	/**
 	 * 
@@ -22,10 +22,10 @@ public class BuildMonthReport_PK  implements Serializable{
 	private String store_id;//仓库id，所属仓库
 
 	
-	public BuildMonthReport_PK() {  
+	public MonthInventory_PK() {  
         super();
     } 
-	public BuildMonthReport_PK(Integer month, String subtype_id, String prod_id,
+	public MonthInventory_PK(Integer month, String subtype_id, String prod_id,
 			String brand_id, String style, String store_id) {
 		super();
 		this.monthkey = month;
@@ -105,7 +105,7 @@ public class BuildMonthReport_PK  implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BuildMonthReport_PK other = (BuildMonthReport_PK) obj;
+		MonthInventory_PK other = (MonthInventory_PK) obj;
 		if (brand_id == null) {
 			if (other.brand_id != null)
 				return false;
@@ -144,5 +144,6 @@ public class BuildMonthReport_PK  implements Serializable{
 	public void setMonthkey(Integer monthkey) {
 		this.monthkey = monthkey;
 	}
+
 
 }

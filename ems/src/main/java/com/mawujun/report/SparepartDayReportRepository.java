@@ -13,7 +13,7 @@ import com.mawujun.report.BuildDayReport;
  * @since 1.0
  */
 @Repository
-public interface BuildDayReportRepository extends IRepository<BuildDayReport, DayInventory_PK>{
+public interface SparepartDayReportRepository extends IRepository<SparepartDayReport, DayInventory_PK>{
 
-	public void proc_builddayreport(Map<String,Object> params);
+	public void proc_buildsparepartdayreport(Map<String,Object> params);
 }

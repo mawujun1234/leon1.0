@@ -1,16 +1,15 @@
-package com.mawujun.report;
+package com.mawujun.inventory;
 
 import java.io.Serializable;
 
-public class SparepartMonthReport_PK  implements Serializable{
+public class DayInventory_PK  implements Serializable{
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 123L;
 
-	
-
-	private Integer monthkey;//201401这种形式
+	private Integer daykey;//20140101这种形式
 
 	private String subtype_id;
 
@@ -22,27 +21,19 @@ public class SparepartMonthReport_PK  implements Serializable{
 
 	private String store_id;//仓库id，所属仓库
 
-	public SparepartMonthReport_PK() {  
+	
+	public DayInventory_PK() {  
         super();
     } 
-	
-	public SparepartMonthReport_PK(Integer monthkey, String subtype_id,
-			String prod_id, String brand_id, String style, String store_id) {
+	public DayInventory_PK(Integer day, String subtype_id, String prod_id,
+			String brand_id, String style, String store_id) {
 		super();
-		this.monthkey = monthkey;
+		this.daykey = day;
 		this.subtype_id = subtype_id;
 		this.prod_id = prod_id;
 		this.brand_id = brand_id;
 		this.style = style;
 		this.store_id = store_id;
-	}
-	
-	public Integer getMonthkey() {
-		return monthkey;
-	}
-
-	public void setMonthkey(Integer monthkey) {
-		this.monthkey = monthkey;
 	}
 
 	public String getSubtype_id() {
@@ -95,8 +86,7 @@ public class SparepartMonthReport_PK  implements Serializable{
 		int result = 1;
 		result = prime * result
 				+ ((brand_id == null) ? 0 : brand_id.hashCode());
-		result = prime * result
-				+ ((monthkey == null) ? 0 : monthkey.hashCode());
+		result = prime * result + ((daykey == null) ? 0 : daykey.hashCode());
 		result = prime * result + ((prod_id == null) ? 0 : prod_id.hashCode());
 		result = prime * result
 				+ ((store_id == null) ? 0 : store_id.hashCode());
@@ -114,16 +104,16 @@ public class SparepartMonthReport_PK  implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		SparepartMonthReport_PK other = (SparepartMonthReport_PK) obj;
+		DayInventory_PK other = (DayInventory_PK) obj;
 		if (brand_id == null) {
 			if (other.brand_id != null)
 				return false;
 		} else if (!brand_id.equals(other.brand_id))
 			return false;
-		if (monthkey == null) {
-			if (other.monthkey != null)
+		if (daykey == null) {
+			if (other.daykey != null)
 				return false;
-		} else if (!monthkey.equals(other.monthkey))
+		} else if (!daykey.equals(other.daykey))
 			return false;
 		if (prod_id == null) {
 			if (other.prod_id != null)
@@ -147,5 +137,12 @@ public class SparepartMonthReport_PK  implements Serializable{
 			return false;
 		return true;
 	}
-	
+	public Integer getDaykey() {
+		return daykey;
+	}
+	public void setDaykey(Integer daykey) {
+		this.daykey = daykey;
+	}
+
+
 }

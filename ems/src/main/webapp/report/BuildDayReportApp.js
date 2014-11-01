@@ -76,6 +76,9 @@ Ext.onReady(function(){
 			text:'导出月报表',
 			handler:function(){
 				var params=getParams();
+				if(!params){
+					return false;
+				}
 				var pp=Ext.Object.toQueryString(params);
 				window.open(Ext.ContextPath+"/buildmonthreport/export.do?"+pp, "_blank");
 			}
@@ -83,6 +86,9 @@ Ext.onReady(function(){
 			text:'导出日报表',
 			handler:function(){
 				var params=getParams();
+				if(!params){
+					return false;
+				}
 				var pp=Ext.Object.toQueryString(params);
 				window.open(Ext.ContextPath+"/builddayreport/export.do?"+pp, "_blank");
 			}
@@ -101,6 +107,7 @@ Ext.onReady(function(){
 			url:Ext.ContextPath+"/buildmonthreport/query.do",
 			reader:{
 			    type:'json',
+			    idProperty: 'key',
 			    root:'root'
 			}
 		},
@@ -114,21 +121,24 @@ Ext.onReady(function(){
 			store_id:store_combox.getValue()
 		}
 		if(!params.year){
-			Exg.Msg.alert("提醒","请先选择年份!");
-			return;
+			Ext.Msg.alert("提醒","请先选择年份!");
+			return false;
 		}
 		if(!params.month){
-			Exg.Msg.alert("提醒","请先选择月份!");
-			return;
+			Ext.Msg.alert("提醒","请先选择月份!");
+			return false;
 		}
 		if(!params.store_id){
-			Exg.Msg.alert("提醒","请先选择仓库!");
-			return;
+			Ext.Msg.alert("提醒","请先选择仓库!");
+			return false;
 		}
 		return params;
 	}
 	store.on("beforeload",function(store){
 		var params=getParams();
+		if(!params){
+			return false;
+		}
 		store.getProxy().extraParams=params;
 	});
 	var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
@@ -161,9 +171,11 @@ Ext.onReady(function(){
         	},{
             header: '型号',
             sortable: true,
+            width:150,
             dataIndex: 'style'
         	},{
             header: '品名',
+            width:150,
             sortable: true,
             dataIndex: 'prod_name'
         	},{

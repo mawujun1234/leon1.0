@@ -36,7 +36,13 @@ public class BuildMonthReportController {
 	public List<BuildMonthReport> query(String year,String month,String store_id){
 		//String sql="select * from report_buildmonthreport where month='"+month+"' and store_id='"+store_id+"'";
 		
-		List<BuildMonthReport> list=buildMonthReportService.query(Cnd.select().andEquals(M.BuildMonthReport.monthkey, year+month).andEquals(M.BuildMonthReport.store_id, store_id));
+		List<BuildMonthReport> list=buildMonthReportService.query(Cnd.select().andEquals(M.BuildMonthReport.monthkey, year+month)
+				.andEquals(M.BuildMonthReport.store_id, store_id)
+				.asc(M.BuildMonthReport.subtype_id)
+				.asc(M.BuildMonthReport.prod_id)
+				.asc(M.BuildMonthReport.brand_id)
+				.asc(M.BuildMonthReport.style)
+				);
 		return list;
 		
 	}

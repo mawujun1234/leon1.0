@@ -50,7 +50,7 @@ begin
   end loop;
 
   --上月结余数
-  for rec in(select * from report_sparepartmonthreport where monthkey=lastmonth_in)
+  for rec in(select * from ems_monthinventory where monthkey=lastmonth_in)
   loop
     update report_sparepartmonthreport a set a.lastnum=rec.nownum
     where a.subtype_id=rec.subtype_id and a.prod_id=rec.prod_id and a.brand_id=rec.brand_id and a.store_id=rec.store_id and a.style=rec.style and monthkey=nowmonth_in;

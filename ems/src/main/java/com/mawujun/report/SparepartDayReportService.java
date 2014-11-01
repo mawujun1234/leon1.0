@@ -23,7 +23,7 @@ import com.mawujun.utils.M;
 import com.mawujun.baseinfo.Store;
 import com.mawujun.baseinfo.StoreRepository;
 import com.mawujun.inventory.DayInventory_PK;
-import com.mawujun.report.BuildDayReport;
+import com.mawujun.report.SparepartDayReport;
 import com.mawujun.report.BuildDayReportRepository;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.repository1.IRepository;
@@ -36,16 +36,16 @@ import com.mawujun.repository1.IRepository;
  */
 @Service
 @Transactional(propagation=Propagation.REQUIRED)
-public class BuildDayReportService extends AbstractService<BuildDayReport, DayInventory_PK>{
+public class SparepartDayReportService extends AbstractService<SparepartDayReport, DayInventory_PK>{
 
 	@Autowired
-	private BuildDayReportRepository buildDayReportRepository;
+	private SparepartDayReportRepository sparepartDayReportRepository;
 	@Autowired
 	private StoreRepository storeRepository;
 	
 	@Override
-	public BuildDayReportRepository getRepository() {
-		return buildDayReportRepository;
+	public SparepartDayReportRepository getRepository() {
+		return sparepartDayReportRepository;
 	}
 
 
@@ -54,7 +54,7 @@ public class BuildDayReportService extends AbstractService<BuildDayReport, DayIn
 	 * 每个月月底，定时生成报表
 	 * @author mawujun 16064988@qq.com
 	 */
-	public void createBuildDayReport(){
+	public void createSparepartDayReport(){
 		Map<String,Object> params=new HashMap<String,Object>();
 		//获取当前月，格式为 201409
 		Calendar cal=Calendar.getInstance();
@@ -70,7 +70,7 @@ public class BuildDayReportService extends AbstractService<BuildDayReport, DayIn
 		List<Store> stores=storeRepository.query(Cnd.select().andEquals(M.Store.type, 1).andEquals(M.Store.status,true ));
 		for(Store store:stores){
 			params.put("store_id_in", store.getId());
-			buildDayReportRepository.proc_builddayreport(params);
+			sparepartDayReportRepository.proc_buildsparepartdayreport(params);
 		}
 		
 		

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
+<mapper namespace="com.mawujun.report.MonthInventoryRepository">
+	<parameterMap type="map" id="proc_map">  
+	   <parameter property="month_in" jdbcType="VARCHAR" mode="IN"/>   
+	   <parameter property="lastmonth_in" jdbcType="VARCHAR" mode="IN"/>   
+	</parameterMap>  
+	<update id="callProc" parameterMap="proc_map" statementType="CALLABLE">  
+       {call proc_monthinventory(?, ?, ?)}  
+   </update> 
+</mapper>
+

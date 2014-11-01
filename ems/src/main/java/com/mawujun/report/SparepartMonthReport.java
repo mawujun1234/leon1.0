@@ -6,12 +6,13 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
 
+import com.mawujun.inventory.MonthInventory_PK;
 import com.mawujun.repository.idEntity.IdEntity;
 
 @Entity
 @Table(name="report_sparepartmonthreport")
-@IdClass(SparepartMonthReport_PK.class) 
-public class SparepartMonthReport implements IdEntity<SparepartMonthReport_PK>{
+@IdClass(MonthInventory_PK.class) 
+public class SparepartMonthReport implements IdEntity<MonthInventory_PK>{
 	@Id
 	@Column(length=8)
 	private Integer monthkey;//201401这种形式
@@ -58,14 +59,14 @@ public class SparepartMonthReport implements IdEntity<SparepartMonthReport_PK>{
 	private String memo;//备注
 	
 	@Override
-	public void setId(SparepartMonthReport_PK id) {
+	public void setId(MonthInventory_PK id) {
 		// TODO Auto-generated method stub
 		//throw new BusinessException("这个还没有做，现在还不需要做");
 	}
 	@Override
-	public SparepartMonthReport_PK getId() {
+	public MonthInventory_PK getId() {
 		// TODO Auto-generated method stub
-		SparepartMonthReport_PK id=new SparepartMonthReport_PK();
+		MonthInventory_PK id=new MonthInventory_PK();
 		id.setBrand_id(brand_id);
 		id.setMonthkey(monthkey);
 		id.setProd_id(prod_id);

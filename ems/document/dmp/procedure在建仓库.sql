@@ -52,7 +52,7 @@ begin
   end loop;
 
   --上月结余数
-  for rec in(select * from report_buildmonthreport where monthkey=lastmonth_in)
+  for rec in(select * from ems_monthinventory where monthkey=lastmonth_in)
   loop
     update report_buildmonthreport a set a.lastnum=rec.nownum
     where a.subtype_id=rec.subtype_id and a.prod_id=rec.prod_id and a.brand_id=rec.brand_id and a.store_id=rec.store_id and a.style=rec.style and monthkey=nowmonth_in;
@@ -151,7 +151,7 @@ begin
   end loop;
 
   --上期结余数,获取的是上个月的结余数量，从月报表中获取
-  for rec in(select * from report_buildmonthreport where monthkey=lastmonth_in)
+  for rec in(select * from ems_monthinventory where monthkey=lastmonth_in)
   loop
     update report_builddayreport a set a.lastnum=rec.nownum
     where a.subtype_id=rec.subtype_id and a.prod_id=rec.prod_id and a.brand_id=rec.brand_id and a.store_id=rec.store_id and a.style=rec.style and daykey=nowday_in;

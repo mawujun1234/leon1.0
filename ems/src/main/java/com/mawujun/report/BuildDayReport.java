@@ -6,6 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
 
+import com.mawujun.inventory.DayInventory_PK;
 import com.mawujun.repository.idEntity.IdEntity;
 
 /**
@@ -15,8 +16,8 @@ import com.mawujun.repository.idEntity.IdEntity;
  */
 @Entity
 @Table(name="report_builddayreport")
-@IdClass(BuildDayReport_PK.class)  
-public class BuildDayReport  implements IdEntity<BuildDayReport_PK>{
+@IdClass(DayInventory_PK.class)  
+public class BuildDayReport  implements IdEntity<DayInventory_PK>{
 	@Id
 	@Column(length=8)
 	private Integer daykey;//20140101这种形式
@@ -206,18 +207,18 @@ public class BuildDayReport  implements IdEntity<BuildDayReport_PK>{
 	}
 	//private BuildDayReport_PK id;
 	@Override
-	public void setId(BuildDayReport_PK id) {
+	public void setId(DayInventory_PK id) {
 		// TODO Auto-generated method stub
 		//throw new BusinessException("这个还没有做，现在还不需要做");
 		//this.id=id;
 	}
 	@Override
-	public BuildDayReport_PK getId() {
+	public DayInventory_PK getId() {
 //		if(id!=null){
 //			return id;
 //		}
 		// TODO Auto-generated method stub
-		BuildDayReport_PK id=new BuildDayReport_PK();
+		DayInventory_PK id=new DayInventory_PK();
 		id.setBrand_id(this.getBrand_id());
 		id.setDaykey(daykey);
 		id.setProd_id(prod_id);

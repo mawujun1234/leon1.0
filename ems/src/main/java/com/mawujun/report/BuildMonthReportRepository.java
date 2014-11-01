@@ -4,10 +4,11 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
+import com.mawujun.inventory.MonthInventory_PK;
 import com.mawujun.repository1.IRepository;
 
 @Repository
-public interface BuildMonthReportRepository extends IRepository<BuildMonthReport, BuildMonthReport_PK> {
+public interface BuildMonthReportRepository extends IRepository<BuildMonthReport, MonthInventory_PK> {
 	/**
 	 * 执行存储过程
 	 * @author mawujun 16064988@qq.com 
