@@ -22,6 +22,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -145,26 +146,29 @@ public class BuildDayReportController {
 		return result;
 		
 	}
-	
-	private StringBuilder[] addRow1(HSSFWorkbook wb,Sheet sheet){
+	public CellStyle getStyle(XSSFWorkbook wb,IndexedColors color){
+		CellStyle style = wb.createCellStyle();
+		Font font = wb.createFont();
+		//day_font.setFontHeightInPoints((short) 14);
+		font.setColor(color.getIndex());
+		font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+		style.setFont(font);
+		style.setAlignment(CellStyle.ALIGN_CENTER);
+		style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		style.setWrapText(true);//自动换行
+		style.setBorderTop(CellStyle.BORDER_THIN);
+		style.setBorderBottom(CellStyle.BORDER_THIN);
+		style.setBorderLeft(CellStyle.BORDER_THIN);
+		style.setBorderRight(CellStyle.BORDER_THIN);
+		return style;
+	}
+	private StringBuilder[] addRow1(XSSFWorkbook wb,Sheet sheet){
 		final int cellstartnum=9;//其实应该从10开始，单后面用了++
 		
 		//=================================================================================
 		//日期的样式
-		CellStyle day_style = wb.createCellStyle();
-		Font day_font = wb.createFont();
-		//day_font.setFontHeightInPoints((short) 14);
-		//day_font.setColor(IndexedColors.RED.getIndex());
-		day_font.setBoldweight(Font.BOLDWEIGHT_BOLD);
-		day_style.setFont(day_font);
-		day_style.setAlignment(CellStyle.ALIGN_CENTER);
-		day_style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-		day_style.setWrapText(true);//自动换行
-		day_style.setBorderTop(CellStyle.BORDER_THIN);
-		day_style.setBorderBottom(CellStyle.BORDER_THIN);
-		day_style.setBorderLeft(CellStyle.BORDER_THIN);
-		day_style.setBorderRight(CellStyle.BORDER_THIN);
 		
+		CellStyle black_style=getStyle(wb,IndexedColors.BLACK);
 		//合并单元格的行
 		Row row1 = sheet.createRow(1);
 		//创建日期，并合并日期的两列
@@ -175,57 +179,57 @@ public class BuildDayReportController {
 			//设置日期值
 			Cell cell11=row1.createCell(cellnum-1);
 			cell11.setCellValue(j);
-			cell11.setCellStyle(day_style);
+			cell11.setCellStyle(black_style);
 			
 			Cell cell12=row1.createCell(cellnum);
-			cell12.setCellStyle(day_style);
+			cell12.setCellStyle(black_style);
 		}
 		//=================================================================================== 
 		
 		//
-		//合并0--9的单元格，纵向合并
-		for(int j=0;j<=cellstartnum;j++){
-			sheet.addMergedRegion(new CellRangeAddress(1,2,(short)j,(short)j)); 
-		}
+		
+		
 		 Cell subtype_name=row1.createCell(0);
 		 subtype_name.setCellValue("小类");
-		 subtype_name.setCellStyle(day_style);
+		 subtype_name.setCellStyle(black_style);
 		 
 		 Cell brand_name=row1.createCell(1);
 		 brand_name.setCellValue("品牌");
-		 brand_name.setCellStyle(day_style);
+		 brand_name.setCellStyle(black_style);
 		 
 		 Cell style=row1.createCell(2);
 		 style.setCellValue("型号");
-		 style.setCellStyle(day_style);
+		 style.setCellStyle(black_style);
 		 
 		 Cell prod_name=row1.createCell(3);
 		 prod_name.setCellValue("品名");
-		 prod_name.setCellStyle(day_style);
+		 prod_name.setCellStyle(black_style);
 		 
 		 Cell store_name=row1.createCell(4);
 		 store_name.setCellValue("仓库");
-		 store_name.setCellStyle(day_style);
+		 store_name.setCellStyle(black_style);
 		 
 		 Cell unit=row1.createCell(5);
 		 unit.setCellValue("单位");
-		 unit.setCellStyle(day_style);
+		 unit.setCellStyle(black_style);
 		 
 		 Cell lastnum=row1.createCell(6);
 		 lastnum.setCellValue("上期结余数");
-		 lastnum.setCellStyle(day_style);
+		 lastnum.setCellStyle(black_style);
 		 
+		 CellStyle blue_style=getStyle(wb,IndexedColors.BLUE);
 		 Cell storeinnum=row1.createCell(7);
 		 storeinnum.setCellValue("本期新增数");
-		 storeinnum.setCellStyle(day_style);
+		 storeinnum.setCellStyle(blue_style);
 		 
+		 CellStyle red_style=getStyle(wb,IndexedColors.RED);
 		 Cell installoutnum=row1.createCell(8);
 		 installoutnum.setCellValue("本期领用数");
-		 installoutnum.setCellStyle(day_style);
+		 installoutnum.setCellStyle(red_style);
 		 
 		 Cell nownum=row1.createCell(9);
-		 nownum.setCellValue("本期结余数");
-		 nownum.setCellStyle(day_style);
+		 nownum.setCellValue("本月结余数");
+		 nownum.setCellStyle(black_style);
 		 
 		 //====================================================		 
 		// 新增数的样式
@@ -277,15 +281,10 @@ public class BuildDayReportController {
 			 day_out.setCellStyle(out_style);
 			 out_formula.append(CellReference.convertNumToColString(cellnum)).append("=");
 			 
-			 if(j==20){
-				 in_formula.append(")+SUM(");
-				 out_formula.append(")+SUM(");
-			 }
-			 if(j!=20&&j!=31){
+			 if(j!=31){
 				 in_formula.append(",");
 				 out_formula.append(",");
-			 }
-			 
+			 } 
 			
 		 }
 		in_formula.append(")");
@@ -293,7 +292,15 @@ public class BuildDayReportController {
 		
 		 Cell memo=row2.createCell(++cellnum);
 		 memo.setCellValue("备注"); 
-		 memo.setCellStyle(day_style);
+		 memo.setCellStyle(black_style);
+		 
+		//合并0--9的单元格，纵向合并
+		for(int j=0;j<=cellstartnum;j++){
+			sheet.addMergedRegion(new CellRangeAddress(1,2,(short)j,(short)j)); 
+				
+			Cell cell12=row2.createCell(j);
+			cell12.setCellStyle(black_style);
+		}
 		 
 		 //冻结行和列
 		 sheet.createFreezePane(cellstartnum+1, 3);
@@ -316,7 +323,7 @@ public class BuildDayReportController {
 		Store store=storeService.get(store_id);
 		Map<BuildDayReport,Map<String,Integer>> result=query(year,month,store_id);
 		
-		HSSFWorkbook wb =new HSSFWorkbook();
+		XSSFWorkbook wb =new XSSFWorkbook();
 		Sheet sheet = wb.createSheet();
 		Row title = sheet.createRow(0);//一共有11列
 		title.setHeight((short)660);
@@ -337,6 +344,17 @@ public class BuildDayReportController {
 		//设置第一行,设置列标题
 		StringBuilder[] formulas=addRow1(wb,sheet);
 		
+		CellStyle blue_style=getStyle(wb,IndexedColors.BLUE);
+		 blue_style.setBorderBottom(CellStyle.BORDER_NONE);
+		 blue_style.setBorderLeft(CellStyle.BORDER_NONE);
+		 blue_style.setBorderRight(CellStyle.BORDER_NONE);
+		 blue_style.setBorderTop(CellStyle.BORDER_NONE);
+		 
+		 CellStyle red_style=getStyle(wb,IndexedColors.RED);
+		 red_style.setBorderBottom(CellStyle.BORDER_NONE);
+		 red_style.setBorderLeft(CellStyle.BORDER_NONE);
+		 red_style.setBorderRight(CellStyle.BORDER_NONE);
+		 red_style.setBorderTop(CellStyle.BORDER_NONE);;
 		
 		//for(int i=0;i<list.size();i++){
 		int i=0;
@@ -373,10 +391,13 @@ public class BuildDayReportController {
 			 Cell storeinnum=row.createCell(7);
 			 storeinnum.setCellValue(buildDayReport.getStoreinnum()==null?0:buildDayReport.getStoreinnum());
 			 storeinnum.setCellFormula(formulas[0].toString().replaceAll("=", (rownum+1)+""));
+			 storeinnum.setCellStyle(blue_style);
 			 
 			 Cell installoutnum=row.createCell(8);
 			 installoutnum.setCellValue(buildDayReport.getInstalloutnum()==null?0:buildDayReport.getInstalloutnum());
 			 installoutnum.setCellFormula(formulas[1].toString().replaceAll("=", (rownum+1)+""));
+			 installoutnum.setCellStyle(red_style);
+			 
 			 //本月结余 上期+本期新增+本期领用
 			 Cell nownum=row.createCell(9);
 			 //nownum.setCellValue(buildDayReport.getNownum()==null?0:buildDayReport.getNownum());
@@ -393,15 +414,17 @@ public class BuildDayReportController {
 				 Cell day_in=row.createCell(++cellstartnum);
 				 Integer value_in=days_nums.get("day"+j+"_in");
 				 day_in.setCellValue(value_in==null?0:value_in);
+				 day_in.setCellStyle(blue_style);
 				 
 				 sheet.setColumnWidth(cellstartnum+1, 7 * 256);
 				 Cell day_out=row.createCell(++cellstartnum);
 				 Integer value_out=days_nums.get("day"+j+"_out");
 				 day_out.setCellValue(value_out==null?0:value_out);
+				 day_out.setCellStyle(red_style);
 			 }
 		 }
 		 
-		 String filename = "在建工程仓库("+store.getName()+")盘点日报表.xls";
+		 String filename = "在建工程仓库("+store.getName()+")盘点日报表.xlsx";
 		 //FileOutputStream out = new FileOutputStream(filename);
 		response.setHeader("content-disposition", "attachment; filename="+ new String(filename.getBytes("UTF-8"), "ISO8859-1"));
 		response.setContentType("application/vnd.ms-excel;charset=uft-8");

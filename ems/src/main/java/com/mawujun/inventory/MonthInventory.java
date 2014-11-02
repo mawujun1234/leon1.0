@@ -37,9 +37,33 @@ public class MonthInventory implements IdEntity<MonthInventory_PK>{
 	private String store_id;//仓库id，所属仓库
 
 	@Column(columnDefinition="INT default 0")
-	private Integer nownum;//库存
+	private Integer fixednum;//额定数量，预先定的数量，手工填的
 	@Column(columnDefinition="INT default 0")
-	private Integer lastnum;//上期库存
+	private Integer lastnum;//上月结余
+	@Column(columnDefinition="INT default 0")
+	private Integer purchasenum;//采购新增
+	@Column(columnDefinition="INT default 0")
+	private Integer oldnum;//旧品新增,旧品新增，指的是取消某个杆位退回的数量
+	@Column(columnDefinition="INT default 0")
+	private Integer installoutnum;//本期领用
+	@Column(columnDefinition="INT default 0")
+	private Integer repairinnum;//本期维修返还数
+	@Column(columnDefinition="INT default 0")
+	private Integer scrapoutnum;//报废出库数量
+	@Column(columnDefinition="INT default 0")
+	private Integer repairoutnum;//维修出库数量
+	@Column(columnDefinition="INT default 0")
+	private Integer adjustoutnum;//借用数，就是调拨出库数量
+	@Column(columnDefinition="INT default 0")
+	private Integer adjustinnum;//返还数，就是调拨入库的数量
+	@Column(columnDefinition="INT default 0")
+	private Integer nownum;//本月结余，，通过前面的数据++--弄出来的
+	@Column(columnDefinition="INT default 0")
+	private Integer nownum_query;//本月结余，,通过查询出来的，会不准，例如重新计算历史的月结库存的时候
+	@Column(columnDefinition="INT default 0")
+	private Integer supplementnum;//增补数，也是手工填的
+	@Column(length=500)
+	private String memo;//备注
 	
 	@Override
 	public void setId(MonthInventory_PK id) {
@@ -117,6 +141,72 @@ public class MonthInventory implements IdEntity<MonthInventory_PK>{
 	}
 	public void setLastnum(Integer lastnum) {
 		this.lastnum = lastnum;
+	}
+	public Integer getFixednum() {
+		return fixednum;
+	}
+	public void setFixednum(Integer fixednum) {
+		this.fixednum = fixednum;
+	}
+	public Integer getPurchasenum() {
+		return purchasenum;
+	}
+	public void setPurchasenum(Integer purchasenum) {
+		this.purchasenum = purchasenum;
+	}
+	public Integer getOldnum() {
+		return oldnum;
+	}
+	public void setOldnum(Integer oldnum) {
+		this.oldnum = oldnum;
+	}
+	public Integer getInstalloutnum() {
+		return installoutnum;
+	}
+	public void setInstalloutnum(Integer installoutnum) {
+		this.installoutnum = installoutnum;
+	}
+	public Integer getRepairinnum() {
+		return repairinnum;
+	}
+	public void setRepairinnum(Integer repairinnum) {
+		this.repairinnum = repairinnum;
+	}
+	public Integer getScrapoutnum() {
+		return scrapoutnum;
+	}
+	public void setScrapoutnum(Integer scrapoutnum) {
+		this.scrapoutnum = scrapoutnum;
+	}
+	public Integer getRepairoutnum() {
+		return repairoutnum;
+	}
+	public void setRepairoutnum(Integer repairoutnum) {
+		this.repairoutnum = repairoutnum;
+	}
+	public Integer getAdjustoutnum() {
+		return adjustoutnum;
+	}
+	public void setAdjustoutnum(Integer adjustoutnum) {
+		this.adjustoutnum = adjustoutnum;
+	}
+	public Integer getAdjustinnum() {
+		return adjustinnum;
+	}
+	public void setAdjustinnum(Integer adjustinnum) {
+		this.adjustinnum = adjustinnum;
+	}
+	public Integer getSupplementnum() {
+		return supplementnum;
+	}
+	public void setSupplementnum(Integer supplementnum) {
+		this.supplementnum = supplementnum;
+	}
+	public String getMemo() {
+		return memo;
+	}
+	public void setMemo(String memo) {
+		this.memo = memo;
 	}
 
 

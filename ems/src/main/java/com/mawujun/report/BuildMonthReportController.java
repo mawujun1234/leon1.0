@@ -11,10 +11,12 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,42 +55,70 @@ public class BuildMonthReportController {
 		return "success";
 	}
 	
-	
-	private void addRow1(Sheet sheet){
+	public CellStyle getStyle(XSSFWorkbook wb,IndexedColors color){
+		CellStyle style = wb.createCellStyle();
+		Font font = wb.createFont();
+		//day_font.setFontHeightInPoints((short) 14);
+		font.setColor(color.getIndex());
+		font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+		style.setFont(font);
+		style.setAlignment(CellStyle.ALIGN_CENTER);
+		style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		style.setWrapText(true);//自动换行
+		style.setBorderTop(CellStyle.BORDER_THIN);
+		style.setBorderBottom(CellStyle.BORDER_THIN);
+		style.setBorderLeft(CellStyle.BORDER_THIN);
+		style.setBorderRight(CellStyle.BORDER_THIN);
+		return style;
+	}
+	private void addRow1(XSSFWorkbook wb,Sheet sheet){
 		 Row row = sheet.createRow(1);
-		 
+		 CellStyle black_style=getStyle(wb,IndexedColors.BLACK);
 		 Cell subtype_name=row.createCell(0);
 		 subtype_name.setCellValue("小类");
+		 subtype_name.setCellStyle(black_style);
 		 
 		 Cell brand_name=row.createCell(1);
 		 brand_name.setCellValue("品牌");
+		 brand_name.setCellStyle(black_style);
 		 
 		 Cell style=row.createCell(2);
 		 style.setCellValue("型号");
+		 style.setCellStyle(black_style);
 		 
 		 Cell prod_name=row.createCell(3);
 		 prod_name.setCellValue("品名");
+		 prod_name.setCellStyle(black_style);
 		 
 		 Cell store_name=row.createCell(4);
 		 store_name.setCellValue("仓库");
+		 store_name.setCellStyle(black_style);
 		 
 		 Cell unit=row.createCell(5);
 		 unit.setCellValue("单位");
+		 unit.setCellStyle(black_style);
 		 
 		 Cell lastnum=row.createCell(6);
 		 lastnum.setCellValue("上期结余数");
+		 lastnum.setCellStyle(black_style);
 		 
+		 CellStyle blue_style=getStyle(wb,IndexedColors.BLUE);
 		 Cell storeinnum=row.createCell(7);
 		 storeinnum.setCellValue("本期新增数");
+		 storeinnum.setCellStyle(blue_style);
 		 
+		 CellStyle red_style=getStyle(wb,IndexedColors.RED);
 		 Cell installoutnum=row.createCell(8);
 		 installoutnum.setCellValue("本期领用数");
+		 installoutnum.setCellStyle(red_style);
 		 
 		 Cell nownum=row.createCell(9);
 		 nownum.setCellValue("本月结余数");
+		 nownum.setCellStyle(black_style);
 		 
 		 Cell memo=row.createCell(10);
 		 memo.setCellValue("备注"); 
+		 memo.setCellStyle(black_style);
 	}
 	@RequestMapping("/buildmonthreport/export.do")
 	public void export(HttpServletResponse response,String year,String month,String store_id) throws IOException{
@@ -96,7 +126,7 @@ public class BuildMonthReportController {
 		Store store=storeService.get(store_id);
 		List<BuildMonthReport> list=query(year,month,store_id);
 		
-		HSSFWorkbook wb =new HSSFWorkbook();
+		XSSFWorkbook wb =new XSSFWorkbook();
 		Sheet sheet = wb.createSheet();
 		Row title = sheet.createRow(0);//一共有11列
 		title.setHeight((short)660);
@@ -115,13 +145,23 @@ public class BuildMonthReportController {
 		sheet.addMergedRegion(new CellRangeAddress(0,(short)0,0,(short)10)); 
 		
 		//设置第一行,设置列标题
-		addRow1(sheet);
+		addRow1(wb,sheet);
 		
-		
+		 CellStyle blue_style=getStyle(wb,IndexedColors.BLUE);
+		 blue_style.setBorderBottom(CellStyle.BORDER_NONE);
+		 blue_style.setBorderLeft(CellStyle.BORDER_NONE);
+		 blue_style.setBorderRight(CellStyle.BORDER_NONE);
+		 blue_style.setBorderTop(CellStyle.BORDER_NONE);;
+		 CellStyle red_style=getStyle(wb,IndexedColors.RED);
+		 red_style.setBorderBottom(CellStyle.BORDER_NONE);
+		 red_style.setBorderLeft(CellStyle.BORDER_NONE);
+		 red_style.setBorderRight(CellStyle.BORDER_NONE);
+		 red_style.setBorderTop(CellStyle.BORDER_NONE);;
 		for(int i=0;i<list.size();i++){
 			 BuildMonthReport buildDayReport=list.get(i);
 			 int rownum=i+2;
 			 Row row = sheet.createRow(rownum);
+			 
 			 
 			 Cell subtype_name=row.createCell(0);
 			 subtype_name.setCellValue(buildDayReport.getSubtype_name());
@@ -144,11 +184,14 @@ public class BuildMonthReportController {
 			 Cell lastnum=row.createCell(6);
 			 lastnum.setCellValue(buildDayReport.getLastnum()==null?0:buildDayReport.getLastnum());
 			 
+			
 			 Cell storeinnum=row.createCell(7);
 			 storeinnum.setCellValue(buildDayReport.getStoreinnum()==null?0:buildDayReport.getStoreinnum());
+			 storeinnum.setCellStyle(blue_style);
 			 
 			 Cell installoutnum=row.createCell(8);
 			 installoutnum.setCellValue(buildDayReport.getInstalloutnum()==null?0:buildDayReport.getInstalloutnum());
+			 installoutnum.setCellStyle(red_style);
 			 //本月结余数
 			 Cell nownum=row.createCell(9);
 			 //nownum.setCellValue(buildDayReport.getNownum()==null?0:buildDayReport.getNownum());

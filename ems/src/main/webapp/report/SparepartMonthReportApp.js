@@ -90,7 +90,7 @@ Ext.onReady(function(){
 					return false;
 				}
 				var pp=Ext.Object.toQueryString(params);
-				window.open(Ext.ContextPath+"/sparepartmonthreport/export.do?"+pp, "_blank");
+				window.open(Ext.ContextPath+"/sparepartdayreport/export.do?"+pp, "_blank");
 			}
 		}]
 	})

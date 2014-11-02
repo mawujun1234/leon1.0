@@ -12,6 +12,7 @@ end;
 
 
 
+
 create or replace procedure proc_sparepartmonthreport(store_id_in in varchar2,nowmonth_in in varchar2,lastmonth_in in varchar2)
 as
   store_name varchar2(30);
@@ -137,5 +138,17 @@ begin
   end loop;
   
   commit;
+end;
+/
+
+
+
+create or replace procedure proc_sparepartdayreport(store_id_in in varchar2,nowmonth_in in varchar2,lastmonth_in in varchar2)
+as
+  store_name varchar2(30);
+begin
+  select name into store_name from ems_store where id=store_id_in;
+  
+  
 end;
 /

@@ -182,6 +182,26 @@ public static final class InstallOutList {
 	public static final String ecode="ecode";
 	public static final String id="id";
 }
+public static final class DayInventory {
+	public static final String daykey="daykey";
+	public static final String subtype_id="subtype_id";
+	public static final String prod_id="prod_id";
+	public static final String brand_id="brand_id";
+	public static final String style="style";
+	public static final String store_id="store_id";
+	public static final String nownum="nownum";
+	public static final String lastnum="lastnum";
+}
+public static final class MonthInventory {
+	public static final String monthkey="monthkey";
+	public static final String subtype_id="subtype_id";
+	public static final String prod_id="prod_id";
+	public static final String brand_id="brand_id";
+	public static final String style="style";
+	public static final String store_id="store_id";
+	public static final String nownum="nownum";
+	public static final String lastnum="lastnum";
+}
 public static final class MetaVersion {
 	public static final String clasName="clasName";
 	public static final String version="version";

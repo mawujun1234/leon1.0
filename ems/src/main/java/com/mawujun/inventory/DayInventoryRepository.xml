@@ -4,7 +4,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
-<mapper namespace="com.mawujun.report.DayInventoryRepository">
+<mapper namespace="com.mawujun.inventory.DayInventoryRepository">
 	<parameterMap type="map" id="proc_map">  
 	   <parameter property="day_in" jdbcType="VARCHAR" mode="IN"/>  
 	   <parameter property="lastday_in" jdbcType="VARCHAR" mode="IN"/>   
