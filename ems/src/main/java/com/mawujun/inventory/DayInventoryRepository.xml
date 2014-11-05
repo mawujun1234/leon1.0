@@ -10,7 +10,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	   <parameter property="lastday_in" jdbcType="VARCHAR" mode="IN"/>   
 	</parameterMap>  
 	<update id="callProc" parameterMap="proc_map" statementType="CALLABLE">  
-       {call proc_dayinventory(?, ?, ?)}  
+       {call proc_dayinventory_all(?, ?)}  
    </update> 
 </mapper>
 

@@ -24,23 +24,23 @@ public class DayInventoryService extends AbstractService<DayInventory, DayInvent
 		// TODO Auto-generated method stub
 		return dayInventoryRepository;
 	}
-	/**
-	 * 创建月结库存
-	 * @author mawujun 16064988@qq.com
-	 */
-	public void callProc(){	
-		Map<String,Object> params=new HashMap<String,Object>();
-		//获取当前月，格式为 201409
-		//Calendar cal=Calendar.getInstance();
-		String day_in=format.format(new Date());
-		params.put("day_in", day_in);
-		Calendar cal=Calendar.getInstance();
-		cal.add(Calendar.DAY_OF_MONTH, -1);
-		params.put("lastday_in", format.format(cal.getTime()));
-
-		
-		dayInventoryRepository.callProc(params);
-		
-		
-	}
+//	/**
+//	 * 创建月结库存
+//	 * @author mawujun 16064988@qq.com
+//	 */
+//	public void callProc(){	
+//		Map<String,Object> params=new HashMap<String,Object>();
+//		//获取当前月，格式为 201409
+//		//Calendar cal=Calendar.getInstance();
+//		String day_in=format.format(new Date());
+//		params.put("day_in", day_in);
+//		Calendar cal=Calendar.getInstance();
+//		cal.add(Calendar.DAY_OF_MONTH, -1);
+//		params.put("lastday_in", format.format(cal.getTime()));
+//
+//		
+//		dayInventoryRepository.callProc(params);
+//		
+//		
+//	}
 }

@@ -189,8 +189,19 @@ public static final class DayInventory {
 	public static final String brand_id="brand_id";
 	public static final String style="style";
 	public static final String store_id="store_id";
-	public static final String nownum="nownum";
+	public static final String fixednum="fixednum";
 	public static final String lastnum="lastnum";
+	public static final String purchasenum="purchasenum";
+	public static final String oldnum="oldnum";
+	public static final String installoutnum="installoutnum";
+	public static final String repairinnum="repairinnum";
+	public static final String scrapoutnum="scrapoutnum";
+	public static final String repairoutnum="repairoutnum";
+	public static final String adjustoutnum="adjustoutnum";
+	public static final String adjustinnum="adjustinnum";
+	public static final String nownum="nownum";
+	public static final String nownum_query="nownum_query";
+	public static final String supplementnum="supplementnum";
 }
 public static final class MonthInventory {
 	public static final String monthkey="monthkey";
@@ -199,8 +210,20 @@ public static final class MonthInventory {
 	public static final String brand_id="brand_id";
 	public static final String style="style";
 	public static final String store_id="store_id";
-	public static final String nownum="nownum";
+	public static final String fixednum="fixednum";
 	public static final String lastnum="lastnum";
+	public static final String purchasenum="purchasenum";
+	public static final String oldnum="oldnum";
+	public static final String installoutnum="installoutnum";
+	public static final String repairinnum="repairinnum";
+	public static final String scrapoutnum="scrapoutnum";
+	public static final String repairoutnum="repairoutnum";
+	public static final String adjustoutnum="adjustoutnum";
+	public static final String adjustinnum="adjustinnum";
+	public static final String nownum="nownum";
+	public static final String nownum_query="nownum_query";
+	public static final String supplementnum="supplementnum";
+	public static final String memo="memo";
 }
 public static final class MetaVersion {
 	public static final String clasName="clasName";

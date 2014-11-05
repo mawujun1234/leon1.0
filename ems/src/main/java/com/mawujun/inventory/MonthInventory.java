@@ -35,7 +35,9 @@ public class MonthInventory implements IdEntity<MonthInventory_PK>{
 	@Id
 	@Column(length=36)
 	private String store_id;//仓库id，所属仓库
+	private Integer store_type;//1:在建仓库，2：维修中心,3:备品备件仓库
 
+	
 	@Column(columnDefinition="INT default 0")
 	private Integer fixednum;//额定数量，预先定的数量，手工填的
 	@Column(columnDefinition="INT default 0")
@@ -51,11 +53,11 @@ public class MonthInventory implements IdEntity<MonthInventory_PK>{
 	@Column(columnDefinition="INT default 0")
 	private Integer scrapoutnum;//报废出库数量
 	@Column(columnDefinition="INT default 0")
-	private Integer repairoutnum;//维修出库数量
+	private Integer repairoutnum;//维修出库数量，维修中心对这个仓库，出库的数量
 	@Column(columnDefinition="INT default 0")
-	private Integer adjustoutnum;//借用数，就是调拨出库数量
+	private Integer adjustoutnum;//借用数，=临时借用于在建项目使用+临时借用外勤维护用
 	@Column(columnDefinition="INT default 0")
-	private Integer adjustinnum;//返还数，就是调拨入库的数量
+	private Integer adjustinnum;//返还数，=临时借用于在建项目使用归还+临时借用外勤维护用
 	@Column(columnDefinition="INT default 0")
 	private Integer nownum;//本月结余，，通过前面的数据++--弄出来的
 	@Column(columnDefinition="INT default 0")
@@ -83,6 +85,18 @@ public class MonthInventory implements IdEntity<MonthInventory_PK>{
 		return id;
 	}
 
+	public Integer getStore_type() {
+		return store_type;
+	}
+	public void setStore_type(Integer store_type) {
+		this.store_type = store_type;
+	}
+	public Integer getNownum_query() {
+		return nownum_query;
+	}
+	public void setNownum_query(Integer nownum_query) {
+		this.nownum_query = nownum_query;
+	}
 	public Integer getMonthkey() {
 		return monthkey;
 	}

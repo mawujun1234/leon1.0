@@ -1,0 +1,52 @@
+--创建总调用的存储过程
+create or replace procedure proc_day_all_all
+as
+--计算所有的仓库的日结库存
+day_in varchar2(8):=to_char(sysdate,'yyyymmdd');
+lastday_in varchar2(8):=to_char( TRUNC(sysdate)-1,'yyyymmdd');
+begin
+    proc_dayinventory_all(day_in,lastday_in);--调用备品备件库
+    proc_dayinventory1_all(day_in,lastday_in);--调用在建仓库
+end;
+
+
+http://www.cnblogs.com/xclw/archive/2009/12/04/1616945.html
+http://cherryqq.iteye.com/blog/855022
+http://blog.csdn.net/thinkscape/article/details/7411012
+
+------------------------------------------------------------建立定时调用
+--查看有哪些任务
+select job,last_date,NEXT_DATE ,last_sec,broken,failures,interval, what from dba_jobs
+--定义定时调用，多次执行，会创建多个一样的定时任务
+--next_date => sysdate表示马上执行一次
+select TRUNC(sysdate)+22/24 from dual--每天的晚上10点执行
+
+
+DECLARE
+  X NUMBER;
+BEGIN
+  SYS.DBMS_JOB.SUBMIT
+  ( job       => X 
+   ,what      => 'proc_day_all_all;'
+   ,next_date => sysdate
+   ,interval  => 'TRUNC(sysdate)+22/24'
+   ,no_parse  => FALSE
+  );
+  SYS.DBMS_OUTPUT.PUT_LINE('Job Number is: ' || to_char(x));
+COMMIT;
+END;
+
+---运行任务，，参数就是查看定时任务里面的job的值
+begin
+    dbms_job.run(4);
+end;
+/
+--移除任务，参数就是查看定时任务里面的job的值
+begin
+    dbms_job.remove(6);
+    commit;
+end;
+/
+
+select * from ems_monthinventory
+delete ems_monthinventory
