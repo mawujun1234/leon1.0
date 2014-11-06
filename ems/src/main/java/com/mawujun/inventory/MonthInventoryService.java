@@ -49,13 +49,17 @@ public class MonthInventoryService extends AbstractService<MonthInventory, Month
 //		monthInventoryRepository.callProc(params);
 //		
 //		
-//	}
+//	}ap<String,I
+	
+	public void updateField(Map<String,Object> params) {
+		monthInventoryRepository.updateField(params);
+	}
 	
 	public List<MonthInventoryVO> queryBuildMonthReport(String store_id,String day_in) {
 		return monthInventoryRepository.queryBuildMonthReport(store_id, day_in);
 	}
 	
-	public List<MonthInventoryVO> querySparepartMonthReport(String store_id,String day_in) {
-		return monthInventoryRepository.querySparepartMonthReport(store_id, day_in);
-	}
+//	public List<MonthInventoryVO> querySparepartMonthReport(String store_id,String day_in) {
+//		return monthInventoryRepository.querySparepartMonthReport(store_id, day_in);
+//	}
 }

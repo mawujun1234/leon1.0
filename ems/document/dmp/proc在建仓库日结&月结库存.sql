@@ -118,7 +118,7 @@ begin
   for store in (
     select * from ems_store where type=1 
   ) loop 
-    proc_dayinventory(store.id,day_in);
+    proc_dayinventory1(store.id,day_in);
   END LOOP;
 end;
 

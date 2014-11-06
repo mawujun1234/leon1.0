@@ -80,7 +80,7 @@ Ext.onReady(function(){
 					return false;
 				}
 				var pp=Ext.Object.toQueryString(params);
-				window.open(Ext.ContextPath+"/sparepartmonthreport/export.do?"+pp, "_blank");
+				window.open(Ext.ContextPath+"/monthinventory/sparepart/export.do?"+pp, "_blank");
 			}
 		},{
 			text:'导出日报表',
@@ -90,7 +90,7 @@ Ext.onReady(function(){
 					return false;
 				}
 				var pp=Ext.Object.toQueryString(params);
-				window.open(Ext.ContextPath+"/sparepartdayreport/export.do?"+pp, "_blank");
+				window.open(Ext.ContextPath+"/dayinventory/sparepart/export.do?"+pp, "_blank");
 			}
 		}]
 	})
@@ -104,7 +104,7 @@ Ext.onReady(function(){
 			actions:{
 				"read":'POST'
 			},
-			url:Ext.ContextPath+"/sparepartmonthreport/query.do",
+			url:Ext.ContextPath+"/monthinventory/queryMonthReport.do",
 			reader:{
 			    type:'json',
 			    idProperty: 'key',
@@ -270,6 +270,8 @@ Ext.onReady(function(){
 		var record=e.record;
 		var params=record.getData();
 		delete params.id;
+		params.field=e.field;
+		params.value=e.value;
 		Ext.Ajax.request({
 			url:Ext.ContextPath+'/monthinventory/update.do',
 			method:'POST',

@@ -80,7 +80,7 @@ Ext.onReady(function(){
 					return false;
 				}
 				var pp=Ext.Object.toQueryString(params);
-				window.open(Ext.ContextPath+"/monthinventory/export.do?"+pp, "_blank");
+				window.open(Ext.ContextPath+"/monthinventory/build/export.do?"+pp, "_blank");
 			}
 		},{
 			text:'导出日报表',
@@ -90,7 +90,7 @@ Ext.onReady(function(){
 					return false;
 				}
 				var pp=Ext.Object.toQueryString(params);
-				window.open(Ext.ContextPath+"/monthinventory/build/export.do?"+pp, "_blank");
+				window.open(Ext.ContextPath+"/dayinventory/build/export.do?"+pp, "_blank");
 			}
 		}]
 	})
@@ -98,7 +98,7 @@ Ext.onReady(function(){
 	var store=Ext.create('Ext.data.Store',{
 		autoLoad:false,
 		fields: ['monthkey', 'subtype_id','subtype_name','prod_id','prod_name','brand_id','brand_name','style','store_id','store_type','store_name','unit','memo'
-			,'lastmonthnum','nowAdd','nowSubtract','nownum'],
+			,'lastnum','nowAdd','nowSubtract','nownum'],
 		proxy:{
 			type:'ajax',
 			actions:{
@@ -194,12 +194,12 @@ Ext.onReady(function(){
         	},{
             header: '本月新增',
             sortable: true,
-            dataIndex: 'storeinnum',
+            dataIndex: 'nowAdd',
             summaryType: 'sum'
         	},{
             header: '本月领用',
             sortable: true,
-            dataIndex: 'installoutnum',
+            dataIndex: 'nowSubtract',
             summaryType: 'sum'
         	},{
             header: '本月结余',

@@ -18,15 +18,15 @@ public class MonthInventoryVO extends MonthInventory{//implements IdEntity<Month
 	private String unit;//单位
 	
 	
-	private Integer lastmonthnum;//上月结余
+	//private Integer lastmonthnum;//上月结余
 
-	public Integer getLastmonthnum() {
-		return lastmonthnum;
-	}
-
-	public void setLastmonthnum(Integer lastmonthnum) {
-		this.lastmonthnum = lastmonthnum;
-	}
+//	public Integer getLastmonthnum() {
+//		return lastmonthnum;
+//	}
+//
+//	public void setLastmonthnum(Integer lastmonthnum) {
+//		this.lastmonthnum = lastmonthnum;
+//	}
 	
 	/**
 	 * 获取本期新增,主要用于在建仓库

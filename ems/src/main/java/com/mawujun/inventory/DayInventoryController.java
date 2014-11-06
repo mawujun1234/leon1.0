@@ -3,6 +3,8 @@ package com.mawujun.inventory;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,16 +23,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mawujun.baseinfo.Store;
 import com.mawujun.baseinfo.StoreService;
-import com.mawujun.repository.cnd.Cnd;
-import com.mawujun.utils.M;
-import com.mawujun.utils.Params;
 
 @Controller
-public class MonthInventoryController {
+public class DayInventoryController {
 	//@Autowired
 	//private DayInventoryService dayInventoryService;
 	@Autowired
-	private MonthInventoryService monthInventoryService;
+	private DayInventoryService dayInventoryService;
 	@Autowired
 	private StoreService storeService;
 	
@@ -42,47 +41,15 @@ public class MonthInventoryController {
 	 * @param store_id
 	 * @return
 	 */
-	@RequestMapping("/monthinventory/queryMonthReport.do")
-	public List<MonthInventoryVO> queryBuildMonthReport(String store_id,String year,String month){
-		List<MonthInventoryVO> list=monthInventoryService.queryBuildMonthReport(store_id,year+month);
+	@RequestMapping("/dayinventory/queryMonthReport.do")
+	public List<DayInventoryVO> queryBuildMonthReport(String store_id,String year,String month){
+		List<DayInventoryVO> list=dayInventoryService.queryBuildMonthReport(store_id,year+month);
 		//还要进行处理，把两个数据合并后，才传到前台去
 		
 		return list;
 		
 	}
-//	/**
-//	 * 备品备件仓库的月报表
-//	 * @author mawujun email:160649888@163.com qq:16064988
-//	 * @param year
-//	 * @param month
-//	 * @param store_id
-//	 * @return
-//	 */
-//	@RequestMapping("/monthinventory/querySparepartMonthReport.do")
-//	public List<MonthInventoryVO> querySparepartMonthReport(String store_id,String year,String month){
-//		//String sql="select * from report_buildmonthreport where month='"+month+"' and store_id='"+store_id+"'";
-//		
-//		List<MonthInventoryVO> list=monthInventoryService.querySparepartMonthReport(store_id, year+month);
-//		return list;
-//		
-//	}
-	
-	@RequestMapping("/monthinventory/update.do")
-	public String update(String field,String value,MonthInventory_PK key){
-		Params params=Params.init().add(M.MonthInventory.monthkey, key.getMonthkey())
-		.add(M.MonthInventory.subtype_id, key.getSubtype_id())
-		.add(M.MonthInventory.prod_id, key.getProd_id())
-		.add(M.MonthInventory.brand_id, key.getBrand_id())
-		.add(M.MonthInventory.style, key.getStyle())
-		.add(M.MonthInventory.store_id, key.getStore_id())
-		.add("field", field)
-		.add("value", value);
-		
-		
-		monthInventoryService.updateField(params);
-		return "success";
-	}
-	
+
 	
 	public CellStyle getStyle(XSSFWorkbook wb,IndexedColors color){
 		CellStyle style = wb.createCellStyle();
@@ -100,67 +67,166 @@ public class MonthInventoryController {
 		style.setBorderRight(CellStyle.BORDER_THIN);
 		return style;
 	}
-	private void build_addRow1(XSSFWorkbook wb,Sheet sheet){
-		 Row row = sheet.createRow(1);
-		 CellStyle black_style=getStyle(wb,IndexedColors.BLACK);
-		 Cell subtype_name=row.createCell(0);
+	private StringBuilder[] addRow1(XSSFWorkbook wb,Sheet sheet){
+		final int cellstartnum=9;//其实应该从10开始，单后面用了++
+		
+		//=================================================================================
+		//日期的样式
+		
+		CellStyle black_style=getStyle(wb,IndexedColors.BLACK);
+		//合并单元格的行
+		Row row1 = sheet.createRow(1);
+		//创建日期，并合并日期的两列
+		int cellnum=cellstartnum;
+		for(int j=1;j<=31;j++){
+			//合并这两个单元格
+			sheet.addMergedRegion(new CellRangeAddress(1,1,++cellnum,++cellnum)); 
+			//设置日期值
+			Cell cell11=row1.createCell(cellnum-1);
+			cell11.setCellValue(j);
+			cell11.setCellStyle(black_style);
+			
+			Cell cell12=row1.createCell(cellnum);
+			cell12.setCellStyle(black_style);
+		}
+		//=================================================================================== 
+		
+		//
+		
+		
+		 Cell subtype_name=row1.createCell(0);
 		 subtype_name.setCellValue("小类");
 		 subtype_name.setCellStyle(black_style);
 		 
-		 Cell brand_name=row.createCell(1);
+		 Cell brand_name=row1.createCell(1);
 		 brand_name.setCellValue("品牌");
 		 brand_name.setCellStyle(black_style);
 		 
-		 Cell style=row.createCell(2);
+		 Cell style=row1.createCell(2);
 		 style.setCellValue("型号");
 		 style.setCellStyle(black_style);
 		 
-		 Cell prod_name=row.createCell(3);
+		 Cell prod_name=row1.createCell(3);
 		 prod_name.setCellValue("品名");
 		 prod_name.setCellStyle(black_style);
 		 
-		 Cell store_name=row.createCell(4);
+		 Cell store_name=row1.createCell(4);
 		 store_name.setCellValue("仓库");
 		 store_name.setCellStyle(black_style);
 		 
-		 Cell unit=row.createCell(5);
+		 Cell unit=row1.createCell(5);
 		 unit.setCellValue("单位");
 		 unit.setCellStyle(black_style);
 		 
-		 Cell lastnum=row.createCell(6);
+		 Cell lastnum=row1.createCell(6);
 		 lastnum.setCellValue("上期结余数");
 		 lastnum.setCellStyle(black_style);
 		 
 		 CellStyle blue_style=getStyle(wb,IndexedColors.BLUE);
-		 Cell storeinnum=row.createCell(7);
+		 Cell storeinnum=row1.createCell(7);
 		 storeinnum.setCellValue("本期新增数");
 		 storeinnum.setCellStyle(blue_style);
 		 
 		 CellStyle red_style=getStyle(wb,IndexedColors.RED);
-		 Cell installoutnum=row.createCell(8);
+		 Cell installoutnum=row1.createCell(8);
 		 installoutnum.setCellValue("本期领用数");
 		 installoutnum.setCellStyle(red_style);
 		 
-		 Cell nownum=row.createCell(9);
+		 Cell nownum=row1.createCell(9);
 		 nownum.setCellValue("本月结余数");
 		 nownum.setCellStyle(black_style);
 		 
-		 Cell memo=row.createCell(10);
+		 //====================================================		 
+		// 新增数的样式
+		CellStyle in_style = wb.createCellStyle();
+		Font in_font = wb.createFont();
+		//in_font.setFontHeightInPoints((short) 16);
+		in_font.setColor(IndexedColors.BLUE_GREY.getIndex());
+		in_font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+		in_style.setFont(in_font);
+		in_style.setAlignment(CellStyle.ALIGN_CENTER);
+		in_style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		in_style.setBorderTop(CellStyle.BORDER_THIN);
+		in_style.setBorderBottom(CellStyle.BORDER_THIN);
+		in_style.setBorderLeft(CellStyle.BORDER_THIN);
+		in_style.setBorderRight(CellStyle.BORDER_THIN);
+		// title_cell.setCellStyle(in_style);
+
+		// 领用数的样式
+		CellStyle out_style = wb.createCellStyle();
+		Font out_font = wb.createFont();
+		//out_font.setFontHeightInPoints((short) 16);
+		out_font.setColor(IndexedColors.RED.getIndex());
+		out_font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+		out_style.setFont(out_font);
+		out_style.setAlignment(CellStyle.ALIGN_CENTER);
+		out_style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		out_style.setBorderTop(CellStyle.BORDER_THIN);
+		out_style.setBorderBottom(CellStyle.BORDER_THIN);
+		out_style.setBorderLeft(CellStyle.BORDER_THIN);
+		out_style.setBorderRight(CellStyle.BORDER_THIN);
+		// title_cell.setCellStyle(out_style);
+		
+		cellnum=cellstartnum;
+		Row row2 = sheet.createRow(2);
+		
+		//
+		StringBuilder in_formula=new StringBuilder("SUM(");
+		StringBuilder out_formula=new StringBuilder("SUM(");
+		for(int j=1;j<=31;j++){
+			 Cell day_in=row2.createCell(++cellnum);
+			 day_in.setCellValue("新增数");
+			 day_in.setCellStyle(in_style);
+			 in_formula.append(CellReference.convertNumToColString(cellnum)).append("=");
+			
+			 
+			 
+			 Cell day_out=row2.createCell(++cellnum);
+			 day_out.setCellValue("领用数");
+			 day_out.setCellStyle(out_style);
+			 out_formula.append(CellReference.convertNumToColString(cellnum)).append("=");
+			 
+			 if(j!=31){
+				 in_formula.append(",");
+				 out_formula.append(",");
+			 } 
+			
+		 }
+		in_formula.append(")");
+		out_formula.append(")");
+		
+		 Cell memo=row2.createCell(++cellnum);
 		 memo.setCellValue("备注"); 
 		 memo.setCellStyle(black_style);
+		 
+		//合并0--9的单元格，纵向合并
+		for(int j=0;j<=cellstartnum;j++){
+			sheet.addMergedRegion(new CellRangeAddress(1,2,(short)j,(short)j)); 
+				
+			Cell cell12=row2.createCell(j);
+			cell12.setCellStyle(black_style);
+		}
+		 
+		 //冻结行和列
+		 sheet.createFreezePane(cellstartnum+1, 3);
+		 
+		 //生成本期新增数公式
+		 StringBuilder[] formulas=new StringBuilder[]{in_formula,out_formula};
+		 return formulas;
+		 
+		 
 	}
-	@RequestMapping("/monthinventory/build/export.do")
+	@RequestMapping("/dayinventory/build/export.do")
 	public void build_export(HttpServletResponse response,String store_id,String year,String month) throws IOException{
-		
 		Store store=storeService.get(store_id);
-		List<MonthInventoryVO> list=queryBuildMonthReport(store_id,year,month);
+		Map<DayInventoryVO,Map<String,Integer>> result=query(year,month,store_id);
 		
 		XSSFWorkbook wb =new XSSFWorkbook();
 		Sheet sheet = wb.createSheet();
 		Row title = sheet.createRow(0);//一共有11列
 		title.setHeight((short)660);
 		Cell title_cell=title.createCell(0);
-		title_cell.setCellValue(year+"年"+month+"月在建工程仓库("+store.getName()+")盘点月报表");
+		title_cell.setCellValue(year+"年"+month+"月在建工程仓库("+store.getName()+")盘点日报表");
 		CellStyle cs = wb.createCellStyle();
 		Font f = wb.createFont();
 		f.setFontHeightInPoints((short) 16);
@@ -174,23 +240,27 @@ public class MonthInventoryController {
 		sheet.addMergedRegion(new CellRangeAddress(0,(short)0,0,(short)10)); 
 		
 		//设置第一行,设置列标题
-		build_addRow1(wb,sheet);
+		StringBuilder[] formulas=addRow1(wb,sheet);
 		
-		 CellStyle blue_style=getStyle(wb,IndexedColors.BLUE);
+		CellStyle blue_style=getStyle(wb,IndexedColors.BLUE);
 		 blue_style.setBorderBottom(CellStyle.BORDER_NONE);
 		 blue_style.setBorderLeft(CellStyle.BORDER_NONE);
 		 blue_style.setBorderRight(CellStyle.BORDER_NONE);
-		 blue_style.setBorderTop(CellStyle.BORDER_NONE);;
+		 blue_style.setBorderTop(CellStyle.BORDER_NONE);
+		 
 		 CellStyle red_style=getStyle(wb,IndexedColors.RED);
 		 red_style.setBorderBottom(CellStyle.BORDER_NONE);
 		 red_style.setBorderLeft(CellStyle.BORDER_NONE);
 		 red_style.setBorderRight(CellStyle.BORDER_NONE);
 		 red_style.setBorderTop(CellStyle.BORDER_NONE);;
-		for(int i=0;i<list.size();i++){
-			 MonthInventoryVO buildDayReport=list.get(i);
-			 int rownum=i+2;
+		
+		//for(int i=0;i<list.size();i++){
+		int i=0;
+		for(Entry<DayInventoryVO,Map<String,Integer>> entry:result.entrySet()){
+			DayInventoryVO buildDayReport=entry.getKey();//list.get(i);
+			int rownum=i+3;
 			 Row row = sheet.createRow(rownum);
-			 
+			 i++;
 			 
 			 Cell subtype_name=row.createCell(0);
 			 subtype_name.setCellValue(buildDayReport.getSubtype_name());
@@ -210,29 +280,49 @@ public class MonthInventoryController {
 			 Cell unit=row.createCell(5);
 			 unit.setCellValue(buildDayReport.getUnit());
 			 
+			 //上期结余
 			 Cell lastnum=row.createCell(6);
 			 lastnum.setCellValue(buildDayReport.getLastnum()==null?0:buildDayReport.getLastnum());
 			 
-			
+			 
+			 //本期新增数
 			 Cell storeinnum=row.createCell(7);
-			 storeinnum.setCellValue(buildDayReport.getNowAdd()==null?0:buildDayReport.getNowAdd());
+			 storeinnum.setCellValue(buildDayReport.getStoreinnum()==null?0:buildDayReport.getStoreinnum());
+			 storeinnum.setCellFormula(formulas[0].toString().replaceAll("=", (rownum+1)+""));
 			 storeinnum.setCellStyle(blue_style);
 			 
 			 Cell installoutnum=row.createCell(8);
 			 installoutnum.setCellValue(buildDayReport.getInstalloutnum()==null?0:buildDayReport.getInstalloutnum());
+			 installoutnum.setCellFormula(formulas[1].toString().replaceAll("=", (rownum+1)+""));
 			 installoutnum.setCellStyle(red_style);
-			 //本月结余数
+			 
+			 //本月结余 上期+本期新增+本期领用
 			 Cell nownum=row.createCell(9);
 			 //nownum.setCellValue(buildDayReport.getNownum()==null?0:buildDayReport.getNownum());
 			 nownum.setCellFormula("SUM("+CellReference.convertNumToColString(6)+(rownum+1)+
 					 ","+CellReference.convertNumToColString(7)+(rownum+1)+
 					 ","+CellReference.convertNumToColString(8)+(rownum+1)+")");
 			 
-			 Cell memo=row.createCell(10);
-			 memo.setCellValue(buildDayReport.getMemo()); 
+
+			 //循环出31天的数据
+			 Map<String,Integer> days_nums=entry.getValue();
+			 int cellstartnum=9;
+			 for(int j=1;j<=31;j++){
+				 sheet.setColumnWidth(cellstartnum+1, 7 * 256);
+				 Cell day_in=row.createCell(++cellstartnum);
+				 Integer value_in=days_nums.get("day"+j+"_in");
+				 day_in.setCellValue(value_in==null?0:value_in);
+				 day_in.setCellStyle(blue_style);
+				 
+				 sheet.setColumnWidth(cellstartnum+1, 7 * 256);
+				 Cell day_out=row.createCell(++cellstartnum);
+				 Integer value_out=days_nums.get("day"+j+"_out");
+				 day_out.setCellValue(value_out==null?0:value_out);
+				 day_out.setCellStyle(red_style);
+			 }
 		 }
 		 
-		 String filename = "在建工程仓库("+store.getName()+")盘点月报表.xlsx";
+		 String filename = "在建工程仓库("+store.getName()+")盘点日报表.xlsx";
 		 //FileOutputStream out = new FileOutputStream(filename);
 		response.setHeader("content-disposition", "attachment; filename="+ new String(filename.getBytes("UTF-8"), "ISO8859-1"));
 		response.setContentType("application/vnd.ms-excel;charset=uft-8");
@@ -357,11 +447,11 @@ public class MonthInventoryController {
 		 memo.setCellStyle(black_style);
 		 sheet.setColumnWidth(cellint-1, "列长".getBytes().length*256);
 	}
-	@RequestMapping("/monthinventory/sparepart/export.do")
+	@RequestMapping("/dayinventory/sparepart/export.do")
 	public void sparepart_export(HttpServletResponse response,String year,String month,String store_id) throws IOException{
 		
 		Store store=storeService.get(store_id);
-		List<MonthInventoryVO> list=queryBuildMonthReport(store_id,year,month);
+		List<DayInventoryVO> list=queryBuildMonthReport(store_id,year,month);
 		
 		XSSFWorkbook wb =new XSSFWorkbook();
 		Sheet sheet = wb.createSheet();
@@ -386,7 +476,7 @@ public class MonthInventoryController {
 		
 		
 		for(int i=0;i<list.size();i++){
-			MonthInventoryVO sparepartMonthReport=list.get(i);
+			DayInventoryVO sparepartMonthReport=list.get(i);
 			 int rownum=i+2;
 			 int cellnum=0;
 			 Row row = sheet.createRow(rownum);
