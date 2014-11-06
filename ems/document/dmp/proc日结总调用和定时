@@ -3,10 +3,11 @@ create or replace procedure proc_day_all_all
 as
 --计算所有的仓库的日结库存
 day_in varchar2(8):=to_char(sysdate,'yyyymmdd');
-lastday_in varchar2(8):=to_char( TRUNC(sysdate)-1,'yyyymmdd');
+--lastday_in varchar2(8):=to_char( TRUNC(sysdate)-1,'yyyymmdd');
 begin
-    proc_dayinventory_all(day_in,lastday_in);--调用备品备件库
-    proc_dayinventory1_all(day_in,lastday_in);--调用在建仓库
+    proc_dayinventory_all(day_in);--调用备品备件库
+    proc_dayinventory1_all(day_in);--调用在建仓库
+    proc_dayreport(day_in);--生成日报数据
 end;
 
 

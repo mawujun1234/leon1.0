@@ -3,12 +3,11 @@ create or replace procedure proc_month_all_all
 as
 --计算所有的仓库的月结库存
 month_in varchar2(6):=to_char(sysdate,'yyyymm');
-lastmonth_in varchar2(6):=to_char( add_months(sysdate,-1),'yyyymm');
+--lastmonth_in varchar2(6):=to_char( add_months(sysdate,-1),'yyyymm');
 begin
-    proc_monthinventory_all(month_in,lastmonth_in);--调用备品备件库
-    proc_monthinventory1_all(month_in,lastmonth_in);--调用在建仓库
+    proc_monthinventory_all(month_in);--调用备品备件库
+    proc_monthinventory1_all(month_in);--调用在建仓库
 end;
-
 
 http://www.cnblogs.com/xclw/archive/2009/12/04/1616945.html
 http://cherryqq.iteye.com/blog/855022

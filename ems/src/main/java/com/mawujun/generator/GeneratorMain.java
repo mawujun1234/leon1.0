@@ -4,24 +4,7 @@ import java.io.IOException;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.mawujun.adjust.Adjust;
-import com.mawujun.adjust.AdjustList;
-import com.mawujun.install.InstallIn;
-import com.mawujun.install.InstallInList;
-import com.mawujun.meta.MetaVersion;
-import com.mawujun.mobile.message.Message;
-import com.mawujun.mobile.task.HitchReasonTpl;
-import com.mawujun.mobile.task.HitchType;
-import com.mawujun.mobile.task.Overtime;
-import com.mawujun.mobile.task.Task;
-import com.mawujun.mobile.task.TaskEquipmentList;
-import com.mawujun.repair.Scrap;
-import com.mawujun.report.BuildDayReport;
-import com.mawujun.report.BuildMonthReport;
-import com.mawujun.store.InStore;
-import com.mawujun.store.InStoreList;
-import com.mawujun.store.Order;
-import com.mawujun.user.UserStore;
+import com.mawujun.inventory.DayInventoryVO;
 
 import freemarker.template.TemplateException;
 /**
@@ -44,7 +27,7 @@ public class GeneratorMain {
 		//str=generatorService.generatorToString(MenuItem.class,FtlFile.JsModel.toString(),null);	
         //System.out.println(str);
 		
-		GeneratorMain.generateAllFile(BuildDayReport.class,"D:/gen/");
+		GeneratorMain.generateAllFile(DayInventoryVO.class,"D:/gen/");
 		
 		
 		

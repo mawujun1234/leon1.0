@@ -271,7 +271,7 @@ Ext.onReady(function(){
 		var params=record.getData();
 		delete params.id;
 		Ext.Ajax.request({
-			url:Ext.ContextPath+'/sparepartmonthreport/update.do',
+			url:Ext.ContextPath+'/monthinventory/update.do',
 			method:'POST',
 			params:params,
 			success:function(response){

@@ -1,19 +1,18 @@
-create or replace procedure proc_monthinventory_all
+create or replace procedure proc_monthinventory_all(month_in in varchar2)
 as
-month_in varchar2(6):=to_char(sysdate,'yyyymm');
-lastmonth_in varchar2(6):=to_char( add_months(sysdate,-1),'yyyymm');
+
 begin
   for store in (
     select * from ems_store  where type=3
-  ) loop 
-    proc_monthinventory(store.id,month_in,lastmonth_in);
+  ) loop
+    proc_monthinventory(store.id,month_in);
   END LOOP;
 end;
 
 
-create or replace procedure proc_monthinventory(store_id_in in varchar2, month_in in varchar2,lastmonth_in in varchar2)
+create or replace procedure proc_monthinventory(store_id_in in varchar2, month_in in varchar2)
 as
-
+lastmonth_in varchar2(6):=to_char(add_months(to_date(month_in,'yyyymm'),-1),'yyyymm');
 begin
 
 --计算所有仓库的库存  
@@ -165,20 +164,20 @@ end;
 
 ----------------------------------------------------------------------------------------日结库存
 
-create or replace procedure proc_dayinventory_all(day_in in varchar2,lastday_in in varchar2)
+create or replace procedure proc_dayinventory_all(day_in in varchar2)
 as
 begin
   for store in (
     select * from ems_store  where type=3
   ) loop
-    proc_dayinventory(store.id,day_in,lastday_in);
+    proc_dayinventory(store.id,day_in);
   END LOOP;
 end;
 
 
-create or replace procedure proc_dayinventory(store_id_in in varchar2, day_in in varchar2,lastday_in in varchar2)
+create or replace procedure proc_dayinventory(store_id_in in varchar2, day_in in varchar2)
 as
-
+lastday_in varchar2(8):=TRUNC(to_date(day_in,'yyyymmdd'))-1;
 begin
 
 --计算所有仓库的库存  
@@ -191,7 +190,7 @@ begin
      and  a.status !=30
   ) loop
     insert into ems_dayinventory(daykey,subtype_id,prod_id,brand_id,style,store_id,store_type
-    fixednum,lastnum,purchasenum,oldnum,installoutnum,repairinnum,scrapoutnum,repairoutnum,adjustoutnum,adjustinnum,nownum)
+    ,fixednum,lastnum,purchasenum,oldnum,installoutnum,repairinnum,scrapoutnum,repairoutnum,adjustoutnum,adjustinnum,nownum)
     values(day_in,rec.subtype_id,rec.prod_id,rec.brand_id,rec.style,rec.store_id,3,0,0,0,0,0,0,0,0,0,0,0);
   end loop;
   

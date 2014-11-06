@@ -80,7 +80,7 @@ Ext.onReady(function(){
 					return false;
 				}
 				var pp=Ext.Object.toQueryString(params);
-				window.open(Ext.ContextPath+"/buildmonthreport/export.do?"+pp, "_blank");
+				window.open(Ext.ContextPath+"/monthinventory/export.do?"+pp, "_blank");
 			}
 		},{
 			text:'导出日报表',
@@ -90,21 +90,21 @@ Ext.onReady(function(){
 					return false;
 				}
 				var pp=Ext.Object.toQueryString(params);
-				window.open(Ext.ContextPath+"/builddayreport/export.do?"+pp, "_blank");
+				window.open(Ext.ContextPath+"/monthinventory/build/export.do?"+pp, "_blank");
 			}
 		}]
 	})
 	
 	var store=Ext.create('Ext.data.Store',{
 		autoLoad:false,
-		fields: ['monthkey', 'subtype_id','subtype_name','prod_id','prod_name','brand_id','brand_name','style','store_id','store_name','unit'
-			,'lastnum','nownum','storeinnum','installoutnum','memo'],
+		fields: ['monthkey', 'subtype_id','subtype_name','prod_id','prod_name','brand_id','brand_name','style','store_id','store_type','store_name','unit','memo'
+			,'lastmonthnum','nowAdd','nowSubtract','nownum'],
 		proxy:{
 			type:'ajax',
 			actions:{
 				"read":'POST'
 			},
-			url:Ext.ContextPath+"/buildmonthreport/query.do",
+			url:Ext.ContextPath+"/monthinventory/queryMonthReport.do",
 			reader:{
 			    type:'json',
 			    idProperty: 'key',
@@ -224,8 +224,10 @@ Ext.onReady(function(){
 		var record=e.record;
 		var params=record.getData();
 		delete params.id;
+		params.field=e.field;
+		params.value=e.value;
 		Ext.Ajax.request({
-			url:Ext.ContextPath+'/buildmonthreport/updateMemo.do',
+			url:Ext.ContextPath+'/monthinventory/update.do',
 			method:'POST',
 			params:params,
 			success:function(response){
