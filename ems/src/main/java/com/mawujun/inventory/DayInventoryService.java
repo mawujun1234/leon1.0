@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,4 +44,8 @@ public class DayInventoryService extends AbstractService<DayInventory, DayInvent
 //		
 //		
 //	}
+	
+	public List<DayInventoryVO> queryDayInventory(String store_id,String day_start,String day_end){
+		return dayInventoryRepository.queryDayInventory(store_id, day_start,day_end);
+	}
 }

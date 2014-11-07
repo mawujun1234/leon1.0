@@ -1,3 +1,4 @@
+--只对在建仓库进行库存的结算
 create or replace procedure proc_monthinventory1_all(month_in in varchar2)
 as
 begin
@@ -125,7 +126,7 @@ end;
 
 create or replace procedure proc_dayinventory1(store_id_in in varchar2, day_in in varchar2)
 as
-lastday_in varchar2(8):=TRUNC(to_date(day_in,'yyyymmdd'))-1;
+lastday_in varchar2(8):=to_char(TRUNC(to_date(day_in,'yyyymmdd'))-1,'yyyymmdd');
 begin
 
 --计算所有仓库的库存  

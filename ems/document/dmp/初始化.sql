@@ -121,15 +121,15 @@ values ('f0861a7e-597e-4886-9a14-b83a37d74150', 'Y', null, null, 'f54d8775-74fa-
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
 values ('b96d7f0c-d4f4-42b3-b0be-4db2f200245a', 'Y', '/baseinfo/BrandApp.jsp', null, 'aeb4c40f-e8d4-414d-b2a1-f7b1dea80aaf', 'aaa-aag', '品牌管理');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('763ce28f-13d0-491d-b7c9-ef859fbcc7c1', 'N', null, null, null, 'aaf', '安    装');
+values ('763ce28f-13d0-491d-b7c9-ef859fbcc7c1', 'N', null, null, null, 'aaf', '外勤借用');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
 values ('fd84ac77-d4a5-4615-adaa-3336198e82ca', 'N', null, null, null, 'aag', '维    修');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
 values ('9f1b4ba5-0d1f-44f2-a75d-0fc69071e473', 'N', null, null, null, 'aah', '调    拨');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('43ea18c3-4d58-4ad0-9817-28db7199993c', 'Y', '/install/InstallOutApp.jsp', null, '763ce28f-13d0-491d-b7c9-ef859fbcc7c1', 'aaf-aaa', '设备领用');
+values ('43ea18c3-4d58-4ad0-9817-28db7199993c', 'Y', '/install/InstallOutApp.jsp', null, '763ce28f-13d0-491d-b7c9-ef859fbcc7c1', 'aaf-aaa', '外勤借用');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
-values ('3f70509f-8ec2-4d6b-b4ba-499eaa99a4e5', 'Y', '/install/InstallInApp.jsp', null, '763ce28f-13d0-491d-b7c9-ef859fbcc7c1', 'aaf-aab', '设备返库');
+values ('3f70509f-8ec2-4d6b-b4ba-499eaa99a4e5', 'Y', '/install/InstallInApp.jsp', null, '763ce28f-13d0-491d-b7c9-ef859fbcc7c1', 'aaf-aab', '外勤借用返回');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
 values ('a690500f-8b13-4fd9-8385-0fd9c6608092', 'Y', '/repair/NewRepairApp.jsp', null, 'fd84ac77-d4a5-4615-adaa-3336198e82ca', 'aag-aaa', '生成维修单');
 insert into SYS_NAVIGATION (id, leaf, link, memo, parentid, reportcode, text)
@@ -151,7 +151,7 @@ values ('4b59ebbd-c5fa-47e5-8932-1385b0912f1a', 'Y', '/task/HitchReasonTplApp.js
 insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
 values ('019ba77f-8348-46e9-911a-d2786e0b8f36', 'Y', '/store/InStoreQueryApp.jsp', null, 'd7624421-6323-4bc7-a28f-6f011f771a57', 'aac-aai', '入库记录查询');
 insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
-values ('5458a38a-734d-4952-b24a-b4f32ce09ff7', 'Y', '/install/InOutQueryApp.jsp', null, '763ce28f-13d0-491d-b7c9-ef859fbcc7c1', 'aaf-aac', '领用返库记录查询');
+values ('5458a38a-734d-4952-b24a-b4f32ce09ff7', 'Y', '/install/InOutQueryApp.jsp', null, '763ce28f-13d0-491d-b7c9-ef859fbcc7c1', 'aaf-aac', '外勤借用记录查询');
 insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)
 values ('7291c55a-15ed-4205-959f-2065b0ee54c7', 'N', null, null, null, 'aai', '报表');
 insert into sys_navigation (ID, LEAF, LINK, MEMO, PARENTID, REPORTCODE, TEXT)

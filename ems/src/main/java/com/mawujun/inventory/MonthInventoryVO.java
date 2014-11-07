@@ -1,5 +1,8 @@
 package com.mawujun.inventory;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  * 在建工程仓库盘点月报
@@ -18,6 +21,8 @@ public class MonthInventoryVO extends MonthInventory{//implements IdEntity<Month
 	private String unit;//单位
 	
 	
+	Map<String,DayInventory> dayInvertorys=new HashMap<String,DayInventory>();
+	
 	//private Integer lastmonthnum;//上月结余
 
 //	public Integer getLastmonthnum() {
@@ -28,6 +33,9 @@ public class MonthInventoryVO extends MonthInventory{//implements IdEntity<Month
 //		this.lastmonthnum = lastmonthnum;
 //	}
 	
+	public void addDayInvertorys(String day,DayInventory dayInvertory) {
+		this.dayInvertorys.put(day, dayInvertory);
+	}
 	/**
 	 * 获取本期新增,主要用于在建仓库
 	 * @author mawujun email:160649888@163.com qq:16064988
@@ -96,6 +104,10 @@ public class MonthInventoryVO extends MonthInventory{//implements IdEntity<Month
 	public void setUnit(String unit) {
 		this.unit = unit;
 	}
+	public Map<String, DayInventory> getDayInvertorys() {
+		return dayInvertorys;
+	}
+	
 	
 	
 

@@ -64,7 +64,39 @@ public class DayInventory  implements IdEntity<DayInventory_PK>{
 	@Column(columnDefinition="INT default 0")
 	private Integer nownum_query;//本月结余，,通过查询出来的，会不准，例如重新计算历史的月结库存的时候
 	@Column(columnDefinition="INT default 0")
-	private Integer supplementnum;//增补数，也是手工填的
+	private Integer supplementnum;//增补数，也是手工填的3
+	@Column(length=500)
+	private String memo;//备注
+	
+	
+	/**
+	 * 获取本期新增,主要用于在建仓库
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @return
+	 */
+	public Integer getNow_in(){
+		if(this.getPurchasenum()==null){
+			this.setPurchasenum(0);
+		}
+		if(this.getAdjustinnum()==null){
+			this.setAdjustinnum(0);
+		}
+		return this.getPurchasenum()+this.getAdjustinnum();
+	}
+	/**
+	 * 获取本期领用,主要用于在建仓库
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @return
+	 */
+	public Integer getNow_out(){
+		if(this.getInstalloutnum()==null){
+			this.setInstalloutnum(0);
+		}
+		if(this.getAdjustoutnum()==null){
+			this.setAdjustoutnum(0);
+		}
+		return this.getInstalloutnum()+this.getAdjustoutnum();
+	}
 	
 	public Integer getFixednum() {
 		return fixednum;
@@ -218,6 +250,12 @@ public class DayInventory  implements IdEntity<DayInventory_PK>{
 	}
 	public void setStore_type(Integer store_type) {
 		this.store_type = store_type;
+	}
+	public String getMemo() {
+		return memo;
+	}
+	public void setMemo(String memo) {
+		this.memo = memo;
 	}
 
 }

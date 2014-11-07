@@ -20,6 +20,9 @@ public class DayInventoryVO extends DayInventory{// implements IdEntity<DayInven
 	
 	//@Column(columnDefinition="INT default 0")
 	private Integer lastmonthnum;//上月结余
+	
+	
+
 
 	public Integer getLastmonthnum() {
 		return lastmonthnum;

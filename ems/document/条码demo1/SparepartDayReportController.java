@@ -197,7 +197,7 @@ public class SparepartDayReportController {
 		 
 		 Cell adjustinnum=row1.createCell(cellnum++);
 		 adjustinnum.setCellValue("本期归还数");
-		 adjustinnum.setCellStyle(black_style);
+		 adjustinnum.setCellStyle(green_style);
 		 sheet.setColumnWidth(cellnum-1, "列长".getBytes().length*256);
 		 
 		 Cell nownum=row1.createCell(cellnum++);

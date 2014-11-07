@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mawujun.baseinfo.Store;
 import com.mawujun.baseinfo.StoreService;
-import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.utils.M;
 import com.mawujun.utils.Params;
 
@@ -43,12 +42,9 @@ public class MonthInventoryController {
 	 * @return
 	 */
 	@RequestMapping("/monthinventory/queryMonthReport.do")
-	public List<MonthInventoryVO> queryBuildMonthReport(String store_id,String year,String month){
-		List<MonthInventoryVO> list=monthInventoryService.queryBuildMonthReport(store_id,year+month);
-		//还要进行处理，把两个数据合并后，才传到前台去
-		
-		return list;
-		
+	public List<MonthInventoryVO> queryMonthReport(String store_id,String year,String month){
+		List<MonthInventoryVO> list=monthInventoryService.queryMonthReport(store_id,year+month);
+		return list;	
 	}
 //	/**
 //	 * 备品备件仓库的月报表
@@ -153,7 +149,7 @@ public class MonthInventoryController {
 	public void build_export(HttpServletResponse response,String store_id,String year,String month) throws IOException{
 		
 		Store store=storeService.get(store_id);
-		List<MonthInventoryVO> list=queryBuildMonthReport(store_id,year,month);
+		List<MonthInventoryVO> list=queryMonthReport(store_id,year,month);
 		
 		XSSFWorkbook wb =new XSSFWorkbook();
 		Sheet sheet = wb.createSheet();
@@ -361,7 +357,7 @@ public class MonthInventoryController {
 	public void sparepart_export(HttpServletResponse response,String year,String month,String store_id) throws IOException{
 		
 		Store store=storeService.get(store_id);
-		List<MonthInventoryVO> list=queryBuildMonthReport(store_id,year,month);
+		List<MonthInventoryVO> list=queryMonthReport(store_id,year,month);
 		
 		XSSFWorkbook wb =new XSSFWorkbook();
 		Sheet sheet = wb.createSheet();

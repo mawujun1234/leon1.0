@@ -18,7 +18,8 @@ public interface MonthInventoryRepository extends IRepository<MonthInventory, Mo
 //	public void callProc(Map<String,Object> params);
 	
 	public void updateField(Map<String,Object> params);
-	public List<MonthInventoryVO> queryBuildMonthReport(@Param("store_id")String store_id,@Param("month_in")String month_in);
+	public List<MonthInventoryVO> queryMonthReport(@Param("store_id")String store_id,@Param("month_in")String month_in);
+	public List<MonthInventoryVO> queryNullMonthReport(@Param("store_id")String store_id);
 	
 	//public List<MonthInventoryVO> querySparepartMonthReport(@Param("store_id")String store_id,@Param("month_in")String month_in);
 }

@@ -203,6 +203,7 @@ public static final class ems_dayinventory {
 	public static final String nownum="nownum";
 	public static final String nownum_query="nownum_query";
 	public static final String supplementnum="supplementnum";
+	public static final String memo="memo";
 }
 public static final class ems_monthinventory {
 	public static final String monthkey="monthkey";
