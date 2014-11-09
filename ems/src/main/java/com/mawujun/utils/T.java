@@ -205,7 +205,55 @@ public static final class ems_dayinventory {
 	public static final String supplementnum="supplementnum";
 	public static final String memo="memo";
 }
+public static final class ems_dayinventorybak {
+	public static final String version="version";
+	public static final String daykey="daykey";
+	public static final String subtype_id="subtype_id";
+	public static final String prod_id="prod_id";
+	public static final String brand_id="brand_id";
+	public static final String style="style";
+	public static final String store_id="store_id";
+	public static final String store_type="store_type";
+	public static final String fixednum="fixednum";
+	public static final String lastnum="lastnum";
+	public static final String purchasenum="purchasenum";
+	public static final String oldnum="oldnum";
+	public static final String installoutnum="installoutnum";
+	public static final String repairinnum="repairinnum";
+	public static final String scrapoutnum="scrapoutnum";
+	public static final String repairoutnum="repairoutnum";
+	public static final String adjustoutnum="adjustoutnum";
+	public static final String adjustinnum="adjustinnum";
+	public static final String nownum="nownum";
+	public static final String nownum_query="nownum_query";
+	public static final String supplementnum="supplementnum";
+	public static final String memo="memo";
+}
 public static final class ems_monthinventory {
+	public static final String monthkey="monthkey";
+	public static final String subtype_id="subtype_id";
+	public static final String prod_id="prod_id";
+	public static final String brand_id="brand_id";
+	public static final String style="style";
+	public static final String store_id="store_id";
+	public static final String store_type="store_type";
+	public static final String fixednum="fixednum";
+	public static final String lastnum="lastnum";
+	public static final String purchasenum="purchasenum";
+	public static final String oldnum="oldnum";
+	public static final String installoutnum="installoutnum";
+	public static final String repairinnum="repairinnum";
+	public static final String scrapoutnum="scrapoutnum";
+	public static final String repairoutnum="repairoutnum";
+	public static final String adjustoutnum="adjustoutnum";
+	public static final String adjustinnum="adjustinnum";
+	public static final String nownum="nownum";
+	public static final String nownum_query="nownum_query";
+	public static final String supplementnum="supplementnum";
+	public static final String memo="memo";
+}
+public static final class ems_monthinventorybak {
+	public static final String version="version";
 	public static final String monthkey="monthkey";
 	public static final String subtype_id="subtype_id";
 	public static final String prod_id="prod_id";

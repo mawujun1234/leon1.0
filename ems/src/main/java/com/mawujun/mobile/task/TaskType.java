@@ -5,7 +5,7 @@ package com.mawujun.mobile.task;
  *
  */
 public enum TaskType {
-	newInstall("新安装"),repair("维修/维护"),patrol("巡检");
+	newInstall("新安装"),repair("维修维护"),patrol("巡检"),cancel("取消");
 	
 	private String name;
 	

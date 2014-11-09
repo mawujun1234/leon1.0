@@ -9,6 +9,13 @@ begin
     proc_dayinventory1_all(day_in);--调用在建仓库
 end;
 
+----初始化日数据的方法，单首先要初始化上个月的月结数据
+begin
+  for day in '20140901'..'20140930' loop
+       proc_dayinventory('2c908549482a46b70148340809580001',day);
+  end loop;
+end;
+
 
 http://www.cnblogs.com/xclw/archive/2009/12/04/1616945.html
 http://cherryqq.iteye.com/blog/855022

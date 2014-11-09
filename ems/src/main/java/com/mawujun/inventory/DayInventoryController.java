@@ -71,7 +71,7 @@ public class DayInventoryController {
 		cal.add(Calendar.MONTH, -1);
 		List<MonthInventoryVO> list_last_monthInventory=monthInventoryService.queryMonthReport(store_id, format.format(cal.getTime()));
 		//当第一次访问的时候，没有生产前一个月的数据的时候
-		if(list==null || list.size()==0){
+		if(list_last_monthInventory==null || list_last_monthInventory.size()==0){
 			list_last_monthInventory=monthInventoryService.queryNullMonthReport(store_id);
 		}
 		
@@ -471,10 +471,10 @@ public class DayInventoryController {
 		 prod_name.setCellStyle(black_style);
 		 sheet.autoSizeColumn(cellnum-1, true);
 		 
-		 Cell store_name=row1.createCell(cellnum++);
-		 store_name.setCellValue("仓库");
-		 store_name.setCellStyle(black_style);
-		 
+//		 Cell store_name=row1.createCell(cellnum++);
+//		 store_name.setCellValue("仓库");
+//		 store_name.setCellStyle(black_style);
+//		 
 		 Cell unit=row1.createCell(cellnum++);
 		 unit.setCellValue("单位");
 		 unit.setCellStyle(black_style);
@@ -736,6 +736,7 @@ public class DayInventoryController {
 		//for(Entry<DayInventoryVO,Map<String,Integer>> entry:result.entrySet()){
 		for(MonthInventoryVO monthInventoryVO:result){
 			int rownum=i+3;
+			i++;
 			 int cellnum=0;
 			 Row row = sheet.createRow(rownum);
 			 StringBuilder nownum_formulas=new StringBuilder("SUM(");
@@ -756,9 +757,9 @@ public class DayInventoryController {
 			 prod_name.setCellValue(monthInventoryVO.getProd_name());
 			 prod_name.setCellStyle(black_style);
 			 
-			 Cell store_name=row.createCell(cellnum++);
-			 store_name.setCellValue(monthInventoryVO.getStore_name());
-			 store_name.setCellStyle(black_style);
+//			 Cell store_name=row.createCell(cellnum++);
+//			 store_name.setCellValue(monthInventoryVO.getStore_name());
+//			 store_name.setCellStyle(black_style);
 			 
 			 Cell unit=row.createCell(cellnum++);
 			 unit.setCellValue(monthInventoryVO.getUnit());

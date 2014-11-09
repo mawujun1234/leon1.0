@@ -164,17 +164,7 @@ Ext.define('Ems.install.StoreEquipmentWindow',{
 	    	          {header: '设备型号', dataIndex: 'style',width:120,hidden:true},
 	    	          {header: '品牌', dataIndex: 'brand_name',width:120,hidden:true},
 	    	          {header: '供应商', dataIndex: 'supplier_name',hidden:true},     
-	    	          {header: '状态', dataIndex: 'status',width:100,hidden:true,renderer:function(value,metaData,record,rowIndex){
-	    	          	if(record.get("subtype_id")=="total"){
-	    	          		return "";
-	    	          	}
-
-	    	          	if(value==4 || value==5){
-	    	          		return '<font color="red">'+equipmentStatus[value]+'</font>';
-	    	          	} else {
-	    	          		return equipmentStatus[value];
-	    	          	} 
-	    	          }},
+	    	         // {header: '状态', dataIndex: 'status_name',width:100,hidden:true},
 	    	          {header: '数量', dataIndex: 'num',width:70,renderer:function(value,metaData,record,rowIndex){
 	    	          	if(level==2){
 	    	          		return value;

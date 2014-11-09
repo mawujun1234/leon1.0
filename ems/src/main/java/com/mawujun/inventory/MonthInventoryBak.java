@@ -1,22 +1,29 @@
 package com.mawujun.inventory;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 import com.mawujun.repository.idEntity.IdEntity;
 
 /**
- * 月结库存
+ * 月结库存的备份表，每次通过存储过程进行月结库存修改的时候，都会进行备份的 以防万一误操作
  * @author mawujun 16064988@qq.com  
  *
  */
 @Entity
-@Table(name="ems_monthinventory")
-@IdClass(MonthInventory_PK.class)  
-public class MonthInventory implements IdEntity<MonthInventory_PK>{
+@Table(name="ems_monthinventorybak")
+@IdClass(MonthInventoryBak_PK.class) 
+public class MonthInventoryBak  implements IdEntity<MonthInventoryBak_PK>{
+	@Id
+	@Column(length=14)
+	private String version;//备份的版本号，例如20141109112209
 	@Id
 	@Column(length=8)
 	private Integer monthkey;//201401这种形式
@@ -66,37 +73,30 @@ public class MonthInventory implements IdEntity<MonthInventory_PK>{
 	private Integer supplementnum;//增补数，也是手工填的
 	@Column(length=500)
 	private String memo;//备注
+
 	
-	@Override
-	public void setId(MonthInventory_PK id) {
-		// TODO Auto-generated method stub
-		//throw new BusinessException("这个还没有做，现在还不需要做");
-	}
-	@Override
-	public MonthInventory_PK getId() {
-		// TODO Auto-generated method stub
-		MonthInventory_PK id=new MonthInventory_PK();
-		id.setBrand_id(this.getBrand_id());
-		id.setMonthkey(monthkey);
-		id.setProd_id(prod_id);
-		id.setStore_id(store_id);
-		id.setStyle(style);
-		id.setSubtype_id(subtype_id);
-		return id;
+	
+
+	public String getVersion() {
+		return version;
 	}
 
-	public Integer getStore_type() {
-		return store_type;
+	public void setVersion(String version) {
+		this.version = version;
 	}
-	public void setStore_type(Integer store_type) {
-		this.store_type = store_type;
+
+	@Override
+	public void setId(MonthInventoryBak_PK id) {
+		// TODO Auto-generated method stub
+		
 	}
-	public Integer getNownum_query() {
-		return nownum_query;
+
+	@Override
+	public MonthInventoryBak_PK getId() {
+		// TODO Auto-generated method stub
+		return null;
 	}
-	public void setNownum_query(Integer nownum_query) {
-		this.nownum_query = nownum_query;
-	}
+
 	public Integer getMonthkey() {
 		return monthkey;
 	}
@@ -144,85 +144,124 @@ public class MonthInventory implements IdEntity<MonthInventory_PK>{
 	public void setStore_id(String store_id) {
 		this.store_id = store_id;
 	}
-	public Integer getNownum() {
-		return nownum;
+
+	public Integer getStore_type() {
+		return store_type;
 	}
-	public void setNownum(Integer nownum) {
-		this.nownum = nownum;
+
+	public void setStore_type(Integer store_type) {
+		this.store_type = store_type;
 	}
-	public Integer getLastnum() {
-		return lastnum;
-	}
-	public void setLastnum(Integer lastnum) {
-		this.lastnum = lastnum;
-	}
+
 	public Integer getFixednum() {
 		return fixednum;
 	}
+
 	public void setFixednum(Integer fixednum) {
 		this.fixednum = fixednum;
 	}
+
+	public Integer getLastnum() {
+		return lastnum;
+	}
+
+	public void setLastnum(Integer lastnum) {
+		this.lastnum = lastnum;
+	}
+
 	public Integer getPurchasenum() {
 		return purchasenum;
 	}
+
 	public void setPurchasenum(Integer purchasenum) {
 		this.purchasenum = purchasenum;
 	}
+
 	public Integer getOldnum() {
 		return oldnum;
 	}
+
 	public void setOldnum(Integer oldnum) {
 		this.oldnum = oldnum;
 	}
+
 	public Integer getInstalloutnum() {
 		return installoutnum;
 	}
+
 	public void setInstalloutnum(Integer installoutnum) {
 		this.installoutnum = installoutnum;
 	}
+
 	public Integer getRepairinnum() {
 		return repairinnum;
 	}
+
 	public void setRepairinnum(Integer repairinnum) {
 		this.repairinnum = repairinnum;
 	}
+
 	public Integer getScrapoutnum() {
 		return scrapoutnum;
 	}
+
 	public void setScrapoutnum(Integer scrapoutnum) {
 		this.scrapoutnum = scrapoutnum;
 	}
+
 	public Integer getRepairoutnum() {
 		return repairoutnum;
 	}
+
 	public void setRepairoutnum(Integer repairoutnum) {
 		this.repairoutnum = repairoutnum;
 	}
+
 	public Integer getAdjustoutnum() {
 		return adjustoutnum;
 	}
+
 	public void setAdjustoutnum(Integer adjustoutnum) {
 		this.adjustoutnum = adjustoutnum;
 	}
+
 	public Integer getAdjustinnum() {
 		return adjustinnum;
 	}
+
 	public void setAdjustinnum(Integer adjustinnum) {
 		this.adjustinnum = adjustinnum;
 	}
+
+	public Integer getNownum() {
+		return nownum;
+	}
+
+	public void setNownum(Integer nownum) {
+		this.nownum = nownum;
+	}
+
+	public Integer getNownum_query() {
+		return nownum_query;
+	}
+
+	public void setNownum_query(Integer nownum_query) {
+		this.nownum_query = nownum_query;
+	}
+
 	public Integer getSupplementnum() {
 		return supplementnum;
 	}
+
 	public void setSupplementnum(Integer supplementnum) {
 		this.supplementnum = supplementnum;
 	}
+
 	public String getMemo() {
 		return memo;
 	}
+
 	public void setMemo(String memo) {
 		this.memo = memo;
 	}
-
-
-	
 }

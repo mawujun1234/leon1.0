@@ -432,6 +432,36 @@ Ext.define('Ems.task.TaskSendGrid',{
 			}
 		});
 		
+		
+		var cancel_button=Ext.create('Ext.button.Button',{
+			text:'取消杆位',
+			margin:'0 0 0 5',
+			icon:'../images/cancel.png',
+			handler:function(){
+				var records=me.getSelectionModel().getSelection();
+				if(!records || records.length==0){
+					alert("请先选择杆位");
+					return;
+				}
+				if(records.length==1){
+//					var pole_status=records[0].get("status");
+//					if(pole_status!="using" && pole_status!="hitch"){
+//						alert("只有'使用中','有损坏'状态的杆位，才能发送巡检任务!");
+//						return;
+//					}
+					var bool=checkTasknum(records[0]);
+					if(!bool){
+						return;
+					}
+					me.showTaskForm(records[0],"cancel");
+				} else {
+					Ext.Msg.alert("消息","为了防止错误取消杆位,一次只能取消一个杆位!");
+					return;
+				}
+				
+			}
+		});
+		
 		me.tbar={
 			xtype: 'container',
 			layout: 'anchor',
@@ -440,7 +470,7 @@ Ext.define('Ems.task.TaskSendGrid',{
 			items: [{
 				items: [customer_combox,area_combox,workunit_combox,pole_textfield,query_button] // toolbar 1
 			}, {
-				items: [install_button,repair_button,patrol_button] // toolbar 2
+				items: [install_button,repair_button,patrol_button,cancel_button] // toolbar 2
 			}]
 		  }	
 		

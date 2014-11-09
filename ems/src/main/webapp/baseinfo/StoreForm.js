@@ -55,6 +55,7 @@ Ext.define('Ems.baseinfo.StoreForm',{
 		},
 		{
 	        	xtype:'combobox',
+	        	itemId:'type',
 			    fieldLabel: '类型',
 			    store:  Ext.create('Ext.data.Store', {
 				    fields: ['id', 'name'],
@@ -191,6 +192,7 @@ Ext.define('Ems.baseinfo.StoreForm',{
 				form.createAction=false;
 				form.down("button#save").show();
 				form.down("button#cancel").show();
+				form.down("combobox#type").setReadOnly(true);
 				var buttons=form.query("button[cls~=fla_form_action]");
 				for(var i=0;i<buttons.length;i++){
 					buttons[i].hide();

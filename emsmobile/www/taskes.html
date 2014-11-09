@@ -30,6 +30,12 @@
     background-size: 34px 34px;
 	background-color:#f6f6f6;
 }
+.ui-icon-cancel:after {
+    background-image: url("img/cancel.png");
+    /* Make your icon fit */
+    background-size: 34px 34px;
+	background-color:#f6f6f6;
+}
 .ui-icon-taskes-refresh:after {
     background-image: url("img/refresh.png");
     /* Make your icon fit */
@@ -152,6 +158,10 @@ function queryTasks(status,appendDir,callBack){
 						page_id="page_patrol";
 						h2_title="巡检";
 						img="img/patrols.png";
+					}else if("cancel"==root[i].type){
+						page_id="page_cancel";
+						h2_title="取消杆位";
+						img="img/cancel.png";
 					}
 					html+='<li id="li_'+root[i].id+'">'+
 					'<a href="#'+page_id+'" onclick="sessionStorage.taskInfoParamStr=\''+taskInfoParamStr+'\'" data-transition="slide" >'+
@@ -449,13 +459,46 @@ $(document).ready(function(e) {
     </div>
 </div>
 
+<div data-role="page" id="page_cancel">
+
+	<div data-role="header" data-position="fixed">
+    	<a href="#page_homepage" class="ui-btn ui-corner-all" data-rel="back" data-theme="c">返回</a>
+        <h1>取消杆位</h1> 
+	</div>
+	<div role="main" class="ui-content">
+        <div class="ui-field-contain">
+            <label for="id">任务编号:</label>
+            <input type="text"  id="page_cancel_id" placeholder="只读" value="">
+            <label for="pole">杆位:</label>
+            <input readonly type="text" id="page_cancel_pole_name" placeholder="只读" value="">
+        	<label  for="memo">任务描述:</label>
+    		<textarea readonly  id="page_cancel_memo" placeholder="只读" data-mini="true"></textarea>
+         </div>	
+         <a href="#" class="ui-btn ui-corner-all actionbutton" name="scan_button">扫描设备</a>
+         <input type="text" name="scan_textfield" class="actionbutton"  value="" placeholder="请扫描或手动输入...">
+         <div id="page_cancel_equipments_list">
+         	
+         </div>
+         <div class="ui-field-contain actionbutton"  align="center">
+            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="saveTask">保存</button>
+            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="submitTask">提交</button>
+         </div>
+	</div>
+    <script type="text/javascript">
+
+	</script>
+    <div data-role="popup" id="page_cancel_deleteEquipmentInfo_popup" data-arrow="b" data-theme="b">
+        <a href="javascript:void(0);" data-role="button" name="deleteEquipmentInfo">删除</a>
+    </div>
+</div>
+
 <script type="application/javascript">
 $(document).ready(function(e) {
 	
 	$( document).on( "pagecontainershow", function( event, ui ) {
 		var page_id=ui.toPage.attr("id");
 		//if (sessionStorage.taskInfoParamStr!='null') {
-		if (page_id=="page_install" || page_id=="page_repair" || page_id=="page_patrol") {
+		if (page_id=="page_install" || page_id=="page_repair" || page_id=="page_patrol" || page_id=="page_cancel") {
 			//从url中解析参数  
 			var params = $.getUrlParam(sessionStorage.taskInfoParamStr);  
 			window.taskInfoParam=params;
