@@ -131,15 +131,6 @@ $(function(){
 		//获取设备的地理位置
 		cordova.plugins.baiduLocation.getCurrentPosition(
 			function(position){
-				//alert(position.coords.longitude);
-//				//如果地址相同，就不发送了,
-//				var coords_temp=cordova.plugins.baiduLocation.coords;
-//				if(coords_temp && coords_temp.longitude==position.coords.longitude 
-//					&& coords_temp.latitude==position.coords.latitude){
-//					return;
-//				} else {
-//					cordova.plugins.baiduLocation.coords=position.coords;
-//				}
 				
 				var params={};
 				params.longitude=position.coords.longitude;

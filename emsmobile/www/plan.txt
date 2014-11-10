@@ -26,7 +26,7 @@
 excel的数据行的分组，先排序，然后单元格合并，然后再分组
 移动端自动更新功能
 
-
+Splash Screens
 
 
 
@@ -37,6 +37,9 @@ excel的数据行的分组，先排序，然后单元格合并，然后再分组
 更细cordova到4.0，并看看4.0更新了什么，是不是使用了内置的浏览器
 程序自动更新http://blog.csdn.net/android_tutor/article/details/7015986
 	是不是直接在这个类中调用就可以了public class emsmobile extends CordovaActivity 
+	http://blog.csdn.net/hualizide/article/details/9312543 和下面的文档结合起来看
+	http://wenku.baidu.com/link?url=Z3zUg8EoajLNqVtkLWmpN0JCu47jdOcyGPd-i2BGi294PoYIFjjMBOexCkcbB9gPu4jqr-ze8yrAbzk035Goy9EC2f_Tl1thff_nPk8VyA3
+	获取版本号https://github.com/whiteoctober/cordova-plugin-app-version/tree/develop/src
 	
 在代码中进行本期结余数比对，相加的结果和sql的结果比对
 条码打印页面的设计：小类，条码，二维码
