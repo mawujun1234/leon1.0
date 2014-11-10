@@ -19,6 +19,8 @@ public class InstallInList  extends UUIDEntity {
 	private String ecode;//设备编码
 	@org.hibernate.annotations.Type(type="yes_no")
 	private Boolean isBad;//在返回的时候，设备是否已经损坏
+	
+	//private String task_id;
 
 	public String getEcode() {
 		return ecode;

@@ -67,46 +67,46 @@ public class InstallOutController {
 //		return outStoreService.queryPage(page);
 //	}
 
-	@RequestMapping("/installOut/query.do")
-	@ResponseBody
-	public List<InstallOut> query() {	
-		List<InstallOut> outStorees=outStoreService.queryAll();
-		return outStorees;
-	}
-	
-
-	@RequestMapping("/installOut/load.do")
-	public InstallOut load(String id) {
-		return outStoreService.get(id);
-	}
-	
-	@RequestMapping("/installOut/create.do")
-	@ResponseBody
-	public InstallOut create(@RequestBody InstallOut outStore) {
-		outStoreService.create(outStore);
-		return outStore;
-	}
-	
-	@RequestMapping("/installOut/update.do")
-	@ResponseBody
-	public  InstallOut update(@RequestBody InstallOut outStore) {
-		outStoreService.update(outStore);
-		return outStore;
-	}
-	
-	@RequestMapping("/installOut/deleteById.do")
-	@ResponseBody
-	public String deleteById(String id) {
-		outStoreService.deleteById(id);
-		return id;
-	}
-	
-	@RequestMapping("/installOut/destroy.do")
-	@ResponseBody
-	public InstallOut destroy(@RequestBody InstallOut outStore) {
-		outStoreService.delete(outStore);
-		return outStore;
-	}
+//	@RequestMapping("/installOut/query.do")
+//	@ResponseBody
+//	public List<InstallOut> query() {	
+//		List<InstallOut> outStorees=outStoreService.queryAll();
+//		return outStorees;
+//	}
+//	
+//
+//	@RequestMapping("/installOut/load.do")
+//	public InstallOut load(String id) {
+//		return outStoreService.get(id);
+//	}
+//	
+//	@RequestMapping("/installOut/create.do")
+//	@ResponseBody
+//	public InstallOut create(@RequestBody InstallOut outStore) {
+//		outStoreService.create(outStore);
+//		return outStore;
+//	}
+//	
+//	@RequestMapping("/installOut/update.do")
+//	@ResponseBody
+//	public  InstallOut update(@RequestBody InstallOut outStore) {
+//		outStoreService.update(outStore);
+//		return outStore;
+//	}
+//	
+//	@RequestMapping("/installOut/deleteById.do")
+//	@ResponseBody
+//	public String deleteById(String id) {
+//		outStoreService.deleteById(id);
+//		return id;
+//	}
+//	
+//	@RequestMapping("/installOut/destroy.do")
+//	@ResponseBody
+//	public InstallOut destroy(@RequestBody InstallOut outStore) {
+//		outStoreService.delete(outStore);
+//		return outStore;
+//	}
 	
 	/**
 	 * 主要用于新品入库的时候

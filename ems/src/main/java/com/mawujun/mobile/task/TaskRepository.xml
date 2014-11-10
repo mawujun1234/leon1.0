@@ -19,6 +19,17 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		where a.ecode in (select ecode from ems_taskequipmentlist where task_id=#{task_id})
     </select>
     
+    <!-- 获取最近关联的那个任务 ，用于作业单位设备返库的时候，关联到对应的任务中去
+    并且任务的时间必须大于
+    <select id="queryTask_id" resultType="string">
+     select task_id from (
+     select a.task_id,rownum rn from ems_taskequipmentlist a,ems_installoutlist b
+     where a.ecode=b.ecode and substr(a.task_id,0,8)>substr(b.installout_id,0,8)
+     and a.ecode=#{ecode}
+     order by a.task_id,b.installout_id desc
+     ) where rownum=1
+    </select>
+    -->
     <!-- 
     select 
 		//a.*,

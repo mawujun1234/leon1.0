@@ -255,6 +255,15 @@ public class TaskService extends AbstractService<Task, String>{
 					throw new BusinessException(equipmentVO.getEcode()+":该设备不是当前任务指定杆位上的设备!");
 				}
 			}
+		} else if(TaskType.cancel.equals(task.getType())){
+			//巡检扫描的设备必须是using章台的设备，并且杆位也必须是相同的
+			if(EquipmentStatus.using.getValue()!=equipmentVO.getStatus()){
+				throw new BusinessException(equipmentVO.getEcode()+":该设备不是'使用中'状态,请检查是否扫描错了!");
+			} else {
+				if(!task.getPole_id().equals(equipmentVO.getPole_id())){
+					throw new BusinessException(equipmentVO.getEcode()+":该设备不是当前任务指定杆位上的设备!");
+				}
+			}
 		}
 		
 		
@@ -295,8 +304,18 @@ public class TaskService extends AbstractService<Task, String>{
 		return vo;
 	}
 	
-	
-	public void mobile_save(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason,String[] ecodes,Integer[] equipment_statuses) {
+	/**
+	 * 返回的值是  去掉重复的条码后的 扫描了的条码
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param task_id
+	 * @param hitchType_id
+	 * @param hitchReasonTpl_id
+	 * @param hitchReason
+	 * @param ecodes
+	 * @param equipment_statuses
+	 * @return
+	 */
+	public Set<String> mobile_save(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason,String[] ecodes,Integer[] equipment_statuses) {
 		//已入库的不能删除
 		check_equip_status(task_id,ecodes);
 		
@@ -315,7 +334,7 @@ public class TaskService extends AbstractService<Task, String>{
 		//修改任务状态为"处理中",无论哪种任务类型
 		//taskRepository.update(Cnd.update().set(M.Task.status, TaskStatus.handling).set(M.Task.startHandDate,new Date()).andEquals(M.Task.id, task_id));
 		if(ecodes==null){
-			return;
+			return null;
 		}
 		Set<String> existinsert=new HashSet<String>();
 		int i=0;
@@ -348,6 +367,7 @@ public class TaskService extends AbstractService<Task, String>{
 			i++;
 			existinsert.add(ecode);
 		}
+		return existinsert;
 		
 	}
 	/**
@@ -405,7 +425,18 @@ public class TaskService extends AbstractService<Task, String>{
 	 */
 	public void mobile_submit(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason,String[] ecodes,Integer[] equipment_statuses) {
 
-		this.mobile_save(task_id, hitchType_id, hitchReasonTpl_id, hitchReason, ecodes, equipment_statuses);
+		Set<String> existEcodes=this.mobile_save(task_id, hitchType_id, hitchReasonTpl_id, hitchReason, ecodes, equipment_statuses);
+		//如果是取消杆位，提交前进行判断，扫描了的设备数量和杆位上实际具有的数量是否一致
+		//是否是该杆位上的设备，已经在扫描的时候就判断了
+		Task task=taskRepository.get(task_id);
+		if(TaskType.cancel==task.getType()){
+			//查找杆位上的数量
+			Long pole_eqips=equipmentRepository.queryCount(Cnd.count("ecode").andEquals(M.Equipment.pole_id, task.getPole_id()));
+			if(pole_eqips!=existEcodes.size()){
+				throw new BusinessException("该杆位上实际的设备数量为:"+pole_eqips+",但现在只扫描了"+existEcodes.size()+"!");
+			}
+		}
+		
 		//修改任务状态为"已提交"
 		taskRepository.update(Cnd.update().set(M.Task.status, TaskStatus.submited).set(M.Task.submitDate, new Date()).andEquals(M.Task.id, task_id));
 		
