@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0" id="com.mawujun.plusins.updateApp" version="0.1.0">
+    <name>UpdateApp</name>
+    <description>Baidu Location Plugin for Phonegap</description>
+    <license>MIT</license>
+    <keywords>baidu, location, phonegap</keywords>
+    
+    <engines>
+        <engine name="cordova" version=">=3.4.0" />
+    </engines>
+  	<js-module src="www/UpdateApp.js" name="UpdateApp">
+            <clobbers target="cordova.plugins.updateApp" />
+    </js-module>
+    <!-- android -->
+    <platform name="android">
+       
+ 
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="UpdateApp">
+                <param name="android-package" value="com.mawujun.plusins.updateApp.UpdateApp"/>
+            </feature>
+        </config-file> 
+        
+        <config-file target="AndroidManifest.xml" parent="/*">
+			<!-- 访问网络，网络定位需要上网-->
+			<uses-permission android:name="android.permission.INTERNET" />
+        </config-file>
+        <source-file src="src/android/com/mawujun/plusins/updateApp/UpdateApp.java" target-dir="src/com/mawujun/plusins/updateApp" />    
+    </platform>         
+</plugin>

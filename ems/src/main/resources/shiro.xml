@@ -41,6 +41,7 @@
 				/**/*.gif=anon
 				/**/*.jpg=anon
 				/**/*.png=anon
+				/**/*.apk=anon
 				/index.jsp*=authc
 				/**/*.jsp=authc,perms
 				#/**/*.do=authc,perms

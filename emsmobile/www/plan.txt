@@ -15,6 +15,8 @@
 		cordova plugin rm org.apache.cordova.device
 	cordova plugin add E:\eclipse\workspace\cordova_plugins\platforms\android\BaiduLocation
 		cordova plugin rm com.mawujun.plusins.baiduLocation
+	cordova plugin add E:\eclipse\workspace\cordova_plugins\platforms\android\UpdateApp
+		cordova plugin rm com.mawujun.plugins.updateApp
 
 
 

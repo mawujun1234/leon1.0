@@ -54,6 +54,12 @@ $.ajaxSetup({
 	}  
 	
 });
+
+window.initServerPath=function(){
+	var ServerIP=localStorage.getItem("ServerIP");
+	var ServerPath="http://"+ServerIP+":"+$.ServerPort;
+	$.ServerPath=ServerPath;
+}
 $(function() {
 	if(location.href.indexOf("login.html")!=-1){
 		return;
@@ -62,10 +68,8 @@ $(function() {
 		location.href="login.html";
 		return;
 	}
+	window.initServerPath();
 	
-	var ServerIP=localStorage.getItem("ServerIP");
-	var ServerPath="http://"+ServerIP+":"+$.ServerPort;
-	$.ServerPath=ServerPath;
 });
 //将form的值序列化为json
 (function($){
@@ -124,6 +128,8 @@ $.getUrlParam = function(string) {
 }  
 
 $(function(){
+	
+		
 	window.uploadGeolocation=function() {
 		var user=$.parseJSON(sessionStorage.getItem("user"));
 		var uuid=device.uuid;
@@ -188,6 +194,26 @@ $(function(){
 			}
 	}
 	
+	window.checkOrUpdateApp=function(){
+		//alert($.ServerPath);
+		if(!$.ServerPath){
+			window.initServerPath();
+		}
+		//alert($.ServerPath);
+		cordova.plugins.updateApp.manuallyUpdateApp(
+			function(){
+				//alert("成功");
+			}, 
+			function(error){
+				//alert("失败");
+				//alert("获取版本信息失败: " + error);
+			},{
+				downloadFile:$.ServerPath+"/emsmobile-debug-unaligned.apk",
+				serverVerUrl:$.ServerPath+'/apkVersion.js'
+			}
+		);	
+	}
+	
 //	if(sessionStorage.getItem("user") && !sessionStorage.getItem("watchID")){
 //			//setTimeout(uploadGeolocation,2000);
 //			//alert(0);
@@ -214,6 +240,8 @@ $(function(){
 			sessionStorage.setItem("watchID",watchID);
 			//uploadGeolocation();
 		}
+		
+		checkOrUpdateApp();//检查版本信息，并更新
 	}, false); //deviceready
 	
 });
