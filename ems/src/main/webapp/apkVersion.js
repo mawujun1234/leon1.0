@@ -1,1 +1,1 @@
-{verCode:2,verName:"0.0.2"}
+{verCode:2,verName:"0.0.2",downloadFile:"http://172.16.3.10:8080/emsmobile-debug-unaligned.apk"}

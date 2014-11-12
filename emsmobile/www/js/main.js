@@ -200,7 +200,8 @@ $(function(){
 			window.initServerPath();
 		}
 		//alert($.ServerPath);
-		cordova.plugins.updateApp.manuallyUpdateApp(
+		//cordova.plugins.updateApp.manuallyUpdateApp(
+		cordova.plugins.updateApp.autoUpdateApp(
 			function(){
 				//alert("成功");
 			}, 
@@ -208,7 +209,7 @@ $(function(){
 				//alert("失败");
 				//alert("获取版本信息失败: " + error);
 			},{
-				downloadFile:$.ServerPath+"/emsmobile-debug-unaligned.apk",
+				//downloadFile:,
 				serverVerUrl:$.ServerPath+'/apkVersion.js'
 			}
 		);	

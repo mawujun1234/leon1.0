@@ -33,11 +33,13 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.os.StrictMode;
 import android.util.Log;
 
 /**
  * 程序更新的app插件
- * version.js的内容如下{verCode:1,verName:'0.0.1'}
+ * version.js的内容如下{verCode:2,verName:"0.0.2",url:"http://172.16.3.10:8080/emsmobile-debug-unaligned.apk"}
+ * 但是如果在客户端请求的参数中加了downloadFile的值，那就以参数的为优先级
  * @author mawujun
  * 
  */
@@ -49,7 +51,7 @@ public class UpdateApp extends CordovaPlugin {
 	ProgressDialog pd = null;
 	String UPDATE_SERVERAPK = "ApkUpdateAndroid.apk";
 	String downloadFile = null;//http://192.168.0.100:88/phoneGap_jqm.apk";
-	String serverVerUrl = "http://172.16.3.10:8080/version.js";// 检查服务器版本的url
+	String serverVerUrl = null;//"http://172.16.3.10:8080/apkVersion.js";// 检查服务器版本的url
 	Activity activity;
 
 	@Override
@@ -60,6 +62,17 @@ public class UpdateApp extends CordovaPlugin {
 		activity = this.cordova.getActivity();
 		final UpdateApp aa=this;
 		
+		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()       
+        .detectDiskReads()       
+        .detectDiskWrites()       
+        .detectNetwork()   // or .detectAll() for all detectable problems       
+        .penaltyLog()       
+        .build());       
+		StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()       
+        .detectLeakedSqlLiteObjects()    
+        .penaltyLog()       
+        .penaltyDeath()       
+        .build());
 		// 检查并更新程序app
 		if ("manuallyUpdateApp".equals(action)) {
 			
@@ -69,6 +82,14 @@ public class UpdateApp extends CordovaPlugin {
 //                	callbackContext.success(); // Thread-safe.
 //                }
 //            });
+//			 cordova.getThreadPool().execute(new Runnable() {
+//	                public void run() {
+//	                	aa.manuallyUpdateApp();
+//	                	callbackContext.success(); // Thread-safe.
+//	                }
+//	         });
+			
+			
 			this.manuallyUpdateApp();
 			callbackContext.success();
 			return true;
@@ -86,9 +107,9 @@ public class UpdateApp extends CordovaPlugin {
 			exceptionDialog("请输入地址参数");
 		}
 		downloadFile=params.getString("downloadFile");
-		if(downloadFile==null){
-			exceptionDialog("请输入文件下载地址参数:downloadFile");
-		}
+//		if(downloadFile==null){
+//			exceptionDialog("请输入文件下载地址参数:downloadFile");
+//		}
 		
 		serverVerUrl=params.getString("serverVerUrl");
 		if(serverVerUrl==null){
@@ -185,121 +206,81 @@ public class UpdateApp extends CordovaPlugin {
 	 * @return
 	 */
 	public boolean getServerVer() {
-		// 生成一个请求对象
-        HttpGet httpGet = new HttpGet("http://www.baidu.com/");
-        // 生成一个Http客户端对象
-        HttpClient httpClient = new DefaultHttpClient();
 
-        // 下面使用Http客户端发送请求，并获取响应内容
-
-        InputStream inputStream = null;
-        HttpResponse mHttpResponse = null;
-        HttpEntity mHttpEntity = null;
-        try
-        {
-        	exceptionDialog("0");
-            // 发送请求并获得响应对象
-            mHttpResponse = httpClient.execute(httpGet);
-            // 获得响应的消息实体
-            mHttpEntity = mHttpResponse.getEntity();
-            exceptionDialog("1");
-            // 获取一个输入流
-            inputStream = mHttpEntity.getContent();
-            exceptionDialog("2");
-            BufferedReader bufferedReader = new BufferedReader(
-                    new InputStreamReader(inputStream));
-
-            String result = "";
-            String line = "";
-            exceptionDialog("3");
-            while (null != (line = bufferedReader.readLine()))
-            {
-                result += line;
-            }
-
-            // 将结果打印出来，可以在LogCat查看
-            System.out.println(result);
-            exceptionDialog("4");
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            try
-            {
-                inputStream.close();
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-        }
-        return true;
+//        new Thread() {
+//        	public void run(){
+        		
         
-//		HttpURLConnection httpConnection =null;
-//		InputStreamReader reader =null;
-//		BufferedReader bReader =null;
-//		try {
-//			URL url = new URL("http://www.baidu.com");
-//			
-//			httpConnection = (HttpURLConnection) url.openConnection();
-//			//httpConnection.setDoInput(true);
-//			//httpConnection.setDoOutput(true);
-//			//httpConnection.setRequestMethod("GET");
-//			//exceptionDialog("0");
-//			//httpConnection.connect();
-//			sdfsd
-//			httpConnection.setConnectTimeout(6*1000);
-//			if (httpConnection.getResponseCode() != 200) {
-//				exceptionDialog("http连接失败!");
-//			}
-//			exceptionDialog("11");
-//			reader = new InputStreamReader(httpConnection.getInputStream());
-//			exceptionDialog("2");
-//			bReader = new BufferedReader(reader);
-//			exceptionDialog("3");
-//			//String json = bReader.readLine();
-//			StringBuffer strBuffer = new StringBuffer();
-//			String line = null;
-//			while ((line = bReader.readLine()) != null) {
-//				strBuffer.append(line);
-//			}
-//			String json =strBuffer.toString();
-//			exceptionDialog(json);
-//			//JSONArray array = new JSONArray(json);
-//			//JSONObject jsonObj = array.getJSONObject(0);
-//			JSONObject jsonObj = new JSONObject(json);
-//			newVerCode = Integer.parseInt(jsonObj.getString("verCode"));
-//			newVerName = jsonObj.getString("verName");
-//			exceptionDialog(newVerCode+"=="+newVerName);
-//		} catch (Exception e) {
-//			exceptionDialog(e.getMessage());
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			return true;// 如果这里改为false 则不更新会退出程序
-//		}finally {
-//            if (httpConnection != null) {
-//            	httpConnection.disconnect();
-//            }
-//            if (reader != null) {
-//                try {
-//                	reader.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            if (bReader != null) {
-//                try {
-//                	bReader.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-// 
-//        }
-//		return true;
+		HttpURLConnection httpConnection =null;
+		InputStreamReader reader =null;
+		BufferedReader bReader =null;
+		try {
+			URL url = new URL(serverVerUrl);
+			
+			httpConnection = (HttpURLConnection) url.openConnection();
+			//httpConnection.setDoInput(true);
+			//httpConnection.setDoOutput(true);
+			httpConnection.setRequestMethod("GET");
+			//exceptionDialog("0");
+			//httpConnection.connect();
+			//sdfsd,放到logcat中试下，调试下看问题出在哪里
+			//通过android的日志系统记录然后，再在logcat中看下
+			httpConnection.setConnectTimeout(6*1000);
+			if (httpConnection.getResponseCode() != 200) {
+				exceptionDialog("http连接失败!");
+				return false;
+			}
+			//exceptionDialog("11");
+			reader = new InputStreamReader(httpConnection.getInputStream());
+			//exceptionDialog("2");
+			bReader = new BufferedReader(reader);
+			//exceptionDialog("3");
+			//String json = bReader.readLine();
+			StringBuffer strBuffer = new StringBuffer();
+			String line = null;
+			while ((line = bReader.readLine()) != null) {
+				strBuffer.append(line);
+			}
+			String json =strBuffer.toString();
+			exceptionDialog(json);
+			//JSONArray array = new JSONArray(json);
+			//JSONObject jsonObj = array.getJSONObject(0);
+			JSONObject jsonObj = new JSONObject(json);
+			newVerCode = Integer.parseInt(jsonObj.getString("verCode"));
+			newVerName = jsonObj.getString("verName");
+			if(downloadFile==null || "".equals(downloadFile.trim())){
+				downloadFile= jsonObj.getString("downloadFile");
+			}
+			
+			exceptionDialog(newVerCode+"=="+newVerName);
+		} catch (Exception e) {
+			exceptionDialog(e.getMessage());
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return true;// 如果这里改为false 则不更新会退出程序
+		}finally {
+            if (httpConnection != null) {
+            	httpConnection.disconnect();
+            }
+            if (reader != null) {
+                try {
+                	reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (bReader != null) {
+                try {
+                	bReader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+ 
+        }
+		return true;
+//        	}
+//        }.start();
 	}
 
 	/**
@@ -335,12 +316,12 @@ public class UpdateApp extends CordovaPlugin {
 		StringBuffer sb = new StringBuffer();
 		sb.append("当前版本：");
 		sb.append(verName);
-		sb.append(" Code:");
-		sb.append(verCode);
+		//sb.append(" Code:");
+		//sb.append(verCode);
 		sb.append(",发现版本：");
 		sb.append(newVerName);
-		sb.append(" Code:");
-		sb.append(newVerCode);
+		//sb.append(" Code:");
+		//sb.append(newVerCode);
 		sb.append(",是否更新");
 		Dialog dialog = new AlertDialog.Builder(this.cordova.getActivity())
 				.setTitle("软件更新")
@@ -353,7 +334,10 @@ public class UpdateApp extends CordovaPlugin {
 						pd = new ProgressDialog(activity);
 						pd.setTitle("正在下载");
 						pd.setMessage("请稍后。。。");
+						pd.setCancelable(true);// 设置是否可以通过点击Back键取消  
+						pd.setCanceledOnTouchOutside(false);// 设置在点击Dialog外是否取消Dialog进度条  
 						pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+						pd.show();
 						downFile(downloadFile);
 					}
 				})
@@ -375,22 +359,35 @@ public class UpdateApp extends CordovaPlugin {
 	 * 下载apk
 	 */
 	public void downFile(final String url) {
-		pd.show();
-		new Thread() {
-			public void run() {
+		
+//		new Thread() {
+//			public void run() {
+		if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))  
+        {  
 				HttpClient client = new DefaultHttpClient();
 				HttpGet get = new HttpGet(url);
 				HttpResponse response;
 				try {
+					//exceptionDialog("0");
 					response = client.execute(get);
+					//exceptionDialog("1");
 					HttpEntity entity = response.getEntity();
+					//exceptionDialog("2");
 					long length = entity.getContentLength();
+					//exceptionDialog(length+"");
 					InputStream is = entity.getContent();
 					FileOutputStream fileOutputStream = null;
+					
+					
+					
 					if (is != null) {
 						File file = new File(
+								//Environment.getDownloadCacheDirectory(),
 								Environment.getExternalStorageDirectory(),
 								UPDATE_SERVERAPK);
+						//exceptionDialog(file.canWrite()+"");
+						//应该是没有写入权限造成的
+						//http://www.cnblogs.com/mengdd/p/3742623.html
 						fileOutputStream = new FileOutputStream(file);
 						byte[] b = new byte[1024];
 						int charb = -1;
@@ -400,17 +397,24 @@ public class UpdateApp extends CordovaPlugin {
 							count += charb;
 						}
 					}
+					//exceptionDialog("-111");
 					fileOutputStream.flush();
 					if (fileOutputStream != null) {
 						fileOutputStream.close();
 					}
+					//exceptionDialog("000");
 					down();
+					//exceptionDialog("333");
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}
-		}.start();
+        } else {
+        	exceptionDialog("SD卡不具有读写权限");
+        	pd.cancel();
+        }
+//			}
+//		}.start();
 	}
 
 	Handler handler = new Handler() {
@@ -420,6 +424,7 @@ public class UpdateApp extends CordovaPlugin {
 
 			super.handleMessage(msg);
 			pd.cancel();
+			//exceptionDialog("111");
 			update();
 		}
 	};
@@ -428,18 +433,19 @@ public class UpdateApp extends CordovaPlugin {
 	 * 下载完成，通过handler将下载对话框取消
 	 */
 	public void down() {
-		new Thread() {
-			public void run() {
+//		new Thread() {
+//			public void run() {
 				Message message = handler.obtainMessage();
 				handler.sendMessage(message);
-			}
-		}.start();
+//			}
+//		}.start();
 	}
 
 	/**
 	 * 安装应用
 	 */
 	public void update() {
+		//exceptionDialog("2222");
 		Intent intent = new Intent(Intent.ACTION_VIEW);
 		intent.setDataAndType(Uri.fromFile(new File(Environment
 				.getExternalStorageDirectory(), UPDATE_SERVERAPK)),
