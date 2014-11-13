@@ -14,9 +14,10 @@
 	cordova plugin add org.apache.cordova.device
 		cordova plugin rm org.apache.cordova.device
 	cordova plugin add E:\eclipse\workspace\cordova_plugins\platforms\android\BaiduLocation
-		cordova plugin rm com.mawujun.plusins.baiduLocation
+		cordova plugin rm com.mawujun.plugins.baiduLocation
 	cordova plugin add E:\eclipse\workspace\cordova_plugins\platforms\android\UpdateApp
 		cordova plugin rm com.mawujun.plugins.updateApp
+	cordova plugin add org.apache.cordova.splashscreen
 
 
 
@@ -25,6 +26,11 @@
 	2:故障原因，维护在维修中心配置吗？
 	
 	
+手持端任务图片，随手机变小而变小,影响排版
+模拟器中定位失败，返回[Object，Object]，在模拟器中运行的时候报错了。返回定位失败。弹出框了，检查下 什么愿意
+下载的apk存放位置
+
+启动图片没有自动拷贝到drawable文件夹下面
 
 
 在建仓库的仓库列去掉，并改成使用cellnum++的形式

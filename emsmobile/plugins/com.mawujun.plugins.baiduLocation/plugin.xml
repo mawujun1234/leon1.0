@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
  
-<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0" id="com.mawujun.plusins.baiduLocation" version="0.1.0">
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0" id="com.mawujun.plugins.baiduLocation" version="0.1.0">
     <name>BaiduLocation</name>
     <description>Baidu Location Plugin for Phonegap</description>
     <license>MIT</license>
@@ -18,7 +18,7 @@
  
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="BaiduLocation">
-                <param name="android-package" value="com.mawujun.plusins.baiduLocation.BaiduLocation"/>
+                <param name="android-package" value="com.mawujun.plugins.baiduLocation.BaiduLocation"/>
             </feature>
         </config-file> 
         
@@ -51,7 +51,7 @@
             <meta-data android:name="com.baidu.lbsapi.API_KEY" android:value="ED0fe5c7c869da5ee4260b4006e811b8" />
         </config-file>
         
-        <source-file src="src/android/com/mawujun/plusins/baiduLocation/BaiduLocation.java" target-dir="src/com/mawujun/plusins/baiduLocation" />   
+        <source-file src="src/android/com/mawujun/plugins/baiduLocation/BaiduLocation.java" target-dir="src/com/mawujun/plugins/baiduLocation" />   
         <source-file src="libs/android/BaiduLBS_Android.jar" target-dir="libs" framework="true"/>      
         <source-file src="libs/android/armeabi/liblocSDK4d.so" target-dir="libs/armeabi" framework="true"/>   
     </platform>         

@@ -1,4 +1,4 @@
-package com.mawujun.plusins.baiduLocation;
+package com.mawujun.plugins.baiduLocation;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,17 +31,17 @@ public class BaiduLocation  extends CordovaPlugin {
 
 	private static final Map<Integer, String> ERROR_MESSAGE_MAP = new HashMap<Integer, String>();
 
-	private static final String DEFAULT_ERROR_MESSAGE = "·şÎñ¶Ë¶¨Î»Ê§°Ü";
+	private static final String DEFAULT_ERROR_MESSAGE = "æœåŠ¡ç«¯å®šä½å¤±è´¥";
 
 	static {
-		ERROR_MESSAGE_MAP.put(61, "GPS¶¨Î»½á¹û");
-		ERROR_MESSAGE_MAP.put(62, "É¨ÃèÕûºÏ¶¨Î»ÒÀ¾İÊ§°Ü¡£´ËÊ±¶¨Î»½á¹ûÎŞĞ§");
-		ERROR_MESSAGE_MAP.put(63, "ÍøÂçÒì³££¬Ã»ÓĞ³É¹¦Ïò·şÎñÆ÷·¢ÆğÇëÇó¡£´ËÊ±¶¨Î»½á¹ûÎŞĞ§");
-		ERROR_MESSAGE_MAP.put(65, "¶¨Î»»º´æµÄ½á¹û");
-		ERROR_MESSAGE_MAP.put(66, "ÀëÏß¶¨Î»½á¹û¡£Í¨¹ırequestOfflineLocaitonµ÷ÓÃÊ±¶ÔÓ¦µÄ·µ»Ø½á¹û");
-		ERROR_MESSAGE_MAP.put(67, "ÀëÏß¶¨Î»Ê§°Ü¡£Í¨¹ırequestOfflineLocaitonµ÷ÓÃÊ±¶ÔÓ¦µÄ·µ»Ø½á¹û");
-		ERROR_MESSAGE_MAP.put(68, "ÍøÂçÁ¬½ÓÊ§°ÜÊ±£¬²éÕÒ±¾µØÀëÏß¶¨Î»Ê±¶ÔÓ¦µÄ·µ»Ø½á¹û¡£");
-		ERROR_MESSAGE_MAP.put(161, "±íÊ¾ÍøÂç¶¨Î»½á¹û");
+		ERROR_MESSAGE_MAP.put(61, "GPSå®šä½ç»“æœ");
+		ERROR_MESSAGE_MAP.put(62, "æ‰«ææ•´åˆå®šä½ä¾æ®å¤±è´¥ã€‚æ­¤æ—¶å®šä½ç»“æœæ— æ•ˆ");
+		ERROR_MESSAGE_MAP.put(63, "ç½‘ç»œå¼‚å¸¸ï¼Œæ²¡æœ‰æˆåŠŸå‘æœåŠ¡å™¨å‘èµ·è¯·æ±‚ã€‚æ­¤æ—¶å®šä½ç»“æœæ— æ•ˆ");
+		ERROR_MESSAGE_MAP.put(65, "å®šä½ç¼“å­˜çš„ç»“æœ");
+		ERROR_MESSAGE_MAP.put(66, "ç¦»çº¿å®šä½ç»“æœã€‚é€šè¿‡requestOfflineLocaitonè°ƒç”¨æ—¶å¯¹åº”çš„è¿”å›ç»“æœ");
+		ERROR_MESSAGE_MAP.put(67, "ç¦»çº¿å®šä½å¤±è´¥ã€‚é€šè¿‡requestOfflineLocaitonè°ƒç”¨æ—¶å¯¹åº”çš„è¿”å›ç»“æœ");
+		ERROR_MESSAGE_MAP.put(68, "ç½‘ç»œè¿æ¥å¤±è´¥æ—¶ï¼ŒæŸ¥æ‰¾æœ¬åœ°ç¦»çº¿å®šä½æ—¶å¯¹åº”çš„è¿”å›ç»“æœã€‚");
+		ERROR_MESSAGE_MAP.put(161, "è¡¨ç¤ºç½‘ç»œå®šä½ç»“æœ");
 	};
 
 
@@ -59,15 +59,15 @@ public class BaiduLocation  extends CordovaPlugin {
 					locationClient.registerLocationListener(myListener);
 					LocationClientOption option = new LocationClientOption();
 					option.setOpenGps(true);
-					option.setLocationMode(LocationMode.Hight_Accuracy);//ÉèÖÃ¶¨Î»Ä£Ê½
-					option.setCoorType("bd09ll");// ·µ»ØµÄ¶¨Î»½á¹ûÊÇ°Ù¶È¾­Î³¶È£¬Ä¬ÈÏÖµgcj02
+					option.setLocationMode(LocationMode.Hight_Accuracy);//è®¾ç½®å®šä½æ¨¡å¼
+					option.setCoorType("bd09ll");// è¿”å›çš„å®šä½ç»“æœæ˜¯ç™¾åº¦ç»çº¬åº¦ï¼Œé»˜è®¤å€¼gcj02
 					option.setProdName("BaiduLoc");
 					locationClient.setLocOption(option);
 					
-//					option.setCoorType("bd09ll");//·µ»ØµÄ¶¨Î»½á¹ûÊÇ°Ù¶È¾­Î³¶È,Ä¬ÈÏÖµgcj02
-//					option.setScanSpan(5000);//ÉèÖÃ·¢Æğ¶¨Î»ÇëÇóµÄ¼ä¸ôÊ±¼äÎª5000ms,²»ÓÃ¶¨Ê±£¬Í¨¹ı×Ô¼ºÔÚjsÖĞ¶¨Ê±ÇëÇó£¬À´»ñÈ¡¶¨Ê±
-//					option.setIsNeedAddress(true);//·µ»ØµÄ¶¨Î»½á¹û°üº¬µØÖ·ĞÅÏ¢
-//					option.setNeedDeviceDirect(true);//·µ»ØµÄ¶¨Î»½á¹û°üº¬ÊÖ»ú»úÍ·µÄ·½Ïò
+//					option.setCoorType("bd09ll");//è¿”å›çš„å®šä½ç»“æœæ˜¯ç™¾åº¦ç»çº¬åº¦,é»˜è®¤å€¼gcj02
+//					option.setScanSpan(5000);//è®¾ç½®å‘èµ·å®šä½è¯·æ±‚çš„é—´éš”æ—¶é—´ä¸º5000ms,ä¸ç”¨å®šæ—¶ï¼Œé€šè¿‡è‡ªå·±åœ¨jsä¸­å®šæ—¶è¯·æ±‚ï¼Œæ¥è·å–å®šæ—¶
+//					option.setIsNeedAddress(true);//è¿”å›çš„å®šä½ç»“æœåŒ…å«åœ°å€ä¿¡æ¯
+//					option.setNeedDeviceDirect(true);//è¿”å›çš„å®šä½ç»“æœåŒ…å«æ‰‹æœºæœºå¤´çš„æ–¹å‘
 					
 
 					locationClient.start();

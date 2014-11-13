@@ -209,7 +209,7 @@ $(function(){
 		cordova.plugins.updateApp.autoUpdateApp(
 			function(){
 				//navigator.splashscreen.hide();
-				alert("成功");	
+				//alert("成功");	
 				sessionStorage.setItem("checkOrUpdateApp_48837","checkOrUpdateApp_48837");
 			}, 
 			function(error){

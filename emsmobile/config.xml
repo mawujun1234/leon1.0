@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.mawujun.mobile" version="0.0.1" android-versionCode="1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>东望智能系统</name>
+    <name>emsmobile</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
     </description>
@@ -23,6 +23,10 @@
 
 		<!-- you can use any density that exists in the Android project -->
 		<splash src="res/android/splash.png"  density="" /><!-- 拷贝到默认的目录 drawable-->
+		<splash src="res/android/splash.png" density="ldpi" />
+		<splash src="res/android/splash.png" density="mdpi" />
+		<splash src="res/android/splash.png" density="hdpi" />
+		<splash src="res/android/splash.png" density="xhdpi" />
 		<splash src="res/android/splash.png" density="land-hdpi" />
 		<splash src="res/android/splash.png" density="land-ldpi" />
 		<splash src="res/android/splash.png" density="land-mdpi" />
