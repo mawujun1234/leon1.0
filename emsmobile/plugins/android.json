@@ -25,6 +25,10 @@
                             "count": 1
                         },
                         {
+                            "xml": "<feature name=\"SplashScreen\"><param name=\"android-package\" value=\"org.apache.cordova.splashscreen.SplashScreen\" /></feature>",
+                            "count": 1
+                        },
+                        {
                             "xml": "<feature name=\"UpdateApp\"><param name=\"android-package\" value=\"com.mawujun.plugins.updateApp.UpdateApp\" /></feature>",
                             "count": 1
                         }
@@ -672,6 +676,9 @@
             "PACKAGE_NAME": "com.mawujun.mobile"
         },
         "org.apache.cordova.dialogs": {
+            "PACKAGE_NAME": "com.mawujun.mobile"
+        },
+        "org.apache.cordova.splashscreen": {
             "PACKAGE_NAME": "com.mawujun.mobile"
         },
         "com.mawujun.plugins.updateApp": {

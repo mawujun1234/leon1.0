@@ -10,9 +10,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import org.apache.cordova.CallbackContext;
-import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
-import org.apache.cordova.CordovaWebView;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -34,19 +32,19 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.os.StrictMode;
 import android.util.Log;
 
 /**
+ * 可以正常使用，但阻塞了主线程,但版本检测时间很长的话，会出现白板
  * 程序更新的app插件
  * version.js的内容如下{verCode:2,verName:"0.0.2",url:"http://172.16.3.10:8080/emsmobile-debug-unaligned.apk"}
  * 但是如果在客户端请求的参数中加了downloadFile的值，那就以参数的为优先级
  * @author mawujun
  * 
  */
-public class UpdateApp extends CordovaPlugin {
+public class CopyOfUpdateApp extends CordovaPlugin {
 	public CallbackContext callbackContext;
 	int newVerCode = -1;// 新版本号，服务端的版本号
 	String newVerName = "";//新版本名称，服务端的版本名称
@@ -56,37 +54,14 @@ public class UpdateApp extends CordovaPlugin {
 	String downloadFile = null;//http://192.168.0.100:88/phoneGap_jqm.apk";
 	String serverVerUrl = null;//"http://172.16.3.10:8080/apkVersion.js";// 检查服务器版本的url
 	Activity activity;
-	
-	//Handler handler = null;
 
-//	@Override
-//	public void initialize(CordovaInterface cordova, CordovaWebView webView) {
-//	    super.initialize(cordova, webView);
-//	    // your init code here
-//	    //Looper.prepare();
-//		handler = new Handler(Looper.getMainLooper()) {
-//
-//			@Override
-//			public void handleMessage(Message msg) {
-//
-//				super.handleMessage(msg);
-//				pd.cancel();
-//				//exceptionDialog("111");
-//				update();
-//			}
-//		};
-//		//Looper.loop();
-//	}
 	@Override
 	public boolean execute(String action, JSONArray args,
 			final CallbackContext callbackContext) throws JSONException {
 		initUrl(args);
-		
 		this.callbackContext = callbackContext;
 		activity = this.cordova.getActivity();
-		final UpdateApp aa=this;
-		
-		
+		final CopyOfUpdateApp aa=this;
 		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()       
         .detectDiskReads()       
         .detectDiskWrites()       
@@ -119,16 +94,14 @@ public class UpdateApp extends CordovaPlugin {
 			callbackContext.success();
 			return true;
 		} else if("autoUpdateApp".equals(action)){
-			cordova.getThreadPool().execute(new Runnable() {
-                public void run() {
-                	//aa.autoUpdateApp();
-                	UpdateManager aa=new UpdateManager(activity);
-                	aa.exec(UpdateManager.getServerVer);
-                	callbackContext.success();
-                }
-			});
-//			this.autoUpdateApp();
-//			callbackContext.success();
+//			cordova.getThreadPool().execute(new Runnable() {
+//                public void run() {
+//                	aa.autoUpdateApp();
+//                	callbackContext.success();
+//                }
+//			});
+			this.autoUpdateApp();
+			callbackContext.success();
 			return true;
 		}
 		return false;
@@ -450,8 +423,7 @@ public class UpdateApp extends CordovaPlugin {
 						fileOutputStream.close();
 					}
 					//exceptionDialog("000");
-					//down();
-					update();
+					down();
 					//exceptionDialog("333");
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -467,19 +439,29 @@ public class UpdateApp extends CordovaPlugin {
 //		}.start();
 	}
 
-	
+	Handler handler = new Handler() {
 
-//	/**
-//	 * 下载完成，通过handler将下载对话框取消
-//	 */
-//	public void down() {
-////		new Thread() {
-////			public void run() {
-//				Message message = handler.obtainMessage();
-//				handler.sendMessage(message);
-////			}
-////		}.start();
-//	}
+		@Override
+		public void handleMessage(Message msg) {
+
+			super.handleMessage(msg);
+			pd.cancel();
+			//exceptionDialog("111");
+			update();
+		}
+	};
+
+	/**
+	 * 下载完成，通过handler将下载对话框取消
+	 */
+	public void down() {
+//		new Thread() {
+//			public void run() {
+				Message message = handler.obtainMessage();
+				handler.sendMessage(message);
+//			}
+//		}.start();
+	}
 
 	/**
 	 * 安装应用

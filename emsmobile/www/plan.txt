@@ -25,14 +25,12 @@
 	2:故障原因，维护在维修中心配置吗？
 	
 	
-点击更新后，不会弹出下载的界面，一直卡在了，点击下去的状态，可能是多线程的原因，改成使用多线程试下。
-main.js中改成自动更新，就是不会出提示的那种
+
 
 在建仓库的仓库列去掉，并改成使用cellnum++的形式
 excel的数据行的分组，先排序，然后单元格合并，然后再分组
-移动端自动更新功能
 
-Splash Screens
+程序自动更新，不能更新的原因是，在子线程中使用了ui，所以要在子线程中弹出对话框的就可以了
 
 
 
@@ -41,11 +39,7 @@ Splash Screens
 
 
 更细cordova到4.0，并看看4.0更新了什么，是不是使用了内置的浏览器
-程序自动更新http://blog.csdn.net/android_tutor/article/details/7015986
-	是不是直接在这个类中调用就可以了public class emsmobile extends CordovaActivity 
-	http://blog.csdn.net/hualizide/article/details/9312543 和下面的文档结合起来看
-	http://wenku.baidu.com/link?url=Z3zUg8EoajLNqVtkLWmpN0JCu47jdOcyGPd-i2BGi294PoYIFjjMBOexCkcbB9gPu4jqr-ze8yrAbzk035Goy9EC2f_Tl1thff_nPk8VyA3
-	获取版本号https://github.com/whiteoctober/cordova-plugin-app-version/tree/develop/src
+
 	
 在代码中进行本期结余数比对，相加的结果和sql的结果比对
 条码打印页面的设计：小类，条码，二维码
@@ -119,6 +113,7 @@ Splash Screens
 jquery的页面模板，等需要的时候才去加载，例如login.html只有最重要的一段内容，没有表
 设备类型等添加一个不显示 已删除数据的功能
 ======================================================================================================
+(完成)app自动更新
 (完成)对历史数据进行执行，插入日报表数据，对日报表数据进行初始化，写一个存储过程
 (完成)日报表中的上期，表示的是上个月的数据
 (完成)日报表执行的时候，进行性能优化，不要使用循环嵌套的方式

@@ -195,21 +195,28 @@ $(function(){
 	}
 	
 	window.checkOrUpdateApp=function(){
-		//alert($.ServerPath);
-		if(!$.ServerPath){
-			window.initServerPath();
+		//如果已经检查过了，就不再进行检查了
+		if(sessionStorage.getItem("checkOrUpdateApp_48837")){
+			return;
 		}
 		//alert($.ServerPath);
+		if(!$.ServerPath){
+			//navigator.splashscreen.hide();
+			window.initServerPath();
+		}
+		
 		//cordova.plugins.updateApp.manuallyUpdateApp(
 		cordova.plugins.updateApp.autoUpdateApp(
 			function(){
-				//alert("成功");
+				//navigator.splashscreen.hide();
+				alert("成功");	
+				sessionStorage.setItem("checkOrUpdateApp_48837","checkOrUpdateApp_48837");
 			}, 
 			function(error){
-				//alert("失败");
+				alert(error);
 				//alert("获取版本信息失败: " + error);
 			},{
-				//downloadFile:,
+				downloadFile:$.ServerPath+"/emsmobile-debug-unaligned.apk",
 				serverVerUrl:$.ServerPath+'/apkVersion.js'
 			}
 		);	
@@ -232,6 +239,7 @@ $(function(){
 		}, false);//backbutton*/
 		document.addEventListener("backbutton", logout, false);//backbutton
 		
+		navigator.splashscreen.hide();
 		//alert(sessionStorage.getItem("user") +"====" +sessionStorage.getItem("watchID"));
 		if(sessionStorage.getItem("user") && !sessionStorage.getItem("watchID")){
 			//setTimeout(uploadGeolocation,2000);
