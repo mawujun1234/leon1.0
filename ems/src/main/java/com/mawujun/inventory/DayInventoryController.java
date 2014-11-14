@@ -273,7 +273,7 @@ public class DayInventoryController {
 		 
 		
 		//合并0--9的单元格，纵向合并
-		for(int j=0;j<=cellnum;j++){
+		for(int j=0;j<=cellnum-1;j++){
 			sheet.addMergedRegion(new CellRangeAddress(1,2,(short)j,(short)j)); 
 				
 			Cell cell12=row2.createCell(j);
@@ -288,17 +288,17 @@ public class DayInventoryController {
 			//合并这两个单元格
 			sheet.addMergedRegion(new CellRangeAddress(1,1,cellnum_temp++,cellnum_temp++)); 
 			//设置日期值
-			Cell cell11=row1.createCell(cellnum_temp-1);
+			Cell cell11=row1.createCell(cellnum_temp-2);
 			cell11.setCellValue(j);
 			cell11.setCellStyle(black_style);
 			
-			Cell cell12=row1.createCell(cellnum_temp);
+			Cell cell12=row1.createCell(cellnum_temp-1);
 			cell12.setCellStyle(black_style);
 		}
 		 
 		 //冻结行和列
 		cellnum_temp=cellnum;
-		sheet.createFreezePane(cellnum_temp+1, 3);
+		sheet.createFreezePane(cellnum_temp, 3);
 		 
 		 //生成本期新增数公式
 		 StringBuilder[] formulas=new StringBuilder[]{in_formula,out_formula};
@@ -346,6 +346,7 @@ public class DayInventoryController {
 		
 		//for(int i=0;i<list.size();i++){
 		int i=0;
+		StringBuilder builder=new StringBuilder();
 		//for(Entry<DayInventoryVO,Map<String,Integer>> entry:result.entrySet()){
 		for(MonthInventoryVO monthInventoryVO:result){
 			//DayInventoryVO buildDayReport=entry.getKey();//list.get(i);
@@ -353,46 +354,56 @@ public class DayInventoryController {
 			 Row row = sheet.createRow(rownum);
 			 i++;
 			 
-			 Cell subtype_name=row.createCell(0);
+			 builder.append("SUM(");
+			 int cellnum=0;
+			 
+			 Cell subtype_name=row.createCell(cellnum++);
 			 subtype_name.setCellValue(monthInventoryVO.getSubtype_name());
 			 
-			 Cell brand_name=row.createCell(1);
+			 Cell brand_name=row.createCell(cellnum++);
 			 brand_name.setCellValue(monthInventoryVO.getBrand_name());
 			 
-			 Cell style=row.createCell(2);
+			 Cell style=row.createCell(cellnum++);
 			 style.setCellValue(monthInventoryVO.getStyle());
 			 
-			 Cell prod_name=row.createCell(3);
+			 Cell prod_name=row.createCell(cellnum++);
 			 prod_name.setCellValue(monthInventoryVO.getProd_name());
 			 
-			 Cell store_name=row.createCell(4);
+			 Cell store_name=row.createCell(cellnum++);
 			 store_name.setCellValue(monthInventoryVO.getStore_name());
 			 
-			 Cell unit=row.createCell(5);
+			 Cell unit=row.createCell(cellnum++);
 			 unit.setCellValue(monthInventoryVO.getUnit());
 			 
 			 //上期结余,获取上个月的当前值
-			 Cell lastnum=row.createCell(6);
+			 Cell lastnum=row.createCell(cellnum++);
 			 lastnum.setCellValue(monthInventoryVO.getNownum()==null?0:monthInventoryVO.getNownum());
-			 
+			 builder.append(CellReference.convertNumToColString(cellnum-1)+(rownum+1));
 			 
 			 //本期新增数
-			 Cell storeinnum=row.createCell(7);
+			 Cell storeinnum=row.createCell(cellnum++);
 			 //storeinnum.setCellValue(buildDayReport.getStoreinnum()==null?0:buildDayReport.getStoreinnum());
 			 storeinnum.setCellFormula(formulas[0].toString().replaceAll("=", (rownum+1)+""));
 			 storeinnum.setCellStyle(blue_style);
+			 builder.append(",");
+			 builder.append(CellReference.convertNumToColString(cellnum-1)+(rownum+1));
 			 
-			 Cell installoutnum=row.createCell(8);
+			 Cell installoutnum=row.createCell(cellnum++);
 			 //installoutnum.setCellValue(buildDayReport.getInstalloutnum()==null?0:buildDayReport.getInstalloutnum());
 			 installoutnum.setCellFormula(formulas[1].toString().replaceAll("=", (rownum+1)+""));
 			 installoutnum.setCellStyle(red_style);
+			 builder.append(",");
+			 builder.append(CellReference.convertNumToColString(cellnum-1)+(rownum+1));
+			 builder.append(")");
 			 
 			 //本月结余 上期+本期新增+本期领用
-			 Cell nownum=row.createCell(9);
+			 Cell nownum=row.createCell(cellnum++);
+			 nownum.setCellFormula(builder.toString());
+			 builder=new StringBuilder();
 			 //nownum.setCellValue(buildDayReport.getNownum()==null?0:buildDayReport.getNownum());
-			 nownum.setCellFormula("SUM("+CellReference.convertNumToColString(6)+(rownum+1)+
-					 ","+CellReference.convertNumToColString(7)+(rownum+1)+
-					 ","+CellReference.convertNumToColString(8)+(rownum+1)+")");
+//			 nownum.setCellFormula("SUM("+CellReference.convertNumToColString(6)+(rownum+1)+
+//					 ","+CellReference.convertNumToColString(7)+(rownum+1)+
+//					 ","+CellReference.convertNumToColString(8)+(rownum+1)+")");
 			 
 
 			 //循环出31天的数据
