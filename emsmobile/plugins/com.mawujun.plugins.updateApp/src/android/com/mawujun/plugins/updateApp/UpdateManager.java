@@ -52,6 +52,9 @@ public class UpdateManager {
 	String UPDATE_SERVERAPK = "ApkUpdateAndroid.apk";
 	String serverVerUrl = null;//"http://172.16.3.10:8080/apkVersion.js";// 检查服务器版本的url
 	String downloadFile = null;//http://192.168.0.100:88/phoneGap_jqm.apk";
+	String changelog=null;
+	
+	private String log_tag="UpdateManager";
 	
 	ProgressDialog pd = null;
 	
@@ -133,7 +136,7 @@ public class UpdateManager {
 	public void autoUpdateApp() {
 		// activity;
 		
-		if (getServerVer()) {
+		if (getServerVersion()) {
 			int verCode = this.getAppVersionCode();
 			if (newVerCode > verCode) {
 				doNewVersionUpdate();// 更新版本
@@ -146,7 +149,7 @@ public class UpdateManager {
 	 */
 	public void manuallyUpdateApp() {
 		// this.cordova.getActivity();
-		if (getServerVer()) {
+		if (getServerVersion()) {
 			int verCode = this.getAppVersionCode();
 			if (newVerCode > verCode) {
 				doNewVersionUpdate();// 更新版本
@@ -219,7 +222,7 @@ public class UpdateManager {
 	 * 
 	 * @return
 	 */
-	public boolean getServerVer() {
+	public boolean getServerVersion() {
 		
 		initHttpStrictMode();
 //        new Thread() {
@@ -230,7 +233,7 @@ public class UpdateManager {
 		InputStreamReader reader =null;
 		BufferedReader bReader =null;
 		try {
-			Log.d("UpdateManager", "获取服务器版本开始");
+			Log.d(log_tag, "获取服务器版本开始");
 			URL url = new URL(serverVerUrl);
 			httpConnection = (HttpURLConnection) url.openConnection();
 			//httpConnection.setDoInput(true);
@@ -260,14 +263,20 @@ public class UpdateManager {
 			newVerCode = Integer.parseInt(jsonObj.getString("verCode"));
 			newVerName = jsonObj.getString("verName");
 			try{
-				Log.d("UpdateManager", "开始获取downloadFile");
+				Log.d(log_tag, "开始获取downloadFile");
 				downloadFile=jsonObj.getString("downloadFile");
 			}catch(Exception e) {//如果后台也设置了下载文件的地址，那就以这个的优先级为高
 				
 			}
-			Log.d("UpdateManager", "获取服务器版本结束");
+			try{
+				changelog=jsonObj.getString("changelog");
+			}catch(Exception e) {//如果后台也设置了下载文件的地址，那就以这个的优先级为高
+				
+			}
+			Log.d(log_tag, "获取服务器版本结束");
 			
 		} catch (Exception e) {
+			Log.d(log_tag, "获取服务器版本错误，错误信息："+e.getMessage());
 			exceptionDialog(e.getMessage());
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -316,7 +325,11 @@ public class UpdateManager {
 		sb.append(newVerName);
 		//sb.append(" Code:");
 		//sb.append(newVerCode);
-		sb.append(",是否立即更新?");
+		sb.append(",是否立即更新?\n");
+		if(changelog!=null){
+			sb.append(changelog);
+		}
+		
 		Dialog dialog = new AlertDialog.Builder(activity)
 				.setTitle("软件更新")
 				.setMessage(sb.toString())

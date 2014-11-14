@@ -99,49 +99,51 @@ public class MonthInventoryController {
 	private void build_addRow1(XSSFWorkbook wb,Sheet sheet){
 		 Row row = sheet.createRow(1);
 		 CellStyle black_style=getStyle(wb,IndexedColors.BLACK);
-		 Cell subtype_name=row.createCell(0);
+		 
+		 int cellnum=0;
+		 Cell subtype_name=row.createCell(cellnum++);
 		 subtype_name.setCellValue("小类");
 		 subtype_name.setCellStyle(black_style);
 		 
-		 Cell brand_name=row.createCell(1);
+		 Cell brand_name=row.createCell(cellnum++);
 		 brand_name.setCellValue("品牌");
 		 brand_name.setCellStyle(black_style);
 		 
-		 Cell style=row.createCell(2);
+		 Cell style=row.createCell(cellnum++);
 		 style.setCellValue("型号");
 		 style.setCellStyle(black_style);
 		 
-		 Cell prod_name=row.createCell(3);
+		 Cell prod_name=row.createCell(cellnum++);
 		 prod_name.setCellValue("品名");
 		 prod_name.setCellStyle(black_style);
 		 
-		 Cell store_name=row.createCell(4);
+		 Cell store_name=row.createCell(cellnum++);
 		 store_name.setCellValue("仓库");
 		 store_name.setCellStyle(black_style);
 		 
-		 Cell unit=row.createCell(5);
+		 Cell unit=row.createCell(cellnum++);
 		 unit.setCellValue("单位");
 		 unit.setCellStyle(black_style);
 		 
-		 Cell lastnum=row.createCell(6);
+		 Cell lastnum=row.createCell(cellnum++);
 		 lastnum.setCellValue("上期结余数");
 		 lastnum.setCellStyle(black_style);
 		 
 		 CellStyle blue_style=getStyle(wb,IndexedColors.BLUE);
-		 Cell storeinnum=row.createCell(7);
+		 Cell storeinnum=row.createCell(cellnum++);
 		 storeinnum.setCellValue("本期新增数");
 		 storeinnum.setCellStyle(blue_style);
 		 
 		 CellStyle red_style=getStyle(wb,IndexedColors.RED);
-		 Cell installoutnum=row.createCell(8);
+		 Cell installoutnum=row.createCell(cellnum++);
 		 installoutnum.setCellValue("本期领用数");
 		 installoutnum.setCellStyle(red_style);
 		 
-		 Cell nownum=row.createCell(9);
+		 Cell nownum=row.createCell(cellnum++);
 		 nownum.setCellValue("本月结余数");
 		 nownum.setCellStyle(black_style);
 		 
-		 Cell memo=row.createCell(10);
+		 Cell memo=row.createCell(cellnum++);
 		 memo.setCellValue("备注"); 
 		 memo.setCellStyle(black_style);
 	}
@@ -182,49 +184,52 @@ public class MonthInventoryController {
 		 red_style.setBorderLeft(CellStyle.BORDER_NONE);
 		 red_style.setBorderRight(CellStyle.BORDER_NONE);
 		 red_style.setBorderTop(CellStyle.BORDER_NONE);;
+		 
+		 int cellnum=0;
 		for(int i=0;i<list.size();i++){
+			cellnum=0;
 			 MonthInventoryVO buildDayReport=list.get(i);
 			 int rownum=i+2;
 			 Row row = sheet.createRow(rownum);
 			 
 			 
-			 Cell subtype_name=row.createCell(0);
+			 Cell subtype_name=row.createCell(cellnum++);
 			 subtype_name.setCellValue(buildDayReport.getSubtype_name());
 			 
-			 Cell brand_name=row.createCell(1);
+			 Cell brand_name=row.createCell(cellnum++);
 			 brand_name.setCellValue(buildDayReport.getBrand_name());
 			 
-			 Cell style=row.createCell(2);
+			 Cell style=row.createCell(cellnum++);
 			 style.setCellValue(buildDayReport.getStyle());
 			 
-			 Cell prod_name=row.createCell(3);
+			 Cell prod_name=row.createCell(cellnum++);
 			 prod_name.setCellValue(buildDayReport.getProd_name());
 			 
-			 Cell store_name=row.createCell(4);
+			 Cell store_name=row.createCell(cellnum++);
 			 store_name.setCellValue(buildDayReport.getStore_name());
 			 
-			 Cell unit=row.createCell(5);
+			 Cell unit=row.createCell(cellnum++);
 			 unit.setCellValue(buildDayReport.getUnit());
 			 
-			 Cell lastnum=row.createCell(6);
+			 Cell lastnum=row.createCell(cellnum++);
 			 lastnum.setCellValue(buildDayReport.getLastnum()==null?0:buildDayReport.getLastnum());
 			 
 			
-			 Cell storeinnum=row.createCell(7);
+			 Cell storeinnum=row.createCell(cellnum++);
 			 storeinnum.setCellValue(buildDayReport.getNowAdd()==null?0:buildDayReport.getNowAdd());
 			 storeinnum.setCellStyle(blue_style);
 			 
-			 Cell installoutnum=row.createCell(8);
+			 Cell installoutnum=row.createCell(cellnum++);
 			 installoutnum.setCellValue(buildDayReport.getInstalloutnum()==null?0:buildDayReport.getInstalloutnum());
 			 installoutnum.setCellStyle(red_style);
 			 //本月结余数
-			 Cell nownum=row.createCell(9);
+			 Cell nownum=row.createCell(cellnum++);
 			 //nownum.setCellValue(buildDayReport.getNownum()==null?0:buildDayReport.getNownum());
 			 nownum.setCellFormula("SUM("+CellReference.convertNumToColString(6)+(rownum+1)+
 					 ","+CellReference.convertNumToColString(7)+(rownum+1)+
 					 ","+CellReference.convertNumToColString(8)+(rownum+1)+")");
 			 
-			 Cell memo=row.createCell(10);
+			 Cell memo=row.createCell(cellnum++);
 			 memo.setCellValue(buildDayReport.getMemo()); 
 		 }
 		 

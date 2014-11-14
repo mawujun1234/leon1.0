@@ -10,7 +10,7 @@
     <content src="login.html" />
     <access origin="*" />
 	
-	<!-- 指定启动图片 -->
+	<!-- 指定启动图片，指定服务图片的名称 -->
 	<preference name="SplashScreen" value="screen" />
 	<preference name="SplashScreenDelay" value="30000" />
 
@@ -21,16 +21,20 @@
 		<icon src="res/android/icon.png" density="hdpi" />
 		<icon src="res/android/icon.png" density="xhdpi" />
 
-		<!-- you can use any density that exists in the Android project -->
-		<splash src="res/android/splash.png"  density="" /><!-- 拷贝到默认的目录 drawable-->
-		<splash src="res/android/splash.png" density="ldpi" />
-		<splash src="res/android/splash.png" density="mdpi" />
-		<splash src="res/android/splash.png" density="hdpi" />
-		<splash src="res/android/splash.png" density="xhdpi" />
-		<splash src="res/android/splash.png" density="land-hdpi" />
-		<splash src="res/android/splash.png" density="land-ldpi" />
-		<splash src="res/android/splash.png" density="land-mdpi" />
-		<splash src="res/android/splash.png" density="land-xhdpi" />
+		<!-- you can use any density that exists in the Android project ，好像会自动拷贝wei-->
+		<!--<splash src="res/android/screen.png"  density="" /> 拷贝到默认的目录 drawable-->
+		<splash src="res/android/screen.png" density="ldpi" />
+		<splash src="res/android/screen.png" density="mdpi" />
+		<splash src="res/android/screen.png" density="hdpi" />
+		<splash src="res/android/screen.png" density="xhdpi" />
+		<splash src="res/android/screen.png" density="land-hdpi" />
+		<splash src="res/android/screen.png" density="land-ldpi" />
+		<splash src="res/android/screen.png" density="land-mdpi" />
+		<splash src="res/android/screen.png" density="land-xhdpi" />
+		<splash src="res/android/screen.png" density="port-hdpi" />
+		<splash src="res/android/screen.png" density="port-ldpi" />
+		<splash src="res/android/screen.png" density="port-mdpi" />
+		<splash src="res/android/screen.png" density="port-xhdpi" />
 	</platform>
 	
 	

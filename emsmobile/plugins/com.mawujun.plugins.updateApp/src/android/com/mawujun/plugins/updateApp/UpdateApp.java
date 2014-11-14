@@ -72,9 +72,6 @@ public class UpdateApp extends CordovaPlugin {
                 	callbackContext.success();
                 }
 			});
-		
-//			this.manuallyUpdateApp();
-//			callbackContext.success();
 			return true;
 		} else if("autoUpdateApp".equals(action)){
 			cordova.getThreadPool().execute(new Runnable() {
@@ -83,8 +80,6 @@ public class UpdateApp extends CordovaPlugin {
                 	callbackContext.success();
                 }
 			});
-//			this.autoUpdateApp();
-//			callbackContext.success();
 			return true;
 		}
 		return false;

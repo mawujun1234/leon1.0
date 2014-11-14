@@ -158,71 +158,51 @@ public class DayInventoryController {
 		return style;
 	}
 	private StringBuilder[] build_addRow1(XSSFWorkbook wb,Sheet sheet){
-		final int cellstartnum=9;//其实应该从10开始，单后面用了++
-		
-		//=================================================================================
-		//日期的样式
-		
+		//final int cellstartnum=9;//其实应该从10开始，单后面用了++
 		CellStyle black_style=getStyle_title(wb,IndexedColors.BLACK,null);
+		//
 		//合并单元格的行
 		Row row1 = sheet.createRow(1);
-		//创建日期，并合并日期的两列
-		int cellnum=cellstartnum;
-		for(int j=1;j<=31;j++){
-			//合并这两个单元格
-			sheet.addMergedRegion(new CellRangeAddress(1,1,++cellnum,++cellnum)); 
-			//设置日期值
-			Cell cell11=row1.createCell(cellnum-1);
-			cell11.setCellValue(j);
-			cell11.setCellStyle(black_style);
-			
-			Cell cell12=row1.createCell(cellnum);
-			cell12.setCellStyle(black_style);
-		}
-		//=================================================================================== 
-		
-		//
-		
-		
-		 Cell subtype_name=row1.createCell(0);
+		int cellnum=0;
+		 Cell subtype_name=row1.createCell(cellnum++);
 		 subtype_name.setCellValue("小类");
 		 subtype_name.setCellStyle(black_style);
 		 
-		 Cell brand_name=row1.createCell(1);
+		 Cell brand_name=row1.createCell(cellnum++);
 		 brand_name.setCellValue("品牌");
 		 brand_name.setCellStyle(black_style);
 		 
-		 Cell style=row1.createCell(2);
+		 Cell style=row1.createCell(cellnum++);
 		 style.setCellValue("型号");
 		 style.setCellStyle(black_style);
 		 
-		 Cell prod_name=row1.createCell(3);
+		 Cell prod_name=row1.createCell(cellnum++);
 		 prod_name.setCellValue("品名");
 		 prod_name.setCellStyle(black_style);
 		 
-		 Cell store_name=row1.createCell(4);
+		 Cell store_name=row1.createCell(cellnum++);
 		 store_name.setCellValue("仓库");
 		 store_name.setCellStyle(black_style);
 		 
-		 Cell unit=row1.createCell(5);
+		 Cell unit=row1.createCell(cellnum++);
 		 unit.setCellValue("单位");
 		 unit.setCellStyle(black_style);
 		 
-		 Cell lastnum=row1.createCell(6);
+		 Cell lastnum=row1.createCell(cellnum++);
 		 lastnum.setCellValue("上期结余数");
 		 lastnum.setCellStyle(black_style);
 		 
 		 CellStyle blue_style=getStyle_title(wb,IndexedColors.BLUE,null);
-		 Cell storeinnum=row1.createCell(7);
+		 Cell storeinnum=row1.createCell(cellnum++);
 		 storeinnum.setCellValue("本期新增数");
 		 storeinnum.setCellStyle(blue_style);
 		 
 		 CellStyle red_style=getStyle_title(wb,IndexedColors.RED,null);
-		 Cell installoutnum=row1.createCell(8);
+		 Cell installoutnum=row1.createCell(cellnum++);
 		 installoutnum.setCellValue("本期领用数");
 		 installoutnum.setCellStyle(red_style);
 		 
-		 Cell nownum=row1.createCell(9);
+		 Cell nownum=row1.createCell(cellnum++);
 		 nownum.setCellValue("本月结余数");
 		 nownum.setCellStyle(black_style);
 		 
@@ -257,24 +237,25 @@ public class DayInventoryController {
 		out_style.setBorderRight(CellStyle.BORDER_THIN);
 		// title_cell.setCellStyle(out_style);
 		
-		cellnum=cellstartnum;
+		//cellnum=cellstartnum;
+		int cellnum_temp=cellnum;
 		Row row2 = sheet.createRow(2);
 		
 		//
 		StringBuilder in_formula=new StringBuilder("SUM(");
 		StringBuilder out_formula=new StringBuilder("SUM(");
 		for(int j=1;j<=31;j++){
-			 Cell day_in=row2.createCell(++cellnum);
+			 Cell day_in=row2.createCell(cellnum_temp++);
 			 day_in.setCellValue("新增数");
 			 day_in.setCellStyle(in_style);
-			 in_formula.append(CellReference.convertNumToColString(cellnum)).append("=");
+			 in_formula.append(CellReference.convertNumToColString(cellnum_temp-1)).append("=");
 			
 			 
 			 
-			 Cell day_out=row2.createCell(++cellnum);
+			 Cell day_out=row2.createCell(cellnum_temp++);
 			 day_out.setCellValue("领用数");
 			 day_out.setCellStyle(out_style);
-			 out_formula.append(CellReference.convertNumToColString(cellnum)).append("=");
+			 out_formula.append(CellReference.convertNumToColString(cellnum_temp-1)).append("=");
 			 
 			 if(j!=31){
 				 in_formula.append(",");
@@ -285,20 +266,39 @@ public class DayInventoryController {
 		in_formula.append(")");
 		out_formula.append(")");
 		
-		 Cell memo=row2.createCell(++cellnum);
+		
+		 Cell memo=row2.createCell(cellnum_temp++);
 		 memo.setCellValue("备注"); 
 		 memo.setCellStyle(black_style);
 		 
+		
 		//合并0--9的单元格，纵向合并
-		for(int j=0;j<=cellstartnum;j++){
+		for(int j=0;j<=cellnum;j++){
 			sheet.addMergedRegion(new CellRangeAddress(1,2,(short)j,(short)j)); 
 				
 			Cell cell12=row2.createCell(j);
 			cell12.setCellStyle(black_style);
 		}
+		
+		
+		//创建日期，并合并日期的两列
+		//int cellnum=cellstartnum;
+		 cellnum_temp=cellnum;
+		for(int j=1;j<=31;j++){
+			//合并这两个单元格
+			sheet.addMergedRegion(new CellRangeAddress(1,1,cellnum_temp++,cellnum_temp++)); 
+			//设置日期值
+			Cell cell11=row1.createCell(cellnum_temp-1);
+			cell11.setCellValue(j);
+			cell11.setCellStyle(black_style);
+			
+			Cell cell12=row1.createCell(cellnum_temp);
+			cell12.setCellStyle(black_style);
+		}
 		 
 		 //冻结行和列
-		 sheet.createFreezePane(cellstartnum+1, 3);
+		cellnum_temp=cellnum;
+		sheet.createFreezePane(cellnum_temp+1, 3);
 		 
 		 //生成本期新增数公式
 		 StringBuilder[] formulas=new StringBuilder[]{in_formula,out_formula};
