@@ -36,7 +36,17 @@ Ext.define('Ems.baseinfo.SubtypeCombo',{
 		    		type:'json',
 		    		root:'root'
 		    	}
-		    }
+		    },
+		    listeners:{
+			    	beforeload:function(store){
+			    		//包含所有的选项
+			    		if(me.containAll){
+			    			store.getProxy().extraParams=Ext.apply(store.getProxy().extraParams,{
+			    				containAll:true
+			    			})
+			    		}
+			    	}
+			}
 	   });
 	   me.store=store;
 
@@ -83,10 +93,15 @@ Ext.define('Ems.baseinfo.ProdCombo',{
 		    	}
 		    },
 		    listeners:{
-		    	beforeload:function(store){
-		    	
-		    	}
-		    }
+			    	beforeload:function(store){
+			    		//包含所有的选项
+			    		if(me.containAll){
+			    			store.getProxy().extraParams=Ext.apply(store.getProxy().extraParams,{
+			    				containAll:true
+			    			})
+			    		}
+			    	}
+			}
 	   });
 	   me.store=store;
        me.callParent();
@@ -130,7 +145,17 @@ Ext.define('Ems.baseinfo.BrandCombo',{
 		    		type:'json',
 		    		root:'root'
 		    	}
-		    }
+		    },
+		    listeners:{
+			    	beforeload:function(store){
+			    		//包含所有的选项
+			    		if(me.containAll){
+			    			store.getProxy().extraParams=Ext.apply(store.getProxy().extraParams,{
+			    				containAll:true
+			    			})
+			    		}
+			    	}
+			}
 	   });
 	   me.store=store;
        me.callParent();
@@ -174,7 +199,17 @@ Ext.define('Ems.baseinfo.SupplierCombo',{
 		    		type:'json',
 		    		root:'root'
 		    	}
-		    }
+		    },
+		    listeners:{
+			    	beforeload:function(store){
+			    		//包含所有的选项
+			    		if(me.containAll){
+			    			store.getProxy().extraParams=Ext.apply(store.getProxy().extraParams,{
+			    				containAll:true
+			    			})
+			    		}
+			    	}
+			}
 	   });
 	   me.store=store;
        me.callParent();

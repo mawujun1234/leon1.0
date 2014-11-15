@@ -146,7 +146,7 @@ public class DayInventoryController {
 		}
 		
 		font.setColor(color.getIndex());
-		//font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+		font.setBoldweight(Font.BOLDWEIGHT_BOLD);
 		style.setFont(font);
 		style.setAlignment(CellStyle.ALIGN_CENTER);
 		style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
@@ -162,47 +162,52 @@ public class DayInventoryController {
 		CellStyle black_style=getStyle_title(wb,IndexedColors.BLACK,null);
 		//
 		//合并单元格的行
-		Row row1 = sheet.createRow(1);
+		Row row = sheet.createRow(1);
 		int cellnum=0;
-		 Cell subtype_name=row1.createCell(cellnum++);
-		 subtype_name.setCellValue("小类");
+		Cell subtype_name=row.createCell(cellnum++);
+		 subtype_name.setCellValue("类别");
 		 subtype_name.setCellStyle(black_style);
+		 sheet.setColumnWidth(cellnum-1, "列".getBytes().length*1*256);
 		 
-		 Cell brand_name=row1.createCell(cellnum++);
+		 Cell brand_name=row.createCell(cellnum++);
 		 brand_name.setCellValue("品牌");
 		 brand_name.setCellStyle(black_style);
 		 
-		 Cell style=row1.createCell(cellnum++);
+		 Cell style=row.createCell(cellnum++);
 		 style.setCellValue("型号");
 		 style.setCellStyle(black_style);
+		 sheet.setColumnWidth(cellnum-1, "列".getBytes().length*15*256);
 		 
-		 Cell prod_name=row1.createCell(cellnum++);
+		 Cell prod_name=row.createCell(cellnum++);
 		 prod_name.setCellValue("品名");
 		 prod_name.setCellStyle(black_style);
+		 sheet.setColumnWidth(cellnum-1, "列".getBytes().length*10*256);
 		 
-		 Cell store_name=row1.createCell(cellnum++);
+		 Cell store_name=row.createCell(cellnum++);
 		 store_name.setCellValue("仓库");
 		 store_name.setCellStyle(black_style);
+		 sheet.setColumnWidth(cellnum-1, "列".getBytes().length*2*256);
 		 
-		 Cell unit=row1.createCell(cellnum++);
+		 Cell unit=row.createCell(cellnum++);
 		 unit.setCellValue("单位");
 		 unit.setCellStyle(black_style);
+		 sheet.setColumnWidth(cellnum-1, "列".getBytes().length*1*256);
 		 
-		 Cell lastnum=row1.createCell(cellnum++);
+		 Cell lastnum=row.createCell(cellnum++);
 		 lastnum.setCellValue("上期结余数");
 		 lastnum.setCellStyle(black_style);
 		 
 		 CellStyle blue_style=getStyle_title(wb,IndexedColors.BLUE,null);
-		 Cell storeinnum=row1.createCell(cellnum++);
+		 Cell storeinnum=row.createCell(cellnum++);
 		 storeinnum.setCellValue("本期新增数");
 		 storeinnum.setCellStyle(blue_style);
 		 
 		 CellStyle red_style=getStyle_title(wb,IndexedColors.RED,null);
-		 Cell installoutnum=row1.createCell(cellnum++);
+		 Cell installoutnum=row.createCell(cellnum++);
 		 installoutnum.setCellValue("本期领用数");
 		 installoutnum.setCellStyle(red_style);
 		 
-		 Cell nownum=row1.createCell(cellnum++);
+		 Cell nownum=row.createCell(cellnum++);
 		 nownum.setCellValue("本月结余数");
 		 nownum.setCellStyle(black_style);
 		 
@@ -288,11 +293,11 @@ public class DayInventoryController {
 			//合并这两个单元格
 			sheet.addMergedRegion(new CellRangeAddress(1,1,cellnum_temp++,cellnum_temp++)); 
 			//设置日期值
-			Cell cell11=row1.createCell(cellnum_temp-2);
+			Cell cell11=row.createCell(cellnum_temp-2);
 			cell11.setCellValue(j);
 			cell11.setCellStyle(black_style);
 			
-			Cell cell12=row1.createCell(cellnum_temp-1);
+			Cell cell12=row.createCell(cellnum_temp-1);
 			cell12.setCellStyle(black_style);
 		}
 		 
@@ -327,58 +332,117 @@ public class DayInventoryController {
 		cs.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
 		title_cell.setCellStyle(cs);
 		//和并单元格
-		sheet.addMergedRegion(new CellRangeAddress(0,(short)0,0,(short)10)); 
+		sheet.addMergedRegion(new CellRangeAddress(0,(short)0,0,(short)9)); 
 		
 		//设置第一行,设置列标题
 		StringBuilder[] formulas=build_addRow1(wb,sheet);
 		
 		CellStyle blue_style=getStyle_title(wb,IndexedColors.BLUE,null);
-		 blue_style.setBorderBottom(CellStyle.BORDER_NONE);
-		 blue_style.setBorderLeft(CellStyle.BORDER_NONE);
-		 blue_style.setBorderRight(CellStyle.BORDER_NONE);
-		 blue_style.setBorderTop(CellStyle.BORDER_NONE);
+//		 blue_style.setBorderBottom(CellStyle.BORDER_NONE);
+//		 blue_style.setBorderLeft(CellStyle.BORDER_NONE);
+//		 blue_style.setBorderRight(CellStyle.BORDER_NONE);
+//		 blue_style.setBorderTop(CellStyle.BORDER_NONE);
 		 
 		 CellStyle red_style=getStyle_title(wb,IndexedColors.RED,null);
-		 red_style.setBorderBottom(CellStyle.BORDER_NONE);
-		 red_style.setBorderLeft(CellStyle.BORDER_NONE);
-		 red_style.setBorderRight(CellStyle.BORDER_NONE);
-		 red_style.setBorderTop(CellStyle.BORDER_NONE);;
+//		 red_style.setBorderBottom(CellStyle.BORDER_NONE);
+//		 red_style.setBorderLeft(CellStyle.BORDER_NONE);
+//		 red_style.setBorderRight(CellStyle.BORDER_NONE);
+//		 red_style.setBorderTop(CellStyle.BORDER_NONE);
+		 
+		CellStyle black_style = this.getStyle(wb, IndexedColors.BLACK,null);
+		//black_style.setBorderBottom(CellStyle.BORDER_NONE);
+		black_style.setBorderLeft(CellStyle.BORDER_NONE);
+		black_style.setBorderRight(CellStyle.BORDER_NONE);
+		black_style.setBorderTop(CellStyle.BORDER_NONE);
+		black_style.setAlignment(CellStyle.ALIGN_LEFT);
+		
+		CellStyle bord_style = wb.createCellStyle();
+		//style.setAlignment(CellStyle.ALIGN_CENTER);
+		//style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		bord_style.setWrapText(true);//自动换行
+		bord_style.setBorderTop(CellStyle.BORDER_THIN);
+		bord_style.setBorderBottom(CellStyle.BORDER_THIN);
+		bord_style.setBorderLeft(CellStyle.BORDER_THIN);
+		bord_style.setBorderRight(CellStyle.BORDER_THIN);
 		
 		//for(int i=0;i<list.size();i++){
 		int i=0;
+		int cellnum=0;
+		int extra_row_num=3;
+		String subtype_id_temp="";
+		int fromRow=0;//开始分组的行
 		StringBuilder builder=new StringBuilder();
 		//for(Entry<DayInventoryVO,Map<String,Integer>> entry:result.entrySet()){
 		for(MonthInventoryVO monthInventoryVO:result){
 			//DayInventoryVO buildDayReport=entry.getKey();//list.get(i);
-			int rownum=i+3;
-			 Row row = sheet.createRow(rownum);
-			 i++;
+			int rownum=i+extra_row_num;
+			cellnum=0;
+			
+			//判断还是不是同个小类，如果不是同个小类就添加一行，只有小类名称的行
+			if(!subtype_id_temp.equals(monthInventoryVO.getSubtype_id())){
+				Row row = sheet.createRow(rownum);
+				Cell subtype_name = row.createCell(cellnum);
+				subtype_name.setCellValue(monthInventoryVO.getSubtype_name());
+				subtype_name.setCellStyle(black_style);
+				for(int j=1;j<(10+31*2+1);j++){
+					Cell cell = row.createCell(cellnum+j);
+					cell.setCellStyle(black_style);
+				}
+				//同时合并单元格
+				sheet.addMergedRegion(new CellRangeAddress(rownum,rownum,0,9+21*2+1)); 
+				//分组
+				if(fromRow!=0){
+					sheet.groupRow(fromRow, rownum-1);//-2是因为后面又++了
+					sheet.setRowGroupCollapsed(fromRow, true);
+				}
+				fromRow=rownum+1;
+				
+				subtype_id_temp=monthInventoryVO.getSubtype_id();
+				rownum++;
+				extra_row_num++;
+			}
+			
+			//这一行必须放在分组的前面，否则会有问题
+			Row row = sheet.createRow(rownum);
+			//当循环到最后一行的时候，添加最后一个分组
+			if(result.size()-1==i){
+				sheet.groupRow(fromRow, rownum);
+				sheet.setRowGroupCollapsed(fromRow, true);
+			}
+			i++;
 			 
 			 builder.append("SUM(");
-			 int cellnum=0;
+			
 			 
 			 Cell subtype_name=row.createCell(cellnum++);
-			 subtype_name.setCellValue(monthInventoryVO.getSubtype_name());
+			 //subtype_name.setCellValue(monthInventoryVO.getSubtype_name());
+			 subtype_name.setCellStyle(bord_style);
 			 
 			 Cell brand_name=row.createCell(cellnum++);
 			 brand_name.setCellValue(monthInventoryVO.getBrand_name());
+			 brand_name.setCellStyle(bord_style);
 			 
 			 Cell style=row.createCell(cellnum++);
 			 style.setCellValue(monthInventoryVO.getStyle());
+			 style.setCellStyle(bord_style);
 			 
 			 Cell prod_name=row.createCell(cellnum++);
 			 prod_name.setCellValue(monthInventoryVO.getProd_name());
+			 prod_name.setCellStyle(bord_style);
 			 
 			 Cell store_name=row.createCell(cellnum++);
 			 store_name.setCellValue(monthInventoryVO.getStore_name());
+			 store_name.setCellStyle(bord_style);
 			 
 			 Cell unit=row.createCell(cellnum++);
 			 unit.setCellValue(monthInventoryVO.getUnit());
+			 unit.setCellStyle(bord_style);
 			 
 			 //上期结余,获取上个月的当前值
 			 Cell lastnum=row.createCell(cellnum++);
 			 lastnum.setCellValue(monthInventoryVO.getNownum()==null?0:monthInventoryVO.getNownum());
 			 builder.append(CellReference.convertNumToColString(cellnum-1)+(rownum+1));
+			 lastnum.setCellStyle(bord_style);
 			 
 			 //本期新增数
 			 Cell storeinnum=row.createCell(cellnum++);
@@ -399,6 +463,7 @@ public class DayInventoryController {
 			 //本月结余 上期+本期新增+本期领用
 			 Cell nownum=row.createCell(cellnum++);
 			 nownum.setCellFormula(builder.toString());
+			 nownum.setCellStyle(bord_style);
 			 builder=new StringBuilder();
 			 //nownum.setCellValue(buildDayReport.getNownum()==null?0:buildDayReport.getNownum());
 //			 nownum.setCellFormula("SUM("+CellReference.convertNumToColString(6)+(rownum+1)+
@@ -431,7 +496,9 @@ public class DayInventoryController {
 				 
 			 }
 		 }
-		 
+		sheet.setRowSumsBelow(false);
+		sheet.setRowSumsRight(false);
+		
 		 String filename = "在建工程仓库("+store.getName()+")盘点日报表.xlsx";
 		 //FileOutputStream out = new FileOutputStream(filename);
 		response.setHeader("content-disposition", "attachment; filename="+ new String(filename.getBytes("UTF-8"), "ISO8859-1"));
@@ -467,20 +534,24 @@ public class DayInventoryController {
 		 Cell subtype_name=row1.createCell(cellnum++);
 		 subtype_name.setCellValue("小类");
 		 subtype_name.setCellStyle(black_style);
+		 sheet.setColumnWidth(cellnum-1, "长".getBytes().length*1*256);
 		 
 		 Cell brand_name=row1.createCell(cellnum++);
 		 brand_name.setCellValue("品牌");
 		 brand_name.setCellStyle(black_style);
 		 
+		 
 		 Cell style=row1.createCell(cellnum++);
 		 style.setCellValue("型号");
 		 style.setCellStyle(black_style);
 		 sheet.autoSizeColumn(cellnum-1, true);
+		 sheet.setColumnWidth(cellnum-1, "长".getBytes().length*6*256);
 		 
 		 Cell prod_name=row1.createCell(cellnum++);
 		 prod_name.setCellValue("品名");
 		 prod_name.setCellStyle(black_style);
 		 sheet.autoSizeColumn(cellnum-1, true);
+		 sheet.setColumnWidth(cellnum-1, "长".getBytes().length*6*256);
 		 
 //		 Cell store_name=row1.createCell(cellnum++);
 //		 store_name.setCellValue("仓库");
@@ -735,25 +806,66 @@ public class DayInventoryController {
 		cs.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
 		title_cell.setCellStyle(cs);
 		//和并单元格
-		sheet.addMergedRegion(new CellRangeAddress(0,(short)0,0,(short)10)); 
+		sheet.addMergedRegion(new CellRangeAddress(0,(short)0,0,(short)15)); 
 		
 		//设置第一行,设置列标题
 		StringBuilder[] formulas=sparepart_addRow1(wb,sheet);
 		
 		CellStyle black_style=getStyle_title(wb,IndexedColors.BLACK,null);
 		black_style.setWrapText(false);
+		black_style.setAlignment(CellStyle.ALIGN_LEFT);
 		 
 		int i=0;
+		int cellnum=0;
+		int extra_row_num=3;
+		String subtype_id_temp="";
+		int fromRow=0;//开始分组的行
 		//for(Entry<DayInventoryVO,Map<String,Integer>> entry:result.entrySet()){
 		for(MonthInventoryVO monthInventoryVO:result){
-			int rownum=i+3;
+			// int rownum=i+3;
+			// i++;
+			// int cellnum=0;
+
+			int rownum = i + extra_row_num;
+			cellnum = 0;
+
+			// 判断还是不是同个小类，如果不是同个小类就添加一行，只有小类名称的行
+			if (!subtype_id_temp.equals(monthInventoryVO.getSubtype_id())) {
+				Row row = sheet.createRow(rownum);
+				Cell subtype_name = row.createCell(cellnum);
+				subtype_name.setCellValue(monthInventoryVO.getSubtype_name());
+				subtype_name.setCellStyle(black_style);
+				for (int j = 1; j < 15+31*7+1; j++) {
+					Cell cell = row.createCell(cellnum + j);
+					cell.setCellStyle(black_style);
+				}
+				// 同时合并单元格
+				sheet.addMergedRegion(new CellRangeAddress(rownum, rownum, 0,15+31*7+1));
+				// 分组
+				if (fromRow != 0) {
+					sheet.groupRow(fromRow, rownum - 1);// -2是因为后面又++了
+					sheet.setRowGroupCollapsed(fromRow, true);
+				}
+				fromRow = rownum + 1;
+
+				subtype_id_temp = monthInventoryVO.getSubtype_id();
+				rownum++;
+				extra_row_num++;
+			}
+
+			// 这一行必须放在分组的前面，否则会有问题
+			Row row = sheet.createRow(rownum);
+			// 当循环到最后一行的时候，添加最后一个分组
+			if (result.size() - 1 == i) {
+				sheet.groupRow(fromRow, rownum);
+				sheet.setRowGroupCollapsed(fromRow, true);
+			}
 			i++;
-			 int cellnum=0;
-			 Row row = sheet.createRow(rownum);
+				
 			 StringBuilder nownum_formulas=new StringBuilder("SUM(");
 			 
 			 Cell subtype_name=row.createCell(cellnum++);
-			 subtype_name.setCellValue(monthInventoryVO.getSubtype_name());
+			 //subtype_name.setCellValue(monthInventoryVO.getSubtype_name());
 			 subtype_name.setCellStyle(black_style);
 			 
 			 Cell brand_name=row.createCell(cellnum++);
@@ -906,6 +1018,8 @@ public class DayInventoryController {
 			 }
 		 }
 		 
+		sheet.setRowSumsBelow(false);
+		sheet.setRowSumsRight(false);
 		 String filename = "备品备件仓库("+store.getName()+")盘点日报表.xlsx";
 		 //FileOutputStream out = new FileOutputStream(filename);
 		response.setHeader("content-disposition", "attachment; filename="+ new String(filename.getBytes("UTF-8"), "ISO8859-1"));

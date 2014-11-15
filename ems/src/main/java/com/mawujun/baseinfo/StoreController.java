@@ -126,7 +126,7 @@ public class StoreController {
 	}
 	
 	/**
-	 * 
+	 * 查询仓库库存
 	 * @author mawujun 16064988@qq.com 
 	 * @param equipment
 	 * @param level //level=1:表示查询的是汇总数据

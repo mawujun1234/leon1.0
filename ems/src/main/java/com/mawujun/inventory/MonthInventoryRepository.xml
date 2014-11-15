@@ -42,6 +42,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     inner join ems_brand d on a.brand_id=d.id
     where a.store_id=#{store_id}
      and  a.status !=30
+     order by subtype_id ,prod_id,brand_id,style
    </select>
    
 </mapper>

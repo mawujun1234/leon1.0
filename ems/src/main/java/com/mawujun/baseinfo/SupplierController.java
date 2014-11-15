@@ -105,13 +105,20 @@ public class SupplierController {
 	
 	@RequestMapping("/supplier/querySupplierCombo.do")
 	@ResponseBody
-	public List<Supplier> querySupplierComboS(String name) {
+	public List<Supplier> querySupplierComboS(String name,Boolean containAll) {
 		//System.out.println("==========================================================="+name);
+		List<Supplier> list=null;
 		if(StringUtils.hasText(name)){
-			return supplierService.query(Cnd.select().andEquals(M.Supplier.status, true).andLike(M.Supplier.name, name));	
+			list= supplierService.query(Cnd.select().andEquals(M.Supplier.status, true).andLike(M.Supplier.name, name));	
 		} else {
-			return supplierService.query(Cnd.select().andEquals(M.Supplier.status, true));	
+			list= supplierService.query(Cnd.select().andEquals(M.Supplier.status, true));	
 		}
-		
+		if(containAll!=null && containAll){
+			Supplier all=new Supplier();
+			all.setId("");
+			all.setName("所有");
+			list.add(0, all);
+		}
+		return list;
 	}
 }

@@ -55,7 +55,7 @@ public class StoreService extends AbstractService<Store, String>{
 	public List<EquipmentVO> queryEquipments(EquipmentVO equipmentVO,Integer level,Integer start,Integer limit) {
 		if(level==1){
 			return storeRepository.queryEquipments_total(equipmentVO);
-		} else if(level==2){
+		} else if(level==2 || level==3){
 			Page page=new Page();
 			page.setStart(start);
 			page.setPageSize(limit);

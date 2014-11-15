@@ -152,7 +152,7 @@ $(function(){
 				});	
 			}, 
 			function(error){
-				alert("定位失败: " + error);
+				alert(error.message + ":"+error.code);
 			}
 		);	
 		

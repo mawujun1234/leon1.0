@@ -22,7 +22,7 @@
 		<icon src="res/android/icon.png" density="xhdpi" />
 
 		<!-- you can use any density that exists in the Android project ，好像会自动拷贝wei-->
-		<!--<splash src="res/android/screen.png"  density="" /> 拷贝到默认的目录 drawable-->
+		<splash src="res/android/screen.png"  density="" /> <!--拷贝到默认的目录 drawable-->
 		<splash src="res/android/screen.png" density="ldpi" />
 		<splash src="res/android/screen.png" density="mdpi" />
 		<splash src="res/android/screen.png" density="hdpi" />
