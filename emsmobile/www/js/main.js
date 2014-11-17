@@ -217,7 +217,7 @@ $(function(){
 				//alert("获取版本信息失败: " + error);
 			},{
 				downloadFile:$.ServerPath+"/emsmobile-debug-unaligned.apk",
-				serverVerUrl:$.ServerPath+'/apkVersion.js'
+				serverVerUrl:$.ServerPath+'/apkVersion.jss'
 			}
 		);	
 	}
