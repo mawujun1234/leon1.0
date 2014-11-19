@@ -60,9 +60,12 @@ delete ems_message;
 delete ems_metaversion;
 
 
-delete report_builddayreport;
-delete report_buildmonthreport;
+delete REPORT_BUILDDAYREPORT;
+delete REPORT_BUILDMONTHREPORT;
 commit;
+
+
+
 ---初始化数据
 alter table SYS_USER disable all triggers;
 delete from SYS_USER;
@@ -70,8 +73,6 @@ commit;
 insert into SYS_USER (id, address, email, logindate, name, password, phone, type, username, status)
 values ('admin', null, null, null, 'admin', 'admin', null, 0, 'admin', 'Y');
 commit;
-
-
 
 
 

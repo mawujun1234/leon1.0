@@ -35,7 +35,7 @@ BEGIN
   SYS.DBMS_JOB.SUBMIT
   ( job       => X 
    ,what      => 'proc_day_all_all;'
-   ,next_date => sysdate
+   ,next_date => TRUNC(sysdate)+22/24
    ,interval  => 'TRUNC(sysdate)+22/24'
    ,no_parse  => FALSE
   );

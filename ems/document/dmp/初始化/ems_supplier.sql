@@ -1,6 +1,4 @@
-﻿prompt Importing table ems_supplier...
-set feedback off
-set define off
+
 insert into ems_supplier (ID, MEMO, NAME, SNAME, STATUS, WEBSITE)
 values ('001', '施工单位', '宁波高新区易和泰科技有限公司', null, 'Y', null);
 
@@ -420,5 +418,4 @@ values ('224', null, '宁波市镇海博新机电科技有限公司', null, 'Y',
 
 insert into ems_supplier (ID, MEMO, NAME, SNAME, STATUS, WEBSITE)
 values ('225', null, '宁波市海曙龙杰智能化设备有限公司', null, 'Y', null);
-
-prompt Done.
+commit;
