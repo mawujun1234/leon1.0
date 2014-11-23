@@ -27,7 +27,7 @@ public class MonthInventory implements IdEntity<MonthInventory_PK>{
 	@Column(length=6)
 	private String prod_id;//品名id
 	@Id
-	@Column(length=6)
+	@Column(length=15)
 	private String brand_id;//品牌id
 	@Id
 	@Column(length=50)

@@ -25,9 +25,9 @@ Ext.define('Ems.baseinfo.BrandForm',{
 	        name: 'id',
 	        readOnly:true,
 	        xtype:'textfield',
-	        minLength:3,
-	        maxLength:3,
-	        length:3,
+	        minLength:15,
+	        maxLength:15,
+	        length:15,
 	        allowBlank: false
 	    },
 		{

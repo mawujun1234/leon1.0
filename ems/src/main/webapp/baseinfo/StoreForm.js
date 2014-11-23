@@ -210,12 +210,21 @@ Ext.define('Ems.baseinfo.StoreForm',{
 				var grid=form.grid;
 		    	Ext.Msg.confirm("删除",'确定要删除吗?', function(btn, text){
 					if (btn == 'yes'){
-						var records=grid.getSelectionModel( ).getSelection( );//.getLastSelected( );
-						grid.getStore().remove( records );
+						var records=grid.getSelectionModel( ).getLastSelected( );//.getLastSelected( );
+						//grid.getStore().remove( records );
 						form.down("button#update").disable();
 						form.down("button#destroy").disable();
-						form.getForm().reset();
-						grid.getStore().reload();
+						Ext.Ajax.request({
+							url:Ext.ContextPath+'/store/destroy.do',
+							method:'POST',
+							params:records.getData(),
+							success:function(){
+								//form.getForm().reset();
+								//grid.getStore().reload();
+								records.set("status",false);
+							}
+						});
+						
 					}
 				});
 			},

@@ -97,7 +97,7 @@ public class StoreController {
 	
 	@RequestMapping("/store/destroy.do")
 	@ResponseBody
-	public Store destroy(@RequestBody Store store) {
+	public Store destroy(Store store) {
 		//storeService.delete(store);
 		store.setStatus(false);
 		storeService.update(store);

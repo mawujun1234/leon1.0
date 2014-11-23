@@ -206,9 +206,7 @@ Ext.define('Ems.baseinfo.CustomerGrid',{
 				if (btn == 'yes'){
 					Ext.Ajax.request({
 						url:Ext.ContextPath+'/customer/destroy.do',
-						params:{
-							id:record.get("id")
-						},
+						params:record.getData(),
 						method:'POST',
 						success:function(){
 							//var parent=me.tree.getSelectionModel( ).getLastSelected( )||me.tree.getRootNode( );  

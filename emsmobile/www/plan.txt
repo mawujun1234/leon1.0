@@ -29,10 +29,21 @@
 
 仓库部能删除。变无效，自动隐藏的问题
 客户信息删除，变无效，自动隐藏的问题
+条码导出，点查询没反应
 品牌后面添加错误提示，明确
+alter table EMS_BRAND modify id VARCHAR2(15 CHAR);
+alter table EMS_EQUIPMENT modify brand_id VARCHAR2(15 CHAR);
+alter table EMS_ORDER modify brand_id VARCHAR2(15 CHAR);
+alter table ems_barcode_maxnum modify brand_id VARCHAR2(15 CHAR);
+alter table ems_dayinventory  modify brand_id VARCHAR2(15 CHAR);
+alter table ems_dayinventorybak modify brand_id VARCHAR2(15 CHAR);
+alter table ems_monthinventory modify brand_id VARCHAR2(15 CHAR);
+alter table ems_monthinventorybak modify brand_id VARCHAR2(15 CHAR);
+
+
 品牌编码的长度改为10个
 仓库库存报表默认是昨天或上个月，最后计算的，但是添加一个按钮，立即计算，也变成当前的库存
-条码导出，点查询没反应
+
 
 
 

@@ -11,7 +11,7 @@ import com.mawujun.repository.idEntity.IdEntity;
 @Table(name="ems_brand")
 public class Brand implements IdEntity<String>{
 	@Id
-	@Column(length=3)
+	@Column(length=15)
 	private String id;
 	@Column(length=30)
 	private String name;

@@ -31,7 +31,7 @@ public class DayInventoryBak  implements IdEntity<DayInventoryBak_PK>{
 	private String prod_id;//品名id
 
 	@Id
-	@Column(length=6)
+	@Column(length=15)
 	private String brand_id;//品牌id
 
 	@Id

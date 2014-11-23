@@ -86,17 +86,19 @@ public class CustomerController {
 		return customer;
 	}
 	
-	@RequestMapping("/customer/deleteById.do")
-	@ResponseBody
-	public String deleteById(String id) {
-		customerService.deleteById(id);
-		return id;
-	}
-	
+//	@RequestMapping("/customer/deleteById.do")
+//	@ResponseBody
+//	public String deleteById(String id) {
+//		customerService.deleteById(id);
+//		return id;
+//	}
+//	
 	@RequestMapping("/customer/destroy.do")
 	@ResponseBody
-	public Customer destroy(@RequestBody Customer customer) {
-		customerService.delete(customer);
+	public Customer destroy(Customer customer) {
+		//customerService.delete(customer);
+		customer.setStatus(false);
+		customerService.update(customer);
 		return customer;
 	}
 	

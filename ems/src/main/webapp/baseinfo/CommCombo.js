@@ -8,7 +8,7 @@ Ext.define('Ems.baseinfo.SubtypeCombo',{
     displayField: 'text',
     valueField: 'id',
    
-    
+    forceSelection:true,
     queryParam: 'name',
     queryMode: 'remote',
     name:'subtype_id',
@@ -63,7 +63,7 @@ Ext.define('Ems.baseinfo.ProdCombo',{
     displayField: 'text',
     valueField: 'id',
     minChars:1,
-    
+    forceSelection:true,
     queryParam: 'name',
     queryMode: 'remote',
     name:'prod_id',
@@ -117,7 +117,7 @@ Ext.define('Ems.baseinfo.BrandCombo',{
     displayField: 'name',
     valueField: 'id',
    minChars:1,
-    
+    forceSelection:true,
     queryParam: 'name',
     queryMode: 'remote',
     name:'brand_id',
@@ -170,14 +170,14 @@ Ext.define('Ems.baseinfo.SupplierCombo',{
 	fieldLabel: '供应商',
     displayField: 'name',
     valueField: 'id',
-   
+   forceSelection:true,
     minChars:1,
     queryParam: 'name',
     queryMode: 'remote',
     name:'supplier_id',
     triggerAction: 'query',
     trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
-    trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
+    //trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
 	onTrigger1Click : function(){
 	    var me = this;
 	    me.setValue('');

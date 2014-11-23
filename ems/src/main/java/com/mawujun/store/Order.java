@@ -29,7 +29,7 @@ public class Order extends UUIDEntity {
 	private String subtype_id;//子类型id
 	@Column(length=3)
 	private String prod_id;//品名id
-	@Column(length=3)
+	@Column(length=15)
 	private String brand_id;//品牌id
 	@Column(length=3)
 	private String supplier_id;//供应商id
