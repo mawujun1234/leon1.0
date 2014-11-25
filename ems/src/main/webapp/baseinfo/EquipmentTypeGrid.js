@@ -24,8 +24,12 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 		},
 		//{dataIndex:'level',text:'level',xtype: 'numbercolumn', format:'0.00'},
 		//{dataIndex:'status',text:'status',xtype: 'numbercolumn', format:'0.00'},
+		{dataIndex:'subtype_name',text:'型号',renderer:function(){
+			return me.subtype_name;
+		}},
 		{dataIndex:'name',text:'名称',flex:1},
 		{dataIndex:'unit',text:'单位',flex:1},
+		{dataIndex:'spec',text:'规格',flex:1},
 		{dataIndex:'status',text:'状态',renderer:function(value){
 			if(value){
 				return "有效";
@@ -159,6 +163,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 
 		var child=values.isModel?values:Ext.createModel(parent.self.getName(),values);
 		var form=new Ems.baseinfo.EquipmentTypeForm({
+			isprod:true,
 			url:Ext.ContextPath+"/equipmentType/create.do",
 			isType:initValue.levl==1?true:false,
 			listeners:{
@@ -191,6 +196,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 		}
 		
 		var form=new Ems.baseinfo.EquipmentTypeForm({
+			isprod:true,
 			url:Ext.ContextPath+"/equipmentType/update.do",
 			isType:record.get("levl")==1?true:false,
 			listeners:{

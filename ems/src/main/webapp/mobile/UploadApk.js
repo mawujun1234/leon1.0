@@ -1,0 +1,11 @@
+Ext.defineModel("Ems.mobile.UploadApk",{
+	extend:"Ext.data.Model",
+	idProperty:'id',
+	fields:[
+		{name:'verCode',type:'string'},
+		{name:'verName',type:'int'},
+		{name:'read',type:'int'}
+	],
+	associations:[
+	]
+});

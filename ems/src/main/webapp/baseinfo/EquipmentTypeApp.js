@@ -45,6 +45,7 @@ Ext.onReady(function(){
 				id:record.get("id"),//.split("_")[0],
 				levl:record.get("levl")
 			}});
+			grid.subtype_name=record.get("text");
 		} else {
 			grid.getEl().mask();
 			grid.getStore().removeAll();

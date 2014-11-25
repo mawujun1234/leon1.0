@@ -11,7 +11,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeForm',{
     },
     frame: true,
     bodyPadding: '5 5 0',
-
+	isprod:false,
  //   layout: {
  //       type: 'vbox',
  //       align: 'stretch'  // Child items are stretched to full width
@@ -49,7 +49,15 @@ Ext.define('Ems.baseinfo.EquipmentTypeForm',{
 	        fieldLabel: '单位',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'unit',
-	        //readOnly:true,
+	        hidden:!me.isprod,
+	        xtype:'textfield',
+	        allowBlank: true
+	    },
+	     {
+	        fieldLabel: '规格',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'spec',
+	        hidden:!me.isprod,
 	        xtype:'textfield',
 	        allowBlank: true
 	    },

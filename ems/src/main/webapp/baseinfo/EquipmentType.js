@@ -8,6 +8,7 @@ Ext.defineModel("Ems.baseinfo.EquipmentType",{
 		{name:'name',type:'string'},
 		{name:'text',type:'string'},
 		{name:'unit',type:'string'},
+		{name:'spec',type:'string'},
 		{name:'parent_id',type:'string'},
 		
 		{name:'status_name',type:'String'}

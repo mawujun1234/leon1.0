@@ -48,12 +48,12 @@ public class EquipmentTypeController {
 			if(status){
 				cnd.andEquals(M.EquipmentType.status, status);
 			}
-			equipmentTypees=equipmentTypeService.query(cnd);
+			equipmentTypees=equipmentTypeService.query(cnd.asc(M.EquipmentType.id));
 		} else if(levl==1){
 			if(isGrid==null || isGrid==false){
 				//id=id.substring(0,id.indexOf('_'));
 			}
-			Cnd cnd=Cnd.select().andEquals(M.EquipmentSubtype.parent_id, "root".equals(id)?null:id);
+			Cnd cnd=Cnd.select().andEquals(M.EquipmentSubtype.parent_id, "root".equals(id)?null:id).asc(M.EquipmentType.id);
 			if(status){
 				cnd.andEquals(M.EquipmentType.status, status);
 			}
@@ -66,7 +66,7 @@ public class EquipmentTypeController {
 			if(isGrid==null || isGrid==false){
 				//id=id.substring(0,id.indexOf('_'));
 			}
-			Cnd cnd=Cnd.select().andEquals(M.EquipmentSubtype.parent_id, "root".equals(id)?null:id);
+			Cnd cnd=Cnd.select().andEquals(M.EquipmentSubtype.parent_id, "root".equals(id)?null:id).asc(M.EquipmentType.id);
 			if(status){
 				cnd.andEquals(M.EquipmentType.status, status);
 			}

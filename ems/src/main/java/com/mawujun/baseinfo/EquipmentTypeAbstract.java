@@ -25,6 +25,8 @@ public class EquipmentTypeAbstract {
 	//单位：台，个
 	@Column(length=10)
 	private String unit;
+	@Column(length=50)
+	private String spec;
 	
 	
 	public String getStatus_name() {
@@ -81,6 +83,14 @@ public class EquipmentTypeAbstract {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getSpec() {
+		return spec;
+	}
+
+	public void setSpec(String spec) {
+		this.spec = spec;
 	}
 
 }
