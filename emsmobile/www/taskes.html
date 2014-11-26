@@ -160,7 +160,7 @@ function queryTasks(status,appendDir,callBack){
 						img="img/patrols.png";
 					}else if("cancel"==root[i].type){
 						page_id="page_cancel";
-						h2_title="取消杆位";
+						h2_title="取消点位";
 						img="img/cancel.png";
 					}
 					html+='<li id="li_'+root[i].id+'">'+
@@ -332,7 +332,7 @@ $(document).ready(function(e) {
         <div class="ui-field-contain">
             <label for="id">任务编号:</label>
             <input type="text"  id="page_install_id" placeholder="只读" value="">
-            <label for="pole">杆位:</label>
+            <label for="pole">点位:</label>
             <input readonly type="text" id="page_install_pole_name" placeholder="只读" value="">
         	<label  for="memo">任务描述:</label>
     		<textarea readonly id="page_install_memo" placeholder="只读" data-mini="true"></textarea>
@@ -367,7 +367,7 @@ $(document).ready(function(e) {
         <div class="ui-field-contain">
             <label for="id">任务编号:</label>
             <input type="text"  id="page_repair_id" placeholder="只读" value="">
-            <label for="pole">杆位:</label>
+            <label for="pole">点位:</label>
             <input readonly type="text" id="page_repair_pole_name" placeholder="只读" value="">
         	<label  for="memo">任务描述:</label>
     		<textarea readonly  id="page_repair_memo" placeholder="只读" data-mini="true"></textarea>
@@ -436,7 +436,7 @@ $(document).ready(function(e) {
         <div class="ui-field-contain">
             <label for="id">任务编号:</label>
             <input type="text"  id="page_patrol_id" placeholder="只读" value="">
-            <label for="pole">杆位:</label>
+            <label for="pole">点位:</label>
             <input readonly type="text" id="page_patrol_pole_name" placeholder="只读" value="">
         	<label  for="memo">任务描述:</label>
     		<textarea readonly  id="page_patrol_memo" placeholder="只读" data-mini="true"></textarea>
@@ -463,13 +463,13 @@ $(document).ready(function(e) {
 
 	<div data-role="header" data-position="fixed">
     	<a href="#page_homepage" class="ui-btn ui-corner-all" data-rel="back" data-theme="c">返回</a>
-        <h1>取消杆位</h1> 
+        <h1>取消点位</h1> 
 	</div>
 	<div role="main" class="ui-content">
         <div class="ui-field-contain">
             <label for="id">任务编号:</label>
             <input type="text"  id="page_cancel_id" placeholder="只读" value="">
-            <label for="pole">杆位:</label>
+            <label for="pole">点位:</label>
             <input readonly type="text" id="page_cancel_pole_name" placeholder="只读" value="">
         	<label  for="memo">任务描述:</label>
     		<textarea readonly  id="page_cancel_memo" placeholder="只读" data-mini="true"></textarea>

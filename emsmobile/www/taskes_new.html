@@ -4,12 +4,12 @@
         <h1>新建任务</h1> 
 	</div>
 	<div role="main" class="ui-content">
-    	<!--<input id="autocomplete-input" data-type="search" placeholder="输入杆位信息...">-->
-    	 <a href="taskes_search_pole.html" data-prefetch="true" class="ui-btn ui-corner-all actionbutton">搜索杆位</a>
+    	<!--<input id="autocomplete-input" data-type="search" placeholder="输入点位信息...">-->
+    	 <a href="taskes_search_pole.html" data-prefetch="true" class="ui-btn ui-corner-all actionbutton">搜索点位</a>
         <div class="ui-field-contain">
         	<input type="hidden" id="page_taskes_new_type" value="" />
             <input type="hidden" id="page_taskes_new_pole_id" value="" />
-        	<label for="page_taskes_new_pole_name">杆位:</label>
+        	<label for="page_taskes_new_pole_name">点位:</label>
             <input type="text"  id="page_taskes_new_pole_name" placeholder="只读" readonly>
        		<label for="page_taskes_new_pole_address">地址:</label>
             <input type="text"  id="page_taskes_new_pole_address" placeholder="只读" readonly>
@@ -49,7 +49,7 @@
 		$("#page_taskes_new_submitNewTask").click(function(event){
 			var params=window.page_taskes_new_params;	
 			if(!params.pole_id){
-				$("#page_taskes_new_errorMsg").html("请先选择一个杆位");
+				$("#page_taskes_new_errorMsg").html("请先选择一个点位");
 				return;
 			}
 			params.memo=$("#page_taskes_new_memo").val();

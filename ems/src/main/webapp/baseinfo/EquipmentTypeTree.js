@@ -169,6 +169,8 @@ Ext.define('Ems.baseinfo.EquipmentTypeTree', {
     	var parent_id=parent.get("id");
     	if(parent_id!="root"){
     		parent_id=parent_id;//.split("_")[0];
+    	} else {
+    		parent_id="";
     	}
 		var initValue={
 		    'parent_id':parent_id,
@@ -184,8 +186,10 @@ Ext.define('Ems.baseinfo.EquipmentTypeTree', {
 
     	values=Ext.applyIf(values,initValue);
 
+    	//values.id=parent_id=="root"?"":parent_id;//用于初始化id的前半段
 		var child=values.isModel?values:Ext.createModel(parent.self.getName(),values);
 		var form=new Ems.baseinfo.EquipmentTypeForm({
+			//parent_id:parent_id=="root"?"":parent_id,
 			url:Ext.ContextPath+"/equipmentType/create.do",
 			isType:initValue.levl==1?true:false,
 			listeners:{

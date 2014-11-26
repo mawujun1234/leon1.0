@@ -40,7 +40,7 @@ Ext.onReady(function(){
 		
 		if(record.get("levl")==2){
 			grid.getEl().unmask();
-			var aa=grid.getSelectionModel( ).getLastSelected( );
+			//var aa=grid.getSelectionModel( ).getLastSelected( );
 			grid.getStore().load({params:{
 				id:record.get("id"),//.split("_")[0],
 				levl:record.get("levl")

@@ -7,7 +7,7 @@
     </style>
 	<div data-role="header"  data-position="fixed">
     	<a href="#page_taskes_new" class="ui-btn ui-corner-all"  data-theme="c">返回</a>
-        <h1>搜索杆位</h1> 
+        <h1>搜索点位</h1> 
 	</div>
 	<div role="main" class="ui-content">
         <form class="ui-filterable">
@@ -26,13 +26,13 @@
 		//page_taskes_new_type是在taskes.html中定义的
 		var params=window.page_taskes_new_params;
 		if(params.type=="newInstall" && pole_status!="uninstall"){
-			alert("杆位‘"+pole_name+"’不能发送新安装任务!");
+			alert("点位‘"+pole_name+"’不能发送新安装任务!");
 			return;
 		} else if(params.type=="repairs" && pole_status!="using" && pole_status!="hitch"){
-			alert("只有'使用中','有损坏'状态的杆位，才能发送维修/维护任务!");
+			alert("只有'使用中','有损坏'状态的点位，才能发送维修/维护任务!");
 			return;
 		} else if(params.type=="patrol" && pole_status!="using" && pole_status!="hitch"){
-			alert("只有'使用中','有损坏'状态的杆位，才能发送巡检任务!");
+			alert("只有'使用中','有损坏'状态的点位，才能发送巡检任务!");
 			return;
 		}
 		params.pole_id=pole_id,
@@ -67,7 +67,7 @@
 					.then( function ( response ) {
 						var root=response.root;
 						if(!root || root.length==0){
-							$ul.html( "<li>无匹配杆位</li>" );
+							$ul.html( "<li>无匹配点位</li>" );
 							$ul.listview( "refresh" );
 							$.hideLoader();
 							return;

@@ -22,11 +22,14 @@ public class EquipmentTypeAbstract {
 	@Transient
 	private Boolean leaf;
 	
-	//单位：台，个
-	@Column(length=10)
+	@Transient
 	private String unit;
-	@Column(length=50)
+	@Transient
 	private String spec;
+	@Transient
+	private String style;// 型号
+	@Transient
+	private String brand_id;
 	
 	
 	public String getStatus_name() {
@@ -64,12 +67,7 @@ public class EquipmentTypeAbstract {
 	public void setLeaf(Boolean leaf) {
 		this.leaf = leaf;
 	}
-	public String getUnit() {
-		return unit;
-	}
-	public void setUnit(String unit) {
-		this.unit = unit;
-	}
+
 	public Boolean getStatus() {
 		return status;
 	}
@@ -85,12 +83,36 @@ public class EquipmentTypeAbstract {
 		this.name = name;
 	}
 
+	public String getUnit() {
+		return unit;
+	}
+
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
+
 	public String getSpec() {
 		return spec;
 	}
 
 	public void setSpec(String spec) {
 		this.spec = spec;
+	}
+
+	public String getStyle() {
+		return style;
+	}
+
+	public void setStyle(String style) {
+		this.style = style;
+	}
+
+	public String getBrand_id() {
+		return brand_id;
+	}
+
+	public void setBrand_id(String brand_id) {
+		this.brand_id = brand_id;
 	}
 
 }

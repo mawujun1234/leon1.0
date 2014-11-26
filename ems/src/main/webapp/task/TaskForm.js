@@ -136,7 +136,7 @@ Ext.define('Ems.task.TaskForm',{
 	        allowBlank: false
 	    },
 	    {
-	        fieldLabel: '杆位',
+	        fieldLabel: '点位',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'pole_name',
 	        readOnly:true,

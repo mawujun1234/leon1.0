@@ -33,8 +33,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -171,9 +173,16 @@ public class GenerateMT_Mojo extends AbstractMojo
     		//fileWrite.append("public static final class "+clazz.getSimpleName()+" {\n");
     		fileWrite.append("public static final class "+annoation.name()+" {\n");
     		 //Field[]fields = clazz.getDeclaredFields();
+    		 Set<String> existField=new HashSet<String>();
+    		 
     		List<Field> fields= getClassField(clazz);
              for (Field field : fields) { //完全等同于上面的for循环
                  //System.out.println(field.getName()+" "+field.getType());
+            	 if(!existField.contains(field.getName())){
+            		 existField.add(field.getName());
+            	 } else {
+            		 continue;
+            	 }
             	 getLog().info(field.getName());
             	
             	 Annotation embeddedIdAnnotataion=field.getAnnotation(EmbeddedId.class);
@@ -254,7 +263,14 @@ public class GenerateMT_Mojo extends AbstractMojo
     		fileWrite.append("public static final class "+clazz.getSimpleName()+" {\n");
     		 //Field[]fields = clazz.getDeclaredFields();
     		 List<Field> fields= getClassField(clazz);
+    		 
+    		 Set<String> existField=new HashSet<String>();
              for (Field field : fields) { //完全等同于上面的for循环
+            	 if(!existField.contains(field.getName())){
+            		 existField.add(field.getName());
+            	 } else {
+            		 continue;
+            	 }
             	 getLog().info(field.getName());
                  //System.out.println(field.getName()+" "+field.getType());
                  //fileWrite.append("public static final "+field.getType().getName()+" "+field.getName()+"=\""+field.getName()+"\";\n");

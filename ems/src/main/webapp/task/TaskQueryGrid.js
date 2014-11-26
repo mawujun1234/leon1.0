@@ -42,7 +42,7 @@ Ext.define('Ems.task.TaskQueryGrid',{
 			return value;
 		}},
 		{dataIndex:'type_name',text:'任务类型',width:60},
-		{dataIndex:'pole_name',text:'杆位名称'},
+		{dataIndex:'pole_name',text:'点位名称'},
 		{dataIndex:'pole_address',text:'地址',flex:1},
 		{dataIndex:'createDate',text:'创建时间', renderer: Ext.util.Format.dateRenderer('Y-m-d')},
 		{dataIndex:'submitDate',text:'提交时间', renderer: Ext.util.Format.dateRenderer('Y-m-d')},

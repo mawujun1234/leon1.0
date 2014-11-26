@@ -33,7 +33,7 @@ Ext.onReady(function(){
 		split: true,
 		height:200,
 		collapsible: true,
-		title:'杆位管理'
+		title:'点位管理'
 	});
 
 

@@ -104,7 +104,7 @@ Ext.onReady(function(){
 	        allowBlank: true
 	    },
 	    {
-	        fieldLabel: '杆位地址',
+	        fieldLabel: '点位地址',
 	        name: 'pole_address',
 	        allowBlank: true
 	    }]

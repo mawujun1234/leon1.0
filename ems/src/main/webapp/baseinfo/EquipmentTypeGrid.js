@@ -29,7 +29,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 		}},
 		{dataIndex:'name',text:'名称',flex:1},
 		{dataIndex:'unit',text:'单位',flex:1},
-		{dataIndex:'spec',text:'规格',flex:1},
+		{dataIndex:'brand_name',text:'品牌',flex:1},
 		{dataIndex:'status',text:'状态',renderer:function(value){
 			if(value){
 				return "有效";
@@ -164,6 +164,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 		var child=values.isModel?values:Ext.createModel(parent.self.getName(),values);
 		var form=new Ems.baseinfo.EquipmentTypeForm({
 			isprod:true,
+			//parent_id:parent_id,
 			url:Ext.ContextPath+"/equipmentType/create.do",
 			isType:initValue.levl==1?true:false,
 			listeners:{
@@ -180,7 +181,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 			layout:'fit',
 			closeAction:'destroy',
 			width:300,
-			height:200,
+			height:240,
 			modal:true
 		});
 		//form.win=win
@@ -202,6 +203,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 			listeners:{
 				saved:function(){
 					//form.updateRecord();
+					
 					win.close();
 					//alert(record.get("id")+"_"+record.get("levl"));
 					//me.tree.getStore().getNodeById(record.get("id")+"_"+record.get("levl")).set("text",record.get("text")) 
@@ -211,14 +213,18 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 		form.getForm().loadRecord(record);
 		//var ids=record.get("id").split("_");
 		//form.getForm().findField("id").setValue(ids[0]);
-		form.getForm().findField("id").setReadOnly(true);
+		var end_id=form.getForm().findField("end_id");
+		end_id.setReadOnly(true);
+		end_id.setValue(record.get("id").substr(record.get("parent_id").length));//replace(record.get("parent_id","")));
+		//alert(record.get("brand_name"));
+		form.getForm().findField("brand_id").setRawValue(record.get("brand_name"));
 		
 		var win=new Ext.window.Window({
 			items:[form],
 			layout:'fit',
 			closeAction:'destroy',
 			width:300,
-			height:200,
+			height:240,
 			modal:true
 		});
 		//form.win=win

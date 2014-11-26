@@ -48,7 +48,7 @@ Ext.define('Ems.task.TaskSendGrid',{
 		   }
 		   return record.get("status_name");
 		 }},
-		{dataIndex:'name',text:'杆位名称',renderer:function(value,metadata ,record){
+		{dataIndex:'name',text:'点位名称',renderer:function(value,metadata ,record){
 			if(record.get("task_num")){
 				 return "<a href='javascript:void(0);'>("+record.get("task_num")+")"+value+"</a>";
 			}
@@ -222,8 +222,8 @@ Ext.define('Ems.task.TaskSendGrid',{
 	    var pole_textfield=Ext.create('Ext.form.field.Text',{
 			labelAlign:'right',
 			name:'pole_name',
-			//fieldLabel: '杆位名称',
-			emptyText:'请输入杆位名称',
+			//fieldLabel: '点位名称',
+			emptyText:'请输入点位名称',
 			selectOnFocus:true,
 			labelWidth:80,
 			width:250,
@@ -245,10 +245,10 @@ Ext.define('Ems.task.TaskSendGrid',{
 				}});
 			}
 		});
-		//判断一个杆位是否能存在多个任务
+		//判断一个点位是否能存在多个任务
 		function checkTasknum(record){
 			if(record.get("task_num")>0){
-				alert("杆位‘"+record.get("name")+"’已经存在任务,不能再发送了。");
+				alert("点位‘"+record.get("name")+"’已经存在任务,不能再发送了。");
 				return false;
 			} else {
 				return true;
@@ -261,13 +261,13 @@ Ext.define('Ems.task.TaskSendGrid',{
 			handler:function(){
 				var records=me.getSelectionModel().getSelection();
 				if(!records || records.length==0){
-					alert("请先选择杆位");
+					alert("请先选择点位");
 					return;
 				}
 				
 				if(records.length==1){
 					if(records[0].get("status")!="uninstall"){
-						alert("只有'未安装'状态的杆位，才能发送新安装任务!");
+						alert("只有'未安装'状态的点位，才能发送新安装任务!");
 						return;
 					}
 					var bool=checkTasknum(records[0]);
@@ -277,12 +277,12 @@ Ext.define('Ems.task.TaskSendGrid',{
 					me.showTaskForm(records[0],"newInstall");
 					
 				} else {
-					Ext.Msg.confirm("提醒","只会为对'未安装'的杆位发送安装任务,选'是'进行发送,并且将会直接发送，不能填写任务描述信息",function(btn){
+					Ext.Msg.confirm("提醒","只会为对'未安装'的点位发送安装任务,选'是'进行发送,并且将会直接发送，不能填写任务描述信息",function(btn){
 						if(btn=='yes'){
 							var taskes=[];
 							for(var i=0;i<records.length;i++){
 								if(records[i].get("status")!="uninstall"){
-									alert("杆位‘"+records[i].get("name")+"’不能发送新安装任务!");
+									alert("点位‘"+records[i].get("name")+"’不能发送新安装任务!");
 									return;
 								}
 								var bool=checkTasknum(records[i]);
@@ -321,13 +321,13 @@ Ext.define('Ems.task.TaskSendGrid',{
 			handler:function(){
 				var records=me.getSelectionModel().getSelection();
 				if(!records || records.length==0){
-					alert("请先选择杆位");
+					alert("请先选择点位");
 					return;
 				}
 				if(records.length==1){
 					var pole_status=records[0].get("status");
 					if(pole_status!="using" && pole_status!="hitch"){
-						alert("只有'使用中','有损坏'状态的杆位，才能发送维修/维护任务!");
+						alert("只有'使用中','有损坏'状态的点位，才能发送维修/维护任务!");
 						return;
 					}
 					var bool=checkTasknum(records[0]);
@@ -336,12 +336,12 @@ Ext.define('Ems.task.TaskSendGrid',{
 								}
 					me.showTaskForm(records[0],"repair");
 				} else {
-					Ext.Msg.confirm("提醒","只会为对'使用中','有损坏'的杆位发送维修/维护任务,选'是'进行发送",function(btn){
+					Ext.Msg.confirm("提醒","只会为对'使用中','有损坏'的点位发送维修/维护任务,选'是'进行发送",function(btn){
 						if(btn=='yes'){
 							var taskes=[];
 							for(var i=0;i<records.length;i++){
 								if(records[i].get("status")!="using" && records[i].get("status")!="hitch"){
-									alert("杆位‘"+records[i].get("name")+"’不能发送维修任务!");
+									alert("点位‘"+records[i].get("name")+"’不能发送维修任务!");
 									return;
 								}
 								var bool=checkTasknum(records[i]);
@@ -380,13 +380,13 @@ Ext.define('Ems.task.TaskSendGrid',{
 			handler:function(){
 				var records=me.getSelectionModel().getSelection();
 				if(!records || records.length==0){
-					alert("请先选择杆位");
+					alert("请先选择点位");
 					return;
 				}
 				if(records.length==1){
 					var pole_status=records[0].get("status");
 					if(pole_status!="using" && pole_status!="hitch"){
-						alert("只有'使用中','有损坏'状态的杆位，才能发送巡检任务!");
+						alert("只有'使用中','有损坏'状态的点位，才能发送巡检任务!");
 						return;
 					}
 					var bool=checkTasknum(records[0]);
@@ -395,12 +395,12 @@ Ext.define('Ems.task.TaskSendGrid',{
 								}
 					me.showTaskForm(records[0],"patrol");
 				} else {
-					Ext.Msg.confirm("提醒","只会为对'使用中','有损坏'的杆位发送巡检任务,选'是'进行发送",function(btn){
+					Ext.Msg.confirm("提醒","只会为对'使用中','有损坏'的点位发送巡检任务,选'是'进行发送",function(btn){
 						if(btn=='yes'){
 							var taskes=[];
 							for(var i=0;i<records.length;i++){
 								if(records[i].get("status")!="using" && records[i].get("status")!="hitch"){
-									alert("杆位‘"+records[i].get("name")+"’不能发送巡检任务!");
+									alert("点位‘"+records[i].get("name")+"’不能发送巡检任务!");
 									return;
 								}
 								var bool=checkTasknum(records[i]);
@@ -434,19 +434,19 @@ Ext.define('Ems.task.TaskSendGrid',{
 		
 		
 		var cancel_button=Ext.create('Ext.button.Button',{
-			text:'取消杆位',
+			text:'取消点位',
 			margin:'0 0 0 5',
 			icon:'../images/cancel.png',
 			handler:function(){
 				var records=me.getSelectionModel().getSelection();
 				if(!records || records.length==0){
-					alert("请先选择杆位");
+					alert("请先选择点位");
 					return;
 				}
 				if(records.length==1){
 //					var pole_status=records[0].get("status");
 //					if(pole_status!="using" && pole_status!="hitch"){
-//						alert("只有'使用中','有损坏'状态的杆位，才能发送巡检任务!");
+//						alert("只有'使用中','有损坏'状态的点位，才能发送巡检任务!");
 //						return;
 //					}
 					var bool=checkTasknum(records[0]);
@@ -455,7 +455,7 @@ Ext.define('Ems.task.TaskSendGrid',{
 					}
 					me.showTaskForm(records[0],"cancel");
 				} else {
-					Ext.Msg.alert("消息","为了防止错误取消杆位,一次只能取消一个杆位!");
+					Ext.Msg.alert("消息","为了防止错误取消点位,一次只能取消一个点位!");
 					return;
 				}
 				
@@ -497,7 +497,7 @@ Ext.define('Ems.task.TaskSendGrid',{
 		var me=this;
 		var values=me.initTask_value(pole,task_type);
 					var title="发送任务";
-					//如果存在，表明该杆位已经存在任务关联了，所以直接设置这几个值
+					//如果存在，表明该点位已经存在任务关联了，所以直接设置这几个值
 					var showSendButton=true;
 					
 					//如果已经存在巡检任务，就可以新建维修任务

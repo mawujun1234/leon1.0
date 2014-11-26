@@ -21,7 +21,7 @@ Ext.define('Ems.baseinfo.AreaPoleGrid',{
       var me = this;
       me.columns=[
 		//{dataIndex:'id',text:'id'},
-      	{dataIndex:'name',text:'杆位名称',width:160},
+      	{dataIndex:'name',text:'点位名称',width:160},
       	{dataIndex:'province',text:'地址',flex:1,renderer:function(value,metaData ,record){
       		return value+record.get("city")+record.get("area")+record.get("address")
       	}},
@@ -137,7 +137,7 @@ Ext.define('Ems.baseinfo.AreaPoleGrid',{
     	}
 		var win=Ext.create('Ems.baseinfo.AreaSelPoleWindow',{
 			width:800,
-			title:'添加杆位(已经被分配的将不会显示)',
+			title:'添加点位(已经被分配的将不会显示)',
 			height:500,
 			buttons:[{
 				text:'确认',

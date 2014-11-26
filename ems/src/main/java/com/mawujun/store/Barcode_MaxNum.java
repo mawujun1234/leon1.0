@@ -15,9 +15,9 @@ import com.mawujun.repository.idEntity.UUIDEntity;
 @Entity
 @Table(name="ems_barcode_maxnum",uniqueConstraints=@UniqueConstraint(columnNames={"subtype_id","prod_id","brand_id","supplier_id","ymd"}))
 public class Barcode_MaxNum extends UUIDEntity {
-	@Column(length=3)
+	@Column(length=4)
 	private String subtype_id;//子类型id
-	@Column(length=3)
+	@Column(length=6)
 	private String prod_id;//品名id
 	@Column(length=3)
 	private String brand_id;//品牌id

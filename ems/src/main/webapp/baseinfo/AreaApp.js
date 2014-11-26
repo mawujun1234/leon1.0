@@ -23,7 +23,7 @@ Ext.onReady(function(){
 		region:'center',
 		split: true,
 		collapsible: true,
-		title:'管理的杆位'
+		title:'管理的点位'
 	});
 	
 	var viewPort=Ext.create('Ext.container.Viewport',{

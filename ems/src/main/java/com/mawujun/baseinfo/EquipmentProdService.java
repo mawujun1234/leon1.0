@@ -1,9 +1,15 @@
 package com.mawujun.baseinfo;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+
+
 
 
 
@@ -52,5 +58,13 @@ public class EquipmentProdService extends AbstractService<EquipmentProd, String>
 		
 		this.getRepository().update(Cnd.update().set(M.EquipmentProd.status, false).andEquals(M.EquipmentProd.id, entity.getId()));
 	}
+	
+	
+	public List<EquipmentProd> queryB(Map map) {
+		return this.getRepository().queryB(map);
+	}
 
+	public List<Brand> queryBrandCombo(String prod_id) {
+		return this.getRepository().queryBrandCombo(prod_id);
+	}
 }

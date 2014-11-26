@@ -17,9 +17,9 @@ public class Equipment implements IdEntity<String>{
 	private String ecode;
 //	@Column(length=2)
 //	private String type_id;//类型id
-	@Column(length=2)
+	@Column(length=4)
 	private String subtype_id;//子类型id
-	@Column(length=3)
+	@Column(length=6)
 	private String prod_id;//品名id
 	@Column(length=15)
 	private String brand_id;//品牌id

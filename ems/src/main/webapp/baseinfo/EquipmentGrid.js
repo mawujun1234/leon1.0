@@ -1,5 +1,5 @@
 /**
- * 显示杆位上有哪些设备的
+ * 显示点位上有哪些设备的
  */
 Ext.define('Ems.baseinfo.EquipmentGrid',{
 	extend:'Ext.grid.Panel',

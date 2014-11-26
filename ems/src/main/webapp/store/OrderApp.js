@@ -78,13 +78,51 @@ Ext.onReady(function(){
 	var prod_combox=Ext.create('Ems.baseinfo.ProdCombo',{
 		labelAlign:'right',
 		allowBlank: false,
-		minChars:-1	
+		minChars:-1	,
+		listeners:{
+			change:function(field,newValue, oldValue){
+				brand_combox.clearValue( );
+				brand_combox.getStore().getProxy().extraParams={prod_id:newValue};
+				brand_combox.getStore().reload();
+			}
+		}
 	});
-	var brand_combox=Ext.create('Ems.baseinfo.BrandCombo',{
-		labelAlign:'right',
-		allowBlank: false,
-		minChars:-1
-	});
+//	var brand_combox=Ext.create('Ext.form.field.ComboBox',{
+//	    	fieldLabel: '品牌',
+//	    	labelWidth:40,
+//		    displayField: 'name',
+//		    valueField: 'id',
+//		     //minChars:1,
+//		     xtype:'combobox',
+//		    forceSelection:true,
+//		    allowBlank: false,
+//		    //queryParam: 'name',
+//		    //queryMode: 'remote',
+//		    name:'brand_id',
+//	    	store:Ext.create('Ext.data.Store', {
+//			    fields: ['id', 'name'],
+//			    autoLoad:false,
+//			    proxy:{
+//			    	type:'ajax',
+//			    	actionMethods: {
+//				        create : 'POST',
+//				        read   : 'POST',
+//				        update : 'POST',
+//				        destroy: 'POST'
+//				    },
+//			    	url:Ext.ContextPath+"/equipmentType/queryBrandCombo.do",
+//			    	reader:{
+//			    		type:'json',
+//			    		root:'root'
+//			    	}
+//			    },
+//			    listeners:{
+//				    	beforeload:function(store){
+//
+//				    	}
+//				}
+//		   })
+//	});
 	var supplier_combox=Ext.create('Ems.baseinfo.SupplierCombo',{
 		labelAlign:'right',
 		

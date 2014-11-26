@@ -78,6 +78,7 @@ Ext.define('Ems.baseinfo.ProdCombo',{
        var me = this;
 	   var store=Ext.create('Ext.data.Store', {
 		    fields: ['id', 'text'],
+		    autoLoad:false,
 		    proxy:{
 		    	type:'ajax',
 		    	actionMethods: {

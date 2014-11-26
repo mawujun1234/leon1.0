@@ -104,7 +104,7 @@ Ext.onReady(function(){
 		tbar:tbar,
 		columns:[
 			{ text: '作业单位',  dataIndex: 'name' },
-			{ text: '杆位数',  dataIndex: 'pole_nums' },
+			{ text: '点位数',  dataIndex: 'pole_nums' },
 			{ text: '本期新建任务',  dataIndex: 'currt_new' },
 			{ text: '本期完成任务',  dataIndex: 'currt_complete' },
 			{ text: '本期完成平均时间',  dataIndex: 'currt_avgcompletetime' },

@@ -1,9 +1,12 @@
 package com.mawujun.baseinfo;
 
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.mawujun.repository1.IRepository;
-
 import com.mawujun.baseinfo.EquipmentProd;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
@@ -13,5 +16,7 @@ import com.mawujun.baseinfo.EquipmentProd;
 @Repository
 public interface EquipmentProdRepository extends IRepository<EquipmentProd, String>{
 
-
+	public List<EquipmentProd> queryB(Map map);
+	
+	public List<Brand> queryBrandCombo(@Param("prod_id") String prod_id);
 }

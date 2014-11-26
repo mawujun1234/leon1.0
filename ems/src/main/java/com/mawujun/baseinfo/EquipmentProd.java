@@ -11,49 +11,51 @@ import javax.persistence.Transient;
 import com.mawujun.repository.idEntity.IdEntity;
 
 @Entity
-@Table(name="ems_equipmentprod")
-public class EquipmentProd  extends EquipmentTypeAbstract implements IdEntity<String>{
+@Table(name = "ems_equipmentprod")
+public class EquipmentProd extends EquipmentTypeAbstract implements
+		IdEntity<String> {
+
+	// 单位：台，个
+	@Column(length = 10)
+	private String unit;
+	@Column(length = 50)
+	private String spec;
+	@Column(length = 50)
+	private String style;// 型号
+	@Column(length = 20)
+	private String brand_id;
+	@Transient
+	private String brand_name;
 	
-	
-//	@Id
-//	@Column(length=2)
-//	private String id;
-//	@Column(length=30)
-//	private String text;
-//	private Integer status;
-//	
-//	//@Transient
-//	@Column(updatable=false)
-//	private int level=3;
-//	
-//	@ManyToOne(fetch=FetchType.LAZY)
-//	private EquipmentSubtype parent;
-//	@Transient
-//	private String parent_id;
-//	
-//	public String getId() {
-//		return id;
-//	}
-//	public void setId(String id) {
-//		this.id = id;
-//	}
-//	public String getText() {
-//		return text;
-//	}
-//	public void setText(String text) {
-//		this.text = text;
-//	}
-//	public Integer getStatus() {
-//		return status;
-//	}
-//	public void setStatus(Integer status) {
-//		this.status = status;
-//	}
-//	public int getLevel() {
-//		return level;
-//	}
-//	public void setLevel(int level) {
-//		this.level = level;
-//	}
+	public String getUnit() {
+		return unit;
+	}
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
+	public String getSpec() {
+		return spec;
+	}
+	public void setSpec(String spec) {
+		this.spec = spec;
+	}
+	public String getStyle() {
+		return style;
+	}
+	public void setStyle(String style) {
+		this.style = style;
+	}
+	public String getBrand_id() {
+		return brand_id;
+	}
+	public void setBrand_id(String brand_id) {
+		this.brand_id = brand_id;
+	}
+	public String getBrand_name() {
+		return brand_name;
+	}
+	public void setBrand_name(String brand_name) {
+		this.brand_name = brand_name;
+	}
 
 }

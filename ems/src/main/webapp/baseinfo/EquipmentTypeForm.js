@@ -11,19 +11,42 @@ Ext.define('Ems.baseinfo.EquipmentTypeForm',{
     },
     frame: true,
     bodyPadding: '5 5 0',
-	isprod:false,
+	isprod:false,//判断现在是不是品名的form
+	parent_id:'',//大类，小类的值
  //   layout: {
  //       type: 'vbox',
  //       align: 'stretch'  // Child items are stretched to full width
  //   },
 	initComponent: function () {
        var me = this;
-       var maxLength=me.isType?2:3;
+       var maxLength=2;//me.parent_id.length+2;//me.isType?2:3;
+       
+	
        me.items= [
-		{
-	        fieldLabel: '编码',
-	        afterLabelTextTpl: Ext.required,
-	        name: 'id',
+       {
+							xtype : 'fieldcontainer',
+							fieldLabel : '编码',
+							afterLabelTextTpl: Ext.required,
+							//labelStyle : 'font-weight:bold;padding:0;',
+							layout : 'hbox',
+							defaultType : 'textfield',
+							fieldDefaults : {
+				// labelAlign: 'top'
+							},
+
+							items : [{
+								width : 35,
+								//fieldLabel : '父编码',
+								// afterLabelTextTpl: Ext.required,
+								margin:'0 5 0 0',
+								name : 'parent_id',
+								readOnly:true
+									// xtype:'hidden',
+									// allowBlank: false
+								}, {
+									flex:1,
+	        //fieldLabel: '编码',
+	        name: 'end_id',
 	        minLength:maxLength,
 	        maxLength:maxLength,
 	        length:maxLength,
@@ -36,7 +59,16 @@ Ext.define('Ems.baseinfo.EquipmentTypeForm',{
 		        	}
 		        }
 	        }
+	    }]
+						},       
+		{
+	        fieldLabel: 'id',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'id',
+	       
+	        xtype:'hidden'
 	    },
+		
 	    {
 	        fieldLabel: '名称',
 	        afterLabelTextTpl: Ext.required,
@@ -46,27 +78,61 @@ Ext.define('Ems.baseinfo.EquipmentTypeForm',{
 	        allowBlank: false
 	    },
 	    {
+	    	fieldLabel: '品牌',
+		    displayField: 'name',
+		    valueField: 'id',
+		    afterLabelTextTpl: Ext.required,
+		    hidden:!me.isprod,
+		     //minChars:1,
+		     xtype:'combobox',
+		    forceSelection:true,
+		    allowBlank: false,
+		    //queryParam: 'name',
+		    //queryMode: 'remote',
+		    name:'brand_id',
+	    	store:Ext.create('Ext.data.Store', {
+			    fields: ['id', 'name'],
+			    proxy:{
+			    	type:'ajax',
+			    	actionMethods: {
+				        create : 'POST',
+				        read   : 'POST',
+				        update : 'POST',
+				        destroy: 'POST'
+				    },
+			    	url:Ext.ContextPath+"/brand/queryBrandCombo.do",
+			    	reader:{
+			    		type:'json',
+			    		root:'root'
+			    	}
+			    },
+			    listeners:{
+				    	beforeload:function(store){
+				    		//包含所有的选项
+				    		if(me.containAll){
+				    			store.getProxy().extraParams=Ext.apply(store.getProxy().extraParams,{
+				    				containAll:true
+				    			})
+				    		}
+				    	}
+				}
+		   })
+		 },
+	     {
+	        fieldLabel: '型号',
+	        afterLabelTextTpl: Ext.required,
+	        name: 'style',
+	        hidden:!me.isprod,
+	        xtype:'textfield',
+	        maxLength:50,
+	        allowBlank: false
+	    },
+	    {
 	        fieldLabel: '单位',
-	        //afterLabelTextTpl: Ext.required,
+	        afterLabelTextTpl: Ext.required,
 	        name: 'unit',
 	        hidden:!me.isprod,
 	        xtype:'textfield',
-	        allowBlank: true
-	    },
-	     {
-	        fieldLabel: '规格',
-	        //afterLabelTextTpl: Ext.required,
-	        name: 'spec',
-	        hidden:!me.isprod,
-	        xtype:'textfield',
-	        allowBlank: true
-	    },
-	    {
-	        fieldLabel: '父编码',
-	        //afterLabelTextTpl: Ext.required,
-	        name: 'parent_id',
-	       
-	        xtype:'hidden',
 	        allowBlank: false
 	    },
 		{
@@ -93,9 +159,11 @@ Ext.define('Ems.baseinfo.EquipmentTypeForm',{
                 if(!form.getForm().isValid()) {
                 	return;
                 }
+                form.getForm().findField("id").setValue(form.getForm().findField("parent_id").getValue()+form.getForm().findField("end_id").getValue());
                 Ext.Msg.confirm("消息","确定要保存吗?",function(btn){
                 	if(btn=='yes'){
                 		form.getForm().updateRecord();
+                		form.getForm().getRecord().set("brand_name",form.getForm().findField("brand_id").getRawValue());
 						form.getRecord().save({
 							url:form.url,
 							success: function(record, operation) {

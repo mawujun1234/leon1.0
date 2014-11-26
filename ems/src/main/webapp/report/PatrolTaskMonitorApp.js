@@ -103,10 +103,10 @@ Ext.onReady(function(){
 		tbar:tbar,
 		columns:[
 			{ text: '作业单位',  dataIndex: 'name' },
-			{ text: '杆位数',  dataIndex: 'pole_nums' },
-			{ text: '已巡检杆位',  dataIndex: 'patrols' },
+			{ text: '点位数',  dataIndex: 'pole_nums' },
+			{ text: '已巡检点位',  dataIndex: 'patrols' },
 			{ text: '完成率',  dataIndex: 'patrols_rate' },
-			{ text: '未巡检杆位',  dataIndex: 'unpatrols' }
+			{ text: '未巡检点位',  dataIndex: 'unpatrols' }
 		]
 	});
 	

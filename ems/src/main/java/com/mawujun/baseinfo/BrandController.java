@@ -110,8 +110,12 @@ public class BrandController {
 	 */
 	@RequestMapping("/brand/queryBrandCombo.do")
 	@ResponseBody
-	public List<Brand> queryBrandCombo(String name,Boolean containAll) {
-		List<Brand> brands=brandService.query(Cnd.select().andEquals(M.Brand.status, true).andLike(M.Brand.name, name));	
+	public List<Brand> queryBrandCombo(String prod_id,String name,Boolean containAll) {
+		Cnd cnd=Cnd.select().andEquals(M.Brand.status, true);
+		if(name !=null && !"".equalsIgnoreCase(name)){
+			cnd.andLike(M.Brand.name, name);
+		}
+		List<Brand> brands=brandService.query(cnd);	
 		if(containAll!=null && containAll){
 			Brand all=new Brand();
 			all.setId("");

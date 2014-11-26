@@ -1,6 +1,8 @@
 package com.mawujun.baseinfo;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -66,21 +68,25 @@ public class EquipmentTypeController {
 			if(isGrid==null || isGrid==false){
 				//id=id.substring(0,id.indexOf('_'));
 			}
-			Cnd cnd=Cnd.select().andEquals(M.EquipmentSubtype.parent_id, "root".equals(id)?null:id).asc(M.EquipmentType.id);
-			if(status){
-				cnd.andEquals(M.EquipmentType.status, status);
-			}
-			equipmentTypees=equipmentProdService.query(cnd);
-		}
-//		//防止编码重复
-//		if(isGrid==null || isGrid==false){
-//			for(int i=0;i<equipmentTypees.size();i++){
-//				EquipmentTypeAbstract obj=(EquipmentTypeAbstract)equipmentTypees.get(i);
-//				//为树上的节点带上编号
-//				//obj.setText(obj.getText()+"("+obj.getId()+")");
-//				//obj.setId(obj.getId()+"_"+obj.getLevl());
+//			Cnd cnd=Cnd.select().andEquals(M.EquipmentSubtype.parent_id, "root".equals(id)?null:id).asc(M.EquipmentType.id);
+//			if(status){
+//				cnd.andEquals(M.EquipmentType.status, status);
 //			}
-//		} 
+//			equipmentTypees=equipmentProdService.query(cnd);
+			
+			Map<String,Object> params=new HashMap<String,Object>();
+			params.put(M.EquipmentSubtype.parent_id, "root".equals(id)?null:id);
+			if(status!=null){
+//				if(status){
+//					params.put(M.EquipmentType.status, "Y");
+//				} else {
+//					params.put(M.EquipmentType.status, "N");
+//				}
+				params.put(M.EquipmentType.status, status);
+			}
+			equipmentTypees=equipmentProdService.queryB(params);
+		}
+
 
 
 		return equipmentTypees;
@@ -214,5 +220,16 @@ public class EquipmentTypeController {
 		return list;
 	}
 	
-	
+	/**
+	 * 用于combobox
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param name
+	 * @return
+	 */
+	@RequestMapping("/equipmentType/queryBrandCombo.do")
+	@ResponseBody
+	public List<Brand> queryBrandCombo(String prod_id) {
+		
+		return equipmentProdService.queryBrandCombo(prod_id);
+	}
 }
