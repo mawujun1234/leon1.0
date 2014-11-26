@@ -6,7 +6,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
 <mapper namespace="com.mawujun.baseinfo.EquipmentProdRepository">
 
-	<select id="queryB" resultType="com.mawujun.baseinfo.EquipmentProd" parameterType="map">
+	<select id="queryProdGrid" resultType="com.mawujun.baseinfo.EquipmentProd" parameterType="map">
     	SELECT a.*,b.name as brand_name
 	    FROM ems_equipmentprod a,ems_brand b 
 		where a.brand_id=b.id
@@ -19,13 +19,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		order by a.id
     </select>
     
-    <select id="queryBrandCombo" resultType="com.mawujun.baseinfo.Brand" parameterType="string">
-    	SELECT b.*
-	    FROM ems_equipmentprod a,ems_brand b 
-		where a.brand_id=b.id
-		and b.status='Y'
-		and a.id=#{prod_id}
-    </select>
+
   
 </mapper>
 

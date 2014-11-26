@@ -1,5 +1,6 @@
 package com.mawujun.baseinfo;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 
 
 
@@ -60,11 +62,21 @@ public class EquipmentProdService extends AbstractService<EquipmentProd, String>
 	}
 	
 	
-	public List<EquipmentProd> queryB(Map map) {
-		return this.getRepository().queryB(map);
+	public List<EquipmentProd> queryProdGrid(Boolean status,String subtype_id) {
+		Map<String,Object> params=new HashMap<String,Object>();
+		params.put(M.EquipmentSubtype.parent_id, subtype_id);
+		if(status!=null){
+//			if(status){
+//				params.put(M.EquipmentType.status, "Y");
+//			} else {
+//				params.put(M.EquipmentType.status, "N");
+//			}
+			params.put(M.EquipmentType.status, status);
+		}
+		return this.getRepository().queryProdGrid(params);
 	}
 
-	public List<Brand> queryBrandCombo(String prod_id) {
-		return this.getRepository().queryBrandCombo(prod_id);
-	}
+//	public List<Brand> queryProdGrid(String subtype_id) {
+//		return this.getRepository().queryBrandCombo(subtype_id);
+//	}
 }

@@ -65,26 +65,15 @@ public class EquipmentTypeController {
 				obj.setLeaf(true);
 			}
 		} else {
-			if(isGrid==null || isGrid==false){
-				//id=id.substring(0,id.indexOf('_'));
-			}
+
 //			Cnd cnd=Cnd.select().andEquals(M.EquipmentSubtype.parent_id, "root".equals(id)?null:id).asc(M.EquipmentType.id);
 //			if(status){
 //				cnd.andEquals(M.EquipmentType.status, status);
 //			}
 //			equipmentTypees=equipmentProdService.query(cnd);
 			
-			Map<String,Object> params=new HashMap<String,Object>();
-			params.put(M.EquipmentSubtype.parent_id, "root".equals(id)?null:id);
-			if(status!=null){
-//				if(status){
-//					params.put(M.EquipmentType.status, "Y");
-//				} else {
-//					params.put(M.EquipmentType.status, "N");
-//				}
-				params.put(M.EquipmentType.status, status);
-			}
-			equipmentTypees=equipmentProdService.queryB(params);
+
+			equipmentTypees=equipmentProdService.queryProdGrid(status,id);
 		}
 
 
@@ -220,16 +209,23 @@ public class EquipmentTypeController {
 		return list;
 	}
 	
-	/**
-	 * 用于combobox
-	 * @author mawujun email:160649888@163.com qq:16064988
-	 * @param name
-	 * @return
-	 */
-	@RequestMapping("/equipmentType/queryBrandCombo.do")
+//	/**
+//	 * 用于combobox
+//	 * @author mawujun email:160649888@163.com qq:16064988
+//	 * @param name
+//	 * @return
+//	 */
+//	@RequestMapping("/equipmentType/queryBrandCombo.do")
+//	@ResponseBody
+//	public List<Brand> queryBrandCombo(String prod_id) {
+//		
+//		return equipmentProdService.queryBrandCombo(prod_id);
+//	}
+	
+	@RequestMapping("/equipmentType/queryProdGrid.do")
 	@ResponseBody
-	public List<Brand> queryBrandCombo(String prod_id) {
-		
-		return equipmentProdService.queryBrandCombo(prod_id);
+	public List<EquipmentProd> queryProdGrid(String subtype_id) {
+		List<EquipmentProd> equipmentTypees=equipmentProdService.queryProdGrid(true,subtype_id);
+		return equipmentTypees;
 	}
 }

@@ -86,7 +86,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeForm',{
 		     //minChars:1,
 		     xtype:'combobox',
 		    forceSelection:true,
-		    allowBlank: false,
+		    allowBlank: !me.isprod,
 		    //queryParam: 'name',
 		    //queryMode: 'remote',
 		    name:'brand_id',
@@ -125,7 +125,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeForm',{
 	        hidden:!me.isprod,
 	        xtype:'textfield',
 	        maxLength:50,
-	        allowBlank: false
+	        allowBlank: !me.isprod
 	    },
 	    {
 	        fieldLabel: '单位',
@@ -133,7 +133,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeForm',{
 	        name: 'unit',
 	        hidden:!me.isprod,
 	        xtype:'textfield',
-	        allowBlank: false
+	        allowBlank: !me.isprod
 	    },
 		{
 	        fieldLabel: 'level',
@@ -156,6 +156,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeForm',{
             iconCls:'form-save-button',
             handler: function(btn) {
             	var form=this.up('form');
+            	//alert(form.getForm().isValid());
                 if(!form.getForm().isValid()) {
                 	return;
                 }

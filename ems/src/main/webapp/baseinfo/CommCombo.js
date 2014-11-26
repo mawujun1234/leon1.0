@@ -4,7 +4,7 @@ Ext.define('Ems.baseinfo.SubtypeCombo',{
 	requires: [
 	     //'Ems.baseinfo.Brand'
 	],
-	fieldLabel: '小类',
+	fieldLabel: '类型',
     displayField: 'text',
     valueField: 'id',
    

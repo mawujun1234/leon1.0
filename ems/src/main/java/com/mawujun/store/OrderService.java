@@ -161,9 +161,10 @@ public class OrderService extends AbstractService<Order, String>{
 	private String generateBarcode(Order orderVO, int serialNum, String y2md) {
 		StringBuilder code = new StringBuilder();
 
-//		code.append(orderVO.getSubtype_id()+ orderVO.getProd_id()+"-"+ orderVO.getBrand_id()+orderVO.getSupplier_id()+"-"+y2md
+//		code.append(orderVO.getSubtype_id()+ orderVO.getProd_id()+"-"+y2md
 //				+StringUtils.leftPad(serialNum+"", 4, "0"));
-		code.append(orderVO.getSubtype_id()+ orderVO.getProd_id()+"-"+y2md
+		
+		code.append(orderVO.getProd_id()+"-"+y2md
 				+StringUtils.leftPad(serialNum+"", 4, "0"));
 		return code.toString();
 	}
