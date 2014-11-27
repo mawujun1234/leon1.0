@@ -86,6 +86,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeForm',{
 		     //minChars:1,
 		     xtype:'combobox',
 		    forceSelection:true,
+		    editable:false,
 		    allowBlank: !me.isprod,
 		    //queryParam: 'name',
 		    //queryMode: 'remote',

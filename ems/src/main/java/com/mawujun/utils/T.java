@@ -79,10 +79,6 @@ public static final class ems_equipmentprod {
 	public static final String levl="levl";
 	public static final String parent_id="parent_id";
 	public static final String leaf="leaf";
-	public static final String unit="unit";
-	public static final String spec="spec";
-	public static final String style="style";
-	public static final String brand_id="brand_id";
 }
 public static final class ems_equipmentsubtype {
 	public static final String id="id";

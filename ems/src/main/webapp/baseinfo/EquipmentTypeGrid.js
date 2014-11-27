@@ -16,21 +16,21 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 	initComponent: function () {
       var me = this;
       me.columns=[
-		{dataIndex:'id',text:'编码',width:150
+		{dataIndex:'id',text:'编码',width:80
 //		,renderer:function(value){
 //			var values=value.split("_");
 //			return values[0];
 //		}
 		},
-		//{dataIndex:'level',text:'level',xtype: 'numbercolumn', format:'0.00'},
-		//{dataIndex:'status',text:'status',xtype: 'numbercolumn', format:'0.00'},
-		{dataIndex:'subtype_name',text:'型号',renderer:function(){
-			return me.subtype_name;
-		}},
+
+//		{dataIndex:'subtype_name',text:'类型',renderer:function(){
+//			return me.subtype_name;
+//		}},
 		{dataIndex:'name',text:'名称',flex:1},
-		{dataIndex:'unit',text:'单位',flex:1},
-		{dataIndex:'brand_name',text:'品牌',flex:1},
-		{dataIndex:'status',text:'状态',renderer:function(value){
+		{dataIndex:'style',text:'型号',flex:1},
+		{dataIndex:'unit',text:'单位',width:60},
+		{dataIndex:'brand_name',text:'品牌',width:100},
+		{dataIndex:'status',text:'状态',width:60,renderer:function(value){
 			if(value){
 				return "有效";
 			} else {
@@ -205,6 +205,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 					//form.updateRecord();
 					
 					win.close();
+					me.getStore().reload();
 					//alert(record.get("id")+"_"+record.get("levl"));
 					//me.tree.getStore().getNodeById(record.get("id")+"_"+record.get("levl")).set("text",record.get("text")) 
 				}
@@ -217,7 +218,10 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 		end_id.setReadOnly(true);
 		end_id.setValue(record.get("id").substr(record.get("parent_id").length));//replace(record.get("parent_id","")));
 		//alert(record.get("brand_name"));
-		form.getForm().findField("brand_id").setRawValue(record.get("brand_name"));
+		var brand_model=form.getForm().findField("brand_id").getStore().createModel({id:record.get("brand_id"),name:record.get("brand_name")});
+		form.getForm().findField("brand_id").setValue(brand_model);
+
+		
 		
 		var win=new Ext.window.Window({
 			items:[form],
