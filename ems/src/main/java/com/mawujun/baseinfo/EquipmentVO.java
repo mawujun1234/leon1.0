@@ -8,6 +8,8 @@ public class EquipmentVO extends Equipment {
 	@Transient
 	private String prod_name;
 	@Transient
+	private String prod_spec;
+	@Transient
 	private String brand_name;
 	@Transient
 	private String supplier_name;
@@ -101,5 +103,13 @@ public class EquipmentVO extends Equipment {
 
 	public void setStatus_name(String status_name) {
 		this.status_name = status_name;
+	}
+
+	public String getProd_spec() {
+		return prod_spec;
+	}
+
+	public void setProd_spec(String prod_spec) {
+		this.prod_spec = prod_spec;
 	}
 }

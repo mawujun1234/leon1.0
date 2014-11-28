@@ -47,8 +47,8 @@ Ext.define('Ems.baseinfo.PoleGrid',{
 //      	{dataIndex:'area',text:'area'},
 //		{dataIndex:'address',text:'address'},
 		//{dataIndex:'customer_id',text:'customer_id'},
-		{dataIndex:'latitude',text:'经度'},
-		{dataIndex:'longitude',text:'纬度'}
+		{dataIndex:'latitude',text:'经度',hidden:true},
+		{dataIndex:'longitude',text:'纬度',hidden:true}
 		//
       ];
       
@@ -257,7 +257,7 @@ Ext.define('Ems.baseinfo.PoleGrid',{
 			title:record.get("name")+'拥有的设备',
 			layout:'fit',
 			closeAction:'destroy',
-			width:600,
+			width:680,
 			height:400,
 			modal:true
 		});

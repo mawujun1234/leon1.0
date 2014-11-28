@@ -30,6 +30,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 		{dataIndex:'style',text:'型号',flex:1},
 		{dataIndex:'unit',text:'单位',width:60},
 		{dataIndex:'brand_name',text:'品牌',width:100},
+		{dataIndex:'spec',text:'规格',flex:1},
 		{dataIndex:'status',text:'状态',width:60,renderer:function(value){
 			if(value){
 				return "有效";
@@ -228,7 +229,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 			layout:'fit',
 			closeAction:'destroy',
 			width:300,
-			height:240,
+			height:400,
 			modal:true
 		});
 		//form.win=win

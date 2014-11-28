@@ -18,7 +18,7 @@ public class EquipmentProd extends EquipmentTypeAbstract implements
 	// 单位：台，个
 	@Column(length = 10)
 	private String unit;
-	@Column(length = 50)
+	@Column(length = 500)
 	private String spec;
 	@Column(length = 50)
 	private String style;// 型号

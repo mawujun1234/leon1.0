@@ -136,6 +136,17 @@ Ext.define('Ems.baseinfo.EquipmentTypeForm',{
 	        xtype:'textfield',
 	        allowBlank: !me.isprod
 	    },
+	    {
+	        fieldLabel: '规格',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'spec',
+	        hidden:!me.isprod,
+	        xtype:'textareafield',
+	        maxLength:500,
+	        height:160,
+	        grow      : false
+	        //allowBlank: !me.isprod
+	    },
 		{
 	        fieldLabel: 'level',
 	        //afterLabelTextTpl: Ext.required,
