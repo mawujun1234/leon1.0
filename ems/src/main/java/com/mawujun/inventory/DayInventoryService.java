@@ -25,25 +25,27 @@ public class DayInventoryService extends AbstractService<DayInventory, DayInvent
 		// TODO Auto-generated method stub
 		return dayInventoryRepository;
 	}
-//	/**
-//	 * 创建月结库存
-//	 * @author mawujun 16064988@qq.com
-//	 */
-//	public void callProc(){	
-//		Map<String,Object> params=new HashMap<String,Object>();
-//		//获取当前月，格式为 201409
-//		//Calendar cal=Calendar.getInstance();
-//		String day_in=format.format(new Date());
-//		params.put("day_in", day_in);
-//		Calendar cal=Calendar.getInstance();
-//		cal.add(Calendar.DAY_OF_MONTH, -1);
-//		params.put("lastday_in", format.format(cal.getTime()));
-//
-//		
-//		dayInventoryRepository.callProc(params);
-//		
-//		
-//	}
+	/**
+	 * 创建月结库存
+	 * @author mawujun 16064988@qq.com
+	 */
+	public void call_proc(String store_id,boolean isbuild){	
+		//Map<String,Object> params=new HashMap<String,Object>();
+		//获取当前月，格式为 201409
+		//Calendar cal=Calendar.getInstance();
+		String day_in=format.format(new Date());
+		//params.put("day_in", day_in);
+		//Calendar cal=Calendar.getInstance();
+		//cal.add(Calendar.DAY_OF_MONTH, -1);
+		//params.put("lastday_in", format.format(cal.getTime()));
+
+		if(isbuild){
+			dayInventoryRepository.proc_dayinventory1(store_id,day_in);
+		} else {
+			dayInventoryRepository.proc_dayinventory(store_id,day_in);
+		}	
+		
+	}
 	
 	public List<DayInventoryVO> queryDayInventory(String store_id,String day_start,String day_end){
 		return dayInventoryRepository.queryDayInventory(store_id, day_start,day_end);

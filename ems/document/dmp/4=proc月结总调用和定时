@@ -5,8 +5,8 @@ as
 month_in varchar2(6):=to_char(sysdate,'yyyymm');
 --lastmonth_in varchar2(6):=to_char( add_months(sysdate,-1),'yyyymm');
 begin
-    proc_monthinventory_all(month_in);--调用备品备件库
-    proc_monthinventory1_all(month_in);--调用在建仓库
+    proc_monthinventory_all(month_in,'Y');--调用备品备件库
+    proc_monthinventory1_all(month_in,'Y');--调用在建仓库
 end;
 
 http://www.cnblogs.com/xclw/archive/2009/12/04/1616945.html

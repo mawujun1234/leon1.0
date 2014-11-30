@@ -10,12 +10,13 @@ import com.mawujun.repository1.IRepository;
 
 @Repository
 public interface MonthInventoryRepository extends IRepository<MonthInventory, MonthInventory_PK>{
-//	/**
-//	 * 执行存储过程
-//	 * @author mawujun 16064988@qq.com 
-//	 * @param params
-//	 */
-//	public void callProc(Map<String,Object> params);
+	/**
+	 * 在建仓库，马上执行存储过程，马上计算当前库存
+	 * @author mawujun 16064988@qq.com 
+	 * @param params
+	 */
+	public void proc_monthinventory1(@Param("store_id_in")String store_id_in,@Param("month_in")String month_in);
+	public void proc_monthinventory(@Param("store_id_in")String store_id_in,@Param("month_in")String month_in);
 	
 	public void updateField(Map<String,Object> params);
 	public List<MonthInventoryVO> queryMonthReport(@Param("store_id")String store_id,@Param("month_in")String month_in);

@@ -5,8 +5,8 @@ as
 day_in varchar2(8):=to_char(sysdate,'yyyymmdd');
 --lastday_in varchar2(8):=to_char( TRUNC(sysdate)-1,'yyyymmdd');
 begin
-    proc_dayinventory_all(day_in);--调用备品备件库
-    proc_dayinventory1_all(day_in);--调用在建仓库
+    proc_dayinventory_all(day_in,'Y');--调用备品备件库
+    proc_dayinventory1_all(day_in,'Y');--调用在建仓库
 end;
 
 ----初始化日数据的方法，单首先要初始化上个月的月结数据

@@ -13,6 +13,23 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
        {call proc_dayinventory_all(?, ?)}  
    </update> 
     -->
+    <!--计算在建仓库-->
+	<parameterMap type="map" id="proc_dayinventory1_map">  
+	   <parameter property="store_id_in" jdbcType="VARCHAR" mode="IN"/>   
+	   <parameter property="day_in" jdbcType="VARCHAR" mode="IN"/>   
+	</parameterMap>  
+	<update id="proc_dayinventory1" parameterMap="proc_dayinventory1_map" statementType="CALLABLE">  
+       {call proc_dayinventory1(?, ?,'N')}  
+   </update> 
+   <!--计算备品备件仓库 -->
+   <parameterMap type="map" id="proc_dayinventory_map">  
+	   <parameter property="store_id_in" jdbcType="VARCHAR" mode="IN"/>   
+	   <parameter property="day_in" jdbcType="VARCHAR" mode="IN"/>   
+	</parameterMap>  
+	<update id="proc_dayinventory" parameterMap="proc_dayinventory_map" statementType="CALLABLE">  
+       {call proc_dayinventory(?, ?,'N')}  
+   </update> 
+   
    
    <select id="queryDayInventory" resultType="com.mawujun.inventory.DayInventoryVO">
    select distinct a.*,b.name as subtype_name,c.name as prod_name,c.unit,d.name as brand_name  
@@ -21,7 +38,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     inner join ems_equipmentprod c on a.prod_id=c.id
     inner join ems_brand d on a.brand_id=d.id
     where a.store_id=#{store_id} and a.daykey&gt;=#{day_start} and a.daykey&lt;=#{day_end}
-    order by subtype_id ,prod_id,brand_id,style
+    order by a.subtype_id ,a.prod_id,a.brand_id,a.style
    </select>
 </mapper>
 

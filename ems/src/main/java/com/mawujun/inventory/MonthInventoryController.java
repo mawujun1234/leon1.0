@@ -1,5 +1,6 @@
 package com.mawujun.inventory;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
@@ -34,6 +35,21 @@ public class MonthInventoryController {
 	private StoreService storeService;
 	
 	/**
+	 * 在建仓库的月报表 计算
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param year
+	 * @param month
+	 * @param store_id
+	 * @return
+	 */
+	@RequestMapping("/monthinventory/call_proc.do")
+	public String call_proc(String store_id,boolean isbuild){
+		monthInventoryService.call_proc(store_id,isbuild);
+		return "success";	
+	}
+	
+	
+	/**
 	 * 在建仓库的越报表
 	 * @author mawujun email:160649888@163.com qq:16064988
 	 * @param year
@@ -46,6 +62,7 @@ public class MonthInventoryController {
 		List<MonthInventoryVO> list=monthInventoryService.queryMonthReport(store_id,year+month);
 		return list;	
 	}
+	
 //	/**
 //	 * 备品备件仓库的月报表
 //	 * @author mawujun email:160649888@163.com qq:16064988
@@ -162,6 +179,26 @@ public class MonthInventoryController {
 		 
 		 sheet.createFreezePane(build_month_freeze_num, 2);
 	}
+	
+	private CellStyle getContentStyle(XSSFWorkbook wb,IndexedColors color){
+		CellStyle bord_style = wb.createCellStyle();
+		//style.setAlignment(CellStyle.ALIGN_CENTER);
+		//style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		Font bord_font = wb.createFont();
+		bord_font.setFontHeightInPoints((short)10);
+		if(color!=null){
+			bord_font.setColor(color.getIndex());
+		}
+		//
+		//bord_font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+		bord_style.setFont(bord_font);
+		bord_style.setWrapText(true);//自动换行
+		bord_style.setBorderTop(CellStyle.BORDER_THIN);
+		bord_style.setBorderBottom(CellStyle.BORDER_THIN);
+		bord_style.setBorderLeft(CellStyle.BORDER_THIN);
+		bord_style.setBorderRight(CellStyle.BORDER_THIN);
+		return bord_style;
+	}
 	@RequestMapping("/monthinventory/build/export.do")
 	public void build_export(HttpServletResponse response,String store_id,String year,String month) throws IOException{
 		
@@ -190,16 +227,16 @@ public class MonthInventoryController {
 		build_addRow1(wb, sheet);
 
 		CellStyle blue_style = getStyle(wb, IndexedColors.BLUE,null);
-		blue_style.setBorderBottom(CellStyle.BORDER_NONE);
-		blue_style.setBorderLeft(CellStyle.BORDER_NONE);
-		blue_style.setBorderRight(CellStyle.BORDER_NONE);
-		blue_style.setBorderTop(CellStyle.BORDER_NONE);
+		//blue_style.setBorderBottom(CellStyle.BORDER_NONE);
+		//blue_style.setBorderLeft(CellStyle.BORDER_NONE);
+		//blue_style.setBorderRight(CellStyle.BORDER_NONE);
+		//blue_style.setBorderTop(CellStyle.BORDER_NONE);
 		
 		CellStyle red_style = getStyle(wb, IndexedColors.RED,null);
-		red_style.setBorderBottom(CellStyle.BORDER_NONE);
-		red_style.setBorderLeft(CellStyle.BORDER_NONE);
-		red_style.setBorderRight(CellStyle.BORDER_NONE);
-		red_style.setBorderTop(CellStyle.BORDER_NONE);
+		//red_style.setBorderBottom(CellStyle.BORDER_NONE);
+		//red_style.setBorderLeft(CellStyle.BORDER_NONE);
+		//red_style.setBorderRight(CellStyle.BORDER_NONE);
+		//red_style.setBorderTop(CellStyle.BORDER_NONE);
 		
 		CellStyle black_style = this.getStyle(wb, IndexedColors.BLACK,null);
 		//black_style.setBorderBottom(CellStyle.BORDER_NONE);
@@ -208,15 +245,20 @@ public class MonthInventoryController {
 		black_style.setBorderTop(CellStyle.BORDER_NONE);
 		black_style.setAlignment(CellStyle.ALIGN_LEFT);
 		
-		CellStyle bord_style = wb.createCellStyle();
-		//style.setAlignment(CellStyle.ALIGN_CENTER);
-		//style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-		bord_style.setWrapText(true);//自动换行
-		bord_style.setBorderTop(CellStyle.BORDER_THIN);
-		bord_style.setBorderBottom(CellStyle.BORDER_THIN);
-		bord_style.setBorderLeft(CellStyle.BORDER_THIN);
-		bord_style.setBorderRight(CellStyle.BORDER_THIN);
-		 
+//		CellStyle bord_style = wb.createCellStyle();
+//		//style.setAlignment(CellStyle.ALIGN_CENTER);
+//		//style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+//		Font bord_font = wb.createFont();
+//		bord_font.setFontHeightInPoints((short)10);
+//		//bord_font.setColor(color.getIndex());
+//		bord_font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+//		bord_style.setFont(bord_font);
+//		bord_style.setWrapText(true);//自动换行
+//		bord_style.setBorderTop(CellStyle.BORDER_THIN);
+//		bord_style.setBorderBottom(CellStyle.BORDER_THIN);
+//		bord_style.setBorderLeft(CellStyle.BORDER_THIN);
+//		bord_style.setBorderRight(CellStyle.BORDER_THIN);
+		CellStyle content_style =getContentStyle(wb,null);
 		 //循环出数据
 		int cellnum=0;
 		int extra_row_num=2;
@@ -234,7 +276,7 @@ public class MonthInventoryController {
 				subtype_name.setCellStyle(black_style);
 				for(int j=1;j<11;j++){
 					Cell cell = row.createCell(cellnum+j);
-					cell.setCellStyle(bord_style);
+					cell.setCellStyle(content_style);
 				}
 				//同时合并单元格
 				sheet.addMergedRegion(new CellRangeAddress(rownum,rownum,0,(short)10)); 
@@ -264,46 +306,46 @@ public class MonthInventoryController {
 
 			//这个标题，真闷提取出一行进行显示了
 			Cell subtype_name = row.createCell(cellnum++);
-			subtype_name.setCellStyle(bord_style);
+			subtype_name.setCellStyle(content_style);
 			//subtype_name.setCellValue(buildDayReport.getSubtype_name());
 
 			Cell brand_name = row.createCell(cellnum++);
 			brand_name.setCellValue(buildDayReport.getBrand_name());
-			brand_name.setCellStyle(bord_style);
+			brand_name.setCellStyle(content_style);
 
 			Cell style = row.createCell(cellnum++);
 			style.setCellValue(buildDayReport.getStyle());
-			style.setCellStyle(bord_style);
+			style.setCellStyle(content_style);
 
 			Cell prod_name = row.createCell(cellnum++);
 			prod_name.setCellValue(buildDayReport.getProd_name());
-			prod_name.setCellStyle(bord_style);
+			prod_name.setCellStyle(content_style);
 
 			Cell store_name = row.createCell(cellnum++);
 			store_name.setCellValue(buildDayReport.getStore_name());
-			store_name.setCellStyle(bord_style);
+			store_name.setCellStyle(content_style);
 
 			Cell unit = row.createCell(cellnum++);
 			unit.setCellValue(buildDayReport.getUnit());
-			unit.setCellStyle(bord_style);
+			unit.setCellStyle(content_style);
 
 			Cell lastnum = row.createCell(cellnum++);
 			lastnum.setCellValue(buildDayReport.getLastnum() == null ? 0
 					: buildDayReport.getLastnum());
-			lastnum.setCellStyle(bord_style);
+			lastnum.setCellStyle(content_style);
 
 			Cell storeinnum = row.createCell(cellnum++);
 			storeinnum.setCellValue(buildDayReport.getNowAdd() == null ? 0
 					: buildDayReport.getNowAdd());
 			storeinnum.setCellStyle(blue_style);
-			storeinnum.setCellStyle(bord_style);
+			//storeinnum.setCellStyle(content_style);
 
 			Cell installoutnum = row.createCell(cellnum++);
 			installoutnum
 					.setCellValue(buildDayReport.getInstalloutnum() == null ? 0
 							: buildDayReport.getInstalloutnum());
 			installoutnum.setCellStyle(red_style);
-			installoutnum.setCellStyle(bord_style);
+			//installoutnum.setCellStyle(content_style);
 			// 本月结余数
 			Cell nownum = row.createCell(cellnum++);
 			// nownum.setCellValue(buildDayReport.getNownum()==null?0:buildDayReport.getNownum());
@@ -313,11 +355,11 @@ public class MonthInventoryController {
 					+ (rownum + 1) + ","
 					+ CellReference.convertNumToColString(8) + (rownum + 1)
 					+ ")");
-			nownum.setCellStyle(bord_style);
+			nownum.setCellStyle(content_style);
 
 			Cell memo = row.createCell(cellnum++);
 			memo.setCellValue(buildDayReport.getMemo());
-			memo.setCellStyle(bord_style);
+			memo.setCellStyle(content_style);
 			
 			
 		}
@@ -492,6 +534,15 @@ public class MonthInventoryController {
 		black_style.setBorderTop(CellStyle.BORDER_NONE);
 		black_style.setAlignment(CellStyle.ALIGN_LEFT);
 		
+		CellStyle content_style =getContentStyle(wb,null);
+		CellStyle content_blue_style =getContentStyle(wb,IndexedColors.BLUE);	
+		CellStyle content_red_style =getContentStyle(wb,IndexedColors.RED);	
+		CellStyle content_green_style =getContentStyle(wb,IndexedColors.GREEN);
+		CellStyle content_orange_style =getContentStyle(wb,IndexedColors.ORANGE);
+		CellStyle content_plum_style =getContentStyle(wb,IndexedColors.PLUM);
+		jj
+		
+		
 		int cellnum=0;
 		int extra_row_num=2;
 		String subtype_id_temp="";
@@ -537,61 +588,80 @@ public class MonthInventoryController {
 			 
 			 Cell subtype_name=row.createCell(cellnum++);
 			 //subtype_name.setCellValue(sparepartMonthReport.getSubtype_name());
+			 subtype_name.setCellStyle(content_style);
 			 
 			 Cell brand_name=row.createCell(cellnum++);
 			 brand_name.setCellValue(sparepartMonthReport.getBrand_name());
+			 brand_name.setCellStyle(content_style);
 			 
 			 Cell style=row.createCell(cellnum++);
 			 style.setCellValue(sparepartMonthReport.getStyle());
+			 style.setCellStyle(content_style);
 			 
 			 Cell prod_name=row.createCell(cellnum++);
 			 prod_name.setCellValue(sparepartMonthReport.getProd_name());
+			 prod_name.setCellStyle(content_style);
 			 
 			 Cell store_name=row.createCell(cellnum++);
 			 store_name.setCellValue(sparepartMonthReport.getStore_name());
+			 store_name.setCellStyle(content_style);
 			 
 			 Cell unit=row.createCell(cellnum++);
 			 unit.setCellValue(sparepartMonthReport.getUnit());
+			 unit.setCellStyle(content_style);
 			 
 			 Cell fixednum=row.createCell(cellnum++);
 			 fixednum.setCellValue(sparepartMonthReport.getFixednum()==null?0:sparepartMonthReport.getFixednum());
+			 fixednum.setCellStyle(content_style);
 			 
 			 Cell lastnum=row.createCell(cellnum++);
 			 lastnum.setCellValue(sparepartMonthReport.getLastnum()==null?0:sparepartMonthReport.getLastnum());
+			 lastnum.setCellStyle(content_style);
 			 
 			 Cell purchasenum=row.createCell(cellnum++);
 			 purchasenum.setCellValue(sparepartMonthReport.getPurchasenum()==null?0:sparepartMonthReport.getPurchasenum());
+			 purchasenum.setCellStyle(content_style);
 			 
 			 Cell oldnum=row.createCell(cellnum++);
 			 oldnum.setCellValue(sparepartMonthReport.getOldnum()==null?0:sparepartMonthReport.getOldnum());
+			 oldnum.setCellStyle(content_style);
 			 
 			 Cell installoutnum=row.createCell(cellnum++);
 			 installoutnum.setCellValue(sparepartMonthReport.getInstalloutnum()==null?0:sparepartMonthReport.getInstalloutnum());
+			 installoutnum.setCellStyle(content_style);
 			 
 			 Cell repairinnum=row.createCell(cellnum++);
 			 repairinnum.setCellValue(sparepartMonthReport.getRepairinnum()==null?0:sparepartMonthReport.getRepairinnum());
+			 repairinnum.setCellStyle(content_style);
 			 
 			 Cell scrapoutnum=row.createCell(cellnum++);
 			 scrapoutnum.setCellValue(sparepartMonthReport.getScrapoutnum()==null?0:sparepartMonthReport.getScrapoutnum());
+			 scrapoutnum.setCellStyle(content_style);
 			 
 			 Cell repairoutnum=row.createCell(cellnum++);
 			 repairoutnum.setCellValue(sparepartMonthReport.getRepairoutnum()==null?0:sparepartMonthReport.getRepairoutnum());
+			 repairoutnum.setCellStyle(content_style);
 			 
 			 Cell adjustoutnum=row.createCell(cellnum++);
 			 adjustoutnum.setCellValue(sparepartMonthReport.getAdjustoutnum()==null?0:sparepartMonthReport.getAdjustoutnum());
+			 adjustoutnum.setCellStyle(content_style);
 			 
 			 Cell adjustinnum=row.createCell(cellnum++);
 			 adjustinnum.setCellValue(sparepartMonthReport.getAdjustinnum()==null?0:sparepartMonthReport.getAdjustinnum());
+			 adjustinnum.setCellStyle(content_style);
 			 
 			 Cell nownum=row.createCell(cellnum++);
 			 nownum.setCellValue(sparepartMonthReport.getNownum()==null?0:sparepartMonthReport.getNownum());
+			 nownum.setCellStyle(content_style);
 			 
 			 Cell supplementnum=row.createCell(cellnum++);
 			 supplementnum.setCellValue(sparepartMonthReport.getSupplementnum()==null?0:sparepartMonthReport.getSupplementnum());
+			 supplementnum.setCellStyle(content_style);
 		 
 			 
 			 Cell memo=row.createCell(cellnum++);
 			 memo.setCellValue(sparepartMonthReport.getMemo()); 
+			 memo.setCellStyle(content_style);
 		 }
 		sheet.setRowSumsBelow(false);
 		sheet.setRowSumsRight(false);

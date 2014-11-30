@@ -54,7 +54,11 @@ public class DayInventoryController {
 //		return list;
 //		
 //	}
-	
+	@RequestMapping("/dayinventory/call_proc.do")
+	public String call_proc(String store_id,boolean isbuild){
+		dayInventoryService.call_proc(store_id,isbuild);
+		return "success";	
+	}
 	
 	SimpleDateFormat format=new SimpleDateFormat("yyyyMM");
 	public List<MonthInventoryVO> query(String store_id,String year,String month) throws IllegalAccessException, InvocationTargetException{

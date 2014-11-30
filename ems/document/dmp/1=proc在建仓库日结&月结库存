@@ -1,15 +1,17 @@
---只对在建仓库进行库存的结算
-create or replace procedure proc_monthinventory1_all(month_in in varchar2)
+--对所有在建仓库进行库存的结算
+create or replace procedure proc_monthinventory1_all(month_in in varchar2,back_record in CHAR)
 as
 begin
   for store in (
     select * from ems_store where type=1
   ) loop
-    proc_monthinventory1(store.id,month_in);
+    proc_monthinventory1(store.id,month_in,back_record);
   END LOOP;
 end;
 
-create or replace procedure proc_monthinventory1(store_id_in in varchar2, month_in in varchar2)
+
+--指定在建仓库的库存结算
+create or replace procedure proc_monthinventory1(store_id_in in varchar2, month_in in varchar2,back_record in CHAR  )
 as
 lastmonth_in varchar2(6):=to_char(add_months(to_date(month_in,'yyyymm'),-1),'yyyymm');
 version_in varchar2(14):=to_char(sysdate,'yyyymmddhh24miss');--备份的版本号
@@ -20,12 +22,14 @@ begin
 --    select * from ems_store
 --) loop
     --首先备份
+    if back_record='Y' then --如果是Y，就表示备份当前数据，一般是在自动导数据的时候用
     insert into ems_monthinventorybak(monthkey,subtype_id,prod_id,brand_id,style,store_id,store_type,version,memo,
     fixednum,lastnum,purchasenum,oldnum,installoutnum,repairinnum,scrapoutnum,repairoutnum,adjustoutnum,adjustinnum,nownum,supplementnum)
     select monthkey,subtype_id,prod_id,brand_id,style,store_id,store_type,version_in,memo,
     fixednum,lastnum,purchasenum,oldnum,installoutnum,repairinnum,scrapoutnum,repairoutnum,adjustoutnum,adjustinnum,nownum,supplementnum 
     from ems_monthinventory
     where monthkey=month_in and store_id=store_id_in;
+    end if;
     --删掉现在又的数据
     delete ems_monthinventory where monthkey=month_in and store_id=store_id_in;
 
@@ -124,18 +128,18 @@ end;
 
 
 ------------------------------------------------------
-create or replace procedure proc_dayinventory1_all(day_in in varchar2)
+create or replace procedure proc_dayinventory1_all(day_in in varchar2,back_record in CHAR)
 as
 begin
   for store in (
     select * from ems_store where type=1 
   ) loop 
-    proc_dayinventory1(store.id,day_in);
+    proc_dayinventory1(store.id,day_in,back_record);
   END LOOP;
 end;
 
 
-create or replace procedure proc_dayinventory1(store_id_in in varchar2, day_in in varchar2)
+create or replace procedure proc_dayinventory1(store_id_in in varchar2, day_in in varchar2,back_record in CHAR)
 as
 lastday_in varchar2(8):=to_char(TRUNC(to_date(day_in,'yyyymmdd'))-1,'yyyymmdd');
 version_in varchar2(14):=to_char(sysdate,'yyyymmddhh24miss');
@@ -143,12 +147,14 @@ begin
 
 --计算所有仓库的库存
     --首先备份
+    if back_record='Y' then --如果是Y，就表示备份当前数据，一般是在自动导数据的时候用
     insert into ems_dayinventorybak(daykey,subtype_id,prod_id,brand_id,style,store_id,store_type,version,memo,
     fixednum,lastnum,purchasenum,oldnum,installoutnum,repairinnum,scrapoutnum,repairoutnum,adjustoutnum,adjustinnum,nownum,supplementnum)
     select daykey,subtype_id,prod_id,brand_id,style,store_id,store_type,version_in,memo,
     fixednum,lastnum,purchasenum,oldnum,installoutnum,repairinnum,scrapoutnum,repairoutnum,adjustoutnum,adjustinnum,nownum,supplementnum 
     from ems_dayinventory
     where daykey=day_in and store_id=store_id_in;
+    end if;
     --删掉现在又的数据
     delete ems_dayinventory where daykey=day_in and store_id=store_id_in;
 

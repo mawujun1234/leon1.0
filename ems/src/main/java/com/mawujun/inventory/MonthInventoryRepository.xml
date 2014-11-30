@@ -5,14 +5,23 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
 <mapper namespace="com.mawujun.inventory.MonthInventoryRepository">
-	<!--<parameterMap type="map" id="proc_map">  
+	<!--计算在建仓库-->
+	<parameterMap type="map" id="proc_monthinventory1_map">  
+	   <parameter property="store_id_in" jdbcType="VARCHAR" mode="IN"/>   
 	   <parameter property="month_in" jdbcType="VARCHAR" mode="IN"/>   
-	   <parameter property="lastmonth_in" jdbcType="VARCHAR" mode="IN"/>   
 	</parameterMap>  
-	<update id="callProc" parameterMap="proc_map" statementType="CALLABLE">  
-       {call proc_monthinventory_all(?, ?)}  
+	<update id="proc_monthinventory1" parameterMap="proc_monthinventory1_map" statementType="CALLABLE">  
+       {call proc_monthinventory1(?, ?,'N')}  
    </update> 
-    -->
+   <!--计算备品备件仓库 -->
+   <parameterMap type="map" id="proc_monthinventory_map">  
+	   <parameter property="store_id_in" jdbcType="VARCHAR" mode="IN"/>   
+	   <parameter property="month_in" jdbcType="VARCHAR" mode="IN"/>   
+	</parameterMap>  
+	<update id="proc_monthinventory" parameterMap="proc_monthinventory_map" statementType="CALLABLE">  
+       {call proc_monthinventory(?, ?,'N')}  
+   </update> 
+    
    <update id="updateField" parameterType="map">
    	update ems_monthinventory set ${field}=#{value}
    	where monthkey=#{monthkey} and 
@@ -30,7 +39,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     inner join ems_equipmentprod c on a.prod_id=c.id
     inner join ems_brand d on a.brand_id=d.id
     where a.store_id=#{store_id} and a.monthkey=#{month_in}
-    order by subtype_id ,prod_id,brand_id,style
+    order by a.subtype_id ,a.prod_id,a.brand_id,a.style
    </select>
    
    <!-- 查询一个只包含维度信息的月结表 -->
@@ -42,7 +51,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     inner join ems_brand d on a.brand_id=d.id
     where a.store_id=#{store_id}
      and  a.status !=30
-     order by subtype_id ,prod_id,brand_id,style
+     order by a.subtype_id ,a.prod_id,a.brand_id,a.style
    </select>
    
 </mapper>

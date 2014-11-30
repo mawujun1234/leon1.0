@@ -41,9 +41,9 @@ Ext.onReady(function(){
 	});	
 	
 	var store_combox=Ext.create('Ext.form.field.ComboBox',{
-	        fieldLabel: '在建仓库',
+	        fieldLabel: '备品备件仓库',
 	        labelAlign:'right',
-            labelWidth:60,
+            labelWidth:80,
 	        //xtype:'combobox',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'store_id',
@@ -54,7 +54,7 @@ Ext.onReady(function(){
 		    	fields: ['id', 'name'],
 			    proxy:{
 			    	type:'ajax',
-			    	extraParams:{type:1,look:true},
+			    	extraParams:{type:3,look:true},
 			    	url:Ext.ContextPath+"/store/queryCombo.do",
 			    	reader:{
 			    		type:'json',
@@ -67,38 +67,87 @@ Ext.onReady(function(){
 	
 	var tbar=Ext.create('Ext.toolbar.Toolbar',{
 		items:[year_combox,month_combox,store_combox,{
-			text:'查询',
+			text:'查询',	
 			handler:function(){
 				
 				store.reload();
-			}
+			},
+			iconCls:'form-search-button',
+			xtype:'splitbutton',
+			menu: [{
+				text: '计算并查询月报表',
+				handler:function(){
+					if(!store_combox.getValue()){
+						alert("请先选择仓库!");
+						return false;
+					}
+					Ext.Msg.confirm("提醒","将会计算到当前为止的月报数据",function(btn){
+						if(btn=='yes'){
+							Ext.getBody().mask("正在计算,请稍候....");
+							Ext.Ajax.request({
+								url:Ext.ContextPath+'/monthinventory/call_proc.do',
+								method:'POST',
+								params:{isbuild:false,store_id:store_combox.getValue()},
+								success:function(response){
+									Ext.getBody().unmask();
+									store.reload();
+								}
+							});
+						}
+					})
+				}
+			},{
+				text: '计算日报表',
+				handler:function(){
+					if(!store_combox.getValue()){
+						alert("请先选择仓库!");
+						return false;
+					}
+					Ext.Msg.confirm("提醒","将会计算到当前为止的日报数据",function(btn){
+						if(btn=='yes'){
+							Ext.getBody().mask("正在计算,请稍候....");
+							Ext.Ajax.request({
+								url:Ext.ContextPath+'/dayinventory/call_proc.do',
+								method:'POST',
+								params:{isbuild:false,store_id:store_combox.getValue()},
+								success:function(response){
+									Ext.getBody().unmask();
+								}
+							});
+						}
+					})
+				}
+			}]
 		},{
 			text:'导出月报表',
+			icon:'../icons/page_excel.png',
 			handler:function(){
 				var params=getParams();
 				if(!params){
 					return false;
 				}
 				var pp=Ext.Object.toQueryString(params);
-				window.open(Ext.ContextPath+"/monthinventory/build/export.do?"+pp, "_blank");
-			}
-		},{
-			text:'导出日报表',
-			handler:function(){
-				var params=getParams();
-				if(!params){
-					return false;
+				window.open(Ext.ContextPath+"/monthinventory/sparepart/export.do?"+pp, "_blank");
+			},
+			menu:[{
+				text:'导出日报表',
+				icon:'../icons/page_excel.png',
+				handler:function(){
+					var params=getParams();
+					if(!params){
+						return false;
+					}
+					var pp=Ext.Object.toQueryString(params);
+					window.open(Ext.ContextPath+"/dayinventory/sparepart/export.do?"+pp, "_blank");
 				}
-				var pp=Ext.Object.toQueryString(params);
-				window.open(Ext.ContextPath+"/dayinventory/build/export.do?"+pp, "_blank");
-			}
+			}]
 		}]
 	})
 	
 	var store=Ext.create('Ext.data.Store',{
 		autoLoad:false,
-		fields: ['monthkey', 'subtype_id','subtype_name','prod_id','prod_name','brand_id','brand_name','style','store_id','store_type','store_name','unit','memo'
-			,'lastnum','nowAdd','nowSubtract','nownum'],
+		fields: ['monthkey', 'subtype_id','subtype_name','prod_id','prod_name','brand_id','brand_name','style','store_id','store_name','unit','memo'
+			,'fixednum','lastnum','nownum','purchasenum','oldnum','installoutnum','repairinnum','scrapoutnum','repairoutnum','adjustoutnum','adjustinnum','supplementnum'],
 		proxy:{
 			type:'ajax',
 			actions:{
@@ -170,13 +219,13 @@ Ext.onReady(function(){
             }
         	},{
             header: '型号',
-            sortable: true,
             width:150,
+            sortable: true,
             dataIndex: 'style'
         	},{
             header: '品名',
-            width:150,
             sortable: true,
+            width:150,
             dataIndex: 'prod_name'
         	},{
             header: '所属仓库',
@@ -187,26 +236,72 @@ Ext.onReady(function(){
             sortable: true,
             dataIndex: 'unit'
         	},{
-            header: '上月结余数',
+            header: '额定数量*',
+            sortable: true,
+            dataIndex: 'fixednum',
+            summaryType: 'sum',
+            field: {
+                xtype: 'numberfield'
+            }
+        	},{
+            header: '上月结余',
             sortable: true,
             dataIndex: 'lastnum',
             summaryType: 'sum'
         	},{
-            header: '本月新增',
+            header: '采购新增',
             sortable: true,
-            dataIndex: 'nowAdd',
+            dataIndex: 'purchasenum',
             summaryType: 'sum'
         	},{
-            header: '本月领用',
+            header: '旧品新增',
             sortable: true,
-            dataIndex: 'nowSubtract',
+            dataIndex: 'oldnum',
+            summaryType: 'sum'
+            
+        	},{
+            header: '本期领用',
+            sortable: true,
+            dataIndex: 'installoutnum',
+            summaryType: 'sum'
+        	},{
+            header: '本期维修返还',
+            sortable: true,
+            dataIndex: 'repairinnum',
+            summaryType: 'sum'
+        	},{
+            header: '报废出库数量',
+            sortable: true,
+            dataIndex: 'scrapoutnum',
+            summaryType: 'sum'
+        	},{
+            header: '维修出库数量',
+            sortable: true,
+            dataIndex: 'repairoutnum',
+            summaryType: 'sum'
+        	},{
+            header: '借用数',
+            sortable: true,
+            dataIndex: 'adjustoutnum',
+            summaryType: 'sum'
+        	},{
+            header: '返还数',
+            sortable: true,
+            dataIndex: 'adjustinnum',
             summaryType: 'sum'
         	},{
             header: '本月结余',
             sortable: true,
             dataIndex: 'nownum',
             summaryType: 'sum'
-            
+        	},{
+            header: '增补数量*',
+            sortable: true,
+            dataIndex: 'supplementnum',
+            summaryType: 'sum',
+            field: {
+                xtype: 'numberfield'
+            }
         	},{
             header: '备注*',
             sortable: true,

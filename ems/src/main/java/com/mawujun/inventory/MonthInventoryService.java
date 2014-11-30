@@ -27,29 +27,31 @@ public class MonthInventoryService extends AbstractService<MonthInventory, Month
 		// TODO Auto-generated method stub
 		return monthInventoryRepository;
 	}
-//	/**
-//	 * 创建月结库存
-//	 * @author mawujun 16064988@qq.com
-//	 */
-//	public void callProc(){
-//		
-//		//如果是每个月的凌晨1点执行的话，就把时间调整为上一个月的最后一天
-//		Calendar cal=Calendar.getInstance();
-//		int day=cal.get(Calendar.DAY_OF_MONTH);
-//		if(day==1){
-//			cal.add(Calendar.DAY_OF_MONTH, -1);
-//		}
-//		
-//		Map<String,Object> params=new HashMap<String,Object>();
-//		String nowmonth_in=format.format(cal.getTime());
-//		params.put("month_in", nowmonth_in);
-//		cal.add(Calendar.DAY_OF_MONTH, -1);
-//		params.put("lastmonth_in", format.format(cal.getTime()));
-//		
-//		monthInventoryRepository.callProc(params);
-//		
-//		
-//	}ap<String,I
+	/**
+	 * 计算在建仓库月结库存
+	 * @author mawujun 16064988@qq.com
+	 */
+	public void call_proc(String store_id,boolean isbuild){
+		
+		//如果是每个月的凌晨1点执行的话，就把时间调整为上一个月的最后一天
+		Calendar cal=Calendar.getInstance();
+		//int day=cal.get(Calendar.DAY_OF_MONTH);
+		//if(day==1){
+		//	cal.add(Calendar.DAY_OF_MONTH, -1);
+		//}
+		
+		//Map<String,Object> params=new HashMap<String,Object>();
+		String nowmonth_in=format.format(cal.getTime());
+		//params.put("month_in", nowmonth_in);
+		//cal.add(Calendar.DAY_OF_MONTH, -1);
+		//params.put("lastmonth_in", format.format(cal.getTime()));
+		if(isbuild){
+			monthInventoryRepository.proc_monthinventory1(store_id,nowmonth_in);
+		} else {
+			monthInventoryRepository.proc_monthinventory(store_id,nowmonth_in);
+		}
+			
+	}
 	
 	public void updateField(Map<String,Object> params) {
 		monthInventoryRepository.updateField(params);
