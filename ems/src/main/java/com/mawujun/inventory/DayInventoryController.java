@@ -357,7 +357,7 @@ public class DayInventoryController {
 //		 blue_style.setBorderTop(CellStyle.BORDER_NONE);
 		 
 		 CellStyle red_style=getStyle_title(wb,IndexedColors.RED,null);
-//		 red_style.setBorderBottom(CellStyle.BORDER_NONE);
+//		 red_style.setBorderBottom(CellStyle.BORDER_NONE);ii如图
 //		 red_style.setBorderLeft(CellStyle.BORDER_NONE);
 //		 red_style.setBorderRight(CellStyle.BORDER_NONE);
 //		 red_style.setBorderTop(CellStyle.BORDER_NONE);
