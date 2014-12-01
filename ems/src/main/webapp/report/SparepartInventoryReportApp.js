@@ -121,6 +121,7 @@ Ext.onReady(function(){
 		},{
 			text:'导出月报表',
 			icon:'../icons/page_excel.png',
+			xtype:'splitbutton',
 			handler:function(){
 				var params=getParams();
 				if(!params){

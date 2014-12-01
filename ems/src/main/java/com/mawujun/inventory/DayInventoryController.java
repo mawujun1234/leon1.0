@@ -11,6 +11,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -164,6 +166,13 @@ public class DayInventoryController {
 	private StringBuilder[] build_addRow1(XSSFWorkbook wb,Sheet sheet){
 		//final int cellstartnum=9;//其实应该从10开始，单后面用了++
 		CellStyle black_style=getStyle_title(wb,IndexedColors.BLACK,null);
+		CellStyle lastnum_style=getStyle(wb,IndexedColors.BLACK,null);
+		 lastnum_style.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.index);
+		 lastnum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		 
+		 CellStyle nownum_style=getStyle(wb,IndexedColors.BLACK,null);
+		 nownum_style.setFillForegroundColor(HSSFColor.LIGHT_TURQUOISE.index);
+		 nownum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 		//
 		//合并单元格的行
 		Row row = sheet.createRow(1);
@@ -180,7 +189,7 @@ public class DayInventoryController {
 		 Cell style=row.createCell(cellnum++);
 		 style.setCellValue("型号");
 		 style.setCellStyle(black_style);
-		 sheet.setColumnWidth(cellnum-1, "列".getBytes().length*15*256);
+		 sheet.setColumnWidth(cellnum-1, "列".getBytes().length*10*256);
 		 
 		 Cell prod_name=row.createCell(cellnum++);
 		 prod_name.setCellValue("品名");
@@ -199,9 +208,9 @@ public class DayInventoryController {
 		 
 		 Cell lastnum=row.createCell(cellnum++);
 		 lastnum.setCellValue("上期结余数");
-		 lastnum.setCellStyle(black_style);
+		 lastnum.setCellStyle(lastnum_style);
 		 
-		 CellStyle blue_style=getStyle_title(wb,IndexedColors.BLUE,null);
+		 CellStyle blue_style=getStyle_title(wb,IndexedColors.PALE_BLUE,null);
 		 Cell storeinnum=row.createCell(cellnum++);
 		 storeinnum.setCellValue("本期新增数");
 		 storeinnum.setCellStyle(blue_style);
@@ -213,14 +222,14 @@ public class DayInventoryController {
 		 
 		 Cell nownum=row.createCell(cellnum++);
 		 nownum.setCellValue("本月结余数");
-		 nownum.setCellStyle(black_style);
+		 nownum.setCellStyle(nownum_style);
 		 
 		 //====================================================		 
 		// 新增数的样式
 		CellStyle in_style = wb.createCellStyle();
 		Font in_font = wb.createFont();
-		//in_font.setFontHeightInPoints((short) 16);
-		in_font.setColor(IndexedColors.BLUE.getIndex());
+		in_font.setFontHeightInPoints((short) 10);
+		in_font.setColor(IndexedColors.PALE_BLUE.getIndex());
 		in_font.setBoldweight(Font.BOLDWEIGHT_BOLD);
 		in_style.setFont(in_font);
 		in_style.setAlignment(CellStyle.ALIGN_CENTER);
@@ -234,7 +243,7 @@ public class DayInventoryController {
 		// 领用数的样式
 		CellStyle out_style = wb.createCellStyle();
 		Font out_font = wb.createFont();
-		//out_font.setFontHeightInPoints((short) 16);
+		out_font.setFontHeightInPoints((short) 10);
 		out_font.setColor(IndexedColors.RED.getIndex());
 		out_font.setBoldweight(Font.BOLDWEIGHT_BOLD);
 		out_style.setFont(out_font);
@@ -341,7 +350,7 @@ public class DayInventoryController {
 		//设置第一行,设置列标题
 		StringBuilder[] formulas=build_addRow1(wb,sheet);
 		
-		CellStyle blue_style=getStyle_title(wb,IndexedColors.BLUE,null);
+		CellStyle blue_style=getStyle_title(wb,IndexedColors.PALE_BLUE,null);
 //		 blue_style.setBorderBottom(CellStyle.BORDER_NONE);
 //		 blue_style.setBorderLeft(CellStyle.BORDER_NONE);
 //		 blue_style.setBorderRight(CellStyle.BORDER_NONE);
@@ -353,21 +362,23 @@ public class DayInventoryController {
 //		 red_style.setBorderRight(CellStyle.BORDER_NONE);
 //		 red_style.setBorderTop(CellStyle.BORDER_NONE);
 		 
-		CellStyle black_style = this.getStyle(wb, IndexedColors.BLACK,null);
+		CellStyle subtype_name_style = this.getStyle(wb, IndexedColors.BLACK,null);
 		//black_style.setBorderBottom(CellStyle.BORDER_NONE);
-		black_style.setBorderLeft(CellStyle.BORDER_NONE);
-		black_style.setBorderRight(CellStyle.BORDER_NONE);
-		black_style.setBorderTop(CellStyle.BORDER_NONE);
-		black_style.setAlignment(CellStyle.ALIGN_LEFT);
+		subtype_name_style.setWrapText(false);
+		subtype_name_style.setBorderLeft(CellStyle.BORDER_NONE);
+		subtype_name_style.setBorderRight(CellStyle.BORDER_NONE);
+		subtype_name_style.setBorderTop(CellStyle.BORDER_NONE);
+		subtype_name_style.setAlignment(CellStyle.ALIGN_LEFT);
 		
-		CellStyle bord_style = wb.createCellStyle();
-		//style.setAlignment(CellStyle.ALIGN_CENTER);
-		//style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-		bord_style.setWrapText(true);//自动换行
-		bord_style.setBorderTop(CellStyle.BORDER_THIN);
-		bord_style.setBorderBottom(CellStyle.BORDER_THIN);
-		bord_style.setBorderLeft(CellStyle.BORDER_THIN);
-		bord_style.setBorderRight(CellStyle.BORDER_THIN);
+//		CellStyle bord_style = wb.createCellStyle();
+//		//style.setAlignment(CellStyle.ALIGN_CENTER);
+//		//style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+//		bord_style.setWrapText(true);//自动换行
+//		bord_style.setBorderTop(CellStyle.BORDER_THIN);
+//		bord_style.setBorderBottom(CellStyle.BORDER_THIN);
+//		bord_style.setBorderLeft(CellStyle.BORDER_THIN);
+//		bord_style.setBorderRight(CellStyle.BORDER_THIN);
+		CellStyle bord_style =getContentStyle(wb,null);
 		
 		//for(int i=0;i<list.size();i++){
 		int i=0;
@@ -376,10 +387,11 @@ public class DayInventoryController {
 		String subtype_id_temp="";
 		int fromRow=0;//开始分组的行
 		StringBuilder builder=new StringBuilder();
+		int rownum=0;
 		//for(Entry<DayInventoryVO,Map<String,Integer>> entry:result.entrySet()){
 		for(MonthInventoryVO monthInventoryVO:result){
 			//DayInventoryVO buildDayReport=entry.getKey();//list.get(i);
-			int rownum=i+extra_row_num;
+			rownum=i+extra_row_num;
 			cellnum=0;
 			
 			//判断还是不是同个小类，如果不是同个小类就添加一行，只有小类名称的行
@@ -387,13 +399,13 @@ public class DayInventoryController {
 				Row row = sheet.createRow(rownum);
 				Cell subtype_name = row.createCell(cellnum);
 				subtype_name.setCellValue(monthInventoryVO.getSubtype_name());
-				subtype_name.setCellStyle(black_style);
+				subtype_name.setCellStyle(subtype_name_style);
 				for(int j=1;j<(10+31*2+1);j++){
 					Cell cell = row.createCell(cellnum+j);
-					cell.setCellStyle(black_style);
+					cell.setCellStyle(subtype_name_style);
 				}
 				//同时合并单元格
-				sheet.addMergedRegion(new CellRangeAddress(rownum,rownum,0,9+21*2+1)); 
+				//sheet.addMergedRegion(new CellRangeAddress(rownum,rownum,0,9+21*2+1)); 
 				//分组
 				if(fromRow!=0){
 					sheet.groupRow(fromRow, rownum-1);//-2是因为后面又++了
@@ -499,9 +511,15 @@ public class DayInventoryController {
 				 day_out.setCellValue(value_out==null?0:value_out);
 				 
 			 }
+			 
+			 Cell memo=row.createCell(++cellstartnum);
+			 //memo.setCellValue("备注"); 
+			 memo.setCellStyle(bord_style);
 		 }
 		sheet.setRowSumsBelow(false);
 		sheet.setRowSumsRight(false);
+		
+		init_build_background(wb,sheet,++rownum);
 		
 		 String filename = "在建工程仓库("+store.getName()+")盘点日报表.xlsx";
 		 //FileOutputStream out = new FileOutputStream(filename);
@@ -515,7 +533,89 @@ public class DayInventoryController {
 		out.close();
 		
 	}
-	
+	public void init_build_background(XSSFWorkbook wb ,Sheet sheet,int lastrownum){
+		 CellStyle lastnum_style=getContentStyle(wb,null);
+		 lastnum_style.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.index);
+		 lastnum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		 
+		 CellStyle nownum_style=getContentStyle(wb,null);
+		 nownum_style.setFillForegroundColor(HSSFColor.LIGHT_TURQUOISE.index);
+		 nownum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		 
+		 
+
+		 
+		 CellStyle lastnum_subtitle_style=getContentStyle(wb,null);
+		 lastnum_subtitle_style.setBorderLeft(CellStyle.BORDER_NONE);
+		 lastnum_subtitle_style.setBorderRight(CellStyle.BORDER_NONE);
+		 lastnum_subtitle_style.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.index);
+		 lastnum_subtitle_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		 
+		 CellStyle nownum_subtitle_style=getContentStyle(wb,null);
+		 nownum_subtitle_style.setBorderLeft(CellStyle.BORDER_NONE);
+		 nownum_subtitle_style.setBorderRight(CellStyle.BORDER_NONE);
+		 nownum_subtitle_style.setFillForegroundColor(IndexedColors.LIGHT_TURQUOISE.index);
+		 nownum_subtitle_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		 
+		 CellStyle memo_subtitle_style=getContentStyle(wb,null);
+		 memo_subtitle_style.setBorderLeft(CellStyle.BORDER_NONE);
+		 //memo_subtitle_style.setBorderRight(CellStyle.BORDER_NONE);
+		
+		for(int i=2;i<lastrownum;i++){
+			Row row=sheet.getRow(i);
+			
+			if(i==3){
+				for(int j=0;j<11;j++){
+					Cell cell=row.getCell(j);
+					if(j==6){
+						cell.setCellStyle(lastnum_subtitle_style);
+					}
+					if(j==9){
+						cell.setCellStyle(nownum_subtitle_style);
+					}
+					if(j==10){
+						cell.setCellStyle(memo_subtitle_style);
+					}
+				}
+				
+			} else {
+				for(int j=0;j<11;j++){
+					Cell cell=row.getCell(j);
+					if(j==6){
+						cell.setCellStyle(lastnum_style);
+					}
+					if(j==9){
+						cell.setCellStyle(nownum_style);
+					}
+				}
+				
+			}
+			
+		}
+	}
+	private CellStyle getContentStyle(XSSFWorkbook wb,IndexedColors color){
+		CellStyle style = wb.createCellStyle();
+		//style.setAlignment(CellStyle.ALIGN_CENTER);
+		//style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		Font bord_font = wb.createFont();
+		bord_font.setFontHeightInPoints((short)10);
+		if(color!=null){
+			bord_font.setColor(color.getIndex());
+		}
+		
+		style.setAlignment(CellStyle.ALIGN_CENTER);
+		style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		
+		//
+		//bord_font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+		style.setFont(bord_font);
+		style.setWrapText(true);//自动换行
+		style.setBorderTop(CellStyle.BORDER_THIN);
+		style.setBorderBottom(CellStyle.BORDER_THIN);
+		style.setBorderLeft(CellStyle.BORDER_THIN);
+		style.setBorderRight(CellStyle.BORDER_THIN);
+		return style;
+	}
 	/**
 	 * =================================
 	 * =================================
@@ -566,17 +666,23 @@ public class DayInventoryController {
 		 unit.setCellStyle(black_style);
 		 sheet.setColumnWidth(cellnum-1, "列".getBytes().length*256);
 		 
+		 CellStyle fixednum_style=getStyle(wb,IndexedColors.BLACK,null);
+		 fixednum_style.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);
+		 fixednum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 		 Cell fixednum=row1.createCell(cellnum++);
 		 fixednum.setCellValue("额定数量");
-		 fixednum.setCellStyle(black_style);
+		 fixednum.setCellStyle(fixednum_style);
 		 sheet.setColumnWidth(cellnum-1, "列长".getBytes().length*256);
 		 
+		 CellStyle lastnum_style=getStyle(wb,IndexedColors.BLACK,null);
+		 lastnum_style.setFillForegroundColor(HSSFColor.LIGHT_YELLOW.index);
+		 lastnum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 		 Cell lastnum=row1.createCell(cellnum++);
 		 lastnum.setCellValue("上月结余");
-		 lastnum.setCellStyle(black_style);
+		 lastnum.setCellStyle(lastnum_style);
 		 sheet.setColumnWidth(cellnum-1, "列长".getBytes().length*256);
 		 
-		 CellStyle blue_style=getStyle_title(wb,IndexedColors.BLUE,null);
+		 CellStyle blue_style=getStyle_title(wb,IndexedColors.PALE_BLUE,null);
 		 Cell purchasenum=row1.createCell(cellnum++);
 		 purchasenum.setCellValue("本期采购新增");
 		 purchasenum.setCellStyle(blue_style);
@@ -622,9 +728,12 @@ public class DayInventoryController {
 		 adjustinnum.setCellStyle(black_style);
 		 sheet.setColumnWidth(cellnum-1, "列长".getBytes().length*256);
 		 
+		 CellStyle nownum_style=getStyle(wb,IndexedColors.BLACK,null);
+		 nownum_style.setFillForegroundColor(HSSFColor.LIGHT_TURQUOISE.index);
+		 nownum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 		 Cell nownum=row1.createCell(cellnum++);
 		 nownum.setCellValue("本月结余");
-		 nownum.setCellStyle(black_style);
+		 nownum.setCellStyle(nownum_style);
 		 sheet.setColumnWidth(cellnum-1, "列长".getBytes().length*256);
 		 
 //		 Cell supplementnum=row1.createCell(cellnum++);
@@ -665,7 +774,7 @@ public class DayInventoryController {
 		StringBuilder adjustinnum_formula=new StringBuilder("SUM(");
 		for(int j=1;j<=31;j++){
 			 
-			blue_style=getStyle_title(wb,IndexedColors.BLUE,(short)8);
+			blue_style=getStyle_title(wb,IndexedColors.PALE_BLUE,(short)8);
 			 Cell purchasenum_repeat=row2.createCell(cellnum_repeat++);
 			 purchasenum_repeat.setCellValue("采购新增");
 			 purchasenum_repeat.setCellStyle(blue_style);
@@ -815,22 +924,34 @@ public class DayInventoryController {
 		//设置第一行,设置列标题
 		StringBuilder[] formulas=sparepart_addRow1(wb,sheet);
 		
-		CellStyle black_style=getStyle_title(wb,IndexedColors.BLACK,null);
-		black_style.setWrapText(false);
-		black_style.setAlignment(CellStyle.ALIGN_LEFT);
+		CellStyle subtype_name_style = this.getStyle(wb, IndexedColors.BLACK,null);
+		//black_style.setBorderBottom(CellStyle.BORDER_NONE);
+		subtype_name_style.setWrapText(false);
+		subtype_name_style.setBorderLeft(CellStyle.BORDER_NONE);
+		subtype_name_style.setBorderRight(CellStyle.BORDER_NONE);
+		subtype_name_style.setBorderTop(CellStyle.BORDER_NONE);
+		subtype_name_style.setAlignment(CellStyle.ALIGN_LEFT);
+		
+		 
+		 CellStyle content_subtitle_style =getContentStyle(wb,null);
+		 content_subtitle_style.setBorderLeft(CellStyle.BORDER_NONE);
+		 content_subtitle_style.setBorderRight(CellStyle.BORDER_NONE);
+		 
+		 CellStyle content_style =getContentStyle(wb,null);
 		 
 		int i=0;
 		int cellnum=0;
 		int extra_row_num=3;
 		String subtype_id_temp="";
 		int fromRow=0;//开始分组的行
+		int rownum =0;
 		//for(Entry<DayInventoryVO,Map<String,Integer>> entry:result.entrySet()){
 		for(MonthInventoryVO monthInventoryVO:result){
 			// int rownum=i+3;
 			// i++;
 			// int cellnum=0;
 
-			int rownum = i + extra_row_num;
+			rownum = i + extra_row_num;
 			cellnum = 0;
 
 			// 判断还是不是同个小类，如果不是同个小类就添加一行，只有小类名称的行
@@ -838,13 +959,14 @@ public class DayInventoryController {
 				Row row = sheet.createRow(rownum);
 				Cell subtype_name = row.createCell(cellnum);
 				subtype_name.setCellValue(monthInventoryVO.getSubtype_name());
-				subtype_name.setCellStyle(black_style);
+				subtype_name.setCellStyle(subtype_name_style);
+				
 				for (int j = 1; j < 15+31*7+1; j++) {
 					Cell cell = row.createCell(cellnum + j);
-					cell.setCellStyle(black_style);
+					cell.setCellStyle(content_subtitle_style);
 				}
 				// 同时合并单元格
-				sheet.addMergedRegion(new CellRangeAddress(rownum, rownum, 0,15+31*7+1));
+				//sheet.addMergedRegion(new CellRangeAddress(rownum, rownum, 0,15+31*7+1));
 				// 分组
 				if (fromRow != 0) {
 					sheet.groupRow(fromRow, rownum - 1);// -2是因为后面又++了
@@ -870,19 +992,19 @@ public class DayInventoryController {
 			 
 			 Cell subtype_name=row.createCell(cellnum++);
 			 //subtype_name.setCellValue(monthInventoryVO.getSubtype_name());
-			 subtype_name.setCellStyle(black_style);
+			 subtype_name.setCellStyle(content_style);
 			 
 			 Cell brand_name=row.createCell(cellnum++);
 			 brand_name.setCellValue(monthInventoryVO.getBrand_name());
-			 brand_name.setCellStyle(black_style);
+			 brand_name.setCellStyle(content_style);
 			 
 			 Cell style=row.createCell(cellnum++);
 			 style.setCellValue(monthInventoryVO.getStyle());
-			 style.setCellStyle(black_style);
+			 style.setCellStyle(content_style);
 			 
 			 Cell prod_name=row.createCell(cellnum++);
 			 prod_name.setCellValue(monthInventoryVO.getProd_name());
-			 prod_name.setCellStyle(black_style);
+			 prod_name.setCellStyle(content_style);
 			 
 //			 Cell store_name=row.createCell(cellnum++);
 //			 store_name.setCellValue(monthInventoryVO.getStore_name());
@@ -890,19 +1012,19 @@ public class DayInventoryController {
 			 
 			 Cell unit=row.createCell(cellnum++);
 			 unit.setCellValue(monthInventoryVO.getUnit());
-			 unit.setCellStyle(black_style);
+			 unit.setCellStyle(content_style);
 			 
 			 Cell fixednum=row.createCell(cellnum++);
 			 fixednum.setCellValue(monthInventoryVO.getFixednum()==null?0:monthInventoryVO.getFixednum());
-			 fixednum.setCellStyle(black_style);
+			 fixednum.setCellStyle(content_style);
 			 
 			 Cell lastnum=row.createCell(cellnum++);
 			 lastnum.setCellValue(monthInventoryVO.getLastnum()==null?0:monthInventoryVO.getLastnum());
-			 lastnum.setCellStyle(black_style);
+			 lastnum.setCellStyle(content_style);
 			 nownum_formulas.append(CellReference.convertNumToColString(cellnum-1)+(rownum+1));
 			 nownum_formulas.append(",");
 			 
-			 CellStyle blue_style=getStyle_title(wb,IndexedColors.BLUE,null);
+			 CellStyle blue_style=getStyle_title(wb,IndexedColors.PALE_BLUE,null);
 			 Cell purchasenum=row.createCell(cellnum++);
 			 //purchasenum.setCellValue(monthInventoryVO.getPurchasenum()==null?0:monthInventoryVO.getPurchasenum());
 			 purchasenum.setCellFormula(formulas[0].toString().replaceAll("=", (rownum+1)+""));
@@ -961,7 +1083,7 @@ public class DayInventoryController {
 			 nownum_formulas.append(")");
 			 Cell nownum=row.createCell(cellnum++);
 			 nownum.setCellFormula(nownum_formulas.toString());
-			 nownum.setCellStyle(black_style);
+			 nownum.setCellStyle(content_style);
 //			 Cell supplementnum=row.createCell(cellnum++);
 //			 supplementnum.setCellValue(monthInventoryVO.getSupplementnum()==null?0:monthInventoryVO.getSupplementnum());
 			 
@@ -973,7 +1095,7 @@ public class DayInventoryController {
 			 for(int j=1;j<=31;j++){
 				 
 
-				 blue_style=getStyle(wb,IndexedColors.BLUE,null);
+				 blue_style=getStyle(wb,IndexedColors.PALE_BLUE,null);
 				 Cell purchasenum_mx=row.createCell(cellnum++);
 				 purchasenum_mx.setCellStyle(blue_style);
  
@@ -1020,7 +1142,13 @@ public class DayInventoryController {
 				 adjustoutnum_mx.setCellValue(dayInventory.getAdjustoutnum());
 				 adjustinnum_mx.setCellValue(dayInventory.getAdjustinnum());
 			 }
+			 
+			Cell memo = row.createCell(cellnum++);
+			//memo.setCellValue("备注");
+			memo.setCellStyle(content_style);
 		 }
+		
+		init_background(wb,sheet, ++rownum);
 		 
 		sheet.setRowSumsBelow(false);
 		sheet.setRowSumsRight(false);
@@ -1035,5 +1163,96 @@ public class DayInventoryController {
 		out.flush();
 		out.close();
 		
+	}
+	public void init_background(XSSFWorkbook wb ,Sheet sheet,int lastrownum){
+		CellStyle fixednum_style=getContentStyle(wb,null);
+		 fixednum_style.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
+		 fixednum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		 
+		CellStyle lastnum_style=getContentStyle(wb,null);
+		 lastnum_style.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.index);
+		 lastnum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		 
+		 CellStyle nownum_style=getContentStyle(wb,null);
+		 nownum_style.setFillForegroundColor(HSSFColor.LIGHT_TURQUOISE.index);
+		 nownum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+
+		 CellStyle supplementnum_style=getContentStyle(wb,null);
+		 supplementnum_style.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);
+		 supplementnum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+//		 
+		
+		CellStyle fixednum_subtitle_style=getContentStyle(wb,null);
+		 fixednum_subtitle_style.setBorderLeft(CellStyle.BORDER_NONE);
+		 fixednum_subtitle_style.setBorderRight(CellStyle.BORDER_NONE);
+		 fixednum_subtitle_style.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
+		 fixednum_subtitle_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		 
+		 CellStyle lastnum_subtitle_style=getContentStyle(wb,null);
+		 lastnum_subtitle_style.setBorderLeft(CellStyle.BORDER_NONE);
+		 lastnum_subtitle_style.setBorderRight(CellStyle.BORDER_NONE);
+		 lastnum_subtitle_style.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.index);
+		 lastnum_subtitle_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		 
+		 CellStyle nownum_subtitle_style=getContentStyle(wb,null);
+		 nownum_subtitle_style.setBorderLeft(CellStyle.BORDER_NONE);
+		 nownum_subtitle_style.setBorderRight(CellStyle.BORDER_NONE);
+		 nownum_subtitle_style.setFillForegroundColor(IndexedColors.LIGHT_TURQUOISE.index);
+		 nownum_subtitle_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		 
+		 CellStyle supplementnum_subtitle_style=getContentStyle(wb,null);
+		 supplementnum_subtitle_style.setBorderLeft(CellStyle.BORDER_NONE);
+		 supplementnum_subtitle_style.setBorderRight(CellStyle.BORDER_NONE);
+		 supplementnum_subtitle_style.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
+		 supplementnum_subtitle_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		 
+		 CellStyle memo_subtitle_style=getContentStyle(wb,null);
+		 memo_subtitle_style.setBorderLeft(CellStyle.BORDER_NONE);
+		 
+		for(int i=3;i<lastrownum;i++){
+			Row row=sheet.getRow(i);
+			
+			if(i==3){
+				for(int j=0;j<18;j++){
+					Cell cell=row.getCell(j);
+					if(cell==null){
+						cell=row.createCell(j);
+					}
+					if(j==5){
+						cell.setCellStyle(fixednum_subtitle_style);
+					}
+					if(j==6){
+						cell.setCellStyle(lastnum_subtitle_style);
+					}
+//					if(j==14){
+//						cell.setCellStyle(nownum_subtitle_style);
+//					}
+					if(j==15){
+						cell.setCellStyle(nownum_subtitle_style);
+					}
+				}
+				
+			} else {
+				for(int j=0;j<18;j++){
+					Cell cell=row.getCell(j);
+					if(cell==null){
+						cell=row.createCell(j);
+					}
+					if(j==5){
+						cell.setCellStyle(fixednum_style);
+					}
+					if(j==6){
+						cell.setCellStyle(lastnum_style);
+					}
+//					if(j==14){
+//						cell.setCellStyle(nownum_style);
+//					}
+					if(j==15){
+						cell.setCellStyle(nownum_subtitle_style);
+					}
+				}
+			}
+			
+		}
 	}
 }
