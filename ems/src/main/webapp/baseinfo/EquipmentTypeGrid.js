@@ -182,7 +182,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 			layout:'fit',
 			closeAction:'destroy',
 			width:300,
-			height:240,
+			height:400,
 			modal:true
 		});
 		//form.win=win

@@ -370,7 +370,7 @@ public class DayInventoryController {
 		subtype_name_style.setBorderTop(CellStyle.BORDER_NONE);
 		subtype_name_style.setAlignment(CellStyle.ALIGN_LEFT);
 		
-//		CellStyle bord_style = wb.createCellStyle();
+//		CellStyle bord_style = wb.createCellStyle(); 
 //		//style.setAlignment(CellStyle.ALIGN_CENTER);
 //		//style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
 //		bord_style.setWrapText(true);//自动换行
