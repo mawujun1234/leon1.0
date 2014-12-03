@@ -24,7 +24,12 @@ Ext.define('Ems.install.InOutListVOGridQuery',{
 		{dataIndex:'prod_name',text:'品名'},
 		{dataIndex:'brand_name',text:'品牌'},
 		{dataIndex:'supplier_name',text:'供应商'},
-		{dataIndex:'style',text:'型号'}
+		{dataIndex:'style',text:'型号'},
+		{header:'规格',dataIndex:'prod_spec',flex:1,renderer:function(value,metadata,record){
+						metadata.tdAttr = "data-qtip='" + value+ "'";
+					    return value;
+						}
+		}
 		//{dataIndex:'num',text:'数量',summaryType: 'sum'}
       ];
       

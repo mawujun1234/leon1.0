@@ -64,8 +64,9 @@ public class OrderService extends AbstractService<Order, String>{
 		
 		return results;
 	}
-	public List<OrderVO> query(String orderNo) {	
-		return orderRepository.query(orderNo);
+	public Page queryList(Page page) {	
+		
+		return orderRepository.queryList(page);
 	}
 	
 	SimpleDateFormat y2mdDateFormat=new SimpleDateFormat("yyMMdd");

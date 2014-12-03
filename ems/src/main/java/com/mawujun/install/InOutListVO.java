@@ -10,6 +10,7 @@ public class InOutListVO {
 	
 	private String subtype_name;
 	private String prod_name;
+	private String prod_spec;
 	private String brand_name;
 	private String supplier_name;
 	private String style;
@@ -75,6 +76,12 @@ public class InOutListVO {
 	}
 	public void setNum(Integer num) {
 		this.num = num;
+	}
+	public String getProd_spec() {
+		return prod_spec;
+	}
+	public void setProd_spec(String prod_spec) {
+		this.prod_spec = prod_spec;
 	}
 	
 }

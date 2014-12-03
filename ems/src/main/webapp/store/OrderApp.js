@@ -61,19 +61,34 @@ Ext.onReady(function(){
 		value:loginName
 	});
 	
+	var type_combox=Ext.create('Ems.baseinfo.TypeCombo',{
+		labelAlign:'right',
+		allowBlank: false,
+		labelWidth:50,
+		//minChars:-1
+		listeners:{
+			change:function(field,newValue, oldValue){
+				subtype_combox.clearValue( );
+				subtype_combox.getStore().getProxy().extraParams={equipmentType_id:newValue};
+				subtype_combox.getStore().reload();
+			}
+		}
+	});
 	
 	var subtype_combox=Ext.create('Ems.baseinfo.SubtypeCombo',{
 		labelAlign:'right',
 		allowBlank: false,
 		labelWidth:50,
-		minChars:-1
-//		listeners:{
-//			change:function(field,newValue, oldValue){
-//				prod_id.clearValue( );
-//				prod_id.getStore().getProxy().extraParams={equipmentSubtype_id:newValue};
-//				prod_id.getStore().reload();
-//			}
-//		}
+		//minChars:-1，
+		listeners:{
+			beforeload:function(store){
+				if(type_combox.getValue()){
+					return true;
+				} 
+				Ext.Msg.alert("消息","请先选择大类!");
+				return false;
+			}
+		}
 	});
 	var prod_id=Ext.create('Ext.form.field.Hidden',{
 		fieldLabel: '品名',
@@ -105,6 +120,7 @@ Ext.onReady(function(){
 					itemdblclick:function(view,record,item){
 						prod_id.setValue(record.get("id"));
 						prod_name.setValue(record.get("name"));
+						prod_spec.setValue(record.get("spec"));
 						
 						brand_id.setValue(record.get("brand_id"));
 						brand_name.setValue(record.get("brand_name"));
@@ -146,6 +162,9 @@ Ext.onReady(function(){
 	var style=Ext.create('Ext.form.field.Text',{
 		flex:1,
 		xtype:'textfield',itemId:'style_field',fieldLabel:'型号',name:'style',labelWidth:50,allowBlank:false,labelAlign:'right'});
+	var prod_spec=Ext.create('Ext.form.field.Text',{
+		flex:1,
+		xtype:'textfield',itemId:'style_field',fieldLabel:'规格',name:'prod_spec',labelWidth:50,allowBlank:false,labelAlign:'right'});
 	
 	var supplier_combox=Ext.create('Ems.baseinfo.SupplierCombo',{
 		labelAlign:'right',
@@ -167,19 +186,9 @@ Ext.onReady(function(){
 		flex:1,
 		store:equipStore,
     	columns: [Ext.create('Ext.grid.RowNumberer'),
-    	          {header: '设备类型', dataIndex: 'subtype_name',width:120},
-    	          {header: '品名', dataIndex: 'prod_name'},
-    	          {header: '品牌', dataIndex: 'brand_name',width:120},
-    	          {header: '供应商', dataIndex: 'supplier_name'},
-    	          {header: '设备型号', dataIndex: 'style',width:120},
-    	          {header: '数量', dataIndex: 'orderNum',width:70},
-    	          {header: '单价(元)', dataIndex: 'unitPrice',width:70},
-    	          {header: '总价(元)', dataIndex: 'totalprice',width:70},
-    	          
-
-    	          { header:'操作',
+    		{ header:'操作',
 	                xtype: 'actioncolumn',
-	                width: 70,
+	                width: 60,
 	                items: [{
 	                    icon   : '../images/delete.gif',  // Use a URL in the icon config
 	                    tooltip: '删除',
@@ -192,7 +201,23 @@ Ext.onReady(function(){
 	                        });
 	                    }
 	                }]
-	            }],
+	            },
+    	          {header: '设备类型', dataIndex: 'subtype_name',width:120},
+    	          {header: '品名', dataIndex: 'prod_name'},
+    	          {header: '品牌', dataIndex: 'brand_name',width:120},
+    	          {header: '供应商', dataIndex: 'supplier_name'},
+    	          {header: '设备型号', dataIndex: 'style',width:120},
+    	          {header: '规格', dataIndex: 'prod_spec',flex:1,renderer:function(value,metadata,record){
+								metadata.tdAttr = "data-qtip='" + value+ "'";
+							    return value;
+							}
+				  },
+    	          {header: '数量', dataIndex: 'orderNum',width:70},
+    	          {header: '单价(元)', dataIndex: 'unitPrice',width:70},
+    	          {header: '总价(元)', dataIndex: 'totalprice',width:70}
+    	          
+
+    	          ],
         tbar:['<pan id="toolbar-title-text">当前订单记录</span>','->'
 //              {text:'清空设备',
 //        	   iconCls:'icon-clearall',
@@ -226,10 +251,12 @@ Ext.onReady(function(){
 			var obj=form.getValues();
 		    var record=new Ext.create('Ems.store.Order',{
 		    	orderNo:order_no.getValue(),
+		    	type_id:obj.type_id,
 	            subtype_id:obj.subtype_id,
 	            subtype_name:subtype_combox.getRawValue(),
 	            prod_id:prod_id.getValue(),
 	            prod_name:prod_name.getValue(),
+	            prod_spec:prod_spec.getValue(),
 	            brand_id:brand_id.getValue(),
 	            brand_name:brand_name.getValue(),
 	            supplier_id:obj.supplier_id,
@@ -259,10 +286,11 @@ Ext.onReady(function(){
         defaults:{margins:'0 0 5 0',border:false},
         items:[{xtype:'form',items:[
         							{xtype:'fieldcontainer',layout: 'hbox',items:[order_no,store_combox,orderDate,operater]},
-        							{xtype:'fieldcontainer',layout: 'hbox',items:[subtype_combox,prod_name,queryProd_button,brand_name,style]},
+        							{xtype:'fieldcontainer',layout: 'hbox',items:[type_combox,subtype_combox,prod_name,queryProd_button,brand_name,style]},
+        							{xtype:'fieldcontainer',layout: 'hbox',items:[prod_spec]},
                                     {xtype:'fieldcontainer',layout: 'hbox',items:[
                                    		supplier_combox,
-                                    	{xtype:'numberfield',itemId:'orderNum_field',fieldLabel:'数目',name:'orderNum',minValue:1,labelWidth:40,allowBlank:false,labelAlign:'right',value:1},
+                                    	{xtype:'numberfield',itemId:'orderNum_field',fieldLabel:'数目',name:'orderNum',minValue:1,labelWidth:40,listeners:{change:countTotal},allowBlank:false,labelAlign:'right',value:1},
                                     	{xtype:'numberfield',itemId:'unitprice_field',fieldLabel:'单价(元)',name:'unitPrice',minValue:0,labelWidth:80,listeners:{change:countTotal},allowBlank:true,labelAlign:'right'},
 										totalprice_display
 									  ]

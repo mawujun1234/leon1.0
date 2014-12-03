@@ -235,25 +235,9 @@ Ext.onReady(function(){
 		flex:1,
 		store:equipStore,
     	columns: [Ext.create('Ext.grid.RowNumberer'),
-    			  {header: '条码', dataIndex: 'ecode',width:150},
-    	          {header: '设备类型', dataIndex: 'subtype_name',width:120},
-    	          {header: '品名', dataIndex: 'prod_name'},
-    	          {header: '品牌', dataIndex: 'brand_name',width:120},
-    	          {header: '供应商', dataIndex: 'supplier_name'},
-    	          {header: '设备型号', dataIndex: 'style',width:120},
-    	          {header: '仓库', dataIndex: 'store_name'},
-    	          //{header: '数量', dataIndex: 'serialNum',width:70},
-  
-    	          {header: '状态', dataIndex: 'status',width:100,renderer:function(value){
-    	          	  if(value==4 || value==5){
-	    	          	return '<font color="red">'+equipmentStatus[value]+'</font>';
-	    	          } else {
-	    	          		return equipmentStatus[value];
-	    	          } 
-    	          }},
-    	          { header:'操作',
+    	{ header:'操作',
 	                xtype: 'actioncolumn',
-	                width: 70,
+	                width: 60,
 	                items: [{
 	                    icon   : '../images/delete.gif',  // Use a URL in the icon config
 	                    tooltip: '删除',
@@ -277,7 +261,29 @@ Ext.onReady(function(){
 	                        });
 	                    }
 	                }]
-	            }],
+	            },
+    			  {header: '条码', dataIndex: 'ecode',width:150},
+    	          {header: '设备类型', dataIndex: 'subtype_name',width:120},
+    	          {header: '品名', dataIndex: 'prod_name'},
+    	          {header: '品牌', dataIndex: 'brand_name',width:120},
+    	          {header: '供应商', dataIndex: 'supplier_name'},
+    	          {header: '设备型号', dataIndex: 'style',width:120},
+    	          {header: '规格', dataIndex: 'prod_spec',width:120,renderer:function(value,metadata,record){
+						metadata.tdAttr = "data-qtip='" + value+ "'";
+					    return value;
+					}
+				  },
+    	          {header: '仓库', dataIndex: 'store_name'},
+    	          //{header: '数量', dataIndex: 'serialNum',width:70},
+  
+    	          {header: '状态', dataIndex: 'status',width:100,renderer:function(value){
+    	          	  if(value==4 || value==5){
+	    	          	return '<font color="red">'+equipmentStatus[value]+'</font>';
+	    	          } else {
+	    	          		return equipmentStatus[value];
+	    	          } 
+    	          }}
+    	          ],
         tbar:['<pan id="toolbar-title-text">当前入库记录</span>','->',
               {text:'清空所选记录',
         	   iconCls:'icon-clearall',

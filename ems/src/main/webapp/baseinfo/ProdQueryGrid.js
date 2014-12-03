@@ -16,20 +16,17 @@ Ext.define('Ems.baseinfo.ProdQueryGrid',{
 	initComponent: function () {
       var me = this;
       me.columns=[
-		{dataIndex:'id',text:'编码',width:150
-//		,renderer:function(value){
-//			var values=value.split("_");
-//			return values[0];
-//		}
-		},
-		//{dataIndex:'level',text:'level',xtype: 'numbercolumn', format:'0.00'},
-		//{dataIndex:'status',text:'status',xtype: 'numbercolumn', format:'0.00'},
-//		{dataIndex:'subtype_name',text:'型号',renderer:function(){
-//			return me.subtype_name;
-//		}},
-		{dataIndex:'name',text:'名称',flex:1},
-		{dataIndex:'unit',text:'单位',flex:1},
-		{dataIndex:'brand_name',text:'品牌',flex:1}
+		{dataIndex:'id',text:'编码',width:60},
+		{dataIndex:'name',text:'名称',width:80},
+		{dataIndex:'unit',text:'单位',width:50},
+		{dataIndex:'brand_name',text:'品牌',width:60},
+		{dataIndex:'style',text:'型号',flex:1},
+		{dataIndex:'spec',text:'规格',flex:1,renderer:function(value,metadata,record){
+			metadata.tdAttr = "data-qtip='" + value+ "'";
+		    return value;
+			}
+		}
+		
       ];
       
 	  me.store=Ext.create('Ext.data.Store',{

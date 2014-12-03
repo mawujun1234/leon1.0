@@ -23,6 +23,11 @@ Ext.define('Ems.store.OrderListGrid',{
     	{header: '品牌', dataIndex: 'brand_name',width:120},
     	{header: '供应商', dataIndex: 'supplier_name'},
     	{header: '设备型号', dataIndex: 'style',width:120},
+    	{header: '规格', dataIndex: 'prod_spec',width:120,renderer:function(value,metadata,record){
+			metadata.tdAttr = "data-qtip='" + value+ "'";
+		    return value;
+		}
+		},
     	{header: '订购数量',dataIndex:'orderNum',xtype: 'numbercolumn', format:'0',width:60},
     	{header: '入库数量',dataIndex:'totalNum',xtype: 'numbercolumn', format:'0',width:60}
       ];
@@ -35,7 +40,7 @@ Ext.define('Ems.store.OrderListGrid',{
 			proxy:{
 				type:'ajax',
 				actionMethods:{read:'POST'},
-				url:Ext.ContextPath+'/order/query.do',
+				url:Ext.ContextPath+'/order/queryList.do',
 				reader:{
 					type:'json',
 					root:'root'

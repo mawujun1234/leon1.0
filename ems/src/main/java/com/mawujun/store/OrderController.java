@@ -100,10 +100,13 @@ public class OrderController {
 	 * @param orderNo
 	 * @return
 	 */
-	@RequestMapping("/order/query.do")
+	@RequestMapping("/order/queryList.do")
 	@ResponseBody
-	public List<OrderVO> query(String orderNo) {	
-		List<OrderVO> orderes=orderService.query(orderNo);
+	public Page queryList(Integer start,Integer limit,String orderNo) {	
+		Page page=Page.getInstance(start,limit);
+		page.addParam(M.Order.orderNo, orderNo);
+		
+		Page orderes=orderService.queryList(page);
 		return orderes;
 	}
 	

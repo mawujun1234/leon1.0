@@ -325,12 +325,33 @@ Ext.onReady(function(){
 		flex:1,
 		store:equipStore,
     	columns: [Ext.create('Ext.grid.RowNumberer'),
+    				{ header:'操作',
+	                xtype: 'actioncolumn',
+	                width: 50,
+	                items: [{
+	                    icon   : '../images/delete.gif',  // Use a URL in the icon config
+	                    tooltip: '删除',
+	                    handler: function(grid, rowIndex, colIndex) {
+	                        var rec = equipStore.getAt(rowIndex);
+	                        Ext.MessageBox.confirm('确认', '您确认要删除该记录吗?', function(btn){
+	                        	if(btn=='yes'){
+	                        		equipStore.remove(rec);
+	                        	}
+	                        });
+	                    }
+	                }]
+	            },
     			  {header: '条码', dataIndex: 'ecode',width:150},
     	          {header: '设备类型', dataIndex: 'subtype_name',width:120},
     	          {header: '品名', dataIndex: 'prod_name'},
     	          {header: '品牌', dataIndex: 'brand_name',width:120},
     	          {header: '供应商', dataIndex: 'supplier_name'},
     	          {header: '设备型号', dataIndex: 'style',width:120},
+    	          {dataIndex:'prod_spec',header:'规格',flex:1,renderer:function(value,metadata,record){
+						metadata.tdAttr = "data-qtip='" + value+ "'";
+					    return value;
+						}
+				  },
     	          {header: '仓库', dataIndex: 'store_name'},
     	          //{header: '作业单位', dataIndex: 'workUnit_name'},
     	          //{header: '数量', dataIndex: 'serialNum',width:70},
@@ -344,23 +365,8 @@ Ext.onReady(function(){
 	    	          } else {
 	    	          		return equipmentStatus[value];
 	    	          } 
-    	          }},
-    	          { header:'操作',
-	                xtype: 'actioncolumn',
-	                width: 70,
-	                items: [{
-	                    icon   : '../images/delete.gif',  // Use a URL in the icon config
-	                    tooltip: '删除',
-	                    handler: function(grid, rowIndex, colIndex) {
-	                        var rec = equipStore.getAt(rowIndex);
-	                        Ext.MessageBox.confirm('确认', '您确认要删除该记录吗?', function(btn){
-	                        	if(btn=='yes'){
-	                        		equipStore.remove(rec);
-	                        	}
-	                        });
-	                    }
-	                }]
-	            }],
+    	          }}
+    	          ],
         tbar:['<pan id="toolbar-title-text">当前入库记录</span>','->',
               {text:'清空选择的设备',
         	   iconCls:'icon-clearall',

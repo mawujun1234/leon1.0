@@ -23,7 +23,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     
     <!-- 查询某个入库单下面的，所有入库明细 -->
     <select id="queryList" resultType="com.mawujun.store.InStoreListVO" parameterType="string">
-    	select a.*,b.name as subtype_name,c.name as prod_name,d.name as brand_name,e.name as supplier_name from 
+    	select a.*,b.name as subtype_name,c.name as prod_name，c.spec as prod_spec,d.name as brand_name,e.name as supplier_name from 
     	(select f.*,a.subtype_id,a.prod_id,a.brand_id,a.supplier_id,a.style from ems_equipment a inner join ems_instorelist f on a.ecode=f.encode and f.inStore_id=#{inStore_id}) a
 		inner join ems_equipmentsubtype b on a.subtype_id=b.id
 		inner join ems_equipmentprod c on a.prod_id=c.id

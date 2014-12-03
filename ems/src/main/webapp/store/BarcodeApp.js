@@ -50,7 +50,7 @@ Ext.onReady(function(){
         autoLoad:false,
         model: 'Ems.store.Order',
         proxy: {
-        	url:Ext.ContextPath+'/order/query.do',
+        	url:Ext.ContextPath+'/order/queryList.do',
             type: 'ajax',
             reader:{
             	type:'json',
@@ -73,6 +73,11 @@ Ext.onReady(function(){
     	          {header: '品牌', dataIndex: 'brand_name',width:120},
     	          {header: '供应商', dataIndex: 'supplier_name'},
     	          {header: '设备型号', dataIndex: 'style',width:120},
+    	          {header: '规格', dataIndex: 'prod_spec',flex:1,renderer:function(value,metadata,record){
+								metadata.tdAttr = "data-qtip='" + value+ "'";
+							    return value;
+							}
+				  },
     	          {header: '订单数量', dataIndex: 'orderNum',width:70},
     	          {header: '累计入库数量', dataIndex: 'totalNum',width:80},
     	          {header: '本次入库数量', dataIndex: 'printNum',width:80,editor: {

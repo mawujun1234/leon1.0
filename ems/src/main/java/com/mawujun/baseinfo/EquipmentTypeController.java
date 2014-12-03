@@ -168,6 +168,23 @@ public class EquipmentTypeController {
 		return equipmentType;
 	}
 	
+	@RequestMapping("/equipmentType/queryTypeCombo.do")
+	@ResponseBody
+	public List<EquipmentType> queryTypeCombo(String name,Boolean containAll) {
+		Cnd  cnd=Cnd.select().andEquals(M.EquipmentType.status, true);
+		
+		if(StringUtils.hasText(name)){
+			cnd.andLike(M.EquipmentType.name, name);
+		}
+		List<EquipmentType> list= equipmentTypeService.query(cnd);	
+		if(containAll!=null && containAll){
+			EquipmentType all=new EquipmentType();
+			all.setId("");
+			all.setName("所有");
+			list.add(0, all);
+		}
+		return list;
+	}
 	/**
 	 * 用于combobox
 	 * @author mawujun email:160649888@163.com qq:16064988
@@ -177,7 +194,14 @@ public class EquipmentTypeController {
 	@RequestMapping("/equipmentType/querySubtypeCombo.do")
 	@ResponseBody
 	public List<EquipmentSubtype> querySubtype(String equipmentType_id,String name,Boolean containAll) {
-		List<EquipmentSubtype> list= equipmentSubtypeService.query(Cnd.select().andEquals(M.EquipmentSubtype.status, true).andLike(M.EquipmentSubtype.name, name));	
+		Cnd cnd=Cnd.select().andEquals(M.EquipmentSubtype.status, true);
+		if(StringUtils.hasText(equipmentType_id)){
+			cnd.andEquals(M.EquipmentSubtype.parent_id, equipmentType_id);
+		}
+		if(StringUtils.hasText(name)){
+			cnd.andLike(M.EquipmentSubtype.name, name);
+		}
+		List<EquipmentSubtype> list= equipmentSubtypeService.query(cnd);	
 		if(containAll!=null && containAll){
 			EquipmentSubtype all=new EquipmentSubtype();
 			all.setId("");

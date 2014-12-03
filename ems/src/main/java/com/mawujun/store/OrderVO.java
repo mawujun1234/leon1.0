@@ -11,6 +11,7 @@ public class OrderVO extends Order {
 	private String subtype_name;
 	@Transient
 	private String prod_name;
+	private String prod_spec;
 	@Transient
 	private String brand_name;
 	@Transient
@@ -71,6 +72,14 @@ public class OrderVO extends Order {
 	}
 	public void setExportStatus(Boolean exportStatus) {
 		this.exportStatus = exportStatus;
+	}
+
+	public String getProd_spec() {
+		return prod_spec;
+	}
+
+	public void setProd_spec(String prod_spec) {
+		this.prod_spec = prod_spec;
 	}
 	
 }

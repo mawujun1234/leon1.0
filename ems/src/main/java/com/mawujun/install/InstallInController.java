@@ -131,7 +131,7 @@ public class InstallInController {
 	 */
 	@RequestMapping("/inoutvo/queryMain.do")
 	@ResponseBody
-	public Page queryMain(Integer start,Integer limit,Date operateDate_start,Date operateDate_end,String store_id,String workUnit_id,String type) { 
+	public Page queryMain(Integer start,Integer limit,String operateDate_start,String operateDate_end,String store_id,String workUnit_id,String type) { 
 		Page page=Page.getInstance(start, limit);
 		page.addParam("operateDate_start", operateDate_start);
 		page.addParam("operateDate_end", operateDate_end);

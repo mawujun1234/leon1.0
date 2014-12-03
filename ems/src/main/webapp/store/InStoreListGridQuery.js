@@ -30,6 +30,11 @@ Ext.define('Ems.store.InStoreListGridQuery',{
 		{dataIndex:'brand_name',text:'品牌'},
 		{dataIndex:'supplier_name',text:'供应商'},
 		{dataIndex:'style',text:'型号'},
+		{dataIndex:'prod_spec',text:'规格',flex:1,renderer:function(value,metadata,record){
+			metadata.tdAttr = "data-qtip='" + value+ "'";
+		    return value;
+			}
+		},
 		{dataIndex:'num',text:'数量',summaryType: 'sum'}
       ];
       

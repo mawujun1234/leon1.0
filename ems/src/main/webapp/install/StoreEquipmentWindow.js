@@ -152,6 +152,11 @@ Ext.define('Ems.install.StoreEquipmentWindow',{
 	    	          }},
 	    	          {header: '品名', dataIndex: 'prod_name',flex:1},
 	    	          {header: '设备型号', dataIndex: 'style',width:120,hidden:true},
+	    	          {dataIndex:'prod_spec',text:'规格',flex:1,renderer:function(value,metadata,record){
+						metadata.tdAttr = "data-qtip='" + value+ "'";
+					    return value;
+						}
+					  },
 	    	          {header: '条码', dataIndex: 'ecode',width:120,hidden:true},
 	    	          {header: '品牌', dataIndex: 'brand_name',width:120,hidden:true},
 	    	          {header: '供应商', dataIndex: 'supplier_name',hidden:true},     

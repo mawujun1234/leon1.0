@@ -19,6 +19,9 @@ import com.mawujun.utils.page.Page;
 public interface OrderRepository extends IRepository<Order, String>{
 
 	public Page queryMain(Page page);
+	public Page queryList(Page page);
+	
+	
 	public List<String> queryUncompleteOrderno(@Param("user_id")String user_id);
 	
 	public List<OrderVO> query(@Param("orderNo")String orderNo);
