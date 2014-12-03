@@ -33,19 +33,27 @@ Ext.define('Ems.baseinfo.PoleForm',{
 	        xtype:'hidden',
 	        allowBlank: false
 	    },
-	    {
-	        fieldLabel: 'customer_id',
-	        //afterLabelTextTpl: Ext.required,
-	        name: 'pole_id',      
-	        xtype:'hidden',
-	        allowBlank: false
-	    },
+	   
 	     {
 	        fieldLabel: 'status',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'status',      
 	        xtype:'hidden',
 	        allowBlank: false
+	    },
+	     {
+	        fieldLabel: 'customer_id',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'pole_id',      
+	        xtype:'hidden',
+	        allowBlank: false
+	    },
+	    {
+	        fieldLabel: '编号',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'code',        
+	        xtype:'textfield',
+	        allowBlank: true
 	    },
 	    {
 	        fieldLabel: '名称',
@@ -127,6 +135,7 @@ Ext.define('Ems.baseinfo.PoleForm',{
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'longitude',   
 	        xtype:'textfield',
+	        hidden:true,
 	        allowBlank: true
 	    },	
 		{
@@ -134,6 +143,7 @@ Ext.define('Ems.baseinfo.PoleForm',{
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'latitude',      
 	        xtype:'textfield',
+	         hidden:true,
 	        allowBlank: true
 	    }
 	  ];   

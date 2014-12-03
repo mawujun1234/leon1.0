@@ -105,6 +105,7 @@ public static final class EquipmentType {
 	public static final String brand_id="brand_id";
 }
 public static final class Pole {
+	public static final String code="code";
 	public static final String name="name";
 	public static final String province="province";
 	public static final String city="city";

@@ -6,7 +6,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
 <mapper namespace="com.mawujun.adjust.AdjustRepository">
 	<select id="getAdjustVOByEcode" resultType="com.mawujun.adjust.AdjustVO" parameterType="java.lang.String">
-    	select a.ecode,a.style as equipment_style,a.status as equipment_status,b.name as subtype_name,c.name as prod_name,d.name as brand_name,e.name as supplier_name ,a.store_id as str_out_id
+    	select a.ecode,a.style as equipment_style,a.status as equipment_status,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name ,a.store_id as str_out_id
     	from ems_equipment a
 		inner join ems_equipmentsubtype b on a.subtype_id=b.id
 		inner join ems_equipmentprod c on a.prod_id=c.id
@@ -22,7 +22,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	
 	<!-- 获取调拨单明细-->
 	<select id="query4InStrList" resultType="com.mawujun.adjust.AdjustListVO" parameterType="java.lang.String">
-    	select f.*,a.style as equipment_style,a.status as equipment_status,b.name as subtype_name,c.name as prod_name,d.name as brand_name,e.name as supplier_name 
+    	select f.*,a.style as equipment_style,a.status as equipment_status,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name 
     	from ems_equipment a
 		inner join ems_equipmentsubtype b on a.subtype_id=b.id
 		inner join ems_equipmentprod c on a.prod_id=c.id

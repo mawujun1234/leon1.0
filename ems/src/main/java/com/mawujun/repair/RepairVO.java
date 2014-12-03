@@ -13,6 +13,7 @@ public class RepairVO extends Repair {
 	
 	private String brand_name;
 	private String prod_name;
+	private String prod_spec;
 	private String subtype_name;
 	private String supplier_name;
 	private String equipment_style;
@@ -100,6 +101,16 @@ public class RepairVO extends Repair {
 
 	public void setWorkunit_name(String workunit_name) {
 		this.workunit_name = workunit_name;
+	}
+
+
+	public String getProd_spec() {
+		return prod_spec;
+	}
+
+
+	public void setProd_spec(String prod_spec) {
+		this.prod_spec = prod_spec;
 	}
 	
 }

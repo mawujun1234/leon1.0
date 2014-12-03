@@ -157,7 +157,7 @@ Ext.onReady(function(){
 						if(ret.success){
 							if(ret.root.equipment_status!=5){//这是新设备入库的情况
 								Ext.Msg.alert("消息","该设备为非\"入库待维修\"状态,不能添加到列表.");
-								return;
+								//return;
 							}
 							//为新增的equipment添加仓库等其他信息
 							ret.root.str_out_id=store_combox.getValue();
@@ -211,12 +211,33 @@ Ext.onReady(function(){
 		flex:1,
 		store:equipStore,
     	columns: [Ext.create('Ext.grid.RowNumberer'),
+    			{ header:'操作',
+	                xtype: 'actioncolumn',
+	                width: 50,
+	                items: [{
+	                    icon   : '../images/delete.gif',  // Use a URL in the icon config
+	                    tooltip: '删除',
+	                    handler: function(grid, rowIndex, colIndex) {
+	                        var rec = equipStore.getAt(rowIndex);
+	                        Ext.MessageBox.confirm('确认', '您确认要删除该记录吗?', function(btn){
+	                        	if(btn=='yes'){
+	                        		equipStore.remove(rec);
+	                        	}
+	                        });
+	                    }
+	                }]
+	            },
     			  {header: '条码', dataIndex: 'ecode',width:150},
     	          {header: '设备类型', dataIndex: 'subtype_name',width:120},
     	          {header: '品名', dataIndex: 'prod_name'},
     	          {header: '品牌', dataIndex: 'brand_name',width:120},
     	          {header: '供应商', dataIndex: 'supplier_name'},
     	          {header: '设备型号', dataIndex: 'equipment_style',width:120},
+    	          {header:'规格',dataIndex:'prod_spec',flex:1,minWidth:100,renderer:function(value,metadata,record){
+						metadata.tdAttr = "data-qtip='" + value+ "'";
+					    return value;
+						}
+				  },
     	          {header: '所在仓库', dataIndex: 'str_out_name'},
     	          {header: '维修中心', dataIndex: 'rpa_name'},
     	          //{header: '数量', dataIndex: 'serialNum',width:70},
@@ -231,23 +252,8 @@ Ext.onReady(function(){
 	    	          } else {
 	    	          		return equipmentStatus[value];
 	    	          } 
-    	          }},
-    	          { header:'操作',
-	                xtype: 'actioncolumn',
-	                width: 70,
-	                items: [{
-	                    icon   : '../images/delete.gif',  // Use a URL in the icon config
-	                    tooltip: '删除',
-	                    handler: function(grid, rowIndex, colIndex) {
-	                        var rec = equipStore.getAt(rowIndex);
-	                        Ext.MessageBox.confirm('确认', '您确认要删除该记录吗?', function(btn){
-	                        	if(btn=='yes'){
-	                        		equipStore.remove(rec);
-	                        	}
-	                        });
-	                    }
-	                }]
-	            }],
+    	          }}
+    	          ],
         tbar:['<pan id="toolbar-title-text">当前入库记录</span>','->',
               {text:'清空列表中设备',
         	   iconCls:'icon-clearall',

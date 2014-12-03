@@ -20,6 +20,7 @@ Ext.define('Ems.baseinfo.PoleGrid',{
       me.columns=[
 		//{dataIndex:'id',text:'id'},
         {xtype: 'rownumberer'},
+       
         {dataIndex:'status',text:'状态',width:40,menuDisabled:true,renderer : function(value,metadata, record, rowIndex, columnIndex, store) {
       	   metadata.tdAttr = "data-qtip='" + record.get("status_name")+ "'";
 		   if (value == 'uninstall') {
@@ -36,6 +37,7 @@ Ext.define('Ems.baseinfo.PoleGrid',{
 		   return record.get("status_name");
 		 }
 		},
+		{dataIndex:'code',text:'编号',width:60},
       	{dataIndex:'name',text:'点位名称',width:160},
       	{dataIndex:'province',text:'地址',flex:1,renderer:function(value,metadata ,record){
       		var aaa=value+record.get("city")+record.get("area")+record.get("address");

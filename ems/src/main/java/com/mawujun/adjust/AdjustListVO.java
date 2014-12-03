@@ -4,6 +4,7 @@ package com.mawujun.adjust;
 public class AdjustListVO extends AdjustList {
 	private String brand_name;
 	private String prod_name;
+	private String prod_spec;
 	private String subtype_name;
 	private String supplier_name;
 	private String equipment_style;
@@ -44,6 +45,12 @@ public class AdjustListVO extends AdjustList {
 	}
 	public void setEquipment_status(String equipment_status) {
 		this.equipment_status = equipment_status;
+	}
+	public String getProd_spec() {
+		return prod_spec;
+	}
+	public void setProd_spec(String prod_spec) {
+		this.prod_spec = prod_spec;
 	}
 
 }

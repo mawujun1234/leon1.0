@@ -39,7 +39,12 @@ Ext.define('Ems.adjust.AdjustListInGrid',{
     	{header: '品名', dataIndex: 'prod_name'},
     	{header: '品牌', dataIndex: 'brand_name',width:120},
     	{header: '供应商', dataIndex: 'supplier_name'},
-    	{header: '设备型号', dataIndex: 'equipment_style',width:120}
+    	{header: '设备型号', dataIndex: 'equipment_style',width:120},
+    	{header:'规格',dataIndex:'prod_spec',flex:1,minWidth:100,renderer:function(value,metadata,record){
+						metadata.tdAttr = "data-qtip='" + value+ "'";
+					    return value;
+						}
+				  }
       ];
       
 	  me.store=Ext.create('Ext.data.Store',{

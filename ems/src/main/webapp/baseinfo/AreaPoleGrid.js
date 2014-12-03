@@ -21,16 +21,13 @@ Ext.define('Ems.baseinfo.AreaPoleGrid',{
       var me = this;
       me.columns=[
 		//{dataIndex:'id',text:'id'},
+      	{dataIndex:'code',text:'编号',width:60},
       	{dataIndex:'name',text:'点位名称',width:160},
       	{dataIndex:'province',text:'地址',flex:1,renderer:function(value,metaData ,record){
       		return value+record.get("city")+record.get("area")+record.get("address")
-      	}},
-//      	{dataIndex:'city',text:'city'},
-//      	{dataIndex:'area',text:'area'},
-//		{dataIndex:'address',text:'address'},
-		//{dataIndex:'customer_id',text:'customer_id'},
-		{dataIndex:'latitude',text:'经度'},
-		{dataIndex:'longitude',text:'纬度'}
+      	}}
+		//{dataIndex:'latitude',text:'经度'},
+		//{dataIndex:'longitude',text:'纬度'}
 		//{dataIndex:'status',text:'status'}
       ];
       

@@ -3,6 +3,7 @@ Ext.defineModel("Ems.baseinfo.Pole",{
 	idProperty:'id',
 	fields:[
 		{name:'id',type:'string'},
+		{name:'code',type:'string'},
 		{name:'address',type:'string'},
 		{name:'area',type:'string'},
 		{name:'city',type:'string'},

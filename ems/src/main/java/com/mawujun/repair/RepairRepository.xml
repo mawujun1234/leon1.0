@@ -7,7 +7,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.mawujun.repair.RepairRepository">
 
 	<select id="getRepairVOByEcode" resultType="com.mawujun.repair.RepairVO" parameterType="java.lang.String">
-    	select a.ecode,a.style as equipment_style,a.status as equipment_status,b.name as subtype_name,c.name as prod_name,d.name as brand_name,e.name as supplier_name ,a.store_id as str_out_id,g.name as str_out_name
+    	select a.ecode,a.style as equipment_style,a.status as equipment_status,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name ,a.store_id as str_out_id,g.name as str_out_name
     	from ems_equipment a
 		inner join ems_equipmentsubtype b on a.subtype_id=b.id
 		inner join ems_equipmentprod c on a.prod_id=c.id
