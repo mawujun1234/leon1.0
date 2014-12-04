@@ -107,7 +107,7 @@ public class AreaController {
 	@RequestMapping("/area/queryPoles.do")
 	@ResponseBody
 	public List<Pole> queryPoles(String area_id) {	
-		List<Pole> poles=poleService.query(Cnd.where().andEquals(M.Pole.area_id, area_id));
+		List<Pole> poles=poleService.query(Cnd.where().andEquals(M.Pole.area_id, area_id).asc(M.Pole.code));
 		return poles;
 	}
 	

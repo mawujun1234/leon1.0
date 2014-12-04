@@ -14,6 +14,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    <if test="filterContainArea==true">
 	    	and area_id is null
 	    </if>
+	    order by code
     </select>
     
     <update id="savePoles">
