@@ -12,7 +12,7 @@ import com.mawujun.repository.idEntity.UUIDEntity;
 @Table(name="ems_pole")
 public class Pole extends UUIDEntity {
 	@Column(length=15)
-	private String code;
+	private Integer code;
 	@Column(length=60)
 	private String name;
 	@Column(length=20)
@@ -134,12 +134,14 @@ public class Pole extends UUIDEntity {
 		this.status = status;
 	}
 
-	public String getCode() {
+	public Integer getCode() {
 		return code;
 	}
 
-	public void setCode(String code) {
+	public void setCode(Integer code) {
 		this.code = code;
 	}
+
+
 
 }

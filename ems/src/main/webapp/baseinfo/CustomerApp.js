@@ -13,11 +13,20 @@ Ext.onReady(function(){
 	});
 	grid.on('itemclick',function(view,record,item,index){
 		
+//		customercontactgrid.customer_id=record.get("id");
+//		customercontactgrid.getStore().load({params:{customer_id:record.get("id")}});
+//		
+//		poleGrid.customer_id=record.get("id");
+//		poleGrid.getStore().load({params:{customer_id:record.get("id")}});
+		
 		customercontactgrid.customer_id=record.get("id");
-		customercontactgrid.getStore().load({params:{customer_id:record.get("id")}});
+		customercontactgrid.getStore().getProxy().extraParams={customer_id:record.get("id")};
+		customercontactgrid.getStore().load();
 		
 		poleGrid.customer_id=record.get("id");
-		poleGrid.getStore().load({params:{customer_id:record.get("id")}});
+		poleGrid.getStore().getProxy().extraParams={customer_id:record.get("id")};
+		poleGrid.getStore().load();
+		
 		
 		panel.getEl().unmask();
 	});
