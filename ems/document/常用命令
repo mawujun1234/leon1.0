@@ -8,7 +8,7 @@
 	http://huanyue.iteye.com/blog/533982
 	
 	删除用户和用户拥有的表
-	drop user ems cascade 
+	drop user ems cascade;
 	create user ems identified by ems;
 	grant dba,connect,resource to ems;
 	
