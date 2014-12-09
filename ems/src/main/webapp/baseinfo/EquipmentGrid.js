@@ -24,9 +24,14 @@ Ext.define('Ems.baseinfo.EquipmentGrid',{
     	{header: '设备类型', dataIndex: 'subtype_name',width:120},
     	{header: '品名', dataIndex: 'prod_name'},
     	{header: '设备型号', dataIndex: 'style',width:120},
-    	{header: '规格', dataIndex: 'prod_spec',width:120},
+    	{header: '规格', dataIndex: 'prod_spec',width:120,renderer:function(value,metadata,record){
+						metadata.tdAttr = "data-qtip='" + value+ "'";
+					    return value;
+					}
+		},
     	{header: '品牌', dataIndex: 'brand_name',width:60},
-    	{header: '供应商', dataIndex: 'supplier_name'}
+    	{header: '供应商', dataIndex: 'supplier_name'},
+    	{header: '安装时间', dataIndex: 'last_install_date',renderer:Ext.util.Format.dateRenderer('Y-m-d')}
       ];
       
 	  me.store=Ext.create('Ext.data.Store',{

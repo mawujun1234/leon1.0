@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
 import com.mawujun.service.AbstractService;
 
 
@@ -48,5 +49,9 @@ public class PoleService extends AbstractService<Pole, String>{
 	
 	public List<Pole> queryEquipments(String id){
 		return poleRepository.queryEquipments(id);
+	}
+	
+	public List<PoleVO> queryPolesAndEquipments(String customer_id) {
+		return poleRepository.queryPolesAndEquipments(customer_id);
 	}
 }

@@ -121,15 +121,25 @@ Ext.define('Ems.baseinfo.PoleGrid',{
 		//me.addAction(reload);
 		actions.push(reload);
 
-		var showEquipment = new Ext.Action({
-		    text: '拥有的设备',
+//		var showEquipment = new Ext.Action({
+//		    text: '拥有的设备',
+//		    //itemId:'reload',
+//		    handler: function(){
+//		    	me.onShowEquipment();
+//		    },
+//		    icon: '../icons/1.png'
+//		});
+//		actions.push(showEquipment);
+		
+		var exportPoles = new Ext.Action({
+		    text: '导出点位设备信息',
 		    //itemId:'reload',
+		    icon:'../icons/page_excel.png',
 		    handler: function(){
-		    	me.onShowEquipment();
-		    },
-		    icon: '../icons/1.png'
+		    	me.onExportPoles();
+		    }
 		});
-		actions.push(showEquipment);
+		actions.push(exportPoles);
 		
 		me.tbar={
 			itemId:'action_toolbar',
@@ -249,21 +259,29 @@ Ext.define('Ems.baseinfo.PoleGrid',{
     	var me=this;
     	me.getStore().reload();	      
     },
-    onShowEquipment:function(){
+//    onShowEquipment:function(){
+//    	var me=this;
+//    	var record=me.getSelectionModel( ).getLastSelected( );
+//    	var grid=Ext.create('Ems.baseinfo.EquipmentGrid',{});
+//    	grid.getStore().load({params:{id:record.get("id")}});
+//    	var win=new Ext.window.Window({
+//			items:[grid],
+//			title:record.get("name")+'拥有的设备',
+//			layout:'fit',
+//			closeAction:'destroy',
+//			width:680,
+//			height:400,
+//			modal:true
+//		});
+//		//form.win=win
+//		win.show();	
+//    }
+    onExportPoles:function(){
     	var me=this;
-    	var record=me.getSelectionModel( ).getLastSelected( );
-    	var grid=Ext.create('Ems.baseinfo.EquipmentGrid',{});
-    	grid.getStore().load({params:{id:record.get("id")}});
-    	var win=new Ext.window.Window({
-			items:[grid],
-			title:record.get("name")+'拥有的设备',
-			layout:'fit',
-			closeAction:'destroy',
-			width:680,
-			height:400,
-			modal:true
-		});
-		//form.win=win
-		win.show();	
+    	var params={
+    		customer_id:me.customer_id
+    	}
+		var pp=Ext.Object.toQueryString(params);
+		window.open(Ext.ContextPath+"/pole/exportPoles.do?"+pp, "_blank");
     }
 });

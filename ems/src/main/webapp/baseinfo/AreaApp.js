@@ -23,12 +23,35 @@ Ext.onReady(function(){
 		region:'center',
 		split: true,
 		collapsible: true,
-		title:'管理的点位'
+		title:'点位信息'
+	});
+	
+	var equipment_grid=Ext.create('Ems.baseinfo.EquipmentGrid',{
+    	title:'拥有的设备',
+    	height:300,
+    	split: true,
+    	collapsible: true,
+    	region:'south'
+    });
+    areaPoleGrid.on('itemclick',function(view,record,item,index){
+    	equipment_grid.getStore().load({params:{id:record.get("id")}});
+    });
+    
+    var panel=Ext.create('Ext.panel.Panel',{
+		//title:'点位管理',
+		region:'center',
+		layout:'border',
+		items:[areaPoleGrid,equipment_grid]
+//		listeners:{
+//			render:function(panel){
+//				panel.getEl().mask();
+//			}
+//		}
 	});
 	
 	var viewPort=Ext.create('Ext.container.Viewport',{
 		layout:'border',
-		items:[grid,areaPoleGrid]
+		items:[grid,panel]
 	});
 
 });

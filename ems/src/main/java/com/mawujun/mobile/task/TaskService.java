@@ -167,15 +167,17 @@ public class TaskService extends AbstractService<Task, String>{
 			//更改设备的位置到该杆位上,把设备从昨夜单位身上移动到杆位上
 				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using.getValue()).set(M.Equipment.isnew, false)
 						.set(M.Equipment.pole_id, task.getPole_id())
+						.set(M.Equipment.last_install_date, new Date())
 						.set(M.Equipment.workUnit_id, null)
 						.set(M.Equipment.store_id, null)
 						.andEquals(M.Equipment.ecode, ecode));	
 			} else if(TaskType.repair.toString().equals(task_type)){
 				//维修的时候，设备的状态，可能是 损坏或者是安装出库 
 				if( taskEquipmentList.getEquipment_status()==EquipmentStatus.using.getValue()){
-					equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using.getValue()).set(M.Equipment.isnew, false)
-							.set(M.Equipment.workUnit_id, null)
+					equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using.getValue()).set(M.Equipment.isnew, false)	
 							.set(M.Equipment.pole_id, task.getPole_id())
+							.set(M.Equipment.last_install_date, new Date())
+							.set(M.Equipment.workUnit_id, null)
 							.set(M.Equipment.store_id, null)
 							.andEquals(M.Equipment.ecode, ecode)
 							.andEquals(M.Equipment.status, EquipmentStatus.out_storage.getValue()));

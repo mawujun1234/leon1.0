@@ -21,8 +21,26 @@ Ext.define('Ems.baseinfo.AreaPoleGrid',{
       var me = this;
       me.columns=[
 		//{dataIndex:'id',text:'id'},
-      	{dataIndex:'code',text:'编号',width:60},
-      	{dataIndex:'name',text:'点位名称',width:160},
+      	
+      	
+      	{dataIndex:'status',text:'状态',width:40,menuDisabled:true,renderer : function(value,metadata, record, rowIndex, columnIndex, store) {
+      	   metadata.tdAttr = "data-qtip='" + record.get("status_name")+ "'";
+		   if (value == 'uninstall') {
+		    return "<img src='../icons/help_circle_blue.png' />";
+		   } else if (value == 'installing'){
+		    return "<img src='../icons/circle_blue.png' />";
+		   }else if (value == 'using'){
+		    return "<img src='../icons/circle_green.png' />";
+		   }else if (value == 'hitch'){
+		    return "<img src='../icons/circle_yellow.png' />";
+		   }else if (value == 'cancel'){
+		    return "<img src='../icons/circle_red.png' />";
+		   }
+		   return record.get("status_name");
+		 }
+		},
+		{dataIndex:'code',text:'编号',width:60},
+		{dataIndex:'name',text:'点位名称',width:160},
       	{dataIndex:'province',text:'地址',flex:1,renderer:function(value,metaData ,record){
       		return value+record.get("city")+record.get("area")+record.get("address")
       	}}
@@ -106,15 +124,25 @@ Ext.define('Ems.baseinfo.AreaPoleGrid',{
 		//me.addAction(reload);
 		actions.push(reload);
 
-		var showEquipment = new Ext.Action({
-		    text: '拥有的设备',
+//		var showEquipment = new Ext.Action({
+//		    text: '拥有的设备',
+//		    //itemId:'reload',
+//		    handler: function(){
+//		    	me.onShowEquipment();
+//		    },
+//		    icon: '../icons/1.png'
+//		});
+//		actions.push(showEquipment);
+		
+		var exportPoles = new Ext.Action({
+		    text: '导出点位设备信息',
 		    //itemId:'reload',
+		    icon:'../icons/page_excel.png',
 		    handler: function(){
-		    	me.onShowEquipment();
-		    },
-		    icon: '../icons/1.png'
+		    	me.onExportPoles();
+		    }
 		});
-		actions.push(showEquipment);
+		actions.push(exportPoles);
 		
 		me.tbar={
 			itemId:'action_toolbar',
@@ -216,21 +244,29 @@ Ext.define('Ems.baseinfo.AreaPoleGrid',{
     	var me=this;
     	me.getStore().reload();	      
     },
-    onShowEquipment:function(){
+//    onShowEquipment:function(){
+//    	var me=this;
+//    	var record=me.getSelectionModel( ).getLastSelected( );
+//    	var grid=Ext.create('Ems.baseinfo.EquipmentGrid',{});
+//    	grid.getStore().load({params:{id:record.get("id")}});
+//    	var win=new Ext.window.Window({
+//			items:[grid],
+//			title:record.get("name")+'拥有的设备',
+//			layout:'fit',
+//			closeAction:'destroy',
+//			width:600,
+//			height:400,
+//			modal:true
+//		});
+//		//form.win=win
+//		win.show();	
+//    },
+    onExportPoles:function(){
     	var me=this;
-    	var record=me.getSelectionModel( ).getLastSelected( );
-    	var grid=Ext.create('Ems.baseinfo.EquipmentGrid',{});
-    	grid.getStore().load({params:{id:record.get("id")}});
-    	var win=new Ext.window.Window({
-			items:[grid],
-			title:record.get("name")+'拥有的设备',
-			layout:'fit',
-			closeAction:'destroy',
-			width:600,
-			height:400,
-			modal:true
-		});
-		//form.win=win
-		win.show();	
+    	var params={
+    		area_id:me.area_id
+    	}
+		var pp=Ext.Object.toQueryString(params);
+		window.open(Ext.ContextPath+"/area/exportPoles.do?"+pp, "_blank");
     }
 });

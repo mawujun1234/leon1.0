@@ -23,6 +23,7 @@ Ext.defineModel("Ems.baseinfo.Equipment",{
 		{name:'unitPrice',type:'float'},
 		{name:'num',type:'int'},
 		{name:'order_id',type:'string'},
+		{name:'last_install_date',type:'date', dateFormat: 'Y-m-d'},
 		
 		{name:'inStore_type',type:'string'},
 		{name:'isInStore',type:'string'},

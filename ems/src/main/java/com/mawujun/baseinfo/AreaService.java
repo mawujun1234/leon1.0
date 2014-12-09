@@ -9,9 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
 import com.mawujun.service.AbstractService;
 
 
+import com.mawujun.utils.page.Page;
 import com.mawujun.baseinfo.Area;
 import com.mawujun.baseinfo.AreaRepository;
 
@@ -37,4 +39,11 @@ public class AreaService extends AbstractService<Area, String>{
 		return this.getRepository().queryAllWithWorkunit();
 	}
 
+	public Page queryPoles(Page page) {
+		return areaRepository.queryPoles(page);
+	}
+	
+	public List<PoleVO> queryPolesAndEquipments(String area_id) {
+		return areaRepository.queryPolesAndEquipments(area_id);
+	}
 }

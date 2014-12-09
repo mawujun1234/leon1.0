@@ -13,12 +13,7 @@ Ext.onReady(function(){
 	});
 	grid.on('itemclick',function(view,record,item,index){
 		
-//		customercontactgrid.customer_id=record.get("id");
-//		customercontactgrid.getStore().load({params:{customer_id:record.get("id")}});
-//		
-//		poleGrid.customer_id=record.get("id");
-//		poleGrid.getStore().load({params:{customer_id:record.get("id")}});
-		
+
 		customercontactgrid.customer_id=record.get("id");
 		customercontactgrid.getStore().getProxy().extraParams={customer_id:record.get("id")};
 		customercontactgrid.getStore().load();
@@ -28,56 +23,63 @@ Ext.onReady(function(){
 		poleGrid.getStore().load();
 		
 		
-		panel.getEl().unmask();
+		tabpanel.getEl().unmask();
 	});
 	var customercontactgrid=Ext.create('Ems.baseinfo.CustomerContactGrid',{
 		region:'north',
-		split: true,
+		//split: true,
 		height:200,
-		collapsible: true,
+		//collapsible: true,
 		title:'联系方式'
 	});
 	var poleGrid=Ext.create('Ems.baseinfo.PoleGrid',{
 		region:'center',
-		split: true,
-		height:200,
-		collapsible: true,
-		title:'点位管理'
+		//split: true,
+		height:200
+		//collapsible: true,
+		//title:'点位信息'
 	});
-
-
-//	var form=Ext.create('Ems.baseinfo.CustomerForm',{
-//		region:'center',
-//		split: true,
-//		//collapsible: true,
-//		title:'表单',
-//		listeners:{
-//			saved:function(){
-//				grid.getStore().reload();
-//			}
-//		}
-//	});
-//	grid.form=form;
-//	form.grid=grid;
-//	grid.on('itemclick',function(view,record,item,index){
-//		//var basicForm=form.getForm();
-//		form.loadRecord(record);
-//	});
-
+	
+	//var record=me.getSelectionModel( ).getLastSelected( );
+    var equipment_grid=Ext.create('Ems.baseinfo.EquipmentGrid',{
+    	title:'拥有的设备',
+    	height:300,
+    	split: true,
+    	collapsible: true,
+    	region:'south'
+    });
+    poleGrid.on('itemclick',function(view,record,item,index){
+    	equipment_grid.getStore().load({params:{id:record.get("id")}});
+    });
+    
 	var panel=Ext.create('Ext.panel.Panel',{
+		title:'点位管理',
 		region:'center',
 		layout:'border',
-		items:[customercontactgrid,poleGrid],
+		items:[poleGrid,equipment_grid]
+//		listeners:{
+//			render:function(panel){
+//				panel.getEl().mask();
+//			}
+//		}
+	});
+
+	var tabpanel=Ext.create('Ext.tab.Panel',{
+		region:'center',
+		layout:'border',
+		items:[panel,customercontactgrid],
 		listeners:{
-			render:function(panel){
-				panel.getEl().mask();
+			render:function(tabpanel){
+				tabpanel.getEl().mask();
 			}
 		}
 	});
+
+	
 	
 	var viewPort=Ext.create('Ext.container.Viewport',{
 		layout:'border',
-		items:[grid,panel]
+		items:[grid,tabpanel]
 	});
 
 });

@@ -30,4 +30,7 @@ public interface PoleRepository extends IRepository<Pole, String>{
 	public void deletePoles(@Param("pole_id")String pole_id);
 	
 	public List<Pole> queryEquipments(@Param("id")String id);
+	
+	
+	public List<PoleVO> queryPolesAndEquipments(@Param("customer_id")String customer_id);
 }

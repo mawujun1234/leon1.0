@@ -6,11 +6,56 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
 <mapper namespace="com.mawujun.baseinfo.AreaRepository">
 
+	<!-- 查询所有片区 -->
 	<select id="queryAllWithWorkunit" resultType="com.mawujun.baseinfo.Area" parameterType="map">
     	SELECT a.*,b.name as workunit_name
 	    FROM ems_area a,ems_workunit b 
 		where a.workunit_id=b.id
     </select>
+    <!-- 查询某个片区下的点位 -->
+    <select id="queryPoles" resultType="com.mawujun.baseinfo.Pole" parameterType="map">
+    	SELECT *
+	    FROM ems_pole a
+		where a.area_id=#{area_id}
+		order by a.code asc
+    </select>
+    
+    <!-- 查询某个片区下所有的点位 机器点位上的设备信息 -->
+    <select id="queryPolesAndEquipments" resultMap="poleMap" parameterType="string">
+    	SELECT a.*,b.ecode,b.style,b.last_install_date,c.name as subtype_name,d.name as prod_name,d.spec as prod_spec,e.name as brand_name,f.name as supplier_name
+      FROM (select a.*,b.name  as customer_name,c.name as area_name,d.name as workunit_name 
+           from ems_pole a,ems_customer b,ems_area c,ems_workunit d where a.customer_id=b.id
+            and a.area_id=c.id and c.workunit_id=d.id and a.area_id=#{area_id})a 
+      left join ems_equipment b on a.id=b.pole_id
+      left join ems_equipmentsubtype c on b.subtype_id =c.id
+      left join ems_equipmentprod d on b.prod_id=d.id
+      left join ems_brand e on b.brand_id=e.id
+      left join ems_supplier f on b.supplier_id=f.id
+		order by a.code asc
+    </select>
+    <resultMap type="com.mawujun.baseinfo.PoleVO" id="poleMap">
+     	<id property="id" column="id"/>
+    	<result property="code" column="code"/>
+    	<result property="name" column="name"/>
+    	<result property="province" column="province"/>
+    	<result property="city" column="city"/>
+    	<result property="area" column="area"/>
+    	<result property="address" column="address"/>
+    	<result property="status" column="status"/>
+    	<result property="area_name" column="area_name"/>
+    	<result property="customer_name" column="customer_name"/>
+    	<result property="workunit_name" column="workunit_name"/>
+    	<collection property="equipments" ofType="com.mawujun.baseinfo.EquipmentVO">  
+            <id property="ecode" column="ecode"/>
+		   <result property="subtype_name" column="subtype_name"/>
+		   <result property="prod_name" column="prod_name"/>
+		   <result property="prod_spec" column="prod_spec"/>
+		   <result property="brand_name" column="brand_name"/>
+		   <result property="supplier_name" column="supplier_name"/>
+		   <result property="style" column="style"/>
+		   <result property="last_install_date" column="last_install_date"/>
+       </collection>  
+    </resultMap>
   
 </mapper>
 

@@ -115,4 +115,6 @@ public class CustomerController {
 //		List<Customer> customeres=customerService.queryAll();
 //		return customeres;
 //	}
+	
+	
 }

@@ -1,5 +1,7 @@
 package com.mawujun.baseinfo;
 
+import java.util.List;
+
 
 
 public class PoleVO extends Pole {
@@ -13,6 +15,8 @@ public class PoleVO extends Pole {
 	private String workunit_name;
 	
 	private Integer task_num;//任务数量
+	
+	private List<EquipmentVO> equipments;
 	
 //	private String task_id;//任务的id
 //	private String task_type;
@@ -55,6 +59,12 @@ public class PoleVO extends Pole {
 	}
 	public void setTask_num(Integer task_num) {
 		this.task_num = task_num;
+	}
+	public List<EquipmentVO> getEquipments() {
+		return equipments;
+	}
+	public void setEquipments(List<EquipmentVO> equipments) {
+		this.equipments = equipments;
 	}
 
 	

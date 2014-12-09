@@ -377,6 +377,7 @@ public class MonthInventoryController {
 			
 			
 		}
+		//定义收缩的方向
 		sheet.setRowSumsBelow(false);
 		sheet.setRowSumsRight(false);
 		
@@ -385,7 +386,7 @@ public class MonthInventoryController {
 		String filename = "在建工程仓库("+store.getName()+")盘点月报表.xlsx";
 		 //FileOutputStream out = new FileOutputStream(filename);
 		response.setHeader("content-disposition", "attachment; filename="+ new String(filename.getBytes("UTF-8"), "ISO8859-1"));
-		response.setContentType("application/vnd.ms-excel;charset=uft-8");
+		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=uft-8");
 
 		OutputStream out = response.getOutputStream();
 		wb.write(out);
@@ -770,7 +771,7 @@ public class MonthInventoryController {
 		 String filename = "备品备件仓库("+store.getName()+")盘点月报表.xlsx";
 		 //FileOutputStream out = new FileOutputStream(filename);
 		response.setHeader("content-disposition", "attachment; filename="+ new String(filename.getBytes("UTF-8"), "ISO8859-1"));
-		response.setContentType("application/vnd.ms-excel;charset=uft-8");
+		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=uft-8");
 
 		OutputStream out = response.getOutputStream();
 		wb.write(out);
