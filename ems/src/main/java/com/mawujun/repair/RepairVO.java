@@ -2,11 +2,12 @@ package com.mawujun.repair;
 
 
 public class RepairVO extends Repair {
-	private String rpa_name;
+	private String rpa_name;//维修中心名称
 	private String str_in_name;
 	private String str_out_name;
 //	private String rpa_type_name;
 //	private String status_name;
+	private String rpa_user_name;//维修人名称
 	
 	private String workunit_name;
 	
@@ -111,6 +112,16 @@ public class RepairVO extends Repair {
 
 	public void setProd_spec(String prod_spec) {
 		this.prod_spec = prod_spec;
+	}
+
+
+	public String getRpa_user_name() {
+		return rpa_user_name;
+	}
+
+
+	public void setRpa_user_name(String rpa_user_name) {
+		this.rpa_user_name = rpa_user_name;
 	}
 	
 }

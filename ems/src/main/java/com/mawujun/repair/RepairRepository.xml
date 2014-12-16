@@ -73,8 +73,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     </select>
     
     <select id="repairMgrQuery" resultType="com.mawujun.repair.RepairVO" parameterType="map">
-    	select a.*,b.id as scrap_id,d.name as workunit_name from ems_repair a left join ems_scrap b on a.id=b.repair_id
+    	select a.*,b.id as scrap_id,d.name as workunit_name,e.name as rpa_user_name from ems_repair a 
+    	 left join ems_scrap b on a.id=b.repair_id
     	 left join ems_workunit d on a.workunit_id=d.id
+    	 left join sys_user e on a.rpa_user_id=e.id
 		<where>
 			a.rpa_id in (select store_id from sys_userstore c where c.user_id=#{user_id} and c.edit='Y')
 			<if test="str_out_id!=null">

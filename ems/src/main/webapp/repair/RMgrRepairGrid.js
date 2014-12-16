@@ -105,7 +105,7 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 		{dataIndex:'str_out_date',text:'出仓时间',xtype: 'datecolumn',   format:'Y-m-d'},
 		{dataIndex:'rpa_name',text:'维修中心'},
 		{dataIndex:'rpa_in_date',text:'入维时间',xtype: 'datecolumn',   format:'Y-m-d'},
-		{dataIndex:'rpa_user_id',text:'维修人'},
+		{dataIndex:'rpa_user_name',text:'维修人'},
 		//{dataIndex:'rpa_in_oper_id',text:'rpa_in_oper_id'},
 		{dataIndex:'rpa_out_date',text:'出维时间',xtype: 'datecolumn',   format:'Y-m-d'},
 		//{dataIndex:'rpa_out_oper_id',text:'rpa_out_oper_id'},

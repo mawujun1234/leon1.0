@@ -160,7 +160,7 @@ public class RepairController {
 
 	
 	/**
-	 * 仓库进行管理的时候进行的查询
+	 * w维修中心进行管理的时候进行的查询
 	 * @author mawujun email:16064988@163.com qq:16064988
 	 * @param start
 	 * @param limit
