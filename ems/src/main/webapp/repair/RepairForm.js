@@ -326,15 +326,16 @@ Ext.define('Ems.repair.RepairForm',{
       me.addEvents("saved");
       
       me.callParent();
+	},
+	/**
+	 * 重载父类的方法
+	 */
+	loadRecord:function(record){
+		var form=this;
+
+		form.callParent(arguments);
+		var store_combox=form.getForm().findField("rpa_user_id");
+		var brand_model= store_combox.getStore().createModel({id:record.get("rpa_user_id"),name:record.get("rpa_user_name")});
+		store_combox.setValue(brand_model);
 	}
-//	/**
-//	 * 重载父类的方法
-//	 */
-//	loadRecord:function(){
-//		var form=this;
-//		form.down("button#update").enable();
-//		form.down("button#destroy").enable();
-//		
-//		form.callParent(arguments);
-//	}
 });

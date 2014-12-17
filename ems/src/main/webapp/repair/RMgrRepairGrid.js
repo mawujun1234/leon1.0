@@ -392,6 +392,7 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 		
 		//record.set('rpa_user_id',loginUsername);
 		form.loadRecord(record);
+		
 		var win=Ext.create('Ext.window.Window',{
 			title:'编辑维修单',
 			layout:'fit',
