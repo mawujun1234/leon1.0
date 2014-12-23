@@ -9,6 +9,7 @@ begin
     proc_monthinventory1_all(month_in,'Y');--调用在建仓库
 end;
 
+------------------------------------------------------------------------------
 http://www.cnblogs.com/xclw/archive/2009/12/04/1616945.html
 http://cherryqq.iteye.com/blog/855022
 http://blog.csdn.net/thinkscape/article/details/7411012

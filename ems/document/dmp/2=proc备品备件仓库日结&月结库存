@@ -10,6 +10,7 @@ begin
   END LOOP;
 end;
 
+------------------------------------------------------------
 
 create or replace procedure proc_monthinventory(store_id_in in varchar2, month_in in varchar2,back_record in CHAR)
 as
@@ -33,10 +34,43 @@ begin
 
   --首先插入key的数据,防止当某个仓库，没有没有库存的时候，就查不出数据了，还有就是这个型号的刚好今天领完了，没有库存，那也不会显示了
   for rec in (
-    select distinct a.subtype_id,a.prod_id,a.brand_id,a.store_id,a.style
+    select distinct * from (
+select distinct a.subtype_id,a.prod_id,a.brand_id,a.style,a.store_id
     from ems_equipment a
     where a.store_id=store_id_in
      and  a.status !=30
+     union
+select distinct c.subtype_id,c.prod_id,c.brand_id,c.style,a.store_id from
+    ems_instore a, ems_instorelist b,ems_equipment c
+    where a.id=b.instore_id and b.encode=c.ecode 
+    and a.store_id=store_id_in 
+    and  to_char(a.operatedate,'yyyymm') =month_in
+    union
+    select  a.subtype_id,a.prod_id,a.brand_id,a.style,a.store_id from ems_monthinventory a 
+    where monthkey=lastmonth_in and a.store_id=store_id_in 
+    union
+    select c.subtype_id,c.prod_id,c.brand_id,c.style,a.store_id from
+    ems_installin a, ems_installinlist b,ems_equipment c
+    where a.id=b.installin_id and b.ecode=c.ecode 
+    and a.store_id=store_id_in  and  to_char(a.operatedate,'yyyymm') =month_in
+    and b.isbad!='Y'
+    union
+    select c.subtype_id,c.prod_id,c.brand_id,c.style,a.str_out_id as store_id from
+    ems_repair a,ems_equipment c
+    where  a.ecode=c.ecode and a.str_out_id=store_id_in  and  to_char(a.str_out_date,'yyyymm') =month_in
+    union
+     select c.subtype_id,c.prod_id,c.brand_id,c.style,a.str_in_id as store_id from
+    ems_repair a,ems_equipment c
+    where  a.ecode=c.ecode and a.str_in_id=store_id_in and  to_char(a.str_in_date,'yyyymm') =month_in
+    union
+    select c.subtype_id,c.prod_id,c.brand_id,c.style,a.str_out_id as store_id from
+    ems_repair a,ems_equipment c
+    where  a.ecode=c.ecode and a.str_out_id=store_id_in and  to_char(a.scrapDate,'yyyymm') =month_in and a.status='6'
+    union
+     select c.subtype_id,c.prod_id,c.brand_id,c.style,a.str_out_id as store_id from
+    ems_adjust a, ems_adjustlist b,ems_equipment c
+    where a.id=b.adjust_id and b.ecode=c.ecode and a.str_out_id=store_id_in and  to_char(a.str_out_date,'yyyymm') =month_in
+ ) a  
   ) loop
     insert into ems_monthinventory(monthkey,subtype_id,prod_id,brand_id,style,store_id,store_type,
     fixednum,lastnum,purchasenum,oldnum,installoutnum,repairinnum,scrapoutnum,repairoutnum,adjustoutnum,adjustinnum,nownum,supplementnum)
@@ -224,10 +258,43 @@ begin
 
   --首先插入key的数据,防止当某个仓库，没有没有库存的时候，就查不出数据了，还有就是这个型号的刚好今天领完了，没有库存，那也不会显示了
   for rec in (
-    select distinct a.subtype_id,a.prod_id,a.brand_id,a.store_id,a.style
+    select distinct * from (
+select distinct a.subtype_id,a.prod_id,a.brand_id,a.style,a.store_id
     from ems_equipment a
     where a.store_id=store_id_in
      and  a.status !=30
+     union
+     select  a.subtype_id,a.prod_id,a.brand_id,a.style,a.store_id from ems_dayinventory a where daykey=lastday_in and a.store_id=store_id_in
+     union
+     select c.subtype_id,c.prod_id,c.brand_id,c.style,a.store_id from
+    ems_instore a, ems_instorelist b,ems_equipment c
+    where a.id=b.instore_id and b.encode=c.ecode and a.store_id=store_id_in and  to_char(a.operatedate,'yyyymmdd') =day_in
+    union
+     select c.subtype_id,c.prod_id,c.brand_id,c.style,a.store_id from
+    ems_installin a, ems_installinlist b,ems_equipment c
+    where a.id=b.installin_id and b.ecode=c.ecode and a.store_id=store_id_in and  to_char(a.operatedate,'yyyymmdd') =day_in
+    and b.isbad!='Y'
+    union
+    select c.subtype_id,c.prod_id,c.brand_id,c.style,a.str_out_id as store_id from
+    ems_repair a,ems_equipment c
+    where  a.ecode=c.ecode and a.str_out_id=store_id_in  and  to_char(a.str_out_date,'yyyymmdd') =day_in
+    union
+    select c.subtype_id,c.prod_id,c.brand_id,c.style,a.str_in_id as store_id from
+    ems_repair a,ems_equipment c
+    where  a.ecode=c.ecode and a.str_in_id=store_id_in and  to_char(a.str_in_date,'yyyymmdd') =day_in
+    union
+    select c.subtype_id,c.prod_id,c.brand_id,c.style,a.str_out_id as store_id from
+    ems_repair a,ems_equipment c
+    where  a.ecode=c.ecode and a.str_out_id=store_id_in and  to_char(a.scrapDate,'yyyymmdd') =day_in and a.status='6'
+    union
+    select c.subtype_id,c.prod_id,c.brand_id,c.style,a.str_out_id as store_id from
+    ems_adjust a, ems_adjustlist b,ems_equipment c
+    where a.id=b.adjust_id and b.ecode=c.ecode and a.str_out_id=store_id_in and  to_char(a.str_out_date,'yyyymmdd') =day_in
+    union
+    select c.subtype_id,c.prod_id,c.brand_id,c.style,a.str_in_id as store_id from
+    ems_adjust a, ems_adjustlist b,ems_equipment c
+    where a.id=b.adjust_id and b.ecode=c.ecode and a.str_in_id=store_id_in and  to_char(a.str_in_date,'yyyymmdd') =day_in
+)
   ) loop
     insert into ems_dayinventory(daykey,subtype_id,prod_id,brand_id,style,store_id,store_type
     ,fixednum,lastnum,purchasenum,oldnum,installoutnum,repairinnum,scrapoutnum,repairoutnum,adjustoutnum,adjustinnum,nownum)

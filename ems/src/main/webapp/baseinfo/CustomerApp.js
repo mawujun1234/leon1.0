@@ -22,7 +22,7 @@ Ext.onReady(function(){
 		poleGrid.getStore().getProxy().extraParams={customer_id:record.get("id")};
 		poleGrid.getStore().load();
 		
-		
+		equipment_grid.getStore().removeAll();
 		tabpanel.getEl().unmask();
 	});
 	var customercontactgrid=Ext.create('Ems.baseinfo.CustomerContactGrid',{

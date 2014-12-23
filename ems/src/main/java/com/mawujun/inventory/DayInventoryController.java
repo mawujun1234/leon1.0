@@ -75,6 +75,7 @@ public class DayInventoryController {
 		cal.set(Calendar.YEAR, Integer.parseInt(year));
 		cal.set(Calendar.MONTH, Integer.parseInt(month)-1);
 		cal.add(Calendar.MONTH, -1);
+		//获取月报数据，以月报作为冻结窗口左边的数据源
 		List<MonthInventoryVO> list_last_monthInventory=monthInventoryService.queryMonthReport(store_id, format.format(cal.getTime()));
 		//当第一次访问的时候，没有生产前一个月的数据的时候
 		if(list_last_monthInventory==null || list_last_monthInventory.size()==0){

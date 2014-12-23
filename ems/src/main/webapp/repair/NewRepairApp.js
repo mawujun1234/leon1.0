@@ -157,7 +157,7 @@ Ext.onReady(function(){
 						if(ret.success){
 							if(ret.root.equipment_status!=5){//这是新设备入库的情况
 								Ext.Msg.alert("消息","该设备为非\"入库待维修\"状态,不能添加到列表.");
-								//return;
+								return;
 							}
 							//为新增的equipment添加仓库等其他信息
 							ret.root.str_out_id=store_combox.getValue();
@@ -287,7 +287,7 @@ Ext.onReady(function(){
         equip_grid,
         {html:'<HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=3>'},
         //{html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;库房人员应当根据采购单，对设备分类后，一次对同类设备批量“添加”入库，直到所有采购单设备根据设备类型都已经“添加”到入库清单后，可以选择“下一步”，进入到二维码生成步骤'}],
-        {html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;一次入库只能选择一个仓库'}],
+        {html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;一次出库只能选择一个仓库'}],
         buttons:[{text:'生成维修单',handler:function(btn){
             if (equipStore.getCount()> 0) { 
             	Ext.getBody().mask("正在入库....");

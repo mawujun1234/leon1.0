@@ -80,7 +80,7 @@ Ext.define('Ems.store.OrderGrid',{
 	  var date_start=Ext.create('Ext.form.field.Date',{
 	  	fieldLabel: '时间范围',
 	  	labelWidth:60,
-	  	width:150,
+	  	width:160,
 	  	format:'Y-m-d',
         //name: 'date_start',
         value:  Ext.Date.add(new Date(), Ext.Date.DAY, -7)

@@ -1,0 +1,13 @@
+
+--初始化每天的数据，修改 i的初始值和，当前月的数据
+declare  
+i int; 
+max_day int;
+begin  
+i:=to_number(to_char(trunc(add_months(last_day(sysdate), -1) + 1), 'yyyymmdd')); 
+max_day:=to_number(to_char(last_day(sysdate), 'yyyymmdd')); 
+while i<=max_day loop 
+proc_dayinventory1('2c90854949bb5a940149c6c4ec180003' , to_char(i),'N');
+i:=i+1; 
+end loop;
+end;

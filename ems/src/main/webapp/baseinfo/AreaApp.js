@@ -17,6 +17,8 @@ Ext.onReady(function(){
 		
 		areaPoleGrid.getStore().getProxy().extraParams={area_id:record.get("id")};
 		areaPoleGrid.getStore().reload();
+		
+		equipment_grid.getStore().removeAll();
 	});
 	
 	var areaPoleGrid=Ext.create('Ems.baseinfo.AreaPoleGrid',{
