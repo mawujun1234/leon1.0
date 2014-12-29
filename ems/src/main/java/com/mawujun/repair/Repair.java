@@ -22,6 +22,8 @@ public class Repair  implements IdEntity<String>{
 	private String id;
 	@Column(length=25)
 	private String ecode;
+	@Column(length=25)
+	private String prod_id;
 	
 	//下面三行是在创建的时候填的，故障描述是实施人员填的
 	private Date repair_date;//报修时间
@@ -224,6 +226,12 @@ public class Repair  implements IdEntity<String>{
 	}
 	public void setScrapDate(Date scrapDate) {
 		this.scrapDate = scrapDate;
+	}
+	public String getProd_id() {
+		return prod_id;
+	}
+	public void setProd_id(String prod_id) {
+		this.prod_id = prod_id;
 	}
 
 }

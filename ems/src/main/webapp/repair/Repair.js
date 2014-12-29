@@ -4,6 +4,7 @@ Ext.defineModel("Ems.repair.Repair",{
 	fields:[
 		{name:'id',type:'string'},
 		{name:'ecode',type:'string'},
+		{name:'prod_id',type:'string'},
 		{name:'rpa_id',type:'string'},
 		
 		{name:'repair_date',type:'date', dateFormat: 'Y-m-d'},
