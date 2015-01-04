@@ -18,8 +18,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     </select> 
     
     <select id="storeMgrQuery" resultType="com.mawujun.repair.RepairVO" parameterType="map">
-    	select a.*,b.id as scrap_id from ems_repair a left join ems_scrap b on a.id=b.repair_id
-    	
+    	select a.*,b.id as scrap_id,d.name as prod_name,d.style as equipment_style from ems_repair a 
+    	left join ems_scrap b on a.id=b.repair_id
+    	left join ems_equipmentprod d on a.prod_id=d.id
 		<where>
 			a.str_out_id in (select store_id from sys_userstore c where c.user_id=#{user_id} and c.edit='Y')
 			<if test="str_out_id!=null">
@@ -44,10 +45,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    		and b.id is not null
 	    	</if>
 		</where>
-		order by status
+		order by a.status
     </select>
     <select id="repairInQuery" resultType="com.mawujun.repair.RepairVO" parameterType="map">
-    	select * from ems_repair a
+    	select a.*,d.name as prod_name,d.style as equipment_style from ems_repair a
+    	left join ems_equipmentprod d on a.prod_id=d.id
 		<where>
 			a.rpa_id in (select store_id from sys_userstore c where c.user_id=#{user_id} and c.edit='Y')
 			<if test="str_out_id!=null">
@@ -69,14 +71,17 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				and a.status=#{status}
 			</if>
 		</where>
-		order by status
+		order by a.status
     </select>
     
     <select id="repairMgrQuery" resultType="com.mawujun.repair.RepairVO" parameterType="map">
-    	select a.*,b.id as scrap_id,d.name as workunit_name,e.name as rpa_user_name from ems_repair a 
+    	select a.*,b.id as scrap_id,d.name as workunit_name,e.name as rpa_user_name 
+    	 ,f.name as prod_name,f.style as equipment_style
+    	 from ems_repair a 
     	 left join ems_scrap b on a.id=b.repair_id
     	 left join ems_workunit d on a.workunit_id=d.id
     	 left join sys_user e on a.rpa_user_id=e.id
+    	 left join ems_equipmentprod f on a.prod_id=f.id
 		<where>
 			a.rpa_id in (select store_id from sys_userstore c where c.user_id=#{user_id} and c.edit='Y')
 			<if test="str_out_id!=null">

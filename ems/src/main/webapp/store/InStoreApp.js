@@ -186,7 +186,9 @@ Ext.onReady(function(){
 //							if(exist){
 //								Ext.Msg.alert('提示','该设备已经存在');
 //							}else{
-								equipStore.insert(0, scanrecord);				
+								equipStore.insert(0, scanrecord);	
+								//alert(1);
+								equip_grid.getView().refresh();
 //							}		
 							store_combox.disable();
 							

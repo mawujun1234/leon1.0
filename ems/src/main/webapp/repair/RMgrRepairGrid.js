@@ -99,6 +99,8 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 	    },
 		{dataIndex:'id',text:'维修单号',width:130},
 		{dataIndex:'ecode',text:'条码',width:150},
+		{dataIndex:'prod_name',text:'品名',width:140},
+		{dataIndex:'equipment_style',text:'型号',width:140},
 		{dataIndex:'str_out_name',text:'发货仓库'},
 		{dataIndex:'rpa_type_name',text:'维修类型',width:60},
 		{dataIndex:'status_name',text:'状态'},
