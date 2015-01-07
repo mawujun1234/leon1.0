@@ -204,10 +204,10 @@ public class PoleController {
 		status.setCellValue("状态");
 		status.setCellStyle(black_style);
 		
-		Cell workunit=row.createCell(cellnum++);
-		workunit.setCellValue("作业单位");
-		workunit.setCellStyle(black_style);
-		sheet.setColumnWidth(cellnum-1, "列".getBytes().length*5*256);
+//		Cell workunit=row.createCell(cellnum++);
+//		workunit.setCellValue("作业单位");
+//		workunit.setCellStyle(black_style);
+//		sheet.setColumnWidth(cellnum-1, "列".getBytes().length*5*256);
 		
 //		Cell customer=row.createCell(cellnum++);
 //		customer.setCellValue("所属客户");
@@ -246,7 +246,7 @@ public class PoleController {
 		sheet.setColumnWidth(cellnum-1, "列".getBytes().length*4*256);
 		
 		//冻结窗格
-		sheet.createFreezePane(5, 1);
+		sheet.createFreezePane(4, 1);
 	}
 	
 	public CellStyle getStyle(XSSFWorkbook wb,IndexedColors color,Short fontSize){
@@ -297,9 +297,9 @@ public class PoleController {
 			status.setCellValue(pole.getStatus_name());
 			status.setCellStyle(yellow_background_style);
 			
-			Cell workunit=row.createCell(cellnum++);
-			workunit.setCellValue(pole.getWorkunit_name());
-			workunit.setCellStyle(yellow_background_style);
+//			Cell workunit=row.createCell(cellnum++);
+//			workunit.setCellValue(pole.getWorkunit_name());
+//			workunit.setCellStyle(yellow_background_style);
 			
 //			Cell customer=row.createCell(cellnum++);
 //			customer.setCellValue(pole.getCustomer_name());
