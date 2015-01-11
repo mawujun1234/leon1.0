@@ -99,14 +99,34 @@ $(document).ready(function(e) {
         <h1>持有设备信息</h1> 
 	</div>
 	<div role="main" class="ui-content">
-    	 <div id="page_equipments_list">
+    	 <!-- <div id="page_equipments_list">
          	
          </div>
+         -->
+         <ul id="page_equipments_list" data-role="listview" data-inset="false" data-divider-theme="a">
+         </ul>
 	</div>
     <script type="text/javascript">
 
 	</script>
 </div>
+<div data-role="page" id="page_equipments_detail">
+	<div data-role="header"  data-position="fixed">
+    	<a href="#page_equipments" class="ui-btn ui-corner-all" data-rel="back" data-theme="c">返回</a>
+        <h1 id="page_equipments_detail_h1"></h1> 
+	</div>
+	<div role="main" class="ui-content">
+         <ol id="page_equipments_list_detail" data-role="listview" >
+         </ol>
+	</div>
+    <script type="text/javascript">
+
+	</script>
+</div>
+
+
+
+
 <script type="text/javascript">
 $(document).ready(function(e) {
 	function getEquipmentInfo(ecode){
@@ -155,46 +175,31 @@ $(document).ready(function(e) {
 		} 
 		
 		for(var i=0;i<root.length;i++){
+		//for(var i=0;i<10;i++){
 			//如果设备状态是手持，就是安装，如果是using就是维修或者巡检，巡检任务扫描的设备都是巡检
-			html+='<div data-role="collapsible" ecode="'+root[i].ecode+'">'+
+			/**html+='<div data-role="collapsible" ecode="'+root[i].ecode+'">'+
 				'<h4>'+root[i].ecode+':'+root[i].style+'</h4>'+
 				'<p>'+root[i].brand_name+':'+root[i].subtype_name+'>'+root[i].prod_name+'>'+root[i].supplier_name+'</p>'+
 				'</div>';	
+				*/
+				html+='<li data-role="list-divider">'+root[i].name+'</li>';
+				if(root[i].prodes){
+					var prodes=root[i].prodes;
+					for(var j=0;j<prodes.length;j++){
+						html+='<li><a href="#page_equipments_detail?prod_id='+prodes[j].id+'">'+prodes[j].name+'('+prodes[j].style+')<span class="ui-li-count">'+prodes[j].ecode_num+'</span></a></li>';
+					}
+				}
 		}
-		
-		//if(coverHtml){
-			//覆盖已经有的html
-			$("#page_equipments_list").html(html).enhanceWithin();
-		//} else {
-		//	$("#"+page_id+"_equipments_list").append(html).enhanceWithin();
-		//}
-		
-/*		$("#"+page_id+"_equipments_list [data-role='collapsible']").unbind("taphold"); 
-		$("#"+page_id+"_equipments_list [data-role='collapsible']").bind( "taphold", function(event){
-			//window.equipmentInfoCollapsible=event.target;
-			//console.dir(event.target);
-			//触发的是<a>,但删除的是div，所以要parent
-			window.equipmentInfoCollapsible=$(event.target).parent().parent();
-			alert(window.equipmentInfoCollapsible);
-			
-			//$( "#popupArrow" ).popup( "open", { positionTo:event.target,transition: "pop" } );
-			$( "#"+page_id+"_deleteEquipmentInfo_popup" ).popup( "open", { positionTo:event.target,transition: "pop" } );
-    		event.preventDefault();
-		});*/
-/*		
-		//渲染损坏类型和损坏原因
-		if(obj.type=="repair"){
-			$("#select-choice-hitchType").val(obj.hitchType_id).selectmenu( "refresh" );
-			$("#select-choice-hitchReasonTpl").val(obj.hitchReasonTpl_id).selectmenu( "refresh" );
-			$("#textarea-hitchReasonTpl").val(obj.hitchReason);
-		}*/
-		
+		//覆盖已经有的html
+		$("#page_equipments_list").html(html).listview("refresh");//.enhanceWithin();	
 	}
-	//获取当前用户持有的设备
-	function queryHaveEquipmentInfos(){
+	
+	//获取当前用户持有的设备的分类汇总信息
+	function queryHaveEquipmentInfosTotal(){
+		$.showLoader(); 
 		$.ajax({   
-			url : $.ServerPath+"/others/mobile/queryHaveEquipmentInfos.do",  
-			//data:{task_id:task_id},  
+			//url : $.ServerPath+"/others/mobile/queryHaveEquipmentInfos.do",  
+			url : $.ServerPath+"/others/mobile/queryHaveEquipmentInfosTotal.do",  
 			success : function(data){
 				if(data.success==true){	
 					var root=data.root;
@@ -204,10 +209,37 @@ $(document).ready(function(e) {
 			}
 		});
 	}
+	function queryHaveEquipmentInfosDetail(prod_id){
+		$.showLoader();
+		$.ajax({   
+			url : $.ServerPath+"/others/mobile/queryHaveEquipmentInfosDetail.do",  
+			data:{prod_id:prod_id},  
+			success : function(data){
+				if(data.success==true){	
+					var root=data.root;
+					var html='';
+					for(var i=0;i<root.length;i++){
+						html+='<li>'+root[i].ecode+'('+root[i].brand_name+')</li>';
+					}
+				}
+				$("#page_equipments_list_detail").html(html).listview("refresh");
+				$.hideLoader();  
+			}
+		});
+	}
 	$( document).on( "pagecontainershow", function( event, ui ) {
 		var page_id=ui.toPage.attr("id");
 		if(page_id=="page_equipments"){
-			queryHaveEquipmentInfos();
+			//如果是从明细页面返回就不查询
+			var prevPage=ui.prevPage;
+			if(prevPage && prevPage.length>0 && prevPage.attr("id")=="page_equipments_detail"){
+				return;
+			}
+			queryHaveEquipmentInfosTotal();
+		} else if(page_id=="page_equipments_detail"){//某个品名下面的详细的ecode编号
+			//获取id
+			var params=$.getUrlParam(event.target.baseURI);
+			queryHaveEquipmentInfosDetail(params.prod_id);
 		}
 	});
 });

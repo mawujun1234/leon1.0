@@ -23,13 +23,13 @@ public class EquipmentTypeAbstract {
 	private Boolean leaf;
 	
 	@Transient
-	private String unit;
+	private String unit; //有用，收集前端信息的时候
 	@Transient
-	private String spec;
+	private String spec;//有用，收集前端信息的时候
 	@Transient
 	private String style;// 型号
 	@Transient
-	private String brand_id;
+	private String brand_id;//有用，收集前端信息的时候
 	
 	
 	public String getStatus_name() {

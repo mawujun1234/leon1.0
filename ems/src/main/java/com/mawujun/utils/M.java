@@ -74,6 +74,8 @@ public static final class EquipmentProd {
 	public static final String style="style";
 	public static final String brand_id="brand_id";
 	public static final String brand_name="brand_name";
+	public static final String subtype_name="subtype_name";
+	public static final String ecode_num="ecode_num";
 	public static final String id="id";
 	public static final String name="name";
 	public static final String status="status";
@@ -82,6 +84,10 @@ public static final class EquipmentProd {
 	public static final String leaf="leaf";
 }
 public static final class EquipmentSubtype {
+	/**
+	* 这里一般是集合属性，返回的是prodes
+	*/
+	public static final String prodes="prodes";
 	public static final String id="id";
 	public static final String name="name";
 	public static final String status="status";

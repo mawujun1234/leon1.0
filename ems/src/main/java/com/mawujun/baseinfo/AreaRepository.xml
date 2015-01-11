@@ -20,7 +20,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		order by a.code asc
     </select>
     
-    <!-- 查询某个片区下所有的点位 机器点位上的设备信息 -->
+    <!-- 查询某个片区下所有的点位 机器点位上的设备信息, -->
     <select id="queryPolesAndEquipments" resultMap="poleMap" parameterType="string">
     	SELECT a.*,b.ecode,b.style,b.last_install_date,c.name as subtype_name,d.name as prod_name,d.spec as prod_spec,e.name as brand_name,f.name as supplier_name
       FROM (select a.*,b.name  as customer_name,c.name as area_name,d.name as workunit_name 
@@ -33,6 +33,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
       left join ems_supplier f on b.supplier_id=f.id
 		order by a.code asc
     </select>
+    <!-- 这个resultMap在PoleRepository中重用了-->
     <resultMap type="com.mawujun.baseinfo.PoleVO" id="poleMap">
      	<id property="id" column="id"/>
     	<result property="code" column="code"/>

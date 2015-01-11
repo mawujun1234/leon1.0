@@ -1,11 +1,17 @@
 package com.mawujun.baseinfo;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+
+
+
 
 
 
@@ -46,4 +52,16 @@ public class WorkUnitService extends AbstractService<WorkUnit, String>{
 		return workUnitRepository.queryUnique(Cnd.where().andEquals(M.WorkUnit.loginName, loginName).andEquals(M.WorkUnit.status, true));
 	}
 	
+	/**
+	 * mobile上用到的
+	 * @author mawujun 16064988@qq.com 
+	 * @return
+	 */
+	public List<EquipmentSubtype> queryHaveEquipmentInfosTotal(String workUnit_id){
+		List<EquipmentSubtype> prodes=workUnitRepository.queryHaveEquipmentInfosTotal(workUnit_id);
+		return prodes;
+	}
+	public List<EquipmentVO> queryHaveEquipmentInfosDetail(String workUnit_id,String prod_id) {
+		return workUnitRepository.queryHaveEquipmentInfosDetail(workUnit_id, prod_id);
+	}
 }

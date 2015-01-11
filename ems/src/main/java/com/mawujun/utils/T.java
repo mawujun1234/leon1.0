@@ -74,6 +74,8 @@ public static final class ems_equipmentprod {
 	public static final String style="style";
 	public static final String brand_id="brand_id";
 	public static final String brand_name="brand_name";
+	public static final String subtype_name="subtype_name";
+	public static final String ecode_num="ecode_num";
 	public static final String id="id";
 	public static final String name="name";
 	public static final String status="status";
