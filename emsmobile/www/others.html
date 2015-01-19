@@ -186,7 +186,7 @@ $(document).ready(function(e) {
 				if(root[i].prodes){
 					var prodes=root[i].prodes;
 					for(var j=0;j<prodes.length;j++){
-						html+='<li><a href="#page_equipments_detail?prod_id='+prodes[j].id+'">'+prodes[j].name+'('+prodes[j].style+')<span class="ui-li-count">'+prodes[j].ecode_num+'</span></a></li>';
+						html+='<li><a href="#page_equipments_detail" onclick="sessionStorage.prod_id=\''+prodes[j].id+'\'">'+prodes[j].name+'('+prodes[j].style+')<span class="ui-li-count">'+prodes[j].ecode_num+'</span></a></li>';
 					}
 				}
 		}
@@ -210,6 +210,7 @@ $(document).ready(function(e) {
 		});
 	}
 	function queryHaveEquipmentInfosDetail(prod_id){
+		//alert(prod_id);
 		$.showLoader();
 		$.ajax({   
 			url : $.ServerPath+"/others/mobile/queryHaveEquipmentInfosDetail.do",  
@@ -238,8 +239,9 @@ $(document).ready(function(e) {
 			queryHaveEquipmentInfosTotal();
 		} else if(page_id=="page_equipments_detail"){//某个品名下面的详细的ecode编号
 			//获取id
-			var params=$.getUrlParam(event.target.baseURI);
-			queryHaveEquipmentInfosDetail(params.prod_id);
+			//alert(event.target.baseURI);
+			//var params=$.getUrlParam(event.target.baseURI);
+			queryHaveEquipmentInfosDetail(sessionStorage.prod_id);
 		}
 	});
 });

@@ -1,1 +1,1 @@
-{verCode:2,verName:"0.0.2",changelog:"1:手持设备情况查询修改!"}
+{verCode:3,verName:"0.0.3",changelog:"1:手持设备情况查询修改!"}
