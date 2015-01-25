@@ -344,6 +344,7 @@ public static final class Task {
 	public static final String workunit_name="workunit_name";
 	public static final String customer_id="customer_id";
 	public static final String customer_name="customer_name";
+	public static final String pole_code="pole_code";
 	public static final String createDate="createDate";
 	public static final String startHandDate="startHandDate";
 	public static final String submitDate="submitDate";

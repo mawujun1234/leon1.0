@@ -16,8 +16,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 
+import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
+import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.PluginResult;
 
 /**
@@ -53,6 +55,12 @@ public class BarcodeScanner extends CordovaPlugin {
      */
     public BarcodeScanner() {
     }
+    
+//    @Override
+//    public void initialize(CordovaInterface cordova, CordovaWebView webView) {
+//        super.initialize(cordova, webView);
+//        // your init code here
+//    }
 
     /**
      * Executes the request.
@@ -71,9 +79,10 @@ public class BarcodeScanner extends CordovaPlugin {
      * @sa https://github.com/apache/cordova-android/blob/master/framework/src/org/apache/cordova/CordovaPlugin.java
      */
     @Override
-    public boolean execute(String action, JSONArray args, CallbackContext callbackContext) {
+    public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) {
         this.callbackContext = callbackContext;
-
+ 
+		
         if (action.equals(ENCODE)) {
             JSONObject obj = args.optJSONObject(0);
             if (obj != null) {
@@ -96,19 +105,41 @@ public class BarcodeScanner extends CordovaPlugin {
                 return true;
             }
         } else if (action.equals(SCAN)) {
+        	Log.d(LOG_TAG , "解析二维码开始...");
+        	//这是原来的
             scan();
+        	//这个事使用现场安全实施
+//        	//cordova.getActivity().runOnUiThread(new Runnable() {
+//        	cordova.getThreadPool().execute(new Runnable() {
+//                public void run() {
+//                	scan();
+//                    //callbackContext.success(); // Thread-safe.
+//                }
+//            });
+            Log.d(LOG_TAG , "解析二维码结束...");
         } else {
             return false;
         }
         return true;
     }
 
+//    /**
+//     * Starts an intent to scan and decode a barcode.
+//     */
+//    public void scan() {
+//        Intent intentScan = new Intent(SCAN_INTENT);
+//        intentScan.addCategory(Intent.CATEGORY_DEFAULT);
+//
+//        this.cordova.startActivityForResult((CordovaPlugin) this, intentScan, REQUEST_CODE);
+//    }
     /**
      * Starts an intent to scan and decode a barcode.
      */
     public void scan() {
         Intent intentScan = new Intent(SCAN_INTENT);
         intentScan.addCategory(Intent.CATEGORY_DEFAULT);
+        // avoid calling other phonegap apps
+        intentScan.setPackage(this.cordova.getActivity().getApplicationContext().getPackageName());
 
         this.cordova.startActivityForResult((CordovaPlugin) this, intentScan, REQUEST_CODE);
     }
@@ -123,10 +154,12 @@ public class BarcodeScanner extends CordovaPlugin {
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+    	//Log.e(LOG_TAG , "intent返回二维码解析结果...");
         if (requestCode == REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 JSONObject obj = new JSONObject();
                 try {
+                	Log.d(LOG_TAG , "intent返回二维码解析结果为:"+intent.getStringExtra("SCAN_RESULT"));
                     obj.put(TEXT, intent.getStringExtra("SCAN_RESULT"));
                     obj.put(FORMAT, intent.getStringExtra("SCAN_RESULT_FORMAT"));
                     obj.put(CANCELLED, false);
@@ -135,6 +168,7 @@ public class BarcodeScanner extends CordovaPlugin {
                 }
                 //this.success(new PluginResult(PluginResult.Status.OK, obj), this.callback);
                 this.callbackContext.success(obj);
+                Log.d(LOG_TAG , "this.callbackContext.success(obj)调用结束");
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 JSONObject obj = new JSONObject();
                 try {
@@ -163,6 +197,8 @@ public class BarcodeScanner extends CordovaPlugin {
         Intent intentEncode = new Intent(ENCODE_INTENT);
         intentEncode.putExtra(ENCODE_TYPE, type);
         intentEncode.putExtra(ENCODE_DATA, data);
+        // avoid calling other phonegap apps
+        intentEncode.setPackage(this.cordova.getActivity().getApplicationContext().getPackageName());
 
         this.cordova.getActivity().startActivity(intentEncode);
     }

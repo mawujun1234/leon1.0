@@ -48,12 +48,14 @@
             }
 
             if (typeof errorCallback != "function") {
-                console.log("BarcodeScanner.scan failure: failure parameter not a function");
+                //console.log("BarcodeScanner.scan failure: failure parameter not a function");
+                 alert("errorCallback不是函数");
                 return;
             }
 
             if (typeof successCallback != "function") {
-                console.log("BarcodeScanner.scan failure: success callback parameter must be a function");
+                //console.log("BarcodeScanner.scan failure: success callback parameter must be a function");
+                alert("successCallback不是函数");
                 return;
             }
 

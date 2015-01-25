@@ -19,6 +19,7 @@ Ext.defineModel("Ems.task.Task",{
 		
 		{name:'pole_address',type:'string'},
 		{name:'customer_name',type:'string'},
+		{name:'pole_code',type:'string'},
 		{name:'pole_name',type:'string'},
 		{name:'workunit_name',type:'string'},
 		{name:'status_name',type:'string'},

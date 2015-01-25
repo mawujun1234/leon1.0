@@ -9,11 +9,11 @@
                 "parents": {
                     "/*": [
                         {
-                            "xml": "<feature name=\"BaiduLocation\"><param name=\"android-package\" value=\"com.mawujun.plugins.baiduLocation.BaiduLocation\" /></feature>",
+                            "xml": "<feature name=\"BarcodeScanner\"><param name=\"android-package\" value=\"com.mawujun.plugins.barcodescanner.BarcodeScanner\" /></feature>",
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"BarcodeScanner\"><param name=\"android-package\" value=\"com.mawujun.plugins.barcodescanner.BarcodeScanner\" /></feature>",
+                            "xml": "<feature name=\"UpdateApp\"><param name=\"android-package\" value=\"com.mawujun.plugins.updateApp.UpdateApp\" /></feature>",
                             "count": 1
                         },
                         {
@@ -27,71 +27,13 @@
                         {
                             "xml": "<feature name=\"SplashScreen\"><param name=\"android-package\" value=\"org.apache.cordova.splashscreen.SplashScreen\" /></feature>",
                             "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"UpdateApp\"><param name=\"android-package\" value=\"com.mawujun.plugins.updateApp.UpdateApp\" /></feature>",
-                            "count": 1
                         }
                     ]
                 }
             },
             "AndroidManifest.xml": {
                 "parents": {
-                    "/*": [
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />",
-                            "count": 2
-                        },
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.INTERNET\" />",
-                            "count": 2
-                        },
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\" />",
-                            "count": 2
-                        },
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.READ_LOGS\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\" />",
-                            "count": 1
-                        }
-                    ],
                     "/manifest/application": [
-                        {
-                            "xml": "<service android:enabled=\"true\" android:name=\"com.baidu.location.f\" android:process=\":remote\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<meta-data android:name=\"com.baidu.lbsapi.API_KEY\" android:value=\"ED0fe5c7c869da5ee4260b4006e811b8\" />",
-                            "count": 1
-                        },
                         {
                             "xml": "<activity android:clearTaskOnLaunch=\"true\" android:configChanges=\"orientation|keyboardHidden\" android:exported=\"false\" android:name=\"com.google.zxing.client.android.CaptureActivity\" android:screenOrientation=\"portrait\" android:theme=\"@android:style/Theme.NoTitleBar.Fullscreen\" android:windowSoftInputMode=\"stateAlwaysHidden\"><intent-filter><action android:name=\"com.mawujun.plugins.barcodescanner.SCAN\" /><category android:name=\"android.intent.category.DEFAULT\" /></intent-filter></activity>",
                             "count": 1
@@ -176,6 +118,24 @@
                         },
                         {
                             "xml": "<uses-permission android:name=\"android.permission.BROADCAST_STICKY\" />",
+                            "count": 1
+                        }
+                    ],
+                    "/*": [
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.INTERNET\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\" />",
                             "count": 1
                         }
                     ]
@@ -666,10 +626,10 @@
         }
     },
     "installed_plugins": {
-        "com.mawujun.plugins.baiduLocation": {
+        "com.mawujun.plugins.barcodescanner": {
             "PACKAGE_NAME": "com.mawujun.mobile"
         },
-        "com.mawujun.plugins.barcodescanner": {
+        "com.mawujun.plugins.updateApp": {
             "PACKAGE_NAME": "com.mawujun.mobile"
         },
         "org.apache.cordova.device": {
@@ -679,9 +639,6 @@
             "PACKAGE_NAME": "com.mawujun.mobile"
         },
         "org.apache.cordova.splashscreen": {
-            "PACKAGE_NAME": "com.mawujun.mobile"
-        },
-        "com.mawujun.plugins.updateApp": {
             "PACKAGE_NAME": "com.mawujun.mobile"
         }
     },

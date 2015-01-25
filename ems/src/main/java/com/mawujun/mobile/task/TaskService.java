@@ -28,6 +28,7 @@ import java.util.Set;
 
 
 
+
 import javax.annotation.Resource;
 
 import org.springframework.beans.BeanUtils;
@@ -203,6 +204,10 @@ public class TaskService extends AbstractService<Task, String>{
 	
 	public Page mobile_queryPage(Page page) {
 		return this.getRepository().mobile_queryPage(page);
+	}
+	
+	public List<Task> mobile_search(String status,String searchStr,String workunit_id) {
+		return this.getRepository().mobile_search(status, searchStr, workunit_id);
 	}
 
 	public List<TaskEquipmentListVO> mobile_queryTaskEquipmentInfos(String task_id) {

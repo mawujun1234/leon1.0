@@ -8,6 +8,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.mawujun.repository.idEntity.IdEntity;
 
@@ -41,6 +42,9 @@ public class Task implements IdEntity<String> {
 	private String customer_id;
 	@Column(length=50)
 	private String customer_name;
+	
+	@Transient
+	private String pole_code;
 	
 	
 	private Date createDate;//创建时间
@@ -189,6 +193,12 @@ public class Task implements IdEntity<String> {
 	}
 	public void setCreaterType(TaskCreaterType createrType) {
 		this.createrType = createrType;
+	}
+	public String getPole_code() {
+		return pole_code;
+	}
+	public void setPole_code(String pole_code) {
+		this.pole_code = pole_code;
 	}
 	
 	

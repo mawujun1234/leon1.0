@@ -139,28 +139,28 @@ function queryTasks(status,appendDir,callBack){
 		success : function(data){
 			if(data.success==true){
 				var root=data.root;
-				var html="";
+				var html='';
 				for(var i=0;i<root.length;i++){
 					var taskInfoParamStr='?id='+root[i].id+'&pole_name='+root[i].pole_name+'&memo='+root[i].memo+'&type='+root[i].type+'&canEdit='+(status=="working"?true:false);
 					//alert(taskInfoParamStr);
 					var page_id="";
-					var h2_title="";
+					var h2_title=root[i].pole_code;
 					var img="";
 					if("newInstall"==root[i].type){
 						page_id="page_install";
-						h2_title="新安装";
+						//h2_title="新安装";
 						img="img/install.png";
 					} else if("repair"==root[i].type){
 						page_id="page_repair";
-						h2_title="维修";
+						//h2_title="维修";
 						img="img/repair.png";
 					} else if("patrol"==root[i].type){
 						page_id="page_patrol";
-						h2_title="巡检";
+						//h2_title="巡检";
 						img="img/patrols.png";
 					}else if("cancel"==root[i].type){
 						page_id="page_cancel";
-						h2_title="取消点位";
+						//h2_title="取消点位";
 						img="img/cancel.png";
 					}
 					html+='<li id="li_'+root[i].id+'">'+
@@ -209,7 +209,7 @@ var taskes_list_query_status={
 };
 function changeTaskesStatus(status){
 	$("ul[id^='taskes_list_']").removeClass("taskes_list_display_block").addClass("taskes_list_display_none");
-	$("#taskes_list_"+status).addClass("taskes_list_display_block");
+	$("#taskes_list_"+status).removeClass("taskes_list_display_none").addClass("taskes_list_display_block");
 	//如果数据已经查询过了，就不再查询了
 	if(!taskes_list_query_status[status]){
 		$.showLoader("正在加载....");
@@ -262,11 +262,18 @@ $(document).ready(function(e) {
 		queryTasks("working","prepend",function(){
 			//$.hideLoader();
 		});
-	 }, "120000");
+	 }, 30*60*1000);
 	
 	//初始化滑出菜单
 	htmlobj=$.ajax({url:"leftMenu.html",async:false});
   	$("#left-menu-contanier").html(htmlobj.responseText).trigger('create');
+	
+	
+	$("#page_content_search_input").click(function(){
+		$(":mobile-pagecontainer").pagecontainer("change","#page_search" , { 
+			transition:'slide'
+		});
+	});
 
 });
 </script>
@@ -299,12 +306,15 @@ $(document).ready(function(e) {
         </div>
     </div>
 	<div role="main" class="ui-content" id="page_content">
-		<ul data-role="listview" id="taskes_list_working">
+        <form class="ui-filterable" style="margin-top:-25px;">
+            <input id="page_content_search_input" data-type="search" placeholder="搜索任务...">
+        </form>
+		<ul data-role="listview" id="taskes_list_working" >
         </ul> 
         
-        <ul data-role="listview" id="taskes_list_confirm" > 
+        <ul data-role="listview" id="taskes_list_confirm" style="margin-top:8px;"> 
         </ul> 
-        <ul data-role="listview" id="taskes_list_complete"> 
+        <ul data-role="listview" id="taskes_list_complete" style="margin-top:8px;"> 
         </ul>
 	</div>
     <!-- jQuery 遮罩层 -->
@@ -322,6 +332,154 @@ $(document).ready(function(e) {
 	</div>
 </div>
 
+<div data-role="page" id="page_search">
+	<div data-role="header" data-position="fixed">
+    	<a href="#page_homepage" class="ui-btn ui-corner-all" data-rel="back"  data-theme="c">返回</a>
+        <h1>搜索任务</h1> 
+	</div>
+    <div role="main" class="ui-content">
+    	<form class="ui-filterable">
+        	<table>
+        	<tr>
+            	<td width="100%"><input id="page_search_search_input" data-type="search" placeholder="请输入杆位编号或名称"></td>
+                <td width="60"><a href="#" id="page_search_search__button" class="ui-shadow ui-btn ui-corner-all ui-btn-inline" >搜索</a></td>
+            </tr>
+            <tr>
+            	<td colspan="2">你可能想要找:</td>
+            </tr>
+        </table>
+            
+        </form>
+        <ul data-role="listview" id="page_search_search_history" data-inset="true" style="margin-top:-20px;">
+
+        </ul>
+        <ul data-role="listview" id="page_search_search_result" style="margin-top:-20px;"> 
+        </ul>
+    </div>
+    <script type="application/javascript">
+		function clearSearchVal(){
+			var searchVal=$("#page_search_search_input").val();
+			
+			$("#page_search_search_input").val("");
+			
+			$("#page_search_search_result").html("").listview('refresh');
+			$("#page_search_search_history").css("display","block");
+			return searchVal;
+		}
+		function clickSearch(searchVal){
+			$("#page_search_search_input").val(searchVal);
+			$("#page_search_search__button").click();
+		}
+
+		$(function(){
+
+			$(document).on("pagebeforeshow","#page_search",function(e,ui){
+				if(ui.prevPage.attr("id")!="page_homepage"){
+					return;
+				}
+			  var searchVal=clearSearchVal();
+			  
+			  //登录后第一次初始化
+			  if(window.page_search_search_history_array==null || !window.page_search_search_history_array){
+				  if(localStorage.getItem("page_search_search_history")!=null){
+					  window.page_search_search_history_array=JSON.parse(localStorage.getItem("page_search_search_history"));
+					//渲染查询历史  
+					var html="";
+					for(var i=0;i<window.page_search_search_history_array.length;i++){
+						html="<li><a href='#' onClick='clickSearch(\""+window.page_search_search_history_array[i]+"\")'>"+window.page_search_search_history_array[i]+"</a></li>"+html;
+					}
+					$("#page_search_search_history").html(html).listview('refresh');
+			      } else {
+					  window.page_search_search_history_array=[];
+				  }
+				  
+			  } else {
+				 
+			  }
+			  //重复就不添加
+			  var isExists=false;
+			  for(var i=0;i<window.page_search_search_history_array.length;i++){
+				  if(window.page_search_search_history_array[i]==searchVal){
+					  isExists=true;
+					  break;
+				  }
+			  }
+			  //alert(isExists);
+			  //alert(searchVal);
+			  if(!isExists && searchVal){
+				   window.page_search_search_history_array.push(searchVal);
+				   if(window.page_search_search_history_array.length>15){
+					  window.page_search_search_history_array.pop();
+				  }
+				  //往list里面添加内容
+				  var html="<li><a href='#' onClick='clickSearch(\""+searchVal+"\")'>"+searchVal+"</a></li>"
+				  $("#page_search_search_history").prepend(html).listview('refresh');
+				  localStorage.setItem("page_search_search_history",JSON.stringify( window.page_search_search_history_array));
+			  }
+ 
+			  
+			});
+
+			$("#page_search_search__button").click(function(){
+				var searchVal=$("#page_search_search_input").val();
+				if(!searchVal){
+					return;
+				}
+				if(searchVal.length<4){
+					alert("请至少输入4个字符!");
+					return;
+				}
+				
+				var status=$("input:checked[name='radio-choice-taskes-status']").val();
+				$.ajax({   
+					url : $.ServerPath+"/task/mobile/search.do",  
+					data:{status:status,searchStr:searchVal},  
+					success : function(data){
+						//console.dir(data);
+						var root=data.root;
+						var html='';
+						for(var i=0;i<root.length;i++){
+							var taskInfoParamStr='?id='+root[i].id+'&pole_name='+root[i].pole_name+'&memo='+root[i].memo+'&type='+root[i].type+'&canEdit='+(status=="working"?true:false);
+							//alert(taskInfoParamStr);
+							var page_id="";
+							var h2_title=root[i].pole_code;
+							var img="";
+							if("newInstall"==root[i].type){
+								page_id="page_install";
+								//h2_title="新安装";
+								img="img/install.png";
+							} else if("repair"==root[i].type){
+								page_id="page_repair";
+								//h2_title="维修";
+								img="img/repair.png";
+							} else if("patrol"==root[i].type){
+								page_id="page_patrol";
+								//h2_title="巡检";
+								img="img/patrols.png";
+							}else if("cancel"==root[i].type){
+								page_id="page_cancel";
+								//h2_title="取消点位";
+								img="img/cancel.png";
+							}
+							html+='<li id="li_'+root[i].id+'">'+
+							'<a href="#'+page_id+'" onclick="sessionStorage.taskInfoParamStr=\''+taskInfoParamStr+'\'" data-transition="slide" >'+
+								'<img src="'+img+'">'+
+								'<h2>'+root[i].id+'</h2>'+
+								'<p>'+h2_title+':'+root[i].pole_name+'</p>'+
+								'<p class="longContent">地址:'+root[i].pole_address+'</p>'+
+								'<p class="ui-li-aside"><strong>'+root[i].createDate+'</strong></p>'+
+								((root[i].status!="newTask")?'':'<p id="'+root[i].id+'_isNew" class="ui-li-count" style="color:#FFF;background-color:#F00;">new</p>')+
+							'</a>'+
+							'</li>'
+						}
+						$("#page_search_search_result").html(html).listview('refresh');
+						$("#page_search_search_history").css("display","none");
+					}
+				});
+			});
+		});
+	</script>
+</div>
 
 <div data-role="page" id="page_install">
 	<div data-role="header" data-position="fixed">
@@ -686,7 +844,6 @@ $(document).ready(function(e) {
 //						return;
 //					}
 					renderEquipmentInfo(root);
-					
 				}
 				$.hideLoader();  
 			}
@@ -731,6 +888,7 @@ $(document).ready(function(e) {
 		}	
 	});
 	$("a[name='scan_button']").click(function(event){
+		$.showLoader("正在获取设备信息....");
 	  	cordova.plugins.barcodeScanner.scan(
 			function (result) {
 		    	//alert("We got a barcode\n" +
@@ -740,6 +898,7 @@ $(document).ready(function(e) {
 				if(!result.cancelled){
 					//同时去后台获取设备信息
 					getEquipmentInfo(result.text);
+					
 				}
 		    }, 
 		    function (error) {

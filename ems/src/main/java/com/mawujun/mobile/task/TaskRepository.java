@@ -48,6 +48,9 @@ public interface TaskRepository extends IRepository<Task, String>{
 	public Task queryMaxId_ecode(@Param("ecode")String ecode);
 	
 	public Page mobile_queryPage(Page page) ;
+	
+	public List<Task> mobile_search(@Param("status")String status,@Param("searchStr")String searchStr,@Param("workunit_id")String workunit_id);
+	
 	public List<TaskEquipmentListVO> mobile_queryTaskEquipmentInfos(@Param("task_id")String task_id);
 	
 	public List<Task> queryReadOvertimeTask(@Param("read")Integer read) ;

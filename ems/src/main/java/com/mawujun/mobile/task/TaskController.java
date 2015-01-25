@@ -197,6 +197,15 @@ public class TaskController {
 
 		return taskService.mobile_queryPage(page);
 	}
+	
+	@RequestMapping("/task/mobile/search.do")
+	@ResponseBody
+	public List<Task> mobile_search(String status,String searchStr){
+
+		return taskService.mobile_search(status, "%"+searchStr+"%", ShiroUtils.getAuthenticationInfo().getId());
+	}
+	
+	
 	/**
 	 * 查询某个任务下的设备挂载情况
 	 * @author mawujun email:160649888@163.com qq:16064988

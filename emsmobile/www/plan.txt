@@ -5,18 +5,19 @@
 	reasons.code:'noPermission'：表示没有权限访问
 	reasons.code:'noLogin':表示没有登录
 *要添加的插件
-	cordova plugin add E:\eclipse\mobile\plugins\barcodeScanner
-		cordova plugin rm com.phonegap.plugins.barcodescanner
+	cordova plugin add E:\eclipse\mobile\cordova_plugins\platforms\android\BarcodeScanner
+		cordova plugin rm com.mawujun.plugins.barcodescanner
+	cordova plugin add E:\eclipse\mobile\cordova_plugins\platforms\android\BaiduLocation
+		cordova plugin rm com.mawujun.plugins.baiduLocation
+	cordova plugin add E:\eclipse\mobile\cordova_plugins\platforms\android\UpdateApp
+		cordova plugin rm com.mawujun.plugins.updateApp
+		
 	cordova plugin add org.apache.cordova.dialogs
 		cordova plugin rm org.apache.cordova.dialogs
 	cordova plugin add org.apache.cordova.device
 		cordova plugin rm org.apache.cordova.device
-	cordova plugin add E:\eclipse\workspace\cordova_plugins\platforms\android\BaiduLocation
-		cordova plugin rm com.mawujun.plugins.baiduLocation
-	cordova plugin add E:\eclipse\workspace\cordova_plugins\platforms\android\UpdateApp
-		cordova plugin rm com.mawujun.plugins.updateApp
 	cordova plugin add org.apache.cordova.splashscreen
-
+		cordova plugin rm org.apache.cordova.splashscreen
 
 
 疑问：
