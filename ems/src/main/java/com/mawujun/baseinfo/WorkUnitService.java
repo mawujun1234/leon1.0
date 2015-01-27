@@ -18,11 +18,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
+
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 
 
 import com.mawujun.utils.M;
+import com.mawujun.utils.page.Page;
 import com.mawujun.baseinfo.WorkUnit;
 import com.mawujun.baseinfo.WorkUnitRepository;
 
@@ -44,8 +47,32 @@ public class WorkUnitService extends AbstractService<WorkUnit, String>{
 		return workUnitRepository;
 	}
 	
-	public List<EquipmentVO> queryEquipments(String workUnit_id) {
-		return workUnitRepository.queryEquipments(workUnit_id);
+	public List<EquipmentVO> queryEquipments(EquipmentVO equipmentVO,Integer level,Integer start,Integer limit) {
+		//return workUnitRepository.queryEquipments(workUnit_id);
+		if(level==1){
+			return workUnitRepository.queryEquipments_total(equipmentVO);
+		} else if(level==2 || level==3){
+			Page page=new Page();
+			page.setStart(start);
+			page.setPageSize(limit);
+			page.setParams(equipmentVO);
+			Page result=workUnitRepository.queryEquipments(page);
+			List<EquipmentVO> list= result.getResult();
+			
+			EquipmentVO total=new EquipmentVO();
+			total.setSubtype_id("total");
+			total.setSubtype_name("<b>合计:</b>");
+			int total_num=0;
+			for(EquipmentVO equi_temp:list){
+				total_num+=equi_temp.getNum();
+			}
+			total.setNum(total_num);
+
+			list.add(total);
+			return list;
+		} else {
+			return null;
+		}
 	}
 
 	public WorkUnit getByLoginName(String loginName){

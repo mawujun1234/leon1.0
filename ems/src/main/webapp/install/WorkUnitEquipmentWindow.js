@@ -23,7 +23,7 @@ Ext.define('Ems.install.WorkUnitEquipmentWindow',{
 				}
 			}
 		});
-		equip_store.load({params:{workUnit_id:me.workUnit_id}});
+		//equip_store.load({params:{workUnit_id:me.workUnit_id}});
 	/**	
 		var equip_grid=Ext.create('Ext.grid.Panel',{
 			flex:1,
@@ -51,15 +51,30 @@ Ext.define('Ems.install.WorkUnitEquipmentWindow',{
 		});
 		**/
 		
+		var brand_combox=Ext.create('Ems.baseinfo.BrandCombo',{
+			labelAlign:'right',
+			labelWidth:40,
+			editable:false,
+			containAll:true,
+			minChars:-1
+		});
+		var supplier_combox=Ext.create('Ems.baseinfo.SupplierCombo',{
+			labelAlign:'right',
+			labelWidth:40,
+			editable:true,
+			width:260,
+			//containAll:true,
+			minChars:2
+		});
 		equip_store.on("beforeload",function(store){
 			store.getProxy().extraParams={
-				store_id:store_combox.getValue(),
-					subtype_id:subtype_id,//subtype_combox.getValue(),
-					prod_id:prod_id,//mbox.getValue(),
-					style:style,
-					brand_id:brand_combox.getValue(),
-					supplier_id:supplier_combox.getValue(),
-					level:level
+				workUnit_id:me.workUnit_id,
+				subtype_id:subtype_id,//subtype_combox.getValue(),
+				prod_id:prod_id,//mbox.getValue(),
+				style:style,
+				brand_id:brand_combox.getValue(),
+				supplier_id:supplier_combox.getValue(),
+				level:level
 			};
 		});
 		var level=1;
@@ -90,7 +105,7 @@ Ext.define('Ems.install.WorkUnitEquipmentWindow',{
 //			  }]
 //			},
 			tbar:{
-			    //items: [store_combox,brand_combox,supplier_combox,button] // toolbar 1
+			    items: [brand_combox,supplier_combox,button] // toolbar 1
 			  },
 			store:equip_store,
 	    	columns: [Ext.create('Ext.grid.RowNumberer'),

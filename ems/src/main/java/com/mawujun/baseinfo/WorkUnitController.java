@@ -118,8 +118,9 @@ public class WorkUnitController {
 	
 	@RequestMapping("/workUnit/queryEquipments.do")
 	@ResponseBody
-	public List<EquipmentVO> queryEquipments(Integer level,String workUnit_id) {	
-		List<EquipmentVO> equipments=workUnitService.queryEquipments(workUnit_id);
+	public List<EquipmentVO> queryEquipments(EquipmentVO equipmentVO,Integer level,Integer start,Integer limit,String workUnit_id) {
+		//workUnit_id已经被包含在了equipmentVO里面
+		List<EquipmentVO> equipments=workUnitService.queryEquipments(equipmentVO,level,start,limit);
 		return equipments;
 	}
 	

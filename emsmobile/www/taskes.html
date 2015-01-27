@@ -888,7 +888,7 @@ $(document).ready(function(e) {
 		}	
 	});
 	$("a[name='scan_button']").click(function(event){
-		$.showLoader("正在获取设备信息....");
+		
 	  	cordova.plugins.barcodeScanner.scan(
 			function (result) {
 		    	//alert("We got a barcode\n" +
@@ -896,6 +896,7 @@ $(document).ready(function(e) {
   		          //      "Format: " + result.format + "\n" +
   		          //      "Cancelled: " + result.cancelled);
 				if(!result.cancelled){
+					$.showLoader("正在获取设备信息....");
 					//同时去后台获取设备信息
 					getEquipmentInfo(result.text);
 					

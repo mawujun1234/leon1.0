@@ -1,1 +1,1 @@
-{verCode:3,verName:"0.0.3",changelog:"1:手持设备情况查询修改!"}
+{verCode:4,verName:"0.0.4",changelog:"1:解决了扫描慢的问题!<br/>2:添加了任务按杆位搜索的功能。"}

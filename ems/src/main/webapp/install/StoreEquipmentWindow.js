@@ -95,9 +95,10 @@ Ext.define('Ems.install.StoreEquipmentWindow',{
 		var supplier_combox=Ext.create('Ems.baseinfo.SupplierCombo',{
 			labelAlign:'right',
 			labelWidth:40,
-			editable:false,
+			editable:true,
+			width:260,
 			//containAll:true,
-			minChars:1
+			minChars:2
 		});
 		
 		equip_store.on("beforeload",function(store){
