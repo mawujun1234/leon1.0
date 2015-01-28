@@ -13,10 +13,6 @@
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"UpdateApp\"><param name=\"android-package\" value=\"com.mawujun.plugins.updateApp.UpdateApp\" /></feature>",
-                            "count": 1
-                        },
-                        {
                             "xml": "<feature name=\"Device\"><param name=\"android-package\" value=\"org.apache.cordova.device.Device\" /></feature>",
                             "count": 1
                         },
@@ -30,6 +26,10 @@
                         },
                         {
                             "xml": "<feature name=\"BaiduLocation\"><param name=\"android-package\" value=\"com.mawujun.plugins.baiduLocation.BaiduLocation\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"UpdateApp\"><param name=\"android-package\" value=\"com.mawujun.plugins.updateApp.UpdateApp\" /></feature>",
                             "count": 1
                         }
                     ]
@@ -143,10 +143,6 @@
                             "count": 2
                         },
                         {
-                            "xml": "<uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\" />",
-                            "count": 1
-                        },
-                        {
                             "xml": "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\" />",
                             "count": 2
                         },
@@ -176,6 +172,10 @@
                         },
                         {
                             "xml": "<uses-permission android:name=\"android.permission.READ_LOGS\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\" />",
                             "count": 1
                         }
                     ]
@@ -669,9 +669,6 @@
         "com.mawujun.plugins.barcodescanner": {
             "PACKAGE_NAME": "com.mawujun.mobile"
         },
-        "com.mawujun.plugins.updateApp": {
-            "PACKAGE_NAME": "com.mawujun.mobile"
-        },
         "org.apache.cordova.device": {
             "PACKAGE_NAME": "com.mawujun.mobile"
         },
@@ -682,6 +679,9 @@
             "PACKAGE_NAME": "com.mawujun.mobile"
         },
         "com.mawujun.plugins.baiduLocation": {
+            "PACKAGE_NAME": "com.mawujun.mobile"
+        },
+        "com.mawujun.plugins.updateApp": {
             "PACKAGE_NAME": "com.mawujun.mobile"
         }
     },

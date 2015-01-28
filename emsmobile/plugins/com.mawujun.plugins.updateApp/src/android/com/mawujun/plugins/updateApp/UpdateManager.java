@@ -233,7 +233,7 @@ public class UpdateManager {
 		InputStreamReader reader =null;
 		BufferedReader bReader =null;
 		try {
-			Log.d(log_tag, "获取服务器版本开始");
+			Log.d(log_tag, "获取服务器版本开始<br/>.serverVerUrl="+serverVerUrl);
 			URL url = new URL(serverVerUrl);
 			httpConnection = (HttpURLConnection) url.openConnection();
 			//httpConnection.setDoInput(true);

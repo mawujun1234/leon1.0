@@ -33,13 +33,13 @@ $(document).ready(function(e) {
 	<div role="main" class="ui-content">
     	 <ul data-role="listview" data-count-theme="b" data-inset="true">
             <li>
-            	<a href="#page_equipmentInfo">
+            	<a href="#page_equipmentInfo" data-transition="slide">
     			<h2>设备查询</h2>
     			<p>查询设备的状态，所属点位等信息</p>
                 </a>
             </li>
             <li>
-            	<a href="#page_equipments">
+            	<a href="#page_equipments" data-transition="slide">
     			<h2>手持情况查询</h2>
     			<p>查询当前用户手中持有设备的情况</p>
                 </a>
@@ -93,9 +93,9 @@ $(document).ready(function(e) {
 
 </div>
 
-<div data-role="page" id="page_equipments">
+<div data-role="page" id="page_equipments" >
 	<div data-role="header"  data-position="fixed">
-    	<a href="#page_homepage" class="ui-btn ui-corner-all" data-rel="back" data-theme="c">返回</a>
+    	<a href="#page_homepage" class="ui-btn ui-corner-all" data-rel="back" data-transition="slide" data-theme="c">返回</a>
         <h1>持有设备信息</h1> 
 	</div>
 	<div role="main" class="ui-content">
@@ -110,9 +110,9 @@ $(document).ready(function(e) {
 
 	</script>
 </div>
-<div data-role="page" id="page_equipments_detail">
+<div data-role="page" id="page_equipments_detail" >
 	<div data-role="header"  data-position="fixed">
-    	<a href="#page_equipments" class="ui-btn ui-corner-all" data-rel="back" data-theme="c">返回</a>
+    	<a href="#page_equipments" class="ui-btn ui-corner-all" data-rel="back" data-transition="slide" data-theme="c">返回</a>
         <h1 id="page_equipments_detail_h1"></h1> 
 	</div>
 	<div role="main" class="ui-content">
@@ -186,7 +186,7 @@ $(document).ready(function(e) {
 				if(root[i].prodes){
 					var prodes=root[i].prodes;
 					for(var j=0;j<prodes.length;j++){
-						html+='<li><a href="#page_equipments_detail" onclick="sessionStorage.prod_id=\''+prodes[j].id+'\'">'+prodes[j].name+'('+prodes[j].style+')<span class="ui-li-count">'+prodes[j].ecode_num+'</span></a></li>';
+						html+='<li><a href="#page_equipments_detail" data-transition="slide"  onclick="sessionStorage.prod_id=\''+prodes[j].id+'\'">'+prodes[j].name+'('+prodes[j].style+')<span class="ui-li-count">'+prodes[j].ecode_num+'</span></a></li>';
 					}
 				}
 		}

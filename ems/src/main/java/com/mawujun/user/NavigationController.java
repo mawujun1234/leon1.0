@@ -323,7 +323,7 @@ public class NavigationController {
 	public void downloadApk(HttpServletRequest request,HttpServletResponse response,String fileName) throws  IOException{
 		String contextPath=request.getSession().getServletContext().getRealPath("/");
 		//String filePath="temp"+File.separatorChar+fileName;
-		fileName="emsmobile-debug-unaligned.apk";
+		fileName="emsmobile-release.apk";
 		String path=contextPath+File.separatorChar+fileName;
 		File file=new File(path);
 		//FileReader reader=new FileReader(file);

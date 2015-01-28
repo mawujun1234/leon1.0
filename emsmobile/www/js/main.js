@@ -57,6 +57,9 @@ $.ajaxSetup({
 
 window.initServerPath=function(){
 	var ServerIP=localStorage.getItem("ServerIP");
+	if(!ServerIP){
+		return;
+	}
 	var ServerPath="http://"+ServerIP+":"+$.ServerPort;
 	$.ServerPath=ServerPath;
 }
@@ -199,10 +202,14 @@ $(function(){
 		if(sessionStorage.getItem("checkOrUpdateApp_48837")){
 			return;
 		}
+		
 		//alert($.ServerPath);
 		if(!$.ServerPath){
 			//navigator.splashscreen.hide();
 			window.initServerPath();
+		}
+		if(!$.ServerPath){
+			return;
 		}
 		
 		//cordova.plugins.updateApp.manuallyUpdateApp(
@@ -216,7 +223,7 @@ $(function(){
 				alert(error);
 				//alert("获取版本信息失败: " + error);
 			},{
-				downloadFile:$.ServerPath+"/emsmobile-debug-unaligned.apk",
+				downloadFile:$.ServerPath+"/emsmobile-release.apk",
 				serverVerUrl:$.ServerPath+'/apkVersion.jss'
 			}
 		);	
