@@ -131,7 +131,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	<if test="status=='complete'">
     		and a.status ='complete'
     	</if>
-    	and (b.name like #{searchStr} or b.code like #{searchStr})
+    	and (b.address like #{searchStr} or b.name like #{searchStr} or b.code like #{searchStr})
     	order by a.createDate desc
     </select>
     

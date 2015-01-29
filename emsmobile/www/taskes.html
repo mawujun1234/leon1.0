@@ -358,37 +358,37 @@ $(document).ready(function(e) {
     </div>
     <script type="application/javascript">
 		function clearSearchVal(){
-			var searchVal=$("#page_search_search_input").val();
+			//var searchVal=$("#page_search_search_input").val();
 			
 			$("#page_search_search_input").val("");
 			
 			$("#page_search_search_result").html("").listview('refresh');
 			$("#page_search_search_history").css("display","block");
-			return searchVal;
+			//return searchVal;
 		}
 		function clickSearch(searchVal){
 			$("#page_search_search_input").val(searchVal);
 			$("#page_search_search__button").click();
 		}
-
-		$(function(){
-
-			$(document).on("pagebeforeshow","#page_search",function(e,ui){
-				if(ui.prevPage.attr("id")!="page_homepage"){
-					return;
-				}
-			  var searchVal=clearSearchVal();
+		//重新渲染查询历史
+		function renderSearchHistory(array){
+			//渲染查询历史  
+					var html="";
+					for(var i=0;i<window.page_search_search_history_array.length;i++){
+						html+="<li><a href='#' onClick='clickSearch(\""+window.page_search_search_history_array[i]+"\")'>"+window.page_search_search_history_array[i]+"</a></li>";
+					}
+					$("#page_search_search_history").html(html).listview('refresh');
+		}
+		
+		function computSearchHistory(){
+			var searchVal=$("#page_search_search_input").val();
+			  clearSearchVal();
 			  
 			  //登录后第一次初始化
 			  if(window.page_search_search_history_array==null || !window.page_search_search_history_array){
 				  if(localStorage.getItem("page_search_search_history")!=null){
 					  window.page_search_search_history_array=JSON.parse(localStorage.getItem("page_search_search_history"));
-					//渲染查询历史  
-					var html="";
-					for(var i=0;i<window.page_search_search_history_array.length;i++){
-						html="<li><a href='#' onClick='clickSearch(\""+window.page_search_search_history_array[i]+"\")'>"+window.page_search_search_history_array[i]+"</a></li>"+html;
-					}
-					$("#page_search_search_history").html(html).listview('refresh');
+					renderSearchHistory(window.page_search_search_history_array);
 			      } else {
 					  window.page_search_search_history_array=[];
 				  }
@@ -397,17 +397,18 @@ $(document).ready(function(e) {
 				 
 			  }
 			  //重复就不添加
-			  var isExists=false;
+			  var isExistsIndex=0;
 			  for(var i=0;i<window.page_search_search_history_array.length;i++){
 				  if(window.page_search_search_history_array[i]==searchVal){
-					  isExists=true;
+					  
+					  isExistsIndex=i;
 					  break;
 				  }
 			  }
 			  //alert(isExists);
 			  //alert(searchVal);
-			  if(!isExists && searchVal){
-				   window.page_search_search_history_array.push(searchVal);
+			  if(isExistsIndex==0 && searchVal){
+				   window.page_search_search_history_array.unshift(searchVal);
 				   if(window.page_search_search_history_array.length>15){
 					  window.page_search_search_history_array.pop();
 				  }
@@ -415,9 +416,21 @@ $(document).ready(function(e) {
 				  var html="<li><a href='#' onClick='clickSearch(\""+searchVal+"\")'>"+searchVal+"</a></li>"
 				  $("#page_search_search_history").prepend(html).listview('refresh');
 				  localStorage.setItem("page_search_search_history",JSON.stringify( window.page_search_search_history_array));
+			  } else if(isExistsIndex>0){//如果已经存在，就把最新的放到最前面来
+				  var aa=window.page_search_search_history_array.del(isExistsIndex);
+				  if(aa){
+					  window.page_search_search_history_array.unshift(aa);
+					  renderSearchHistory(window.page_search_search_history_array);
+				  }
 			  }
- 
-			  
+		}
+		$(function(){
+
+			$(document).on("pagebeforeshow","#page_search",function(e,ui){
+				if(ui.prevPage.attr("id")!="page_homepage"){
+					return;
+				}
+				computSearchHistory();
 			});
 
 			$("#page_search_search__button").click(function(){
@@ -425,8 +438,8 @@ $(document).ready(function(e) {
 				if(!searchVal){
 					return;
 				}
-				if(searchVal.length<4){
-					alert("请至少输入4个字符!");
+				if(searchVal.length<3){
+					alert("请至少输入3个字符!");
 					return;
 				}
 				
@@ -474,6 +487,8 @@ $(document).ready(function(e) {
 						}
 						$("#page_search_search_result").html(html).listview('refresh');
 						$("#page_search_search_history").css("display","none");
+						
+						
 					}
 				});
 			});

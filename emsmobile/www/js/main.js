@@ -353,3 +353,16 @@ function Page(start,limit){
 		this.limit=this.limit_reset;
 	}
 }
+
+
+Array.prototype.del=function(index){
+    if(isNaN(index)||index>=this.length){
+        return false;
+    }
+	var returnVal=this[index];
+    for(var i=index;i<this.length-1;i++){
+        this[i]=this[i+1];
+    }
+    this.length-=1;
+	return returnVal
+};
