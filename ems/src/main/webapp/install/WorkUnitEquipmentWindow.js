@@ -154,6 +154,7 @@ Ext.define('Ems.install.WorkUnitEquipmentWindow',{
 			if(level==1&&dataIndex=="num"){
 				level=2;
 				subtype_id=record.get("subtype_id");
+				
 				//var subtype_model=Ext.createModel(subtype_combox.getStore().model.getName( ),{id:record.get("subtype_id"),text:record.get("subtype_name")});
 	    		//subtype_combox.setValue(subtype_model);
 
