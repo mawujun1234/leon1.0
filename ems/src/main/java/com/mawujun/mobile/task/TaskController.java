@@ -195,7 +195,8 @@ public class TaskController {
 		page.addParam(M.Task.status, status);
 		page.addParam(M.Task.workunit_id, ShiroUtils.getAuthenticationInfo().getId());
 
-		return taskService.mobile_queryPage(page);
+		Page aa =taskService.mobile_queryPage(page);
+		return aa;
 	}
 	
 	@RequestMapping("/task/mobile/search.do")

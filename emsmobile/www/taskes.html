@@ -87,7 +87,7 @@ function toggleSecondNavbar(type,callback){
 		var footernavZIndex=$("#footernav").css("z-index");
 		$("#footernav").css("z-index","50");
 		//$("#footernav").css("z-index","50");
-		showBg();	
+		showBg(true,52);	
 		$("#dialog").show();//显示二级菜单
 	} else {
 		$("#footernav").css("z-index",footernavZIndex);
@@ -107,20 +107,21 @@ function toggleSecondNavbar(type,callback){
 }
 
 //显示灰色 jQuery 遮罩层
-function showBg(fullScreen) {
-    var bh = $("body").height();
-    var bw = $("body").width();
+function showBg(fullScreen,zIndex) {//alert(1);
+    var bh = $(document).height();
+    var bw = $(document).width();
+console.log(bh);
     $("#fullbg").css({
         height:bh,
         width:bw,
-		top:fullScreen?$("#page_homepage_header").height():0,
-		//zIndex:2500,
-        display:"block"
-    });
+		top:fullScreen?$("#page_homepage_header").height():0
+		,zIndex:zIndex,
+        //display:"block"
+    }).show();
     
 }
 //关闭灰色 jQuery 遮罩
-function closeBg() {
+function closeBg() {//alert(2);
     $("#fullbg").hide();
 }
 
@@ -248,11 +249,14 @@ $(document).ready(function(e) {
 	window.isLazyLoading=true;//防止二次刷新,设置为true是防止只有一个页面数据的时候，两次查询
 	$(window).scroll(function(){
 	if(!window.isLazyLoading&&($(window).scrollTop()==$(document).height()-$(window).height())){
+		$.showLoader("正在查询....");
+		showBg(false,2500);
 		window.isLazyLoading=true;
-//		$("#taskes_list_"+status).append( "<li ><div class='ui-loader'><span class='ui-icon ui-icon-loading'></span></div></li>" ).listview( "refresh" );
+
 		queryTasks(status,"append",function(){
 			window.isLazyLoading=false;
 			$.hideLoader(); 
+			closeBg();
 		});
 	}
 	});
@@ -281,7 +285,8 @@ $(document).ready(function(e) {
 
 </head> 
 <body> 
-
+ <!-- jQuery 遮罩层 -->
+<div id="fullbg" ></div>
 <div data-role="page" id="page_homepage">
 	<div id="page_homepage_header" data-role="header" data-position="fixed"  >
         <a href="#left-menu" data-icon="gear" data-iconpos="notext"></a> 
@@ -317,8 +322,7 @@ $(document).ready(function(e) {
         <ul data-role="listview" id="taskes_list_complete" style="margin-top:8px;"> 
         </ul>
 	</div>
-    <!-- jQuery 遮罩层 -->
-	<div id="fullbg"  onClick="toggleSecondNavbar();"></div>
+
     
     
 	<div data-role="footer" id="footernav"  data-id="footernav" data-position="fixed" data-tap-toggle="false">

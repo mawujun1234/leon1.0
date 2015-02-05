@@ -48,6 +48,7 @@ Ext.define('Ems.task.TaskSendGrid',{
 		   }
 		   return record.get("status_name");
 		 }},
+		{dataIndex:'code',text:'编号',width:60},
 		{dataIndex:'name',text:'点位名称',renderer:function(value,metadata ,record){
 			if(record.get("task_num")){
 				 return "<a href='javascript:void(0);'>("+record.get("task_num")+")"+value+"</a>";
