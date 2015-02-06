@@ -19,6 +19,7 @@ import com.mawujun.mobile.task.Task;
 public interface TaskRepository extends IRepository<Task, String>{
 	public String queryMax_id(@Param("createDate")String createDate);
 	public Page queryPoles(Page page);
+	public Page queryPoles_no_send_task(Page page);
 	public int count_task_quip_status(@Param("task_id")String task_id);
 	
 	public List<EquipmentVO> queryEquipList(@Param("task_id")String task_id);

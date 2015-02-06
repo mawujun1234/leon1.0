@@ -89,6 +89,9 @@ public class TaskService extends AbstractService<Task, String>{
 	public Page queryPoles(Page page) {
 		return taskRepository.queryPoles(page);
 	}
+	public Page queryPoles_no_send_task(Page page) {
+		return taskRepository.queryPoles_no_send_task(page);
+	}
 	
 	public void create(Task[] taskes) {
 		Date createDate=new Date();

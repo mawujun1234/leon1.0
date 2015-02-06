@@ -73,11 +73,83 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				and b.workunit_id=#{workunit_id}
 			</if>
 			<if test="pole_name!=null">
-				and a.name like #{pole_name}
+				and (a.name like #{pole_name} or a.code like #{pole_name})
+			</if>
+		</where>
+    </select>
+    <select id="queryPoles_count" resultType="com.mawujun.baseinfo.PoleVO" parameterType="map">
+    	select 
+			count(a.id)
+		from EMS_pole a 
+		inner join ems_area b on  a.area_id=b.id
+		<where>
+			<if test="customer_id!=null">
+				and a.customer_id=#{customer_id}
+			</if>
+			<if test="area_id!=null">
+				and a.area_id=#{area_id}
+			</if>
+			<if test="workunit_id!=null">
+				and b.workunit_id=#{workunit_id}
+			</if>
+			<if test="pole_name!=null">
+				and (a.name like #{pole_name} or a.code like #{pole_name})
 			</if>
 		</where>
     </select>
     
+    <!-- 其实只要查询，还没有发送过任务的点位 -->
+    <select id="queryPoles_no_send_task" resultType="com.mawujun.baseinfo.PoleVO" parameterType="map">
+    	select 
+		a.*,
+		b.name as area_name,
+		c.id as workunit_id,
+		c.name as workunit_name,
+		d.name as customer_name,
+		0 as task_num
+		from EMS_pole a 
+		inner join ems_area b on  a.area_id=b.id
+		inner join Ems_Workunit c on b.workunit_id=c.id
+		inner join ems_customer d on a.customer_id=d.id
+		<where>
+			not exists ( select 1 from ems_task task where  task.pole_id=a.id)
+			<if test="customer_id!=null">
+				and a.customer_id=#{customer_id}
+			</if>
+			<if test="area_id!=null">
+				and a.area_id=#{area_id}
+			</if>
+			<if test="workunit_id!=null">
+				and b.workunit_id=#{workunit_id}
+			</if>
+			<if test="pole_name!=null">
+				and (a.name like #{pole_name} or a.code like #{pole_name})
+			</if>
+		</where>
+    </select>
+    <select id="queryPoles_no_send_task_count" resultType="com.mawujun.baseinfo.PoleVO" parameterType="map">
+    	select 
+			count(a.id)
+		from EMS_pole a 
+		inner join ems_area b on  a.area_id=b.id
+		<where>
+			not exists ( select 1 from ems_task task where  task.pole_id=a.id)
+			<if test="customer_id!=null">
+				and a.customer_id=#{customer_id}
+			</if>
+			<if test="area_id!=null">
+				and a.area_id=#{area_id}
+			</if>
+			<if test="workunit_id!=null">
+				and b.workunit_id=#{workunit_id}
+			</if>
+			<if test="pole_name!=null">
+				and (a.name like #{pole_name} or a.code like #{pole_name})
+			</if>
+		</where>
+    </select>
+    
+    <!-- 任务查询管理 -->
     <select id="queryPage" resultType="com.mawujun.mobile.task.Task" parameterType="map">
     	select a.*,b.code as pole_code from ems_task a,ems_pole b
     	<where>
@@ -88,6 +160,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="status!=null">
 				and a.status=#{status}
 			</if>
+			<if test="type!=null">
+				and a.type=#{type}
+			</if>
 			<if test="workunit_id!=null">
 				and a.workunit_id=#{workunit_id}
 			</if>
@@ -95,7 +170,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				and a.pole_id=#{pole_id} and  a.status  &lt; &gt;'complete'
 			</if>
 			<if test="pole_name!=null">
-				and a.pole_name like #{pole_name}
+				and (a.pole_name like #{pole_name} or b.code like #{pole_name} )
 			</if>
 			<if test="isOvertime!=null and isOvertime==true">
 				and a.status in ('newTask','read') and floor(to_number(sysdate-(a.createDate+0))*24*60) &gt; #{handling}
@@ -116,7 +191,17 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	<if test="status=='complete'">
     		and a.status ='complete'
     	</if>
-    	order by a.createDate desc
+    	
+    	<if test="status=='working'">
+    		order by a.id desc
+    	</if>
+    	<if test="status=='confirm'">
+    		order by a.submitdate desc
+    	</if>
+    	<if test="status=='complete'">
+    		order by a.completedate desc
+    	</if>
+    	
     </select>
     
     <select id="mobile_search" resultType="com.mawujun.mobile.task.Task">
@@ -132,7 +217,16 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     		and a.status ='complete'
     	</if>
     	and (b.address like #{searchStr} or b.name like #{searchStr} or b.code like #{searchStr})
-    	order by a.createDate desc
+    	
+    	<if test="status=='working'">
+    		order by a.id desc
+    	</if>
+    	<if test="status=='confirm'">
+    		order by a.submitdate desc
+    	</if>
+    	<if test="status=='complete'">
+    		order by a.completedate desc
+    	</if>
     </select>
     
     

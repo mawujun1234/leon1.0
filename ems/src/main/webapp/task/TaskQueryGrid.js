@@ -196,13 +196,11 @@ Ext.define('Ems.task.TaskQueryGrid',{
 		   })
 	    });
 	    
-	  
-		
-		var status_combox=Ext.create('Ext.form.field.ComboBox',{
-	        fieldLabel: '状态',
+	  var task_type_combox=Ext.create('Ext.form.field.ComboBox',{
+	        fieldLabel: '类型',
 	        labelAlign:'right',
-            labelWidth:55,
-            width:'155',
+            labelWidth:40,
+            width:120,
 	        //xtype:'combobox',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'status',
@@ -211,17 +209,34 @@ Ext.define('Ems.task.TaskQueryGrid',{
 	        //allowBlank: false,
 	        store:Ext.create('Ext.data.Store', {
 		    	fields: ['id', 'name'],
-			    data:[{id:'newTask',name:'新任务'},{id:'read',name:'已阅'},{id:'handling',name:'处理中'},{id:'submited',name:'已提交'},{id:'complete',name:'完成'}]
+			    data:[{id:'',name:'无'},{id:'newInstall',name:'新安装'},{id:'repair',name:'维修维护'},{id:'patrol',name:'巡检'},{id:'cancel',name:'取消'}]
+		   })
+	  }); 
+		
+		var status_combox=Ext.create('Ext.form.field.ComboBox',{
+	        fieldLabel: '状态',
+	        labelAlign:'right',
+            labelWidth:40,
+            width:120,
+	        //xtype:'combobox',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'status',
+		    displayField: 'name',
+		    valueField: 'id',
+	        //allowBlank: false,
+	        store:Ext.create('Ext.data.Store', {
+		    	fields: ['id', 'name'],
+			    data:[{id:'',name:'无'},{id:'newTask',name:'新任务'},{id:'read',name:'已阅'},{id:'handling',name:'处理中'},{id:'submited',name:'已提交'},{id:'complete',name:'完成'}]
 		   })
 	  }); 
 	    var pole_textfield=Ext.create('Ext.form.field.Text',{
 			labelAlign:'right',
 			name:'pole_name',
 			//fieldLabel: '杆位名称',
-			emptyText:'请输入杆位名称',
+			emptyText:'请输入点位编号或名称',
 			selectOnFocus:true,
 			labelWidth:80,
-			width:250,
+			width:120,
 			allowBlank:true
 		});
 	  var isOvertime_checkbox=Ext.create('Ext.form.field.Checkbox',{
@@ -237,6 +252,7 @@ Ext.define('Ems.task.TaskQueryGrid',{
 				pole_name:pole_textfield.getValue(),
 					//area_id:area_combox.getValue(),
 				status:status_combox.getValue(),
+				type:task_type_combox.getValue(),
 				workunit_id:workunit_combox.getValue(),
 				isOvertime:isOvertime_checkbox.getValue()
 			};
@@ -382,7 +398,7 @@ Ext.define('Ems.task.TaskQueryGrid',{
 			defaults: {anchor: '0'},
 			defaultType: 'toolbar',
 			items: [{
-				items: [customer_combox,workunit_combox,status_combox,pole_textfield,isOvertime_checkbox,query_button] // toolbar 1
+				items: [customer_combox,workunit_combox,status_combox,task_type_combox,pole_textfield,isOvertime_checkbox,query_button] // toolbar 1
 			}, {
 				items: [install_button,back_button,cancel_button] // toolbar 2
 			}]

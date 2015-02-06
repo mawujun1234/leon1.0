@@ -54,7 +54,7 @@ public class TaskController {
 	 */
 	@RequestMapping("/task/queryPoles.do")
 	@ResponseBody
-	public Page queryPoles(Integer start,Integer limit,String customer_id,String area_id,String workunit_id,String pole_name) {
+	public Page queryPoles(Integer start,Integer limit,String customer_id,String filter_other,String area_id,String workunit_id,String pole_name) {
 		Page page=Page.getInstance(start,limit);
 		page.addParam("customer_id", customer_id);
 		page.addParam("area_id", area_id);
@@ -62,7 +62,14 @@ public class TaskController {
 		if(StringUtils.hasText(pole_name)){
 			page.addParam("pole_name", "%"+pole_name+"%");
 		}
-		Page result= taskService.queryPoles(page);
+		Page result=null;
+		if(!StringUtils.hasText(filter_other) || "no_filter".equals(filter_other)){
+			result= taskService.queryPoles(page);
+		} else if("no_send_task".equals(filter_other)){
+			//查询所有没有安装任务的
+			result= taskService.queryPoles_no_send_task(page);
+		}
+		
 		
 //		//因为一个杆位会有多个任务
 //		int i=0;
@@ -76,12 +83,18 @@ public class TaskController {
 	
 	@RequestMapping("/task/query.do")
 	@ResponseBody
-	public Page query(Integer start,Integer limit,String customer_id,String status,String workunit_id,String pole_id,String pole_name,Boolean isOvertime) {
+	public Page query(Integer start,Integer limit,String customer_id,String status,String type,String workunit_id,String pole_id,String pole_name,Boolean isOvertime) {
 		Page page=Page.getInstance(start,limit);
 		page.addParam(M.Task.customer_id, customer_id);
-		page.addParam(M.Task.status, status);
+		if(StringUtils.hasText(status)){
+			page.addParam(M.Task.status, status);
+		}
 		page.addParam(M.Task.workunit_id, workunit_id);
 		page.addParam(M.Task.pole_id, pole_id);
+		if(StringUtils.hasText(type)){
+			page.addParam(M.Task.type, type);
+		}
+		
 		
 		if(pole_name!=null){
 			page.addParam(M.Task.pole_name, "%"+pole_name+"%");

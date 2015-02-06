@@ -149,11 +149,29 @@ Ext.define('Ems.task.TaskSendGrid',{
 			    }
 		   })
 	    });
+	    var filter_other_combox=Ext.create('Ext.form.field.ComboBox',{
+	        fieldLabel: '过滤',
+	        labelAlign:'right',
+            labelWidth:40,
+            //width:250,
+	        //xtype:'combobox',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'filter_other',
+		    displayField: 'name',
+		    valueField: 'id',
+		    //queryParam: 'name',
+    		//queryMode: 'locale',
+	        //allowBlank: false,
+	        store:Ext.create('Ext.data.ArrayStore', {
+		    	fields: ['id', 'name'],
+			    data:[['no_filter','无'],['no_send_task','未发送过任务']]
+		   })
+	    });
 	    
 	    var area_combox=Ext.create('Ext.form.field.ComboBox',{
 	        fieldLabel: '片区',
 	        labelAlign:'right',
-            labelWidth:60,
+            labelWidth:40,
             //width:250,
 	        //xtype:'combobox',
 	        //afterLabelTextTpl: Ext.required,
@@ -224,10 +242,10 @@ Ext.define('Ems.task.TaskSendGrid',{
 			labelAlign:'right',
 			name:'pole_name',
 			//fieldLabel: '点位名称',
-			emptyText:'请输入点位名称',
+			emptyText:'请输入点位编号或名称',
 			selectOnFocus:true,
 			labelWidth:80,
-			width:250,
+			width:120,
 			allowBlank:true
 		});
 		
@@ -240,6 +258,7 @@ Ext.define('Ems.task.TaskSendGrid',{
 			handler:function(){
 				me.getStore().load({params:{
 					customer_id:customer_combox.getValue(),
+					filter_other:filter_other_combox.getValue(),
 					pole_name:pole_textfield.getValue(),
 					area_id:area_combox.getValue(),
 					workunit_id:workunit_combox.getValue()
@@ -469,7 +488,7 @@ Ext.define('Ems.task.TaskSendGrid',{
 			defaults: {anchor: '0'},
 			defaultType: 'toolbar',
 			items: [{
-				items: [customer_combox,area_combox,workunit_combox,pole_textfield,query_button] // toolbar 1
+				items: [customer_combox,filter_other_combox,area_combox,workunit_combox,pole_textfield,query_button] // toolbar 1
 			}, {
 				items: [install_button,repair_button,patrol_button,cancel_button] // toolbar 2
 			}]
