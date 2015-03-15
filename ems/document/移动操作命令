@@ -1,0 +1,13 @@
+生成android的正式版本
+cordova run android -release
+发布新版本的流程：
+	1:进入emsmoile的文件夹
+	2：首先修改config.xml中的版本信息
+		version="0.0.7" android-versionCode="7"
+	2:然后重新生成新版本
+		cordova run android -release
+	3：把生成的apk文件拷贝到ems文件的www文件夹下
+	4：修改apkVersion.jss的版本升级信息
+	5：修改login.html中的版本提示信息，改成一样。
+	6：更新到远程服务器
+		122.227.163.82:8083 administrator nbdw001
