@@ -35,13 +35,13 @@
 				$("#page_taskes_new_pole_address").val(params.pole_address);
 			} else {
 				if(params.type=="newInstall"){
-					$("h1").html("新建'安装'任务");
+					$("#page_taskes_new h1").html("新建'安装'任务");
 				} else if(params.type=="repair"){
-					$("h1").html("新建'维修/维护'任务");
+					$("#page_taskes_new h1").html("新建'维修/维护'任务");
 				} else if(params.type=="patrol"){
-					$("h1").html("新建'巡检任'务");
+					$("#page_taskes_new h1").html("新建'巡检任'务");
 				} else {
-					$("h1").html("新建任务");
+					$("#page_taskes_new h1").html("新建任务");
 				}
 				
 			}

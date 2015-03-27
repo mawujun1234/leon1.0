@@ -13,7 +13,7 @@
         <form class="ui-filterable">
         <table>
         	<tr>
-            	<td width="100%"><input id="page_taskes_search_pole_input" data-type="search" placeholder="最少输2个字" ></td>
+            	<td width="100%"><input id="page_taskes_search_pole_input" data-type="search" placeholder="请输入点位编号或名称" ></td>
                 <td width="60"><a href="#" id="page_taskes_search_pole_button" class="ui-shadow ui-btn ui-corner-all ui-btn-inline" style="float:left;">搜索</a></td>
             </tr>
         </table>
@@ -54,9 +54,7 @@
 				var	value = $input.val()
 				var	html = "";
 				$ul.html( "" );
-				if ( value && value.length >= 2 ) {
-
-					//alert(1);
+				if ( value && value.length >= 3 ) {
 					$.showLoader();
 					$.ajax({
 						url:$.ServerPath+"/task/mobile/queryPoles.do",
@@ -74,14 +72,19 @@
 						}
 						for(var i=0;i<root.length;i++){
 							html += "<li data-filtertext='"+root[i].name+" "+root[i].address+"'>"+
-							"<a href='#page_taskes_new' onClick='changePole(\""+root[i].id+"\",\""+root[i].name+"\",\""+root[i].address+"\",\""+root[i].status+"\");'>" + root[i].name + "<p>"+root[i].address+"</p></a></li>";
+							"<a href='#page_taskes_new' onClick='changePole(\""+root[i].id+"\",\""+root[i].name+"\",\""+root[i].address+"\",\""+root[i].status+"\");'>" + root[i].name +
+							'<p>'+root[i].code+'</p>'+
+							 "<p>"+root[i].address+"</p></a></li>";
 						}
 						$ul.html(html );
 						$ul.listview( "refresh" );
 						$ul.trigger( "updatelayout");
 						$.hideLoader();
 					});
-				}
+				} else {
+					alert("请至少输入3个字符!");
+					return;
+				}	
 			});
 			
 			 
