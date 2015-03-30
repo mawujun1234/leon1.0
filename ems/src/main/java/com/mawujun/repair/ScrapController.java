@@ -72,14 +72,14 @@ public class ScrapController {
 //		return scrapService.get(id);
 //	}
 //	
-//	@RequestMapping("/scrap/create.do")
-//	@ResponseBody
-//	public Scrap create(@RequestBody Scrap scrap) {
-//		
-//		scrapService.create(scrap);
-//		return scrap;
-//	}
-//	
+	@RequestMapping("/scrap/create.do")
+	@ResponseBody
+	public Scrap create(@RequestBody Scrap scrap) {
+		
+		scrapService.create(scrap);
+		return scrap;
+	}
+	
 	@RequestMapping("/scrap/update.do")
 	@ResponseBody
 	public  Scrap update(@RequestBody Scrap scrap) {

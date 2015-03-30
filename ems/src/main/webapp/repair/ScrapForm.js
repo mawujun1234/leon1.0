@@ -60,6 +60,15 @@ Ext.define('Ems.repair.ScrapForm',{
 	        value:loginUsername,
 	        allowBlank: false
 	    },
+	    {
+	        fieldLabel: '残余值',
+	        afterLabelTextTpl: Ext.required,
+	        name: 'residual',
+	        readOnly:false,
+	       // grow :true,
+	        xtype:'numberfield',
+	        allowBlank: false
+	    },
 		{
 	        fieldLabel: '报废原因',
 	        afterLabelTextTpl: Ext.required,
@@ -68,17 +77,17 @@ Ext.define('Ems.repair.ScrapForm',{
 	        grow :true,
 	        xtype:'textarea',
 	        allowBlank: false
-	    },
-		
-		{
-	        fieldLabel: '残余值',
-	        afterLabelTextTpl: Ext.required,
-	        name: 'residual',
-	        readOnly:false,
-	        grow :true,
-	        xtype:'textarea',
-	        allowBlank: false
 	    }
+		
+//		{
+//	        fieldLabel: '残余值',
+//	        afterLabelTextTpl: Ext.required,
+//	        name: 'residual',
+//	        readOnly:false,
+//	        grow :true,
+//	        xtype:'textarea',
+//	        allowBlank: false
+//	    }
 	  ];   
 	  
 	  

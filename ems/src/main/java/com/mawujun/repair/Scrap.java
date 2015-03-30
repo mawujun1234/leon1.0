@@ -25,8 +25,10 @@ public class Scrap implements IdEntity<String>{
 	private String ecode;
 	@Column(length=500)
 	private String reason;//报废原因
-	@Column(length=500)
-	private String residual;//残余值
+//	@Column(length=500)
+//	private String residual;//残余值
+	//@Column(length=500)
+	private Double residual;//残余值
 
 	@Column(length=50,updatable=false)
 	private String scrpReqOper;//报废申请人
@@ -62,14 +64,6 @@ public class Scrap implements IdEntity<String>{
 
 	public void setReason(String reason) {
 		this.reason = reason;
-	}
-
-	public String getResidual() {
-		return residual;
-	}
-
-	public void setResidual(String residual) {
-		this.residual = residual;
 	}
 
 	public String getOperater() {
@@ -110,5 +104,13 @@ public class Scrap implements IdEntity<String>{
 
 	public void setScrpReqDate(Date scrpReqDate) {
 		this.scrpReqDate = scrpReqDate;
+	}
+
+	public Double getResidual() {
+		return residual;
+	}
+
+	public void setResidual(Double residual) {
+		this.residual = residual;
 	}
 }
