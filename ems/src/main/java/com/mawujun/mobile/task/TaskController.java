@@ -203,9 +203,10 @@ public class TaskController {
 	 */
 	@RequestMapping("/task/mobile/query.do")
 	@ResponseBody
-	public Page mobile_query(Integer start,Integer limit,String status,String searchStr){
+	public Page mobile_query(Integer start,Integer limit,String status,String type){
 		Page page=Page.getInstance(start,limit);//.addParam(M.Task.sampleName, "%"+sampleName+"%");
 		page.addParam(M.Task.status, status);
+		page.addParam(M.Task.type, type);
 		page.addParam(M.Task.workunit_id, ShiroUtils.getAuthenticationInfo().getId());
 
 		Page aa =taskService.mobile_queryPage(page);

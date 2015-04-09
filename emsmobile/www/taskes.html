@@ -133,10 +133,12 @@ window["complete_pageParam"]=new Page(0,20);
 //status:working,confirm,complete
 //appendDir:append表示是要加在现有数据后面的，prepend在开头插入数据，用在定时刷新上,其他的值，全部刷新
 function queryTasks(appendDir,callBack){
-	pageParam =window[post_params.status+"_pageParam"];
+	var status=post_params.status;
+	var type=post_params.type;
+	pageParam =window[status+"_pageParam"];
 	$.ajax({   
 		url : $.ServerPath+"/task/mobile/query.do",  
-		data:{start:pageParam.start,limit:pageParam.limit,status:post_params.status,type:post_params.type},  
+		data:{start:pageParam.start,limit:pageParam.limit,status:status,type:type},  
 		success : function(data){
 			if(data.success==true){
 				var root=data.root;
@@ -144,43 +146,44 @@ function queryTasks(appendDir,callBack){
 				for(var i=0;i<root.length;i++){
 					var taskInfoParamStr='?id='+root[i].id+'&pole_name='+root[i].pole_name+'&memo='+root[i].memo+'&type='+root[i].type+'&canEdit='+(status=="working"?true:false);
 					//alert(taskInfoParamStr);
-					var page_id="";
+					var page_id="page_"+root[i].type;
 					var h2_title=root[i].pole_code;
-					var img="";
-					if("newInstall"==root[i].type){
-						page_id="page_install";
-						//h2_title="新安装";
-						img="img/install.png";
-					} else if("repair"==root[i].type){
-						page_id="page_repair";
-						//h2_title="维修";
-						img="img/repair.png";
-					} else if("patrol"==root[i].type){
-						page_id="page_patrol";
-						//h2_title="巡检";
-						img="img/patrols.png";
-					}else if("cancel"==root[i].type){
-						page_id="page_cancel";
-						//h2_title="取消点位";
-						img="img/cancel.png";
+					//var type_name="";
+					//var img="";
+					if("newTask"==root[i].status){
+						//page_id="page_install";
+						status_name="新任务";
+						//img="img/install.png";
+					} else if("read"==root[i].status){
+						//page_id="page_repair";
+						status_name="已阅";
+						//img="img/repair.png";
+					} else if("submited"==root[i].status){
+						//page_id="page_repair";
+						status_name="已提交";
+						//img="img/repair.png";
+					} else if("complete"==root[i].status){
+						//page_id="page_patrol";
+						status_name="完成";
+						//img="img/patrols.png";
 					}
 					html+='<li id="li_'+root[i].id+'">'+
 					'<a href="#'+page_id+'" onclick="sessionStorage.taskInfoParamStr=\''+taskInfoParamStr+'\'" data-transition="slide" >'+
-						'<img src="'+img+'">'+
+						//'<img src="'+img+'">'+
 						'<h2>'+root[i].id+'</h2>'+
 						'<p>'+h2_title+':'+root[i].pole_name+'</p>'+
 						'<p class="longContent">地址:'+root[i].pole_address+'</p>'+
 						'<p class="ui-li-aside"><strong>'+root[i].createDate+'</strong></p>'+
-						((root[i].status!="newTask")?'':'<p id="'+root[i].id+'_isNew" class="ui-li-count" style="color:#FFF;background-color:#F00;">new</p>')+
+						((root[i].status!="newTask")?'<p class="ui-li-count">'+status_name+'</p>':'<p id="'+root[i].id+'_isNew" class="ui-li-count" style="color:#FFF;background-color:#F00;">new</p>')+
 					'</a>'+
 					'</li>'
 				}
 				if(appendDir=="append"){
-					$("#taskes_list_"+status).append(html).listview('refresh');
+					$("#taskes_list_"+type).append(html).listview('refresh');
 				} else if(appendDir=="prepend"){
-					$("#taskes_list_"+status).prepend(html).listview('refresh');
+					$("#taskes_list_"+type).prepend(html).listview('refresh');
 				} else {
-					$("#taskes_list_"+status).html(html).listview('refresh');
+					$("#taskes_list_"+type).html(html).listview('refresh');
 				}
 				//下次开始获取的数据
 				//pageParam.start=pageParam.start+root.length;
@@ -214,7 +217,7 @@ var post_params={
 	status:"working",
 	type:"repair"
 }
-function changeTaskesType(type){
+function changeTaskesType(type){alert(type);
 	$("ul[id^='taskes_list_']").removeClass("taskes_list_display_block").addClass("taskes_list_display_none");
 	$("#taskes_list_"+type).removeClass("taskes_list_display_none").addClass("taskes_list_display_block");
 	queryTasks(null,function(){
@@ -248,7 +251,7 @@ function refreshTaskes(){
 $(document).ready(function(e) {
 	//---初始化任务信息
 	var type=$("input:checked[name='radio-choice-taskes-type']").val();
-	changeTaskesType(status);
+	changeTaskesType(type);
 	$("input[name=radio-choice-taskes-type]").click(function(e){
 	    //var val=$("input:checked[name='radio-choice-taskes-status']").val();
 	    //当选择条件发生变化的时候
@@ -303,11 +306,11 @@ $(document).ready(function(e) {
         <a href="#left-menu" data-icon="gear" data-iconpos="notext"></a> 
         <div id="left-menu-contanier"></div>
         <div  data-role="controlgroup" data-type="horizontal" align="center" >
-            <input type="radio" name="radio-choice-taskes-type" id="radio-choice-taskes-typea" value="working" checked="checked">
+            <input type="radio" name="radio-choice-taskes-type" id="radio-choice-taskes-typea" value="repair" checked="checked">
             <label for="radio-choice-taskes-typea">维修</label>
-            <input type="radio" name="radio-choice-taskes-type" id="radio-choice-taskes-typeb" value="confirm">
+            <input type="radio" name="radio-choice-taskes-type" id="radio-choice-taskes-typeb" value="patrol">
             <label for="radio-choice-taskes-typeb">巡检</label>
-            <input type="radio" name="radio-choice-taskes-type" id="radio-choice-taskes-typec" value="complete">
+            <input type="radio" name="radio-choice-taskes-type" id="radio-choice-taskes-typec" value="newInstall">
             <label for="radio-choice-taskes-typec">新建</label>
         </div>
         <!--<a href="#" data-icon="plus" data-iconpos="notext" data-ajax="false"></a>-->
@@ -510,7 +513,7 @@ $(document).ready(function(e) {
 		});
 	</script></div>
 
-<div data-role="page" id="page_install">
+<div data-role="page" id="page_newInstall">
 	<div data-role="header" data-position="fixed">
     	<a href="#page_homepage" class="ui-btn ui-corner-all" data-rel="back" data-theme="c">返回</a>
         <h1>设备新安装</h1> 
