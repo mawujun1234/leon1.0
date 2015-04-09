@@ -132,11 +132,11 @@ window["complete_pageParam"]=new Page(0,20);
 //查询任务
 //status:working,confirm,complete
 //appendDir:append表示是要加在现有数据后面的，prepend在开头插入数据，用在定时刷新上,其他的值，全部刷新
-function queryTasks(appendDir,callBack){
-	pageParam =window[post_params.status+"_pageParam"];
+function queryTasks(status,appendDir,callBack){
+	pageParam =window[status+"_pageParam"];
 	$.ajax({   
 		url : $.ServerPath+"/task/mobile/query.do",  
-		data:{start:pageParam.start,limit:pageParam.limit,status:post_params.status,type:post_params.type},  
+		data:{start:pageParam.start,limit:pageParam.limit,status:status},  
 		success : function(data){
 			if(data.success==true){
 				var root=data.root;
@@ -204,33 +204,22 @@ function queryTasks(appendDir,callBack){
 }
 //切换任务状态框
 var taskes_list_query_status={
-	working:true,
+	working:false,
 	'confirm':false,
 	complete:false
 };
-//这个是临时的，要进行修改的，要把所有变量集中在一起进行管理
-//默认的值
-var post_params={
-	status:"working",
-	type:"repair"
-}
-function changeTaskesType(type){
+function changeTaskesStatus(status){
 	$("ul[id^='taskes_list_']").removeClass("taskes_list_display_block").addClass("taskes_list_display_none");
-	$("#taskes_list_"+type).removeClass("taskes_list_display_none").addClass("taskes_list_display_block");
-	queryTasks(null,function(){
-		$.hideLoader();
-		window.isLazyLoading=false;
-	});
-
-//	//如果数据已经查询过了，就不再查询了
-//	if(!taskes_list_query_status[status]){
-//		$.showLoader("正在加载....");
-//		queryTasks(status,null,function(){
-//			$.hideLoader();
-//			window.isLazyLoading=false;
-//		});
-//		taskes_list_query_status[status]=true;
-//	}
+	$("#taskes_list_"+status).removeClass("taskes_list_display_none").addClass("taskes_list_display_block");
+	//如果数据已经查询过了，就不再查询了
+	if(!taskes_list_query_status[status]){
+		$.showLoader("正在加载....");
+		queryTasks(status,null,function(){
+			$.hideLoader();
+			window.isLazyLoading=false;
+		});
+		taskes_list_query_status[status]=true;
+	}
 	
 }
 //点击刷新按钮，刷新任务
@@ -247,37 +236,37 @@ function refreshTaskes(){
 }
 $(document).ready(function(e) {
 	//---初始化任务信息
-	var type=$("input:checked[name='radio-choice-taskes-type']").val();
-	changeTaskesType(status);
-	$("input[name=radio-choice-taskes-type]").click(function(e){
+	var status=$("input:checked[name='radio-choice-taskes-status']").val();
+	changeTaskesStatus(status);
+	$("input[name=radio-choice-taskes-status]").click(function(e){
 	    //var val=$("input:checked[name='radio-choice-taskes-status']").val();
 	    //当选择条件发生变化的时候
 		
-	    type=$(e.target).val();
-		changeTaskesType(type);
+	    status=$(e.target).val();
+		changeTaskesStatus(status);
 	});
-//	//到底部的时候去加在最新的数据
-//	window.isLazyLoading=true;//防止二次刷新,设置为true是防止只有一个页面数据的时候，两次查询
-//	$(window).scroll(function(){
-//	if(!window.isLazyLoading&&($(window).scrollTop()==$(document).height()-$(window).height())){
-//		$.showLoader("正在查询....");
-//		showBg(false,2500);
-//		window.isLazyLoading=true;
-//
-//		queryTasks(status,"append",function(){
-//			window.isLazyLoading=false;
-//			$.hideLoader(); 
-//			closeBg();
-//		});
-//	}
-//	});
-//	//定时刷新任务,定时更新数据
-//	setInterval(function(){
-//		//$.showLoader("正在加载....");
-//		queryTasks("working","prepend",function(){
-//			//$.hideLoader();
-//		});
-//	 }, 30*60*1000);
+	//到底部的时候去加在最新的数据
+	window.isLazyLoading=true;//防止二次刷新,设置为true是防止只有一个页面数据的时候，两次查询
+	$(window).scroll(function(){
+	if(!window.isLazyLoading&&($(window).scrollTop()==$(document).height()-$(window).height())){
+		$.showLoader("正在查询....");
+		showBg(false,2500);
+		window.isLazyLoading=true;
+
+		queryTasks(status,"append",function(){
+			window.isLazyLoading=false;
+			$.hideLoader(); 
+			closeBg();
+		});
+	}
+	});
+	//定时刷新任务,定时更新数据
+	setInterval(function(){
+		//$.showLoader("正在加载....");
+		queryTasks("working","prepend",function(){
+			//$.hideLoader();
+		});
+	 }, 30*60*1000);
 	
 	//初始化滑出菜单
 	htmlobj=$.ajax({url:"leftMenu.html",async:false});
@@ -303,20 +292,20 @@ $(document).ready(function(e) {
         <a href="#left-menu" data-icon="gear" data-iconpos="notext"></a> 
         <div id="left-menu-contanier"></div>
         <div  data-role="controlgroup" data-type="horizontal" align="center" >
-            <input type="radio" name="radio-choice-taskes-type" id="radio-choice-taskes-typea" value="working" checked="checked">
-            <label for="radio-choice-taskes-typea">维修</label>
-            <input type="radio" name="radio-choice-taskes-type" id="radio-choice-taskes-typeb" value="confirm">
-            <label for="radio-choice-taskes-typeb">巡检</label>
-            <input type="radio" name="radio-choice-taskes-type" id="radio-choice-taskes-typec" value="complete">
-            <label for="radio-choice-taskes-typec">新建</label>
+            <input type="radio" name="radio-choice-taskes-status" id="radio-choice-taskes-statusa" value="working" checked="checked">
+            <label for="radio-choice-taskes-statusa">当前</label>
+            <input type="radio" name="radio-choice-taskes-status" id="radio-choice-taskes-statusb" value="confirm">
+            <label for="radio-choice-taskes-statusb">确认中</label>
+            <input type="radio" name="radio-choice-taskes-status" id="radio-choice-taskes-statusc" value="complete">
+            <label for="radio-choice-taskes-statusc">已完成</label>
         </div>
         <!--<a href="#" data-icon="plus" data-iconpos="notext" data-ajax="false"></a>-->
         <button href="#" data-icon="plus" data-iconpos="notext" onClick="toggleSecondNavbar();"></button>
 		<div data-role="navbar" id="secondNavbar" class="secondNavbar-glyphish-example" style="display:none;">
         	<ul>
-            	<li><a href="#page_taskes_new" onClick="toggleSecondNavbar('newInstall');"  class="ui-icon-install ui-btn-icon-top">当前</a></li>
-                <li><a href="#page_taskes_new" onClick="toggleSecondNavbar('repair');" class="ui-icon-repair ui-btn-icon-top">确认中</a></li>
-                <li><a href="#page_taskes_new" onClick="toggleSecondNavbar('patrol');" class="ui-icon-patrols ui-btn-icon-top">已完成</a></li>
+            	<li><a href="#page_taskes_new" onClick="toggleSecondNavbar('newInstall');"  class="ui-icon-install ui-btn-icon-top">新安装</a></li>
+                <li><a href="#page_taskes_new" onClick="toggleSecondNavbar('repair');" class="ui-icon-repair ui-btn-icon-top">维修</a></li>
+                <li><a href="#page_taskes_new" onClick="toggleSecondNavbar('patrol');" class="ui-icon-patrols ui-btn-icon-top">巡检</a></li>
                 <li><a href="#page_taskes_refresh" onClick="refreshTaskes();" class="ui-icon-taskes-refresh ui-btn-icon-top">刷新</a></li>
             </ul>
         </div>
@@ -325,12 +314,12 @@ $(document).ready(function(e) {
         <form class="ui-filterable" style="margin-top:-25px;">
             <input id="page_content_search_input" data-type="search" placeholder="搜索任务...">
         </form>
-		<ul data-role="listview" id="taskes_list_repair" >
+		<ul data-role="listview" id="taskes_list_working" >
         </ul> 
         
-        <ul data-role="listview" id="taskes_list_patrol" style="margin-top:8px;"> 
+        <ul data-role="listview" id="taskes_list_confirm" style="margin-top:8px;"> 
         </ul> 
-        <ul data-role="listview" id="taskes_list_newInstall" style="margin-top:8px;"> 
+        <ul data-role="listview" id="taskes_list_complete" style="margin-top:8px;"> 
         </ul>
 	</div>
 
@@ -780,7 +769,7 @@ $(document).ready(function(e) {
 						  transition: 'slide',
 						  reverse: true });
 					//并且刷新任务,或者移除该任务
-					//changeTaskesType("working");
+					//changeTaskesStatus("working");
 					$('#li_'+taskInfoParam.id).remove();
 					//刷新待确认的任务
 					window["confirm_pageParam"].reset();
