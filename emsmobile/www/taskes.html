@@ -76,7 +76,7 @@ $(function(){
 var secondNavbarIsHide=true;
 //切换二级菜单，type就是新建任务的类型,也可以为null
 //callback:当菜单切换完后执行的函数
-function toggleSecondNavbar(type,callback){	
+function toggleSecondNavbar(callback){	
 	$("#secondNavbar").toggle(500,function(){
 		secondNavbarIsHide=!secondNavbarIsHide;
 		if(callback){
@@ -93,17 +93,15 @@ function toggleSecondNavbar(type,callback){
 		$("#footernav").css("z-index",footernavZIndex);
 		closeBg();
 	}
-	if(type){
-		//表示要进行跳转了
-		//$( ":mobile-pagecontainer" ).pagecontainer( "load", "taskes_new.html", {  } );
-		window.page_taskes_new_type=type;
-		var params={
-			type:type
-		};
-		window.page_taskes_new_params=params;
-	}
-	
-	
+//	if(type){
+//		//表示要进行跳转了
+//		//$( ":mobile-pagecontainer" ).pagecontainer( "load", "taskes_new.html", {  } );
+//		window.page_taskes_new_type=type;
+//		var params={
+//			type:type
+//		};
+//		window.page_taskes_new_params=params;
+//	}
 }
 
 //显示灰色 jQuery 遮罩层
@@ -125,17 +123,36 @@ function closeBg() {//alert(2);
     $("#fullbg").hide();
 }
 
-
-window["working_pageParam"]=new Page(0,20);
-window["confirm_pageParam"]=new Page(0,20);
-window["complete_pageParam"]=new Page(0,20);
+//working状态包含多种状态:newTask,read,handling
+window["newInstall_pageParam"]=new Page(0,20);
+window["newInstall_pageParam"].params={
+	status:"working",
+	type:"newInstall"
+}
+window["repair_pageParam"]=new Page(0,20);
+window["repair_pageParam"].params={
+	status:"working",
+	type:"repair"
+}
+window["patrol_pageParam"]=new Page(0,20);
+window["patrol_pageParam"].params={
+	status:"working",
+	type:"patrol"
+}
+window["cancel_pageParam"]=new Page(0,20);
+window["cancel_pageParam"].params={
+	status:"working",
+	type:"cancel"
+}
 //查询任务
 //status:working,confirm,complete
 //appendDir:append表示是要加在现有数据后面的，prepend在开头插入数据，用在定时刷新上,其他的值，全部刷新
-function queryTasks(appendDir,callBack){
+function queryTasks(type,appendDir,callBack){
+	var pageParam =window[type+"_pageParam"];
+	var post_params=pageParam.params;
 	var status=post_params.status;
 	var type=post_params.type;
-	pageParam =window[status+"_pageParam"];
+	
 	$.ajax({   
 		url : $.ServerPath+"/task/mobile/query.do",  
 		data:{start:pageParam.start,limit:pageParam.limit,status:status,type:type},  
@@ -206,10 +223,11 @@ function queryTasks(appendDir,callBack){
 	});
 }
 //切换任务状态框
-var taskes_list_query_status={
-	working:true,
-	'confirm':false,
-	complete:false
+var taskes_list_query_type={
+	newInstall:false,
+	'repair':false,
+	patrol:false,
+	'cancel':false
 };
 //这个是临时的，要进行修改的，要把所有变量集中在一起进行管理
 //默认的值
@@ -217,36 +235,73 @@ var post_params={
 	status:"working",
 	type:"repair"
 }
-function changeTaskesType(type){alert(type);
+//当任务类型发生变化后，所做的工作
+function changeTaskesType(type){//alert(type);
+	//window[type+"_pageParam"].params.type=type;
 	$("ul[id^='taskes_list_']").removeClass("taskes_list_display_block").addClass("taskes_list_display_none");
 	$("#taskes_list_"+type).removeClass("taskes_list_display_none").addClass("taskes_list_display_block");
-	queryTasks(null,function(){
-		$.hideLoader();
-		window.isLazyLoading=false;
-	});
 
-//	//如果数据已经查询过了，就不再查询了
-//	if(!taskes_list_query_status[status]){
-//		$.showLoader("正在加载....");
-//		queryTasks(status,null,function(){
-//			$.hideLoader();
-//			window.isLazyLoading=false;
-//		});
-//		taskes_list_query_status[status]=true;
-//	}
+	//如果数据已经查询过了，就不再查询了
+	if(!taskes_list_query_type[type]){
+		$.showLoader("正在加载....");
+		queryTasks(type,null,function(){
+			$.hideLoader();
+			window.isLazyLoading=false;
+		});
+		taskes_list_query_type[type]=true;
+	}
+	var type_status=window[type+"_pageParam"].params.status;
+	//设置二级菜单中当前的状态,回到当前类型下面的状态值
+	$("#secondNavbar #secondNavbar_ul ul a").each(function(index, element) {
+        alert($(element).attr("status"));
+		if($(element).attr("status")==type_status){
+			//	
+			$(element).addClass("ui-btn-active");
+		} else {
+			$(element).removeClass("ui-btn-active");
+		}
+    });
+	////当切换类型时，隐藏二级菜单
+	//toggleSecondNavbar();
 	
 }
 //点击刷新按钮，刷新任务
 function refreshTaskes(){
-	toggleSecondNavbar(null,function(){
-		var status=$("input:checked[name='radio-choice-taskes-status']").val();
-		window[status+"_pageParam"].reset();
-		queryTasks(status,null,function(){
+	toggleSecondNavbar(function(){
+		var type=$("input:checked[name='radio-choice-taskes-type']").val();
+		window[type+"_pageParam"].reset();
+		queryTasks(type,null,function(){
 				window.isLazyLoading=false;
 				$.hideLoader(); 
 		});
 	});
 	
+}
+//点击查询更多的时候，查询更多的数据
+function queryMore(){
+	$.showLoader("正在查询....");
+	showBg(false,2500);
+	window.isLazyLoading=true;
+	var type=$("input:checked[name='radio-choice-taskes-type']").val();
+	queryTasks(type,"append",function(){
+		window.isLazyLoading=false;
+		$.hideLoader(); 
+		closeBg();
+	});
+	
+}
+//当状态发生变化的时候进行查询
+function queryByStatusChange(status){
+	toggleSecondNavbar(function(){
+		var type=$("input:checked[name='radio-choice-taskes-type']").val();
+		window[type+"_pageParam"].reset();
+		var pageParam =window[type+"_pageParam"];
+		pageParam.params.status=status;
+		queryTasks(type,null,function(){
+				window.isLazyLoading=false;
+				$.hideLoader(); 
+		});
+	});
 }
 $(document).ready(function(e) {
 	//---初始化任务信息
@@ -292,6 +347,12 @@ $(document).ready(function(e) {
 			transition:'slide'
 		});
 	});
+	
+	$("#page_homepage [id^='taskes_list_']").bind( "taphold", function(event){
+			//alert(1);
+			$( "#page_homepage_sort_popup" ).popup( "open", { positionTo:event.target,transition: "slideup" } );
+    		event.preventDefault();
+	});
 
 });
 </script>
@@ -314,13 +375,13 @@ $(document).ready(function(e) {
             <label for="radio-choice-taskes-typec">新建</label>
         </div>
         <!--<a href="#" data-icon="plus" data-iconpos="notext" data-ajax="false"></a>-->
-        <button href="#" data-icon="plus" data-iconpos="notext" onClick="toggleSecondNavbar();"></button>
+        <button href="#" data-icon="carat-d" data-iconpos="notext" onClick="toggleSecondNavbar();"></button>
 		<div data-role="navbar" id="secondNavbar" class="secondNavbar-glyphish-example" style="display:none;">
-        	<ul>
-            	<li><a href="#page_taskes_new" onClick="toggleSecondNavbar('newInstall');"  class="ui-icon-install ui-btn-icon-top">当前</a></li>
-                <li><a href="#page_taskes_new" onClick="toggleSecondNavbar('repair');" class="ui-icon-repair ui-btn-icon-top">确认中</a></li>
-                <li><a href="#page_taskes_new" onClick="toggleSecondNavbar('patrol');" class="ui-icon-patrols ui-btn-icon-top">已完成</a></li>
-                <li><a href="#page_taskes_refresh" onClick="refreshTaskes();" class="ui-icon-taskes-refresh ui-btn-icon-top">刷新</a></li>
+        	<ul id="secondNavbar_ul">
+            	<li><a href="#" status='working' onClick="queryByStatusChange('working');"  class="ui-icon-taskes-refresh ui-btn-icon-top ui-btn-active">当前</a></li>
+                <li><a href="#" status='confirm' onClick="queryByStatusChange('confirm');" class="ui-icon-taskes-refresh ui-btn-icon-top">确认中</a></li>
+                <li><a href="#" status='complete' onClick="queryByStatusChange('complete');" class="ui-icon-taskes-refresh ui-btn-icon-top">已完成</a></li>
+                <li><a href="#" onClick="refreshTaskes();" class="ui-icon-taskes-refresh ui-btn-icon-top">新建</a></li>
             </ul>
         </div>
     </div>
@@ -335,8 +396,14 @@ $(document).ready(function(e) {
         </ul> 
         <ul data-role="listview" id="taskes_list_newInstall" style="margin-top:8px;"> 
         </ul>
+        <a href="#" class="ui-shadow ui-btn ui-corner-all" onClick="queryMore();" style="margin-top:20px;">获取更多...</a>
 	</div>
-
+	<div data-role="popup" id="page_homepage_sort_popup" >
+        <ul data-role="listview" data-inset="true" >
+            <li><a href="javascript:void(0);" >点位排序</a></li>
+            <li><a href="javascript:void(0);" >日期排序</a></li>
+        </ul>
+    </div>
     
     
 	<div data-role="footer" id="footernav"  data-id="footernav" data-position="fixed" data-tap-toggle="false">
