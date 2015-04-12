@@ -22,7 +22,7 @@
         </ul>
 	</div>
     <script type="application/javascript">
-	function changePole(pole_id,pole_name,pole_address,pole_status){
+	function changePole(pole_id,pole_code,pole_name,pole_address,pole_status){
 		//page_taskes_new_type是在taskes.html中定义的
 		var params=window.page_taskes_new_params;
 		if(params.type=="newInstall" && pole_status!="uninstall"){
@@ -35,11 +35,15 @@
 			alert("只有'使用中','有损坏'状态的点位，才能发送巡检任务!");
 			return;
 		}
-		params.pole_id=pole_id,
-		params.pole_name=pole_name,
-		params.pole_address=pole_address
-		$(document).pagecontainer( "load" );
-		
+		params.pole_id=pole_id;
+		params.pole_code=pole_code;
+		params.pole_name=pole_name;
+		params.pole_address=pole_address;
+		//$(document).pagecontainer( "load" );
+		$(":mobile-pagecontainer").pagecontainer("change", "#page_taskes_new", { 
+			type:'POST',
+			transition:'slideup'
+		});
 	} 
 	</script>
     <script type="application/javascript">
@@ -72,7 +76,7 @@
 						}
 						for(var i=0;i<root.length;i++){
 							html += "<li data-filtertext='"+root[i].name+" "+root[i].address+"'>"+
-							"<a href='#page_taskes_new' onClick='changePole(\""+root[i].id+"\",\""+root[i].name+"\",\""+root[i].address+"\",\""+root[i].status+"\");'>" + root[i].name +
+							"<a href='#page_taskes_new' onClick='changePole(\""+root[i].id+"\",\""+root[i].code+"\",\""+root[i].name+"\",\""+root[i].address+"\",\""+root[i].status+"\");'>" + root[i].name +
 							'<p>'+root[i].code+'</p>'+
 							 "<p>"+root[i].address+"</p></a></li>";
 						}

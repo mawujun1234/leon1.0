@@ -192,7 +192,19 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	<if test="status=='complete'">
     		and a.status ='complete'
     	</if>
-    	order by a.createDate
+    	<if test="orderBy=='createDate_desc'">
+    		order by a.createDate desc
+    	</if>
+    	<if test="orderBy=='createDate_asc'">
+    		order by a.createDate asc
+    	</if>
+    	<if test="orderBy=='poleCode_desc'">
+    		order by b.code desc
+    	</if>
+    	<if test="orderBy=='poleCode_asc'">
+    		order by b.code asc
+    	</if>
+    	
     	<!---
     	<if test="status=='working'">
     		order by a.id desc

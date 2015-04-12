@@ -71,7 +71,7 @@
 </style>
 <script type="application/javascript">
 $(function(){
-	$( ":mobile-pagecontainer" ).pagecontainer( "load", "taskes_new.html", {  } );	
+	//$( ":mobile-pagecontainer" ).pagecontainer( "load", "taskes_new.html", {  } );	
 })
 var secondNavbarIsHide=true;
 //切换二级菜单，type就是新建任务的类型,也可以为null
@@ -155,11 +155,12 @@ function queryTasks(type,appendDir,callBack){
 	
 	$.ajax({   
 		url : $.ServerPath+"/task/mobile/query.do",  
-		data:{start:pageParam.start,limit:pageParam.limit,status:status,type:type},  
+		data:{start:pageParam.start,limit:pageParam.limit,status:status,type:type,orderBy:post_params.orderBy},  
 		success : function(data){
 			if(data.success==true){
 				var root=data.root;
 				var html='';
+				var status_name="";
 				for(var i=0;i<root.length;i++){
 					var taskInfoParamStr='?id='+root[i].id+'&pole_name='+root[i].pole_name+'&memo='+root[i].memo+'&type='+root[i].type+'&canEdit='+(status=="working"?true:false);
 					//alert(taskInfoParamStr);
@@ -168,14 +169,18 @@ function queryTasks(type,appendDir,callBack){
 					//var type_name="";
 					//var img="";
 					if("newTask"==root[i].status){
-						//page_id="page_install";
+						//page_id="page_newInstall";
 						status_name="新任务";
 						//img="img/install.png";
 					} else if("read"==root[i].status){
 						//page_id="page_repair";
 						status_name="已阅";
 						//img="img/repair.png";
-					} else if("submited"==root[i].status){
+					}  else if("handling"==root[i].status){
+						//page_id="page_repair";
+						status_name="处理中";
+						//img="img/repair.png";
+					}else if("submited"==root[i].status){
 						//page_id="page_repair";
 						status_name="已提交";
 						//img="img/repair.png";
@@ -183,6 +188,8 @@ function queryTasks(type,appendDir,callBack){
 						//page_id="page_patrol";
 						status_name="完成";
 						//img="img/patrols.png";
+					} else {
+						status_name="";	
 					}
 					html+='<li id="li_'+root[i].id+'">'+
 					'<a href="#'+page_id+'" onclick="sessionStorage.taskInfoParamStr=\''+taskInfoParamStr+'\'" data-transition="slide" >'+
@@ -303,6 +310,34 @@ function queryByStatusChange(status){
 		});
 	});
 }
+//对内容进行排序，按照点位编号进行排序
+function sortByColumn(column){
+	var type=$("input:checked[name='radio-choice-taskes-type']").val();
+	var pageParam =window[type+"_pageParam"];
+	var post_params=pageParam.params;
+	post_params.orderBy=column;
+	
+	$( "#page_homepage_sort_popup" ).popup( "close");
+	
+	window[type+"_pageParam"].reset();
+	queryTasks(type,null,function(){
+		window.isLazyLoading=false;
+		$.hideLoader(); 
+	});
+	
+}
+
+function createTaskes(){
+	var type=$("input:checked[name='radio-choice-taskes-type']").val();
+	//window.page_taskes_new_type=type;
+	var params={
+		type:type
+	};
+	window.page_taskes_new_params=params;
+	//closeBg();
+	toggleSecondNavbar();
+}
+
 $(document).ready(function(e) {
 	//---初始化任务信息
 	var type=$("input:checked[name='radio-choice-taskes-type']").val();
@@ -368,11 +403,11 @@ $(document).ready(function(e) {
         <div id="left-menu-contanier"></div>
         <div  data-role="controlgroup" data-type="horizontal" align="center" >
             <input type="radio" name="radio-choice-taskes-type" id="radio-choice-taskes-typea" value="repair" checked="checked">
-            <label for="radio-choice-taskes-typea">维修</label>
+            <label for="radio-choice-taskes-typea">维修维护</label>
             <input type="radio" name="radio-choice-taskes-type" id="radio-choice-taskes-typeb" value="patrol">
             <label for="radio-choice-taskes-typeb">巡检</label>
             <input type="radio" name="radio-choice-taskes-type" id="radio-choice-taskes-typec" value="newInstall">
-            <label for="radio-choice-taskes-typec">新建</label>
+            <label for="radio-choice-taskes-typec">新安装</label>
         </div>
         <!--<a href="#" data-icon="plus" data-iconpos="notext" data-ajax="false"></a>-->
         <button href="#" data-icon="carat-d" data-iconpos="notext" onClick="toggleSecondNavbar();"></button>
@@ -381,7 +416,7 @@ $(document).ready(function(e) {
             	<li><a href="#" status='working' onClick="queryByStatusChange('working');"  class="ui-icon-taskes-refresh ui-btn-icon-top ui-btn-active">当前</a></li>
                 <li><a href="#" status='confirm' onClick="queryByStatusChange('confirm');" class="ui-icon-taskes-refresh ui-btn-icon-top">确认中</a></li>
                 <li><a href="#" status='complete' onClick="queryByStatusChange('complete');" class="ui-icon-taskes-refresh ui-btn-icon-top">已完成</a></li>
-                <li><a href="#" onClick="refreshTaskes();" class="ui-icon-taskes-refresh ui-btn-icon-top">新建</a></li>
+                <li><a href="#page_taskes_new" onClick="createTaskes();" class="ui-icon-install ui-btn-icon-top">新建</a></li>
             </ul>
         </div>
     </div>
@@ -399,9 +434,11 @@ $(document).ready(function(e) {
         <a href="#" class="ui-shadow ui-btn ui-corner-all" onClick="queryMore();" style="margin-top:20px;">获取更多...</a>
 	</div>
 	<div data-role="popup" id="page_homepage_sort_popup" >
-        <ul data-role="listview" data-inset="true" >
-            <li><a href="javascript:void(0);" >点位排序</a></li>
-            <li><a href="javascript:void(0);" >日期排序</a></li>
+        <ul data-role="listview" data-inset="true" style="margin-top:-20px;margin-bottom:-20px;">
+            <li ><a href="javascript:void(0);" onClick="sortByColumn('poleCode_asc')" >点位升序</a></li>
+			<li style=""><a href="javascript:void(0);" onClick="sortByColumn('poleCode_desc')" >点位降序</a></li>
+            <li style=""><a href="javascript:void(0);" onClick="sortByColumn('createDate_asc')">日期升序</a></li>
+			<li ><a href="javascript:void(0);" onClick="sortByColumn('createDate_desc')">日期降序</a></li>
         </ul>
     </div>
     
@@ -540,33 +577,34 @@ $(document).ready(function(e) {
 							var taskInfoParamStr='?id='+root[i].id+'&pole_name='+root[i].pole_name+'&memo='+root[i].memo+'&type='+root[i].type+'&canEdit='+(status=="working"?true:false);
 							//alert(taskInfoParamStr);
 							var page_id="";
-							var h2_title=root[i].pole_code;
-							var img="";
+							var h2_title="";
+							//var img="";
+							alert();
 							if("newInstall"==root[i].type){
-								page_id="page_install";
-								//h2_title="新安装";
-								img="img/install.png";
+								page_id="page_newInstall";
+								h2_title="新安装";
+								//img="img/install.png";
 							} else if("repair"==root[i].type){
 								page_id="page_repair";
-								//h2_title="维修";
-								img="img/repair.png";
+								h2_title="维修";
+								//img="img/repair.png";
 							} else if("patrol"==root[i].type){
 								page_id="page_patrol";
-								//h2_title="巡检";
-								img="img/patrols.png";
+								h2_title="巡检";
+								//img="img/patrols.png";
 							}else if("cancel"==root[i].type){
 								page_id="page_cancel";
-								//h2_title="取消点位";
-								img="img/cancel.png";
+								h2_title="取消点位";
+								//img="img/cancel.png";
 							}
 							html+='<li id="li_'+root[i].id+'">'+
 							'<a href="#'+page_id+'" onclick="sessionStorage.taskInfoParamStr=\''+taskInfoParamStr+'\'" data-transition="slide" >'+
-								'<img src="'+img+'">'+
+								//'<img src="'+img+'">'+
 								'<h2>'+root[i].id+'</h2>'+
-								'<p>'+h2_title+':'+root[i].pole_name+'</p>'+
+								'<p>'+root[i].pole_code+':'+root[i].pole_name+'</p>'+
 								'<p class="longContent">地址:'+root[i].pole_address+'</p>'+
 								'<p class="ui-li-aside"><strong>'+root[i].createDate+'</strong></p>'+
-								((root[i].status!="newTask")?'':'<p id="'+root[i].id+'_isNew" class="ui-li-count" style="color:#FFF;background-color:#F00;">new</p>')+
+								'<p id="'+root[i].id+'_isNew" class="ui-li-count" style="color:#FFF;">'+h2_title+'</p>'+
 							'</a>'+
 							'</li>'
 						}
@@ -589,15 +627,15 @@ $(document).ready(function(e) {
     	
         <div class="ui-field-contain">
             <label for="id">任务编号:</label>
-            <input type="text"  id="page_install_id" placeholder="只读" value="">
+            <input type="text"  id="page_newInstall_id" placeholder="只读" value="">
             <label for="pole">点位:</label>
-            <input readonly type="text" id="page_install_pole_name" placeholder="只读" value="">
+            <input readonly type="text" id="page_newInstall_pole_name" placeholder="只读" value="">
         	<label  for="memo">任务描述:</label>
-    		<textarea readonly id="page_install_memo" placeholder="只读" data-mini="true"></textarea>
+    		<textarea readonly id="page_newInstall_memo" placeholder="只读" data-mini="true"></textarea>
          </div>	
-         <a href="#" class="ui-btn ui-corner-all actionbutton"  id="page_install_scan_button" name="scan_button">扫描新设备</a>
-         <input type="text" id="page_install_scan_textfield" class="actionbutton" name="scan_textfield"  value="" placeholder="请扫描或手动输入...">
-         <div id="page_install_equipments_list">
+         <a href="#" class="ui-btn ui-corner-all actionbutton"  id="page_newInstall_scan_button" name="scan_button">扫描新设备</a>
+         <input type="text" id="page_newInstall_scan_textfield" class="actionbutton" name="scan_textfield"  value="" placeholder="请扫描或手动输入...">
+         <div id="page_newInstall_equipments_list">
          	
           </div>
           <!--
@@ -611,7 +649,7 @@ $(document).ready(function(e) {
     <script type="text/javascript">
 
 	</script>
-    <div data-role="popup" id="page_install_deleteEquipmentInfo_popup" data-arrow="b" data-theme="b">
+    <div data-role="popup" id="page_newInstall_deleteEquipmentInfo_popup" data-arrow="b" data-theme="b">
         <a href="javascript:void(0);" data-role="button" name="deleteEquipmentInfo">删除</a>
     </div>
 </div>
@@ -756,7 +794,7 @@ $(document).ready(function(e) {
 	$( document).on( "pagecontainershow", function( event, ui ) {
 		var page_id=ui.toPage.attr("id");
 		//if (sessionStorage.taskInfoParamStr!='null') {
-		if (page_id=="page_install" || page_id=="page_repair" || page_id=="page_patrol" || page_id=="page_cancel") {
+		if (page_id=="page_newInstall" || page_id=="page_repair" || page_id=="page_patrol" || page_id=="page_cancel") {
 			//从url中解析参数  
 			var params = $.getUrlParam(sessionStorage.taskInfoParamStr);  
 			window.taskInfoParam=params;
@@ -779,7 +817,7 @@ $(document).ready(function(e) {
 	});
 	//isSubmit：true表示是提交的时候获取参数
 	function getSubmitParams(isSubmit){
-		//var params="&task_id="+$("#page_install_id").val();
+		//var params="&task_id="+$("#page_newInstall_id").val();
 		var params="&task_id="+taskInfoParam.id+"&task_type="+taskInfoParam.type;
 		var page_id=taskInfoParam.page_id;
 		var scaned=false;
@@ -1027,6 +1065,102 @@ $(document).ready(function(e) {
 
 
 <!----------------------新建任务系列--------------------------->
+<div data-role="page" id="page_taskes_new" data-dom-cache="true">
+	<div data-role="header"  data-position="fixed">
+    	<a href="#page_homepage" class="ui-btn ui-corner-all" data-theme="c">返回</a>
+        <h1>新建任务</h1> 
+	</div>
+	<div role="main" class="ui-content">
+    	<!--<input id="autocomplete-input" data-type="search" placeholder="输入点位信息...">-->
+    	 <a href="taskes_search_pole.html" data-prefetch="true" class="ui-btn ui-corner-all actionbutton">搜索点位</a>
+        <div class="ui-field-contain">
+        	<input type="hidden" id="page_taskes_new_type" value="" />
+            <input type="hidden" id="page_taskes_new_pole_id" value="" />
+            <label for="page_taskes_new_pole_code">编号:</label>
+            <input type="text"  id="page_taskes_new_pole_code" placeholder="只读" readonly>
+        	<label for="page_taskes_new_pole_name">点位:</label>
+            <input type="text"  id="page_taskes_new_pole_name" placeholder="只读" readonly>
+       		<label for="page_taskes_new_pole_address">地址:</label>
+            <input type="text"  id="page_taskes_new_pole_address" placeholder="只读" readonly>
+            <label for="page_taskes_new_pole_memo">任务描述:</label>
+            <textarea id="page_taskes_new_pole_memo" placeholder="请输入" data-mini="true"></textarea>  
+            
+            <div id="page_taskes_new_errorMsg" style="color:red;height:36px;font-weight:bold;"></div>        
+         </div>	
+         
+         <div class="ui-field-contain actionbutton"  align="center">
+            <button class="ui-shadow ui-btn ui-corner-all ui-btn-icon-left"  id="page_taskes_new_submitNewTask">提交</button>
+         </div>
+	</div>
+    <script type="application/javascript">
+	$(document).ready(function(e) {
+		//$( ":mobile-pagecontainer" ).pagecontainer( "load", "taskes_search_pole.html", {  } );
+        $(document).on('pagebeforeshow', "#page_taskes_new", function (event, data) {
+			var params=window.page_taskes_new_params;	
+			if(params.pole_id){
+				$("#page_taskes_new_type").val(params.type);
+				$("#page_taskes_new_pole_id").val(params.pole_id);
+				$("#page_taskes_new_pole_code").val(params.pole_code);
+				$("#page_taskes_new_pole_name").val(params.pole_name);
+				$("#page_taskes_new_pole_address").val(params.pole_address);
+			} else {
+				if(params.type=="newInstall"){
+					$("#page_taskes_new h1").html("新建'安装'任务");
+				} else if(params.type=="repair"){
+					$("#page_taskes_new h1").html("新建'维修/维护'任务");
+				} else if(params.type=="patrol"){
+					$("#page_taskes_new h1").html("新建'巡检'任务");
+				} else {
+					$("#page_taskes_new h1").html("新建任务");
+				}
+				
+			}
+		});//pagebeforeshow
+		$("#page_taskes_new_submitNewTask").click(function(event){
+			var params=window.page_taskes_new_params;	
+			if(!params.pole_id){
+				$("#page_taskes_new_errorMsg").html("请先选择一个点位");
+				return;
+			}
+			
+			params.memo=$("#page_taskes_new_pole_memo").val();
+			$.ajax({   
+				url : $.ServerPath+"/task/mobile/create.do",  
+				data:params,  
+				success : function(data){
+					if(data.success==true){	
+						$("#page_taskes_new_type").val("");
+						$("#page_taskes_new_pole_code").val("");
+						$("#page_taskes_new_pole_id").val("");
+						$("#page_taskes_new_pole_name").val("");
+						$("#page_taskes_new_pole_address").val("");
+						$("#page_taskes_new_pole_memo").val("");
+						
+						//并且刷新任务,或者移除该任务
+						//或者手动构建li，然后动态添加到界面中，同时，别忘记更改page的参数
+						var type=$("input:checked[name='radio-choice-taskes-type']").val();
+						window[type+"_pageParam"].reset();
+						queryTasks(type,null,function(){
+							//taskes_list_query_status["working"]=true;
+							
+						});					
+						window.page_taskes_new_params={};
+						
+						$(":mobile-pagecontainer").pagecontainer("change", "#page_homepage", { 
+							type:'POST',
+							transition:'slideup'
+		 				});
+					}
+					$.hideLoader();  
+				}
+			});	//ajax
+		//}
+		});//click
+    });//ready
+	</script>
+</div>
+
+
 
 </body>
 </html>
