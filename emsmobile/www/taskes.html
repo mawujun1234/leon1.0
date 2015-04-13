@@ -162,7 +162,7 @@ function queryTasks(type,appendDir,callBack){
 				var html='';
 				var status_name="";
 				for(var i=0;i<root.length;i++){
-					var taskInfoParamStr='?id='+root[i].id+'&pole_name='+root[i].pole_name+'&memo='+root[i].memo+'&type='+root[i].type+'&canEdit='+(status=="working"?true:false);
+					var taskInfoParamStr='?id='+root[i].id+'&pole_code='+root[i].pole_code+'&pole_name='+root[i].pole_name+'&memo='+root[i].memo+'&type='+root[i].type+'&canEdit='+(status=="working"?true:false);
 					//alert(taskInfoParamStr);
 					var page_id="page_"+root[i].type;
 					var h2_title=root[i].pole_code;
@@ -259,8 +259,8 @@ function changeTaskesType(type){//alert(type);
 	}
 	var type_status=window[type+"_pageParam"].params.status;
 	//设置二级菜单中当前的状态,回到当前类型下面的状态值
-	$("#secondNavbar #secondNavbar_ul ul a").each(function(index, element) {
-        alert($(element).attr("status"));
+	$("#secondNavbar #secondNavbar_ul li a").each(function(index, element) {
+        //alert($(element).attr("status"));
 		if($(element).attr("status")==type_status){
 			//	
 			$(element).addClass("ui-btn-active");
@@ -477,6 +477,7 @@ $(document).ready(function(e) {
         </ul>
         <ul data-role="listview" id="page_search_search_result" style="margin-top:-20px;"> 
         </ul>
+        <a href="#" class="ui-shadow ui-btn ui-corner-all" onClick="clickSearch(true);" style="margin-top:20px;">获取更多...</a>
     </div>
     <script type="application/javascript">
 		function clearSearchVal(){
@@ -485,78 +486,17 @@ $(document).ready(function(e) {
 			$("#page_search_search_input").val("");
 			
 			$("#page_search_search_result").html("").listview('refresh');
-			$("#page_search_search_history").css("display","block");
+			window.page_search_search_pageParam={start:0,limit:20};
+			//$("#page_search_search_history").css("display","block");
 			//return searchVal;
 		}
-		function clickSearch(searchVal){
-			$("#page_search_search_input").val(searchVal);
-			$("#page_search_search__button").click();
-		}
-		//重新渲染查询历史
-		function renderSearchHistory(array){
-			//渲染查询历史  
-					var html="";
-					for(var i=0;i<window.page_search_search_history_array.length;i++){
-						html+="<li><a href='#' onClick='clickSearch(\""+window.page_search_search_history_array[i]+"\")'>"+window.page_search_search_history_array[i]+"</a></li>";
-					}
-					$("#page_search_search_history").html(html).listview('refresh');
-		}
 		
-		function computSearchHistory(){
+		function clickSearch(isappend){
+			//点击搜索或者第一次进来的时候初始化这个分页参数
+			if(!isappend){
+				window.page_search_search_pageParam={start:0,limit:20};
+			}
 			var searchVal=$("#page_search_search_input").val();
-			  clearSearchVal();
-			  
-			  //登录后第一次初始化
-			  if(window.page_search_search_history_array==null || !window.page_search_search_history_array){
-				  if(localStorage.getItem("page_search_search_history")!=null){
-					  window.page_search_search_history_array=JSON.parse(localStorage.getItem("page_search_search_history"));
-					renderSearchHistory(window.page_search_search_history_array);
-			      } else {
-					  window.page_search_search_history_array=[];
-				  }
-				  
-			  } else {
-				 
-			  }
-			  //重复就不添加
-			  var isExistsIndex=0;
-			  for(var i=0;i<window.page_search_search_history_array.length;i++){
-				  if(window.page_search_search_history_array[i]==searchVal){
-					  
-					  isExistsIndex=i;
-					  break;
-				  }
-			  }
-			  //alert(isExists);
-			  //alert(searchVal);
-			  if(isExistsIndex==0 && searchVal){
-				   window.page_search_search_history_array.unshift(searchVal);
-				   if(window.page_search_search_history_array.length>15){
-					  window.page_search_search_history_array.pop();
-				  }
-				  //往list里面添加内容
-				  var html="<li><a href='#' onClick='clickSearch(\""+searchVal+"\")'>"+searchVal+"</a></li>"
-				  $("#page_search_search_history").prepend(html).listview('refresh');
-				  localStorage.setItem("page_search_search_history",JSON.stringify( window.page_search_search_history_array));
-			  } else if(isExistsIndex>0){//如果已经存在，就把最新的放到最前面来
-				  var aa=window.page_search_search_history_array.del(isExistsIndex);
-				  if(aa){
-					  window.page_search_search_history_array.unshift(aa);
-					  renderSearchHistory(window.page_search_search_history_array);
-				  }
-			  }
-		}
-		$(function(){
-
-			$(document).on("pagebeforeshow","#page_search",function(e,ui){
-				if(ui.prevPage.attr("id")!="page_homepage"){
-					return;
-				}
-				computSearchHistory();
-			});
-
-			$("#page_search_search__button").click(function(){
-				var searchVal=$("#page_search_search_input").val();
 				if(!searchVal){
 					return;
 				}
@@ -565,38 +505,45 @@ $(document).ready(function(e) {
 					return;
 				}
 				
-				var status=$("input:checked[name='radio-choice-taskes-status']").val();
+				//var status=$("input:checked[name='radio-choice-taskes-status']").val();
 				$.ajax({   
 					url : $.ServerPath+"/task/mobile/search.do",  
-					data:{status:status,searchStr:searchVal},  
+					data:{searchStr:searchVal,start:window.page_search_search_pageParam.start,limit:window.page_search_search_pageParam.limit},  
 					success : function(data){
+						window.page_search_search_pageParam.start=window.page_search_search_pageParam.start+data.root.length;
 						//console.dir(data);
 						var root=data.root;
-						var html='';
+						var html='';//'newTask','read','handling'
 						for(var i=0;i<root.length;i++){
-							var taskInfoParamStr='?id='+root[i].id+'&pole_name='+root[i].pole_name+'&memo='+root[i].memo+'&type='+root[i].type+'&canEdit='+(status=="working"?true:false);
+							var taskInfoParamStr='?id='+root[i].id+'&pole_code='+root[i].pole_code+'&pole_name='+root[i].pole_name+'&memo='+root[i].memo+'&type='+root[i].type+'&canEdit='+((root[i].status=="newTask"|| root[i].status=="read"|| root[i].status=="handling")?true:false);
 							//alert(taskInfoParamStr);
-							var page_id="";
+							var page_id="page_"+root[i].type;
 							var h2_title="";
-							//var img="";
-							alert();
-							if("newInstall"==root[i].type){
-								page_id="page_newInstall";
-								h2_title="新安装";
+							if("newTask"==root[i].status){
+								//page_id="page_newInstall";
+								status_name="新任务";
 								//img="img/install.png";
-							} else if("repair"==root[i].type){
-								page_id="page_repair";
-								h2_title="维修";
+							} else if("read"==root[i].status){
+								//page_id="page_repair";
+								status_name="已阅";
 								//img="img/repair.png";
-							} else if("patrol"==root[i].type){
-								page_id="page_patrol";
-								h2_title="巡检";
+							}  else if("handling"==root[i].status){
+								//page_id="page_repair";
+								status_name="处理中";
+								//img="img/repair.png";
+							}else if("submited"==root[i].status){
+								//page_id="page_repair";
+								status_name="已提交";
+								//img="img/repair.png";
+							} else if("complete"==root[i].status){
+								//page_id="page_patrol";
+								status_name="完成";
 								//img="img/patrols.png";
-							}else if("cancel"==root[i].type){
-								page_id="page_cancel";
-								h2_title="取消点位";
-								//img="img/cancel.png";
+							} else {
+								status_name="";	
 							}
+							//h2_title+="<br/>新任务"
+							//console.log(h2_title);
 							html+='<li id="li_'+root[i].id+'">'+
 							'<a href="#'+page_id+'" onclick="sessionStorage.taskInfoParamStr=\''+taskInfoParamStr+'\'" data-transition="slide" >'+
 								//'<img src="'+img+'">'+
@@ -604,16 +551,89 @@ $(document).ready(function(e) {
 								'<p>'+root[i].pole_code+':'+root[i].pole_name+'</p>'+
 								'<p class="longContent">地址:'+root[i].pole_address+'</p>'+
 								'<p class="ui-li-aside"><strong>'+root[i].createDate+'</strong></p>'+
-								'<p id="'+root[i].id+'_isNew" class="ui-li-count" style="color:#FFF;">'+h2_title+'</p>'+
+								'<p id="'+root[i].id+'_isNew" class="ui-li-count" >'+status_name+'</p>'+
 							'</a>'+
 							'</li>'
 						}
-						$("#page_search_search_result").html(html).listview('refresh');
+						if(isappend){
+							$("#page_search_search_result").append(html).listview('refresh');
+						} else {
+							$("#page_search_search_result").html(html).listview('refresh');
+						}
+						
 						$("#page_search_search_history").css("display","none");
 						
 						
 					}
 				});
+		}
+//		//重新渲染查询历史
+//		function renderSearchHistory(array){
+//			//渲染查询历史  
+//					var html="";
+//					for(var i=0;i<window.page_search_search_history_array.length;i++){
+//						html+="<li><a href='#' onClick='clickSearch(\""+window.page_search_search_history_array[i]+"\")'>"+window.page_search_search_history_array[i]+"</a></li>";
+//					}
+//					$("#page_search_search_history").html(html).listview('refresh');
+//		}
+//		
+//		function computSearchHistory(){
+//			var searchVal=$("#page_search_search_input").val();
+//			  clearSearchVal();
+//			  
+//			  登录后第一次初始化
+//			  if(window.page_search_search_history_array==null || !window.page_search_search_history_array){
+//				  if(localStorage.getItem("page_search_search_history")!=null){
+//					  window.page_search_search_history_array=JSON.parse(localStorage.getItem("page_search_search_history"));
+//					renderSearchHistory(window.page_search_search_history_array);
+//			      } else {
+//					  window.page_search_search_history_array=[];
+//				  }
+//				  
+//			  } else {
+//				 
+//			  }
+//			  重复就不添加
+//			  var isExistsIndex=0;
+//			  for(var i=0;i<window.page_search_search_history_array.length;i++){
+//				  if(window.page_search_search_history_array[i]==searchVal){
+//					  
+//					  isExistsIndex=i;
+//					  break;
+//				  }
+//			  }
+//			  alert(isExists);
+//			  alert(searchVal);
+//			  if(isExistsIndex==0 && searchVal){
+//				   window.page_search_search_history_array.unshift(searchVal);
+//				   if(window.page_search_search_history_array.length>15){
+//					  window.page_search_search_history_array.pop();
+//				  }
+//				  往list里面添加内容
+//				  var html="<li><a href='#' onClick='clickSearch(\""+searchVal+"\")'>"+searchVal+"</a></li>"
+//				  $("#page_search_search_history").prepend(html).listview('refresh');
+//				  localStorage.setItem("page_search_search_history",JSON.stringify( window.page_search_search_history_array));
+//			  } else if(isExistsIndex>0){//如果已经存在，就把最新的放到最前面来
+//				  var aa=window.page_search_search_history_array.del(isExistsIndex);
+//				  if(aa){
+//					  window.page_search_search_history_array.unshift(aa);
+//					  renderSearchHistory(window.page_search_search_history_array);
+//				  }
+//			  }
+//		}
+		$(function(){
+
+			$(document).on("pagebeforeshow","#page_search",function(e,ui){
+				if(ui.prevPage.attr("id")!="page_homepage"){
+					return;
+				}
+				//computSearchHistory();
+				//当从page_homepage进来的时候就清空历史查询记录
+				clearSearchVal();
+			});
+			
+			$("#page_search_search__button").click(function(){
+				clickSearch();
 			});
 		});
 	</script></div>
@@ -628,6 +648,8 @@ $(document).ready(function(e) {
         <div class="ui-field-contain">
             <label for="id">任务编号:</label>
             <input type="text"  id="page_newInstall_id" placeholder="只读" value="">
+            <label for="page_newInstall_pole_code">编号:</label>
+            <input readonly type="text" id="page_newInstall_pole_code" placeholder="只读" value="">
             <label for="pole">点位:</label>
             <input readonly type="text" id="page_newInstall_pole_name" placeholder="只读" value="">
         	<label  for="memo">任务描述:</label>
@@ -663,6 +685,8 @@ $(document).ready(function(e) {
         <div class="ui-field-contain">
             <label for="id">任务编号:</label>
             <input type="text"  id="page_repair_id" placeholder="只读" value="">
+            <label for="page_repair_pole_code">编号:</label>
+            <input readonly type="text" id="page_repair_pole_code" placeholder="只读" value="">
             <label for="pole">点位:</label>
             <input readonly type="text" id="page_repair_pole_name" placeholder="只读" value="">
         	<label  for="memo">任务描述:</label>
@@ -732,6 +756,8 @@ $(document).ready(function(e) {
         <div class="ui-field-contain">
             <label for="id">任务编号:</label>
             <input type="text"  id="page_patrol_id" placeholder="只读" value="">
+            <label for="page_patrol_pole_code">编号:</label>
+            <input readonly type="text" id="page_patrol_pole_code" placeholder="只读" value="">
             <label for="pole">点位:</label>
             <input readonly type="text" id="page_patrol_pole_name" placeholder="只读" value="">
         	<label  for="memo">任务描述:</label>
@@ -765,6 +791,8 @@ $(document).ready(function(e) {
         <div class="ui-field-contain">
             <label for="id">任务编号:</label>
             <input type="text"  id="page_cancel_id" placeholder="只读" value="">
+            <label for="page_cancel_pole_code">编号:</label>
+            <input readonly type="text" id="page_cancel_pole_code" placeholder="只读" value="">
             <label for="pole">点位:</label>
             <input readonly type="text" id="page_cancel_pole_name" placeholder="只读" value="">
         	<label  for="memo">任务描述:</label>
@@ -806,6 +834,7 @@ $(document).ready(function(e) {
 				$(".actionbutton").hide();
 			}
 			$("#"+page_id+"_id").val(params.id);  
+			$("#"+page_id+"_pole_code").val(params.pole_code);
 			$("#"+page_id+"_pole_name").val(params.pole_name);  
 			$("#"+page_id+"_memo").val(params.memo);
 			sessionStorage.taskInfoParamStr=null;
@@ -870,6 +899,10 @@ $(document).ready(function(e) {
 		});	
 	}
 	function submitTask(){
+		var r=confirm("是否确认提交!");
+		if(!r){
+			return;
+		}
 		$.showLoader("正在提交....");
 
 		var params=getSubmitParams(true);
@@ -890,11 +923,14 @@ $(document).ready(function(e) {
 					//并且刷新任务,或者移除该任务
 					//changeTaskesType("working");
 					$('#li_'+taskInfoParam.id).remove();
+					
 					//刷新待确认的任务
-					window["confirm_pageParam"].reset();
-					queryTasks("confirm",null,function(){
+					//window["confirm_pageParam"].reset();
+					var type=$("input:checked[name='radio-choice-taskes-type']").val();
+					window[type+"_pageParam"].reset();
+					queryTasks(type,null,function(){
 						//切换confirm任务的状态,这样再点击的时候，就不会重新去查询了
-						taskes_list_query_status["confirm"]=true;
+						taskes_list_query_type[type]=true;
 					});
 				}
 				$.hideLoader();  
@@ -1141,8 +1177,7 @@ $(document).ready(function(e) {
 						var type=$("input:checked[name='radio-choice-taskes-type']").val();
 						window[type+"_pageParam"].reset();
 						queryTasks(type,null,function(){
-							//taskes_list_query_status["working"]=true;
-							
+							taskes_list_query_type[type]=true;
 						});					
 						window.page_taskes_new_params={};
 						

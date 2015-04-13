@@ -217,9 +217,14 @@ public class TaskController {
 	
 	@RequestMapping("/task/mobile/search.do")
 	@ResponseBody
-	public List<Task> mobile_search(String status,String searchStr){
-
-		return taskService.mobile_search(status, "%"+searchStr+"%", ShiroUtils.getAuthenticationInfo().getId());
+	public Page mobile_search(String status,String searchStr,Integer start,Integer limit){
+		Page page=Page.getInstance(start,limit);
+		page.addParam(M.Task.status, status);
+		page.addParam("searchStr", "%"+searchStr+"%");
+		page.addParam(M.Task.workunit_id, ShiroUtils.getAuthenticationInfo().getId());
+		Page aa =taskService.mobile_search(page);
+		return aa;
+		//return taskService.mobile_search(status, "%"+searchStr+"%", ShiroUtils.getAuthenticationInfo().getId());
 	}
 	
 	

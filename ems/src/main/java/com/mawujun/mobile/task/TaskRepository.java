@@ -50,7 +50,7 @@ public interface TaskRepository extends IRepository<Task, String>{
 	
 	public Page mobile_queryPage(Page page) ;
 	
-	public List<Task> mobile_search(@Param("status")String status,@Param("searchStr")String searchStr,@Param("workunit_id")String workunit_id);
+	public Page mobile_search(Page page);
 	
 	public List<TaskEquipmentListVO> mobile_queryTaskEquipmentInfos(@Param("task_id")String task_id);
 	

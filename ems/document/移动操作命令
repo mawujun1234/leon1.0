@@ -7,7 +7,7 @@ cordova run android -release
 	2:然后重新生成新版本
 		cordova run android -release
 	3：把生成的apk文件拷贝到ems文件的www文件夹下
-	4：修改apkVersion.jss的版本升级信息
+	4：修改apkVersion.jss的版本升级信息,换行使用:\n
 	5：修改login.html中的版本提示信息，改成一样。
 	6：更新到远程服务器
 		122.227.163.82:8083 administrator nbdw001

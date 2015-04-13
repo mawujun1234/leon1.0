@@ -209,8 +209,8 @@ public class TaskService extends AbstractService<Task, String>{
 		return this.getRepository().mobile_queryPage(page);
 	}
 	
-	public List<Task> mobile_search(String status,String searchStr,String workunit_id) {
-		return this.getRepository().mobile_search(status, searchStr, workunit_id);
+	public Page mobile_search(Page page) {
+		return this.getRepository().mobile_search(page);
 	}
 
 	public List<TaskEquipmentListVO> mobile_queryTaskEquipmentInfos(String task_id) {
