@@ -178,6 +178,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</where>
     </select>
     
+    <!-- 维修任务明细报表 -->
+    <select id="queryRepairTaskesReport" resultType="com.mawujun.mobile.task.TaskRepairReport" parameterType="map">
+    	select a.*,b.code as pole_code from ems_task a,ems_pole b
+		where a.pole_id=b.id
+			and a.type='repair'
+			and a.workunit_id=#{workunit_id}
+			and a.createDate  &gt;= to_date(#{date_start},'yyyy-mm-dd') and a.createDate  &lt;= to_date(#{date_end},'yyyy-mm-dd')
+    </select>
+    
     
     <select id="mobile_queryPage" resultType="com.mawujun.mobile.task.Task" parameterType="map">
     	select a.id,a.memo,a.type,a.status,a.pole_id,b.code as pole_code,a.pole_name,a.pole_address,a.createDate from ems_task a,ems_pole b

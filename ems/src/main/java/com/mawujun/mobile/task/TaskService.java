@@ -29,6 +29,10 @@ import java.util.Set;
 
 
 
+
+
+
+
 import javax.annotation.Resource;
 
 import org.springframework.beans.BeanUtils;
@@ -51,6 +55,7 @@ import com.mawujun.service.AbstractService;
 import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.AssertUtils;
 import com.mawujun.utils.M;
+import com.mawujun.utils.Params;
 import com.mawujun.utils.StringUtils;
 import com.mawujun.utils.page.Page;
 
@@ -74,6 +79,10 @@ public class TaskService extends AbstractService<Task, String>{
 	private PoleRepository poleRepository;
 	@Resource
 	private EquipmentService equipmentService;
+	@Resource
+	private OvertimeService overtimeService;
+	@Resource
+	private HitchTypeRepository hitchTypeRepository;
 	
 	@Override
 	public TaskRepository getRepository() {
@@ -314,6 +323,27 @@ public class TaskService extends AbstractService<Task, String>{
 		return vo;
 	}
 	
+	public Page queryRepairTaskesReport(Page page) {
+		//获取超期时间
+		Overtime overtime=overtimeService.get("overtime");
+		Page result= this.getRepository().queryRepairTaskesReport(page);
+		List<TaskRepairReport> list=result.getResult();
+		for(TaskRepairReport task:list){
+			task.checkIsOverTime(overtime.getHandling());
+		}
+		return result;
+	}
+	
+	public List<TaskRepairReport> exportRepairTaskesReport(String workunit_id,String date_start,String date_end) {
+		Overtime overtime=overtimeService.get("overtime");
+		Params params=Params.init().add(M.Task.workunit_id, workunit_id).add("date_start", date_start).add("date_end", date_end);
+		List<TaskRepairReport> list= this.getRepository().queryRepairTaskesReport(params);
+		for(TaskRepairReport task:list){
+			task.checkIsOverTime(overtime.getHandling());
+		}
+		return list;
+	}
+	
 	/**
 	 * 返回的值是  去掉重复的条码后的 扫描了的条码
 	 * @author mawujun email:160649888@163.com qq:16064988
@@ -332,10 +362,13 @@ public class TaskService extends AbstractService<Task, String>{
 		taskEquipmentListRepository.deleteBatch(Cnd.delete().andEquals(M.TaskEquipmentList.task_id, task_id));
 		
 		Task task=taskRepository.get(task_id);
+		
 		task.setHitchType_id(hitchType_id);
+		task.setHitchType(hitchTypeRepository.get(hitchType_id).getName());
 		task.setHitchReasonTpl_id(hitchReasonTpl_id);
 		task.setHitchReason(hitchReason);
 		task.setStatus(TaskStatus.handling);
+		
 		if(task.getStartHandDate()==null){
 			task.setStartHandDate(new Date());
 		}

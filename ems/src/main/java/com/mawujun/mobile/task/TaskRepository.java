@@ -1,11 +1,13 @@
 package com.mawujun.mobile.task;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.mawujun.repository1.IRepository;
+import com.mawujun.utils.Params;
 import com.mawujun.utils.page.Page;
 import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.baseinfo.Pole;
@@ -40,6 +42,9 @@ public interface TaskRepository extends IRepository<Task, String>{
 	 * @return
 	 */
 	public List<String> query_other_task_have_scaned(@Param("workunit_id")String workunit_id,@Param("ecode")String ecode);
+	
+	public Page queryRepairTaskesReport(Page page);
+	public List<TaskRepairReport> queryRepairTaskesReport(Params params);
 	/**
 	 * 根据条码查询最新的任务信息
 	 * @author mawujun email:160649888@163.com qq:16064988
