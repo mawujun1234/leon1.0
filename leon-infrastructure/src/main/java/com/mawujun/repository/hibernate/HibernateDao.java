@@ -373,9 +373,9 @@ public class HibernateDao<T, ID extends Serializable> implements IHibernateDao<T
 		}else if (ReflectUtils.isBigDecimal(val)) {
 			query.setBigDecimal(position, (BigDecimal) val);
 		} else if (ReflectUtils.isOf(val, java.sql.Date.class)) {
-			query.setDate(position, (java.sql.Date) val);
+			query.setTimestamp(position, (java.sql.Date) val);
 		} else if (ReflectUtils.isOf(val, java.util.Date.class)) {
-			query.setDate(position, (java.util.Date) val);
+			query.setTimestamp(position, (java.util.Date) val);
 		} else if (val.getClass().isArray() && val.getClass().getComponentType() == byte.class) {
 			query.setBinary(position,(byte[]) val);
 		} else if (val.getClass().isEnum()) {

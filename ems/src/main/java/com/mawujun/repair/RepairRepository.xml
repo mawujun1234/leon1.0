@@ -109,6 +109,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		order by a.status
     </select>
     
+    <!-- 某端时间 维修任务查询 -->
+    <select id="queryRepairReport" resultType="com.mawujun.repair.RepairVO" parameterType="map">
+    	select a.*,d.name as prod_name,d.style as equipment_style ,e.name as rpa_user_name 
+    	from ems_repair a
+    	left join ems_equipmentprod d on a.prod_id=d.id
+    	left join sys_user e on a.rpa_user_id=e.id
+		where to_char(a.rpa_in_date,'yyyy-mm-dd') &lt;= #{date_end}
+			and to_char(a.rpa_in_date,'yyyy-mm-dd') &gt;= #{date_start}
+    </select>
 
 </mapper>
 

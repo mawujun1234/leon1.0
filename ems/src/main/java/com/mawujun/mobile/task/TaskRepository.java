@@ -45,6 +45,7 @@ public interface TaskRepository extends IRepository<Task, String>{
 	
 	public Page queryRepairTaskesReport(Page page);
 	public List<TaskRepairReport> queryRepairTaskesReport(Params params);
+	public Page queryUnrepairPoleReport(Page page);
 	/**
 	 * 根据条码查询最新的任务信息
 	 * @author mawujun email:160649888@163.com qq:16064988

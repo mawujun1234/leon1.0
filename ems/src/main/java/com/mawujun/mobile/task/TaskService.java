@@ -333,6 +333,17 @@ public class TaskService extends AbstractService<Task, String>{
 		}
 		return result;
 	}
+	public Page queryUnrepairPoleReport(Page page) {
+		//获取超期时间
+		//Overtime overtime=overtimeService.get("overtime");
+		Page result= this.getRepository().queryUnrepairPoleReport(page);
+//		List<Task> list=result.getResult();
+//		for(Task task:list){
+//			task.checkIsOverTime(overtime.getHandling());
+//		}
+		return result;
+	}
+	
 	
 	public List<TaskRepairReport> exportRepairTaskesReport(String workunit_id,String date_start,String date_end) {
 		Overtime overtime=overtimeService.get("overtime");

@@ -368,6 +368,17 @@ public class TaskController {
 		return taskService.queryRepairTaskesReport(page);
 	}
 	
+	@RequestMapping("/task/queryUnrepairPoleReport.do")
+	@ResponseBody
+	public Page queryUnrepairPoleReport(Integer start,Integer limit,String workunit_id,String customer_id) {
+		Page page=Page.getInstance(start,limit);
+		page.addParam(M.Task.workunit_id, workunit_id);
+		page.addParam(M.Task.customer_id, customer_id);
+
+		JsonConfigHolder.setDatePattern("yyyy-MM-dd HH:mm:ss");
+		return taskService.queryUnrepairPoleReport(page);
+	}
+	
 	//PoleController
 	@RequestMapping("/task/exportRepairTaskesReport.do")
 	@ResponseBody

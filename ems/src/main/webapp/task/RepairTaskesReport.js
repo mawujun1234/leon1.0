@@ -52,7 +52,7 @@ Ext.onReady(function(){
 			}
 	});
 	var exportPoles = new Ext.Action({
-		    text: '导出点位设备信息',
+		    text: '导出',
 		    //itemId:'reload',
 		    icon:'../icons/page_excel.png',
 		    handler: function(){
@@ -108,6 +108,7 @@ Ext.onReady(function(){
 		columnLines :true,
 		stripeRows:true,
 		columns:[
+			{xtype: 'rownumberer'},
 	        {dataIndex:'id',text:'任务编号',width:100},
 	        {dataIndex:'customer_name',text:'派出所'},
 	        {dataIndex:'pole_code',text:'点位编号',width:55},

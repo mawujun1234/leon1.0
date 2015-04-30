@@ -22,6 +22,7 @@ import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.M;
+import com.mawujun.utils.Params;
 import com.mawujun.utils.StringUtils;
 import com.mawujun.utils.page.Page;
 
@@ -151,7 +152,11 @@ public class RepairService extends AbstractService<Repair, String>{
 		}
 		return results;
 	}
-	
+	/**
+	 * 维修中心入库
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param repairs
+	 */
 	public void repairInStore(Repair[] repairs){
 		String oper_id=ShiroUtils.getAuthenticationInfo().getId();
 		for(Repair repair:repairs){
@@ -250,5 +255,12 @@ public class RepairService extends AbstractService<Repair, String>{
 	}
 	
 
+	public Page queryRepairReport(Page page) {
+		return repairRepository.queryRepairReport(page);
+	}
+	
+	public List<RepairVO> exportRepairReport(Params params) {
+		return repairRepository.queryRepairReport(params);
+	}
 	
 }
