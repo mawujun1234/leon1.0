@@ -386,6 +386,7 @@ public static final class Repair {
 	public static final String status="status";
 	public static final String scrapDate="scrapDate";
 	public static final String broken_reson="broken_reson";
+	public static final String handler_method="handler_method";
 	public static final String memo="memo";
 }
 public static final class Scrap {

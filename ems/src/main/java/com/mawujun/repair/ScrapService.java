@@ -2,6 +2,7 @@ package com.mawujun.repair;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,9 @@ import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.M;
+import com.mawujun.utils.Params;
 import com.mawujun.utils.StringUtils;
+import com.mawujun.utils.page.Page;
 
 
 /**
@@ -79,4 +82,12 @@ public class ScrapService extends AbstractService<Scrap, String>{
 		return scrap;
 	}
 
+	
+	public Page queryScrapReport(Page page) {
+		return scrapRepository.queryScrapReport(page);
+	}
+	
+	public List<RepairVO> exportRepairReport(Params params) {
+		return scrapRepository.queryScrapReport(params);
+	}
 }

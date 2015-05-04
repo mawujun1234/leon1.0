@@ -26,4 +26,7 @@ public interface RepairRepository extends IRepository<Repair, String>{
 	public Page queryRepairReport(Page page);
 	public List<RepairVO> queryRepairReport(Params params);
 	
+	public Page queryCompleteRepairReport(Page page);
+	public List<RepairVO> queryCompleteRepairReport(Params params);
+	
 }

@@ -1,4 +1,4 @@
-Ext.require("Ems.repair.RepairReport");
+Ext.require("Ems.repair.CompleteRepair");
 Ext.onReady(function(){
 
 	var date_start=Ext.create('Ext.form.field.Date',{
@@ -39,7 +39,7 @@ Ext.onReady(function(){
 		    		date_end:date_end.getRawValue()
 		    	}
 				var pp=Ext.Object.toQueryString(params);
-				window.open(Ext.ContextPath+"/repair/exportRepairReport.do?"+pp, "_blank");
+				window.open(Ext.ContextPath+"/repair/exportCompleteRepairReport.do?"+pp, "_blank");
 		    }
 		});
 	var toolbar=Ext.create('Ext.toolbar.Toolbar',{
@@ -48,7 +48,7 @@ Ext.onReady(function(){
 	var store=Ext.create('Ext.data.Store',{
 			autoSync:false,
 			pageSize:50,
-			model: 'Ems.repair.RepairReport',
+			model: 'Ems.repair.CompleteRepair',
 			autoLoad:false,
 			proxy:{
 				type:'ajax',
@@ -58,7 +58,7 @@ Ext.onReady(function(){
 			        update : 'POST',
 			        destroy: 'POST'
 			    },
-				url:Ext.ContextPath+'/repair/queryRepairReport.do',
+				url:Ext.ContextPath+'/repair/queryCompleteRepairReport.do',
 				reader:{
 					type:'json',
 					root:'root'
@@ -77,17 +77,15 @@ Ext.onReady(function(){
 		columns:[
 			{xtype: 'rownumberer'},
 			{dataIndex:'id',text:'维修单号',width:130},
-			{dataIndex:'rpa_in_date',text:'坏件领料时间',width:120},
-			{dataIndex:'rpa_user_name',text:'维修人员'},
 			{dataIndex:'ecode',text:'条码',width:150},
 			{dataIndex:'prod_name',text:'品名',width:140},
 			{dataIndex:'equipment_style',text:'型号',width:140},
-			{dataIndex:'broken_memo',text:'故障现象'},
-			{dataIndex:'broken_reson',text:'故障原因'},
-			{dataIndex:'handler_method',text:'处理方法'},
-			{dataIndex:'rpa_out_date',text:'修复时间',width:120},
-			{dataIndex:'str_in_date',text:'好件还库时间',width:120},
-			{dataIndex:'memo',text:'信息反馈及备注'}
+			{dataIndex:'str_out_name',text:'发货仓库'},
+			{dataIndex:'rpa_type_name',text:'维修类型'},
+			{dataIndex:'str_out_date',text:'开单日期',width:120},
+			{dataIndex:'rpa_out_date',text:'结单日期',width:120},
+			{dataIndex:'rpa_user_name',text:'维修人'},
+			{dataIndex:'str_in_date',text:'入库时间',width:120}
 	    ],
       	store:store,
       	tbar:toolbar,

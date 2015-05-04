@@ -49,6 +49,20 @@ Ext.onReady(function(){
 			}
 		}]
 	})
+	var exportPoles = new Ext.Action({
+		    text: '导出',
+		    //itemId:'reload',
+		    icon:'../icons/page_excel.png',
+		    handler: function(){
+		    	var me=this;
+		    	var params={
+		    		store_id:store_combox.getValue()
+		    	}
+				var pp=Ext.Object.toQueryString(params);
+				window.open(Ext.ContextPath+"/propertystatus/export.do?"+pp, "_blank");
+		    }
+	});
+	tbar.add(exportPoles);	
 	
 	var store=Ext.create('Ext.data.Store',{
 		autoLoad:false,
@@ -77,7 +91,9 @@ Ext.onReady(function(){
 			{ text: '外修中',  dataIndex: 'outside_repairing' },
 			{ text: '维修中',  dataIndex: 'inner_repairing' },
 			{ text: '维修后已出库',  dataIndex: 'out_repair' }
-		]
+		],
+		columnLines :true,
+		stripeRows:true
 	});
 	
 	

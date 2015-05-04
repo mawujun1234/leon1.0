@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html>
   <head>
     
-    <title>设备维修明细</title>
+    <title>已完成（自修）的维修单明细和已完成（外修）维修单明细</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -22,7 +22,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	
 	<%@include file="../../common/init.jsp" %>
-	<script type="text/javascript" src="RepairReportApp.js"></script>
+	<script type="text/javascript" src="CompleteRepairReport.js"></script>
   </head>
   
   <body>

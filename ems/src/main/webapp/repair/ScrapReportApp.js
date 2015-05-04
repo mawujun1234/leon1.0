@@ -1,4 +1,4 @@
-Ext.require("Ems.repair.RepairReport");
+Ext.require("Ems.repair.ScrapReport");
 Ext.onReady(function(){
 
 	var date_start=Ext.create('Ext.form.field.Date',{
@@ -39,7 +39,7 @@ Ext.onReady(function(){
 		    		date_end:date_end.getRawValue()
 		    	}
 				var pp=Ext.Object.toQueryString(params);
-				window.open(Ext.ContextPath+"/repair/exportRepairReport.do?"+pp, "_blank");
+				window.open(Ext.ContextPath+"/scrap/exportScrapReport.do?"+pp, "_blank");
 		    }
 		});
 	var toolbar=Ext.create('Ext.toolbar.Toolbar',{
@@ -48,7 +48,7 @@ Ext.onReady(function(){
 	var store=Ext.create('Ext.data.Store',{
 			autoSync:false,
 			pageSize:50,
-			model: 'Ems.repair.RepairReport',
+			model: 'Ems.repair.ScrapReport',
 			autoLoad:false,
 			proxy:{
 				type:'ajax',
@@ -58,7 +58,7 @@ Ext.onReady(function(){
 			        update : 'POST',
 			        destroy: 'POST'
 			    },
-				url:Ext.ContextPath+'/repair/queryRepairReport.do',
+				url:Ext.ContextPath+'/scrap/queryScrapReport.do',
 				reader:{
 					type:'json',
 					root:'root'
@@ -83,10 +83,10 @@ Ext.onReady(function(){
 			{dataIndex:'prod_name',text:'品名',width:140},
 			{dataIndex:'equipment_style',text:'型号',width:140},
 			{dataIndex:'broken_memo',text:'故障现象'},
-			{dataIndex:'broken_reson',text:'故障原因'},
 			{dataIndex:'handler_method',text:'处理方法'},
-			{dataIndex:'rpa_out_date',text:'修复时间',width:120},
-			{dataIndex:'str_in_date',text:'好件还库时间',width:120},
+			{dataIndex:'scrap_reason',text:'报废原因',flex:1,minWidth:120},
+			{dataIndex:'scrap_residual',text:'坏件残值'},
+			{dataIndex:'scrap_operateDate',text:'报废确认',width:120},
 			{dataIndex:'memo',text:'信息反馈及备注'}
 	    ],
       	store:store,

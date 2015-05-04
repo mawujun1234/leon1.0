@@ -39,7 +39,7 @@ Ext.onReady(function(){
 	        fieldLabel: '作业单位',
 	        labelAlign:'right',
             labelWidth:55,
-            //width:250,
+            width:250,
 	        //xtype:'combobox',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'workunit_id',

@@ -1,5 +1,7 @@
 package com.mawujun.repair;
 
+import java.util.Date;
+
 
 public class RepairVO extends Repair {
 	private String rpa_name;//维修中心名称
@@ -21,6 +23,9 @@ public class RepairVO extends Repair {
 	private String equipment_status;
 	
 	private String scrap_id;//报废单的单号
+	private String scrap_reason;//报废原因
+	private String scrap_residual;//报废残值
+	private Date scrap_operateDate;//报废确认时间
 	
 
 	public String getStatus_name() {
@@ -122,6 +127,36 @@ public class RepairVO extends Repair {
 
 	public void setRpa_user_name(String rpa_user_name) {
 		this.rpa_user_name = rpa_user_name;
+	}
+
+
+	public String getScrap_reason() {
+		return scrap_reason;
+	}
+
+
+	public void setScrap_reason(String scrap_reason) {
+		this.scrap_reason = scrap_reason;
+	}
+
+
+	public String getScrap_residual() {
+		return scrap_residual;
+	}
+
+
+	public void setScrap_residual(String scrap_residual) {
+		this.scrap_residual = scrap_residual;
+	}
+
+
+	public Date getScrap_operateDate() {
+		return scrap_operateDate;
+	}
+
+
+	public void setScrap_operateDate(Date scrap_operateDate) {
+		this.scrap_operateDate = scrap_operateDate;
 	}
 	
 }

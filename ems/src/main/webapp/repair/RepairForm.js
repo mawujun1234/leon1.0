@@ -187,6 +187,23 @@ Ext.define('Ems.repair.RepairForm',{
                         //hideLabel: 'true'
                     },
                     items: [{
+                        name: 'handler_method',
+                        fieldLabel: '处理方法',
+                        flex: 1,
+                        xtype:'textarea',
+                        readOnly:false,
+                        allowBlank: true
+                    }]
+     },{
+                    xtype: 'fieldcontainer',
+                    //fieldLabel: 'Name',
+                    layout: 'hbox',
+                    combineErrors: true,
+                    defaultType: 'textfield',
+                    defaults: {
+                        //hideLabel: 'true'
+                    },
+                    items: [{
                         name: 'memo',
                         fieldLabel: '备注',
                         flex: 1,

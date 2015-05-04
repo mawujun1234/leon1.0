@@ -1,13 +1,23 @@
 package com.mawujun.report;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.mawujun.repair.RepairVO;
 import com.mawujun.utils.M;
 
 /**
@@ -103,5 +113,97 @@ public class PropertyStatusController {
 		}
 		return ems_equipmentsubtype;
 		
+	}
+	
+	@RequestMapping("/propertystatus/export.do")
+	public void export(HttpServletResponse response,String store_id) throws IOException{
+		List<Map<String,Object>> result=query(store_id);
+		
+		XSSFWorkbook wb =new XSSFWorkbook();
+		Sheet sheet = wb.createSheet();
+		int rownum=0;
+		
+		build_addColumnName(wb,sheet,rownum);
+		
+		// 开始构建整个excel的文件
+		if (result != null && result.size() > 0) {
+			rownum++;
+			build_content(result, wb, sheet, rownum);
+		}
+		String filename = "仓库资产情况.xlsx";
+		 //FileOutputStream out = new FileOutputStream(filename);
+		response.setHeader("content-disposition", "attachment; filename="+ new String(filename.getBytes("UTF-8"), "ISO8859-1"));
+		//response.setContentType("application/vnd.ms-excel;charset=uft-8");
+		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=uft-8");
+
+		OutputStream out = response.getOutputStream();
+		wb.write(out);
+		
+		out.flush();
+		out.close();
+		
+	}
+	
+	
+	private void build_addColumnName(XSSFWorkbook wb,Sheet sheet,int rowInt){
+		//CellStyle black_style=getStyle(wb,IndexedColors.BLACK,(short)11);
+		 
+		Row row = sheet.createRow(rowInt);
+		int cellnum=0;
+		
+		Cell name=row.createCell(cellnum++);
+		name.setCellValue("小类");
+		
+		Cell in_storage=row.createCell(cellnum++);
+		in_storage.setCellValue("已入库");
+		
+		Cell wait_for_repair=row.createCell(cellnum++);
+		wait_for_repair.setCellValue("入库待维修");
+		
+		Cell to_repair=row.createCell(cellnum++);
+		to_repair.setCellValue("发往维修中心");
+		
+		Cell outside_repairing=row.createCell(cellnum++);
+		outside_repairing.setCellValue("外修中");
+		
+		Cell inner_repairing=row.createCell(cellnum++);
+		inner_repairing.setCellValue("维修中");
+		
+		Cell out_repair=row.createCell(cellnum++);
+		out_repair.setCellValue("维修后已出库");
+		
+	}
+	
+	SimpleDateFormat yMdHms=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private void build_content(List<Map<String,Object>> list,XSSFWorkbook wb,Sheet sheet,int rownum){
+		int cellnum=0;
+
+		for(Map<String,Object> map:list){
+			cellnum=0;
+			Row row = sheet.createRow(rownum++);
+			
+			Cell name=row.createCell(cellnum++);
+			name.setCellValue(map.get("name").toString());
+			
+			Cell in_storage=row.createCell(cellnum++);
+			in_storage.setCellValue(map.get("in_storage")!=null?map.get("in_storage").toString():"");
+			
+			Cell wait_for_repair=row.createCell(cellnum++);
+			wait_for_repair.setCellValue(map.get("wait_for_repair")!=null?map.get("wait_for_repair").toString():"");
+			
+			Cell to_repair=row.createCell(cellnum++);
+			to_repair.setCellValue(map.get("to_repair")!=null?map.get("to_repair").toString():"");
+			
+			Cell outside_repairing=row.createCell(cellnum++);
+			outside_repairing.setCellValue(map.get("outside_repairing")!=null?map.get("outside_repairing").toString():"");
+			
+			Cell inner_repairing=row.createCell(cellnum++);
+			inner_repairing.setCellValue(map.get("inner_repairing")!=null?map.get("inner_repairing").toString():"");
+			
+			Cell out_repair=row.createCell(cellnum++);
+			out_repair.setCellValue(map.get("out_repair")!=null?map.get("out_repair").toString():"");
+			
+
+		}
 	}
 }

@@ -400,6 +400,7 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 			layout:'fit',
 			modal:true,
 			width:500,
+			constrainHeader:true,
 			items:[form]
 		});
 		if(record.get("status")!=2){

@@ -117,7 +117,22 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	left join sys_user e on a.rpa_user_id=e.id
 		where to_char(a.rpa_in_date,'yyyy-mm-dd') &lt;= #{date_end}
 			and to_char(a.rpa_in_date,'yyyy-mm-dd') &gt;= #{date_start}
+			and not exists (select 1 from Ems_Scrap eeee where a.id=eeee.repair_id)
     </select>
 
+
+ 	<!-- 已完成（自修）的维修单明细和已完成（外修）维修单明细 -->
+    <select id="queryCompleteRepairReport" resultType="com.mawujun.repair.RepairVO" parameterType="map">
+    	select a.*,d.name as prod_name,d.style as equipment_style ,e.name as rpa_user_name 
+    	,g.name as str_out_name
+    	from ems_repair a
+    	left join ems_equipmentprod d on a.prod_id=d.id
+    	left join sys_user e on a.rpa_user_id=e.id
+    	left join ems_store g on a.str_out_id=g.id
+		where to_char(a.rpa_in_date,'yyyy-mm-dd') &lt;= #{date_end}
+			and to_char(a.rpa_in_date,'yyyy-mm-dd') &gt;= #{date_start}
+			and not exists (select 1 from Ems_Scrap eeee where a.id=eeee.repair_id)
+			and a.status='4'
+    </select>
 </mapper>
 

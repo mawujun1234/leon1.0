@@ -71,6 +71,8 @@ public class Repair  implements IdEntity<String>{
 	@Column(length=500) 
 	private String broken_reson;//故障原因
 	@Column(length=500) 
+	private String handler_method;//处理方法
+	@Column(length=500) 
 	private String memo;
 	
 	public String getRpa_type_name() {
@@ -232,6 +234,12 @@ public class Repair  implements IdEntity<String>{
 	}
 	public void setProd_id(String prod_id) {
 		this.prod_id = prod_id;
+	}
+	public String getHandler_method() {
+		return handler_method;
+	}
+	public void setHandler_method(String handler_method) {
+		this.handler_method = handler_method;
 	}
 
 }
