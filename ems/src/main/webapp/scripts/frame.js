@@ -303,7 +303,11 @@ Ext.define('Ext.ms.header.Toolbar',{
     				item.menu=[{text:'正在加载...'}];
     				item.listeners={
     					menushow:me.menuAjaxShow,
-    					focus:me.menuAjaxShow
+    					focus:me.menuAjaxShow,
+    					menutriggerout:function(btn,menu){
+							//alert(1);
+    						//btn.hideMenu( );
+    					}
     				}
     			} else {
     				item.handler=me.naviAction;

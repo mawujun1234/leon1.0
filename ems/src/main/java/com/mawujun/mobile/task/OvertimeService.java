@@ -61,6 +61,9 @@ public class OvertimeService extends AbstractService<Overtime, String>{
 		//System.out.println("111111111111111111111111111111111111111");
 		//首先获取过期时间
 		Overtime overtime=overtimeRepository.get("overtime");
+		if(overtime==null){
+			return;
+		}
 //		//处理未阅读的任务,要按人进行发送
 //		List<Task> list=taskRepository.queryReadOvertimeTask(overtime.getRead());
 //		//如果已发送的怎么办，
