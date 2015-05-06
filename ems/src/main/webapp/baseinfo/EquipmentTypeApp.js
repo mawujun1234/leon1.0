@@ -5,10 +5,10 @@ Ext.require("Ems.baseinfo.EquipmentTypeForm");
 Ext.onReady(function(){
 	var grid=Ext.create('Ems.baseinfo.EquipmentTypeGrid',{
 		region:'center',
-		split: true,
-		collapsible: true,
+		//split: true,
+		//collapsible: true,
 		title:'品名',
-		width:400,
+		//width:400,
 		listeners:{
 			render:function(grid){
 				grid.getEl().mask();
@@ -19,6 +19,8 @@ Ext.onReady(function(){
 	var tree=Ext.create('Ems.baseinfo.EquipmentTypeTree',{
 		title:'大类小类',
 		width:400,
+		split:true,
+		collapsible: true,
 		region:'west'
 	});
 	grid.tree=tree;
