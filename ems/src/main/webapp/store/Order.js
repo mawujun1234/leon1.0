@@ -21,6 +21,7 @@ Ext.defineModel("Ems.store.Order",{
 		{name:'brand_name',type:'string'},
 		{name:'prod_name',type:'string'},
 		{name:'prod_spec',type:'string'},
+		{name:'type_name',type:'string'},
 		{name:'subtype_name',type:'string'},
 		{name:'supplier_name',type:'string'},
 		{name:'store_name',type:'string'},

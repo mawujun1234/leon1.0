@@ -69,8 +69,11 @@ Ext.onReady(function(){
 		listeners:{
 			change:function(field,newValue, oldValue){
 				subtype_combox.clearValue( );
-				subtype_combox.getStore().getProxy().extraParams={equipmentType_id:newValue};
-				subtype_combox.getStore().reload();
+				if(newValue){
+					subtype_combox.getStore().getProxy().extraParams={equipmentType_id:newValue};
+					subtype_combox.getStore().reload();
+				}
+				
 			}
 		}
 	});
@@ -88,6 +91,15 @@ Ext.onReady(function(){
 				Ext.Msg.alert("消息","请先选择大类!");
 				return false;
 			}
+//			change:function(){
+//				//当小类变化后，品名要清空
+//				prod_id.setValue(""); 
+//				prod_name.setValue(""); 
+//				brand_id.setValue(""); 
+//				brand_name.setValue(""); 
+//				style.setValue(""); 
+//				prod_spec.setValue(""); 
+//			}
 		}
 	});
 	var prod_id=Ext.create('Ext.form.field.Hidden',{
@@ -161,16 +173,24 @@ Ext.onReady(function(){
 	});
 	var style=Ext.create('Ext.form.field.Text',{
 		flex:1,
+		readOnly:true,
 		xtype:'textfield',itemId:'style_field',fieldLabel:'型号',name:'style',labelWidth:50,allowBlank:false,labelAlign:'right'});
 	var prod_spec=Ext.create('Ext.form.field.Text',{
 		flex:1,
+		readOnly:true,
 		xtype:'textfield',itemId:'style_field',fieldLabel:'规格',name:'prod_spec',labelWidth:50,allowBlank:false,labelAlign:'right'});
 	
 	var supplier_combox=Ext.create('Ems.baseinfo.SupplierCombo',{
 		labelAlign:'right',
 		labelWidth:40,
 		flex:1,
-		allowBlank: false
+		allowBlank: true
+	});
+	var orderNum_field=Ext.create('Ext.form.field.Number',{
+		xtype:'numberfield',itemId:'orderNum_field',fieldLabel:'数目',name:'orderNum',minValue:1,labelWidth:40,listeners:{change:countTotal},allowBlank:false,labelAlign:'right',value:1
+	});
+	var unitprice_field=Ext.create('Ext.form.field.Number',{
+		xtype:'numberfield',itemId:'unitprice_field',fieldLabel:'单价(元)',name:'unitPrice',minValue:0,labelWidth:80,listeners:{change:countTotal},allowBlank:true,labelAlign:'right'
 	});
 	var totalprice_display=Ext.create('Ext.form.field.Display',{
 		xtype:'displayfield',fieldLabel:'总价(元)',name:'totalprice',labelWidth:60,submitValue : true,labelAlign:'right',width:180
@@ -245,28 +265,43 @@ Ext.onReady(function(){
 	}
 	
 	function addEquip(){
+		type_combox.enable();
+		subtype_combox.enable();
+		if(equip_grid.click_record){
+			equipStore.remove(equip_grid.click_record);
+		}
+		equip_grid.click_record=null;
+		
 		var equipform=step1.down('form');
         var form=equipform.getForm();
 		if(form.isValid()){
-			var obj=form.getValues();
+			//var obj=form.getValues();
+			if(!supplier_combox.getValue()){
+				alert("请选择供应商!");
+				return;
+			}
+			console.log("新增或修改:"+type_combox.getValue());
+			console.log("新增或修改:"+order_no.getValue());
+			//console.log(obj.subtype_id);
 		    var record=new Ext.create('Ems.store.Order',{
 		    	orderNo:order_no.getValue(),
-		    	type_id:obj.type_id,
-	            subtype_id:obj.subtype_id,
+		    	type_id:type_combox.getValue(),
+		    	type_name:type_combox.getRawValue(),
+	            subtype_id:subtype_combox.getValue(),
 	            subtype_name:subtype_combox.getRawValue(),
 	            prod_id:prod_id.getValue(),
 	            prod_name:prod_name.getValue(),
 	            prod_spec:prod_spec.getValue(),
 	            brand_id:brand_id.getValue(),
 	            brand_name:brand_name.getValue(),
-	            supplier_id:obj.supplier_id,
+	            supplier_id:supplier_combox.getValue(),
 	            supplier_name:supplier_combox.getRawValue(),
 	            style:style.getValue(),
 	            store_id:store_combox.getValue(),
 	            store_name:store_combox.getRawValue(),
-	            orderNum:obj.orderNum,
-	            unitPrice:obj.unitPrice,
-	            totalprice:obj.totalprice,
+	            orderNum:orderNum_field.getValue(),
+	            unitPrice:unitprice_field.getValue(),
+	            totalprice:totalprice_display.getValue(),
 	            orderDate:orderDate.getValue(),
 	            operater:loginUserId
 		    })
@@ -274,8 +309,64 @@ Ext.onReady(function(){
 			//订单号和仓库变味不可编辑
 			order_no.disable();
 			store_combox.disable();
+			
+			//清空信息
+			type_combox.clearValue();
+			subtype_combox.clearValue();
+			prod_id.setValue(""); 
+			prod_name.setValue(""); 
+			brand_id.setValue(""); 
+			brand_name.setValue(""); 
+			style.setValue(""); 
+			prod_spec.setValue(""); 
+			supplier_combox.clearValue();
+			orderNum_field.setValue(1); 
+			unitprice_field.setValue(0);
+			totalprice_display.setValue(0);
 		}
+		
+		
 	}
+	
+	equip_grid.on('itemclick',function(view, record, item, index, e, eOpts){
+		console.log(record.get("type_id"));
+		console.log(record.get("type_name"));
+			//var type_model= type_combox.getStore().createModel({id:record.get("type_id"),text:record.get("type_name")});
+			//type_combox.setValue(type_model);
+			//alert(type_combox.getValue());
+			
+			//var subtype_model= subtype_combox.getStore().createModel({id:record.get("subtype_id"),text:record.get("subtype_name")});
+			//subtype_combox.setValue(subtype_model);
+		
+			type_combox.setValue(record.get("type_id"));
+			var fun=function(){alert(record.get("subtype_id"));
+				subtype_combox.setValue(record.get("subtype_id"));
+				subtype_combox.getStore().un("load",fun);
+			}
+			subtype_combox.getStore().on("load",fun);
+			
+			
+			prod_id.setValue(record.get("prod_id")); 
+			prod_name.setValue(record.get("prod_name")); 
+			brand_id.setValue(record.get("brand_id")); 
+			brand_name.setValue(record.get("brand_name")); 
+			style.setValue(record.get("style")); 
+			prod_spec.setValue(record.get("prod_spec")); 
+			
+			var supplier_model= supplier_combox.getStore().createModel({id:record.get("supplier_id"),name:record.get("supplier_name")});
+			supplier_combox.setValue(supplier_model);
+			//supplier_combox.setValue(record.get("supplier_id"));
+			//supplier_combox.setRawValue(record.get("supplier_name"));
+			
+			orderNum_field.setValue(record.get("orderNum")); 
+			unitprice_field.setValue(record.get("unitPrice"));
+			totalprice_display.setValue(record.get("totalprice"));
+			
+			type_combox.disable();
+			subtype_combox.disable();
+			
+			equip_grid.click_record=record;
+	});
 	
 	var step1=Ext.create('Ext.panel.Panel',{
         layout: {
@@ -290,14 +381,15 @@ Ext.onReady(function(){
         							{xtype:'fieldcontainer',layout: 'hbox',items:[prod_spec]},
                                     {xtype:'fieldcontainer',layout: 'hbox',items:[
                                    		supplier_combox,
-                                    	{xtype:'numberfield',itemId:'orderNum_field',fieldLabel:'数目',name:'orderNum',minValue:1,labelWidth:40,listeners:{change:countTotal},allowBlank:false,labelAlign:'right',value:1},
-                                    	{xtype:'numberfield',itemId:'unitprice_field',fieldLabel:'单价(元)',name:'unitPrice',minValue:0,labelWidth:80,listeners:{change:countTotal},allowBlank:true,labelAlign:'right'},
+                                    	orderNum_field,
+                                    	unitprice_field,
 										totalprice_display
 									  ]
 									}
 		            		       
 		            		        ]},
-        {layout:{type:'hbox',algin:'stretch'},items:[{flex:1,border:false,html:'<HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=3>'},{xtype:'button',text:'添加',handler:addEquip,width:70,iconCls:'icon-add',margin:'0 5px 0 5px'}]},
+        {layout:{type:'hbox',algin:'stretch'},items:[{flex:1,border:false,html:'<HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=3>'},
+        	{xtype:'button',text:'添加或修改',handler:addEquip,width:70,margin:'0 5px 0 5px'}]},
         equip_grid,
         {html:'<HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=3>'},
         {html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;一次只能输入一个订单'}],

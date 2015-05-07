@@ -99,6 +99,8 @@ public class OrderService extends AbstractService<Order, String>{
 			//创建订单
 			orderRepository.create(order);
 			
+			//是否需要把订单拆分成 主订单和明细订单，先不切换吧，影响不大，而且大部分订单都是只有一种设备,而且改动量会比较大
+			添加订单状态，把条码的生成放在订单确认的时候
 			//创建该订单的条码号
 			int maxsd=getMaxsd(order,y2md);	
 			int nums = order.getOrderNum();

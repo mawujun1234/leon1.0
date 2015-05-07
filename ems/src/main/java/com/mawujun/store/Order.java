@@ -23,6 +23,11 @@ public class Order extends UUIDEntity {
 	private String orderNo;//订单号
 	@Column(length=36)
 	private String store_id;
+	private Date orderDate;//订购日期
+	@Column(length=36)
+	private String operater;//操作人的id
+	
+	
 	@Column(length=2)
 	private String type_id;//类型id
 	@Column(length=4)
@@ -47,9 +52,7 @@ public class Order extends UUIDEntity {
 	private Integer orderNum=0;//订货数量
 	private Integer totalNum=0;//累计入库数量
 	
-	private Date orderDate;//订购日期
-	@Column(length=36)
-	private String operater;//操作人的id
+	
 
 	/**
 	 * 返回订单状态，true表示已经完成了，false表示还没有完成
