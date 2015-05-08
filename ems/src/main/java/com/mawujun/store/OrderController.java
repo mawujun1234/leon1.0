@@ -163,6 +163,21 @@ public class OrderController {
 		return "success";
 	}
 	
+	@RequestMapping("/order/editover.do")
+	@ResponseBody
+	public String editover(String orderNo) throws  IOException{
+		orderService.editover(orderNo);
+		return "success";
+	}
+	
+	@RequestMapping("/order/delete.do")
+	@ResponseBody
+	public String delete(String orderNo) throws  IOException{
+		orderService.delete(orderNo);
+		return "success";
+	}
+	
+	
 	@RequestMapping("/order/exportBarcode.do")
 	@ResponseBody
 	public String exportBarcode(HttpServletRequest request,HttpServletResponse response,@RequestBody OrderVO[] orderVOs) throws  IOException{

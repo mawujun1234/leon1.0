@@ -94,14 +94,58 @@ public class OrderService extends AbstractService<Order, String>{
 		if(count!=null && count>0){
 			throw new BusinessException("该订单号已经存在");
 		}
-		String y2md=y2mdDateFormat.format(new Date());//年月日
+//		String y2md=y2mdDateFormat.format(new Date());//年月日
+		Date createDate=new Date();
 		for(Order order:orderes){	
+			order.setCreateDate(createDate);
 			//创建订单
 			orderRepository.create(order);
 			
-			//是否需要把订单拆分成 主订单和明细订单，先不切换吧，影响不大，而且大部分订单都是只有一种设备,而且改动量会比较大
-			添加订单状态，把条码的生成放在订单确认的时候
-			//创建该订单的条码号
+//			//是否需要把订单拆分成 主订单和明细订单，先不切换吧，影响不大，而且大部分订单都是只有一种设备,而且改动量会比较大
+//			添加订单状态，把条码的生成放在订单确认的时候
+//			//创建该订单的条码号
+//			int maxsd=getMaxsd(order,y2md);	
+//			int nums = order.getOrderNum();
+//			if(maxsd+nums>9999){
+//				throw new BusinessException("同一天同个小类的的设备数量不能超过9999件,请明天再录入!");
+//			}
+//			for (int i = 1; i <= nums; i++) {
+//				String ecode = generateBarcode(order, i+maxsd, y2md);
+//				//ecodes.add(ecode);
+//				//保存这个订单明细下所有生成过的条码
+//				Barcode bar=new Barcode();
+//				bar.setEcode(ecode);
+//				bar.setOrder_id(order.getId());
+//				bar.setYmd(y2md);
+//				bar.setSeqNum(i);
+//				barcodeRepository.create(bar);
+//			}
+//			
+//			//保存今天的这个订单号的最大值，因为同一天同个型号的可能会录入多次，因为有多个仓库
+//			barcode_MaxNumRepository.update(Cnd.update().set(M.Barcode_MaxNum.num, nums+maxsd)
+//					.andEquals(M.Barcode_MaxNum.subtype_id, order.getSubtype_id())
+//					.andEquals(M.Barcode_MaxNum.prod_id, order.getProd_id())
+//					//.andEquals(M.Barcode_MaxNum.brand_id, order.getBrand_id())
+//					//.andEquals(M.Barcode_MaxNum.supplier_id, order.getSupplier_id())
+//					.andEquals(M.Barcode_MaxNum.ymd,y2md)
+//					.andEquals(M.Barcode_MaxNum.num,maxsd));//用num做条件，是放置并发的时候，出现覆盖
+			
+		}
+	}
+	/**
+	 * 把订单确认为 订单编辑完成了
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param orderNo
+	 */
+	public void editover(String orderNo) {
+		orderRepository.update(Cnd.update().set(M.Order.status, OrderStatus.editover).andEquals(M.Order.orderNo, orderNo));
+		List<Order> orderes=orderRepository.query(Cnd.select().andEquals(M.Order.orderNo, orderNo));
+		
+		String y2md=y2mdDateFormat.format(new Date());//年月日
+		//同时生成条码
+		//是否需要把订单拆分成 主订单和明细订单，先不切换吧，影响不大，而且大部分订单都是只有一种设备,而且改动量会比较大
+		//创建该订单的条码号
+		for(Order order:orderes){
 			int maxsd=getMaxsd(order,y2md);	
 			int nums = order.getOrderNum();
 			if(maxsd+nums>9999){
@@ -127,8 +171,15 @@ public class OrderService extends AbstractService<Order, String>{
 					//.andEquals(M.Barcode_MaxNum.supplier_id, order.getSupplier_id())
 					.andEquals(M.Barcode_MaxNum.ymd,y2md)
 					.andEquals(M.Barcode_MaxNum.num,maxsd));//用num做条件，是放置并发的时候，出现覆盖
-			
 		}
+	}
+	
+	public void delete(String orderNo) {
+		String status=orderRepository.queryStatus(orderNo);
+		if(OrderStatus.editover.toString().equalsIgnoreCase(status)){
+			throw new BusinessException("订单已确认，不能删除!");
+		}
+		orderRepository.deleteBatch(Cnd.delete().andEquals(M.Order.orderNo, orderNo));
 	}
 	/**
 	 * 返回条码和型号

@@ -280,8 +280,8 @@ Ext.onReady(function(){
 				alert("请选择供应商!");
 				return;
 			}
-			console.log("新增或修改:"+type_combox.getValue());
-			console.log("新增或修改:"+order_no.getValue());
+			//console.log("新增或修改:"+type_combox.getValue());
+			//console.log("新增或修改:"+order_no.getValue());
 			//console.log(obj.subtype_id);
 		    var record=new Ext.create('Ems.store.Order',{
 		    	orderNo:order_no.getValue(),
@@ -329,8 +329,8 @@ Ext.onReady(function(){
 	}
 	
 	equip_grid.on('itemclick',function(view, record, item, index, e, eOpts){
-		console.log(record.get("type_id"));
-		console.log(record.get("type_name"));
+		//console.log(record.get("type_id"));
+		//console.log(record.get("type_name"));
 			//var type_model= type_combox.getStore().createModel({id:record.get("type_id"),text:record.get("type_name")});
 			//type_combox.setValue(type_model);
 			//alert(type_combox.getValue());
@@ -339,7 +339,7 @@ Ext.onReady(function(){
 			//subtype_combox.setValue(subtype_model);
 		
 			type_combox.setValue(record.get("type_id"));
-			var fun=function(){alert(record.get("subtype_id"));
+			var fun=function(){
 				subtype_combox.setValue(record.get("subtype_id"));
 				subtype_combox.getStore().un("load",fun);
 			}

@@ -16,15 +16,9 @@ Ext.define('Ems.store.OrderGrid',{
 	initComponent: function () {
       var me = this;
       me.columns=[
-		{dataIndex:'orderNo',text:'订单号'},
+		{dataIndex:'orderNo',text:'订单号',width:150},
 		{dataIndex:'store_name',text:'入库仓库',flex:1},
-		{dataIndex: 'status_name',text: '状态',renderer:function(value){
-			if(value=="完成"){
-				return "<span style='color:green;'>"+value+"</span>";
-			} else {
-				return "<span style='color:red;'>"+value+"</span>";
-			}
-		}},
+		{dataIndex: 'status_name',text: '状态',width:70},
 		{dataIndex:'orderDate',text:'订购日期',xtype: 'datecolumn',   format:'Y-m-d',width:80}
     	//{dataIndex: 'operater',text: '经办人'}
       ];
@@ -78,7 +72,7 @@ Ext.define('Ems.store.OrderGrid',{
 	  
 	  
 	  var date_start=Ext.create('Ext.form.field.Date',{
-	  	fieldLabel: '时间范围',
+	  	fieldLabel: '订购日期',
 	  	labelWidth:60,
 	  	width:160,
 	  	format:'Y-m-d',
@@ -125,6 +119,50 @@ Ext.define('Ems.store.OrderGrid',{
 			iconCls:'form-search-button',
 			handler: function(btn){
 				me.store.reload();
+			}
+		  },{
+			text: '确认',
+			icon:'../icons/cog.png',
+			//iconCls:'form-search-button',
+			handler: function(btn){
+				Ext.Msg.confirm("提醒","确认后,该订单将不可再修改!",function(btn){
+					if(btn=='yes'){
+						var record=me.getSelectionModel().getLastSelected();
+						Ext.Ajax.request({
+							url:Ext.ContextPath+'/order/editover.do',
+							method:'POST',
+							params:{orderNo:record.get("orderNo")},
+							success:function(resposne){
+								me.store.reload();
+							}
+						});
+					
+					}
+				});
+			}
+		  },{
+			text: '删除',
+			//iconCls:'form-search-button',
+			icon:'../icons/action_delete.gif',
+			handler: function(btn){
+				Ext.Msg.confirm("提醒","确认要删除吗?",function(btn){
+					if(btn=='yes'){
+						var record=me.getSelectionModel().getLastSelected();
+						if(record.get("status")=='editover'){
+							alert("状态是'已确认',不能删除！");
+							return;
+						}
+						Ext.Ajax.request({
+							url:Ext.ContextPath+'/order/delete.do',
+							method:'POST',
+							params:{orderNo:record.get("orderNo")},
+							success:function(resposne){
+								me.store.reload();
+							}
+						});
+					
+					}
+				});
 			}
 		  }] 
 		}]

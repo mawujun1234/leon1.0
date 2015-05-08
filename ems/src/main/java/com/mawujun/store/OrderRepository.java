@@ -31,4 +31,6 @@ public interface OrderRepository extends IRepository<Order, String>{
 	public void updateTotalNum(@Param("order_id")String order_id,@Param("totalNum")String totalNum);
 	
 	public List<BarcodeVO> getBarcodesRange(Map<String,Object> params);
+	
+	public String queryStatus(@Param("orderNo")String orderNo);
 }

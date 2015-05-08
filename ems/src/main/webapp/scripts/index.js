@@ -52,39 +52,41 @@ Ext.onReady(function() {
 		contentEl:'div-center',
 		id:'doc-panel',
 	    region:'center',
-        plugins: [Ext.create('Ext.ux.TabCloseMenu', {
-            extraItemsTail: [
-                '-',
-                {
-                    text: 'Closable',
-                    checked: true,
-                    hideOnClick: true,
-                    handler: function (item) {
-                		item.setDisabled(false);
-                    	currentItem.tab.setClosable(item.checked);
-                    }
-                }
-            ],
-            listeners: {
-                aftermenu: function () {
-                    currentItem = null;
-                },
-                beforemenu: function (menu, item) {
-                    var menuitem = menu.child('*[text="Closable"]');
-                    currentItem = item;
-                    if(item.getId()!='welcome-panel'){
-                    	if(menuitem.isDisabled()){
-                    		menuitem.setDisabled(false);
-                    	}
-                    	menuitem.setChecked(item.closable);
-                    }else{
-                    	if(!menuitem.isDisabled()){
-                    		menuitem.setDisabled(true);
-                    	}
-                    }
-                }
-            }
-        }),{
+        plugins: [
+//        Ext.create('Ext.ux.TabCloseMenu', {
+////            extraItemsTail: [
+////                '-',
+////                {
+////                    text: 'Closable',
+////                    checked: true,
+////                    hideOnClick: true,
+////                    handler: function (item) {
+////                		item.setDisabled(false);
+////                    	currentItem.tab.setClosable(item.checked);
+////                    }
+////                }
+////            ],
+//            listeners: {
+//                aftermenu: function () {
+//                    //currentItem = null;
+//                },
+//                beforemenu: function (menu, item) {
+////                    var menuitem = menu.child('*[text="Closable"]');
+////                    currentItem = item;
+////                    if(item.getId()!='welcome-panel'){
+////                    	if(menuitem.isDisabled()){
+////                    		menuitem.setDisabled(false);
+////                    	}
+////                    	menuitem.setChecked(item.closable);
+////                    }else{
+////                    	if(!menuitem.isDisabled()){
+////                    		menuitem.setDisabled(true);
+////                    	}
+////                    }
+//                }
+//            }
+//        }),
+        	{
             ptype: 'tabscrollermenu',
             maxText  : 15,
             pageSize : 7

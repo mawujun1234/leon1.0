@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -26,6 +28,11 @@ public class Order extends UUIDEntity {
 	private Date orderDate;//订购日期
 	@Column(length=36)
 	private String operater;//操作人的id
+	@Enumerated(EnumType.STRING)
+	@Column(length=15)
+	private OrderStatus status=OrderStatus.edit;//状态有两个edit，或者 editover
+	
+	private Date createDate;//订单建立日期
 	
 	
 	@Column(length=2)
@@ -54,18 +61,7 @@ public class Order extends UUIDEntity {
 	
 	
 
-	/**
-	 * 返回订单状态，true表示已经完成了，false表示还没有完成
-	 * @author mawujun email:160649888@163.com qq:16064988
-	 * @return
-	 */
-	public Boolean getStatus(){
-		if(this.orderNum==this.totalNum){
-			return true;
-		} else {
-			return false;
-		}
-	}
+
 	
 	
 //	@org.hibernate.annotations.Type(type="yes_no")
@@ -166,5 +162,19 @@ public class Order extends UUIDEntity {
 	public void setOrderNo(String orderNo) {
 		this.orderNo = orderNo;
 	}
+	public OrderStatus getStatus() {
+		return status;
+	}
+	public void setStatus(OrderStatus status) {
+		this.status = status;
+	}
+	public Date getCreateDate() {
+		return createDate;
+	}
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+
 	
 }

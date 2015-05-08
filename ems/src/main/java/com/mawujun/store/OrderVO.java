@@ -24,11 +24,10 @@ public class OrderVO extends Order {
 	private Boolean exportStatus=false;//有
 	
 	public String getStatus_name() {
-		if(this.getOrderNum()==this.getTotalNum()){
-			return "完成";
-		} else {
-			return "未完成";
+		if(this.getStatus()!=null){
+			return this.getStatus().getName();
 		}
+		return null;
 	}
 	
 	public String getSubtype_name() {
