@@ -64,8 +64,52 @@ Ext.define('Ems.store.OrderListGrid',{
 				grid.getStore().reload();
 			},
 			iconCls: 'form-reload-button'
+		},{
+			text: '新增',
+			//itemId:'reload',
+			disabled:me.disabledAction,
+			handler: function(btn){
+				me.addList();
+			},
+			iconCls: 'form-add-button'
+		},{
+			text: '修改',
+			//itemId:'reload',
+			//disabled:me.disabledAction,
+			handler: function(btn){
+				var grid=btn.up("grid");
+				grid.getStore().reload();
+			},
+			iconCls: 'form-update-button'
+		},{
+			text: '删除',
+			//itemId:'reload',
+			//disabled:me.disabledAction,
+			handler: function(btn){
+				var grid=btn.up("grid");
+				grid.getStore().reload();
+			},
+			iconCls: 'form-delete-button'
 		}]
        
       me.callParent();
+	},
+	//添加订单明细，参数是订单信息
+	addList:function(orderNo){
+		var form=Ext.create('Ems.store.OrderForm',{});
+		var win=Ext.create('Ext.window.Window',{
+			modal:true,
+			title:"新增",
+			items:[form]
+		});
+		win.show();
+	},
+	//添加订单明细，参数是订单信息
+	updateList:function(order){
+	
+	},
+	//添加订单明细，参数是订单信息
+	deleteList:function(id){
+	
 	}
 });
