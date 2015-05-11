@@ -304,6 +304,51 @@ public class OrderController {
 		
 
 	}
+	
+	
+	
+	/**
+	 * 添加明细数据
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param orderNo
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping("/order/addList.do")
+	@ResponseBody
+	public String addList(Order order) throws  IOException{
+		orderService.addList(order);
+		return "success";
+	}
+	
+	/**
+	 * 更新明细数据
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param orderNo
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping("/order/updateList.do")
+	@ResponseBody
+	public String updateList(Order order) throws  IOException{
+		orderService.updateList(order);
+		return "success";
+	}
+	
+	/**
+	 * 删除明细数据
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param orderNo
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping("/order/deleteList.do")
+	@ResponseBody
+	public String deleteList(String id) throws  IOException{
+		orderService.deleteList(id);
+		return "success";
+	}
+	
 
 	
 }

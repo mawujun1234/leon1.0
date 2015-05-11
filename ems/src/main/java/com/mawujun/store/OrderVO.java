@@ -12,6 +12,7 @@ public class OrderVO extends Order {
 	@Transient
 	private String prod_name;
 	private String prod_spec;
+	private String prod_unit;
 	@Transient
 	private String brand_name;
 	@Transient
@@ -79,6 +80,14 @@ public class OrderVO extends Order {
 
 	public void setProd_spec(String prod_spec) {
 		this.prod_spec = prod_spec;
+	}
+
+	public String getProd_unit() {
+		return prod_unit;
+	}
+
+	public void setProd_unit(String prod_unit) {
+		this.prod_unit = prod_unit;
 	}
 	
 }

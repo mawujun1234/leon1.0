@@ -118,6 +118,15 @@ Ext.onReady(function(){
 		readOnly:true,
 		name:'prod_name'
 	});
+	var prod_unit=Ext.create('Ext.form.field.Text',{
+		fieldLabel: '单位',
+		labelWidth:40,
+		width:80,
+		labelAlign:'right',
+		allowBlank: false,
+		readOnly:true,
+		name:'prod_unit'
+	});
 	var queryProd_button=Ext.create('Ext.button.Button',{
 		text:'选择品名',
 		margin:'0 0 0 5',
@@ -133,6 +142,7 @@ Ext.onReady(function(){
 						prod_id.setValue(record.get("id"));
 						prod_name.setValue(record.get("name"));
 						prod_spec.setValue(record.get("spec"));
+						prod_unit.setValue(record.get("unit"));
 						
 						brand_id.setValue(record.get("brand_id"));
 						brand_name.setValue(record.get("brand_name"));
@@ -232,6 +242,7 @@ Ext.onReady(function(){
 							    return value;
 							}
 				  },
+				  {header: '单位', dataIndex: 'prod_unit',width:70},
     	          {header: '数量', dataIndex: 'orderNum',width:70},
     	          {header: '单价(元)', dataIndex: 'unitPrice',width:70},
     	          {header: '总价(元)', dataIndex: 'totalprice',width:70}
@@ -292,6 +303,7 @@ Ext.onReady(function(){
 	            prod_id:prod_id.getValue(),
 	            prod_name:prod_name.getValue(),
 	            prod_spec:prod_spec.getValue(),
+	            prod_unit:prod_unit.getValue(),
 	            brand_id:brand_id.getValue(),
 	            brand_name:brand_name.getValue(),
 	            supplier_id:supplier_combox.getValue(),
@@ -315,6 +327,7 @@ Ext.onReady(function(){
 			subtype_combox.clearValue();
 			prod_id.setValue(""); 
 			prod_name.setValue(""); 
+			prod_unit.setValue(""); 
 			brand_id.setValue(""); 
 			brand_name.setValue(""); 
 			style.setValue(""); 
@@ -352,6 +365,7 @@ Ext.onReady(function(){
 			brand_name.setValue(record.get("brand_name")); 
 			style.setValue(record.get("style")); 
 			prod_spec.setValue(record.get("prod_spec")); 
+			prod_unit.setValue(record.get("prod_unit")); 
 			
 			var supplier_model= supplier_combox.getStore().createModel({id:record.get("supplier_id"),name:record.get("supplier_name")});
 			supplier_combox.setValue(supplier_model);
@@ -378,7 +392,7 @@ Ext.onReady(function(){
         items:[{xtype:'form',items:[
         							{xtype:'fieldcontainer',layout: 'hbox',items:[order_no,store_combox,orderDate,operater]},
         							{xtype:'fieldcontainer',layout: 'hbox',items:[type_combox,subtype_combox,prod_name,queryProd_button,brand_name,style]},
-        							{xtype:'fieldcontainer',layout: 'hbox',items:[prod_spec]},
+        							{xtype:'fieldcontainer',layout: 'hbox',items:[prod_spec,prod_unit]},
                                     {xtype:'fieldcontainer',layout: 'hbox',items:[
                                    		supplier_combox,
                                     	orderNum_field,

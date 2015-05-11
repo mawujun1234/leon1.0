@@ -26,7 +26,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	order by a.orderDate desc
     </select>
     <select id="queryList" resultType="com.mawujun.store.OrderVO" parameterType="map">
-    	SELECT a.*,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name
+    	SELECT a.*,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,c.unit as prod_unit,d.name as brand_name,e.name as supplier_name
 	    FROM ems_order a
 	    inner join ems_equipmentsubtype b on a.subtype_id=b.id
 		inner join ems_equipmentprod c on a.prod_id=c.id
@@ -98,6 +98,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		inner join ems_supplier e on a.supplier_id=e.id
 		inner join ems_Barcode f on a.id=f.order_id and f.seqnum &gt; #{startNum} and f.seqnum &lt;= #{endNum}
 		where a.id=#{order_id}   
+    </select>
+    
+    <!-- 获取订单的主信息，就是 明细表对应主表的信息 ,当字段发生变化的时候要注意OrderService-->
+    <select id="getMainInfo" resultType="com.mawujun.store.Order" parameterType="map">
+    	select distinct orderNo,store_id,orderDate,operater,status,createDate from ems_Order a
+    	where a.orderNo=#{orderNo}
     </select>
 </mapper>
 

@@ -1,7 +1,8 @@
 Ext.define('Ems.store.OrderListGrid',{
 	extend:'Ext.grid.Panel',
 	requires: [
-	     'Ems.store.Order'
+	    'Ems.store.Order',
+		'Ems.store.OrderForm'
 	],
 	columnLines :true,
 	stripeRows:true,
@@ -28,7 +29,9 @@ Ext.define('Ems.store.OrderListGrid',{
 		    return value;
 		}
 		},
+		{header: '单位', dataIndex: 'prod_unit',width:70},
     	{header: '订购数量',dataIndex:'orderNum',xtype: 'numbercolumn', format:'0',width:60},
+    	{header: '单价',dataIndex:'unitPrice',xtype: 'numbercolumn', format:'0',width:60},
     	{header: '入库数量',dataIndex:'totalNum',xtype: 'numbercolumn', format:'0',width:60}
       ];
       
@@ -58,7 +61,7 @@ Ext.define('Ems.store.OrderListGrid',{
 	me.tbar=	[{
 			text: '刷新',
 			itemId:'reload',
-			disabled:me.disabledAction,
+			//disabled:me.disabledAction,
 			handler: function(btn){
 				var grid=btn.up("grid");
 				grid.getStore().reload();
@@ -67,7 +70,7 @@ Ext.define('Ems.store.OrderListGrid',{
 		},{
 			text: '新增',
 			//itemId:'reload',
-			disabled:me.disabledAction,
+			//disabled:me.disabledAction,
 			handler: function(btn){
 				me.addList();
 			},
@@ -77,8 +80,7 @@ Ext.define('Ems.store.OrderListGrid',{
 			//itemId:'reload',
 			//disabled:me.disabledAction,
 			handler: function(btn){
-				var grid=btn.up("grid");
-				grid.getStore().reload();
+				me.updateList();
 			},
 			iconCls: 'form-update-button'
 		},{
@@ -86,8 +88,7 @@ Ext.define('Ems.store.OrderListGrid',{
 			//itemId:'reload',
 			//disabled:me.disabledAction,
 			handler: function(btn){
-				var grid=btn.up("grid");
-				grid.getStore().reload();
+				me.deleteList();
 			},
 			iconCls: 'form-delete-button'
 		}]
@@ -95,21 +96,88 @@ Ext.define('Ems.store.OrderListGrid',{
       me.callParent();
 	},
 	//添加订单明细，参数是订单信息
-	addList:function(orderNo){
-		var form=Ext.create('Ems.store.OrderForm',{});
+	addList:function(){
+		var me=this;
+		var documentWidth=Ext.getBody().getWidth();
+		var orderNo=this.getStore().getProxy().extraParams.orderNo;
+		if(!orderNo){
+       		alert("请先在左边选择一个订单!");
+       		return;
+        }
+		
+		var form=Ext.create('Ems.store.OrderForm',{
+			orderNo:orderNo,
+			url:Ext.ContextPath+'/order/addList.do',
+			listeners:{
+				saved:function(){
+					win.close();
+					me.getStore().reload();
+				}
+			}	
+		});
 		var win=Ext.create('Ext.window.Window',{
 			modal:true,
+			width:documentWidth-100,
 			title:"新增",
+			closeAction:"destroy",
+			items:[form]
+		});
+		win.show();
+	},
+	//更新订单明细，参数是订单信息
+	updateList:function(){
+		var me=this;
+		var documentWidth=Ext.getBody().getWidth();
+		var orderNo=this.getStore().getProxy().extraParams.orderNo;
+		if(!orderNo){
+       		alert("请先在左边选择一个订单!");
+       		return;
+        }
+		var record=me.getSelectionModel().getLastSelected();
+		//console.log(record.get("unitPrice"));
+		var form=Ext.create('Ems.store.OrderForm',{
+			//order_id:orderNo,
+			orderNo:orderNo,
+			url:Ext.ContextPath+'/order/updateList.do',
+			listeners:{
+				saved:function(){
+					win.close();
+					me.getStore().reload();
+					me.getSelectionModel().deselect(record);
+				}
+			}	
+		});
+		form.updateFieldValue(record);
+		
+		
+		var win=Ext.create('Ext.window.Window',{
+			modal:true,
+			width:documentWidth-100,
+			title:"更新",
+			closeAction:"destroy",
 			items:[form]
 		});
 		win.show();
 	},
 	//添加订单明细，参数是订单信息
-	updateList:function(order){
-	
-	},
-	//添加订单明细，参数是订单信息
-	deleteList:function(id){
-	
+	deleteList:function(){
+		var me=this;
+		var record = me.getSelectionModel().getLastSelected();
+		if (!record) {
+			alert("请先选择一个订单明细!");
+			return;
+		}
+		Ext.Msg.confirm("消息","确认删除吗?",function(btn){
+			if(btn=='yes'){
+				
+				Ext.Ajax.request({
+					url:Ext.ContextPath+'/order/deleteList.do',
+					params:{id:record.get("id")},
+					success:function(){
+						me.getStore().reload();
+					}
+				});
+			}
+		})
 	}
 });

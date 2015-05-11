@@ -1,5 +1,6 @@
 package com.mawujun.store;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.adjust.AdjustVO;
 import com.mawujun.baseinfo.EquipmentVO;
@@ -276,6 +279,70 @@ public class OrderService extends AbstractService<Order, String>{
 	public EquipmentVO getEquipFromBarcode(String ecode) {
 		EquipmentVO vo=orderRepository.getEquipFromBarcode(ecode);
 		return vo;
+	}
+	
+	
+	/**
+	 * 添加明细数据
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param orderNo
+	 * @return
+	 * @throws IOException
+	 */
+	public void addList(Order order) throws  IOException{
+		//获取主订单的信息
+		Order main=orderRepository.getMainInfo(order.getOrderNo());
+		if(main.getStatus().equals(OrderStatus.editover)){
+			throw new BusinessException("该订单已经不能编辑!");
+		}
+		
+		order.setStore_id(main.getStore_id());
+		order.setOrderDate(main.getOrderDate());
+		order.setOperater(main.getOperater());
+		order.setStatus(main.getStatus());
+		order.setCreateDate(main.getCreateDate());
+		
+		orderRepository.create(order);
+	}
+	
+	/**
+	 * 更新明细数据
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param orderNo
+	 * @return
+	 * @throws IOException
+	 */
+	public void updateList(Order order) throws IOException {
+		// 获取主订单的信息
+		Order main = orderRepository.get(order.getId());
+		if(main.getStatus().equals(OrderStatus.editover)){
+			throw new BusinessException("该订单已经不能编辑!");
+		}
+
+		main.setProd_id(order.getProd_id());
+		main.setBrand_id(order.getBrand_id());
+		main.setSupplier_id(order.getSupplier_id());
+		main.setStyle(order.getStyle());
+		main.setUnitPrice(order.getUnitPrice());
+		main.setOrderNum(order.getOrderNum());
+		
+
+		orderRepository.update(main);
+	}
+	
+	/**
+	 * 删除明细数据
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param orderNo
+	 * @return
+	 * @throws IOException
+	 */
+	public void deleteList(String id) throws  IOException{
+		Order main = orderRepository.get(id);
+		if(main.getStatus().equals(OrderStatus.editover)){
+			throw new BusinessException("该订单已经结束编辑，不能删除!");
+		}
+		orderRepository.deleteById(id);
 	}
 
 }

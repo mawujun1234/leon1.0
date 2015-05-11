@@ -33,4 +33,6 @@ public interface OrderRepository extends IRepository<Order, String>{
 	public List<BarcodeVO> getBarcodesRange(Map<String,Object> params);
 	
 	public String queryStatus(@Param("orderNo")String orderNo);
+	
+	public Order getMainInfo(@Param("orderNo")String orderNo);
 }
