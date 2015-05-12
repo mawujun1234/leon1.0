@@ -13,6 +13,7 @@ Ext.onReady(function(){
 	        fieldLabel: '订单号',
 	        labelAlign:'right',
             labelWidth:60,
+            width:280,
 	        //xtype:'combobox',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'store_id',

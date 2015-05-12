@@ -39,12 +39,21 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	where a.orderNo=#{orderNo}
     </select>
     <!-- 在条码导出的时候，查询还没有完成的订单 -->
-	<select id="queryUncompleteOrderno" resultType="string" parameterType="String">
+    
+    <select id="queryUncompleteOrderno" resultType="string" parameterType="String">
+    	SELECT distinct a.orderNo,a.orderDate
+	    FROM ems_order a,sys_userstore b
+		where a.store_id=b.store_id and b.user_id=#{user_id} and b.edit='Y' 
+		and a.status='editover'
+		order by a.orderDate desc
+    </select>
+	<!-- <select id="queryUncompleteOrderno" resultType="string" parameterType="String">
     	SELECT distinct a.orderNo,a.orderDate
 	    FROM ems_order a,sys_userstore b
 		where a.store_id=b.store_id and b.user_id=#{user_id} and b.edit='Y' and a.ordernum!=a.totalnum
 		order by a.orderDate desc
-    </select>
+    </select>-->
+    
     <!-- 获取某个订单的状态 -->
     <select id="queryStatus" resultType="string" parameterType="String">
     	SELECT distinct a.status
