@@ -5,7 +5,7 @@
 	导出ems的表和数据: exp system/system@ems file=E:\eclipse\workspace\leon\ems\document\dmp\daochu.dmp owner=(ems)
 	导入到新的数据库:imp ems/ems@ems   file=E:\eclipse\workspace\leon\ems\document\dmp\daochu0508.dmp full=Y
 	不同名用户导入
-	imp system/test@xe fromuser=hkb touser=hkb_new file=c:\orabackup\hkbfull.dmp
+		imp system/test@xe fromuser=hkb touser=hkb_new file=c:\orabackup\hkbfull.dmp
 	空表不能导出的问题：http://www.2cto.com/database/201211/166179.html
 		alter system set deferred_segment_creation=false scope=both;
 	http://huanyue.iteye.com/blog/533982
@@ -14,6 +14,17 @@
 	drop user ems cascade;
 	create user ems identified by ems;
 	grant dba,connect,resource to ems;
+	
+	
+	
+=====================================================================================================测试库的更新
+		drop user emstest cascade;
+	create user emstest identified by emstest;
+	grant dba,connect,resource to emstest;
+	
+	imp emstest/emstest@emstest   file=E:\eclipse\workspace\leon\ems\document\dmp\daochu0508.dmp fromuser=ems touser=emstest
+	
+	
 	
 	
 	

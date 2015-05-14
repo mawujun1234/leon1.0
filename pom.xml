@@ -32,6 +32,7 @@
 			<properties>
 				<profiles.active>dev</profiles.active>
 				<log4j2.level>debug</log4j2.level>
+				<finalName>ROOT</finalName>
 			</properties>
 			<activation>
 				<activeByDefault>true</activeByDefault>
@@ -42,6 +43,7 @@
 			<properties>
 				<profiles.active>test</profiles.active>
 				<log4j2.level>debug</log4j2.level>
+				<finalName>test</finalName>
 			</properties>
 		</profile>
 		<profile>
@@ -49,6 +51,7 @@
 			<properties>
 				<profiles.active>prod</profiles.active>
 				<log4j2.level>warn</log4j2.level>
+				<finalName>ROOT</finalName>
 			</properties>
 		</profile>
 	</profiles>

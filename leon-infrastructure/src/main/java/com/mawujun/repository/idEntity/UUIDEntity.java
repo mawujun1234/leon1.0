@@ -31,7 +31,7 @@ public abstract class UUIDEntity  implements IdEntity<String>,Serializable{
 	
 	@Id
 	@GeneratedValue(generator = "system-uuid")
-	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@GenericGenerator(name = "system-uuid", strategy = "org.hibernate.id.UUIDGenerator")
 	//@GenericGenerator(name = "idGenerator", strategy = "com.mawujun.model.UUIDGenerator")
 	//@GeneratedValue(generator="idGenerator")
 	@Column(length=36,updatable=false,unique=true)

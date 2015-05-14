@@ -14,7 +14,7 @@
   <name>ems Maven Webapp</name>
   <url>http://maven.apache.org</url>
   <build>
-		<finalName>ROOT</finalName>
+		<finalName>${finalName}</finalName>
 		<!-- 进行profile的切换 -->
 		<resources>
 			<resource>
