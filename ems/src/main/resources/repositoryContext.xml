@@ -258,14 +258,12 @@
 		 </jdbc:initialize-database>
 	</beans>
 	
-	<!-- unit test环境 -->
+	<!-- unit test环境 
 	<beans profile="test">
-		 <!-- 只有在测试的时候，才需要每次连接数据库的时候都进行初始化 -->
 		<jdbc:embedded-database id="dataSource" type="H2">
-			<!--<jdbc:script location="classpath:sql/test.sql" />
-			<jdbc:script location="classpath:sql/initData.sql" />-->
+			<jdbc:script location="classpath:sql/initData.sql" />
 		</jdbc:embedded-database>
 	</beans>
-	
+	-->
 
 </beans>

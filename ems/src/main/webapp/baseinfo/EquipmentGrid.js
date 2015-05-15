@@ -41,7 +41,7 @@ Ext.define('Ems.baseinfo.EquipmentGrid',{
 	        autoLoad:false,
 	        proxy: {
 		        type: 'ajax',
-		        url: '/pole/queryEquipments.do',  // url that will load data with respect to start and limit params
+		        url: Ext.ContetxtPath+'/pole/queryEquipments.do',  // url that will load data with respect to start and limit params
 		        reader: {
 		            type: 'json',
 		            root: 'root',
