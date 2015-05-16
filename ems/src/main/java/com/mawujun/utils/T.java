@@ -121,6 +121,13 @@ public static final class ems_pole {
 	public static final String status="status";
 	public static final String id="id";
 }
+public static final class ems_project {
+	public static final String name="name";
+	public static final String sname="sname";
+	public static final String memo="memo";
+	public static final String status="status";
+	public static final String id="id";
+}
 public static final class ems_store {
 	public static final String name="name";
 	public static final String type="type";
@@ -430,7 +437,12 @@ public static final class ems_order {
 	public static final String orderDate="orderDate";
 	public static final String operater="operater";
 	public static final String status="status";
+	public static final String project_id="project_id";
 	public static final String createDate="createDate";
+	public static final String id="id";
+}
+public static final class ems_orderlist {
+	public static final String order_id="order_id";
 	public static final String type_id="type_id";
 	public static final String subtype_id="subtype_id";
 	public static final String prod_id="prod_id";
@@ -440,6 +452,7 @@ public static final class ems_order {
 	public static final String unitPrice="unitPrice";
 	public static final String orderNum="orderNum";
 	public static final String totalNum="totalNum";
+	public static final String printNum="printNum";
 	public static final String id="id";
 }
 public static final class sys_datarole {

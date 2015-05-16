@@ -19,25 +19,25 @@ Ext.define('Ems.store.OrderForm',{
 	initComponent: function () {
        var me = this;
        
-      // alert(me.orderNo);
-     var order_no=Ext.create('Ext.form.field.Hidden',{
+      // alert(me.order_id);
+     var order_id=Ext.create('Ext.form.field.Hidden',{
 		fieldLabel:'订单号',
-		name:'orderNo',
+		name:'order_id',
 		labelWidth:50,
 		allowBlank:false,
 		labelAlign:'right',
-		value:me.orderNo
+		value:me.order_id
 	});
-	me.order_no=order_no;
+	me.order_id=order_id;
 	
-	var order_id=Ext.create('Ext.form.field.Hidden',{
+	var id_field=Ext.create('Ext.form.field.Hidden',{
 		fieldLabel:'id',
 		name:'id',
 		labelWidth:50,
 		allowBlank:false,
 		labelAlign:'right'
 	});
-	me.order_id=order_id;
+	me.id_field=id_field;
 	
 	var type_combox=Ext.create('Ems.baseinfo.TypeCombo',{
 		labelAlign:'right',
@@ -98,6 +98,7 @@ Ext.define('Ems.store.OrderForm',{
 		labelAlign:'right',
 		allowBlank: false,
 		readOnly:true,
+		emptyText:'不可编辑',
 		name:'prod_name'
 	});
 	me.prod_name=prod_name;
@@ -108,6 +109,7 @@ Ext.define('Ems.store.OrderForm',{
 		labelAlign:'right',
 		allowBlank: false,
 		readOnly:true,
+		emptyText:'不可编辑',
 		name:'prod_unit'
 	});
 	me.prod_unit=prod_unit;
@@ -164,17 +166,20 @@ Ext.define('Ems.store.OrderForm',{
 		labelAlign:'right',
 		allowBlank: false,
 		readOnly:true,
+		emptyText:'不可编辑',
 		name:'brand_name'	
 	});
 	me.brand_name=brand_name;
 	var style=Ext.create('Ext.form.field.Text',{
 		flex:1,
 		readOnly:true,
+		emptyText:'不可编辑',
 		xtype:'textfield',itemId:'style_field',fieldLabel:'型号',name:'style',labelWidth:50,allowBlank:false,labelAlign:'right'});
 	me.prod_style=style;
 	var prod_spec=Ext.create('Ext.form.field.Text',{
 		flex:1,
 		readOnly:true,
+		emptyText:'不可编辑',
 		xtype:'textfield',itemId:'style_field',fieldLabel:'规格',name:'prod_spec',labelWidth:50,allowBlank:false,labelAlign:'right'});
 	me.prod_spec=prod_spec;
 	var supplier_combox=Ext.create('Ems.baseinfo.SupplierCombo',{
@@ -200,7 +205,7 @@ Ext.define('Ems.store.OrderForm',{
 	me.totalprice_display=totalprice_display;
 	
 	me.items=[
-			{xtype:'fieldcontainer',layout: 'hbox',items:[order_no,order_id,brand_id,prod_id]},
+			{xtype:'fieldcontainer',layout: 'hbox',items:[id_field,order_id,brand_id,prod_id]},
         							{xtype:'fieldcontainer',layout: 'hbox',items:[type_combox,subtype_combox,prod_name,queryProd_button,brand_name,style]},
         							{xtype:'fieldcontainer',layout: 'hbox',items:[prod_spec,prod_unit]},
                                     {xtype:'fieldcontainer',layout: 'hbox',items:[
@@ -251,42 +256,43 @@ Ext.define('Ems.store.OrderForm',{
 		}
 	},
 	//更新字段信息
-	updateFieldValue : function(order) {
+	updateFieldValue : function(orderlist) {
 		var me=this;
-		this.order_id.setValue(order.get("id"));
+		this.id_field.setValue(orderlist.get("id"));
+		this.order_id.setValue(orderlist.get("order_id"));
 		//this.type_combox.setValue(order.get("type_id"));
 		var fun0 = function() {
-			me.type_combox.setValue(order.get("type_id"));
-			me.type_combox.getStore().un("load", fun);
+			me.type_combox.setValue(orderlist.get("type_id"));
+			me.type_combox.getStore().un("load", fun0);
 		}
 		this.type_combox.getStore().on("load", fun0);
 		this.type_combox.getStore().load();
 		
 		var fun = function() {
-			me.subtype_combox.setValue(order.get("subtype_id"));
+			me.subtype_combox.setValue(orderlist.get("subtype_id"));
 			me.subtype_combox.getStore().un("load", fun);
 		}
 		this.subtype_combox.getStore().on("load", fun);
 
-		this.prod_id.setValue(order.get("prod_id"));
-		this.prod_name.setValue(order.get("prod_name"));
-		this.prod_unit.setValue(order.get("prod_unit"));
-		this.brand_id.setValue(order.get("brand_id"));
-		this.brand_name.setValue(order.get("brand_name"));
-		this.prod_style.setValue(order.get("style"));
-		this.prod_spec.setValue(order.get("prod_spec"));
+		this.prod_id.setValue(orderlist.get("prod_id"));
+		this.prod_name.setValue(orderlist.get("prod_name"));
+		this.prod_unit.setValue(orderlist.get("prod_unit"));
+		this.brand_id.setValue(orderlist.get("brand_id"));
+		this.brand_name.setValue(orderlist.get("brand_name"));
+		this.prod_style.setValue(orderlist.get("style"));
+		this.prod_spec.setValue(orderlist.get("prod_spec"));
 
 		var supplier_model = this.supplier_combox.getStore().createModel({
-					id : order.get("supplier_id"),
-					name : order.get("supplier_name")
+					id : orderlist.get("supplier_id"),
+					name : orderlist.get("supplier_name")
 				});
 		this.supplier_combox.setValue(supplier_model);
 
-		this.orderNum_field.setValue(order.get("orderNum"));
-		this.unitprice_field.setValue(order.get("unitPrice"));
-		this.totalprice_display.setValue(order.get("totalprice"));
+		this.orderNum_field.setValue(orderlist.get("orderNum"));
+		this.unitprice_field.setValue(orderlist.get("unitPrice"));
+		this.totalprice_display.setValue(orderlist.get("totalprice"));
 
-		this.type_combox.disable();
-		this.subtype_combox.disable();
+		this.type_combox.setEditable(false);这里的问题
+		this.subtype_combox.setEditable(false);
 	}
 });

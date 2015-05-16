@@ -1,4 +1,5 @@
 Ext.require("Ems.store.Order");
+Ext.require("Ems.store.OrderList");
 //Ext.require("Ems.store.OrderGrid");
 //Ext.require("Ems.store.OrderTree");
 //Ext.require("Ems.store.OrderForm");
@@ -116,6 +117,7 @@ Ext.onReady(function(){
 		labelAlign:'right',
 		allowBlank: false,
 		readOnly:true,
+		emptyText:'不可编辑',
 		name:'prod_name'
 	});
 	var prod_unit=Ext.create('Ext.form.field.Text',{
@@ -125,6 +127,7 @@ Ext.onReady(function(){
 		labelAlign:'right',
 		allowBlank: false,
 		readOnly:true,
+		emptyText:'不可编辑',
 		name:'prod_unit'
 	});
 	var queryProd_button=Ext.create('Ext.button.Button',{
@@ -179,15 +182,18 @@ Ext.onReady(function(){
 		labelAlign:'right',
 		allowBlank: false,
 		readOnly:true,
+		emptyText:'不可编辑',
 		name:'brand_name'	
 	});
 	var style=Ext.create('Ext.form.field.Text',{
 		flex:1,
 		readOnly:true,
+		emptyText:'不可编辑',
 		xtype:'textfield',itemId:'style_field',fieldLabel:'型号',name:'style',labelWidth:50,allowBlank:false,labelAlign:'right'});
 	var prod_spec=Ext.create('Ext.form.field.Text',{
 		flex:1,
 		readOnly:true,
+		emptyText:'不可编辑',
 		xtype:'textfield',itemId:'style_field',fieldLabel:'规格',name:'prod_spec',labelWidth:50,allowBlank:false,labelAlign:'right'});
 	
 	var supplier_combox=Ext.create('Ems.baseinfo.SupplierCombo',{
@@ -294,8 +300,9 @@ Ext.onReady(function(){
 			//console.log("新增或修改:"+type_combox.getValue());
 			//console.log("新增或修改:"+order_no.getValue());
 			//console.log(obj.subtype_id);
-		    var record=new Ext.create('Ems.store.Order',{
-		    	orderNo:order_no.getValue(),
+			
+		    var record=new Ext.create('Ems.store.OrderList',{
+		    	//orderNo:order_no.getValue(),
 		    	type_id:type_combox.getValue(),
 		    	type_name:type_combox.getRawValue(),
 	            subtype_id:subtype_combox.getValue(),
@@ -309,13 +316,13 @@ Ext.onReady(function(){
 	            supplier_id:supplier_combox.getValue(),
 	            supplier_name:supplier_combox.getRawValue(),
 	            style:style.getValue(),
-	            store_id:store_combox.getValue(),
-	            store_name:store_combox.getRawValue(),
+	            //store_id:store_combox.getValue(),
+	            //store_name:store_combox.getRawValue(),
 	            orderNum:orderNum_field.getValue(),
 	            unitPrice:unitprice_field.getValue(),
-	            totalprice:totalprice_display.getValue(),
-	            orderDate:orderDate.getValue(),
-	            operater:loginUserId
+	            totalprice:totalprice_display.getValue()
+	            //orderDate:orderDate.getValue(),
+	            //operater:loginUserId
 		    })
 			equipStore.add(record);
 			//订单号和仓库变味不可编辑
@@ -410,6 +417,22 @@ Ext.onReady(function(){
         buttons:[{text:'保存',handler:function(btn){
             if (equipStore.getCount()> 0) { 
             	Ext.getBody().mask("正在保存....");
+//            	var order=new Ext.create('Ems.store.Order',{
+//					orderNo:order_no.getValue(),
+//					store_id:store_combox.getValue(),
+//		            store_name:store_combox.getRawValue(),
+//		            orderDate:orderDate.getValue(),
+//		            operater:loginUserId
+//		            
+//				});
+            	var order={
+					orderNo:order_no.getValue(),
+					store_id:store_combox.getValue(),
+		            store_name:store_combox.getRawValue(),
+		            orderDate:orderDate.getValue(),
+		            operater:loginUserId
+		            
+				};
             	var barcodes = new Array();
             	equipStore.each(function(record){
             		barcodes.push(record.data);
@@ -420,7 +443,9 @@ Ext.onReady(function(){
 					method:'POST',
 					timeout:600000000,
 					headers:{ 'Content-Type':'application/json;charset=UTF-8'},
-					jsonData:barcodes,
+					jsonData:barcodes,//{order:order,orderLists:barcodes},
+					params:order,
+					method:"POST",
 					//params:{jsonStr:Ext.encode(equiplist)},
 					success:function(response){
 						var obj=Ext.decode(response.responseText);
@@ -428,7 +453,7 @@ Ext.onReady(function(){
 							Ext.Msg.alert("消息","成功");
 							equipStore.removeAll();
 							
-							var record=new Ext.create('Ems.store.Order',{
+							var record=new Ext.create('Ems.store.OrderList',{
 								operater:loginUserId,
 								orderDate:new Date()
 						    });

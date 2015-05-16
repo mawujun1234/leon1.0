@@ -22,7 +22,7 @@ public interface OrderRepository extends IRepository<Order, String>{
 	public Page queryList(Page page);
 	
 	
-	public List<String> queryUncompleteOrderno(@Param("user_id")String user_id);
+	public List<String> queryUncompleteOrderno(@Param("user_id")String user_id,@Param("orderNo")String orderNo);
 	
 	public List<OrderVO> query(@Param("orderNo")String orderNo);
 	
@@ -32,7 +32,7 @@ public interface OrderRepository extends IRepository<Order, String>{
 	
 	public List<BarcodeVO> getBarcodesRange(Map<String,Object> params);
 	
-	public String queryStatus(@Param("orderNo")String orderNo);
+	public String queryStatus(@Param("id")String id);
 	
-	public Order getMainInfo(@Param("orderNo")String orderNo);
+	//public Order getMainInfo(@Param("orderNo")String orderNo);
 }

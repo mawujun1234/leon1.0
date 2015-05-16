@@ -16,19 +16,19 @@ Ext.onReady(function(){
             width:280,
 	        //xtype:'combobox',
 	        //afterLabelTextTpl: Ext.required,
-	        name: 'store_id',
+	        name: 'orderNo',
 		    displayField: 'name',
 		    valueField: 'id',
-		    //queryParam: 'name',
-    		//queryMode: 'remote',
-    		//triggerAction: 'query',
-    		//minChars:-1,
-		    //trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
-		    //trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
-			//onTrigger1Click : function(){
-			//    var me = this;
-			//    me.setValue('');
-			//},
+		    queryParam: 'orderNo',
+    		queryMode: 'remote',
+    		triggerAction: 'query',
+    		minChars:2,
+		    trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
+		    trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
+			onTrigger1Click : function(){
+			    var me = this;
+			    me.setValue('');
+			},
 	        allowBlank: false,
 	        store:Ext.create('Ext.data.Store', {
 		    	fields: ['id', 'name'],

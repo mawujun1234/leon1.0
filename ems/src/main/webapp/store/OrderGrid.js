@@ -131,7 +131,7 @@ Ext.define('Ems.store.OrderGrid',{
 						Ext.Ajax.request({
 							url:Ext.ContextPath+'/order/editover.do',
 							method:'POST',
-							params:{orderNo:record.get("orderNo")},
+							params:{id:record.get("id")},
 							success:function(resposne){
 								me.store.reload();
 							}
@@ -155,7 +155,7 @@ Ext.define('Ems.store.OrderGrid',{
 						Ext.Ajax.request({
 							url:Ext.ContextPath+'/order/delete.do',
 							method:'POST',
-							params:{orderNo:record.get("orderNo")},
+							params:{id:record.get("id")},
 							success:function(resposne){
 								me.store.reload();
 							}

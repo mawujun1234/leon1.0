@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
+<mapper namespace="com.mawujun.baseinfo.ProjectRepository">
+
+	<select id="queryPage" resultType="com.mawujun.baseinfo.Project" parameterType="map">
+    	SELECT a.*
+	    FROM ems_project  a
+		<where>
+        	<if test="name!=null">
+        		a.name like #{name}
+			</if>
+        </where>
+    </select>
+    <!-- 查询是否在订单中已经使用过了-->
+    <select id="queryAlreadyUsedInOrder" resultType="long">
+    	select count(id) from ems_order
+    	where project_id=#{id}
+    </select>
+</mapper>
+

@@ -31,33 +31,29 @@ public class Order extends UUIDEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(length=15)
 	private OrderStatus status=OrderStatus.edit;//状态有两个edit，或者 editover
-	
+	@Column(length=36)
+	private String project_id;//项目id
 	private Date createDate;//订单建立日期
 	
 	
-	@Column(length=2)
-	private String type_id;//类型id
-	@Column(length=4)
-	private String subtype_id;//子类型id
-	@Column(length=6)
-	private String prod_id;//品名id
-	@Column(length=15)
-	private String brand_id;//品牌id
-	@Column(length=3)
-	private String supplier_id;//供应商id
-	@Column(length=50)
-	private String style;//型号
-	
+//	@Column(length=2)
+//	private String type_id;//类型id
+//	@Column(length=4)
+//	private String subtype_id;//子类型id
 //	@Column(length=6)
-//	private String ymd;//年月日
+//	private String prod_id;//品名id
+//	@Column(length=15)
+//	private String brand_id;//品牌id
 //	@Column(length=3)
-//	private Integer serialNum;//流水号
-	
-	@Column(precision=10,scale=2)
-	private Double unitPrice;
-	
-	private Integer orderNum=0;//订货数量
-	private Integer totalNum=0;//累计入库数量
+//	private String supplier_id;//供应商id
+//	@Column(length=50)
+//	private String style;//型号
+//	
+//	@Column(precision=10,scale=2)
+//	private Double unitPrice;
+//	
+//	private Integer orderNum=0;//订货数量
+//	private Integer totalNum=0;//累计入库数量
 	
 	
 
@@ -71,71 +67,13 @@ public class Order extends UUIDEntity {
 //	private Boolean isInStore=false;//true:已经入库，表示已经使用过了，false：表示这个条码还未使用
 
 
-	public String getSubtype_id() {
-		return subtype_id;
-	}
-	public void setSubtype_id(String subtype_id) {
-		this.subtype_id = subtype_id;
-	}
-	public String getProd_id() {
-		return prod_id;
-	}
-	public void setProd_id(String prod_id) {
-		this.prod_id = prod_id;
-	}
-	public String getBrand_id() {
-		return brand_id;
-	}
-	public void setBrand_id(String brand_id) {
-		this.brand_id = brand_id;
-	}
-	public String getSupplier_id() {
-		return supplier_id;
-	}
-	public void setSupplier_id(String supplier_id) {
-		this.supplier_id = supplier_id;
-	}
-	
-	public String getStyle() {
-		return style;
-	}
-	public void setStyle(String style) {
-		this.style = style;
-	}
-	public Double getUnitPrice() {
-		return unitPrice;
-	}
-	public void setUnitPrice(Double unitPrice) {
-		this.unitPrice = unitPrice;
-	}
 	public String getStore_id() {
 		return store_id;
 	}
 	public void setStore_id(String store_id) {
 		this.store_id = store_id;
 	}
-	public String getType_id() {
-		return type_id;
-	}
-	public void setType_id(String type_id) {
-		this.type_id = type_id;
-	}
 
-	public Integer getOrderNum() {
-		return orderNum;
-	}
-
-	public void setOrderNum(Integer orderNum) {
-		this.orderNum = orderNum;
-	}
-
-	public Integer getTotalNum() {
-		return totalNum;
-	}
-
-	public void setTotalNum(Integer totalNum) {
-		this.totalNum = totalNum;
-	}
 
 	public Date getOrderDate() {
 		return orderDate;
@@ -173,6 +111,12 @@ public class Order extends UUIDEntity {
 	}
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
+	}
+	public String getProject_id() {
+		return project_id;
+	}
+	public void setProject_id(String project_id) {
+		this.project_id = project_id;
 	}
 
 

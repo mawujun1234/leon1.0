@@ -1,7 +1,7 @@
 Ext.define('Ems.store.OrderListGrid',{
 	extend:'Ext.grid.Panel',
 	requires: [
-	    'Ems.store.Order',
+	    'Ems.store.OrderList',
 		'Ems.store.OrderForm'
 	],
 	columnLines :true,
@@ -38,7 +38,7 @@ Ext.define('Ems.store.OrderListGrid',{
 	  me.store=Ext.create('Ext.data.Store',{
 			autoSync:false,
 			pageSize:50,
-			model: 'Ems.store.Order',
+			model: 'Ems.store.OrderList',
 			autoLoad:false,
 			proxy:{
 				type:'ajax',
@@ -98,15 +98,19 @@ Ext.define('Ems.store.OrderListGrid',{
 	//添加订单明细，参数是订单信息
 	addList:function(){
 		var me=this;
+		if(me.order_status=="editover"){
+			alert("订单已确认，不能修改!");
+       		return;
+		}
 		var documentWidth=Ext.getBody().getWidth();
-		var orderNo=this.getStore().getProxy().extraParams.orderNo;
-		if(!orderNo){
+		var order_id=this.getStore().getProxy().extraParams.order_id;
+		if(!order_id){
        		alert("请先在左边选择一个订单!");
        		return;
         }
 		
 		var form=Ext.create('Ems.store.OrderForm',{
-			orderNo:orderNo,
+			order_id:order_id,
 			url:Ext.ContextPath+'/order/addList.do',
 			listeners:{
 				saved:function(){
@@ -127,17 +131,25 @@ Ext.define('Ems.store.OrderListGrid',{
 	//更新订单明细，参数是订单信息
 	updateList:function(){
 		var me=this;
+		if(me.order_status=="editover"){
+			alert("订单已确认，不能修改!");
+       		return;
+		}
 		var documentWidth=Ext.getBody().getWidth();
-		var orderNo=this.getStore().getProxy().extraParams.orderNo;
-		if(!orderNo){
+		var order_id=this.getStore().getProxy().extraParams.order_id
+		if(!order_id){
        		alert("请先在左边选择一个订单!");
        		return;
         }
 		var record=me.getSelectionModel().getLastSelected();
+		if(!record){
+			alert("请先选择一个订单明细!");
+       		return;		
+		}
 		//console.log(record.get("unitPrice"));
 		var form=Ext.create('Ems.store.OrderForm',{
-			//order_id:orderNo,
-			orderNo:orderNo,
+			//order_id:order_id,
+			order_id:order_id,
 			url:Ext.ContextPath+'/order/updateList.do',
 			listeners:{
 				saved:function(){
@@ -162,6 +174,10 @@ Ext.define('Ems.store.OrderListGrid',{
 	//添加订单明细，参数是订单信息
 	deleteList:function(){
 		var me=this;
+		if(me.order_status=="editover"){
+			alert("订单已确认，不能修改!");
+       		return;
+		}
 		var record = me.getSelectionModel().getLastSelected();
 		if (!record) {
 			alert("请先选择一个订单明细!");

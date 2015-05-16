@@ -7,7 +7,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.mawujun.store.OrderRepository">
 
 	<select id="queryMain" resultType="com.mawujun.store.OrderVO" parameterType="map">
-    	select distinct a.orderNo,store_id,orderDate,status from ems_Order a
+    	select a.* from ems_Order a
     	<where>
     		and a.store_id in (select store_id from sys_userstore c where c.user_id=#{user_id} and c.look='Y')
     		<if test="store_id!=null">
@@ -25,18 +25,18 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	</where>
     	order by a.orderDate desc
     </select>
-    <select id="queryList" resultType="com.mawujun.store.OrderVO" parameterType="map">
+    <select id="queryList" resultType="com.mawujun.store.OrderListVO" parameterType="map">
     	SELECT a.*,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,c.unit as prod_unit,d.name as brand_name,e.name as supplier_name
-	    FROM ems_order a
+	    FROM ems_orderlist a
 	    inner join ems_equipmentsubtype b on a.subtype_id=b.id
 		inner join ems_equipmentprod c on a.prod_id=c.id
 		inner join ems_brand d on a.brand_id=d.id
 		inner join ems_supplier e on a.supplier_id=e.id
-		where a.orderNo=#{orderNo}   
+		where a.order_id=#{order_id}   
     </select>
-    <select id="queryList_count" resultType="com.mawujun.store.OrderVO" parameterType="map">
-    	select count(a.id) from ems_Order a
-    	where a.orderNo=#{orderNo}
+    <select id="queryList_count" resultType="int" parameterType="map">
+    	select count(a.id) from ems_Orderlist a
+    	where a.order_id=#{order_id}
     </select>
     <!-- 在条码导出的时候，查询还没有完成的订单 -->
     
@@ -44,6 +44,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	SELECT distinct a.orderNo,a.orderDate
 	    FROM ems_order a,sys_userstore b
 		where a.store_id=b.store_id and b.user_id=#{user_id} and b.edit='Y' 
+		<if test="orderNo!=null">
+				a.orderNo like #{orderNo}
+		</if>
 		and a.status='editover'
 		order by a.orderDate desc
     </select>
@@ -56,9 +59,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     
     <!-- 获取某个订单的状态 -->
     <select id="queryStatus" resultType="string" parameterType="String">
-    	SELECT distinct a.status
+    	SELECT a.status
 	    FROM ems_order a
-		where a.orderNo=#{orderNo}
+		where a.id=#{id}
     </select>
     
    
@@ -84,11 +87,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		where a0.ecode=#{ecode}  
     </select>
 
-	
+	<!--更新订单明细中，已经入库的数量 -->
 	<select id="updateTotalNum">
-    	update ems_order 
+    	update ems_orderlist 
     	set totalNum=${totalNum}
-    	where id=#{order_id}
+    	where order_id=#{order_id}
     </select> 
     
     
@@ -109,10 +112,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		where a.id=#{order_id}   
     </select>
     
-    <!-- 获取订单的主信息，就是 明细表对应主表的信息 ,当字段发生变化的时候要注意OrderService-->
+    <!-- 获取订单的主信息，就是 明细表对应主表的信息 ,当字段发生变化的时候要注意OrderService
     <select id="getMainInfo" resultType="com.mawujun.store.Order" parameterType="map">
     	select distinct orderNo,store_id,orderDate,operater,status,createDate from ems_Order a
     	where a.orderNo=#{orderNo}
-    </select>
+    </select>-->
 </mapper>
 

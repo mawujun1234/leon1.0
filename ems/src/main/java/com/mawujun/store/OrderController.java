@@ -28,6 +28,7 @@ import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.M;
+import com.mawujun.utils.StringUtils;
 import com.mawujun.utils.page.Page;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
@@ -102,12 +103,12 @@ public class OrderController {
 	 */
 	@RequestMapping("/order/queryList.do")
 	@ResponseBody
-	public Page queryList(Integer start,Integer limit,String orderNo) {	
+	public Page queryList(Integer start,Integer limit,String order_id) {	
 		Page page=Page.getInstance(start,limit);
-		page.addParam(M.Order.orderNo, orderNo);
+		page.addParam(M.OrderList.order_id, order_id);
 		
-		Page orderes=orderService.queryList(page);
-		return orderes;
+		Page orderlists=orderService.queryList(page);
+		return orderlists;
 	}
 	
 
@@ -151,29 +152,31 @@ public class OrderController {
 	 */
 	@RequestMapping("/order/queryUncomplete.do")
 	@ResponseBody
-	public List<Map<String,String>> queryUncomplete() {	
-		
-		return orderService.queryUncompleteOrderno();
+	public List<Map<String,String>> queryUncomplete(String orderNo) {	
+		if(StringUtils.hasText(orderNo)){
+			orderNo="%"+orderNo+"%";
+		}
+		return orderService.queryUncompleteOrderno(orderNo);
 	}
 	
 	@RequestMapping("/order/create.do")
 	@ResponseBody
-	public String create(@RequestBody Order[] orderes) throws  IOException{
-		orderService.create(orderes);
+	public String create(Order order,@RequestBody OrderList[] orderLists) throws  IOException{
+		orderService.create(order,orderLists);
 		return "success";
 	}
 	
 	@RequestMapping("/order/editover.do")
 	@ResponseBody
-	public String editover(String orderNo) throws  IOException{
-		orderService.editover(orderNo);
+	public String editover(String id) throws  IOException{
+		orderService.editover(id);
 		return "success";
 	}
 	
 	@RequestMapping("/order/delete.do")
 	@ResponseBody
-	public String delete(String orderNo) throws  IOException{
-		orderService.delete(orderNo);
+	public String delete(String id) throws  IOException{
+		orderService.delete(id);
 		return "success";
 	}
 	
@@ -183,67 +186,68 @@ public class OrderController {
 	public String exportBarcode(HttpServletRequest request,HttpServletResponse response,@RequestBody OrderVO[] orderVOs) throws  IOException{
 
 		
-		List<BarcodeVO> results=new ArrayList<BarcodeVO>();
-		results=orderService.getBarCodeList(orderVOs);
-
-		String contextPath=request.getSession().getServletContext().getRealPath("/");
-		
-		String fileName="qrcode("+orderVOs[0].getOrderNo()+").xls";
-		String filePath="temp"+File.separatorChar+fileName;
-		String path=contextPath+filePath;
-		File file=new File(path);
-		if(!file.exists()){
-			//File temp=new File(contextPath+"temp");
-			if (!file.getParentFile().exists()) {
-				file.getParentFile().mkdir();
-			}
-			file.createNewFile();
-		}
-		
-
-        HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
-        HSSFSheet hssfSheet = hssfWorkbook.createSheet("二维码");
-        
-        HSSFRow hssfRow0 = hssfSheet.createRow(0);
-    	HSSFCell cell00 = hssfRow0.createCell(0);
-    	cell00.setCellValue("条码");
-    	HSSFCell cell011 = hssfRow0.createCell(1);
-    	cell011.setCellValue("型号");
-    	HSSFCell cell012= hssfRow0.createCell(2);
-    	cell012.setCellValue("品牌");
-    	HSSFCell cell013 = hssfRow0.createCell(3);
-    	cell013.setCellValue("供应商");
-    	HSSFCell cell014 = hssfRow0.createCell(4);
-    	cell014.setCellValue("小类");
-    	HSSFCell cell015 = hssfRow0.createCell(5);
-    	cell015.setCellValue("品名");
-    	
-        for(int i=1;i<=results.size();i++){
-        	BarcodeVO barcodeVO=results.get(i-1);
-        	
-        	HSSFRow hssfRow = hssfSheet.createRow(i);
-        	HSSFCell cell0 = hssfRow.createCell(0);
-        	cell0.setCellValue(barcodeVO.getEcode());
-        	HSSFCell cell1 = hssfRow.createCell(1);
-        	cell1.setCellValue(barcodeVO.getStyle());
-        	
-        	HSSFCell cell2 = hssfRow.createCell(2);
-        	cell2.setCellValue(barcodeVO.getBrand_name());
-        	HSSFCell cell3 = hssfRow.createCell(3);
-        	cell3.setCellValue(barcodeVO.getSupplier_name());
-        	HSSFCell cell4 = hssfRow.createCell(4);
-        	cell4.setCellValue(barcodeVO.getSubtype_name());
-        	HSSFCell cell5 = hssfRow.createCell(5);
-        	cell5.setCellValue(barcodeVO.getProd_name());
-        	 
-        }
-        OutputStream out = new FileOutputStream(file);
-        hssfWorkbook.write(out);
-        out.close();
-
-
-	    //return "/"+filePath.replace(File.separatorChar, '/');
-	    return fileName;
+//		List<BarcodeVO> results=new ArrayList<BarcodeVO>();
+//		results=orderService.getBarCodeList(orderVOs);
+//
+//		String contextPath=request.getSession().getServletContext().getRealPath("/");
+//		
+//		String fileName="qrcode("+orderVOs[0].getOrderNo()+").xls";
+//		String filePath="temp"+File.separatorChar+fileName;
+//		String path=contextPath+filePath;
+//		File file=new File(path);
+//		if(!file.exists()){
+//			//File temp=new File(contextPath+"temp");
+//			if (!file.getParentFile().exists()) {
+//				file.getParentFile().mkdir();
+//			}
+//			file.createNewFile();
+//		}
+//		
+//
+//        HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
+//        HSSFSheet hssfSheet = hssfWorkbook.createSheet("二维码");
+//        
+//        HSSFRow hssfRow0 = hssfSheet.createRow(0);
+//    	HSSFCell cell00 = hssfRow0.createCell(0);
+//    	cell00.setCellValue("条码");
+//    	HSSFCell cell011 = hssfRow0.createCell(1);
+//    	cell011.setCellValue("型号");
+//    	HSSFCell cell012= hssfRow0.createCell(2);
+//    	cell012.setCellValue("品牌");
+//    	HSSFCell cell013 = hssfRow0.createCell(3);
+//    	cell013.setCellValue("供应商");
+//    	HSSFCell cell014 = hssfRow0.createCell(4);
+//    	cell014.setCellValue("小类");
+//    	HSSFCell cell015 = hssfRow0.createCell(5);
+//    	cell015.setCellValue("品名");
+//    	
+//        for(int i=1;i<=results.size();i++){
+//        	BarcodeVO barcodeVO=results.get(i-1);
+//        	
+//        	HSSFRow hssfRow = hssfSheet.createRow(i);
+//        	HSSFCell cell0 = hssfRow.createCell(0);
+//        	cell0.setCellValue(barcodeVO.getEcode());
+//        	HSSFCell cell1 = hssfRow.createCell(1);
+//        	cell1.setCellValue(barcodeVO.getStyle());
+//        	
+//        	HSSFCell cell2 = hssfRow.createCell(2);
+//        	cell2.setCellValue(barcodeVO.getBrand_name());
+//        	HSSFCell cell3 = hssfRow.createCell(3);
+//        	cell3.setCellValue(barcodeVO.getSupplier_name());
+//        	HSSFCell cell4 = hssfRow.createCell(4);
+//        	cell4.setCellValue(barcodeVO.getSubtype_name());
+//        	HSSFCell cell5 = hssfRow.createCell(5);
+//        	cell5.setCellValue(barcodeVO.getProd_name());
+//        	 
+//        }
+//        OutputStream out = new FileOutputStream(file);
+//        hssfWorkbook.write(out);
+//        out.close();
+//
+//
+//	    //return "/"+filePath.replace(File.separatorChar, '/');
+//	    return fileName;
+		return "";
 	}
 	
 //	@RequestMapping("/order/exportBarcode.do")
@@ -316,8 +320,8 @@ public class OrderController {
 	 */
 	@RequestMapping("/order/addList.do")
 	@ResponseBody
-	public String addList(Order order) throws  IOException{
-		orderService.addList(order);
+	public String addList(OrderList orderList) throws  IOException{
+		orderService.addList(orderList);
 		return "success";
 	}
 	
@@ -330,8 +334,8 @@ public class OrderController {
 	 */
 	@RequestMapping("/order/updateList.do")
 	@ResponseBody
-	public String updateList(Order order) throws  IOException{
-		orderService.updateList(order);
+	public String updateList(OrderList orderList) throws  IOException{
+		orderService.updateList(orderList);
 		return "success";
 	}
 	

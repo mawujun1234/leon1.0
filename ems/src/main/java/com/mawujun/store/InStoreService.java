@@ -95,7 +95,7 @@ public class InStoreService extends AbstractService<InStore, String>{
 		}
 		
 		for(Entry<String,Integer> entry:totalnumMap.entrySet()){
-			orderRepository.updateTotalNum(entry.getKey(), M.Order.totalNum+"+"+entry.getValue());
+			orderRepository.updateTotalNum(entry.getKey(), M.OrderList.totalNum+"+"+entry.getValue());
 		}
 		
 	}
