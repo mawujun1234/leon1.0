@@ -57,7 +57,7 @@ public static final class Equipment {
 	public static final String brand_id="brand_id";
 	public static final String supplier_id="supplier_id";
 	public static final String style="style";
-	public static final String order_id="order_id";
+	public static final String orderlist_id="orderlist_id";
 	public static final String unitPrice="unitPrice";
 	public static final String isnew="isnew";
 	public static final String memo="memo";
@@ -409,7 +409,7 @@ public static final class Scrap {
 }
 public static final class Barcode {
 	public static final String ecode="ecode";
-	public static final String order_id="order_id";
+	public static final String orderlist_id="orderlist_id";
 	public static final String ymd="ymd";
 	public static final String seqNum="seqNum";
 	public static final String status="status";

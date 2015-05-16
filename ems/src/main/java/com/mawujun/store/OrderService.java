@@ -76,17 +76,17 @@ public class OrderService extends AbstractService<Order, String>{
 	
 	SimpleDateFormat y2mdDateFormat=new SimpleDateFormat("yyMMdd");
 	
-	public List<Map<String,String>> queryUncompleteOrderno(String orderNo) {
-		List<String> list=orderRepository.queryUncompleteOrderno(ShiroUtils.getAuthenticationInfo().getId(),orderNo);
+	public List<Order> queryUncompleteOrderno(String orderNo) {
+		List<Order> list=orderRepository.queryUncompleteOrderno(ShiroUtils.getAuthenticationInfo().getId(),orderNo);
 		
-		List<Map<String,String>> result=new ArrayList<Map<String,String>>();
-		for(String str:list){
-			Map<String,String> map=new HashMap<String,String>();
-			map.put("id", str);
-			map.put("name", str);
-			result.add(map);
-		}
-		return result;
+//		List<Map<String,String>> result=new ArrayList<Map<String,String>>();
+//		for(String str:list){
+//			Map<String,String> map=new HashMap<String,String>();
+//			map.put("id", str);
+//			map.put("name", str);
+//			result.add(map);
+//		}
+		return list;
 	}
 	/**
 	 * 创建订单，同时生成条码
@@ -132,6 +132,11 @@ public class OrderService extends AbstractService<Order, String>{
 		//更新订单状态
 		//orderRepository.update(Cnd.update().set(M.Order.status, OrderStatus.editover).andEquals(M.Order.orderNo, orderNo));
 		Order order=orderRepository.get(id);
+		if(order.getStatus()==OrderStatus.editover){
+			return;
+		}
+		order.setStatus(OrderStatus.editover);
+		orderRepository.update(order);
 		//
 		List<OrderList> orderLists=orderListRepository.query(Cnd.select().andEquals(M.OrderList.order_id, order.getId()));
 		
@@ -151,7 +156,7 @@ public class OrderService extends AbstractService<Order, String>{
 				//保存这个订单明细下所有生成过的条码
 				Barcode bar=new Barcode();
 				bar.setEcode(ecode);
-				bar.setOrder_id(order.getId());
+				bar.setOrderlist_id(orderList.getId());
 				bar.setYmd(y2md);
 				bar.setSeqNum(i);
 				barcodeRepository.create(bar);
@@ -222,7 +227,7 @@ public class OrderService extends AbstractService<Order, String>{
 			for(OrderList orderList:orderLists){
 				//获取当前要打印的条码范围
 				Map<String,Object> params=new HashMap<String,Object>();
-				params.put(M.Barcode.order_id, orderList.getId());
+				params.put("orderlist_id", orderList.getId());
 				params.put("startNum", orderList.getTotalNum());
 				params.put("endNum", orderList.getTotalNum()+orderList.getPrintNum());
 				List<BarcodeVO> list= orderRepository.getBarcodesRange(params);

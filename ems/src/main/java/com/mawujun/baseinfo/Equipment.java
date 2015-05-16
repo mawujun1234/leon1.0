@@ -28,7 +28,7 @@ public class Equipment implements IdEntity<String>{
 	@Column(length=50)
 	private String style;//型号
 	@Column(length=36)
-	private String order_id;//订单明细id
+	private String orderlist_id;//订单明细id
 	
 	//private Date lastInDate;//最新一次入库时间
 	@Column(precision=10,scale=2)
@@ -135,12 +135,7 @@ public class Equipment implements IdEntity<String>{
 		this.fisData = fisData;
 	}
 	
-	public String getOrder_id() {
-		return order_id;
-	}
-	public void setOrder_id(String order_id) {
-		this.order_id = order_id;
-	}
+
 	public String getStore_id() {
 		return store_id;
 	}
@@ -164,6 +159,12 @@ public class Equipment implements IdEntity<String>{
 	}
 	public void setLast_install_date(Date last_install_date) {
 		this.last_install_date = last_install_date;
+	}
+	public String getOrderlist_id() {
+		return orderlist_id;
+	}
+	public void setOrderlist_id(String orderlist_id) {
+		this.orderlist_id = orderlist_id;
 	}
 
 

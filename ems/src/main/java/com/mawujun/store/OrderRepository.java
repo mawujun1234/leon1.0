@@ -22,13 +22,13 @@ public interface OrderRepository extends IRepository<Order, String>{
 	public Page queryList(Page page);
 	
 	
-	public List<String> queryUncompleteOrderno(@Param("user_id")String user_id,@Param("orderNo")String orderNo);
+	public List<Order> queryUncompleteOrderno(@Param("user_id")String user_id,@Param("orderNo")String orderNo);
 	
 	public List<OrderVO> query(@Param("orderNo")String orderNo);
 	
 	public EquipmentVO getEquipFromBarcode(@Param("ecode")String ecode);
 	
-	public void updateTotalNum(@Param("order_id")String order_id,@Param("totalNum")String totalNum);
+	public void updateTotalNum(@Param("orderlist_id")String orderlist_id,@Param("totalNum")String totalNum);
 	
 	public List<BarcodeVO> getBarcodesRange(Map<String,Object> params);
 	

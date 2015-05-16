@@ -112,38 +112,7 @@ public class OrderController {
 	}
 	
 
-//	@RequestMapping("/order/load.do")
-//	public Order load(String id) {
-//		return orderService.get(id);
-//	}
-//	
-//	@RequestMapping("/order/create.do")
-//	@ResponseBody
-//	public Order create(@RequestBody Order order) {
-//		orderService.create(order);
-//		return order;
-//	}
-	
-//	@RequestMapping("/order/update.do")
-//	@ResponseBody
-//	public  Order update(@RequestBody Order order) {
-//		orderService.update(order);
-//		return order;
-//	}
-//	
-//	@RequestMapping("/order/deleteById.do")
-//	@ResponseBody
-//	public String deleteById(String id) {
-//		orderService.deleteById(id);
-//		return id;
-//	}
-//	
-//	@RequestMapping("/order/destroy.do")
-//	@ResponseBody
-//	public Order destroy(@RequestBody Order order) {
-//		orderService.delete(order);
-//		return order;
-//	}
+
 	
 	/**
 	 * 查询该用户可以编辑的仓库的所有订单,而且订单还咩有全部入库
@@ -152,10 +121,10 @@ public class OrderController {
 	 */
 	@RequestMapping("/order/queryUncomplete.do")
 	@ResponseBody
-	public List<Map<String,String>> queryUncomplete(String orderNo) {	
+	public List<Order> queryUncomplete(String orderNo) {	
 		if(StringUtils.hasText(orderNo)){
 			orderNo="%"+orderNo+"%";
-		}
+		} 
 		return orderService.queryUncompleteOrderno(orderNo);
 	}
 	
@@ -163,6 +132,13 @@ public class OrderController {
 	@ResponseBody
 	public String create(Order order,@RequestBody OrderList[] orderLists) throws  IOException{
 		orderService.create(order,orderLists);
+		return "success";
+	}
+	
+	@RequestMapping("/order/update.do")
+	@ResponseBody
+	public String update(Order order) throws  IOException{
+		orderService.update(order);
 		return "success";
 	}
 	
@@ -183,71 +159,70 @@ public class OrderController {
 	
 	@RequestMapping("/order/exportBarcode.do")
 	@ResponseBody
-	public String exportBarcode(HttpServletRequest request,HttpServletResponse response,@RequestBody OrderVO[] orderVOs) throws  IOException{
+	public String exportBarcode(HttpServletRequest request,HttpServletResponse response,@RequestBody OrderList[] orderLists) throws  IOException{
 
 		
-//		List<BarcodeVO> results=new ArrayList<BarcodeVO>();
-//		results=orderService.getBarCodeList(orderVOs);
-//
-//		String contextPath=request.getSession().getServletContext().getRealPath("/");
-//		
-//		String fileName="qrcode("+orderVOs[0].getOrderNo()+").xls";
-//		String filePath="temp"+File.separatorChar+fileName;
-//		String path=contextPath+filePath;
-//		File file=new File(path);
-//		if(!file.exists()){
-//			//File temp=new File(contextPath+"temp");
-//			if (!file.getParentFile().exists()) {
-//				file.getParentFile().mkdir();
-//			}
-//			file.createNewFile();
-//		}
-//		
-//
-//        HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
-//        HSSFSheet hssfSheet = hssfWorkbook.createSheet("二维码");
-//        
-//        HSSFRow hssfRow0 = hssfSheet.createRow(0);
-//    	HSSFCell cell00 = hssfRow0.createCell(0);
-//    	cell00.setCellValue("条码");
-//    	HSSFCell cell011 = hssfRow0.createCell(1);
-//    	cell011.setCellValue("型号");
-//    	HSSFCell cell012= hssfRow0.createCell(2);
-//    	cell012.setCellValue("品牌");
-//    	HSSFCell cell013 = hssfRow0.createCell(3);
-//    	cell013.setCellValue("供应商");
-//    	HSSFCell cell014 = hssfRow0.createCell(4);
-//    	cell014.setCellValue("小类");
-//    	HSSFCell cell015 = hssfRow0.createCell(5);
-//    	cell015.setCellValue("品名");
-//    	
-//        for(int i=1;i<=results.size();i++){
-//        	BarcodeVO barcodeVO=results.get(i-1);
-//        	
-//        	HSSFRow hssfRow = hssfSheet.createRow(i);
-//        	HSSFCell cell0 = hssfRow.createCell(0);
-//        	cell0.setCellValue(barcodeVO.getEcode());
-//        	HSSFCell cell1 = hssfRow.createCell(1);
-//        	cell1.setCellValue(barcodeVO.getStyle());
-//        	
-//        	HSSFCell cell2 = hssfRow.createCell(2);
-//        	cell2.setCellValue(barcodeVO.getBrand_name());
-//        	HSSFCell cell3 = hssfRow.createCell(3);
-//        	cell3.setCellValue(barcodeVO.getSupplier_name());
-//        	HSSFCell cell4 = hssfRow.createCell(4);
-//        	cell4.setCellValue(barcodeVO.getSubtype_name());
-//        	HSSFCell cell5 = hssfRow.createCell(5);
-//        	cell5.setCellValue(barcodeVO.getProd_name());
-//        	 
-//        }
-//        OutputStream out = new FileOutputStream(file);
-//        hssfWorkbook.write(out);
-//        out.close();
-//
-//
-//	    //return "/"+filePath.replace(File.separatorChar, '/');
-//	    return fileName;
-		return "";
+		List<BarcodeVO> results=new ArrayList<BarcodeVO>();
+		results=orderService.getBarCodeList(orderLists);
+
+		String contextPath=request.getSession().getServletContext().getRealPath("/");
+		
+		String fileName="qrcode.xls";
+		String filePath="temp"+File.separatorChar+fileName;
+		String path=contextPath+filePath;
+		File file=new File(path);
+		if(!file.exists()){
+			//File temp=new File(contextPath+"temp");
+			if (!file.getParentFile().exists()) {
+				file.getParentFile().mkdir();
+			}
+			file.createNewFile();
+		}
+		
+
+        HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
+        HSSFSheet hssfSheet = hssfWorkbook.createSheet("二维码");
+        
+        HSSFRow hssfRow0 = hssfSheet.createRow(0);
+    	HSSFCell cell00 = hssfRow0.createCell(0);
+    	cell00.setCellValue("条码");
+    	HSSFCell cell011 = hssfRow0.createCell(1);
+    	cell011.setCellValue("型号");
+    	HSSFCell cell012= hssfRow0.createCell(2);
+    	cell012.setCellValue("品牌");
+    	HSSFCell cell013 = hssfRow0.createCell(3);
+    	cell013.setCellValue("供应商");
+    	HSSFCell cell014 = hssfRow0.createCell(4);
+    	cell014.setCellValue("小类");
+    	HSSFCell cell015 = hssfRow0.createCell(5);
+    	cell015.setCellValue("品名");
+    	
+        for(int i=1;i<=results.size();i++){
+        	BarcodeVO barcodeVO=results.get(i-1);
+        	
+        	HSSFRow hssfRow = hssfSheet.createRow(i);
+        	HSSFCell cell0 = hssfRow.createCell(0);
+        	cell0.setCellValue(barcodeVO.getEcode());
+        	HSSFCell cell1 = hssfRow.createCell(1);
+        	cell1.setCellValue(barcodeVO.getStyle());
+        	
+        	HSSFCell cell2 = hssfRow.createCell(2);
+        	cell2.setCellValue(barcodeVO.getBrand_name());
+        	HSSFCell cell3 = hssfRow.createCell(3);
+        	cell3.setCellValue(barcodeVO.getSupplier_name());
+        	HSSFCell cell4 = hssfRow.createCell(4);
+        	cell4.setCellValue(barcodeVO.getSubtype_name());
+        	HSSFCell cell5 = hssfRow.createCell(5);
+        	cell5.setCellValue(barcodeVO.getProd_name());
+        	 
+        }
+        OutputStream out = new FileOutputStream(file);
+        hssfWorkbook.write(out);
+        out.close();
+
+
+	    //return "/"+filePath.replace(File.separatorChar, '/');
+	    return fileName;
 	}
 	
 //	@RequestMapping("/order/exportBarcode.do")

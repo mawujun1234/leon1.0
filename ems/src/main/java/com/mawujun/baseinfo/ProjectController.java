@@ -107,7 +107,7 @@ public class ProjectController {
 	
 	@RequestMapping("/project/destroy.do")
 	@ResponseBody
-	public Project destroy(@RequestBody Project project) {
+	public Project destroy(Project project) {
 		projectService.delete(project);
 		return project;
 	}

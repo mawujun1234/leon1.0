@@ -15,3 +15,6 @@ select sys_guid(),id,type_id,subtype_id,prod_id,brand_id,supplier_id,style,unitP
 select distinct b.id,type_id,subtype_id,prod_id,brand_id,supplier_id,style,unitPrice,orderNum,totalNum from ems_order_0516 a,ems_order b
 where a.orderNo=b.orderNo
 )
+
+删除 EMS_BARCODE的ORDER_ID列
+删除 ems_equipment的ORDER_ID列

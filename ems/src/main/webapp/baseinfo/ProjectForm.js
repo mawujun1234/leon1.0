@@ -187,13 +187,13 @@ Ext.define('Ems.baseinfo.ProjectForm',{
 		    	Ext.Msg.confirm("删除",'确定要删除吗?删除后将不可恢复!', function(btn, text){
 					if (btn == 'yes'){
 						var records=grid.getSelectionModel( ).getLastSelected( );
-						grid.getStore().remove( records );
+						//grid.getStore().remove( records );
 						form.down("button#update").disable();
 						form.down("button#destroy").disable();
 						form.getForm().reset();
 						Ext.Ajax.request({
 							url:Ext.ContextPath+"/project/destroy.do",
-							params:records.getDate(),
+							params:records.getData(),
 							success:function(response){
 								var obj=Ext.decode(response.responseText);
 								if(obj.success){

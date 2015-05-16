@@ -7,10 +7,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.mawujun.store.OrderRepository">
 
 	<select id="queryMain" resultType="com.mawujun.store.OrderVO" parameterType="map">
-    	select a.* from ems_Order a
+    	select a.*,b.name as project_name from ems_Order a left join ems_project b on a.project_id=b.id
     	<where>
     		and a.store_id in (select store_id from sys_userstore c where c.user_id=#{user_id} and c.look='Y')
-    		<if test="store_id!=null">
+    		<if test="store_id!=null and store_id!=''">
     			and a.store_id=#{store_id}
     		</if>
     		<if test="date_start!=null">
@@ -19,7 +19,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     		<if test="date_end!=null">
     			and a.orderDate &lt;=#{date_end}
     		</if>
-    		<if test="orderNo!=null">
+    		<if test="orderNo!=null and orderNo!=''">
     			and a.orderNo like #{orderNo}
     		</if>
     	</where>
@@ -38,17 +38,18 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	select count(a.id) from ems_Orderlist a
     	where a.order_id=#{order_id}
     </select>
-    <!-- 在条码导出的时候，查询还没有完成的订单 -->
     
-    <select id="queryUncompleteOrderno" resultType="string" parameterType="String">
-    	SELECT distinct a.orderNo,a.orderDate
+    <!-- 在条码导出的时候，查询还没有完成的订单 -->
+    <select id="queryUncompleteOrderno" resultType="com.mawujun.store.Order" >
+    	SELECT distinct a.id,a.orderNo
 	    FROM ems_order a,sys_userstore b
 		where a.store_id=b.store_id and b.user_id=#{user_id} and b.edit='Y' 
-		<if test="orderNo!=null">
-				a.orderNo like #{orderNo}
-		</if>
 		and a.status='editover'
-		order by a.orderDate desc
+		<if test="orderNo!=null and orderNo!=''">
+			and	a.orderNo like #{orderNo}
+		</if>
+		
+		
     </select>
 	<!-- <select id="queryUncompleteOrderno" resultType="string" parameterType="String">
     	SELECT distinct a.orderNo,a.orderDate
@@ -66,9 +67,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     
    
     
-    <!--a0.status作为Equipment的状态 -->
+    <!--a0.status作为Equipment的状态 ,在新品入库的时候，查询设备条码用的-->
     <select id="getEquipFromBarcode" resultType="com.mawujun.baseinfo.EquipmentVO" parameterType="String">
-    	select a0.ecode,a0.order_id,a0.status,
+    	select a0.ecode,a0.orderlist_id,a0.status,
     	a.store_id,
 		a.brand_id,
 		a.prod_id,
@@ -79,7 +80,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		a.unitprice
 		,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name
 		from ems_barcode a0 
-		inner join ems_order a on a0.order_id=a.id 
+		inner join (select a.*,b.store_id from ems_orderlist a,ems_order b where a.order_id=b.id) a on a0.orderlist_id=a.id 
 		inner join ems_equipmentsubtype b on a.subtype_id=b.id
 		inner join ems_equipmentprod c on a.prod_id=c.id
 		inner join ems_brand d on a.brand_id=d.id
@@ -91,7 +92,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<select id="updateTotalNum">
     	update ems_orderlist 
     	set totalNum=${totalNum}
-    	where order_id=#{order_id}
+    	where id=#{orderlist_id}
     </select> 
     
     
@@ -103,13 +104,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	
     	
     	SELECT a.*,b.name as subtype_name,c.name as prod_name,d.name as brand_name,e.name as supplier_name,f.ecode
-	    FROM ems_order a
+	    FROM ems_orderlist a
 	    inner join ems_equipmentsubtype b on a.subtype_id=b.id
 		inner join ems_equipmentprod c on a.prod_id=c.id
 		inner join ems_brand d on a.brand_id=d.id
 		inner join ems_supplier e on a.supplier_id=e.id
-		inner join ems_Barcode f on a.id=f.order_id and f.seqnum &gt; #{startNum} and f.seqnum &lt;= #{endNum}
-		where a.id=#{order_id}   
+		inner join ems_Barcode f on a.id=f.orderlist_id and f.seqnum &gt; #{startNum} and f.seqnum &lt;= #{endNum}
+		where a.id=#{orderlist_id}   
     </select>
     
     <!-- 获取订单的主信息，就是 明细表对应主表的信息 ,当字段发生变化的时候要注意OrderService

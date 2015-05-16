@@ -77,10 +77,10 @@ public class InStoreService extends AbstractService<InStore, String>{
 			//barcodeRepository.update(Cnd.update().set(M.Barcode.isInStore, true).andEquals(M.Barcode.ecode, equipment.getEcode()));
 			//更新订单明细中的累计入库数量
 			//orderRepository.updateTotalNum(equipment.getOrder_id(), M.Order.totalNum+"+1");
-			if(totalnumMap.containsKey(equipment.getOrder_id())){
-				totalnumMap.put(equipment.getOrder_id(), totalnumMap.get(equipment.getOrder_id())+1);
+			if(totalnumMap.containsKey(equipment.getOrderlist_id())){
+				totalnumMap.put(equipment.getOrderlist_id(), totalnumMap.get(equipment.getOrderlist_id())+1);
 			} else {
-				totalnumMap.put(equipment.getOrder_id(), 1);
+				totalnumMap.put(equipment.getOrderlist_id(), 1);
 			}
 			
 			

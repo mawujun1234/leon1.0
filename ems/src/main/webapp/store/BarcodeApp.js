@@ -1,4 +1,4 @@
-Ext.require("Ems.store.Order");
+Ext.require("Ems.store.OrderList");
 
 Ext.onReady(function(){
 //	var order_no=Ext.create('Ext.form.field.Text',{
@@ -17,12 +17,12 @@ Ext.onReady(function(){
 	        //xtype:'combobox',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'orderNo',
-		    displayField: 'name',
+		    displayField: 'orderNo',
 		    valueField: 'id',
 		    queryParam: 'orderNo',
     		queryMode: 'remote',
     		triggerAction: 'query',
-    		minChars:2,
+    		minChars:-1,
 		    trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
 		    trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
 			onTrigger1Click : function(){
@@ -31,7 +31,7 @@ Ext.onReady(function(){
 			},
 	        allowBlank: false,
 	        store:Ext.create('Ext.data.Store', {
-		    	fields: ['id', 'name'],
+		    	fields: ['id', 'orderNo'],
 			    proxy:{
 			    	type:'ajax',
 			    	extraParams:{type:1,edit:true},
@@ -49,7 +49,7 @@ Ext.onReady(function(){
 	var equipStore = Ext.create('Ext.data.Store', {
         autoDestroy: true,
         autoLoad:false,
-        model: 'Ems.store.Order',
+        model: 'Ems.store.OrderList',
         proxy: {
         	url:Ext.ContextPath+'/order/queryList.do',
             type: 'ajax',
@@ -151,7 +151,7 @@ Ext.onReady(function(){
 			alert("请先输入订单号!");
 			return;
 		}
-		equipStore.load({params:{orderNo:order_no.getValue()}});
+		equipStore.load({params:{order_id:order_no.getValue()}});
 	}
 	
 	var step1=Ext.create('Ext.panel.Panel',{

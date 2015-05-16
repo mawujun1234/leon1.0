@@ -1,5 +1,6 @@
 Ext.require("Ems.store.Order");
 Ext.require("Ems.store.OrderList");
+Ext.require('Ems.baseinfo.ProdQueryGrid');
 //Ext.require("Ems.store.OrderGrid");
 //Ext.require("Ems.store.OrderTree");
 //Ext.require("Ems.store.OrderForm");
@@ -60,6 +61,49 @@ Ext.onReady(function(){
 		readOnly:true,
 		allowBlank:false,
 		value:loginName
+	});
+	//
+	var project_id=Ext.create('Ext.form.field.Hidden',{
+		labelAlign:'right',
+		labelWidth:40,
+		fieldLabel: '项目',
+		name:'project_id',
+		readOnly:true,
+		emptyText:"不可编辑",
+		allowBlank:false
+	});
+	var project_name=Ext.create('Ext.form.field.Text',{
+		labelAlign:'right',
+		labelWidth:40,
+		fieldLabel: '项目',
+		name:'project_name',
+		readOnly:true,
+		emptyText:"不可编辑",
+		allowBlank:false
+	});
+	var project_button=Ext.create('Ext.button.Button',{
+		text:'选择项目',
+		margin:'0 0 0 5',
+		handler:function(){
+			var projectGrid=Ext.create('Ems.baseinfo.ProjectQueryGrid',{
+				listeners:{
+					itemdblclick:function(view,record,item){
+						project_id.setValue(record.get("id"));
+						project_name.setValue(record.get("name"));
+						win.close();
+					}
+				}
+			});
+			var win=Ext.create('Ext.window.Window',{
+				title:'双击选择项目',
+				items:[projectGrid],
+				layout:'fit',
+				modal:true,
+				width:700,
+				height:300
+			});
+			win.show();
+		}
 	});
 	
 	var type_combox=Ext.create('Ems.baseinfo.TypeCombo',{
@@ -206,7 +250,7 @@ Ext.onReady(function(){
 		xtype:'numberfield',itemId:'orderNum_field',fieldLabel:'数目',name:'orderNum',minValue:1,labelWidth:40,listeners:{change:countTotal},allowBlank:false,labelAlign:'right',value:1
 	});
 	var unitprice_field=Ext.create('Ext.form.field.Number',{
-		xtype:'numberfield',itemId:'unitprice_field',fieldLabel:'单价(元)',name:'unitPrice',minValue:0,labelWidth:80,listeners:{change:countTotal},allowBlank:true,labelAlign:'right'
+		xtype:'numberfield',itemId:'unitprice_field',fieldLabel:'单价(元)',name:'unitPrice',minValue:0,value:1,labelWidth:80,listeners:{change:countTotal},allowBlank:true,labelAlign:'right'
 	});
 	var totalprice_display=Ext.create('Ext.form.field.Display',{
 		xtype:'displayfield',fieldLabel:'总价(元)',name:'totalprice',labelWidth:60,submitValue : true,labelAlign:'right',width:180
@@ -326,8 +370,8 @@ Ext.onReady(function(){
 		    })
 			equipStore.add(record);
 			//订单号和仓库变味不可编辑
-			order_no.disable();
-			store_combox.disable();
+			//order_no.disable();
+			//store_combox.disable();
 			
 			//清空信息
 			type_combox.clearValue();
@@ -397,7 +441,7 @@ Ext.onReady(function(){
         },
         defaults:{margins:'0 0 5 0',border:false},
         items:[{xtype:'form',items:[
-        							{xtype:'fieldcontainer',layout: 'hbox',items:[order_no,store_combox,orderDate,operater]},
+        							{xtype:'fieldcontainer',layout: 'hbox',items:[order_no,store_combox,orderDate,operater,project_id,project_name,project_button]},
         							{xtype:'fieldcontainer',layout: 'hbox',items:[type_combox,subtype_combox,prod_name,queryProd_button,brand_name,style]},
         							{xtype:'fieldcontainer',layout: 'hbox',items:[prod_spec,prod_unit]},
                                     {xtype:'fieldcontainer',layout: 'hbox',items:[
@@ -430,6 +474,7 @@ Ext.onReady(function(){
 					store_id:store_combox.getValue(),
 		            store_name:store_combox.getRawValue(),
 		            orderDate:orderDate.getValue(),
+		            project_id:project_id.getValue(),
 		            operater:loginUserId
 		            
 				};
@@ -454,13 +499,17 @@ Ext.onReady(function(){
 							equipStore.removeAll();
 							
 							var record=new Ext.create('Ems.store.OrderList',{
-								operater:loginUserId,
-								orderDate:new Date()
+								//operater:loginUserId,
+								//orderDate:new Date()
 						    });
-						    order_no.enable();
-							store_combox.enable();
+						    //order_no.enable();
+							//store_combox.enable();
 							var equipform=step1.down('form');
 							equipform.getForm().loadRecord(record);
+							
+							order_no.setValue("");
+							store_combox.clearValue();
+							orderDate.setValue(new Date());
 						}
 						Ext.getBody().unmask();
 						

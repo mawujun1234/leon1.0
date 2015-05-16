@@ -14,7 +14,7 @@ public class Barcode implements IdEntity<String>{
 	@Column(length=25)
 	private String ecode;//条码，也可以说是某个订单明细下的所有条码
 	@Column(length=36)
-	private String order_id;//订单明细的id
+	private String orderlist_id;//订单明细的id
 	@Column(length=8)
 	private String ymd;//年月日，也可以说是批次
 	
@@ -37,12 +37,7 @@ public class Barcode implements IdEntity<String>{
 	public void setEcode(String ecode) {
 		this.ecode = ecode;
 	}
-	public String getOrder_id() {
-		return order_id;
-	}
-	public void setOrder_id(String order_id) {
-		this.order_id = order_id;
-	}
+
 	public String getYmd() {
 		return ymd;
 	}
@@ -61,6 +56,12 @@ public class Barcode implements IdEntity<String>{
 	}
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+	public String getOrderlist_id() {
+		return orderlist_id;
+	}
+	public void setOrderlist_id(String orderlist_id) {
+		this.orderlist_id = orderlist_id;
 	}
 
 }

@@ -19,6 +19,7 @@ Ext.define('Ems.store.OrderGrid',{
 		{dataIndex:'orderNo',text:'订单号',width:150},
 		{dataIndex:'store_name',text:'入库仓库',flex:1},
 		{dataIndex: 'status_name',text: '状态',width:70},
+		{dataIndex: 'project_name',text: '项目',width:70},
 		{dataIndex:'orderDate',text:'订购日期',xtype: 'datecolumn',   format:'Y-m-d',width:80}
     	//{dataIndex: 'operater',text: '经办人'}
       ];
@@ -120,7 +121,9 @@ Ext.define('Ems.store.OrderGrid',{
 			handler: function(btn){
 				me.store.reload();
 			}
-		  },{
+		  }] 
+		},{
+			items:[{
 			text: '确认',
 			icon:'../icons/cog.png',
 			//iconCls:'form-search-button',
@@ -141,9 +144,21 @@ Ext.define('Ems.store.OrderGrid',{
 				});
 			}
 		  },{
-			text: '删除',
-			//iconCls:'form-search-button',
+			text: '修改',
+			iconCls: 'form-update-button',
 			icon:'../icons/action_delete.gif',
+			handler: function(btn){
+				var record=me.getSelectionModel().getLastSelected();
+				if(record.get("status")=='editover'){
+					alert("状态是'已确认',不能修改！");
+					return;
+				}
+				me.updateOrder(record);
+				
+			}
+		  },{
+			text: '删除',
+			iconCls: 'form-delete-button',
 			handler: function(btn){
 				Ext.Msg.confirm("提醒","确认要删除吗?",function(btn){
 					if(btn=='yes'){
@@ -164,7 +179,7 @@ Ext.define('Ems.store.OrderGrid',{
 					}
 				});
 			}
-		  }] 
+		  }]
 		}]
 	   };
 	   me.store.load();
@@ -172,5 +187,47 @@ Ext.define('Ems.store.OrderGrid',{
 
        
       me.callParent();
+	},
+	updateOrder:function(order){
+		var me=this;
+		if(order.get("status")=="editover"){
+			alert("订单已确认，不能修改!");
+       		return;
+		}
+		//var documentWidth=Ext.getBody().getWidth();
+		
+		//console.log(record.get("unitPrice"));
+		var form=Ext.create('Ems.store.OrderForm',{
+			//order_id:order_id,
+			//order_id:order_id,
+			url:Ext.ContextPath+'/order/update.do',
+			listeners:{
+				saved:function(){
+					win.close();
+					me.getStore().reload();
+					me.getSelectionModel().deselect(order);
+				}
+			}	
+		});
+		form.loadRecord(order);
+		
+//		var fun0 = function() {
+//			me.type_combox.setValue(orderlist.get("type_id"));
+//			me.type_combox.getStore().un("load", fun0);
+//		}
+//		this.type_combox.getStore().on("load", fun0);
+		form.getForm().findField("store_id").getStore().load();
+		//form.updateFieldValue(order);
+		
+		
+		var win=Ext.create('Ext.window.Window',{
+			modal:true,
+			//width:documentWidth-100,
+			width:350,
+			title:"更新",
+			closeAction:"destroy",
+			items:[form]
+		});
+		win.show();
 	}
 });

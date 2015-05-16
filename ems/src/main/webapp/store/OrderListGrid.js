@@ -2,7 +2,7 @@ Ext.define('Ems.store.OrderListGrid',{
 	extend:'Ext.grid.Panel',
 	requires: [
 	    'Ems.store.OrderList',
-		'Ems.store.OrderForm'
+		'Ems.store.OrderListForm'
 	],
 	columnLines :true,
 	stripeRows:true,
@@ -109,7 +109,7 @@ Ext.define('Ems.store.OrderListGrid',{
        		return;
         }
 		
-		var form=Ext.create('Ems.store.OrderForm',{
+		var form=Ext.create('Ems.store.OrderListForm',{
 			order_id:order_id,
 			url:Ext.ContextPath+'/order/addList.do',
 			listeners:{
@@ -147,7 +147,7 @@ Ext.define('Ems.store.OrderListGrid',{
        		return;		
 		}
 		//console.log(record.get("unitPrice"));
-		var form=Ext.create('Ems.store.OrderForm',{
+		var form=Ext.create('Ems.store.OrderListForm',{
 			//order_id:order_id,
 			order_id:order_id,
 			url:Ext.ContextPath+'/order/updateList.do',
