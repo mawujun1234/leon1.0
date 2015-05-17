@@ -34,6 +34,7 @@ public static final class ems_brand {
 public static final class ems_customer {
 	public static final String name="name";
 	public static final String type="type";
+	public static final String parent_id="parent_id";
 	public static final String memo="memo";
 	public static final String status="status";
 	public static final String id="id";

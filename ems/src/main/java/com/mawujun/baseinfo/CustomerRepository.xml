@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
+<mapper namespace="com.mawujun.baseinfo.CustomerRepository">
+
+	<select id="queryChildren" resultType="com.mawujun.baseinfo.CustomerVO" parameterType="map">
+    	SELECT a.*
+	    FROM ems_customer  a
+		<where>
+			<choose>
+			    <when test="parent_id!=null and parent_id!=''">
+			      a.parent_id = #{parent_id}
+			    </when>
+			    
+			    <otherwise>
+			      AND a.type=2 and a.parent_id is null
+			    </otherwise>
+		    </choose>
+		    
+		    <if test="name!=null and name!=''">
+		    	and a.name like #{name}
+		    </if>
+        </where>
+    </select>
+   
+</mapper>
+

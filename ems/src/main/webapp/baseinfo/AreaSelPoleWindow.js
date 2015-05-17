@@ -5,7 +5,7 @@ Ext.define('Ems.baseinfo.AreaSelPoleWindow', {
 		modal:true,
 	    initComponent: function(){
 	    	var me=this;
-	    	var customerStore = new Ext.data.Store({
+	    	var customerStore = new Ext.data.TreeStore({
 				model: 'Ems.baseinfo.Customer',
 			    proxy: {
 			        type: 'ajax',
@@ -15,7 +15,7 @@ Ext.define('Ems.baseinfo.AreaSelPoleWindow', {
 			            root: 'root'
 			        }
 			    },
-			    autoLoad:true
+			    //autoLoad:true,
 //			    listeners:{
 //				    load:function(s,records,success,o,e){
 //				    	if(success&&records.length>0 && customer_grid){
@@ -23,25 +23,33 @@ Ext.define('Ems.baseinfo.AreaSelPoleWindow', {
 //				    	}
 //				    }
 //			    }
+			    root: {
+				    expanded: true,
+				    text: "根节点"
+				}
 			});
-			var customer_grid=Ext.create('Ext.grid.Panel', {
+			var customer_grid=Ext.create('Ext.tree.Panel', {
 		    	region:'west',
 		    	width:230,
 		    	title:'客户信息',
 			    store: customerStore,
+			    useArrows: true,
+    			rootVisible: false,
 			    columns: [
 			    	
-			        {dataIndex:'name',text:'名称',flex:1},
+			        {xtype:'treecolumn',dataIndex:'name',text:'名称',flex:1},
 			        {dataIndex:'type',text:'类型',xtype: 'numbercolumn', renderer:function(value){
 						if(value==0){
 							return "机关";
-						} else {
+						} else if(value==1) {
 							return "企业";
+						} else if(value==2){
+							return "区";
 						}
 					}}
 			    ],
 			    listeners:{
-			    	select:function(row,r,i,e){
+			    	itemclick:function(row,r,i,e){
 			    		if(r){
 				    		customer_id=r.get('id');
 				    		customer_name=r.get('name');

@@ -76,8 +76,108 @@ Ext.define('Ems.baseinfo.AreaPoleGrid',{
 	},
 	initAction:function(){
      	var me = this;
-     	var actions=[];
+     	var actions0=[];
      	
+     	var customer_2=Ext.create('Ext.form.field.ComboBox',{
+	        fieldLabel: '区',
+	        labelAlign:'right',
+            labelWidth:20,
+            width:150,
+	        //xtype:'combobox',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'customer_2',
+		    displayField: 'name',
+		    valueField: 'id',
+		    queryParam: 'name',
+    		queryMode: 'remote',
+//    		triggerAction: 'query',
+//    		minChars:-1,
+//		    trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
+//		    trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
+//			onTrigger1Click : function(){
+//			    var me = this;
+//			    me.setValue('');
+//			},
+//	        allowBlank: false,
+	        store:Ext.create('Ext.data.Store', {
+		    	fields: ['id', 'name'],
+			    proxy:{
+			    	type:'ajax',
+			    	//extraParams:{type:1,edit:true},
+			    	url:Ext.ContextPath+"/customer/query4combo.do",
+			    	reader:{
+			    		type:'json',
+			    		root:'root'
+			    	}
+			    }
+		   }),
+		   listeners:{
+		   	 change:function(field,newValue, oldValue){
+				customer_0or1.clearValue( );
+				if(newValue){
+					customer_0or1.getStore().getProxy().extraParams={parent_id:newValue};
+					//customer_0or1.getStore().reload();
+				}
+				
+			 }
+		   }
+		});
+		actions0.push(customer_2);
+		var customer_0or1=Ext.create('Ext.form.field.ComboBox',{
+	        fieldLabel: '客户',
+	        labelAlign:'right',
+            labelWidth:40,
+            width:280,
+	        //xtype:'combobox',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'customer_0or1',
+		    displayField: 'name',
+		    valueField: 'id',
+		    queryParam: 'name',
+    		queryMode: 'remote',
+    		triggerAction: 'query',
+    		minChars:-1,
+		    trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
+		    trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
+			onTrigger1Click : function(){
+			    var me = this;
+			    me.setValue('');
+			},
+	        allowBlank: false,
+	        store:Ext.create('Ext.data.Store', {
+		    	fields: ['id', 'name'],
+			    proxy:{
+			    	type:'ajax',
+			    	//extraParams:{type:1,edit:true},
+			    	method:'POST',
+			    	url:Ext.ContextPath+"/customer/query4combo.do",
+			    	reader:{
+			    		type:'json',
+			    		root:'root'
+			    	}
+			    }
+		   })
+		});
+     	actions0.push(customer_0or1);
+     	var reload = new Ext.Action({
+		    text: '查询',
+		    itemId:'reload',
+		    handler: function(){
+		    	if(customer_2.getValue() && !customer_0or1.getValue()){
+		    		alert("请选择一个客户");
+		    		return;
+		    	}
+		    	me.getStore().getProxy().extraParams=Ext.apply(me.getStore().getProxy().extraParams,{
+		    		//customer_id_2:customer_2.getValue(),
+		    		customer_id:customer_0or1.getValue()
+		    	});
+		    	me.onReload();
+		    },
+		    iconCls: 'form-reload-button'
+		});
+		//me.addAction(reload);
+		actions0.push(reload);
+     	var actions=[];
        var create = new Ext.Action({
 		    text: '添加',
 		    itemId:'create',
@@ -113,16 +213,7 @@ Ext.define('Ems.baseinfo.AreaPoleGrid',{
 		//me.addAction(destroy);
 		actions.push(destroy)
 		
-		var reload = new Ext.Action({
-		    text: '刷新',
-		    itemId:'reload',
-		    handler: function(){
-		    	me.onReload();
-		    },
-		    iconCls: 'form-reload-button'
-		});
-		//me.addAction(reload);
-		actions.push(reload);
+		
 
 //		var showEquipment = new Ext.Action({
 //		    text: '拥有的设备',
@@ -135,7 +226,7 @@ Ext.define('Ems.baseinfo.AreaPoleGrid',{
 //		actions.push(showEquipment);
 		
 		var exportPoles = new Ext.Action({
-		    text: '导出点位设备信息',
+		    text: '导出',
 		    //itemId:'reload',
 		    icon:'../icons/page_excel.png',
 		    handler: function(){
@@ -145,13 +236,24 @@ Ext.define('Ems.baseinfo.AreaPoleGrid',{
 		actions.push(exportPoles);
 		
 		me.tbar={
-			itemId:'action_toolbar',
-			layout: {
-	               overflowHandler: 'Menu'
-	        },
-			items:actions
-			//,autoScroll:true		
-		};
+			xtype: 'container',
+			layout: 'anchor',
+			defaults: {anchor: '0'},
+			defaultType: 'toolbar',
+			items: [{
+				items: actions0 // toolbar 1
+			},{
+				items: actions // toolbar 1
+			}]
+		}
+//		me.tbar={
+//			itemId:'action_toolbar',
+//			layout: {
+//	               overflowHandler: 'Menu'
+//	        },
+//			items:actions
+//			//,autoScroll:true		
+//		};
 
     },
     onCreate:function(){

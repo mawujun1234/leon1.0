@@ -27,6 +27,14 @@ Ext.define('Ems.baseinfo.CustomerForm',{
 	        xtype:'hidden',
 	        allowBlank: false
 	    },
+	    {
+	        fieldLabel: 'parent_id',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'parent_id',
+	        
+	        xtype:'hidden',
+	        allowBlank: false
+	    },
 		
 		{
 	        fieldLabel: '名称',
@@ -43,7 +51,8 @@ Ext.define('Ems.baseinfo.CustomerForm',{
 				    fields: ['id', 'name'],
 				    data : [
 				        {"id":0, "name":"机关"},
-				        {"id":1, "name":"企业"}
+				        {"id":1, "name":"企业"},
+				        {"id":2, "name":"区"}
 				    ]
 				}),
 			    queryMode: 'local',
@@ -96,12 +105,49 @@ Ext.define('Ems.baseinfo.CustomerForm',{
                 	return;
                 }
                 form.getForm().updateRecord();
-				form.getRecord().save({
-					success: function(record, operation) {
-						me.fireEvent("saved");
-						alert("保存成功");
-					}
-				});
+                
+                //如果选择的不是区，那必须要有一个区，如果选择新建的是区，那肯定是健在顶层的目录下面
+                var record=form.getRecord();
+                if(me.isupdate==false){
+                	if(!me.seletedcnode && record.get("type")!=2){
+	                	alert("企业和机关只能建在区下面!区只能建在一级目录!");
+	                	return;
+	                } else if(me.seletedcnode && me.seletedcnode.get("type")==2 && record.get("type")!=2 ){//
+                		//me.getForm().findField("parent_id").setValue(me.seletedcnode.get("id"));
+                		record.set("parent_id",me.seletedcnode.get("id"));
+                	} else if(me.seletedcnode && record.get("type")!=2 ){//&& me.seletedcnode.get("type")==2
+                		var parentNode=me.seletedcnode.parentNode;
+                		//me.getForm().findField("parent_id").setValue(parentNode.get("id"));
+                		record.set("parent_id",parentNode.get("id"));
+
+                	} else if(me.seletedcnode && record.get("type")==2){
+                		me.getForm().findField("parent_id").setValue("");
+                	}
+                	form.getRecord().save({
+							success: function(record, operation) {
+								me.fireEvent("saved",record);
+								alert("保存成功");
+							}
+					});
+                }
+                
+                if(me.isupdate==true){
+                	var parentNode=me.seletedcnode.parentNode;
+                	if(record.get("type")!=2 && parentNode.isRoot()){
+                		alert("企业和机关只能建在区下面!区只能建在一级目录!");
+                		return;
+                	} else if(record.get("type")==2 && !parentNode.isRoot()){
+                		alert("企业和机关只能建在区下面!区只能建在一级目录!");         
+                		return;
+                	}
+                	form.getRecord().save({
+							success: function(record, operation) {
+								me.fireEvent("saved",record);
+								alert("保存成功");
+							}
+					});
+                }
+                
             }
       });
       me.buttons=[saveButton];

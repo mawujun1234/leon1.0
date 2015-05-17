@@ -5,6 +5,7 @@ Ext.defineModel("Ems.baseinfo.Customer",{
 		{name:'id',type:'string'},
 		{name:'memo',type:'string'},
 		{name:'name',type:'string'},
+		{name:'parent_id',type:'string'},
 		{name:'status',type:'bool'},
 		{name:'type',type:'int'}
 	],

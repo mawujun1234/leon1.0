@@ -138,9 +138,11 @@ public class AreaController {
 	 */
 	@RequestMapping("/area/queryPoles.do")
 	@ResponseBody
-	public Page queryPoles(Integer start,Integer limit,String area_id) {	
+	public Page queryPoles(Integer start,Integer limit,String area_id,String customer_id) {	
 		Page page=Page.getInstance(start,limit);
 		page.addParam(M.Pole.area_id, area_id);
+		//page.addParam("customer_id_2", customer_id_2);
+		page.addParam(M.Pole.customer_id, customer_id);
 		
 		return areaService.queryPoles(page);
 		

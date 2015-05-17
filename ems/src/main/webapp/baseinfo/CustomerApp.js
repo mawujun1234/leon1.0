@@ -1,10 +1,10 @@
 Ext.require("Ems.baseinfo.Customer");
-Ext.require("Ems.baseinfo.CustomerGrid");
+Ext.require("Ems.baseinfo.CustomerTreeGrid");
 Ext.require("Ems.baseinfo.PoleGrid");
 Ext.require("Ems.baseinfo.CustomerContactGrid");
 Ext.require("Ems.baseinfo.CustomerForm");
 Ext.onReady(function(){
-	var grid=Ext.create('Ems.baseinfo.CustomerGrid',{
+	var grid=Ext.create('Ems.baseinfo.CustomerTreeGrid',{
 		region:'west',
 		split: true,
 		collapsible: true,
@@ -12,7 +12,9 @@ Ext.onReady(function(){
 		width:400
 	});
 	grid.on('itemclick',function(view,record,item,index){
-		
+		//if(record.get("type")==2){
+			//return;
+		//}
 
 		customercontactgrid.customer_id=record.get("id");
 		customercontactgrid.getStore().getProxy().extraParams={customer_id:record.get("id")};

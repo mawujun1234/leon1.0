@@ -1,9 +1,12 @@
 package com.mawujun.baseinfo;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 
 
 import com.mawujun.service.AbstractService;
@@ -30,4 +33,7 @@ public class CustomerService extends AbstractService<Customer, String>{
 		return customerRepository;
 	}
 
+	public List<CustomerVO> queryChildren(String parent_id,String name) {
+		return customerRepository.queryChildren(parent_id,name);
+	}
 }

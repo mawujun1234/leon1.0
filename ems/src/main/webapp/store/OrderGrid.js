@@ -71,6 +71,54 @@ Ext.define('Ems.store.OrderGrid',{
 		   })
 	  }); 
 	  
+	  var project_id=Ext.create('Ext.form.field.Hidden',{
+		labelAlign:'right',
+		labelWidth:40,
+		fieldLabel: '项目',
+		name:'project_id',
+		readOnly:true,
+		emptyText:"不可编辑",
+		allowBlank:false
+	});
+	var project_name=Ext.create('Ext.form.field.Text',{
+		labelAlign:'right',
+		labelWidth:40,
+		fieldLabel: '项目',
+		name:'project_name',
+		readOnly:true,
+		emptyText:"不可编辑",
+		allowBlank:false
+	});
+	var project_button=Ext.create('Ext.button.Button',{
+		text:'选择项目',
+		margin:'0 0 0 5',
+		handler:function(){
+			var projectGrid=Ext.create('Ems.baseinfo.ProjectQueryGrid',{
+				listeners:{
+					itemdblclick:function(view,record,item){
+						project_id.setValue(record.get("id"));
+						project_name.setValue(record.get("name"));
+						win.close();
+					}
+				}
+			});
+			var win=Ext.create('Ext.window.Window',{
+				title:'双击选择项目',
+				items:[projectGrid],
+				layout:'fit',
+				modal:true,
+				width:700,
+				height:300
+			});
+			win.show();
+		}
+	});
+	  var supplier_combox=Ext.create('Ems.baseinfo.SupplierCombo',{
+		labelAlign:'right',
+		labelWidth:40,
+		flex:1,
+		allowBlank: true
+	});
 	  
 	  var date_start=Ext.create('Ext.form.field.Date',{
 	  	fieldLabel: '订购日期',
@@ -84,7 +132,7 @@ Ext.define('Ems.store.OrderGrid',{
 	  	fieldLabel: '到',
 	  	format:'Y-m-d',
 	  	labelWidth:15,
-	  	labelWidth:15,
+	  	width:115,
         //name: 'date_end',
         value: new Date()
 	  });
@@ -92,7 +140,7 @@ Ext.define('Ems.store.OrderGrid',{
 	 var order_no=Ext.create('Ext.form.field.Text',{
 		fieldLabel:'订单号',
 		name:'orderNo',
-		labelWidth:50,
+		labelWidth:40,
 		allowBlank:false,
 		labelAlign:'right'
 	});
@@ -102,7 +150,9 @@ Ext.define('Ems.store.OrderGrid',{
 					store_id:store_combox.getValue(),
 					date_start: date_start.getRawValue(),
 					date_end: date_end.getRawValue(),
-					orderNo:order_no.getValue()
+					orderNo:order_no.getValue(),
+					project_id:project_id.getValue(),
+					supplier_id:supplier_combox.getValue()
 				  };
 	});
 	  me.tbar={
@@ -111,11 +161,13 @@ Ext.define('Ems.store.OrderGrid',{
 		defaults: {anchor: '0'},
 		defaultType: 'toolbar',
 		items: [{
-			items: [store_combox] // toolbar 1
+			items: [store_combox,date_start,date_end] // toolbar 1
+		},{
+			items: [] // toolbar 1
+		},{
+			items: [supplier_combox] // toolbar 1
 		}, {
-			items: [date_start,date_end] // toolbar 2
-		}, {
-			items: [order_no,{
+			items: [project_id,project_name,project_button,order_no,{
 			text: '查询',
 			iconCls:'form-search-button',
 			handler: function(btn){

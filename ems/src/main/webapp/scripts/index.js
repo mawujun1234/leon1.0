@@ -41,6 +41,7 @@ Ext.onReady(function() {
 		contentEl:'div-left',
 	    title:'常用功能',
 	    region:'west',
+	    collapsed:true,
 	    //url:Ext.ContextPath+"/getnavi.do",
 	    url:Ext.ContextPath+"/nav/getleftnavi.do",
 	    width: 200,

@@ -7,7 +7,17 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.mawujun.store.OrderRepository">
 
 	<select id="queryMain" resultType="com.mawujun.store.OrderVO" parameterType="map">
-    	select a.*,b.name as project_name from ems_Order a left join ems_project b on a.project_id=b.id
+    	select a.*,b.name as project_name from 
+    	(
+    		select a.* from ems_Order a,ems_orderlist b
+    		where a.id=b.order_id
+    		<if test="project_id!=null and project_id!=''">
+	    		and a.project_id = #{project_id}
+	    	</if>
+	    	<if test="supplier_id!=null and supplier_id!=''">
+	    		and b.supplier_id = #{supplier_id}
+	    	</if>
+    	) a left join ems_project b on a.project_id=b.id
     	<where>
     		and a.store_id in (select store_id from sys_userstore c where c.user_id=#{user_id} and c.look='Y')
     		<if test="store_id!=null and store_id!=''">

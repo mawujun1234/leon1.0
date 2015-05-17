@@ -14,9 +14,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     </select>
     <!-- 查询某个片区下的点位 -->
     <select id="queryPoles" resultType="com.mawujun.baseinfo.Pole" parameterType="map">
-    	SELECT *
+    	SELECT a.*
 	    FROM ems_pole a
 		where a.area_id=#{area_id}
+		<if test="customer_id!=null and customer_id!=''">
+			 and a.customer_id=#{customer_id}
+		</if>
 		order by a.code asc
     </select>
     

@@ -8,8 +8,8 @@ Ext.onReady(function(){
 		region:'west',
 		split: true,
 		collapsible: true,
-		title:'订单',
-		width:400
+		//title:'订单',
+		width:500
 	});
 
 	var gridList=Ext.create('Ems.store.OrderListGrid',{

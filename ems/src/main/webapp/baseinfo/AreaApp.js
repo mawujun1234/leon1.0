@@ -30,9 +30,10 @@ Ext.onReady(function(){
 	
 	var equipment_grid=Ext.create('Ems.baseinfo.EquipmentGrid',{
     	title:'拥有的设备',
-    	height:300,
+    	height:200,
     	split: true,
     	collapsible: true,
+    	collapsed:true,
     	region:'south'
     });
     areaPoleGrid.on('itemclick',function(view,record,item,index){

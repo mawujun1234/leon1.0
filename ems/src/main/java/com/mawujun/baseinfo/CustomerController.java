@@ -14,6 +14,7 @@ import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.utils.page.Page;
 import com.mawujun.utils.M;
+import com.mawujun.utils.StringUtils;
 import com.mawujun.baseinfo.Customer;
 import com.mawujun.baseinfo.CustomerService;
 /**
@@ -61,8 +62,32 @@ public class CustomerController {
 
 	@RequestMapping("/customer/query.do")
 	@ResponseBody
-	public List<Customer> query() {	
-		List<Customer> customeres=customerService.queryAll();
+	public List<CustomerVO> query(String node) {	
+		List<CustomerVO> customeres=null;
+		if("root".equals(node)){
+			customeres=customerService.queryChildren(null,null);
+		} else {
+			customeres=customerService.queryChildren(node,null);
+		}
+		
+		JsonConfigHolder.setAutoWrap(false);
+		return customeres;
+	}
+	
+	@RequestMapping("/customer/query4combo.do")
+	@ResponseBody
+	public List<CustomerVO> query4combo(String parent_id,String name) {	
+		List<CustomerVO> customeres=null;
+		if(!StringUtils.hasText(parent_id)){
+			customeres=customerService.queryChildren(null,null);
+		} else {
+			if(StringUtils.hasText(name)){
+				name="%"+name+"%";
+			}
+			customeres=customerService.queryChildren(parent_id,name);
+		}
+		
+		//JsonConfigHolder.setAutoWrap(false);
 		return customeres;
 	}
 	
@@ -75,6 +100,9 @@ public class CustomerController {
 	@RequestMapping("/customer/create.do")
 	@ResponseBody
 	public Customer create(@RequestBody Customer customer) {
+		if(customer.getType()==2){
+			customer.setParent_id(null);
+		}
 		customerService.create(customer);
 		return customer;
 	}
