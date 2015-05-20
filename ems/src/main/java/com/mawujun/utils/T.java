@@ -82,6 +82,7 @@ public static final class ems_equipmentprod {
 	public static final String status="status";
 	public static final String levl="levl";
 	public static final String parent_id="parent_id";
+	public static final String memo="memo";
 	public static final String leaf="leaf";
 }
 public static final class ems_equipmentsubtype {
@@ -90,6 +91,7 @@ public static final class ems_equipmentsubtype {
 	public static final String status="status";
 	public static final String levl="levl";
 	public static final String parent_id="parent_id";
+	public static final String memo="memo";
 	public static final String leaf="leaf";
 	public static final String unit="unit";
 	public static final String spec="spec";
@@ -102,6 +104,7 @@ public static final class ems_equipmenttype {
 	public static final String status="status";
 	public static final String levl="levl";
 	public static final String parent_id="parent_id";
+	public static final String memo="memo";
 	public static final String leaf="leaf";
 	public static final String unit="unit";
 	public static final String spec="spec";

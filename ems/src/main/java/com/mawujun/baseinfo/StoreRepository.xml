@@ -112,6 +112,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     		and 1!=1
     	</if>
     </select>
+    <!-- 看看仓库是否已经被使用了，在订单中 -->
+    <select id="queryUsedCountByOrder" resultType="int" parameterType="string">
+    	select count(id) from ems_order where store_id=#{store_id}
+    </select>
    
 </mapper>
 

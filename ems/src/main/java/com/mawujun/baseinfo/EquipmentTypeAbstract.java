@@ -19,6 +19,13 @@ public class EquipmentTypeAbstract {
 	private Integer levl;
 	@Column(length=2)
 	private String parent_id;
+	@Column(length = 100)
+	private String memo;//描述信息，例如 国内标配，样品等信息,先放着，现在只有 品名里面会用到
+	
+	
+	
+	
+	
 	@Transient
 	private Boolean leaf;
 	
@@ -113,6 +120,12 @@ public class EquipmentTypeAbstract {
 
 	public void setBrand_id(String brand_id) {
 		this.brand_id = brand_id;
+	}
+	public String getMemo() {
+		return memo;
+	}
+	public void setMemo(String memo) {
+		this.memo = memo;
 	}
 
 }

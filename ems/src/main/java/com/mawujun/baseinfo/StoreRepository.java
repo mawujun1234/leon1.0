@@ -25,4 +25,6 @@ public interface StoreRepository extends IRepository<Store, String>{
 	public List<Store> queryCombo(@Param("user_id")String user_id,@Param("types")Integer[] types,@Param("look")Boolean look,@Param("edit")Boolean edit);
 	//public List<Store> queryCombo(Map<String,Object> params);
 	public List<User> queryUsersByStore(@Param("store_id")String store_id,@Param("look")Boolean look,@Param("edit")Boolean edit);
+	
+	public Integer queryUsedCountByOrder(@Param("store_id")String store_id);
 }

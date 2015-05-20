@@ -16,6 +16,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 	initComponent: function () {
       var me = this;
       me.columns=[
+      	{xtype:'rownumberer',text:'序号'},
 		{dataIndex:'id',text:'编码',width:80
 //		,renderer:function(value){
 //			var values=value.split("_");
@@ -28,9 +29,13 @@ Ext.define('Ems.baseinfo.EquipmentTypeGrid',{
 //		}},
 		{dataIndex:'name',text:'名称',flex:1},
 		{dataIndex:'style',text:'型号',flex:1},
+		{dataIndex:'memo',text:'描述'},
 		{dataIndex:'unit',text:'单位',width:60},
 		{dataIndex:'brand_name',text:'品牌',width:100},
-		{dataIndex:'spec',text:'规格',flex:1},
+		{dataIndex:'spec',text:'规格',flex:1,renderer:function(value,metadata,record){
+								metadata.tdAttr = "data-qtip='" + value+ "'";
+							    return value;
+							}},
 		{dataIndex:'status',text:'状态',width:60,renderer:function(value){
 			if(value){
 				return "有效";

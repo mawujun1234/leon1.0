@@ -2,6 +2,7 @@ Ext.require("Ems.store.Order");
 Ext.require("Ems.store.OrderList");
 Ext.require("Ems.store.OrderGrid");
 Ext.require("Ems.store.OrderListGrid");
+Ext.require('Ems.store.OrderForm');
 
 Ext.onReady(function(){
 	var grid=Ext.create('Ems.store.OrderGrid',{

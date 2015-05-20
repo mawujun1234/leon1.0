@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 
@@ -28,6 +29,7 @@ import com.mawujun.utils.M;
 import com.mawujun.utils.page.Page;
 import com.mawujun.baseinfo.WorkUnit;
 import com.mawujun.baseinfo.WorkUnitRepository;
+import com.mawujun.exception.BusinessException;
 
 
 /**
@@ -91,4 +93,18 @@ public class WorkUnitService extends AbstractService<WorkUnit, String>{
 	public List<EquipmentVO> queryHaveEquipmentInfosDetail(String workUnit_id,String prod_id) {
 		return workUnitRepository.queryHaveEquipmentInfosDetail(workUnit_id, prod_id);
 	}
+	
+//	@Override
+//	public void delete(WorkUnit entity) {
+////		// 先判断是否有订单引用他了，如果有就不能删除
+////		if(workUnitRepository.queryUsedCountByOrder(entity.getId())>0){
+////			throw new BusinessException("作业单位已经被引用,不能删除!");
+////		} else {
+////			super.delete(entity);
+////		}
+//		//先判断在片区中是否已经被引用了，如果已经被引用就不能删除
+//		
+//		//再判断在
+//		
+//	}
 }

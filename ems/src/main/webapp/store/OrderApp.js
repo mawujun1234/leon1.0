@@ -63,48 +63,83 @@ Ext.onReady(function(){
 		value:loginName
 	});
 	//
-	var project_id=Ext.create('Ext.form.field.Hidden',{
-		labelAlign:'right',
-		labelWidth:40,
-		fieldLabel: '项目',
-		name:'project_id',
-		readOnly:true,
-		emptyText:"不可编辑",
-		allowBlank:false
-	});
-	var project_name=Ext.create('Ext.form.field.Text',{
-		labelAlign:'right',
-		labelWidth:40,
-		fieldLabel: '项目',
-		name:'project_name',
-		readOnly:true,
-		emptyText:"不可编辑",
-		allowBlank:false
-	});
-	var project_button=Ext.create('Ext.button.Button',{
-		text:'选择项目',
-		margin:'0 0 0 5',
-		handler:function(){
-			var projectGrid=Ext.create('Ems.baseinfo.ProjectQueryGrid',{
-				listeners:{
-					itemdblclick:function(view,record,item){
-						project_id.setValue(record.get("id"));
-						project_name.setValue(record.get("name"));
-						win.close();
-					}
-				}
-			});
-			var win=Ext.create('Ext.window.Window',{
-				title:'双击选择项目',
-				items:[projectGrid],
-				layout:'fit',
-				modal:true,
-				width:700,
-				height:300
-			});
-			win.show();
-		}
-	});
+//	var project_id=Ext.create('Ext.form.field.Hidden',{
+//		labelAlign:'right',
+//		labelWidth:40,
+//		fieldLabel: '项目',
+//		name:'project_id',
+//		readOnly:true,
+//		emptyText:"不可编辑",
+//		allowBlank:false
+//	});
+//	var project_name=Ext.create('Ext.form.field.Text',{
+//		labelAlign:'right',
+//		labelWidth:40,
+//		fieldLabel: '项目',
+//		name:'project_name',
+//		readOnly:true,
+//		emptyText:"不可编辑",
+//		allowBlank:false
+//	});
+//	var project_button=Ext.create('Ext.button.Button',{
+//		text:'选择项目',
+//		margin:'0 0 0 5',
+//		handler:function(){
+//			var projectGrid=Ext.create('Ems.baseinfo.ProjectQueryGrid',{
+//				listeners:{
+//					itemdblclick:function(view,record,item){
+//						project_id.setValue(record.get("id"));
+//						project_name.setValue(record.get("name"));
+//						win.close();
+//					}
+//				}
+//			});
+//			var win=Ext.create('Ext.window.Window',{
+//				title:'双击选择项目',
+//				items:[projectGrid],
+//				layout:'fit',
+//				modal:true,
+//				width:700,
+//				height:300
+//			});
+//			win.show();
+//		}
+//	});
+	
+	var project_combox=Ext.create('Ext.form.field.ComboBox',{
+	        fieldLabel: '项目',
+	        labelAlign:'right',
+            labelWidth:40,
+            flex:1,
+	        //xtype:'combobox',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'project_id',
+		    displayField: 'name',
+		    valueField: 'id',
+		    queryParam: 'name',
+    		queryMode: 'remote',
+    		triggerAction: 'query',
+    		minChars:-1,
+		    trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
+		    trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
+			onTrigger1Click : function(){
+			    var me = this;
+			    me.setValue('');
+			},
+	        allowBlank: false,
+	        store:Ext.create('Ext.data.Store', {
+		    	fields: ['id', 'name'],
+			    proxy:{
+			    	type:'ajax',
+			    	extraParams:{type:[1,3],look:true},
+			    	url:Ext.ContextPath+"/project/query.do",
+			    	reader:{
+			    		type:'json',
+			    		root:'root'
+			    	}
+			    }
+		   })
+	});	
 	
 	var type_combox=Ext.create('Ems.baseinfo.TypeCombo',{
 		labelAlign:'right',
@@ -441,7 +476,7 @@ Ext.onReady(function(){
         },
         defaults:{margins:'0 0 5 0',border:false},
         items:[{xtype:'form',items:[
-        							{xtype:'fieldcontainer',layout: 'hbox',items:[order_no,store_combox,orderDate,operater,project_id,project_name,project_button]},
+        							{xtype:'fieldcontainer',layout: 'hbox',items:[order_no,store_combox,orderDate,operater,project_combox]},
         							{xtype:'fieldcontainer',layout: 'hbox',items:[type_combox,subtype_combox,prod_name,queryProd_button,brand_name,style]},
         							{xtype:'fieldcontainer',layout: 'hbox',items:[prod_spec,prod_unit]},
                                     {xtype:'fieldcontainer',layout: 'hbox',items:[
@@ -474,7 +509,7 @@ Ext.onReady(function(){
 					store_id:store_combox.getValue(),
 		            store_name:store_combox.getRawValue(),
 		            orderDate:orderDate.getValue(),
-		            project_id:project_id.getValue(),
+		            project_id:project_combox.getValue(),
 		            operater:loginUserId
 		            
 				};
@@ -499,8 +534,7 @@ Ext.onReady(function(){
 							equipStore.removeAll();
 							
 							var record=new Ext.create('Ems.store.OrderList',{
-								//operater:loginUserId,
-								//orderDate:new Date()
+
 						    });
 						    //order_no.enable();
 							//store_combox.enable();
@@ -509,6 +543,7 @@ Ext.onReady(function(){
 							
 							order_no.setValue("");
 							store_combox.clearValue();
+							project_combox.clearValue();
 							orderDate.setValue(new Date());
 						}
 						Ext.getBody().unmask();

@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
 import com.mawujun.service.AbstractService;
 
 
@@ -33,6 +34,7 @@ import com.mawujun.utils.M;
 import com.mawujun.utils.page.Page;
 import com.mawujun.baseinfo.Store;
 import com.mawujun.baseinfo.StoreRepository;
+import com.mawujun.exception.BusinessException;
 
 
 /**
@@ -92,5 +94,17 @@ public class StoreService extends AbstractService<Store, String>{
 	
 	public List<User> queryUsersByStore(String store_id,Boolean look,Boolean edit) {
 		return storeRepository.queryUsersByStore(store_id,look,edit);
+	}
+	@Override
+	public void delete(Store entity) {
+		// 先判断是否有订单引用他了，如果有就不能删除
+		if(storeRepository.queryUsedCountByOrder(entity.getId())>0){
+			throw new BusinessException("仓库已经被引用,不能删除!");
+		} else {
+			super.delete(entity);
+		}
+		//store.setStatus(false);
+		//storeRepository.update(store);
+		//super.delete(entity);
 	}
 }

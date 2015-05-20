@@ -33,6 +33,7 @@ public class Order extends UUIDEntity {
 	private OrderStatus status=OrderStatus.edit;//状态有两个edit，或者 editover
 	@Column(length=36)
 	private String project_id;//项目id
+	@Column(updatable=false)
 	private Date createDate;//订单建立日期
 	
 	

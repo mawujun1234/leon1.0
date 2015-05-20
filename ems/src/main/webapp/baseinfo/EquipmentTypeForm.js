@@ -130,6 +130,16 @@ Ext.define('Ems.baseinfo.EquipmentTypeForm',{
 	        allowBlank: true
 	    },
 	    {
+	        fieldLabel: '描述',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'memo',
+	        hidden:!me.isprod,
+	        xtype:'textfield',
+	        maxLength:50,
+	        value:"",
+	        allowBlank: true
+	    },
+	    {
 	        fieldLabel: '单位',
 	        afterLabelTextTpl: Ext.required,
 	        name: 'unit',

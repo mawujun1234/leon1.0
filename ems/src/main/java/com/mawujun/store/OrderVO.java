@@ -21,6 +21,8 @@ public class OrderVO extends Order {
 	private String store_name;
 	private String project_name;
 	
+	private String operater_name;
+	
 //	private Integer printNum=0;//要打印的数量
 	
 //	private Boolean exportStatus=false;//有
@@ -46,6 +48,14 @@ public class OrderVO extends Order {
 
 	public void setProject_name(String project_name) {
 		this.project_name = project_name;
+	}
+
+	public String getOperater_name() {
+		return operater_name;
+	}
+
+	public void setOperater_name(String operater_name) {
+		this.operater_name = operater_name;
 	}
 	
 	

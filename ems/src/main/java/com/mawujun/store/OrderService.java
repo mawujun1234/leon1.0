@@ -135,6 +135,9 @@ public class OrderService extends AbstractService<Order, String>{
 		if(order.getStatus()==OrderStatus.editover){
 			return;
 		}
+		if(!StringUtils.hasText(order.getProject_id())){
+			throw new BusinessException("该订单还没有添加项目信息，不能确认!");
+		}
 		order.setStatus(OrderStatus.editover);
 		orderRepository.update(order);
 		//

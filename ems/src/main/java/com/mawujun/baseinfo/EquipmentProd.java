@@ -2,9 +2,6 @@ package com.mawujun.baseinfo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -19,11 +16,14 @@ public class EquipmentProd extends EquipmentTypeAbstract implements
 	@Column(length = 10)
 	private String unit;
 	@Column(length = 500)
-	private String spec;
+	private String spec;//规格
 	@Column(length = 50)
 	private String style;// 型号
 	@Column(length = 20)
 	private String brand_id;
+	
+	
+	
 	
 	@Transient
 	private String brand_name;
@@ -74,5 +74,6 @@ public class EquipmentProd extends EquipmentTypeAbstract implements
 	public void setSubtype_name(String subtype_name) {
 		this.subtype_name = subtype_name;
 	}
+
 
 }

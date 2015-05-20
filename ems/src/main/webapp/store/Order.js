@@ -7,6 +7,7 @@ Ext.defineModel("Ems.store.Order",{
 		{name:'brand_id',type:'string'},
 		{name:'operater',type:'string'},
 		{name:'orderDate',type:'date', dateFormat: 'Y-m-d'},
+		{name:'createDate',type:'date', dateFormat: 'Y-m-d'},
 		//{name:'orderNum',type:'int'},
 		//{name:'prod_id',type:'string'},
 		{name:'store_id',type:'string'},
@@ -30,6 +31,7 @@ Ext.defineModel("Ems.store.Order",{
 		{name:'project_name',type:'string'},
 		//{name:'printNum',type:'int'},
 		//{name:'exportStatus',type:'bool'},
+		{name:'operater_name',type:'string'},
 		{name:'status_name',type:'string'}
 	],
 	associations:[
