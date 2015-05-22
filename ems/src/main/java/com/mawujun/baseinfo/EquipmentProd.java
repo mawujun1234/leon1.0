@@ -2,6 +2,9 @@ package com.mawujun.baseinfo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -9,8 +12,25 @@ import com.mawujun.repository.idEntity.IdEntity;
 
 @Entity
 @Table(name = "ems_equipmentprod")
-public class EquipmentProd extends EquipmentTypeAbstract implements
+public class EquipmentProd  implements
 		IdEntity<String> {
+	
+	@Id
+	@Column(length=3)
+	private String id;
+	@Column(length=30)
+	private String name;
+	@org.hibernate.annotations.Type(type="yes_no")
+	private Boolean status=true;
+//	
+//	@Column(updatable=false)
+//	private Integer levl;
+	@Column(length=6)
+	private String parent_id;
+	@Column(length=6)
+	private String subtype_id;
+	@Column(length = 100)
+	private String memo;//描述信息，例如 国内标配，样品等信息,先放着，现在只有 品名里面会用到
 
 	// 单位：台，个
 	@Column(length = 10)
@@ -22,15 +42,25 @@ public class EquipmentProd extends EquipmentTypeAbstract implements
 	@Column(length = 20)
 	private String brand_id;
 	
+	@Enumerated(EnumType.STRING)
+	@Column(length=6)
+	private EquipmentProdType type=EquipmentProdType.DJ;
+//	@Column(length=6)
+//	private String type_parent_id;//当被拆分后的parent_id
 	
 	
 	
-	@Transient
-	private String brand_name;
-	@Transient
-	private String subtype_name;
-	@Transient
-	private String ecode_num;//品名下的ecode的数量，或者是
+	
+	
+	
+	public Boolean getLeaf() {
+		//如果是套件就返回false
+		if(type==EquipmentProdType.TJ){
+			return false;
+		} else {
+			return true;
+		}
+	}
 	
 	public String getUnit() {
 		return unit;
@@ -56,23 +86,65 @@ public class EquipmentProd extends EquipmentTypeAbstract implements
 	public void setBrand_id(String brand_id) {
 		this.brand_id = brand_id;
 	}
-	public String getBrand_name() {
-		return brand_name;
+	
+	public EquipmentProdType getType() {
+		return type;
 	}
-	public void setBrand_name(String brand_name) {
-		this.brand_name = brand_name;
+	public void setType(EquipmentProdType type) {
+		this.type = type;
 	}
-	public String getEcode_num() {
-		return ecode_num;
+
+
+	@Override
+	public void setId(String id) {
+		// TODO Auto-generated method stub
+		this.id=id;
 	}
-	public void setEcode_num(String ecode_num) {
-		this.ecode_num = ecode_num;
+
+	@Override
+	public String getId() {
+		// TODO Auto-generated method stub
+		return this.id;
 	}
-	public String getSubtype_name() {
-		return subtype_name;
+
+	public String getName() {
+		return name;
 	}
-	public void setSubtype_name(String subtype_name) {
-		this.subtype_name = subtype_name;
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
+
+	public String getParent_id() {
+		return parent_id;
+	}
+
+	public void setParent_id(String parent_id) {
+		this.parent_id = parent_id;
+	}
+
+	public String getSubtype_id() {
+		return subtype_id;
+	}
+
+	public void setSubtype_id(String subtype_id) {
+		this.subtype_id = subtype_id;
+	}
+
+	public String getMemo() {
+		return memo;
+	}
+
+	public void setMemo(String memo) {
+		this.memo = memo;
 	}
 
 

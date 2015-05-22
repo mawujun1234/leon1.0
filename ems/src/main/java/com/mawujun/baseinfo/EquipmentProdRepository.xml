@@ -13,8 +13,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="status!=null">
 		and a.status=#{status}
 		</if>
-		<if test="parent_id!=null">
-		and a.parent_id=#{parent_id}
+		<if test="subtype_id!=null">
+		and a.subtype_id=#{subtype_id}
 		</if>
 		order by a.id
     </select>

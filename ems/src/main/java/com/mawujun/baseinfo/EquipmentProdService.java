@@ -64,13 +64,8 @@ public class EquipmentProdService extends AbstractService<EquipmentProd, String>
 	
 	public List<EquipmentProd> queryProdGrid(Boolean status,String subtype_id) {
 		Map<String,Object> params=new HashMap<String,Object>();
-		params.put(M.EquipmentSubtype.parent_id, subtype_id);
+		params.put(M.EquipmentProd.subtype_id, subtype_id);
 		if(status!=null){
-//			if(status){
-//				params.put(M.EquipmentType.status, "Y");
-//			} else {
-//				params.put(M.EquipmentType.status, "N");
-//			}
 			params.put(M.EquipmentType.status, status);
 		}
 		return this.getRepository().queryProdGrid(params);

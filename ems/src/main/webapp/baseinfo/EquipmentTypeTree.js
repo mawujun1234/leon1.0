@@ -20,7 +20,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeTree', {
 	       	model:'Ems.baseinfo.EquipmentType',
 			root: {
 			    expanded: true,
-			    levl:0,
+			   // levl:0,
 			    status:true,
 			    text:"类型管理" 
 			},
@@ -32,8 +32,8 @@ Ext.define('Ems.baseinfo.EquipmentTypeTree', {
 					//operation.params.status=true;
 					//operation.params.levl=node?node.get("levl"):null;
 					store.getProxy().extraParams=Ext.apply(store.getProxy().extraParams,{
-						isGrid:false,
-						levl:node?node.get("levl"):null
+						//isGrid:false,
+						//levl:node?node.get("levl"):null
 					});
 				}
 			}
@@ -86,7 +86,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeTree', {
 		    itemId:'create',
 		    disabled:me.disabledAction,
 		    handler: function(b){
-		    	me.onCreate(null,b);
+		    	me.onCreate();
 		    },
 		    iconCls: 'form-add-button'
 		});
@@ -155,13 +155,13 @@ Ext.define('Ems.baseinfo.EquipmentTypeTree', {
 		};
 
     },
-    onCreate:function(values,b){
+    onCreate:function(){
     	var me=this;
 
-    	values=values||{};
+    	var values={};
 
     	var parent=me.getSelectionModel( ).getLastSelected( )||me.tree.getRootNode( );    
-    	if(parent.get("levl")==2){
+    	if(parent.get("parent_id") ){//&&　parent.get("parent_id")!='root'
     		alert("小类下面不能再添加了，品名请在左边的表格里面新建!");
     		return;
     	}
@@ -170,28 +170,28 @@ Ext.define('Ems.baseinfo.EquipmentTypeTree', {
     	if(parent_id!="root"){
     		parent_id=parent_id;//.split("_")[0];
     	} else {
-    		parent_id="";
+    		parent_id=null;//显示父编码为空
     	}
 		var initValue={
 		    'parent_id':parent_id,
 		    status:1,
 		    text:''
 		};
-		//if(parent.get("levl")){
-			initValue.levl=parent.get("levl")+1;
-		//}
-			if(initValue.levl==2){
-				
-			}
+//		//if(parent.get("levl")){
+//			initValue.levl=parent.get("levl")+1;
+//		//}
+//			if(initValue.levl==2){
+//				
+//			}
 
     	values=Ext.applyIf(values,initValue);
 
     	//values.id=parent_id=="root"?"":parent_id;//用于初始化id的前半段
-		var child=values.isModel?values:Ext.createModel(parent.self.getName(),values);
+		var child=Ext.createModel('Ems.baseinfo.EquipmentType',values);
 		var form=new Ems.baseinfo.EquipmentTypeForm({
 			//parent_id:parent_id=="root"?"":parent_id,
 			url:Ext.ContextPath+"/equipmentType/create.do",
-			isType:initValue.levl==1?true:false,
+			//isType:initValue.levl==1?true:false,
 			listeners:{
 				saved:function(){
 					win.close();
@@ -223,7 +223,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeTree', {
 		
 		var form=new Ems.baseinfo.EquipmentTypeForm({
 			url:Ext.ContextPath+"/equipmentType/update.do",
-			isType:record.get("levl")==1?true:false,
+			//isType:record.get("levl")==1?true:false,
 			listeners:{
 				saved:function(){
 					//form.updateRecord();
@@ -267,10 +267,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeTree', {
 				if (btn == 'yes'){
 					Ext.Ajax.request({
 						url:Ext.ContextPath+'/equipmentType/destroy.do',
-						params:{
-							id:record.get("id"),
-							levl:record.get("levl")
-						},
+						params:record.getData(),
 						method:'POST',
 						success:function(){
 							var parent=record.parentNode;//me.getSelectionModel( ).getLastSelected( )||me.getRootNode( );  

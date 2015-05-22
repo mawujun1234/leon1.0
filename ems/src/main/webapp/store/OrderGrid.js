@@ -140,7 +140,13 @@ Ext.define('Ems.store.OrderGrid',{
 		    	fields: ['id', 'name'],
 			    proxy:{
 			    	type:'ajax',
-			    	extraParams:{type:[1,3],look:true},
+			    	//extraParams:{type:[1,3],look:true},
+			    	actionMethods: {
+				        create : 'POST',
+				        read   : 'POST',
+				        update : 'POST',
+				        destroy: 'POST'
+				    },
 			    	url:Ext.ContextPath+"/project/query.do",
 			    	reader:{
 			    		type:'json',

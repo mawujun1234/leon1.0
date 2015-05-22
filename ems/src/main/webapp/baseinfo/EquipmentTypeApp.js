@@ -1,9 +1,9 @@
 Ext.require("Ems.baseinfo.EquipmentType");
-Ext.require("Ems.baseinfo.EquipmentTypeGrid");
+Ext.require("Ems.baseinfo.EquipmentProdGrid");
 Ext.require("Ems.baseinfo.EquipmentTypeTree");
 Ext.require("Ems.baseinfo.EquipmentTypeForm");
 Ext.onReady(function(){
-	var grid=Ext.create('Ems.baseinfo.EquipmentTypeGrid',{
+	var grid=Ext.create('Ems.baseinfo.EquipmentProdGrid',{
 		region:'center',
 		//split: true,
 		//collapsible: true,
@@ -40,7 +40,7 @@ Ext.onReady(function(){
 //			levl:record.get("levl")
 //		}});
 		
-		if(record.get("levl")==2){
+		if(record.get("parent_id")){
 			grid.getEl().unmask();
 			//var aa=grid.getSelectionModel( ).getLastSelected( );
 			grid.getStore().load({params:{
@@ -50,7 +50,7 @@ Ext.onReady(function(){
 			grid.subtype_name=record.get("text");
 		} else {
 			grid.getEl().mask();
-			grid.getStore().removeAll();
+			//grid.getStore().removeAll();
 		}
 		
 	});

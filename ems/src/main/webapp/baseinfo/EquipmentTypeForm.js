@@ -46,7 +46,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeForm',{
 								}, {
 									flex:1,
 	        //fieldLabel: '编码',
-	        name: 'end_id',
+	        name: 'id',
 	        minLength:maxLength,
 	        maxLength:maxLength,
 	        length:maxLength,
@@ -60,15 +60,7 @@ Ext.define('Ems.baseinfo.EquipmentTypeForm',{
 		        }
 	        }
 	    }]
-						},       
-		{
-	        fieldLabel: 'id',
-	        //afterLabelTextTpl: Ext.required,
-	        name: 'id',
-	       
-	        xtype:'hidden'
-	    },
-		
+		},       	
 	    {
 	        fieldLabel: '名称',
 	        afterLabelTextTpl: Ext.required,
@@ -77,93 +69,15 @@ Ext.define('Ems.baseinfo.EquipmentTypeForm',{
 	        xtype:'textfield',
 	        allowBlank: false
 	    },
-	    {
-	    	fieldLabel: '品牌',
-		    displayField: 'name',
-		    valueField: 'id',
-		    afterLabelTextTpl: Ext.required,
-		    hidden:!me.isprod,
-		     //minChars:1,
-		     xtype:'combobox',
-		    forceSelection:true,
-		    editable:false,
-		    allowBlank: !me.isprod,
-		    //queryParam: 'name',
-		    //queryMode: 'remote',
-		    name:'brand_id',
-	    	store:Ext.create('Ext.data.Store', {
-			    fields: ['id', 'name'],
-			    proxy:{
-			    	type:'ajax',
-			    	actionMethods: {
-				        create : 'POST',
-				        read   : 'POST',
-				        update : 'POST',
-				        destroy: 'POST'
-				    },
-			    	url:Ext.ContextPath+"/brand/queryBrandCombo.do",
-			    	reader:{
-			    		type:'json',
-			    		root:'root'
-			    	}
-			    },
-			    listeners:{
-				    	beforeload:function(store){
-				    		//包含所有的选项
-				    		if(me.containAll){
-				    			store.getProxy().extraParams=Ext.apply(store.getProxy().extraParams,{
-				    				containAll:true
-				    			})
-				    		}
-				    	}
-				}
-		   })
-		 },
-	     {
-	        fieldLabel: '型号',
-	        //afterLabelTextTpl: Ext.required,
-	        name: 'style',
-	        hidden:!me.isprod,
-	        xtype:'textfield',
-	        maxLength:50,
-	        value:"",
-	        allowBlank: true
-	    },
+	    
 	    {
 	        fieldLabel: '描述',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'memo',
-	        hidden:!me.isprod,
 	        xtype:'textfield',
 	        maxLength:50,
 	        value:"",
 	        allowBlank: true
-	    },
-	    {
-	        fieldLabel: '单位',
-	        afterLabelTextTpl: Ext.required,
-	        name: 'unit',
-	        hidden:!me.isprod,
-	        xtype:'textfield',
-	        allowBlank: !me.isprod
-	    },
-	    {
-	        fieldLabel: '规格',
-	        //afterLabelTextTpl: Ext.required,
-	        name: 'spec',
-	        hidden:!me.isprod,
-	        xtype:'textareafield',
-	        maxLength:500,
-	        height:160,
-	        grow      : false
-	        //allowBlank: !me.isprod
-	    },
-		{
-	        fieldLabel: 'level',
-	        //afterLabelTextTpl: Ext.required,
-	        name: 'level',
-	       
-	        xtype:'hidden'
 	    },
 		{
 	        fieldLabel: 'status',
@@ -183,11 +97,11 @@ Ext.define('Ems.baseinfo.EquipmentTypeForm',{
                 if(!form.getForm().isValid()) {
                 	return;
                 }
-                form.getForm().findField("id").setValue(form.getForm().findField("parent_id").getValue()+form.getForm().findField("end_id").getValue());
+               // form.getForm().findField("id").setValue(form.getForm().findField("parent_id").getValue()+form.getForm().findField("end_id").getValue());
                 Ext.Msg.confirm("消息","确定要保存吗?",function(btn){
                 	if(btn=='yes'){
                 		form.getForm().updateRecord();
-                		form.getForm().getRecord().set("brand_name",form.getForm().findField("brand_id").getRawValue());
+                		//form.getForm().getRecord().set("brand_name",form.getForm().findField("brand_id").getRawValue());
 						form.getRecord().save({
 							url:form.url,
 							success: function(record, operation) {

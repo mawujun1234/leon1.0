@@ -15,8 +15,8 @@ public class EquipmentTypeAbstract {
 	@org.hibernate.annotations.Type(type="yes_no")
 	private Boolean status=true;
 	
-	@Column(updatable=false)
-	private Integer levl;
+//	@Column(updatable=false)
+//	private Integer levl;
 	@Column(length=2)
 	private String parent_id;
 	@Column(length = 100)
@@ -29,14 +29,14 @@ public class EquipmentTypeAbstract {
 	@Transient
 	private Boolean leaf;
 	
-	@Transient
-	private String unit; //有用，收集前端信息的时候
-	@Transient
-	private String spec;//有用，收集前端信息的时候
-	@Transient
-	private String style;// 型号
-	@Transient
-	private String brand_id;//有用，收集前端信息的时候
+//	@Transient
+//	private String unit; //有用，收集前端信息的时候
+//	@Transient
+//	private String spec;//有用，收集前端信息的时候
+//	@Transient
+//	private String style;// 型号
+//	@Transient
+//	private String brand_id;//有用，收集前端信息的时候
 	
 	
 	public String getStatus_name() {
@@ -62,12 +62,7 @@ public class EquipmentTypeAbstract {
 	public void setParent_id(String parent_id) {
 		this.parent_id = parent_id;
 	}
-	public Integer getLevl() {
-		return levl;
-	}
-	public void setLevl(Integer levl) {
-		this.levl = levl;
-	}
+
 	public Boolean getLeaf() {
 		return leaf;
 	}
@@ -90,37 +85,6 @@ public class EquipmentTypeAbstract {
 		this.name = name;
 	}
 
-	public String getUnit() {
-		return unit;
-	}
-
-	public void setUnit(String unit) {
-		this.unit = unit;
-	}
-
-	public String getSpec() {
-		return spec;
-	}
-
-	public void setSpec(String spec) {
-		this.spec = spec;
-	}
-
-	public String getStyle() {
-		return style;
-	}
-
-	public void setStyle(String style) {
-		this.style = style;
-	}
-
-	public String getBrand_id() {
-		return brand_id;
-	}
-
-	public void setBrand_id(String brand_id) {
-		this.brand_id = brand_id;
-	}
 	public String getMemo() {
 		return memo;
 	}

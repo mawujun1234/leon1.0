@@ -70,46 +70,33 @@ public static final class ems_equipment {
 	public static final String last_install_date="last_install_date";
 }
 public static final class ems_equipmentprod {
+	public static final String id="id";
+	public static final String name="name";
+	public static final String status="status";
+	public static final String parent_id="parent_id";
+	public static final String subtype_id="subtype_id";
+	public static final String memo="memo";
 	public static final String unit="unit";
 	public static final String spec="spec";
 	public static final String style="style";
 	public static final String brand_id="brand_id";
-	public static final String brand_name="brand_name";
-	public static final String subtype_name="subtype_name";
-	public static final String ecode_num="ecode_num";
-	public static final String id="id";
-	public static final String name="name";
-	public static final String status="status";
-	public static final String levl="levl";
-	public static final String parent_id="parent_id";
-	public static final String memo="memo";
-	public static final String leaf="leaf";
+	public static final String type="type";
 }
 public static final class ems_equipmentsubtype {
 	public static final String id="id";
 	public static final String name="name";
 	public static final String status="status";
-	public static final String levl="levl";
 	public static final String parent_id="parent_id";
 	public static final String memo="memo";
 	public static final String leaf="leaf";
-	public static final String unit="unit";
-	public static final String spec="spec";
-	public static final String style="style";
-	public static final String brand_id="brand_id";
 }
 public static final class ems_equipmenttype {
 	public static final String id="id";
 	public static final String name="name";
 	public static final String status="status";
-	public static final String levl="levl";
 	public static final String parent_id="parent_id";
 	public static final String memo="memo";
 	public static final String leaf="leaf";
-	public static final String unit="unit";
-	public static final String spec="spec";
-	public static final String style="style";
-	public static final String brand_id="brand_id";
 }
 public static final class ems_pole {
 	public static final String code="code";
