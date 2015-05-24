@@ -42,11 +42,14 @@ Ext.onReady(function(){
 		
 		if(record.get("parent_id")){
 			grid.getEl().unmask();
-			//var aa=grid.getSelectionModel( ).getLastSelected( );
-			grid.getStore().load({params:{
-				id:record.get("id"),//.split("_")[0],
-				levl:record.get("levl")
-			}});
+//			grid.getStore().load({params:{
+//				subtype_id:record.get("id")
+//			}});
+			grid.getStore().getProxy().extraParams={
+				subtype_id:record.get("id"),
+				status:true
+			};
+			grid.getStore().load();
 			grid.subtype_name=record.get("text");
 		} else {
 			grid.getEl().mask();

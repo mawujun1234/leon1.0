@@ -1,7 +1,7 @@
 Ext.define('Ems.baseinfo.ProdQueryGrid',{
 	extend:'Ext.grid.Panel',
 	requires: [
-	     'Ems.baseinfo.EquipmentType'
+	     'Ems.baseinfo.EquipmentProd'
 	],
 	columnLines :true,
 	stripeRows:true,
@@ -21,6 +21,7 @@ Ext.define('Ems.baseinfo.ProdQueryGrid',{
 		{dataIndex:'unit',text:'单位',width:50},
 		{dataIndex:'brand_name',text:'品牌',width:60},
 		{dataIndex:'style',text:'型号',flex:1},
+		{dataIndex:'memo',text:'描述'},
 		{dataIndex:'spec',text:'规格',flex:1,renderer:function(value,metadata,record){
 			metadata.tdAttr = "data-qtip='" + value+ "'";
 		    return value;
@@ -32,11 +33,12 @@ Ext.define('Ems.baseinfo.ProdQueryGrid',{
 	  me.store=Ext.create('Ext.data.Store',{
 			autoSync:false,
 			pageSize:50,
-			model: 'Ems.baseinfo.EquipmentType',
+			model: 'Ems.baseinfo.EquipmentProd',
 			autoLoad:false,
 			proxy:{
 				type:'ajax',
-				url:Ext.ContextPath+'/equipmentType/queryProdGrid.do',
+				//url:Ext.ContextPath+'/equipmentType/queryProdGrid.do',
+				url:Ext.ContextPath+'/equipmentType/queryProds.do',
 				reader:{
 			    	type:'json',
 			    	root:'root'

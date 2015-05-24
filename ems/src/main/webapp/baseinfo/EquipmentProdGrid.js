@@ -62,7 +62,7 @@ Ext.define('Ems.baseinfo.EquipmentProdGrid',{
 //	  });
       me.store= new Ext.data.TreeStore({
       	autoLoad:false,
-      	nodeParam :'id',
+      	nodeParam :'parent_id',
                 model: 'Ems.baseinfo.EquipmentProd',
                 proxy: {
                     type: 'ajax',
@@ -82,7 +82,7 @@ Ext.define('Ems.baseinfo.EquipmentProdGrid',{
 				}
                 //folderSort: true
       });
-	  me.store.getProxy().extraParams ={isGrid:true,status:true}
+	  //me.store.getProxy().extraParams ={isGrid:true,status:true}
 	  
 //	  me.tbar=	[{
 //			text: '刷新',
@@ -155,7 +155,7 @@ Ext.define('Ems.baseinfo.EquipmentProdGrid',{
             checked:true,
             listeners:{
             	change:function(checkbox,newValue, oldValue){
-            		me.store.getProxy().extraParams ={isGrid:true,status:newValue};
+            		me.store.getProxy().extraParams.status =newValue;
             		me.store.reload();
             	}
             }
@@ -215,6 +215,7 @@ Ext.define('Ems.baseinfo.EquipmentProdGrid',{
 		var form=Ext.create('Ems.baseinfo.EquipmentProdForm',{
 			//isprod:true,
 			//parent_id:parent_id,
+			isUpdate:false,
 			url:Ext.ContextPath+"/equipmentType/createProd.do",
 			//isType:initValue.levl==1?true:false,
 			listeners:{
@@ -242,20 +243,31 @@ Ext.define('Ems.baseinfo.EquipmentProdGrid',{
     	var me=this;
     	var parent=me.getSelectionModel( ).getLastSelected( );
 		if(!parent){
+			alert("请先选择一个套件品名!");
 		    return;
+		} 
+		//alert(parent.get("parent_id"));
+		if(parent.get("parent_id")){
+			alert("不能再进行拆分了");
+			return;
 		} 
 		var unit=parent.get("unit");
 		if(unit!="套" && unit!="对"){
 			alert("你选的品名单位不是'套'或'对',请确认有没有选错.");
 		}
 		
+		
+		
 		var child=Ext.createModel('Ems.baseinfo.EquipmentProd',{
-			parent_id:parent.get("id")
+			parent_id:parent.get("id"),
+			status:true,
+			subtype_id:parent.get("subtype_id")
 		});
 		//套件的form
 		var form=Ext.create('Ems.baseinfo.EquipmentProdForm',{
 			//isprod:true,
 			//parent_id:parent.get("id"),
+			isUpdate:false,
 			url:Ext.ContextPath+"/equipmentType/createProdTJ.do",
 			//isType:initValue.levl==1?true:false,
 			listeners:{
@@ -267,6 +279,13 @@ Ext.define('Ems.baseinfo.EquipmentProdGrid',{
 			}
 		});
 		form.getForm().loadRecord(child);
+		
+		var subtype_id=form.getForm().findField("subtype_id");
+		subtype_id.hide();
+		var parent_id=form.getForm().findField("parent_id");
+		parent_id.show();
+		//var id=form.getForm().findField("id");
+		
 		var win=new Ext.window.Window({
 			items:[form],
 			layout:'fit',
@@ -310,6 +329,7 @@ Ext.define('Ems.baseinfo.EquipmentProdGrid',{
 		//alert(record.get("brand_name"));
 		var brand_model=form.getForm().findField("brand_id").getStore().createModel({id:record.get("brand_id"),name:record.get("brand_name")});
 		form.getForm().findField("brand_id").setValue(brand_model);
+		//form.getForm().findField("brand_id").getStore().reload();//.setValue(brand_model);
 
 		
 		
@@ -332,7 +352,7 @@ Ext.define('Ems.baseinfo.EquipmentProdGrid',{
 
     	//console.dir(record);
 		if(!record){
-		    Ext.Msg.alert("消息","请先选择一条记录");	
+		    Ext.Msg.alert("消息","请先选择一条品名");	
 			return;
 		}
 		//return;
@@ -340,21 +360,20 @@ Ext.define('Ems.baseinfo.EquipmentProdGrid',{
 		Ext.Msg.confirm("删除",'确定要删除吗?', function(btn, text){
 				if (btn == 'yes'){
 					Ext.Ajax.request({
-						url:Ext.ContextPath+'/equipmentType/destroy.do',
-						params:{
-							id:record.get("id"),
-							levl:record.get("levl")
-						},
+						url:Ext.ContextPath+'/equipmentType/destroyProd.do',
+//						params:{
+//							id:record.get("id"),
+//							levl:record.get("levl")
+//						},
+						params:record.raw,
 						method:'POST',
 						success:function(){
 							//var parent=me.tree.getSelectionModel( ).getLastSelected( )||me.tree.getRootNode( );  
 							//me.tree.getStore().reload({node:parent});
-							
-							me.getStore().remove(record);
+							record.destroy();
+							//me.getStore().remove(record);
 							//me.select(0);
-							
-							//record.set("status_name","无效");
-							//record.set("status",false);
+						
 						}
 					});
 			}

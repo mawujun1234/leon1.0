@@ -274,12 +274,16 @@ Ext.onReady(function(){
 		flex:1,
 		readOnly:true,
 		emptyText:'不可编辑',
-		xtype:'textfield',itemId:'style_field',fieldLabel:'型号',name:'style',labelWidth:50,allowBlank:false,labelAlign:'right'});
+		xtype:'textfield',itemId:'style_field',fieldLabel:'型号',name:'style',labelWidth:50,
+		//allowBlank:false,
+		labelAlign:'right'});
 	var prod_spec=Ext.create('Ext.form.field.Text',{
 		flex:1,
 		readOnly:true,
 		emptyText:'不可编辑',
-		xtype:'textfield',itemId:'style_field',fieldLabel:'规格',name:'prod_spec',labelWidth:50,allowBlank:false,labelAlign:'right'});
+		xtype:'textfield',itemId:'style_field',fieldLabel:'规格',name:'prod_spec',labelWidth:50,
+		//allowBlank:false,
+		labelAlign:'right'});
 	
 	var supplier_combox=Ext.create('Ems.baseinfo.SupplierCombo',{
 		labelAlign:'right',

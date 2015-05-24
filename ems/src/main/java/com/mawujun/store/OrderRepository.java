@@ -34,5 +34,7 @@ public interface OrderRepository extends IRepository<Order, String>{
 	
 	public String queryStatus(@Param("id")String id);
 	
+	public List<OrderListVO> queryList4Barcode(Map params);
+	
 	//public Order getMainInfo(@Param("orderNo")String orderNo);
 }

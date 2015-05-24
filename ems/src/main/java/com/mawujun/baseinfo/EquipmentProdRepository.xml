@@ -6,7 +6,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
 <mapper namespace="com.mawujun.baseinfo.EquipmentProdRepository">
 
-	<select id="queryProdGrid" resultType="com.mawujun.baseinfo.EquipmentProd" parameterType="map">
+	<select id="queryProdGrid" resultType="com.mawujun.baseinfo.EquipmentProdVO" parameterType="map">
     	SELECT a.*,b.name as brand_name
 	    FROM ems_equipmentprod a,ems_brand b 
 		where a.brand_id=b.id
@@ -16,10 +16,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="subtype_id!=null">
 		and a.subtype_id=#{subtype_id}
 		</if>
+		<if test="parent_id!=null">
+		and a.parent_id=#{parent_id}
+		</if>
+		<if test="parent_id==null">
+		and a.parent_id is null
+		</if>
 		order by a.id
     </select>
     
-
   
 </mapper>
 

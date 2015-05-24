@@ -16,7 +16,7 @@ import com.mawujun.baseinfo.EquipmentProd;
 @Repository
 public interface EquipmentProdRepository extends IRepository<EquipmentProd, String>{
 
-	public List<EquipmentProd> queryProdGrid(Map map);
+	public List<EquipmentProdVO> queryProdGrid(Map map);
 	
 	//public List<Brand> queryProdGrid(@Param("subtype_id") String subtype_id);
 }

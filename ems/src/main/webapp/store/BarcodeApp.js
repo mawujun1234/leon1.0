@@ -51,7 +51,7 @@ Ext.onReady(function(){
         autoLoad:false,
         model: 'Ems.store.OrderList',
         proxy: {
-        	url:Ext.ContextPath+'/order/queryList.do',
+        	url:Ext.ContextPath+'/order/queryList4Barcode.do',
             type: 'ajax',
             reader:{
             	type:'json',

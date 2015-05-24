@@ -92,14 +92,26 @@ public class EquipmentTypeController {
 		
 		return equipmentTypees;
 	}
-	
+	/**
+	 * Ems.baseinfo.ProdQueryGrid 这个js类中也用到了
+	 * @author mawujun 16064988@qq.com 
+	 * @param subtype_id
+	 * @param parent_id
+	 * @param status
+	 * @return
+	 */
 	@RequestMapping("/equipmentType/queryProds.do")
 	@ResponseBody
-	public List queryProds(String id,Boolean status) {
-		if("root".equals(id)){
-			return new ArrayList();
+	public List<EquipmentProdVO> queryProds(String subtype_id,String parent_id,Boolean status) {
+		//当第一次打开设备设备类型的页面的时候
+		if(!StringUtils.hasText(subtype_id)){
+			return new ArrayList<EquipmentProdVO>();
 		}
-		return equipmentProdService.queryProdGrid(status,id);
+		if("root".equals(parent_id)){
+			//return new ArrayList<EquipmentProdVO>();
+			parent_id=null;
+		}
+		return equipmentProdService.queryProdGrid(status,subtype_id,parent_id);
 	}
 	
 	@RequestMapping("/equipmentType/create.do")
@@ -158,27 +170,7 @@ public class EquipmentTypeController {
 	@RequestMapping("/equipmentType/createProdTJ.do")
 	@ResponseBody
 	public EquipmentProd createProdTJ(@RequestBody EquipmentProd equipmentProd) {
-		// 合并id
-		equipmentProd.setId(equipmentProd.getParent_id()+ equipmentProd.getId());
-
-		Long count = equipmentProdService.queryCount(Cnd.select().andEquals(M.EquipmentProd.id, equipmentProd.getId()));
-		if (count > 0) {
-			throw new BusinessException("编码已经存在");
-		}
-
-		EquipmentProd parent = equipmentProdService.get(equipmentProd.getParent_id());
-		if (parent == null || parent.getStatus() == false) {
-			throw new BusinessException("品名已经删除,不能再进行套件拆分");
-		}
-
-		//改变属性
-		equipmentProd.setType(EquipmentProdType.DJ);
-		equipmentProd.setSubtype_id(parent.getSubtype_id());
-		parent.setType(EquipmentProdType.TJ);
-		equipmentProdService.update(parent);
-
-		equipmentProdService.create(equipmentProd);
-		return equipmentProd;
+		return equipmentProdService.createProdTJ(equipmentProd);
 	}
 	
 	@RequestMapping("/equipmentType/update.do")
@@ -212,6 +204,14 @@ public class EquipmentTypeController {
 			equipmentSubtypeService.delete(BeanUtils.copyOrCast(equipmentType, EquipmentSubtype.class));
 		} 
 		return equipmentType;
+	}
+	@RequestMapping("/equipmentType/destroyProd.do")
+	@ResponseBody
+	public EquipmentProd destroyProd(EquipmentProd equipmentProd) {
+		//equipmentType.setId(equipmentType.getId().substring(0,equipmentType.getId().indexOf('_')));
+		//这里还要写上删除的业务逻辑，还有绑定数据好像还有点问题
+		equipmentProdService.delete(equipmentProd);
+		return equipmentProd;
 	}
 	
 	@RequestMapping("/equipmentType/queryTypeCombo.do")
@@ -264,7 +264,7 @@ public class EquipmentTypeController {
 	 */
 	@RequestMapping("/equipmentType/queryProdCombo.do")
 	@ResponseBody
-	public List<EquipmentProd> queryProd(String equipmentSubtype_id,String name,Boolean containAll) {
+	public List<EquipmentProd> queryProdCombo(String equipmentSubtype_id,String name,Boolean containAll) {
 		if(!StringUtils.hasText(equipmentSubtype_id)){
 			return new ArrayList<EquipmentProd>();
 		}
@@ -291,11 +291,11 @@ public class EquipmentTypeController {
 //		
 //		return equipmentProdService.queryBrandCombo(prod_id);
 //	}
-	
-	@RequestMapping("/equipmentType/queryProdGrid.do")
-	@ResponseBody
-	public List<EquipmentProd> queryProdGrid(String subtype_id) {
-		List<EquipmentProd> equipmentTypees=equipmentProdService.queryProdGrid(true,subtype_id);
-		return equipmentTypees;
-	}
+//	
+//	@RequestMapping("/equipmentType/queryProdGrid.do")
+//	@ResponseBody
+//	public List<EquipmentProdVO> queryProdGrid(String subtype_id) {
+//		List<EquipmentProdVO> equipmentTypees=equipmentProdService.queryProdGrid(true,subtype_id);
+//		return equipmentTypees;
+//	}
 }

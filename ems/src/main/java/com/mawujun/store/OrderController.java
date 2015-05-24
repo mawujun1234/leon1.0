@@ -28,6 +28,7 @@ import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.M;
+import com.mawujun.utils.Params;
 import com.mawujun.utils.StringUtils;
 import com.mawujun.utils.page.Page;
 /**
@@ -112,6 +113,22 @@ public class OrderController {
 		return orderlists;
 	}
 	
+	/**
+	 * 根据订单号，查询所有的订单明细，用在条码打印的时候
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param parent_id 品名的父id
+	 * @return
+	 */
+	@RequestMapping("/order/queryList4Barcode.do")
+	@ResponseBody
+	public Page queryList4Barcode(String order_id,String parent_id) {	
+		//Page page=Page.getInstance(start,limit);
+		//page.addParam(M.OrderList.order_id, order_id);
+		Params.init().add(M.OrderList.order_id, order_id).add(M.EquipmentProd.parent_id, parent_id)
+		
+		Page orderlists=orderService.queryList4Barcode(page);
+		return orderlists;
+	}
 
 
 	

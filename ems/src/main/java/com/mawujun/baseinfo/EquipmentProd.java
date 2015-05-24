@@ -16,7 +16,7 @@ public class EquipmentProd  implements
 		IdEntity<String> {
 	
 	@Id
-	@Column(length=3)
+	@Column(length=12)
 	private String id;
 	@Column(length=30)
 	private String name;
@@ -25,7 +25,7 @@ public class EquipmentProd  implements
 //	
 //	@Column(updatable=false)
 //	private Integer levl;
-	@Column(length=6)
+	@Column(length=12)
 	private String parent_id;
 	@Column(length=6)
 	private String subtype_id;

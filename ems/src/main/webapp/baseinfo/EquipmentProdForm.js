@@ -38,16 +38,19 @@ Ext.define('Ems.baseinfo.EquipmentProdForm',{
 				readOnly : true
 				
 			},  {
-	        	fieldLabel: 'parent_id',
+	        	//fieldLabel: 'parent_id',
 	        	//afterLabelTextTpl: Ext.required,
+				width : 55,
+				margin : '0 5 0 0',
 	        	name: 'parent_id',
-	        	xtype:'hidden',
+	        	xtype:'textfield',
+	        	hidden:true,
 	        	readOnly : true
 	    	},{
 				flex : 1,
 						// fieldLabel: '编码',
 				name : 'id',
-				minLength : me.isUpdate?12:maxLength,
+				minLength : me.isUpdate?6:maxLength,
 				maxLength : me.isUpdate?12:maxLength,
 				length : maxLength,
 				xtype : 'textfield',
@@ -142,8 +145,7 @@ Ext.define('Ems.baseinfo.EquipmentProdForm',{
 	        afterLabelTextTpl: Ext.required,
 	        name: 'unit',
 	       // hidden:!me.isprod,
-	        xtype:'textfield',
-	        allowBlank: !me.isprod
+	        xtype:'textfield'
 	    },
 	    {
 	        fieldLabel: '规格',
@@ -157,16 +159,11 @@ Ext.define('Ems.baseinfo.EquipmentProdForm',{
 	        //allowBlank: !me.isprod
 	    },
 		{
-	        fieldLabel: 'level',
-	        //afterLabelTextTpl: Ext.required,
-	        name: 'level',
-	        xtype:'hidden'
-	    },
-		{
 	        fieldLabel: 'status',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'status',
-	        xtype:'hidden'
+	        xtype:'hidden',
+	        value:1
 	    }
 	  ];   
 	  
@@ -177,7 +174,9 @@ Ext.define('Ems.baseinfo.EquipmentProdForm',{
             handler: function(btn) {
             	var form=this.up('form');
             	//alert(form.getForm().isValid());
-            	if(!me.isUpdate && (!id_field.getValue() || id_field.getValue()!=2)){
+            	//var id_field=form.getForm().findField("id");
+            	var id_field=form.getForm().findField("id");
+            	if(!me.isUpdate && (!id_field.getValue() || (id_field.getValue()+"").length!=2)){
                		alert("请输入2位长度的编码!");
                		return;
                 }
@@ -185,7 +184,7 @@ Ext.define('Ems.baseinfo.EquipmentProdForm',{
                 	return;
                 }
                 
-               var id_field=form.getForm().findField("id");
+               
                
                 Ext.Msg.confirm("消息","确定要保存吗?",function(btn){
                 	if(btn=='yes'){

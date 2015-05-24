@@ -18,6 +18,7 @@ public class OrderListVO extends OrderList {
 	private String prod_name;
 	private String prod_spec;
 	private String prod_unit;
+	private String prod_memo;
 	@Transient
 	private String brand_name;
 	@Transient
@@ -87,6 +88,12 @@ public class OrderListVO extends OrderList {
 
 	public void setProd_unit(String prod_unit) {
 		this.prod_unit = prod_unit;
+	}
+	public String getProd_memo() {
+		return prod_memo;
+	}
+	public void setProd_memo(String prod_memo) {
+		this.prod_memo = prod_memo;
 	}
 	
 }
