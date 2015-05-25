@@ -10,6 +10,11 @@ import com.mawujun.repository.idEntity.UUIDEntity;
 @Entity
 @Table(name="ems_orderlist")
 public class OrderList extends UUIDEntity {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Column(length=36)
 	private String order_id;//订单id
 	

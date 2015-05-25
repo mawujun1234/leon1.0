@@ -25,6 +25,7 @@ import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.M;
+import com.mawujun.utils.Params;
 import com.mawujun.utils.StringUtils;
 import com.mawujun.utils.page.Page;
 
@@ -74,9 +75,13 @@ public class OrderService extends AbstractService<Order, String>{
 		return orderRepository.queryList(page);
 	}
 	
-	public List<OrderListVO> queryList4Barcode(Map params) {	
+	public List<OrderListVO> queryList4Barcode(Params params) {	
 		
 		return orderRepository.queryList4Barcode(params);
+	}
+	public List<OrderListVO> queryList4Barcode_tj_children(Params params) {	
+		
+		return orderRepository.queryList4Barcode_tj_children(params);
 	}
 	
 	SimpleDateFormat y2mdDateFormat=new SimpleDateFormat("yyMMdd");

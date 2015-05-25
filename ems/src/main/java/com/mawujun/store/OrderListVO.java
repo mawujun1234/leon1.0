@@ -1,11 +1,8 @@
 package com.mawujun.store;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.mawujun.repository.idEntity.UUIDEntity;
+import com.mawujun.baseinfo.EquipmentProdType;
 
 public class OrderListVO extends OrderList {
 	/**
@@ -14,11 +11,12 @@ public class OrderListVO extends OrderList {
 	private static final long serialVersionUID = 1L;
 	@Transient
 	private String subtype_name;
-	@Transient
+	private String prod_id;
 	private String prod_name;
 	private String prod_spec;
 	private String prod_unit;
 	private String prod_memo;
+	private EquipmentProdType prod_type;
 	@Transient
 	private String brand_name;
 	@Transient
@@ -29,6 +27,17 @@ public class OrderListVO extends OrderList {
 	private Integer printNum=0;//要打印的数量
 	
 	private Boolean exportStatus=false;//有
+	
+	private Boolean noedit=false;//该订单明细不可编辑
+	
+	public boolean getLeaf() {
+		if(prod_type==EquipmentProdType.TJ){
+			return false;
+		} else {
+			return true;
+		}
+	}
+
 	
 	
 	public String getSubtype_name() {
@@ -94,6 +103,30 @@ public class OrderListVO extends OrderList {
 	}
 	public void setProd_memo(String prod_memo) {
 		this.prod_memo = prod_memo;
+	}
+
+
+
+	public String getProd_id() {
+		return prod_id;
+	}
+
+
+
+	public void setProd_id(String prod_id) {
+		this.prod_id = prod_id;
+	}
+
+
+
+	public Boolean getNoedit() {
+		return noedit;
+	}
+
+
+
+	public void setNoedit(Boolean noedit) {
+		this.noedit = noedit;
 	}
 	
 }

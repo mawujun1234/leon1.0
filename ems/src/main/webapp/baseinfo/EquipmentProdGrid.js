@@ -26,12 +26,7 @@ Ext.define('Ems.baseinfo.EquipmentProdGrid',{
       var me = this;
       me.columns=[
       	//{xtype:'rownumberer',text:'序号'},
-		{xtype:'treecolumn',dataIndex:'id',text:'编码',width:80
-//		,renderer:function(value){
-//			var values=value.split("_");
-//			return values[0];
-//		}
-		},
+		{xtype:'treecolumn',dataIndex:'id',text:'编码',width:80},
 
 //		{dataIndex:'subtype_name',text:'类型',renderer:function(){
 //			return me.subtype_name;
@@ -273,6 +268,7 @@ Ext.define('Ems.baseinfo.EquipmentProdGrid',{
 			listeners:{
 				saved:function(){
 					win.close();
+					parent.set("leaf",false);
 					me.getStore().reload({node:parent});
 					//me.tree.getStore().reload({node:parent});
 				}

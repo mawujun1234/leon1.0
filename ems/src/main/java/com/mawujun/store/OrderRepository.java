@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.repository1.IRepository;
 import com.mawujun.store.Order;
+import com.mawujun.utils.Params;
 import com.mawujun.utils.page.Page;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
@@ -34,7 +35,8 @@ public interface OrderRepository extends IRepository<Order, String>{
 	
 	public String queryStatus(@Param("id")String id);
 	
-	public List<OrderListVO> queryList4Barcode(Map params);
+	public List<OrderListVO> queryList4Barcode(Params params);
+	public List<OrderListVO> queryList4Barcode_tj_children(Params params);
 	
 	//public Order getMainInfo(@Param("orderNo")String orderNo);
 }

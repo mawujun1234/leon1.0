@@ -44,78 +44,33 @@ Ext.onReady(function(){
 		   })
 	});
 	
-	var query_button=Ext.create('Ext.Button',{xtype:'button',text:'查询',handler:queryEquip,width:70,iconCls:'form-search-button',margin:'0 5px 0 5px'});
+	var query_button=Ext.create('Ext.Button',{xtype:'button',text:'查询',handler:addEquip,width:70,iconCls:'form-search-button',margin:'0 5px 0 5px'});
 	
-//	var equipStore = Ext.create('Ext.data.Store', {
-//        autoDestroy: true,
-//        autoLoad:false,
-//        model: 'Ems.store.OrderList',
-//        proxy: {
-//        	url:Ext.ContextPath+'/order/queryList4Barcode.do',
-//            type: 'ajax',
-//            reader:{
-//            	type:'json',
-//            	root:'root'
-//            }
-//        }
-//    });
-	var equipStore = Ext.create('Ext.data.TreeStore', {
+	var equipStore = Ext.create('Ext.data.Store', {
         autoDestroy: true,
         autoLoad:false,
         model: 'Ems.store.OrderList',
-        //nodeParam :'parent_id',
         proxy: {
         	url:Ext.ContextPath+'/order/queryList4Barcode.do',
             type: 'ajax',
             reader:{
             	type:'json',
             	root:'root'
-            },
-            root: {
-				expanded: true,
-				text: "根节点"
-			}
-        },
-        listeners:{
-        	beforeload:function(store, operation, eOpts){
-        		if(expendItem!=null){	
-        			store.getProxy().extraParams.parent_id=expendItem.get("prod_id");
-        		}
-        	}
+            }
         }
     });
-    var expendItem=null;
-	var equip_grid=Ext.create('Ext.tree.Panel',{
+	var equip_grid=Ext.create('Ext.grid.Panel',{
 		flex:1,
 		columnLines:true,
 		store:equipStore,
-		useArrows: true,
-    	rootVisible: false,
 		plugins: [
 	        Ext.create('Ext.grid.plugin.CellEditing', {
 	            clicksToEdit: 1
-//	            listeners:{
-//	            	beforestartedit:function(editor, e) {alert(1);
-//					    // commit the changes right after editing finished
-//						var record=e.record;
-//						if(record.get("noedit")){
-//							editor.cancelEdit();
-//						}
-//						
-//					}
-//	            }
 	        })
 	    ],
-	    listeners:{
-	    	beforeitemexpand:function(node){
-	    		expendItem=node;
-	    	}
-	    },
-    	columns: [//Ext.create('Ext.grid.RowNumberer'),
-    			{xtype:'treecolumn',dataIndex:'prod_id',text:'编码',width:120},
-    			{dataIndex:'prod_name',text:'品名',width:80},
+    	columns: [Ext.create('Ext.grid.RowNumberer'),
     	          {header: '设备类型', dataIndex: 'subtype_name',width:120},
-    	          //{header: '品名', dataIndex: 'prod_name'},
+    	          {header: '品名', dataIndex: 'prod_name'},
     	          {header: '品牌', dataIndex: 'brand_name',width:120},
     	          {header: '供应商', dataIndex: 'supplier_name'},
     	          {header: '设备型号', dataIndex: 'style',width:120},
@@ -125,50 +80,30 @@ Ext.onReady(function(){
 							    return value;
 							}
 				  },
-    	          {header: '订单数量', dataIndex: 'orderNum',width:70,renderer:function(value,metadata,record){
-    	          	if(!record.get("noedit")){
-    	          		return value;
-    	          	} 
-    	          }},
-    	          {header: '累计入库数量', dataIndex: 'totalNum',width:80,renderer:function(value,metadata,record){
-    	          	if(!record.get("noedit")){
-    	          		return value;
-    	          	} 
-    	          }},
+    	          {header: '订单数量', dataIndex: 'orderNum',width:70},
+    	          {header: '累计入库数量', dataIndex: 'totalNum',width:80},
     	          {header: '本次入库数量', dataIndex: 'printNum',width:80,editor: {
 	                xtype: 'numberfield',
 	                selectOnFocus:true,
 	                minValue:0,
 	                allowBlank: false
-	              },renderer:function(value,metadata,record){
-    	          	if(!record.get("noedit")){
-    	          		return value;
-    	          	} 
-    	          }},
-    	          {header: '状态', dataIndex: 'exportStatus',width:60,renderer:function(value,metadata,record){
+	              }},
+    	          {header: '状态', dataIndex: 'exportStatus',width:60,renderer:function(value){
     	          	if(value){
     	          		return '<font color="red">已导出</font>';
     	          	} else {
-    	          		if(!record.get("noedit")){
-	    	          		return "未导出";
-	    	          	} 
-    	          		
+    	          		return "未导出";
     	          	}
     	          }},
 
     	          { header:'导出',
 	                xtype: 'actioncolumn',
-	                width: 70,   
+	                width: 70,
 	                items: [{
 	                    icon   : '../icons/cog_start.png',  // Use a URL in the icon config
 	                    tooltip: '导出',
-	                    isDisabled :function(view  ,rowIndex  ,colIndex ,item ,record  ){
-		                	//alert(record.get("noedit"));
-		                	return record.get("noedit");
-		                },
-	                    handler: function(grid, rowIndex, colIndex,item,e,record ,row) {
-	                    	//var record=equipStore.getAt(rowIndex);
-	                    	//console.log(record.getData());
+	                    handler: function(grid, rowIndex, colIndex) {
+	                    	var record=equipStore.getAt(rowIndex);
 	                    	Ext.getBody().mask("正在导出......");
 	                        Ext.Ajax.request({
 								url:Ext.ContextPath+'/order/exportBarcode.do',
@@ -196,17 +131,6 @@ Ext.onReady(function(){
         tbar:['<pan id="toolbar-title-text">当前订单记录</span>','->']
 	});
 
-	equip_grid.on('beforeedit', function(editor, e) {
-		
-	    // commit the changes right after editing finished
-		var record=e.record;
-		//alert(record.get("noedit"));
-		if(record.get("noedit")){
-			editor.cancelEdit();
-			return false;
-		}
-		
-	});
 	equip_grid.on('edit', function(editor, e) {
 	    // commit the changes right after editing finished
 		var record=e.record;
@@ -223,15 +147,12 @@ Ext.onReady(function(){
 			record.set('printNum',0);
 		}
 	});
-	function queryEquip(){
+	function addEquip(){
 		if(!order_no.getValue()){
 			alert("请先输入订单号!");
 			return;
 		}
-		//equipStore.getProxy().extraParams={};
-		expendItem=null;
-		equipStore.getProxy().extraParams={order_id:order_no.getValue()};
-		equipStore.load();
+		equipStore.load({params:{order_id:order_no.getValue()}});
 	}
 	
 	var step1=Ext.create('Ext.panel.Panel',{

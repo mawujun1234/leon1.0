@@ -52,13 +52,28 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     
     <!-- 条码打印的时候，查询订单明细的数据-->
     <select id="queryList4Barcode" resultType="com.mawujun.store.OrderListVO" parameterType="map">
-    	SELECT a.*,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,c.memo as prod_memo,c.unit as prod_unit,d.name as brand_name,e.name as supplier_name
+    	SELECT a.*,b.name as subtype_name,c.id as prod_id,c.name as prod_name,c.spec as prod_spec,c.memo as prod_memo,c.unit as prod_unit,c.type as prod_type,d.name as brand_name,e.name as supplier_name
 	    FROM ems_orderlist a
 	    inner join ems_equipmentsubtype b on a.subtype_id=b.id
 		inner join ems_equipmentprod c on a.prod_id=c.id
 		inner join ems_brand d on a.brand_id=d.id
 		inner join ems_supplier e on a.supplier_id=e.id
-		where a.order_id=#{order_id}   
+		where a.order_id=#{order_id}
+		<if test="parent_id!=null and parent_id!=''">
+			and c.parent_id=#{parent_id}
+		</if>
+		<if test="parent_id ==null">
+			and c.parent_id is null
+		</if>
+    </select>
+    <!-- 查询套件下面的明细 -->
+    <select id="queryList4Barcode_tj_children" resultType="com.mawujun.store.OrderListVO" parameterType="map">
+    	SELECT a.id as prod_id,a.name as prod_name,a.spec as prod_spec,a.memo as prod_memo,a.unit as prod_unit,a.type as prod_type,b.name as brand_name,c.name as subtype_name
+    	,'Y' as noedit 
+	    FROM ems_equipmentprod a
+	    inner join ems_brand b on a.brand_id=b.id
+	    inner join ems_equipmentsubtype c on a.subtype_id=c.id
+		where  a.parent_id=#{parent_id}
     </select>
     
     <!-- 在条码导出的时候，查询还没有完成的订单 -->
@@ -70,8 +85,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="orderNo!=null and orderNo!=''">
 			and	a.orderNo like #{orderNo}
 		</if>
-		
-		
+
     </select>
 	<!-- <select id="queryUncompleteOrderno" resultType="string" parameterType="String">
     	SELECT distinct a.orderNo,a.orderDate
