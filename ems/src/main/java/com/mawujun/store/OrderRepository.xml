@@ -133,13 +133,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     
     
 	<!-- 打印条码的时候，获取要打印的范围 
-	select a.style,b.ecode from ems_Order a,ems_Barcode b 
-    	where a.id=b.order_id and a.id=#{order_id} and b.seqnum &gt; #{startNum} and b.seqnum &lt;= #{endNum}
-	-->    
-    <select id="getBarcodesRange" resultType="com.mawujun.store.BarcodeVO" parameterType="map">
-    	
-    	
-    	SELECT a.*,b.name as subtype_name,c.name as prod_name,d.name as brand_name,e.name as supplier_name,f.ecode
+	SELECT a.*,b.name as subtype_name,c.name as prod_name,d.name as brand_name,e.name as supplier_name,f.ecode
 	    FROM ems_orderlist a
 	    inner join ems_equipmentsubtype b on a.subtype_id=b.id
 		inner join ems_equipmentprod c on a.prod_id=c.id
@@ -147,7 +141,24 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		inner join ems_supplier e on a.supplier_id=e.id
 		inner join ems_Barcode f on a.id=f.orderlist_id and f.seqnum &gt; #{startNum} and f.seqnum &lt;= #{endNum}
 		where a.id=#{orderlist_id}   
+		order by f.ecode
+	-->    
+    <select id="getBarcodesRange" resultType="com.mawujun.store.BarcodeVO" parameterType="map">
+    	SELECT a.*,b.name as subtype_name,c.name as prod_name,d.name as brand_name,e.name as supplier_name,f.ecode
+	    FROM ems_orderlist a
+	    inner join ems_equipmentsubtype b on a.subtype_id=b.id
+		inner join ems_equipmentprod c on a.prod_id=c.id
+		inner join ems_brand d on a.brand_id=d.id
+		inner join ems_supplier e on a.supplier_id=e.id
+		inner join ems_Barcode f on a.id=f.orderlist_id and f.randomStr= #{randomStr}
+		where a.id=#{orderlist_id}   
+		order by f.ecode
     </select>
+    <!--  
+    <delete id="deleteBarcodesRange" parameterType="map">
+    	delete ems_Barcode where orderlist_id=#{orderlist_id}   and seqnum &gt; #{startNum} and seqnum &lt;= #{endNum}
+    </delete>
+    -->
     
     <!-- 获取订单的主信息，就是 明细表对应主表的信息 ,当字段发生变化的时候要注意OrderService
     <select id="getMainInfo" resultType="com.mawujun.store.Order" parameterType="map">

@@ -71,7 +71,7 @@ Ext.onReady(function(){
 		fieldLabel: '输入设备条码',
 		minLength:Ext.ecode_length,
 		maxLength:Ext.ecode_length,
-		length:Ext.ecode_length,
+		//length:Ext.ecode_length,
 		selectOnFocus:true,
 		labelWidth:80,
 		width:250,

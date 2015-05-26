@@ -176,16 +176,17 @@ Ext.onReady(function(){
 				} 
 				Ext.Msg.alert("消息","请先选择大类!");
 				return false;
+			},
+			select:function( combo, records, eOpts){
+				//当小类变化后，品名要清空
+				prod_id.setValue(""); 
+				prod_name.setValue(""); 
+				brand_id.setValue(""); 
+				brand_name.setValue(""); 
+				style.setValue(""); 
+				prod_spec.setValue(""); 
+				prod_unit.setValue("");
 			}
-//			change:function(){
-//				//当小类变化后，品名要清空
-//				prod_id.setValue(""); 
-//				prod_name.setValue(""); 
-//				brand_id.setValue(""); 
-//				brand_name.setValue(""); 
-//				style.setValue(""); 
-//				prod_spec.setValue(""); 
-//			}
 		}
 	});
 	var prod_id=Ext.create('Ext.form.field.Hidden',{

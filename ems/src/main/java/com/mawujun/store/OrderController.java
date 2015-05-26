@@ -10,11 +10,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.math.RandomUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -199,7 +201,7 @@ public class OrderController {
 
 		String contextPath=request.getSession().getServletContext().getRealPath("/");
 		
-		String fileName="qrcode.xls";
+		String fileName="qrcode("+ShiroUtils.getLoginName()+").xls";
 		String filePath="temp"+File.separatorChar+fileName;
 		String path=contextPath+filePath;
 		File file=new File(path);
@@ -213,7 +215,7 @@ public class OrderController {
 		
 
         HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
-        HSSFSheet hssfSheet = hssfWorkbook.createSheet("二维码");
+        HSSFSheet hssfSheet = hssfWorkbook.createSheet("二维码数据源");
         
         HSSFRow hssfRow0 = hssfSheet.createRow(0);
     	HSSFCell cell00 = hssfRow0.createCell(0);
@@ -257,6 +259,35 @@ public class OrderController {
 	    return fileName;
 	}
 	
+	@RequestMapping("/order/downloadBarcode.do")
+	//@ResponseBody
+	public void downloadBarcode(HttpServletRequest request,HttpServletResponse response,String fileName) throws  IOException{
+		String contextPath=request.getSession().getServletContext().getRealPath("/");
+		fileName="qrcode("+ShiroUtils.getLoginName()+").xls";
+		String filePath="temp"+File.separatorChar+fileName;
+		String path=contextPath+filePath;
+		File file=new File(path);
+		//FileReader reader=new FileReader(file);
+		FileInputStream in=new FileInputStream(file);
+		
+		response.setHeader("content-disposition","attachment; filename="+fileName);
+		response.setContentType("application/vnd.ms-excel;charset=uft-8");
+		//response.setContentType("text/plain; charset=gb2312");
+		
+		OutputStream  out = response.getOutputStream();
+		int n;
+		byte b[]=new byte[1024];
+		while((n=in.read(b))!=-1){
+			out.write(b,0,n);
+		}
+		in.close();
+		
+		out.flush();
+		out.close();
+		
+
+	}
+	
 //	@RequestMapping("/order/exportBarcode.do")
 //	@ResponseBody
 //	public String exportBarcode(HttpServletRequest request,HttpServletResponse response,@RequestBody OrderVO[] orderVOs) throws  IOException{
@@ -288,33 +319,7 @@ public class OrderController {
 //	    return fileName;
 //	}
 	
-	@RequestMapping("/order/downloadBarcode.do")
-	//@ResponseBody
-	public void downloadBarcode(HttpServletRequest request,HttpServletResponse response,String fileName) throws  IOException{
-		String contextPath=request.getSession().getServletContext().getRealPath("/");
-		String filePath="temp"+File.separatorChar+fileName;
-		String path=contextPath+filePath;
-		File file=new File(path);
-		//FileReader reader=new FileReader(file);
-		FileInputStream in=new FileInputStream(file);
-
-		response.setHeader("content-disposition","attachment; filename="+fileName);
-		response.setContentType("application/vnd.ms-excel;charset=uft-8");
-		//response.setContentType("text/plain; charset=gb2312");
-		
-		OutputStream  out = response.getOutputStream();
-		int n;
-		byte b[]=new byte[1024];
-		while((n=in.read(b))!=-1){
-			out.write(b,0,n);
-		}
-		in.close();
-		
-		out.flush();
-		out.close();
-		
-
-	}
+	
 	
 	
 	

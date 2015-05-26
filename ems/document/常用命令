@@ -22,7 +22,7 @@
 	create user emstest identified by emstest;
 	grant dba,connect,resource to emstest;
 	
-	imp emstest/emstest@emstest   file=E:\eclipse\workspace\leon\ems\document\dmp\daochu0508.dmp fromuser=ems touser=emstest
+	imp emstest/emstest@emstest   file=d:\daochu0526.dmp fromuser=ems touser=emstest
 	
 	
 	

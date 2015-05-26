@@ -26,7 +26,7 @@ Ext.define('Ems.baseinfo.EquipmentProdGrid',{
       var me = this;
       me.columns=[
       	//{xtype:'rownumberer',text:'序号'},
-		{xtype:'treecolumn',dataIndex:'id',text:'编码',width:80},
+		{xtype:'treecolumn',dataIndex:'id',text:'编码',width:120},
 
 //		{dataIndex:'subtype_name',text:'类型',renderer:function(){
 //			return me.subtype_name;
@@ -106,8 +106,24 @@ Ext.define('Ems.baseinfo.EquipmentProdGrid',{
 		    },
 		    iconCls: 'form-add-button'
 		});
-		//me.addAction(create);
 		actions.push(create);
+		
+		
+		var createTJ = new Ext.Action({
+		    text: '增加套件组成',
+		    itemId:'createTJ',
+		    handler: function(){
+		    	me.createTJ();
+		    },
+		    icon:'../icons/package_add.png'
+		    //iconCls: 'form-reload-button'
+		});
+		actions.push(createTJ);
+		
+		actions.push('-');
+		actions.push('-');
+		//me.addAction(create);
+		
 		var update = new Ext.Action({
 		    text: '更新',
 		    itemId:'update',
@@ -157,18 +173,7 @@ Ext.define('Ems.baseinfo.EquipmentProdGrid',{
 		});
 		actions.push(checkbox);
 		
-		actions.push('-');
-		actions.push('-');
-		var createTJ = new Ext.Action({
-		    text: '增加套件组成',
-		    itemId:'reload',
-		    handler: function(){
-		    	me.createTJ();
-		    },
-		    icon:'../icons/package_add.png'
-		    //iconCls: 'form-reload-button'
-		});
-		actions.push(createTJ);
+		
 		
 		me.tbar={
 			itemId:'action_toolbar',
@@ -365,8 +370,8 @@ Ext.define('Ems.baseinfo.EquipmentProdGrid',{
 						method:'POST',
 						success:function(){
 							//var parent=me.tree.getSelectionModel( ).getLastSelected( )||me.tree.getRootNode( );  
-							//me.tree.getStore().reload({node:parent});
-							record.destroy();
+							me.getStore().reload({node:record.parentNode});
+							//record.destroy();
 							//me.getStore().remove(record);
 							//me.select(0);
 						

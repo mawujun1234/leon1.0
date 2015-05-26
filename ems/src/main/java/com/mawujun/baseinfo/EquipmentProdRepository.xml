@@ -25,6 +25,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		order by a.id
     </select>
     
+    <!-- 在答应条码的时候获取 套件下面的零件 -->
+    <select id="queryProd_tj_children" resultType="com.mawujun.baseinfo.EquipmentProd" >
+    	SELECT a.*
+	    FROM ems_equipmentprod a
+	    where a.parent_id=#{parent_id}
+	    order by a.id
+    </select>
   
 </mapper>
 

@@ -402,7 +402,8 @@ public static final class Barcode {
 	public static final String ecode="ecode";
 	public static final String orderlist_id="orderlist_id";
 	public static final String ymd="ymd";
-	public static final String seqNum="seqNum";
+	public static final String randomStr="randomStr";
+	public static final String createDate="createDate";
 	public static final String status="status";
 }
 public static final class Barcode_MaxNum {

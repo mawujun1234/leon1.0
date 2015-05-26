@@ -29,9 +29,11 @@ public interface OrderRepository extends IRepository<Order, String>{
 	
 	public EquipmentVO getEquipFromBarcode(@Param("ecode")String ecode);
 	
+	
 	public void updateTotalNum(@Param("orderlist_id")String orderlist_id,@Param("totalNum")String totalNum);
 	
 	public List<BarcodeVO> getBarcodesRange(Map<String,Object> params);
+	public void deleteBarcodesRange(Map<String,Object> params);
 	
 	public String queryStatus(@Param("id")String id);
 	

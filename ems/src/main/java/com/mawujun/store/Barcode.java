@@ -1,5 +1,7 @@
 package com.mawujun.store;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -18,7 +20,13 @@ public class Barcode implements IdEntity<String>{
 	@Column(length=8)
 	private String ymd;//年月日，也可以说是批次
 	
-	private Integer seqNum;//序号，就是从1开始，用于在导出条码的时候获取哪个范围的条码
+	//private Integer seqNum;//序号，就是从1开始，用于在导出条码的时候获取哪个范围的条码
+	
+	//用于判断某个订单本次条码生成的判断条件
+	@Column(length=36)
+	private String randomStr;
+	
+	private Date createDate;
 
 	private Integer status=0;//0:未入库，1：已入库
 	@Override
@@ -45,12 +53,6 @@ public class Barcode implements IdEntity<String>{
 		this.ymd = ymd;
 	}
 
-	public Integer getSeqNum() {
-		return seqNum;
-	}
-	public void setSeqNum(Integer seqNum) {
-		this.seqNum = seqNum;
-	}
 	public Integer getStatus() {
 		return status;
 	}
@@ -62,6 +64,18 @@ public class Barcode implements IdEntity<String>{
 	}
 	public void setOrderlist_id(String orderlist_id) {
 		this.orderlist_id = orderlist_id;
+	}
+	public String getRandomStr() {
+		return randomStr;
+	}
+	public void setRandomStr(String randomStr) {
+		this.randomStr = randomStr;
+	}
+	public Date getCreateDate() {
+		return createDate;
+	}
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
 	}
 
 }

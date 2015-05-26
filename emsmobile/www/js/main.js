@@ -3,7 +3,7 @@
 //$.ServerPath="http://172.16.3.4:8084";
 $.ServerPath="";
 $.ServerPort="8080";
-$.ecodeLength=17;
+$.ecodeLength=20;
 $.ajaxSetup({
 	//jsonp: "jsonpCallback",//使用浏览器进行测试的时候用的，如果安装到手机，就注释掉
 	//dataType:'jsonp',//使用浏览器进行测试的时候用的，如果安装到手机就注释掉

@@ -65,8 +65,8 @@ Ext.Loader.setConfig({
 	}
 });
 
-Ext.ecode_length=17;
-
+//Ext.ecode_length=17;
+Ext.ecode_length=20;
 
 var equipmentStatus={
 	0:'未入库',

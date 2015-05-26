@@ -169,6 +169,10 @@ Ext.onReady(function(){
 	                    handler: function(grid, rowIndex, colIndex,item,e,record ,row) {
 	                    	//var record=equipStore.getAt(rowIndex);
 	                    	//console.log(record.getData());
+	                    	if(record.get("printNum")==0){
+	                    		alert("请先输入 本次入库数量!");
+	                    		return;
+	                    	}
 	                    	Ext.getBody().mask("正在导出......");
 	                        Ext.Ajax.request({
 								url:Ext.ContextPath+'/order/exportBarcode.do',
@@ -259,7 +263,7 @@ Ext.onReady(function(){
         //{html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;条码的生成规则是: 小类(3)+品名(2)+-+品牌(3)+供应商(3)+-+日期(6)+流水号(4)，按“导出”，导出条码'}],
         {html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;条码的生成规则是: 品名编码(6)+-+日期(6)+流水号(4)，按“导出”，导出条码'}],
         
-        buttons:[{text:'导出',handler:function(btn){
+        buttons:[{text:'导出',hidden:true,handler:function(btn){
             if (equipStore.getCount()> 0) { 
             	
             	var orderVOs = new Array();
