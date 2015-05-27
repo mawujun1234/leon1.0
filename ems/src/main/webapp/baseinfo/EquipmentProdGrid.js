@@ -260,6 +260,7 @@ Ext.define('Ems.baseinfo.EquipmentProdGrid',{
 		
 		var child=Ext.createModel('Ems.baseinfo.EquipmentProd',{
 			parent_id:parent.get("id"),
+			brand_id:parent.get("brand_id"),
 			status:true,
 			subtype_id:parent.get("subtype_id")
 		});
@@ -285,7 +286,12 @@ Ext.define('Ems.baseinfo.EquipmentProdGrid',{
 		subtype_id.hide();
 		var parent_id=form.getForm().findField("parent_id");
 		parent_id.show();
-		//var id=form.getForm().findField("id");
+		var brand_id=form.getForm().findField("brand_id");
+		//brand_id.setValue(parent.get("brand_id"));
+		//brand_id.getStore().load();
+		var project_model= brand_id.getStore().createModel({id:parent.get("brand_id"),name:parent.get("brand_name")});
+		brand_id.setValue(project_model);
+
 		
 		var win=new Ext.window.Window({
 			items:[form],
