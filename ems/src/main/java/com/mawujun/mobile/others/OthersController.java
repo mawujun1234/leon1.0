@@ -44,12 +44,12 @@ public class OthersController {
 		} else if(vo.getPole_id()!=null){
 			vo.setPole_address(poleService.get(vo.getPole_id()).geetFullAddress());
 		}
-		for (EquipmentStatus status : EquipmentStatus.values()) {
-			if (status.getValue() == vo.getStatus()) {
-				vo.setStatus_name(status.getName());
-				break;
-			}
-		}
+//		for (EquipmentStatus status : EquipmentStatus.values()) {
+//			if (status.getValue() == vo.getStatus()) {
+//				vo.setStatus_name(status.getName());
+//				break;
+//			}
+//		}
 		vo.setFisData(null);
 		vo.setIsInStore(null);
 		vo.setMemo(null);

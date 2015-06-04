@@ -22,7 +22,7 @@ Ext.define('Ems.store.OrderListGrid',{
 		{header: '设备类型', dataIndex: 'subtype_name',width:120},
     	{header: '品名', dataIndex: 'prod_name'},
     	{header: '品牌', dataIndex: 'brand_name',width:120},
-    	{header: '供应商', dataIndex: 'supplier_name'},
+    	//{header: '供应商', dataIndex: 'supplier_name'},
     	{header: '设备型号', dataIndex: 'style',width:120},
     	{header: '描述', dataIndex: 'prod_memo',width:120},
     	{header: '规格', dataIndex: 'prod_spec',width:120,renderer:function(value,metadata,record){

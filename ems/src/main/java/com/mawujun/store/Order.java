@@ -35,6 +35,8 @@ public class Order extends UUIDEntity {
 	private String project_id;//项目id
 	@Column(updatable=false)
 	private Date createDate;//订单建立日期
+	@Column(length=3)
+	private String supplier_id;//供应商id
 	
 	
 //	@Column(length=2)
@@ -118,6 +120,12 @@ public class Order extends UUIDEntity {
 	}
 	public void setProject_id(String project_id) {
 		this.project_id = project_id;
+	}
+	public String getSupplier_id() {
+		return supplier_id;
+	}
+	public void setSupplier_id(String supplier_id) {
+		this.supplier_id = supplier_id;
 	}
 
 

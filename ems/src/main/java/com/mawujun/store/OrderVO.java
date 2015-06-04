@@ -22,6 +22,7 @@ public class OrderVO extends Order {
 	private String project_name;
 	
 	private String operater_name;
+	private String supplier_name;
 	
 //	private Integer printNum=0;//要打印的数量
 	
@@ -56,6 +57,14 @@ public class OrderVO extends Order {
 
 	public void setOperater_name(String operater_name) {
 		this.operater_name = operater_name;
+	}
+
+	public String getSupplier_name() {
+		return supplier_name;
+	}
+
+	public void setSupplier_name(String supplier_name) {
+		this.supplier_name = supplier_name;
 	}
 	
 	

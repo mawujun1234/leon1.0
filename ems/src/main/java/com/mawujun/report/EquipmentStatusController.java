@@ -51,12 +51,12 @@ public class EquipmentStatusController {
 		} else if(baseinfo.getPole_id()!=null){
 			baseinfo.setPole_address(poleService.get(baseinfo.getPole_id()).geetFullAddress());
 		}
-		for (EquipmentStatus status : EquipmentStatus.values()) {
-			if (status.getValue() == baseinfo.getStatus()) {
-				baseinfo.setStatus_name(status.getName());
-				break;
-			}
-		}
+//		for (EquipmentStatus status : EquipmentStatus.values()) {
+//			if (status == baseinfo.getStatus()) {
+//				baseinfo.setStatus_name(status.getName());
+//				break;
+//			}
+//		}
 		baseinfo.setFisData(null);
 		baseinfo.setIsInStore(null);
 		baseinfo.setMemo(null);

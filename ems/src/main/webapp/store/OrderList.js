@@ -13,7 +13,7 @@ Ext.defineModel("Ems.store.OrderList",{
 		//{name:'store_id',type:'string'},
 		{name:'style',type:'string'},
 		{name:'subtype_id',type:'string'},
-		{name:'supplier_id',type:'string'},
+		
 		{name:'totalNum',type:'int'},
 		{name:'type_id',type:'string'},
 		{name:'unitPrice',type:'float'},
@@ -28,7 +28,7 @@ Ext.defineModel("Ems.store.OrderList",{
 		{name:'prod_memo',type:'string'},
 		{name:'type_name',type:'string'},
 		{name:'subtype_name',type:'string'},
-		{name:'supplier_name',type:'string'},
+		
 		{name:'noedit',type:'bool'},
 		//{name:'store_name',type:'string'},
 		{name:'printNum',type:'int'}

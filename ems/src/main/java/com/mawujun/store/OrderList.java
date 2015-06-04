@@ -26,13 +26,14 @@ public class OrderList extends UUIDEntity {
 	private String prod_id;//品名id
 	@Column(length=15)
 	private String brand_id;//品牌id
-	@Column(length=3)
-	private String supplier_id;//供应商id
+//	@Column(length=3)
+//	private String supplier_id;//供应商id
 	@Column(length=50)
 	private String style;//型号
 	
 	@Column(precision=10,scale=2)
 	private Double unitPrice;
+	private int quality_month;//质保时间长度，以月为单位
 	
 	private Integer orderNum=0;//订货数量
 	private Integer totalNum=0;//累计入库数量
@@ -70,12 +71,7 @@ public class OrderList extends UUIDEntity {
 	public void setBrand_id(String brand_id) {
 		this.brand_id = brand_id;
 	}
-	public String getSupplier_id() {
-		return supplier_id;
-	}
-	public void setSupplier_id(String supplier_id) {
-		this.supplier_id = supplier_id;
-	}
+
 	public String getStyle() {
 		return style;
 	}
@@ -105,5 +101,11 @@ public class OrderList extends UUIDEntity {
 	}
 	public void setPrintNum(Integer printNum) {
 		this.printNum = printNum;
+	}
+	public int getQuality_month() {
+		return quality_month;
+	}
+	public void setQuality_month(int quality_month) {
+		this.quality_month = quality_month;
 	}
 }

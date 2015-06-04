@@ -3,7 +3,7 @@ package com.mawujun.baseinfo;
 /**
  * 0:未入库
  * 1：已入库
- * 2:安装出库
+ * 2:安装出库 改成了施工持有，在
  * 3:使用中
  * 4:损坏----实施人员把换下来的设备标记为损坏
  * 5:入库待维修
@@ -22,7 +22,7 @@ package com.mawujun.baseinfo;
 public enum EquipmentStatus {
 	no_storage(0,"未入库"),
 	in_storage(1,"已入库"),
-	out_storage(2,"安装出库"),
+	out_storage(2,"施工持有"),//安装出库 改成了施工持有，在从仓库领出和从点位上拆下后，都变成这个状态
 	using(3,"使用中"),
 	breakdown(4,"损坏"),
 	wait_for_repair(5,"入库待维修"),

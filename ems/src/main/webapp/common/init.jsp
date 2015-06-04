@@ -68,6 +68,7 @@ Ext.Loader.setConfig({
 //Ext.ecode_length=17;
 Ext.ecode_length=20;
 
+/**
 var equipmentStatus={
 	0:'未入库',
 	1:'已入库',
@@ -82,5 +83,6 @@ var equipmentStatus={
 	10:'在途',
 	30:'报废'
 }
+**/
 </script>
 

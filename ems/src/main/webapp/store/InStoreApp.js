@@ -278,13 +278,7 @@ Ext.onReady(function(){
     	          {header: '仓库', dataIndex: 'store_name'},
     	          //{header: '数量', dataIndex: 'serialNum',width:70},
   
-    	          {header: '状态', dataIndex: 'status',width:100,renderer:function(value){
-    	          	  if(value==4 || value==5){
-	    	          	return '<font color="red">'+equipmentStatus[value]+'</font>';
-	    	          } else {
-	    	          		return equipmentStatus[value];
-	    	          } 
-    	          }}
+    	          {header: '状态', dataIndex: 'status_name',width:100}
     	          ],
         tbar:['<pan id="toolbar-title-text">当前入库记录</span>','->',
               {text:'清空所选记录',

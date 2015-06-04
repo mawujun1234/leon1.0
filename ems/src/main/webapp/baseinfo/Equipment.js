@@ -12,7 +12,7 @@ Ext.defineModel("Ems.baseinfo.Equipment",{
 		{name:'prod_id',type:'string'},
 		{name:'prod_name',type:'string'},
 		{name:'prod_spec',type:'string'},
-		{name:'status',type:'int'},
+		{name:'status',type:'string'},
 		{name:'style',type:'string'},
 		{name:'subtype_id',type:'string'},
 		{name:'subtype_name',type:'string'},
@@ -30,6 +30,7 @@ Ext.defineModel("Ems.baseinfo.Equipment",{
 		//出库的时候用的
 		{name:'workUnit_id',type:'string'},
 		{name:'workUnit_name',type:'string'},
+		{name:'status_name',type:'string'},
 		{name:'outStore_type',type:'string'}
 		
 	],

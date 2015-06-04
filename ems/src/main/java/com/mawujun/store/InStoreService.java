@@ -68,7 +68,7 @@ public class InStoreService extends AbstractService<InStore, String>{
 		for(Equipment equipment:equipments){
 			equipment.setFisData(new Date());
 			//equipment.setLastInDate(new Date());
-			equipment.setStatus(EquipmentStatus.in_storage.getValue());
+			equipment.setStatus(EquipmentStatus.in_storage);
 			equipment.setIsnew(true);
 			equipment.setStore_id(inStore.getStore_id());
 			equipment.setMemo("");

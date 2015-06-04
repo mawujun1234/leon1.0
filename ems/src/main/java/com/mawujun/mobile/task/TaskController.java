@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mawujun.baseinfo.Customer;
 import com.mawujun.baseinfo.CustomerService;
 import com.mawujun.baseinfo.EquipmentService;
+import com.mawujun.baseinfo.EquipmentStatus;
 import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.baseinfo.Pole;
 import com.mawujun.baseinfo.PoleService;
@@ -282,7 +283,8 @@ public class TaskController {
 	 */
 	@RequestMapping("/task/mobile/save.do")
 	@ResponseBody
-	public String mobile_save(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason,String[] ecodes,Integer[] equipment_statuses) {
+	//public String mobile_save(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason,String[] ecodes,Integer[] equipment_statuses) {
+	public String mobile_save(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason,String[] ecodes,EquipmentStatus[] equipment_statuses) {
 		//jquery 2 json地方有文图，，不能将数组正确的转换
 		taskService.mobile_save(task_id,hitchType_id,hitchReasonTpl_id,hitchReason,ecodes,equipment_statuses);
 		return "success";
@@ -297,7 +299,7 @@ public class TaskController {
 	@RequestMapping("/task/mobile/submit.do")
 	@ResponseBody
 	//public String mobile_submit(String task_id,String task_type,String[] ecodes,Integer[] equipment_statuses) {
-	public String mobile_submit(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason,String[] ecodes,Integer[] equipment_statuses) {
+	public String mobile_submit(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason,String[] ecodes,EquipmentStatus[] equipment_statuses) {
 		//jquery 2 json地方有文图，，不能将数组正确的转换
 		taskService.mobile_submit(task_id,hitchType_id,hitchReasonTpl_id,hitchReason,ecodes,equipment_statuses);
 		return "success";

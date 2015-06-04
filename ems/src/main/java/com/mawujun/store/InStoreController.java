@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.baseinfo.Equipment;
+import com.mawujun.baseinfo.EquipmentStatus;
 import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.cache.CacheMgr;
 import com.mawujun.cache.EquipKey;
@@ -134,7 +135,7 @@ public class InStoreController {
 			if(store_id==null || !equipmentVO.getStore_id().equals(store_id)){
 				throw new BusinessException("该条码不能入库到所选择的仓库!");
 			}
-			if(equipmentVO.getStatus()!=0){//这是新设备入库的情况
+			if(equipmentVO.getStatus()!=EquipmentStatus.no_storage){//这是新设备入库的情况
 				//Ext.Msg.alert("消息","该设备为非新增设备,不能添加到入库列表.");
 				throw new BusinessException("该设备为非新增设备,不能添加到入库列表!");
 			}

@@ -1,7 +1,7 @@
 //Ext.require("Ems.store.Barcode");
 //Ext.require("Ems.install.WorkUnitEquipmentWindow");
 //Ext.require("Ems.install.StoreEquipmentWindow");
-//Ext.require("Ems.store.BarcodeForm");
+Ext.require("Ems.baseinfo.Equipment");
 Ext.onReady(function(){
 
      var store_combox=Ext.create('Ext.form.field.ComboBox',{
@@ -94,6 +94,33 @@ Ext.onReady(function(){
 			    		root:'root'
 			    	}
 			    }
+		   })
+	    });
+	    var type_combox=Ext.create('Ext.form.field.ComboBox',{
+	        fieldLabel: '<b>入库类型</b>',
+	        labelAlign:'right',
+            labelWidth:60,
+            width:150,
+	        //xtype:'combobox',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'type',
+		    displayField: 'name',
+		    valueField: 'id',
+		    value:'bad',
+		    //queryParam: 'name',
+    		//queryMode: 'remote',
+    		//triggerAction: 'query',
+    		//minChars:-1,
+		    //trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
+		    //trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
+			//onTrigger1Click : function(){
+			//    var me = this;
+			//    me.setValue('');
+			//},
+	        allowBlank: false,
+	        store:Ext.create('Ext.data.ArrayStore', {
+		    	fields: ['id', 'name'],
+			    data:[['good','好件入库'],['bad','坏件入库']]
 		   })
 	    });
 //	var queryWorkUnitEquip_button=Ext.create('Ext.button.Button',{
@@ -237,13 +264,13 @@ Ext.onReady(function(){
 					success : function(response) {//加载成功的处理函数   
 						var ret=Ext.decode(response.responseText);
 						if(ret.success){
-							if(ret.root.status!=3 && ret.root.status!=2 && ret.root.status!=4){//这是新设备入库的情况
+							if(ret.root.status!='out_storage'){//这是新设备入库的情况
 								Ext.Msg.alert("消息","该设备为非手持状态,不能添加到设备返库列表.");
 								return;
 							}
-							if( ret.root.status==4){
-								alert("该设备已损坏,请注意!");
-							}
+//							if( ret.root.status==4){
+//								alert("该设备已损坏,请注意!");
+//							}
 							//为新增的equipment添加仓库等其他信息
 							ret.root.workUnit_id=workUnit_combox.getValue();
 							ret.root.workUnit_name=workUnit_combox.getRawValue();
@@ -332,13 +359,7 @@ Ext.onReady(function(){
     	          
     	          //{header: 'stid', dataIndex: 'stid',hideable:false,hidden:true},
     	         // {header: '库房', dataIndex: 'stock',width:120},
-    	          {header: '状态', dataIndex: 'status',width:60,renderer:function(value){
-    	          	  if(value==4 || value==5){
-	    	          		return '<font color="red">'+equipmentStatus[value]+'</font>';
-	    	          } else {
-	    	          		return equipmentStatus[value];
-	    	          } 
-    	          }}
+    	          {header: '状态', dataIndex: 'status_name',width:60}
     	          ],
         tbar:['<pan id="toolbar-title-text">当前入库记录</span>','->',
               {text:'清空选择的设备',
@@ -386,7 +407,7 @@ Ext.onReady(function(){
             align:'stretch'
         },
         defaults:{margins:'0 0 5 0',border:false},
-        items:[{xtype:'form',items:[{xtype:'fieldcontainer',layout: 'hbox',items:[store_combox,workUnit_combox,ecode_textfield,clear_button]},
+        items:[{xtype:'form',items:[{xtype:'fieldcontainer',layout: 'hbox',items:[store_combox,workUnit_combox,type_combox,ecode_textfield,clear_button]},
                                     {xtype:'fieldcontainer',layout: 'hbox',items:[storeman_textfield,inDate_textfield,memo_textfield]}
 		            		        //{xtype:'columnbox',columnSize:4,items:[{xtype:'listcombox',url:Ext.ContextPath+'/dataExtra/stockList.do',itemId:'stock_field',fieldLabel:'库房',name:'stid',allowBlank:false,emptyText:'未选择库房',labelAlign:'right'},{xtype:'textfield',name:'stmemo',fieldLabel:'库房描述',columnWidth:3/4,labelAlign:'right'}]}
 		            		        ]},
@@ -399,6 +420,12 @@ Ext.onReady(function(){
         {html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;'}],
         buttons:[{text:'设备返库',handler:function(btn){
             if (equipStore.getCount()> 0) { 
+            	var msg="好件返库";
+            	if(type_combox.getValue()=='bad'){
+            		msg="<b style='color:red'>坏件返库</b>";
+            	}
+            	Ext.Msg.confirm("消息","当前正在《"+msg+"》,确认要返库吗?",function(btn){
+            	if(btn=='yes'){
             	Ext.getBody().mask("正在入库....");
             	var equipments = new Array();
             	equipStore.each(function(record){
@@ -410,7 +437,7 @@ Ext.onReady(function(){
 					method:'POST',
 					timeout:600000000,
 					headers:{ 'Content-Type':'application/json;charset=UTF-8'},
-					params:{memo:memo_textfield.getValue(),store_id:store_combox.getValue(),workUnit_id:workUnit_combox.getValue()},
+					params:{memo:memo_textfield.getValue(),store_id:store_combox.getValue(),workUnit_id:workUnit_combox.getValue(),type:type_combox.getValue()},
 					jsonData:equipments,
 					//params:{jsonStr:Ext.encode(equiplist)},
 					success:function(response){
@@ -429,6 +456,8 @@ Ext.onReady(function(){
 						Ext.getBody().unmask();
 					}
 				});
+            	}//if(btn=='yes'){
+				});//Ext.Msg.confirm("消息","",function(){
             }else{
             	Ext.Msg.alert('提示','请先添加一个设备');
             }

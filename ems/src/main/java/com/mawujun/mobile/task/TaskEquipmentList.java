@@ -9,6 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.mawujun.baseinfo.EquipmentStatus;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
 /**
@@ -28,7 +29,10 @@ public class TaskEquipmentList extends UUIDEntity {
 	@Column(length=15)
 	private TaskListTypeEnum type;
 	//提交任务的时候设备的状态，主要用于维修的时候
-	private Integer equipment_status;
+	//private Integer equipment_status;
+	@Enumerated(EnumType.STRING)
+	@Column(length=20)
+	private EquipmentStatus equipment_status;
 	
 	public String getTask_id() {
 		return task_id;
@@ -49,11 +53,12 @@ public class TaskEquipmentList extends UUIDEntity {
 	public void setType(TaskListTypeEnum type) {
 		this.type = type;
 	}
-	public Integer getEquipment_status() {
+	public EquipmentStatus getEquipment_status() {
 		return equipment_status;
 	}
-	public void setEquipment_status(Integer equipment_status) {
+	public void setEquipment_status(EquipmentStatus equipment_status) {
 		this.equipment_status = equipment_status;
 	}
+
 
 }

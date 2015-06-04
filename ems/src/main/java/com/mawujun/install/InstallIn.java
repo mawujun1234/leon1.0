@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -26,9 +28,15 @@ public class InstallIn   implements IdEntity<String>{
 	private Date operateDate;//入库时间
 	@Column(length=36)
 	private String workUnit_id;//作业单位
-
+	@Enumerated(EnumType.STRING)
+	@Column(length=15)
+	private InstallInType type;//好件入库 还是坏件入库
 	@Column(length=100)
 	private String memo;
+	
+	public String getType_name(){
+		return type==null?null:type.getName();
+	}
 	
 	public String getId() {
 		return id;
@@ -66,6 +74,12 @@ public class InstallIn   implements IdEntity<String>{
 	}
 	public void setWorkUnit_id(String workUnit_id) {
 		this.workUnit_id = workUnit_id;
+	}
+	public InstallInType getType() {
+		return type;
+	}
+	public void setType(InstallInType type) {
+		this.type = type;
 	}
 
 }

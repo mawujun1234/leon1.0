@@ -176,6 +176,7 @@ public static final class InstallIn {
 	public static final String operater="operater";
 	public static final String operateDate="operateDate";
 	public static final String workUnit_id="workUnit_id";
+	public static final String type="type";
 	public static final String memo="memo";
 }
 public static final class InstallInList {
@@ -190,12 +191,18 @@ public static final class InstallOut {
 	public static final String operater="operater";
 	public static final String operateDate="operateDate";
 	public static final String workUnit_id="workUnit_id";
+	public static final String installOutType_id="installOutType_id";
 	public static final String requestnum="requestnum";
 	public static final String memo="memo";
 }
 public static final class InstallOutList {
 	public static final String installOut_id="installOut_id";
 	public static final String ecode="ecode";
+	public static final String id="id";
+}
+public static final class InstallOutType {
+	public static final String name="name";
+	public static final String memo="memo";
 	public static final String id="id";
 }
 public static final class DayInventory {
@@ -435,6 +442,7 @@ public static final class Order {
 	public static final String status="status";
 	public static final String project_id="project_id";
 	public static final String createDate="createDate";
+	public static final String supplier_id="supplier_id";
 	public static final String id="id";
 }
 public static final class OrderList {
@@ -443,7 +451,6 @@ public static final class OrderList {
 	public static final String subtype_id="subtype_id";
 	public static final String prod_id="prod_id";
 	public static final String brand_id="brand_id";
-	public static final String supplier_id="supplier_id";
 	public static final String style="style";
 	public static final String unitPrice="unitPrice";
 	public static final String orderNum="orderNum";

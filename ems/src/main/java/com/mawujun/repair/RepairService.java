@@ -81,7 +81,7 @@ public class RepairService extends AbstractService<Repair, String>{
 		int i=0;
 		for(Repair repair:repairs){
 			//修改设备状态为 发往维修中心
-			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.to_repair.getValue()).andEquals(M.Equipment.ecode, repair.getEcode()));
+			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.to_repair).andEquals(M.Equipment.ecode, repair.getEcode()));
 			
 			String id=id_prev+StringUtils.leftPad(i+"", 3, '0');
 			i++;
@@ -162,7 +162,7 @@ public class RepairService extends AbstractService<Repair, String>{
 		for(Repair repair:repairs){
 			//修改设备状态为“维修中”
 			//把设备中参仓库，移到 维修中心来
-			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.outside_repairing.getValue()).set(M.Equipment.store_id, repair.getRpa_id()).andEquals(M.Equipment.ecode, repair.getEcode()));
+			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.outside_repairing).set(M.Equipment.store_id, repair.getRpa_id()).andEquals(M.Equipment.ecode, repair.getEcode()));
 			//修改维修单状态为"维修中"	
 			repairRepository.update(Cnd.update()
 					.set(M.Repair.rpa_in_oper_id, oper_id)
@@ -208,7 +208,7 @@ public class RepairService extends AbstractService<Repair, String>{
 			
 			
 			//修改设备状态为"返库途中"
-			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.out_repair.getValue()).andEquals(M.Equipment.ecode, repair.getEcode()));
+			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.out_repair).andEquals(M.Equipment.ecode, repair.getEcode()));
 			//维修单的状态也改为"返库途中"
 			repairRepository.update(Cnd.update()
 					.set(M.Repair.rpa_out_oper_id, oper_id)
@@ -228,7 +228,7 @@ public class RepairService extends AbstractService<Repair, String>{
 		for(Repair repair:repairs){
 			//修改设备状态为"已入库"
 			//设备从维修中心挂到仓库中
-			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.in_storage.getValue()).set(M.Equipment.store_id, repair.getStr_in_id()).andEquals(M.Equipment.ecode, repair.getEcode()));
+			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.in_storage).set(M.Equipment.store_id, repair.getStr_in_id()).andEquals(M.Equipment.ecode, repair.getEcode()));
 			//维修单的状态也改为"完成"
 			repairRepository.update(Cnd.update()
 					.set(M.Repair.str_in_oper_id, oper_id)

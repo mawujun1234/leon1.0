@@ -23,6 +23,7 @@ import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.utils.page.Page;
 import com.mawujun.utils.BeanUtils;
 import com.mawujun.utils.M;
+import com.mawujun.utils.StringUtils;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
  * @version 1.0
@@ -124,7 +125,7 @@ public class InstallOutController {
 			throw new BusinessException("对不起，该条码对应的设备不存在，或者该设备挂在其他仓库中!");
 		}
 		//设备返库的时候，设备如果不是手持或损坏状态的话，就不能进行返库，说明任务没有扫描或者没有提交
-		if(equipment.getStatus()!=EquipmentStatus.in_storage.getValue()){
+		if(equipment.getStatus()!=EquipmentStatus.in_storage){
 			throw new BusinessException("设备状态不是\"已入库\",不能领用该设备!");
 		}
 		return equipment;
@@ -144,6 +145,40 @@ public class InstallOutController {
 		//inStoreService.newInStore(equipments);
 		outStoreService.equipOutStore(equipments, outStore);
 		return "success";
+	}
+	
+	/**
+	 * 
+	 * @author mawujun 16064988@qq.com 
+	 * @param start
+	 * @param limit
+	 * @param operateDate_start
+	 * @param operateDate_end
+	 * @param store_id
+	 * @param type 是出库单还是入库单
+	 * @return
+	 */
+	@RequestMapping("/installOut/queryMain.do")
+	@ResponseBody
+	public Page queryMain(Integer start,Integer limit,String operateDate_start,String operateDate_end,String store_id,String workUnit_id,String installOutType_id) { 
+		Page page=Page.getInstance(start, limit);
+		page.addParam("operateDate_start", operateDate_start);
+		page.addParam("operateDate_end", operateDate_end);
+		page.addParam(M.InstallOut.store_id, store_id);
+		page.addParam(M.InstallOut.workUnit_id, workUnit_id);
+		page.addParam(M.InstallOut.installOutType_id, installOutType_id);
+		page=outStoreService.queryMain(page);
+		return page;
+	}
+	
+	@RequestMapping("/installOut/queryList.do")
+	@ResponseBody
+	public List<InstallOutListVO> queryList(String installOut_id) { 
+		if(!StringUtils.hasText(installOut_id)){
+			throw new BusinessException("请先选择一条单据!");
+		}
+		List<InstallOutListVO> page=outStoreService.queryList(installOut_id);
+		return page;
 	}
 	
 }

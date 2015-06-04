@@ -52,7 +52,8 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 			throw new BusinessException("该条码对应的设备不存在，或者该设备挂在其他作业单位或已经入库了!");
 		}
 		//设备返库的时候，设备如果不是手持或损坏状态的话，就不能进行返库，说明任务没有扫描或者没有提交
-		if(equipment.getStatus()!=EquipmentStatus.out_storage.getValue() && equipment.getStatus()!=EquipmentStatus.breakdown.getValue()){
+		//if(equipment.getStatus()!=EquipmentStatus.out_storage && equipment.getStatus()!=EquipmentStatus.breakdown){
+		if(equipment.getStatus()!=EquipmentStatus.out_storage ){
 			throw new BusinessException("设备状态不对,不是作业单位手中持有的设备!");
 		}
 		return equipment;
@@ -77,18 +78,33 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 			//如果设备状态时损坏，就把设备状态改为 入库待维修，否则就修改为在库
 			//把设备挂到相应的仓库上
 			//同时减持设备挂在作业单位
-			if(equipment.getStatus()==4){
+//			if(equipment.getStatus()==EquipmentStatus.breakdown){
+//				list.setIsBad(true);
+//				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.wait_for_repair.getValue())
+//						.set(M.Equipment.store_id, installin.getStore_id())
+//						.set(M.Equipment.workUnit_id,null)
+//						.andEquals(M.Equipment.ecode, equipment.getEcode()));
+//			} else {
+//				list.setIsBad(false);
+//				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.in_storage.getValue())
+//						.set(M.Equipment.store_id, installin.getStore_id())
+//						.set(M.Equipment.workUnit_id,null)
+//						.andEquals(M.Equipment.ecode, equipment.getEcode()));
+//				
+//			}
+			if(installin.getType()==InstallInType.bad){
 				list.setIsBad(true);
-				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.wait_for_repair.getValue())
+				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.wait_for_repair)
 						.set(M.Equipment.store_id, installin.getStore_id())
 						.set(M.Equipment.workUnit_id,null)
 						.andEquals(M.Equipment.ecode, equipment.getEcode()));
 			} else {
 				list.setIsBad(false);
-				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.in_storage.getValue())
+				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.in_storage)
 						.set(M.Equipment.store_id, installin.getStore_id())
 						.set(M.Equipment.workUnit_id,null)
 						.andEquals(M.Equipment.ecode, equipment.getEcode()));
+				
 			}
 			
 			//添加明细
@@ -98,21 +114,16 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 		}
 	}
 
-	public Page queryMain(Page page,String type) { 
-		if("in".equals(type)){
-			return installInRepository.queryMain_in(page);
-		} else if("out".equals(type)){
-			return installInRepository.queryMain_out(page);
-		}
-		return null;
+	public Page queryMain(Page page){
+
+		return installInRepository.queryMain(page);
+
 		
 	}
-	public List<InOutListVO> queryList(String inOut_id,String type) {
-		if("in".equals(type)){
-			return installInRepository.queryList_in(inOut_id);
-		} else if("out".equals(type)){
-			return installInRepository.queryList_out(inOut_id);
-		}
-		return null;
+	public List<InstallInListVO> queryList(String installIn_id) {
+
+		return installInRepository.queryList(installIn_id);
+
 	}
+	
 }

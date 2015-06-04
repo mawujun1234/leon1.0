@@ -331,7 +331,7 @@ Ext.onReady(function(){
     	          {header: '设备类型', dataIndex: 'subtype_name',width:120},
     	          {header: '品名', dataIndex: 'prod_name'},
     	          {header: '品牌', dataIndex: 'brand_name',width:120},
-    	          {header: '供应商', dataIndex: 'supplier_name'},
+    	          //{header: '供应商', dataIndex: 'supplier_name'},
     	          {header: '设备型号', dataIndex: 'style',width:120},
     	          {header: '规格', dataIndex: 'prod_spec',flex:1,renderer:function(value,metadata,record){
 								metadata.tdAttr = "data-qtip='" + value+ "'";
@@ -403,8 +403,8 @@ Ext.onReady(function(){
 	            prod_unit:prod_unit.getValue(),
 	            brand_id:brand_id.getValue(),
 	            brand_name:brand_name.getValue(),
-	            supplier_id:supplier_combox.getValue(),
-	            supplier_name:supplier_combox.getRawValue(),
+	            //supplier_id:supplier_combox.getValue(),
+	            //supplier_name:supplier_combox.getRawValue(),
 	            style:style.getValue(),
 	            //store_id:store_combox.getValue(),
 	            //store_name:store_combox.getRawValue(),
@@ -429,7 +429,7 @@ Ext.onReady(function(){
 			brand_name.setValue(""); 
 			style.setValue(""); 
 			prod_spec.setValue(""); 
-			supplier_combox.clearValue();
+			//supplier_combox.clearValue();
 			orderNum_field.setValue(1); 
 			unitprice_field.setValue(0);
 			totalprice_display.setValue(0);
@@ -488,10 +488,10 @@ Ext.onReady(function(){
         defaults:{margins:'0 0 5 0',border:false},
         items:[{xtype:'form',items:[
         							{xtype:'fieldcontainer',layout: 'hbox',items:[order_no,store_combox,orderDate,operater,project_combox]},
+        							{xtype:'fieldcontainer',layout: 'hbox',items:[supplier_combox]},
         							{xtype:'fieldcontainer',layout: 'hbox',items:[type_combox,subtype_combox,prod_name,queryProd_button,brand_name,style]},
         							{xtype:'fieldcontainer',layout: 'hbox',items:[prod_spec,prod_unit]},
                                     {xtype:'fieldcontainer',layout: 'hbox',items:[
-                                   		supplier_combox,
                                     	orderNum_field,
                                     	unitprice_field,
 										totalprice_display
@@ -521,6 +521,8 @@ Ext.onReady(function(){
 		            store_name:store_combox.getRawValue(),
 		            orderDate:orderDate.getValue(),
 		            project_id:project_combox.getValue(),
+		            supplier_id:supplier_combox.getValue(),
+	            	supplier_name:supplier_combox.getRawValue(),
 		            operater:loginUserId
 		            
 				};

@@ -154,7 +154,29 @@ Ext.onReady(function(){
 		readOnly:false
 		//allowBlank:false
 	});
-	
+	var installOutType_combox=Ext.create('Ext.form.field.ComboBox',{
+	        fieldLabel: '领用类型',
+	        labelAlign:'right',
+            labelWidth:55,
+	        //xtype:'combobox',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'installOutType_id',
+		    displayField: 'name',
+		    valueField: 'id',
+	        allowBlank: false,
+	        store:Ext.create('Ext.data.Store', {
+		    	fields: ['id', 'name'],
+			    proxy:{
+			    	type:'ajax',
+			    	//extraParams:{type:[1,3],edit:true},
+			    	url:Ext.ContextPath+"/installOutType/query.do",
+			    	reader:{
+			    		type:'json',
+			    		root:'root'
+			    	}
+			    }
+		   })
+	});
 	
 	var ecode_textfield=Ext.create('Ext.form.field.Text',{
 		labelAlign:'right',
@@ -267,7 +289,7 @@ Ext.onReady(function(){
 					success : function(response) {//加载成功的处理函数   
 						var ret=Ext.decode(response.responseText);
 						if(ret.success){
-							if(ret.root.status!=1){//这是新设备入库的情况
+							if(ret.root.status!='in_storage'){//这是新设备入库的情况
 								Ext.Msg.alert("消息","该设备为非可用库存设备,不能添加到出库列表.");
 								return;
 							}
@@ -359,13 +381,7 @@ Ext.onReady(function(){
     	          
     	          //{header: 'stid', dataIndex: 'stid',hideable:false,hidden:true},
     	         // {header: '库房', dataIndex: 'stock',width:120},
-    	          {header: '状态', dataIndex: 'status',width:100,renderer:function(value){
-    	          	  if(value==4 || value==5){
-	    	          	return '<font color="red">'+equipmentStatus[value]+'</font>';
-	    	          } else {
-	    	          		return equipmentStatus[value];
-	    	          } 
-    	          }}
+    	          {header: '状态', dataIndex: 'status_name',width:100}
     	          ],
         tbar:['<pan id="toolbar-title-text">当前入库记录</span>','->',
               {text:'清空选择的设备',
@@ -413,7 +429,7 @@ Ext.onReady(function(){
             align:'stretch'
         },
         defaults:{margins:'0 0 5 0',border:false},
-        items:[{xtype:'form',items:[{xtype:'fieldcontainer',layout: 'hbox',items:[store_combox,queryStoEquip_button,workUnit_combox,queryWorkUnitEquip_button,requestnum_textfield,ecode_textfield,clear_button]},
+        items:[{xtype:'form',items:[{xtype:'fieldcontainer',layout: 'hbox',items:[store_combox,queryStoEquip_button,workUnit_combox,queryWorkUnitEquip_button,installOutType_combox,requestnum_textfield,ecode_textfield,clear_button]},
                                     {xtype:'fieldcontainer',layout: 'hbox',items:[storeman_textfield,inDate_textfield,memo_textfield]}
 		            		        //{xtype:'columnbox',columnSize:4,items:[{xtype:'listcombox',url:Ext.ContextPath+'/dataExtra/stockList.do',itemId:'stock_field',fieldLabel:'库房',name:'stid',allowBlank:false,emptyText:'未选择库房',labelAlign:'right'},{xtype:'textfield',name:'stmemo',fieldLabel:'库房描述',columnWidth:3/4,labelAlign:'right'}]}
 		            		        ]},
@@ -437,7 +453,7 @@ Ext.onReady(function(){
 					method:'POST',
 					timeout:600000000,
 					headers:{ 'Content-Type':'application/json;charset=UTF-8'},
-					params:{memo:memo_textfield.getValue(),store_id:store_combox.getValue(),workUnit_id:workUnit_combox.getValue(),requestnum:requestnum_textfield.getValue()},
+					params:{memo:memo_textfield.getValue(),store_id:store_combox.getValue(),workUnit_id:workUnit_combox.getValue(),installOutType_id:installOutType_combox.getValue(),requestnum:requestnum_textfield.getValue()},
 					jsonData:equipments,
 					//params:{jsonStr:Ext.encode(equiplist)},
 					success:function(response){

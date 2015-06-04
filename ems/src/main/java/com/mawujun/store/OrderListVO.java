@@ -19,8 +19,8 @@ public class OrderListVO extends OrderList {
 	private EquipmentProdType prod_type;
 	@Transient
 	private String brand_name;
-	@Transient
-	private String supplier_name;
+//	@Transient
+//	private String supplier_name;
 	@Transient
 	private String store_name;
 	
@@ -58,12 +58,7 @@ public class OrderListVO extends OrderList {
 	public void setBrand_name(String brand_name) {
 		this.brand_name = brand_name;
 	}
-	public String getSupplier_name() {
-		return supplier_name;
-	}
-	public void setSupplier_name(String supplier_name) {
-		this.supplier_name = supplier_name;
-	}
+
 	public String getStore_name() {
 		return store_name;
 	}

@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -39,7 +41,11 @@ public class Equipment implements IdEntity<String>{
 	private String memo;
 
 	//外键于表EquipmentStatus
-	private Integer status=0;//1:表示是在库
+	//private Integer status=0;//
+	@Enumerated(EnumType.STRING)
+	@Column(length=20)
+	private EquipmentStatus status=EquipmentStatus.no_storage;
+	
 	@Column(updatable=false)
 	private Date fisData;//first in stock date第一次入库时间
 	@Column(length=36)
@@ -51,7 +57,6 @@ public class Equipment implements IdEntity<String>{
 	private String pole_id;//杆位，所属的杆位，store_id，workUnit_id，pole_id三个职能存在一个
 	private Date last_install_date;//最近的安装时间，该设备安装在这个杆位上时的时间，包括最新安装和维修安装
 	
-
 
 
 	
@@ -122,12 +127,7 @@ public class Equipment implements IdEntity<String>{
 	public void setUnitPrice(Double unitPrice) {
 		this.unitPrice = unitPrice;
 	}
-	public Integer getStatus() {
-		return status;
-	}
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
+	
 	public Date getFisData() {
 		return fisData;
 	}
@@ -165,6 +165,12 @@ public class Equipment implements IdEntity<String>{
 	}
 	public void setOrderlist_id(String orderlist_id) {
 		this.orderlist_id = orderlist_id;
+	}
+	public EquipmentStatus getStatus() {
+		return status;
+	}
+	public void setStatus(EquipmentStatus status) {
+		this.status = status;
 	}
 
 

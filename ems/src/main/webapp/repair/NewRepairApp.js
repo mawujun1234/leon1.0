@@ -246,13 +246,7 @@ Ext.onReady(function(){
     	          
     	          //{header: 'stid', dataIndex: 'stid',hideable:false,hidden:true},
     	         // {header: '库房', dataIndex: 'stock',width:120},
-    	          {header: '设备状态', dataIndex: 'equipment_status',width:100,renderer:function(value){
-    	          	  if(value==4 || value==5){
-	    	          	return '<font color="red">'+equipmentStatus[value]+'</font>';
-	    	          } else {
-	    	          		return equipmentStatus[value];
-	    	          } 
-    	          }}
+    	          {header: '设备状态', dataIndex: 'equipment_status',width:100}
     	          ],
         tbar:['<pan id="toolbar-title-text">当前入库记录</span>','->',
               {text:'清空列表中设备',

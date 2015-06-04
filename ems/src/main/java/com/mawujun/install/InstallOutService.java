@@ -2,6 +2,7 @@ package com.mawujun.install;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.persister.entity.AbstractEntityPersister;
@@ -19,6 +20,7 @@ import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.M;
+import com.mawujun.utils.page.Page;
 
 
 /**
@@ -58,7 +60,7 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 			//更新设备状态为出库待安装
 			//把设备绑定到作业单位上面
 			//把仓库中的该设备移除
-			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.out_storage.getValue())
+			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.out_storage)
 					.set(M.Equipment.workUnit_id, outStore.getWorkUnit_id())
 					.set(M.Equipment.store_id, null)
 					.andEquals(M.Equipment.ecode, equipment.getEcode()));
@@ -82,5 +84,17 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 			inStoreList.setInstallOut_id(instore_id);
 			outStoreListRepository.create(inStoreList);
 		}
+	}
+	
+	public Page queryMain(Page page){
+
+		return outStoreRepository.queryMain(page);
+
+		
+	}
+	public List<InstallOutListVO> queryList(String installOut_id) {
+
+		return outStoreRepository.queryList(installOut_id);
+
 	}
 }

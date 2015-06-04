@@ -17,10 +17,12 @@ Ext.define('Ems.store.OrderGrid',{
 	initComponent: function () {
       var me = this;
       me.columns=[
+      	{xtype: 'rownumberer'},
 		{dataIndex:'orderNo',text:'订单号',width:150},
 		{dataIndex:'store_name',text:'入库仓库',flex:1},
 		{dataIndex: 'status_name',text: '状态',width:70},
 		{dataIndex: 'project_name',text: '项目',width:70},
+		{header: '供应商', dataIndex: 'supplier_name'},
 		{dataIndex:'orderDate',text:'订购日期',xtype: 'datecolumn',   format:'Y-m-d',width:80}
     	//{dataIndex: 'operater',text: '经办人'}
       ];
@@ -184,7 +186,7 @@ Ext.define('Ems.store.OrderGrid',{
 		fieldLabel:'订单号',
 		name:'orderNo',
 		labelWidth:40,
-		allowBlank:false,
+		allowBlank:true,
 		labelAlign:'right'
 	});
 	  
@@ -315,6 +317,13 @@ Ext.define('Ems.store.OrderGrid',{
 		var project_combox=form.getForm().findField("project_id");
 		var project_model= project_combox.getStore().createModel({id:order.get("project_id"),name:order.get("project_name")});
 		project_combox.setValue(project_model);
+		
+		var supplier_combox=form.getForm().findField("supplier_id");
+		var supplier_model = supplier_combox.getStore().createModel({
+			id : order.get("supplier_id"),
+			name : order.get("supplier_name")
+		});
+		supplier_combox.setValue(supplier_model);
 		
 		
 		var win=Ext.create('Ext.window.Window',{

@@ -66,7 +66,7 @@ public class ScrapService extends AbstractService<Scrap, String>{
 	
 	public Scrap makeSureScrap(Scrap scrap) {
 		//修改设备状态为报废
-		equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.scrapped.getValue()).andEquals(M.Equipment.ecode, scrap.getEcode()));
+		equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.scrapped).andEquals(M.Equipment.ecode, scrap.getEcode()));
 		
 		Date date=new Date();
 		scrap.setOperateDate(date);

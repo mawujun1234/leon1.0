@@ -178,7 +178,7 @@ public class TaskService extends AbstractService<Task, String>{
 			String ecode=taskEquipmentList.getEcode();
 			if(TaskType.newInstall.toString().equals(task_type)){
 			//更改设备的位置到该杆位上,把设备从昨夜单位身上移动到杆位上
-				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using.getValue()).set(M.Equipment.isnew, false)
+				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using).set(M.Equipment.isnew, false)
 						.set(M.Equipment.pole_id, task.getPole_id())
 						.set(M.Equipment.last_install_date, new Date())
 						.set(M.Equipment.workUnit_id, null)
@@ -186,21 +186,21 @@ public class TaskService extends AbstractService<Task, String>{
 						.andEquals(M.Equipment.ecode, ecode));	
 			} else if(TaskType.repair.toString().equals(task_type)){
 				//维修的时候，设备的状态，可能是 损坏或者是安装出库 
-				if( taskEquipmentList.getEquipment_status()==EquipmentStatus.using.getValue()){
-					equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using.getValue()).set(M.Equipment.isnew, false)	
+				if( taskEquipmentList.getEquipment_status()==EquipmentStatus.using){
+					equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using).set(M.Equipment.isnew, false)	
 							.set(M.Equipment.pole_id, task.getPole_id())
 							.set(M.Equipment.last_install_date, new Date())
 							.set(M.Equipment.workUnit_id, null)
 							.set(M.Equipment.store_id, null)
 							.andEquals(M.Equipment.ecode, ecode)
-							.andEquals(M.Equipment.status, EquipmentStatus.out_storage.getValue()));
+							.andEquals(M.Equipment.status, EquipmentStatus.out_storage));
 				} else {
 					equipmentRepository.update(Cnd.update().set(M.Equipment.status, taskEquipmentList.getEquipment_status())
 							.set(M.Equipment.workUnit_id, task.getWorkunit_id())
 							.set(M.Equipment.pole_id, null)
 							.set(M.Equipment.store_id, null)
 							.andEquals(M.Equipment.ecode, ecode)
-							.andEquals(M.Equipment.status, EquipmentStatus.using.getValue()));	
+							.andEquals(M.Equipment.status, EquipmentStatus.using));	
 				}
 						
 			} else if(TaskType.patrol.toString().equals(task_type)){
@@ -244,7 +244,7 @@ public class TaskService extends AbstractService<Task, String>{
 		
 		
 		if(TaskType.newInstall.equals(task.getType())){
-			if(EquipmentStatus.out_storage.getValue()!=equipmentVO.getStatus()){
+			if(EquipmentStatus.out_storage!=equipmentVO.getStatus()){
 				throw new BusinessException(equipmentVO.getEcode()+":该设备不是'安装出库'状态,不能安装!");
 			} else if(!ShiroUtils.getAuthenticationInfo().getId().equals(equipmentVO.getWorkUnit_id()) ){
 				//判断是不是当前用户持有的设备，否则就报错
@@ -253,11 +253,11 @@ public class TaskService extends AbstractService<Task, String>{
 		} else if(TaskType.repair.equals(task.getType())){
 			//如果是using状态的设备就判断是个是这个任务关联的杆位,防止出现串号
 			//否则就判断是不是安装出库状态,
-			if(EquipmentStatus.using.getValue()==equipmentVO.getStatus()){
+			if(EquipmentStatus.using==equipmentVO.getStatus()){
 				if(!task.getPole_id().equals(equipmentVO.getPole_id())){
 					throw new BusinessException(equipmentVO.getEcode()+":该设备不是当前任务指定杆位上的设备!");
 				}
-			} else if(EquipmentStatus.out_storage.getValue()!=equipmentVO.getStatus()){
+			} else if(EquipmentStatus.out_storage!=equipmentVO.getStatus()){
 				throw new BusinessException(equipmentVO.getEcode()+":该设备不是'安装出库'状态,不能安装!");
 			} else {
 				if(!ShiroUtils.getAuthenticationInfo().getId().equals(equipmentVO.getWorkUnit_id()) ){
@@ -267,7 +267,7 @@ public class TaskService extends AbstractService<Task, String>{
 			}
 		} else if(TaskType.patrol.equals(task.getType())){
 			//巡检扫描的设备必须是using章台的设备，并且杆位也必须是相同的
-			if(EquipmentStatus.using.getValue()!=equipmentVO.getStatus()){
+			if(EquipmentStatus.using!=equipmentVO.getStatus()){
 				throw new BusinessException(equipmentVO.getEcode()+":该设备不是'使用中'状态,不能作为巡检标识!");
 			} else {
 				if(!task.getPole_id().equals(equipmentVO.getPole_id())){
@@ -276,7 +276,7 @@ public class TaskService extends AbstractService<Task, String>{
 			}
 		} else if(TaskType.cancel.equals(task.getType())){
 			//巡检扫描的设备必须是using章台的设备，并且杆位也必须是相同的
-			if(EquipmentStatus.using.getValue()!=equipmentVO.getStatus()){
+			if(EquipmentStatus.using!=equipmentVO.getStatus()){
 				throw new BusinessException(equipmentVO.getEcode()+":该设备不是'使用中'状态,请检查是否扫描错了!");
 			} else {
 				if(!task.getPole_id().equals(equipmentVO.getPole_id())){
@@ -309,16 +309,18 @@ public class TaskService extends AbstractService<Task, String>{
 		BeanUtils.copyProperties(equipmentVO, vo);
 		
 		if(task.getType()==TaskType.repair){
-			if(equipmentVO.getStatus()==EquipmentStatus.using.getValue()){
-				//如果是证在使用的设备，默认替换下来的设备就设置为损坏
-				vo.setEquipment_status(EquipmentStatus.breakdown.getValue());
-			} else if(equipmentVO.getStatus()==EquipmentStatus.out_storage.getValue()){
+			if(equipmentVO.getStatus()==EquipmentStatus.using){
+				//如果是证在使用的设备，默认替换下来的设备就设置为损坏out_storage
+				//vo.setEquipment_status(EquipmentStatus.breakdown.getValue());
+				//从点位上拆下来也变成是 施工单位持有的状态 2015.06.03,这个是即将变成的状态
+				vo.setEquipment_status(EquipmentStatus.out_storage);
+			} else if(equipmentVO.getStatus()==EquipmentStatus.out_storage){
 				//如果是安装出库状态的设备，默认就设置外i使用中，这里都是临时的
-				vo.setEquipment_status(EquipmentStatus.using.getValue());
+				vo.setEquipment_status(EquipmentStatus.using);
 			} 
 		} else {
 			//安装和巡检的时候，都是使用中的状态
-			vo.setEquipment_status(EquipmentStatus.using.getValue());
+			vo.setEquipment_status(EquipmentStatus.using);
 		}
 		return vo;
 	}
@@ -366,7 +368,7 @@ public class TaskService extends AbstractService<Task, String>{
 	 * @param equipment_statuses
 	 * @return
 	 */
-	public Set<String> mobile_save(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason,String[] ecodes,Integer[] equipment_statuses) {
+	public Set<String> mobile_save(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason,String[] ecodes,EquipmentStatus[] equipment_statuses) {
 		//已入库的不能删除
 		check_equip_status(task_id,ecodes);
 		
@@ -407,7 +409,7 @@ public class TaskService extends AbstractService<Task, String>{
 				tel.setType(TaskListTypeEnum.install);
 			} else if(TaskType.repair==task.getType()){
 				//如果设备将会变成使用中的状态，那这个设备就是安装
-				if(equipment_statuses[i]==EquipmentStatus.using.getValue()){
+				if(equipment_statuses[i]==EquipmentStatus.using){
 					tel.setType(TaskListTypeEnum.install);
 				} else {
 					//退换下来的，可能是损坏，也可能是 安装出库状态的设备就是 卸载下来的
@@ -477,7 +479,7 @@ public class TaskService extends AbstractService<Task, String>{
 	 * @param task_type
 	 * @param ecodes
 	 */
-	public void mobile_submit(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason,String[] ecodes,Integer[] equipment_statuses) {
+	public void mobile_submit(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason,String[] ecodes,EquipmentStatus[] equipment_statuses) {
 
 		Set<String> existEcodes=this.mobile_save(task_id, hitchType_id, hitchReasonTpl_id, hitchReason, ecodes, equipment_statuses);
 		//如果是取消杆位，提交前进行判断，扫描了的设备数量和杆位上实际具有的数量是否一致

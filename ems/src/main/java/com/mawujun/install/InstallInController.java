@@ -102,6 +102,40 @@ public class InstallInController {
 //		return installIn;
 //	}
 	
+	/**
+	 * 
+	 * @author mawujun 16064988@qq.com 
+	 * @param start
+	 * @param limit
+	 * @param operateDate_start
+	 * @param operateDate_end
+	 * @param store_id
+	 * @param type 是出库单还是入库单
+	 * @return
+	 */
+	@RequestMapping("/installIn/queryMain.do")
+	@ResponseBody
+	public Page queryMain(Integer start,Integer limit,String operateDate_start,String operateDate_end,String store_id,String workUnit_id,String type) { 
+		Page page=Page.getInstance(start, limit);
+		page.addParam("operateDate_start", operateDate_start);
+		page.addParam("operateDate_end", operateDate_end);
+		page.addParam(M.InstallIn.store_id, store_id);
+		page.addParam(M.InstallIn.workUnit_id, workUnit_id);
+		page.addParam(M.InstallIn.type, type);
+		page=installInService.queryMain(page);
+		return page;
+	}
+	
+	@RequestMapping("/installIn/queryList.do")
+	@ResponseBody
+	public List<InstallInListVO> queryList(String installIn_id) { 
+		if(!StringUtils.hasText(installIn_id)){
+			throw new BusinessException("请先选择一条单据!");
+		}
+		List<InstallInListVO> page=installInService.queryList(installIn_id);
+		return page;
+	}
+	
 	@RequestMapping("/installIn/getEquipmentByEcode.do")
 	@ResponseBody
 	public EquipmentVO getEquipmentByEcode(String ecode,String workunit_id) {
@@ -118,39 +152,5 @@ public class InstallInController {
 		return "success";
 	}
 	
-	/**
-	 * 
-	 * @author mawujun 16064988@qq.com 
-	 * @param start
-	 * @param limit
-	 * @param operateDate_start
-	 * @param operateDate_end
-	 * @param store_id
-	 * @param type 是出库单还是入库单
-	 * @return
-	 */
-	@RequestMapping("/inoutvo/queryMain.do")
-	@ResponseBody
-	public Page queryMain(Integer start,Integer limit,String operateDate_start,String operateDate_end,String store_id,String workUnit_id,String type) { 
-		Page page=Page.getInstance(start, limit);
-		page.addParam("operateDate_start", operateDate_start);
-		page.addParam("operateDate_end", operateDate_end);
-		page.addParam(M.InstallIn.store_id, store_id);
-		page.addParam(M.InstallIn.workUnit_id, workUnit_id);
-		page=installInService.queryMain(page, type);
-		return page;
-	}
 	
-	@RequestMapping("/inoutvo/queryList.do")
-	@ResponseBody
-	public List<InOutListVO> queryList(String inOut_id,String type) { 
-		if(!StringUtils.hasText(inOut_id)){
-			throw new BusinessException("请先选择一条单据!");
-		}
-		if(!StringUtils.hasText(type)){
-			throw new BusinessException("单据类型没有选!");
-		}
-		List<InOutListVO> page=installInService.queryList(inOut_id, type);
-		return page;
-	}
 }

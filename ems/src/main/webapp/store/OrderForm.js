@@ -194,8 +194,16 @@ Ext.define('Ems.store.OrderForm',{
 			    }
 		   })
 	});	
+	var supplier_combox=Ext.create('Ems.baseinfo.SupplierCombo',{
+		labelAlign:'right',
+		labelWidth:40,
+		flex:1,
+		minWidth:150,
+		allowBlank: true
+	});
+	//me.supplier_combox=supplier_combox;
 		
-		me.items=[id_field,status,order_no,store_combox,orderDate,operater,operater_name,project_combox];
+		me.items=[id_field,status,order_no,store_combox,orderDate,operater,operater_name,project_combox,supplier_combox];
 		
 		var saveButton=Ext.create('Ext.button.Button',{
             text: '保存',

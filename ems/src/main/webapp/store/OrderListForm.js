@@ -182,14 +182,14 @@ Ext.define('Ems.store.OrderListForm',{
 		emptyText:'不可编辑',
 		xtype:'textfield',itemId:'style_field',fieldLabel:'规格',name:'prod_spec',labelWidth:50,allowBlank:false,labelAlign:'right'});
 	me.prod_spec=prod_spec;
-	var supplier_combox=Ext.create('Ems.baseinfo.SupplierCombo',{
-		labelAlign:'right',
-		labelWidth:40,
-		flex:1,
-		minWidth:150,
-		allowBlank: true
-	});
-	me.supplier_combox=supplier_combox;
+//	var supplier_combox=Ext.create('Ems.baseinfo.SupplierCombo',{
+//		labelAlign:'right',
+//		labelWidth:40,
+//		flex:1,
+//		minWidth:150,
+//		allowBlank: true
+//	});
+//	me.supplier_combox=supplier_combox;
 	var orderNum_field=Ext.create('Ext.form.field.Number',{
 		xtype:'numberfield',itemId:'orderNum_field',fieldLabel:'数目',name:'orderNum',minValue:1,labelWidth:40,listeners:{change:me.countTotal},allowBlank:false,labelAlign:'right',value:1
 	});
@@ -209,7 +209,7 @@ Ext.define('Ems.store.OrderListForm',{
         							{xtype:'fieldcontainer',layout: 'hbox',items:[type_combox,subtype_combox,prod_name,queryProd_button,brand_name,style]},
         							{xtype:'fieldcontainer',layout: 'hbox',items:[prod_spec,prod_unit]},
                                     {xtype:'fieldcontainer',layout: 'hbox',items:[
-                                   		supplier_combox,
+                                   		//supplier_combox,
                                     	orderNum_field,
                                     	unitprice_field,
 										totalprice_display
@@ -282,11 +282,11 @@ Ext.define('Ems.store.OrderListForm',{
 		this.prod_style.setValue(orderlist.get("style"));
 		this.prod_spec.setValue(orderlist.get("prod_spec"));
 
-		var supplier_model = this.supplier_combox.getStore().createModel({
-					id : orderlist.get("supplier_id"),
-					name : orderlist.get("supplier_name")
-				});
-		this.supplier_combox.setValue(supplier_model);
+//		var supplier_model = this.supplier_combox.getStore().createModel({
+//					id : orderlist.get("supplier_id"),
+//					name : orderlist.get("supplier_name")
+//				});
+//		this.supplier_combox.setValue(supplier_model);
 
 		this.orderNum_field.setValue(orderlist.get("orderNum"));
 		this.unitprice_field.setValue(orderlist.get("unitPrice"));
