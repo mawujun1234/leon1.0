@@ -33,7 +33,7 @@ public class OrderList extends UUIDEntity {
 	
 	@Column(precision=10,scale=2)
 	private Double unitPrice;
-	private int quality_month;//质保时间长度，以月为单位
+	private Integer quality_month;//质保时间长度，以月为单位
 	
 	private Integer orderNum=0;//订货数量
 	private Integer totalNum=0;//累计入库数量
@@ -102,10 +102,11 @@ public class OrderList extends UUIDEntity {
 	public void setPrintNum(Integer printNum) {
 		this.printNum = printNum;
 	}
-	public int getQuality_month() {
+	public Integer getQuality_month() {
 		return quality_month;
 	}
-	public void setQuality_month(int quality_month) {
+	public void setQuality_month(Integer quality_month) {
 		this.quality_month = quality_month;
 	}
+
 }

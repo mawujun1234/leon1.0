@@ -24,6 +24,7 @@ Ext.define('Ems.store.OrderListGrid',{
     	{header: '品牌', dataIndex: 'brand_name',width:120},
     	//{header: '供应商', dataIndex: 'supplier_name'},
     	{header: '设备型号', dataIndex: 'style',width:120},
+    	{dataIndex:'quality_month',text:'质保(月)',width:50},
     	{header: '描述', dataIndex: 'prod_memo',width:120},
     	{header: '规格', dataIndex: 'prod_spec',width:120,renderer:function(value,metadata,record){
 			metadata.tdAttr = "data-qtip='" + value+ "'";
@@ -160,7 +161,16 @@ Ext.define('Ems.store.OrderListGrid',{
 				}
 			}	
 		});
-		form.updateFieldValue(record);
+		//form.updateFieldValue(record);
+		form.loadRecord(record);
+		
+		var type_combox=form.getForm().findField("type_id");
+		var type_model= type_combox.getStore().createModel({id:record.get("type_id"),name:record.get("type_name")});
+		type_combox.setValue(type_model);
+		
+		var subtype_combox=form.getForm().findField("subtype_id");
+		var subtype_model= subtype_combox.getStore().createModel({id:record.get("subtype_id"),name:record.get("subtype_name")});
+		subtype_combox.setValue(subtype_model);
 		
 		
 		var win=Ext.create('Ext.window.Window',{

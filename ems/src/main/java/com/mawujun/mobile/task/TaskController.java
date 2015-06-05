@@ -1,10 +1,8 @@
 package com.mawujun.mobile.task;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,8 +11,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -25,14 +21,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.baseinfo.Customer;
 import com.mawujun.baseinfo.CustomerService;
-import com.mawujun.baseinfo.EquipmentService;
 import com.mawujun.baseinfo.EquipmentStatus;
 import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.baseinfo.Pole;
 import com.mawujun.baseinfo.PoleService;
-import com.mawujun.baseinfo.PoleVO;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
-import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.M;

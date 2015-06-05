@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html>
   <head>
     
-    <title>EquipmentType</title>
+    <title>返库查询</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -19,17 +19,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
-<style type="text/css">
-.status_disable {
-	text-decoration:line-through;
-	color:gray;
-}
-</style>
+
 	
-	<%@include file="../common/init.jsp" %>
-	<script type="text/javascript" src="CommCombo.js"></script>
-	<script type="text/javascript" src="EquipmentTypeApp.js"></script>
-	
+	<%@include file="../../common/init.jsp" %>
+	<script type="text/javascript" src="BrokenEquipmentQueryApp.js"></script>
   </head>
   
   <body>

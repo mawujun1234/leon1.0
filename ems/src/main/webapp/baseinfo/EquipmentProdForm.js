@@ -79,47 +79,50 @@ Ext.define('Ems.baseinfo.EquipmentProdForm',{
 	        allowBlank: false
 	    },
 	    {
-	    	fieldLabel: '品牌',
-		    displayField: 'name',
-		    valueField: 'id',
-		    afterLabelTextTpl: Ext.required,
-		    //hidden:!me.isprod,
-		     //minChars:1,
-		     xtype:'combobox',
-		    forceSelection:true,
-		    editable:false,
-		   // allowBlank: !me.isprod,
-		    //queryParam: 'name',
-		    //queryMode: 'remote',
-		    name:'brand_id',
-	    	store:Ext.create('Ext.data.Store', {
-			    fields: ['id', 'name'],
-			    proxy:{
-			    	type:'ajax',
-			    	actionMethods: {
-				        create : 'POST',
-				        read   : 'POST',
-				        update : 'POST',
-				        destroy: 'POST'
-				    },
-			    	url:Ext.ContextPath+"/brand/queryBrandCombo.do",
-			    	reader:{
-			    		type:'json',
-			    		root:'root'
-			    	}
-			    },
-			    listeners:{
-				    	beforeload:function(store){
-				    		//包含所有的选项
-				    		if(me.containAll){
-				    			store.getProxy().extraParams=Ext.apply(store.getProxy().extraParams,{
-				    				containAll:true
-				    			})
-				    		}
-				    	}
-				}
-		   })
-		 },
+	    	xtype:'brandcombo'
+	    },
+//	    {
+//	    	fieldLabel: '品牌',
+//		    displayField: 'name',
+//		    valueField: 'id',
+//		    afterLabelTextTpl: Ext.required,
+//		    //hidden:!me.isprod,
+//		     //minChars:1,
+//		     xtype:'combobox',
+//		    forceSelection:true,
+//		    editable:false,
+//		   // allowBlank: !me.isprod,
+//		    //queryParam: 'name',
+//		    //queryMode: 'remote',
+//		    name:'brand_id',
+//	    	store:Ext.create('Ext.data.Store', {
+//			    fields: ['id', 'name'],
+//			    proxy:{
+//			    	type:'ajax',
+//			    	actionMethods: {
+//				        create : 'POST',
+//				        read   : 'POST',
+//				        update : 'POST',
+//				        destroy: 'POST'
+//				    },
+//			    	url:Ext.ContextPath+"/brand/queryBrandCombo.do",
+//			    	reader:{
+//			    		type:'json',
+//			    		root:'root'
+//			    	}
+//			    },
+//			    listeners:{
+//				    	beforeload:function(store){
+//				    		//包含所有的选项
+//				    		if(me.containAll){
+//				    			store.getProxy().extraParams=Ext.apply(store.getProxy().extraParams,{
+//				    				containAll:true
+//				    			})
+//				    		}
+//				    	}
+//				}
+//		   })
+//		 },
 	     {
 	        fieldLabel: '型号',
 	        //afterLabelTextTpl: Ext.required,
@@ -129,6 +132,13 @@ Ext.define('Ems.baseinfo.EquipmentProdForm',{
 	        maxLength:50,
 	        value:"",
 	        allowBlank: true
+	    },
+	    {
+	        fieldLabel: '质保(月)',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'quality_month',
+	       // hidden:!me.isprod,
+	        xtype:'numberfield'
 	    },
 	    {
 	        fieldLabel: '描述',

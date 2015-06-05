@@ -48,7 +48,7 @@ public class EquipmentProd  implements
 //	@Column(length=6)
 //	private String type_parent_id;//当被拆分后的parent_id
 	
-	private int quality_month;//质保时间长度，以月为单位
+	private Integer quality_month;//质保时间长度，以月为单位
 	
 	
 	
@@ -147,6 +147,15 @@ public class EquipmentProd  implements
 	public void setMemo(String memo) {
 		this.memo = memo;
 	}
+
+	public Integer getQuality_month() {
+		return quality_month;
+	}
+
+	public void setQuality_month(Integer quality_month) {
+		this.quality_month = quality_month;
+	}
+
 
 
 }

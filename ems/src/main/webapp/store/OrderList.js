@@ -18,6 +18,7 @@ Ext.defineModel("Ems.store.OrderList",{
 		{name:'type_id',type:'string'},
 		{name:'unitPrice',type:'float'},
 		{name:'totalprice',type:'int'},
+		{name:'quality_month',type:'int'},
 		//{name:'status',type:'string'},
 		
 		{name:'brand_name',type:'string'},

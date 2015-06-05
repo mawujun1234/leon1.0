@@ -9,7 +9,7 @@ public class OrderListVO extends OrderList {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	@Transient
+	private String type_name;
 	private String subtype_name;
 	private String prod_id;
 	private String prod_name;
@@ -122,6 +122,18 @@ public class OrderListVO extends OrderList {
 
 	public void setNoedit(Boolean noedit) {
 		this.noedit = noedit;
+	}
+
+
+
+	public String getType_name() {
+		return type_name;
+	}
+
+
+
+	public void setType_name(String type_name) {
+		this.type_name = type_name;
 	}
 	
 }

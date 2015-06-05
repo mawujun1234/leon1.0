@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mawujun.baseinfo.EquipmentService;
+import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.mobile.task.TaskRepairReport;
@@ -23,6 +25,7 @@ import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.user.User;
 import com.mawujun.utils.M;
 import com.mawujun.utils.Params;
+import com.mawujun.utils.StringUtils;
 import com.mawujun.utils.page.Page;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
@@ -35,57 +38,26 @@ public class RepairController {
 
 	@Resource
 	private RepairService repairService;
+	@Resource
+	private EquipmentService equipmentService;
 
 
-//	/**
-//	 * 请按自己的需求修改
-//	 * @author mawujun email:16064988@163.com qq:16064988
-//	 * @param id 是父节点的id
-//	 * @return
-//	 */
-//	@RequestMapping("/repair/query.do")
-//	@ResponseBody
-//	public List<Repair> query(String id) {
-//		Cnd cnd=Cnd.select().andEquals(M.Repair.parent.id, "root".equals(id)?null:id);
-//		List<Repair> repaires=repairService.query(cnd);
-//		//JsonConfigHolder.setFilterPropertys(Repair.class,M.Repair.parent.name());
-//		return repaires;
-//	}
-
-//	/**
-//	 * 这是基于分页的几种写法,的例子，请按自己的需求修改
-//	 * @author mawujun email:16064988@163.com qq:16064988
-//	 * @param start
-//	 * @param limit
-//	 * @param userName
-//	 * @return
-//	 */
-//	@RequestMapping("/repair/query.do")
-//	@ResponseBody
-//	public Page query(Integer start,Integer limit,String sampleName){
-//		Page page=Page.getInstance(start,limit);//.addParam(M.Repair.sampleName, "%"+sampleName+"%");
-//		return repairService.queryPage(page);
-//	}
-
-//	@RequestMapping("/repair/query.do")
-//	@ResponseBody
-//	public List<Repair> query() {	
-//		List<Repair> repaires=repairService.queryAll();
-//		return repaires;
-//	}
-//	
-
-//	@RequestMapping("/repair/load.do")
-//	public Repair load(String id) {
-//		return repairService.get(id);
-//	}
-	
-//	@RequestMapping("/repair/create.do")
-//	@ResponseBody
-//	public Repair create(@RequestBody Repair repair) {
-//		repairService.create(repair);
-//		return repair;
-//	}
+	/**
+	 * 搜索仓库中所有坏掉的设备
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param ecode
+	 * @param store_id
+	 * @return
+	 */
+	@RequestMapping("/repair/queryBrokenEquipment.do")
+	@ResponseBody
+	public List<EquipmentVO> queryBrokenEquipment(String store_id) {
+		if(!StringUtils.hasText(store_id)){
+			throw new BusinessException("请先选择一个仓库!");
+		}
+		return equipmentService.queryBrokenEquipment(store_id);
+		
+	}
 
 	
 	@RequestMapping("/repair/update.do")

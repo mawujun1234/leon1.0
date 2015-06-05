@@ -1,6 +1,6 @@
 Ext.require("Ems.store.Order");
 Ext.require("Ems.store.OrderList");
-Ext.require('Ems.baseinfo.ProdQueryGrid');
+Ext.require('Ems.baseinfo.EquipmentProdQueryGrid');
 //Ext.require("Ems.store.OrderGrid");
 //Ext.require("Ems.store.OrderTree");
 //Ext.require("Ems.store.OrderForm");
@@ -106,47 +106,51 @@ Ext.onReady(function(){
 //		}
 //	});
 	
-	var project_combox=Ext.create('Ext.form.field.ComboBox',{
-	        fieldLabel: '项目',
-	        labelAlign:'right',
-            labelWidth:40,
-            flex:1,
-	        //xtype:'combobox',
-	        //afterLabelTextTpl: Ext.required,
-	        name: 'project_id',
-		    displayField: 'name',
-		    valueField: 'id',
-		    queryParam: 'name',
-    		queryMode: 'remote',
-    		triggerAction: 'query',
-    		minChars:-1,
-		    trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
-		    trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
-			onTrigger1Click : function(){
-			    var me = this;
-			    me.setValue('');
-			},
-	        allowBlank: false,
-	        store:Ext.create('Ext.data.Store', {
-		    	fields: ['id', 'name'],
-			    proxy:{
-			    	type:'ajax',
-			    	actionMethods: {
-				        create : 'POST',
-				        read   : 'POST',
-				        update : 'POST',
-				        destroy: 'POST'
-				    },
-			    	//extraParams:{type:[1,3],look:true},
-			    	url:Ext.ContextPath+"/project/query.do",
-			    	reader:{
-			    		type:'json',
-			    		root:'root'
-			    	}
-			    }
-		   })
-	});	
+//	var project_combox=Ext.create('Ext.form.field.ComboBox',{
+//	        fieldLabel: '项目',
+//	        labelAlign:'right',
+//            labelWidth:40,
+//            flex:1,
+//	        //xtype:'combobox',
+//	        //afterLabelTextTpl: Ext.required,
+//	        name: 'project_id',
+//		    displayField: 'name',
+//		    valueField: 'id',
+//		    queryParam: 'name',
+//    		queryMode: 'remote',
+//    		triggerAction: 'query',
+//    		minChars:-1,
+//		    trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
+//		    trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
+//			onTrigger1Click : function(){
+//			    var me = this;
+//			    me.setValue('');
+//			},
+//	        allowBlank: false,
+//	        store:Ext.create('Ext.data.Store', {
+//		    	fields: ['id', 'name'],
+//			    proxy:{
+//			    	type:'ajax',
+//			    	actionMethods: {
+//				        create : 'POST',
+//				        read   : 'POST',
+//				        update : 'POST',
+//				        destroy: 'POST'
+//				    },
+//			    	//extraParams:{type:[1,3],look:true},
+//			    	url:Ext.ContextPath+"/project/query.do",
+//			    	reader:{
+//			    		type:'json',
+//			    		root:'root'
+//			    	}
+//			    }
+//		   })
+//	});	
 	
+	var project_combox=Ext.create('Ems.baseinfo.ProjectCombo',{
+		//flex:1,
+		allowBlank: false
+	});
 	var type_combox=Ext.create('Ems.baseinfo.TypeCombo',{
 		labelAlign:'right',
 		allowBlank: false,
@@ -225,14 +229,14 @@ Ext.onReady(function(){
 				Ext.Msg.alert("消息","请先选择一个类型");
 				return;
 			}
-			var prod_grid=Ext.create('Ems.baseinfo.ProdQueryGrid',{
+			var prod_grid=Ext.create('Ems.baseinfo.EquipmentProdQueryGrid',{
 				listeners:{
 					itemdblclick:function(view,record,item){
 						prod_id.setValue(record.get("id"));
 						prod_name.setValue(record.get("name"));
 						prod_spec.setValue(record.get("spec"));
 						prod_unit.setValue(record.get("unit"));
-						
+						quality_month_field.setValue(record.get("quality_month"));
 						brand_id.setValue(record.get("brand_id"));
 						brand_name.setValue(record.get("brand_name"));
 						
@@ -292,6 +296,9 @@ Ext.onReady(function(){
 		flex:1,
 		allowBlank: true
 	});
+	var quality_month_field=Ext.create('Ext.form.field.Number',{
+		xtype:'numberfield',itemId:'quality_month_field',fieldLabel:'质保(月)',name:'quality_month',minValue:1,labelWidth:60,allowBlank:false,labelAlign:'right',value:0
+	});
 	var orderNum_field=Ext.create('Ext.form.field.Number',{
 		xtype:'numberfield',itemId:'orderNum_field',fieldLabel:'数目',name:'orderNum',minValue:1,labelWidth:40,listeners:{change:countTotal},allowBlank:false,labelAlign:'right',value:1
 	});
@@ -303,7 +310,7 @@ Ext.onReady(function(){
 	});
 	var equipStore = Ext.create('Ext.data.Store', {
         autoDestroy: true,
-        model: 'Ems.store.Order',
+        model: 'Ems.store.OrderList',
         proxy: {
             type: 'memory'
         }
@@ -333,6 +340,7 @@ Ext.onReady(function(){
     	          {header: '品牌', dataIndex: 'brand_name',width:120},
     	          //{header: '供应商', dataIndex: 'supplier_name'},
     	          {header: '设备型号', dataIndex: 'style',width:120},
+    	          {dataIndex:'quality_month',text:'质保(月)',width:50},
     	          {header: '规格', dataIndex: 'prod_spec',flex:1,renderer:function(value,metadata,record){
 								metadata.tdAttr = "data-qtip='" + value+ "'";
 							    return value;
@@ -408,6 +416,7 @@ Ext.onReady(function(){
 	            style:style.getValue(),
 	            //store_id:store_combox.getValue(),
 	            //store_name:store_combox.getRawValue(),
+	            quality_month:quality_month_field.getValue(),
 	            orderNum:orderNum_field.getValue(),
 	            unitPrice:unitprice_field.getValue(),
 	            totalprice:totalprice_display.getValue()
@@ -430,6 +439,7 @@ Ext.onReady(function(){
 			style.setValue(""); 
 			prod_spec.setValue(""); 
 			//supplier_combox.clearValue();
+			quality_month_field.setValue(0);
 			orderNum_field.setValue(1); 
 			unitprice_field.setValue(0);
 			totalprice_display.setValue(0);
@@ -464,11 +474,12 @@ Ext.onReady(function(){
 			prod_spec.setValue(record.get("prod_spec")); 
 			prod_unit.setValue(record.get("prod_unit")); 
 			
-			var supplier_model= supplier_combox.getStore().createModel({id:record.get("supplier_id"),name:record.get("supplier_name")});
-			supplier_combox.setValue(supplier_model);
+			//var supplier_model= supplier_combox.getStore().createModel({id:record.get("supplier_id"),name:record.get("supplier_name")});
+			//supplier_combox.setValue(supplier_model);
 			//supplier_combox.setValue(record.get("supplier_id"));
 			//supplier_combox.setRawValue(record.get("supplier_name"));
 			
+			quality_month_field.setValue(record.get("quality_month"));
 			orderNum_field.setValue(record.get("orderNum")); 
 			unitprice_field.setValue(record.get("unitPrice"));
 			totalprice_display.setValue(record.get("totalprice"));
@@ -492,6 +503,7 @@ Ext.onReady(function(){
         							{xtype:'fieldcontainer',layout: 'hbox',items:[type_combox,subtype_combox,prod_name,queryProd_button,brand_name,style]},
         							{xtype:'fieldcontainer',layout: 'hbox',items:[prod_spec,prod_unit]},
                                     {xtype:'fieldcontainer',layout: 'hbox',items:[
+                                    	quality_month_field,
                                     	orderNum_field,
                                     	unitprice_field,
 										totalprice_display

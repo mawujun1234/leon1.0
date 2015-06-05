@@ -218,9 +218,6 @@ Ext.onReady(function(){
         autoDestroy: true,
         pageSize:pageSize,
         model: 'Ems.baseinfo.Equipment',
-//        proxy: {
-//            type: 'memory'
-//        }
         autoLoad:false,
         proxy: {
 	        type: 'ajax',

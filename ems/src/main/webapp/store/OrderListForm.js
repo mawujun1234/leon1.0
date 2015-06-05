@@ -1,7 +1,8 @@
 Ext.define('Ems.store.OrderListForm',{
 	extend:'Ext.form.Panel',
 	requires: [
-	     'Ems.store.OrderList'
+	     'Ems.store.OrderList',
+	     'Ems.baseinfo.EquipmentProdQueryGrid'
 	],
 	fieldDefaults: {
         msgTarget: 'side',
@@ -122,7 +123,7 @@ Ext.define('Ems.store.OrderListForm',{
 				Ext.Msg.alert("消息","请先选择一个类型");
 				return;
 			}
-			var prod_grid=Ext.create('Ems.baseinfo.ProdQueryGrid',{
+			var prod_grid=Ext.create('Ems.baseinfo.EquipmentProdQueryGrid',{
 				listeners:{
 					itemdblclick:function(view,record,item){
 						prod_id.setValue(record.get("id"));
@@ -190,6 +191,10 @@ Ext.define('Ems.store.OrderListForm',{
 //		allowBlank: true
 //	});
 //	me.supplier_combox=supplier_combox;
+	
+	var quality_month_field=Ext.create('Ext.form.field.Number',{
+		xtype:'numberfield',itemId:'quality_month_field',fieldLabel:'质保(月)',name:'quality_month',minValue:1,labelWidth:60,allowBlank:true,labelAlign:'right',value:0
+	});
 	var orderNum_field=Ext.create('Ext.form.field.Number',{
 		xtype:'numberfield',itemId:'orderNum_field',fieldLabel:'数目',name:'orderNum',minValue:1,labelWidth:40,listeners:{change:me.countTotal},allowBlank:false,labelAlign:'right',value:1
 	});
@@ -209,7 +214,7 @@ Ext.define('Ems.store.OrderListForm',{
         							{xtype:'fieldcontainer',layout: 'hbox',items:[type_combox,subtype_combox,prod_name,queryProd_button,brand_name,style]},
         							{xtype:'fieldcontainer',layout: 'hbox',items:[prod_spec,prod_unit]},
                                     {xtype:'fieldcontainer',layout: 'hbox',items:[
-                                   		//supplier_combox,
+                                   		quality_month_field,
                                     	orderNum_field,
                                     	unitprice_field,
 										totalprice_display

@@ -62,6 +62,23 @@ public class ProjectController {
 		}
 		return projectService.queryPage(page);
 	}
+	@RequestMapping("/project/queryCombo.do")
+	@ResponseBody
+	public List<Project> queryCombo(String name,Boolean containAll){
+		List<Project> list=null;
+		if(StringUtils.hasText(name)){
+			list= projectService.query(Cnd.select().andEquals(M.Supplier.status, true).andLike(M.Supplier.name, name));	
+		} else {
+			list= projectService.query(Cnd.select().andEquals(M.Supplier.status, true));	
+		}
+		if(containAll!=null && containAll){
+			Project all=new Project();
+			all.setId("");
+			all.setName("所有");
+			list.add(0, all);
+		}
+		return list;
+	}
 //
 //	@RequestMapping("/project/query.do")
 //	@ResponseBody

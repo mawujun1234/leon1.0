@@ -24,7 +24,7 @@ public enum EquipmentStatus {
 	in_storage(1,"已入库"),
 	out_storage(2,"施工持有"),//安装出库 改成了施工持有，在从仓库领出和从点位上拆下后，都变成这个状态
 	using(3,"使用中"),
-	breakdown(4,"损坏"),
+	//breakdown(4,"损坏"),
 	wait_for_repair(5,"入库待维修"),
 	to_repair(6,"发往维修中心"),
 	outside_repairing(7,"外修中"),
