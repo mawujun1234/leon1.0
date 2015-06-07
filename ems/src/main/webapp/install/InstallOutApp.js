@@ -289,6 +289,7 @@ Ext.onReady(function(){
 					success : function(response) {//加载成功的处理函数   
 						var ret=Ext.decode(response.responseText);
 						if(ret.success){
+							//alert(ret.root.status);
 							if(ret.root.status!='in_storage'){//这是新设备入库的情况
 								Ext.Msg.alert("消息","该设备为非可用库存设备,不能添加到出库列表.");
 								return;

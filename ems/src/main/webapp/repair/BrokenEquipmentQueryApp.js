@@ -76,12 +76,12 @@ Ext.onReady(function(){
     	          {header: '品牌', dataIndex: 'brand_name',width:120},
     	          {header: '供应商', dataIndex: 'supplier_name'},
     	          {header: '设备型号', dataIndex: 'style',width:120},
-    	          {header: '规格', dataIndex: 'prod_spec',width:120,renderer:function(value,metadata,record){
+    	          {header: '规格', dataIndex: 'prod_spec',flex:1,renderer:function(value,metadata,record){
 						metadata.tdAttr = "data-qtip='" + value+ "'";
 					    return value;
 					}
 				  },
-    	          {header: '仓库', dataIndex: 'store_name'},
+    	         // {header: '仓库', dataIndex: 'store_name'},
     	          //{header: '数量', dataIndex: 'serialNum',width:70},
   
     	          {header: '状态', dataIndex: 'status_name',width:100}
@@ -91,20 +91,20 @@ Ext.onReady(function(){
                icon:'../icons/gnext.png',
         	   //iconCls:'icon-clearall',
         	   handler:function(){
-        		   Ext.MessageBox.confirm('确认', '您确认把所有坏件生成维修单并出库吗?', function(btn){
+        		   Ext.MessageBox.confirm('确认', '您确认把<b>所有</b>坏件生成维修单并出库吗?', function(btn){
 					   if(btn=='yes'){
 							createRepair();
 						}
 					});
         	   }
         	}
-        ],
-        bbar:{
-	        xtype: 'pagingtoolbar',
-	        store: equipStore,  
-	        dock: 'bottom',
-	        displayInfo: true
-	  }
+        ]
+//        bbar:{
+//	        xtype: 'pagingtoolbar',
+//	        store: equipStore,  
+//	        dock: 'bottom',
+//	        displayInfo: true
+//	  }
 	});
 	//生成维修单
 	function createRepair(){
@@ -139,7 +139,9 @@ Ext.onReady(function(){
 			buttons:[{
 				text:'出库',
 				handler:function(){
-				
+					Ext.Ajax.request({
+						url:Ext.ContextPath+'/'
+					});
 				}
 			}]
 		});

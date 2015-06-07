@@ -101,6 +101,16 @@ public class RepairService extends AbstractService<Repair, String>{
 		}
 		
 	}
+	
+	/**
+	 * 把仓库中所有是坏的设备全部转换为维修单
+	 * @author mawujun 16064988@qq.com 
+	 * @param store_id
+	 * @return
+	 */
+	public String brokenEquipment2Repair(String store_id) {
+		
+	}
 	public Page storeMgrQuery(Page page){
 		List<Store> stores=storeRepository.queryAll();
 		Page results=repairRepository.storeMgrQuery(page);
@@ -270,5 +280,6 @@ public class RepairService extends AbstractService<Repair, String>{
 	public List<RepairVO> exportCompleteRepairReport(Params params) {
 		return repairRepository.queryCompleteRepairReport(params);
 	}
+	
 	
 }

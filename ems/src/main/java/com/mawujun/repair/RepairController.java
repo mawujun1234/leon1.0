@@ -58,6 +58,21 @@ public class RepairController {
 		return equipmentService.queryBrokenEquipment(store_id);
 		
 	}
+	/**
+	 * 仓库中所有损坏的设备一次性全部生成维修单
+	 * @author mawujun 16064988@qq.com 
+	 * @param store_id
+	 * @return
+	 */
+	@RequestMapping("/repair/brokenEquipment2Repair.do")
+	@ResponseBody
+	public String brokenEquipment2Repair(String store_id) {
+		if(!StringUtils.hasText(store_id)){
+			throw new BusinessException("请先选择一个仓库!");
+		}
+		repairService.brokenEquipment2Repair(store_id);
+		return "success";
+	}
 
 	
 	@RequestMapping("/repair/update.do")

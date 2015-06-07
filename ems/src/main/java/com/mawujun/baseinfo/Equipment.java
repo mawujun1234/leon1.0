@@ -56,6 +56,8 @@ public class Equipment implements IdEntity<String>{
 	@Column(length=36)
 	private String pole_id;//杆位，所属的杆位，store_id，workUnit_id，pole_id三个职能存在一个
 	private Date last_install_date;//最近的安装时间，该设备安装在这个杆位上时的时间，包括最新安装和维修安装
+	@Column(length=36)
+	private String last_task_id;//最新一次任务id
 	
 
 
@@ -171,6 +173,12 @@ public class Equipment implements IdEntity<String>{
 	}
 	public void setStatus(EquipmentStatus status) {
 		this.status = status;
+	}
+	public String getLast_task_id() {
+		return last_task_id;
+	}
+	public void setLast_task_id(String last_task_id) {
+		this.last_task_id = last_task_id;
 	}
 
 

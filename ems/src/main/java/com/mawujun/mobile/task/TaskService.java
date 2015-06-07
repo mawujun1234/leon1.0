@@ -181,6 +181,7 @@ public class TaskService extends AbstractService<Task, String>{
 				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using).set(M.Equipment.isnew, false)
 						.set(M.Equipment.pole_id, task.getPole_id())
 						.set(M.Equipment.last_install_date, new Date())
+						.set(M.Equipment.last_task_id, id)
 						.set(M.Equipment.workUnit_id, null)
 						.set(M.Equipment.store_id, null)
 						.andEquals(M.Equipment.ecode, ecode));	
@@ -190,6 +191,7 @@ public class TaskService extends AbstractService<Task, String>{
 					equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using).set(M.Equipment.isnew, false)	
 							.set(M.Equipment.pole_id, task.getPole_id())
 							.set(M.Equipment.last_install_date, new Date())
+							.set(M.Equipment.last_task_id, id)
 							.set(M.Equipment.workUnit_id, null)
 							.set(M.Equipment.store_id, null)
 							.andEquals(M.Equipment.ecode, ecode)
@@ -197,6 +199,7 @@ public class TaskService extends AbstractService<Task, String>{
 				} else {
 					equipmentRepository.update(Cnd.update().set(M.Equipment.status, taskEquipmentList.getEquipment_status())
 							.set(M.Equipment.workUnit_id, task.getWorkunit_id())
+							.set(M.Equipment.last_task_id, id)
 							.set(M.Equipment.pole_id, null)
 							.set(M.Equipment.store_id, null)
 							.andEquals(M.Equipment.ecode, ecode)
