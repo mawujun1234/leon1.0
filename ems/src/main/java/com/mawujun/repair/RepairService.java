@@ -4,13 +4,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mawujun.baseinfo.EquipmentRepository;
+import com.mawujun.baseinfo.EquipmentService;
 import com.mawujun.baseinfo.EquipmentStatus;
+import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.baseinfo.Store;
 import com.mawujun.baseinfo.StoreRepository;
 import com.mawujun.exception.BusinessException;
@@ -46,6 +50,8 @@ public class RepairService extends AbstractService<Repair, String>{
 	private InstallInRepository installInRepository;
 	@Autowired
 	private TaskRepository taskRepository;
+	//@Resource
+	//private EquipmentService equipmentService;
 	
 	SimpleDateFormat ymdHmsDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
 	@Override
@@ -91,15 +97,20 @@ public class RepairService extends AbstractService<Repair, String>{
 			repair.setStr_out_date(new Date());
 			repair.setStr_out_oper_id(oper_id);
 			
-			//获取故障信息和任务单号，根据条码，查询最新的任务信息
-			Task task=taskRepository.queryMaxId_ecode(repair.getEcode());
-			if(task!=null){
-				repair.setTask_id(task.getId());
-				repair.setBroken_memo(task.getHitchReason());
-			}
+//			//获取故障信息和任务单号，根据条码，查询最新的任务信息
+//			//这里别忘记修改了，
+//			Task task=taskRepository.get(repair.getTask_id());//.queryMaxId_ecode(repair.getEcode());
+//			if(task!=null){
+//				repair.setTask_id(task.getId());
+//				repair.setBroken_memo(task.getHitchReason());
+//			}
 			repairRepository.create(repair);	
 		}
 		
+	}
+	
+	public List<EquipmentVO> queryBrokenEquipment(String store_id){
+		return repairRepository.queryBrokenEquipment(store_id);
 	}
 	
 	/**
@@ -108,8 +119,27 @@ public class RepairService extends AbstractService<Repair, String>{
 	 * @param store_id
 	 * @return
 	 */
-	public String brokenEquipment2Repair(String store_id) {
+	public void brokenEquipment2Repair(String store_id,String rpa_id) {
+		List<Repair> repairs=repairRepository.queryBrokenEquipment2Reapir(store_id);
+		for(Repair repair:repairs){
+			repair.setRpa_id(rpa_id);
+		}
+		newRepair(repairs.toArray(new Repair[repairs.size()]));
 		
+//		List<EquipmentVO> brokenEquipments=repairRepository.queryBrokenEquipment(store_id);
+//		Repair[] repairs=new Repair[brokenEquipments.size()];
+//		int i=0;
+//		for(EquipmentVO equipment:brokenEquipments){
+//			Repair repair=new Repair();
+//			repair.setEcode(equipment.getEcode());
+//			repair.setProd_id(equipment.getPole_id());
+//			repair.setWorkunit_id(equipment.getLast_workunit_id());
+//			repair.setInstallIn_id(equipment.getLast_installIn_id());
+//			repair.setTask_id(equipment.getLast_task_id());
+//			//repair.setBroken_memo(task.getHitchReason());
+//			repairs[i]=repair;
+//		}
+//		newRepair(repairs);
 	}
 	public Page storeMgrQuery(Page page){
 		List<Store> stores=storeRepository.queryAll();

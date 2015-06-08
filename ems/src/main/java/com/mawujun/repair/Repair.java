@@ -26,7 +26,7 @@ public class Repair  implements IdEntity<String>{
 	private String prod_id;
 	
 	//下面三行是在创建的时候填的，故障描述是实施人员填的
-	private Date repair_date;//报修时间
+	private Date repair_date;//报修时间，仓库维修出库时间
 	@Column(length=36) 
 	private String workunit_id;//报修人,就是维修小组
 	@Column(length=15)

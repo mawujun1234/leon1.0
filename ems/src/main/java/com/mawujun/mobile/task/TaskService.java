@@ -181,7 +181,7 @@ public class TaskService extends AbstractService<Task, String>{
 				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using).set(M.Equipment.isnew, false)
 						.set(M.Equipment.pole_id, task.getPole_id())
 						.set(M.Equipment.last_install_date, new Date())
-						.set(M.Equipment.last_task_id, id)
+						//.set(M.Equipment.last_task_id, id)
 						.set(M.Equipment.workUnit_id, null)
 						.set(M.Equipment.store_id, null)
 						.andEquals(M.Equipment.ecode, ecode));	
@@ -191,7 +191,7 @@ public class TaskService extends AbstractService<Task, String>{
 					equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using).set(M.Equipment.isnew, false)	
 							.set(M.Equipment.pole_id, task.getPole_id())
 							.set(M.Equipment.last_install_date, new Date())
-							.set(M.Equipment.last_task_id, id)
+							//.set(M.Equipment.last_task_id, id)
 							.set(M.Equipment.workUnit_id, null)
 							.set(M.Equipment.store_id, null)
 							.andEquals(M.Equipment.ecode, ecode)
@@ -199,7 +199,7 @@ public class TaskService extends AbstractService<Task, String>{
 				} else {
 					equipmentRepository.update(Cnd.update().set(M.Equipment.status, taskEquipmentList.getEquipment_status())
 							.set(M.Equipment.workUnit_id, task.getWorkunit_id())
-							.set(M.Equipment.last_task_id, id)
+							//.set(M.Equipment.last_task_id, id)
 							.set(M.Equipment.pole_id, null)
 							.set(M.Equipment.store_id, null)
 							.andEquals(M.Equipment.ecode, ecode)
@@ -436,7 +436,7 @@ public class TaskService extends AbstractService<Task, String>{
 	 * @param task_id
 	 * @param ecodes
 	 */
-	private List<String> check_equip_status(String task_id ,String[] ecodes){
+	private void check_equip_status(String task_id ,String[] ecodes){
 		//首先判断要删除的设备是否存在不是指定状态的设备
 				//获取现有的设备和已经存在的设备的差异，判断差异设备的状态就行了
 				//查询当前任务中拥有的设备
@@ -468,9 +468,10 @@ public class TaskService extends AbstractService<Task, String>{
 					if(count.size()>0){
 						throw new BusinessException("不能保存或提交,"+count.get(0)+"已经入库不能删除!");
 					}
-					return count;
+					//return count;
 				} else {
-					return new ArrayList<String>();
+					return;
+					//return new ArrayList<String>();
 				}
 				 
 	}

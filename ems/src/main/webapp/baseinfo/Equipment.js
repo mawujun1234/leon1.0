@@ -24,6 +24,9 @@ Ext.defineModel("Ems.baseinfo.Equipment",{
 		{name:'num',type:'int'},
 		{name:'orderlist_id',type:'string'},
 		{name:'last_install_date',type:'date', dateFormat: 'Y-m-d'},
+		{name:'last_task_id',type:'string'},
+		{name:'last_installIn_id',type:'string'},
+		{name:'last_workunit_id',type:'string'},
 		
 		{name:'inStore_type',type:'string'},
 		{name:'isInStore',type:'string'},

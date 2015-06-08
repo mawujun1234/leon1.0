@@ -6,15 +6,44 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
 <mapper namespace="com.mawujun.repair.RepairRepository">
 
+	<!--通过烧苗条码进行设备出库维修的时候，查询的数据  -->
 	<select id="getRepairVOByEcode" resultType="com.mawujun.repair.RepairVO" parameterType="java.lang.String">
-    	select a.ecode,a.style as equipment_style,a.status as equipment_status,a.prod_id,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name ,a.store_id as str_out_id,g.name as str_out_name
+    	select a.ecode,a.style as equipment_style,a.status as equipment_status,a.prod_id,
+    	a.last_workunit_id as workunit_id,
+    	a.last_task_id as task_id,
+    	h.hitchReason as broken_memo,
+    	a.last_installIn_id as installIn_id,
+    	b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name ,a.store_id as str_out_id,g.name as str_out_name
     	from ems_equipment a
 		inner join ems_equipmentsubtype b on a.subtype_id=b.id
 		inner join ems_equipmentprod c on a.prod_id=c.id
 		inner join ems_brand d on a.brand_id=d.id
 		inner join ems_supplier e on a.supplier_id=e.id
 		inner join ems_store g on a.store_id=g.id
+		left join ems_task h on a.last_task_id=h.id
 		where a.ecode=#{ecode} and a.store_id=#{store_id}
+    </select> 
+    
+     <!-- 查询所有损坏的设备 -->
+    <select id="queryBrokenEquipment" resultType="com.mawujun.baseinfo.EquipmentVO" >
+    	select a.*,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name from ems_equipment a
+		inner join ems_equipmentsubtype b on a.subtype_id=b.id
+		inner join ems_equipmentprod c on a.prod_id=c.id
+		inner join ems_brand d on a.brand_id=d.id
+		inner join ems_supplier e on a.supplier_id=e.id
+		where  a.store_id=#{store_id} and a.status='wait_for_repair'
+    </select> 
+    <!--通过仓库代码，一次性把仓库中所有的设备都变成维修单  -->
+	<select id="queryBrokenEquipment2Reapir" resultType="com.mawujun.repair.Repair" parameterType="java.lang.String">
+    	select a.ecode,a.prod_id,
+    	a.last_workunit_id as workunit_id,
+    	a.last_task_id as task_id,
+    	a.last_installIn_id as installIn_id,
+    	a.store_id as str_out_id,
+    	h.hitchReason as broken_memo
+    	from ems_equipment a
+    	left join ems_task h on a.last_task_id=h.id
+		where  a.store_id=#{store_id} and a.status='wait_for_repair'
     </select> 
     
     <select id="storeMgrQuery" resultType="com.mawujun.repair.RepairVO" parameterType="map">
@@ -47,9 +76,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</where>
 		order by a.status
     </select>
+    <!-- 维修入库的时候，查询有哪些需要维修中心入库的维修单 -->
     <select id="repairInQuery" resultType="com.mawujun.repair.RepairVO" parameterType="map">
-    	select a.*,d.name as prod_name,d.style as equipment_style from ems_repair a
+    	select a.*,d.name as prod_name,d.style as equipment_style,e.name as workunit_name  from ems_repair a
     	left join ems_equipmentprod d on a.prod_id=d.id
+    	left join ems_workunit e on a.workunit_id=e.id
 		<where>
 			a.rpa_id in (select store_id from sys_userstore c where c.user_id=#{user_id} and c.edit='Y')
 			<if test="str_out_id!=null">

@@ -39,8 +39,6 @@ public class EquipmentService extends AbstractService<Equipment, String>{
 		return equipmentRepository.getEquipmentInfo(ecode);
 	}
 	
-	public List<EquipmentVO> queryBrokenEquipment(String store_id){
-		return equipmentRepository.queryBrokenEquipment(store_id);
-	}
+	
 
 }

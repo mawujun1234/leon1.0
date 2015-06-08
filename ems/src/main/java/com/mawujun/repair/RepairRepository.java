@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.repository1.IRepository;
 import com.mawujun.repair.Repair;
 import com.mawujun.user.User;
@@ -28,5 +29,9 @@ public interface RepairRepository extends IRepository<Repair, String>{
 	
 	public Page queryCompleteRepairReport(Page page);
 	public List<RepairVO> queryCompleteRepairReport(Params params);
+	
+	
+	public List<EquipmentVO> queryBrokenEquipment(@Param("store_id")String store_id);
+	public List<com.mawujun.repair.Repair> queryBrokenEquipment2Reapir(@Param("store_id")String store_id);
 	
 }

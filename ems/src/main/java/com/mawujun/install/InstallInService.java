@@ -97,12 +97,17 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.wait_for_repair)
 						.set(M.Equipment.store_id, installin.getStore_id())
 						.set(M.Equipment.workUnit_id,null)
+						.set(M.Equipment.last_installIn_id,instore_id)
+						.set(M.Equipment.last_installIn_id,instore_id)
+						.set(M.Equipment.last_workunit_id,equipment.getWorkUnit_id())
 						.andEquals(M.Equipment.ecode, equipment.getEcode()));
 			} else {
 				list.setIsBad(false);
 				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.in_storage)
 						.set(M.Equipment.store_id, installin.getStore_id())
 						.set(M.Equipment.workUnit_id,null)
+						.set(M.Equipment.last_installIn_id,instore_id)
+						.set(M.Equipment.last_workunit_id,equipment.getWorkUnit_id())
 						.andEquals(M.Equipment.ecode, equipment.getEcode()));
 				
 			}

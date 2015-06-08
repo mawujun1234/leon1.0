@@ -48,16 +48,22 @@ public class Equipment implements IdEntity<String>{
 	
 	@Column(updatable=false)
 	private Date fisData;//first in stock date第一次入库时间
+	
 	@Column(length=36)
 	private String store_id;//仓库id，所属仓库
 	@Column(length=36)
 	private String workUnit_id;//作业单位id，所属的作业单位，和store_id，同时只能有一个有值
-	
 	@Column(length=36)
 	private String pole_id;//杆位，所属的杆位，store_id，workUnit_id，pole_id三个职能存在一个
+	
+	
+	@Column(length=36)
+	private String last_installIn_id;//最后一次入库的入库id，这个字段是返库，无论坏件还是好贱返库的时候的id
 	private Date last_install_date;//最近的安装时间，该设备安装在这个杆位上时的时间，包括最新安装和维修安装
 	@Column(length=36)
 	private String last_task_id;//最新一次任务id
+	@Column(length=36)
+	private String last_workunit_id;//最后一次设备经手的工作单位
 	
 
 
@@ -179,6 +185,18 @@ public class Equipment implements IdEntity<String>{
 	}
 	public void setLast_task_id(String last_task_id) {
 		this.last_task_id = last_task_id;
+	}
+	public String getLast_installIn_id() {
+		return last_installIn_id;
+	}
+	public void setLast_installIn_id(String last_installIn_id) {
+		this.last_installIn_id = last_installIn_id;
+	}
+	public String getLast_workunit_id() {
+		return last_workunit_id;
+	}
+	public void setLast_workunit_id(String last_workunit_id) {
+		this.last_workunit_id = last_workunit_id;
 	}
 
 

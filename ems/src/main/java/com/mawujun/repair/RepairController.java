@@ -38,8 +38,8 @@ public class RepairController {
 
 	@Resource
 	private RepairService repairService;
-	@Resource
-	private EquipmentService equipmentService;
+	//@Resource
+	//private EquipmentService equipmentService;
 
 
 	/**
@@ -55,7 +55,7 @@ public class RepairController {
 		if(!StringUtils.hasText(store_id)){
 			throw new BusinessException("请先选择一个仓库!");
 		}
-		return equipmentService.queryBrokenEquipment(store_id);
+		return repairService.queryBrokenEquipment(store_id);
 		
 	}
 	/**
@@ -66,11 +66,14 @@ public class RepairController {
 	 */
 	@RequestMapping("/repair/brokenEquipment2Repair.do")
 	@ResponseBody
-	public String brokenEquipment2Repair(String store_id) {
+	public String brokenEquipment2Repair(String store_id,String rpa_id) {
 		if(!StringUtils.hasText(store_id)){
 			throw new BusinessException("请先选择一个仓库!");
 		}
-		repairService.brokenEquipment2Repair(store_id);
+		if(!StringUtils.hasText(rpa_id)){
+			throw new BusinessException("请先选择一个维修中心!");
+		}
+		repairService.brokenEquipment2Repair(store_id,rpa_id);
 		return "success";
 	}
 

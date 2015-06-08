@@ -22,7 +22,8 @@
 	create user emstest identified by emstest;
 	grant dba,connect,resource to emstest;
 	
-	imp emstest/emstest@emstest   file=d:\daochu0526.dmp fromuser=ems touser=emstest
+	exp system/system@emstest file=d:\daochutest0608.dmp owner=(emstest)
+	imp emstest/emstest@emstest   file=d:\daochutest0608.dmp fromuser=ems touser=emstest
 	
 	
 	

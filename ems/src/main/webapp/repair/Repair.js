@@ -41,7 +41,8 @@ Ext.defineModel("Ems.repair.Repair",{
 		{name:'subtype_name',type:'string'},
 		{name:'supplier_name',type:'string'},
 		{name:'equipment_style',type:'string'},
-		{name:'equipment_status',type:'int'},
+		{name:'equipment_status',type:'string'},
+		{name:'equipment_status_name',type:'string'},
 		{name:'status_name',type:'string'},
 		{name:'rpa_type_name',type:'string'},
 		

@@ -87,7 +87,7 @@ Ext.onReady(function(){
     	          {header: '状态', dataIndex: 'status_name',width:100}
     	          ],
         tbar:[store_combox,query_button,'-','-',
-              {text:'生成维修单',
+              {text:'一键生成维修单',
                icon:'../icons/gnext.png',
         	   //iconCls:'icon-clearall',
         	   handler:function(){
@@ -137,10 +137,30 @@ Ext.onReady(function(){
 			width:240,
 			title:'选择维修中心',
 			buttons:[{
-				text:'出库',
+				text:'出库转维修单',
 				handler:function(){
+					//alert("还未完成，请稍后!");
+					//return;
+					if(!repair_combox.getValue()){
+						alert("请先选择一个维修中心!");
+						return;
+					}
+					Ext.getBody().mask("正在出库,请稍后....");
 					Ext.Ajax.request({
-						url:Ext.ContextPath+'/'
+						url:Ext.ContextPath+'/repair/brokenEquipment2Repair.do',
+						params:{store_id:store_combox.getValue(),rpa_id:repair_combox.getValue()},
+						success:function(response){
+							var obj=Ext.decode(response.responseText);
+							
+							if(obj.success){
+								alert("出库成功!");
+								win.close();
+								equipStore.reload();
+								Ext.getBody().unmask();
+							} else {
+								alert("出库失败!,请重新尝试 一次!");	
+							}
+						}
 					});
 				}
 			}]

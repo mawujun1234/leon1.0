@@ -2,6 +2,8 @@ package com.mawujun.repair;
 
 import java.util.Date;
 
+import com.mawujun.baseinfo.EquipmentStatus;
+
 
 public class RepairVO extends Repair {
 	private String rpa_name;//维修中心名称
@@ -20,7 +22,7 @@ public class RepairVO extends Repair {
 	private String subtype_name;
 	private String supplier_name;
 	private String equipment_style;
-	private String equipment_status;
+	private EquipmentStatus equipment_status;
 	
 	private String scrap_id;//报废单的单号
 	private String scrap_reason;//报废原因
@@ -35,6 +37,13 @@ public class RepairVO extends Repair {
 			}
 		}
 		return null;
+	}
+	public String getEquipment_status_name() {
+		if(equipment_status==null){
+			return "";
+		}
+		return equipment_status.getName();
+		
 	}
 
 	
@@ -80,12 +89,7 @@ public class RepairVO extends Repair {
 	public void setSupplier_name(String supplier_name) {
 		this.supplier_name = supplier_name;
 	}
-	public String getEquipment_status() {
-		return equipment_status;
-	}
-	public void setEquipment_status(String equipment_status) {
-		this.equipment_status = equipment_status;
-	}
+
 	public String getEquipment_style() {
 		return equipment_style;
 	}
@@ -157,6 +161,12 @@ public class RepairVO extends Repair {
 
 	public void setScrap_operateDate(Date scrap_operateDate) {
 		this.scrap_operateDate = scrap_operateDate;
+	}
+	public EquipmentStatus getEquipment_status() {
+		return equipment_status;
+	}
+	public void setEquipment_status(EquipmentStatus equipment_status) {
+		this.equipment_status = equipment_status;
 	}
 	
 }

@@ -19,6 +19,6 @@ public interface EquipmentRepository extends IRepository<Equipment, String>{
 	
 	public EquipmentVO getEquipmentInfo(@Param("ecode")String ecode);
 	
-	public List<EquipmentVO> queryBrokenEquipment(@Param("store_id")String store_id);
+	
 
 }
