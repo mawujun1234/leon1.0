@@ -67,7 +67,7 @@ public class EquipmentStatusController {
 		
 		//获取首次入库信息
 		Map<String,Object> firstinstore=new HashMap<String,Object>();
-		String sql="select b.orderNo,b.orderDate from ems_equipment a,ems_order b where a.order_id=b.id and a.ecode='"+ecode+"'";
+		String sql="select b.orderNo,b.orderDate from ems_equipment a,(select x.orderDate,x.orderno,y.id from ems_order x,ems_orderlist y where x.id=y.order_id) b where a.orderlist_id=b.id and a.ecode='"+ecode+"'";
 		Map<String,Object> order_map=jdbcTemplate.queryForMap(sql);
 		firstinstore.put("orderNo", order_map.get("orderNo"));
 		firstinstore.put("orderDate", order_map.get("orderDate"));

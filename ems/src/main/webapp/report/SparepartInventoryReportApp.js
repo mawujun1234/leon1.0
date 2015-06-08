@@ -64,64 +64,10 @@ Ext.onReady(function(){
 		   })
 	});	
 	
-	
-	var tbar=Ext.create('Ext.toolbar.Toolbar',{
+	var tbar1=Ext.create('Ext.toolbar.Toolbar',{
 		items:[year_combox,month_combox,store_combox,{
-			text:'查询',	
-			handler:function(){
-				
-				store.reload();
-			},
-			iconCls:'form-search-button',
-			xtype:'splitbutton',
-			menu: [{
-				text: '计算并查询月报表',
-				handler:function(){
-					if(!store_combox.getValue()){
-						alert("请先选择仓库!");
-						return false;
-					}
-					Ext.Msg.confirm("提醒","将会计算到当前为止的月报数据",function(btn){
-						if(btn=='yes'){
-							Ext.getBody().mask("正在计算,请稍候....");
-							Ext.Ajax.request({
-								url:Ext.ContextPath+'/monthinventory/call_proc.do',
-								method:'POST',
-								params:{isbuild:false,store_id:store_combox.getValue()},
-								success:function(response){
-									Ext.getBody().unmask();
-									store.reload();
-								}
-							});
-						}
-					})
-				}
-			},{
-				text: '计算日报表',
-				handler:function(){
-					if(!store_combox.getValue()){
-						alert("请先选择仓库!");
-						return false;
-					}
-					Ext.Msg.confirm("提醒","将会计算到当前为止的日报数据",function(btn){
-						if(btn=='yes'){
-							Ext.getBody().mask("正在计算,请稍候....");
-							Ext.Ajax.request({
-								url:Ext.ContextPath+'/dayinventory/call_proc.do',
-								method:'POST',
-								params:{isbuild:false,store_id:store_combox.getValue()},
-								success:function(response){
-									Ext.getBody().unmask();
-								}
-							});
-						}
-					})
-				}
-			}]
-		},{
 			text:'导出月报表',
 			icon:'../icons/page_excel.png',
-			xtype:'splitbutton',
 			handler:function(){
 				var params=getParams();
 				if(!params){
@@ -129,212 +75,322 @@ Ext.onReady(function(){
 				}
 				var pp=Ext.Object.toQueryString(params);
 				window.open(Ext.ContextPath+"/monthinventory/sparepart/export.do?"+pp, "_blank");
-			},
-			menu:[{
-				text:'导出日报表',
-				icon:'../icons/page_excel.png',
-				handler:function(){
-					var params=getParams();
-					if(!params){
-						return false;
-					}
-					var pp=Ext.Object.toQueryString(params);
-					window.open(Ext.ContextPath+"/dayinventory/sparepart/export.do?"+pp, "_blank");
-				}
-			}]
-		}]
-	})
-	
-	var store=Ext.create('Ext.data.Store',{
-		autoLoad:false,
-		fields: ['monthkey', 'subtype_id','subtype_name','prod_id','prod_name','brand_id','brand_name','style','store_id','store_name','unit','memo'
-			,'fixednum','lastnum','nownum','purchasenum','oldnum','installoutnum','repairinnum','scrapoutnum','repairoutnum','adjustoutnum','adjustinnum','supplementnum'],
-		proxy:{
-			type:'ajax',
-			actions:{
-				"read":'POST'
-			},
-			url:Ext.ContextPath+"/monthinventory/queryMonthReport.do",
-			reader:{
-			    type:'json',
-			    idProperty: 'key',
-			    root:'root'
 			}
 		},
-		groupField: 'subtype_name'
-	});
-	
-	function getParams(){
-		var params={
-			year:year_combox.getValue(),
-			month:month_combox.getValue(),
-			store_id:store_combox.getValue()
-		}
-		if(!params.year){
-			Ext.Msg.alert("提醒","请先选择年份!");
-			return false;
-		}
-		if(!params.month){
-			Ext.Msg.alert("提醒","请先选择月份!");
-			return false;
-		}
-		if(!params.store_id){
-			Ext.Msg.alert("提醒","请先选择仓库!");
-			return false;
-		}
-		return params;
-	}
-	store.on("beforeload",function(store){
-		var params=getParams();
-		if(!params){
-			return false;
-		}
-		store.getProxy().extraParams=params;
-	});
-	var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
-        clicksToEdit: 1
-    });
-	var grid=Ext.create('Ext.grid.Panel',{
-		store:store,
-		tbar:tbar,
-		plugins: [cellEditing],
-		features: [{
-            id: 'group',
-            ftype: 'groupingsummary',
-            groupHeaderTpl: '小类:{name}',
-            hideGroupedHeader: true,
-            enableGroupingMenu: false
-        }],
-		columns:[
-			{
-            header: '小类',
-            width: 180,
-            sortable: true,
-            dataIndex: 'subtype_name'
-        	},{
-            header: '品牌',
-            sortable: true,
-            dataIndex: 'brand_name',
-            summaryRenderer: function(value, summaryData, dataIndex) {
-                return "&nbsp;&nbsp;&nbsp;<b>汇总:</b>";
-            }
-        	},{
-            header: '型号',
-            width:150,
-            sortable: true,
-            dataIndex: 'style'
-        	},{
-            header: '品名',
-            sortable: true,
-            width:150,
-            dataIndex: 'prod_name'
-        	},{
-            header: '所属仓库',
-            sortable: true,
-            dataIndex: 'store_name'
-        	},{
-            header: '单位',
-            sortable: true,
-            dataIndex: 'unit'
-        	},{
-            header: '额定数量*',
-            sortable: true,
-            dataIndex: 'fixednum',
-            summaryType: 'sum',
-            field: {
-                xtype: 'numberfield'
-            }
-        	},{
-            header: '上月结余',
-            sortable: true,
-            dataIndex: 'lastnum',
-            summaryType: 'sum'
-        	},{
-            header: '采购新增',
-            sortable: true,
-            dataIndex: 'purchasenum',
-            summaryType: 'sum'
-        	},{
-            header: '旧品新增',
-            sortable: true,
-            dataIndex: 'oldnum',
-            summaryType: 'sum'
-            
-        	},{
-            header: '本期领用',
-            sortable: true,
-            dataIndex: 'installoutnum',
-            summaryType: 'sum'
-        	},{
-            header: '本期维修返还',
-            sortable: true,
-            dataIndex: 'repairinnum',
-            summaryType: 'sum'
-        	},{
-            header: '报废出库数量',
-            sortable: true,
-            dataIndex: 'scrapoutnum',
-            summaryType: 'sum'
-        	},{
-            header: '维修出库数量',
-            sortable: true,
-            dataIndex: 'repairoutnum',
-            summaryType: 'sum'
-        	},{
-            header: '借用数',
-            sortable: true,
-            dataIndex: 'adjustoutnum',
-            summaryType: 'sum'
-        	},{
-            header: '返还数',
-            sortable: true,
-            dataIndex: 'adjustinnum',
-            summaryType: 'sum'
-        	},{
-            header: '本月结余',
-            sortable: true,
-            dataIndex: 'nownum',
-            summaryType: 'sum'
-        	},{
-            header: '增补数量*',
-            sortable: true,
-            dataIndex: 'supplementnum',
-            summaryType: 'sum',
-            field: {
-                xtype: 'numberfield'
-            }
-        	},{
-            header: '备注*',
-            sortable: true,
-            flex:1,
-            dataIndex: 'memo',
-            field: {
-                xtype: 'textfield'
-            }
-        	}
-        	
-		]
-	});
-	
-	grid.on('edit',function(editor, e){
-		var record=e.record;
-		var params=record.getData();
-		delete params.id;
-		params.field=e.field;
-		params.value=e.value;
-		Ext.Ajax.request({
-			url:Ext.ContextPath+'/monthinventory/update.do',
-			method:'POST',
-			params:params,
-			success:function(response){
-				e.record.commit();
+		{
+			text:'导出月报表模板',
+			icon:'../icons/page_excel.png',
+			handler:function(){
+				window.open(Ext.ContextPath+"/monthinventory/sparepart/excelTpl.do", "_blank");
 			}
-		});
-		//
+		}
+		]
+	})
+	
+	var tbar2=Ext.create('Ext.toolbar.Toolbar',{
+		items:[{
+			text:'导出日报表',
+			icon:'../icons/page_excel.png',
+			handler:function(){
+				var params=getParams();
+				if(!params){
+					return false;
+				}
+				var pp=Ext.Object.toQueryString(params);
+				window.open(Ext.ContextPath+"/dayinventory/sparepart/export.do?"+pp, "_blank");
+			}
+		},
+		{
+			text:'导出日报表模板',
+			icon:'../icons/page_excel.png',
+			handler:function(){
+				window.open(Ext.ContextPath+"/dayinventory/sparepart/excelTpl.do", "_blank");
+			}
+		}
+		]
+	})
+	
+	var panel=Ext.create('Ext.panel.Panel',{
+		tbar:{
+		  xtype: 'container',
+		  layout: 'anchor',
+		  defaults: {anchor: '0'},
+		  defaultType: 'toolbar',
+		  items: [tbar1, tbar2]
+		}
 	});
+	
+	
+//	var tbar=Ext.create('Ext.toolbar.Toolbar',{
+//		items:[year_combox,month_combox,store_combox,{
+//			text:'查询',	
+//			handler:function(){
+//				
+//				store.reload();
+//			},
+//			iconCls:'form-search-button',
+//			xtype:'splitbutton',
+//			menu: [{
+//				text: '计算并查询月报表',
+//				handler:function(){
+//					if(!store_combox.getValue()){
+//						alert("请先选择仓库!");
+//						return false;
+//					}
+//					Ext.Msg.confirm("提醒","将会计算到当前为止的月报数据",function(btn){
+//						if(btn=='yes'){
+//							Ext.getBody().mask("正在计算,请稍候....");
+//							Ext.Ajax.request({
+//								url:Ext.ContextPath+'/monthinventory/call_proc.do',
+//								method:'POST',
+//								params:{isbuild:false,store_id:store_combox.getValue()},
+//								success:function(response){
+//									Ext.getBody().unmask();
+//									store.reload();
+//								}
+//							});
+//						}
+//					})
+//				}
+//			},{
+//				text: '计算日报表',
+//				handler:function(){
+//					if(!store_combox.getValue()){
+//						alert("请先选择仓库!");
+//						return false;
+//					}
+//					Ext.Msg.confirm("提醒","将会计算到当前为止的日报数据",function(btn){
+//						if(btn=='yes'){
+//							Ext.getBody().mask("正在计算,请稍候....");
+//							Ext.Ajax.request({
+//								url:Ext.ContextPath+'/dayinventory/call_proc.do',
+//								method:'POST',
+//								params:{isbuild:false,store_id:store_combox.getValue()},
+//								success:function(response){
+//									Ext.getBody().unmask();
+//								}
+//							});
+//						}
+//					})
+//				}
+//			}]
+//		},{
+//			text:'导出月报表',
+//			icon:'../icons/page_excel.png',
+//			xtype:'splitbutton',
+//			handler:function(){
+//				var params=getParams();
+//				if(!params){
+//					return false;
+//				}
+//				var pp=Ext.Object.toQueryString(params);
+//				window.open(Ext.ContextPath+"/monthinventory/sparepart/export.do?"+pp, "_blank");
+//			},
+//			menu:[{
+//				text:'导出日报表',
+//				icon:'../icons/page_excel.png',
+//				handler:function(){
+//					var params=getParams();
+//					if(!params){
+//						return false;
+//					}
+//					var pp=Ext.Object.toQueryString(params);
+//					window.open(Ext.ContextPath+"/dayinventory/sparepart/export.do?"+pp, "_blank");
+//				}
+//			}]
+//		}]
+//	})
+//	
+//	var store=Ext.create('Ext.data.Store',{
+//		autoLoad:false,
+//		fields: ['monthkey', 'subtype_id','subtype_name','prod_id','prod_name','brand_id','brand_name','style','store_id','store_name','unit','memo'
+//			,'fixednum','lastnum','nownum','purchasenum','oldnum','installoutnum','repairinnum','scrapoutnum','repairoutnum','adjustoutnum','adjustinnum','supplementnum'],
+//		proxy:{
+//			type:'ajax',
+//			actions:{
+//				"read":'POST'
+//			},
+//			url:Ext.ContextPath+"/monthinventory/queryMonthReport.do",
+//			reader:{
+//			    type:'json',
+//			    idProperty: 'key',
+//			    root:'root'
+//			}
+//		},
+//		groupField: 'subtype_name'
+//	});
+//	
+//	function getParams(){
+//		var params={
+//			year:year_combox.getValue(),
+//			month:month_combox.getValue(),
+//			store_id:store_combox.getValue()
+//		}
+//		if(!params.year){
+//			Ext.Msg.alert("提醒","请先选择年份!");
+//			return false;
+//		}
+//		if(!params.month){
+//			Ext.Msg.alert("提醒","请先选择月份!");
+//			return false;
+//		}
+//		if(!params.store_id){
+//			Ext.Msg.alert("提醒","请先选择仓库!");
+//			return false;
+//		}
+//		return params;
+//	}
+//	store.on("beforeload",function(store){
+//		var params=getParams();
+//		if(!params){
+//			return false;
+//		}
+//		store.getProxy().extraParams=params;
+//	});
+//	var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
+//        clicksToEdit: 1
+//    });
+//	var grid=Ext.create('Ext.grid.Panel',{
+//		store:store,
+//		tbar:tbar,
+//		plugins: [cellEditing],
+//		features: [{
+//            id: 'group',
+//            ftype: 'groupingsummary',
+//            groupHeaderTpl: '小类:{name}',
+//            hideGroupedHeader: true,
+//            enableGroupingMenu: false
+//        }],
+//		columns:[
+//			{
+//            header: '小类',
+//            width: 180,
+//            sortable: true,
+//            dataIndex: 'subtype_name'
+//        	},{
+//            header: '品牌',
+//            sortable: true,
+//            dataIndex: 'brand_name',
+//            summaryRenderer: function(value, summaryData, dataIndex) {
+//                return "&nbsp;&nbsp;&nbsp;<b>汇总:</b>";
+//            }
+//        	},{
+//            header: '型号',
+//            width:150,
+//            sortable: true,
+//            dataIndex: 'style'
+//        	},{
+//            header: '品名',
+//            sortable: true,
+//            width:150,
+//            dataIndex: 'prod_name'
+//        	},{
+//            header: '所属仓库',
+//            sortable: true,
+//            dataIndex: 'store_name'
+//        	},{
+//            header: '单位',
+//            sortable: true,
+//            dataIndex: 'unit'
+//        	},{
+//            header: '额定数量*',
+//            sortable: true,
+//            dataIndex: 'fixednum',
+//            summaryType: 'sum',
+//            field: {
+//                xtype: 'numberfield'
+//            }
+//        	},{
+//            header: '上月结余',
+//            sortable: true,
+//            dataIndex: 'lastnum',
+//            summaryType: 'sum'
+//        	},{
+//            header: '采购新增',
+//            sortable: true,
+//            dataIndex: 'purchasenum',
+//            summaryType: 'sum'
+//        	},{
+//            header: '旧品新增',
+//            sortable: true,
+//            dataIndex: 'oldnum',
+//            summaryType: 'sum'
+//            
+//        	},{
+//            header: '本期领用',
+//            sortable: true,
+//            dataIndex: 'installoutnum',
+//            summaryType: 'sum'
+//        	},{
+//            header: '本期维修返还',
+//            sortable: true,
+//            dataIndex: 'repairinnum',
+//            summaryType: 'sum'
+//        	},{
+//            header: '报废出库数量',
+//            sortable: true,
+//            dataIndex: 'scrapoutnum',
+//            summaryType: 'sum'
+//        	},{
+//            header: '维修出库数量',
+//            sortable: true,
+//            dataIndex: 'repairoutnum',
+//            summaryType: 'sum'
+//        	},{
+//            header: '借用数',
+//            sortable: true,
+//            dataIndex: 'adjustoutnum',
+//            summaryType: 'sum'
+//        	},{
+//            header: '返还数',
+//            sortable: true,
+//            dataIndex: 'adjustinnum',
+//            summaryType: 'sum'
+//        	},{
+//            header: '本月结余',
+//            sortable: true,
+//            dataIndex: 'nownum',
+//            summaryType: 'sum'
+//        	},{
+//            header: '增补数量*',
+//            sortable: true,
+//            dataIndex: 'supplementnum',
+//            summaryType: 'sum',
+//            field: {
+//                xtype: 'numberfield'
+//            }
+//        	},{
+//            header: '备注*',
+//            sortable: true,
+//            flex:1,
+//            dataIndex: 'memo',
+//            field: {
+//                xtype: 'textfield'
+//            }
+//        	}
+//        	
+//		]
+//	});
+//	
+//	grid.on('edit',function(editor, e){
+//		var record=e.record;
+//		var params=record.getData();
+//		delete params.id;
+//		params.field=e.field;
+//		params.value=e.value;
+//		Ext.Ajax.request({
+//			url:Ext.ContextPath+'/monthinventory/update.do',
+//			method:'POST',
+//			params:params,
+//			success:function(response){
+//				e.record.commit();
+//			}
+//		});
+//		//
+//	});
 	var viewPort=Ext.create('Ext.container.Viewport',{
 		layout:'fit',
-		items:[grid]
+		items:[panel]
 	});
 
 });

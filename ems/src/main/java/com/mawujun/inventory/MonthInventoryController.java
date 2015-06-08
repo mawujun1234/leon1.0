@@ -3,6 +3,7 @@ package com.mawujun.inventory;
 import java.awt.Color;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -871,5 +872,201 @@ public class MonthInventoryController {
 			}
 			
 		}
+	}
+	
+	/**
+	 * 导出在建仓库月报表模板
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param response
+	 * @throws IOException
+	 */
+	@RequestMapping("/monthinventory/build/excelTpl.do")
+	public void excelTpl(HttpServletResponse response) throws IOException{
+		//Store store=storeService.get(store_id);
+		//List<MonthInventoryVO> list=queryMonthReport(store_id,year,month);
+		
+		XSSFWorkbook wb =new XSSFWorkbook();
+		Sheet sheet = wb.createSheet();
+		Row title = sheet.createRow(0);//一共有11列
+		title.setHeight((short)660);
+		Cell title_cell=title.createCell(0);
+		title_cell.setCellValue("在建仓库盘点月报表_模板");
+		CellStyle cs = wb.createCellStyle();
+		Font f = wb.createFont();
+		f.setFontHeightInPoints((short) 16);
+		//f.setColor(IndexedColors.RED.getIndex());
+		f.setBoldweight(Font.BOLDWEIGHT_BOLD);
+		cs.setFont(f);
+		cs.setAlignment(CellStyle.ALIGN_CENTER);
+		cs.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		title_cell.setCellStyle(cs);
+		//和并单元格
+		sheet.addMergedRegion(new CellRangeAddress(0,(short)0,0,(short)10)); 
+		
+		//设置第一行,设置列标题
+		sparepart_addRow1(wb,sheet);
+		
+		
+		CellStyle subtype_name_style = this.getStyle(wb, IndexedColors.BLACK,null);
+		//black_style.setBorderBottom(CellStyle.BORDER_NONE);
+		subtype_name_style.setWrapText(false);
+		subtype_name_style.setBorderLeft(CellStyle.BORDER_NONE);
+		subtype_name_style.setBorderRight(CellStyle.BORDER_NONE);
+		subtype_name_style.setBorderTop(CellStyle.BORDER_NONE);
+		subtype_name_style.setAlignment(CellStyle.ALIGN_LEFT);
+		
+		CellStyle content_style =getContentStyle(wb,null);
+		CellStyle content_blue_style =getContentStyle(wb,IndexedColors.LIGHT_BLUE);	
+		CellStyle content_red_style =getContentStyle(wb,IndexedColors.RED);	
+		CellStyle content_green_style =getContentStyle(wb,IndexedColors.GREEN);
+		CellStyle content_orange_style =getContentStyle(wb,IndexedColors.ORANGE);
+		CellStyle content_plum_style =getContentStyle(wb,IndexedColors.PLUM);
+		
+		
+
+		 
+		 CellStyle content_subtitle_style =getContentStyle(wb,null);
+		 content_subtitle_style.setBorderLeft(CellStyle.BORDER_NONE);
+		 content_subtitle_style.setBorderRight(CellStyle.BORDER_NONE);
+		 //content_subtitle_style.setBorderTop(CellStyle.BORDER_NONE);
+		 
+		
+		List<MonthInventoryVO> list=new ArrayList<MonthInventoryVO>();
+		
+		int cellnum=0;
+		int extra_row_num=2;
+		String subtype_id_temp="";
+		int fromRow=0;//开始分组的行
+		int rownum=0;
+		for(int i=0;i<list.size();i++){
+			//MonthInventoryVO sparepartMonthReport = list.get(i);
+			rownum = i + extra_row_num;
+			cellnum = 0;
+
+			// 判断还是不是同个小类，如果不是同个小类就添加一行，只有小类名称的行
+			if (!subtype_id_temp.equals(sparepartMonthReport.getSubtype_id())) {
+				Row row = sheet.createRow(rownum);
+				Cell subtype_name = row.createCell(cellnum);
+				subtype_name.setCellValue(sparepartMonthReport.getSubtype_name());
+				subtype_name.setCellStyle(subtype_name_style);
+				for (int j = 1; j < 19; j++) {
+					Cell cell = row.createCell(cellnum + j);
+					cell.setCellStyle(content_subtitle_style);
+
+				}
+				// 同时合并单元格
+				//sheet.addMergedRegion(new CellRangeAddress(rownum, rownum, 0,(short) 9));
+				// 分组
+				if (fromRow != 0) {
+					sheet.groupRow(fromRow, rownum - 1);// -2是因为后面又++了
+					sheet.setRowGroupCollapsed(fromRow, true);
+				}
+				fromRow = rownum + 1;
+
+				subtype_id_temp = sparepartMonthReport.getSubtype_id();
+				rownum++;
+				extra_row_num++;
+			}
+
+			// 这一行必须放在分组的前面，否则会有问题
+			Row row = sheet.createRow(rownum);
+			// 当循环到最后一行的时候，添加最后一个分组
+			if (list.size() - 1 == i) {
+				sheet.groupRow(fromRow, rownum);
+				sheet.setRowGroupCollapsed(fromRow, true);
+			}
+			 
+			 Cell subtype_name=row.createCell(cellnum++);
+			 //subtype_name.setCellValue(sparepartMonthReport.getSubtype_name());
+			 subtype_name.setCellStyle(content_style);
+			 
+			 Cell brand_name=row.createCell(cellnum++);
+			 brand_name.setCellValue(sparepartMonthReport.getBrand_name());
+			 brand_name.setCellStyle(content_style);
+			 
+			 Cell style=row.createCell(cellnum++);
+			 style.setCellValue(sparepartMonthReport.getStyle());
+			 style.setCellStyle(content_style);
+			 
+			 Cell prod_name=row.createCell(cellnum++);
+			 prod_name.setCellValue(sparepartMonthReport.getProd_name());
+			 prod_name.setCellStyle(content_style);
+			 
+			 Cell store_name=row.createCell(cellnum++);
+			 store_name.setCellValue(sparepartMonthReport.getStore_name());
+			 store_name.setCellStyle(content_style);
+			 
+			 Cell unit=row.createCell(cellnum++);
+			 unit.setCellValue(sparepartMonthReport.getUnit());
+			 unit.setCellStyle(content_style);
+			 
+			 Cell fixednum=row.createCell(cellnum++);
+			 fixednum.setCellValue(sparepartMonthReport.getFixednum()==null?0:sparepartMonthReport.getFixednum());
+			 //fixednum.setCellStyle(content_style);
+			 
+			 Cell lastnum=row.createCell(cellnum++);
+			 lastnum.setCellValue(sparepartMonthReport.getLastnum()==null?0:sparepartMonthReport.getLastnum());
+			 //lastnum.setCellStyle(content_style);
+			 
+			 Cell purchasenum=row.createCell(cellnum++);
+			 purchasenum.setCellValue(sparepartMonthReport.getPurchasenum()==null?0:sparepartMonthReport.getPurchasenum());
+			 purchasenum.setCellStyle(content_blue_style);
+			 
+			 Cell oldnum=row.createCell(cellnum++);
+			 oldnum.setCellValue(sparepartMonthReport.getOldnum()==null?0:sparepartMonthReport.getOldnum());
+			 oldnum.setCellStyle(content_blue_style);
+			 
+			 Cell installoutnum=row.createCell(cellnum++);
+			 installoutnum.setCellValue(sparepartMonthReport.getInstalloutnum()==null?0:sparepartMonthReport.getInstalloutnum());
+			 installoutnum.setCellStyle(content_red_style);
+			 
+			 Cell repairinnum=row.createCell(cellnum++);
+			 repairinnum.setCellValue(sparepartMonthReport.getRepairinnum()==null?0:sparepartMonthReport.getRepairinnum());
+			 repairinnum.setCellStyle(content_green_style);
+			 
+			 Cell scrapoutnum=row.createCell(cellnum++);
+			 scrapoutnum.setCellValue(sparepartMonthReport.getScrapoutnum()==null?0:sparepartMonthReport.getScrapoutnum());
+			 scrapoutnum.setCellStyle(content_orange_style);
+			 
+			 Cell repairoutnum=row.createCell(cellnum++);
+			 repairoutnum.setCellValue(sparepartMonthReport.getRepairoutnum()==null?0:sparepartMonthReport.getRepairoutnum());
+			 repairoutnum.setCellStyle(content_orange_style);
+			 
+			 Cell adjustoutnum=row.createCell(cellnum++);
+			 adjustoutnum.setCellValue(sparepartMonthReport.getAdjustoutnum()==null?0:sparepartMonthReport.getAdjustoutnum());
+			 adjustoutnum.setCellStyle(content_plum_style);
+			 
+			 Cell adjustinnum=row.createCell(cellnum++);
+			 adjustinnum.setCellValue(sparepartMonthReport.getAdjustinnum()==null?0:sparepartMonthReport.getAdjustinnum());
+			 adjustinnum.setCellStyle(content_style);
+			 
+			 Cell nownum=row.createCell(cellnum++);
+			 nownum.setCellValue(sparepartMonthReport.getNownum()==null?0:sparepartMonthReport.getNownum());
+			 //nownum.setCellStyle(content_style);
+			 
+			 Cell supplementnum=row.createCell(cellnum++);
+			 supplementnum.setCellValue(sparepartMonthReport.getSupplementnum()==null?0:sparepartMonthReport.getSupplementnum());
+			// supplementnum.setCellStyle(content_style);
+		 
+			 
+			 Cell memo=row.createCell(cellnum++);
+			 memo.setCellValue(sparepartMonthReport.getMemo()); 
+			 memo.setCellStyle(content_style);
+		 }
+		sheet.setRowSumsBelow(false);
+		sheet.setRowSumsRight(false);
+		
+		init_background(wb,sheet, ++rownum);
+		
+		 String filename = "在建仓库盘点月报表_模板.xlsx";
+		 //FileOutputStream out = new FileOutputStream(filename);
+		response.setHeader("content-disposition", "attachment; filename="+ new String(filename.getBytes("UTF-8"), "ISO8859-1"));
+		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=uft-8");
+
+		OutputStream out = response.getOutputStream();
+		wb.write(out);
+		
+		out.flush();
+		out.close();
 	}
 }
