@@ -366,10 +366,14 @@ Ext.onReady(function(){
 //       		}
         ]
 	});
-	function countTotal(f,n,o,e){
+	function countTotal(f){
 		var form=f.up('form');
 		var nums=form.down('#orderNum_field').getValue();
 		var unitprice=form.down('#unitprice_field').getValue();
+		if(nums==0 || unitprice==0){
+			total=0;
+			totalprice_display.setValue(total.toFixed(2));
+		}
 		if(!!nums&&!!unitprice&&nums!=""&&unitprice!=""){
 			var total=nums*unitprice;
 			if(!totalprice_display.isVisible()){
@@ -390,6 +394,7 @@ Ext.onReady(function(){
 		var equipform=step1.down('form');
         var form=equipform.getForm();
 		if(form.isValid()){
+			countTotal(equipform.down('#unitprice_field'));
 			//var obj=form.getValues();
 			if(!supplier_combox.getValue()){
 				alert("请选择供应商!");
