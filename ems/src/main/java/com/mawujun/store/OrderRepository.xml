@@ -174,7 +174,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="orderNo!=null and orderNo!=''">
 			and	a.orderNo like #{orderNo}
 		</if>
-
+		<if test="project_id!=null and project_id!=''">
+			and	a.project_id = #{project_id}
+		</if>
     </select>
 	<!-- <select id="queryUncompleteOrderno" resultType="string" parameterType="String">
     	SELECT distinct a.orderNo,a.orderDate

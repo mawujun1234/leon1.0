@@ -23,7 +23,7 @@ public class BorrowList  extends UUIDEntity{
 	private String borrow_id;//入库单id
 	@Column(length=25)
 	private String ecode;//设备编码
-	
+	@org.hibernate.annotations.Type(type="yes_no")
 	private Boolean isReturn=false;//是否已经归还
 
 	private Date returnDate;//归还时间

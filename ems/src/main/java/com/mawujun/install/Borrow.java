@@ -70,5 +70,11 @@ public class Borrow   implements IdEntity<String>{
 	public void setWorkUnit_id(String workUnit_id) {
 		this.workUnit_id = workUnit_id;
 	}
+	public String getProject_id() {
+		return project_id;
+	}
+	public void setProject_id(String project_id) {
+		this.project_id = project_id;
+	}
 	
 }

@@ -195,7 +195,7 @@ Ext.define('Ems.store.OrderForm',{
 //		   })
 //	});	
 	var project_combox=Ext.create('Ems.baseinfo.ProjectCombo',{
-		//flex:1,
+		flex:1,
 		allowBlank: false
 	});
 	var supplier_combox=Ext.create('Ems.baseinfo.SupplierCombo',{

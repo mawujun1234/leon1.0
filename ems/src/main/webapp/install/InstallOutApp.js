@@ -177,6 +177,10 @@ Ext.onReady(function(){
 			    }
 		   })
 	});
+	var project_combox=Ext.create('Ems.baseinfo.ProjectCombo',{
+		width:500	,
+		allowBlank: false
+	});
 	
 	var ecode_textfield=Ext.create('Ext.form.field.Text',{
 		labelAlign:'right',
@@ -188,7 +192,7 @@ Ext.onReady(function(){
 		selectOnFocus:true,
 		labelWidth:80,
 		width:250,
-		allowBlank:false,
+		allowBlank:true,
 		listeners:{
 			blur:function(f,e){
 				if(!f.getValue()||f.getValue()==''){
@@ -431,6 +435,7 @@ Ext.onReady(function(){
         },
         defaults:{margins:'0 0 5 0',border:false},
         items:[{xtype:'form',items:[{xtype:'fieldcontainer',layout: 'hbox',items:[store_combox,queryStoEquip_button,workUnit_combox,queryWorkUnitEquip_button,installOutType_combox,requestnum_textfield,ecode_textfield,clear_button]},
+                                     {xtype:'fieldcontainer',layout: 'hbox',items:[project_combox]},
                                     {xtype:'fieldcontainer',layout: 'hbox',items:[storeman_textfield,inDate_textfield,memo_textfield]}
 		            		        //{xtype:'columnbox',columnSize:4,items:[{xtype:'listcombox',url:Ext.ContextPath+'/dataExtra/stockList.do',itemId:'stock_field',fieldLabel:'库房',name:'stid',allowBlank:false,emptyText:'未选择库房',labelAlign:'right'},{xtype:'textfield',name:'stmemo',fieldLabel:'库房描述',columnWidth:3/4,labelAlign:'right'}]}
 		            		        ]},
@@ -442,6 +447,12 @@ Ext.onReady(function(){
         //{html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;库房人员应当根据采购单，对设备分类后，一次对同类设备批量“添加”入库，直到所有采购单设备根据设备类型都已经“添加”到入库清单后，可以选择“下一步”，进入到二维码生成步骤'}],
         {html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;'}],
         buttons:[{text:'领用出库',handler:function(btn){
+        	var form= step1.down('form').getForm();
+        	if(!form.isValid()){
+        		alert("请在出现红框的地方选择值!");
+        		return;
+        	}
+        	
             if (equipStore.getCount()> 0) { 
             	Ext.getBody().mask("正在入库....");
             	var equipments = new Array();
@@ -454,7 +465,9 @@ Ext.onReady(function(){
 					method:'POST',
 					timeout:600000000,
 					headers:{ 'Content-Type':'application/json;charset=UTF-8'},
-					params:{memo:memo_textfield.getValue(),store_id:store_combox.getValue(),workUnit_id:workUnit_combox.getValue(),installOutType_id:installOutType_combox.getValue(),requestnum:requestnum_textfield.getValue()},
+					params:{memo:memo_textfield.getValue(),store_id:store_combox.getValue(),workUnit_id:workUnit_combox.getValue(),installOutType_id:installOutType_combox.getValue()
+					,project_id:project_combox.getValue()
+					,requestnum:requestnum_textfield.getValue()},
 					jsonData:equipments,
 					//params:{jsonStr:Ext.encode(equiplist)},
 					success:function(response){

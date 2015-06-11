@@ -30,7 +30,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		inner join ems_equipmentprod c on a.prod_id=c.id
 		inner join ems_brand d on a.brand_id=d.id
 		inner join ems_supplier e on a.supplier_id=e.id
-		where a.pole_id=#{id}
+		inner join ems_equipment_pole f on a.ecode=f.ecode
+		where f.pole_id=#{id}
     </select>
    
    

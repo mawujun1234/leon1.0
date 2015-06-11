@@ -34,7 +34,7 @@ public class GeneratorMain {
 		//str=generatorService.generatorToString(MenuItem.class,FtlFile.JsModel.toString(),null);	
         //System.out.println(str);
 		
-		GeneratorMain.generateAllFile(BorrowList.class,"D:/gen/");
+		GeneratorMain.generateAllFile(Borrow.class,"D:/gen/");
 		
 		
 		

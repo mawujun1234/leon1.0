@@ -16,8 +16,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     </select> 
  -->
     <select id="queryMain" resultType="com.mawujun.install.InstallOutVO" parameterType="map">
-    	select a.*,b.name as store_name,c.name as workUnit_name,'out' as type from ems_installout a,ems_store b,ems_workunit c
-		where a.store_id=b.id and a.workunit_id=c.id
+    	select a.*,b.name as store_name,c.name as workUnit_name,d.name as project_name,'out' as type from ems_installout a,ems_store b,ems_workunit c,ems_project d
+		where a.store_id=b.id and a.workunit_id=c.id and a.project_id=d.id
 		<if test="operateDate_start!=null">
 			and to_char(a.operateDate,'yyyy-mm-dd') &gt;=#{operateDate_start}
 		</if>

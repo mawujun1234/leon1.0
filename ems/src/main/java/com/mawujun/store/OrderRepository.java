@@ -23,7 +23,7 @@ public interface OrderRepository extends IRepository<Order, String>{
 	public Page queryList(Page page);
 	
 	
-	public List<Order> queryUncompleteOrderno(@Param("user_id")String user_id,@Param("orderNo")String orderNo);
+	public List<Order> queryUncompleteOrderno(@Param("user_id")String user_id,@Param("orderNo")String orderNo,@Param("project_id")String project_id);
 	
 	public List<OrderVO> query(@Param("orderNo")String orderNo);
 	

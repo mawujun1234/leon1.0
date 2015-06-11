@@ -93,8 +93,8 @@ public class OrderService extends AbstractService<Order, String>{
 	
 	SimpleDateFormat y2mdDateFormat=new SimpleDateFormat("yyMMdd");
 	
-	public List<Order> queryUncompleteOrderno(String orderNo) {
-		List<Order> list=orderRepository.queryUncompleteOrderno(ShiroUtils.getAuthenticationInfo().getId(),orderNo);
+	public List<Order> queryUncompleteOrderno(String orderNo,String project_id) {
+		List<Order> list=orderRepository.queryUncompleteOrderno(ShiroUtils.getAuthenticationInfo().getId(),orderNo,project_id);
 		
 //		List<Map<String,String>> result=new ArrayList<Map<String,String>>();
 //		for(String str:list){

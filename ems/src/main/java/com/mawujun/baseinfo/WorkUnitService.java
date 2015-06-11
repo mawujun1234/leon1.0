@@ -52,6 +52,7 @@ public class WorkUnitService extends AbstractService<WorkUnit, String>{
 	public List<EquipmentVO> queryEquipments(EquipmentVO equipmentVO,Integer level,Integer start,Integer limit) {
 		//return workUnitRepository.queryEquipments(workUnit_id);
 		if(level==1){
+			//返回作业单位身上所有的设备，顶级
 			return workUnitRepository.queryEquipments_total(equipmentVO);
 		} else if(level==2 || level==3){
 			Page page=new Page();

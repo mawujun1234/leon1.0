@@ -28,11 +28,13 @@ public class InstallOut   implements IdEntity<String>{
 	private String workUnit_id;//作业单位
 	@Column(length=36)
 	private String installOutType_id;//领用类型的id
+	@Column(length=36)
+	private String project_id;//项目id
 	
 	//请求数量
 	private Integer requestnum;
 	
-	//private Integer type;//出库类型 1：设备领用，2：维修出库
+
 	@Column(length=100)
 	private String memo;
 	
@@ -84,6 +86,12 @@ public class InstallOut   implements IdEntity<String>{
 	}
 	public void setInstallOutType_id(String installOutType_id) {
 		this.installOutType_id = installOutType_id;
+	}
+	public String getProject_id() {
+		return project_id;
+	}
+	public void setProject_id(String project_id) {
+		this.project_id = project_id;
 	}
 
 }

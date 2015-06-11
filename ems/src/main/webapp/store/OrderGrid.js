@@ -76,7 +76,7 @@ Ext.define('Ems.store.OrderGrid',{
 	  
 
 	var project_combox=Ext.create('Ems.baseinfo.ProjectCombo',{
-		//flex:1,
+		flex:1,
 		allowBlank: true
 	});
 	  var supplier_combox=Ext.create('Ems.baseinfo.SupplierCombo',{
@@ -89,7 +89,7 @@ Ext.define('Ems.store.OrderGrid',{
 	 var status_combox=Ext.create('Ext.form.field.ComboBox',{
 	        fieldLabel: '状态',
 	        labelAlign:'right',
-            labelWidth:60,
+            labelWidth:40,
 	        //xtype:'combobox',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'status',

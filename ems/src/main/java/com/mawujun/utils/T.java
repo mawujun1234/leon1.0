@@ -240,6 +240,7 @@ public static final class ems_installout {
 	public static final String operateDate="operateDate";
 	public static final String workUnit_id="workUnit_id";
 	public static final String installOutType_id="installOutType_id";
+	public static final String project_id="project_id";
 	public static final String requestnum="requestnum";
 	public static final String memo="memo";
 }

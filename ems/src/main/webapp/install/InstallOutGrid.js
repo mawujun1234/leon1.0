@@ -9,7 +9,7 @@ Ext.define('Ems.install.InstallOutGrid',{
 		stripeRows:true,
 		listeners:{
 			refresh:function(){
-				this.select(0);
+				//this.select(0);
 			}
 		}
 	},
@@ -19,6 +19,7 @@ Ext.define('Ems.install.InstallOutGrid',{
 		{dataIndex:'id',text:'编码'},
 		{dataIndex:'store_name',text:'仓库'},
 		{dataIndex:'workUnit_name',text:'作业单位'},
+		{dataIndex:'project_name',text:'作业单位'},
 		{dataIndex:'operateDate',text:'操作时间',xtype: 'datecolumn',   format:'Y-m-d'},
 		{dataIndex:'operater',text:'操作人'},
 		{dataIndex:'memo',text:'备注'}

@@ -16,7 +16,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
      -->
     <select id="queryEquipments_total" resultType="com.mawujun.baseinfo.EquipmentVO" parameterType="com.mawujun.baseinfo.Equipment">
     	select a.subtype_id,b.name as subtype_name,sum(a.num) as num
-    	from (select x.*,1 as num from ems_equipment x,ems_equipment_workunit y where y.workUnit_id=#{workUnit_id}) a
+    	from (select x.*,1 as num from ems_equipment x,ems_equipment_workunit y where x.ecode=y.ecode and y.workUnit_id=#{workUnit_id}) a
 		inner join ems_equipmentsubtype b on a.subtype_id=b.id
 		inner join ems_brand d on a.brand_id=d.id
 		inner join ems_supplier e on a.supplier_id=e.id
@@ -39,7 +39,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				a.ecode,
 		</if>
     	a.style,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name ,sum(a.num) as num
-    	from (select x.*,1 as num from ems_equipment x ,ems_equipment_workunit y where y.workUnit_id=#{workUnit_id} and x.subtype_id=#{subtype_id}) a
+    	from (select x.*,1 as num from ems_equipment x ,ems_equipment_workunit y where x.ecode=y.ecode and y.workUnit_id=#{workUnit_id} and x.subtype_id=#{subtype_id}) a
 		inner join ems_equipmentsubtype b on a.subtype_id=b.id
 		inner join ems_equipmentprod c on a.prod_id=c.id
 		inner join ems_brand d on a.brand_id=d.id
@@ -68,7 +68,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		 a.style,b.name ,c.name,c.spec,d.name,e.name
     </select> 
     <select id="queryEquipments_count" resultType="int" parameterType="com.mawujun.baseinfo.EquipmentVO">
-		select count(x.ecode) from ems_equipment x ,ems_equipment_workunit y where y.workUnit_id=#{workUnit_id} and x.subtype_id=#{subtype_id}
+		select count(x.ecode) from ems_equipment x ,ems_equipment_workunit y where x.ecode=y.ecode and y.workUnit_id=#{workUnit_id} and x.subtype_id=#{subtype_id}
 			<!--<if test="subtype_id!=null and subtype_id!=''">
 				and x.subtype_id=#{subtype_id}
 			</if> -->
@@ -89,7 +89,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     <!-- 移动端使用 -->
     <select id="queryHaveEquipmentInfosTotal" resultMap="EquipmentSubtype_Map" parameterType="java.lang.String">
     	select a.subtype_id,b.name as subtype_name,c.id as prod_id,c.name as prod_name,c.style as prod_style,count(a.ecode) ecode_num
-      	from (select x.* from ems_equipment x ,ems_equipment_workunit y where y.workUnit_id=#{workUnit_id}) a
+      	from (select x.* from ems_equipment x ,ems_equipment_workunit y where x.ecode=y.ecode and y.workUnit_id=#{workUnit_id}) a
 	    inner join ems_equipmentsubtype b on a.subtype_id=b.id
 	    inner join ems_equipmentprod c on a.prod_id=c.id
 	    group by  a.subtype_id ,b.name,c.id,c.name,c.style
@@ -108,7 +108,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     
     <select id="queryHaveEquipmentInfosDetail" resultType="com.mawujun.baseinfo.EquipmentVO">
     	select a.ecode,d.name as brand_name 
-    	from (select x.* from ems_equipment x ,ems_equipment_workunit y where y.workUnit_id=#{workUnit_id} and prod_id=#{prod_id}) a
+    	from (select x.* from ems_equipment x ,ems_equipment_workunit y where x.ecode=y.ecode and y.workUnit_id=#{workUnit_id} and prod_id=#{prod_id}) a
 		inner join ems_brand d on a.brand_id=d.id
 		order by d.name
     </select> 

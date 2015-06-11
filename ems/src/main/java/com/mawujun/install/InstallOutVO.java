@@ -3,6 +3,8 @@ package com.mawujun.install;
 public class InstallOutVO extends InstallOut {
 	private String store_name;
 	private String workUnit_name;
+	private String project_name;
+	
 	public String getStore_name() {
 		return store_name;
 	}
@@ -14,5 +16,11 @@ public class InstallOutVO extends InstallOut {
 	}
 	public void setWorkUnit_name(String workUnit_name) {
 		this.workUnit_name = workUnit_name;
+	}
+	public String getProject_name() {
+		return project_name;
+	}
+	public void setProject_name(String project_name) {
+		this.project_name = project_name;
 	}
 }

@@ -148,7 +148,7 @@ Ext.onReady(function(){
 //	});	
 	
 	var project_combox=Ext.create('Ems.baseinfo.ProjectCombo',{
-		//flex:1,
+		flex:1,
 		allowBlank: false
 	});
 	var type_combox=Ext.create('Ems.baseinfo.TypeCombo',{

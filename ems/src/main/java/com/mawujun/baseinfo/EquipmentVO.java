@@ -27,7 +27,7 @@ public class EquipmentVO extends Equipment {
 	//private String status_name;
 	
 	//=======入库的时候
-	
+	private String workUnit_id;
 	@Transient
 	private String workUnit_name;
 	
@@ -108,5 +108,13 @@ public class EquipmentVO extends Equipment {
 
 	public void setProd_spec(String prod_spec) {
 		this.prod_spec = prod_spec;
+	}
+
+	public String getWorkUnit_id() {
+		return workUnit_id;
+	}
+
+	public void setWorkUnit_id(String workUnit_id) {
+		this.workUnit_id = workUnit_id;
 	}
 }

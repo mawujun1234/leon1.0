@@ -9,6 +9,21 @@ Ext.onReady(function(){
 //		labelAlign:'right'
 //	});
 	
+	var project_combox=Ext.create('Ems.baseinfo.ProjectCombo',{
+		width:400,
+		allowBlank: true,
+		listeners:{
+			select:function( combo, records, eOpts ) {
+				//alert(1);
+				order_no.getStore().removeAll();
+				 
+				order_no.clearValue( );
+				//order_no.setValue('');
+				alert(order_no.lastQuery);
+				delete order_no.lastQuery;
+			}
+		}
+	});
 	var order_no=Ext.create('Ext.form.field.ComboBox',{
 	        fieldLabel: '订单号',
 	        labelAlign:'right',
@@ -34,11 +49,19 @@ Ext.onReady(function(){
 		    	fields: ['id', 'orderNo'],
 			    proxy:{
 			    	type:'ajax',
-			    	extraParams:{type:1,edit:true},
+			    	//extraParams:{type:1,edit:true},
 			    	url:Ext.ContextPath+"/order/queryUncomplete.do",
 			    	reader:{
 			    		type:'json',
 			    		root:'root'
+			    	}
+			    },
+			    listeners:{
+			    	beforeload:function(store){
+			    		
+			    		store.getProxy().extraParams={
+			    			project_id:project_combox.getValue()
+			    		}
 			    	}
 			    }
 		   })
@@ -246,7 +269,7 @@ Ext.onReady(function(){
         },
         defaults:{margins:'0 0 5 0',border:false},
         items:[{xtype:'form',items:[
-        							{xtype:'fieldcontainer',layout: 'hbox',items:[order_no,query_button]}
+        							{xtype:'fieldcontainer',layout: 'hbox',items:[project_combox,order_no,query_button]}
         							//{xtype:'fieldcontainer',layout: 'hbox',items:[subtype_combox,prod_combox,brand_combox,supplier_combox]},
 //                                    {xtype:'fieldcontainer',layout: 'hbox',items:[
 //                                    	{xtype:'textfield',itemId:'style_field',fieldLabel:'型号',name:'style',labelWidth:50,allowBlank:false,labelAlign:'right'},

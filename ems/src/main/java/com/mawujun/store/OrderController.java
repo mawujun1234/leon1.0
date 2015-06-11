@@ -156,11 +156,11 @@ public class OrderController {
 	 */
 	@RequestMapping("/order/queryUncomplete.do")
 	@ResponseBody
-	public List<Order> queryUncomplete(String orderNo) {	
+	public List<Order> queryUncomplete(String orderNo,String project_id) {
 		if(StringUtils.hasText(orderNo)){
 			orderNo="%"+orderNo+"%";
 		} 
-		return orderService.queryUncompleteOrderno(orderNo);
+		return orderService.queryUncompleteOrderno(orderNo,project_id);
 	}
 	
 	@RequestMapping("/order/create.do")

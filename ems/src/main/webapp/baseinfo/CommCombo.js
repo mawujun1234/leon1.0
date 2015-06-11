@@ -282,7 +282,7 @@ Ext.define('Ems.baseinfo.ProjectCombo',{
 	fieldLabel: '项目',
 	        labelAlign:'right',
             labelWidth:40,
-            flex:1,
+            //flex:1,
 	        //xtype:'combobox',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'project_id',
