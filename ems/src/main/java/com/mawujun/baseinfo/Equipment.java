@@ -46,15 +46,19 @@ public class Equipment implements IdEntity<String>{
 	@Column(length=20)
 	private EquipmentStatus status=EquipmentStatus.no_storage;
 	
+	@Enumerated(EnumType.STRING)
+	@Column(length=20)
+	private EquipmentPlace place;
+	
 	@Column(updatable=false)
 	private Date fisData;//first in stock date第一次入库时间
 	
-	@Column(length=36)
-	private String store_id;//仓库id，所属仓库
-	@Column(length=36)
-	private String workUnit_id;//作业单位id，所属的作业单位，和store_id，同时只能有一个有值
-	@Column(length=36)
-	private String pole_id;//杆位，所属的杆位，store_id，workUnit_id，pole_id三个职能存在一个
+//	@Column(length=36)
+//	private String store_id;//仓库id，所属仓库
+//	@Column(length=36)
+//	private String workUnit_id;//作业单位id，所属的作业单位，和store_id，同时只能有一个有值
+//	@Column(length=36)
+//	private String pole_id;//杆位，所属的杆位，store_id，workUnit_id，pole_id三个职能存在一个
 	
 	
 	@Column(length=36)
@@ -144,24 +148,26 @@ public class Equipment implements IdEntity<String>{
 	}
 	
 
-	public String getStore_id() {
-		return store_id;
-	}
-	public void setStore_id(String store_id) {
-		this.store_id = store_id;
-	}
-	public String getWorkUnit_id() {
-		return workUnit_id;
-	}
-	public void setWorkUnit_id(String workUnit_id) {
-		this.workUnit_id = workUnit_id;
-	}
-	public String getPole_id() {
-		return pole_id;
-	}
-	public void setPole_id(String pole_id) {
-		this.pole_id = pole_id;
-	}
+//	public String getStore_id() {
+//		return store_id;
+//	}
+//	public void setStore_id(String store_id) {
+//		this.store_id = store_id;
+//	}
+//	public String getWorkUnit_id() {
+//		return workUnit_id;
+//	}
+//	public void setWorkUnit_id(String workUnit_id) {
+//		this.workUnit_id = workUnit_id;
+//	}
+//	public String getPole_id() {
+//		return pole_id;
+//	}
+//	public void setPole_id(String pole_id) {
+//		this.pole_id = pole_id;
+//	}
+	
+	
 	public Date getLast_install_date() {
 		return last_install_date;
 	}
@@ -197,6 +203,12 @@ public class Equipment implements IdEntity<String>{
 	}
 	public void setLast_workunit_id(String last_workunit_id) {
 		this.last_workunit_id = last_workunit_id;
+	}
+	public EquipmentPlace getPlace() {
+		return place;
+	}
+	public void setPlace(EquipmentPlace place) {
+		this.place = place;
 	}
 
 

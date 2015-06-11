@@ -61,13 +61,13 @@ public class BorrowService extends AbstractService<Borrow, String>{
 		borrowRepository.create(borrow);
 		
 		for(Equipment equipment:equipments){
-			//更新设备状态为出库待安装
-			//把设备绑定到作业单位上面
-			//把仓库中的该设备移除
-			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.out_storage)
-					.set(M.Equipment.workUnit_id, borrow.getWorkUnit_id())
-					.set(M.Equipment.store_id, null)
-					.andEquals(M.Equipment.ecode, equipment.getEcode()));
+//			//更新设备状态为出库待安装
+//			//把设备绑定到作业单位上面
+//			//把仓库中的该设备移除
+//			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.out_storage)
+//					.set(M.Equipment.workUnit_id, borrow.getWorkUnit_id())
+//					.set(M.Equipment.store_id, null)
+//					.andEquals(M.Equipment.ecode, equipment.getEcode()));
 			
 			
 			//插入入库单明细

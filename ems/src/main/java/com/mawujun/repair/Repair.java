@@ -24,6 +24,13 @@ public class Repair  implements IdEntity<String>{
 	private String ecode;
 	@Column(length=25)
 	private String prod_id;
+	@Column(length=36) 
+	private String str_out_id;//出库仓库
+	@Column(length=36) 
+	private String rpa_id;//维修中心id
+	@Column(length=36) 
+	private String str_in_id;//入库仓库
+	
 	
 	//下面三行是在创建的时候填的，故障描述是实施人员填的
 	private Date repair_date;//报修时间，仓库维修出库时间
@@ -39,11 +46,9 @@ public class Repair  implements IdEntity<String>{
 	@Column(length=36)
 	private String str_out_oper_id;//仓库出库的操作人
 	private Date str_out_date;//仓库出库时间，也是维修单创建日期
-	@Column(length=36) 
-	private String str_out_id;//出库仓库
 	
-	@Column(length=36) 
-	private String rpa_id;//维修中心id
+	
+	
 	@Column(length=36) 
 	private String rpa_user_id;//维修人
 	
@@ -59,8 +64,7 @@ public class Repair  implements IdEntity<String>{
 	@Column(length=36) 
 	private String str_in_oper_id;//仓库入库的操作人
 	private Date str_in_date;//仓库入库时间，也就是维修好后的入库时间
-	@Column(length=36) 
-	private String str_in_id;//入库仓库
+	
 	@Column(length=8) 
 	private String rpa_type="innerrpa";//维修类型，维修 (innerrpa)还是外修(outrpa)
 	

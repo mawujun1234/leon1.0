@@ -12,13 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.baseinfo.EquipmentService;
-import com.mawujun.baseinfo.EquipmentStatus;
 import com.mawujun.baseinfo.EquipmentSubtype;
 import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.baseinfo.PoleService;
 import com.mawujun.baseinfo.StoreService;
 import com.mawujun.baseinfo.WorkUnitService;
-import com.mawujun.mobile.task.Task;
 import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.M;
 
@@ -37,19 +35,14 @@ public class OthersController {
 	@ResponseBody
 	public EquipmentVO getEquipmentInfo(String ecode){
 		EquipmentVO vo= equipmentService.getEquipmentInfo(ecode);
-		if(vo.getWorkUnit_id()!=null){
-			vo.setWorkUnit_name(workUnitService.get(vo.getWorkUnit_id()).getName());
-		} else if(vo.getStore_id()!=null){
-			vo.setStore_name(storeService.get(vo.getStore_id()).getName());
-		} else if(vo.getPole_id()!=null){
-			vo.setPole_address(poleService.get(vo.getPole_id()).geetFullAddress());
-		}
-//		for (EquipmentStatus status : EquipmentStatus.values()) {
-//			if (status.getValue() == vo.getStatus()) {
-//				vo.setStatus_name(status.getName());
-//				break;
-//			}
+//		if(vo.getPlace()==EquipmentPlace.workunit){
+//			vo.setWorkUnit_name(workUnitService.get(vo.getWorkUnit_id()).getName());
+//		} else if(vo.getPlace()==EquipmentPlace.store || vo.getPlace()==EquipmentPlace.repair){
+//			vo.setStore_name(storeService.get(vo.getStore_id()).getName());
+//		} else if(vo.getPlace()==EquipmentPlace.pole){
+//			vo.setPole_address(poleService.get(vo.getPole_id()).geetFullAddress());
 //		}
+
 		vo.setFisData(null);
 		vo.setIsInStore(null);
 		vo.setMemo(null);

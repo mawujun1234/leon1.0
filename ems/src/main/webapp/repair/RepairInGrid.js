@@ -296,7 +296,7 @@ Ext.define('Ems.repair.RepairInGrid',{
 						repairs.push({
 							ecode:records[i].get("ecode"),
 							id:records[i].get("id"),
-							rpa_id:rpa_id,
+							rpa_id:records[i].get("rpa_id"),
 							str_out_id:records[i].get("str_out_id")
 						});
 						//ids.push(records[i].get("id"));

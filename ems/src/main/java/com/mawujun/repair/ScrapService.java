@@ -8,10 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
+import com.mawujun.baseinfo.EquipmentPlace;
+import com.mawujun.baseinfo.EquipmentRepairPK;
+import com.mawujun.baseinfo.EquipmentRepairRepository;
 import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.EquipmentStatus;
+import com.mawujun.baseinfo.StoreRepository;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 import com.mawujun.shiro.ShiroUtils;
@@ -34,9 +37,12 @@ public class ScrapService extends AbstractService<Scrap, String>{
 	private ScrapRepository scrapRepository;
 	@Autowired
 	private RepairRepository repairRepository;
+	//@Autowired
+	//private StoreRepository storeRepository;
 	@Autowired
 	private EquipmentRepository equipmentRepository;
-	
+	@Autowired
+	private EquipmentRepairRepository equipmentRepairRepository;
 	
 	SimpleDateFormat ymdHmsDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
 	
@@ -65,8 +71,20 @@ public class ScrapService extends AbstractService<Scrap, String>{
 	}
 	
 	public Scrap makeSureScrap(Scrap scrap) {
+		
 		//修改设备状态为报废
-		equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.scrapped).andEquals(M.Equipment.ecode, scrap.getEcode()));
+		equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.scrapped)
+				.set(M.Equipment.place, EquipmentPlace.scrap)
+				.andEquals(M.Equipment.ecode, scrap.getEcode()));
+		
+		//获取维修中心的id
+		Repair repair=repairRepository.get(scrap.getRepair_id());
+		
+		//从维修中心中删除
+		EquipmentRepairPK equipmentRepairPK=new EquipmentRepairPK();
+		equipmentRepairPK.setEcode(scrap.getEcode());
+		equipmentRepairPK.setRepair_id(repair.getRpa_id());
+		equipmentRepairRepository.deleteById(equipmentRepairPK);
 		
 		Date date=new Date();
 		scrap.setOperateDate(date);
@@ -74,7 +92,7 @@ public class ScrapService extends AbstractService<Scrap, String>{
 		this.update(scrap);
 		
 		//同时结束维修单--报废
-		Repair repair=repairRepository.get(scrap.getRepair_id());
+		//Repair repair=repairRepository.get(scrap.getRepair_id());
 		repair.setStatus(RepairStatus.Six.getValue());
 		repair.setScrapDate(date);
 		repairRepository.update(repair);

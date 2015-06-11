@@ -33,11 +33,16 @@ import com.mawujun.service.AbstractService;
 import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.BeanUtils;
 import com.mawujun.utils.M;
+import com.mawujun.utils.Params;
 import com.mawujun.utils.page.Page;
 import com.mawujun.adjust.Adjust;
 import com.mawujun.adjust.AdjustRepository;
+import com.mawujun.baseinfo.EquipmentPlace;
 import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.EquipmentStatus;
+import com.mawujun.baseinfo.EquipmentStore;
+import com.mawujun.baseinfo.EquipmentStoreRepository;
+import com.mawujun.baseinfo.EquipmentStoreType;
 import com.mawujun.baseinfo.Store;
 import com.mawujun.baseinfo.StoreRepository;
 import com.mawujun.exception.BusinessException;
@@ -58,6 +63,8 @@ public class AdjustService extends AbstractService<Adjust, String>{
 	private AdjustListRepository adjustListRepository;
 	@Autowired
 	private EquipmentRepository equipmentRepository;
+	@Autowired
+	private EquipmentStoreRepository equipmentStoreRepository;
 	@Autowired
 	private StoreRepository storeRepository;
 	
@@ -122,7 +129,7 @@ public class AdjustService extends AbstractService<Adjust, String>{
 	 * @author mawujun 16064988@qq.com 
 	 * @return
 	 */
-	public void partInStr(AdjustList[] adjustLists,String str_in_id) {
+	public void partInStr(AdjustList[] adjustLists,String str_in_id,String str_out_id) {
 		//获取当前调拨下的设备总数,本来应该是sum的，但现在是sum和count一样的
 		//Long out_num_total=adjustListRepository.queryCount(Cnd.count(M.AdjustList.id).andEquals(M.AdjustList.adjust_id, adjustLists[0].getAdjust_id()));
 		Long out_num_total=(Long)adjustListRepository.querySum(Cnd.sum(M.AdjustList.out_num).andEquals(M.AdjustList.adjust_id, adjustLists[0].getAdjust_id()));
@@ -137,7 +144,20 @@ public class AdjustService extends AbstractService<Adjust, String>{
 			//同时更改设备状态，从A仓库到B仓库
 			//同时修改设备状态
 			//修改设备状态为"在库"
-			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.in_storage).set(M.Equipment.store_id, str_in_id).andEquals(M.Equipment.ecode, adjustList.getEcode()));
+//			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.in_storage)
+//					.set(M.Equipment.store_id, str_in_id).andEquals(M.Equipment.ecode, adjustList.getEcode()));
+			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.in_storage)
+					.set(M.Equipment.place, EquipmentPlace.store)
+					.andEquals(M.Equipment.ecode, adjustList.getEcode()));
+			//EquipmentStore equipmentStore=new EquipmentStore();
+			//equipmentStore
+			Params p=Params.init().add(M.EquipmentStore.type, EquipmentStoreType.adjust)
+					.add(M.EquipmentStore.type_id, adjustList.getAdjust_id())
+					.add(M.EquipmentStore.ecode, adjustList.getEcode())
+					.add("str_in_id", str_in_id)//入库仓库，新的仓库
+					.add("store_out_id", str_out_id);
+			equipmentStoreRepository.changeStore(p);
+		
 		}
 		//这个时候就表示是都选择了，修改整个调拨单的状态
 		Long in_num_total=(Long)adjustListRepository.querySum(Cnd.sum(M.AdjustList.in_num).andEquals(M.AdjustList.adjust_id, adjustLists[0].getAdjust_id()));

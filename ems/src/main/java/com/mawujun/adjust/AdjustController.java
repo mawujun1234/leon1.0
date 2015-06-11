@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.exception.BusinessException;
 import com.mawujun.shiro.ShiroUtils;
+import com.mawujun.utils.StringUtils;
 import com.mawujun.utils.page.Page;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
@@ -171,8 +172,11 @@ public class AdjustController {
 	 */
 	@RequestMapping("/adjust/partInStr.do")
 	@ResponseBody
-	public String partInStr(@RequestBody AdjustList[] adjustLists,String str_in_id) {	
-		adjustService.partInStr(adjustLists,str_in_id);	
+	public String partInStr(@RequestBody AdjustList[] adjustLists,String str_in_id,String str_out_id) {	
+		if(!StringUtils.hasText(str_out_id)){
+			throw new BusinessException("str_out_id这个值没有!");
+		}
+		adjustService.partInStr(adjustLists,str_in_id,str_out_id);	
 		return "success";
 	}
 	

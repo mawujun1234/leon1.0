@@ -44,19 +44,15 @@ public class EquipmentStatusController {
 		if(baseinfo==null){
 			throw new BusinessException("不存在该设备!");
 		}
-		if(baseinfo.getWorkUnit_id()!=null){
-			baseinfo.setWorkUnit_name(workUnitService.get(baseinfo.getWorkUnit_id()).getName());
-		} else if(baseinfo.getStore_id()!=null){
-			baseinfo.setStore_name(storeService.get(baseinfo.getStore_id()).getName());
-		} else if(baseinfo.getPole_id()!=null){
-			baseinfo.setPole_address(poleService.get(baseinfo.getPole_id()).geetFullAddress());
-		}
-//		for (EquipmentStatus status : EquipmentStatus.values()) {
-//			if (status == baseinfo.getStatus()) {
-//				baseinfo.setStatus_name(status.getName());
-//				break;
-//			}
+		//这里要进行修改
+//		if(baseinfo.getWorkUnit_id()!=null){
+//			baseinfo.setWorkUnit_name(workUnitService.get(baseinfo.getWorkUnit_id()).getName());
+//		} else if(baseinfo.getStore_id()!=null){
+//			baseinfo.setStore_name(storeService.get(baseinfo.getStore_id()).getName());
+//		} else if(baseinfo.getPole_id()!=null){
+//			baseinfo.setPole_address(poleService.get(baseinfo.getPole_id()).geetFullAddress());
 //		}
+
 		baseinfo.setFisData(null);
 		baseinfo.setIsInStore(null);
 		baseinfo.setMemo(null);

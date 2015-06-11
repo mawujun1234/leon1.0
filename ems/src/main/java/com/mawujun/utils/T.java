@@ -63,14 +63,21 @@ public static final class ems_equipment {
 	public static final String isnew="isnew";
 	public static final String memo="memo";
 	public static final String status="status";
+	public static final String place="place";
 	public static final String fisData="fisData";
-	public static final String store_id="store_id";
-	public static final String workUnit_id="workUnit_id";
-	public static final String pole_id="pole_id";
 	public static final String last_installIn_id="last_installIn_id";
 	public static final String last_install_date="last_install_date";
 	public static final String last_task_id="last_task_id";
 	public static final String last_workunit_id="last_workunit_id";
+}
+public static final class ems_equipment_pole {
+	public static final String ecode="ecode";
+	public static final String pole_id="pole_id";
+	public static final String workunit_id="workunit_id";
+	public static final String num="num";
+	public static final String inDate="inDate";
+	public static final String type="type";
+	public static final String type_id="type_id";
 }
 public static final class ems_equipmentprod {
 	public static final String id="id";
@@ -85,6 +92,22 @@ public static final class ems_equipmentprod {
 	public static final String brand_id="brand_id";
 	public static final String type="type";
 	public static final String quality_month="quality_month";
+}
+public static final class ems_equipment_repair {
+	public static final String ecode="ecode";
+	public static final String repair_id="repair_id";
+	public static final String num="num";
+	public static final String type="type";
+	public static final String type_id="type_id";
+	public static final String inDate="inDate";
+}
+public static final class ems_equipment_store {
+	public static final String ecode="ecode";
+	public static final String store_id="store_id";
+	public static final String num="num";
+	public static final String type="type";
+	public static final String type_id="type_id";
+	public static final String inDate="inDate";
 }
 public static final class ems_equipmentsubtype {
 	public static final String id="id";
@@ -101,6 +124,14 @@ public static final class ems_equipmenttype {
 	public static final String parent_id="parent_id";
 	public static final String memo="memo";
 	public static final String leaf="leaf";
+}
+public static final class ems_equipment_workunit {
+	public static final String ecode="ecode";
+	public static final String workunit_id="workunit_id";
+	public static final String num="num";
+	public static final String inDate="inDate";
+	public static final String type="type";
+	public static final String type_id="type_id";
 }
 public static final class ems_pole {
 	public static final String code="code";
@@ -387,6 +418,9 @@ public static final class ems_repair {
 	public static final String id="id";
 	public static final String ecode="ecode";
 	public static final String prod_id="prod_id";
+	public static final String str_out_id="str_out_id";
+	public static final String rpa_id="rpa_id";
+	public static final String str_in_id="str_in_id";
 	public static final String repair_date="repair_date";
 	public static final String workunit_id="workunit_id";
 	public static final String installIn_id="installIn_id";
@@ -394,8 +428,6 @@ public static final class ems_repair {
 	public static final String broken_memo="broken_memo";
 	public static final String str_out_oper_id="str_out_oper_id";
 	public static final String str_out_date="str_out_date";
-	public static final String str_out_id="str_out_id";
-	public static final String rpa_id="rpa_id";
 	public static final String rpa_user_id="rpa_user_id";
 	public static final String rpa_in_oper_id="rpa_in_oper_id";
 	public static final String rpa_in_date="rpa_in_date";
@@ -403,7 +435,6 @@ public static final class ems_repair {
 	public static final String rpa_out_date="rpa_out_date";
 	public static final String str_in_oper_id="str_in_oper_id";
 	public static final String str_in_date="str_in_date";
-	public static final String str_in_id="str_in_id";
 	public static final String rpa_type="rpa_type";
 	public static final String status="status";
 	public static final String scrapDate="scrapDate";

@@ -420,11 +420,11 @@ Ext.onReady(function(){
         {html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;'}],
         buttons:[{text:'设备返库',handler:function(btn){
             if (equipStore.getCount()> 0) { 
-            	var msg="好件返库";
+            	var msg="当前正在《好件返库》,请确认要返库的设备都是好！";
             	if(type_combox.getValue()=='bad'){
-            		msg="<b style='color:red'>坏件返库</b>";
+            		msg="当前正在《<b style='color:red'>坏件返库</b>》,请确认要返库的设备都是坏的!";
             	}
-            	Ext.Msg.confirm("消息","当前正在《"+msg+"》,确认要返库的设备都是损坏的吗?",function(btn){
+            	Ext.Msg.confirm("消息",function(btn){
             	if(btn=='yes'){
             	Ext.getBody().mask("正在入库....");
             	var equipments = new Array();

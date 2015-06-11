@@ -4,23 +4,28 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mawujun.baseinfo.EquipmentPlace;
+import com.mawujun.baseinfo.EquipmentRepair;
+import com.mawujun.baseinfo.EquipmentRepairPK;
+import com.mawujun.baseinfo.EquipmentRepairRepository;
+import com.mawujun.baseinfo.EquipmentRepairType;
 import com.mawujun.baseinfo.EquipmentRepository;
-import com.mawujun.baseinfo.EquipmentService;
 import com.mawujun.baseinfo.EquipmentStatus;
+import com.mawujun.baseinfo.EquipmentStore;
+import com.mawujun.baseinfo.EquipmentStorePK;
+import com.mawujun.baseinfo.EquipmentStoreRepository;
+import com.mawujun.baseinfo.EquipmentStoreType;
 import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.baseinfo.Store;
 import com.mawujun.baseinfo.StoreRepository;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.install.InstallIn;
 import com.mawujun.install.InstallInRepository;
-import com.mawujun.mobile.task.Task;
 import com.mawujun.mobile.task.TaskRepository;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
@@ -46,6 +51,10 @@ public class RepairService extends AbstractService<Repair, String>{
 	private StoreRepository storeRepository;
 	@Autowired
 	private EquipmentRepository equipmentRepository;
+	@Autowired
+	private EquipmentStoreRepository equipmentStoreRepository;
+	@Autowired
+	private EquipmentRepairRepository equipmentRepairRepository;
 	@Autowired
 	private InstallInRepository installInRepository;
 	@Autowired
@@ -202,28 +211,41 @@ public class RepairService extends AbstractService<Repair, String>{
 		for(Repair repair:repairs){
 			//修改设备状态为“维修中”
 			//把设备中参仓库，移到 维修中心来
-			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.outside_repairing).set(M.Equipment.store_id, repair.getRpa_id()).andEquals(M.Equipment.ecode, repair.getEcode()));
+			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.outside_repairing)
+					//.set(M.Equipment.store_id, repair.getRpa_id())
+					.set(M.Equipment.place, EquipmentPlace.repair)
+					.andEquals(M.Equipment.ecode, repair.getEcode()));
+//			//把设备从仓库转移到维修中心中
+//			Params p=Params.init().add(M.EquipmentStore.type, EquipmentStoreType.repair)
+//					.add(M.EquipmentStore.type_id, repair.getId())
+//					.add(M.EquipmentStore.ecode, repair.getEcode())
+//					.add("store_in_id", repair.getRpa_id())//入库仓库，维修中心
+//					.add("store_out_id", repair.getStr_out_id());
+//			equipmentStoreRepository.changeStore(p);
+			
+			//从仓库中删除
+			EquipmentStorePK equipmentStorePK=new EquipmentStorePK();
+			equipmentStorePK.setEcode(repair.getEcode());
+			equipmentStorePK.setStore_id(repair.getStr_out_id());
+			equipmentStoreRepository.deleteById(equipmentStorePK);
+			
+			//插入到维修中心表中
+			EquipmentRepair equipmentRepair=new EquipmentRepair();
+			equipmentRepair.setEcode(repair.getEcode());
+			equipmentRepair.setRepair_id(repair.getRpa_id());
+			equipmentRepair.setNum(1);
+			equipmentRepair.setInDate(new Date());
+			equipmentRepair.setType(EquipmentRepairType.repair);
+			equipmentRepair.setType_id(repair.getId());
+			equipmentRepairRepository.create(equipmentRepair);
+			
+			
 			//修改维修单状态为"维修中"	
 			repairRepository.update(Cnd.update()
 					.set(M.Repair.rpa_in_oper_id, oper_id)
 					.set(M.Repair.rpa_in_date, new Date())
 					.set(M.Repair.status, RepairStatus.Two.getValue())
-					.andEquals(M.Repair.id, repair.getId()));
-//			//把设备中参仓库，移到 维修中心来,原来的仓库减1，维修中心如果没有该设备，就添加该设备，否则就加1
-//			storeEquipmentRepository.updateNum(repair.getStr_out_id(), repair.getEcode(), "num-1");
-//			//维修中心数据要添加了
-//			Long count=storeEquipmentRepository.queryCount(Cnd.count(M.StoreEquipment.id).andEquals(M.StoreEquipment.ecode, repair.getEcode())
-//					.andEquals(M.StoreEquipment.store_id, repair.getRpa_id()));
-//			if(count>0){
-//				storeEquipmentRepository.updateNum(repair.getRpa_id(), repair.getEcode(), "num+1");
-//			} else {
-//				StoreEquipment storeEquipment=new StoreEquipment();
-//				storeEquipment.setStore_id(repair.getRpa_id());
-//				storeEquipment.setEcode(repair.getEcode());
-//				storeEquipment.setNum(1);
-//				storeEquipmentRepository.create(storeEquipment);
-//			}
-//			
+					.andEquals(M.Repair.id, repair.getId()));		
 		}
 		
 		
@@ -268,29 +290,42 @@ public class RepairService extends AbstractService<Repair, String>{
 		for(Repair repair:repairs){
 			//修改设备状态为"已入库"
 			//设备从维修中心挂到仓库中
-			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.in_storage).set(M.Equipment.store_id, repair.getStr_in_id()).andEquals(M.Equipment.ecode, repair.getEcode()));
+			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.in_storage)
+					//.set(M.Equipment.store_id, repair.getStr_in_id())
+					.set(M.Equipment.place, EquipmentPlace.store)
+					.andEquals(M.Equipment.ecode, repair.getEcode()));
+			
+//			//把设备从到维修中心转移到仓库
+//			Params p=Params.init().add(M.EquipmentStore.type, EquipmentStoreType.repair)
+//					.add(M.EquipmentStore.type_id, repair.getId())
+//					.add(M.EquipmentStore.ecode, repair.getEcode())
+//					.add("str_in_id", repair.getStr_in_id())//入库仓库
+//					.add("store_out_id", repair.getRpa_id());//维修中心
+//			equipmentStoreRepository.changeStore(p);
+			
+			//从维修中心中删除
+			EquipmentRepairPK equipmentRepairPK=new EquipmentRepairPK();
+			equipmentRepairPK.setEcode(repair.getEcode());
+			equipmentRepairPK.setRepair_id(repair.getRpa_id());
+			equipmentRepairRepository.deleteById(equipmentRepairPK);
+			
+			//插入到仓库
+			EquipmentStore equipmentStore=new EquipmentStore();
+			equipmentStore.setEcode(repair.getEcode());
+			equipmentStore.setStore_id(repair.getStr_in_id());
+			equipmentStore.setNum(1);
+			equipmentStore.setInDate(new Date());
+			equipmentStore.setType(EquipmentStoreType.repair);
+			equipmentStore.setType_id(repair.getId());
+			equipmentStoreRepository.create(equipmentStore);
+			
 			//维修单的状态也改为"完成"
 			repairRepository.update(Cnd.update()
 					.set(M.Repair.str_in_oper_id, oper_id)
 					.set(M.Repair.str_in_date, new Date())
 					.set(M.Repair.str_in_id, repair.getStr_in_id())
 					.set(M.Repair.status, RepairStatus.Four.getValue()).andEquals(M.Repair.id, repair.getId()));
-//			//设备从维修中心挂到仓库中
-//			storeEquipmentRepository.updateNum(repair.getRpa_id(), repair.getEcode(), "num-1");
-//			//注意选择的是入库仓库
-//			Long count=storeEquipmentRepository.queryCount(Cnd.count(M.StoreEquipment.id).andEquals(M.StoreEquipment.ecode, repair.getEcode())
-//					.andEquals(M.StoreEquipment.store_id, repair.getStr_in_id()));
-//			if(count>0){
-//				storeEquipmentRepository.updateNum(repair.getStr_in_id(), repair.getEcode(), "num+1");
-//			} else {
-//				StoreEquipment storeEquipment=new StoreEquipment();
-//				storeEquipment.setStore_id(repair.getStr_in_id());
-//				storeEquipment.setEcode(repair.getEcode());
-//				storeEquipment.setNum(1);
-//				storeEquipmentRepository.create(storeEquipment);
-//			}
-			
-			
+	
 		}
 	}
 	

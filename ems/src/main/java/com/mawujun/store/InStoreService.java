@@ -13,8 +13,12 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mawujun.baseinfo.Equipment;
+import com.mawujun.baseinfo.EquipmentPlace;
 import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.EquipmentStatus;
+import com.mawujun.baseinfo.EquipmentStore;
+import com.mawujun.baseinfo.EquipmentStoreRepository;
+import com.mawujun.baseinfo.EquipmentStoreType;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 import com.mawujun.shiro.ShiroUtils;
@@ -36,6 +40,8 @@ public class InStoreService extends AbstractService<InStore, String>{
 	private InStoreListRepository inStoreListRepository;
 	@Autowired
 	private EquipmentRepository equipmentRepository;
+	@Autowired
+	private EquipmentStoreRepository equipmentStoreRepository;
 	@Autowired
 	private BarcodeRepository barcodeRepository;
 	@Autowired
@@ -70,7 +76,8 @@ public class InStoreService extends AbstractService<InStore, String>{
 			//equipment.setLastInDate(new Date());
 			equipment.setStatus(EquipmentStatus.in_storage);
 			equipment.setIsnew(true);
-			equipment.setStore_id(inStore.getStore_id());
+			//equipment.setStore_id(inStore.getStore_id());
+			equipment.setPlace(EquipmentPlace.store);
 			equipment.setMemo("");
 			equipmentRepository.create(equipment);
 			////修改条码状态
@@ -83,6 +90,15 @@ public class InStoreService extends AbstractService<InStore, String>{
 				totalnumMap.put(equipment.getOrderlist_id(), 1);
 			}
 			
+			//插入到仓库中
+			EquipmentStore equipmentStore=new EquipmentStore();
+			equipmentStore.setEcode(equipment.getEcode());
+			equipmentStore.setStore_id(inStore.getStore_id());
+			equipmentStore.setNum(1);
+			equipmentStore.setInDate(new Date());
+			equipmentStore.setType(EquipmentStoreType.newinstore);
+			equipmentStore.setType_id(inStore.getId());
+			equipmentStoreRepository.create(equipmentStore);
 			
 			//插入入库单明细
 			InStoreList inStoreList=new InStoreList();

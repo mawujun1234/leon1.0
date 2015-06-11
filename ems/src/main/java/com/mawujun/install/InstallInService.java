@@ -10,9 +10,15 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mawujun.baseinfo.Equipment;
+import com.mawujun.baseinfo.EquipmentPlace;
 import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.EquipmentStatus;
+import com.mawujun.baseinfo.EquipmentStore;
+import com.mawujun.baseinfo.EquipmentStoreRepository;
+import com.mawujun.baseinfo.EquipmentStoreType;
 import com.mawujun.baseinfo.EquipmentVO;
+import com.mawujun.baseinfo.EquipmentWorkunitPK;
+import com.mawujun.baseinfo.EquipmentWorkunitRepository;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
@@ -34,6 +40,10 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 	private InstallInRepository installInRepository;
 	@Autowired
 	private EquipmentRepository equipmentRepository;
+	@Autowired
+	private EquipmentStoreRepository equipmentStoreRepository;
+	@Autowired
+	private EquipmentWorkunitRepository equipmentWorkunitRepository;
 	@Autowired
 	private InstallInListRepository installInListRepository;
 	
@@ -95,22 +105,39 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 			if(installin.getType()==InstallInType.bad){
 				list.setIsBad(true);
 				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.wait_for_repair)
-						.set(M.Equipment.store_id, installin.getStore_id())
-						.set(M.Equipment.workUnit_id,null)
+						//.set(M.Equipment.store_id, installin.getStore_id())
+						//.set(M.Equipment.workUnit_id,null)
+						.set(M.Equipment.place, EquipmentPlace.store)
 						.set(M.Equipment.last_installIn_id,instore_id)
 						.set(M.Equipment.last_installIn_id,instore_id)
-						.set(M.Equipment.last_workunit_id,equipment.getWorkUnit_id())
+						.set(M.Equipment.last_workunit_id,installin.getWorkUnit_id())
 						.andEquals(M.Equipment.ecode, equipment.getEcode()));
 			} else {
 				list.setIsBad(false);
 				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.in_storage)
-						.set(M.Equipment.store_id, installin.getStore_id())
-						.set(M.Equipment.workUnit_id,null)
+						//.set(M.Equipment.store_id, installin.getStore_id())
+						//.set(M.Equipment.workUnit_id,null)
+						.set(M.Equipment.place, EquipmentPlace.store)
 						.set(M.Equipment.last_installIn_id,instore_id)
-						.set(M.Equipment.last_workunit_id,equipment.getWorkUnit_id())
+						.set(M.Equipment.last_workunit_id,installin.getWorkUnit_id())
 						.andEquals(M.Equipment.ecode, equipment.getEcode()));
 				
 			}
+			
+			//插入仓库中
+			EquipmentStore equipmentStore=new EquipmentStore();
+			equipmentStore.setEcode(equipment.getEcode());
+			equipmentStore.setStore_id(installin.getStore_id());
+			equipmentStore.setNum(1);
+			equipmentStore.setInDate(new Date());
+			equipmentStore.setType(EquipmentStoreType.installin);
+			equipmentStore.setType_id(installin.getId());
+			equipmentStoreRepository.create(equipmentStore);
+			//workunit减掉这个设备
+			EquipmentWorkunitPK equipmentWorkunitPK=new EquipmentWorkunitPK();
+			equipmentWorkunitPK.setEcode(equipment.getEcode());
+			equipmentWorkunitPK.setWorkunit_id(installin.getWorkUnit_id());
+			equipmentWorkunitRepository.deleteById(equipmentWorkunitPK);
 			
 			//添加明细
 			installInListRepository.create(list);
