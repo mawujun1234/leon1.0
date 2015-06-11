@@ -174,6 +174,23 @@ public static final class WorkUnitContact {
 	public static final String workunit_id="workunit_id";
 	public static final String id="id";
 }
+public static final class Borrow {
+	public static final String id="id";
+	public static final String store_id="store_id";
+	public static final String operater="operater";
+	public static final String operateDate="operateDate";
+	public static final String workUnit_id="workUnit_id";
+	public static final String project_id="project_id";
+	public static final String memo="memo";
+}
+public static final class BorrowList {
+	public static final String borrow_id="borrow_id";
+	public static final String ecode="ecode";
+	public static final String isReturn="isReturn";
+	public static final String returnDate="returnDate";
+	public static final String memo="memo";
+	public static final String id="id";
+}
 public static final class InstallIn {
 	public static final String id="id";
 	public static final String store_id="store_id";

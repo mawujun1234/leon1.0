@@ -30,6 +30,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    	<if test="supplier_id!=null and supplier_id!=''">
 	    		and a.supplier_id = #{supplier_id}
 	    	</if>
+	    	<if test="status!=null and status!=''">
+	    		and a.status = #{status}
+	    	</if>
     	</where>
     	order by a.orderDate desc
     </select>
@@ -54,6 +57,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    	</if>
 	    	<if test="supplier_id!=null and supplier_id!=''">
 	    		and a.supplier_id = #{supplier_id}
+	    	</if>
+	    	<if test="status!=null and status!=''">
+	    		and a.status = #{status}
 	    	</if>
     	</where>
     	order by a.orderDate desc

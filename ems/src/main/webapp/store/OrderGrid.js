@@ -74,89 +74,7 @@ Ext.define('Ems.store.OrderGrid',{
 		   })
 	  }); 
 	  
-//	  var project_id=Ext.create('Ext.form.field.Hidden',{
-//		labelAlign:'right',
-//		labelWidth:40,
-//		fieldLabel: '项目',
-//		name:'project_id',
-//		readOnly:true,
-//		//emptyText:"不可编辑",
-//		allowBlank:false
-//	});
-//	var project_name=Ext.create('Ext.form.field.Text',{
-//		labelAlign:'right',
-//		labelWidth:40,
-//		fieldLabel: '项目',
-//		name:'project_name',
-//		readOnly:true,
-//		emptyText:"不可编辑",
-//		allowBlank:false
-//	});
-//	var project_button=Ext.create('Ext.button.Button',{
-//		text:'选择项目',
-//		margin:'0 0 0 5',
-//		handler:function(){
-//			var projectGrid=Ext.create('Ems.baseinfo.ProjectQueryGrid',{
-//				listeners:{
-//					itemdblclick:function(view,record,item){
-//						project_id.setValue(record.get("id"));
-//						project_name.setValue(record.get("name"));
-//						win.close();
-//					}
-//				}
-//			});
-//			var win=Ext.create('Ext.window.Window',{
-//				title:'双击选择项目',
-//				items:[projectGrid],
-//				layout:'fit',
-//				modal:true,
-//				width:700,
-//				height:300
-//			});
-//			win.show();
-//		}
-//	});
-	
-//	var project_combox=Ext.create('Ext.form.field.ComboBox',{
-//	        fieldLabel: '项目',
-//	        labelAlign:'right',
-//            labelWidth:40,
-//            flex:1,
-//	        //xtype:'combobox',
-//	        //afterLabelTextTpl: Ext.required,
-//	        name: 'project_id',
-//		    displayField: 'name',
-//		    valueField: 'id',
-//		    queryParam: 'name',
-//    		queryMode: 'remote',
-//    		triggerAction: 'query',
-//    		minChars:-1,
-//		    trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
-//		    trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
-//			onTrigger1Click : function(){
-//			    var me = this;
-//			    me.setValue('');
-//			},
-//	        allowBlank: false,
-//	        store:Ext.create('Ext.data.Store', {
-//		    	fields: ['id', 'name'],
-//			    proxy:{
-//			    	type:'ajax',
-//			    	//extraParams:{type:[1,3],look:true},
-//			    	actionMethods: {
-//				        create : 'POST',
-//				        read   : 'POST',
-//				        update : 'POST',
-//				        destroy: 'POST'
-//				    },
-//			    	url:Ext.ContextPath+"/project/query.do",
-//			    	reader:{
-//			    		type:'json',
-//			    		root:'root'
-//			    	}
-//			    }
-//		   })
-//	});	
+
 	var project_combox=Ext.create('Ems.baseinfo.ProjectCombo',{
 		//flex:1,
 		allowBlank: true
@@ -167,6 +85,22 @@ Ext.define('Ems.store.OrderGrid',{
 		flex:1,
 		allowBlank: true
 	});
+	
+	 var status_combox=Ext.create('Ext.form.field.ComboBox',{
+	        fieldLabel: '状态',
+	        labelAlign:'right',
+            labelWidth:60,
+	        //xtype:'combobox',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'status',
+		    displayField: 'name',
+		    valueField: 'id',
+	        //allowBlank: false,
+	        store:Ext.create('Ext.data.ArrayStore', {
+		    	fields: ['id', 'name'],
+			    data:[['edit','编辑中'],['editover','已确认']]
+		   })
+	  }); 
 	  
 	  var date_start=Ext.create('Ext.form.field.Date',{
 	  	fieldLabel: '订购日期',
@@ -200,7 +134,8 @@ Ext.define('Ems.store.OrderGrid',{
 					date_end: date_end.getRawValue(),
 					orderNo:order_no.getValue(),
 					project_id:project_combox.getValue(),
-					supplier_id:supplier_combox.getValue()
+					supplier_id:supplier_combox.getValue(),
+					status:status_combox.getValue()
 				  };
 	});
 	  me.tbar={
@@ -211,11 +146,11 @@ Ext.define('Ems.store.OrderGrid',{
 		items: [{
 			items: [store_combox,date_start,date_end] // toolbar 1
 		},{
-			items: [] // toolbar 1
-		},{
 			items: [supplier_combox] // toolbar 1
+		},{
+			items: [project_combox] // toolbar 1
 		}, {
-			items: [project_combox,order_no,{
+			items: [status_combox,order_no,{
 			text: '查询',
 			iconCls:'form-search-button',
 			handler: function(btn){
