@@ -88,97 +88,50 @@ public class BorrowController {
 	 */
 	@RequestMapping("/borrow/queryMain.do")
 	@ResponseBody
-	public Page queryMain(Integer start,Integer limit,String operateDate_start,String operateDate_end,String store_id,String workUnit_id,String installOutType_id) { 
+	public Page queryMain(Integer start,Integer limit,String operateDate_start,String operateDate_end,String store_id,String workUnit_id,String project_id,String isAllReturn) { 
 		Page page=Page.getInstance(start, limit);
 		page.addParam("operateDate_start", operateDate_start);
 		page.addParam("operateDate_end", operateDate_end);
-		page.addParam(M.InstallOut.store_id, store_id);
-		page.addParam(M.InstallOut.workUnit_id, workUnit_id);
-		page.addParam(M.InstallOut.installOutType_id, installOutType_id);
+		page.addParam(M.Borrow.store_id, store_id);
+		page.addParam(M.Borrow.workUnit_id, workUnit_id);
+		page.addParam(M.Borrow.project_id, project_id);
+		page.addParam(M.Borrow.isAllReturn, isAllReturn);
 		page=borrowService.queryMain(page);
 		return page;
 	}
 	
 	@RequestMapping("/borrow/queryList.do")
 	@ResponseBody
-	public List<InstallOutListVO> queryList(String installOut_id) { 
-		if(!StringUtils.hasText(installOut_id)){
+	public List<BorrowListVO> queryList(String borrow_id) { 
+		if(!StringUtils.hasText(borrow_id)){
 			throw new BusinessException("请先选择一条单据!");
 		}
-		List<InstallOutListVO> page=borrowService.queryList(installOut_id);
+		List<BorrowListVO> page=borrowService.queryList(borrow_id);
 		return page;
 	}
 	
-//	/**
-//	 * 请按自己的需求修改
-//	 * @author mawujun email:16064988@163.com qq:16064988
-//	 * @param id 是父节点的id
-//	 * @return
-//	 */
-//	@RequestMapping("/borrow/query.do")
-//	@ResponseBody
-//	public List<Borrow> query(String id) {
-//		Cnd cnd=Cnd.select().andEquals(M.Borrow.parent.id, "root".equals(id)?null:id);
-//		List<Borrow> borrowes=borrowService.query(cnd);
-//		//JsonConfigHolder.setFilterPropertys(Borrow.class,M.Borrow.parent.name());
-//		return borrowes;
-//	}
-//
-//	/**
-//	 * 这是基于分页的几种写法,的例子，请按自己的需求修改
-//	 * @author mawujun email:16064988@163.com qq:16064988
-//	 * @param start
-//	 * @param limit
-//	 * @param userName
-//	 * @return
-//	 */
-//	@RequestMapping("/borrow/query.do")
-//	@ResponseBody
-//	public Page query(Integer start,Integer limit,String sampleName){
-//		Page page=Page.getInstance(start,limit);//.addParam(M.Borrow.sampleName, "%"+sampleName+"%");
-//		return borrowService.queryPage(page);
-//	}
-//
-//	@RequestMapping("/borrow/query.do")
-//	@ResponseBody
-//	public List<Borrow> query() {	
-//		List<Borrow> borrowes=borrowService.queryAll();
-//		return borrowes;
-//	}
-//	
-//
-//	@RequestMapping("/borrow/load.do")
-//	public Borrow load(String id) {
-//		return borrowService.get(id);
-//	}
-//	
-//	@RequestMapping("/borrow/create.do")
-//	@ResponseBody
-//	public Borrow create(@RequestBody Borrow borrow) {
-//		borrowService.create(borrow);
-//		return borrow;
-//	}
-//	
-//	@RequestMapping("/borrow/update.do")
-//	@ResponseBody
-//	public  Borrow update(@RequestBody Borrow borrow) {
-//		borrowService.update(borrow);
-//		return borrow;
-//	}
-//	
-//	@RequestMapping("/borrow/deleteById.do")
-//	@ResponseBody
-//	public String deleteById(String id) {
-//		borrowService.deleteById(id);
-//		return id;
-//	}
-//	
-//	@RequestMapping("/borrow/destroy.do")
-//	@ResponseBody
-//	public Borrow destroy(@RequestBody Borrow borrow) {
-//		borrowService.delete(borrow);
-//		return borrow;
-//	}
+	/**
+	 * 在借用返还的时候，或旧设备返库的时候，获取设备信息的
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param ecode
+	 * @param workunit_id
+	 * @return
+	 */
+	@RequestMapping("/borrow/getBorrowListVOByEcode.do")
+	@ResponseBody
+	public BorrowListVO getBorrowListVOByEcode(String ecode,String store_id) {
+		BorrowListVO borrowListVO= borrowService.getBorrowEquipmentByEcode(ecode,store_id);
+
+		return borrowListVO;
+	}
 	
+	@RequestMapping("/borrow/borrowReturn.do")
+	@ResponseBody
+	//public String equipOutStore(@RequestBody Equipment[] equipments,String store_id,String workUnit_id,String type,String memo) {
+	public String borrowReturn(@RequestBody BorrowList borrowlists[],String store_id) { 
+		borrowService.borrowReturn(borrowlists,store_id);
+		return "success";
+	}
 	
+
 }

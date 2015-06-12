@@ -28,7 +28,8 @@ public class Borrow   implements IdEntity<String>{
 	private String workUnit_id;//作业单位
 	@Column(length=36)
 	private String project_id;//项目id
-
+	@org.hibernate.annotations.Type(type="yes_no")
+	private Boolean isAllReturn=false;//是否已经全部归还
 	
 	@Column(length=100)
 	private String memo;
@@ -75,6 +76,12 @@ public class Borrow   implements IdEntity<String>{
 	}
 	public void setProject_id(String project_id) {
 		this.project_id = project_id;
+	}
+	public Boolean getIsAllReturn() {
+		return isAllReturn;
+	}
+	public void setIsAllReturn(Boolean isAllReturn) {
+		this.isAllReturn = isAllReturn;
 	}
 	
 }

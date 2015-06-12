@@ -33,6 +33,32 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="workUnit_id!=null and workUnit_id!=''">
 			and a.workUnit_id =#{workUnit_id}
 		</if>
+		<if test="project_id!=null and project_id!=''">
+			and a.project_id =#{project_id}
+		</if>
+    </select>
+    <select id="queryMain_count" resultType="int" parameterType="map">
+    	select count(a.id) from ems_installout a
+		<where> 
+		<if test="operateDate_start!=null">
+			and to_char(a.operateDate,'yyyy-mm-dd') &gt;=#{operateDate_start}
+		</if>
+		<if test="operateDate_end!=null">
+			and to_char(a.operateDate,'yyyy-mm-dd') &lt;=#{operateDate_end}
+		</if>
+		<if test="store_id!=null and store_id!=''">
+			and a.store_id =#{store_id}
+		</if>
+		<if test="installOutType_id!=null and installOutType_id!=''">
+			and a.installOutType_id =#{installOutType_id}
+		</if>
+		<if test="workUnit_id!=null and workUnit_id!=''">
+			and a.workUnit_id =#{workUnit_id}
+		</if>
+		<if test="project_id!=null and project_id!=''">
+			and a.project_id =#{project_id}
+		</if>
+		</where>
     </select>
     <select id="queryList" resultType="com.mawujun.install.InstallOutListVO" parameterType="string">
     	select a.*,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name from 

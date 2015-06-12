@@ -59,11 +59,12 @@ public class Equipment implements IdEntity<String>{
 //	private String workUnit_id;//作业单位id，所属的作业单位，和store_id，同时只能有一个有值
 //	@Column(length=36)
 //	private String pole_id;//杆位，所属的杆位，store_id，workUnit_id，pole_id三个职能存在一个
-	
+	private Date last_install_date;//最近的安装时间，该设备安装在这个杆位上时的时间，包括最新安装和维修安装
 	
 	@Column(length=36)
 	private String last_installIn_id;//最后一次入库的入库id，这个字段是返库，无论坏件还是好贱返库的时候的id
-	private Date last_install_date;//最近的安装时间，该设备安装在这个杆位上时的时间，包括最新安装和维修安装
+	@Column(length=36)
+	private String last_borrow_id;
 	@Column(length=36)
 	private String last_task_id;//最新一次任务id
 	@Column(length=36)
@@ -209,6 +210,12 @@ public class Equipment implements IdEntity<String>{
 	}
 	public void setPlace(EquipmentPlace place) {
 		this.place = place;
+	}
+	public String getLast_borrow_id() {
+		return last_borrow_id;
+	}
+	public void setLast_borrow_id(String last_borrow_id) {
+		this.last_borrow_id = last_borrow_id;
 	}
 
 

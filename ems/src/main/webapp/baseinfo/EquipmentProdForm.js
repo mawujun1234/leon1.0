@@ -79,7 +79,9 @@ Ext.define('Ems.baseinfo.EquipmentProdForm',{
 	        allowBlank: false
 	    },
 	    {
-	    	xtype:'brandcombo'
+	    	xtype:'brandcombo',
+	    	afterLabelTextTpl: Ext.required,
+	    	allowBlank: false
 	    },
 //	    {
 //	    	fieldLabel: '品牌',

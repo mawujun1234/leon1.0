@@ -37,6 +37,8 @@ public class EquipmentRepair implements IdEntity<EquipmentRepairPK> {
 	private EquipmentRepairType type;//新品入库，还是返回入库，还是借用归还，还是调拨入库
 	@Column(length=36)
 	private String type_id;//如果是新品入库，就是新品入库的单据id，如果是领用返就是领用id，借用就是借用id
+	@Column(length=36)
+	private String from_id;//来源的id，比如从仓库来，就是仓库id，如果是从杆位上来就是杆位id
 	//@Column(updatable=false)
 	private Date inDate;//入库的时间
 	
@@ -88,6 +90,12 @@ public class EquipmentRepair implements IdEntity<EquipmentRepairPK> {
 	}
 	public void setRepair_id(String repair_id) {
 		this.repair_id = repair_id;
+	}
+	public String getFrom_id() {
+		return from_id;
+	}
+	public void setFrom_id(String from_id) {
+		this.from_id = from_id;
 	}
 	
 }

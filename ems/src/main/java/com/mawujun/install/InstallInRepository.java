@@ -22,10 +22,10 @@ public interface InstallInRepository extends IRepository<InstallIn, String>{
 	 * @param ecode
 	 * @return
 	 */
-	public InstallIn getInstallInByEcode(@Param("ecode")String ecode);
+	//public InstallIn getInstallInByEcode(@Param("ecode")String ecode);
 	
 	//public EquipmentVO getEquipmentByEcode(@Param("ecode")String ecode,@Param("workunit_id")String workunit_id);
-	public EquipmentVO getEquipmentByEcode(@Param("ecode")String ecode,@Param("workunit_id")String workunit_id);
+	public InstallInListVO getEquipmentByEcode(@Param("ecode")String ecode,@Param("workunit_id")String workunit_id);
 //	/**
 //	 * 查询领用单和返库单的数据
 //	 * @author mawujun 16064988@qq.com 

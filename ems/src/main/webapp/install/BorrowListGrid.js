@@ -1,7 +1,7 @@
-Ext.define('Ems.install.InstallOutListGrid',{
+Ext.define('Ems.install.BorrowListGrid',{
 	extend:'Ext.grid.Panel',
 	requires: [
-	     'Ems.install.InstallOutList'
+	     'Ems.install.BorrowList'
 	],
 	columnLines :true,
 	stripeRows:true,
@@ -20,6 +20,7 @@ Ext.define('Ems.install.InstallOutListGrid',{
 		{dataIndex:'ecode',text:'条码',width:130},
 		//{dataIndex:'installIn_id',text:'installIn_id'},
 		//{dataIndex:'isBad',text:'isBad'}
+		{dataIndex:'returnDate',text:'归还日期',xtype: 'datecolumn',   format:'Y-m-d'},
 		{dataIndex:'subtype_name',text:'小类'},
 		{dataIndex:'prod_name',text:'品名'},
 		{dataIndex:'brand_name',text:'品牌'},
@@ -36,12 +37,12 @@ Ext.define('Ems.install.InstallOutListGrid',{
 	  me.store=Ext.create('Ext.data.Store',{
 			autoSync:false,
 			pageSize:50,
-			model: 'Ems.install.InstallOutList',
+			model: 'Ems.install.BorrowList',
 			autoLoad:false,
 			proxy:{
 				type:'ajax',
 				actionMethods:{read:'POST'},
-				url:Ext.ContextPath+'/installOut/queryList.do',
+				url:Ext.ContextPath+'/borrow/queryList.do',
 				reader:{
 					type:'json',
 					root:'root'

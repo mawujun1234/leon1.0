@@ -9,14 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mawujun.baseinfo.Equipment;
 import com.mawujun.baseinfo.EquipmentPlace;
 import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.EquipmentStatus;
 import com.mawujun.baseinfo.EquipmentStore;
 import com.mawujun.baseinfo.EquipmentStoreRepository;
 import com.mawujun.baseinfo.EquipmentStoreType;
-import com.mawujun.baseinfo.EquipmentVO;
+import com.mawujun.baseinfo.EquipmentWorkunit;
 import com.mawujun.baseinfo.EquipmentWorkunitPK;
 import com.mawujun.baseinfo.EquipmentWorkunitRepository;
 import com.mawujun.exception.BusinessException;
@@ -54,23 +53,44 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 		return installInRepository;
 	}
 	
-	public EquipmentVO getEquipmentByEcode(String ecode,String workunit_id) {
-		EquipmentVO equipment= installInRepository.getEquipmentByEcode(ecode,workunit_id);
+	public InstallInListVO getEquipmentByEcode(String ecode,String workunit_id) {
+		//如果存在，再判断该设备是不是借用设备，如果是借用设备就不能返还
+		EquipmentWorkunit equipmentWorkunit=equipmentWorkunitRepository.getBorrowEquipment(ecode);
+		if(equipmentWorkunit!=null){
+			throw new BusinessException("该设备是借用设备,不能在这里进行返回!");
+		}
+				
+		InstallInListVO equipment= installInRepository.getEquipmentByEcode(ecode,workunit_id);
+		
+		//若果这个设备部在当前的作业单位身上
 		if(equipment==null){
 			//equipment=new Equipment();
 			//equipment.setStatus(0);
 			throw new BusinessException("该条码对应的设备不存在，或者该设备挂在其他作业单位或已经入库了!");
 		}
-		//设备返库的时候，设备如果不是手持或损坏状态的话，就不能进行返库，说明任务没有扫描或者没有提交
-		//if(equipment.getStatus()!=EquipmentStatus.out_storage && equipment.getStatus()!=EquipmentStatus.breakdown){
-		if(equipment.getStatus()!=EquipmentStatus.out_storage ){
-			throw new BusinessException("设备状态不对,不是作业单位手中持有的设备!");
-		}
+		
 		return equipment;
+
+//		if(equipment==null){
+//			//equipment=new Equipment();
+//			//equipment.setStatus(0);
+//			throw new BusinessException("该条码对应的设备不存在，或者该设备挂在其他作业单位或已经入库了!");
+//		}
+//		//设备返库的时候，设备如果不是手持或损坏状态的话，就不能进行返库，说明任务没有扫描或者没有提交
+//		if(equipment.getStatus()!=EquipmentStatus.out_storage ){
+//			throw new BusinessException("设备状态不对,不是作业单位手中持有的设备!");
+//		}
+//		d
+//		return equipment;
 	}
 	
-	
-	public void equipmentInStore(Equipment[] equipments, InstallIn installin) { 
+	/**
+	 * 领用返回的时候
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param equipments
+	 * @param installin
+	 */
+	public void equipmentInStore(InstallInList[] equipments, InstallIn installin) { 
 		String instore_id = ymdHmsDateFormat.format(new Date());
 		// InStore inStore=new InStore();
 		installin.setId(instore_id);
@@ -79,29 +99,15 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 		//outStore.setType(1);
 		installInRepository.create(installin);
 		
-		for(Equipment equipment:equipments){
+		for(InstallInList list:equipments){
 			
-			InstallInList list=new InstallInList();
-			list.setEcode(equipment.getEcode());
+			//InstallInList list=new InstallInList();
+			//list.setEcode(equipment.getEcode());
 			list.setInstallIn_id(instore_id);
 			
 			//如果设备状态时损坏，就把设备状态改为 入库待维修，否则就修改为在库
 			//把设备挂到相应的仓库上
 			//同时减持设备挂在作业单位
-//			if(equipment.getStatus()==EquipmentStatus.breakdown){
-//				list.setIsBad(true);
-//				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.wait_for_repair.getValue())
-//						.set(M.Equipment.store_id, installin.getStore_id())
-//						.set(M.Equipment.workUnit_id,null)
-//						.andEquals(M.Equipment.ecode, equipment.getEcode()));
-//			} else {
-//				list.setIsBad(false);
-//				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.in_storage.getValue())
-//						.set(M.Equipment.store_id, installin.getStore_id())
-//						.set(M.Equipment.workUnit_id,null)
-//						.andEquals(M.Equipment.ecode, equipment.getEcode()));
-//				
-//			}
 			if(installin.getType()==InstallInType.bad){
 				list.setIsBad(true);
 				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.wait_for_repair)
@@ -109,9 +115,8 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 						//.set(M.Equipment.workUnit_id,null)
 						.set(M.Equipment.place, EquipmentPlace.store)
 						.set(M.Equipment.last_installIn_id,instore_id)
-						.set(M.Equipment.last_installIn_id,instore_id)
 						.set(M.Equipment.last_workunit_id,installin.getWorkUnit_id())
-						.andEquals(M.Equipment.ecode, equipment.getEcode()));
+						.andEquals(M.Equipment.ecode, list.getEcode()));
 			} else {
 				list.setIsBad(false);
 				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.in_storage)
@@ -120,22 +125,22 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 						.set(M.Equipment.place, EquipmentPlace.store)
 						.set(M.Equipment.last_installIn_id,instore_id)
 						.set(M.Equipment.last_workunit_id,installin.getWorkUnit_id())
-						.andEquals(M.Equipment.ecode, equipment.getEcode()));
-				
+						.andEquals(M.Equipment.ecode, list.getEcode()));
 			}
 			
 			//插入仓库中
 			EquipmentStore equipmentStore=new EquipmentStore();
-			equipmentStore.setEcode(equipment.getEcode());
+			equipmentStore.setEcode(list.getEcode());
 			equipmentStore.setStore_id(installin.getStore_id());
 			equipmentStore.setNum(1);
 			equipmentStore.setInDate(new Date());
 			equipmentStore.setType(EquipmentStoreType.installin);
 			equipmentStore.setType_id(installin.getId());
+			equipmentStore.setFrom_id(installin.getWorkUnit_id());
 			equipmentStoreRepository.create(equipmentStore);
 			//workunit减掉这个设备
 			EquipmentWorkunitPK equipmentWorkunitPK=new EquipmentWorkunitPK();
-			equipmentWorkunitPK.setEcode(equipment.getEcode());
+			equipmentWorkunitPK.setEcode(list.getEcode());
 			equipmentWorkunitPK.setWorkunit_id(installin.getWorkUnit_id());
 			equipmentWorkunitRepository.deleteById(equipmentWorkunitPK);
 			

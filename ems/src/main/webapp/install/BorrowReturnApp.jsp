@@ -1,15 +1,15 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page language="java" import="java.util.*,com.mawujun.shiro.*" pageEncoding="UTF-8"%>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 
 %>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
 <html>
   <head>
     
-    <title>领用入库查询</title>
+    <title>Barcode</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -23,7 +23,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<%@include file="../../common/init.jsp" %>
 	<script type="text/javascript" src="../baseinfo/CommCombo.js"></script>
-	<script type="text/javascript" src="InstallOutQueryApp.js"></script>
+	<script type="text/javascript" src="BorrowReturnApp.js"></script>
+	<script type="text/javascript">
+		var loginName='<%=ShiroUtils.getName()%>';
+		var loginUserId='<%=ShiroUtils.getAuthenticationInfo().getId()%>';
+	</script>
   </head>
   
   <body>

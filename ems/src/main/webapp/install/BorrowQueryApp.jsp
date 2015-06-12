@@ -23,7 +23,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<%@include file="../../common/init.jsp" %>
 	<script type="text/javascript" src="../baseinfo/CommCombo.js"></script>
-	<script type="text/javascript" src="InstallOutQueryApp.js"></script>
+	<script type="text/javascript" src="BorrowQueryApp.js"></script>
   </head>
   
   <body>

@@ -6,7 +6,7 @@ package com.mawujun.baseinfo;
  *
  */
 public enum EquipmentStoreType {
-	newinstore("新品入库"),installin("返库"),borrow("借用返库"),adjust("调拨入库"),repair("维修入库");
+	newinstore("新品入库"),installin("返库"),borrowreturn("借用返库"),adjust("调拨入库"),repair("维修入库");
 	private String name;
 	
 	EquipmentStoreType(String name){

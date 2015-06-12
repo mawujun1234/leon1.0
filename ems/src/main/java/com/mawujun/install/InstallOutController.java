@@ -160,13 +160,14 @@ public class InstallOutController {
 	 */
 	@RequestMapping("/installOut/queryMain.do")
 	@ResponseBody
-	public Page queryMain(Integer start,Integer limit,String operateDate_start,String operateDate_end,String store_id,String workUnit_id,String installOutType_id) { 
+	public Page queryMain(Integer start,Integer limit,String operateDate_start,String operateDate_end,String store_id,String workUnit_id,String installOutType_id,String project_id) { 
 		Page page=Page.getInstance(start, limit);
 		page.addParam("operateDate_start", operateDate_start);
 		page.addParam("operateDate_end", operateDate_end);
 		page.addParam(M.InstallOut.store_id, store_id);
 		page.addParam(M.InstallOut.workUnit_id, workUnit_id);
 		page.addParam(M.InstallOut.installOutType_id, installOutType_id);
+		page.addParam(M.InstallOut.project_id, project_id);
 		page=outStoreService.queryMain(page);
 		return page;
 	}

@@ -74,13 +74,13 @@ public class RepairService extends AbstractService<Repair, String>{
 		if(repairvo==null){
 			throw new BusinessException("该设备不在该仓库");
 		}
-		//获取报修人的相关信息，和报修单id
-		InstallIn installIn=installInRepository.getInstallInByEcode(ecode);
-		if(installIn!=null){
-			repairvo.setWorkunit_id(installIn.getWorkUnit_id());
-			repairvo.setRepair_date(installIn.getOperateDate());
-			repairvo.setInstallIn_id(installIn.getId());
-		}
+//		//获取报修人的相关信息，和报修单id
+//		InstallIn installIn=installInRepository.getInstallInByEcode(ecode);
+//		if(installIn!=null){
+//			repairvo.setWorkunit_id(installIn.getWorkUnit_id());
+//			repairvo.setRepair_date(installIn.getOperateDate());
+//			repairvo.setInstallIn_id(installIn.getId());
+//		}
 
 		//获取任务单的id和其中的故障描述,这里要考虑是否把任务单号直接放置在InstallInList里面
 		return repairvo;	
@@ -105,6 +105,7 @@ public class RepairService extends AbstractService<Repair, String>{
 			repair.setStatus(RepairStatus.One.getValue());
 			repair.setStr_out_date(new Date());
 			repair.setStr_out_oper_id(oper_id);
+			
 			
 //			//获取故障信息和任务单号，根据条码，查询最新的任务信息
 //			//这里别忘记修改了，
@@ -237,6 +238,7 @@ public class RepairService extends AbstractService<Repair, String>{
 			equipmentRepair.setInDate(new Date());
 			equipmentRepair.setType(EquipmentRepairType.repair);
 			equipmentRepair.setType_id(repair.getId());
+			equipmentRepair.setFrom_id(repair.getStr_out_id());
 			equipmentRepairRepository.create(equipmentRepair);
 			
 			
@@ -317,6 +319,7 @@ public class RepairService extends AbstractService<Repair, String>{
 			equipmentStore.setInDate(new Date());
 			equipmentStore.setType(EquipmentStoreType.repair);
 			equipmentStore.setType_id(repair.getId());
+			equipmentStore.setFrom_id(repair.getRpa_id());
 			equipmentStoreRepository.create(equipmentStore);
 			
 			//维修单的状态也改为"完成"

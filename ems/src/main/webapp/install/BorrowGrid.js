@@ -1,7 +1,7 @@
-Ext.define('Ems.install.InstallOutGrid',{
+Ext.define('Ems.install.BorrowGrid',{
 	extend:'Ext.grid.Panel',
 	requires: [
-	     'Ems.install.InstallOut'
+	     'Ems.install.Borrow'
 	],
 	columnLines :true,
 	stripeRows:true,
@@ -19,7 +19,7 @@ Ext.define('Ems.install.InstallOutGrid',{
 		{dataIndex:'id',text:'编码'},
 		{dataIndex:'store_name',text:'仓库'},
 		{dataIndex:'workUnit_name',text:'作业单位'},
-		{dataIndex:'project_name',text:'作业单位'},
+		{dataIndex:'project_name',text:'项目'},
 		{dataIndex:'operateDate',text:'操作时间',xtype: 'datecolumn',   format:'Y-m-d'},
 		{dataIndex:'operater',text:'操作人'},
 		{dataIndex:'memo',text:'备注'}
@@ -28,12 +28,12 @@ Ext.define('Ems.install.InstallOutGrid',{
 	  me.store=Ext.create('Ext.data.Store',{
 			autoSync:false,
 			pageSize:50,
-			model: 'Ems.install.InstallOut',
+			model: 'Ems.install.Borrow',
 			autoLoad:false,
 			proxy:{
 				type:'ajax',
 				actionMethods:{read:'POST'},
-				url:Ext.ContextPath+'/installOut/queryMain.do',
+				url:Ext.ContextPath+'/borrow/queryMain.do',
 				reader:{
 					type:'json',
 					root:'root'
@@ -46,7 +46,7 @@ Ext.define('Ems.install.InstallOutGrid',{
 					store_id:store_combox.getValue(),
 					workUnit_id:workUnit_combox.getValue(),
 					project_id:project_combox.getValue( ),
-					installOutType_id:installOutType_combox.getValue(),
+					isAllReturn:isAllReturn_combox.getValue(),
 					operateDate_start: operateDate_start.getRawValue(),
 					operateDate_end: operateDate_end.getRawValue()
 				  };
@@ -151,27 +151,19 @@ Ext.define('Ems.install.InstallOutGrid',{
 		flex:1,
 		allowBlank: false
 	});
-	 var installOutType_combox=Ext.create('Ext.form.field.ComboBox',{
-	        fieldLabel: '领用类型',
+	 var isAllReturn_combox=Ext.create('Ext.form.field.ComboBox',{
+	        fieldLabel: '返还状态',
 	        labelAlign:'right',
             labelWidth:55,
 	        //xtype:'combobox',
 	        //afterLabelTextTpl: Ext.required,
-	        name: 'installOutType_id',
+	        name: 'isAllReturn_id',
 		    displayField: 'name',
 		    valueField: 'id',
-	        allowBlank: false,
-	        store:Ext.create('Ext.data.Store', {
+	        allowBlank: true,
+	        store:Ext.create('Ext.data.ArrayStore', {
 		    	fields: ['id', 'name'],
-			    proxy:{
-			    	type:'ajax',
-			    	//extraParams:{type:[1,3],edit:true},
-			    	url:Ext.ContextPath+"/installOutType/query.do",
-			    	reader:{
-			    		type:'json',
-			    		root:'root'
-			    	}
-			    }
+			    data:[['N','未返还'],['Y','全返还']]
 		   })
 	});
 	 me.tbar={
@@ -186,7 +178,7 @@ Ext.define('Ems.install.InstallOutGrid',{
 		}, {
 			items: [project_combox] // toolbar 1
 		},{
-			items: [installOutType_combox,{
+			items: [isAllReturn_combox,{
 			text: '查询',
 			iconCls:'form-search-button',
 			handler: function(btn){

@@ -98,6 +98,7 @@ public class InStoreService extends AbstractService<InStore, String>{
 			equipmentStore.setInDate(new Date());
 			equipmentStore.setType(EquipmentStoreType.newinstore);
 			equipmentStore.setType_id(inStore.getId());
+			equipmentStore.setFrom_id("newinstore");
 			equipmentStoreRepository.create(equipmentStore);
 			
 			//插入入库单明细

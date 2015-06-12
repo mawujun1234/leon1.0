@@ -6,7 +6,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
 <mapper namespace="com.mawujun.install.InstallInRepository">
 
-	<select id="getEquipmentByEcode" resultType="com.mawujun.baseinfo.EquipmentVO" >
+	<select id="getEquipmentByEcode" resultType="com.mawujun.install.InstallInListVO" >
     	select a.*,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name 
     	from ems_equipment a
 		inner join ems_equipmentsubtype b on a.subtype_id=b.id
@@ -17,11 +17,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		where a.ecode=#{ecode} and f.workunit_id=#{workunit_id}
     </select> 
     
+    <!-- 
 	<select id="getInstallInByEcode" resultType="com.mawujun.install.InstallIn">
     	select * from ems_installin a
 		where a.id=(select max(installin_id) from ems_installinlist where ecode=#{ecode})
     </select> 
-    
+     -->
     
     <!-- 查询领用单和返库单的数据 -->
     <select id="queryMain" resultType="com.mawujun.install.InstallInVO" parameterType="map">
@@ -43,11 +44,33 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			and a.type =#{type}
 		</if>
     </select>
+    <select id="queryMain_count" resultType="int" parameterType="map">
+    	select count(a.id) from ems_installin a
+		<where>
+		<if test="operateDate_start!=null">
+			and to_char(a.operateDate,'yyyy-mm-dd') &gt;=#{operateDate_start}
+		</if>
+		<if test="operateDate_end!=null">
+			and to_char(a.operateDate,'yyyy-mm-dd') &lt;=#{operateDate_end}
+		</if>
+		<if test="store_id!=null and store_id!=''">
+			and a.store_id =#{store_id}
+		</if>
+		<if test="workUnit_id!=null and workUnit_id!=''">
+			and a.workUnit_id =#{workUnit_id}
+		</if>
+		<if test="type!=null and type!=''">
+			and a.type =#{type}
+		</if>
+		</where>
+    </select>
 
     <!-- 查询某个领用单或返回单的明细数据-->
     <select id="queryList" resultType="com.mawujun.install.InstallInListVO" parameterType="string">
     	select a.*,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name from 
-    	(select f.*,a.subtype_id,a.prod_id,a.brand_id,a.supplier_id,a.style from ems_equipment a inner join ems_installinlist f on a.ecode=f.ecode and f.installIn_id=#{installIn_id}) a
+    	(select f.*,a.subtype_id,a.prod_id,a.brand_id,a.supplier_id,a.style 
+    	from ems_equipment a 
+    	inner join ems_installinlist f on a.ecode=f.ecode and f.installIn_id=#{installIn_id}) a
 		inner join ems_equipmentsubtype b on a.subtype_id=b.id
 		inner join ems_equipmentprod c on a.prod_id=c.id
 		inner join ems_brand d on a.brand_id=d.id

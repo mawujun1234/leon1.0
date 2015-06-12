@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.baseinfo.Equipment;
 import com.mawujun.baseinfo.EquipmentService;
+import com.mawujun.baseinfo.EquipmentStatus;
 import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.utils.M;
@@ -136,19 +137,26 @@ public class InstallInController {
 		return page;
 	}
 	
+	/**
+	 * 在领用返回的时候，或旧设备返库的时候，获取设备信息的
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param ecode
+	 * @param workunit_id
+	 * @return
+	 */
 	@RequestMapping("/installIn/getEquipmentByEcode.do")
 	@ResponseBody
-	public EquipmentVO getEquipmentByEcode(String ecode,String workunit_id) {
-		EquipmentVO equipment= installInService.getEquipmentByEcode(ecode,workunit_id);
-		
+	public InstallInListVO getEquipmentByEcode(String ecode,String workunit_id) {
+		InstallInListVO equipment= installInService.getEquipmentByEcode(ecode,workunit_id);
+
 		return equipment;
 	}
 	
 	@RequestMapping("/installIn/equipmentInStore.do")
 	@ResponseBody
 	//public String equipOutStore(@RequestBody Equipment[] equipments,String store_id,String workUnit_id,String type,String memo) {
-	public String equipmentInStore(@RequestBody Equipment[] equipments, InstallIn installin) { 
-		installInService.equipmentInStore(equipments, installin);
+	public String equipmentInStore(@RequestBody InstallInList[] installInLists, InstallIn installin) { 
+		installInService.equipmentInStore(installInLists, installin);
 		return "success";
 	}
 	

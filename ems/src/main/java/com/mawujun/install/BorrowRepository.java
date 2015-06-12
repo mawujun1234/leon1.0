@@ -16,6 +16,10 @@ import com.mawujun.install.Borrow;
 @Repository
 public interface BorrowRepository extends IRepository<Borrow, String>{
 	public Page queryMain(Page page);
-	public List<InstallOutListVO> queryList(@Param("borrow_id")String borrow_id) ;
+	public List<BorrowListVO> queryList(@Param("borrow_id")String borrow_id) ;
+	
+	public BorrowListVO getBorrowListVO(@Param("borrow_id")String borrow_id,@Param("ecode")String ecode);
+	public void returnBorrowList(@Param("borrowlist_id")String borrowlist_id);
+	public void updateBorrowIsAllReturn(@Param("borrow_id")String borrow_id);
 
 }

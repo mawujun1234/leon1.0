@@ -65,8 +65,9 @@ public static final class ems_equipment {
 	public static final String status="status";
 	public static final String place="place";
 	public static final String fisData="fisData";
-	public static final String last_installIn_id="last_installIn_id";
 	public static final String last_install_date="last_install_date";
+	public static final String last_installIn_id="last_installIn_id";
+	public static final String last_borrow_id="last_borrow_id";
 	public static final String last_task_id="last_task_id";
 	public static final String last_workunit_id="last_workunit_id";
 }
@@ -78,6 +79,7 @@ public static final class ems_equipment_pole {
 	public static final String inDate="inDate";
 	public static final String type="type";
 	public static final String type_id="type_id";
+	public static final String from_id="from_id";
 }
 public static final class ems_equipmentprod {
 	public static final String id="id";
@@ -99,6 +101,7 @@ public static final class ems_equipment_repair {
 	public static final String num="num";
 	public static final String type="type";
 	public static final String type_id="type_id";
+	public static final String from_id="from_id";
 	public static final String inDate="inDate";
 }
 public static final class ems_equipment_store {
@@ -107,6 +110,7 @@ public static final class ems_equipment_store {
 	public static final String num="num";
 	public static final String type="type";
 	public static final String type_id="type_id";
+	public static final String from_id="from_id";
 	public static final String inDate="inDate";
 }
 public static final class ems_equipmentsubtype {
@@ -132,6 +136,7 @@ public static final class ems_equipment_workunit {
 	public static final String inDate="inDate";
 	public static final String type="type";
 	public static final String type_id="type_id";
+	public static final String from_id="from_id";
 }
 public static final class ems_pole {
 	public static final String code="code";
@@ -208,6 +213,7 @@ public static final class ems_borrow {
 	public static final String operateDate="operateDate";
 	public static final String workUnit_id="workUnit_id";
 	public static final String project_id="project_id";
+	public static final String isAllReturn="isAllReturn";
 	public static final String memo="memo";
 }
 public static final class ems_borrowlist {

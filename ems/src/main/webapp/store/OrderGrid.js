@@ -123,6 +123,7 @@ Ext.define('Ems.store.OrderGrid',{
 		fieldLabel:'订单号',
 		name:'orderNo',
 		labelWidth:40,
+		flex:1,
 		allowBlank:true,
 		labelAlign:'right'
 	});

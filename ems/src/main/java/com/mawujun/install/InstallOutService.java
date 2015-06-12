@@ -90,6 +90,7 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 			equipmentWorkunit.setNum(1);
 			equipmentWorkunit.setType(EquipmentWorkunitType.installout);
 			equipmentWorkunit.setType_id(outstore_id);
+			equipmentWorkunit.setFrom_id(outStore.getStore_id());
 			equipmentWorkunitRepository.create(equipmentWorkunit);
 			
 			

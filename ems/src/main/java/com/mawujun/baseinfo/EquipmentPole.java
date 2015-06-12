@@ -33,6 +33,8 @@ public class EquipmentPole implements IdEntity<EquipmentPolePK>{
 	private EquipmentPoleType type;//安装到杆位上的类型 是新安装上去的，还是维修安装上去的
 	@Column(length=36)
 	private String type_id;//任务id
+	@Column(length=36)
+	private String from_id;//来源的id，比如从仓库来，就是仓库id，如果是从杆位上来就是杆位id
 	
 	public EquipmentPolePK getId() {
 		return new EquipmentPolePK(ecode,pole_id);
@@ -89,6 +91,12 @@ public class EquipmentPole implements IdEntity<EquipmentPolePK>{
 	}
 	public void setType_id(String type_id) {
 		this.type_id = type_id;
+	}
+	public String getFrom_id() {
+		return from_id;
+	}
+	public void setFrom_id(String from_id) {
+		this.from_id = from_id;
 	}
 
 }

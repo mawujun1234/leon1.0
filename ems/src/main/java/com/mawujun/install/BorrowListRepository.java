@@ -13,5 +13,5 @@ import com.mawujun.install.BorrowList;
 @Repository
 public interface BorrowListRepository extends IRepository<BorrowList, String>{
 
-
+	
 }

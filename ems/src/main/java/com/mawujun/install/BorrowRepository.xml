@@ -6,6 +6,79 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
 <mapper namespace="com.mawujun.install.BorrowRepository">
 
-	
+	<select id="queryMain" resultType="com.mawujun.install.BorrowVO" parameterType="map">
+    	select a.*,b.name as store_name,c.name as workUnit_name,d.name as project_name,'out' as type from ems_borrow a,ems_store b,ems_workunit c,ems_project d
+		where a.store_id=b.id and a.workunit_id=c.id and a.project_id=d.id
+		<if test="operateDate_start!=null">
+			and to_char(a.operateDate,'yyyy-mm-dd') &gt;=#{operateDate_start}
+		</if>
+		<if test="operateDate_end!=null">
+			and to_char(a.operateDate,'yyyy-mm-dd') &lt;=#{operateDate_end}
+		</if>
+		<if test="store_id!=null and store_id!=''">
+			and a.store_id =#{store_id}
+		</if>
+		<if test="isAllReturn!=null and isAllReturn!=''">
+			and a.isAllReturn =#{isAllReturn}
+		</if>
+		<if test="workUnit_id!=null and workUnit_id!=''">
+			and a.workUnit_id =#{workUnit_id}
+		</if>
+		<if test="project_id!=null and project_id!=''">
+			and a.project_id =#{project_id}
+		</if>
+    </select>
+    <select id="queryMain_count" resultType="int" parameterType="map">
+    	select count(a.id) from ems_borrow a
+		<where> 
+		<if test="operateDate_start!=null">
+			and to_char(a.operateDate,'yyyy-mm-dd') &gt;=#{operateDate_start}
+		</if>
+		<if test="operateDate_end!=null">
+			and to_char(a.operateDate,'yyyy-mm-dd') &lt;=#{operateDate_end}
+		</if>
+		<if test="store_id!=null and store_id!=''">
+			and a.store_id =#{store_id}
+		</if>
+		<if test="isAllReturn!=null and isAllReturn!=''">
+			and a.isAllReturn =#{isAllReturn}
+		</if>
+		<if test="workUnit_id!=null and workUnit_id!=''">
+			and a.workUnit_id =#{workUnit_id}
+		</if>
+		<if test="project_id!=null and project_id!=''">
+			and a.project_id =#{project_id}
+		</if>
+		</where>
+    </select>
+    <select id="queryList" resultType="com.mawujun.install.BorrowListVO" parameterType="string">
+    	select a.*,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name from 
+    	(select f.*,a.subtype_id,a.prod_id,a.brand_id,a.supplier_id,a.style from ems_equipment a inner join ems_borrowlist f on a.ecode=f.ecode and f.borrow_id=#{borrow_id}) a
+		inner join ems_equipmentsubtype b on a.subtype_id=b.id
+		inner join ems_equipmentprod c on a.prod_id=c.id
+		inner join ems_brand d on a.brand_id=d.id
+		inner join ems_supplier e on a.supplier_id=e.id
+    </select>
+    
+    <!-- 通过ecode和borrow_id获取借用单的明细数据 -->
+    <select id="getBorrowListVO" resultType="com.mawujun.install.BorrowListVO">
+		select a.*,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name from 
+        (select f.*,a.subtype_id,a.prod_id,a.brand_id,a.supplier_id,a.style from ems_equipment a inner join ems_borrowlist f on a.ecode=f.ecode and f.borrow_id=#{borrow_id} and a.ecode=#{ecode}) a
+		inner join ems_equipmentsubtype b on a.subtype_id=b.id
+		inner join ems_equipmentprod c on a.prod_id=c.id
+		inner join ems_brand d on a.brand_id=d.id
+		inner join ems_supplier e on a.supplier_id=e.id
+	</select>
+	<!-- 归还借用明细数据的设备 -->
+	<update id="returnBorrowList" parameterType="string">
+		update ems_borrowlist set isReturn='Y' , returnDate=sysdate where id=#{borrowlist_id}
+	</update>
+	<!-- 判断该借用单的设备是否已经全部归还 -->
+	<update id="updateBorrowIsAllReturn" parameterType="string">
+		update ems_borrow set isallreturn=(
+		       select decode(count(id) ,sum(decode(isreturn,'Y',1,0)),'Y','N')  from ems_borrowlist 
+		       where borrow_id=#{borrow_id}
+		) where id=#{borrow_id}
+	</update>
 </mapper>
 

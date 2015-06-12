@@ -117,6 +117,7 @@ public class EquipmentTypeController {
 	@RequestMapping("/equipmentType/create.do")
 	@ResponseBody
 	public  EquipmentTypeAbstract create(@RequestBody EquipmentTypeAbstract equipmentType) {
+		equipmentType.setId(equipmentType.getParent_id()+equipmentType.getId());
 		if(!StringUtils.hasText(equipmentType.getParent_id())){
 			equipmentType.setParent_id(null);
 			Long count=equipmentTypeService.queryCount(Cnd.select().andEquals(M.EquipmentType.id, equipmentType.getId()));

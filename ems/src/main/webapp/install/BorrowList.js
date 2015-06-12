@@ -7,7 +7,14 @@ Ext.defineModel("Ems.install.BorrowList",{
 		{name:'ecode',type:'string'},
 		{name:'isReturn',type:'bool'},
 		{name:'memo',type:'string'},
-		{name:'returnDate',type:'date', dateFormat: 'Y-m-d'}
+		{name:'returnDate',type:'date', dateFormat: 'Y-m-d'},
+		
+		{name:'subtype_name',type:'string'},
+		{name:'prod_name',type:'string'},
+		{name:'prod_spec',type:'string'},
+		{name:'brand_name',type:'string'},
+		{name:'supplier_name',type:'string'},
+		{name:'style',type:'string'}
 	],
 	associations:[
 	]

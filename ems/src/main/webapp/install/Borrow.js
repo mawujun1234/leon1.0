@@ -8,7 +8,12 @@ Ext.defineModel("Ems.install.Borrow",{
 		{name:'operater',type:'string'},
 		{name:'project_id',type:'string'},
 		{name:'store_id',type:'string'},
-		{name:'workUnit_id',type:'string'}
+		{name:'workUnit_id',type:'string'},
+		{name:'isAllReturn',type:'bool'},
+		
+		{name:'project_name',type:'string'},
+		{name:'store_name',type:'string'},
+		{name:'workUnit_name',type:'string'}
 	],
 	associations:[
 	]
