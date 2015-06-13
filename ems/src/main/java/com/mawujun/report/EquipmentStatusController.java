@@ -11,6 +11,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.mawujun.baseinfo.EquipmentPlace;
+import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.EquipmentService;
 import com.mawujun.baseinfo.EquipmentStatus;
 import com.mawujun.baseinfo.EquipmentVO;
@@ -32,6 +34,8 @@ public class EquipmentStatusController {
 	@Resource
 	private EquipmentService equipmentService;
 	@Resource
+	private EquipmentRepository equipmentRepository;
+	@Resource
 	private WorkUnitService workUnitService;
 	@Resource
 	private StoreService storeService;
@@ -52,6 +56,15 @@ public class EquipmentStatusController {
 //		} else if(baseinfo.getPole_id()!=null){
 //			baseinfo.setPole_address(poleService.get(baseinfo.getPole_id()).geetFullAddress());
 //		}
+		if(baseinfo.getPlace()==EquipmentPlace.workunit){
+			baseinfo.setWorkUnit_name(equipmentRepository.getEquipmentWorkunitVO(ecode).getWorkunit_name());
+		} else if(baseinfo.getPlace()==EquipmentPlace.store ){
+			baseinfo.setStore_name(equipmentRepository.getEquipmentStoreVO(ecode).getStore_name());
+		} else if(baseinfo.getPlace()==EquipmentPlace.repair){
+			baseinfo.setPole_address(equipmentRepository.getEquipmentRepairVO(ecode).getRepair_name());
+		} else if(baseinfo.getPlace()==EquipmentPlace.pole){
+			baseinfo.setPole_address(equipmentRepository.getEquipmentPoleVO(ecode).getPole_address());
+		}
 
 		baseinfo.setFisData(null);
 		baseinfo.setIsInStore(null);

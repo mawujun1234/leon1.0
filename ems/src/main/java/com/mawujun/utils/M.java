@@ -65,11 +65,13 @@ public static final class Equipment {
 	public static final String status="status";
 	public static final String place="place";
 	public static final String fisData="fisData";
-	public static final String last_install_date="last_install_date";
 	public static final String last_installIn_id="last_installIn_id";
 	public static final String last_borrow_id="last_borrow_id";
-	public static final String last_task_id="last_task_id";
 	public static final String last_workunit_id="last_workunit_id";
+	public static final String last_install_date="last_install_date";
+	public static final String last_task_id="last_task_id";
+	public static final String last_pole_id="last_pole_id";
+	public static final String currt_task_id="currt_task_id";
 }
 public static final class EquipmentPole {
 	public static final String ecode="ecode";

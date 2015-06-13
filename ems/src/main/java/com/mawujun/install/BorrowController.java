@@ -46,7 +46,7 @@ public class BorrowController {
 	@RequestMapping("/borrow/getEquipmentByEcode.do")
 	@ResponseBody
 	public EquipmentVO getEquipmentByEcode(String ecode,String store_id) {	
-		EquipmentVO equipment= equipmentService.getEquipmentByEcode(ecode,store_id);
+		EquipmentVO equipment= equipmentService.getEquipmentByEcode_in_store(ecode,store_id);
 		if(equipment==null){
 			//equipment=new Equipment();
 			//equipment.setStatus(0);

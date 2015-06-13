@@ -5,12 +5,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
 <mapper namespace="com.mawujun.baseinfo.EquipmentWorkunitRepository">
-	<!--  根据条码 查询借用的设备信息,通过条码获取的时候是可以获取到唯一的一条记录的-->
-	<select id="getBorrowEquipment" resultType="com.mawujun.baseinfo.EquipmentWorkunit">
-		select * from 
-		ems_equipment_workunit 
-		where ecode=#{ecode} and type='borrow'
-	</select>
+	
 	
 	
    

@@ -97,6 +97,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			</if>
 		</where>
     </select>
+    <!-- 查询某个任务下所有少苗过的设备数量-->
+    <select id="query_count_tasklist_by_task" resultType="int" parameterType="string">
+    	select count(ecode) from ems_taskequipmentlist where task_id=#{task_id}
+    </select>
     
     <!-- 其实只要查询，还没有发送过任务的点位 -->
     <select id="queryPoles_no_send_task" resultType="com.mawujun.baseinfo.PoleVO" parameterType="map">
@@ -331,7 +335,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	select count(1) from ems_equipment where status not in (2,3,4)
 		and ecode in (select ecode from ems_taskequipmentlist where task_id=#{task_id})
     </select>
-    <select id="count_task_quip_status1" resultType="string" parameterType="string">
+   <!-- <select id="count_task_quip_status1" resultType="string" parameterType="string">
     	select ecode from ems_equipment where status not in (2,3,4)
 		and ecode in 
 		<foreach item="item" index="index" collection="ecodes" open="(" separator="," close=")">  
@@ -340,7 +344,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     </select>
     <select id="query_task_equip_list" resultType="string" parameterType="string">
     	select ecode from ems_taskequipmentlist where task_id=#{task_id}
-    </select>
+    </select>-->
     <!-- 检查其他任务是否已经扫描过这个设备了 -->
     <select id="query_other_task_have_scaned" resultType="string" parameterType="string">
     	select a.id from ems_task a,ems_taskequipmentlist b 

@@ -6,7 +6,7 @@ package com.mawujun.baseinfo;
  *
  */
 public enum EquipmentPoleType {
-	newinstall("安装"),repair("维修");
+	install("安装");//,repair("维修");
 	private String name;
 	
 	EquipmentPoleType(String name){

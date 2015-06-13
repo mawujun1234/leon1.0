@@ -16,7 +16,7 @@ $.ajaxSetup({
 	/****/
 	complete: function(jqXHR,textStatus ){
 		var contentType=jqXHR.getResponseHeader("Content-Type");
-		if(contentType.indexOf("application/json")!=-1){
+		if(contentType && contentType.indexOf("application/json")!=-1){
 			//统一处理后台返回的信息
 			var data=$.parseJSON(jqXHR.responseText);
 			if(!data.success && data.reasons){
@@ -35,7 +35,7 @@ $.ajaxSetup({
 			alert('数据返回类型错误'); 
 		} else {
 			var contentType=jqXHR.getResponseHeader("Content-Type");
-			if(contentType.indexOf("application/json")!=-1){
+			if(contentType && contentType.indexOf("application/json")!=-1){
 				//统一处理后台返回的信息
 				var data=$.parseJSON(jqXHR.responseText);
 				if(!data.success && data.reasons){

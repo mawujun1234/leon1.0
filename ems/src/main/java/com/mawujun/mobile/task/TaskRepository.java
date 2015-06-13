@@ -19,6 +19,8 @@ import com.mawujun.mobile.task.Task;
  */
 @Repository
 public interface TaskRepository extends IRepository<Task, String>{
+	public int query_count_tasklist_by_task(@Param("task_id")String task_id);
+	
 	public String queryMax_id(@Param("createDate")String createDate);
 	public Page queryPoles(Page page);
 	public Page queryPoles_no_send_task(Page page);
@@ -32,8 +34,8 @@ public interface TaskRepository extends IRepository<Task, String>{
 	 * @param ecodes
 	 * @return
 	 */
-	public List<String> count_task_quip_status1(@Param("task_id")String task_id,@Param("ecodes")List<String> ecodes);
-	public List<String> query_task_equip_list(@Param("task_id")String task_id);
+	//public List<String> count_task_quip_status1(@Param("task_id")String task_id,@Param("ecodes")List<String> ecodes);
+	//public List<String> query_task_equip_list(@Param("task_id")String task_id);
 	/**
 	 * 查询其他扫描过这个设备的任务列表
 	 * @author mawujun email:160649888@163.com qq:16064988

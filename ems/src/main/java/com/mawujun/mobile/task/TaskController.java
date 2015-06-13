@@ -261,10 +261,23 @@ public class TaskController {
 	 * @param ecode
 	 * @return
 	 */
-	@RequestMapping("/task/mobile/getEquipmentInfo.do")
+	@RequestMapping("/task/mobile/getTaskEquipmentList.do")
 	@ResponseBody
-	public TaskEquipmentListVO getEquipmentInfo(String ecode,String task_id){
-		return taskService.getEquipmentInfo(ecode, task_id);
+	public TaskEquipmentListVO getTaskEquipmentList(String ecode,String task_id,TaskType task_type,String pole_id){
+		return taskService.mobile_getAndCreateTaskEquipmentList(ecode, task_id,task_type,pole_id);
+		//return equipmentVO;
+	}
+	/**
+	 * 在某个任务上删除某个设备
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param ecode
+	 * @return
+	 */
+	@RequestMapping("/task/mobile/deleteTaskEquipmentList.do")
+	@ResponseBody
+	public String deleteTaskEquipmentList(String taskEquipmentList_id,String ecode){
+		taskService.mobile_deleteTaskEquipmentList(ecode,taskEquipmentList_id);
+		return "success";
 		//return equipmentVO;
 	}
 	
@@ -277,9 +290,9 @@ public class TaskController {
 	@RequestMapping("/task/mobile/save.do")
 	@ResponseBody
 	//public String mobile_save(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason,String[] ecodes,Integer[] equipment_statuses) {
-	public String mobile_save(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason,String[] ecodes,EquipmentStatus[] equipment_statuses) {
+	public String mobile_save(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason) {
 		//jquery 2 json地方有文图，，不能将数组正确的转换
-		taskService.mobile_save(task_id,hitchType_id,hitchReasonTpl_id,hitchReason,ecodes,equipment_statuses);
+		taskService.mobile_save(task_id,hitchType_id,hitchReasonTpl_id,hitchReason);
 		return "success";
 	}
 	
@@ -292,9 +305,9 @@ public class TaskController {
 	@RequestMapping("/task/mobile/submit.do")
 	@ResponseBody
 	//public String mobile_submit(String task_id,String task_type,String[] ecodes,Integer[] equipment_statuses) {
-	public String mobile_submit(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason,String[] ecodes,EquipmentStatus[] equipment_statuses) {
+	public String mobile_submit(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason) {
 		//jquery 2 json地方有文图，，不能将数组正确的转换
-		taskService.mobile_submit(task_id,hitchType_id,hitchReasonTpl_id,hitchReason,ecodes,equipment_statuses);
+		taskService.mobile_submit(task_id,hitchType_id,hitchReasonTpl_id,hitchReason);
 		return "success";
 	}
 	

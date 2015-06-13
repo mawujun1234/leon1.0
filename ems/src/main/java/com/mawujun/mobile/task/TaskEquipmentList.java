@@ -32,7 +32,7 @@ public class TaskEquipmentList extends UUIDEntity {
 	//private Integer equipment_status;
 	@Enumerated(EnumType.STRING)
 	@Column(length=20)
-	private EquipmentStatus equipment_status;
+	private EquipmentStatus equipment_status;//安装或维修前的设备状态，这个字段可以删除，没设么用了
 	
 	public String getTask_id() {
 		return task_id;

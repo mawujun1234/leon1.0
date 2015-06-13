@@ -8,5 +8,5 @@ import com.mawujun.repository1.IRepository;
 
 @Repository
 public interface EquipmentStoreRepository extends IRepository<EquipmentStore,EquipmentStorePK> {
-	public void changeStore(Map<String,Object> params);
+	//public void changeStore(Map<String,Object> params);
 }

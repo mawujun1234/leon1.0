@@ -7,5 +7,5 @@ import com.mawujun.repository1.IRepository;
 
 @Repository
 public interface EquipmentWorkunitRepository extends IRepository<EquipmentWorkunit,EquipmentWorkunitPK> {
-	public EquipmentWorkunit getBorrowEquipment(@Param("ecode")String ecode);
+	//public EquipmentWorkunit getBorrowEquipment(@Param("ecode")String ecode);
 }

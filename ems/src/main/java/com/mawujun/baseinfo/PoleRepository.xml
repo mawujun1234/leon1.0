@@ -33,6 +33,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		inner join ems_equipment_pole f on a.ecode=f.ecode
 		where f.pole_id=#{id}
     </select>
+    
+    <!-- 查询在杆位上的设备数量-->
+	<select id="query_count_equipment_in_pole" resultType="int">
+    	select count(ecode) from ems_equipment_pole where  pole_id=#{pole_id}
+    </select>
    
    
     <!-- 查询某个客户下所有的点位 机器点位上的设备信息 -->

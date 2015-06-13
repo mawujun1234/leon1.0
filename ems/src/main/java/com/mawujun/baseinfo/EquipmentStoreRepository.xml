@@ -5,11 +5,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
 <mapper namespace="com.mawujun.baseinfo.EquipmentStoreRepository">
-	<!-- 把设备从一个库移到另一个库的时候,例如调拨，维修入库，仓库从维修中心中重新入库-->
-	<update id="changeStore" parameterType="map">
-		update ems_equipment_store set store_id=#{store_in_id},type=#{type},type_id=#{type_id},inDate=sysdate
-		where ecode=#{ecode} and store_id=#{store_out_id}
-	</update>
+	
    
 </mapper>
 

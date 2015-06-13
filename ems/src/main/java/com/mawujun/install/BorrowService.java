@@ -89,6 +89,7 @@ public class BorrowService extends AbstractService<Borrow, String>{
 			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.out_storage)
 					//.set(M.Equipment.workUnit_id, borrow.getWorkUnit_id())
 					//.set(M.Equipment.store_id, null)
+					.set(M.Equipment.last_workunit_id, borrow.getWorkUnit_id())
 					.set(M.Equipment.last_borrow_id, borrow_id)
 					.set(M.Equipment.place, EquipmentPlace.workunit)
 					.andEquals(M.Equipment.ecode, equipment.getEcode()));
@@ -138,7 +139,7 @@ public class BorrowService extends AbstractService<Borrow, String>{
 		//先检查改设备是不是该仓库借出去的,顺便判断是不是领用设备，好提醒仓管,该设备不是借用设备
 		//Equipment equipment=equipmentRepository.get(ecode);
 		//EquipmentWorkunitPK equipmentworkunitpk=new EquipmentWorkunitPK();
-		EquipmentWorkunit equipmentWorkunit=equipmentWorkunitRepository.getBorrowEquipment(ecode);
+		EquipmentWorkunit equipmentWorkunit=equipmentRepository.getBorrowEquipmentWorkunit(ecode);
 		if(equipmentWorkunit==null){
 			throw new BusinessException("该设备不是借用设备,不能在这里进行返还!");
 		}
@@ -171,7 +172,7 @@ public class BorrowService extends AbstractService<Borrow, String>{
 			
 			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.in_storage)
 					.set(M.Equipment.place, EquipmentPlace.store)
-					.set(M.Equipment.last_workunit_id,borrow.getWorkUnit_id())
+					//.set(M.Equipment.last_workunit_id,borrow.getWorkUnit_id())
 					.andEquals(M.Equipment.ecode, borrowList.getEcode()));
 			//同时从作业单位专业到仓库
 			//插入仓库中

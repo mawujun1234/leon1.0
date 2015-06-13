@@ -67,7 +67,7 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 			//把设备绑定到作业单位上面
 			//把仓库中的该设备移除
 			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.out_storage)
-					//.set(M.Equipment.workUnit_id, outStore.getWorkUnit_id())
+					.set(M.Equipment.last_workunit_id, outStore.getWorkUnit_id())
 					//.set(M.Equipment.store_id, null)
 					.set(M.Equipment.place, EquipmentPlace.workunit)
 					.andEquals(M.Equipment.ecode, equipment.getEcode()));

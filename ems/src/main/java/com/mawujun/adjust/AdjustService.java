@@ -156,7 +156,7 @@ public class AdjustService extends AbstractService<Adjust, String>{
 					.add(M.EquipmentStore.ecode, adjustList.getEcode())
 					.add("str_in_id", str_in_id)//入库仓库，新的仓库
 					.add("store_out_id", str_out_id);
-			equipmentStoreRepository.changeStore(p);
+			equipmentRepository.changeStore(p);
 		
 		}
 		//这个时候就表示是都选择了，修改整个调拨单的状态

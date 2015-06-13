@@ -33,4 +33,5 @@ public interface PoleRepository extends IRepository<Pole, String>{
 	
 	
 	public List<PoleVO> queryPolesAndEquipments(@Param("customer_id")String customer_id);
+	public int query_count_equipment_in_pole(@Param("pole_id")String pole_id);
 }

@@ -29,8 +29,8 @@ public class EquipmentService extends AbstractService<Equipment, String>{
 	}
 
 	
-	public EquipmentVO getEquipmentByEcode(String ecode,String store_id) {
-		EquipmentVO equipment =equipmentRepository.getEquipmentByEcode(ecode,store_id);
+	public EquipmentVO getEquipmentByEcode_in_store(String ecode,String store_id) {
+		EquipmentVO equipment =equipmentRepository.getEquipmentByEcode_in_store(ecode,store_id);
 		
 		return equipment;
 	}

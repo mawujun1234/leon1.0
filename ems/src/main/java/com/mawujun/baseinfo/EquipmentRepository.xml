@@ -5,7 +5,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
 <mapper namespace="com.mawujun.baseinfo.EquipmentRepository">
-	<select id="getEquipmentByEcode" resultType="com.mawujun.baseinfo.EquipmentVO" >
+	<select id="getEquipmentByEcode_in_store" resultType="com.mawujun.baseinfo.EquipmentVO" >
     	select a.*,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name 
     	from ems_equipment a
 		inner join ems_equipmentsubtype b on a.subtype_id=b.id
@@ -25,6 +25,61 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		where a.ecode=#{ecode}
     </select> 
     
+    <!-- 通过ecode判断这个设备室不是在某个作业单位上-->
+    <select id="check_in_workunit_by_ecode" resultType="int">
+    	select count(ecode) from ems_equipment_workunit where ecode=#{ecode} and workunit_id#{workunit_id}
+    </select>
+     <!-- 通过ecode判断这个设备室不是在某个仓库上-->
+    <select id="check_in_store_by_ecode" resultType="int">
+    	select count(ecode) from ems_equipment_store where ecode=#{ecode} and store_id#{store_ids}
+    </select>
+     <!-- 通过ecode判断这个设备室不是在某个作业单位上-->
+    <select id="check_in_repair_by_ecode" resultType="int">
+    	select count(ecode) from ems_equipment_repair where ecode=#{ecode} and repair_id#{repair_id}
+    </select>
+     <!-- 通过ecode判断这个设备室不是在某个作业单位上-->
+    <select id="check_in_pole_by_ecode" resultType="int">
+    	select count(ecode) from ems_equipment_pole where ecode=#{ecode} and pole_id#{pole_id}
+    </select>
+    
+    
+    <select id="getEquipmentWorkunitVO" resultType="com.mawujun.baseinfo.EquipmentWorkunitVO">
+		select a.*,b.name as workunit_name from 
+		ems_equipment_workunit a,ems_workunit b
+		where a.workunit_id=b.id and a.ecode=#{ecode}
+	</select>
+	<select id="getEquipmentStoreVO" resultType="com.mawujun.baseinfo.EquipmentStoreVO">
+		select a.*,b.name as store_name from 
+		ems_equipment_store a,ems_store b
+		where a.store_id=b.id and a.ecode=#{ecode}
+	</select>
+	<select id="getEquipmentRepairVO" resultType="com.mawujun.baseinfo.EquipmentRepairVO">
+		select a.*,b.name as repair_name from 
+		ems_equipment_repair a,ems_store b
+		where a.repair_id=b.id and a.ecode=#{ecode}
+	</select>
+	<select id="getEquipmentPoleVO" resultType="com.mawujun.baseinfo.EquipmentPoleVO">
+		select a.*,b.name as pole_name,b.address as pole_address from 
+		ems_equipment_pole a,ems_pole b
+		where a.pole_id=b.id and a.ecode=#{ecode}
+	</select>
+	
+	
+
+    
+    <!-- 把设备从一个库移到另一个库的时候,例如调拨，维修入库，仓库从维修中心中重新入库-->
+	<update id="changeStore" parameterType="map">
+		update ems_equipment_store set store_id=#{store_in_id},type=#{type},type_id=#{type_id},inDate=sysdate
+		where ecode=#{ecode} and store_id=#{store_out_id}
+	</update>
+	
+	<!--  根据条码 查询借用的设备信息,通过条码获取的时候是可以获取到唯一的一条记录的-->
+	<select id="getBorrowEquipmentWorkunit" resultType="com.mawujun.baseinfo.EquipmentWorkunit">
+		select * from 
+		ems_equipment_workunit 
+		where ecode=#{ecode} and type='borrow'
+	</select>
+	
    
 </mapper>
 

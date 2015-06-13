@@ -162,7 +162,7 @@ function queryTasks(type,appendDir,callBack){
 				var html='';
 				var status_name="";
 				for(var i=0;i<root.length;i++){
-					var taskInfoParamStr='?id='+root[i].id+'&pole_code='+root[i].pole_code+'&pole_name='+root[i].pole_name+'&memo='+root[i].memo+'&type='+root[i].type+'&canEdit='+(status=="working"?true:false);
+					var taskInfoParamStr='?id='+root[i].id+'&pole_id='+root[i].pole_id+'&pole_code='+root[i].pole_code+'&pole_name='+root[i].pole_name+'&memo='+root[i].memo+'&type='+root[i].type+'&canEdit='+(status=="working"?true:false);
 					//alert(taskInfoParamStr);
 					var page_id="page_"+root[i].type;
 					var h2_title=root[i].pole_code;
@@ -202,6 +202,7 @@ function queryTasks(type,appendDir,callBack){
 					'</a>'+
 					'</li>'
 				}
+				
 				if(appendDir=="append"){
 					$("#taskes_list_"+type).append(html).listview('refresh');
 				} else if(appendDir=="prepend"){
@@ -408,6 +409,8 @@ $(document).ready(function(e) {
             <label for="radio-choice-taskes-typeb">巡检</label>
             <input type="radio" name="radio-choice-taskes-type" id="radio-choice-taskes-typec" value="newInstall">
             <label for="radio-choice-taskes-typec">新安装</label>
+            <input type="radio" name="radio-choice-taskes-type" id="radio-choice-taskes-typed" value="cancel">
+            <label for="radio-choice-taskes-typed">取消</label>
         </div>
         <!--<a href="#" data-icon="plus" data-iconpos="notext" data-ajax="false"></a>-->
         <button href="#" data-icon="carat-d" data-iconpos="notext" onClick="toggleSecondNavbar();"></button>
@@ -430,6 +433,8 @@ $(document).ready(function(e) {
         <ul data-role="listview" id="taskes_list_patrol" style="margin-top:8px;"> 
         </ul> 
         <ul data-role="listview" id="taskes_list_newInstall" style="margin-top:8px;"> 
+        </ul>
+        <ul data-role="listview" id="taskes_list_cancel" style="margin-top:8px;"> 
         </ul>
         <a href="#" class="ui-shadow ui-btn ui-corner-all" onClick="queryMore();" style="margin-top:20px;">获取更多...</a>
 	</div>
@@ -664,8 +669,9 @@ $(document).ready(function(e) {
             <textarea cols="40" rows="8" name="textarea" id="textarea" placeholder="请填写设备安装描述"></textarea>
          -->
          <div class="ui-field-contain actionbutton"  align="center">
-            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="saveTask">保存</button>
+            
             <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="submitTask">提交</button>
+            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="saveTask">保存</button>
          </div>
 	</div>
     <script type="text/javascript">
@@ -706,8 +712,9 @@ $(document).ready(function(e) {
          	
           </div>
          <div class="ui-field-contain actionbutton"  align="center">
-            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="saveTask">保存</button>
+            
             <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="submitTask">提交</button>
+            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="saveTask">保存</button>
          </div>
 	</div>
     <script type="text/javascript">
@@ -741,8 +748,8 @@ $(document).ready(function(e) {
 	</script>
     <div data-role="popup" id="page_repair_deleteEquipmentInfo_popup" data-arrow="b" data-theme="b">
         <a href="javascript:void(0);" data-role="button" name="deleteEquipmentInfo">删除</a>
-        <a href="javascript:void(0);" data-role="button" name="out_storageEquipmentInfo">未损坏</a>
-        <!-- <a href="javascript:void(0);" data-role="button" name="breakdownEquipmentInfo">已损坏</a>-->
+        <!--<a href="javascript:void(0);" data-role="button" name="out_storageEquipmentInfo">未损坏</a>
+         <a href="javascript:void(0);" data-role="button" name="breakdownEquipmentInfo">已损坏</a>-->
     </div>
 </div>
 
@@ -769,8 +776,9 @@ $(document).ready(function(e) {
          	
          </div>
          <div class="ui-field-contain actionbutton"  align="center">
-            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="saveTask">保存</button>
+           
             <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="submitTask">提交</button>
+             <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="saveTask">保存</button>
          </div>
 	</div>
     <script type="text/javascript">
@@ -804,8 +812,9 @@ $(document).ready(function(e) {
          	
          </div>
          <div class="ui-field-contain actionbutton"  align="center">
-            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="saveTask">保存</button>
+            
             <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="submitTask">提交</button>
+            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="saveTask">保存</button>
          </div>
 	</div>
     <script type="text/javascript">
@@ -850,12 +859,15 @@ $(document).ready(function(e) {
 		var params="&task_id="+taskInfoParam.id+"&task_type="+taskInfoParam.type;
 		var page_id=taskInfoParam.page_id;
 		var scaned=false;
-		$("#"+page_id+"_equipments_list [data-role='collapsible']").each(function(index, element) {
-            //values.push($(this).attr("ecode"));
-			params+="&ecodes="+$(this).attr("ecode");
-			params+="&equipment_statuses="+$(this).attr("equipment_status");
+//		$("#"+page_id+"_equipments_list [data-role='collapsible']").each(function(index, element) {
+//            //values.push($(this).attr("ecode"));
+//			params+="&ecodes="+$(this).attr("ecode");
+//			params+="&equipment_statuses="+$(this).attr("equipment_status");
+//			scaned=true;
+//        });
+		if($("#"+page_id+"_equipments_list [data-role='collapsible']").size()>0){
 			scaned=true;
-        });
+		}
 		if(isSubmit&&!scaned){
 			alert("请先扫描设备!");
 			return false;
@@ -952,7 +964,7 @@ $(document).ready(function(e) {
 				color='color="#F00"';//如果是损坏设备就表示为红色
 			}
 			//如果设备状态是手持，就是安装，如果是using就是维修或者巡检，巡检任务扫描的设备都是巡检
-			html+='<div data-role="collapsible" ecode="'+root[i].ecode+'" equipment_status="'+root[i].equipment_status+'">'+
+			html+='<div data-role="collapsible" taskEquipmentList_id="'+root[i].id+'" ecode="'+root[i].ecode+'" equipment_status="'+root[i].equipment_status+'">'+
 				'<h4><font '+color+'>'+root[i].ecode+':'+root[i].style+'</font></h4>'+
 				'<p>'+root[i].brand_name+':'+root[i].subtype_name+'>'+root[i].prod_name+'>'+root[i].supplier_name+'</p>'+
 				'</div>';	
@@ -1000,10 +1012,10 @@ $(document).ready(function(e) {
 		});
 	}
 	//扫描的时候获取设备相关信息
-	function getEquipmentInfo(ecode){
+	function getTaskEquipmentList(ecode){
 		$.ajax({   
-			url : $.ServerPath+"/task/mobile/getEquipmentInfo.do",  
-			data:{ecode:ecode,task_id:taskInfoParam.id},  
+			url : $.ServerPath+"/task/mobile/getTaskEquipmentList.do",  
+			data:{ecode:ecode,task_id:taskInfoParam.id,task_type:taskInfoParam.type,pole_id:taskInfoParam.pole_id},  
 			success : function(data){
 				if(data.success==true){	
 					var root=data.root;
@@ -1025,11 +1037,24 @@ $(document).ready(function(e) {
 	}
 
 	function deleteEquipmentInfo(){
+		//window.equipmentInfoCollapsible是当前选中的行
+		var li=$(window.equipmentInfoCollapsible);
 		//选择了设备
-		
-		$(window.equipmentInfoCollapsible).remove();
-		window.equipmentInfoCollapsible=null;
-		//alert(window.equipmentInfoCollapsible);
+		$.ajax({   
+			url : $.ServerPath+"/task/mobile/deleteTaskEquipmentList.do",  
+			data:{ecode:li.attr("ecode"),taskEquipmentList_id:li.attr("taskEquipmentList_id")},  
+			success : function(data){
+				if(data.success!=true){	
+					alert("删除失败,请重新尝试");
+					return;
+				} else {
+					$(window.equipmentInfoCollapsible).remove();
+					window.equipmentInfoCollapsible=null;
+				}
+				
+				$.hideLoader();  
+			}
+		});
 		var page_id=taskInfoParam.page_id;
 		$( "#"+page_id+"_deleteEquipmentInfo_popup" ).popup( "close");
 		//alert(2);
@@ -1057,7 +1082,7 @@ $(document).ready(function(e) {
 
 	$("input[name='scan_textfield']").keyup(function(event){
 	  	if(event.target.value.length==$.ecodeLength){
-			getEquipmentInfo(event.target.value);
+			getTaskEquipmentList(event.target.value);
 			event.target.value="";
 		}	
 	});
@@ -1072,7 +1097,7 @@ $(document).ready(function(e) {
 				if(!result.cancelled){
 					$.showLoader("扫描成功,正在获取设备信息....");
 					//同时去后台获取设备信息
-					getEquipmentInfo(result.text);
+					getTaskEquipmentList(result.text);
 					
 				}
 		    }, 
@@ -1089,6 +1114,7 @@ $(document).ready(function(e) {
 	});
 	$("button[name='saveTask']").click(function(event){
 	  	saveTask();
+		//history.back();
 	});
 	$("button[name='submitTask']").click(function(event){
 	  	submitTask();

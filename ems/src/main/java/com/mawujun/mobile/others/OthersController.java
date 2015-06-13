@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mawujun.baseinfo.EquipmentPlace;
+import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.EquipmentService;
 import com.mawujun.baseinfo.EquipmentSubtype;
 import com.mawujun.baseinfo.EquipmentVO;
@@ -23,7 +25,7 @@ import com.mawujun.utils.M;
 @Controller
 public class OthersController {
 	@Resource
-	private EquipmentService equipmentService;
+	private EquipmentRepository equipmentRepository;
 	@Resource
 	private StoreService storeService;
 	@Resource
@@ -34,14 +36,16 @@ public class OthersController {
 	@RequestMapping("/others/mobile/getEquipmentInfo.do")
 	@ResponseBody
 	public EquipmentVO getEquipmentInfo(String ecode){
-		EquipmentVO vo= equipmentService.getEquipmentInfo(ecode);
-//		if(vo.getPlace()==EquipmentPlace.workunit){
-//			vo.setWorkUnit_name(workUnitService.get(vo.getWorkUnit_id()).getName());
-//		} else if(vo.getPlace()==EquipmentPlace.store || vo.getPlace()==EquipmentPlace.repair){
-//			vo.setStore_name(storeService.get(vo.getStore_id()).getName());
-//		} else if(vo.getPlace()==EquipmentPlace.pole){
-//			vo.setPole_address(poleService.get(vo.getPole_id()).geetFullAddress());
-//		}
+		EquipmentVO vo= equipmentRepository.getEquipmentInfo(ecode);
+		if(vo.getPlace()==EquipmentPlace.workunit){
+			vo.setWorkUnit_name(equipmentRepository.getEquipmentWorkunitVO(ecode).getWorkunit_name());
+		} else if(vo.getPlace()==EquipmentPlace.store ){
+			vo.setStore_name(equipmentRepository.getEquipmentStoreVO(ecode).getStore_name());
+		} else if(vo.getPlace()==EquipmentPlace.repair){
+			vo.setPole_address(equipmentRepository.getEquipmentRepairVO(ecode).getRepair_name());
+		} else if(vo.getPlace()==EquipmentPlace.pole){
+			vo.setPole_address(equipmentRepository.getEquipmentPoleVO(ecode).getPole_address());
+		}
 
 		vo.setFisData(null);
 		vo.setIsInStore(null);

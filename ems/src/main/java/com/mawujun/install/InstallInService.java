@@ -55,7 +55,7 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 	
 	public InstallInListVO getEquipmentByEcode(String ecode,String workunit_id) {
 		//如果存在，再判断该设备是不是借用设备，如果是借用设备就不能返还
-		EquipmentWorkunit equipmentWorkunit=equipmentWorkunitRepository.getBorrowEquipment(ecode);
+		EquipmentWorkunit equipmentWorkunit=equipmentRepository.getBorrowEquipmentWorkunit(ecode);
 		if(equipmentWorkunit!=null){
 			throw new BusinessException("该设备是借用设备,不能在这里进行返回!");
 		}
@@ -91,9 +91,9 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 	 * @param installin
 	 */
 	public void equipmentInStore(InstallInList[] equipments, InstallIn installin) { 
-		String instore_id = ymdHmsDateFormat.format(new Date());
+		String installin_id = ymdHmsDateFormat.format(new Date());
 		// InStore inStore=new InStore();
-		installin.setId(instore_id);
+		installin.setId(installin_id);
 		installin.setOperateDate(new Date());
 		installin.setOperater(ShiroUtils.getAuthenticationInfo().getId());
 		//outStore.setType(1);
@@ -103,7 +103,7 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 			
 			//InstallInList list=new InstallInList();
 			//list.setEcode(equipment.getEcode());
-			list.setInstallIn_id(instore_id);
+			list.setInstallIn_id(installin_id);
 			
 			//如果设备状态时损坏，就把设备状态改为 入库待维修，否则就修改为在库
 			//把设备挂到相应的仓库上
@@ -114,7 +114,7 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 						//.set(M.Equipment.store_id, installin.getStore_id())
 						//.set(M.Equipment.workUnit_id,null)
 						.set(M.Equipment.place, EquipmentPlace.store)
-						.set(M.Equipment.last_installIn_id,instore_id)
+						.set(M.Equipment.last_installIn_id,installin_id)
 						.set(M.Equipment.last_workunit_id,installin.getWorkUnit_id())
 						.andEquals(M.Equipment.ecode, list.getEcode()));
 			} else {
@@ -123,7 +123,7 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 						//.set(M.Equipment.store_id, installin.getStore_id())
 						//.set(M.Equipment.workUnit_id,null)
 						.set(M.Equipment.place, EquipmentPlace.store)
-						.set(M.Equipment.last_installIn_id,instore_id)
+						.set(M.Equipment.last_installIn_id,installin_id)//最后一次入库的入库id，这个字段是返库，无论坏件还是好贱返库的时候的id
 						.set(M.Equipment.last_workunit_id,installin.getWorkUnit_id())
 						.andEquals(M.Equipment.ecode, list.getEcode()));
 			}
