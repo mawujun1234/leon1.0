@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
+<mapper namespace="com.mawujun.baseinfo.EquipmentTypeRepository">
+	 <!-- -->
+    <resultMap type="com.mawujun.baseinfo.EquipmentType" id="equipmentType_map">
+     	<id property="id" column="id"/>
+    	<result property="name" column="name"/>
+    	<collection property="subtypes" ofType="com.mawujun.baseinfo.EquipmentSubtype">  
+    		<id property="id" column="subtype_id"/>
+		    <result property="name" column="subtype_name"/>
+       </collection>  
+    </resultMap>
+	<!-- 在导出报表的时候，获取大类和小类主表明细报表关系数据， 并以一对多的形式返回 -->
+	<select id="queryTypeAndSubtype" resultMap="equipmentType_map" >
+    	select a.id ,a.name,b.id as subtype_id,b.name as subtype_name
+		from ems_equipmenttype a,ems_equipmentsubtype b
+		where a.id=b.parent_id and a.status='Y' and b.status='Y'
+		order by a.id,b.id
+    </select>
+
+  
+</mapper>
+

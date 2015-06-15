@@ -128,6 +128,10 @@ public static final class EquipmentSubtype {
 	public static final String leaf="leaf";
 }
 public static final class EquipmentType {
+	/**
+	* 这里一般是集合属性，返回的是subtypes
+	*/
+	public static final String subtypes="subtypes";
 	public static final String id="id";
 	public static final String name="name";
 	public static final String status="status";

@@ -80,7 +80,7 @@ Ext.onReady(function(){
 			text:'导出月报表模板',
 			icon:'../icons/page_excel.png',
 			handler:function(){
-				window.open(Ext.ContextPath+"/monthinventory/build/excelTpl.do", "_blank");
+				window.open(Ext.ContextPath+"/inventory/month/build/excelTpl.do", "_blank");
 			}
 		}
 		]

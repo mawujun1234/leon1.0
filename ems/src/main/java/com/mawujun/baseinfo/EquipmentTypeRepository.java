@@ -14,6 +14,6 @@ import com.mawujun.baseinfo.EquipmentType;
  */
 @Repository
 public interface EquipmentTypeRepository extends IRepository<EquipmentType, String>{
-	//public List<EquipmentType> queryType(@Param("parent_id") String parent_id);
+	public List<EquipmentType> queryTypeAndSubtype();
 
 }
