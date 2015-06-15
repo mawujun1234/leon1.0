@@ -15,8 +15,8 @@ public class TaskRepairReport extends Task {
 	 * @return
 	 */
 	public String getFinishTime(){
-		if(this.getCompleteDate()!=null){
-			long ltime=this.getCompleteDate().getTime()-this.getCreateDate().getTime();
+		if(this.getSubmitDate()!=null){
+			long ltime=this.getSubmitDate().getTime()-this.getCreateDate().getTime();
 			String day=(ltime/(60*60*1000))+"小时"+(ltime%(60*60*1000))/(60*1000)+"分钟";
 			return day;
 		}
@@ -28,8 +28,8 @@ public class TaskRepairReport extends Task {
 	 * @return
 	 */
 	public String getRepairTime(){
-		if(this.getCompleteDate()!=null){
-			long ltime=this.getCompleteDate().getTime()-this.getStartHandDate().getTime();
+		if(this.getSubmitDate()!=null){
+			long ltime=this.getSubmitDate().getTime()-this.getStartHandDate().getTime();
 			String day=(ltime/(60*60*1000))+"小时"+(ltime%(60*60*1000))/(60*1000)+"分钟";
 			return day;
 		}
@@ -40,8 +40,8 @@ public class TaskRepairReport extends Task {
 	 * @author mawujun email:160649888@163.com qq:16064988
 	 */
 	public void checkIsOverTime(Integer time){
-		if(this.getCompleteDate()!=null){
-			long ltime=this.getCompleteDate().getTime()-this.getCreateDate().getTime();
+		if(this.getSubmitDate()!=null){
+			long ltime=this.getSubmitDate().getTime()-this.getCreateDate().getTime();
 			if(ltime>time*60*1000){
 				isOverTime= true;
 			}

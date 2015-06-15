@@ -26,7 +26,7 @@ public class Task implements IdEntity<String> {
 	private TaskCreaterType createrType;//任务创建类型是中心端发布的 还是移动端自己发布的
 	@Enumerated(EnumType.STRING)
 	@Column(length=15)
-	private TaskStatus status;//任务状态
+	private TaskStatus status;//任务状态，submited状态的任务就算完成了，因为取消了任务确认的过程
 	
 	@Column(length=36)
 	private String pole_id;
@@ -51,7 +51,7 @@ public class Task implements IdEntity<String> {
 	private Date startHandDate;//开始处理时间，第一次保存的时候
 	private Date submitDate;//提交时间
 	//private Date approveDate;//管理人员审批时间
-	private Date completeDate;//完成时间
+	//private Date completeDate;//完成时间
 	
 	
 	private Integer hitchType_id;//故障类型
@@ -134,12 +134,6 @@ public class Task implements IdEntity<String> {
 		this.submitDate = submitDate;
 	}
 
-	public Date getCompleteDate() {
-		return completeDate;
-	}
-	public void setCompleteDate(Date completeDate) {
-		this.completeDate = completeDate;
-	}
 	public String getHitchType() {
 		return hitchType;
 	}

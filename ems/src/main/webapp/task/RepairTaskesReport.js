@@ -117,7 +117,7 @@ Ext.onReady(function(){
 	        {dataIndex:'hitchReason',text:'故障现象'},
 	        {dataIndex:'createDate',text:'任务下派时间',width:120},
 			{dataIndex:'startHandDate',text:'维修到达时间',width:120},
-			{dataIndex:'completeDate',text:'完成时间',width:120},
+			{dataIndex:'submitDate',text:'提交时间',width:120},
 			{dataIndex:'finishTime',text:'总耗时'},
 			//{dataIndex:'',text:'结果'},
 			{dataIndex:'repairTime',text:'修复耗时'},

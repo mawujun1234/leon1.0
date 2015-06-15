@@ -4,7 +4,7 @@ Ext.defineModel("Ems.task.Task",{
 	fields:[
 		{name:'id',type:'string'},
 		{name:'approveDate',type:'date', dateFormat: 'Y-m-d'},
-		{name:'completeDate',type:'date', dateFormat: 'Y-m-d'},
+		//{name:'completeDate',type:'date', dateFormat: 'Y-m-d'},
 		{name:'createDate',type:'date', dateFormat: 'Y-m-d'},
 		{name:'customer_id',type:'string'},
 		{name:'hitchReason',type:'string'},

@@ -346,6 +346,7 @@ Ext.define('Ems.task.TaskSendGrid',{
 				}
 				if(records.length==1){
 					var pole_status=records[0].get("status");
+					alert(pole_status);
 					if(pole_status!="using" && pole_status!="hitch"){
 						alert("只有'使用中','有损坏'状态的点位，才能发送维修/维护任务!");
 						return;

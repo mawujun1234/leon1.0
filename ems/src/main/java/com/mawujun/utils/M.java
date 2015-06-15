@@ -418,7 +418,6 @@ public static final class Task {
 	public static final String createDate="createDate";
 	public static final String startHandDate="startHandDate";
 	public static final String submitDate="submitDate";
-	public static final String completeDate="completeDate";
 	public static final String hitchType_id="hitchType_id";
 	public static final String hitchType="hitchType";
 	public static final String hitchReasonTpl_id="hitchReasonTpl_id";

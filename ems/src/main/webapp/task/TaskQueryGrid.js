@@ -47,7 +47,7 @@ Ext.define('Ems.task.TaskQueryGrid',{
 		{dataIndex:'pole_address',text:'地址',flex:1},
 		{dataIndex:'createDate',text:'创建时间', renderer: Ext.util.Format.dateRenderer('Y-m-d')},
 		{dataIndex:'submitDate',text:'提交时间', renderer: Ext.util.Format.dateRenderer('Y-m-d')},
-		{dataIndex:'completeDate',text:'完成时间', renderer: Ext.util.Format.dateRenderer('Y-m-d')},
+		//{dataIndex:'completeDate',text:'完成时间', renderer: Ext.util.Format.dateRenderer('Y-m-d')},
 		{dataIndex:'workunit_name',text:'作业单位'},
 		{dataIndex:'customer_name',text:'所属客户'},
 		{dataIndex:'memo',text:'任务描述',flex:1,renderer:function(value,metadata,record){
@@ -226,7 +226,7 @@ Ext.define('Ems.task.TaskQueryGrid',{
 	        //allowBlank: false,
 	        store:Ext.create('Ext.data.Store', {
 		    	fields: ['id', 'name'],
-			    data:[{id:'',name:'无'},{id:'newTask',name:'新任务'},{id:'read',name:'已阅'},{id:'handling',name:'处理中'},{id:'submited',name:'已提交'},{id:'complete',name:'完成'}]
+			    data:[{id:'',name:'无'},{id:'newTask',name:'新任务'},{id:'read',name:'已阅'},{id:'handling',name:'处理中'},{id:'submited',name:'已提交'}]
 		   })
 	  }); 
 	    var pole_textfield=Ext.create('Ext.form.field.Text',{
@@ -274,82 +274,82 @@ Ext.define('Ems.task.TaskQueryGrid',{
 			}
 		});
 		
-		var install_button=Ext.create('Ext.button.Button',{
-			text:'确认',
-			margin:'0 0 0 5',
-			icon:'../icons/gem_okay.png',
-			handler:function(){
-				var records=me.getSelectionModel().getSelection();
-				if(!records || records.length==0){
-					alert("请先选择任务");
-					return;
-				}
-				
-				if(records.length==1){
-					if(records[0].get("status")!="submited"){
-						alert("只有'已提交'状态下，才能确认!");
-						return;
-					}	
-					Ext.Ajax.request({
-						url:Ext.ContextPath+'/task/confirm.do',
-						method:'POST',
-						params:{id:records[0].get("id")},
-						success:function(response){
-							records[0].set("status","complete");
-							records[0].set("status_name","完成");
-						}
-					});
-				} else {
-					Ext.Msg.confirm("提醒","只会为对'只有'已提交'状态的状态，才能确认",function(btn){
-						if(btn=='yes'){
-						
-						}
-					});
-				}
-				
-			}
-		});
-		
-		var back_button=Ext.create('Ext.button.Button',{
-			text:'退回',
-			margin:'0 0 0 5',
-			icon:'../icons/arrow_undo.png',
-			handler:function(){
-				Ext.Msg.confirm("消息","确定要退回吗?",function(btn){
-					if(btn=='no'){
-						return;
-					}
-					var records=me.getSelectionModel().getSelection();
-					if(!records || records.length==0){
-						alert("请先选择任务");
-						return;
-					}
-					
-					if(records.length==1){
-						if(records[0].get("status")!="submited"){
-							alert("只有'已提交'状态下，才能退回!");
-							return;
-						}	
-						Ext.Ajax.request({
-							url:Ext.ContextPath+'/task/back.do',
-							method:'POST',
-							params:{id:records[0].get("id")},
-							success:function(response){
-								records[0].set("status","handling");
-								records[0].set("status_name","处理中");
-							}
-						});
-					} else {
-						Ext.Msg.confirm("提醒","只会为对'只有'已提交'状态的状态，才能确认",function(btn){
-							if(btn=='yes'){
-							
-							}
-						});
-					}
-				});
-			}
-			
-		});
+//		var install_button=Ext.create('Ext.button.Button',{
+//			text:'确认',
+//			margin:'0 0 0 5',
+//			icon:'../icons/gem_okay.png',
+//			handler:function(){
+//				var records=me.getSelectionModel().getSelection();
+//				if(!records || records.length==0){
+//					alert("请先选择任务");
+//					return;
+//				}
+//				
+//				if(records.length==1){
+//					if(records[0].get("status")!="submited"){
+//						alert("只有'已提交'状态下，才能确认!");
+//						return;
+//					}	
+//					Ext.Ajax.request({
+//						url:Ext.ContextPath+'/task/confirm.do',
+//						method:'POST',
+//						params:{id:records[0].get("id")},
+//						success:function(response){
+//							records[0].set("status","complete");
+//							records[0].set("status_name","完成");
+//						}
+//					});
+//				} else {
+//					Ext.Msg.confirm("提醒","只会为对'只有'已提交'状态的状态，才能确认",function(btn){
+//						if(btn=='yes'){
+//						
+//						}
+//					});
+//				}
+//				
+//			}
+//		});
+//		
+//		var back_button=Ext.create('Ext.button.Button',{
+//			text:'退回',
+//			margin:'0 0 0 5',
+//			icon:'../icons/arrow_undo.png',
+//			handler:function(){
+//				Ext.Msg.confirm("消息","确定要退回吗?",function(btn){
+//					if(btn=='no'){
+//						return;
+//					}
+//					var records=me.getSelectionModel().getSelection();
+//					if(!records || records.length==0){
+//						alert("请先选择任务");
+//						return;
+//					}
+//					
+//					if(records.length==1){
+//						if(records[0].get("status")!="submited"){
+//							alert("只有'已提交'状态下，才能退回!");
+//							return;
+//						}	
+//						Ext.Ajax.request({
+//							url:Ext.ContextPath+'/task/back.do',
+//							method:'POST',
+//							params:{id:records[0].get("id")},
+//							success:function(response){
+//								records[0].set("status","handling");
+//								records[0].set("status_name","处理中");
+//							}
+//						});
+//					} else {
+//						Ext.Msg.confirm("提醒","只会为对'只有'已提交'状态的状态，才能确认",function(btn){
+//							if(btn=='yes'){
+//							
+//							}
+//						});
+//					}
+//				});
+//			}
+//			
+//		});
 		
 		var cancel_button=Ext.create('Ext.button.Button',{
 			text:'取消',
@@ -400,7 +400,7 @@ Ext.define('Ems.task.TaskQueryGrid',{
 			items: [{
 				items: [customer_combox,workunit_combox,status_combox,task_type_combox,pole_textfield,isOvertime_checkbox,query_button] // toolbar 1
 			}, {
-				items: [install_button,back_button,cancel_button] // toolbar 2
+				items: [cancel_button] // toolbar 2
 			}]
 		  }	
 		

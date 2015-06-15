@@ -61,7 +61,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		inner join ems_area b on  a.area_id=b.id
 		inner join Ems_Workunit c on b.workunit_id=c.id
 		inner join ems_customer d on a.customer_id=d.id
-		left join (select pole_id,count(id) as task_num from ems_task where  status!='complete' group by pole_id) e on a.id=e.pole_id
+		left join (select pole_id,count(id) as task_num from ems_task where  status!='submited' group by pole_id) e on a.id=e.pole_id
 		<where>
 			<if test="customer_id!=null">
 				and a.customer_id=#{customer_id}
@@ -76,6 +76,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				and (a.name like #{pole_name} or a.code like #{pole_name})
 			</if>
 		</where>
+		order by a.code
     </select>
     <select id="queryPoles_count" resultType="com.mawujun.baseinfo.PoleVO" parameterType="map">
     	select 
@@ -130,6 +131,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				and (a.name like #{pole_name} or a.code like #{pole_name})
 			</if>
 		</where>
+		order by a.code
     </select>
     <select id="queryPoles_no_send_task_count" resultType="com.mawujun.baseinfo.PoleVO" parameterType="map">
     	select 
@@ -180,6 +182,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				and a.status in ('newTask','read') and floor(to_number(sysdate-(a.createDate+0))*24*60) &gt; #{handling}
 			</if>
 		</where>
+		order by b.code
     </select>
     
     <!-- 维修任务明细报表 -->
@@ -214,11 +217,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	<if test="status=='working'">
     		and a.status in ('newTask','read','handling')
     	</if>
-    	<if test="status=='confirm'">
+    	<if test="status=='submited'">
     		and a.status ='submited'
-    	</if>
-    	<if test="status=='complete'">
-    		and a.status ='complete'
     	</if>
     	<if test="orderBy=='createDate_desc'">
     		order by a.createDate desc
@@ -239,9 +239,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	</if>
     	<if test="status=='confirm'">
     		order by a.submitdate desc
-    	</if>
-    	<if test="status=='complete'">
-    		order by a.completedate desc
     	</if>
     	-->
     </select>
@@ -267,9 +264,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	</if>
     	<if test="status=='confirm'">
     		order by a.submitdate desc
-    	</if>
-    	<if test="status=='complete'">
-    		order by a.completedate desc
     	</if>
     	-->
     </select>

@@ -157,8 +157,8 @@ public class TaskService extends AbstractService<Task, String>{
 	}
 	public void cancel(String id) {
 		Task task=this.get(id);
-		if(task.getStatus()==TaskStatus.complete){
-			throw new BusinessException("已提交和已完成的任务不能取消!");
+		if(task.getStatus()==TaskStatus.submited){
+			throw new BusinessException("已提交的任务不能取消!");
 		}
 		//判断任务里面的设备是否已经如果入库，不是安装出库，手持和使用中状态就不能取消
 		//因为提交后就修改了设备的状态
@@ -175,146 +175,6 @@ public class TaskService extends AbstractService<Task, String>{
 		}
 		this.deleteBatch(Cnd.delete().andEquals(M.Task.id, id));
 	}
-	/**
-	 * 管理人员 确认任务单,同时修改设备的状态
-	 * @author mawujun email:160649888@163.com qq:16064988
-	 * @param id
-	 * @return
-	 */
-	public void confirm(String id) {
-		//taskRepository.update(Cnd.update().set(M.Task.status, TaskStatus.complete).set(M.Task.completeDate, new Date()).andEquals(M.Task.id, id));
-		
-		Task task=taskRepository.get(id);
-		task.setStatus( TaskStatus.complete);
-		task.setCompleteDate(new Date());
-		taskRepository.update(task);
-		//修改杆位状态为"已安装"
-		if(task.getType()==TaskType.newInstall){
-			poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.using).andEquals(M.Pole.id, task.getPole_id()));	
-		} else if(task.getType()==TaskType.repair){
-			poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.using).andEquals(M.Pole.id, task.getPole_id()));	
-		}
-		
-		
-		String task_type=task.getType().toString();
-		//所有这次任务相关的设备清单
-		List<TaskEquipmentList> taskEquipmentListes=taskEquipmentListRepository.query(Cnd.select().andEquals(M.TaskEquipmentList.task_id,id));
-		for(TaskEquipmentList taskEquipmentList:taskEquipmentListes){
-			String ecode=taskEquipmentList.getEcode();
-			if(TaskType.newInstall.toString().equals(task_type)){
-				//更改设备的位置到该杆位上,把设备从昨夜单位身上移动到杆位上
-				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using).set(M.Equipment.isnew, false)
-						.set(M.Equipment.place, EquipmentPlace.pole)
-						.set(M.Equipment.last_install_date, new Date())
-						.set(M.Equipment.last_pole_id, task.getPole_id())
-						.set(M.Equipment.last_task_id, task.getId())
-						.set(M.Equipment.currt_task_id, null)
-						.andEquals(M.Equipment.ecode, ecode));	
-				
-				//插入到杆位中
-				EquipmentPole equipmentStore=new EquipmentPole();
-				equipmentStore.setEcode(taskEquipmentList.getEcode());
-				equipmentStore.setPole_id(task.getPole_id());
-				equipmentStore.setNum(1);
-				equipmentStore.setInDate(new Date());
-				equipmentStore.setType(EquipmentPoleType.install);
-				equipmentStore.setType_id(task.getId());
-				equipmentStore.setFrom_id(task.getWorkunit_id());
-				equipmentPoleRepository.create(equipmentStore);
-				//workunit减掉这个设备
-				EquipmentWorkunitPK equipmentWorkunitPK=new EquipmentWorkunitPK();
-				equipmentWorkunitPK.setEcode(taskEquipmentList.getEcode());
-				equipmentWorkunitPK.setWorkunit_id(task.getWorkunit_id());
-				equipmentWorkunitRepository.deleteById(equipmentWorkunitPK);
-			} else if(TaskType.repair.toString().equals(task_type)){
-				//维修的时候，设备的状态，可能是 损坏或者是安装出库 
-				//如果设备原来的状态是正在使用，你把设备下架的
-				if( taskEquipmentList.getType()==TaskListTypeEnum.install){
-					equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using).set(M.Equipment.isnew, false)
-							.set(M.Equipment.place, EquipmentPlace.pole)
-							.set(M.Equipment.last_install_date, new Date())
-							.set(M.Equipment.last_pole_id, task.getPole_address())
-							.set(M.Equipment.last_task_id, task.getId())
-							.set(M.Equipment.currt_task_id, null)
-							.andEquals(M.Equipment.ecode, ecode));	
-					
-					//插入到杆位中
-					EquipmentPole equipmentStore=new EquipmentPole();
-					equipmentStore.setEcode(taskEquipmentList.getEcode());
-					equipmentStore.setPole_id(task.getPole_id());
-					equipmentStore.setNum(1);
-					equipmentStore.setInDate(new Date());
-					equipmentStore.setType(EquipmentPoleType.install);
-					equipmentStore.setType_id(task.getId());
-					equipmentStore.setFrom_id(task.getWorkunit_id());
-					equipmentPoleRepository.create(equipmentStore);
-					//workunit减掉这个设备
-					EquipmentWorkunitPK equipmentWorkunitPK=new EquipmentWorkunitPK();
-					equipmentWorkunitPK.setEcode(taskEquipmentList.getEcode());
-					equipmentWorkunitPK.setWorkunit_id(task.getWorkunit_id());
-					equipmentWorkunitRepository.deleteById(equipmentWorkunitPK);
-				} else {
-					//设备从杆位上卸载下来的情况
-					equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.out_storage).set(M.Equipment.isnew, false)
-							.set(M.Equipment.place, EquipmentPlace.workunit)
-							//.set(M.Equipment.last_install_date, new Date())
-							.set(M.Equipment.last_workunit_id, task.getWorkunit_id())
-							.set(M.Equipment.last_task_id, task.getId())
-							.set(M.Equipment.currt_task_id, null)
-							.andEquals(M.Equipment.ecode, ecode));	
-					
-
-					//插入到workunit中
-					EquipmentWorkunit equipmentWorkunit=new EquipmentWorkunit();
-					equipmentWorkunit.setEcode(taskEquipmentList.getEcode());
-					equipmentWorkunit.setWorkunit_id(task.getWorkunit_id());
-					equipmentWorkunit.setInDate(new Date());
-					equipmentWorkunit.setNum(1);
-					equipmentWorkunit.setType(EquipmentWorkunitType.task);
-					equipmentWorkunit.setType_id(task.getId());
-					equipmentWorkunit.setFrom_id(task.getPole_id());
-					equipmentWorkunitRepository.create(equipmentWorkunit);
-					//从杆位中移除这个设备
-					EquipmentPolePK equipmentPolePK=new EquipmentPolePK();
-					equipmentPolePK.setEcode(taskEquipmentList.getEcode());
-					equipmentPolePK.setPole_id(task.getPole_id());
-					equipmentPoleRepository.deleteById(equipmentPolePK);
-				}
-						
-			} else if(TaskType.cancel.toString().equals(task_type)){
-				//设备从杆位上卸载下来的情况
-				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.out_storage).set(M.Equipment.isnew, false)
-						.set(M.Equipment.place, EquipmentPlace.workunit)
-						//.set(M.Equipment.last_install_date, new Date())
-						.set(M.Equipment.last_workunit_id, task.getWorkunit_id())
-						.set(M.Equipment.last_task_id, task.getId())
-						.set(M.Equipment.currt_task_id, null)
-						.andEquals(M.Equipment.ecode, ecode));	
-				
-
-				//插入到workunit中
-				EquipmentWorkunit equipmentWorkunit=new EquipmentWorkunit();
-				equipmentWorkunit.setEcode(taskEquipmentList.getEcode());
-				equipmentWorkunit.setWorkunit_id(task.getWorkunit_id());
-				equipmentWorkunit.setInDate(new Date());
-				equipmentWorkunit.setNum(1);
-				equipmentWorkunit.setType(EquipmentWorkunitType.task);
-				equipmentWorkunit.setType_id(task.getId());
-				equipmentWorkunit.setFrom_id(task.getPole_id());
-				equipmentWorkunitRepository.create(equipmentWorkunit);
-				//从杆位中移除这个设备
-				EquipmentPolePK equipmentPolePK=new EquipmentPolePK();
-				equipmentPolePK.setEcode(taskEquipmentList.getEcode());
-				equipmentPolePK.setPole_id(task.getPole_id());
-				equipmentPoleRepository.deleteById(equipmentPolePK);
-
-			}else if(TaskType.patrol.toString().equals(task_type)){
-
-			}
-
-		}
-		
-	}
 //	/**
 //	 * 管理人员 确认任务单,同时修改设备的状态
 //	 * @author mawujun email:160649888@163.com qq:16064988
@@ -327,6 +187,7 @@ public class TaskService extends AbstractService<Task, String>{
 //		Task task=taskRepository.get(id);
 //		task.setStatus( TaskStatus.complete);
 //		task.setCompleteDate(new Date());
+//		taskRepository.update(task);
 //		//修改杆位状态为"已安装"
 //		if(task.getType()==TaskType.newInstall){
 //			poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.using).andEquals(M.Pole.id, task.getPole_id()));	
@@ -336,49 +197,125 @@ public class TaskService extends AbstractService<Task, String>{
 //		
 //		
 //		String task_type=task.getType().toString();
-//		//修改设备的状态
+//		//所有这次任务相关的设备清单
 //		List<TaskEquipmentList> taskEquipmentListes=taskEquipmentListRepository.query(Cnd.select().andEquals(M.TaskEquipmentList.task_id,id));
 //		for(TaskEquipmentList taskEquipmentList:taskEquipmentListes){
 //			String ecode=taskEquipmentList.getEcode();
 //			if(TaskType.newInstall.toString().equals(task_type)){
-//			//更改设备的位置到该杆位上,把设备从昨夜单位身上移动到杆位上
+//				//更改设备的位置到该杆位上,把设备从昨夜单位身上移动到杆位上
 //				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using).set(M.Equipment.isnew, false)
-//						.set(M.Equipment.pole_id, task.getPole_id())
+//						.set(M.Equipment.place, EquipmentPlace.pole)
 //						.set(M.Equipment.last_install_date, new Date())
-//						//.set(M.Equipment.last_task_id, id)
-//						.set(M.Equipment.workUnit_id, null)
-//						.set(M.Equipment.store_id, null)
+//						.set(M.Equipment.last_pole_id, task.getPole_id())
+//						.set(M.Equipment.last_task_id, task.getId())
+//						.set(M.Equipment.currt_task_id, null)
 //						.andEquals(M.Equipment.ecode, ecode));	
+//				
+//				//插入到杆位中
+//				EquipmentPole equipmentStore=new EquipmentPole();
+//				equipmentStore.setEcode(taskEquipmentList.getEcode());
+//				equipmentStore.setPole_id(task.getPole_id());
+//				equipmentStore.setNum(1);
+//				equipmentStore.setInDate(new Date());
+//				equipmentStore.setType(EquipmentPoleType.install);
+//				equipmentStore.setType_id(task.getId());
+//				equipmentStore.setFrom_id(task.getWorkunit_id());
+//				equipmentPoleRepository.create(equipmentStore);
+//				//workunit减掉这个设备
+//				EquipmentWorkunitPK equipmentWorkunitPK=new EquipmentWorkunitPK();
+//				equipmentWorkunitPK.setEcode(taskEquipmentList.getEcode());
+//				equipmentWorkunitPK.setWorkunit_id(task.getWorkunit_id());
+//				equipmentWorkunitRepository.deleteById(equipmentWorkunitPK);
 //			} else if(TaskType.repair.toString().equals(task_type)){
 //				//维修的时候，设备的状态，可能是 损坏或者是安装出库 
-//				if( taskEquipmentList.getEquipment_status()==EquipmentStatus.using){
-//					equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using).set(M.Equipment.isnew, false)	
-//							.set(M.Equipment.pole_id, task.getPole_id())
+//				//如果设备原来的状态是正在使用，你把设备下架的
+//				if( taskEquipmentList.getType()==TaskListTypeEnum.install){
+//					equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using).set(M.Equipment.isnew, false)
+//							.set(M.Equipment.place, EquipmentPlace.pole)
 //							.set(M.Equipment.last_install_date, new Date())
-//							//.set(M.Equipment.last_task_id, id)
-//							.set(M.Equipment.workUnit_id, null)
-//							.set(M.Equipment.store_id, null)
-//							.andEquals(M.Equipment.ecode, ecode)
-//							.andEquals(M.Equipment.status, EquipmentStatus.out_storage));
+//							.set(M.Equipment.last_pole_id, task.getPole_address())
+//							.set(M.Equipment.last_task_id, task.getId())
+//							.set(M.Equipment.currt_task_id, null)
+//							.andEquals(M.Equipment.ecode, ecode));	
+//					
+//					//插入到杆位中
+//					EquipmentPole equipmentStore=new EquipmentPole();
+//					equipmentStore.setEcode(taskEquipmentList.getEcode());
+//					equipmentStore.setPole_id(task.getPole_id());
+//					equipmentStore.setNum(1);
+//					equipmentStore.setInDate(new Date());
+//					equipmentStore.setType(EquipmentPoleType.install);
+//					equipmentStore.setType_id(task.getId());
+//					equipmentStore.setFrom_id(task.getWorkunit_id());
+//					equipmentPoleRepository.create(equipmentStore);
+//					//workunit减掉这个设备
+//					EquipmentWorkunitPK equipmentWorkunitPK=new EquipmentWorkunitPK();
+//					equipmentWorkunitPK.setEcode(taskEquipmentList.getEcode());
+//					equipmentWorkunitPK.setWorkunit_id(task.getWorkunit_id());
+//					equipmentWorkunitRepository.deleteById(equipmentWorkunitPK);
 //				} else {
-//					equipmentRepository.update(Cnd.update().set(M.Equipment.status, taskEquipmentList.getEquipment_status())
-//							.set(M.Equipment.workUnit_id, task.getWorkunit_id())
-//							//.set(M.Equipment.last_task_id, id)
-//							.set(M.Equipment.pole_id, null)
-//							.set(M.Equipment.store_id, null)
-//							.andEquals(M.Equipment.ecode, ecode)
-//							.andEquals(M.Equipment.status, EquipmentStatus.using));	
+//					//设备从杆位上卸载下来的情况
+//					equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.out_storage).set(M.Equipment.isnew, false)
+//							.set(M.Equipment.place, EquipmentPlace.workunit)
+//							//.set(M.Equipment.last_install_date, new Date())
+//							.set(M.Equipment.last_workunit_id, task.getWorkunit_id())
+//							.set(M.Equipment.last_task_id, task.getId())
+//							.set(M.Equipment.currt_task_id, null)
+//							.andEquals(M.Equipment.ecode, ecode));	
+//					
+//
+//					//插入到workunit中
+//					EquipmentWorkunit equipmentWorkunit=new EquipmentWorkunit();
+//					equipmentWorkunit.setEcode(taskEquipmentList.getEcode());
+//					equipmentWorkunit.setWorkunit_id(task.getWorkunit_id());
+//					equipmentWorkunit.setInDate(new Date());
+//					equipmentWorkunit.setNum(1);
+//					equipmentWorkunit.setType(EquipmentWorkunitType.task);
+//					equipmentWorkunit.setType_id(task.getId());
+//					equipmentWorkunit.setFrom_id(task.getPole_id());
+//					equipmentWorkunitRepository.create(equipmentWorkunit);
+//					//从杆位中移除这个设备
+//					EquipmentPolePK equipmentPolePK=new EquipmentPolePK();
+//					equipmentPolePK.setEcode(taskEquipmentList.getEcode());
+//					equipmentPolePK.setPole_id(task.getPole_id());
+//					equipmentPoleRepository.deleteById(equipmentPolePK);
 //				}
 //						
-//			} else if(TaskType.patrol.toString().equals(task_type)){
+//			} else if(TaskType.cancel.toString().equals(task_type)){
+//				//设备从杆位上卸载下来的情况
+//				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.out_storage).set(M.Equipment.isnew, false)
+//						.set(M.Equipment.place, EquipmentPlace.workunit)
+//						//.set(M.Equipment.last_install_date, new Date())
+//						.set(M.Equipment.last_workunit_id, task.getWorkunit_id())
+//						.set(M.Equipment.last_task_id, task.getId())
+//						.set(M.Equipment.currt_task_id, null)
+//						.andEquals(M.Equipment.ecode, ecode));	
+//				
+//
+//				//插入到workunit中
+//				EquipmentWorkunit equipmentWorkunit=new EquipmentWorkunit();
+//				equipmentWorkunit.setEcode(taskEquipmentList.getEcode());
+//				equipmentWorkunit.setWorkunit_id(task.getWorkunit_id());
+//				equipmentWorkunit.setInDate(new Date());
+//				equipmentWorkunit.setNum(1);
+//				equipmentWorkunit.setType(EquipmentWorkunitType.task);
+//				equipmentWorkunit.setType_id(task.getId());
+//				equipmentWorkunit.setFrom_id(task.getPole_id());
+//				equipmentWorkunitRepository.create(equipmentWorkunit);
+//				//从杆位中移除这个设备
+//				EquipmentPolePK equipmentPolePK=new EquipmentPolePK();
+//				equipmentPolePK.setEcode(taskEquipmentList.getEcode());
+//				equipmentPolePK.setPole_id(task.getPole_id());
+//				equipmentPoleRepository.deleteById(equipmentPolePK);
+//
+//			}else if(TaskType.patrol.toString().equals(task_type)){
 //
 //			}
 //
 //		}
 //		
-//		
 //	}
-	
+
 	
 	
 	public Page mobile_queryPage(Page page) {
@@ -836,9 +773,125 @@ public class TaskService extends AbstractService<Task, String>{
 			}
 		}
 		
-		//修改任务状态为"已提交"
-		taskRepository.update(Cnd.update().set(M.Task.status, TaskStatus.submited).set(M.Task.submitDate, new Date()).andEquals(M.Task.id, task_id));
+		//更新任务状态
+		task.setStatus( TaskStatus.submited);
+		task.setSubmitDate(new Date());
+		taskRepository.update(task);
 		
+		// 修改杆位状态为"使用中"
+		if (task.getType() == TaskType.newInstall) {
+			poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.using).andEquals(M.Pole.id, task.getPole_id()));
+		} else if (task.getType() == TaskType.repair) {
+			poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.using).andEquals(M.Pole.id, task.getPole_id()));
+		}
+
+		//String task_type = task.getType().toString();
+		// 所有这次任务相关的设备清单
+		List<TaskEquipmentList> taskEquipmentListes = taskEquipmentListRepository.query(Cnd.select().andEquals(M.TaskEquipmentList.task_id, task_id));
+		for (TaskEquipmentList taskEquipmentList : taskEquipmentListes) {
+			String ecode = taskEquipmentList.getEcode();
+			if (TaskType.newInstall== task.getType()) {
+				// 更改设备的位置到该杆位上,把设备从昨夜单位身上移动到杆位上
+				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using).set(M.Equipment.isnew, false)
+						.set(M.Equipment.place, EquipmentPlace.pole).set(M.Equipment.last_install_date, new Date())
+						.set(M.Equipment.last_pole_id, task.getPole_id()).set(M.Equipment.last_task_id, task.getId())
+						.set(M.Equipment.currt_task_id, null).andEquals(M.Equipment.ecode, ecode));
+
+				// 杆位绑定这个设备
+				EquipmentPole equipmentStore = new EquipmentPole();
+				equipmentStore.setEcode(taskEquipmentList.getEcode());
+				equipmentStore.setPole_id(task.getPole_id());
+				equipmentStore.setNum(1);
+				equipmentStore.setInDate(new Date());
+				equipmentStore.setType(EquipmentPoleType.install);
+				equipmentStore.setType_id(task.getId());
+				equipmentStore.setFrom_id(task.getWorkunit_id());
+				equipmentPoleRepository.create(equipmentStore);
+				// workunit减掉这个设备
+				EquipmentWorkunitPK equipmentWorkunitPK = new EquipmentWorkunitPK();
+				equipmentWorkunitPK.setEcode(taskEquipmentList.getEcode());
+				equipmentWorkunitPK.setWorkunit_id(task.getWorkunit_id());
+				equipmentWorkunitRepository.deleteById(equipmentWorkunitPK);
+			} else if (TaskType.repair== task.getType()) {
+				// 维修的时候，设备的状态，可能是 损坏或者是安装出库
+				// 如果设备原来的状态是正在使用，你把设备下架的
+				if (taskEquipmentList.getType() == TaskListTypeEnum.install) {
+					equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using).set(M.Equipment.isnew, false)
+							.set(M.Equipment.place, EquipmentPlace.pole).set(M.Equipment.last_install_date, new Date())
+							.set(M.Equipment.last_pole_id, task.getPole_address()).set(M.Equipment.last_task_id, task.getId())
+							.set(M.Equipment.currt_task_id, null).andEquals(M.Equipment.ecode, ecode));
+
+					// 杆位绑定这个设备
+					EquipmentPole equipmentStore = new EquipmentPole();
+					equipmentStore.setEcode(taskEquipmentList.getEcode());
+					equipmentStore.setPole_id(task.getPole_id());
+					equipmentStore.setNum(1);
+					equipmentStore.setInDate(new Date());
+					equipmentStore.setType(EquipmentPoleType.install);
+					equipmentStore.setType_id(task.getId());
+					equipmentStore.setFrom_id(task.getWorkunit_id());
+					equipmentPoleRepository.create(equipmentStore);
+					// workunit减掉这个设备
+					EquipmentWorkunitPK equipmentWorkunitPK = new EquipmentWorkunitPK();
+					equipmentWorkunitPK.setEcode(taskEquipmentList.getEcode());
+					equipmentWorkunitPK.setWorkunit_id(task.getWorkunit_id());
+					equipmentWorkunitRepository.deleteById(equipmentWorkunitPK);
+				} else {
+					// 设备从杆位上卸载下来的情况
+					equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.out_storage).set(M.Equipment.isnew, false)
+							.set(M.Equipment.place, EquipmentPlace.workunit)
+							// .set(M.Equipment.last_install_date, new Date())
+							.set(M.Equipment.last_workunit_id, task.getWorkunit_id()).set(M.Equipment.last_task_id, task.getId())
+							.set(M.Equipment.currt_task_id, null).andEquals(M.Equipment.ecode, ecode));
+
+					// 把设备挂到这个作业单位身上
+					EquipmentWorkunit equipmentWorkunit = new EquipmentWorkunit();
+					equipmentWorkunit.setEcode(taskEquipmentList.getEcode());
+					equipmentWorkunit.setWorkunit_id(task.getWorkunit_id());
+					equipmentWorkunit.setInDate(new Date());
+					equipmentWorkunit.setNum(1);
+					equipmentWorkunit.setType(EquipmentWorkunitType.task);
+					equipmentWorkunit.setType_id(task.getId());
+					equipmentWorkunit.setFrom_id(task.getPole_id());
+					equipmentWorkunitRepository.create(equipmentWorkunit);
+					// 从杆位中移除这个设备
+					EquipmentPolePK equipmentPolePK = new EquipmentPolePK();
+					equipmentPolePK.setEcode(taskEquipmentList.getEcode());
+					equipmentPolePK.setPole_id(task.getPole_id());
+					equipmentPoleRepository.deleteById(equipmentPolePK);
+				}
+
+			} else if (TaskType.cancel== task.getType()) {
+				// 设备从杆位上卸载下来的情况
+				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.out_storage).set(M.Equipment.isnew, false)
+						.set(M.Equipment.place, EquipmentPlace.workunit)
+						// .set(M.Equipment.last_install_date, new Date())
+						.set(M.Equipment.last_workunit_id, task.getWorkunit_id()).set(M.Equipment.last_task_id, task.getId())
+						.set(M.Equipment.currt_task_id, null).andEquals(M.Equipment.ecode, ecode));
+
+				// 插入到workunit中
+				EquipmentWorkunit equipmentWorkunit = new EquipmentWorkunit();
+				equipmentWorkunit.setEcode(taskEquipmentList.getEcode());
+				equipmentWorkunit.setWorkunit_id(task.getWorkunit_id());
+				equipmentWorkunit.setInDate(new Date());
+				equipmentWorkunit.setNum(1);
+				equipmentWorkunit.setType(EquipmentWorkunitType.task);
+				equipmentWorkunit.setType_id(task.getId());
+				equipmentWorkunit.setFrom_id(task.getPole_id());
+				equipmentWorkunitRepository.create(equipmentWorkunit);
+				// 从杆位中移除这个设备
+				EquipmentPolePK equipmentPolePK = new EquipmentPolePK();
+				equipmentPolePK.setEcode(taskEquipmentList.getEcode());
+				equipmentPolePK.setPole_id(task.getPole_id());
+				equipmentPoleRepository.deleteById(equipmentPolePK);
+
+			} else if (TaskType.patrol== task.getType()) {
+
+			}
+
+		}
+
+	
 		
 	}
 //	/**

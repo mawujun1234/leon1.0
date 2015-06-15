@@ -145,19 +145,19 @@ public class TaskController {
 		//JsonConfigHolder.setAutoWrap(false);
 		return builder.toString();
 	}
-	@RequestMapping("/task/confirm.do")
-	@ResponseBody
-	public String confirm(String id) {
-		taskService.confirm(id);
-		return "success";
-	}
+//	@RequestMapping("/task/confirm.do")
+//	@ResponseBody
+//	public String confirm(String id) {
+//		taskService.confirm(id);
+//		return "success";
+//	}
 	
-	@RequestMapping("/task/back.do")
-	@ResponseBody
-	public String backs(String id) {
-		taskService.update(Cnd.update().set(M.Task.status, TaskStatus.handling).andEquals(M.Task.id, id));
-		return "success";
-	}
+//	@RequestMapping("/task/back.do")
+//	@ResponseBody
+//	public String backs(String id) {
+//		taskService.update(Cnd.update().set(M.Task.status, TaskStatus.handling).andEquals(M.Task.id, id));
+//		return "success";
+//	}
 	@RequestMapping("/task/cancel.do")
 	@ResponseBody
 	public String cancel(String id) {
@@ -447,8 +447,8 @@ public class TaskController {
 		Cell startHandDate=row.createCell(cellnum++);
 		startHandDate.setCellValue("维修到达时间");
 		
-		Cell completeDate=row.createCell(cellnum++);
-		completeDate.setCellValue("完成时间");
+//		Cell completeDate=row.createCell(cellnum++);
+//		completeDate.setCellValue("完成时间");
 		
 		Cell finishTime=row.createCell(cellnum++);
 		finishTime.setCellValue("总耗时");
@@ -498,8 +498,8 @@ public class TaskController {
 			Cell startHandDate=row.createCell(cellnum++);
 			startHandDate.setCellValue(task.getStartHandDate()!=null?yMdHms.format(task.getStartHandDate()):"");
 			
-			Cell completeDate=row.createCell(cellnum++);
-			completeDate.setCellValue(task.getCompleteDate()!=null?yMdHms.format(task.getCompleteDate()):"");//==null?"":task.getCompleteDate());
+//			Cell completeDate=row.createCell(cellnum++);
+//			completeDate.setCellValue(task.getCompleteDate()!=null?yMdHms.format(task.getCompleteDate()):"");//==null?"":task.getCompleteDate());
 			
 			Cell finishTime=row.createCell(cellnum++);
 			finishTime.setCellValue(task.getFinishTime());

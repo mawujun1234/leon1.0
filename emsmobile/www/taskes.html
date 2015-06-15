@@ -71,7 +71,11 @@
 </style>
 <script type="application/javascript">
 $(function(){
-	//$( ":mobile-pagecontainer" ).pagecontainer( "load", "taskes_new.html", {  } );	
+	//$( ":mobile-pagecontainer" ).pagecontainer( "load", "taskes_new.html", {  } );
+	//当遮罩层被点击的时候	
+	$("#fullbg").on( "tap", function(){
+		toggleSecondNavbar();
+	});
 })
 var secondNavbarIsHide=true;
 //切换二级菜单，type就是新建任务的类型,也可以为null
@@ -93,15 +97,6 @@ function toggleSecondNavbar(callback){
 		$("#footernav").css("z-index",footernavZIndex);
 		closeBg();
 	}
-//	if(type){
-//		//表示要进行跳转了
-//		//$( ":mobile-pagecontainer" ).pagecontainer( "load", "taskes_new.html", {  } );
-//		window.page_taskes_new_type=type;
-//		var params={
-//			type:type
-//		};
-//		window.page_taskes_new_params=params;
-//	}
 }
 
 //显示灰色 jQuery 遮罩层
@@ -416,10 +411,10 @@ $(document).ready(function(e) {
         <button href="#" data-icon="carat-d" data-iconpos="notext" onClick="toggleSecondNavbar();"></button>
 		<div data-role="navbar" id="secondNavbar" class="secondNavbar-glyphish-example" style="display:none;">
         	<ul id="secondNavbar_ul">
-            	<li><a href="#" status='working' onClick="queryByStatusChange('working');"  class="ui-icon-taskes-refresh ui-btn-icon-top ui-btn-active">当前</a></li>
-                <li><a href="#" status='confirm' onClick="queryByStatusChange('confirm');" class="ui-icon-taskes-refresh ui-btn-icon-top">确认中</a></li>
-                <li><a href="#" status='complete' onClick="queryByStatusChange('complete');" class="ui-icon-taskes-refresh ui-btn-icon-top">已完成</a></li>
-                <li><a href="#page_taskes_new" onClick="createTaskes();" class="ui-icon-install ui-btn-icon-top">新建</a></li>
+            	<li><a href="#page_taskes_new" onClick="createTaskes();" class="ui-icon-install ui-btn-icon-top">新建</a></li>
+            	<li><a href="#" status='working' onClick="queryByStatusChange('working');"  class="ui-icon-taskes-refresh ui-btn-icon-top ui-btn-active">处理中</a></li>
+                <li><a href="#" status='submited' onClick="queryByStatusChange('submited');" class="ui-icon-taskes-refresh ui-btn-icon-top">已提交</a></li>   
+                 <!--<li><a href="#" status='refresh' onClick="refresh('complete');" class="ui-icon-taskes-refresh ui-btn-icon-top">刷新</a></li>-->
             </ul>
         </div>
     </div>
@@ -1114,7 +1109,7 @@ $(document).ready(function(e) {
 	});
 	$("button[name='saveTask']").click(function(event){
 	  	saveTask();
-		//history.back();
+		history.back();
 	});
 	$("button[name='submitTask']").click(function(event){
 	  	submitTask();
