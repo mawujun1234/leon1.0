@@ -73,12 +73,16 @@ public class Day_sparepart_Controller {
 		return style;
 	}
 	
-	private CellStyle getContentStyle(XSSFWorkbook wb,IndexedColors color,short fontSize){
+	private CellStyle getContentStyle(XSSFWorkbook wb,IndexedColors color,Short fontSize){
 		CellStyle style = wb.createCellStyle();
 		//style.setAlignment(CellStyle.ALIGN_CENTER);
 		//style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
 		Font bord_font = wb.createFont();
-		bord_font.setFontHeightInPoints((short)10);
+		if(fontSize!=null){
+			bord_font.setFontHeightInPoints(fontSize);
+		} else {
+			bord_font.setFontHeightInPoints((short)10);
+		}
 		if(color!=null){
 			bord_font.setColor(color.getIndex());
 		}
@@ -98,8 +102,8 @@ public class Day_sparepart_Controller {
 	
 	public void init_background(XSSFWorkbook wb ,Sheet sheet,int lastrownum){
 		CellStyle fixednum_style=getContentStyle(wb,null,(short)9);
-		 fixednum_style.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
-		 fixednum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		fixednum_style.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
+		fixednum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 		 
 		CellStyle lastnum_style=getContentStyle(wb,null,(short)9);
 		 lastnum_style.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.index);
@@ -109,28 +113,28 @@ public class Day_sparepart_Controller {
 		 nownum_style.setFillForegroundColor(HSSFColor.LIGHT_TURQUOISE.index);
 		 nownum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 
-		 CellStyle supplementnum_style=getContentStyle(wb,null,(short)9);
-		 supplementnum_style.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);
-		 supplementnum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+//		 CellStyle supplementnum_style=getContentStyle(wb,null,(short)10);
+//		 supplementnum_style.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);
+//		 supplementnum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 //		 
 		
-		CellStyle fixednum_subtitle_style=getContentStyle(wb,null,(short)9);
-		 fixednum_subtitle_style.setBorderLeft(CellStyle.BORDER_NONE);
-		 fixednum_subtitle_style.setBorderRight(CellStyle.BORDER_NONE);
-		 fixednum_subtitle_style.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
-		 fixednum_subtitle_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		 
-		 CellStyle lastnum_subtitle_style=getContentStyle(wb,null,(short)9);
-		 lastnum_subtitle_style.setBorderLeft(CellStyle.BORDER_NONE);
-		 lastnum_subtitle_style.setBorderRight(CellStyle.BORDER_NONE);
-		 lastnum_subtitle_style.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.index);
-		 lastnum_subtitle_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		 
-		 CellStyle nownum_subtitle_style=getContentStyle(wb,null,(short)9);
-		 nownum_subtitle_style.setBorderLeft(CellStyle.BORDER_NONE);
-		 nownum_subtitle_style.setBorderRight(CellStyle.BORDER_NONE);
-		 nownum_subtitle_style.setFillForegroundColor(IndexedColors.LIGHT_TURQUOISE.index);
-		 nownum_subtitle_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+//		CellStyle fixednum_subtitle_style=getContentStyle(wb,null,(short)10);
+//		 fixednum_subtitle_style.setBorderLeft(CellStyle.BORDER_NONE);
+//		 fixednum_subtitle_style.setBorderRight(CellStyle.BORDER_NONE);
+//		 fixednum_subtitle_style.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
+//		 fixednum_subtitle_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+//		 
+//		 CellStyle lastnum_subtitle_style=getContentStyle(wb,null,(short)10);
+//		 lastnum_subtitle_style.setBorderLeft(CellStyle.BORDER_NONE);
+//		 lastnum_subtitle_style.setBorderRight(CellStyle.BORDER_NONE);
+//		 lastnum_subtitle_style.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.index);
+//		 lastnum_subtitle_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+//		 
+//		 CellStyle nownum_subtitle_style=getContentStyle(wb,null,(short)10);
+//		 nownum_subtitle_style.setBorderLeft(CellStyle.BORDER_NONE);
+//		 nownum_subtitle_style.setBorderRight(CellStyle.BORDER_NONE);
+//		 nownum_subtitle_style.setFillForegroundColor(IndexedColors.LIGHT_TURQUOISE.index);
+//		 nownum_subtitle_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 		 
 //		 CellStyle supplementnum_subtitle_style=getContentStyle(wb,null);
 //		 supplementnum_subtitle_style.setBorderLeft(CellStyle.BORDER_NONE);
@@ -141,29 +145,27 @@ public class Day_sparepart_Controller {
 //		 CellStyle memo_subtitle_style=getContentStyle(wb,null);
 //		 memo_subtitle_style.setBorderLeft(CellStyle.BORDER_NONE);
 		 
-		for(int i=2;i<lastrownum;i++){
-			Row row=sheet.getRow(i);
+		 //对于有背景色的专门使用自己的样式表
+		for (int i = 4; i < lastrownum; i++) {
+			Row row = sheet.getRow(i);
 
-				for(int j=0;j<type_group_end_num;j++){
-					Cell cell=row.getCell(j);
-					if(cell==null){
-						//cell=row.createCell(j);
-						continue;
-					}
-					if(j==6){
-						cell.setCellStyle(fixednum_style);
-					}
-					if(j==7){
-						cell.setCellStyle(lastnum_style);
-					}
-					if(j==16){
-						cell.setCellStyle(nownum_style);
-					}
-					if(j==17){
-						cell.setCellStyle(supplementnum_style);
-					}
+			for (int j = 6; j < type_group_end_num; j++) {
+				Cell cell = row.getCell(j);
+				if (cell == null) {
+					// cell=row.createCell(j);
+					continue;
+				}
+				if (j == 6) {
+					 cell.setCellStyle(fixednum_style);
+				}
+				if (j == 7) {
+					 cell.setCellStyle(lastnum_style);
+				}
+				if (j == 16) {
+					cell.setCellStyle(nownum_style);
 				}
 			}
+		}
 	}
 	private StringBuilder[] sparepart_addRow1(XSSFWorkbook wb,Sheet sheet){
 		 Row row = sheet.createRow(1);
@@ -636,8 +638,7 @@ public class Day_sparepart_Controller {
 						 
 						 Cell nownum=row_prod.createCell(cellnum++);
 						 nownum.setCellFormula(nownum_formule_builder.toString());
-						 //supplementnum_formule_builder.append("-"+CellReference.convertNumToColString(cellnum-1)+(rownum));
-						 //nownum.setCellStyle(content_style);
+						// nownum.setCellStyle(content_style);
 						 
 					 
 						for (int j = 1; j <= day_of_month_num; j++) {
@@ -696,6 +697,7 @@ public class Day_sparepart_Controller {
 		sheet.setRowSumsBelow(false);
 		sheet.setRowSumsRight(false);
 		
+		把样式直接转换成放在，构建的地方，因为样式是公用的
 		init_background(wb,sheet, ++rownum);
 		
 		 String filename = "备品备件仓库盘点月报表_样式表.xlsx";
