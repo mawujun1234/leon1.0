@@ -103,7 +103,7 @@ Ext.onReady(function(){
 			text:'导出日报表模板',
 			icon:'../icons/page_excel.png',
 			handler:function(){
-				window.open(Ext.ContextPath+"/dayinventory/build/excelTpl.do", "_blank");
+				window.open(Ext.ContextPath+"/inventory/day/build/excelTpl.do", "_blank");
 			}
 		}
 		]

@@ -81,7 +81,7 @@ Ext.onReady(function(){
 			text:'导出月报表模板',
 			icon:'../icons/page_excel.png',
 			handler:function(){
-				window.open(Ext.ContextPath+"/monthinventory/sparepart/excelTpl.do", "_blank");
+				window.open(Ext.ContextPath+"/inventory/month/sparepart/excelTpl.do", "_blank");
 			}
 		}
 		]
@@ -104,7 +104,7 @@ Ext.onReady(function(){
 			text:'导出日报表模板',
 			icon:'../icons/page_excel.png',
 			handler:function(){
-				window.open(Ext.ContextPath+"/dayinventory/sparepart/excelTpl.do", "_blank");
+				window.open(Ext.ContextPath+"/inventory/day/sparepart/excelTpl.do", "_blank");
 			}
 		}
 		]

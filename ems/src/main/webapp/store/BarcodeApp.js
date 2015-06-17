@@ -19,7 +19,7 @@ Ext.onReady(function(){
 				 
 				order_no.clearValue( );
 				//order_no.setValue('');
-				alert(order_no.lastQuery);
+				//alert(order_no.lastQuery);
 				delete order_no.lastQuery;
 			}
 		}
