@@ -1,1 +1,1 @@
-{verCode:101,verName:"1.0.1",changelog:" 1:条码长度修改.\n"}
+{verCode:110,verName:"1.1.0",changelog:" 1:增加取消任务.\n2:扫描任务调整."}

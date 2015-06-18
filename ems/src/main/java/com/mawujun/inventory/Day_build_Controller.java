@@ -175,7 +175,7 @@ public class Day_build_Controller {
 		CellStyle in_style = wb.createCellStyle();
 		Font in_font = wb.createFont();
 		in_font.setFontHeightInPoints((short) 8);
-		in_font.setColor(IndexedColors.PALE_BLUE.getIndex());
+		in_font.setColor(IndexedColors.LIGHT_BLUE.getIndex());
 		in_font.setBoldweight(Font.BOLDWEIGHT_BOLD);
 		in_style.setFont(in_font);
 		in_style.setAlignment(CellStyle.ALIGN_CENTER);
@@ -303,40 +303,40 @@ public class Day_build_Controller {
 		StringBuilder[] formulas=build_addRow1(wb, sheet);
 		
 		
-		//---------------------------具体数据德样式
-		// 新增数的样式
-		CellStyle in_style = wb.createCellStyle();
-		Font in_font = wb.createFont();
-		in_font.setFontHeightInPoints((short) 10);
-		in_font.setColor(IndexedColors.PALE_BLUE.getIndex());
-		//in_font.setBoldweight(Font.BOLDWEIGHT_BOLD);
-		in_style.setFont(in_font);
-		in_style.setAlignment(CellStyle.ALIGN_CENTER);
-		in_style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-		in_style.setBorderTop(CellStyle.BORDER_THIN);
-		in_style.setBorderBottom(CellStyle.BORDER_THIN);
-		in_style.setBorderLeft(CellStyle.BORDER_THIN);
-		in_style.setBorderRight(CellStyle.BORDER_THIN);
-		// title_cell.setCellStyle(in_style);
+//		//---------------------------具体数据德样式
+//		// 新增数的样式
+//		CellStyle in_style = wb.createCellStyle();
+//		Font in_font = wb.createFont();
+//		in_font.setFontHeightInPoints((short) 10);
+//		in_font.setColor(IndexedColors.PALE_BLUE.getIndex());
+//		//in_font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+//		in_style.setFont(in_font);
+//		in_style.setAlignment(CellStyle.ALIGN_CENTER);
+//		in_style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+//		in_style.setBorderTop(CellStyle.BORDER_THIN);
+//		in_style.setBorderBottom(CellStyle.BORDER_THIN);
+//		in_style.setBorderLeft(CellStyle.BORDER_THIN);
+//		in_style.setBorderRight(CellStyle.BORDER_THIN);
+//		// title_cell.setCellStyle(in_style);
+//
+//		// 领用数的样式
+//		CellStyle out_style = wb.createCellStyle();
+//		Font out_font = wb.createFont();
+//		out_font.setFontHeightInPoints((short) 10);
+//		out_font.setColor(IndexedColors.RED.getIndex());
+//		//out_font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+//		out_style.setFont(out_font);
+//		out_style.setAlignment(CellStyle.ALIGN_CENTER);
+//		out_style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+//		out_style.setBorderTop(CellStyle.BORDER_THIN);
+//		out_style.setBorderBottom(CellStyle.BORDER_THIN);
+//		out_style.setBorderLeft(CellStyle.BORDER_THIN);
+//		out_style.setBorderRight(CellStyle.BORDER_THIN);
+//		//---------------------------具体数据德样式
 
-		// 领用数的样式
-		CellStyle out_style = wb.createCellStyle();
-		Font out_font = wb.createFont();
-		out_font.setFontHeightInPoints((short) 10);
-		out_font.setColor(IndexedColors.RED.getIndex());
-		//out_font.setBoldweight(Font.BOLDWEIGHT_BOLD);
-		out_style.setFont(out_font);
-		out_style.setAlignment(CellStyle.ALIGN_CENTER);
-		out_style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-		out_style.setBorderTop(CellStyle.BORDER_THIN);
-		out_style.setBorderBottom(CellStyle.BORDER_THIN);
-		out_style.setBorderLeft(CellStyle.BORDER_THIN);
-		out_style.setBorderRight(CellStyle.BORDER_THIN);
-		//---------------------------具体数据德样式
-
-		CellStyle blue_style = getStyle(wb, IndexedColors.LIGHT_BLUE,null);
+		//CellStyle blue_style = getStyle(wb, IndexedColors.LIGHT_BLUE,null);
 		
-		CellStyle red_style = getStyle(wb, IndexedColors.RED,null);
+		//CellStyle red_style = getStyle(wb, IndexedColors.RED,null);
 
 		
 		CellStyle type_name_style = this.getStyle(wb, IndexedColors.BLACK,(short)12);
@@ -358,13 +358,21 @@ public class Day_build_Controller {
 		subtype_name_style.setAlignment(CellStyle.ALIGN_LEFT);
 
 		CellStyle content_style =getContentStyle(wb,null);
+		CellStyle content_blue_style =getContentStyle(wb,IndexedColors.LIGHT_BLUE);
+		CellStyle content_red_style =getContentStyle(wb,IndexedColors.RED);
 		
 		 CellStyle content_subtitle_style =getContentStyle(wb,null);
 		 content_subtitle_style.setBorderLeft(CellStyle.BORDER_NONE);
 		 content_subtitle_style.setBorderRight(CellStyle.BORDER_NONE);
 		 //content_subtitle_style.setBorderTop(CellStyle.BORDER_NONE);
 		
-		
+		 CellStyle lastnum_style=getContentStyle(wb,null);
+		 lastnum_style.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.index);
+		 lastnum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		 
+		 CellStyle nownum_style=getContentStyle(wb,null);
+		 nownum_style.setFillForegroundColor(HSSFColor.LIGHT_TURQUOISE.index);
+		 nownum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 
 		
 		 //循环出数据
@@ -423,15 +431,15 @@ public class Day_build_Controller {
 						cellnum=2;
 						Row row_prod = sheet.createRow(rownum++);
 						Cell brand_name = row_prod.createCell(cellnum++);
-						brand_name.setCellValue("测试");
+						//brand_name.setCellValue("测试");
 						brand_name.setCellStyle(content_style);
 			
 						Cell style = row_prod.createCell(cellnum++);
-						style.setCellValue("测试");
+						//style.setCellValue("测试");
 						style.setCellStyle(content_style);
 			
 						Cell prod_name = row_prod.createCell(cellnum++);
-						prod_name.setCellValue("测试");
+						//prod_name.setCellValue("测试");
 						prod_name.setCellStyle(content_style);
 			
 //						Cell store_name = row_prod.createCell(cellnum++);
@@ -439,23 +447,23 @@ public class Day_build_Controller {
 //						store_name.setCellStyle(content_style);
 			
 						Cell unit = row_prod.createCell(cellnum++);
-						unit.setCellValue("台");
+						//unit.setCellValue("台");
 						unit.setCellStyle(content_style);
 			
 						Cell lastnum = row_prod.createCell(cellnum++);
-						lastnum.setCellValue(1);
+						//lastnum.setCellValue(1);
 						nownum_formule_builder.append(CellReference.convertNumToColString(cellnum-1)+(rownum));
-						//lastnum.setCellStyle(lastnum_style);
+						lastnum.setCellStyle(lastnum_style);
 			
 						Cell storeinnum = row_prod.createCell(cellnum++);
 						storeinnum.setCellFormula(formulas[0].toString().replaceAll("=", (rownum)+""));
-						storeinnum.setCellStyle(blue_style);
+						storeinnum.setCellStyle(content_blue_style);
 						nownum_formule_builder.append(",");
 						nownum_formule_builder.append(CellReference.convertNumToColString(cellnum-1)+(rownum));
 			
 						Cell installoutnum = row_prod.createCell(cellnum++);
 						installoutnum.setCellFormula(formulas[1].toString().replaceAll("=", (rownum)+""));
-						installoutnum.setCellStyle(red_style);
+						installoutnum.setCellStyle(content_red_style);
 						nownum_formule_builder.append(",");
 						nownum_formule_builder.append(CellReference.convertNumToColString(cellnum-1)+(rownum));
 						nownum_formule_builder.append(")");
@@ -466,29 +474,17 @@ public class Day_build_Controller {
 //								+ "," + CellReference.convertNumToColString(7)+(rownum ) 
 //								+ ","+ CellReference.convertNumToColString(8) + (rownum )
 //								+ ")");
-						 nownum.setCellFormula(nownum_formule_builder.toString());
-						 //nownum.setCellStyle(bord_style);
-						//nownum.setCellStyle(nownum_style);
+						nownum.setCellFormula(nownum_formule_builder.toString());
+						nownum.setCellStyle(nownum_style);
 						
 						for(int j=1;j<=day_of_month_num;j++){
 							 Cell day_in=row_prod.createCell(cellnum++);
-							 day_in.setCellValue(1);
-							 day_in.setCellStyle(in_style);
-							 //in_formula.append(CellReference.convertNumToColString(cellnum_temp-1)).append("=");
-							 //sheet.setColumnWidth(cellnum_temp-1, "列".getBytes().length*2*200);
-							
-							 
+							 //day_in.setCellValue(1);
+							 day_in.setCellStyle(content_blue_style);
 							 
 							 Cell day_out=row_prod.createCell(cellnum++);
-							 day_out.setCellValue(2);
-							 day_out.setCellStyle(out_style);
-							 //out_formula.append(CellReference.convertNumToColString(cellnum_temp-1)).append("=");
-							// sheet.setColumnWidth(cellnum_temp-1, "列".getBytes().length*2*200);
-//							 
-//							 if(j!=day_of_month_num){
-//								 in_formula.append(",");
-//								 out_formula.append(",");
-//							 } 
+							 //day_out.setCellValue(2);
+							 day_out.setCellStyle(content_red_style);
 							
 						 }
 			
@@ -512,7 +508,6 @@ public class Day_build_Controller {
 		sheet.setRowSumsBelow(false);
 		sheet.setRowSumsRight(false);
 		
-		init_build_background(wb,sheet,rownum);
 		
 		String filename = "在建仓库日报表_样式表.xlsx";
 		 //FileOutputStream out = new FileOutputStream(filename);
@@ -526,55 +521,6 @@ public class Day_build_Controller {
 		out.close();
 		
 	}
-	
-	int start_row=3;
-	public void init_build_background(XSSFWorkbook wb ,Sheet sheet,int lastrownum){
-		 CellStyle lastnum_style=getContentStyle(wb,null);
-		 lastnum_style.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.index);
-		 lastnum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		 
-		 CellStyle nownum_style=getContentStyle(wb,null);
-		 nownum_style.setFillForegroundColor(HSSFColor.LIGHT_TURQUOISE.index);
-		 nownum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		 
-		 
 
-		 
-		 CellStyle lastnum_subtitle_style=getContentStyle(wb,null);
-		 lastnum_subtitle_style.setBorderLeft(CellStyle.BORDER_NONE);
-		 lastnum_subtitle_style.setBorderRight(CellStyle.BORDER_NONE);
-		 lastnum_subtitle_style.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.index);
-		 lastnum_subtitle_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		 
-		 CellStyle nownum_subtitle_style=getContentStyle(wb,null);
-		 nownum_subtitle_style.setBorderLeft(CellStyle.BORDER_NONE);
-		 nownum_subtitle_style.setBorderRight(CellStyle.BORDER_NONE);
-		 nownum_subtitle_style.setFillForegroundColor(IndexedColors.LIGHT_TURQUOISE.index);
-		 nownum_subtitle_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		 
-		 CellStyle memo_subtitle_style=getContentStyle(wb,null);
-		 memo_subtitle_style.setBorderLeft(CellStyle.BORDER_NONE);
-		 //memo_subtitle_style.setBorderRight(CellStyle.BORDER_NONE);
-		
-		for(int i=3;i<lastrownum;i++){
-			Row row=sheet.getRow(i);
-			
-			for(int j=0;j<11;j++){
-				Cell cell=row.getCell(j);
-				if(cell==null){
-					//cell=row.createCell(j);
-					continue;
-				}
-				if(j==6){
-					cell.setCellStyle(lastnum_style);
-				}
-				if(j==9){
-					cell.setCellStyle(nownum_style);
-				}
-			}
-			
-		}
-	}
-	
 	
 }

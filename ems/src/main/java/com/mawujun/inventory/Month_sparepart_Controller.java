@@ -76,75 +76,7 @@ public class Month_sparepart_Controller {
 		return style;
 	}
 	
-	public void init_background(XSSFWorkbook wb ,Sheet sheet,int lastrownum){
-		CellStyle fixednum_style=getContentStyle(wb,null);
-		 fixednum_style.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
-		 fixednum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		 
-		CellStyle lastnum_style=getContentStyle(wb,null);
-		 lastnum_style.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.index);
-		 lastnum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		 
-		 CellStyle nownum_style=getContentStyle(wb,null);
-		 nownum_style.setFillForegroundColor(HSSFColor.LIGHT_TURQUOISE.index);
-		 nownum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 
-		 CellStyle supplementnum_style=getContentStyle(wb,null);
-		 supplementnum_style.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);
-		 supplementnum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-//		 
-		
-		CellStyle fixednum_subtitle_style=getContentStyle(wb,null);
-		 fixednum_subtitle_style.setBorderLeft(CellStyle.BORDER_NONE);
-		 fixednum_subtitle_style.setBorderRight(CellStyle.BORDER_NONE);
-		 fixednum_subtitle_style.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
-		 fixednum_subtitle_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		 
-		 CellStyle lastnum_subtitle_style=getContentStyle(wb,null);
-		 lastnum_subtitle_style.setBorderLeft(CellStyle.BORDER_NONE);
-		 lastnum_subtitle_style.setBorderRight(CellStyle.BORDER_NONE);
-		 lastnum_subtitle_style.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.index);
-		 lastnum_subtitle_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		 
-		 CellStyle nownum_subtitle_style=getContentStyle(wb,null);
-		 nownum_subtitle_style.setBorderLeft(CellStyle.BORDER_NONE);
-		 nownum_subtitle_style.setBorderRight(CellStyle.BORDER_NONE);
-		 nownum_subtitle_style.setFillForegroundColor(IndexedColors.LIGHT_TURQUOISE.index);
-		 nownum_subtitle_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		 
-		 CellStyle supplementnum_subtitle_style=getContentStyle(wb,null);
-		 supplementnum_subtitle_style.setBorderLeft(CellStyle.BORDER_NONE);
-		 supplementnum_subtitle_style.setBorderRight(CellStyle.BORDER_NONE);
-		 supplementnum_subtitle_style.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
-		 supplementnum_subtitle_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		 
-		 CellStyle memo_subtitle_style=getContentStyle(wb,null);
-		 memo_subtitle_style.setBorderLeft(CellStyle.BORDER_NONE);
-		 
-		for(int i=2;i<lastrownum;i++){
-			Row row=sheet.getRow(i);
-
-				for(int j=0;j<18;j++){
-					Cell cell=row.getCell(j);
-					if(cell==null){
-						//cell=row.createCell(j);
-						continue;
-					}
-					if(j==6){
-						cell.setCellStyle(fixednum_style);
-					}
-					if(j==7){
-						cell.setCellStyle(lastnum_style);
-					}
-					if(j==16){
-						cell.setCellStyle(nownum_style);
-					}
-					if(j==17){
-						cell.setCellStyle(supplementnum_style);
-					}
-				}
-			}
-	}
 	private void sparepart_addRow1(XSSFWorkbook wb,Sheet sheet){
 		 Row row = sheet.createRow(1);
 		 
@@ -285,7 +217,7 @@ public class Month_sparepart_Controller {
 		Row title = sheet.createRow(0);//一共有11列
 		title.setHeight((short)660);
 		Cell title_cell=title.createCell(0);
-		title_cell.setCellValue("____________项目________年_________月备品备件仓库(仓库名称)盘点日报表");
+		title_cell.setCellValue("____________项目________年_________月备品备件仓库(仓库名称)盘点月报表");
 		CellStyle cs = wb.createCellStyle();
 		Font f = wb.createFont();
 		f.setFontHeightInPoints((short) 16);
@@ -320,6 +252,22 @@ public class Month_sparepart_Controller {
 		subtype_name_style.setBorderTop(CellStyle.BORDER_NONE);
 		subtype_name_style.setBorderBottom(CellStyle.BORDER_NONE);
 		subtype_name_style.setAlignment(CellStyle.ALIGN_LEFT);
+		
+		CellStyle fixednum_style=getContentStyle(wb,null);
+		 fixednum_style.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
+		 fixednum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		 
+		CellStyle lastnum_style=getContentStyle(wb,null);
+		 lastnum_style.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.index);
+		 lastnum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		 
+		 CellStyle nownum_style=getContentStyle(wb,null);
+		 nownum_style.setFillForegroundColor(HSSFColor.LIGHT_TURQUOISE.index);
+		 nownum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+
+		 CellStyle supplementnum_style=getContentStyle(wb,null);
+		 supplementnum_style.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);
+		 supplementnum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 		
 		CellStyle content_style =getContentStyle(wb,null);
 		CellStyle content_blue_style =getContentStyle(wb,IndexedColors.LIGHT_BLUE);	
@@ -386,15 +334,15 @@ public class Month_sparepart_Controller {
 						Row row_prod = sheet.createRow(rownum++);
 						
 						Cell brand_name=row_prod.createCell(cellnum++);
-						 brand_name.setCellValue("测试");
+						 //brand_name.setCellValue("测试");
 						 brand_name.setCellStyle(content_style);
 						 
 						 Cell style=row_prod.createCell(cellnum++);
-						 style.setCellValue("测试");
+						 //style.setCellValue("测试");
 						 style.setCellStyle(content_style);
 						 
 						 Cell prod_name=row_prod.createCell(cellnum++);
-						 prod_name.setCellValue("测试");
+						// prod_name.setCellValue("测试");
 						 prod_name.setCellStyle(content_style);
 						 
 //						 Cell store_name=row_prod.createCell(cellnum++);
@@ -402,63 +350,65 @@ public class Month_sparepart_Controller {
 //						 store_name.setCellStyle(content_style);
 						 
 						 Cell unit=row_prod.createCell(cellnum++);
-						 unit.setCellValue("台");
+						 //unit.setCellValue("台");
 						 unit.setCellStyle(content_style);
 						 
 						 //额定数量
 						 Cell fixednum=row_prod.createCell(cellnum++);
-						 fixednum.setCellValue(1);
+						 //fixednum.setCellValue(1);
+						 fixednum.setCellStyle(fixednum_style);
 						 supplementnum_formule_builder.append(CellReference.convertNumToColString(cellnum-1)+(rownum));
-						 //fixednum.setCellStyle(content_style);
+						
 						 
 						 //上月结余
 						 Cell lastnum=row_prod.createCell(cellnum++);
-						 lastnum.setCellValue(2);
+						 //lastnum.setCellValue(2);
+						 lastnum.setCellStyle(lastnum_style);
 						 nownum_formule_builder.append(CellReference.convertNumToColString(cellnum-1)+(rownum));
-						 //lastnum.setCellStyle(content_style);
+						 
 						 
 						 //本期采购新增
 						 Cell purchasenum=row_prod.createCell(cellnum++);
-						 purchasenum.setCellValue(3);
+						 //purchasenum.setCellValue(3);
 						 purchasenum.setCellStyle(content_blue_style);
 						 nownum_formule_builder.append(",");
 						 nownum_formule_builder.append(CellReference.convertNumToColString(cellnum-1)+(rownum));
 						 
 						 //本期旧品新增
 						 Cell oldnum=row_prod.createCell(cellnum++);
-						 oldnum.setCellValue(4);
+						 //oldnum.setCellValue(4);
 						 oldnum.setCellStyle(content_blue_style);
 						 nownum_formule_builder.append(",");
 						 nownum_formule_builder.append(CellReference.convertNumToColString(cellnum-1)+(rownum));
 						 //本期领用数
 						 Cell installoutnum=row_prod.createCell(cellnum++);
-						 installoutnum.setCellValue(5);
+						 //installoutnum.setCellValue(5);
 						 installoutnum.setCellStyle(content_red_style);
 						 nownum_formule_builder.append(",");
 						 nownum_formule_builder.append(CellReference.convertNumToColString(cellnum-1)+(rownum));
 						 //本期维修返还数
 						 Cell repairinnum=row_prod.createCell(cellnum++);
-						 repairinnum.setCellValue(6);
+						 //repairinnum.setCellValue(6);
 						 repairinnum.setCellStyle(content_green_style);
 						 nownum_formule_builder.append(",");
 						 nownum_formule_builder.append(CellReference.convertNumToColString(cellnum-1)+(rownum));
 						 //报废出库
 						 Cell scrapoutnum=row_prod.createCell(cellnum++);
-						 scrapoutnum.setCellValue(7);
+						 //scrapoutnum.setCellValue(7);
 						 scrapoutnum.setCellStyle(content_orange_style);
 						 //维修出库
 						 Cell repairoutnum=row_prod.createCell(cellnum++);
-						 repairoutnum.setCellValue(8);
+						 //repairoutnum.setCellValue(8);
 						 repairoutnum.setCellStyle(content_orange_style);
 						 //本期借用数
 						 Cell adjustoutnum=row_prod.createCell(cellnum++);
-						 adjustoutnum.setCellValue(9);
+						// adjustoutnum.setCellValue(9);
 						 adjustoutnum.setCellStyle(content_plum_style);
 						 nownum_formule_builder.append(",");
 						 nownum_formule_builder.append(CellReference.convertNumToColString(cellnum-1)+(rownum));
 						 //本期归还数
 						 Cell adjustinnum=row_prod.createCell(cellnum++);
-						 adjustinnum.setCellValue(10);
+						 //adjustinnum.setCellValue(10);
 						 adjustinnum.setCellStyle(content_style);
 						 nownum_formule_builder.append(",");
 						 nownum_formule_builder.append(CellReference.convertNumToColString(cellnum-1)+(rownum));
@@ -466,13 +416,15 @@ public class Month_sparepart_Controller {
 						 
 						 Cell nownum=row_prod.createCell(cellnum++);
 						 nownum.setCellFormula(nownum_formule_builder.toString());
+						 nownum.setCellStyle(nownum_style);
 						 supplementnum_formule_builder.append("-"+CellReference.convertNumToColString(cellnum-1)+(rownum));
-						 //nownum.setCellStyle(content_style);
+						 
 						 
 						 Cell supplementnum=row_prod.createCell(cellnum++);
 						 //supplementnum.setCellValue(12);
+						 supplementnum.setCellStyle(supplementnum_style);
 						 supplementnum.setCellFormula(supplementnum_formule_builder.toString());
-						// supplementnum.setCellStyle(content_style);
+						 
 					 
 						 
 						 Cell memo=row_prod.createCell(cellnum++);
@@ -492,8 +444,6 @@ public class Month_sparepart_Controller {
 		 }
 		sheet.setRowSumsBelow(false);
 		sheet.setRowSumsRight(false);
-		
-		init_background(wb,sheet, ++rownum);
 		
 		 String filename = "备品备件仓库盘点月报表_样式表.xlsx";
 		 //FileOutputStream out = new FileOutputStream(filename);
