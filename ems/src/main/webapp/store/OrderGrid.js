@@ -159,6 +159,7 @@ Ext.define('Ems.store.OrderGrid',{
 			}
 		  }] 
 		},{
+			hidden:me.onlyRead,
 			items:[{
 			text: '确认',
 			icon:'../icons/cog.png',
@@ -209,6 +210,30 @@ Ext.define('Ems.store.OrderGrid',{
 						}
 						Ext.Ajax.request({
 							url:Ext.ContextPath+'/order/delete.do',
+							method:'POST',
+							params:{id:record.get("id")},
+							success:function(resposne){
+								me.store.reload();
+							}
+						});
+					
+					}
+				});
+			}
+		  },{
+			text: '强制退回',
+			//iconCls: 'form-delete-button',
+			icon:'../icons/arrow_undo.png',
+			handler: function(btn){
+				Ext.Msg.confirm("提醒","确认要强制退回吗?",function(btn){
+					if(btn=='yes'){
+						var record=me.getSelectionModel().getLastSelected();
+						if(record.get("status")=='edit'){
+							alert("状态是已经是'编辑中'状态，不能退回!");
+							return;
+						}
+						Ext.Ajax.request({
+							url:Ext.ContextPath+'/order/forceBack.do',
 							method:'POST',
 							params:{id:record.get("id")},
 							success:function(resposne){

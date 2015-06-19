@@ -190,6 +190,12 @@ public class OrderController {
 		orderService.delete(id);
 		return "success";
 	}
+	@RequestMapping("/order/forceBack.do")
+	@ResponseBody
+	public String forceBack(String id) throws  IOException{
+		orderService.forceBack(id);
+		return "success";
+	}
 	
 	
 	@RequestMapping("/order/exportBarcode.do")

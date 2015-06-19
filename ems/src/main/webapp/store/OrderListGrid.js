@@ -54,13 +54,14 @@ Ext.define('Ems.store.OrderListGrid',{
 	  });
 	  
       me.dockedItems= [{
+      		
 	        xtype: 'pagingtoolbar',
 	        store: me.store,  
 	        dock: 'bottom',
 	        displayInfo: true
 	  }];
-
-	me.tbar=	[{
+	if(!me.onlyRead){
+		me.tbar=	[{
 			text: '刷新',
 			itemId:'reload',
 			//disabled:me.disabledAction,
@@ -94,6 +95,8 @@ Ext.define('Ems.store.OrderListGrid',{
 			},
 			iconCls: 'form-delete-button'
 		}]
+	}
+	
        
       me.callParent();
 	},

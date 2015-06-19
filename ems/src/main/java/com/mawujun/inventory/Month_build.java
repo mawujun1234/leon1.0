@@ -13,9 +13,9 @@ import com.mawujun.repository.idEntity.IdEntity;
  * @author mawujun 16064988@qq.com  
  *
  */
-@Entity
-@Table(name="ems_day_build")
-@IdClass(Month_build_PK.class)  
+//@Entity
+//@Table(name="ems_day_build")
+//@IdClass(Month_build_PK.class)  
 public class Month_build  implements IdEntity<Month_build_PK>{
 	@Id
 	@Column(length=36)
@@ -39,7 +39,7 @@ public class Month_build  implements IdEntity<Month_build_PK>{
 
 	@Override
 	public void setId(Month_build_PK id) {
-		this.daykey=id.getDaykey();
+		//this.daykey=id.getDaykey();
 		this.prod_id=id.getProd_id();
 		this.store_id=id.getStore_id();
 	}
@@ -47,7 +47,7 @@ public class Month_build  implements IdEntity<Month_build_PK>{
 	@Override
 	public Month_build_PK getId() {
 		// TODO Auto-generated method stub
-		return new Day_build_PK(daykey,prod_id,store_id);
+		return new Month_build_PK(monthkey,prod_id,store_id);
 	}
 	
 

@@ -203,6 +203,21 @@ public class OrderService extends AbstractService<Order, String>{
 		orderRepository.deleteBatch(Cnd.delete().andEquals(M.Order.id, id));
 	}
 	/**
+	 * 强制退回，把订单状态改成可编辑
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param id
+	 */
+	public void forceBack(String id) {
+//		Order order=orderRepository.get(id);
+//		if(order.get){
+//			
+//		}
+//		if(OrderStatus.editover.toString().equalsIgnoreCase(status)){
+//			throw new BusinessException("订单已确认，不能删除!");
+//		}
+		orderRepository.update(Cnd.update().set(M.Order.status, OrderStatus.edit).andEquals(M.Order.id, id));
+	}
+	/**
 	 * 如果订单进行修改，同个品名有很多不同的订单，条码的序号不是从1开始的，如果重复导出，将会生成不同的条码，序号递增
 	 * @author mawujun email:160649888@163.com qq:16064988
 	 */
@@ -417,6 +432,10 @@ public class OrderService extends AbstractService<Order, String>{
 		Order main = orderRepository.get(orderList.getOrder_id());
 		if (main.getStatus().equals(OrderStatus.editover)) {
 			throw new BusinessException("该订单已经不能编辑!");
+		}
+		//如果已入库数量大于要订单的数量，也不准编辑
+		if(orderList.getTotalNum()!=null &&orderList.getTotalNum()>orderList.getOrderNum()){
+			throw new BusinessException("以入库数量大于订单数量，不准备修改!");
 		}
 
 		orderListRepository.update(orderList);
