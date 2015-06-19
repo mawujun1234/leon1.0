@@ -18,6 +18,7 @@ Ext.define('Ems.install.InstallOutListGrid',{
       me.columns=[
 		//{dataIndex:'id',text:'id'},
 		{dataIndex:'ecode',text:'条码',width:130},
+		{dataIndex:'installOutType_name',text:'领用类型'},
 		//{dataIndex:'installIn_id',text:'installIn_id'},
 		//{dataIndex:'isBad',text:'isBad'}
 		{dataIndex:'subtype_name',text:'小类'},

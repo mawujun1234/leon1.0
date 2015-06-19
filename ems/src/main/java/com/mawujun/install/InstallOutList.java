@@ -17,6 +17,9 @@ public class InstallOutList  extends UUIDEntity {
 	private String installOut_id;//入库单id
 	@Column(length=25)
 	private String ecode;//设备编码
+	
+	@Column(length=36)
+	private String installOutType_id;//领用类型的id
 
 	public String getEcode() {
 		return ecode;
@@ -29,6 +32,12 @@ public class InstallOutList  extends UUIDEntity {
 	}
 	public void setInstallOut_id(String installOut_id) {
 		this.installOut_id = installOut_id;
+	}
+	public String getInstallOutType_id() {
+		return installOutType_id;
+	}
+	public void setInstallOutType_id(String installOutType_id) {
+		this.installOutType_id = installOutType_id;
 	}
 
 }

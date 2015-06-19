@@ -291,6 +291,7 @@ Ext.onReady(function(){
 							}
 							workUnit_combox.disable();
 							store_combox.disable();
+							type_combox.disable();
 						}
 					}
 //					failure : function(response) {//加载失败的处理函数   
@@ -336,6 +337,7 @@ Ext.onReady(function(){
 	                }]
 	            },
     			  {header: '条码', dataIndex: 'ecode',width:150},
+    			  {header: '返回类型', dataIndex: 'type_name'},
     	          {header: '设备类型', dataIndex: 'subtype_name',width:120},
     	          {header: '品名', dataIndex: 'prod_name'},
     	          {header: '品牌', dataIndex: 'brand_name',width:120},
@@ -358,6 +360,7 @@ Ext.onReady(function(){
 							equipStore.removeAll();
 							workUnit_combox.enable();
 							store_combox.enable();
+							type_combox.enable();
 						}
 					});
         	   }
@@ -444,6 +447,7 @@ Ext.onReady(function(){
 						
 						workUnit_combox.enable();
 						store_combox.enable();
+						type_combox.enable();
 					},
 					failure:function(){
 						Ext.getBody().unmask();

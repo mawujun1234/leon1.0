@@ -30,7 +30,7 @@ public class EquipmentWorkunit implements IdEntity<EquipmentWorkunitPK>{
 	@Column(length=20)
 	private EquipmentWorkunitType type;//进入的类型 出库单 或者是任务(维修任务)
 	@Column(length=36)
-	private String type_id;//出库单id或者是任务id，这个任务id可能是维修任务的id，维修任务会把从杆位行拆下来的设备放到这里
+	private String type_id;//出库单id，借用单id或者是任务id，这个任务id可能是维修任务的id，维修任务会把从杆位行拆下来的设备放到这里
 	@Column(length=36)
 	private String from_id;//来源的id，比如从仓库来，就是仓库id，如果是从杆位上来就是杆位id
 	

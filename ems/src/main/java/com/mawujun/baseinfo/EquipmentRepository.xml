@@ -5,6 +5,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
 <mapper namespace="com.mawujun.baseinfo.EquipmentRepository">
+	<!-- 从仓库中读取设备信息，就是读取有仓库库存的设备信息 -->
 	<select id="getEquipmentByEcode_in_store" resultType="com.mawujun.baseinfo.EquipmentVO" >
     	select a.*,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name 
     	from ems_equipment a

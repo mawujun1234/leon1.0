@@ -2,6 +2,8 @@ package com.mawujun.install;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
 import com.mawujun.repository.idEntity.UUIDEntity;
@@ -18,7 +20,12 @@ public class InstallInList  extends UUIDEntity {
 	@Column(length=25)
 	private String ecode;//设备编码
 	@org.hibernate.annotations.Type(type="yes_no")
-	private Boolean isBad=false;//在返回的时候，设备是否已经损坏
+	private Boolean isBad=false;//在返回的时候，设备是否已经损坏	
+	@Enumerated(EnumType.STRING)
+	@Column(length=20)
+	private InstallInListType type;
+	@Column(length=36)
+	private String installout_id;//如果type是领用返回，那这个id就是领用单的id，否则就为null
 	
 	//private String task_id;
 
@@ -39,5 +46,17 @@ public class InstallInList  extends UUIDEntity {
 	}
 	public void setIsBad(Boolean isBad) {
 		this.isBad = isBad;
+	}
+	public InstallInListType getType() {
+		return type;
+	}
+	public void setType(InstallInListType type) {
+		this.type = type;
+	}
+	public String getInstallout_id() {
+		return installout_id;
+	}
+	public void setInstallout_id(String installout_id) {
+		this.installout_id = installout_id;
 	}
 }

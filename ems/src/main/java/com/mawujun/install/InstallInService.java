@@ -18,6 +18,7 @@ import com.mawujun.baseinfo.EquipmentStoreType;
 import com.mawujun.baseinfo.EquipmentWorkunit;
 import com.mawujun.baseinfo.EquipmentWorkunitPK;
 import com.mawujun.baseinfo.EquipmentWorkunitRepository;
+import com.mawujun.baseinfo.EquipmentWorkunitType;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
@@ -55,20 +56,40 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 	
 	public InstallInListVO getEquipmentByEcode(String ecode,String workunit_id) {
 		//如果存在，再判断该设备是不是借用设备，如果是借用设备就不能返还
-		EquipmentWorkunit equipmentWorkunit=equipmentRepository.getBorrowEquipmentWorkunit(ecode);
-		if(equipmentWorkunit!=null){
+//		EquipmentWorkunit equipmentWorkunit=equipmentRepository.getBorrowEquipmentWorkunit(ecode);
+//		if(equipmentWorkunit!=null){
+//			throw new BusinessException("该设备是借用设备,不能在这里进行返回!");
+//		}
+		EquipmentWorkunitPK equipmentWorkunitPK=new EquipmentWorkunitPK();
+		equipmentWorkunitPK.setEcode(ecode);
+		equipmentWorkunitPK.setWorkunit_id(workunit_id);
+		
+		EquipmentWorkunit equipmentWorkunit=equipmentWorkunitRepository.get(equipmentWorkunitPK);
+		if(equipmentWorkunit==null){
+			//equipment=new Equipment();
+			//equipment.setStatus(0);
+			throw new BusinessException("该条码对应的设备不存在，或者该设备挂在其他作业单位或已经入库了!");
+		}
+		//如果存在，再判断该设备是不是借用设备，如果是借用设备就不能返还
+		if(equipmentWorkunit.getType()==EquipmentWorkunitType.borrow){
 			throw new BusinessException("该设备是借用设备,不能在这里进行返回!");
 		}
-				
-		InstallInListVO equipment= installInRepository.getEquipmentByEcode(ecode,workunit_id);
 		
-		//若果这个设备部在当前的作业单位身上
+		InstallInListVO equipment= installInRepository.getEquipmentByEcode(ecode,workunit_id);
+		//若果这个设备不在当前的作业单位身上
 		if(equipment==null){
 			//equipment=new Equipment();
 			//equipment.setStatus(0);
 			throw new BusinessException("该条码对应的设备不存在，或者该设备挂在其他作业单位或已经入库了!");
 		}
-		
+		//如果是领用出去，然后直接返回的
+		if(equipmentWorkunit.getType()==EquipmentWorkunitType.installout){
+			equipment.setType(InstallInListType.intallout);
+			equipment.setInstallout_id(equipmentWorkunit.getType_id());
+		} else {
+			equipment.setType(InstallInListType.other);
+		}
+
 		return equipment;
 
 //		if(equipment==null){

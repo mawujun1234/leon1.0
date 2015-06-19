@@ -6,7 +6,10 @@ Ext.defineModel("Ems.install.InstallInList",{
 		{name:'ecode',type:'string'},
 		{name:'installIn_id',type:'string'},
 		{name:'isBad',type:'bool'},
+		{name:'type',type:'string'},
+		{name:'installout_id',type:'string'},
 		
+		{name:'type_name',type:'string'},
 		{name:'subtype_name',type:'string'},
 		{name:'prod_name',type:'string'},
 		{name:'prod_spec',type:'string'},

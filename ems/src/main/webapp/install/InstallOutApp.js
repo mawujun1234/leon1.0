@@ -1,7 +1,7 @@
 //Ext.require("Ems.store.Barcode");
 Ext.require("Ems.install.WorkUnitEquipmentWindow");
 Ext.require("Ems.install.StoreEquipmentWindow");
-//Ext.require("Ems.store.BarcodeForm");
+Ext.require("Ems.install.InstallOutList");
 Ext.onReady(function(){
 //	var type_radio=Ext.create('Ext.form.RadioGroup',{
 //            //xtype      : 'fieldcontainer',
@@ -299,13 +299,14 @@ Ext.onReady(function(){
 								return;
 							}
 							//为新增的equipment添加仓库等其他信息
-							ret.root.workUnit_id=workUnit_combox.getValue();
-							ret.root.workUnit_name=workUnit_combox.getRawValue();
-							ret.root.store_id=store_combox.getValue();
-							ret.root.store_name=store_combox.getRawValue();
+							//ret.root.workUnit_id=workUnit_combox.getValue();
+							//ret.root.workUnit_name=workUnit_combox.getRawValue();
+							//ret.root.store_id=store_combox.getValue();
+							//ret.root.store_name=store_combox.getRawValue();
 							//ret.root.memo=memo_textfield.getValue();
-							//ret.root.outStore_type=type_radio.getValue().type;
-							var scanrecord = Ext.create('Ems.baseinfo.Equipment', ret.root);
+							ret.root.installOutType_id=installOutType_combox.getValue();
+							ret.root.installOutType_name=installOutType_combox.getRawValue();
+							var scanrecord = Ext.create('Ems.install.InstallOutList', ret.root);
 
 							ecode_textfield.setValue("");
 							ecode_textfield.clearInvalid( );
@@ -343,7 +344,7 @@ Ext.onReady(function(){
 	
 	var equipStore = Ext.create('Ext.data.Store', {
         autoDestroy: true,
-        model: 'Ems.baseinfo.Equipment',
+        model: 'Ems.install.InstallOutList',
         proxy: {
             type: 'memory'
         }
@@ -369,6 +370,7 @@ Ext.onReady(function(){
 	                }]
 	            },
     			  {header: '条码', dataIndex: 'ecode',width:150},
+    			  {header: '领用类型', dataIndex: 'installOutType_name'},
     	          {header: '设备类型', dataIndex: 'subtype_name',width:120},
     	          {header: '品名', dataIndex: 'prod_name'},
     	          {header: '品牌', dataIndex: 'brand_name',width:120},
@@ -378,15 +380,15 @@ Ext.onReady(function(){
 						metadata.tdAttr = "data-qtip='" + value+ "'";
 					    return value;
 						}
-				  },
-    	          {header: '仓库', dataIndex: 'store_name'},
+				  }
+    	          //{header: '仓库', dataIndex: 'store_name'},
     	          //{header: '作业单位', dataIndex: 'workUnit_name'},
     	          //{header: '数量', dataIndex: 'serialNum',width:70},
     	          
     	          
     	          //{header: 'stid', dataIndex: 'stid',hideable:false,hidden:true},
     	         // {header: '库房', dataIndex: 'stock',width:120},
-    	          {header: '状态', dataIndex: 'status_name',width:100}
+    	          //{header: '状态', dataIndex: 'status_name',width:100}
     	          ],
         tbar:['<pan id="toolbar-title-text">当前入库记录</span>','->',
               {text:'清空选择的设备',
@@ -434,8 +436,8 @@ Ext.onReady(function(){
             align:'stretch'
         },
         defaults:{margins:'0 0 5 0',border:false},
-        items:[{xtype:'form',items:[{xtype:'fieldcontainer',layout: 'hbox',items:[store_combox,queryStoEquip_button,workUnit_combox,queryWorkUnitEquip_button,installOutType_combox,requestnum_textfield,ecode_textfield,clear_button]},
-                                     {xtype:'fieldcontainer',layout: 'hbox',items:[project_combox]},
+        items:[{xtype:'form',items:[{xtype:'fieldcontainer',layout: 'hbox',items:[store_combox,queryStoEquip_button,workUnit_combox,queryWorkUnitEquip_button,project_combox]},
+                                     {xtype:'fieldcontainer',layout: 'hbox',items:[installOutType_combox,requestnum_textfield,ecode_textfield,clear_button]},
                                     {xtype:'fieldcontainer',layout: 'hbox',items:[storeman_textfield,inDate_textfield,memo_textfield]}
 		            		        //{xtype:'columnbox',columnSize:4,items:[{xtype:'listcombox',url:Ext.ContextPath+'/dataExtra/stockList.do',itemId:'stock_field',fieldLabel:'库房',name:'stid',allowBlank:false,emptyText:'未选择库房',labelAlign:'right'},{xtype:'textfield',name:'stmemo',fieldLabel:'库房描述',columnWidth:3/4,labelAlign:'right'}]}
 		            		        ]},
@@ -465,7 +467,7 @@ Ext.onReady(function(){
 					method:'POST',
 					timeout:600000000,
 					headers:{ 'Content-Type':'application/json;charset=UTF-8'},
-					params:{memo:memo_textfield.getValue(),store_id:store_combox.getValue(),workUnit_id:workUnit_combox.getValue(),installOutType_id:installOutType_combox.getValue()
+					params:{memo:memo_textfield.getValue(),store_id:store_combox.getValue(),workUnit_id:workUnit_combox.getValue()
 					,project_id:project_combox.getValue()
 					,requestnum:requestnum_textfield.getValue()},
 					jsonData:equipments,

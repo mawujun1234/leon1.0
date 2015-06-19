@@ -16,7 +16,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     </select> 
  -->
     <select id="queryMain" resultType="com.mawujun.install.InstallOutVO" parameterType="map">
-    	select a.*,b.name as store_name,c.name as workUnit_name,d.name as project_name,'out' as type from ems_installout a,ems_store b,ems_workunit c,ems_project d
+    	select a.*,b.name as store_name,c.name as workUnit_name,d.name as project_name,'out' as type 
+    	from ems_installout a,ems_store b,ems_workunit c,ems_project d
 		where a.store_id=b.id and a.workunit_id=c.id and a.project_id=d.id
 		<if test="operateDate_start!=null">
 			and to_char(a.operateDate,'yyyy-mm-dd') &gt;=#{operateDate_start}
@@ -26,9 +27,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</if>
 		<if test="store_id!=null and store_id!=''">
 			and a.store_id =#{store_id}
-		</if>
-		<if test="installOutType_id!=null and installOutType_id!=''">
-			and a.installOutType_id =#{installOutType_id}
 		</if>
 		<if test="workUnit_id!=null and workUnit_id!=''">
 			and a.workUnit_id =#{workUnit_id}
@@ -61,12 +59,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</where>
     </select>
     <select id="queryList" resultType="com.mawujun.install.InstallOutListVO" parameterType="string">
-    	select a.*,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name from 
+    	select a.*,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name,f.name as installOutType_name from 
     	(select f.*,a.subtype_id,a.prod_id,a.brand_id,a.supplier_id,a.style from ems_equipment a inner join ems_installoutlist f on a.ecode=f.ecode and f.installOut_id=#{installOut_id}) a
 		inner join ems_equipmentsubtype b on a.subtype_id=b.id
 		inner join ems_equipmentprod c on a.prod_id=c.id
 		inner join ems_brand d on a.brand_id=d.id
 		inner join ems_supplier e on a.supplier_id=e.id
+		inner join ems_installouttype f on a.installOutType_id=f.id
     </select>
 </mapper>
 

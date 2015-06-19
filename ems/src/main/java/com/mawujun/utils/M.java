@@ -247,6 +247,8 @@ public static final class InstallInList {
 	public static final String installIn_id="installIn_id";
 	public static final String ecode="ecode";
 	public static final String isBad="isBad";
+	public static final String type="type";
+	public static final String installout_id="installout_id";
 	public static final String id="id";
 }
 public static final class InstallOut {
@@ -255,7 +257,6 @@ public static final class InstallOut {
 	public static final String operater="operater";
 	public static final String operateDate="operateDate";
 	public static final String workUnit_id="workUnit_id";
-	public static final String installOutType_id="installOutType_id";
 	public static final String project_id="project_id";
 	public static final String requestnum="requestnum";
 	public static final String memo="memo";
@@ -263,6 +264,7 @@ public static final class InstallOut {
 public static final class InstallOutList {
 	public static final String installOut_id="installOut_id";
 	public static final String ecode="ecode";
+	public static final String installOutType_id="installOutType_id";
 	public static final String id="id";
 }
 public static final class InstallOutType {

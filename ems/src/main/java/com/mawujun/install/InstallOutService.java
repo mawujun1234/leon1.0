@@ -52,7 +52,7 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 		return outStoreRepository;
 	}
 
-	public void equipOutStore(Equipment[] equipments, InstallOut outStore) {
+	public void equipOutStore(InstallOutList[] installOutListes, InstallOut outStore) {
 		// 插入入库单
 		String outstore_id = ymdHmsDateFormat.format(new Date());
 		// InStore inStore=new InStore();
@@ -62,7 +62,7 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 		//outStore.setType(1);
 		outStoreRepository.create(outStore);
 		
-		for(Equipment equipment:equipments){
+		for(InstallOutList inStoreList:installOutListes){
 			//更新设备状态为出库待安装
 			//把设备绑定到作业单位上面
 			//把仓库中的该设备移除
@@ -70,11 +70,11 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 					.set(M.Equipment.last_workunit_id, outStore.getWorkUnit_id())
 					//.set(M.Equipment.store_id, null)
 					.set(M.Equipment.place, EquipmentPlace.workunit)
-					.andEquals(M.Equipment.ecode, equipment.getEcode()));
+					.andEquals(M.Equipment.ecode, inStoreList.getEcode()));
 			
 			//从仓库中删除
 			EquipmentStorePK equipmentStorePK=new EquipmentStorePK();
-			equipmentStorePK.setEcode(equipment.getEcode());
+			equipmentStorePK.setEcode(inStoreList.getEcode());
 			equipmentStorePK.setStore_id(outStore.getStore_id());
 			equipmentStoreRepository.deleteById(equipmentStorePK);
 //			equipmentStore.setNum(1);
@@ -84,7 +84,7 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 //			equipmentStoreRepository.create(equipmentStore);
 			//插入到workunit中
 			EquipmentWorkunit equipmentWorkunit=new EquipmentWorkunit();
-			equipmentWorkunit.setEcode(equipment.getEcode());
+			equipmentWorkunit.setEcode(inStoreList.getEcode());
 			equipmentWorkunit.setWorkunit_id(outStore.getWorkUnit_id());
 			equipmentWorkunit.setInDate(new Date());
 			equipmentWorkunit.setNum(1);
@@ -94,9 +94,9 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 			equipmentWorkunitRepository.create(equipmentWorkunit);
 			
 			
-			//插入入库单明细
-			InstallOutList inStoreList=new InstallOutList();
-			inStoreList.setEcode(equipment.getEcode());
+//			//插入入库单明细
+//			InstallOutList inStoreList=new InstallOutList();
+//			inStoreList.setEcode(equipment.getEcode());
 			inStoreList.setInstallOut_id(outstore_id);
 			outStoreListRepository.create(inStoreList);
 		}
