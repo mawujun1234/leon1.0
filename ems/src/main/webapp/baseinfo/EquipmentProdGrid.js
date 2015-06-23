@@ -149,16 +149,7 @@ Ext.define('Ems.baseinfo.EquipmentProdGrid',{
 		//me.addAction(destroy);
 		actions.push(destroy)
 		
-		var reload = new Ext.Action({
-		    text: '刷新',
-		    itemId:'reload',
-		    handler: function(){
-		    	me.onReload();
-		    },
-		    iconCls: 'form-reload-button'
-		});
-		//me.addAction(reload);
-		actions.push(reload);
+		
 
 		var checkbox=Ext.create('Ext.form.field.Checkbox',{
 			boxLabel  : '只有在用',
@@ -174,7 +165,61 @@ Ext.define('Ems.baseinfo.EquipmentProdGrid',{
 		});
 		actions.push(checkbox);
 		
+		actions.push('-');
+		actions.push('-');
+		var prod_name = new Ext.form.field.Text({
+		    emptyText : '型号关键字',
+		    itemId:'prod_name'
+		});
+		//me.addAction(reload);
+		actions.push(prod_name);
+		//当选中的时候就表示查询所有品名
+		var all_prod_checkbox=Ext.create('Ext.form.field.Checkbox',{
+			boxLabel  : '所有品名',
+            name      : 'all_prod_checkbox',
+            //value:false,
+            checked:true
+		});
+		actions.push(all_prod_checkbox);
 		
+		
+		var reload = new Ext.Action({
+		    text: '查询',
+		    itemId:'reload',
+		    handler: function(){
+		    	if(!prod_name.getValue()){
+		    		alert("请先输入型号关键字!");
+		    		return;
+		    	}
+//		    	if(all_prod_checkbox.getValue()){
+//		    		//alert("当前是在所有的品名中过滤出相关型号。");
+//		    		var subtype_id=me.getStore().getProxy().extraParams.subtype_id;
+//		    		me.getStore().getProxy().extraParams={
+//		    			subtype_id:subtype_id,
+//						all_prod:all_prod_checkbox.getValue(),
+//						prod_name:prod_name.getValue(),
+//						status:true
+//					};
+//					
+//		    	} else {
+//		    		var subtype_id=me.getStore().getProxy().extraParams.subtype_id;
+//		    		me.getStore().getProxy().extraParams={
+//						subtype_id:subtype_id,
+//						all_prod:all_prod_checkbox.getValue(),
+//						prod_name:prod_name.getValue(),
+//						status:true
+//					};
+//		    	}
+		    	
+		    	me.onReload(null,{
+						all_prod:all_prod_checkbox.getValue(),
+						prod_name:prod_name.getValue()
+				});
+		    },
+		    iconCls: 'form-reload-button'
+		});
+		//me.addAction(reload);
+		actions.push(reload);
 		
 		me.tbar={
 			itemId:'action_toolbar',
@@ -387,13 +432,13 @@ Ext.define('Ems.baseinfo.EquipmentProdGrid',{
 			}
 		});
     },
-    onReload:function(node){
+    onReload:function(node,params){ddd
     	var me=this;
     	var parent=node||me.getSelectionModel( ).getLastSelected( );
 		if(parent){
 		    me.getStore().reload({node:parent});
 		} else {
-		    me.getStore().reload();	
+		    me.getStore().reload(params);	
 		}      
     }
 });
