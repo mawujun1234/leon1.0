@@ -11,6 +11,15 @@ public class BorrowListVO extends BorrowList {
 	private String brand_name;
 	private String supplier_name;
 	private String style;
+	
+	
+	public String getBorrowListType_name(){
+		if(this.getBorrowListType()!=null){
+			return this.getBorrowListType().getName();
+		}
+		return null;
+	}
+	
 	public String getSubtype_name() {
 		return subtype_name;
 	}

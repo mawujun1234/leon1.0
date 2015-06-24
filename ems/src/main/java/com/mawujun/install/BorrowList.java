@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -24,9 +26,13 @@ public class BorrowList  extends UUIDEntity{
 	@Column(length=25)
 	private String ecode;//设备编码
 	@org.hibernate.annotations.Type(type="yes_no")
-	private Boolean isReturn=false;//是否已经归还
+	private Boolean isReturn=false;//是否已经归还,如果是领用了(任务提交的时间)，那也是true
 
-	private Date returnDate;//归还时间
+	private Date returnDate;//归还时间。领用时间(任务提交的时间)
+	@Enumerated(EnumType.STRING)
+	@Column(length=20)
+	private BorrowListType borrowListType=BorrowListType.borrow;
+	//private String task_id;//任务id，当借转领的时候的任务id
 	
 	@Column(length=100)
 	private String memo;//归还的时候备注信息
@@ -69,6 +75,14 @@ public class BorrowList  extends UUIDEntity{
 
 	public void setMemo(String memo) {
 		this.memo = memo;
+	}
+
+	public BorrowListType getBorrowListType() {
+		return borrowListType;
+	}
+
+	public void setBorrowListType(BorrowListType borrowListType) {
+		this.borrowListType = borrowListType;
 	}
 	
 }

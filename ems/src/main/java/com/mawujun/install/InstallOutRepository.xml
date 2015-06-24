@@ -67,5 +67,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		inner join ems_supplier e on a.supplier_id=e.id
 		inner join ems_installouttype f on a.installOutType_id=f.id
     </select>
+    
+    <!-- 在任务提交的时候，发现该设备是从领用单里来的，那就把该设备修改为领用(因为默认是借用) -->
+    <update id="changeInstallOutListType2installout" >
+    	update ems_installoutlist set installOutListType='installout' where installOut_id=#{installOut_id} and ecode=#{ecode}
+    </update>
 </mapper>
 

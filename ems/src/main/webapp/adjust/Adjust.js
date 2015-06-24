@@ -11,11 +11,14 @@ Ext.defineModel("Ems.adjust.Adjust",{
 		{name:'str_out_date',type:'date', dateFormat: 'Y-m-d'},
 		{name:'str_out_id',type:'string'},
 		{name:'str_out_oper_id',type:'string'},
+		{name:'adjustType',type:'string'},
 		
+		{name:'adjustType_name',type:'string'},
 		{name:'str_in_name',type:'string'},
 		{name:'str_out_name',type:'string'},
 		{name:'status_name',type:'string'},
 		{name:'ecode',type:'string'},
+		
 		
 		{name:'brand_name',type:'string'},
 		{name:'prod_name',type:'string'},

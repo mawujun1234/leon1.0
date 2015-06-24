@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -20,8 +22,9 @@ public class Adjust implements IdEntity<String>{
 	@Id
 	@Column(length=18)
 	private String id;
+	@Enumerated(EnumType.STRING)
 	@Column(length=8)
-	private String status;//edit,carry,over
+	private AdjustStatus status;//edit,carry,over
 	
 	@Column(length=36)
 	private String str_out_id;//出库仓库
@@ -36,9 +39,11 @@ public class Adjust implements IdEntity<String>{
 	@Column(length=500)
 	private String memo;
 	
-	public String getStatus_name() {
-		return AdjustStatus.valueOf(this.getStatus()).getName();
-	}
+	@Enumerated(EnumType.STRING)
+	@Column(length=20)
+	private AdjustType adjustType=AdjustType.borrow;//是借用还是领用的调拨单
+	
+	
 	
 	public String getId() {
 		return id;
@@ -46,12 +51,7 @@ public class Adjust implements IdEntity<String>{
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
+
 	
 	public String getMemo() {
 		return memo;
@@ -94,6 +94,20 @@ public class Adjust implements IdEntity<String>{
 	}
 	public void setStr_in_oper_id(String str_in_oper_id) {
 		this.str_in_oper_id = str_in_oper_id;
+	}
+
+	public AdjustType getAdjustType() {
+		return adjustType;
+	}
+
+	public void setAdjustType(AdjustType adjustType) {
+		this.adjustType = adjustType;
+	}
+	public AdjustStatus getStatus() {
+		return status;
+	}
+	public void setStatus(AdjustStatus status) {
+		this.status = status;
 	}
 
 

@@ -98,11 +98,13 @@ public class EquipmentTypeController {
 	 * @param subtype_id
 	 * @param parent_id
 	 * @param status
+	 * @param prod_name
+	 * @param all_prod 是否是过滤所有的品名，true 所有的品名中过滤，false，只从当前的品名中过滤
 	 * @return
 	 */
 	@RequestMapping("/equipmentType/queryProds.do")
 	@ResponseBody
-	public List<EquipmentProdVO> queryProds(String subtype_id,String parent_id,Boolean status) {
+	public List<EquipmentProdVO> queryProds(String subtype_id,String parent_id,Boolean status,String style,Boolean all_prod) {
 		//当第一次打开设备设备类型的页面的时候
 		if(!StringUtils.hasText(subtype_id)){
 			return new ArrayList<EquipmentProdVO>();
@@ -111,7 +113,7 @@ public class EquipmentTypeController {
 			//return new ArrayList<EquipmentProdVO>();
 			parent_id=null;
 		}
-		return equipmentProdService.queryProdGrid(status,subtype_id,parent_id);
+		return equipmentProdService.queryProdGrid(status,subtype_id,parent_id,all_prod,style);
 	}
 	
 	@RequestMapping("/equipmentType/create.do")

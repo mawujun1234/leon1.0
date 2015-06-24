@@ -11,6 +11,7 @@ import com.mawujun.repository.idEntity.IdEntity;
 
 /**
  * 设备领用单
+ * 领用数就是真正使用掉的叫领用数，否则就是借用数，领用数是有严格定义的
  * @author mawujun email:16064988@163.com qq:16064988
  *
  */

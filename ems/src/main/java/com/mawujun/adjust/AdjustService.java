@@ -75,30 +75,31 @@ public class AdjustService extends AbstractService<Adjust, String>{
 		return adjustRepository;
 	}
 	
-	public AdjustVO getAdjustVOByEcode(String ecode,String store_id) {
+	public AdjustListVO getAdjustVOByEcode(String ecode,String store_id) {
 		return adjustRepository.getAdjustVOByEcode(ecode, store_id);
 	}
 	
-	public void newAdjuest(AdjustVO[] adjuestVOs) {
+	public void newAdjuest(Adjust adjust,@RequestBody AdjustList[] adjuestLists) {
 		//创建调拨单
-		Adjust adjust=BeanUtils.copyOrCast(adjuestVOs[0], Adjust.class);//adjuestVOs[0];//每条记录的主单内容都是一样的
+		//Adjust adjust=BeanUtils.copyOrCast(adjuestVOs[0], Adjust.class);//adjuestVOs[0];//每条记录的主单内容都是一样的
 		adjust.setId(ymdHmsDateFormat.format(new Date()));
 		adjust.setStr_out_date(new Date());
-		adjust.setStatus(AdjustStatus.carry.toString());
+		adjust.setStatus(AdjustStatus.carry);
 		adjust.setStr_in_oper_id(ShiroUtils.getAuthenticationInfo().getId());
+
 		adjustRepository.create(adjust);
 		
 		
-		for(AdjustVO adjustVO:adjuestVOs){
+		for(AdjustList adjustList:adjuestLists){
 			//创建调拨明细
-			AdjustList adjustList=new AdjustList();
+			//AdjustList adjustList=new AdjustList();
 			adjustList.setAdjust_id(adjust.getId());
-			adjustList.setEcode(adjustVO.getEcode());
-			adjustList.setOut_num(1);
+			//adjustList.setEcode(adjustVO.getEcode());
+			//adjustList.setOut_num(1);
 			adjustListRepository.create(adjustList);
 			
 			//修改设备状态为"在途"
-			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.in_transit).andEquals(M.Equipment.ecode, adjustVO.getEcode()));
+			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.in_transit).andEquals(M.Equipment.ecode, adjustList.getEcode()));
 		}
 		//
 	}
@@ -131,13 +132,13 @@ public class AdjustService extends AbstractService<Adjust, String>{
 	 */
 	public void partInStr(AdjustList[] adjustLists,String str_in_id,String str_out_id) {
 		//获取当前调拨下的设备总数,本来应该是sum的，但现在是sum和count一样的
-		//Long out_num_total=adjustListRepository.queryCount(Cnd.count(M.AdjustList.id).andEquals(M.AdjustList.adjust_id, adjustLists[0].getAdjust_id()));
-		Long out_num_total=(Long)adjustListRepository.querySum(Cnd.sum(M.AdjustList.out_num).andEquals(M.AdjustList.adjust_id, adjustLists[0].getAdjust_id()));
+		Long out_num_total=adjustListRepository.queryCount(Cnd.count(M.AdjustList.id).andEquals(M.AdjustList.adjust_id, adjustLists[0].getAdjust_id()));
+		//Long out_num_total=(Long)adjustListRepository.querySum(Cnd.sum(M.AdjustList.out_num).andEquals(M.AdjustList.adjust_id, adjustLists[0].getAdjust_id()));
 		
 		//int total=0;
 		for(AdjustList adjustList:adjustLists) {
 			adjustList.setStatus(true);
-			adjustList.setIn_num(1);
+			//adjustList.setIn_num(1);
 			//total++;
 			adjustListRepository.update(adjustList);
 			
@@ -160,7 +161,9 @@ public class AdjustService extends AbstractService<Adjust, String>{
 		
 		}
 		//这个时候就表示是都选择了，修改整个调拨单的状态
-		Long in_num_total=(Long)adjustListRepository.querySum(Cnd.sum(M.AdjustList.in_num).andEquals(M.AdjustList.adjust_id, adjustLists[0].getAdjust_id()));
+		//Long in_num_total=(Long)adjustListRepository.querySum(Cnd.sum(M.AdjustList.in_num).andEquals(M.AdjustList.adjust_id, adjustLists[0].getAdjust_id()));
+		还有仓库迁移要做
+		Long in_num_total=(Long)adjustListRepository.queryCount(Cnd.sum(M.AdjustList.in_num).andEquals(M.AdjustList.adjust_id, adjustLists[0].getAdjust_id()));
 		//if(adjustRepository.sumInnumByadjust_id(adjustLists[0].getAdjust_id())==out_num_total){
 		if(in_num_total==out_num_total){
 			adjustRepository.update(Cnd.update().set(M.Adjust.status, AdjustStatus.over).andEquals(M.Adjust.id, adjustLists[0].getAdjust_id()));

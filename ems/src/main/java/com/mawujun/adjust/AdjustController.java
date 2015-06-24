@@ -124,19 +124,19 @@ public class AdjustController {
 	
 	@RequestMapping("/adjust/getAdjustVOByEcode.do")
 	@ResponseBody
-	public AdjustVO getAdjustVOByEcode(String ecode,String store_id) {	
-		AdjustVO repairvo= adjustService.getAdjustVOByEcode(ecode,store_id);
+	public AdjustListVO getAdjustVOByEcode(String ecode,String store_id) {	
+		AdjustListVO repairvo= adjustService.getAdjustVOByEcode(ecode,store_id);
 		if(repairvo==null){
 			throw new BusinessException("对不起，该条码对应的设备不存在，或者该设备挂在其他仓库中!");
 		}
-		repairvo.setStatus(AdjustStatus.edit.toString());
+		//repairvo.setStatus(AdjustStatus.edit);
 		return repairvo;
 	}
 	
 	@RequestMapping("/adjust/newAdjuest.do")
 	@ResponseBody
-	public String newAdjuest(@RequestBody AdjustVO[] adjuestVOs) {
-		adjustService.newAdjuest(adjuestVOs);
+	public String newAdjuest(AdjustVO adjustVO,@RequestBody AdjustListVO[] adjuestListVOs) {
+		adjustService.newAdjuest(adjustVO,adjuestListVOs);
 		return "success";
 	}
 	

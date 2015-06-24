@@ -115,15 +115,26 @@ public class EquipmentProdService extends AbstractService<EquipmentProd, String>
 	}
 	
 	
-	public List<EquipmentProdVO> queryProdGrid(Boolean status,String subtype_id,String parent_id) {
+	public List<EquipmentProdVO> queryProdGrid(Boolean status,String subtype_id,String parent_id,Boolean all_prod,String style) {
 		Map<String,Object> params=new HashMap<String,Object>();
-		params.put(M.EquipmentProd.subtype_id, subtype_id);
+		//当选择从所有品名中过滤的时候，就不用添加子类型了
+		if(all_prod==null || all_prod==false){
+			params.put(M.EquipmentProd.subtype_id, subtype_id);
+		}
+		
 		if(status!=null){
 			params.put(M.EquipmentProd.status, status);
 		}
-		if(StringUtils.hasText(parent_id)){
+		if(StringUtils.hasText(parent_id) ){
 			params.put(M.EquipmentProd.parent_id, parent_id);
+		} else {
+			//当展开品名的拆分零件的时候，是不要带上过滤条件的
+			if(StringUtils.hasText(style)){
+				params.put(M.EquipmentProd.style, "%"+style+"%");
+			}
 		}
+		
+		
 		return this.getRepository().queryProdGrid(params);
 	}
 

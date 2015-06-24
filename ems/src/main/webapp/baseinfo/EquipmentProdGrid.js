@@ -167,53 +167,36 @@ Ext.define('Ems.baseinfo.EquipmentProdGrid',{
 		
 		actions.push('-');
 		actions.push('-');
-		var prod_name = new Ext.form.field.Text({
+		var style = new Ext.form.field.Text({
 		    emptyText : '型号关键字',
-		    itemId:'prod_name'
+		    itemId:'style'
 		});
 		//me.addAction(reload);
-		actions.push(prod_name);
+		actions.push(style);
+		me.style_field=style;
 		//当选中的时候就表示查询所有品名
 		var all_prod_checkbox=Ext.create('Ext.form.field.Checkbox',{
 			boxLabel  : '所有品名',
-            name      : 'all_prod_checkbox',
+            itemId      : 'all_prod_checkbox',
             //value:false,
-            checked:true
+            checked:false
 		});
 		actions.push(all_prod_checkbox);
+		me.all_prod_checkbox=all_prod_checkbox;
 		
 		
 		var reload = new Ext.Action({
 		    text: '查询',
 		    itemId:'reload',
 		    handler: function(){
-		    	if(!prod_name.getValue()){
+		    	if(all_prod_checkbox.getValue() && !style.getValue()){
 		    		alert("请先输入型号关键字!");
 		    		return;
 		    	}
-//		    	if(all_prod_checkbox.getValue()){
-//		    		//alert("当前是在所有的品名中过滤出相关型号。");
-//		    		var subtype_id=me.getStore().getProxy().extraParams.subtype_id;
-//		    		me.getStore().getProxy().extraParams={
-//		    			subtype_id:subtype_id,
-//						all_prod:all_prod_checkbox.getValue(),
-//						prod_name:prod_name.getValue(),
-//						status:true
-//					};
-//					
-//		    	} else {
-//		    		var subtype_id=me.getStore().getProxy().extraParams.subtype_id;
-//		    		me.getStore().getProxy().extraParams={
-//						subtype_id:subtype_id,
-//						all_prod:all_prod_checkbox.getValue(),
-//						prod_name:prod_name.getValue(),
-//						status:true
-//					};
-//		    	}
 		    	
 		    	me.onReload(null,{
 						all_prod:all_prod_checkbox.getValue(),
-						prod_name:prod_name.getValue()
+						style:style.getValue()
 				});
 		    },
 		    iconCls: 'form-reload-button'
@@ -432,13 +415,21 @@ Ext.define('Ems.baseinfo.EquipmentProdGrid',{
 			}
 		});
     },
-    onReload:function(node,params){ddd
+    onReload:function(node,params){
     	var me=this;
     	var parent=node||me.getSelectionModel( ).getLastSelected( );
 		if(parent){
+			//走展开子节点的
 		    me.getStore().reload({node:parent});
 		} else {
-		    me.getStore().reload(params);	
+		    me.getStore().reload({params:params});	
 		}      
+    },
+    /**
+     * 当点击左边的树的时候，清空型号和全部型号的关键字
+     */
+    clearStyleAll_prod:function(){
+    	this.style_field.setValue();
+    	this.all_prod_checkbox.setValue(false);
     }
 });

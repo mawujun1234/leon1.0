@@ -78,7 +78,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</where>
 		order by a.code
     </select>
-    <select id="queryPoles_count" resultType="com.mawujun.baseinfo.PoleVO" parameterType="map">
+    <select id="queryPoles_count" resultType="int" parameterType="map">
     	select 
 			count(a.id)
 		from EMS_pole a 
@@ -133,7 +133,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</where>
 		order by a.code
     </select>
-    <select id="queryPoles_no_send_task_count" resultType="com.mawujun.baseinfo.PoleVO" parameterType="map">
+    <select id="queryPoles_no_send_task_count" resultType="int" parameterType="map">
     	select 
 			count(a.id)
 		from EMS_pole a 

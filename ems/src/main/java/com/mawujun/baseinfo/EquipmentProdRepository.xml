@@ -10,6 +10,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	SELECT a.*,b.name as brand_name
 	    FROM ems_equipmentprod a,ems_brand b 
 		where a.brand_id=b.id
+		<if test="style!=null and style !=''">
+		and a.style  like #{style}
+		</if>
 		<if test="status!=null">
 		and a.status=#{status}
 		</if>

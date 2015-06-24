@@ -78,6 +78,7 @@ Ext.define('Ems.baseinfo.AreaPoleGrid',{
      	var me = this;
      	var actions0=[];
      	
+     	//区
      	var customer_2=Ext.create('Ext.form.field.ComboBox',{
 	        fieldLabel: '区',
 	        labelAlign:'right',
@@ -123,6 +124,7 @@ Ext.define('Ems.baseinfo.AreaPoleGrid',{
 		   }
 		});
 		actions0.push(customer_2);
+		//具体的客户
 		var customer_0or1=Ext.create('Ext.form.field.ComboBox',{
 	        fieldLabel: '客户',
 	        labelAlign:'right',
@@ -155,7 +157,18 @@ Ext.define('Ems.baseinfo.AreaPoleGrid',{
 			    		type:'json',
 			    		root:'root'
 			    	}
+			    },
+			    listeners:{
+			    	beforeload:function(store){
+				    	if(!customer_2.getValue()){
+				    		delete customer_0or1.lastQuery;
+				    		alert("请先选择'区'");
+				    		return false;
+				    	}
+				    }
+			    
 			    }
+			    
 		   })
 		});
      	actions0.push(customer_0or1);

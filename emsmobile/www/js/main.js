@@ -2,7 +2,7 @@
 //$.ServerPath="http://localhost:8084";
 //$.ServerPath="http://172.16.3.4:8084";
 $.ServerPath="";
-$.ServerPort="8080";
+$.ServerPort="8081";
 $.ecodeLength=20;
 $.ajaxSetup({
 	//jsonp: "jsonpCallback",//使用浏览器进行测试的时候用的，如果安装到手机，就注释掉
@@ -60,8 +60,15 @@ window.initServerPath=function(){
 	if(!ServerIP){
 		return;
 	}
-	var ServerPath="http://"+ServerIP+":"+$.ServerPort;
 	$.ServerPath=ServerPath;
+	var ServerPort=localStorage.getItem("ServerPort");
+	if(!ServerPort){
+		ServerPort="8081";
+	}
+	$.ServerPort=ServerPort;
+	
+	var ServerPath="http://"+ServerIP+":"+ServerPort;
+	
 }
 $(function() {
 	if(location.href.indexOf("login.html")!=-1){

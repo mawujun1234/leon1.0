@@ -17,7 +17,7 @@ import com.mawujun.adjust.Adjust;
 @Repository
 public interface AdjustRepository extends IRepository<Adjust, String>{
 
-	public AdjustVO getAdjustVOByEcode(@Param("ecode")String ecode,@Param("store_id")String store_id);
+	public AdjustListVO getAdjustVOByEcode(@Param("ecode")String ecode,@Param("store_id")String store_id);
 	
 	public Page query4InStr(Page page);
 	public List<AdjustListVO> query4InStrList(@Param("adjust_id")String adjust_id);

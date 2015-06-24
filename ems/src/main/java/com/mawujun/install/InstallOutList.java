@@ -2,6 +2,8 @@ package com.mawujun.install;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
 import com.mawujun.repository.idEntity.UUIDEntity;
@@ -18,8 +20,13 @@ public class InstallOutList  extends UUIDEntity {
 	@Column(length=25)
 	private String ecode;//设备编码
 	
+	//默认为借用，当任务提交后，该设备就变成领用
+	@Enumerated(EnumType.STRING)
+	@Column(length=20)
+	private InstallOutListType installOutListType=InstallOutListType.borrow; //这个设备最终是被领用的还是借用的，判断条件是是否归还，即在返还的时候判断该设备是否正常归还了
+	
 	@Column(length=36)
-	private String installOutType_id;//领用类型的id
+	private String installOutType_id;//领用类型的id,是损坏领用，还是被盗领用
 
 	public String getEcode() {
 		return ecode;
@@ -38,6 +45,12 @@ public class InstallOutList  extends UUIDEntity {
 	}
 	public void setInstallOutType_id(String installOutType_id) {
 		this.installOutType_id = installOutType_id;
+	}
+	public InstallOutListType getInstallOutListType() {
+		return installOutListType;
+	}
+	public void setInstallOutListType(InstallOutListType installOutListType) {
+		this.installOutListType = installOutListType;
 	}
 
 }

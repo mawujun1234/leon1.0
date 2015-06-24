@@ -70,6 +70,23 @@ Ext.onReady(function(){
 			    }
 		   })
 	});
+	var adjustType_combox=Ext.create('Ext.form.field.ComboBox',{
+	        fieldLabel: '调拨类型',
+	        labelAlign:'right',
+            labelWidth:60,
+            width:120,
+	        //xtype:'combobox',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'adjustType',
+		    displayField: 'name',
+		    valueField: 'id',
+		    value:'borrow',
+	        allowBlank: false,
+	        store:Ext.create('Ext.data.ArrayStore', {
+		    	fields: ['id', 'name'],
+			    data:[['borrow','借用'],['installout','领用']]
+		   })
+	});
 	var ecode_textfield=Ext.create('Ext.form.field.Text',{
 		labelAlign:'right',
 		name:'encode',
@@ -284,7 +301,7 @@ Ext.onReady(function(){
             align:'stretch'
         },
         defaults:{margins:'0 0 5 0',border:false},
-        items:[{xtype:'form',items:[{xtype:'fieldcontainer',layout: 'hbox',items:[store_out_combox,store_in_combox,ecode_textfield,clear_button]},
+        items:[{xtype:'form',items:[{xtype:'fieldcontainer',layout: 'hbox',items:[store_out_combox,store_in_combox,adjustType_combox,ecode_textfield,clear_button]},
                                     {xtype:'fieldcontainer',layout: 'hbox',items:[storeman_textfield,inDate_textfield,memo_textfield]}
 		            		        //{xtype:'columnbox',columnSize:4,items:[{xtype:'listcombox',url:Ext.ContextPath+'/dataExtra/stockList.do',itemId:'stock_field',fieldLabel:'库房',name:'stid',allowBlank:false,emptyText:'未选择库房',labelAlign:'right'},{xtype:'textfield',name:'stmemo',fieldLabel:'库房描述',columnWidth:3/4,labelAlign:'right'}]}
 		            		        ]},

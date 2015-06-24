@@ -231,6 +231,7 @@ public static final class BorrowList {
 	public static final String ecode="ecode";
 	public static final String isReturn="isReturn";
 	public static final String returnDate="returnDate";
+	public static final String borrowListType="borrowListType";
 	public static final String memo="memo";
 	public static final String id="id";
 }
@@ -264,6 +265,7 @@ public static final class InstallOut {
 public static final class InstallOutList {
 	public static final String installOut_id="installOut_id";
 	public static final String ecode="ecode";
+	public static final String installOutListType="installOutListType";
 	public static final String installOutType_id="installOutType_id";
 	public static final String id="id";
 }

@@ -18,6 +18,7 @@ Ext.define('Ems.install.BorrowListGrid',{
       me.columns=[
 		//{dataIndex:'id',text:'id'},
 		{dataIndex:'ecode',text:'条码',width:130},
+		{dataIndex:'borrowListType_name',text:'借/领'},
 		//{dataIndex:'installIn_id',text:'installIn_id'},
 		//{dataIndex:'isBad',text:'isBad'}
 		{dataIndex:'returnDate',text:'归还日期',xtype: 'datecolumn',   format:'Y-m-d'},
@@ -27,9 +28,9 @@ Ext.define('Ems.install.BorrowListGrid',{
 		{dataIndex:'supplier_name',text:'供应商'},
 		{dataIndex:'style',text:'型号'},
 		{header:'规格',dataIndex:'prod_spec',flex:1,renderer:function(value,metadata,record){
-						metadata.tdAttr = "data-qtip='" + value+ "'";
-					    return value;
-						}
+				metadata.tdAttr = "data-qtip='" + value+ "'";
+				return value;
+			}
 		}
 		//{dataIndex:'num',text:'数量',summaryType: 'sum'}
       ];

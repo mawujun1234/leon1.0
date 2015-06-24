@@ -49,6 +49,7 @@ Ext.onReady(function(){
 				subtype_id:record.get("id"),
 				status:true
 			};
+			grid.clearStyleAll_prod();
 			grid.getStore().load();
 			grid.subtype_name=record.get("text");
 		} else {

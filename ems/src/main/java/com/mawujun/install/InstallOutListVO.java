@@ -8,7 +8,16 @@ public class InstallOutListVO extends InstallOutList {
 	private String supplier_name;
 	private String style;
 	
+	
 	private String installOutType_name;
+	
+	public String getInstallOutListType_name(){
+		if(this.getInstallOutListType()!=null){
+			return this.getInstallOutListType().getName();
+		}
+		return null;
+	}
+	
 	public String getSubtype_name() {
 		return subtype_name;
 	}

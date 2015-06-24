@@ -21,5 +21,8 @@ public interface BorrowRepository extends IRepository<Borrow, String>{
 	public BorrowListVO getBorrowListVO(@Param("borrow_id")String borrow_id,@Param("ecode")String ecode);
 	public void returnBorrowList(@Param("borrowlist_id")String borrowlist_id);
 	public void updateBorrowIsAllReturn(@Param("borrow_id")String borrow_id);
+	
+	
+	public void changeBorrowListType2installout(@Param("borrow_id")String borrow_id,@Param("ecode")String ecode );
 
 }

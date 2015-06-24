@@ -42,6 +42,8 @@ import java.util.Set;
 
 
 
+
+
 import javax.annotation.Resource;
 
 import org.springframework.beans.BeanUtils;
@@ -70,6 +72,8 @@ import com.mawujun.baseinfo.Pole;
 import com.mawujun.baseinfo.PoleRepository;
 import com.mawujun.baseinfo.PoleStatus;
 import com.mawujun.exception.BusinessException;
+import com.mawujun.install.BorrowRepository;
+import com.mawujun.install.InstallOutRepository;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 import com.mawujun.shiro.ShiroUtils;
@@ -107,6 +111,11 @@ public class TaskService extends AbstractService<Task, String>{
 	private OvertimeService overtimeService;
 	@Resource
 	private HitchTypeRepository hitchTypeRepository;
+	
+	@Autowired
+	private InstallOutRepository outStoreRepository;
+	@Autowired
+	private BorrowRepository borrowRepository;
 	
 	@Override
 	public TaskRepository getRepository() {
@@ -792,13 +801,17 @@ public class TaskService extends AbstractService<Task, String>{
 		List<TaskEquipmentList> taskEquipmentListes = taskEquipmentListRepository.query(Cnd.select().andEquals(M.TaskEquipmentList.task_id, task_id));
 		for (TaskEquipmentList taskEquipmentList : taskEquipmentListes) {
 			String ecode = taskEquipmentList.getEcode();
+			//修改对应的设备为领用，因为设备只有当真正被使用过了才叫领用，否则都还是借用
+			
 			if (TaskType.newInstall== task.getType()) {
 				// 更改设备的位置到该杆位上,把设备从昨夜单位身上移动到杆位上
 				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using).set(M.Equipment.isnew, false)
 						.set(M.Equipment.place, EquipmentPlace.pole).set(M.Equipment.last_install_date, new Date())
 						.set(M.Equipment.last_pole_id, task.getPole_id()).set(M.Equipment.last_task_id, task.getId())
 						.set(M.Equipment.currt_task_id, null).andEquals(M.Equipment.ecode, ecode));
-
+				//要放在最前面，把设备从借用变成领用
+				changeInstallOutListType2installout(taskEquipmentList.getEcode(),task.getWorkunit_id());
+				
 				// 杆位绑定这个设备
 				EquipmentPole equipmentStore = new EquipmentPole();
 				equipmentStore.setEcode(taskEquipmentList.getEcode());
@@ -822,7 +835,9 @@ public class TaskService extends AbstractService<Task, String>{
 							.set(M.Equipment.place, EquipmentPlace.pole).set(M.Equipment.last_install_date, new Date())
 							.set(M.Equipment.last_pole_id, task.getPole_address()).set(M.Equipment.last_task_id, task.getId())
 							.set(M.Equipment.currt_task_id, null).andEquals(M.Equipment.ecode, ecode));
-
+					//要放在最前面，把设备从借用变成领用
+					changeInstallOutListType2installout(taskEquipmentList.getEcode(),task.getWorkunit_id());
+					
 					// 杆位绑定这个设备
 					EquipmentPole equipmentStore = new EquipmentPole();
 					equipmentStore.setEcode(taskEquipmentList.getEcode());
@@ -838,6 +853,8 @@ public class TaskService extends AbstractService<Task, String>{
 					equipmentWorkunitPK.setEcode(taskEquipmentList.getEcode());
 					equipmentWorkunitPK.setWorkunit_id(task.getWorkunit_id());
 					equipmentWorkunitRepository.deleteById(equipmentWorkunitPK);
+					
+					
 				} else {
 					// 设备从杆位上卸载下来的情况
 					equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.out_storage).set(M.Equipment.isnew, false)
@@ -892,9 +909,28 @@ public class TaskService extends AbstractService<Task, String>{
 			}
 
 		}
-
-	
-		
+	}
+	/**
+	 * 如果这个设备是领用出来的，那就把该设备变为变为领用(因为默认是借用)
+	 * 如果该设备是借用出来的，，那也把该设备变为领用
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param ecode
+	 * @param workunit_id
+	 */
+	public void changeInstallOutListType2installout(String ecode,String workunit_id){
+		EquipmentWorkunitPK equipmentWorkunitPK = new EquipmentWorkunitPK();
+		equipmentWorkunitPK.setEcode(ecode);
+		equipmentWorkunitPK.setWorkunit_id(workunit_id);
+		EquipmentWorkunit equipmentWorkunit=equipmentWorkunitRepository.get(equipmentWorkunitPK);
+		//表示这个设备是领用出来的，那就把该设备变成是领用的
+		if(equipmentWorkunit.getType()==EquipmentWorkunitType.installout ){
+			outStoreRepository.changeInstallOutListType2installout(equipmentWorkunit.getType_id(), ecode);
+		}
+		if(equipmentWorkunit.getType()==EquipmentWorkunitType.borrow){
+			borrowRepository.changeBorrowListType2installout(equipmentWorkunit.getType_id(), ecode);
+			//判断该借用单是否已经全部归还了
+			borrowRepository.updateBorrowIsAllReturn(equipmentWorkunit.getType_id());
+		}
 	}
 //	/**
 //	 * 任务提交，不修改设备状态，等管理端确认后，才修改设备的状态

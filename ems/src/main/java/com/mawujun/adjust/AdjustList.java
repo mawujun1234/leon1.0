@@ -11,8 +11,8 @@ import com.mawujun.repository.idEntity.UUIDEntity;
 public class AdjustList extends UUIDEntity{
 	private String adjust_id;
 	private String ecode;
-	private Integer out_num=1;//申请出库的数量,永远是1
-	private Integer in_num=1;//入库的数量,永远是1
+//	private Integer out_num=1;//申请出库的数量,永远是1
+//	private Integer in_num=1;//入库的数量,永远是1
 	@org.hibernate.annotations.Type(type="yes_no")
 	private Boolean status=false;//是否已经入库，true表示已经入库
 	
@@ -28,18 +28,7 @@ public class AdjustList extends UUIDEntity{
 	public void setEcode(String ecode) {
 		this.ecode = ecode;
 	}
-	public Integer getOut_num() {
-		return out_num;
-	}
-	public void setOut_num(Integer out_num) {
-		this.out_num = out_num;
-	}
-	public Integer getIn_num() {
-		return in_num;
-	}
-	public void setIn_num(Integer in_num) {
-		this.in_num = in_num;
-	}
+
 	public Boolean getStatus() {
 		return status;
 	}

@@ -13,6 +13,8 @@ Ext.onReady(function(){
 
 
 	grid.on('itemclick',function(view,record,item,index){
+		areaPoleGrid.getEl().unmask();
+		
 		areaPoleGrid.area_id=record.get("id");
 		
 		areaPoleGrid.getStore().getProxy().extraParams={area_id:record.get("id")};
@@ -25,7 +27,12 @@ Ext.onReady(function(){
 		region:'center',
 		split: true,
 		collapsible: true,
-		title:'点位信息'
+		title:'点位信息',
+		listeners:{
+			render:function(grid){
+				grid.getEl().mask();
+			}
+		}
 	});
 	
 	var equipment_grid=Ext.create('Ems.baseinfo.EquipmentGrid',{
