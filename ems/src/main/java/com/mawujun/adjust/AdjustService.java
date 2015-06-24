@@ -28,8 +28,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.mawujun.repair.RepairVO;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
-
-
 import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.BeanUtils;
 import com.mawujun.utils.M;
@@ -41,6 +39,7 @@ import com.mawujun.baseinfo.EquipmentPlace;
 import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.EquipmentStatus;
 import com.mawujun.baseinfo.EquipmentStore;
+import com.mawujun.baseinfo.EquipmentStorePK;
 import com.mawujun.baseinfo.EquipmentStoreRepository;
 import com.mawujun.baseinfo.EquipmentStoreType;
 import com.mawujun.baseinfo.Store;
@@ -150,22 +149,39 @@ public class AdjustService extends AbstractService<Adjust, String>{
 			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.in_storage)
 					.set(M.Equipment.place, EquipmentPlace.store)
 					.andEquals(M.Equipment.ecode, adjustList.getEcode()));
-			//EquipmentStore equipmentStore=new EquipmentStore();
-			//equipmentStore
-			Params p=Params.init().add(M.EquipmentStore.type, EquipmentStoreType.adjust)
-					.add(M.EquipmentStore.type_id, adjustList.getAdjust_id())
-					.add(M.EquipmentStore.ecode, adjustList.getEcode())
-					.add("str_in_id", str_in_id)//入库仓库，新的仓库
-					.add("store_out_id", str_out_id);
-			equipmentRepository.changeStore(p);
+//			//EquipmentStore equipmentStore=new EquipmentStore();
+//			//equipmentStore
+//			Params p=Params.init().add(M.EquipmentStore.type, EquipmentStoreType.adjust)
+//					.add(M.EquipmentStore.type_id, adjustList.getAdjust_id())
+//					.add(M.EquipmentStore.ecode, adjustList.getEcode())
+//					.add("str_in_id", str_in_id)//入库仓库，新的仓库
+//					.add("store_out_id", str_out_id);
+//			equipmentRepository.changeStore(p);
+			
+			//从仓库中删除
+			EquipmentStorePK equipmentStorePK=new EquipmentStorePK();
+			equipmentStorePK.setEcode( adjustList.getEcode());
+			equipmentStorePK.setStore_id(str_out_id);
+			equipmentStoreRepository.deleteById(equipmentStorePK);
+			
+			//插入到仓库
+			EquipmentStore equipmentStore=new EquipmentStore();
+			equipmentStore.setEcode( adjustList.getEcode());
+			equipmentStore.setStore_id(str_in_id);
+			equipmentStore.setNum(1);
+			equipmentStore.setInDate(new Date());
+			equipmentStore.setType(EquipmentStoreType.adjust);
+			equipmentStore.setType_id(adjustList.getAdjust_id());
+			equipmentStore.setFrom_id(str_out_id);
+			equipmentStoreRepository.create(equipmentStore);
 		
 		}
 		//这个时候就表示是都选择了，修改整个调拨单的状态
 		//Long in_num_total=(Long)adjustListRepository.querySum(Cnd.sum(M.AdjustList.in_num).andEquals(M.AdjustList.adjust_id, adjustLists[0].getAdjust_id()));
-		还有仓库迁移要做
-		Long in_num_total=(Long)adjustListRepository.queryCount(Cnd.sum(M.AdjustList.in_num).andEquals(M.AdjustList.adjust_id, adjustLists[0].getAdjust_id()));
+		//还有仓库迁移要做
+		//Long in_num_total=(Long)adjustListRepository.queryCount(Cnd.sum(M.AdjustList.in_num).andEquals(M.AdjustList.adjust_id, adjustLists[0].getAdjust_id()));
 		//if(adjustRepository.sumInnumByadjust_id(adjustLists[0].getAdjust_id())==out_num_total){
-		if(in_num_total==out_num_total){
+		if(adjustLists.length==out_num_total){
 			adjustRepository.update(Cnd.update().set(M.Adjust.status, AdjustStatus.over).andEquals(M.Adjust.id, adjustLists[0].getAdjust_id()));
 		}
 		

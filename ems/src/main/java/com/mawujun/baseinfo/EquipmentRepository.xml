@@ -68,12 +68,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	
 
     
-    <!-- 把设备从一个库移到另一个库的时候,例如调拨，维修入库，仓库从维修中心中重新入库-->
+    <!-- 把设备从一个库移到另一个库的时候,例如调拨，维修入库，仓库从维修中心中重新入库
 	<update id="changeStore" parameterType="map">
 		update ems_equipment_store set store_id=#{store_in_id},type=#{type},type_id=#{type_id},inDate=sysdate
 		where ecode=#{ecode} and store_id=#{store_out_id}
 	</update>
-	
+	-->
 	<!--  根据条码 查询借用的设备信息,通过条码获取的时候是可以获取到唯一的一条记录的-->
 	<select id="getBorrowEquipmentWorkunit" resultType="com.mawujun.baseinfo.EquipmentWorkunit">
 		select * from 
