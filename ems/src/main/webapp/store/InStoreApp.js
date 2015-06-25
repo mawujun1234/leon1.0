@@ -267,18 +267,18 @@ Ext.onReady(function(){
     	          {header: '品牌', dataIndex: 'brand_name',width:120},
     	          {header: '供应商', dataIndex: 'supplier_name'},
     	          {header: '设备型号', dataIndex: 'style',width:120},
-    	          {header: '规格', dataIndex: 'prod_spec',width:120,renderer:function(value,metadata,record){
+    	          {header: '规格', flex:1,dataIndex: 'prod_spec',width:120,renderer:function(value,metadata,record){
 						metadata.tdAttr = "data-qtip='" + value+ "'";
 					    return value;
 					}
 				  },
-    	          {header: '仓库', dataIndex: 'store_name'},
+    	          //{header: '仓库', dataIndex: 'store_name'},
     	          //{header: '数量', dataIndex: 'serialNum',width:70},
   
     	          {header: '状态', dataIndex: 'status_name',width:100}
     	          ],
         tbar:['<pan id="toolbar-title-text">当前入库记录</span>','->',
-              {text:'清空所选记录',
+              {text:'清空所有记录',
         	   iconCls:'icon-clearall',
         	   handler:function(){
         		   Ext.MessageBox.confirm('确认', '您确认要清除所有记录吗?', function(btn){
@@ -307,7 +307,7 @@ Ext.onReady(function(){
 	        store: equipStore,  
 	        dock: 'bottom',
 	        displayInfo: true
-	  }
+	    }
 	});
 	
 	

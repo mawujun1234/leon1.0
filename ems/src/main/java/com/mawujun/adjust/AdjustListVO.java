@@ -10,6 +10,14 @@ public class AdjustListVO extends AdjustList {
 	private String equipment_style;
 	private String equipment_status;
 	
+	public String getAdjustListStatus_name() {
+		if(this.getAdjustListStatus()!=null){
+			return this.getAdjustListStatus().getName();
+		}
+		return null;
+	}
+	
+	
 	public String getBrand_name() {
 		return brand_name;
 	}

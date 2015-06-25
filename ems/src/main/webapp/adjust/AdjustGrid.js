@@ -18,6 +18,7 @@ Ext.define('Ems.adjust.AdjustGrid',{
       me.columns=[
 		{dataIndex:'id',text:'单号'},
 		{dataIndex:'status_name',text:'状态',width:60},
+		{dataIndex:'adjustType_name',text:'调拨类型'},
 		{dataIndex: 'str_out_name',text: '出库仓库'},
     	{dataIndex: 'str_in_name',text: '入库仓库'},
     	{dataIndex:'str_out_date',text:'出库时间',xtype: 'datecolumn',   format:'Y-m-d',width:80},
@@ -125,7 +126,7 @@ Ext.define('Ems.adjust.AdjustGrid',{
 	        allowBlank: false,
 	        store:Ext.create('Ext.data.Store', {
 		    	fields: ['id', 'name'],
-			    data:[{id:"",name:"所有"},{id:"carry",name:"在途"},{id:"over",name:"完成"}]//,{id:"edit",name:"编辑中"}
+			    data:[{id:"",name:"所有"},{id:"carry",name:"在途"},{id:"noallin",name:"未全入"},{id:"noreturn",name:"未归还"},{id:"over",name:"完成"}]//,{id:"edit",name:"编辑中"}
 		   })
 	  }); 
 	  
@@ -137,6 +138,29 @@ Ext.define('Ems.adjust.AdjustGrid',{
 					str_out_date_end: str_out_date_end.getRawValue(),
 					status:status_combo.getValue()
 				  };
+	});
+	
+	//将调拨单的类型从借用单转换成领用单
+	//已经入过库的不能转换，不是出库仓库的不能转
+	var chang2installout=Ext.create('Ext.button.Button',{
+		text:'借转领',
+		handler:function(){
+			alert("还未完成");
+			return;
+			var record=me.getSelectionModel().getLastSelected();
+			if(!record){
+				return;
+			}
+			Ext.Ajax.request({
+				url:Ext.ContextPath+'/adjust/change2installout.do',
+				method:'POST',
+				params:{},
+				success:function(response){
+					me.store.reload();
+				}
+			
+			});
+		}
 	});
 	  me.tbar={
 		xtype: 'container',
@@ -153,27 +177,11 @@ Ext.define('Ems.adjust.AdjustGrid',{
 			iconCls:'form-search-button',
 			handler: function(btn){
 				me.store.reload();
-//				me.store.load({params:{
-//					str_out_id:out_store_combox.getValue(),
-//					str_in_id:in_store_combox.getValue(),
-//					str_out_date_start: str_out_date_start.getRawValue(),
-//					str_out_date_end: str_out_date_end.getRawValue(),
-//					status:status_combo.getValue()
-//				  }
-//			    });
 			}
 		  }] 
-		}]
+		},chang2installout]
 	   };
 	   me.store.load();
-//	   me.store.load({params:{
-//					str_out_id:out_store_combox.getValue(),
-//					str_in_id:in_store_combox.getValue(),
-//					str_out_date_start: str_out_date_start.getRawValue(),
-//					str_out_date_end: str_out_date_end.getRawValue(),
-//					status:status_combo.getValue()
-//				  }
-//	   });
 
        
       me.callParent();

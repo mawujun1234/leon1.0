@@ -22,12 +22,6 @@ Ext.define('Ems.adjust.AdjustInGrid',{
     	{dataIndex: 'str_in_name',text: '入库仓库'},
     	{dataIndex:'str_out_date',text:'出库时间',xtype: 'datecolumn',   format:'Y-m-d',width:80},
     	{dataIndex:'memo',text:'备注',flex:1}
-		//{dataIndex:'str_out_id',text:'str_out_id'}
-		//{dataIndex:'str_in_date',text:'str_in_date',xtype: 'datecolumn',   format:'Y-m-d'},
-		//{dataIndex:'str_in_id',text:'str_in_id'},
-		//{dataIndex:'str_in_oper_id',text:'str_in_oper_id'},
-		
-		//{dataIndex:'str_out_oper_id',text:'str_out_oper_id'}
       ];
       
 	  me.store=Ext.create('Ext.data.Store',{

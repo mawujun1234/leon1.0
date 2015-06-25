@@ -78,7 +78,7 @@ public class AdjustService extends AbstractService<Adjust, String>{
 		return adjustRepository.getAdjustVOByEcode(ecode, store_id);
 	}
 	
-	public void newAdjuest(Adjust adjust,@RequestBody AdjustList[] adjuestLists) {
+	public void newAdjuest(Adjust adjust,AdjustList[] adjuestLists) {
 		//创建调拨单
 		//Adjust adjust=BeanUtils.copyOrCast(adjuestVOs[0], Adjust.class);//adjuestVOs[0];//每条记录的主单内容都是一样的
 		adjust.setId(ymdHmsDateFormat.format(new Date()));
@@ -93,6 +93,7 @@ public class AdjustService extends AbstractService<Adjust, String>{
 			//创建调拨明细
 			//AdjustList adjustList=new AdjustList();
 			adjustList.setAdjust_id(adjust.getId());
+			adjustList.setAdjustListStatus(AdjustListStatus.noin);
 			//adjustList.setEcode(adjustVO.getEcode());
 			//adjustList.setOut_num(1);
 			adjustListRepository.create(adjustList);
@@ -129,17 +130,21 @@ public class AdjustService extends AbstractService<Adjust, String>{
 	 * @author mawujun 16064988@qq.com 
 	 * @return
 	 */
-	public void partInStr(AdjustList[] adjustLists,String str_in_id,String str_out_id) {
+	public void adjustInStore(AdjustList[] adjustLists,String adjust_id) {
+		Adjust adjust=adjustRepository.get(adjust_id);
+		
 		//获取当前调拨下的设备总数,本来应该是sum的，但现在是sum和count一样的
-		Long out_num_total=adjustListRepository.queryCount(Cnd.count(M.AdjustList.id).andEquals(M.AdjustList.adjust_id, adjustLists[0].getAdjust_id()));
-		//Long out_num_total=(Long)adjustListRepository.querySum(Cnd.sum(M.AdjustList.out_num).andEquals(M.AdjustList.adjust_id, adjustLists[0].getAdjust_id()));
+		Long out_num_total=adjustListRepository.queryCount(Cnd.count(M.AdjustList.id).andEquals(M.AdjustList.adjust_id, adjust_id));
+		//Long out_num_total=(Long)adjustListRepository.querySum(Cnd.sum(M.AdjustList.out_num).andEquals(M.AdjustList.adjust_id, adjust_id));
 		
 		//int total=0;
 		for(AdjustList adjustList:adjustLists) {
-			adjustList.setStatus(true);
-			//adjustList.setIn_num(1);
-			//total++;
-			adjustListRepository.update(adjustList);
+			//adjustList.setStatus(true);
+			//adjustListRepository.update(adjustList);
+			//更新调拨单明细的状态为已经入库
+			adjustListRepository.update(Cnd.update().set(M.AdjustList.adjustListStatus, AdjustListStatus.in)
+					//.set(M.AdjustList.indate, new Date())
+					.andEquals(M.AdjustList.id, adjustList.getId()));
 			
 			//同时更改设备状态，从A仓库到B仓库
 			//同时修改设备状态
@@ -149,43 +154,51 @@ public class AdjustService extends AbstractService<Adjust, String>{
 			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.in_storage)
 					.set(M.Equipment.place, EquipmentPlace.store)
 					.andEquals(M.Equipment.ecode, adjustList.getEcode()));
-//			//EquipmentStore equipmentStore=new EquipmentStore();
-//			//equipmentStore
-//			Params p=Params.init().add(M.EquipmentStore.type, EquipmentStoreType.adjust)
-//					.add(M.EquipmentStore.type_id, adjustList.getAdjust_id())
-//					.add(M.EquipmentStore.ecode, adjustList.getEcode())
-//					.add("str_in_id", str_in_id)//入库仓库，新的仓库
-//					.add("store_out_id", str_out_id);
-//			equipmentRepository.changeStore(p);
 			
 			//从仓库中删除
 			EquipmentStorePK equipmentStorePK=new EquipmentStorePK();
 			equipmentStorePK.setEcode( adjustList.getEcode());
-			equipmentStorePK.setStore_id(str_out_id);
+			equipmentStorePK.setStore_id(adjust.getStr_out_id());
 			equipmentStoreRepository.deleteById(equipmentStorePK);
 			
 			//插入到仓库
 			EquipmentStore equipmentStore=new EquipmentStore();
 			equipmentStore.setEcode( adjustList.getEcode());
-			equipmentStore.setStore_id(str_in_id);
+			equipmentStore.setStore_id(adjust.getStr_in_id());
 			equipmentStore.setNum(1);
 			equipmentStore.setInDate(new Date());
 			equipmentStore.setType(EquipmentStoreType.adjust);
 			equipmentStore.setType_id(adjustList.getAdjust_id());
-			equipmentStore.setFrom_id(str_out_id);
+			equipmentStore.setFrom_id(adjust.getStr_out_id());
 			equipmentStoreRepository.create(equipmentStore);
 		
 		}
 		//这个时候就表示是都选择了，修改整个调拨单的状态
-		//Long in_num_total=(Long)adjustListRepository.querySum(Cnd.sum(M.AdjustList.in_num).andEquals(M.AdjustList.adjust_id, adjustLists[0].getAdjust_id()));
+		//Long in_num_total=(Long)adjustListRepository.querySum(Cnd.sum(M.AdjustList.in_num).andEquals(M.AdjustList.adjust_id, adjust_id));
 		//还有仓库迁移要做
-		//Long in_num_total=(Long)adjustListRepository.queryCount(Cnd.sum(M.AdjustList.in_num).andEquals(M.AdjustList.adjust_id, adjustLists[0].getAdjust_id()));
-		//if(adjustRepository.sumInnumByadjust_id(adjustLists[0].getAdjust_id())==out_num_total){
-		if(adjustLists.length==out_num_total){
-			adjustRepository.update(Cnd.update().set(M.Adjust.status, AdjustStatus.over).andEquals(M.Adjust.id, adjustLists[0].getAdjust_id()));
+		Long in_num_total=(Long)adjustListRepository.queryCount(Cnd.sum(M.AdjustList.id)
+				.andEquals(M.AdjustList.adjust_id, adjust_id).andIn(M.AdjustList.adjustListStatus, AdjustListStatus.in.toString(),AdjustListStatus.installout.toString()));
+		
+		
+		//if(adjustRepository.sumInnumByadjust_id(adjust_id)==out_num_total){
+		//入的数量和出的数量
+		if(in_num_total==out_num_total){
+			
+			if(adjust.getAdjustType()==AdjustType.borrow){
+				//adjustRepository.update(Cnd.update().set(M.Adjust.status, AdjustStatus.noreturn).andEquals(M.Adjust.id, adjust_id));
+				adjust.setStatus(AdjustStatus.noreturn);
+			} else {
+				//adjustRepository.update(Cnd.update().set(M.Adjust.status, AdjustStatus.over).andEquals(M.Adjust.id, adjust_id));
+				adjust.setStatus(AdjustStatus.over);
+			}
+			
+		} else {
+			//这里表示未完全入库
+			//adjustRepository.update(Cnd.update().set(M.Adjust.status, AdjustStatus.noallin).andEquals(M.Adjust.id, adjust_id));
+			adjust.setStatus(AdjustStatus.noallin);
 		}
 		
-		
+		adjustRepository.update(adjust);
 	}
 //	/**
 //	 * 当按全部入库按钮的时候，当要入库的数量和实际要入库的数量不一致的时候，要给出提醒，如果还是要强制入库，就表示某个设备丢失了
@@ -220,4 +233,18 @@ public class AdjustService extends AbstractService<Adjust, String>{
 		return adjustRepository.query4InStrList(adjust_id);
 	}
 
+	
+	public void change2installout(String adjust_id) {
+		Adjust adjust=adjustRepository.get(adjust_id);
+		//入过本来就是领用单，就不进行转换
+		if(adjust.getAdjustType()==AdjustType.installout){
+			return;
+		}
+		
+		//入过该借用单已经有过入库了，那也不能转换
+		
+		//入过当前用户没有权限操作这个仓库，那也不能转换
+		
+		//同时把明细单的所有状态，改成 installout
+	}
 }

@@ -14,10 +14,10 @@ Ext.define('Ems.adjust.AdjustListInGrid',{
 		}
 	},
 	selModel:new Ext.selection.CheckboxModel({
-		//checkOnly:true,
+		checkOnly:true,
 		showHeaderCheckbox:false,//防止点全选，去选择
 		renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-			if(record.get("status")==false ){
+			if(record.get("adjustListStatus")=='noin' ){
 				var baseCSSPrefix = Ext.baseCSSPrefix;
 		        metaData.tdCls = baseCSSPrefix + 'grid-cell-special ' + baseCSSPrefix + 'grid-cell-row-checker';
 		        return '<div class="' + baseCSSPrefix + 'grid-row-checker">&#160;</div>';
@@ -63,12 +63,12 @@ Ext.define('Ems.adjust.AdjustListInGrid',{
 			}
 	  });
 	  
-      me.dockedItems= [{
-	        xtype: 'pagingtoolbar',
-	        store: me.store,  
-	        dock: 'bottom',
-	        displayInfo: true
-	  }];
+//      me.dockedItems= [{
+//	        xtype: 'pagingtoolbar',
+//	        store: me.store,  
+//	        dock: 'bottom',
+//	        displayInfo: true
+//	  }];
 	  
 	  var ecode_textfield=Ext.create('Ext.form.field.Text',{
 		labelAlign:'right',
@@ -86,7 +86,7 @@ Ext.define('Ems.adjust.AdjustListInGrid',{
 				if(newValue.length<Ext.ecode_length){
 					return;
 				}
-				if(!me.str_in_id){
+				if(!me.adjust_id){
 					alert("请先选择挑拨单!");
 					return;
 				}
@@ -132,16 +132,17 @@ Ext.define('Ems.adjust.AdjustListInGrid',{
 			//不会修改调拨单状态
 			Ext.getBody().mask("正在执行,请稍候.....");
 			Ext.Ajax.request({
-				url:Ext.ContextPath+'/adjust/partInStr.do',
+				url:Ext.ContextPath+'/adjust/adjustInStore.do',
 				method:'POST',
 				timeout:600000000,
 				//headers:{ 'Content-Type':'application/json;charset=UTF-8'},
-				params:{str_in_id:me.str_in_id},
+				params:{adjust_id:me.adjust_id},
 				jsonData:adjustes,
 				//params:{jsonStr:Ext.encode(equiplist)},
 				success:function(response){
 					var obj=Ext.decode(response.responseText);		
 							//Ext.Msg.alert("消息","维修中心入库完成!");
+					me.getSelectionModel().deselect(records);
 					Ext.getBody().unmask();
 					me.getStore().reload();
 				},
@@ -163,7 +164,7 @@ Ext.define('Ems.adjust.AdjustListInGrid',{
 			itemId:'reload',
 			disabled:me.disabledAction,
 			handler: function(btn){
-				if(!me.str_in_id){
+				if(!me.adjust_id){
 					alert("请先选择挑拨单!");
 					return;
 				}

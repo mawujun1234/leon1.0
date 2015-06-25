@@ -147,7 +147,7 @@ function queryTasks(type,appendDir,callBack){
 	var post_params=pageParam.params;
 	var status=post_params.status;
 	var type=post_params.type;
-	
+
 	$.ajax({   
 		url : $.ServerPath+"/task/mobile/query.do",  
 		data:{start:pageParam.start,limit:pageParam.limit,status:status,type:type,orderBy:post_params.orderBy},  

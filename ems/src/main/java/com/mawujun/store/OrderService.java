@@ -221,7 +221,7 @@ public class OrderService extends AbstractService<Order, String>{
 	 * 如果订单进行修改，同个品名有很多不同的订单，条码的序号不是从1开始的，如果重复导出，将会生成不同的条码，序号递增
 	 * @author mawujun email:160649888@163.com qq:16064988
 	 */
-	public void insertBarcode(OrderList orderList,String randomStr){
+	public void insertBarcode(Order order,OrderList orderList,String randomStr){
 		//
 		//List<OrderList> orderLists=orderListRepository.query(Cnd.select().andEquals(M.OrderList.order_id, order.getId()));
 		String y2md=y2mdDateFormat.format(new Date());//年月日
@@ -267,6 +267,22 @@ public class OrderService extends AbstractService<Order, String>{
 				bar.setEcode(ecode);
 				bar.setOrderlist_id(orderList.getId());
 				bar.setYmd(y2md);
+				
+				
+				bar.setType_id(orderList.getType_id());
+				bar.setSubtype_id(temp.getSubtype_id());
+				bar.setProd_id(temp.getId());
+				if(StringUtils.hasText(temp.getStyle())){
+					bar.setStyle(temp.getStyle());
+				} else {
+					bar.setStyle(orderList.getStyle());
+				}
+				
+				bar.setBrand_id(temp.getBrand_id());
+				bar.setSupplier_id(order.getSupplier_id());
+				bar.setStore_id(order.getStore_id());
+				
+				
 				//bar.setSeqNum(i+startNum);
 				bar.setRandomStr(randomStr);
 				bar.setCreateDate(createDate);
@@ -324,8 +340,10 @@ public class OrderService extends AbstractService<Order, String>{
 		//本次导出条码的标识
 		String randomStr=UUID.randomUUID().toString();
 		 List<BarcodeVO> result=new ArrayList<BarcodeVO>();
+		 Order order=orderRepository.get(orderLists[0].getOrder_id());
 			//首先获取这个订单明细中的当前值
 			for(OrderList orderList:orderLists){
+				
 				if(orderList.getPrintNum()==0){
 					continue;
 				}
@@ -333,7 +351,7 @@ public class OrderService extends AbstractService<Order, String>{
 				//orderRepository.deleteBarcodesRange(params);
 				
 				//先把条码存储在数据库中
-				insertBarcode(orderList,randomStr);
+				insertBarcode(order,orderList,randomStr);
 				//获取当前要打印的条码范围
 				Map<String,Object> params=new HashMap<String,Object>();
 				params.put("orderlist_id", orderList.getId());

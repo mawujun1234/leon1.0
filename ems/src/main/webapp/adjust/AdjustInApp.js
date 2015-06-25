@@ -20,7 +20,7 @@ Ext.onReady(function(){
 	
 	grid.on('itemclick',function(view,record,item,index){
 		gridList.getStore().load({params:{adjust_id:record.get("id")}});
-		gridList.str_in_id=record.get("str_in_id");
+		gridList.adjust_id=record.get("id");
 	});
 	
 	var viewPort=Ext.create('Ext.container.Viewport',{

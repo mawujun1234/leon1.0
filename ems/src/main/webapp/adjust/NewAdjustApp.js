@@ -181,18 +181,14 @@ Ext.onReady(function(){
 					success : function(response) {//加载成功的处理函数   
 						var ret=Ext.decode(response.responseText);
 						if(ret.success){
-							if(ret.root.equipment_status!=1){//这是新设备入库的情况
-								Ext.Msg.alert("消息","该设备为非\"在库\"状态,不能添加到列表.");
-								return;
-							}
-							//为新增的equipment添加仓库等其他信息
-							ret.root.str_out_id=store_out_combox.getValue();
-							ret.root.str_out_name=store_out_combox.getRawValue();
-							ret.root.str_in_id=store_in_combox.getValue();
-							ret.root.str_in_name=store_in_combox.getRawValue();
+//							//为新增的equipment添加仓库等其他信息
+//							ret.root.str_out_id=store_out_combox.getValue();
+//							ret.root.str_out_name=store_out_combox.getRawValue();
+//							ret.root.str_in_id=store_in_combox.getValue();
+//							ret.root.str_in_name=store_in_combox.getRawValue();
 	
 							
-							var scanrecord = Ext.create('Ems.adjust.Adjust', ret.root);
+							var scanrecord = Ext.create('Ems.adjust.AdjustList', ret.root);
 
 							ecode_textfield.setValue("");
 							ecode_textfield.clearInvalid( );
@@ -265,17 +261,10 @@ Ext.onReady(function(){
 						metadata.tdAttr = "data-qtip='" + value+ "'";
 					    return value;
 						}
-				  },
-    	          {header: '出库仓库', dataIndex: 'str_out_name'},
-    	          {header: '入库仓库', dataIndex: 'str_in_name'},
-
-    	          {header: '设备状态', dataIndex: 'equipment_status',width:100,renderer:function(value){
-    	          	  if(value==4 || value==5){
-	    	          	return '<font color="red">'+equipmentStatus[value]+'</font>';
-	    	          } else {
-	    	          		return equipmentStatus[value];
-	    	          } 
-    	          }} ],
+				  }
+    	          //{header: '出库仓库', dataIndex: 'str_out_name'},
+    	          //{header: '入库仓库', dataIndex: 'str_in_name'},
+				  ],
         tbar:['<pan id="toolbar-title-text">当前入库记录</span>','->',
               {text:'清空列表中设备',
         	   iconCls:'icon-clearall',
@@ -319,13 +308,20 @@ Ext.onReady(function(){
             	equipStore.each(function(record){
             		equipments.push(record.data);
             	});
+            	
 
+            	var params={
+            		str_out_id:store_out_combox.getValue(),
+            		str_in_id:store_in_combox.getValue(),
+            		memo:memo_textfield.getValue(),
+            		adjustType:adjustType_combox.getValue()
+            	}
 				Ext.Ajax.request({
 					url:Ext.ContextPath+'/adjust/newAdjuest.do',
 					method:'POST',
 					timeout:600000000,
 					headers:{ 'Content-Type':'application/json;charset=UTF-8'},
-					//params:{store_id:store_out_combox.getValue()},
+					params:params,
 					jsonData:equipments,
 					success:function(response){
 						var obj=Ext.decode(response.responseText);

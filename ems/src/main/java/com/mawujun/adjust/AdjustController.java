@@ -129,14 +129,15 @@ public class AdjustController {
 		if(repairvo==null){
 			throw new BusinessException("对不起，该条码对应的设备不存在，或者该设备挂在其他仓库中!");
 		}
+
 		//repairvo.setStatus(AdjustStatus.edit);
 		return repairvo;
 	}
 	
 	@RequestMapping("/adjust/newAdjuest.do")
 	@ResponseBody
-	public String newAdjuest(AdjustVO adjustVO,@RequestBody AdjustListVO[] adjuestListVOs) {
-		adjustService.newAdjuest(adjustVO,adjuestListVOs);
+	public String newAdjuest(Adjust adjust,@RequestBody AdjustList[] adjuestLists) {
+		adjustService.newAdjuest(adjust,adjuestLists);
 		return "success";
 	}
 	
@@ -170,26 +171,26 @@ public class AdjustController {
 	 * @author mawujun 16064988@qq.com 
 	 * @return
 	 */
-	@RequestMapping("/adjust/partInStr.do")
+	@RequestMapping("/adjust/adjustInStore.do")
 	@ResponseBody
-	public String partInStr(@RequestBody AdjustList[] adjustLists,String str_in_id,String str_out_id) {	
-		if(!StringUtils.hasText(str_out_id)){
-			throw new BusinessException("str_out_id这个值没有!");
-		}
-		adjustService.partInStr(adjustLists,str_in_id,str_out_id);	
+	public String adjustInStore(@RequestBody AdjustList[] adjustLists,String adjust_id) {	
+		adjustService.adjustInStore(adjustLists,adjust_id);	
 		return "success";
 	}
 	
-//	/**
-//	 * 当按全部入库按钮的时候，当要入库的数量和实际要入库的数量不一致的时候，要给出提醒
-//	 * @author mawujun 16064988@qq.com 
-//	 * @return
-//	 */
-//	@RequestMapping("/adjust/allInStr.do")
-//	@ResponseBody
-//	public String allInStr(@RequestBody AdjustList[] adjustLists,String str_in_id) {	
-//		adjustService.allInStr(adjustLists,str_in_id);	
-//		return "success";
-//	}
+	/**
+	 * 把借用单转换成领用单
+	 * @author mawujun 16064988@qq.com 
+	 * @param adjust_id
+	 * @return
+	 */
+	@RequestMapping("/adjust/change2installout.do")
+	@ResponseBody
+	public String change2installout(String adjust_id) {	
+		
+		 adjustService.change2installout(adjust_id);
+		 return "成功";
+	}
+	
 	
 }

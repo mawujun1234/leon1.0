@@ -111,7 +111,8 @@ public class InStoreService extends AbstractService<InStore, String>{
 			barcodeRepository.update(Cnd.update().set(M.Barcode.status, 1).andEquals(M.Barcode.ecode, equipment.getEcode()));
 		}
 		
-		for(Entry<String,Integer> entry:totalnumMap.entrySet()){
+		for(Entry<String,Integer> entry:totalnumMap.entrySet()) {
+			//dsf
 			orderRepository.updateTotalNum(entry.getKey(), M.OrderList.totalNum+"+"+entry.getValue());
 		}
 		

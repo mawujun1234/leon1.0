@@ -5,11 +5,14 @@
 		version="0.0.7" android-versionCode="7"
 	3：修改login.html中的版本提示信息，改成一样。
 	4：修改apkVersion.jss的版本升级信息,换行使用:\n
-	5:然后重新生成新版本
+	5:进入项目目录，然后重新生成新版本
+		cordova build android -release 编译不启动模拟器
 		cordova run android -release
-	6：把生成的apk文件拷贝到ems文件的webapp文件夹下，并重名名为	
+	6：把生成的apk文件拷贝到ems文件的webapp文件夹下，并重名名为	emsmobile-release.apk
 	7：更新到远程服务器
 		122.227.163.82:8083 administrator nbdw001
+		最好是重新打包发布，因为 解压然后访问的
+		只要把emsmobile-release.apk文件和apkVersion.jss文件拷贝到服务器的webapp目录下就可以了，就可以实现更新了
 		
 		生成android的正式版本
 cordova run android -release

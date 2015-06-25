@@ -60,7 +60,7 @@ window.initServerPath=function(){
 	if(!ServerIP){
 		return;
 	}
-	$.ServerPath=ServerPath;
+	
 	var ServerPort=localStorage.getItem("ServerPort");
 	if(!ServerPort){
 		ServerPort="8081";
@@ -68,7 +68,7 @@ window.initServerPath=function(){
 	$.ServerPort=ServerPort;
 	
 	var ServerPath="http://"+ServerIP+":"+ServerPort;
-	
+	$.ServerPath=ServerPath;
 }
 $(function() {
 	if(location.href.indexOf("login.html")!=-1){
@@ -205,6 +205,10 @@ $(function(){
 	}
 	
 	window.checkOrUpdateApp=function(){
+		//如果是登陆页面，就不检查更新，等登陆进去后再检查更新
+		if(location.href.indexOf("login.html")!=-1){
+			return;
+		}
 		//如果已经检查过了，就不再进行检查了
 		if(sessionStorage.getItem("checkOrUpdateApp_48837")){
 			return;
@@ -254,15 +258,15 @@ $(function(){
 		document.addEventListener("backbutton", logout, false);//backbutton
 		
 		navigator.splashscreen.hide();
-		//alert(sessionStorage.getItem("user") +"====" +sessionStorage.getItem("watchID"));
-		if(sessionStorage.getItem("user") && !sessionStorage.getItem("watchID")){
-			//setTimeout(uploadGeolocation,2000);
-			//alert(0);
-			var watchID=window.setInterval("uploadGeolocation()",1000*60*1);
-			//用来控制应用只发送一个请求
-			sessionStorage.setItem("watchID",watchID);
-			//uploadGeolocation();
-		}
+	//	//alert(sessionStorage.getItem("user") +"====" +sessionStorage.getItem("watchID"));
+//		if(sessionStorage.getItem("user") && !sessionStorage.getItem("watchID")){
+//			//setTimeout(uploadGeolocation,2000);
+//			//alert(0);
+//			var watchID=window.setInterval("uploadGeolocation()",1000*60*1);
+//			//用来控制应用只发送一个请求
+//			sessionStorage.setItem("watchID",watchID);
+//			//uploadGeolocation();
+//		}
 		
 		checkOrUpdateApp();//检查版本信息，并更新
 	}, false); //deviceready

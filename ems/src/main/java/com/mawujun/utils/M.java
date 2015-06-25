@@ -10,13 +10,13 @@ public static final class Adjust {
 	public static final String str_in_date="str_in_date";
 	public static final String str_in_oper_id="str_in_oper_id";
 	public static final String memo="memo";
+	public static final String adjustType="adjustType";
 }
 public static final class AdjustList {
 	public static final String adjust_id="adjust_id";
 	public static final String ecode="ecode";
-	public static final String out_num="out_num";
-	public static final String in_num="in_num";
-	public static final String status="status";
+	public static final String adjustListStatus="adjustListStatus";
+	public static final String indate="indate";
 	public static final String id="id";
 }
 public static final class Area {
@@ -477,6 +477,13 @@ public static final class Barcode {
 	public static final String ecode="ecode";
 	public static final String orderlist_id="orderlist_id";
 	public static final String ymd="ymd";
+	public static final String type_id="type_id";
+	public static final String subtype_id="subtype_id";
+	public static final String prod_id="prod_id";
+	public static final String brand_id="brand_id";
+	public static final String style="style";
+	public static final String supplier_id="supplier_id";
+	public static final String store_id="store_id";
 	public static final String randomStr="randomStr";
 	public static final String createDate="createDate";
 	public static final String status="status";
