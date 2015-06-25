@@ -352,7 +352,7 @@ Ext.onReady(function(){
     	          //{header: '状态', dataIndex: 'status_name',width:60}
     	          ],
         tbar:['<pan id="toolbar-title-text">当前入库记录</span>','->',
-              {text:'清空选择的设备',
+              {text:'清空所有的设备',
         	   iconCls:'icon-clearall',
         	   handler:function(){
         		   Ext.MessageBox.confirm('确认', '您确认要清除所有记录吗?', function(btn){

@@ -76,6 +76,23 @@ public class BorrowController {
 	}
 	
 	/**
+	 * 打印借用单
+	 * @author mawujun 16064988@qq.com 
+	 * @param equipments
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping("/borrow/equipmentOutStorePrint.do")
+	@ResponseBody
+	//public String equipOutStore(@RequestBody Equipment[] equipments,String store_id,String workUnit_id,String type,String memo) {
+	public String equipmentOutStorePrint(String borrow_id) {
+		BorrowVO borrow=borrowService.getBorrowVO(borrow_id);
+		List<BorrowListVO> borrowListVOs=borrowService.queryList(borrow_id);
+
+		return "success";
+	}
+	
+	/**
 	 * 
 	 * @author mawujun 16064988@qq.com 
 	 * @param start

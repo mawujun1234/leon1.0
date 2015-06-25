@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -52,7 +53,7 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 		return outStoreRepository;
 	}
 
-	public void equipOutStore(InstallOutList[] installOutListes, InstallOut outStore) {
+	public String equipOutStore(InstallOutList[] installOutListes, InstallOut outStore) {
 		// 插入入库单
 		String outstore_id = ymdHmsDateFormat.format(new Date());
 		// InStore inStore=new InStore();
@@ -100,6 +101,7 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 			inStoreList.setInstallOut_id(outstore_id);
 			outStoreListRepository.create(inStoreList);
 		}
+		return outstore_id;
 	}
 	
 	public Page queryMain(Page page){
@@ -107,6 +109,10 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 		return outStoreRepository.queryMain(page);
 
 		
+	}
+	
+	public InstallOutVO getInstallOutVO(String installOut_id){
+		return outStoreRepository.getInstallOutVO(installOut_id);
 	}
 	public List<InstallOutListVO> queryList(String installOut_id) {
 

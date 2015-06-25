@@ -143,7 +143,25 @@ public class InstallOutController {
 	//public String equipOutStore(@RequestBody Equipment[] equipments,String store_id,String workUnit_id,String type,String memo) {
 	public String equipOutStore(@RequestBody InstallOutList[] installOutListes, InstallOut outStore) { 
 		//inStoreService.newInStore(equipments);
-		outStoreService.equipOutStore(installOutListes, outStore);
+		String installOut_id=outStoreService.equipOutStore(installOutListes, outStore);
+		return installOut_id;
+	}
+	
+	/**
+	 * 设备出库，设备领用
+	 * @author mawujun 16064988@qq.com 
+	 * @param equipments
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping("/installOut/equipmentOutStorePrint.do")
+	@ResponseBody
+	//public String equipOutStore(@RequestBody Equipment[] equipments,String store_id,String workUnit_id,String type,String memo) {
+	public String equipmentOutStorePrint(String installOut_id) { 
+		InstallOutVO installOutVO=outStoreService.getInstallOutVO(installOut_id);
+		List<InstallOutListVO> installOutListes=outStoreService.queryList(installOut_id);
+		//inStoreService.newInStore(equipments);
+		//outStoreService.equipOutStore(installOutListes, outStore);
 		return "success";
 	}
 	

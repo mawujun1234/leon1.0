@@ -58,6 +58,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</if>
 		</where>
     </select>
+    
+    <!-- 获取InstallOutVO-->
+    <select id="getInstallOutVO" resultType="com.mawujun.install.InstallOutVO" parameterType="string">
+    	select a.*,b.name as store_name.c.name as workunit_name,d.name as project_name from ems_installout a
+    	inner join ems_store b on a.store_id=b.id
+    	inner join ems_workUnit c on a.workUnit_id=c.id
+    	inner join project_id d on a.project_id=d.id
+    	where a.id==#{installOut_id}
+    </select>
     <select id="queryList" resultType="com.mawujun.install.InstallOutListVO" parameterType="string">
     	select a.*,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name,f.name as installOutType_name from 
     	(select f.*,a.subtype_id,a.prod_id,a.brand_id,a.supplier_id,a.style from ems_equipment a inner join ems_installoutlist f on a.ecode=f.ecode and f.installOut_id=#{installOut_id}) a

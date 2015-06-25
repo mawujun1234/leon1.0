@@ -246,8 +246,8 @@ Ext.onReady(function(){
 				record.set('printNum',orderNum-totalNum);
 			}
 		} else {
-			Ext.Msg.alert("消息","该类型设备已经全部入库");
-			record.set('printNum',0);
+			//Ext.Msg.alert("消息","该类型设备已经全部入库");
+			//record.set('printNum',0);
 		}
 	});
 	function queryEquip(){

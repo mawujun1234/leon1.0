@@ -112,7 +112,7 @@ public class InStoreService extends AbstractService<InStore, String>{
 		}
 		
 		for(Entry<String,Integer> entry:totalnumMap.entrySet()) {
-			//dsf
+			//更新总共入库的数量，如果建有拆分，最后的录入数量将会是订单数量的N倍
 			orderRepository.updateTotalNum(entry.getKey(), M.OrderList.totalNum+"+"+entry.getValue());
 		}
 		

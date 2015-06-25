@@ -4,10 +4,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 
 
 
@@ -128,6 +130,10 @@ public class BorrowService extends AbstractService<Borrow, String>{
 		return borrowRepository.queryMain(page);
 
 		
+	}
+	
+	public BorrowVO getBorrowVO(String borrow_id) {
+		return borrowRepository.getBorrowVO(borrow_id);
 	}
 	public List<BorrowListVO> queryList(String borrow_id) {
 

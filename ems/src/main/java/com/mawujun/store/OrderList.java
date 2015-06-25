@@ -36,7 +36,7 @@ public class OrderList extends UUIDEntity {
 	private Integer quality_month;//质保时间长度，以月为单位
 	
 	private Integer orderNum=0;//订货数量
-	private Integer totalNum=0;//累计入库数量
+	private Integer totalNum=0;//累计入库数量,如果该品名下面还有拆分，拆分几个就会乘以几个，会是orderNum的倍数
 	
 	@Transient
 	private Integer  printNum;//要打印的数目
