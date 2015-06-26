@@ -130,6 +130,7 @@ Ext.define('Ems.store.OrderListForm',{
 						prod_name.setValue(record.get("name"));
 						prod_spec.setValue(record.get("spec"));
 						prod_unit.setValue(record.get("unit"));
+						quality_month_field.setValue(record.get("quality_month"));
 						
 						brand_id.setValue(record.get("brand_id"));
 						brand_name.setValue(record.get("brand_name"));

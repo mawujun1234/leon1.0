@@ -1,8 +1,32 @@
 package com.mawujun.install;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.HtmlExporter;
+import net.sf.jasperreports.engine.export.JRHtmlExporter;
+import net.sf.jasperreports.export.HtmlExporterOutput;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleExporterInputItem;
+import net.sf.jasperreports.export.SimpleHtmlExporterOutput;
+import net.sf.jasperreports.export.SimpleHtmlReportConfiguration;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -152,17 +176,82 @@ public class InstallOutController {
 	 * @author mawujun 16064988@qq.com 
 	 * @param equipments
 	 * @return
+	 * @throws JRException 
 	 * @throws IOException
 	 */
 	@RequestMapping("/installOut/equipmentOutStorePrint.do")
 	@ResponseBody
-	//public String equipOutStore(@RequestBody Equipment[] equipments,String store_id,String workUnit_id,String type,String memo) {
-	public String equipmentOutStorePrint(String installOut_id) { 
-		InstallOutVO installOutVO=outStoreService.getInstallOutVO(installOut_id);
-		List<InstallOutListVO> installOutListes=outStoreService.queryList(installOut_id);
-		//inStoreService.newInStore(equipments);
-		//outStoreService.equipOutStore(installOutListes, outStore);
-		return "success";
+	public void equipmentOutStorePrint(HttpServletRequest request,HttpServletResponse response,String installOut_id) throws JRException, IOException { 
+		//PrintWriter writer = response.getWriter();
+		
+		//InstallOutVO installOutVO=outStoreService.getInstallOutVO(installOut_id);
+		//List<InstallOutListVO> installOutListes=outStoreService.queryList(installOut_id);
+		List<InstallOutListVO> installOutListes=new ArrayList<InstallOutListVO>();
+		InstallOutListVO a=new InstallOutListVO();
+		a.setBrand_name("1");
+		a.setEcode("1");
+		a.setInstallOut_id("1");
+		a.setProd_name("1");
+		a.setSubtype_name("1");
+		a.setStyle("1");
+		installOutListes.add(a);
+		
+		
+		JRBeanCollectionDataSource dataSource=new JRBeanCollectionDataSource(installOutListes);
+		
+		//String root_path = request.getSession().getServletContext().getRealPath("/");
+		response.setContentType("text/html;charset=UTF-8");
+		OutputStream outputStream=response.getOutputStream();
+		
+		Map<String,Object> params=new HashMap<String,Object>();
+		params.put("project_name", "111111");  
+
+		
+		String JASPER_FILE_NAME=request.getSession().getServletContext().getRealPath("/install/report/installout.jasper");
+		//JasperReport jasperReport = (JasperReport)JRLoader.loadObject(JASPER_FILE_NAME);
+		File reportFile=new File(JASPER_FILE_NAME);
+		InputStream in=new FileInputStream(reportFile);
+		JasperPrint print = JasperFillManager.fillReport(in, params, dataSource);
+		// 使用JRHtmlExproter导出Html格式
+		
+		HtmlExporter exporter = new HtmlExporter();
+		//exporter.getCurrentJasperPrint()
+		SimpleHtmlExporterOutput simpleHtmlExporterOutput=new SimpleHtmlExporterOutput(outputStream,"UTF-8");
+		exporter.setExporterOutput(simpleHtmlExporterOutput);
+		
+		SimpleHtmlReportConfiguration simpleHtmlReportConfiguration=new SimpleHtmlReportConfiguration();
+		exporter.setConfiguration(simpleHtmlReportConfiguration);
+		
+		//SimpleExporterInputItem simpleExporterInputItem=new SimpleExporterInputItem(print);
+		SimpleExporterInput simpleExporterInput=new SimpleExporterInput(print);
+		exporter.setExporterInput(simpleExporterInput);
+		// 导出
+		exporter.exportReport();
+		outputStream.close();
+		
+		
+//		String JASPER_FILE_NAME=request.getSession().getServletContext().getRealPath("/tuih/report1.jasper");
+//		//JasperReport jasperReport = (JasperReport)JRLoader.loadObject(JASPER_FILE_NAME);
+//		File reportFile=new File(JASPER_FILE_NAME);
+//		InputStream in=new FileInputStream(reportFile);
+//		JasperPrint print = JasperFillManager.fillReport(in, params, dataSource);
+//		// 使用JRHtmlExproter导出Html格式
+//		JRHtmlExporter exporter = new JRHtmlExporter();
+////		request.getSession().setAttribute(ImageServlet.DEFAULT_JASPER_PRINT_SESSION_ATTRIBUTE, print);
+////		exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
+////		exporter.setParameter(JRExporterParameter.OUTPUT_WRITER, writer);
+////		//exporter.setParameter(JRHtmlExporterParameter.IMAGES_URI, "./servlets/image?image=");
+//		exporter.setParameter(JRExporterParameter.CHARACTER_ENCODING, "UTF-8");
+//		exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
+//		exporter.setParameter(JRExporterParameter.OUTPUT_WRITER, writer);
+//		exporter.setParameter(JRExporterParameter.CHARACTER_ENCODING, "GB2312");
+//		exporter.setParameter(JRHtmlExporterParameter.BETWEEN_PAGES_HTML, "<br style='page-break-before:always;'>");//翻页的处理（style='page-break-before:always;）；
+//
+//
+//				     
+//		exporter.setParameter(JRHtmlExporterParameter.IS_USING_IMAGES_TO_ALIGN, Boolean.FALSE);
+//		// 导出
+//		exporter.exportReport();
 	}
 	
 	/**

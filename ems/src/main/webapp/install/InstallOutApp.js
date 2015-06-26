@@ -456,7 +456,7 @@ Ext.onReady(function(){
         	}
         	
             if (equipStore.getCount()> 0) { 
-            	Ext.getBody().mask("正在入库....");
+            	Ext.getBody().mask("正在出库....");
             	var equipments = new Array();
             	equipStore.each(function(record){
             		equipments.push(record.data);
@@ -490,7 +490,13 @@ Ext.onReady(function(){
             }else{
             	Ext.Msg.alert('提示','请先添加一个设备');
             }
-		}}]
+		}},{
+			text:'打印测试',
+			handler:function(){
+				///installOut/equipmentOutStorePrint.do"
+				window.location.href=Ext.ContextPath+"/installOut/equipmentOutStorePrint.do";
+			}
+		}]
 	});
 	
 	

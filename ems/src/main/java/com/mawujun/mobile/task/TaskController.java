@@ -276,6 +276,9 @@ public class TaskController {
 	@RequestMapping("/task/mobile/deleteTaskEquipmentList.do")
 	@ResponseBody
 	public String deleteTaskEquipmentList(String taskEquipmentList_id,String ecode){
+		if(!StringUtils.hasText(ecode)){
+			return "条码没有!";
+		}
 		taskService.mobile_deleteTaskEquipmentList(ecode,taskEquipmentList_id);
 		return "success";
 		//return equipmentVO;

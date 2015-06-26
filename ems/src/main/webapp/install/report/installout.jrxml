@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="installout" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="94c10b2d-adf8-4bbe-941e-a606f414d4d1">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="project_name" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="brand_name" class="java.lang.String">
+		<fieldDescription><![CDATA[brand_name]]></fieldDescription>
+	</field>
+	<field name="ecode" class="java.lang.String">
+		<fieldDescription><![CDATA[ecode]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.String">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="installOut_id" class="java.lang.String">
+		<fieldDescription><![CDATA[installOut_id]]></fieldDescription>
+	</field>
+	<field name="prod_name" class="java.lang.String">
+		<fieldDescription><![CDATA[prod_name]]></fieldDescription>
+	</field>
+	<field name="prod_spec" class="java.lang.String">
+		<fieldDescription><![CDATA[prod_spec]]></fieldDescription>
+	</field>
+	<field name="style" class="java.lang.String">
+		<fieldDescription><![CDATA[style]]></fieldDescription>
+	</field>
+	<field name="subtype_name" class="java.lang.String">
+		<fieldDescription><![CDATA[subtype_name]]></fieldDescription>
+	</field>
+	<field name="supplier_name" class="java.lang.String">
+		<fieldDescription><![CDATA[supplier_name]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="52" splitType="Stretch">
+			<textField>
+				<reportElement x="257" y="10" width="66" height="30" uuid="00f8b28d-93e7-4717-ae80-7b87d115c896"/>
+				<textElement textAlignment="Justified">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[领用单]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<textField>
+				<reportElement x="58" y="15" width="100" height="20" uuid="df2bc3de-2f78-4c84-b090-f6ebdf65d6aa"/>
+				<textFieldExpression><![CDATA[$P{project_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="15" width="53" height="20" uuid="c07dcfc9-dba6-4328-bbc6-92256ebb7383"/>
+				<textFieldExpression><![CDATA[项目名称:]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="38" splitType="Stretch">
+			<textField>
+				<reportElement x="5" y="18" width="48" height="20" uuid="eaf53857-585d-4c34-be8c-0d10671879fa"/>
+				<textFieldExpression><![CDATA[类别]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="58" y="18" width="97" height="20" uuid="82979700-26bc-4f7d-8999-eb2273b6df6e"/>
+				<textFieldExpression><![CDATA[品牌]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="155" y="18" width="138" height="20" uuid="ea9bcc9c-fa05-4409-b7a9-cc4b1e2fbe4c"/>
+				<textFieldExpression><![CDATA[型号]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="293" y="18" width="115" height="20" uuid="938bf93f-8d9c-4f3d-874a-253b438281cb"/>
+				<textFieldExpression><![CDATA[品名]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="408" y="18" width="31" height="20" uuid="04595049-bd50-46c6-ae08-b97236cb9752"/>
+				<textFieldExpression><![CDATA[单位]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="445" y="18" width="100" height="20" uuid="e56572fa-7031-4d53-9b7a-e43fdd8ae1de"/>
+				<textFieldExpression><![CDATA[备注]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -406,7 +406,7 @@ public class TaskService extends AbstractService<Task, String>{
 		Equipment equipment=equipmentRepository.getEquipmentInfo(ecode);
 		
 		//无论是安装，维修，取消，还是巡检，只要是设备不在杆位上或者不在作业单位手上，就不能从任务中删除了
-		if(equipment.getStatus()!=EquipmentStatus.using || equipment.getStatus()!=EquipmentStatus.out_storage){
+		if(equipment.getStatus()!=EquipmentStatus.using && equipment.getStatus()!=EquipmentStatus.out_storage){
 			throw new BusinessException("该设备已经入库,不能删除!");
 		}
 		

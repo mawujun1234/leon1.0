@@ -201,7 +201,7 @@ Ext.define('Ems.baseinfo.EquipmentProdForm',{
                 Ext.Msg.confirm("消息","确定要保存吗?",function(btn){
                 	if(btn=='yes'){
                 		form.getForm().updateRecord();
-                		form.getForm().getRecord().set("brand_name",form.getForm().findField("brand_id").getRawValue());
+                		//form.getForm().getRecord().set("brand_name",form.getForm().findField("brand_id").getRawValue());
 						form.getRecord().save({
 							url:form.url,
 							success: function(record, operation) {
