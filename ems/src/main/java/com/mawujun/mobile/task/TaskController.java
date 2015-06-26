@@ -26,6 +26,7 @@ import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.baseinfo.Pole;
 import com.mawujun.baseinfo.PoleService;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
+import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.M;
@@ -277,7 +278,7 @@ public class TaskController {
 	@ResponseBody
 	public String deleteTaskEquipmentList(String taskEquipmentList_id,String ecode){
 		if(!StringUtils.hasText(ecode)){
-			return "条码没有!";
+			throw new BusinessException("请选择一个条码!");
 		}
 		taskService.mobile_deleteTaskEquipmentList(ecode,taskEquipmentList_id);
 		return "success";

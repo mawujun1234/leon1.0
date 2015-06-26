@@ -95,10 +95,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    group by  a.subtype_id ,b.name,c.id,c.name,c.style
 	    order by  a.subtype_id,c.id
     </select>
-    <resultMap type="com.mawujun.baseinfo.EquipmentSubtype" id="EquipmentSubtype_Map">
+    <resultMap id="EquipmentSubtype_Map" type="com.mawujun.baseinfo.EquipmentSubtype" >
      	<id property="id" column="subtype_id"/>
     	<result property="name" column="subtype_name"/>
-    	<collection property="prodes" ofType="com.mawujun.baseinfo.EquipmentProd">  
+    	<collection property="prodes" ofType="com.mawujun.baseinfo.EquipmentProdVO">  
             <id property="id" column="prod_id"/>
 		   <result property="name" column="prod_name"/>
 		   <result property="style" column="prod_style"/>

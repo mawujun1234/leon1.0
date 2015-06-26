@@ -12,13 +12,13 @@ import com.mawujun.repository.idEntity.IdEntity;
 @Table(name="ems_equipmentsubtype")
 public class EquipmentSubtype  extends EquipmentTypeAbstract implements IdEntity<String>{
 	@Transient
-	private List<EquipmentProd> prodes;
+	private List<EquipmentProdVO> prodes;
 
-	public List<EquipmentProd> getProdes() {
+	public List<EquipmentProdVO> getProdes() {
 		return prodes;
 	}
 
-	public void setProdes(List<EquipmentProd> prodes) {
+	public void setProdes(List<EquipmentProdVO> prodes) {
 		this.prodes = prodes;
 	}
 
