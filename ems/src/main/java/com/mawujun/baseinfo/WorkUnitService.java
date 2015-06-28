@@ -1,6 +1,7 @@
 package com.mawujun.baseinfo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,10 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
-
-
 import com.mawujun.utils.M;
 import com.mawujun.utils.page.Page;
 import com.mawujun.baseinfo.WorkUnit;
@@ -43,6 +43,17 @@ public class WorkUnitService extends AbstractService<WorkUnit, String>{
 
 	@Autowired
 	private WorkUnitRepository workUnitRepository;
+	
+	private HashMap<String,WorkUnit> workunits_cache=new HashMap<String,WorkUnit>();
+	@Override
+	public WorkUnit get(String id) {
+		WorkUnit workUnit=workunits_cache.get(id);
+		if(workUnit==null){
+			return workUnitRepository.get(id);
+		} else {
+			return workUnit;
+		}
+	}
 	
 	@Override
 	public WorkUnitRepository getRepository() {

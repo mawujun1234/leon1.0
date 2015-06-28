@@ -24,12 +24,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
+
+
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.M;
 import com.mawujun.utils.page.Page;
 import com.mawujun.baseinfo.Equipment;
+import com.mawujun.baseinfo.EquipmentCycleService;
 import com.mawujun.baseinfo.EquipmentPlace;
 import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.EquipmentStatus;
@@ -41,6 +45,9 @@ import com.mawujun.baseinfo.EquipmentWorkunit;
 import com.mawujun.baseinfo.EquipmentWorkunitPK;
 import com.mawujun.baseinfo.EquipmentWorkunitRepository;
 import com.mawujun.baseinfo.EquipmentWorkunitType;
+import com.mawujun.baseinfo.OperateType;
+import com.mawujun.baseinfo.StoreService;
+import com.mawujun.baseinfo.WorkUnitService;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.install.Borrow;
 import com.mawujun.install.BorrowRepository;
@@ -65,6 +72,12 @@ public class BorrowService extends AbstractService<Borrow, String>{
 	private EquipmentStoreRepository equipmentStoreRepository;
 	@Autowired
 	private EquipmentWorkunitRepository equipmentWorkunitRepository;
+	@Autowired
+	private WorkUnitService workUnitService;
+	@Autowired
+	private EquipmentCycleService equipmentCycleService;
+	@Autowired
+	private StoreService storeService;
 	
 	@Override
 	public BorrowRepository getRepository() {
@@ -122,6 +135,9 @@ public class BorrowService extends AbstractService<Borrow, String>{
 			borrowlist.setEcode(equipment.getEcode());
 			borrowlist.setBorrow_id(borrow_id);
 			borrowListRepository.create(borrowlist);
+			
+			//记录设备入库的生命周期
+			equipmentCycleService.logEquipmentCycle(equipment.getEcode(), OperateType.borrow, borrow_id, borrow.getWorkUnit_id(),workUnitService.get(borrow.getWorkUnit_id()).getName());
 		}
 	}
 	
@@ -196,6 +212,9 @@ public class BorrowService extends AbstractService<Borrow, String>{
 			equipmentWorkunitPK.setEcode(borrowList.getEcode());
 			equipmentWorkunitPK.setWorkunit_id(borrow.getWorkUnit_id());
 			equipmentWorkunitRepository.deleteById(equipmentWorkunitPK);
+			
+			//记录设备入库的生命周期
+			equipmentCycleService.logEquipmentCycle(borrowList.getEcode(), OperateType.borrowreturn, borrowList.getBorrow_id(), borrow.getStore_id(),storeService.get(borrow.getStore_id()).getName());
 			
 		}
 	}

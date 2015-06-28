@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mawujun.baseinfo.EquipmentCycleService;
 import com.mawujun.baseinfo.EquipmentPlace;
 import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.EquipmentStatus;
@@ -19,6 +20,9 @@ import com.mawujun.baseinfo.EquipmentWorkunit;
 import com.mawujun.baseinfo.EquipmentWorkunitPK;
 import com.mawujun.baseinfo.EquipmentWorkunitRepository;
 import com.mawujun.baseinfo.EquipmentWorkunitType;
+import com.mawujun.baseinfo.OperateType;
+import com.mawujun.baseinfo.StoreService;
+import com.mawujun.baseinfo.WorkUnitService;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
@@ -46,6 +50,12 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 	private EquipmentWorkunitRepository equipmentWorkunitRepository;
 	@Autowired
 	private InstallInListRepository installInListRepository;
+	@Autowired
+	private WorkUnitService workUnitService;
+	@Autowired
+	private EquipmentCycleService equipmentCycleService;
+	@Autowired
+	private StoreService storeService;
 	
 	SimpleDateFormat ymdHmsDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
 	
@@ -168,7 +178,8 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 			//添加明细
 			installInListRepository.create(list);
 			
-			
+			//记录设备入库的生命周期
+			equipmentCycleService.logEquipmentCycle(list.getEcode(), OperateType.installin, list.getInstallIn_id(),installin.getStore_id(),storeService.get(installin.getStore_id()).getName());
 		}
 	}
 

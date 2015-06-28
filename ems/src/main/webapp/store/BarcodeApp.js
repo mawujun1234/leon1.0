@@ -203,12 +203,12 @@ Ext.onReady(function(){
 								timeout:600000000,
 								headers:{ 'Content-Type':'application/json;charset=UTF-8'},
 								jsonData:record.getData(),
-								//params:{jsonStr:Ext.encode(equiplist)},
+								params:{orderno:order_no.getRawValue()},
 								success:function(response){
 									var obj=Ext.decode(response.responseText);
 									
 									
-									var test =window.open(Ext.ContextPath+"/order/downloadBarcode.do?fileName="+obj.root, "_blank");//这个方法就直接把这个TXT以浏览器的方式打开了 
+									var test =window.open(Ext.ContextPath+"/order/downloadBarcode.do?orderno="+order_no.getRawValue(), "_blank");//这个方法就直接把这个TXT以浏览器的方式打开了 
 
 					            	record.set("exportStatus",true);
 									Ext.getBody().unmask();

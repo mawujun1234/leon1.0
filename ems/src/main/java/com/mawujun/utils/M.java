@@ -73,6 +73,16 @@ public static final class Equipment {
 	public static final String last_pole_id="last_pole_id";
 	public static final String currt_task_id="currt_task_id";
 }
+public static final class EquipmentCycle {
+	public static final String ecode="ecode";
+	public static final String operateDate="operateDate";
+	public static final String operater_id="operater_id";
+	public static final String operater_name="operater_name";
+	public static final String operateType="operateType";
+	public static final String type_id="type_id";
+	public static final String target_id="target_id";
+	public static final String id="id";
+}
 public static final class EquipmentPole {
 	public static final String ecode="ecode";
 	public static final String pole_id="pole_id";

@@ -41,77 +41,6 @@ public class InStoreController {
 	@Resource
 	private CacheMgr cacheMgr;
 
-//
-//	/**
-//	 * 请按自己的需求修改
-//	 * @author mawujun email:16064988@163.com qq:16064988
-//	 * @param id 是父节点的id
-//	 * @return
-//	 */
-//	@RequestMapping("/inStore/query.do")
-//	@ResponseBody
-//	public List<InStore> query(String id) {
-//		Cnd cnd=Cnd.select().andEquals(M.InStore.parent.id, "root".equals(id)?null:id);
-//		List<InStore> inStorees=inStoreService.query(cnd);
-//		//JsonConfigHolder.setFilterPropertys(InStore.class,M.InStore.parent.name());
-//		return inStorees;
-//	}
-//
-//	/**
-//	 * 这是基于分页的几种写法,的例子，请按自己的需求修改
-//	 * @author mawujun email:16064988@163.com qq:16064988
-//	 * @param start
-//	 * @param limit
-//	 * @param userName
-//	 * @return
-//	 */
-//	@RequestMapping("/inStore/query.do")
-//	@ResponseBody
-//	public Page query(Integer start,Integer limit,String sampleName){
-//		Page page=Page.getInstance(start,limit);//.addParam(M.InStore.sampleName, "%"+sampleName+"%");
-//		return inStoreService.queryPage(page);
-//	}
-
-//	@RequestMapping("/inStore/query.do")
-//	@ResponseBody
-//	public List<InStore> query() {	
-//		List<InStore> inStorees=inStoreService.queryAll();
-//		return inStorees;
-//	}
-//	
-//
-//	@RequestMapping("/inStore/load.do")
-//	public InStore load(String id) {
-//		return inStoreService.get(id);
-//	}
-//	
-//	@RequestMapping("/inStore/create.do")
-//	@ResponseBody
-//	public InStore create(@RequestBody InStore inStore) {
-//		inStoreService.create(inStore);
-//		return inStore;
-//	}
-//	
-//	@RequestMapping("/inStore/update.do")
-//	@ResponseBody
-//	public  InStore update(@RequestBody InStore inStore) {
-//		inStoreService.update(inStore);
-//		return inStore;
-//	}
-//	
-//	@RequestMapping("/inStore/deleteById.do")
-//	@ResponseBody
-//	public String deleteById(String id) {
-//		inStoreService.deleteById(id);
-//		return id;
-//	}
-//	
-//	@RequestMapping("/inStore/destroy.do")
-//	@ResponseBody
-//	public InStore destroy(@RequestBody InStore inStore) {
-//		inStoreService.delete(inStore);
-//		return inStore;
-//	}
 	/**
 	 * 主要用于新品入库的时候
 	 * @author mawujun 16064988@qq.com 
@@ -125,9 +54,14 @@ public class InStoreController {
 		EquipmentVO equipmentVO=cacheMgr.getQrcode(key, ecode);
 		if(equipmentVO!=null){
 			JsonConfigHolder.setSuccessValue(false);
-			JsonConfigHolder.setMsg("设备已经存在!");
+			JsonConfigHolder.setMsg("设备已经扫过!");
 			return equipmentVO;
 		}
+		
+		if(inStoreService.checkEquipmentExist(ecode)){
+			throw new BusinessException("该设备已经存在，不能重复入库!");
+		}
+		
 		equipmentVO= orderService.getEquipFromBarcode(ecode);
 		
 		

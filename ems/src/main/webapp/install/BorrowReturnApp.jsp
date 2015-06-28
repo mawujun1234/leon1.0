@@ -25,7 +25,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="../baseinfo/CommCombo.js"></script>
 	<script type="text/javascript" src="BorrowReturnApp.js"></script>
 	<script type="text/javascript">
-		var loginName='<%=ShiroUtils.getName()%>';
+		var loginName='<%=ShiroUtils.getUserName()%>';
 		var loginUserId='<%=ShiroUtils.getAuthenticationInfo().getId()%>';
 	</script>
   </head>

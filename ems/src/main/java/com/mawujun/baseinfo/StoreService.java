@@ -49,6 +49,16 @@ public class StoreService extends AbstractService<Store, String>{
 	@Autowired
 	private StoreRepository storeRepository;
 	
+	private HashMap<String,Store> stores_cache=new HashMap<String,Store>();
+	@Override
+	public Store get(String id) {
+		Store store=stores_cache.get(id);
+		if(store==null){
+			return storeRepository.get(id);
+		} else {
+			return store;
+		}
+	}
 	@Override
 	public StoreRepository getRepository() {
 		return storeRepository;

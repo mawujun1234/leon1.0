@@ -353,8 +353,8 @@ public class TaskController {
 		Pole pole=poleService.get(pole_id);
 		task.setPole_name(pole.getName());
 		task.setPole_address(pole.geetFullAddress());
-		task.setWorkunit_id(ShiroUtils.getAuthenticationInfo().getId());
-		task.setWorkunit_name(ShiroUtils.getName());
+		task.setWorkunit_id(ShiroUtils.getUserId());
+		task.setWorkunit_name(ShiroUtils.getUserName());
 		
 		Customer customer=customerService.get(pole.getCustomer_id());
 		task.setCustomer_id(customer.getId());

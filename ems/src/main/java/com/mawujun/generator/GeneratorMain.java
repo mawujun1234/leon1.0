@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.mawujun.baseinfo.EquipmentCycle;
 import com.mawujun.baseinfo.Project;
 import com.mawujun.install.Borrow;
 import com.mawujun.install.BorrowList;
@@ -34,7 +35,7 @@ public class GeneratorMain {
 		//str=generatorService.generatorToString(MenuItem.class,FtlFile.JsModel.toString(),null);	
         //System.out.println(str);
 		
-		GeneratorMain.generateAllFile(Borrow.class,"D:/gen/");
+		GeneratorMain.generateAllFile(EquipmentCycle.class,"D:/gen/");
 		
 		
 		

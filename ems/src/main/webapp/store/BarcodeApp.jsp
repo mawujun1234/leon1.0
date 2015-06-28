@@ -25,7 +25,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript" src="../baseinfo/CommCombo.js"></script>
 	<script type="text/javascript" src="BarcodeApp.js"></script>
 	<script type="text/javascript">
-		var loginUsername='<%=ShiroUtils.getName()%>';
+		var loginUsername='<%=ShiroUtils.getUserName()%>';
 	</script>
   </head>
   

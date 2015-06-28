@@ -13,12 +13,15 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mawujun.baseinfo.Equipment;
+import com.mawujun.baseinfo.EquipmentCycleService;
 import com.mawujun.baseinfo.EquipmentPlace;
 import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.EquipmentStatus;
 import com.mawujun.baseinfo.EquipmentStore;
 import com.mawujun.baseinfo.EquipmentStoreRepository;
 import com.mawujun.baseinfo.EquipmentStoreType;
+import com.mawujun.baseinfo.OperateType;
+import com.mawujun.baseinfo.StoreService;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 import com.mawujun.shiro.ShiroUtils;
@@ -46,6 +49,10 @@ public class InStoreService extends AbstractService<InStore, String>{
 	private BarcodeRepository barcodeRepository;
 	@Autowired
 	private OrderRepository orderRepository;
+	@Autowired
+	private EquipmentCycleService equipmentCycleService;
+	@Autowired
+	private StoreService storeService;
 	
 	SimpleDateFormat ymdHmsDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
 	
@@ -109,6 +116,9 @@ public class InStoreService extends AbstractService<InStore, String>{
 			
 			//更新条码的状态
 			barcodeRepository.update(Cnd.update().set(M.Barcode.status, 1).andEquals(M.Barcode.ecode, equipment.getEcode()));
+			
+			//记录设备入库的生命周期
+			equipmentCycleService.logEquipmentCycle(equipment.getEcode(), OperateType.newinstore, instore_id, inStore.getStore_id(),storeService.get(inStore.getStore_id()).getName());
 		}
 		
 		for(Entry<String,Integer> entry:totalnumMap.entrySet()) {
@@ -125,5 +135,18 @@ public class InStoreService extends AbstractService<InStore, String>{
 	 */
 	public List<InStoreListVO> queryList(String inStore_id) {
 		return inStoreRepository.queryList(inStore_id);
+	}
+	/**
+	 * 判断某个条码是否已经存在
+	 * @author mawujun 16064988@qq.com 
+	 * @param ecode
+	 * @return true 已经存在该条码的设备，false，该设备还不存在
+	 */
+	public boolean checkEquipmentExist(String ecode){
+		int count=inStoreRepository.checkEquipmentExist(ecode);
+		if(count>0){
+			return true;
+		}
+		return false;
 	}
 }

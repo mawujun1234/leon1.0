@@ -4,13 +4,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mawujun.baseinfo.Equipment;
+import com.mawujun.baseinfo.EquipmentCycleService;
 import com.mawujun.baseinfo.EquipmentPlace;
 import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.EquipmentStatus;
@@ -19,6 +18,8 @@ import com.mawujun.baseinfo.EquipmentStoreRepository;
 import com.mawujun.baseinfo.EquipmentWorkunit;
 import com.mawujun.baseinfo.EquipmentWorkunitRepository;
 import com.mawujun.baseinfo.EquipmentWorkunitType;
+import com.mawujun.baseinfo.OperateType;
+import com.mawujun.baseinfo.WorkUnitService;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 import com.mawujun.shiro.ShiroUtils;
@@ -45,6 +46,10 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 	private EquipmentStoreRepository equipmentStoreRepository;
 	@Autowired
 	private EquipmentWorkunitRepository equipmentWorkunitRepository;
+	@Autowired
+	private WorkUnitService workUnitService;
+	@Autowired
+	private EquipmentCycleService equipmentCycleService;
 	
 	SimpleDateFormat ymdHmsDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
 	
@@ -100,6 +105,9 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 //			inStoreList.setEcode(equipment.getEcode());
 			inStoreList.setInstallOut_id(outstore_id);
 			outStoreListRepository.create(inStoreList);
+			
+			//记录设备入库的生命周期
+			equipmentCycleService.logEquipmentCycle(inStoreList.getEcode(), OperateType.installout, outstore_id,outStore.getWorkUnit_id(),workUnitService.get(outStore.getWorkUnit_id()).getName());
 		}
 		return outstore_id;
 	}

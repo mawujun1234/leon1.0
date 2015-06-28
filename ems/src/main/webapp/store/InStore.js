@@ -8,6 +8,7 @@ Ext.defineModel("Ems.store.InStore",{
 		{name:'operater',type:'string'},
 		{name:'store_id',type:'string'},
 		
+		{name:'operater_name',type:'string'},
 		{name:'store_name',type:'string'}
 	],
 	associations:[

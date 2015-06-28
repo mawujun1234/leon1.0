@@ -18,7 +18,7 @@ Ext.define('Ems.store.InStoreGridQuery',{
       me.columns=[
 		{dataIndex:'id',text:'编号'},
 		{dataIndex:'operateDate',text:'操作时间',xtype: 'datecolumn',   format:'Y-m-d'},
-		{dataIndex:'operater',text:'操作人'},
+		{dataIndex:'operater_name',text:'操作人'},
 		{dataIndex:'store_name',text:'仓库'},
 		{dataIndex:'memo',text:'备注'}
       ];

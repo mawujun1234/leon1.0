@@ -8,8 +8,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	
     <!-- 获取某个任务的设备清单 -->
     <select id="queryPage" resultType="com.mawujun.store.InStoreVO" parameterType="map">
-    	select a.*,b.name as store_name from ems_instore a,ems_store b
-		where a.store_id=b.id 
+    	select a.*,b.name as store_name,c.name as operater_name from ems_instore a,ems_store b,sys_user c
+		where a.store_id=b.id and a.operater=c.id
 		<if test="operateDate_start!=null">
 			and to_char(a.operateDate,'yyyy-mm-dd') &gt;=#{operateDate_start}
 		</if>
@@ -31,5 +31,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		inner join ems_supplier e on a.supplier_id=e.id
     </select>
    
+   <select id="checkEquipmentExist" resultType="int"  parameterType="string">
+   		select count(ecode) from ems_equipment where ecode=#{ecode}
+   </select>
 </mapper>
 

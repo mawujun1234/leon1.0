@@ -44,6 +44,9 @@ import java.util.Set;
 
 
 
+
+
+
 import javax.annotation.Resource;
 
 import org.springframework.beans.BeanUtils;
@@ -53,6 +56,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mawujun.baseinfo.Equipment;
+import com.mawujun.baseinfo.EquipmentCycleService;
 import com.mawujun.baseinfo.EquipmentPlace;
 import com.mawujun.baseinfo.EquipmentPole;
 import com.mawujun.baseinfo.EquipmentPolePK;
@@ -68,9 +72,13 @@ import com.mawujun.baseinfo.EquipmentWorkunit;
 import com.mawujun.baseinfo.EquipmentWorkunitPK;
 import com.mawujun.baseinfo.EquipmentWorkunitRepository;
 import com.mawujun.baseinfo.EquipmentWorkunitType;
+import com.mawujun.baseinfo.OperateType;
 import com.mawujun.baseinfo.Pole;
 import com.mawujun.baseinfo.PoleRepository;
+import com.mawujun.baseinfo.PoleService;
 import com.mawujun.baseinfo.PoleStatus;
+import com.mawujun.baseinfo.StoreService;
+import com.mawujun.baseinfo.WorkUnitService;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.install.BorrowRepository;
 import com.mawujun.install.InstallOutRepository;
@@ -116,6 +124,15 @@ public class TaskService extends AbstractService<Task, String>{
 	private InstallOutRepository outStoreRepository;
 	@Autowired
 	private BorrowRepository borrowRepository;
+	
+	@Autowired
+	private WorkUnitService workUnitService;
+	@Autowired
+	private EquipmentCycleService equipmentCycleService;
+	@Autowired
+	private StoreService storeService;
+	@Autowired
+	private PoleService poleService;
 	
 	@Override
 	public TaskRepository getRepository() {
@@ -827,6 +844,9 @@ public class TaskService extends AbstractService<Task, String>{
 				equipmentWorkunitPK.setEcode(taskEquipmentList.getEcode());
 				equipmentWorkunitPK.setWorkunit_id(task.getWorkunit_id());
 				equipmentWorkunitRepository.deleteById(equipmentWorkunitPK);
+				
+				//记录设备入库的生命周期
+				equipmentCycleService.logEquipmentCycle(taskEquipmentList.getEcode(), OperateType.task_install, task.getPole_id(),task.getPole_id(),poleService.get(task.getPole_id()).getName());
 			} else if (TaskType.repair== task.getType()) {
 				// 维修的时候，设备的状态，可能是 损坏或者是安装出库
 				// 如果设备原来的状态是正在使用，你把设备下架的
@@ -854,6 +874,8 @@ public class TaskService extends AbstractService<Task, String>{
 					equipmentWorkunitPK.setWorkunit_id(task.getWorkunit_id());
 					equipmentWorkunitRepository.deleteById(equipmentWorkunitPK);
 					
+					//记录设备入库的生命周期
+					equipmentCycleService.logEquipmentCycle(taskEquipmentList.getEcode(), OperateType.task_install, task.getPole_id(),task.getPole_id(),poleService.get(task.getPole_id()).getName());
 					
 				} else {
 					// 设备从杆位上卸载下来的情况
@@ -878,6 +900,9 @@ public class TaskService extends AbstractService<Task, String>{
 					equipmentPolePK.setEcode(taskEquipmentList.getEcode());
 					equipmentPolePK.setPole_id(task.getPole_id());
 					equipmentPoleRepository.deleteById(equipmentPolePK);
+					
+					//记录设备入库的生命周期
+					equipmentCycleService.logEquipmentCycle(taskEquipmentList.getEcode(), OperateType.task_cancel, task.getPole_id(),task.getWorkunit_id(),workUnitService.get(task.getWorkunit_id()).getName());
 				}
 
 			} else if (TaskType.cancel== task.getType()) {
@@ -904,6 +929,8 @@ public class TaskService extends AbstractService<Task, String>{
 				equipmentPolePK.setPole_id(task.getPole_id());
 				equipmentPoleRepository.deleteById(equipmentPolePK);
 
+				//记录设备入库的生命周期
+				equipmentCycleService.logEquipmentCycle(taskEquipmentList.getEcode(), OperateType.task_cancel, task.getPole_id(),task.getWorkunit_id(),workUnitService.get(task.getWorkunit_id()).getName());
 			} else if (TaskType.patrol== task.getType()) {
 
 			}

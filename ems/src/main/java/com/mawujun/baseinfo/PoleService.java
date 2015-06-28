@@ -1,11 +1,13 @@
 package com.mawujun.baseinfo;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 
 
 
@@ -30,6 +32,17 @@ public class PoleService extends AbstractService<Pole, String>{
 
 	@Autowired
 	private PoleRepository poleRepository;
+	
+	private HashMap<String,Pole> poles_cache=new HashMap<String,Pole>();
+	@Override
+	public Pole get(String id) {
+		Pole store=poles_cache.get(id);
+		if(store==null){
+			return poleRepository.get(id);
+		} else {
+			return store;
+		}
+	}
 	
 	@Override
 	public PoleRepository getRepository() {

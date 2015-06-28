@@ -16,4 +16,6 @@ import com.mawujun.store.InStore;
 public interface InStoreRepository extends IRepository<InStore, String>{
 
 	public List<InStoreListVO> queryList(@Param("inStore_id")String inStore_id);
+	
+	public int checkEquipmentExist(@Param("ecode")String ecode);
 }

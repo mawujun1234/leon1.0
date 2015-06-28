@@ -200,7 +200,7 @@ public class OrderController {
 	
 	@RequestMapping("/order/exportBarcode.do")
 	@ResponseBody
-	public String exportBarcode(HttpServletRequest request,HttpServletResponse response,@RequestBody OrderList[] orderLists) throws  IOException{
+	public String exportBarcode(HttpServletRequest request,HttpServletResponse response,@RequestBody OrderList[] orderLists,String orderno) throws  IOException{
 
 		
 		List<BarcodeVO> results=new ArrayList<BarcodeVO>();
@@ -208,7 +208,7 @@ public class OrderController {
 
 		String contextPath=request.getSession().getServletContext().getRealPath("/");
 		
-		String fileName="qrcode("+ShiroUtils.getLoginName()+").xls";
+		String fileName="qrcode("+orderno+").xls";
 		String filePath="temp"+File.separatorChar+fileName;
 		String path=contextPath+filePath;
 		File file=new File(path);
@@ -222,7 +222,7 @@ public class OrderController {
 		
 
         HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
-        HSSFSheet hssfSheet = hssfWorkbook.createSheet("二维码数据源");
+        HSSFSheet hssfSheet = hssfWorkbook.createSheet(orderno);
         
         HSSFRow hssfRow0 = hssfSheet.createRow(0);
     	HSSFCell cell00 = hssfRow0.createCell(0);
@@ -268,9 +268,9 @@ public class OrderController {
 	
 	@RequestMapping("/order/downloadBarcode.do")
 	//@ResponseBody
-	public void downloadBarcode(HttpServletRequest request,HttpServletResponse response,String fileName) throws  IOException{
+	public void downloadBarcode(HttpServletRequest request,HttpServletResponse response,String orderno) throws  IOException{
 		String contextPath=request.getSession().getServletContext().getRealPath("/");
-		fileName="qrcode("+ShiroUtils.getLoginName()+").xls";
+		String fileName="qrcode("+orderno+").xls";
 		String filePath="temp"+File.separatorChar+fileName;
 		String path=contextPath+filePath;
 		File file=new File(path);

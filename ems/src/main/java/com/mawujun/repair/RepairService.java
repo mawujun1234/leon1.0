@@ -115,6 +115,8 @@ public class RepairService extends AbstractService<Repair, String>{
 //				repair.setBroken_memo(task.getHitchReason());
 //			}
 			repairRepository.create(repair);	
+			
+			
 		}
 		
 	}

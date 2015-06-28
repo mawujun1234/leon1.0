@@ -13,8 +13,16 @@ public class ShiroUtils {
 	 * @author mawujun email:160649888@163.com qq:16064988
 	 * @return
 	 */
-	public static String getName(){
+	public static String getUserName(){
 		return ShiroUtils.getAuthenticationInfo().getName();
+	}
+	/**
+	 * 获取用户的id
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @return
+	 */
+	public static String getUserId(){
+		return ShiroUtils.getAuthenticationInfo().getId();
 	}
 	
 	public static User getAuthenticationInfo(){
