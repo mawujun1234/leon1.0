@@ -666,6 +666,7 @@ $(document).ready(function(e) {
          <div class="ui-field-contain actionbutton"  align="center">
             
             <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="submitTask">提交</button>
+            <a href="#page_homepage" class="ui-btn ui-corner-all ui-btn-inline" data-rel="back" data-theme="c">返回</a>
             <!-- <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="saveTask">保存</button>-->
          </div>
 	</div>
@@ -773,6 +774,7 @@ $(document).ready(function(e) {
          <div class="ui-field-contain actionbutton"  align="center">
            
             <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="submitTask">提交</button>
+            <a href="#page_homepage" class="ui-btn ui-corner-all ui-btn-inline" data-rel="back" data-theme="c">返回</a>
              <!--<button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="saveTask">保存</button>-->
          </div>
 	</div>
@@ -809,6 +811,7 @@ $(document).ready(function(e) {
          <div class="ui-field-contain actionbutton"  align="center">
             
             <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="submitTask">提交</button>
+            <a href="#page_homepage" class="ui-btn ui-corner-all ui-btn-inline" data-rel="back" data-theme="c">返回</a>
             <!--<button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="saveTask">保存</button>-->
          </div>
 	</div>
@@ -975,10 +978,10 @@ $(document).ready(function(e) {
 		$("#"+page_id+"_equipments_list [data-role='collapsible']").unbind("taphold"); 
 		$("#"+page_id+"_equipments_list [data-role='collapsible']").bind( "taphold", function(event){
 			//window.equipmentInfoCollapsible=event.target;
-			//console.dir(event.target);
-			//触发的是<a>,但删除的是div，所以要parent
-			window.equipmentInfoCollapsible=$(event.target).parent().parent();
 			
+			//触发的是<a>,但删除的是div，所以要parent
+			window.equipmentInfoCollapsible=$(event.target).parents('div[data-role="collapsible"]');//.parent();
+			//console.log($(window.equipmentInfoCollapsible).html());
 			//$( "#popupArrow" ).popup( "open", { positionTo:event.target,transition: "pop" } );
 			$( "#"+page_id+"_deleteEquipmentInfo_popup" ).popup( "open", { positionTo:event.target,transition: "pop" } );
     		event.preventDefault();

@@ -1,11 +1,26 @@
 package com.mawujun.install;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.HtmlExporter;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleHtmlExporterOutput;
+import net.sf.jasperreports.export.SimpleHtmlReportConfiguration;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -152,7 +167,7 @@ public class InstallOutController {
 	 */
 	@RequestMapping("/installOut/equipmentOutStorePrint.do")
 	@ResponseBody
-	public void equipmentOutStorePrint(HttpServletRequest request,HttpServletResponse response,String installOut_id) throws  IOException { 
+	public void equipmentOutStorePrint(HttpServletRequest request,HttpServletResponse response,String installOut_id) throws  IOException, JRException { 
 		//PrintWriter writer = response.getWriter();
 		
 		//InstallOutVO installOutVO=outStoreService.getInstallOutVO(installOut_id);
@@ -168,37 +183,37 @@ public class InstallOutController {
 		installOutListes.add(a);
 		
 		
-//		JRBeanCollectionDataSource dataSource=new JRBeanCollectionDataSource(installOutListes);
-//		
-//		//String root_path = request.getSession().getServletContext().getRealPath("/");
-//		response.setContentType("text/html;charset=UTF-8");
-//		OutputStream outputStream=response.getOutputStream();
-//		
-//		Map<String,Object> params=new HashMap<String,Object>();
-//		params.put("project_name", "111111");  
-//
-//		
-//		String JASPER_FILE_NAME=request.getSession().getServletContext().getRealPath("/install/report/install_out.jasper");
-//		//JasperReport jasperReport = (JasperReport)JRLoader.loadObject(JASPER_FILE_NAME);
-//		File reportFile=new File(JASPER_FILE_NAME);
-//		InputStream in=new FileInputStream(reportFile);
-//		JasperPrint print = JasperFillManager.fillReport(in, params, dataSource);
-//		// 使用JRHtmlExproter导出Html格式
-//		
-//		HtmlExporter exporter = new HtmlExporter();
-//		//exporter.getCurrentJasperPrint()
-//		SimpleHtmlExporterOutput simpleHtmlExporterOutput=new SimpleHtmlExporterOutput(outputStream,"UTF-8");
-//		exporter.setExporterOutput(simpleHtmlExporterOutput);
-//		
-//		SimpleHtmlReportConfiguration simpleHtmlReportConfiguration=new SimpleHtmlReportConfiguration();
-//		exporter.setConfiguration(simpleHtmlReportConfiguration);
-//		
-//		//SimpleExporterInputItem simpleExporterInputItem=new SimpleExporterInputItem(print);
-//		SimpleExporterInput simpleExporterInput=new SimpleExporterInput(print);
-//		exporter.setExporterInput(simpleExporterInput);
-//		// 导出
-//		exporter.exportReport();
-//		outputStream.close();
+		JRBeanCollectionDataSource dataSource=new JRBeanCollectionDataSource(installOutListes);
+		
+		//String root_path = request.getSession().getServletContext().getRealPath("/");
+		response.setContentType("text/html;charset=UTF-8");
+		OutputStream outputStream=response.getOutputStream();
+		
+		Map<String,Object> params=new HashMap<String,Object>();
+		params.put("project_name", "111111");  
+
+		
+		String JASPER_FILE_NAME=request.getSession().getServletContext().getRealPath("/install/report/install_out.jasper");
+		//JasperReport jasperReport = (JasperReport)JRLoader.loadObject(JASPER_FILE_NAME);
+		File reportFile=new File(JASPER_FILE_NAME);
+		InputStream in=new FileInputStream(reportFile);
+		JasperPrint print = JasperFillManager.fillReport(in, params, dataSource);
+		// 使用JRHtmlExproter导出Html格式
+		
+		HtmlExporter exporter = new HtmlExporter();
+		//exporter.getCurrentJasperPrint()
+		SimpleHtmlExporterOutput simpleHtmlExporterOutput=new SimpleHtmlExporterOutput(outputStream,"UTF-8");
+		exporter.setExporterOutput(simpleHtmlExporterOutput);
+		
+		SimpleHtmlReportConfiguration simpleHtmlReportConfiguration=new SimpleHtmlReportConfiguration();
+		exporter.setConfiguration(simpleHtmlReportConfiguration);
+		
+		//SimpleExporterInputItem simpleExporterInputItem=new SimpleExporterInputItem(print);
+		SimpleExporterInput simpleExporterInput=new SimpleExporterInput(print);
+		exporter.setExporterInput(simpleExporterInput);
+		// 导出
+		exporter.exportReport();
+		outputStream.close();
 		
 		
 //		String JASPER_FILE_NAME=request.getSession().getServletContext().getRealPath("/tuih/report1.jasper");

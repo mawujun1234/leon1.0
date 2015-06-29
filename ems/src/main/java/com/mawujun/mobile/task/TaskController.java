@@ -276,7 +276,7 @@ public class TaskController {
 	 */
 	@RequestMapping("/task/mobile/deleteTaskEquipmentList.do")
 	@ResponseBody
-	public String deleteTaskEquipmentList(String taskEquipmentList_id,String ecode){
+	public String mobile_deleteTaskEquipmentList(String taskEquipmentList_id,String ecode){
 		if(!StringUtils.hasText(ecode)){
 			throw new BusinessException("请选择一个条码!");
 		}

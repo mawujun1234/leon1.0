@@ -11,7 +11,6 @@
 	6：把生成的apk文件拷贝到ems文件的webapp文件夹下，并重名名为	emsmobile-release.apk
 	7：更新到远程服务器
 		122.227.163.82:8083 administrator nbdw001
-		最好是重新打包发布，因为 解压然后访问的
 		只要把emsmobile-release.apk文件和apkVersion.jss文件拷贝到服务器的webapp目录下就可以了，就可以实现更新了
 		
 		生成android的正式版本
