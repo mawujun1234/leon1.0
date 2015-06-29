@@ -21,7 +21,7 @@ public class Order extends UUIDEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	@Column(length=25)
+	@Column(length=60)
 	private String orderNo;//订单号
 	@Column(length=36)
 	private String store_id;

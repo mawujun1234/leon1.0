@@ -155,7 +155,7 @@ Ext.define('Ems.store.OrderGrid',{
 			text: '查询',
 			iconCls:'form-search-button',
 			handler: function(btn){
-				me.store.reload();
+				me.store.loadPage(1);
 			}
 		  }] 
 		},{

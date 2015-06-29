@@ -81,6 +81,7 @@ public static final class EquipmentCycle {
 	public static final String operateType="operateType";
 	public static final String type_id="type_id";
 	public static final String target_id="target_id";
+	public static final String target_name="target_name";
 	public static final String id="id";
 }
 public static final class EquipmentPole {
@@ -477,6 +478,8 @@ public static final class Scrap {
 	public static final String ecode="ecode";
 	public static final String reason="reason";
 	public static final String residual="residual";
+	public static final String store_id="store_id";
+	public static final String rpa_id="rpa_id";
 	public static final String scrpReqOper="scrpReqOper";
 	public static final String scrpReqDate="scrpReqDate";
 	public static final String operater="operater";

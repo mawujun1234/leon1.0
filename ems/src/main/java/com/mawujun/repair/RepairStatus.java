@@ -6,16 +6,12 @@ package com.mawujun.repair;
  *
  */
 public enum RepairStatus {
-	One(1,"发往维修中心"),Two(2,"维修中"),Three(3,"返库途中"),Four(4,"完成"),Five(5,"报废确认中"),Six(6,"报废");
-	
-	private Integer value;
+	//to_repair(1,"发往维修中心"),repairing(2,"维修中"),back_store(3,"返库途中"),over(4,"完成"),scrap_confirm(5,"报废确认中"),scrap(6,"报废");
+	to_repair("发往维修中心"),repairing("维修中"),back_store("返库途中"),over("完成"),scrap_confirm("报废确认中"),scrap("报废");
+
 	private String name;
-	private RepairStatus(Integer value,String name){
-		this.value=value;
+	private RepairStatus(String name){
 		this.name=name;
-	}
-	public Integer getValue() {
-		return value;
 	}
 	public String getName() {
 		return name;

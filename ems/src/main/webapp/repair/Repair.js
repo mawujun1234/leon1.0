@@ -17,7 +17,7 @@ Ext.defineModel("Ems.repair.Repair",{
 		{name:'rpa_out_oper_id',type:'string'},
 		{name:'rpa_user_id',type:'string'},
 		{name:'rpa_type',type:'string'},
-		{name:'status',type:'int'},
+		{name:'status',type:'string'},
 		{name:'str_in_date',type:'date', dateFormat: 'Y-m-d'},
 		{name:'str_in_id',type:'string'},
 		

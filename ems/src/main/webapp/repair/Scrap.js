@@ -8,7 +8,9 @@ Ext.defineModel("Ems.repair.Scrap",{
 		{name:'operater',type:'string'},
 		{name:'reason',type:'string'},
 		{name:'repair_id',type:'string'},
-		{name:'residual',type:'string'}
+		{name:'residual',type:'string'},
+		{name:'store_id',type:'string'},
+		{name:'rpa_id',type:'string'}
 	],
 	associations:[
 	]

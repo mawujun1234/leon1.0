@@ -138,7 +138,7 @@ public class ScrapController {
 	 */
 	@RequestMapping("/scrap/makeSureScrap.do")
 	public Scrap makeSureScrap(Scrap scrap) {
-		return scrapService.makeSureScrap(scrap);
+		return scrapService.makeSureScrap(scrap.getId());
 	}
 	
 	

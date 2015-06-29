@@ -262,15 +262,7 @@ Ext.define('Ems.task.TaskQueryGrid',{
 			margin:'0 0 0 5',
 			iconCls:'form-search-button',
 			handler:function(){
-				me.getStore().load();
-//				me.getStore().load({params:{
-//					customer_id:customer_combox.getValue(),
-//					pole_name:pole_textfield.getValue(),
-//					//area_id:area_combox.getValue(),
-//					status:status_combox.getValue(),
-//					workunit_id:workunit_combox.getValue(),
-//					isOvertime:isOvertime_checkbox.getValue()
-//				}});
+				me.store.loadPage(1);
 			}
 		});
 		

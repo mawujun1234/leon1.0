@@ -48,7 +48,7 @@ Ext.onReady(function(){
 			margin:'0 0 0 5',
 			iconCls:'form-search-button',
 			handler:function(){
-				store.load();
+				store.loadPage(1);
 			}
 	});
 	var exportPoles = new Ext.Action({

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.baseinfo.EquipmentService;
+import com.mawujun.baseinfo.EquipmentStatus;
 import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.exception.BusinessException;
@@ -110,7 +111,10 @@ public class RepairController {
 		if(repairvo==null){
 			throw new BusinessException("对不起，该条码对应的设备不存在，或者该设备挂在其他仓库中!");
 		}
-		repairvo.setStatus(RepairStatus.One.getValue());
+		if(repairvo.getEquipment_status()!=EquipmentStatus.wait_for_repair){
+			throw new BusinessException("该设备为非\"入库待维修\"状态,不能添加到列表");
+		}
+		repairvo.setStatus(RepairStatus.to_repair);
 		return repairvo;
 	}
 	
@@ -131,7 +135,7 @@ public class RepairController {
 	@RequestMapping("/repair/storeMgrQuery.do")
 	@ResponseBody
 	public Page storeMgrQuery(Integer start,Integer limit, String str_out_id,String rpa_id,String str_out_date_start,String str_out_date_end
-			,String ecode,Integer status,Boolean only_have_scap){
+			,String ecode,RepairStatus status,Boolean only_have_scap){
 		Page page=Page.getInstance(start,limit);//.addParam(M.Repair.sampleName, "%"+sampleName+"%");
 		page.addParam("str_out_id", str_out_id).addParam("rpa_id", rpa_id).addParam("str_out_date_start", str_out_date_start).addParam("str_out_date_end", str_out_date_end)
 		.addParam("ecode", ecode).addParam("status", status)
@@ -152,7 +156,7 @@ public class RepairController {
 	@RequestMapping("/repair/repairInQuery.do")
 	@ResponseBody
 	public Page repairInQuery(Integer start,Integer limit, String str_out_id,String rpa_id,String str_out_date_start,String str_out_date_end
-			,String ecode,Integer status){
+			,String ecode,RepairStatus status){
 		Page page=Page.getInstance(start,limit);//.addParam(M.Repair.sampleName, "%"+sampleName+"%");
 		page.addParam("str_out_id", str_out_id).addParam("rpa_id", rpa_id).addParam("str_out_date_start", str_out_date_start).addParam("str_out_date_end", str_out_date_end)
 		.addParam("ecode", ecode).addParam("status", status);
@@ -172,7 +176,7 @@ public class RepairController {
 	@RequestMapping("/repair/repairMgrQuery.do")
 	@ResponseBody
 	public Page repairMgrQuery(Integer start,Integer limit, String str_out_id,String rpa_id,String rpa_in_date_start,String rpa_in_date_end
-			,String ecode,Integer status,Boolean only_have_scap){
+			,String ecode,RepairStatus status,Boolean only_have_scap){
 		Page page=Page.getInstance(start,limit);//.addParam(M.Repair.sampleName, "%"+sampleName+"%");
 		page.addParam("str_out_id", str_out_id).addParam("rpa_id", rpa_id).addParam("rpa_in_date_start", rpa_in_date_start).addParam("rpa_in_date_end", rpa_in_date_end)
 		.addParam("ecode", ecode).addParam("status", status)

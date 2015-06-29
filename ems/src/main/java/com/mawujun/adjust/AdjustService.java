@@ -245,6 +245,6 @@ public class AdjustService extends AbstractService<Adjust, String>{
 		
 		//入过当前用户没有权限操作这个仓库，那也不能转换
 		
-		//同时把明细单的所有状态，改成 installout
+		//同时把明细单的所有状态，改成 install_out
 	}
 }

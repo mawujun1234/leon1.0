@@ -17,7 +17,7 @@ Ext.defineModel("Ems.repair.ScrapReport",{
 		{name:'rpa_out_oper_id',type:'string'},
 		{name:'rpa_user_id',type:'string'},
 		{name:'rpa_type',type:'string'},
-		{name:'status',type:'int'},
+		{name:'status',type:'string'},
 		{name:'str_in_date',type:'string'},
 		{name:'str_in_id',type:'string'},
 		

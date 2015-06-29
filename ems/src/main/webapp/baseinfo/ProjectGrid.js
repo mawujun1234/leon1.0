@@ -66,7 +66,8 @@ Ext.define('Ems.baseinfo.ProjectGrid',{
 			disabled:me.disabledAction,
 			handler: function(btn){
 				var grid=btn.up("grid");
-				grid.getStore().reload();
+				//grid.getStore().reload();
+				grid.getStore().loadPage(1);
 			},
 			iconCls: 'form-reload-button'
 		}]

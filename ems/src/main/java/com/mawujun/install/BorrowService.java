@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 import com.mawujun.shiro.ShiroUtils;
@@ -47,6 +48,7 @@ import com.mawujun.baseinfo.EquipmentWorkunitRepository;
 import com.mawujun.baseinfo.EquipmentWorkunitType;
 import com.mawujun.baseinfo.OperateType;
 import com.mawujun.baseinfo.StoreService;
+import com.mawujun.baseinfo.TargetType;
 import com.mawujun.baseinfo.WorkUnitService;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.install.Borrow;
@@ -72,12 +74,12 @@ public class BorrowService extends AbstractService<Borrow, String>{
 	private EquipmentStoreRepository equipmentStoreRepository;
 	@Autowired
 	private EquipmentWorkunitRepository equipmentWorkunitRepository;
-	@Autowired
-	private WorkUnitService workUnitService;
+//	@Autowired
+//	private WorkUnitService workUnitService;
 	@Autowired
 	private EquipmentCycleService equipmentCycleService;
-	@Autowired
-	private StoreService storeService;
+//	@Autowired
+//	private StoreService storeService;
 	
 	@Override
 	public BorrowRepository getRepository() {
@@ -94,7 +96,7 @@ public class BorrowService extends AbstractService<Borrow, String>{
 		borrow.setId(borrow_id);
 		borrow.setOperateDate(new Date());
 		borrow.setOperater(ShiroUtils.getAuthenticationInfo().getId());
-		//borrow.setType(1);
+		//borrow_out.setType(1);
 		borrowRepository.create(borrow);
 		
 		for(Equipment equipment:equipments){
@@ -102,7 +104,7 @@ public class BorrowService extends AbstractService<Borrow, String>{
 			//把设备绑定到作业单位上面
 			//把仓库中的该设备移除
 			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.out_storage)
-					//.set(M.Equipment.workUnit_id, borrow.getWorkUnit_id())
+					//.set(M.Equipment.workUnit_id, borrow_out.getWorkUnit_id())
 					//.set(M.Equipment.store_id, null)
 					.set(M.Equipment.last_workunit_id, borrow.getWorkUnit_id())
 					.set(M.Equipment.last_borrow_id, borrow_id)
@@ -117,7 +119,7 @@ public class BorrowService extends AbstractService<Borrow, String>{
 //			equipmentStore.setNum(1);
 //			equipmentStore.setInDate(new Date());
 //			equipmentStore.setType(EquipmentStoreType.installin);
-//			equipmentStore.setType_id(installin.getId());
+//			equipmentStore.setType_id(install_in.getId());
 //			equipmentStoreRepository.create(equipmentStore);
 			//插入到workunit中
 			EquipmentWorkunit equipmentWorkunit=new EquipmentWorkunit();
@@ -137,7 +139,7 @@ public class BorrowService extends AbstractService<Borrow, String>{
 			borrowListRepository.create(borrowlist);
 			
 			//记录设备入库的生命周期
-			equipmentCycleService.logEquipmentCycle(equipment.getEcode(), OperateType.borrow, borrow_id, borrow.getWorkUnit_id(),workUnitService.get(borrow.getWorkUnit_id()).getName());
+			equipmentCycleService.logEquipmentCycle(equipment.getEcode(), OperateType.borrow_out, borrow_id, TargetType.workunit,borrow.getWorkUnit_id());
 		}
 	}
 	
@@ -194,7 +196,7 @@ public class BorrowService extends AbstractService<Borrow, String>{
 			
 			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.in_storage)
 					.set(M.Equipment.place, EquipmentPlace.store)
-					//.set(M.Equipment.last_workunit_id,borrow.getWorkUnit_id())
+					//.set(M.Equipment.last_workunit_id,borrow_out.getWorkUnit_id())
 					.andEquals(M.Equipment.ecode, borrowList.getEcode()));
 			//同时从作业单位专业到仓库
 			//插入仓库中
@@ -214,7 +216,7 @@ public class BorrowService extends AbstractService<Borrow, String>{
 			equipmentWorkunitRepository.deleteById(equipmentWorkunitPK);
 			
 			//记录设备入库的生命周期
-			equipmentCycleService.logEquipmentCycle(borrowList.getEcode(), OperateType.borrowreturn, borrowList.getBorrow_id(), borrow.getStore_id(),storeService.get(borrow.getStore_id()).getName());
+			equipmentCycleService.logEquipmentCycle(borrowList.getEcode(), OperateType.borrow_return, borrowList.getBorrow_id(), TargetType.store,borrow.getStore_id());
 			
 		}
 	}

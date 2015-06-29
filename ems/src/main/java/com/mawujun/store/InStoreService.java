@@ -22,6 +22,7 @@ import com.mawujun.baseinfo.EquipmentStoreRepository;
 import com.mawujun.baseinfo.EquipmentStoreType;
 import com.mawujun.baseinfo.OperateType;
 import com.mawujun.baseinfo.StoreService;
+import com.mawujun.baseinfo.TargetType;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 import com.mawujun.shiro.ShiroUtils;
@@ -118,7 +119,7 @@ public class InStoreService extends AbstractService<InStore, String>{
 			barcodeRepository.update(Cnd.update().set(M.Barcode.status, 1).andEquals(M.Barcode.ecode, equipment.getEcode()));
 			
 			//记录设备入库的生命周期
-			equipmentCycleService.logEquipmentCycle(equipment.getEcode(), OperateType.newinstore, instore_id, inStore.getStore_id(),storeService.get(inStore.getStore_id()).getName());
+			equipmentCycleService.logEquipmentCycle(equipment.getEcode(), OperateType.newinstore, instore_id, TargetType.store,inStore.getStore_id());
 		}
 		
 		for(Entry<String,Integer> entry:totalnumMap.entrySet()) {

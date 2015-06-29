@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -68,7 +70,9 @@ public class Repair  implements IdEntity<String>{
 	@Column(length=8) 
 	private String rpa_type="innerrpa";//维修类型，维修 (innerrpa)还是外修(outrpa)
 	
-	private Integer status=RepairStatus.One.getValue();//状态
+	@Enumerated(EnumType.STRING)
+	@Column(length=18) 
+	private RepairStatus status=RepairStatus.to_repair;//状态
 	
 	private Date scrapDate;//如果这个维修单的设备报废了，那就填写报废时间
 	
@@ -167,12 +171,6 @@ public class Repair  implements IdEntity<String>{
 		this.str_in_id = str_in_id;
 	}
 
-	public Integer getStatus() {
-		return status;
-	}
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
 	public String getBroken_memo() {
 		return broken_memo;
 	}
@@ -244,6 +242,12 @@ public class Repair  implements IdEntity<String>{
 	}
 	public void setHandler_method(String handler_method) {
 		this.handler_method = handler_method;
+	}
+	public RepairStatus getStatus() {
+		return status;
+	}
+	public void setStatus(RepairStatus status) {
+		this.status = status;
 	}
 
 }

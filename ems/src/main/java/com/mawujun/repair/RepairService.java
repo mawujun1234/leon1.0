@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mawujun.baseinfo.EquipmentCycleService;
 import com.mawujun.baseinfo.EquipmentPlace;
 import com.mawujun.baseinfo.EquipmentRepair;
 import com.mawujun.baseinfo.EquipmentRepairPK;
@@ -21,10 +22,12 @@ import com.mawujun.baseinfo.EquipmentStorePK;
 import com.mawujun.baseinfo.EquipmentStoreRepository;
 import com.mawujun.baseinfo.EquipmentStoreType;
 import com.mawujun.baseinfo.EquipmentVO;
+import com.mawujun.baseinfo.OperateType;
 import com.mawujun.baseinfo.Store;
 import com.mawujun.baseinfo.StoreRepository;
+import com.mawujun.baseinfo.StoreService;
+import com.mawujun.baseinfo.TargetType;
 import com.mawujun.exception.BusinessException;
-import com.mawujun.install.InstallIn;
 import com.mawujun.install.InstallInRepository;
 import com.mawujun.mobile.task.TaskRepository;
 import com.mawujun.repository.cnd.Cnd;
@@ -59,6 +62,11 @@ public class RepairService extends AbstractService<Repair, String>{
 	private InstallInRepository installInRepository;
 	@Autowired
 	private TaskRepository taskRepository;
+	
+	@Autowired
+	private EquipmentCycleService equipmentCycleService;
+//	@Autowired
+//	private StoreService storeService;
 	//@Resource
 	//private EquipmentService equipmentService;
 	
@@ -102,21 +110,15 @@ public class RepairService extends AbstractService<Repair, String>{
 			i++;
 			repair.setId(id);
 			//维修单的状态修改为 发往维修中心
-			repair.setStatus(RepairStatus.One.getValue());
+			repair.setStatus(RepairStatus.to_repair);
 			repair.setStr_out_date(new Date());
 			repair.setStr_out_oper_id(oper_id);
 			
 			
-//			//获取故障信息和任务单号，根据条码，查询最新的任务信息
-//			//这里别忘记修改了，
-//			Task task=taskRepository.get(repair.getTask_id());//.queryMaxId_ecode(repair.getEcode());
-//			if(task!=null){
-//				repair.setTask_id(task.getId());
-//				repair.setBroken_memo(task.getHitchReason());
-//			}
 			repairRepository.create(repair);	
 			
-			
+			//记录设备入库的生命周期,目标记录的是出库仓库
+			equipmentCycleService.logEquipmentCycle(repair.getEcode(), OperateType.repair_store_out, repair.getId(),TargetType.store,repair.getStr_out_id());
 		}
 		
 	}
@@ -248,8 +250,11 @@ public class RepairService extends AbstractService<Repair, String>{
 			repairRepository.update(Cnd.update()
 					.set(M.Repair.rpa_in_oper_id, oper_id)
 					.set(M.Repair.rpa_in_date, new Date())
-					.set(M.Repair.status, RepairStatus.Two.getValue())
+					.set(M.Repair.status, RepairStatus.repairing)
 					.andEquals(M.Repair.id, repair.getId()));		
+			
+			//记录设备入库的生命周期
+			equipmentCycleService.logEquipmentCycle(repair.getEcode(), OperateType.repair_in, repair.getId(),TargetType.repair,repair.getRpa_id());
 		}
 		
 		
@@ -279,7 +284,10 @@ public class RepairService extends AbstractService<Repair, String>{
 			repairRepository.update(Cnd.update()
 					.set(M.Repair.rpa_out_oper_id, oper_id)
 					.set(M.Repair.rpa_out_date, new Date())
-					.set(M.Repair.status, RepairStatus.Three.getValue()).andEquals(M.Repair.id, repair.getId()));
+					.set(M.Repair.status, RepairStatus.back_store).andEquals(M.Repair.id, repair.getId()));
+			
+			//记录设备入库的生命周期
+			equipmentCycleService.logEquipmentCycle(repair.getEcode(), OperateType.repair_out, repair.getId(),TargetType.repair,repair.getRpa_id());
 		}
 	}
 	
@@ -329,7 +337,10 @@ public class RepairService extends AbstractService<Repair, String>{
 					.set(M.Repair.str_in_oper_id, oper_id)
 					.set(M.Repair.str_in_date, new Date())
 					.set(M.Repair.str_in_id, repair.getStr_in_id())
-					.set(M.Repair.status, RepairStatus.Four.getValue()).andEquals(M.Repair.id, repair.getId()));
+					.set(M.Repair.status, RepairStatus.over).andEquals(M.Repair.id, repair.getId()));
+			
+			//记录设备入库的生命周期
+			equipmentCycleService.logEquipmentCycle(repair.getEcode(), OperateType.repair_out, repair.getId(),TargetType.store,repair.getStr_in_id());
 	
 		}
 	}

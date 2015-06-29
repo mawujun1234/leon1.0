@@ -18,7 +18,7 @@ Ext.define('Ems.repair.RepairInGrid',{
 		//checkOnly:true,
 		showHeaderCheckbox:false,//防止点全选，去选择
 		renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-			if(record.get("status")==1 ||record.get("status")==2 ){
+			if(record.get("status")=='to_repair' ||record.get("status")=='repairing' ){
 				var baseCSSPrefix = Ext.baseCSSPrefix;
 		        metaData.tdCls = baseCSSPrefix + 'grid-cell-special ' + baseCSSPrefix + 'grid-cell-row-checker';
 		        return '<div class="' + baseCSSPrefix + 'grid-row-checker">&#160;</div>';
@@ -54,7 +54,7 @@ Ext.define('Ems.repair.RepairInGrid',{
 	             tooltip: '编辑      |  ',
 	             handler: function(grid, rowIndex, colIndex) {
 	                  var record = grid.getStore().getAt(rowIndex);
-	                  if(record.get("status")!=2){
+	                  if(record.get("status")!='repairing'){
 	                  	Ext.Msg.alert('消息',"不是\"维修中\"的设备不能编辑!");
 	                  	return;
 	                  }
@@ -65,7 +65,7 @@ Ext.define('Ems.repair.RepairInGrid',{
 	             tooltip: '报废',
 	             handler: function(grid, rowIndex, colIndex) {
 	                  var record = grid.getStore().getAt(rowIndex);
-	                  if(record.get("status")!=2){
+	                  if(record.get("status")!='repairing'){
 	                  	Ext.Msg.alert('消息',"不是\"维修中\"的设备不能报废!");
 	                  	return;
 	                  }
@@ -88,7 +88,7 @@ Ext.define('Ems.repair.RepairInGrid',{
 			autoLoad:true,
 			proxy:{
 				actionMethods:{read:'POST'},
-				extraParams:{status:1},
+				extraParams:{status:'to_repair'},
 				url:Ext.ContextPath+'/repair/repairInQuery.do',
 				type:'ajax',
 				reader:{
@@ -173,73 +173,31 @@ Ext.define('Ems.repair.RepairInGrid',{
         //value: new Date()
 	  });
 	  
-//	  var container_repair_over=Ext.create('Ext.form.field.Checkbox',{
-//	  	labelWidth:60,
-//	  	fieldLabel: '包含完成',
-//	  	checked:false
-//	  });
-//	  var status_combo=Ext.create('Ext.form.field.ComboBox',{
-//	        fieldLabel: '状态',
-//	        labelAlign:'right',
-//            labelWidth:30,
-//	        //xtype:'combobox',
-//	        //afterLabelTextTpl: Ext.required,
-//	        name: 'status',
-//		    displayField: 'name',
-//		    valueField: 'id',
-//		    value:"1",
-//	        allowBlank: false,
-//	        store:Ext.create('Ext.data.Store', {
-//		    	fields: ['id', 'name'],
-//			    data:[{id:"1",name:"发往维修中心"},{id:"2",name:"维修中"},{id:"3",name:"返库途中"},{id:"4",name:"完成"}]
-//		   }),
-//		   listeners:{
-////		   	  change:function(combo,newValue, oldValue){
-////				
-////			  }
-//		   }
-//	  }); 
+	  me.store.on("beforeload",function(store){
+		store.getProxy().extraParams={
+					str_out_id:store_combox.getValue(),
+					rpa_id:repair_combox.getValue(),
+					str_out_date_start: str_out_date_start.getRawValue(),
+					str_out_date_end: str_out_date_end.getRawValue()
+		};
+	 });
 	  
 	  var query_button=Ext.create("Ext.button.Button",{
 			text:'查询',
 			margin:'0 0 0 5',
 			iconCls:'form-search-button',
 			handler:function(){
-//				var rpa_id=repair_combox.getValue();
-//				if(!rpa_id){
-//					Ext.Msg.alert("消息","请先选择入库的维修中心!");
-//					return;
-//				}
-//				ecode_textfield.enable();
-//				var status=status_combo.getValue();
-//				if(status==1){
-//					str_in_button.enable();
-//				} else {
-//					str_in_button.disable();
-//				}
-//				if(status==2){
-//					str_out_button.enable();
-//				} else {
-//					str_out_button.disable();
-//				}
+				me.store.loadPage(1);
 				
-				me.store.load({params:{
-					str_out_id:store_combox.getValue(),
-					rpa_id:repair_combox.getValue(),
-					str_out_date_start: str_out_date_start.getRawValue(),
-					str_out_date_end: str_out_date_end.getRawValue()
-				}
-			  });
-			}
-	  });
-//	  me.store.load({params:{
+//				me.store.load({params:{
 //					str_out_id:store_combox.getValue(),
 //					rpa_id:repair_combox.getValue(),
-//					str_out_date_start: Ext.Date.format(new Date(str_out_date_start.getValue()),'Y-m-d'),
-//					str_out_date_end: Ext.Date.format(new Date(str_out_date_end.getValue()),'Y-m-d'),
-//					status:status_combo.getValue()
+//					str_out_date_start: str_out_date_start.getRawValue(),
+//					str_out_date_end: str_out_date_end.getRawValue()
 //				}
-//	 });
+//			  });
+			}
+	  });
 	 
 	 
 	 var ecode_textfield=Ext.create('Ext.form.field.Text',{

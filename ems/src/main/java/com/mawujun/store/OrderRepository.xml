@@ -73,10 +73,20 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		inner join ems_brand d on a.brand_id=d.id
 		where a.order_id=#{order_id}   
     </select>
+    <!--  
     <select id="queryList_count" resultType="int" parameterType="map">
     	select count(a.id) from ems_Orderlist a
     	where a.order_id=#{order_id}
     </select>
+    -->
+    
+    
+    
+    
+    
+    
+    
+    
     <!-- 
 	<select id="queryMain" resultType="com.mawujun.store.OrderVO" parameterType="map">
     	select a.*,b.name as project_name,c.name as operater_name from 

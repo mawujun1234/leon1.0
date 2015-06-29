@@ -53,13 +53,13 @@ Ext.define('Ems.store.OrderListGrid',{
 			}
 	  });
 	  
-      me.dockedItems= [{
-      		
-	        xtype: 'pagingtoolbar',
-	        store: me.store,  
-	        dock: 'bottom',
-	        displayInfo: true
-	  }];
+//      me.dockedItems= [{
+//      		
+//	        xtype: 'pagingtoolbar',
+//	        store: me.store,  
+//	        dock: 'bottom',
+//	        displayInfo: true
+//	  }];
 	if(!me.onlyRead){
 		me.tbar=	[{
 			text: '刷新',

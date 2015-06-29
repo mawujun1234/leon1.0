@@ -37,7 +37,7 @@ public class EquipmentCycle extends UUIDEntity{
 	private String type_id;//入库id，领用单id等等 各种单据id,还有任务id
 	
 	@Column(length=36)
-	private String target_id;//目标id。仓库id，作业单位id，维修中心id等
+	private String target_id;//目标id。仓库id，作业单位id，维修中心id等,维修出库的时候，就是仓库id，维修中心入库的时候就是维修中心id
 	@Column(length=50)
 	private String target_name;
 	
@@ -47,7 +47,7 @@ public class EquipmentCycle extends UUIDEntity{
 	 * @return
 	 */
 	public String getCycleInfo(){
-		return this.getOperateDate()+" ,操作者:"+this.getOperater_name()+",操作类型:"+this.getOperateType().getName()+"("+this.getTarget_id()+")"+",目标:"+this.getTarget_name();
+		return this.getOperateDate()+",操作类型:"+this.getOperateType().getName()+"("+this.getTarget_id()+")"+",主体:"+this.getTarget_name()+" ,操作者:"+this.getOperater_name();
 	}
 	
 	public String getEcode() {

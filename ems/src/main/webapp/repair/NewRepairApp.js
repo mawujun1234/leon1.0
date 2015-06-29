@@ -155,10 +155,10 @@ Ext.onReady(function(){
 					success : function(response) {//加载成功的处理函数   
 						var ret=Ext.decode(response.responseText);
 						if(ret.success){
-							if(ret.root.equipment_status!='wait_for_repair'){//这是新设备入库的情况
-								Ext.Msg.alert("消息","该设备为非\"入库待维修\"状态,不能添加到列表.");
-								return;
-							}
+//							if(ret.root.equipment_status!='wait_for_repair'){//这是新设备入库的情况
+//								Ext.Msg.alert("消息","该设备为非\"入库待维修\"状态,不能添加到列表.");
+//								return;
+//							}
 							//为新增的equipment添加仓库等其他信息
 							ret.root.str_out_id=store_combox.getValue();
 							ret.root.str_out_name=store_combox.getRawValue();

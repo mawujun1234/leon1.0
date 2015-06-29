@@ -22,6 +22,7 @@ import com.mawujun.baseinfo.EquipmentWorkunitRepository;
 import com.mawujun.baseinfo.EquipmentWorkunitType;
 import com.mawujun.baseinfo.OperateType;
 import com.mawujun.baseinfo.StoreService;
+import com.mawujun.baseinfo.TargetType;
 import com.mawujun.baseinfo.WorkUnitService;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
@@ -119,7 +120,7 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 	 * 领用返回的时候
 	 * @author mawujun email:160649888@163.com qq:16064988
 	 * @param equipments
-	 * @param installin
+	 * @param install_in
 	 */
 	public void equipmentInStore(InstallInList[] equipments, InstallIn installin) { 
 		String installin_id = ymdHmsDateFormat.format(new Date());
@@ -142,7 +143,7 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 			if(installin.getType()==InstallInType.bad){
 				list.setIsBad(true);
 				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.wait_for_repair)
-						//.set(M.Equipment.store_id, installin.getStore_id())
+						//.set(M.Equipment.store_id, install_in.getStore_id())
 						//.set(M.Equipment.workUnit_id,null)
 						.set(M.Equipment.place, EquipmentPlace.store)
 						.set(M.Equipment.last_installIn_id,installin_id)
@@ -151,7 +152,7 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 			} else {
 				list.setIsBad(false);
 				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.in_storage)
-						//.set(M.Equipment.store_id, installin.getStore_id())
+						//.set(M.Equipment.store_id, install_in.getStore_id())
 						//.set(M.Equipment.workUnit_id,null)
 						.set(M.Equipment.place, EquipmentPlace.store)
 						.set(M.Equipment.last_installIn_id,installin_id)//最后一次入库的入库id，这个字段是返库，无论坏件还是好贱返库的时候的id
@@ -179,7 +180,7 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 			installInListRepository.create(list);
 			
 			//记录设备入库的生命周期
-			equipmentCycleService.logEquipmentCycle(list.getEcode(), OperateType.installin, list.getInstallIn_id(),installin.getStore_id(),storeService.get(installin.getStore_id()).getName());
+			equipmentCycleService.logEquipmentCycle(list.getEcode(), OperateType.install_in, list.getInstallIn_id(),TargetType.store,installin.getStore_id());
 		}
 	}
 

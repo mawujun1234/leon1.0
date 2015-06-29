@@ -250,19 +250,21 @@ Ext.define('Ems.task.TaskSendGrid',{
 		});
 		
 		
-		
-		var query_button=Ext.create('Ext.button.Button',{
-			text:'查询',
-			margin:'0 0 0 5',
-			iconCls:'form-search-button',
-			handler:function(){
-				me.getStore().load({params:{
+		me.store.on("beforeload",function(store){
+			store.getProxy().extraParams={
 					customer_id:customer_combox.getValue(),
 					filter_other:filter_other_combox.getValue(),
 					pole_name:pole_textfield.getValue(),
 					area_id:area_combox.getValue(),
 					workunit_id:workunit_combox.getValue()
-				}});
+			};
+		});
+		var query_button=Ext.create('Ext.button.Button',{
+			text:'查询',
+			margin:'0 0 0 5',
+			iconCls:'form-search-button',
+			handler:function(){
+				me.store.loadPage(1);
 			}
 		});
 		//判断一个点位是否能存在多个任务

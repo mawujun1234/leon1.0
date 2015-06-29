@@ -19,7 +19,7 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 		//checkOnly:true,
 		showHeaderCheckbox:false,//防止点全选，去选择
 		renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-			if(record.get("status")==2 ){
+			if(record.get("status")=='repairing' ){
 				var baseCSSPrefix = Ext.baseCSSPrefix;
 		        metaData.tdCls = baseCSSPrefix + 'grid-cell-special ' + baseCSSPrefix + 'grid-cell-row-checker';
 		        return '<div class="' + baseCSSPrefix + 'grid-row-checker">&#160;</div>';
@@ -44,13 +44,13 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 //	             	return true;
 //	             },
 	             getClass:function(v,metadata,record,rowIndex ,colIndex ,store ){
-	             	if(record.get("status")==2){
+	             	if(record.get("status")=='repairing'){
 	             		return "repair_edit";
 	             	}
 	             	return "repair_look";
 	             },
 	             getTip:function(value,metadata ,record,rowIndex ,colIndex ,store ){
-	             	if(record.get("status")!=2){
+	             	if(record.get("status")!='repairing'){
 	             		return "查看维修单";
 	             	}
 	             	return '编辑维修单';
@@ -69,13 +69,13 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 	             isDisabled:function(view,rowIndex ,colIndex ,item ,record ){
 	             	//var status=record.get("status");
 	             	var scrap_id=record.get("scrap_id");
-	             	if(record.get("status")==2 || scrap_id){
+	             	if(record.get("status")=='repairing' || scrap_id){
 	             		return false;
 	             	}
 	             	return true;
 	             },
 	             getClass:function(v,metadata,record,rowIndex ,colIndex ,store ){
-	             	if(record.get("status")==2){
+	             	if(record.get("status")=='repairing'){
 	             		return "scrap_edit";
 	             	}
 	             	if(!record.get("scrap_id")){
@@ -222,7 +222,8 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 		    
 	        store:Ext.create('Ext.data.Store', {
 		    	fields: ['id', 'name'],
-			    data:[{id:"",name:"所有"},{id:"1",name:"发往维修中心"},{id:"2",name:"维修中"},{id:"3",name:"返库途中"},{id:"4",name:"完成"},{id:"5",name:"报废确认中"}]
+			    data:[{id:"",name:"所有"},{id:"to_repair",name:"发往维修中心"},{id:"repairing",name:"维修中"},{id:"back_store",name:"返库途中"}
+			    ,{id:"over",name:"完成"},{id:"scrap_confirm",name:"报废确认中"}]
 		   }),
 		   listeners:{
 		   	  //change:function(combo,newValue, oldValue){
@@ -235,21 +236,31 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 	  	fieldLabel: '只含报废',
 	  	checked:false
 	  });
-	  var query_button=Ext.create("Ext.button.Button",{
-			text:'查询',
-			margin:'0 0 0 5',
-			iconCls:'form-search-button',
-			handler:function(){
-				
-				me.store.load({params:{
+	   me.store.on("beforeload",function(store){
+		store.getProxy().extraParams={
 					str_out_id:store_combox.getValue(),
 					rpa_id:repair_combox.getValue(),
 					rpa_in_date_start: rpa_in_date_start.getRawValue(),
 					rpa_in_date_end: rpa_in_date_end.getRawValue(),
 					status:status_combo.getValue(),
 					only_have_scap:only_have_scap_checkbox.getValue()
-				}
-			  });
+		};
+	 });
+	  var query_button=Ext.create("Ext.button.Button",{
+			text:'查询',
+			margin:'0 0 0 5',
+			iconCls:'form-search-button',
+			handler:function(){
+				me.store.loadPage(1);
+//				me.store.load({params:{
+//					str_out_id:store_combox.getValue(),
+//					rpa_id:repair_combox.getValue(),
+//					rpa_in_date_start: rpa_in_date_start.getRawValue(),
+//					rpa_in_date_end: rpa_in_date_end.getRawValue(),
+//					status:status_combo.getValue(),
+//					only_have_scap:only_have_scap_checkbox.getValue()
+//				}
+//			  });
 			  
 			  
 				
@@ -403,7 +414,7 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 			constrainHeader:true,
 			items:[form]
 		});
-		if(record.get("status")!=2){
+		if(record.get("status")!='repairing'){
 			form.saveButton.hide();
 			win.setTitle("查看维修单(不能编辑)");
 	    }
@@ -415,7 +426,7 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 			listeners:{
 				scraped:function(){
 					alert("报废单生成成功");
-					repair.set("status",5);
+					repair.set("status",'scrap_confirm');
 					repair.set("status_name",'报废确认中');
 					win.close();
 				},
@@ -435,7 +446,7 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 			items:[form]
 		});
 		//form.win=win;
-		if(repair.get("status")!=2){
+		if(repair.get("status")!='repairing'){
 			form.saveButton.hide();
 			form.scrapButton.hide();
 			win.setTitle("查看报废(不能编辑)");

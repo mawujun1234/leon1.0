@@ -1,51 +1,8 @@
 package com.mawujun.mobile.task;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 import javax.annotation.Resource;
 
@@ -65,8 +22,6 @@ import com.mawujun.baseinfo.EquipmentPoleType;
 import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.EquipmentService;
 import com.mawujun.baseinfo.EquipmentStatus;
-import com.mawujun.baseinfo.EquipmentStore;
-import com.mawujun.baseinfo.EquipmentStoreType;
 import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.baseinfo.EquipmentWorkunit;
 import com.mawujun.baseinfo.EquipmentWorkunitPK;
@@ -75,17 +30,14 @@ import com.mawujun.baseinfo.EquipmentWorkunitType;
 import com.mawujun.baseinfo.OperateType;
 import com.mawujun.baseinfo.Pole;
 import com.mawujun.baseinfo.PoleRepository;
-import com.mawujun.baseinfo.PoleService;
 import com.mawujun.baseinfo.PoleStatus;
-import com.mawujun.baseinfo.StoreService;
-import com.mawujun.baseinfo.WorkUnitService;
+import com.mawujun.baseinfo.TargetType;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.install.BorrowRepository;
 import com.mawujun.install.InstallOutRepository;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 import com.mawujun.shiro.ShiroUtils;
-import com.mawujun.utils.AssertUtils;
 import com.mawujun.utils.M;
 import com.mawujun.utils.Params;
 import com.mawujun.utils.StringUtils;
@@ -126,13 +78,8 @@ public class TaskService extends AbstractService<Task, String>{
 	private BorrowRepository borrowRepository;
 	
 	@Autowired
-	private WorkUnitService workUnitService;
-	@Autowired
 	private EquipmentCycleService equipmentCycleService;
-	@Autowired
-	private StoreService storeService;
-	@Autowired
-	private PoleService poleService;
+	
 	
 	@Override
 	public TaskRepository getRepository() {
@@ -846,7 +793,7 @@ public class TaskService extends AbstractService<Task, String>{
 				equipmentWorkunitRepository.deleteById(equipmentWorkunitPK);
 				
 				//记录设备入库的生命周期
-				equipmentCycleService.logEquipmentCycle(taskEquipmentList.getEcode(), OperateType.task_install, task.getPole_id(),task.getPole_id(),poleService.get(task.getPole_id()).getName());
+				equipmentCycleService.logEquipmentCycle(taskEquipmentList.getEcode(), OperateType.task_install, task.getId(),TargetType.pole,task.getPole_id());
 			} else if (TaskType.repair== task.getType()) {
 				// 维修的时候，设备的状态，可能是 损坏或者是安装出库
 				// 如果设备原来的状态是正在使用，你把设备下架的
@@ -875,7 +822,7 @@ public class TaskService extends AbstractService<Task, String>{
 					equipmentWorkunitRepository.deleteById(equipmentWorkunitPK);
 					
 					//记录设备入库的生命周期
-					equipmentCycleService.logEquipmentCycle(taskEquipmentList.getEcode(), OperateType.task_install, task.getPole_id(),task.getPole_id(),poleService.get(task.getPole_id()).getName());
+					equipmentCycleService.logEquipmentCycle(taskEquipmentList.getEcode(), OperateType.task_install, task.getId(),TargetType.pole,task.getPole_id());
 					
 				} else {
 					// 设备从杆位上卸载下来的情况
@@ -902,7 +849,7 @@ public class TaskService extends AbstractService<Task, String>{
 					equipmentPoleRepository.deleteById(equipmentPolePK);
 					
 					//记录设备入库的生命周期
-					equipmentCycleService.logEquipmentCycle(taskEquipmentList.getEcode(), OperateType.task_cancel, task.getPole_id(),task.getWorkunit_id(),workUnitService.get(task.getWorkunit_id()).getName());
+					equipmentCycleService.logEquipmentCycle(taskEquipmentList.getEcode(), OperateType.task_cancel, task.getId(),TargetType.pole,task.getPole_id());
 				}
 
 			} else if (TaskType.cancel== task.getType()) {
@@ -930,7 +877,7 @@ public class TaskService extends AbstractService<Task, String>{
 				equipmentPoleRepository.deleteById(equipmentPolePK);
 
 				//记录设备入库的生命周期
-				equipmentCycleService.logEquipmentCycle(taskEquipmentList.getEcode(), OperateType.task_cancel, task.getPole_id(),task.getWorkunit_id(),workUnitService.get(task.getWorkunit_id()).getName());
+				equipmentCycleService.logEquipmentCycle(taskEquipmentList.getEcode(), OperateType.task_cancel, task.getId(),TargetType.pole,task.getPole_id());
 			} else if (TaskType.patrol== task.getType()) {
 
 			}

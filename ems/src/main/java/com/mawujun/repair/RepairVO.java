@@ -31,10 +31,8 @@ public class RepairVO extends Repair {
 	
 
 	public String getStatus_name() {
-		for(RepairStatus repairstatus:RepairStatus.values()) {
-			if(repairstatus.getValue()==this.getStatus()){
-				return repairstatus.getName();
-			}
+		if(this.getStatus()!=null){
+			this.getStatus().getName();
 		}
 		return null;
 	}

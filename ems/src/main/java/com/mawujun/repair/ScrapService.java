@@ -9,12 +9,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mawujun.baseinfo.EquipmentCycleService;
 import com.mawujun.baseinfo.EquipmentPlace;
 import com.mawujun.baseinfo.EquipmentRepairPK;
 import com.mawujun.baseinfo.EquipmentRepairRepository;
 import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.EquipmentStatus;
+import com.mawujun.baseinfo.OperateType;
 import com.mawujun.baseinfo.StoreRepository;
+import com.mawujun.baseinfo.TargetType;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 import com.mawujun.shiro.ShiroUtils;
@@ -44,6 +47,9 @@ public class ScrapService extends AbstractService<Scrap, String>{
 	@Autowired
 	private EquipmentRepairRepository equipmentRepairRepository;
 	
+	@Autowired
+	private EquipmentCycleService equipmentCycleService;
+	
 	SimpleDateFormat ymdHmsDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
 	
 	@Override
@@ -62,16 +68,23 @@ public class ScrapService extends AbstractService<Scrap, String>{
 		if(!StringUtils.hasText(scrap.getId())){
 			scrap.setScrpReqDate(new Date());
 			scrap.setScrpReqOper(ShiroUtils.getAuthenticationInfo().getId());
+			
+			Repair repair=repairRepository.get(scrap.getRepair_id());
+			scrap.setStore_id(repair.getStr_out_id());
+			scrap.setRpa_id(repair.getRpa_id());
 			this.create(scrap);
 		}
+		
+		
+
 		//把维修单状态改为"报废中"
-		repairRepository.update(Cnd.update().set(M.Repair.status, RepairStatus.Five.getValue()).andEquals(M.Repair.id, scrap.getRepair_id()));
+		repairRepository.update(Cnd.update().set(M.Repair.status, RepairStatus.scrap_confirm).andEquals(M.Repair.id, scrap.getRepair_id()));
 		
 		return scrap;
 	}
 	
-	public Scrap makeSureScrap(Scrap scrap) {
-		
+	public Scrap makeSureScrap(String scrap_id) {
+		Scrap scrap=scrapRepository.get(scrap_id);
 		//修改设备状态为报废
 		equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.scrapped)
 				.set(M.Equipment.place, EquipmentPlace.scrap)
@@ -89,14 +102,17 @@ public class ScrapService extends AbstractService<Scrap, String>{
 		Date date=new Date();
 		scrap.setOperateDate(date);
 		scrap.setScrpReqOper(ShiroUtils.getAuthenticationInfo().getId());
-		this.update(scrap);
+		scrapRepository.update(scrap);
 		
 		//同时结束维修单--报废
 		//Repair repair=repairRepository.get(scrap.getRepair_id());
-		repair.setStatus(RepairStatus.Six.getValue());
+		repair.setStatus(RepairStatus.scrap);
 		repair.setScrapDate(date);
 		repairRepository.update(repair);
-		//repairRepository.update(Cnd.update().set(M.Repair.status, RepairStatus.Six.getValue()).andEquals(M.Repair.id, scrap.getRepair_id()));
+		//repairRepository.update(Cnd.update().set(M.Repair.status, RepairStatus.scrap.getValue()).andEquals(M.Repair.id, scrap.getRepair_id()));
+		
+		//记录设备入库的生命周期,目标记录的是出库仓库
+		equipmentCycleService.logEquipmentCycle(repair.getEcode(), OperateType.scrap, scrap.getId(),TargetType.store,scrap.getStore_id());
 		return scrap;
 	}
 

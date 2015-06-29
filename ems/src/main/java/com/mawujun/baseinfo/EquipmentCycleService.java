@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
 import com.mawujun.service.AbstractService;
 
 
@@ -29,8 +30,12 @@ public class EquipmentCycleService extends AbstractService<EquipmentCycle, Strin
 
 	@Autowired
 	private EquipmentCycleRepository equipmentCycleRepository;
-//	@Autowired
-//	private EquipmentCycleRepository storeRepository;
+	@Autowired
+	private WorkUnitService workUnitService;
+	@Autowired
+	private StoreService storeService;
+	@Autowired
+	private PoleService poleService;
 	
 	@Override
 	public EquipmentCycleRepository getRepository() {
@@ -45,7 +50,7 @@ public class EquipmentCycleService extends AbstractService<EquipmentCycle, Strin
 	 * @param target_id 目标id。仓库id，作业单位id，维修中心id等
 	 * @param target_name 目标的名称。仓库名称，作业单位名称，维修中心名称等
 	 */
-	public void logEquipmentCycle(String ecode,OperateType operateType,String type_id,String target_id,String target_name){
+	public void logEquipmentCycle(String ecode,OperateType operateType,String type_id,TargetType targetType,String target_id){
 		EquipmentCycle cycle=new EquipmentCycle();
 		cycle.setEcode(ecode);
 		
@@ -57,7 +62,15 @@ public class EquipmentCycleService extends AbstractService<EquipmentCycle, Strin
 		cycle.setOperateType(operateType);
 		
 		cycle.setTarget_id(target_id);
-		cycle.setTarget_name(target_name);
+		if(targetType==TargetType.store || targetType==TargetType.repair){
+			cycle.setTarget_name(storeService.get(target_id).getName());
+		} else if(targetType==TargetType.pole){
+			Pole pole=poleService.get(target_id);
+			cycle.setTarget_name(pole.getName()+"("+pole.getCode()+")");
+		} else if(targetType==TargetType.workunit){
+			cycle.setTarget_name(workUnitService.get(target_id).getName());
+		}
+		
 		
 		cycle.setType_id(type_id);
 		

@@ -111,11 +111,11 @@ public class OrderController {
 	 */
 	@RequestMapping("/order/queryList.do")
 	@ResponseBody
-	public Page queryList(Integer start,Integer limit,String order_id) {	
-		Page page=Page.getInstance(start,limit);
-		page.addParam(M.OrderList.order_id, order_id);
+	public List<OrderListVO> queryList(Integer start,Integer limit,String order_id) {	
+		//Page page=Page.getInstance(start,limit);
+		//page.addParam(M.OrderList.order_id, order_id);
 		
-		Page orderlists=orderService.queryList(page);
+		List<OrderListVO> orderlists=orderService.queryList(order_id);
 		return orderlists;
 	}
 	
@@ -208,6 +208,7 @@ public class OrderController {
 
 		String contextPath=request.getSession().getServletContext().getRealPath("/");
 		
+		orderno=orderno.replaceAll("\\\\", "_");
 		String fileName="qrcode("+orderno+").xls";
 		String filePath="temp"+File.separatorChar+fileName;
 		String path=contextPath+filePath;
@@ -222,7 +223,7 @@ public class OrderController {
 		
 
         HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
-        HSSFSheet hssfSheet = hssfWorkbook.createSheet(orderno);
+        HSSFSheet hssfSheet = hssfWorkbook.createSheet("二维码数据源");
         
         HSSFRow hssfRow0 = hssfSheet.createRow(0);
     	HSSFCell cell00 = hssfRow0.createCell(0);
@@ -269,6 +270,8 @@ public class OrderController {
 	@RequestMapping("/order/downloadBarcode.do")
 	//@ResponseBody
 	public void downloadBarcode(HttpServletRequest request,HttpServletResponse response,String orderno) throws  IOException{
+		orderno=orderno.replaceAll("\\\\", "_");
+		
 		String contextPath=request.getSession().getServletContext().getRealPath("/");
 		String fileName="qrcode("+orderno+").xls";
 		String filePath="temp"+File.separatorChar+fileName;

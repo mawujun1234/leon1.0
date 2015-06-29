@@ -2,7 +2,7 @@ package com.mawujun.adjust;
 
 /**
  * 订单明细情况
- * noin("未入库"),in("已入库"),installout("被领用");
+ * noin("未入库"),in("已入库"),install_out("被领用");
  * @author mawujun email:16064988@qq.com qq:16064988
  *
  */

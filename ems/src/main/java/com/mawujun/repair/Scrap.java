@@ -29,6 +29,10 @@ public class Scrap implements IdEntity<String>{
 //	private String residual;//残余值
 	//@Column(length=500)
 	private Double residual;//残余值
+	@Column(length=36)
+	private String store_id;//仓库id
+	@Column(length=36)
+	private String rpa_id;//维修中心id
 
 	@Column(length=50,updatable=false)
 	private String scrpReqOper;//报废申请人
@@ -112,5 +116,21 @@ public class Scrap implements IdEntity<String>{
 
 	public void setResidual(Double residual) {
 		this.residual = residual;
+	}
+
+	public String getStore_id() {
+		return store_id;
+	}
+
+	public void setStore_id(String store_id) {
+		this.store_id = store_id;
+	}
+
+	public String getRpa_id() {
+		return rpa_id;
+	}
+
+	public void setRpa_id(String rpa_id) {
+		this.rpa_id = rpa_id;
 	}
 }

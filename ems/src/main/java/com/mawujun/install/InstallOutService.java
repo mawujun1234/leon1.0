@@ -19,6 +19,7 @@ import com.mawujun.baseinfo.EquipmentWorkunit;
 import com.mawujun.baseinfo.EquipmentWorkunitRepository;
 import com.mawujun.baseinfo.EquipmentWorkunitType;
 import com.mawujun.baseinfo.OperateType;
+import com.mawujun.baseinfo.TargetType;
 import com.mawujun.baseinfo.WorkUnitService;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
@@ -86,7 +87,7 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 //			equipmentStore.setNum(1);
 //			equipmentStore.setInDate(new Date());
 //			equipmentStore.setType(EquipmentStoreType.installin);
-//			equipmentStore.setType_id(installin.getId());
+//			equipmentStore.setType_id(install_in.getId());
 //			equipmentStoreRepository.create(equipmentStore);
 			//插入到workunit中
 			EquipmentWorkunit equipmentWorkunit=new EquipmentWorkunit();
@@ -107,7 +108,7 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 			outStoreListRepository.create(inStoreList);
 			
 			//记录设备入库的生命周期
-			equipmentCycleService.logEquipmentCycle(inStoreList.getEcode(), OperateType.installout, outstore_id,outStore.getWorkUnit_id(),workUnitService.get(outStore.getWorkUnit_id()).getName());
+			equipmentCycleService.logEquipmentCycle(inStoreList.getEcode(), OperateType.install_out, outstore_id,TargetType.workunit,outStore.getWorkUnit_id());
 		}
 		return outstore_id;
 	}

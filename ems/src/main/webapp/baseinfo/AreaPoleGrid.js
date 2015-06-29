@@ -357,7 +357,8 @@ Ext.define('Ems.baseinfo.AreaPoleGrid',{
     },
     onReload:function(){
     	var me=this;
-    	me.getStore().reload();	      
+    	//me.getStore().reload();	   
+    	me.getStore().loadPage(1);
     },
 //    onShowEquipment:function(){
 //    	var me=this;

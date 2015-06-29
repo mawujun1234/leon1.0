@@ -178,7 +178,7 @@ public class InstallOutController {
 //		params.put("project_name", "111111");  
 //
 //		
-//		String JASPER_FILE_NAME=request.getSession().getServletContext().getRealPath("/install/report/installout.jasper");
+//		String JASPER_FILE_NAME=request.getSession().getServletContext().getRealPath("/install/report/install_out.jasper");
 //		//JasperReport jasperReport = (JasperReport)JRLoader.loadObject(JASPER_FILE_NAME);
 //		File reportFile=new File(JASPER_FILE_NAME);
 //		InputStream in=new FileInputStream(reportFile);

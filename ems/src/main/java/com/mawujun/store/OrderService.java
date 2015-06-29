@@ -77,9 +77,9 @@ public class OrderService extends AbstractService<Order, String>{
 		
 		return results;
 	}
-	public Page queryList(Page page) {	
+	public  List<OrderListVO> queryList(String order_id) {	
 		
-		return orderRepository.queryList(page);
+		return orderRepository.queryList(order_id);
 	}
 	
 	public List<OrderListVO> queryList4Barcode(Params params) {	
