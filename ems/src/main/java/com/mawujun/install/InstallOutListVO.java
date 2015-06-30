@@ -4,9 +4,11 @@ public class InstallOutListVO extends InstallOutList {
 	private String subtype_name;
 	private String prod_name;
 	private String prod_spec;
+	private String prod_unit;
 	private String brand_name;
 	private String supplier_name;
 	private String style;
+	
 	
 	
 	private String installOutType_name;
@@ -59,5 +61,13 @@ public class InstallOutListVO extends InstallOutList {
 	}
 	public void setInstallOutType_name(String installOutType_name) {
 		this.installOutType_name = installOutType_name;
+	}
+
+	public String getProd_unit() {
+		return prod_unit;
+	}
+
+	public void setProd_unit(String prod_unit) {
+		this.prod_unit = prod_unit;
 	}
 }

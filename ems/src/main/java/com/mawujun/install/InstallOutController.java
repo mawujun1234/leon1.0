@@ -18,9 +18,13 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.HtmlExporter;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.export.JRPdfExporterParameter;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleHtmlExporterOutput;
 import net.sf.jasperreports.export.SimpleHtmlReportConfiguration;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimplePdfReportConfiguration;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -173,42 +177,46 @@ public class InstallOutController {
 		//InstallOutVO installOutVO=outStoreService.getInstallOutVO(installOut_id);
 		//List<InstallOutListVO> installOutListes=outStoreService.queryList(installOut_id);
 		List<InstallOutListVO> installOutListes=new ArrayList<InstallOutListVO>();
-		InstallOutListVO a=new InstallOutListVO();
-		a.setBrand_name("1");
-		a.setEcode("1");
-		a.setInstallOut_id("1");
-		a.setProd_name("1");
-		a.setSubtype_name("1");
-		a.setStyle("1");
-		installOutListes.add(a);
+		
+		
+		for(int i=0;i<50;i++){
+			InstallOutListVO a=new InstallOutListVO();
+			a.setBrand_name(i+"品牌");
+			a.setEcode("020202-**-1506260006");
+			a.setInstallOut_id(i+"");
+			a.setProd_name(i+"品名品名品名品名品名品名品名品名品名品名");
+			a.setSubtype_name(i+"小类小类小类小类小类小类小类小类");
+			a.setStyle(i+"DS-2CD4012F(A/W/P/SDI/FC)");
+			a.setProd_unit("台");
+			installOutListes.add(a);
+		}
 		
 		
 		JRBeanCollectionDataSource dataSource=new JRBeanCollectionDataSource(installOutListes);
 		
 		//String root_path = request.getSession().getServletContext().getRealPath("/");
-		response.setContentType("text/html;charset=UTF-8");
-		OutputStream outputStream=response.getOutputStream();
-		
+		//response.setContentType("text/html;charset=UTF-8");
 		Map<String,Object> params=new HashMap<String,Object>();
-		params.put("project_name", "111111");  
+		params.put("project_name", "111111"); 
+		params.put("installout_id", "20150630124512001");  
 
 		
-		String JASPER_FILE_NAME=request.getSession().getServletContext().getRealPath("/install/report/install_out.jasper");
+		
+		String JASPER_FILE_NAME=request.getSession().getServletContext().getRealPath("/install/report/installout.jasper");
 		//JasperReport jasperReport = (JasperReport)JRLoader.loadObject(JASPER_FILE_NAME);
 		File reportFile=new File(JASPER_FILE_NAME);
 		InputStream in=new FileInputStream(reportFile);
 		JasperPrint print = JasperFillManager.fillReport(in, params, dataSource);
-		// 使用JRHtmlExproter导出Html格式
 		
-		HtmlExporter exporter = new HtmlExporter();
-		//exporter.getCurrentJasperPrint()
-		SimpleHtmlExporterOutput simpleHtmlExporterOutput=new SimpleHtmlExporterOutput(outputStream,"UTF-8");
-		exporter.setExporterOutput(simpleHtmlExporterOutput);
+		response.setContentType("application/pdf;charset=UTF-8");
+		OutputStream outputStream=response.getOutputStream();
+		JRPdfExporter exporter = new JRPdfExporter(); 
+		SimpleOutputStreamExporterOutput simpleOutputStreamExporterOutput=new SimpleOutputStreamExporterOutput(outputStream);
+		exporter.setExporterOutput(simpleOutputStreamExporterOutput);
 		
-		SimpleHtmlReportConfiguration simpleHtmlReportConfiguration=new SimpleHtmlReportConfiguration();
-		exporter.setConfiguration(simpleHtmlReportConfiguration);
+		SimplePdfReportConfiguration simplePdfReportConfiguration=new SimplePdfReportConfiguration();
+		exporter.setConfiguration(simplePdfReportConfiguration);
 		
-		//SimpleExporterInputItem simpleExporterInputItem=new SimpleExporterInputItem(print);
 		SimpleExporterInput simpleExporterInput=new SimpleExporterInput(print);
 		exporter.setExporterInput(simpleExporterInput);
 		// 导出
@@ -216,28 +224,26 @@ public class InstallOutController {
 		outputStream.close();
 		
 		
-//		String JASPER_FILE_NAME=request.getSession().getServletContext().getRealPath("/tuih/report1.jasper");
-//		//JasperReport jasperReport = (JasperReport)JRLoader.loadObject(JASPER_FILE_NAME);
-//		File reportFile=new File(JASPER_FILE_NAME);
-//		InputStream in=new FileInputStream(reportFile);
-//		JasperPrint print = JasperFillManager.fillReport(in, params, dataSource);
+
+		
 //		// 使用JRHtmlExproter导出Html格式
-//		JRHtmlExporter exporter = new JRHtmlExporter();
-////		request.getSession().setAttribute(ImageServlet.DEFAULT_JASPER_PRINT_SESSION_ATTRIBUTE, print);
-////		exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
-////		exporter.setParameter(JRExporterParameter.OUTPUT_WRITER, writer);
-////		//exporter.setParameter(JRHtmlExporterParameter.IMAGES_URI, "./servlets/image?image=");
-//		exporter.setParameter(JRExporterParameter.CHARACTER_ENCODING, "UTF-8");
-//		exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
-//		exporter.setParameter(JRExporterParameter.OUTPUT_WRITER, writer);
-//		exporter.setParameter(JRExporterParameter.CHARACTER_ENCODING, "GB2312");
-//		exporter.setParameter(JRHtmlExporterParameter.BETWEEN_PAGES_HTML, "<br style='page-break-before:always;'>");//翻页的处理（style='page-break-before:always;）；
-//
-//
-//				     
-//		exporter.setParameter(JRHtmlExporterParameter.IS_USING_IMAGES_TO_ALIGN, Boolean.FALSE);
+//		response.setContentType("text/html;charset=UTF-8");
+//		OutputStream outputStream=response.getOutputStream();
+//		HtmlExporter exporter = new HtmlExporter();
+//		//exporter.getCurrentJasperPrint()
+//		SimpleHtmlExporterOutput simpleHtmlExporterOutput=new SimpleHtmlExporterOutput(outputStream,"UTF-8");
+//		exporter.setExporterOutput(simpleHtmlExporterOutput);
+//		
+//		SimpleHtmlReportConfiguration simpleHtmlReportConfiguration=new SimpleHtmlReportConfiguration();
+//		exporter.setConfiguration(simpleHtmlReportConfiguration);
+//		
+//		//SimpleExporterInputItem simpleExporterInputItem=new SimpleExporterInputItem(print);
+//		SimpleExporterInput simpleExporterInput=new SimpleExporterInput(print);
+//		exporter.setExporterInput(simpleExporterInput);
 //		// 导出
 //		exporter.exportReport();
+//		outputStream.close();
+
 	}
 	
 	/**

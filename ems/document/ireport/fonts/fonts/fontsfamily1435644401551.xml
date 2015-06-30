@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fontFamilies>
+
+   <fontFamily name="a&#40657;&#20307;">
+       <normal><![CDATA[fonts/SIMHEI.TTF]]></normal>
+       <bold><![CDATA[fonts/SIMHEI.TTF]]></bold>
+       <italic><![CDATA[fonts/SIMHEI.TTF]]></italic>
+       <boldItalic><![CDATA[fonts/SIMHEI.TTF]]></boldItalic>
+       <pdfEncoding><![CDATA[Identity-H]]></pdfEncoding>
+       <pdfEmbedded><![CDATA[true]]></pdfEmbedded>
+   </fontFamily>
+
+
+</fontFamilies>

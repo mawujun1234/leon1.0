@@ -494,7 +494,14 @@ Ext.onReady(function(){
 			text:'打印测试',
 			handler:function(){
 				///installOut/equipmentOutStorePrint.do"
-				window.location.href=Ext.ContextPath+"/installOut/equipmentOutStorePrint.do";
+				//window.location.href=Ext.ContextPath+"/installOut/equipmentOutStorePrint.do";
+				//window.open("/installOut/equipmentOutStorePrint.do","_blank","height=100,width=400,top=0,left=0,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no");
+				window.open("/installOut/equipmentOutStorePrint.do?dataa="+(new Date()),"_blank");
+				//var param={
+				//	JIHDID:gridMX.JIHDID
+				//};			
+				//var str=Ext.urlEncode(param);
+				//window.open("/tuih/maicqrMXPrint.do"+"?"+str);
 			}
 		}]
 	});
