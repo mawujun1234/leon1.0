@@ -387,7 +387,7 @@ Ext.onReady(function(){
         		return;
         	}
             if (equipStore.getCount()> 0) { 
-            	Ext.getBody().mask("正在入库....");
+            	Ext.getBody().mask("正在出库....");
             	var equipments = new Array();
             	equipStore.each(function(record){
             		equipments.push(record.data);
@@ -406,7 +406,12 @@ Ext.onReady(function(){
 						workUnit_id_temp=null;
 						var obj=Ext.decode(response.responseText);
 						
-						Ext.Msg.alert("消息","借用出库完成!");
+						//Ext.Msg.alert("消息","借用出库完成!");
+						Ext.Msg.confirm("消息","借用出库完成,是否要打印该借用单?",function(btn){
+							if(btn){
+								window.open("/borrow/equipmentOutStorePrint.do?borrow_id="+obj.root,"_blank");
+							}
+						});
 						equipStore.removeAll();
 						Ext.getBody().unmask();
 						workUnit_combox.enable();

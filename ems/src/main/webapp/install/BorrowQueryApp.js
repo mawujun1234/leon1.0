@@ -8,7 +8,7 @@ Ext.onReady(function(){
 		region:'west',
 		split: true,
 		collapsible: true,
-		title:'领用查询',
+		title:'借用查询',
 		width:400
 	});
 

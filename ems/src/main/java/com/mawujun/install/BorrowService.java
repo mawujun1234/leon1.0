@@ -28,9 +28,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 import com.mawujun.shiro.ShiroUtils;
+import com.mawujun.user.UserService;
 import com.mawujun.utils.M;
 import com.mawujun.utils.page.Page;
 import com.mawujun.baseinfo.Equipment;
@@ -74,6 +76,8 @@ public class BorrowService extends AbstractService<Borrow, String>{
 	private EquipmentStoreRepository equipmentStoreRepository;
 	@Autowired
 	private EquipmentWorkunitRepository equipmentWorkunitRepository;
+	@Autowired
+	private UserService userService;
 //	@Autowired
 //	private WorkUnitService workUnitService;
 	@Autowired
@@ -89,7 +93,7 @@ public class BorrowService extends AbstractService<Borrow, String>{
 	SimpleDateFormat ymdHmsDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
 	
 
-	public void borrow(Equipment[] equipments, Borrow borrow) {
+	public String borrow(Equipment[] equipments, Borrow borrow) {
 		// 插入入库单
 		String borrow_id = ymdHmsDateFormat.format(new Date());
 		// InStore inStore=new InStore();
@@ -141,6 +145,7 @@ public class BorrowService extends AbstractService<Borrow, String>{
 			//记录设备入库的生命周期
 			equipmentCycleService.logEquipmentCycle(equipment.getEcode(), OperateType.borrow_out, borrow_id, TargetType.workunit,borrow.getWorkUnit_id());
 		}
+		return borrow_id;
 	}
 	
 	public Page queryMain(Page page){
@@ -151,7 +156,9 @@ public class BorrowService extends AbstractService<Borrow, String>{
 	}
 	
 	public BorrowVO getBorrowVO(String borrow_id) {
-		return borrowRepository.getBorrowVO(borrow_id);
+		BorrowVO borrowVO= borrowRepository.getBorrowVO(borrow_id);
+		borrowVO.setOperater_name(userService.get(borrowVO.getOperater()).getName());
+		return borrowVO;
 	}
 	public List<BorrowListVO> queryList(String borrow_id) {
 

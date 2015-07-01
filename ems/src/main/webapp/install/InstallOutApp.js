@@ -477,7 +477,13 @@ Ext.onReady(function(){
 						workUnit_id_temp=null;
 						var obj=Ext.decode(response.responseText);
 						
-						Ext.Msg.alert("消息","领用出库完成!");
+						//Ext.Msg.alert("消息","领用出库完成!");
+						
+						Ext.Msg.confirm("消息","领用出库完成,是否要打印该领用单?",function(btn){
+							if(btn){
+								window.open("/installOut/equipmentOutStorePrint.do?installOut_id="+obj.root,"_blank");
+							}
+						});
 						equipStore.removeAll();
 						Ext.getBody().unmask();
 						workUnit_combox.enable();
@@ -490,20 +496,7 @@ Ext.onReady(function(){
             }else{
             	Ext.Msg.alert('提示','请先添加一个设备');
             }
-		}},{
-			text:'打印测试',
-			handler:function(){
-				///installOut/equipmentOutStorePrint.do"
-				//window.location.href=Ext.ContextPath+"/installOut/equipmentOutStorePrint.do";
-				//window.open("/installOut/equipmentOutStorePrint.do","_blank","height=100,width=400,top=0,left=0,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no");
-				window.open("/installOut/equipmentOutStorePrint.do?dataa="+(new Date()),"_blank");
-				//var param={
-				//	JIHDID:gridMX.JIHDID
-				//};			
-				//var str=Ext.urlEncode(param);
-				//window.open("/tuih/maicqrMXPrint.do"+"?"+str);
-			}
-		}]
+		}}]
 	});
 	
 	

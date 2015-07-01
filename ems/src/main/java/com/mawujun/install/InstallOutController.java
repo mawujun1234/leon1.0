@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +39,8 @@ import com.mawujun.exception.BusinessException;
 import com.mawujun.utils.M;
 import com.mawujun.utils.StringUtils;
 import com.mawujun.utils.page.Page;
+
+import freemarker.template.utility.DateUtil;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
  * @version 1.0
@@ -160,7 +163,7 @@ public class InstallOutController {
 		String installOut_id=outStoreService.equipOutStore(installOutListes, outStore);
 		return installOut_id;
 	}
-	
+	SimpleDateFormat yyyyMMdd=new SimpleDateFormat("yyyy-MM-dd");
 	/**
 	 * 设备出库，设备领用
 	 * @author mawujun 16064988@qq.com 
@@ -172,33 +175,40 @@ public class InstallOutController {
 	@RequestMapping("/installOut/equipmentOutStorePrint.do")
 	@ResponseBody
 	public void equipmentOutStorePrint(HttpServletRequest request,HttpServletResponse response,String installOut_id) throws  IOException, JRException { 
-		//PrintWriter writer = response.getWriter();
 		
-		//InstallOutVO installOutVO=outStoreService.getInstallOutVO(installOut_id);
-		//List<InstallOutListVO> installOutListes=outStoreService.queryList(installOut_id);
-		List<InstallOutListVO> installOutListes=new ArrayList<InstallOutListVO>();
+		InstallOutVO installOutVO=outStoreService.getInstallOutVO(installOut_id);
+		Map<String,Object> params=new HashMap<String,Object>();
+		params.put("project_name", installOutVO.getProject_name()); 
+		params.put("installout_id", installOutVO.getId());  
+		params.put("workunit_name", installOutVO.getWorkUnit_name()); 
+		params.put("operater_name", installOutVO.getOperater_name());//仓管姓名
+		params.put("operateDate", yyyyMMdd.format(installOutVO.getOperateDate()));
+		List<InstallOutListVO> installOutListes=outStoreService.queryList(installOut_id);
 		
 		
-		for(int i=0;i<50;i++){
-			InstallOutListVO a=new InstallOutListVO();
-			a.setBrand_name(i+"品牌");
-			a.setEcode("020202-**-1506260006");
-			a.setInstallOut_id(i+"");
-			a.setProd_name(i+"品名品名品名品名品名品名品名品名品名品名");
-			a.setSubtype_name(i+"小类小类小类小类小类小类小类小类");
-			a.setStyle(i+"DS-2CD4012F(A/W/P/SDI/FC)");
-			a.setProd_unit("台");
-			installOutListes.add(a);
-		}
+//		List<InstallOutListVO> installOutListes=new ArrayList<InstallOutListVO>();
+//		for(int i=0;i<20;i++){
+//			InstallOutListVO a=new InstallOutListVO();
+//			a.setBrand_name(i+"品牌");
+//			a.setEcode("020202-**-1506260006");
+//			a.setInstallOut_id(i+"");
+//			a.setProd_name(i+"品名品名品名品名品名品名品名品名品名品名sdfetlkjsdfnejkksdjfljl");
+//			a.setSubtype_name(i+"小类小类小类小类小类小类小类小类");
+//			a.setStyle(i+"DS-2CD4012F(A/W/P/SDI/FC)detgtdsfsdfe4ddferereertgthgh");
+//			a.setProd_unit("台");
+//			installOutListes.add(a);
+//		}
+//		Map<String,Object> params=new HashMap<String,Object>();
+//		params.put("project_name", "111111"); 
+//		params.put("installout_id", "20150630124512001");  
+//		params.put("workunit_name", "哈哈哈哈"); 
+//		params.put("operater_name", "哈哈哈哈");//仓管姓名
+//		params.put("operateDate", "2015-07-01");
+		
 		
 		
 		JRBeanCollectionDataSource dataSource=new JRBeanCollectionDataSource(installOutListes);
 		
-		//String root_path = request.getSession().getServletContext().getRealPath("/");
-		//response.setContentType("text/html;charset=UTF-8");
-		Map<String,Object> params=new HashMap<String,Object>();
-		params.put("project_name", "111111"); 
-		params.put("installout_id", "20150630124512001");  
 
 		
 		

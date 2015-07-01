@@ -24,6 +24,7 @@ import com.mawujun.baseinfo.WorkUnitService;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 import com.mawujun.shiro.ShiroUtils;
+import com.mawujun.user.UserService;
 import com.mawujun.utils.M;
 import com.mawujun.utils.page.Page;
 
@@ -47,6 +48,8 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 	private EquipmentStoreRepository equipmentStoreRepository;
 	@Autowired
 	private EquipmentWorkunitRepository equipmentWorkunitRepository;
+	@Autowired
+	private UserService userService;
 	@Autowired
 	private WorkUnitService workUnitService;
 	@Autowired
@@ -121,7 +124,9 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 	}
 	
 	public InstallOutVO getInstallOutVO(String installOut_id){
-		return outStoreRepository.getInstallOutVO(installOut_id);
+		InstallOutVO installOutVO= outStoreRepository.getInstallOutVO(installOut_id);
+		installOutVO.setOperater_name(userService.get(installOutVO.getOperater()).getName());
+		return installOutVO;
 	}
 	public List<InstallOutListVO> queryList(String installOut_id) {
 

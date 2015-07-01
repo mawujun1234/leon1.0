@@ -8,6 +8,7 @@ public class BorrowListVO extends BorrowList {
 	private String subtype_name;
 	private String prod_name;
 	private String prod_spec;
+	private String prod_unit;
 	private String brand_name;
 	private String supplier_name;
 	private String style;
@@ -55,5 +56,13 @@ public class BorrowListVO extends BorrowList {
 	}
 	public void setStyle(String style) {
 		this.style = style;
+	}
+
+	public String getProd_unit() {
+		return prod_unit;
+	}
+
+	public void setProd_unit(String prod_unit) {
+		this.prod_unit = prod_unit;
 	}
 }

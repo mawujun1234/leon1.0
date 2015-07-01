@@ -185,7 +185,18 @@ Ext.define('Ems.install.BorrowGrid',{
 				//me.store.reload();
 				me.store.loadPage(1);
 			}
-		  }]
+		  },{
+			text:'打印',
+			icon:'../icons/printer.png',
+			handler:function(){
+				var record=me.getSelectionModel().getLastSelected();
+				if(!record){
+					alert("请先选择一个借用单!");
+					return;
+				}
+				window.open("/borrow/equipmentOutStorePrint.do?borrow_id="+record.get("id"),"_blank");
+			}
+		}]
 		}]
 	   };
 	  me.store.load();

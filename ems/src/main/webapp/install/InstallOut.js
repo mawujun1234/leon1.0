@@ -14,6 +14,7 @@ Ext.defineModel("Ems.install.InstallOut",{
 		
 		{name:'project_name',type:'string'},
 		{name:'store_name',type:'string'},
+		{name:'operater_name',type:'string'},
 		{name:'workUnit_name',type:'string'}
 	],
 	associations:[

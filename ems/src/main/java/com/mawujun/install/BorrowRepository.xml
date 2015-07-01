@@ -53,15 +53,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     </select>
     
     <select id="getBorrowVO" resultType="com.mawujun.install.BorrowVO" parameterType="string">
-    	select a.*,b.name as store_name.c.name as workunit_name,d.name as project_name 
+    	select a.*,b.name as store_name,c.name as workunit_name,d.name as project_name 
     	from ems_borrow a
     	inner join ems_store b on a.store_id=b.id
     	inner join ems_workUnit c on a.workUnit_id=c.id
-    	inner join project_id d on a.project_id=d.id
-    	where a.id==#{installOut_id}
+    	inner join ems_project d on a.project_id=d.id
+    	where a.id=#{borrow_id}
     </select>
     <select id="queryList" resultType="com.mawujun.install.BorrowListVO" parameterType="string">
-    	select a.*,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name from 
+    	select a.*,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,c.unit as prod_unit,d.name as brand_name,e.name as supplier_name from 
     	(select f.*,a.subtype_id,a.prod_id,a.brand_id,a.supplier_id,a.style from ems_equipment a inner join ems_borrowlist f on a.ecode=f.ecode and f.borrow_id=#{borrow_id}) a
 		inner join ems_equipmentsubtype b on a.subtype_id=b.id
 		inner join ems_equipmentprod c on a.prod_id=c.id

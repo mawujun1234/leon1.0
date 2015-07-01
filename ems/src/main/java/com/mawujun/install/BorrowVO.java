@@ -4,6 +4,7 @@ public class BorrowVO extends Borrow {
 	private String store_name;
 	private String workUnit_name;
 	private String project_name;
+	private String operater_name;
 	
 	public String getStore_name() {
 		return store_name;
@@ -22,5 +23,11 @@ public class BorrowVO extends Borrow {
 	}
 	public void setProject_name(String project_name) {
 		this.project_name = project_name;
+	}
+	public String getOperater_name() {
+		return operater_name;
+	}
+	public void setOperater_name(String operater_name) {
+		this.operater_name = operater_name;
 	}
 }

@@ -193,7 +193,18 @@ Ext.define('Ems.install.InstallOutGrid',{
 				//me.store.reload();
 				me.store.loadPage(1);
 			}
-		  }]
+		  },{
+			text:'打印',
+			icon:'../icons/printer.png',
+			handler:function(){
+				var record=me.getSelectionModel().getLastSelected();
+				if(!record){
+					alert("请先选择一个领用单!");
+					return;
+				}
+				window.open("/installOut/equipmentOutStorePrint.do?installOut_id="+record.get("id"),"_blank");
+			}
+		}]
 		}]
 	   };
 	  me.store.load();

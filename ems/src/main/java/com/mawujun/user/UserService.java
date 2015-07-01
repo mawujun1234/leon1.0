@@ -11,6 +11,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mawujun.baseinfo.WorkUnit;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.repository1.IRepository;
@@ -31,6 +32,16 @@ public class UserService  extends AbstractService<User, String>{
 		return userRepository;
 	}
 	
+	private HashMap<String,User> users_cache=new HashMap<String,User>();
+	@Override
+	public User get(String id) {
+		User user=users_cache.get(id);
+		if(user==null){
+			return userRepository.get(id);
+		} else {
+			return user;
+		}
+	}
 	public User getByUsername(String username){
 		return userRepository.getByUsername(username);
 	}

@@ -1,8 +1,27 @@
 package com.mawujun.install;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimplePdfReportConfiguration;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -71,25 +90,57 @@ public class BorrowController {
 	//public String equipOutStore(@RequestBody Equipment[] equipments,String store_id,String workUnit_id,String type,String memo) {
 	public String equipOutStore(@RequestBody Equipment[] equipments, Borrow borrow) { 
 		//inStoreService.newInStore(equipments);
-		borrowService.borrow(equipments, borrow);
-		return "success";
+		String borrow_id=borrowService.borrow(equipments, borrow);
+		return borrow_id;
 	}
-	
+	SimpleDateFormat yyyyMMdd=new SimpleDateFormat("yyyy-MM-dd");
 	/**
 	 * 打印借用单
 	 * @author mawujun 16064988@qq.com 
 	 * @param equipments
 	 * @return
 	 * @throws IOException
+	 * @throws JRException 
 	 */
 	@RequestMapping("/borrow/equipmentOutStorePrint.do")
 	@ResponseBody
 	//public String equipOutStore(@RequestBody Equipment[] equipments,String store_id,String workUnit_id,String type,String memo) {
-	public String equipmentOutStorePrint(String borrow_id) {
-		BorrowVO borrow=borrowService.getBorrowVO(borrow_id);
+	public void equipmentOutStorePrint(HttpServletRequest request,HttpServletResponse response,String borrow_id) throws IOException, JRException {
+		BorrowVO borrowVO=borrowService.getBorrowVO(borrow_id);
+		Map<String,Object> params=new HashMap<String,Object>();
+		params.put("project_name", borrowVO.getProject_name()); 
+		params.put("borrow_id", borrowVO.getId());  
+		params.put("workunit_name", borrowVO.getWorkUnit_name()); 
+		params.put("operater_name", borrowVO.getOperater_name());//仓管姓名
+		params.put("operateDate", yyyyMMdd.format(borrowVO.getOperateDate()));
 		List<BorrowListVO> borrowListVOs=borrowService.queryList(borrow_id);
+		
+		
+		JRBeanCollectionDataSource dataSource=new JRBeanCollectionDataSource(borrowListVOs);
+		
 
-		return "success";
+		
+		
+		String JASPER_FILE_NAME=request.getSession().getServletContext().getRealPath("/install/report/borrow.jasper");
+		//JasperReport jasperReport = (JasperReport)JRLoader.loadObject(JASPER_FILE_NAME);
+		File reportFile=new File(JASPER_FILE_NAME);
+		InputStream in=new FileInputStream(reportFile);
+		JasperPrint print = JasperFillManager.fillReport(in, params, dataSource);
+		
+		response.setContentType("application/pdf;charset=UTF-8");
+		OutputStream outputStream=response.getOutputStream();
+		JRPdfExporter exporter = new JRPdfExporter(); 
+		SimpleOutputStreamExporterOutput simpleOutputStreamExporterOutput=new SimpleOutputStreamExporterOutput(outputStream);
+		exporter.setExporterOutput(simpleOutputStreamExporterOutput);
+		
+		SimplePdfReportConfiguration simplePdfReportConfiguration=new SimplePdfReportConfiguration();
+		exporter.setConfiguration(simplePdfReportConfiguration);
+		
+		SimpleExporterInput simpleExporterInput=new SimpleExporterInput(print);
+		exporter.setExporterInput(simpleExporterInput);
+		// 导出
+		exporter.exportReport();
+		outputStream.close();
 	}
 	
 	/**
