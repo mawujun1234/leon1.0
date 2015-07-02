@@ -299,7 +299,7 @@ Ext.define('Ems.repair.RepairInGrid',{
 
        
 	
-	  me.on('itemdblclick',me.recordDbclick);
+	 // me.on('itemdblclick',me.recordDbclick);
       me.callParent();
 	},
 	recordDbclick:function(view, record){

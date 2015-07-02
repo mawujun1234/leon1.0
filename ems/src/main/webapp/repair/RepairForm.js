@@ -113,6 +113,7 @@ Ext.define('Ems.repair.RepairForm',{
                         name: 'rpa_user_id',
                         fieldLabel: '维修人',
                         flex: 1,
+                        editable:false,
                         afterLabelTextTpl: Ext.required,
                         xtype:'combobox',
                         displayField: 'name',

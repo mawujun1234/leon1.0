@@ -50,8 +50,10 @@ public class RepairService extends AbstractService<Repair, String>{
 
 	@Autowired
 	private RepairRepository repairRepository;
+//	@Autowired
+//	private StoreRepository storeRepository;
 	@Autowired
-	private StoreRepository storeRepository;
+	private StoreService storeService;
 	@Autowired
 	private EquipmentRepository equipmentRepository;
 	@Autowired
@@ -156,52 +158,82 @@ public class RepairService extends AbstractService<Repair, String>{
 //		newRepair(repairs);
 	}
 	public Page storeMgrQuery(Page page){
-		List<Store> stores=storeRepository.queryAll();
+		//List<Store> stores=storeRepository.queryAll();
 		Page results=repairRepository.storeMgrQuery(page);
 		List<RepairVO> list=results.getResult();
 		for(RepairVO repairVO:list){
-			for(Store store:stores){
-				if(store.getId().equals(repairVO.getStr_out_id())){
-					repairVO.setStr_out_name(store.getName());
-				} else if(store.getId().equals(repairVO.getRpa_id())){
-					repairVO.setRpa_name(store.getName());
-				} else if(store.getId().equals(repairVO.getStr_in_id())){
-					repairVO.setStr_in_name(store.getName());
-				}
+//			for(Store store:stores){
+//				if(store.getId().equals(repairVO.getStr_out_id())){
+//					repairVO.setStr_out_name(store.getName());
+//				} else if(store.getId().equals(repairVO.getRpa_id())){
+//					repairVO.setRpa_name(store.getName());
+//				} else if(store.getId().equals(repairVO.getStr_in_id())){
+//					repairVO.setStr_in_name(store.getName());
+//				}
+//			}
+			if(storeService.get(repairVO.getStr_out_id())!=null){
+				repairVO.setStr_out_name(storeService.get(repairVO.getStr_out_id()).getName());
 			}
+			if(storeService.get(repairVO.getRpa_id())!=null){
+				repairVO.setRpa_name(storeService.get(repairVO.getRpa_id()).getName());
+			}
+			if(storeService.get(repairVO.getStr_in_id())!=null){
+				repairVO.setStr_in_name(storeService.get(repairVO.getStr_in_id()).getName());
+			}
+			
+			
+			
 		}
 		return results;
 	}
 	public Page repairInQuery(Page page){
-		List<Store> stores=storeRepository.queryAll();
+		//List<Store> stores=storeRepository.queryAll();
 		Page results=repairRepository.repairInQuery(page);
 		List<RepairVO> list=results.getResult();
 		for(RepairVO repairVO:list){
-			for(Store store:stores){
-				if(store.getId().equals(repairVO.getStr_out_id())){
-					repairVO.setStr_out_name(store.getName());
-				} else if(store.getId().equals(repairVO.getRpa_id())){
-					repairVO.setRpa_name(store.getName());
-				} else if(store.getId().equals(repairVO.getStr_in_id())){
-					repairVO.setStr_in_name(store.getName());
-				}
+//			for(Store store:stores){
+//				if(store.getId().equals(repairVO.getStr_out_id())){
+//					repairVO.setStr_out_name(store.getName());
+//				} else if(store.getId().equals(repairVO.getRpa_id())){
+//					repairVO.setRpa_name(store.getName());
+//				} else if(store.getId().equals(repairVO.getStr_in_id())){
+//					repairVO.setStr_in_name(store.getName());
+//				}
+//			}
+			if(storeService.get(repairVO.getStr_out_id())!=null){
+				repairVO.setStr_out_name(storeService.get(repairVO.getStr_out_id()).getName());
+			}
+			if(storeService.get(repairVO.getRpa_id())!=null){
+				repairVO.setRpa_name(storeService.get(repairVO.getRpa_id()).getName());
+			}
+			if(storeService.get(repairVO.getStr_in_id())!=null){
+				repairVO.setStr_in_name(storeService.get(repairVO.getStr_in_id()).getName());
 			}
 		}
 		return results;
 	}
 	public Page repairMgrQuery(Page page){
-		List<Store> stores=storeRepository.queryAll();
+		//List<Store> stores=storeRepository.queryAll();
 		Page results=repairRepository.repairMgrQuery(page);
 		List<RepairVO> list=results.getResult();
 		for(RepairVO repairVO:list){
-			for(Store store:stores){
-				if(store.getId().equals(repairVO.getStr_out_id())){
-					repairVO.setStr_out_name(store.getName());
-				} else if(store.getId().equals(repairVO.getRpa_id())){
-					repairVO.setRpa_name(store.getName());
-				} else if(store.getId().equals(repairVO.getStr_in_id())){
-					repairVO.setStr_in_name(store.getName());
-				}
+//			for(Store store:stores){
+//				if(store.getId().equals(repairVO.getStr_out_id())){
+//					repairVO.setStr_out_name(store.getName());
+//				} else if(store.getId().equals(repairVO.getRpa_id())){
+//					repairVO.setRpa_name(store.getName());
+//				} else if(store.getId().equals(repairVO.getStr_in_id())){
+//					repairVO.setStr_in_name(store.getName());
+//				}
+//			}
+			if(storeService.get(repairVO.getStr_out_id())!=null){
+				repairVO.setStr_out_name(storeService.get(repairVO.getStr_out_id()).getName());
+			}
+			if(storeService.get(repairVO.getRpa_id())!=null){
+				repairVO.setRpa_name(storeService.get(repairVO.getRpa_id()).getName());
+			}
+			if(storeService.get(repairVO.getStr_in_id())!=null){
+				repairVO.setStr_in_name(storeService.get(repairVO.getStr_in_id()).getName());
 			}
 		}
 		return results;

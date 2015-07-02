@@ -32,9 +32,11 @@ public class RepairVO extends Repair {
 
 	public String getStatus_name() {
 		if(this.getStatus()!=null){
-			this.getStatus().getName();
+			return this.getStatus().getName();
+		} else {
+			return null;
 		}
-		return null;
+		
 	}
 	public String getEquipment_status_name() {
 		if(equipment_status==null){

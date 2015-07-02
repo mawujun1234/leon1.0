@@ -159,7 +159,7 @@ public class RepairController {
 			,String ecode,RepairStatus status){
 		Page page=Page.getInstance(start,limit);//.addParam(M.Repair.sampleName, "%"+sampleName+"%");
 		page.addParam("str_out_id", str_out_id).addParam("rpa_id", rpa_id).addParam("str_out_date_start", str_out_date_start).addParam("str_out_date_end", str_out_date_end)
-		.addParam("ecode", ecode).addParam("status", status);
+		.addParam("ecode", ecode).addParam("status", RepairStatus.to_repair);
 		page.addParam("user_id", ShiroUtils.getAuthenticationInfo().getId());
 		return repairService.repairInQuery(page);
 	}
