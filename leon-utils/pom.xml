@@ -9,7 +9,6 @@
   </parent>
   <groupId>com.mawujun</groupId>
   <artifactId>leon-utils</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
   <name>leon-utils</name>
   <url>http://maven.apache.org</url>
   <properties>
