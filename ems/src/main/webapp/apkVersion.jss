@@ -1,1 +1,1 @@
-{verCode:113,verName:"1.1.3",changelog:" 1:修正删除条码时的兼容性问题.\n2:把保存按钮变成返回按钮。"}
+{verCode:114,verName:"1.1.4",changelog:" 1:修正维修任务原因模板选择的兼容性问题。"}

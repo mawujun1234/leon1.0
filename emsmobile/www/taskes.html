@@ -694,12 +694,12 @@ $(document).ready(function(e) {
         	<label  for="memo">任务描述:</label>
     		<textarea readonly  id="page_repair_memo" placeholder="只读" data-mini="true"></textarea>
          </div>	
-         <select name="select-choice-a" id="select-choice-hitchType" data-native-menu="false">
-        	<option>请选择故障类型</option>
+         <select name="select-choice-a" id="select-choice-hitchType">
+        	<option selected value="0">请选择故障类型</option>
         </select>
 
-        <select name="select-choice-a" id="select-choice-hitchReasonTpl" data-native-menu="false">
-        	<option>请选择原因模板</option>
+        <select name="select-choice-a" id="select-choice-hitchReasonTpl" >
+        	<option selected value="0">请选择原因模板</option>
         </select>
         <textarea  name="textarea" id="textarea-hitchReasonTpl" placeholder="请填写设备故障原因情况"></textarea>
          <a href="#" class="ui-btn ui-corner-all actionbutton" name="scan_button">扫描设备</a>
@@ -711,6 +711,7 @@ $(document).ready(function(e) {
             
             <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="submitTask">提交</button>
             <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="saveTask">保存</button>
+            <a href="#page_homepage" class="ui-btn ui-corner-all ui-btn-inline" data-rel="back" data-theme="c">返回</a>
          </div>
 	</div>
     <script type="text/javascript">
@@ -723,14 +724,14 @@ $(document).ready(function(e) {
 			for(var i=0;i<hitchTypes.length;i++){
 				html+='<option value="'+hitchTypes[i].id+'">'+hitchTypes[i].name+'</option>';
 			}
-			$("#select-choice-hitchType").append(html).trigger("create");;
+			$("#select-choice-hitchType").append(html);//.trigger("create");;
 			var hitchReasonTples=$.tasks.getHitchReasonTpl();
 			hitchReasonTples=hitchReasonTples==null?[]:hitchReasonTples;
 			html="";
 			for(var i=0;i<hitchReasonTples.length;i++){
 				html+='<option value="'+hitchReasonTples[i].id+'">'+hitchReasonTples[i].name+'</option>';
 			}
-			$("#select-choice-hitchReasonTpl").append(html).trigger("create");
+			$("#select-choice-hitchReasonTpl").append(html);//.trigger("create");
 			
 			$("#select-choice-hitchReasonTpl").change(function(e){
 				for(var i=0;i<hitchReasonTples.length;i++){
@@ -873,12 +874,12 @@ $(document).ready(function(e) {
 		
 		if(taskInfoParam.type=='repair'){
 			var hitchType_id=$("#select-choice-hitchType").val();
-			if(!hitchType_id){
+			if("0"==hitchType_id){
 				alert("请先选故障类型");
 				return false;
 			}
 			var hitchReasonTpl_id=$("#select-choice-hitchReasonTpl").val();
-			if(!hitchReasonTpl_id){
+			if("0"==hitchReasonTpl_id){
 				alert("请先选故障原因模板!");
 				return false;
 			}
@@ -989,8 +990,16 @@ $(document).ready(function(e) {
 		
 		//渲染损坏类型和损坏原因
 		if(obj.type=="repair"){
-			$("#select-choice-hitchType").val(obj.hitchType_id).selectmenu( "refresh" );
-			$("#select-choice-hitchReasonTpl").val(obj.hitchReasonTpl_id).selectmenu( "refresh" );
+			if(obj.hitchType_id){
+				$("#select-choice-hitchType").val(obj.hitchType_id).selectmenu( "refresh" );
+			} else {
+				$("#select-choice-hitchType").val("0").selectmenu( "refresh" );
+			}
+			if(obj.hitchReasonTpl_id){
+				$("#select-choice-hitchReasonTpl").val(obj.hitchReasonTpl_id).selectmenu( "refresh" );
+			}else {
+				$("#select-choice-hitchReasonTpl").val("0").selectmenu( "refresh" );
+			}
 			$("#textarea-hitchReasonTpl").val(obj.hitchReason);
 		}
 		
@@ -1112,7 +1121,7 @@ $(document).ready(function(e) {
 	});
 	$("button[name='saveTask']").click(function(event){
 	  	saveTask();
-		history.back();
+		//history.back();
 	});
 	$("button[name='submitTask']").click(function(event){
 	  	submitTask();

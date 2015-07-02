@@ -588,6 +588,12 @@ public class TaskService extends AbstractService<Task, String>{
 	 * @return
 	 */
 	public void mobile_save(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason) {
+		if(hitchType_id==0){
+			throw new BusinessException("请选择故障类型");
+		}
+		if(hitchReasonTpl_id==0){
+			throw new BusinessException("请选择故障原因模板");
+		}
 		
 		Task task=taskRepository.get(task_id);
 		

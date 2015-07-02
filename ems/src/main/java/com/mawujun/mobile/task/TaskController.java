@@ -244,6 +244,9 @@ public class TaskController {
 	@RequestMapping("/task/mobile/queryTaskEquipmentInfos.do")
 	@ResponseBody
 	public Map<String,Object> mobile_queryTaskEquipmentInfos(String task_id){
+		if(!StringUtils.hasText(task_id)){
+			throw new BusinessException("请先选择一个任务!");
+		}
 		
 		List<TaskEquipmentListVO> equipmentVOs=taskService.mobile_queryTaskEquipmentInfos(task_id);
 		Task task=taskService.get(task_id);
