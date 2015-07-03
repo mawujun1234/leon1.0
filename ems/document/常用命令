@@ -16,7 +16,7 @@
 	grant dba,connect,resource to ems;
 	
 	
-	imp ems/ems@ems   file=E:\eclipse\workspace\leon\ems\document\dmp\daochu0626test.dmp fromuser=emstest touser=ems
+	imp ems/ems@ems   file=E:\eclipse\workspace\leon\ems\document\dmp\daochu0703test.dmp fromuser=emstest touser=ems
 =====================================================================================================测试库的更新
 		drop user emstest cascade;
 	create user emstest identified by emstest;

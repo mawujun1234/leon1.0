@@ -381,6 +381,15 @@ public class TaskService extends AbstractService<Task, String>{
 				.andEquals(M.Equipment.ecode, ecode));
 	}
 	public TaskEquipmentListVO mobile_getAndCreateTaskEquipmentList(String ecode,String task_id,TaskType task_type,String pole_id){
+		
+		EquipmentWorkunitPK equipmentWorkunitPK = new EquipmentWorkunitPK();
+		equipmentWorkunitPK.setEcode(ecode);
+		equipmentWorkunitPK.setWorkunit_id(ShiroUtils.getUserId());
+		EquipmentWorkunit equipmentWorkunit=equipmentWorkunitRepository.get(equipmentWorkunitPK);
+		if(equipmentWorkunit==null){
+			throw new BusinessException(ecode+"不在该作业单位手上!");
+		}
+		
 		EquipmentVO equipmentVO=equipmentService.getEquipmentInfo(ecode);
 		if(equipmentVO==null){
 			throw new BusinessException("没有这个设备");
@@ -588,10 +597,12 @@ public class TaskService extends AbstractService<Task, String>{
 	 * @return
 	 */
 	public void mobile_save(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason) {
-		if(hitchType_id==0){
+		//hitchType_id=0 表示是维修任务传递过来的
+		if(hitchType_id!=null && hitchType_id==0){
 			throw new BusinessException("请选择故障类型");
 		}
-		if(hitchReasonTpl_id==0){
+		//hitchType_id=0 表示是维修任务传递过来的
+		if(hitchReasonTpl_id!=null && hitchReasonTpl_id==0){
 			throw new BusinessException("请选择故障原因模板");
 		}
 		
@@ -902,6 +913,9 @@ public class TaskService extends AbstractService<Task, String>{
 		equipmentWorkunitPK.setEcode(ecode);
 		equipmentWorkunitPK.setWorkunit_id(workunit_id);
 		EquipmentWorkunit equipmentWorkunit=equipmentWorkunitRepository.get(equipmentWorkunitPK);
+		if(equipmentWorkunit==null){
+			throw new BusinessException(ecode+"不在该作业单位手上!");
+		}
 		//表示这个设备是领用出来的，那就把该设备变成是领用的
 		if(equipmentWorkunit.getType()==EquipmentWorkunitType.installout ){
 			outStoreRepository.changeInstallOutListType2installout(equipmentWorkunit.getType_id(), ecode);
