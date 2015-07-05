@@ -43,6 +43,8 @@ public class Adjust implements IdEntity<String>{
 	@Column(length=20)
 	private AdjustType adjustType=AdjustType.borrow;//是借用还是领用的调拨单
 	
+	@Column(length=36)
+	private String adjust_id_borrow;//对应要归还的id,结果来后要归还的那张单据的id
 	
 	
 	public String getId() {
@@ -108,6 +110,12 @@ public class Adjust implements IdEntity<String>{
 	}
 	public void setStatus(AdjustStatus status) {
 		this.status = status;
+	}
+	public String getAdjust_id_borrow() {
+		return adjust_id_borrow;
+	}
+	public void setAdjust_id_borrow(String adjust_id_borrow) {
+		this.adjust_id_borrow = adjust_id_borrow;
 	}
 
 

@@ -11,6 +11,7 @@ public static final class ems_adjust {
 	public static final String str_in_oper_id="str_in_oper_id";
 	public static final String memo="memo";
 	public static final String adjustType="adjustType";
+	public static final String adjust_id_borrow="adjust_id_borrow";
 }
 public static final class ems_adjustlist {
 	public static final String adjust_id="adjust_id";
@@ -18,6 +19,9 @@ public static final class ems_adjustlist {
 	public static final String isnew="isnew";
 	public static final String adjustListStatus="adjustListStatus";
 	public static final String indate="indate";
+	public static final String adjust_id_returnback="adjust_id_returnback";
+	public static final String ecode_returnback="ecode_returnback";
+	public static final String prod_id="prod_id";
 	public static final String id="id";
 }
 public static final class ems_area {

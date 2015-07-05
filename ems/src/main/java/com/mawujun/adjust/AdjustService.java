@@ -97,6 +97,7 @@ public class AdjustService extends AbstractService<Adjust, String>{
 	 */
 	public void adjuestReturn(Adjust adjust,AdjustList[] adjuestLists,String adjust_id_borrow) {
 		adjust.setAdjustType(AdjustType.returnback);
+		adjust.setAdjust_id_borrow(adjust_id_borrow);
 		Adjust adjust_borrow=adjustRepository.get(adjust_id_borrow);
 		//先判断调拨单是不是借用单
 		if(adjust_borrow.getAdjustType()!=AdjustType.borrow){
@@ -119,6 +120,8 @@ public class AdjustService extends AbstractService<Adjust, String>{
 			throw new BusinessException(adjust_id_borrow+"还有"+adjustlist_borrowes.size()+"件没归还,但现在扫描了"+adjuestLists.length+"件");
 		}
 		
+		//新建调拨单
+		newAdjuest( adjust, adjuestLists);
 		//进行设备品名的判断，如果不是同个品名，是不能归还的
 		boolean exists_prod=false;
 		AdjustList exists_adjustList_borrow=null;
@@ -135,7 +138,10 @@ public class AdjustService extends AbstractService<Adjust, String>{
 			
 			if(exists_prod){
 				adjustlist_borrowes.remove(exists_adjustList_borrow);
-	sdfsdf
+				//更新出借方明细单上的数据
+				adjustListRepository.update(Cnd.update().set(M.AdjustList.adjust_id_returnback, adjust.getId())
+						.set(M.AdjustList.ecode_returnback, adjuestList.getEcode())
+						.andEquals(M.AdjustList.id,exists_adjustList_borrow.getId()));kk
 			} else {
 				throw new BusinessException(adjuestList.getEcode()+"该条码的设备的品名不对,在借用单中已经不存在该品名需要归还!");
 			}
@@ -146,8 +152,7 @@ public class AdjustService extends AbstractService<Adjust, String>{
 		//如果该调拨单已经全部归还，变更借用单的状态为over
 		//如果该调拨单还没有全部归还，则修改调拨单状态为partreturn
 		
-		//新建调拨单
-		newAdjuest( adjust, adjuestLists);
+		
 	}
 	public Page query4InStore(Page page){
 		//List<Store> stores=storeRepository.queryAll();

@@ -36,8 +36,9 @@ public class AdjustList extends UUIDEntity{
 	
 	
 	//下面两个字段只有在AdjustType.borrow的时候有值
+	//和主表中的adjust_id_borrow是相反的，这个有值，adjust_id_borrow就没有值
 	@Column(length=36)
-	private String adjust_id_returnback;//归还单的id，存在多次归还，所以放在这里了
+	private String adjust_id_returnback;//归还单明细的id，存在多次归还，所以放在这里了
 	@Column(length=25)
 	private String ecode_returnback;//归还单的条码
 	
@@ -80,17 +81,18 @@ public class AdjustList extends UUIDEntity{
 	public void setProd_id(String prod_id) {
 		this.prod_id = prod_id;
 	}
-	public String getAdjust_id_returnback() {
-		return adjust_id_returnback;
-	}
-	public void setAdjust_id_returnback(String adjust_id_returnback) {
-		this.adjust_id_returnback = adjust_id_returnback;
-	}
+
 	public String getEcode_returnback() {
 		return ecode_returnback;
 	}
 	public void setEcode_returnback(String ecode_returnback) {
 		this.ecode_returnback = ecode_returnback;
+	}
+	public String getAdjust_id_returnback() {
+		return adjust_id_returnback;
+	}
+	public void setAdjust_id_returnback(String adjust_id_returnback) {
+		this.adjust_id_returnback = adjust_id_returnback;
 	}
 
 
