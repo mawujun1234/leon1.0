@@ -27,6 +27,8 @@ public class BorrowList  extends UUIDEntity{
 	private String ecode;//设备编码
 	@org.hibernate.annotations.Type(type="yes_no")
 	private Boolean isReturn=false;//是否已经归还,如果是领用了(任务提交的时间)，那也是true
+	@org.hibernate.annotations.Type(type="yes_no")
+	private Boolean isnew=false;//
 
 	private Date returnDate;//归还时间。领用时间(任务提交的时间)
 	@Enumerated(EnumType.STRING)
@@ -83,6 +85,14 @@ public class BorrowList  extends UUIDEntity{
 
 	public void setBorrowListType(BorrowListType borrowListType) {
 		this.borrowListType = borrowListType;
+	}
+
+	public Boolean getIsnew() {
+		return isnew;
+	}
+
+	public void setIsnew(Boolean isnew) {
+		this.isnew = isnew;
 	}
 	
 }

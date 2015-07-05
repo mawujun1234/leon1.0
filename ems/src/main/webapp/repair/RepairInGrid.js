@@ -202,7 +202,7 @@ Ext.define('Ems.repair.RepairInGrid',{
 	 
 	 var ecode_textfield=Ext.create('Ext.form.field.Text',{
 		labelAlign:'right',
-		name:'encode',
+		name:'ecode',
 		labelWidth:60,
 		width:230,
 		//disabled:true,

@@ -35,4 +35,7 @@ public interface UserRepository extends IRepository<User, String> {
 	 
 	 
 	 public List<UserStore> selectAllCheckedStore(String user_id);
+	 
+	 
+	 public int check_edit_store_permission(@Param("user_id")String user_id,@Param("store_id")String store_id);
 }

@@ -89,7 +89,7 @@ Ext.onReady(function(){
 	});
 	var ecode_textfield=Ext.create('Ext.form.field.Text',{
 		labelAlign:'right',
-		name:'encode',
+		name:'ecode',
 		fieldLabel: '输入设备条码',
 		minLength:Ext.ecode_length,
 		maxLength:Ext.ecode_length,
@@ -176,7 +176,7 @@ Ext.onReady(function(){
 			  // form.load({
 		   	Ext.Ajax.request({
 					params : {ecode:newValue,store_id:store_out_combox.getValue()},//传递参数   
-					url : Ext.ContextPath+'/adjust/getAdjustVOByEcode.do',//请求的url地址   
+					url : Ext.ContextPath+'/adjust/getAdjustListVOByEcode.do',//请求的url地址   
 					method : 'GET',//请求方式   
 					success : function(response) {//加载成功的处理函数   
 						var ret=Ext.decode(response.responseText);
@@ -256,7 +256,7 @@ Ext.onReady(function(){
     	          {header: '品名', dataIndex: 'prod_name'},
     	          {header: '品牌', dataIndex: 'brand_name',width:120},
     	          {header: '供应商', dataIndex: 'supplier_name'},
-    	          {header: '设备型号', dataIndex: 'equipment_style',width:120},
+    	          {header: '设备型号', dataIndex: 'prod_style',width:120},
     	          {header:'规格',dataIndex:'prod_spec',minWidth:100,flex:1,renderer:function(value,metadata,record){
 						metadata.tdAttr = "data-qtip='" + value+ "'";
 					    return value;
@@ -303,7 +303,7 @@ Ext.onReady(function(){
         {html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;一次调拨出库只能选择一个仓库'}],
         buttons:[{text:'调拨出库',handler:function(btn){
             if (equipStore.getCount()> 0) { 
-            	Ext.getBody().mask("正在入库....");
+            	Ext.getBody().mask("正在执行....");
             	var equipments = new Array();
             	equipStore.each(function(record){
             		equipments.push(record.data);

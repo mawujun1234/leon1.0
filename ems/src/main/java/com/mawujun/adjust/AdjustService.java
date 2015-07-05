@@ -8,33 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.mawujun.repair.RepairVO;
-import com.mawujun.repository.cnd.Cnd;
-import com.mawujun.service.AbstractService;
-import com.mawujun.shiro.ShiroUtils;
-import com.mawujun.utils.BeanUtils;
-import com.mawujun.utils.M;
-import com.mawujun.utils.Params;
-import com.mawujun.utils.page.Page;
-import com.mawujun.adjust.Adjust;
-import com.mawujun.adjust.AdjustRepository;
 import com.mawujun.baseinfo.EquipmentPlace;
 import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.EquipmentStatus;
@@ -44,7 +19,14 @@ import com.mawujun.baseinfo.EquipmentStoreRepository;
 import com.mawujun.baseinfo.EquipmentStoreType;
 import com.mawujun.baseinfo.Store;
 import com.mawujun.baseinfo.StoreRepository;
+import com.mawujun.baseinfo.StoreService;
 import com.mawujun.exception.BusinessException;
+import com.mawujun.repository.cnd.Cnd;
+import com.mawujun.service.AbstractService;
+import com.mawujun.shiro.ShiroUtils;
+import com.mawujun.user.UserRepository;
+import com.mawujun.utils.M;
+import com.mawujun.utils.page.Page;
 
 
 /**
@@ -64,9 +46,12 @@ public class AdjustService extends AbstractService<Adjust, String>{
 	private EquipmentRepository equipmentRepository;
 	@Autowired
 	private EquipmentStoreRepository equipmentStoreRepository;
+//	@Autowired
+//	private StoreRepository storeRepository;
 	@Autowired
-	private StoreRepository storeRepository;
-	
+	private StoreService storeService;
+	@Autowired
+	private UserRepository userRepository; 
 	SimpleDateFormat ymdHmsDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
 	
 	@Override
@@ -74,8 +59,8 @@ public class AdjustService extends AbstractService<Adjust, String>{
 		return adjustRepository;
 	}
 	
-	public AdjustListVO getAdjustVOByEcode(String ecode,String store_id) {
-		return adjustRepository.getAdjustVOByEcode(ecode, store_id);
+	public AdjustListVO getAdjustListVOByEcode(String ecode,String store_id) {
+		return adjustRepository.getAdjustListVOByEcode(ecode, store_id);
 	}
 	
 	public void newAdjuest(Adjust adjust,AdjustList[] adjuestLists) {
@@ -103,27 +88,93 @@ public class AdjustService extends AbstractService<Adjust, String>{
 		}
 		//
 	}
-	
-	public Page query4InStr(Page page){
-		List<Store> stores=storeRepository.queryAll();
+	/**
+	 * 设备归还
+	 * @author mawujun 16064988@qq.com 
+	 * @param adjust
+	 * @param adjuestLists
+	 * @param adjust_id_borrow
+	 */
+	public void adjuestReturn(Adjust adjust,AdjustList[] adjuestLists,String adjust_id_borrow) {
+		adjust.setAdjustType(AdjustType.returnback);
+		Adjust adjust_borrow=adjustRepository.get(adjust_id_borrow);
+		//先判断调拨单是不是借用单
+		if(adjust_borrow.getAdjustType()!=AdjustType.borrow){
+			throw new BusinessException("你选择的调拨单不是借用类型!");
+		}
 		
-		Page results=adjustRepository.query4InStr(page);
-		List<AdjustVO> list=results.getResult();
-		for(AdjustVO adjustVO:list){
-			for(Store store:stores){
-				if(store.getId().equals(adjustVO.getStr_out_id())){
-					adjustVO.setStr_out_name(store.getName());
-				} else if(store.getId().equals(adjustVO.getStr_in_id())){
-					adjustVO.setStr_in_name(store.getName());
+		if(adjust_borrow.getStatus()==AdjustStatus.over){
+			throw new BusinessException("该调拨单已经全部归还，不能再归还了!");
+		}
+		
+		if(adjust_borrow.getStatus()==AdjustStatus.noallin || adjust_borrow.getStatus()==AdjustStatus.carry){
+			throw new BusinessException("该调拨单还没有完全接收，不能进行归还操作!");
+		}
+
+		//查处所有未归还的明细数据,就是已入库状态的 明细数据
+		List<AdjustList> adjustlist_borrowes=adjustRepository.query_borrow_in_adjustList(adjust_id_borrow);
+		//如果扫描的数量超过了未归还借用设备的数量，就给出提示，设备过多了
+		//注意当对某个借用单进行多次归还的时候，注意判断
+		if(adjuestLists.length>adjustlist_borrowes.size()){
+			throw new BusinessException(adjust_id_borrow+"还有"+adjustlist_borrowes.size()+"件没归还,但现在扫描了"+adjuestLists.length+"件");
+		}
+		
+		//进行设备品名的判断，如果不是同个品名，是不能归还的
+		boolean exists_prod=false;
+		AdjustList exists_adjustList_borrow=null;
+		for(AdjustList adjuestList:adjuestLists){
+			exists_prod=false;
+			for(AdjustList  aa:adjustlist_borrowes){
+				//表示有相同的品名
+				if(aa.getProd_id().equals(adjuestList.getProd_id())){
+					exists_prod=true;
+					exists_adjustList_borrow=aa;
+					break;
 				}
 			}
+			
+			if(exists_prod){
+				adjustlist_borrowes.remove(exists_adjustList_borrow);
+	sdfsdf
+			} else {
+				throw new BusinessException(adjuestList.getEcode()+"该条码的设备的品名不对,在借用单中已经不存在该品名需要归还!");
+			}
+		}
+				
+		//修改调拨单明细状态为 returnback 已归还
+		
+		//如果该调拨单已经全部归还，变更借用单的状态为over
+		//如果该调拨单还没有全部归还，则修改调拨单状态为partreturn
+		
+		//新建调拨单
+		newAdjuest( adjust, adjuestLists);
+	}
+	public Page query4InStore(Page page){
+		//List<Store> stores=storeRepository.queryAll();
+		
+		Page results=adjustRepository.query4InStore(page);
+		List<AdjustVO> list=results.getResult();
+		for(AdjustVO adjustVO:list){
+			if(storeService.get(adjustVO.getStr_out_id())!=null){
+				adjustVO.setStr_out_name(storeService.get(adjustVO.getStr_out_id()).getName());
+			}
+			if(storeService.get(adjustVO.getStr_in_id())!=null){
+				adjustVO.setStr_in_name(storeService.get(adjustVO.getStr_in_id()).getName());
+			}
+//			for(Store store:stores){
+//				if(store.getId().equals(adjustVO.getStr_out_id())){
+//					adjustVO.setStr_out_name(store.getName());
+//				} else if(store.getId().equals(adjustVO.getStr_in_id())){
+//					adjustVO.setStr_in_name(store.getName());
+//				}
+//			}
 		}
 		return results;
 	}
 	
 	
-	public List<AdjustListVO> query4InStrList(String adjust_id) {
-		return adjustRepository.query4InStrList(adjust_id);
+	public List<AdjustListVO> query4InStoreList(String adjust_id) {
+		return adjustRepository.query4InStoreList(adjust_id);
 	}
 	/**
 	 * 当按部分入库按钮的时候，并且判断当入库数和实际要入库数一样的时候，就当做事全部入库，走的是就是全部入库的路线了
@@ -175,10 +226,9 @@ public class AdjustService extends AbstractService<Adjust, String>{
 		}
 		//这个时候就表示是都选择了，修改整个调拨单的状态
 		//Long in_num_total=(Long)adjustListRepository.querySum(Cnd.sum(M.AdjustList.in_num).andEquals(M.AdjustList.adjust_id, adjust_id));
-		//还有仓库迁移要做
+		//还有仓库迁移要做,如果明确是丢失的设备，那这个借用单也算是
 		Long in_num_total=(Long)adjustListRepository.queryCount(Cnd.sum(M.AdjustList.id)
-				.andEquals(M.AdjustList.adjust_id, adjust_id).andIn(M.AdjustList.adjustListStatus, AdjustListStatus.in.toString(),AdjustListStatus.installout.toString()));
-		
+				.andEquals(M.AdjustList.adjust_id, adjust_id).andIn(M.AdjustList.adjustListStatus, AdjustListStatus.in.toString(),AdjustListStatus.lost.toString()));
 		
 		//if(adjustRepository.sumInnumByadjust_id(adjust_id)==out_num_total){
 		//入的数量和出的数量
@@ -214,37 +264,64 @@ public class AdjustService extends AbstractService<Adjust, String>{
 //	}
 	
 	public Page queryPage(Page page) {
-		List<Store> stores=storeRepository.queryAll();
+		//List<Store> stores=storeRepository.queryAll();
 		
 		Page results=adjustRepository.queryPage(page);
 		List<AdjustVO> list=results.getResult();
 		for(AdjustVO adjustVO:list){
-			for(Store store:stores){
-				if(store.getId().equals(adjustVO.getStr_out_id())){
-					adjustVO.setStr_out_name(store.getName());
-				} else if(store.getId().equals(adjustVO.getStr_in_id())){
-					adjustVO.setStr_in_name(store.getName());
-				}
+//			for(Store store:stores){
+//				if(store.getId().equals(adjustVO.getStr_out_id())){
+//					adjustVO.setStr_out_name(store.getName());
+//				} else if(store.getId().equals(adjustVO.getStr_in_id())){
+//					adjustVO.setStr_in_name(store.getName());
+//				}
+//			}
+			if(storeService.get(adjustVO.getStr_out_id())!=null){
+				adjustVO.setStr_out_name(storeService.get(adjustVO.getStr_out_id()).getName());
+			}
+			if(storeService.get(adjustVO.getStr_in_id())!=null){
+				adjustVO.setStr_in_name(storeService.get(adjustVO.getStr_in_id()).getName());
 			}
 		}
 		return results;
 	}
 	public List<AdjustListVO> queryList(String adjust_id) {
-		return adjustRepository.query4InStrList(adjust_id);
+		return adjustRepository.query4InStoreList(adjust_id);
 	}
 
-	
+	/**
+	 * 只有在途和noreturn状态的调拨单才可以转
+	 * @author mawujun 16064988@qq.com 
+	 * @param adjust_id
+	 */
 	public void change2installout(String adjust_id) {
 		Adjust adjust=adjustRepository.get(adjust_id);
 		//入过本来就是领用单，就不进行转换
 		if(adjust.getAdjustType()==AdjustType.installout){
-			return;
+			throw new BusinessException("该调拨单已经是领用单，不需要转!");
 		}
 		
-		//入过该借用单已经有过入库了，那也不能转换
+		//如果该借用单已经有过入库了，但还有一部分设备没有入库的时候，那是不能转的，先把那部分设备处理掉
+		if(adjust.getStatus()==AdjustStatus.noallin){
+			throw new BusinessException("设备还没有完全入库，请先完全入库后，再转为领用!");
+		}
+		//已经有部分归还的，也不能转
+		if(adjust.getStatus()==AdjustStatus.partreturn){
+			throw new BusinessException("设备已经部分归还，不能转为领用!");
+		}
 		
-		//入过当前用户没有权限操作这个仓库，那也不能转换
+		//如果已经结束了，也不能转
+		if(adjust.getStatus()==AdjustStatus.over){
+			throw new BusinessException("该调拨单已经结束，不能转为领用!");
+		}
 		
-		//同时把明细单的所有状态，改成 install_out
+		//入过当前用户没有权限操作这个仓库，那也不能转换,只有发货仓库才有这个权限
+		if(userRepository.check_edit_store_permission(ShiroUtils.getUserId(), adjust.getStr_out_id())<=0){
+			throw new BusinessException("你不是发货仓库，没有权限把该调拨单转换为领用单!");
+		}
+		
+		adjust.setAdjustType(AdjustType.installout);
+		adjust.setStatus(AdjustStatus.over);
+		adjustRepository.update(adjust);
 	}
 }

@@ -123,4 +123,8 @@
 		and
 		a.user_id=#{user_id}
 	</select>
+	<!-- 检查某个用书是否具有 编辑 仓库的去权限-->
+	<select id="check_edit_store_permission" resultType="int">
+		select count(*) from sys_userstore where user_id=#{user_id} and store_id=#{store_id} and edit='Y'
+	</select>
 </mapper>

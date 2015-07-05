@@ -7,7 +7,9 @@ Ext.defineModel("Ems.adjust.AdjustList",{
 		{name:'ecode',type:'string'},
 		{name:'in_num',type:'int'},
 		{name:'out_num',type:'int'},
-		{name:'adjustListStatus',type:'string'},
+		{name:'out_num',type:'int'},
+		{name:'isnew',type:'bool'},
+		{name:'prod_id',type:'string'},
 		
 		{name:'adjustListStatus_name',type:'string'},
 		{name:'brand_name',type:'string'},
@@ -15,8 +17,7 @@ Ext.defineModel("Ems.adjust.AdjustList",{
 		{name:'prod_spec',type:'string'},
 		{name:'subtype_name',type:'string'},
 		{name:'supplier_name',type:'string'},
-		{name:'equipment_style',type:'string'},
-		{name:'equipment_status',type:'int'}
+		{name:'prod_style',type:'string'}
 	],
 	associations:[
 	]

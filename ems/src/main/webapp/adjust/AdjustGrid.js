@@ -126,7 +126,7 @@ Ext.define('Ems.adjust.AdjustGrid',{
 	        allowBlank: false,
 	        store:Ext.create('Ext.data.Store', {
 		    	fields: ['id', 'name'],
-			    data:[{id:"",name:"所有"},{id:"carry",name:"在途"},{id:"noallin",name:"未全入"},{id:"noreturn",name:"未归还"},{id:"over",name:"完成"}]//,{id:"edit",name:"编辑中"}
+			    data:[{id:"",name:"所有"},{id:"carry",name:"在途"},{id:"noallin",name:"未全入"},{id:"noreturn",name:"未归还"},{id:"partreturn",name:"部分归还"},{id:"over",name:"完成"}]//,{id:"edit",name:"编辑中"}
 		   })
 	  }); 
 	  
@@ -145,21 +145,30 @@ Ext.define('Ems.adjust.AdjustGrid',{
 	var chang2installout=Ext.create('Ext.button.Button',{
 		text:'借转领',
 		handler:function(){
-			alert("还未完成");
-			return;
 			var record=me.getSelectionModel().getLastSelected();
 			if(!record){
 				return;
 			}
-			Ext.Ajax.request({
-				url:Ext.ContextPath+'/adjust/change2installout.do',
-				method:'POST',
-				params:{},
-				success:function(response){
-					me.store.reload();
-				}
 			
+			Ext.Msg.confirm("消息","确定要把该借用类型调拨单，转换为领用类型吗?",function(btn){
+				if(btn=='yes'){
+				Ext.getBody().mask("正在执行....");
+				Ext.Ajax.request({
+					url:Ext.ContextPath+'/adjust/change2installout.do',
+					method:'POST',
+					params:{adjust_id:record.get("id")},
+					success:function(response){
+						me.store.reload();
+						Ext.getBody().unmask();
+					},
+					failure:function(){
+						Ext.getBody().unmask();
+					}
+				
+				});
+				}
 			});
+			
 		}
 	});
 	  me.tbar={
@@ -179,8 +188,8 @@ Ext.define('Ems.adjust.AdjustGrid',{
 				//me.store.reload();
 				me.store.loadPage(1);
 			}
-		  }] 
-		},chang2installout]
+		  },chang2installout] 
+		}]
 	   };
 	   me.store.load();
 

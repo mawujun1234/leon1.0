@@ -21,9 +21,13 @@ public class InstallInList  extends UUIDEntity {
 	private String ecode;//设备编码
 	@org.hibernate.annotations.Type(type="yes_no")
 	private Boolean isBad=false;//在返回的时候，设备是否已经损坏	
+	
+	@org.hibernate.annotations.Type(type="yes_no")
+	private Boolean isnew=false;//
+	
 	@Enumerated(EnumType.STRING)
 	@Column(length=20)
-	private InstallInListType type;
+	private InstallInListType installInListType;//返回的设备是领用出去，没使用就马上返回 ，还是从点位上拆下来返回的设备
 	@Column(length=36)
 	private String installout_id;//如果type是领用返回，那这个id就是领用单的id，否则就为null
 	
@@ -47,16 +51,22 @@ public class InstallInList  extends UUIDEntity {
 	public void setIsBad(Boolean isBad) {
 		this.isBad = isBad;
 	}
-	public InstallInListType getType() {
-		return type;
+	public InstallInListType getInstallInListType() {
+		return installInListType;
 	}
-	public void setType(InstallInListType type) {
-		this.type = type;
+	public void setInstallInListType(InstallInListType type) {
+		this.installInListType = type;
 	}
 	public String getInstallout_id() {
 		return installout_id;
 	}
 	public void setInstallout_id(String installout_id) {
 		this.installout_id = installout_id;
+	}
+	public Boolean getIsnew() {
+		return isnew;
+	}
+	public void setIsnew(Boolean isnew) {
+		this.isnew = isnew;
 	}
 }

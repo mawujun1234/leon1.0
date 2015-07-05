@@ -5,8 +5,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
 <mapper namespace="com.mawujun.adjust.AdjustRepository">
-	<select id="getAdjustVOByEcode" resultType="com.mawujun.adjust.AdjustListVO" parameterType="java.lang.String">
-    	select a.ecode,a.style as equipment_style,a.status as equipment_status,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name
+	<select id="getAdjustListVOByEcode" resultType="com.mawujun.adjust.AdjustListVO" parameterType="java.lang.String">
+    	select a.isnew,a.prod_id,a.ecode,c.style as prod_style,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name
     	from ems_equipment a
 		inner join ems_equipmentsubtype b on a.subtype_id=b.id
 		inner join ems_equipmentprod c on a.prod_id=c.id
@@ -16,15 +16,17 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		where a.ecode=#{ecode} and f.store_id=#{store_id} 
     </select> 
     
-
-	<select id="query4InStr" resultType="com.mawujun.adjust.AdjustVO" parameterType="map">
+	<!-- 仓库入库的时候查询-->
+	<select id="query4InStore" resultType="com.mawujun.adjust.AdjustVO" parameterType="map">
 		select a.* from ems_adjust a where (a.status='carry' or a.status='noallin')
 		and a.str_in_id in (select store_id from sys_userstore c where c.user_id=#{user_id} and c.edit='Y')
 	</select>
 	
+	<!--
+	 -->
 	<!-- 获取调拨单明细-->
-	<select id="query4InStrList" resultType="com.mawujun.adjust.AdjustListVO" parameterType="java.lang.String">
-    	select f.*,a.style as equipment_style,a.status as equipment_status,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name 
+	<select id="query4InStoreList" resultType="com.mawujun.adjust.AdjustListVO" parameterType="java.lang.String">
+    	select f.*,b.name as subtype_name,c.id as prod_id,c.name as prod_name,c.style as prod_style,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name 
     	from ems_equipment a
 		inner join ems_equipmentsubtype b on a.subtype_id=b.id
 		inner join ems_equipmentprod c on a.prod_id=c.id
@@ -32,13 +34,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		inner join ems_supplier e on a.supplier_id=e.id
 		inner join ems_adjustlist f on a.ecode=f.ecode
 		where f.adjust_id=#{adjust_id}
-		
-    </select> 
-    
+    </select>
+    <!-- 
     <select id="sumInnumByadjust_id" resultType="long"  parameterType="java.lang.String">
     	select sum(in_num) from ems_adjustlist where adjust_id=#{adjust_id}
     </select>
-    
+    -->
     <select id="queryPage" resultType="com.mawujun.adjust.AdjustVO" parameterType="map">
 		select a.* from ems_adjust a
 		<where>
@@ -60,5 +61,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			</if>
 		</where>
 	</select>
+	
+	<!-- 查询类型为借用类型的未归还的调拨单的明细-->
+	<select id="query_borrow_in_adjustList" resultType="com.mawujun.adjust.AdjustList" parameterType="java.lang.String">
+    	select f.*,a.prod_id
+    	from ems_equipment a
+		inner join ems_adjustlist f on a.ecode=f.ecode
+		where f.adjust_id=#{adjust_id} and f.adjustListStatus='in'
+		
+    </select> 
 </mapper>
 

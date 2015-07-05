@@ -19,11 +19,14 @@ public class InstallOutList  extends UUIDEntity {
 	private String installOut_id;//入库单id
 	@Column(length=25)
 	private String ecode;//设备编码
-	
+	//在领用的时候时候是新设备
+	@org.hibernate.annotations.Type(type="yes_no")
+	private Boolean isnew=false;//
 	//默认为借用，当任务提交后，该设备就变成领用
+	//这个设备最终是被领用的还是借用的，判断条件是是否归还，即在返还的时候判断该设备是否正常归还了
 	@Enumerated(EnumType.STRING)
 	@Column(length=20)
-	private InstallOutListType installOutListType=InstallOutListType.borrow; //这个设备最终是被领用的还是借用的，判断条件是是否归还，即在返还的时候判断该设备是否正常归还了
+	private InstallOutListType installOutListType=InstallOutListType.borrow; 
 	
 	@Column(length=36)
 	private String installOutType_id;//领用类型的id,是损坏领用，还是被盗领用
@@ -51,6 +54,12 @@ public class InstallOutList  extends UUIDEntity {
 	}
 	public void setInstallOutListType(InstallOutListType installOutListType) {
 		this.installOutListType = installOutListType;
+	}
+	public Boolean getIsnew() {
+		return isnew;
+	}
+	public void setIsnew(Boolean isnew) {
+		this.isnew = isnew;
 	}
 
 }

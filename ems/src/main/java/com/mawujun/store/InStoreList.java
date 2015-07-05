@@ -16,7 +16,7 @@ public class InStoreList extends UUIDEntity {
 	@Column(length=15)
 	private String inStore_id;//入库单id
 	@Column(length=25)
-	private String encode;//设备编码
+	private String ecode;//设备编码
 	
 	
 	public String getInStore_id() {
@@ -26,10 +26,10 @@ public class InStoreList extends UUIDEntity {
 		this.inStore_id = inStore_id;
 	}
 	public String getEncode() {
-		return encode;
+		return ecode;
 	}
-	public void setEncode(String encode) {
-		this.encode = encode;
+	public void setEcode(String ecode) {
+		this.ecode = ecode;
 	}
 	
 

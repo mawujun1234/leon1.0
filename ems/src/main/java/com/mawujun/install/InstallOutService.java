@@ -113,6 +113,8 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 			//记录设备入库的生命周期
 			equipmentCycleService.logEquipmentCycle(inStoreList.getEcode(), OperateType.install_out, outstore_id,TargetType.workunit,outStore.getWorkUnit_id());
 		}
+		
+		
 		return outstore_id;
 	}
 	

@@ -13,9 +13,9 @@ import com.mawujun.repository.idEntity.IdEntity;
  * @author mawujun 16064988@qq.com  
  *
  */
-@Entity
-@Table(name="ems_dayinventory")
-@IdClass(DayInventory_PK.class)  
+//@Entity
+//@Table(name="ems_dayinventory")
+//@IdClass(DayInventory_PK.class)  
 public class DayInventory  implements IdEntity<DayInventory_PK>{
 	@Id
 	@Column(length=8)

@@ -15,6 +15,7 @@ public static final class ems_adjust {
 public static final class ems_adjustlist {
 	public static final String adjust_id="adjust_id";
 	public static final String ecode="ecode";
+	public static final String isnew="isnew";
 	public static final String adjustListStatus="adjustListStatus";
 	public static final String indate="indate";
 	public static final String id="id";
@@ -233,6 +234,7 @@ public static final class ems_borrowlist {
 	public static final String borrow_id="borrow_id";
 	public static final String ecode="ecode";
 	public static final String isReturn="isReturn";
+	public static final String isnew="isnew";
 	public static final String returnDate="returnDate";
 	public static final String borrowListType="borrowListType";
 	public static final String memo="memo";
@@ -251,7 +253,8 @@ public static final class ems_installinlist {
 	public static final String installIn_id="installIn_id";
 	public static final String ecode="ecode";
 	public static final String isBad="isBad";
-	public static final String type="type";
+	public static final String isnew="isnew";
+	public static final String installInListType="installInListType";
 	public static final String installout_id="installout_id";
 	public static final String id="id";
 }
@@ -268,6 +271,7 @@ public static final class ems_installout {
 public static final class ems_installoutlist {
 	public static final String installOut_id="installOut_id";
 	public static final String ecode="ecode";
+	public static final String isnew="isnew";
 	public static final String installOutListType="installOutListType";
 	public static final String installOutType_id="installOutType_id";
 	public static final String id="id";
@@ -277,16 +281,11 @@ public static final class ems_installouttype {
 	public static final String memo="memo";
 	public static final String id="id";
 }
-public static final class ems_dayinventory {
+public static final class report_day_sparepart {
 	public static final String daykey="daykey";
-	public static final String subtype_id="subtype_id";
 	public static final String prod_id="prod_id";
-	public static final String brand_id="brand_id";
-	public static final String style="style";
 	public static final String store_id="store_id";
-	public static final String store_type="store_type";
 	public static final String fixednum="fixednum";
-	public static final String lastnum="lastnum";
 	public static final String purchasenum="purchasenum";
 	public static final String oldnum="oldnum";
 	public static final String installoutnum="installoutnum";
@@ -295,81 +294,7 @@ public static final class ems_dayinventory {
 	public static final String repairoutnum="repairoutnum";
 	public static final String adjustoutnum="adjustoutnum";
 	public static final String adjustinnum="adjustinnum";
-	public static final String nownum="nownum";
-	public static final String nownum_query="nownum_query";
-	public static final String supplementnum="supplementnum";
-	public static final String memo="memo";
-}
-public static final class ems_dayinventorybak {
-	public static final String version="version";
-	public static final String daykey="daykey";
-	public static final String subtype_id="subtype_id";
-	public static final String prod_id="prod_id";
-	public static final String brand_id="brand_id";
-	public static final String style="style";
-	public static final String store_id="store_id";
-	public static final String store_type="store_type";
-	public static final String fixednum="fixednum";
-	public static final String lastnum="lastnum";
-	public static final String purchasenum="purchasenum";
-	public static final String oldnum="oldnum";
-	public static final String installoutnum="installoutnum";
-	public static final String repairinnum="repairinnum";
-	public static final String scrapoutnum="scrapoutnum";
-	public static final String repairoutnum="repairoutnum";
-	public static final String adjustoutnum="adjustoutnum";
-	public static final String adjustinnum="adjustinnum";
-	public static final String nownum="nownum";
-	public static final String nownum_query="nownum_query";
-	public static final String supplementnum="supplementnum";
-	public static final String memo="memo";
-}
-public static final class ems_monthinventory {
-	public static final String monthkey="monthkey";
-	public static final String subtype_id="subtype_id";
-	public static final String prod_id="prod_id";
-	public static final String brand_id="brand_id";
-	public static final String style="style";
-	public static final String store_id="store_id";
-	public static final String store_type="store_type";
-	public static final String fixednum="fixednum";
-	public static final String lastnum="lastnum";
-	public static final String purchasenum="purchasenum";
-	public static final String oldnum="oldnum";
-	public static final String installoutnum="installoutnum";
-	public static final String repairinnum="repairinnum";
-	public static final String scrapoutnum="scrapoutnum";
-	public static final String repairoutnum="repairoutnum";
-	public static final String adjustoutnum="adjustoutnum";
-	public static final String adjustinnum="adjustinnum";
-	public static final String nownum="nownum";
-	public static final String nownum_query="nownum_query";
-	public static final String supplementnum="supplementnum";
-	public static final String memo="memo";
-}
-public static final class ems_monthinventorybak {
-	public static final String version="version";
-	public static final String monthkey="monthkey";
-	public static final String subtype_id="subtype_id";
-	public static final String prod_id="prod_id";
-	public static final String brand_id="brand_id";
-	public static final String style="style";
-	public static final String store_id="store_id";
-	public static final String store_type="store_type";
-	public static final String fixednum="fixednum";
-	public static final String lastnum="lastnum";
-	public static final String purchasenum="purchasenum";
-	public static final String oldnum="oldnum";
-	public static final String installoutnum="installoutnum";
-	public static final String repairinnum="repairinnum";
-	public static final String scrapoutnum="scrapoutnum";
-	public static final String repairoutnum="repairoutnum";
-	public static final String adjustoutnum="adjustoutnum";
-	public static final String adjustinnum="adjustinnum";
-	public static final String nownum="nownum";
-	public static final String nownum_query="nownum_query";
-	public static final String supplementnum="supplementnum";
-	public static final String memo="memo";
+	public static final String createDate="createDate";
 }
 public static final class ems_metaversion {
 	public static final String clasName="clasName";
@@ -511,7 +436,7 @@ public static final class ems_instore {
 }
 public static final class ems_instorelist {
 	public static final String inStore_id="inStore_id";
-	public static final String encode="encode";
+	public static final String ecode="ecode";
 	public static final String id="id";
 }
 public static final class ems_order {

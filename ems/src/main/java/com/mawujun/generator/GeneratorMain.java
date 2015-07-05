@@ -5,14 +5,6 @@ import java.io.IOException;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.mawujun.baseinfo.EquipmentCycle;
-import com.mawujun.baseinfo.Project;
-import com.mawujun.install.Borrow;
-import com.mawujun.install.BorrowList;
-import com.mawujun.install.InstallIn;
-import com.mawujun.install.InstallInList;
-import com.mawujun.install.InstallOutType;
-import com.mawujun.inventory.DayInventoryVO;
-import com.mawujun.store.OrderList;
 
 import freemarker.template.TemplateException;
 /**

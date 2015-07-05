@@ -6,7 +6,7 @@ package com.mawujun.adjust;
  *
  */
 public enum AdjustType {
-	installout("领用"),borrow("借用");
+	installout("领用"),borrow("借用"),returnback("归还");
 	
 	private String name;
 	AdjustType(String name){

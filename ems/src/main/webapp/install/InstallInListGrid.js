@@ -21,7 +21,7 @@ Ext.define('Ems.install.InstallInListGrid',{
 		//{dataIndex:'installIn_id',text:'installIn_id'},
 		//{dataIndex:'isBad',text:'isBad'},
 		{dataIndex:'ecode',text:'条码'},
-		{header: '返回类型', dataIndex: 'type_name'},
+		{header: '返回类型', dataIndex: 'installInListType_name'},
 		//{dataIndex:'installIn_id',text:'installIn_id'},
 		//{dataIndex:'isBad',text:'isBad'}
 		{dataIndex:'subtype_name',text:'小类'},

@@ -3,7 +3,7 @@ Ext.defineModel("Ems.store.InStoreList",{
 	idProperty:'id',
 	fields:[
 		{name:'id',type:'string'},
-		{name:'encode',type:'string'},
+		{name:'ecode',type:'string'},
 		{name:'inStore_id',type:'string'},
 		
 		{name:'subtype_name',type:'string'},

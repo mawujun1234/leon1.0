@@ -161,7 +161,7 @@ Ext.onReady(function(){
 	
 	var ecode_textfield=Ext.create('Ext.form.field.Text',{
 		labelAlign:'right',
-		name:'encode',
+		name:'ecode',
 		fieldLabel: '输入设备条码',
 		minLength:Ext.ecode_length,
 		maxLength:Ext.ecode_length,

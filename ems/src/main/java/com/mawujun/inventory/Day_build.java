@@ -14,7 +14,7 @@ import com.mawujun.repository.idEntity.IdEntity;
  *
  */
 //@Entity
-//@Table(name="ems_day_build")
+//@Table(name="report_day_build")
 //@IdClass(Day_build_PK.class)  
 public class Day_build  implements IdEntity<Day_build_PK>{
 	@Id

@@ -7,9 +7,9 @@ public class InstallInListVO extends InstallInList {
 	private String brand_name;
 	private String supplier_name;
 	private String style;
-	public String getType_name() {
-		if(this.getType()!=null){
-			return this.getType().getName();
+	public String getInstallInListType_name() {
+		if(this.getInstallInListType()!=null){
+			return this.getInstallInListType().getName();
 		}else {
 			return null;
 		}

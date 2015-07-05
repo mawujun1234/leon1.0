@@ -95,25 +95,14 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 		}
 		//如果是领用出去，然后直接返回的
 		if(equipmentWorkunit.getType()==EquipmentWorkunitType.installout){
-			equipment.setType(InstallInListType.intallout);
+			//如果领出去然后直接返回时，这个设备还是挂在workunit中，并且最新的单据还是领用单
+			equipment.setInstallInListType(InstallInListType.intallout);
 			equipment.setInstallout_id(equipmentWorkunit.getType_id());
 		} else {
-			equipment.setType(InstallInListType.other);
+			equipment.setInstallInListType(InstallInListType.other);
 		}
 
 		return equipment;
-
-//		if(equipment==null){
-//			//equipment=new Equipment();
-//			//equipment.setStatus(0);
-//			throw new BusinessException("该条码对应的设备不存在，或者该设备挂在其他作业单位或已经入库了!");
-//		}
-//		//设备返库的时候，设备如果不是手持或损坏状态的话，就不能进行返库，说明任务没有扫描或者没有提交
-//		if(equipment.getStatus()!=EquipmentStatus.out_storage ){
-//			throw new BusinessException("设备状态不对,不是作业单位手中持有的设备!");
-//		}
-//		d
-//		return equipment;
 	}
 	
 	/**
@@ -175,6 +164,8 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 			equipmentWorkunitPK.setEcode(list.getEcode());
 			equipmentWorkunitPK.setWorkunit_id(installin.getWorkUnit_id());
 			equipmentWorkunitRepository.deleteById(equipmentWorkunitPK);
+			
+			//这里没有修改InstallOutList中的InstallOutListType为借用或领用，因为默认借用单和领用单的明细都是借用，只有在真正使用之后才会变成领用
 			
 			//添加明细
 			installInListRepository.create(list);

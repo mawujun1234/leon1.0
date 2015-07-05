@@ -60,7 +60,7 @@ Ext.define('Ems.adjust.AdjustListGrid',{
 //	  
 //	  var ecode_textfield=Ext.create('Ext.form.field.Text',{
 //		labelAlign:'right',
-//		name:'encode',
+//		name:'ecode',
 //		fieldLabel: '扫码选择',
 //		minLength:Ext.ecode_length,
 //		maxLength:Ext.ecode_length,

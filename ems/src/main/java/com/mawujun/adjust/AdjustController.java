@@ -88,44 +88,11 @@ public class AdjustController {
 		return adjustService.queryList(adjust_id);
 	}
 	
-
-//	@RequestMapping("/adjust/load.do")
-//	public Adjust load(String id) {
-//		return adjustService.get(id);
-//	}
-//	
-//	@RequestMapping("/adjust/create.do")
-//	@ResponseBody
-//	public Adjust create(@RequestBody Adjust adjust) {
-//		adjustService.create(adjust);
-//		return adjust;
-//	}
-//	
-//	@RequestMapping("/adjust/update.do")
-//	@ResponseBody
-//	public  Adjust update(@RequestBody Adjust adjust) {
-//		adjustService.update(adjust);
-//		return adjust;
-//	}
-//	
-//	@RequestMapping("/adjust/deleteById.do")
-//	@ResponseBody
-//	public String deleteById(String id) {
-//		adjustService.deleteById(id);
-//		return id;
-//	}
-//	
-//	@RequestMapping("/adjust/destroy.do")
-//	@ResponseBody
-//	public Adjust destroy(@RequestBody Adjust adjust) {
-//		adjustService.delete(adjust);
-//		return adjust;
-//	}
 	
-	@RequestMapping("/adjust/getAdjustVOByEcode.do")
+	@RequestMapping("/adjust/getAdjustListVOByEcode.do")
 	@ResponseBody
-	public AdjustListVO getAdjustVOByEcode(String ecode,String store_id) {	
-		AdjustListVO repairvo= adjustService.getAdjustVOByEcode(ecode,store_id);
+	public AdjustListVO getAdjustListVOByEcode(String ecode,String store_id) {	
+		AdjustListVO repairvo= adjustService.getAdjustListVOByEcode(ecode,store_id);
 		if(repairvo==null){
 			throw new BusinessException("对不起，该条码对应的设备不存在，或者该设备挂在其他仓库中!");
 		}
@@ -151,7 +118,7 @@ public class AdjustController {
 	public Page query4InStr(Integer start,Integer limit) {	
 		Page page=Page.getInstance(start,limit);	
 		page.addParam("user_id", ShiroUtils.getAuthenticationInfo().getId());
-		return adjustService.query4InStr(page);
+		return adjustService.query4InStore(page);
 	}
 	/**
 	 * 在调拨入库的时候，获取调拨单明细
@@ -163,7 +130,7 @@ public class AdjustController {
 	@ResponseBody
 	public List<AdjustListVO> query4InStrList(String adjust_id) {	
 		
-		return adjustService.query4InStrList(adjust_id);
+		return adjustService.query4InStoreList(adjust_id);
 	}
 	
 	/**
@@ -192,5 +159,18 @@ public class AdjustController {
 		 return "成功";
 	}
 	
-	
+	/**
+	 * 调拨单归还，把设备归还给原来的仓库
+	 * @author mawujun 16064988@qq.com 
+	 * @param adjust
+	 * @param adjuestLists
+	 * @param adjust_id_borrow 被归还的调拨单id
+	 * @return
+	 */
+	@RequestMapping("/adjust/adjuestReturn.do")
+	@ResponseBody
+	public String adjuestReturn(Adjust adjust,@RequestBody AdjustList[] adjuestLists,String adjust_id_borrow) {
+		adjustService.adjuestReturn(adjust,adjuestLists,adjust_id_borrow);
+		return "success";
+	}
 }

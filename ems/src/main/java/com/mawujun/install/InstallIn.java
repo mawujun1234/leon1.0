@@ -30,7 +30,7 @@ public class InstallIn   implements IdEntity<String>{
 	private String workUnit_id;//作业单位
 	@Enumerated(EnumType.STRING)
 	@Column(length=15)
-	private InstallInType type;//好件入库 还是坏件入库
+	private InstallInType type;//好件入库 还是坏件入库,这个只是现在使用的，最好不要用它做条件，因为以后可能把这个字段取消掉
 	@Column(length=100)
 	private String memo;
 	

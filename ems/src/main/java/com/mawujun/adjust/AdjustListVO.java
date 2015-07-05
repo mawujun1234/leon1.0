@@ -2,13 +2,15 @@ package com.mawujun.adjust;
 
 
 public class AdjustListVO extends AdjustList {
+	
+	
 	private String brand_name;
 	private String prod_name;
 	private String prod_spec;
 	private String subtype_name;
 	private String supplier_name;
-	private String equipment_style;
-	private String equipment_status;
+	private String prod_style;
+	//private String equipment_status;
 	
 	public String getAdjustListStatus_name() {
 		if(this.getAdjustListStatus()!=null){
@@ -42,23 +44,22 @@ public class AdjustListVO extends AdjustList {
 	public void setSupplier_name(String supplier_name) {
 		this.supplier_name = supplier_name;
 	}
-	public String getEquipment_style() {
-		return equipment_style;
-	}
-	public void setEquipment_style(String equipment_style) {
-		this.equipment_style = equipment_style;
-	}
-	public String getEquipment_status() {
-		return equipment_status;
-	}
-	public void setEquipment_status(String equipment_status) {
-		this.equipment_status = equipment_status;
-	}
 	public String getProd_spec() {
 		return prod_spec;
 	}
 	public void setProd_spec(String prod_spec) {
 		this.prod_spec = prod_spec;
 	}
+
+
+	public String getProd_style() {
+		return prod_style;
+	}
+
+
+	public void setProd_style(String prod_style) {
+		this.prod_style = prod_style;
+	}
+
 
 }

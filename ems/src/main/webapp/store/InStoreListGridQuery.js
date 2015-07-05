@@ -24,7 +24,7 @@ Ext.define('Ems.store.InStoreListGridQuery',{
 	initComponent: function () {
       var me = this;
       me.columns=[
-		{dataIndex:'encode',text:'条码',width:120},
+		{dataIndex:'ecode',text:'条码',width:120},
 		{dataIndex:'subtype_name',text:'小类'},
 		{dataIndex:'prod_name',text:'品名'},
 		{dataIndex:'brand_name',text:'品牌'},
