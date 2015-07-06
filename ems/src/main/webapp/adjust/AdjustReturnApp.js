@@ -76,7 +76,7 @@ Ext.onReady(function(){
 	});
 	//要归还的借用单的id
 	var adjust_id_borrow_textfield=Ext.create('Ext.form.field.Text',{
-		fieldLabel: '调拨单单号',
+		fieldLabel: '借用调拨单号',
 	        name: 'adjust_id_borrow',
 	        allowBlank:false,
 		    value:''
@@ -91,7 +91,7 @@ Ext.onReady(function(){
 		selectOnFocus:true,
 		labelWidth:80,
 		width:250,
-		allowBlank:false,
+		//allowBlank:false,
 		listeners:{
 			blur:function(f,e){
 				if(!f.getValue()||f.getValue()==''){
@@ -209,7 +209,7 @@ Ext.onReady(function(){
 //						ecode_textfield.clearInvalid( );
 //					}
 				});
-		   }
+		   } 
 		}else{
 			//form.reset();
 		}
@@ -250,7 +250,7 @@ Ext.onReady(function(){
     	          {header: '品名', dataIndex: 'prod_name'},
     	          {header: '品牌', dataIndex: 'brand_name',width:120},
     	          {header: '供应商', dataIndex: 'supplier_name'},
-    	          {header: '设备型号', dataIndex: 'equipment_style',width:120},
+    	          {header: '设备型号', dataIndex: 'prod_style',width:120},
     	          {header:'规格',dataIndex:'prod_spec',minWidth:100,flex:1,renderer:function(value,metadata,record){
 						metadata.tdAttr = "data-qtip='" + value+ "'";
 					    return value;
@@ -295,8 +295,14 @@ Ext.onReady(function(){
         {html:'<HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=3>'},
         //{html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;库房人员应当根据采购单，对设备分类后，一次对同类设备批量“添加”入库，直到所有采购单设备根据设备类型都已经“添加”到入库清单后，可以选择“下一步”，进入到二维码生成步骤'}],
         {html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;一次调拨出库只能选择一个仓库'}],
-        buttons:[{text:'调拨出库',handler:function(btn){
-            if (equipStore.getCount()> 0) { 
+        buttons:[{text:'归还',handler:function(btn){
+            if (equipStore.getCount()> 0) {
+            	var form= step1.down('form').getForm();
+	        	if(!form.isValid()){
+	        		alert("请在出现红框的地方选择值!");
+	        		return;
+	        	}
+
             	Ext.getBody().mask("正在执行....");
             	var equipments = new Array();
             	equipStore.each(function(record){

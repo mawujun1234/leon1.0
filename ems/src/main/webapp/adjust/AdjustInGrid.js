@@ -18,6 +18,7 @@ Ext.define('Ems.adjust.AdjustInGrid',{
       me.columns=[
 		{dataIndex:'id',text:'单号'},
 		{dataIndex:'status_name',text:'状态',width:60},
+		{dataIndex:'adjustType_name',text:'类型',width:60},
 		{dataIndex: 'str_out_name',text: '出库仓库'},
     	{dataIndex: 'str_in_name',text: '入库仓库'},
     	{dataIndex:'str_out_date',text:'出库时间',xtype: 'datecolumn',   format:'Y-m-d',width:80},

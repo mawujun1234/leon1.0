@@ -73,7 +73,7 @@ public class TaskService extends AbstractService<Task, String>{
 	private HitchTypeRepository hitchTypeRepository;
 	
 	@Autowired
-	private InstallOutRepository outStoreRepository;
+	private InstallOutRepository installOutRepository;
 	@Autowired
 	private BorrowRepository borrowRepository;
 	
@@ -918,7 +918,7 @@ public class TaskService extends AbstractService<Task, String>{
 		}
 		//表示这个设备是领用出来的，那就把该设备变成是领用的
 		if(equipmentWorkunit.getType()==EquipmentWorkunitType.installout ){
-			outStoreRepository.changeInstallOutListType2installout(equipmentWorkunit.getType_id(), ecode);
+			installOutRepository.changeInstallOutListType2installout(equipmentWorkunit.getType_id(), ecode);
 		}
 		if(equipmentWorkunit.getType()==EquipmentWorkunitType.borrow){
 			borrowRepository.changeBorrowListType2installout(equipmentWorkunit.getType_id(), ecode);

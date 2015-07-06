@@ -38,7 +38,12 @@ public class Order extends UUIDEntity {
 	@Column(length=3)
 	private String supplier_id;//供应商id
 	
-	
+	public void setOrderNo(String orderNo) {
+		if(orderNo!=null){
+			this.orderNo = orderNo.trim();
+		}
+		
+	}
 //	@Column(length=2)
 //	private String type_id;//类型id
 //	@Column(length=4)
@@ -100,9 +105,7 @@ public class Order extends UUIDEntity {
 	}
 
 
-	public void setOrderNo(String orderNo) {
-		this.orderNo = orderNo;
-	}
+	
 	public OrderStatus getStatus() {
 		return status;
 	}

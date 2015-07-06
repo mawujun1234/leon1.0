@@ -20,13 +20,14 @@ Ext.define('Ems.adjust.AdjustListGrid',{
 		//{dataIndex:'id',text:'id'},
 		//{dataIndex:'adjust_id',text:'adjust_id'},
 		{dataIndex:'ecode',text:'条码',width:130},
+		{dataIndex:'adjustListStatus_name',text:'状态',width:60},
 		//{dataIndex:'in_num',text:'in_num',xtype: 'numbercolumn', format:'0.00'},
 		//{dataIndex:'out_num',text:'out_num',xtype: 'numbercolumn', format:'0.00'},
 		{header: '设备类型', dataIndex: 'subtype_name',width:120},
     	{header: '品名', dataIndex: 'prod_name'},
     	{header: '品牌', dataIndex: 'brand_name',width:120},
     	{header: '供应商', dataIndex: 'supplier_name'},
-    	{header: '设备型号', dataIndex: 'equipment_style',width:120},
+    	{header: '设备型号', dataIndex: 'prod_style',width:120},
     	{header:'规格',dataIndex:'prod_spec',flex:1,minWidth:100,renderer:function(value,metadata,record){
 						metadata.tdAttr = "data-qtip='" + value+ "'";
 					    return value;

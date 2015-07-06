@@ -234,24 +234,18 @@ Ext.onReady(function(){
 	});
 	
 	var store_id_temp=null;//用来判断仓库的id有没有变
-	var workUnit_id_temp=null;
+	//var workUnit_id_temp=null;
 	function equipScan(field,newValue,oldValue,e){
-		//if(!store_id_temp){
 			store_id_temp=store_combox.getValue();
-		//} else if(store_id_temp!=store_combox.getValue()){
-		//	Ext.Msg.alert("消息","对不起，一次入库只能选择一个仓库.");
-		//	ecode_textfield.setValue("");workUnit_combox
-		//	ecode_textfield.clearInvalid( );
-		//	return;
-		//}
-		if(!workUnit_id_temp){
-			workUnit_id_temp=workUnit_combox.getValue();
-		} else if(workUnit_id_temp!=workUnit_combox.getValue()){
-			Ext.Msg.alert("消息","对不起，一次出库库只能选择一个作业单位.");
-			ecode_textfield.setValue("");
-			ecode_textfield.clearInvalid( );
-			return;
-		}
+
+//		if(!workUnit_id_temp){
+//			workUnit_id_temp=workUnit_combox.getValue();
+//		} else if(workUnit_id_temp!=workUnit_combox.getValue()){
+//			Ext.Msg.alert("消息","对不起，一次出库库只能选择一个作业单位.");
+//			ecode_textfield.setValue("");
+//			ecode_textfield.clearInvalid( );
+//			return;
+//		}
 		
 		var form= step1.down('form').getForm();
 		if(newValue.length>=Ext.ecode_length){
@@ -438,7 +432,7 @@ Ext.onReady(function(){
 					//params:{jsonStr:Ext.encode(equiplist)},
 					success:function(response){
 						store_id_temp=null;//用来判断仓库的id有没有变
-						workUnit_id_temp=null;
+						//workUnit_id_temp=null;
 						var obj=Ext.decode(response.responseText);
 						
 						Ext.Msg.alert("消息","设备返库完成!");

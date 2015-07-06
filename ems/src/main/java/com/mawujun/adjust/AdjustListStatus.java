@@ -7,7 +7,7 @@ package com.mawujun.adjust;
  *
  */
 public enum AdjustListStatus {
-	noin("未入库"),in("已入库"),returnback("已归还"),lost("丢失");
+	noin("未入库"),in("已接收"),returnback("已归还"),lost("丢失");
 	private String name;
 	AdjustListStatus(String name){
 		this.name=name;

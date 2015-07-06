@@ -97,7 +97,7 @@ Ext.onReady(function(){
 		selectOnFocus:true,
 		labelWidth:80,
 		width:250,
-		allowBlank:false,
+		//allowBlank:false,
 		listeners:{
 			blur:function(f,e){
 				if(!f.getValue()||f.getValue()==''){
@@ -303,6 +303,12 @@ Ext.onReady(function(){
         {html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;一次调拨出库只能选择一个仓库'}],
         buttons:[{text:'调拨出库',handler:function(btn){
             if (equipStore.getCount()> 0) { 
+            	var form= step1.down('form').getForm();
+	        	if(!form.isValid()){
+	        		alert("请在出现红框的地方选择值!");
+	        		return;
+	        	}
+	        	
             	Ext.getBody().mask("正在执行....");
             	var equipments = new Array();
             	equipStore.each(function(record){

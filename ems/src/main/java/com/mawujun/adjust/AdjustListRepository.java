@@ -1,5 +1,6 @@
 package com.mawujun.adjust;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.mawujun.repository1.IRepository;
@@ -10,5 +11,5 @@ import com.mawujun.repository1.IRepository;
  */
 @Repository
 public interface AdjustListRepository extends IRepository<AdjustList, String>{
-
+	
 }

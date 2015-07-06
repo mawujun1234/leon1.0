@@ -1,5 +1,7 @@
 package com.mawujun.install;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -27,6 +29,8 @@ public class InstallOutList  extends UUIDEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(length=20)
 	private InstallOutListType installOutListType=InstallOutListType.borrow; 
+	
+	private Date returnDate;//归还时间。领用时间(任务提交的时间)
 	
 	@Column(length=36)
 	private String installOutType_id;//领用类型的id,是损坏领用，还是被盗领用
@@ -60,6 +64,12 @@ public class InstallOutList  extends UUIDEntity {
 	}
 	public void setIsnew(Boolean isnew) {
 		this.isnew = isnew;
+	}
+	public Date getReturnDate() {
+		return returnDate;
+	}
+	public void setReturnDate(Date returnDate) {
+		this.returnDate = returnDate;
 	}
 
 }

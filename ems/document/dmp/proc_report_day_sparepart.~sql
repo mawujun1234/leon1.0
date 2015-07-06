@@ -38,11 +38,6 @@ begin
     and b.installOutListType='installout'
     group by c.prod_id  
     union all
-    select c.prod_id,count(b.ecode) as installoutnum from ems_borrow a,ems_borrowlist b,ems_equipment c
-    where a.id=b.borrow_id and b.ecode=c.ecode and to_char(a.operatedate,'yyyymmdd') ='20150626' and a.store_id='2c9085494d1dba52014d21ae15eb0003'
-    and b.borrowListType='installout'
-    group by c.prod_id  
-    union all
     select c.prod_id,count( b.ecode) as installoutnum from ems_adjust a,ems_adjustlist b,ems_equipment c
     where a.id=b.adjust_id and b.ecode=c.ecode and to_char(a.str_out_date,'yyyymmdd') ='20150626' and a.str_out_id='2c9085494d1dba52014d21ae15eb0003'  
     and a.adjustType='installout'

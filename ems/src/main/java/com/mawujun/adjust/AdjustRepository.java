@@ -21,5 +21,7 @@ public interface AdjustRepository extends IRepository<Adjust, String>{
 	public List<AdjustListVO> query4InStoreList(@Param("adjust_id")String adjust_id);
 	
 	public List<AdjustList> query_borrow_in_adjustList(@Param("adjust_id")String adjust_id);
+	
+	public void updateAdjustIsAllReturn(@Param("adjust_id")String adjust_id);
 
 }

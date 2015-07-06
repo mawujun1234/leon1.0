@@ -22,6 +22,7 @@ Ext.onReady(function(){
 		gridList.getStore().load({params:{adjust_id:record.get("id")}});
 		gridList.adjust_id=record.get("id");
 	});
+	gridList.adjustInGrid=grid;
 	
 	var viewPort=Ext.create('Ext.container.Viewport',{
 		layout:'border',

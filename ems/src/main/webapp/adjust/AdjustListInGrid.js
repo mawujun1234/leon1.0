@@ -33,6 +33,7 @@ Ext.define('Ems.adjust.AdjustListInGrid',{
 		//{dataIndex:'id',text:'id'},
 		//{dataIndex:'adjust_id',text:'adjust_id'},
 		{dataIndex:'ecode',text:'条码',width:140},
+		{dataIndex:'adjustListStatus_name',text:'状态',width:140},
 		//{dataIndex:'in_num',text:'in_num',xtype: 'numbercolumn', format:'0.00'},
 		//{dataIndex:'out_num',text:'out_num',xtype: 'numbercolumn', format:'0.00'},
 		{header: '设备类型', dataIndex: 'subtype_name',width:120},
@@ -144,7 +145,10 @@ Ext.define('Ems.adjust.AdjustListInGrid',{
 							//Ext.Msg.alert("消息","维修中心入库完成!");
 					me.getSelectionModel().deselect(records);
 					Ext.getBody().unmask();
+					me.adjustInGrid.getStore().reload();
 					me.getStore().reload();
+					
+					
 				},
 				failure:function(){
 					Ext.getBody().unmask();

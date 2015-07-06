@@ -116,6 +116,7 @@ public class OrderService extends AbstractService<Order, String>{
 		if(count!=null && count>0){
 			throw new BusinessException("该订单号已经存在");
 		}
+		
 		Date createDate=new Date();
 		order.setCreateDate(createDate);
 		orderRepository.create(order);

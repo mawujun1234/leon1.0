@@ -277,6 +277,7 @@ public static final class ems_installoutlist {
 	public static final String ecode="ecode";
 	public static final String isnew="isnew";
 	public static final String installOutListType="installOutListType";
+	public static final String returnDate="returnDate";
 	public static final String installOutType_id="installOutType_id";
 	public static final String id="id";
 }
