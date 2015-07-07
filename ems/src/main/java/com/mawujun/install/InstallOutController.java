@@ -157,13 +157,13 @@ public class InstallOutController {
 	 */
 	@RequestMapping("/installOut/equipmentOutStoreSaveAndPrint.do")
 	@ResponseBody
-	public String equipmentOutStoreSaveAndPrint(@RequestBody InstallOutList[] installOutListes, InstallOut outStore) { 
+	public String equipmentOutStoreSaveAndPrint(@RequestBody InstallOutList[] installOutListes, InstallOut outStore, String installOut_id) { 
 		
 			
-		String installOut_id=outStoreService.equipOutStoreSaveAndPrint(installOutListes, outStore);
+		String installOut_id_re=outStoreService.equipOutStoreSaveAndPrint(installOutListes, outStore,installOut_id);
 		
 		
-		return installOut_id;
+		return installOut_id_re;
 	}
 	/**
 	 * 设备出库，设备领用
@@ -175,9 +175,7 @@ public class InstallOutController {
 	@RequestMapping("/installOut/equipmentOutStore.do")
 	@ResponseBody
 	public String equipOutStore(@RequestBody InstallOutList[] installOutListes, InstallOut outStore , String installOut_id) { 
-		if(installOut_id==null || "".equals(installOut_id.trim())){
-			throw new BusinessException("请先选择一个'编辑中'的领用单!");
-		}
+		
 		outStoreService.equipOutStore(installOutListes, outStore,installOut_id);
 		return installOut_id;
 	}

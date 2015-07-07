@@ -70,36 +70,46 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 	 * @param outStore
 	 * @return
 	 */
-	public String equipOutStoreSaveAndPrint(InstallOutList[] installOutListes, InstallOut outStore) {
+	public String equipOutStoreSaveAndPrint(InstallOutList[] installOutListes, InstallOut outStore,String installOut_id) {
+		if(installOut_id!=null && !"".equals(installOut_id)){
+			installOutRepository.deleteBatch(Cnd.delete().andEquals(M.InstallOut.id, installOut_id));
+			installOutListRepository.deleteBatch(Cnd.delete().andEquals(M.InstallOutList.installOut_id, installOut_id));
+			outStore.setId(installOut_id);
+		} else {
+			installOut_id = ymdHmsDateFormat.format(new Date());
+			// InStore inStore=new InStore();
+			outStore.setId(installOut_id);
+		}
 		outStore.setStatus(InstallOutStatus.edit);
 		// 插入入库单
-		String outstore_id = ymdHmsDateFormat.format(new Date());
-		// InStore inStore=new InStore();
-		outStore.setId(outstore_id);
+		
 		outStore.setOperateDate(new Date());
 		outStore.setOperater(ShiroUtils.getAuthenticationInfo().getId());
 		// outStore.setType(1);
 		installOutRepository.create(outStore);
 		
 		for(InstallOutList inStoreList:installOutListes){
-			inStoreList.setInstallOut_id(outstore_id);
+			inStoreList.setInstallOut_id(installOut_id);
 			installOutListRepository.create(inStoreList);
 		}
-		return 	outstore_id;
+		return 	installOut_id;
 	}
 	public String equipOutStore(InstallOutList[] installOutListes, InstallOut outStore,String installOut_id) {
-		
-//		InstallOut outStore=installOutRepository.get(installOut_id);
-//		if(outStore.getStatus()==InstallOutStatus.over){
-//			throw new BusinessException("该调用单已经全部出库，不能再出库了!");
+//		if(installOut_id==null || "".equals(installOut_id.trim())){
+//			throw new BusinessException("请先选择一个'编辑中'的领用单!");
 //		}
-		//String installOut_id=outStore.getId();
-		//先删除所有的原来的明细数据
-		installOutRepository.deleteBatch(Cnd.delete().andEquals(M.InstallOut.id, installOut_id));
-		installOutListRepository.deleteBatch(Cnd.delete().andEquals(M.InstallOutList.installOut_id, installOut_id));
-				
-				
+
 		
+		if(installOut_id!=null && !"".equals(installOut_id)){
+			//先删除所有的原来的明细数据
+			installOutRepository.deleteBatch(Cnd.delete().andEquals(M.InstallOut.id, installOut_id));
+			installOutListRepository.deleteBatch(Cnd.delete().andEquals(M.InstallOutList.installOut_id, installOut_id));
+		} else {
+			installOut_id = ymdHmsDateFormat.format(new Date());
+			// InStore inStore=new InStore();
+			outStore.setId(installOut_id);
+		}
+
 		outStore.setId(installOut_id);
 		outStore.setOperateDate(new Date());
 		outStore.setOperater(ShiroUtils.getAuthenticationInfo().getId());

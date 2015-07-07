@@ -429,6 +429,7 @@ Ext.onReady(function(){
 //		}
 //	}
 	
+	var installOut_id=null;
 	var step1=Ext.create('Ext.panel.Panel',{
         layout: {
             type:'vbox',
@@ -456,7 +457,7 @@ Ext.onReady(function(){
         	}
         	
             if (equipStore.getCount()> 0) { 
-            	Ext.getBody().mask("正在出库....");
+            	Ext.getBody().mask("正在执行....");
             	var equipments = new Array();
             	equipStore.each(function(record){
             		equipments.push(record.data);
@@ -470,14 +471,20 @@ Ext.onReady(function(){
 					params:{memo:memo_textfield.getValue(),store_id:store_combox.getValue(),workUnit_id:workUnit_combox.getValue()
 					,project_id:project_combox.getValue()
 					,requestnum:requestnum_textfield.getValue()
+					,installOut_id:installOut_id
 					},
 					jsonData:equipments,
 					success:function(response){
 						var obj=Ext.decode(response.responseText);
 						
 						//Ext.Msg.alert("消息","领用出库完成!");
-						
-						
+						installOut_id=obj.root;
+						Ext.Msg.confirm("消息","保存成功,是否打印该领用单?",function(btn){
+								if(btn){
+									window.open("/installOut/equipmentOutStorePrint.do?installOut_id="+obj.root,"_blank");
+								}
+						});
+						Ext.getBody().unmask();
 						//equipStore.removeAll();
 						//Ext.getBody().unmask();
 						//workUnit_combox.enable();
@@ -493,47 +500,55 @@ Ext.onReady(function(){
 		}},{
 			text:'领用出库',
 			handler:function(){
-				return;
 				var form= step1.down('form').getForm();
 	        	if(!form.isValid()){
 	        		alert("请在出现红框的地方选择值!");
 	        		return;
 	        	}
-	        	
-	            if (equipStore.getCount()> 0) { 
-	            	Ext.getBody().mask("正在出库....");
-					Ext.Ajax.request({
-						url:Ext.ContextPath+'/installOut/equipmentOutStore.do',
-						method:'POST',
-						timeout:600000000,
-						headers:{ 'Content-Type':'application/json;charset=UTF-8'},
-						params:{memo:memo_textfield.getValue(),store_id:store_combox.getValue(),workUnit_id:workUnit_combox.getValue()
-						,project_id:project_combox.getValue()
-						,requestnum:requestnum_textfield.getValue()
-						},
-						jsonData:equipments,
-						//params:{jsonStr:Ext.encode(equiplist)},
-						success:function(response){
-							//store_id_temp=null;//用来判断仓库的id有没有变
-							//workUnit_id_temp=null;
-							var obj=Ext.decode(response.responseText);
-							
-							Ext.Msg.confirm("消息","领用出库完成,是否还要打印该领用单?",function(btn){
-								if(btn){
-									window.open("/installOut/equipmentOutStorePrint.do?installOut_id="+obj.root,"_blank");
+
+	            if (equipStore.getCount()> 0) {
+		            Ext.Msg.confirm("消息","正准备领用出库,是否确认要领用出库?",function(btn){	
+		            	if(btn){
+			            	Ext.getBody().mask("正在执行....");
+			            	var equipments = new Array();
+			            	equipStore.each(function(record){
+			            		equipments.push(record.data);
+			            	});
+							Ext.Ajax.request({
+								url:Ext.ContextPath+'/installOut/equipmentOutStore.do',
+								method:'POST',
+								timeout:600000000,
+								headers:{ 'Content-Type':'application/json;charset=UTF-8'},
+								params:{memo:memo_textfield.getValue(),store_id:store_combox.getValue(),workUnit_id:workUnit_combox.getValue()
+								,project_id:project_combox.getValue()
+								,requestnum:requestnum_textfield.getValue()
+								,installOut_id:installOut_id
+								},
+								jsonData:equipments,
+								//params:{jsonStr:Ext.encode(equiplist)},
+								success:function(response){
+									//store_id_temp=null;//用来判断仓库的id有没有变
+									//workUnit_id_temp=null;
+									var obj=Ext.decode(response.responseText);
+									
+									Ext.Msg.confirm("消息","领用出库完成,是否还要打印该领用单?",function(btn){
+										if(btn){
+											window.open("/installOut/equipmentOutStorePrint.do?installOut_id="+obj.root,"_blank");
+										}
+									});
+									
+									
+									equipStore.removeAll();
+									Ext.getBody().unmask();
+									workUnit_combox.enable();
+									store_combox.enable();
+								},
+								failure:function(){
+									Ext.getBody().unmask();
 								}
 							});
-							
-							
-							equipStore.removeAll();
-							Ext.getBody().unmask();
-							workUnit_combox.enable();
-							store_combox.enable();
-						},
-						failure:function(){
-							Ext.getBody().unmask();
 						}
-					});
+					});//Ext.Msg.confirm
 				}else{
 	            	Ext.Msg.alert('提示','请先添加一个设备');
 	            }
