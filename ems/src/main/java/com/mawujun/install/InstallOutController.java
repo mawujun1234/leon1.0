@@ -155,12 +155,30 @@ public class InstallOutController {
 	 * @return
 	 * @throws IOException
 	 */
+	@RequestMapping("/installOut/equipmentOutStoreSaveAndPrint.do")
+	@ResponseBody
+	public String equipmentOutStoreSaveAndPrint(@RequestBody InstallOutList[] installOutListes, InstallOut outStore) { 
+		
+			
+		String installOut_id=outStoreService.equipOutStoreSaveAndPrint(installOutListes, outStore);
+		
+		
+		return installOut_id;
+	}
+	/**
+	 * 设备出库，设备领用
+	 * @author mawujun 16064988@qq.com 
+	 * @param equipments
+	 * @return
+	 * @throws IOException
+	 */
 	@RequestMapping("/installOut/equipmentOutStore.do")
 	@ResponseBody
-	//public String equipOutStore(@RequestBody Equipment[] equipments,String store_id,String workUnit_id,String type,String memo) {
-	public String equipOutStore(@RequestBody InstallOutList[] installOutListes, InstallOut outStore) { 
-		//inStoreService.newInStore(equipments);
-		String installOut_id=outStoreService.equipOutStore(installOutListes, outStore);
+	public String equipOutStore(@RequestBody InstallOutList[] installOutListes, InstallOut outStore , String installOut_id) { 
+		if(installOut_id==null || "".equals(installOut_id.trim())){
+			throw new BusinessException("请先选择一个'编辑中'的领用单!");
+		}
+		outStoreService.equipOutStore(installOutListes, outStore,installOut_id);
 		return installOut_id;
 	}
 	SimpleDateFormat yyyyMMdd=new SimpleDateFormat("yyyy-MM-dd");

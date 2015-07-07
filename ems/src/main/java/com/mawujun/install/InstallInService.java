@@ -52,6 +52,8 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 	@Autowired
 	private InstallInListRepository installInListRepository;
 	@Autowired
+	private InstallOutListRepository installOutListRepository;
+	@Autowired
 	private WorkUnitService workUnitService;
 	@Autowired
 	private EquipmentCycleService equipmentCycleService;
@@ -148,6 +150,11 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 						.set(M.Equipment.last_workunit_id,installin.getWorkUnit_id())
 						.andEquals(M.Equipment.ecode, list.getEcode()));
 			}
+			//更新InstallOut中的返回时间，
+			//InstallInList中的installOut_id就是在getEquipmentByEcode中就设置好了
+			installOutListRepository.update(Cnd.update().set(M.InstallOutList.returnDate, new Date())
+					.andEquals(M.InstallOutList.installOut_id, list.getInstallout_id())
+					.andEquals(M.InstallOutList.ecode, list.getEcode()));
 			
 			//插入仓库中
 			EquipmentStore equipmentStore=new EquipmentStore();

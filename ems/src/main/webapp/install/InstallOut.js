@@ -7,11 +7,12 @@ Ext.defineModel("Ems.install.InstallOut",{
 		{name:'operater',type:'string'},
 		{name:'store_id',type:'string'},
 		{name:'workUnit_id',type:'string'},
+		{name:'status',type:'string'},
 		
 		{name:'memo',type:'string'},
 		{name:'type',type:'string'},
 		{name:'project_id',type:'string'},
-		
+		{name:'status_name',type:'string'},
 		{name:'project_name',type:'string'},
 		{name:'store_name',type:'string'},
 		{name:'operater_name',type:'string'},

@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -30,6 +32,9 @@ public class InstallOut   implements IdEntity<String>{
 	
 	@Column(length=36)
 	private String project_id;//项目id
+	@Enumerated(EnumType.STRING)
+	@Column(length=15)
+	private InstallOutStatus status=InstallOutStatus.edit;
 	
 	//请求数量
 	private Integer requestnum;
@@ -86,6 +91,12 @@ public class InstallOut   implements IdEntity<String>{
 	}
 	public void setProject_id(String project_id) {
 		this.project_id = project_id;
+	}
+	public InstallOutStatus getStatus() {
+		return status;
+	}
+	public void setStatus(InstallOutStatus status) {
+		this.status = status;
 	}
 
 }

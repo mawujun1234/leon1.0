@@ -256,8 +256,8 @@ Ext.onReady(function(){
 		allowBlank:true
 	});
 	
-	var store_id_temp=null;//用来判断仓库的id有没有变
-	var workUnit_id_temp=null;
+	//var store_id_temp=null;//用来判断仓库的id有没有变
+	//var workUnit_id_temp=null;
 	function equipScan(field,newValue,oldValue,e){
 //		if(!stock_field.getValue()){
 //			Ext.Msg.alert("消息","请先选择仓库!");
@@ -266,7 +266,7 @@ Ext.onReady(function(){
 //			return;
 //		}
 		//if(!store_id_temp){
-			store_id_temp=store_combox.getValue();
+		//	store_id_temp=store_combox.getValue();
 		//} else if(store_id_temp!=store_combox.getValue()){
 		//	Ext.Msg.alert("消息","对不起，一次入库只能选择一个仓库.");
 		//	ecode_textfield.setValue("");workUnit_combox
@@ -274,7 +274,7 @@ Ext.onReady(function(){
 		//	return;
 		//}
 		//if(!workUnit_id_temp){
-			workUnit_id_temp=workUnit_combox.getValue();
+		//	workUnit_id_temp=workUnit_combox.getValue();
 		//} else if(workUnit_id_temp!=workUnit_combox.getValue()){
 		//	Ext.Msg.alert("消息","对不起，一次出库库只能选择一个作业单位.");
 		//	ecode_textfield.setValue("");
@@ -448,7 +448,7 @@ Ext.onReady(function(){
         {html:'<HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=3>'},
         //{html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;库房人员应当根据采购单，对设备分类后，一次对同类设备批量“添加”入库，直到所有采购单设备根据设备类型都已经“添加”到入库清单后，可以选择“下一步”，进入到二维码生成步骤'}],
         {html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;'}],
-        buttons:[{text:'领用出库',handler:function(btn){
+        buttons:[{text:'保存并打印',handler:function(btn){
         	var form= step1.down('form').getForm();
         	if(!form.isValid()){
         		alert("请在出现红框的地方选择值!");
@@ -463,31 +463,25 @@ Ext.onReady(function(){
             	});
             	
 				Ext.Ajax.request({
-					url:Ext.ContextPath+'/installOut/equipmentOutStore.do',
+					url:Ext.ContextPath+'/installOut/equipmentOutStoreSaveAndPrint.do',
 					method:'POST',
 					timeout:600000000,
 					headers:{ 'Content-Type':'application/json;charset=UTF-8'},
 					params:{memo:memo_textfield.getValue(),store_id:store_combox.getValue(),workUnit_id:workUnit_combox.getValue()
 					,project_id:project_combox.getValue()
-					,requestnum:requestnum_textfield.getValue()},
+					,requestnum:requestnum_textfield.getValue()
+					},
 					jsonData:equipments,
-					//params:{jsonStr:Ext.encode(equiplist)},
 					success:function(response){
-						store_id_temp=null;//用来判断仓库的id有没有变
-						workUnit_id_temp=null;
 						var obj=Ext.decode(response.responseText);
 						
 						//Ext.Msg.alert("消息","领用出库完成!");
 						
-						Ext.Msg.confirm("消息","领用出库完成,是否要打印该领用单?",function(btn){
-							if(btn){
-								window.open("/installOut/equipmentOutStorePrint.do?installOut_id="+obj.root,"_blank");
-							}
-						});
-						equipStore.removeAll();
-						Ext.getBody().unmask();
-						workUnit_combox.enable();
-						store_combox.enable();
+						
+						//equipStore.removeAll();
+						//Ext.getBody().unmask();
+						//workUnit_combox.enable();
+						//store_combox.enable();
 					},
 					failure:function(){
 						Ext.getBody().unmask();
@@ -496,7 +490,56 @@ Ext.onReady(function(){
             }else{
             	Ext.Msg.alert('提示','请先添加一个设备');
             }
-		}}]
+		}},{
+			text:'领用出库',
+			handler:function(){
+				return;
+				var form= step1.down('form').getForm();
+	        	if(!form.isValid()){
+	        		alert("请在出现红框的地方选择值!");
+	        		return;
+	        	}
+	        	
+	            if (equipStore.getCount()> 0) { 
+	            	Ext.getBody().mask("正在出库....");
+					Ext.Ajax.request({
+						url:Ext.ContextPath+'/installOut/equipmentOutStore.do',
+						method:'POST',
+						timeout:600000000,
+						headers:{ 'Content-Type':'application/json;charset=UTF-8'},
+						params:{memo:memo_textfield.getValue(),store_id:store_combox.getValue(),workUnit_id:workUnit_combox.getValue()
+						,project_id:project_combox.getValue()
+						,requestnum:requestnum_textfield.getValue()
+						},
+						jsonData:equipments,
+						//params:{jsonStr:Ext.encode(equiplist)},
+						success:function(response){
+							//store_id_temp=null;//用来判断仓库的id有没有变
+							//workUnit_id_temp=null;
+							var obj=Ext.decode(response.responseText);
+							
+							Ext.Msg.confirm("消息","领用出库完成,是否还要打印该领用单?",function(btn){
+								if(btn){
+									window.open("/installOut/equipmentOutStorePrint.do?installOut_id="+obj.root,"_blank");
+								}
+							});
+							
+							
+							equipStore.removeAll();
+							Ext.getBody().unmask();
+							workUnit_combox.enable();
+							store_combox.enable();
+						},
+						failure:function(){
+							Ext.getBody().unmask();
+						}
+					});
+				}else{
+	            	Ext.Msg.alert('提示','请先添加一个设备');
+	            }
+					
+			}
+		}]
 	});
 	
 	
