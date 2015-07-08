@@ -403,7 +403,7 @@ Ext.onReady(function(){
 						borrow_id=obj.root;
 						//Ext.Msg.alert("消息","借用出库完成!");
 						Ext.Msg.confirm("消息","借用出库完成,是否要打印该借用单?",function(btn){
-							if(btn){
+							if(btn=='yes'){
 								window.open("/borrow/equipmentOutStorePrint.do?borrow_id="+obj.root,"_blank");
 							}
 						});
@@ -450,7 +450,7 @@ Ext.onReady(function(){
 						
 						//Ext.Msg.alert("消息","借用出库完成!");
 						Ext.Msg.confirm("消息","借用出库完成,是否要打印该借用单?",function(btn){
-							if(btn){
+							if(btn=='yes'){
 								window.open("/borrow/equipmentOutStorePrint.do?borrow_id="+obj.root,"_blank");
 							}
 						});

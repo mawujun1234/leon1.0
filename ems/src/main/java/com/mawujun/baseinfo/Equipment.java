@@ -37,8 +37,8 @@ public class Equipment implements IdEntity<String>{
 	private Double unitPrice;//价格
 	@org.hibernate.annotations.Type(type="yes_no")
 	private Boolean isnew=true;//是否是新产品
-	@org.hibernate.annotations.Type(type="yes_no")
-	private String islocked;//在领用和借用的时候才会对这个设备进行锁定
+	//@org.hibernate.annotations.Type(type="yes_no")
+	//private String islocked;//在领用和借用的时候才会对这个设备进行锁定
 	@Column(length=100)
 	private String memo;
 
@@ -231,12 +231,6 @@ public class Equipment implements IdEntity<String>{
 	}
 	public void setCurrt_task_id(String currt_task_id) {
 		this.currt_task_id = currt_task_id;
-	}
-	public String getIslocked() {
-		return islocked;
-	}
-	public void setIslocked(String islocked) {
-		this.islocked = islocked;
 	}
 
 

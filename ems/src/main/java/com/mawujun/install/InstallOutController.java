@@ -107,7 +107,7 @@ public class InstallOutController {
 	@ResponseBody
 	public String equipOutStore(@RequestBody InstallOutList[] installOutListes, InstallOut outStore , String installOut_id) { 
 		
-		installOutStoreService.equipOutStore(installOutListes, outStore,installOut_id);
+		installOut_id=installOutStoreService.equipOutStore(installOutListes, outStore,installOut_id);
 		return installOut_id;
 	}
 	SimpleDateFormat yyyyMMdd=new SimpleDateFormat("yyyy-MM-dd");

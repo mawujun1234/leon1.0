@@ -5,10 +5,12 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 
 
 
@@ -156,10 +158,14 @@ public class BorrowService extends AbstractService<Borrow, String>{
 					.andEquals(M.Equipment.ecode, borrowlist.getEcode()));
 			
 			//从仓库中删除
+			try {
 			EquipmentStorePK equipmentStorePK=new EquipmentStorePK();
 			equipmentStorePK.setEcode(borrowlist.getEcode());
 			equipmentStorePK.setStore_id(borrow.getStore_id());
 			equipmentStoreRepository.deleteById(equipmentStorePK);
+			}catch(ObjectNotFoundException e){
+				throw new BusinessException("该设备已经不在仓库!");
+			}
 
 			//插入到workunit中
 			EquipmentWorkunit equipmentWorkunit=new EquipmentWorkunit();

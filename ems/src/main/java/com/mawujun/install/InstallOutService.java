@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.ObjectNotFoundException;
+import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -38,6 +40,7 @@ import com.mawujun.utils.page.Page;
 @Service
 @Transactional(propagation=Propagation.REQUIRED)
 public class InstallOutService extends AbstractService<InstallOut, String>{
+	Logger
 
 	@Autowired
 	private InstallOutRepository installOutRepository;
@@ -132,10 +135,15 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 					.andEquals(M.Equipment.ecode, inStoreList.getEcode()));
 			
 			//从仓库中删除
+			try {
 			EquipmentStorePK equipmentStorePK=new EquipmentStorePK();
 			equipmentStorePK.setEcode(inStoreList.getEcode());
 			equipmentStorePK.setStore_id(outStore.getStore_id());
 			equipmentStoreRepository.deleteById(equipmentStorePK);
+			}catch(Exception e){
+				logger.error(e);
+				throw new BusinessException("该设备已经不在仓库!");
+			}
 //			equipmentStore.setNum(1);
 //			equipmentStore.setInDate(new Date());
 //			equipmentStore.setType(EquipmentStoreType.installin);
