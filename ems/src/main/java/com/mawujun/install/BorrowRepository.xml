@@ -18,8 +18,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="store_id!=null and store_id!=''">
 			and a.store_id =#{store_id}
 		</if>
-		<if test="isAllReturn!=null and isAllReturn!=''">
-			and a.isAllReturn =#{isAllReturn}
+		<if test="status!=null and status!=''">
+			and a.status =#{status}
 		</if>
 		<if test="workUnit_id!=null and workUnit_id!=''">
 			and a.workUnit_id =#{workUnit_id}
@@ -40,8 +40,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="store_id!=null and store_id!=''">
 			and a.store_id =#{store_id}
 		</if>
-		<if test="isAllReturn!=null and isAllReturn!=''">
-			and a.isAllReturn =#{isAllReturn}
+		<if test="status!=null and status!=''">
+			and a.status =#{status}
 		</if>
 		<if test="workUnit_id!=null and workUnit_id!=''">
 			and a.workUnit_id =#{workUnit_id}
@@ -87,8 +87,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</update>
 	<!-- 判断该借用单的设备是否已经全部归还 -->
 	<update id="updateBorrowIsAllReturn" parameterType="string">
-		update ems_borrow set isallreturn=(
-		       select decode(count(id) ,sum(decode(isreturn,'Y',1,0)),'Y','N')  from ems_borrowlist 
+		update ems_borrow set status=(
+		       select decode(count(id) ,sum(decode(isreturn,'Y',1,0)),'over','noreturn')  from ems_borrowlist 
 		       where borrow_id=#{borrow_id}
 		) where id=#{borrow_id}
 	</update>
@@ -97,5 +97,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     <update id="changeBorrowListType2installout" >
     	update ems_borrowlist set borrowListType='installout', isReturn='Y' , returnDate=sysdate where borrow_id=#{borrow_id} and ecode=#{ecode}
     </update>
+    
+    
+    <select id="queryEditBorrow" resultType="com.mawujun.install.BorrowVO" parameterType="map">
+    	select a.*,b.name as store_name,c.name as workUnit_name,d.name as project_name,'out' as type 
+    	from ems_borrow a,ems_store b,ems_workunit c,ems_project d
+		where a.store_id=b.id and a.workunit_id=c.id and a.project_id=d.id
+		and a.status='edit'
+    </select>
 </mapper>
 

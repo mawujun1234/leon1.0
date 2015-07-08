@@ -17,6 +17,7 @@ Ext.define('Ems.install.BorrowGrid',{
       var me = this;
       me.columns=[
 		{dataIndex:'id',text:'编码'},
+		{dataIndex:'status_name',text:'仓库'},
 		{dataIndex:'store_name',text:'仓库'},
 		{dataIndex:'workUnit_name',text:'作业单位'},
 		{dataIndex:'project_name',text:'项目'},
@@ -46,7 +47,7 @@ Ext.define('Ems.install.BorrowGrid',{
 					store_id:store_combox.getValue(),
 					workUnit_id:workUnit_combox.getValue(),
 					project_id:project_combox.getValue( ),
-					isAllReturn:isAllReturn_combox.getValue(),
+					status:status_combox.getValue(),
 					operateDate_start: operateDate_start.getRawValue(),
 					operateDate_end: operateDate_end.getRawValue()
 				  };
@@ -151,7 +152,7 @@ Ext.define('Ems.install.BorrowGrid',{
 		flex:1,
 		allowBlank: false
 	});
-	 var isAllReturn_combox=Ext.create('Ext.form.field.ComboBox',{
+	 var status_combox=Ext.create('Ext.form.field.ComboBox',{
 	        fieldLabel: '返还状态',
 	        labelAlign:'right',
             labelWidth:55,
@@ -163,7 +164,7 @@ Ext.define('Ems.install.BorrowGrid',{
 	        allowBlank: true,
 	        store:Ext.create('Ext.data.ArrayStore', {
 		    	fields: ['id', 'name'],
-			    data:[['N','未返还'],['Y','全返还']]
+			    data:[['edit','编辑中'],['noreturn','未归还'],['over','已归还']]
 		   })
 	});
 	 me.tbar={
@@ -178,7 +179,7 @@ Ext.define('Ems.install.BorrowGrid',{
 		}, {
 			items: [project_combox] // toolbar 1
 		},{
-			items: [isAllReturn_combox,{
+			items: [status_combox,{
 			text: '查询',
 			iconCls:'form-search-button',
 			handler: function(btn){

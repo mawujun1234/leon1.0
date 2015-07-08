@@ -72,8 +72,9 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 	 */
 	public String equipOutStoreSaveAndPrint(InstallOutList[] installOutListes, InstallOut outStore,String installOut_id) {
 		if(installOut_id!=null && !"".equals(installOut_id)){
-			installOutRepository.deleteBatch(Cnd.delete().andEquals(M.InstallOut.id, installOut_id));
+			
 			installOutListRepository.deleteBatch(Cnd.delete().andEquals(M.InstallOutList.installOut_id, installOut_id));
+			installOutRepository.deleteBatch(Cnd.delete().andEquals(M.InstallOut.id, installOut_id));
 			outStore.setId(installOut_id);
 		} else {
 			installOut_id = ymdHmsDateFormat.format(new Date());
@@ -102,8 +103,9 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 		
 		if(installOut_id!=null && !"".equals(installOut_id)){
 			//先删除所有的原来的明细数据
-			installOutRepository.deleteBatch(Cnd.delete().andEquals(M.InstallOut.id, installOut_id));
 			installOutListRepository.deleteBatch(Cnd.delete().andEquals(M.InstallOutList.installOut_id, installOut_id));
+			installOutRepository.deleteBatch(Cnd.delete().andEquals(M.InstallOut.id, installOut_id));
+			
 		} else {
 			installOut_id = ymdHmsDateFormat.format(new Date());
 			// InStore inStore=new InStore();
@@ -237,5 +239,9 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 
 		return installOutRepository.queryList(installOut_id);
 
+	}
+	
+	public List<InstallOutVO> queryEditInstallOut() {
+		return installOutRepository.queryEditInstallOut();
 	}
 }

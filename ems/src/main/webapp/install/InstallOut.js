@@ -3,7 +3,7 @@ Ext.defineModel("Ems.install.InstallOut",{
 	idProperty:'id',
 	fields:[
 		{name:'id',type:'string'},
-		{name:'operateDate',type:'date', dateFormat: 'Y-m-d'},
+		{name:'operateDate',type:'string'},
 		{name:'operater',type:'string'},
 		{name:'store_id',type:'string'},
 		{name:'workUnit_id',type:'string'},

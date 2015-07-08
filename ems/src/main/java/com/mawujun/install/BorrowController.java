@@ -85,12 +85,27 @@ public class BorrowController {
 	 * @return
 	 * @throws IOException
 	 */
+	@RequestMapping("/borrow/saveAndPrint.do")
+	@ResponseBody
+	//public String equipOutStore(@RequestBody Equipment[] equipments,String store_id,String workUnit_id,String type,String memo) {
+	public String saveAndPrint(@RequestBody BorrowList[] borrowListes, Borrow borrow, String borrow_id) { 
+		//inStoreService.newInStore(equipments);
+		borrow_id=borrowService.borrowSaveAndPrint(borrowListes, borrow,borrow_id);
+		return borrow_id;
+	}
+	/**
+	 * 设备出库，设备领用
+	 * @author mawujun 16064988@qq.com 
+	 * @param equipments
+	 * @return
+	 * @throws IOException
+	 */
 	@RequestMapping("/borrow/equipmentOutStore.do")
 	@ResponseBody
 	//public String equipOutStore(@RequestBody Equipment[] equipments,String store_id,String workUnit_id,String type,String memo) {
-	public String equipOutStore(@RequestBody Equipment[] equipments, Borrow borrow) { 
+	public String equipOutStore(@RequestBody BorrowList[] borrowListes, Borrow borrow, String borrow_id) { 
 		//inStoreService.newInStore(equipments);
-		String borrow_id=borrowService.borrow(equipments, borrow);
+		borrow_id=borrowService.borrow(borrowListes, borrow,borrow_id);
 		return borrow_id;
 	}
 	SimpleDateFormat yyyyMMdd=new SimpleDateFormat("yyyy-MM-dd");
@@ -156,14 +171,14 @@ public class BorrowController {
 	 */
 	@RequestMapping("/borrow/queryMain.do")
 	@ResponseBody
-	public Page queryMain(Integer start,Integer limit,String operateDate_start,String operateDate_end,String store_id,String workUnit_id,String project_id,String isAllReturn) { 
+	public Page queryMain(Integer start,Integer limit,String operateDate_start,String operateDate_end,String store_id,String workUnit_id,String project_id,BorrowStatus status) { 
 		Page page=Page.getInstance(start, limit);
 		page.addParam("operateDate_start", operateDate_start);
 		page.addParam("operateDate_end", operateDate_end);
 		page.addParam(M.Borrow.store_id, store_id);
 		page.addParam(M.Borrow.workUnit_id, workUnit_id);
 		page.addParam(M.Borrow.project_id, project_id);
-		page.addParam(M.Borrow.isAllReturn, isAllReturn);
+		page.addParam(M.Borrow.status, status);
 		page=borrowService.queryMain(page);
 		return page;
 	}
@@ -201,5 +216,23 @@ public class BorrowController {
 		return "success";
 	}
 	
+	
+	/**
+	 * 查询正在编辑状态的所有领用单
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param start
+	 * @param limit
+	 * @param operateDate_start
+	 * @param operateDate_end
+	 * @param store_id
+	 * @param workUnit_id
+	 * @param project_id
+	 * @return
+	 */
+	@RequestMapping("/borrow/queryEditBorrow.do")
+	@ResponseBody
+	public List<BorrowVO> queryEditBorrow() { 
+		return borrowService.queryEditBorrow();
+	}
 
 }

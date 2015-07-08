@@ -29,6 +29,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
+
+
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 import com.mawujun.shiro.ShiroUtils;
@@ -92,18 +95,55 @@ public class BorrowService extends AbstractService<Borrow, String>{
 
 	SimpleDateFormat ymdHmsDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
 	
-
-	public String borrow(Equipment[] equipments, Borrow borrow) {
+	
+	public String borrowSaveAndPrint(BorrowList[] borrowListes, Borrow borrow, String borrow_id) {
+		if(borrow_id!=null && !"".equals(borrow_id)){
+			
+			borrowListRepository.deleteBatch(Cnd.delete().andEquals(M.BorrowList.borrow_id, borrow_id));
+			borrowRepository.deleteBatch(Cnd.delete().andEquals(M.Borrow.id, borrow_id));
+			borrow.setId(borrow_id);
+		} else {
+			borrow_id = ymdHmsDateFormat.format(new Date());
+			// InStore inStore=new InStore();
+			borrow.setId(borrow_id);
+		}
+		borrow.setStatus(BorrowStatus.edit);
 		// 插入入库单
-		String borrow_id = ymdHmsDateFormat.format(new Date());
+		
+		borrow.setOperateDate(new Date());
+		borrow.setOperater(ShiroUtils.getAuthenticationInfo().getId());
+		// outStore.setType(1);
+		borrowRepository.create(borrow);
+		
+		for(BorrowList borrowList:borrowListes){
+			borrowList.setBorrow_id(borrow_id);
+			borrowListRepository.create(borrowList);
+		}
+		return 	borrow_id;
+	}
+
+	public String borrow(BorrowList[] borrowListes, Borrow borrow, String borrow_id) {
+		//// 插入入库单
+		//String borrow_id = ymdHmsDateFormat.format(new Date());
+		if(borrow_id!=null && !"".equals(borrow_id)){
+			
+			borrowListRepository.deleteBatch(Cnd.delete().andEquals(M.BorrowList.borrow_id, borrow_id));
+			borrowRepository.deleteBatch(Cnd.delete().andEquals(M.Borrow.id, borrow_id));
+			borrow.setId(borrow_id);
+		} else {
+			borrow_id = ymdHmsDateFormat.format(new Date());
+			// InStore inStore=new InStore();
+			borrow.setId(borrow_id);
+		}
+
 		// InStore inStore=new InStore();
 		borrow.setId(borrow_id);
 		borrow.setOperateDate(new Date());
 		borrow.setOperater(ShiroUtils.getAuthenticationInfo().getId());
-		//borrow_out.setType(1);
+		borrow.setStatus(BorrowStatus.noreturn);
 		borrowRepository.create(borrow);
 		
-		for(Equipment equipment:equipments){
+		for(BorrowList borrowlist:borrowListes){
 			//更新设备状态为出库待安装
 			//把设备绑定到作业单位上面
 			//把仓库中的该设备移除
@@ -113,21 +153,17 @@ public class BorrowService extends AbstractService<Borrow, String>{
 					.set(M.Equipment.last_workunit_id, borrow.getWorkUnit_id())
 					.set(M.Equipment.last_borrow_id, borrow_id)
 					.set(M.Equipment.place, EquipmentPlace.workunit)
-					.andEquals(M.Equipment.ecode, equipment.getEcode()));
+					.andEquals(M.Equipment.ecode, borrowlist.getEcode()));
 			
 			//从仓库中删除
 			EquipmentStorePK equipmentStorePK=new EquipmentStorePK();
-			equipmentStorePK.setEcode(equipment.getEcode());
+			equipmentStorePK.setEcode(borrowlist.getEcode());
 			equipmentStorePK.setStore_id(borrow.getStore_id());
 			equipmentStoreRepository.deleteById(equipmentStorePK);
-//			equipmentStore.setNum(1);
-//			equipmentStore.setInDate(new Date());
-//			equipmentStore.setType(EquipmentStoreType.installin);
-//			equipmentStore.setType_id(install_in.getId());
-//			equipmentStoreRepository.create(equipmentStore);
+
 			//插入到workunit中
 			EquipmentWorkunit equipmentWorkunit=new EquipmentWorkunit();
-			equipmentWorkunit.setEcode(equipment.getEcode());
+			equipmentWorkunit.setEcode(borrowlist.getEcode());
 			equipmentWorkunit.setWorkunit_id(borrow.getWorkUnit_id());
 			equipmentWorkunit.setInDate(new Date());
 			equipmentWorkunit.setNum(1);
@@ -136,14 +172,14 @@ public class BorrowService extends AbstractService<Borrow, String>{
 			equipmentWorkunit.setFrom_id(borrow.getStore_id());
 			equipmentWorkunitRepository.create(equipmentWorkunit);
 			
-			//插入入库单明细
-			BorrowList borrowlist=new BorrowList();
-			borrowlist.setEcode(equipment.getEcode());
+//			//插入入库单明细
+//			BorrowList borrowlist=new BorrowList();
+//			borrowlist.setEcode(equipment.getEcode());
 			borrowlist.setBorrow_id(borrow_id);
 			borrowListRepository.create(borrowlist);
 			
 			//记录设备入库的生命周期
-			equipmentCycleService.logEquipmentCycle(equipment.getEcode(), OperateType.borrow_out, borrow_id, TargetType.workunit,borrow.getWorkUnit_id());
+			equipmentCycleService.logEquipmentCycle(borrowlist.getEcode(), OperateType.borrow_out, borrow_id, TargetType.workunit,borrow.getWorkUnit_id());
 		}
 		return borrow_id;
 	}
@@ -226,5 +262,10 @@ public class BorrowService extends AbstractService<Borrow, String>{
 			equipmentCycleService.logEquipmentCycle(borrowList.getEcode(), OperateType.borrow_return, borrowList.getBorrow_id(), TargetType.store,borrow.getStore_id());
 			
 		}
+	}
+	
+	
+	public List<BorrowVO> queryEditBorrow() {
+		return borrowRepository.queryEditBorrow();
 	}
 }

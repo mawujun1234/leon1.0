@@ -1,4 +1,4 @@
-//Ext.require("Ems.store.Barcode");
+Ext.require("Ems.install.InstallOutEditGrid");
 Ext.require("Ems.install.WorkUnitEquipmentWindow");
 Ext.require("Ems.install.StoreEquipmentWindow");
 Ext.require("Ems.install.InstallOutList");
@@ -45,6 +45,7 @@ Ext.onReady(function(){
 			//    me.setValue('');
 			//},
 	        allowBlank: false,
+	        editable:false,
 	        store:Ext.create('Ext.data.Store', {
 		    	fields: ['id', 'name'],
 			    proxy:{
@@ -93,6 +94,7 @@ Ext.onReady(function(){
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'workUnit_id',
 		    displayField: 'name',
+		     editable:false,
 		    valueField: 'id',
 		    //queryParam: 'name',
     		//queryMode: 'remote',
@@ -142,18 +144,7 @@ Ext.onReady(function(){
 		});
 		win.show();	
 	}
-	
-	var requestnum_textfield=Ext.create('Ext.form.field.Number',{
-		labelAlign:'right',
-		labelWidth:55,
-		fieldLabel: '<b>请领数</b>',
-		name:'requestnum',
-		hidden:true,
-		value:0,
-		width:110,
-		readOnly:false
-		//allowBlank:false
-	});
+
 	var installOutType_combox=Ext.create('Ext.form.field.ComboBox',{
 	        fieldLabel: '领用类型',
 	        labelAlign:'right',
@@ -162,8 +153,9 @@ Ext.onReady(function(){
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'installOutType_id',
 		    displayField: 'name',
+		    editable:false,
 		    valueField: 'id',
-	        allowBlank: false,
+	        allowBlank: true,
 	        store:Ext.create('Ext.data.Store', {
 		    	fields: ['id', 'name'],
 			    proxy:{
@@ -176,6 +168,15 @@ Ext.onReady(function(){
 			    	}
 			    }
 		   })
+	});
+	var installOutType_content_textfield=Ext.create('Ext.form.field.Text',{
+		labelAlign:'right',
+		labelWidth:55,
+		fieldLabel: '领用类型二级',
+		name:'installOutType_content',
+		readOnly:false,
+		allowBlank:true,
+		emptyText:'输入车牌号等内容'
 	});
 	var project_combox=Ext.create('Ems.baseinfo.ProjectCombo',{
 		width:500	,
@@ -200,17 +201,6 @@ Ext.onReady(function(){
 				}
 			},
 			focus:function(){
-				//alert(type_radio.getValue());
-				//console.dir(type_radio.getValue());
-				//alert(type_radio.getValue().type);
-//				if(type_radio.getValue().type==2){
-//					alert("设备维修出库还没有做!");
-//					return;
-//				}
-//				if(!type_radio.getValue().type){
-//					Ext.Msg.alert("消息","请先选择出库类型!");
-//					return;
-//				}
 				if(!workUnit_combox.getValue()){
 					Ext.Msg.alert("消息","请先选择作业单位!");
 					return;
@@ -256,32 +246,69 @@ Ext.onReady(function(){
 		allowBlank:true
 	});
 	
+	var select_edit_installout=Ext.create('Ext.button.Button',{
+		text:'选择编辑中领用单',
+		handler:function(){
+			var installOutEdtiGrid=Ext.create('Ems.install.InstallOutEditGrid',{
+				listeners:{
+					itemdblclick:function( view, record, item, index, e, eOpts ) {
+						installOut_id=record.get("id");//全局变量保存当前的订单
+						reloadInstallout_content(record);
+						win.close();
+					}
+				}
+			});
+			var win=Ext.create('Ext.window.Window',{
+				layout:'fit',
+				title:'双击选择',
+				items:[installOutEdtiGrid],
+				modal:true,
+				width:500,
+				height:360
+			});
+			win.show();
+		
+		}
+	});
+	
+	function reloadInstallout_content(installout){
+//		store_combox
+//		workUnit_combox
+//		installOutType_combox
+//		installOutType_content_textfield
+//		project_combox
+//		inDate_textfield
+//		memo_textfield
+
+		store_combox.getStore().load();
+		workUnit_combox.getStore().load();
+		installOutType_combox.getStore().load();
+		
+		var form= step1.down('form').getForm();
+		form.loadRecord(installout);
+		var project_model= project_combox.getStore().createModel({id:installout.get("project_id"),name:installout.get("project_name")});
+		project_combox.setValue(project_model);
+		
+		//获取领用单的明细数据
+		Ext.Ajax.request({
+			url:Ext.ContextPath+"/installOut/queryList.do",
+			method:'POST',
+			params:{installOut_id:installout.get("id")},
+			success:function(response){
+				var obj=Ext.decode(response.responseText);
+				equipStore.removeAll();
+				equipStore.loadData(obj.root);
+			}
+		})
+	}
+	
 	//var store_id_temp=null;//用来判断仓库的id有没有变
 	//var workUnit_id_temp=null;
 	function equipScan(field,newValue,oldValue,e){
-//		if(!stock_field.getValue()){
-//			Ext.Msg.alert("消息","请先选择仓库!");
-//			ecode_textfield.setValue("");
-//			ecode_textfield.clearInvalid( );
-//			return;
-//		}
-		//if(!store_id_temp){
-		//	store_id_temp=store_combox.getValue();
-		//} else if(store_id_temp!=store_combox.getValue()){
-		//	Ext.Msg.alert("消息","对不起，一次入库只能选择一个仓库.");
-		//	ecode_textfield.setValue("");workUnit_combox
-		//	ecode_textfield.clearInvalid( );
-		//	return;
-		//}
-		//if(!workUnit_id_temp){
-		//	workUnit_id_temp=workUnit_combox.getValue();
-		//} else if(workUnit_id_temp!=workUnit_combox.getValue()){
-		//	Ext.Msg.alert("消息","对不起，一次出库库只能选择一个作业单位.");
-		//	ecode_textfield.setValue("");
-		//	ecode_textfield.clearInvalid( );
-		//	return;
-		//}
-		
+		if(!installOutType_combox.getValue()){
+			alert("请先选择领用类型!");
+			return;
+		}
 		var form= step1.down('form').getForm();
 		if(newValue.length>=Ext.ecode_length){
 		   if(field.isValid()){
@@ -305,6 +332,7 @@ Ext.onReady(function(){
 							//ret.root.store_name=store_combox.getRawValue();
 							//ret.root.memo=memo_textfield.getValue();
 							ret.root.installOutType_id=installOutType_combox.getValue();
+							ret.root.installOutType_content=installOutType_content_textfield.getValue();
 							ret.root.installOutType_name=installOutType_combox.getRawValue();
 							var scanrecord = Ext.create('Ems.install.InstallOutList', ret.root);
 
@@ -371,6 +399,7 @@ Ext.onReady(function(){
 	            },
     			  {header: '条码', dataIndex: 'ecode',width:150},
     			  {header: '领用类型', dataIndex: 'installOutType_name'},
+    			  {header: '领用类型二级', dataIndex: 'installOutType_content'},
     	          {header: '设备类型', dataIndex: 'subtype_name',width:120},
     	          {header: '品名', dataIndex: 'prod_name'},
     	          {header: '品牌', dataIndex: 'brand_name',width:120},
@@ -438,12 +467,13 @@ Ext.onReady(function(){
         },
         defaults:{margins:'0 0 5 0',border:false},
         items:[{xtype:'form',items:[{xtype:'fieldcontainer',layout: 'hbox',items:[store_combox,queryStoEquip_button,workUnit_combox,queryWorkUnitEquip_button,project_combox]},
-                                     {xtype:'fieldcontainer',layout: 'hbox',items:[installOutType_combox,requestnum_textfield,ecode_textfield,clear_button]},
+                                     {xtype:'fieldcontainer',layout: 'hbox',items:[installOutType_combox,installOutType_content_textfield,ecode_textfield,clear_button]},
                                     {xtype:'fieldcontainer',layout: 'hbox',items:[storeman_textfield,inDate_textfield,memo_textfield]}
 		            		        //{xtype:'columnbox',columnSize:4,items:[{xtype:'listcombox',url:Ext.ContextPath+'/dataExtra/stockList.do',itemId:'stock_field',fieldLabel:'库房',name:'stid',allowBlank:false,emptyText:'未选择库房',labelAlign:'right'},{xtype:'textfield',name:'stmemo',fieldLabel:'库房描述',columnWidth:3/4,labelAlign:'right'}]}
 		            		        ]},
-        {layout:{type:'hbox',algin:'stretch'},items:[{flex:1,border:false,html:'<HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=3>'}
+        {layout:{type:'hbox',algin:'stretch'},items:[select_edit_installout,{flex:1,border:false,html:'<HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=3>'}
         //,{xtype:'button',text:'添加',handler:addEquip,width:70,iconCls:'icon-add',margin:'0 5px 0 5px'}
+        
         ]},
         equip_grid,
         {html:'<HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=3>'},
@@ -470,7 +500,6 @@ Ext.onReady(function(){
 					headers:{ 'Content-Type':'application/json;charset=UTF-8'},
 					params:{memo:memo_textfield.getValue(),store_id:store_combox.getValue(),workUnit_id:workUnit_combox.getValue()
 					,project_id:project_combox.getValue()
-					,requestnum:requestnum_textfield.getValue()
 					,installOut_id:installOut_id
 					},
 					jsonData:equipments,
@@ -480,7 +509,7 @@ Ext.onReady(function(){
 						//Ext.Msg.alert("消息","领用出库完成!");
 						installOut_id=obj.root;
 						Ext.Msg.confirm("消息","保存成功,是否打印该领用单?",function(btn){
-								if(btn){
+								if(btn=='yes'){
 									window.open("/installOut/equipmentOutStorePrint.do?installOut_id="+obj.root,"_blank");
 								}
 						});
@@ -508,7 +537,7 @@ Ext.onReady(function(){
 
 	            if (equipStore.getCount()> 0) {
 		            Ext.Msg.confirm("消息","正准备领用出库,是否确认要领用出库?",function(btn){	
-		            	if(btn){
+		            	if(btn=='yes'){
 			            	Ext.getBody().mask("正在执行....");
 			            	var equipments = new Array();
 			            	equipStore.each(function(record){
@@ -521,7 +550,6 @@ Ext.onReady(function(){
 								headers:{ 'Content-Type':'application/json;charset=UTF-8'},
 								params:{memo:memo_textfield.getValue(),store_id:store_combox.getValue(),workUnit_id:workUnit_combox.getValue()
 								,project_id:project_combox.getValue()
-								,requestnum:requestnum_textfield.getValue()
 								,installOut_id:installOut_id
 								},
 								jsonData:equipments,
@@ -532,7 +560,7 @@ Ext.onReady(function(){
 									var obj=Ext.decode(response.responseText);
 									
 									Ext.Msg.confirm("消息","领用出库完成,是否还要打印该领用单?",function(btn){
-										if(btn){
+										if(btn=='yes'){
 											window.open("/installOut/equipmentOutStorePrint.do?installOut_id="+obj.root,"_blank");
 										}
 									});
@@ -542,6 +570,7 @@ Ext.onReady(function(){
 									Ext.getBody().unmask();
 									workUnit_combox.enable();
 									store_combox.enable();
+									installOut_id=null;
 								},
 								failure:function(){
 									Ext.getBody().unmask();

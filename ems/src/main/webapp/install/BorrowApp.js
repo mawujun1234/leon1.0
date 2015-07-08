@@ -1,7 +1,7 @@
-//Ext.require("Ems.store.Barcode");
+Ext.require("Ems.install.BorrowEditGrid");
 Ext.require("Ems.install.WorkUnitEquipmentWindow");
 Ext.require("Ems.install.StoreEquipmentWindow");
-//Ext.require("Ems.store.BarcodeForm");
+Ext.require("Ems.install.BorrowList");
 Ext.onReady(function(){
      var store_combox=Ext.create('Ext.form.field.ComboBox',{
 	        fieldLabel: '<b>仓库</b>',
@@ -134,17 +134,6 @@ Ext.onReady(function(){
 				}
 			},
 			focus:function(){
-				//alert(type_radio.getValue());
-				//console.dir(type_radio.getValue());
-				//alert(type_radio.getValue().type);
-//				if(type_radio.getValue().type==2){
-//					alert("设备维修出库还没有做!");
-//					return;
-//				}
-//				if(!type_radio.getValue().type){
-//					Ext.Msg.alert("消息","请先选择出库类型!");
-//					return;
-//				}
 				if(!workUnit_combox.getValue()){
 					Ext.Msg.alert("消息","请先选择作业单位!");
 					return;
@@ -190,31 +179,61 @@ Ext.onReady(function(){
 		allowBlank:true
 	});
 	
-	var store_id_temp=null;//用来判断仓库的id有没有变
-	var workUnit_id_temp=null;
+	var select_edit_borrow=Ext.create('Ext.button.Button',{
+		text:'选择编辑中的借用单',
+		handler:function(){
+			var borrowEdtiGrid=Ext.create('Ems.install.BorrowEditGrid',{
+				listeners:{
+					itemdblclick:function( view, record, item, index, e, eOpts ) {
+						borrow_id=record.get("id");//全局变量保存当前的订单
+						reloadBorrow_content(record);
+						win.close();
+					}
+				}
+			});
+			var win=Ext.create('Ext.window.Window',{
+				layout:'fit',
+				title:'双击选择',
+				items:[borrowEdtiGrid],
+				modal:true,
+				width:500,
+				height:360
+			});
+			win.show();
+		
+		}
+	});
+	
+	function reloadBorrow_content(borrow) {
+//		store_combox
+//		workUnit_combox
+//		project_combox
+
+		store_combox.getStore().load();
+		workUnit_combox.getStore().load();
+		//borrowType_combox.getStore().load();
+		
+		var form= step1.down('form').getForm();
+		form.loadRecord(borrow);
+		var project_model= project_combox.getStore().createModel({id:borrow.get("project_id"),name:borrow.get("project_name")});
+		project_combox.setValue(project_model);
+		
+		//获取领用单的明细数据
+		Ext.Ajax.request({
+			url:Ext.ContextPath+"/borrow/queryList.do",
+			method:'POST',
+			params:{borrow_id:borrow.get("id")},
+			success:function(response){
+				var obj=Ext.decode(response.responseText);
+				equipStore.removeAll();
+				equipStore.loadData(obj.root);
+			}
+		})
+	}
+	
+	//var store_id_temp=null;//用来判断仓库的id有没有变
+	//var workUnit_id_temp=null;
 	function equipScan(field,newValue,oldValue,e){
-//		if(!stock_field.getValue()){
-//			Ext.Msg.alert("消息","请先选择仓库!");
-//			ecode_textfield.setValue("");
-//			ecode_textfield.clearInvalid( );
-//			return;
-//		}
-		//if(!store_id_temp){
-			store_id_temp=store_combox.getValue();
-		//} else if(store_id_temp!=store_combox.getValue()){
-		//	Ext.Msg.alert("消息","对不起，一次入库只能选择一个仓库.");
-		//	ecode_textfield.setValue("");workUnit_combox
-		//	ecode_textfield.clearInvalid( );
-		//	return;
-		//}
-		//if(!workUnit_id_temp){
-			workUnit_id_temp=workUnit_combox.getValue();
-		//} else if(workUnit_id_temp!=workUnit_combox.getValue()){
-		//	Ext.Msg.alert("消息","对不起，一次出库库只能选择一个作业单位.");
-		//	ecode_textfield.setValue("");
-		//	ecode_textfield.clearInvalid( );
-		//	return;
-		//}
 		
 		var form= step1.down('form').getForm();
 		if(newValue.length>=Ext.ecode_length){
@@ -239,7 +258,7 @@ Ext.onReady(function(){
 							ret.root.store_name=store_combox.getRawValue();
 							//ret.root.memo=memo_textfield.getValue();
 							//ret.root.outStore_type=type_radio.getValue().type;
-							var scanrecord = Ext.create('Ems.baseinfo.Equipment', ret.root);
+							var scanrecord = Ext.create('Ems.install.BorrowList', ret.root);
 
 							ecode_textfield.setValue("");
 							ecode_textfield.clearInvalid( );
@@ -277,7 +296,7 @@ Ext.onReady(function(){
 	
 	var equipStore = Ext.create('Ext.data.Store', {
         autoDestroy: true,
-        model: 'Ems.baseinfo.Equipment',
+        model: 'Ems.install.BorrowList',
         proxy: {
             type: 'memory'
         }
@@ -312,15 +331,9 @@ Ext.onReady(function(){
 						metadata.tdAttr = "data-qtip='" + value+ "'";
 					    return value;
 						}
-				  },
-    	          {header: '仓库', dataIndex: 'store_name'},
-    	          //{header: '作业单位', dataIndex: 'workUnit_name'},
-    	          //{header: '数量', dataIndex: 'serialNum',width:70},
-    	          
-    	          
-    	          //{header: 'stid', dataIndex: 'stid',hideable:false,hidden:true},
-    	         // {header: '库房', dataIndex: 'stock',width:120},
-    	          {header: '状态', dataIndex: 'status_name',width:100}
+				  }
+    	          //{header: '仓库', dataIndex: 'store_name'},
+    	         // {header: '状态', dataIndex: 'status_name',width:100}
     	          ],
         tbar:['<pan id="toolbar-title-text">当前入库记录</span>','->',
               {text:'清空所有的设备',
@@ -338,29 +351,7 @@ Ext.onReady(function(){
 	});
 	
 	
-//	function addEquip(){
-//		var equipform=step1.down('form');
-//        var form=equipform.getForm();
-//		if(form.isValid()){
-//			var obj=form.getValues();
-//		    var record=new Ext.create('Ems.store.Equipment',{
-//	            subtype_id:obj.subtype_id,
-//	            subtype_name:subtype_combox.getRawValue(),
-//	            prod_id:obj.prod_id,
-//	            prod_name:prod_combox.getRawValue(),
-//	            brand_id:obj.brand_id,
-//	            brand_name:brand_combox.getRawValue(),
-//	            supplier_id:obj.supplier_id,
-//	            supplier_name:supplier_combox.getRawValue(),
-//	            style:obj.style,
-//	            serialNum:obj.serialNum,
-//	            unitPrice:obj.unitPrice,
-//	            totalprice:obj.totalprice
-//		    })
-//			equipStore.add(record);
-//		}
-//	}
-	
+	var borrow_id=null;
 	var step1=Ext.create('Ext.panel.Panel',{
         layout: {
             type:'vbox',
@@ -373,21 +364,69 @@ Ext.onReady(function(){
                                     {xtype:'fieldcontainer',layout: 'hbox',items:[storeman_textfield,inDate_textfield,memo_textfield]}
 		            		        //{xtype:'columnbox',columnSize:4,items:[{xtype:'listcombox',url:Ext.ContextPath+'/dataExtra/stockList.do',itemId:'stock_field',fieldLabel:'库房',name:'stid',allowBlank:false,emptyText:'未选择库房',labelAlign:'right'},{xtype:'textfield',name:'stmemo',fieldLabel:'库房描述',columnWidth:3/4,labelAlign:'right'}]}
 		            		        ]},
-        {layout:{type:'hbox',algin:'stretch'},items:[{flex:1,border:false,html:'<HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=3>'}
+        {layout:{type:'hbox',algin:'stretch'},items:[select_edit_borrow,{flex:1,border:false,html:'<HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=3>'}
         //,{xtype:'button',text:'添加',handler:addEquip,width:70,iconCls:'icon-add',margin:'0 5px 0 5px'}
         ]},
         equip_grid,
         {html:'<HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=3>'},
         //{html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;库房人员应当根据采购单，对设备分类后，一次对同类设备批量“添加”入库，直到所有采购单设备根据设备类型都已经“添加”到入库清单后，可以选择“下一步”，进入到二维码生成步骤'}],
         {html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;'}],
-        buttons:[{text:'借用出库',handler:function(btn){
+        buttons:[{text:'保存及打印',handler:function(btn){
         	var form= step1.down('form').getForm();
         	if(!form.isValid()){
         		alert("请在出现红框的地方选择值!");
         		return;
         	}
             if (equipStore.getCount()> 0) { 
-            	Ext.getBody().mask("正在出库....");
+            	Ext.getBody().mask("正在执行....");
+            	var equipments = new Array();
+            	equipStore.each(function(record){
+            		equipments.push(record.data);
+            	});
+            	
+				Ext.Ajax.request({
+					url:Ext.ContextPath+'/borrow/saveAndPrint.do',
+					method:'POST',
+					timeout:600000000,
+					headers:{ 'Content-Type':'application/json;charset=UTF-8'},
+					params:{memo:memo_textfield.getValue(),store_id:store_combox.getValue(),workUnit_id:workUnit_combox.getValue()
+					,project_id:project_combox.getValue()
+					,borrow_id:borrow_id
+					
+					},
+					jsonData:equipments,
+					//params:{jsonStr:Ext.encode(equiplist)},
+					success:function(response){
+						//store_id_temp=null;//用来判断仓库的id有没有变
+						//workUnit_id_temp=null;
+						var obj=Ext.decode(response.responseText);
+						borrow_id=obj.root;
+						//Ext.Msg.alert("消息","借用出库完成!");
+						Ext.Msg.confirm("消息","借用出库完成,是否要打印该借用单?",function(btn){
+							if(btn){
+								window.open("/borrow/equipmentOutStorePrint.do?borrow_id="+obj.root,"_blank");
+							}
+						});
+						//equipStore.removeAll();
+						Ext.getBody().unmask();
+						//workUnit_combox.enable();
+						//store_combox.enable();
+					},
+					failure:function(){
+						Ext.getBody().unmask();
+					}
+				});
+            }else{
+            	Ext.Msg.alert('提示','请先添加一个设备');
+            }
+		}},{text:'借用出库',handler:function(btn){
+        	var form= step1.down('form').getForm();
+        	if(!form.isValid()){
+        		alert("请在出现红框的地方选择值!");
+        		return;
+        	}
+            if (equipStore.getCount()> 0) { 
+            	Ext.getBody().mask("正在执行....");
             	var equipments = new Array();
             	equipStore.each(function(record){
             		equipments.push(record.data);
@@ -398,12 +437,15 @@ Ext.onReady(function(){
 					method:'POST',
 					timeout:600000000,
 					headers:{ 'Content-Type':'application/json;charset=UTF-8'},
-					params:{memo:memo_textfield.getValue(),store_id:store_combox.getValue(),workUnit_id:workUnit_combox.getValue(),project_id:project_combox.getValue()},
+					params:{memo:memo_textfield.getValue(),store_id:store_combox.getValue(),workUnit_id:workUnit_combox.getValue()
+					,project_id:project_combox.getValue()
+					,borrow_id:borrow_id
+					},
 					jsonData:equipments,
 					//params:{jsonStr:Ext.encode(equiplist)},
 					success:function(response){
-						store_id_temp=null;//用来判断仓库的id有没有变
-						workUnit_id_temp=null;
+						//store_id_temp=null;//用来判断仓库的id有没有变
+						//workUnit_id_temp=null;
 						var obj=Ext.decode(response.responseText);
 						
 						//Ext.Msg.alert("消息","借用出库完成!");
@@ -416,6 +458,7 @@ Ext.onReady(function(){
 						Ext.getBody().unmask();
 						workUnit_combox.enable();
 						store_combox.enable();
+						borrow_id=null;
 					},
 					failure:function(){
 						Ext.getBody().unmask();

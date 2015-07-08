@@ -6,7 +6,9 @@ Ext.defineModel("Ems.install.InstallOutList",{
 		{name:'ecode',type:'string'},
 		{name:'installOut_id',type:'string'},
 		{name:'installOutType_id',type:'string'},
+		{name:'installOutType_content',type:'string'},//领用类型的二级
 		{name:'installOutListType',type:'string'},
+
 		{name:'isnew',type:'bool'},
 		
 		{name:'installOutListType_name',type:'string'},

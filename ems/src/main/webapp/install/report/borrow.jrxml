@@ -84,14 +84,14 @@
 	<columnHeader>
 		<band height="26" splitType="Stretch">
 			<staticText>
-				<reportElement x="166" y="3" width="147" height="20" uuid="7ebd4cbb-591b-4f9c-9be0-37bb01cbb713"/>
+				<reportElement x="166" y="3" width="120" height="20" uuid="7ebd4cbb-591b-4f9c-9be0-37bb01cbb713"/>
 				<textElement textAlignment="Center">
 					<font fontName="宋体" size="10" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[型号]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="317" y="3" width="175" height="20" uuid="3a91aa6c-2be6-4792-9e49-b6e4960e6b06"/>
+				<reportElement x="289" y="3" width="139" height="20" uuid="3a91aa6c-2be6-4792-9e49-b6e4960e6b06"/>
 				<textElement textAlignment="Center">
 					<font fontName="宋体" size="10" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
@@ -137,24 +137,34 @@
 				<reportElement x="165" y="0" width="1" height="24" uuid="701d71e3-0890-4762-8646-c14c8f5fa60a"/>
 			</line>
 			<line>
-				<reportElement x="315" y="1" width="1" height="24" uuid="a13b54fc-4fba-4866-b97b-8a8caaebf097"/>
+				<reportElement x="287" y="1" width="1" height="24" uuid="a13b54fc-4fba-4866-b97b-8a8caaebf097"/>
 			</line>
 			<line>
 				<reportElement x="496" y="1" width="1" height="24" uuid="d6b50f3c-e2b1-46e7-9c76-6e35260da945"/>
+			</line>
+			<staticText>
+				<reportElement x="432" y="3" width="63" height="20" uuid="827f4643-689a-4b9a-b40c-208f13709798"/>
+				<textElement textAlignment="Center">
+					<font fontName="宋体" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[品牌]]></text>
+			</staticText>
+			<line>
+				<reportElement x="430" y="1" width="1" height="24" uuid="3cd6410a-1553-4e05-ac15-ca10b97519d8"/>
 			</line>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="25" splitType="Stretch">
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="166" y="2" width="147" height="20" uuid="2d9de0b2-dd4e-4b05-a207-d7732a18c9ad"/>
+				<reportElement stretchType="RelativeToTallestObject" x="166" y="2" width="120" height="20" uuid="2d9de0b2-dd4e-4b05-a207-d7732a18c9ad"/>
 				<textElement>
 					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{style}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="318" y="2" width="175" height="20" uuid="d920ea5e-bfa5-442e-8e21-70f63b770ca1"/>
+				<reportElement stretchType="RelativeToTallestObject" x="291" y="2" width="137" height="20" uuid="d920ea5e-bfa5-442e-8e21-70f63b770ca1"/>
 				<textElement>
 					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
@@ -184,10 +194,20 @@
 				<reportElement x="165" y="-1" width="1" height="24" uuid="efc037c9-ee2a-4be4-babb-c2230bfb5d5a"/>
 			</line>
 			<line>
-				<reportElement x="315" y="-1" width="1" height="24" uuid="54b6cf61-a53f-4129-a9cc-61c3d41056af"/>
+				<reportElement x="287" y="-1" width="1" height="24" uuid="54b6cf61-a53f-4129-a9cc-61c3d41056af"/>
 			</line>
 			<line>
 				<reportElement x="496" y="-1" width="1" height="24" uuid="a60cd76f-4386-496a-a03c-3071c838a43f"/>
+			</line>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="433" y="2" width="63" height="20" uuid="771fb349-d7fc-4618-bc08-3055eb4b4a1e"/>
+				<textElement>
+					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{brand_name}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="430" y="-1" width="1" height="24" uuid="5fc1a986-849a-40bf-91d6-80db4d2801f6"/>
 			</line>
 		</band>
 	</detail>

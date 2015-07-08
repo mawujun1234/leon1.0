@@ -231,7 +231,7 @@ public static final class ems_borrow {
 	public static final String operateDate="operateDate";
 	public static final String workUnit_id="workUnit_id";
 	public static final String project_id="project_id";
-	public static final String isAllReturn="isAllReturn";
+	public static final String status="status";
 	public static final String memo="memo";
 }
 public static final class ems_borrowlist {
@@ -280,6 +280,7 @@ public static final class ems_installoutlist {
 	public static final String installOutListType="installOutListType";
 	public static final String returnDate="returnDate";
 	public static final String installOutType_id="installOutType_id";
+	public static final String installOutType_content="installOutType_content";
 	public static final String id="id";
 }
 public static final class ems_installouttype {

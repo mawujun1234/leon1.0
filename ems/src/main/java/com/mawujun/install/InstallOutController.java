@@ -51,80 +51,11 @@ import freemarker.template.utility.DateUtil;
 public class InstallOutController {
 
 	@Resource
-	private InstallOutService outStoreService;
+	private InstallOutService installOutStoreService;
 	@Resource
 	private EquipmentService equipmentService;
 
-//	/**
-//	 * 请按自己的需求修改
-//	 * @author mawujun email:16064988@163.com qq:16064988
-//	 * @param id 是父节点的id
-//	 * @return
-//	 */
-//	@RequestMapping("/installOut/query.do")
-//	@ResponseBody
-//	public List<InstallOut> query(String id) {
-//		Cnd cnd=Cnd.select().andEquals(M.OutStore.parent.id, "root".equals(id)?null:id);
-//		List<InstallOut> outStorees=outStoreService.query(cnd);
-//		//JsonConfigHolder.setFilterPropertys(InstallOut.class,M.OutStore.parent.name());
-//		return outStorees;
-//	}
-//
-//	/**
-//	 * 这是基于分页的几种写法,的例子，请按自己的需求修改
-//	 * @author mawujun email:16064988@163.com qq:16064988
-//	 * @param start
-//	 * @param limit
-//	 * @param userName
-//	 * @return
-//	 */
-//	@RequestMapping("/installOut/query.do")
-//	@ResponseBody
-//	public Page query(Integer start,Integer limit,String sampleName){
-//		Page page=Page.getInstance(start,limit);//.addParam(M.OutStore.sampleName, "%"+sampleName+"%");
-//		return outStoreService.queryPage(page);
-//	}
 
-//	@RequestMapping("/installOut/query.do")
-//	@ResponseBody
-//	public List<InstallOut> query() {	
-//		List<InstallOut> outStorees=outStoreService.queryAll();
-//		return outStorees;
-//	}
-//	
-//
-//	@RequestMapping("/installOut/load.do")
-//	public InstallOut load(String id) {
-//		return outStoreService.get(id);
-//	}
-//	
-//	@RequestMapping("/installOut/create.do")
-//	@ResponseBody
-//	public InstallOut create(@RequestBody InstallOut outStore) {
-//		outStoreService.create(outStore);
-//		return outStore;
-//	}
-//	
-//	@RequestMapping("/installOut/update.do")
-//	@ResponseBody
-//	public  InstallOut update(@RequestBody InstallOut outStore) {
-//		outStoreService.update(outStore);
-//		return outStore;
-//	}
-//	
-//	@RequestMapping("/installOut/deleteById.do")
-//	@ResponseBody
-//	public String deleteById(String id) {
-//		outStoreService.deleteById(id);
-//		return id;
-//	}
-//	
-//	@RequestMapping("/installOut/destroy.do")
-//	@ResponseBody
-//	public InstallOut destroy(@RequestBody InstallOut outStore) {
-//		outStoreService.delete(outStore);
-//		return outStore;
-//	}
 	
 	/**
 	 * 主要用于新品入库的时候
@@ -160,7 +91,7 @@ public class InstallOutController {
 	public String equipmentOutStoreSaveAndPrint(@RequestBody InstallOutList[] installOutListes, InstallOut outStore, String installOut_id) { 
 		
 			
-		String installOut_id_re=outStoreService.equipOutStoreSaveAndPrint(installOutListes, outStore,installOut_id);
+		String installOut_id_re=installOutStoreService.equipOutStoreSaveAndPrint(installOutListes, outStore,installOut_id);
 		
 		
 		return installOut_id_re;
@@ -176,7 +107,7 @@ public class InstallOutController {
 	@ResponseBody
 	public String equipOutStore(@RequestBody InstallOutList[] installOutListes, InstallOut outStore , String installOut_id) { 
 		
-		outStoreService.equipOutStore(installOutListes, outStore,installOut_id);
+		installOutStoreService.equipOutStore(installOutListes, outStore,installOut_id);
 		return installOut_id;
 	}
 	SimpleDateFormat yyyyMMdd=new SimpleDateFormat("yyyy-MM-dd");
@@ -192,14 +123,14 @@ public class InstallOutController {
 	@ResponseBody
 	public void equipmentOutStorePrint(HttpServletRequest request,HttpServletResponse response,String installOut_id) throws  IOException, JRException { 
 		
-		InstallOutVO installOutVO=outStoreService.getInstallOutVO(installOut_id);
+		InstallOutVO installOutVO=installOutStoreService.getInstallOutVO(installOut_id);
 		Map<String,Object> params=new HashMap<String,Object>();
 		params.put("project_name", installOutVO.getProject_name()); 
 		params.put("installout_id", installOutVO.getId());  
 		params.put("workunit_name", installOutVO.getWorkUnit_name()); 
 		params.put("operater_name", installOutVO.getOperater_name());//仓管姓名
 		params.put("operateDate", yyyyMMdd.format(installOutVO.getOperateDate()));
-		List<InstallOutListVO> installOutListes=outStoreService.queryList(installOut_id);
+		List<InstallOutListVO> installOutListes=installOutStoreService.queryList(installOut_id);
 		
 		
 //		List<InstallOutListVO> installOutListes=new ArrayList<InstallOutListVO>();
@@ -293,7 +224,7 @@ public class InstallOutController {
 		page.addParam(M.InstallOut.workUnit_id, workUnit_id);
 		//page.addParam(M.InstallOut.installOutType_id, installOutType_id);
 		page.addParam(M.InstallOut.project_id, project_id);
-		page=outStoreService.queryMain(page);
+		page=installOutStoreService.queryMain(page);
 		return page;
 	}
 	
@@ -303,8 +234,26 @@ public class InstallOutController {
 		if(!StringUtils.hasText(installOut_id)){
 			throw new BusinessException("请先选择一条单据!");
 		}
-		List<InstallOutListVO> page=outStoreService.queryList(installOut_id);
+		List<InstallOutListVO> page=installOutStoreService.queryList(installOut_id);
 		return page;
+	}
+	
+	/**
+	 * 查询正在编辑状态的所有领用单
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param start
+	 * @param limit
+	 * @param operateDate_start
+	 * @param operateDate_end
+	 * @param store_id
+	 * @param workUnit_id
+	 * @param project_id
+	 * @return
+	 */
+	@RequestMapping("/installOut/queryEditInstallOut.do")
+	@ResponseBody
+	public List<InstallOutVO> queryEditInstallOut() { 
+		return installOutStoreService.queryEditInstallOut();
 	}
 	
 }

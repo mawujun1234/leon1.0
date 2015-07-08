@@ -6,6 +6,13 @@ public class BorrowVO extends Borrow {
 	private String project_name;
 	private String operater_name;
 	
+	public String getStatus_name() {
+		if(this.getStatus()!=null){
+			return this.getStatus().getName();
+		}
+		return null;
+	}
+	
 	public String getStore_name() {
 		return store_name;
 	}

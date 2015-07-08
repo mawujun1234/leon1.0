@@ -34,6 +34,8 @@ public class InstallOutList  extends UUIDEntity {
 	
 	@Column(length=36)
 	private String installOutType_id;//领用类型的id,是损坏领用，还是被盗领用
+	@Column(length=50)
+	private String installOutType_content;//领用类型的二级
 
 	public String getEcode() {
 		return ecode;
@@ -70,6 +72,12 @@ public class InstallOutList  extends UUIDEntity {
 	}
 	public void setReturnDate(Date returnDate) {
 		this.returnDate = returnDate;
+	}
+	public String getInstallOutType_content() {
+		return installOutType_content;
+	}
+	public void setInstallOutType_content(String installOutType_content) {
+		this.installOutType_content = installOutType_content;
 	}
 
 }
