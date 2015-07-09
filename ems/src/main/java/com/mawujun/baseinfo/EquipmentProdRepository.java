@@ -20,5 +20,7 @@ public interface EquipmentProdRepository extends IRepository<EquipmentProd, Stri
 	
 	public List<EquipmentProd> queryProd_tj_children(@Param("parent_id") String parent_id);
 	
+	public List<String> checkProd_used_in_equipment(@Param("prod_id") String prod_id);
+	
 	//public List<Brand> queryProdGrid(@Param("subtype_id") String subtype_id);
 }

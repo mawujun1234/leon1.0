@@ -3,24 +3,16 @@ package com.mawujun.store;
 import javax.persistence.Transient;
 
 public class BarcodeVO extends Barcode {
-	@Transient
+	
 	private String subtype_name;
-	@Transient
+	
 	private String prod_name;
-	@Transient
+	private String prod_style;
+	
 	private String brand_name;
-	@Transient
+	
 	private String supplier_name;
 
-	private String style;//型号
-
-	public String getStyle() {
-		return style;
-	}
-
-	public void setStyle(String style) {
-		this.style = style;
-	}
 
 	public String getSubtype_name() {
 		return subtype_name;
@@ -52,5 +44,13 @@ public class BarcodeVO extends Barcode {
 
 	public void setSupplier_name(String supplier_name) {
 		this.supplier_name = supplier_name;
+	}
+
+	public String getProd_style() {
+		return prod_style;
+	}
+
+	public void setProd_style(String prod_style) {
+		this.prod_style = prod_style;
 	}
 }

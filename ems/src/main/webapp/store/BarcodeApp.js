@@ -141,7 +141,7 @@ Ext.onReady(function(){
     	          //{header: '品名', dataIndex: 'prod_name'},
     	          {header: '品牌', dataIndex: 'brand_name',width:120},
     	          //{header: '供应商', dataIndex: 'supplier_name'},
-    	          {header: '设备型号', dataIndex: 'style',width:120},
+    	          {header: '设备型号', dataIndex: 'prod_style',width:120},
     	          {header: '单位', dataIndex: 'prod_unit',width:40},
     	          {header: '规格', dataIndex: 'prod_spec',flex:1,renderer:function(value,metadata,record){
 								metadata.tdAttr = "data-qtip='" + value+ "'";

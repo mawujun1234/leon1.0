@@ -65,7 +65,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	order by a.orderDate desc
     </select>
     <select id="queryList" resultType="com.mawujun.store.OrderListVO" parameterType="map">
-    	SELECT a.*,e.name as type_name,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,c.memo as prod_memo,c.unit as prod_unit,d.name as brand_name
+    	SELECT a.*,e.name as type_name,b.name as subtype_name,c.name as prod_name,c.style as prod_style,c.spec as prod_spec,c.memo as prod_memo,c.unit as prod_unit,d.name as brand_name
 	    FROM ems_orderlist a
 	    inner join ems_equipmentsubtype b on a.subtype_id=b.id
 	    inner join ems_equipmenttype e on b.parent_id=e.id
@@ -266,7 +266,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     </select>
     -->
  	<select id="getBarcodesRange" resultType="com.mawujun.store.BarcodeVO" parameterType="map">
-    	SELECT a.*,b.name as subtype_name,c.name as prod_name,d.name as brand_name,e.name as supplier_name
+    	SELECT a.*,b.name as subtype_name,c.name as prod_name,c.style as prod_style,d.name as brand_name,e.name as supplier_name
 	    FROM ems_Barcode a
 	    inner join ems_equipmentsubtype b on a.subtype_id=b.id
 		inner join ems_equipmentprod c on a.prod_id=c.id

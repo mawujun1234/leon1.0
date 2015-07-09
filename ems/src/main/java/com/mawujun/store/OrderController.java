@@ -246,7 +246,7 @@ public class OrderController {
         	HSSFCell cell0 = hssfRow.createCell(0);
         	cell0.setCellValue(barcodeVO.getEcode());
         	HSSFCell cell1 = hssfRow.createCell(1);
-        	cell1.setCellValue(barcodeVO.getStyle());
+        	cell1.setCellValue(barcodeVO.getProd_style());
         	
         	HSSFCell cell2 = hssfRow.createCell(2);
         	cell2.setCellValue(barcodeVO.getBrand_name());

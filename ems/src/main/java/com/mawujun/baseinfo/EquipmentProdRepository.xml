@@ -35,6 +35,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    where a.parent_id=#{parent_id}
 	    order by a.id
     </select>
+    
+    <!-- 判断品名是否已经在设备中被使用了，如果被使用了表明被打印了，而且如果型号变了，这样就不能修改型号了-->
+    <select id="checkProd_used_in_equipment" resultType="String">
+    	select distinct style from ems_equipment
+    	where prod_id=#{prod_id}
+    </select>
   
 </mapper>
 
