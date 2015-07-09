@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
+  <Properties>
+        <property name="log_pattern">%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</property>
+        <property name="file_name">logs/app.log</property>
+        <property name="rolling_file_name">logs/app-%d{yyyy-MM-dd}-%i.log.gz</property>
+        
+        <property name="every_file_size">10M</property><!-- 日志切割的最小单位 -->
+        <property name="output_log_level">${log4j2.level}</property><!-- 日志输出级别 -->
+  </Properties>
   <Appenders>
     <Console name="STDOUT" target="SYSTEM_OUT">
-      <PatternLayout pattern="%d %-5p [%t] %C{2} (%F:%L) - %m%n"/>
+      <PatternLayout pattern="${log_pattern}"/>
     </Console>
+    
+    <RollingFile name="RollingFile" fileName="${file_name}"
+                     filePattern="${rolling_file_name}">
+            <PatternLayout pattern="${log_pattern}"/>
+            <SizeBasedTriggeringPolicy size="${every_file_size}"/>
+    </RollingFile>
   </Appenders>
   <Loggers>
 
@@ -20,7 +34,12 @@
     <Logger name="jdbc.resultset" level="OFF" additivity="true"></Logger>
     <Logger name="jdbc.connection" level="OFF" additivity="true"></Logger>
     
-    <Root level="${log4j2.level}">
+    
+    <Logger name="com.mawujun" level="${output_log_level}" additivity="true">
+    	<AppenderRef ref="RollingFile"/>
+    </Logger>
+    
+    <Root level="${output_log_level}">
       <AppenderRef ref="STDOUT"/>
     </Root>
   </Loggers>

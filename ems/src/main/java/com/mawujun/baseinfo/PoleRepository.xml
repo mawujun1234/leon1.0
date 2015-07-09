@@ -46,7 +46,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
       FROM (select a.*,b.name  as customer_name 
            from ems_pole a,ems_customer b where a.customer_id=b.id
               and a.customer_id=#{customer_id})a 
-      left join ems_equipment b on a.id=b.pole_id
+      left join ems_equipment_pole g on a.id=g.pole_id
+      left join ems_equipment b on g.ecode=b.ecode  
       left join ems_equipmentsubtype c on b.subtype_id =c.id
       left join ems_equipmentprod d on b.prod_id=d.id
       left join ems_brand e on b.brand_id=e.id

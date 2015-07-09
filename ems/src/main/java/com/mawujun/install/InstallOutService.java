@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.ObjectNotFoundException;
 import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +42,7 @@ import com.mawujun.utils.page.Page;
 @Service
 @Transactional(propagation=Propagation.REQUIRED)
 public class InstallOutService extends AbstractService<InstallOut, String>{
-	Logger
+	private static Logger logger = LogManager.getLogger(InstallOutService.class);
 
 	@Autowired
 	private InstallOutRepository installOutRepository;
@@ -141,7 +143,8 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 			equipmentStorePK.setStore_id(outStore.getStore_id());
 			equipmentStoreRepository.deleteById(equipmentStorePK);
 			}catch(Exception e){
-				logger.error(e);
+				logger.warn(inStoreList.getEcode()+"该设备已经不在仓库"+outStore.getStore_id(),e);
+				//logger.warn
 				throw new BusinessException("该设备已经不在仓库!");
 			}
 //			equipmentStore.setNum(1);

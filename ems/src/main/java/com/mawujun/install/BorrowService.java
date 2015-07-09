@@ -5,11 +5,14 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 
 
 
@@ -70,7 +73,7 @@ import com.mawujun.install.BorrowRepository;
 @Service
 @Transactional(propagation=Propagation.REQUIRED)
 public class BorrowService extends AbstractService<Borrow, String>{
-
+	private static Logger logger = LogManager.getLogger(BorrowService.class);
 	@Autowired
 	private BorrowRepository borrowRepository;
 	@Autowired
@@ -99,6 +102,7 @@ public class BorrowService extends AbstractService<Borrow, String>{
 	
 	
 	public String borrowSaveAndPrint(BorrowList[] borrowListes, Borrow borrow, String borrow_id) {
+		//logger.info("正在借用======================================");
 		if(borrow_id!=null && !"".equals(borrow_id)){
 			
 			borrowListRepository.deleteBatch(Cnd.delete().andEquals(M.BorrowList.borrow_id, borrow_id));
@@ -164,6 +168,7 @@ public class BorrowService extends AbstractService<Borrow, String>{
 			equipmentStorePK.setStore_id(borrow.getStore_id());
 			equipmentStoreRepository.deleteById(equipmentStorePK);
 			}catch(ObjectNotFoundException e){
+				logger.warn(borrowlist.getEcode()+"该设备已经不在仓库"+borrow.getStore_id(),e);
 				throw new BusinessException("该设备已经不在仓库!");
 			}
 
