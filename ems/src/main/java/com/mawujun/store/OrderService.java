@@ -273,11 +273,11 @@ public class OrderService extends AbstractService<Order, String>{
 				bar.setType_id(orderList.getType_id());
 				bar.setSubtype_id(temp.getSubtype_id());
 				bar.setProd_id(temp.getId());
-				if(StringUtils.hasText(temp.getStyle())){
-					bar.setStyle(temp.getStyle());
-				} else {
-					bar.setStyle(orderList.getStyle());
-				}
+//				if(StringUtils.hasText(temp.getStyle())){
+//					bar.setStyle(temp.getStyle());
+//				} else {
+//					bar.setStyle(orderList.getStyle());
+//				}
 				
 				bar.setBrand_id(temp.getBrand_id());
 				bar.setSupplier_id(order.getSupplier_id());

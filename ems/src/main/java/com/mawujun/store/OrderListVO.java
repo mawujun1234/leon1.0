@@ -12,6 +12,7 @@ public class OrderListVO extends OrderList {
 	private String type_name;
 	private String subtype_name;
 	private String prod_id;
+	private String prod_style;
 	private String prod_name;
 	private String prod_spec;
 	private String prod_unit;
@@ -134,6 +135,30 @@ public class OrderListVO extends OrderList {
 
 	public void setType_name(String type_name) {
 		this.type_name = type_name;
+	}
+
+
+
+	public String getProd_style() {
+		return prod_style;
+	}
+
+
+
+	public void setProd_style(String prod_style) {
+		this.prod_style = prod_style;
+	}
+
+
+
+	public EquipmentProdType getProd_type() {
+		return prod_type;
+	}
+
+
+
+	public void setProd_type(EquipmentProdType prod_type) {
+		this.prod_type = prod_type;
 	}
 	
 }

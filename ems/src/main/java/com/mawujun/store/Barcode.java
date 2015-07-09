@@ -28,8 +28,8 @@ public class Barcode implements IdEntity<String>{
 	private String prod_id;//品名id
 	@Column(length=15)
 	private String brand_id;//品牌id
-	@Column(length=50)
-	private String style;//型号
+//	@Column(length=50)
+//	private String style;//型号
 	@Column(length=3)
 	private String supplier_id;//供应商id,是订单指定的供应商
 	@Column(length=36)
@@ -116,12 +116,12 @@ public class Barcode implements IdEntity<String>{
 	public void setBrand_id(String brand_id) {
 		this.brand_id = brand_id;
 	}
-	public String getStyle() {
-		return style;
-	}
-	public void setStyle(String style) {
-		this.style = style;
-	}
+//	public String getStyle() {
+//		return style;
+//	}
+//	public void setStyle(String style) {
+//		this.style = style;
+//	}
 	public String getSupplier_id() {
 		return supplier_id;
 	}

@@ -28,8 +28,8 @@ public class OrderList extends UUIDEntity {
 	private String brand_id;//品牌id
 //	@Column(length=3)
 //	private String supplier_id;//供应商id
-	@Column(length=50)
-	private String style;//型号
+//	@Column(length=50)
+//	private String style;//型号
 	
 	@Column(precision=10,scale=2)
 	private Double unitPrice;
@@ -72,12 +72,12 @@ public class OrderList extends UUIDEntity {
 		this.brand_id = brand_id;
 	}
 
-	public String getStyle() {
-		return style;
-	}
-	public void setStyle(String style) {
-		this.style = style;
-	}
+//	public String getStyle() {
+//		return style;
+//	}
+//	public void setStyle(String style) {
+//		this.style = style;
+//	}
 	public Double getUnitPrice() {
 		return unitPrice;
 	}

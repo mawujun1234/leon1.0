@@ -152,7 +152,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     -->
     <!-- 条码打印的时候，查询订单明细的数据-->
     <select id="queryList4Barcode" resultType="com.mawujun.store.OrderListVO" parameterType="map">
-    	SELECT a.*,b.name as subtype_name,c.id as prod_id,c.name as prod_name,c.spec as prod_spec,c.memo as prod_memo,c.unit as prod_unit,c.type as prod_type,d.name as brand_name
+    	SELECT a.*
+    	,b.name as subtype_name,c.id as prod_id,c.name as prod_name,c.style as prod_style,c.spec as prod_spec,c.memo as prod_memo,c.unit as prod_unit,c.type as prod_type,d.name as brand_name
 	    FROM ems_orderlist a
 	    inner join ems_equipmentsubtype b on a.subtype_id=b.id
 		inner join ems_equipmentprod c on a.prod_id=c.id
@@ -167,7 +168,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     </select>
     <!-- 查询套件下面的明细 -->
     <select id="queryList4Barcode_tj_children" resultType="com.mawujun.store.OrderListVO" parameterType="map">
-    	SELECT a.style,a.id as prod_id,a.name as prod_name,a.spec as prod_spec,a.memo as prod_memo,a.unit as prod_unit,a.type as prod_type,b.name as brand_name,c.name as subtype_name
+    	SELECT a.style as prod_style,a.id as prod_id,a.name as prod_name,a.spec as prod_spec,a.memo as prod_memo,a.unit as prod_unit,a.type as prod_type,b.name as brand_name,c.name as subtype_name
     	,'Y' as noedit 
 	    FROM ems_equipmentprod a
 	    inner join ems_brand b on a.brand_id=b.id
@@ -230,7 +231,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	a.store_id,
 		a.brand_id,
 		a.prod_id,
-		a.style,
+		c.style,
 		a.subtype_id,
 		a.supplier_id,
 		a.type_id,

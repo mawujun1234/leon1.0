@@ -339,7 +339,7 @@ Ext.onReady(function(){
     	          {header: '品名', dataIndex: 'prod_name'},
     	          {header: '品牌', dataIndex: 'brand_name',width:120},
     	          //{header: '供应商', dataIndex: 'supplier_name'},
-    	          {header: '设备型号', dataIndex: 'style',width:120},
+    	          {header: '设备型号', dataIndex: 'prod_style',width:120},
     	          {dataIndex:'quality_month',text:'质保(月)',width:50},
     	          {header: '规格', dataIndex: 'prod_spec',flex:1,renderer:function(value,metadata,record){
 								metadata.tdAttr = "data-qtip='" + value+ "'";
@@ -418,7 +418,7 @@ Ext.onReady(function(){
 	            brand_name:brand_name.getValue(),
 	            //supplier_id:supplier_combox.getValue(),
 	            //supplier_name:supplier_combox.getRawValue(),
-	            style:style.getValue(),
+	            prod_style:style.getValue(),
 	            //store_id:store_combox.getValue(),
 	            //store_name:store_combox.getRawValue(),
 	            quality_month:quality_month_field.getValue(),
