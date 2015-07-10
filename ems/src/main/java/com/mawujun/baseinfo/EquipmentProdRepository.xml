@@ -36,11 +36,21 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    order by a.id
     </select>
     
-    <!-- 判断品名是否已经在设备中被使用了，如果被使用了表明被打印了，而且如果型号变了，这样就不能修改型号了-->
+    <!-- 判断品名是否已经在设备中被使用了，如果被使用了表明被打印了，而且如果型号变了，这样就不能修改型号了
     <select id="checkProd_used_in_equipment" resultType="String">
     	select distinct style from ems_equipment
     	where prod_id=#{prod_id}
     </select>
+    -->
+    <!-- 当更新品名的嘶吼，如果发现型号不一致了，就不准更新 -->
+     <select id="get_style_by_prod_id" resultType="String">
+    	select style from ems_equipmentprod
+    	where id=#{prod_id}
+    </select>
+    <!-- 当设备入库的时候，就把该设备所在的品名的型号锁定，表示该品名的型号不能修改了 -->
+    <update id="update_lock_style" >
+    	update ems_equipmentprod set lock_style=#{lock_style} where id=#{prod_id}
+    </update>
   
 </mapper>
 

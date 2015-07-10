@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mawujun.baseinfo.Equipment;
 import com.mawujun.baseinfo.EquipmentCycleService;
 import com.mawujun.baseinfo.EquipmentPlace;
+import com.mawujun.baseinfo.EquipmentProdRepository;
 import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.EquipmentStatus;
 import com.mawujun.baseinfo.EquipmentStore;
@@ -54,6 +55,8 @@ public class InStoreService extends AbstractService<InStore, String>{
 	private EquipmentCycleService equipmentCycleService;
 	@Autowired
 	private StoreService storeService;
+	@Autowired
+	private EquipmentProdRepository equipmentProdRepository;
 	
 	SimpleDateFormat ymdHmsDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
 	
@@ -117,6 +120,9 @@ public class InStoreService extends AbstractService<InStore, String>{
 			
 			//更新条码的状态
 			barcodeRepository.update(Cnd.update().set(M.Barcode.status, 1).andEquals(M.Barcode.ecode, equipment.getEcode()));
+			
+			//更新品名的型号不能修改
+			equipmentProdRepository.update_lock_style(equipment.getProd_id(),true);
 			
 			//记录设备入库的生命周期
 			equipmentCycleService.logEquipmentCycle(equipment.getEcode(), OperateType.newinstore, instore_id, TargetType.store,inStore.getStore_id());

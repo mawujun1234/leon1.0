@@ -49,6 +49,8 @@ public class EquipmentProd  implements
 //	private String type_parent_id;//当被拆分后的parent_id
 	
 	private Integer quality_month;//质保时间长度，以月为单位
+	@org.hibernate.annotations.Type(type="yes_no")
+	private Boolean lock_style=false;//true表示锁定这个品名的型号，这个型号就不能修改了
 	
 	
 	
@@ -154,6 +156,14 @@ public class EquipmentProd  implements
 
 	public void setQuality_month(Integer quality_month) {
 		this.quality_month = quality_month;
+	}
+
+	public Boolean getLock_style() {
+		return lock_style;
+	}
+
+	public void setLock_style(Boolean lock_style) {
+		this.lock_style = lock_style;
 	}
 
 

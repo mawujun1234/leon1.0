@@ -139,17 +139,29 @@ public class EquipmentProdService extends AbstractService<EquipmentProd, String>
 	}
 	@Override
 	public void update(EquipmentProd equipmentProd){
-		//先判断该设备是否可以修改
-		//如果该品名已经在设备里面已经存在了，就不能修改了
-		List<String> styles=this.getRepository().checkProd_used_in_equipment(equipmentProd.getId());
-		if(styles.size()>=2){
-			throw new BusinessException("该品名的型号，出现了不一致的情况，请联系管理员，先进行修改!");
-		}
-		if(styles.size()==1){
-			if(!styles.get(0).equals(equipmentProd.getStyle())){
+//		//先判断该设备是否可以修改
+//		//如果该品名已经在设备里面已经存在了，就不能修改了
+//		List<String> styles=this.getRepository().checkProd_used_in_equipment(equipmentProd.getId());
+//		if(styles.size()>=2){
+//			throw new BusinessException("该品名的型号，出现了不一致的情况，请联系管理员，先进行修改!");
+//		}
+//		if(styles.size()==1){
+//			if(!styles.get(0).equals(equipmentProd.getStyle())){
+//				throw new BusinessException("该品名的型号已经被打印并被使用，不能再修改!");
+//			}
+//		}
+		
+		String style_old=this.getRepository().get_style_by_prod_id(equipmentProd.getId());
+		if(equipmentProd.getLock_style()!=null && equipmentProd.getLock_style()){
+			if(equipmentProd.getStyle()!=null){
+				if(!equipmentProd.getStyle().equals(style_old)){
+					throw new BusinessException("该品名的型号已经被打印并被使用，不能再修改!");
+				}
+			} else if(style_old!=null){
 				throw new BusinessException("该品名的型号已经被打印并被使用，不能再修改!");
 			}
 		}
+		
 		
 		this.getRepository().update(equipmentProd);
 	}
