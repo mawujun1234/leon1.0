@@ -235,7 +235,6 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 //	}
 	
 	public Page queryMain(Page page){
-
 		return installOutRepository.queryMain(page);
 
 		

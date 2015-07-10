@@ -2,7 +2,6 @@ package com.mawujun.store;
 import java.beans.IntrospectionException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
