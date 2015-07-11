@@ -61,6 +61,7 @@ public class InStoreController {
 			throw new BusinessException("该设备已经存在，不能重复入库!");
 		}
 		
+		
 		equipmentVO= orderService.getEquipFromBarcode(ecode);
 		
 		
@@ -73,6 +74,9 @@ public class InStoreController {
 				throw new BusinessException("该设备为非新增设备,不能添加到入库列表!");
 			}
 			cacheMgr.putQrcode(key, equipmentVO);
+			
+			Integer total=cacheMgr.getQrcodesAll(key).length;
+			JsonConfigHolder.setTotal(total);
 			return equipmentVO;
 		} else {
 			//return new EquipmentVO();

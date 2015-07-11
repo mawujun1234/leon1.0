@@ -80,20 +80,32 @@ public class CacheMgr {
 		
 		ArrayList<EquipmentVO> list=new ArrayList<EquipmentVO>();
 		int size=map.size();
+		//当当前页没有数据的时候，就获取前一页的数据
+		if(start>=size){
+			start=(start-limit<10)?0:(start-limit);
+		}
 		
 		int i=0;
 		for(Entry<String,EquipmentVO> entry:map.entrySet()) {
-			if((size-i-1)>=start){
-				if(((size-i-1)-start)<limit){
+			if((i+1)>start){
+				if(((size-i-1))<=limit){
 					list.add(entry.getValue());
 				} else {
 					//break;
 				}	
 			}
 			i++;
+//			if((size-i-1)>=start){
+//				if(((size-i-1)-start)<limit){
+//					list.add(entry.getValue());
+//				} else {
+//					//break;
+//				}	
+//			}
+//			i++;
 		}
 		
-		Collections.reverse(list);
+		//Collections.reverse(list);
 		Page page=Page.getInstance(start, limit);
 		page.setTotal(map.size());
 		page.setResult(list);

@@ -3,32 +3,32 @@ package com.mawujun.baseinfo;
 import javax.persistence.Transient;
 
 public class EquipmentVO extends Equipment {
-	@Transient
+	
 	private String subtype_name;
-	@Transient
+	
 	private String prod_name;
-	@Transient
+	
 	private String prod_spec;
-	@Transient
+	
 	private String brand_name;
-	@Transient
+	
 	private String supplier_name;
-	@Transient
+	
 	private String store_id;
-	@Transient
+	
 	private String store_name;
-	@Transient
+	
 	private Boolean isInStore;//这个条码是否已经入过库了。是barcode中的条码的状态
-	@Transient
+	
 	private Integer num;
-	@Transient
+	
 	private String pole_address;
-	//@Transient
+	//
 	//private String status_name;
 	
 	//=======入库的时候
 	private String workUnit_id;
-	@Transient
+	
 	private String workUnit_name;
 	
 	public String getStatus_name() {

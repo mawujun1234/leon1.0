@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Page {
-	protected int pageNo = 0;
+	protected int pageNo = 1;
 	protected int pageSize = 50;// 默认是每页50条
 	protected int start = 1;
 
@@ -32,7 +32,7 @@ public class Page {
 	
 	public int getPageNo() {
 		//开始计算pageNo。看getFirst()
-		this.pageNo=Double.valueOf(Math.ceil(new Double(start)/new Double(pageSize))).intValue();//+1;
+		this.pageNo=Double.valueOf(Math.ceil(new Double(start)/new Double(pageSize))).intValue()+1;
 		return pageNo;
 	}
 

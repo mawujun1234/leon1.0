@@ -175,29 +175,25 @@ Ext.onReady(function(){
 
 							ecode_textfield.setValue("");
 							ecode_textfield.clearInvalid( );
-
-//							var exist=false;
-//							equipStore.each(function(record){
-//								if(newValue==record.get('ecode')){
-//								    exist=true;
-//								    return !exist;
-//								}
-//							});
-//							if(exist){
-//								Ext.Msg.alert('提示','该设备已经存在');
-//							}else{
-								equipStore.insert(0, scanrecord);	
-								//alert(1);
-								equip_grid.getView().refresh();
-//							}		
 							store_combox.disable();
 							
-							if(equipStore.getCount()>=pageSize+20){
-								//永远获取第一页
-								equipStore.getProxy().extraParams={store_id:store_combox.getValue(),checkDate:checkDate};
-								//equipStore.load({params:{start:0,limit:pageSize}})
-								equip_grid.getDockedItems('toolbar[dock="bottom"]')[0].moveFirst( );
+							//插入到最后，如果发现超过了页数，那就翻页到第二页
+							var currentPage_return=Math.floor(ret.total/pageSize)+1;
+							if(ret.total%pageSize!=0 && currentPage_return!=equipStore.currentPage){
+								equipStore.loadPage(currentPage_return);
+							} else {
+								equipStore.add(scanrecord);
+								equip_grid.getView().refresh();	
 							}
+
+//							equipStore.insert(0, scanrecord);	
+//							equip_grid.getView().refresh();					
+//							if(equipStore.getCount()>=pageSize+20){
+//								//永远获取第一页
+//								equipStore.getProxy().extraParams={store_id:store_combox.getValue(),checkDate:checkDate};
+//								//equipStore.load({params:{start:0,limit:pageSize}})
+//								equip_grid.getDockedItems('toolbar[dock="bottom"]')[0].moveFirst( );
+//							}
 						} else {
 							Ext.Msg.alert("消息",ret.msg);
 							ecode_textfield.setValue("");
@@ -213,7 +209,7 @@ Ext.onReady(function(){
 	
 	//==========================================================================================
 	
-	var pageSize=50;
+	var pageSize=10;
 	var equipStore = Ext.create('Ext.data.Store', {
         autoDestroy: true,
         pageSize:pageSize,
@@ -227,6 +223,11 @@ Ext.onReady(function(){
 	            root: 'root',
 	            totalProperty: 'total'
 	        }
+	    },
+	    listeners:{
+	    	beforeload:function( store, operation, eOpts ) {
+	    		equipStore.getProxy().extraParams={store_id:store_combox.getValue(),checkDate:checkDate};
+	    	}
 	    }
     });
 
@@ -252,7 +253,13 @@ Ext.onReady(function(){
 										success : function(response) {//加载成功的处理函数   
 											var ret=Ext.decode(response.responseText);
 											if(ret.success){
+												var currentPage=equipStore.currentPage;
+												if(equipStore.getCount()==1 && currentPage!=1){
+													currentPage-=1;
+												}
 												equipStore.remove(record);
+												//重新加载
+												equipStore.loadPage(currentPage);
 											}
 										}
 									});
