@@ -47,9 +47,15 @@ public class Day_sparepart  implements IdEntity<Day_sparepart_PK>{
 	@Column(columnDefinition="INT default 0")
 	private Integer repairoutnum;//维修出库数量，
 	@Column(columnDefinition="INT default 0")
-	private Integer adjustoutnum;//借用数，
+	private Integer borrownum;//借用数，
 	@Column(columnDefinition="INT default 0")
-	private Integer adjustinnum;//返还数，
+	private Integer borrowreturnnum;//返还数，
+	
+	
+//	@Column(columnDefinition="INT default 0")
+//	private Integer adjustoutnum;//借用数，
+//	@Column(columnDefinition="INT default 0")
+//	private Integer adjustinnum;//返还数，
 	
 	//下面三个都是计算出啦的
 //	@Column(columnDefinition="INT default 0")
@@ -157,28 +163,28 @@ public class Day_sparepart  implements IdEntity<Day_sparepart_PK>{
 		this.repairoutnum = repairoutnum;
 	}
 
-	public Integer getAdjustoutnum() {
-		return adjustoutnum;
-	}
-
-	public void setAdjustoutnum(Integer adjustoutnum) {
-		this.adjustoutnum = adjustoutnum;
-	}
-
-	public Integer getAdjustinnum() {
-		return adjustinnum;
-	}
-
-	public void setAdjustinnum(Integer adjustinnum) {
-		this.adjustinnum = adjustinnum;
-	}
-
 	public Date getCreateDate() {
 		return createDate;
 	}
 
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
+	}
+
+	public Integer getBorrownum() {
+		return borrownum;
+	}
+
+	public void setBorrownum(Integer borrownum) {
+		this.borrownum = borrownum;
+	}
+
+	public Integer getBorrowreturnnum() {
+		return borrowreturnnum;
+	}
+
+	public void setBorrowreturnnum(Integer borrowreturnnum) {
+		this.borrowreturnnum = borrowreturnnum;
 	}
 
 }

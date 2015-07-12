@@ -153,6 +153,7 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 			//更新InstallOut中的返回时间，
 			//InstallInList中的installOut_id就是在getEquipmentByEcode中就设置好了
 			installOutListRepository.update(Cnd.update().set(M.InstallOutList.returnDate, new Date())
+					.set(M.InstallOutList.isReturn, true)
 					.andEquals(M.InstallOutList.installOut_id, list.getInstallout_id())
 					.andEquals(M.InstallOutList.ecode, list.getEcode()));
 			
@@ -173,7 +174,7 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 			equipmentWorkunitRepository.deleteById(equipmentWorkunitPK);
 			
 			//这里没有修改InstallOutList中的InstallOutListType为借用或领用，因为默认借用单和领用单的明细都是借用，只有在真正使用之后才会变成领用
-			
+	
 			//添加明细
 			installInListRepository.create(list);
 			

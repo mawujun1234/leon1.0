@@ -382,13 +382,16 @@ public class TaskService extends AbstractService<Task, String>{
 	}
 	public TaskEquipmentListVO mobile_getAndCreateTaskEquipmentList(String ecode,String task_id,TaskType task_type,String pole_id){
 		
-		EquipmentWorkunitPK equipmentWorkunitPK = new EquipmentWorkunitPK();
-		equipmentWorkunitPK.setEcode(ecode);
-		equipmentWorkunitPK.setWorkunit_id(ShiroUtils.getUserId());
-		EquipmentWorkunit equipmentWorkunit=equipmentWorkunitRepository.get(equipmentWorkunitPK);
-		if(equipmentWorkunit==null){
-			throw new BusinessException(ecode+"不在该作业单位手上!");
+		if(task_type!=TaskType.cancel){
+			EquipmentWorkunitPK equipmentWorkunitPK = new EquipmentWorkunitPK();
+			equipmentWorkunitPK.setEcode(ecode);
+			equipmentWorkunitPK.setWorkunit_id(ShiroUtils.getUserId());
+			EquipmentWorkunit equipmentWorkunit=equipmentWorkunitRepository.get(equipmentWorkunitPK);
+			if(equipmentWorkunit==null){
+				throw new BusinessException(ecode+"不在该作业单位手上!");
+			}
 		}
+		
 		
 		EquipmentVO equipmentVO=equipmentService.getEquipmentInfo(ecode);
 		if(equipmentVO==null){

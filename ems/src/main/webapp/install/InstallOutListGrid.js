@@ -17,6 +17,7 @@ Ext.define('Ems.install.InstallOutListGrid',{
       var me = this;
       me.columns=[
 		//{dataIndex:'id',text:'id'},
+        Ext.create('Ext.grid.RowNumberer'),
 		{dataIndex:'ecode',text:'条码',width:130},
 		{dataIndex:'installOutType_name',text:'领用类型'},
 		{dataIndex:'installOutListType_name',text:'借/领'},

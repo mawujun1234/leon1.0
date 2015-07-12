@@ -28,6 +28,14 @@ Ext.define('Ems.repair.ScrapForm',{
 	        allowBlank: false
 	    },
 	    {
+	        fieldLabel: '状态',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'status',
+	        readOnly:true,
+	        xtype:'hidden',
+	        allowBlank: true
+	    },
+	    {
 	        fieldLabel: '报废单号',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'repair_id',

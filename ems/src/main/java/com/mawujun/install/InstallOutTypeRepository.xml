@@ -7,7 +7,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.mawujun.install.InstallOutTypeRepository">
 	<!-- 判断是不是被领用单引用过了 -->
 	<select id="isUsedByInstallOut" resultType="int">
-		select count(*) from ems_InstallOut where installOutType_id=#{id}
+		select count(*) from ems_InstallOutlist where installOutType_id=#{id}
 	</select>
 </mapper>
 

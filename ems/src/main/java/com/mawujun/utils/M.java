@@ -19,6 +19,7 @@ public static final class AdjustList {
 	public static final String isnew="isnew";
 	public static final String adjustListStatus="adjustListStatus";
 	public static final String indate="indate";
+	public static final String isReturn="isReturn";
 	public static final String adjust_id_returnback="adjust_id_returnback";
 	public static final String ecode_returnback="ecode_returnback";
 	public static final String prod_id="prod_id";
@@ -287,6 +288,7 @@ public static final class InstallOutList {
 	public static final String ecode="ecode";
 	public static final String isnew="isnew";
 	public static final String installOutListType="installOutListType";
+	public static final String isReturn="isReturn";
 	public static final String returnDate="returnDate";
 	public static final String installOutType_id="installOutType_id";
 	public static final String installOutType_content="installOutType_content";
@@ -308,8 +310,8 @@ public static final class Day_sparepart {
 	public static final String repairinnum="repairinnum";
 	public static final String scrapoutnum="scrapoutnum";
 	public static final String repairoutnum="repairoutnum";
-	public static final String adjustoutnum="adjustoutnum";
-	public static final String adjustinnum="adjustinnum";
+	public static final String borrownum="borrownum";
+	public static final String borrowreturnnum="borrowreturnnum";
 	public static final String createDate="createDate";
 }
 public static final class MetaVersion {
@@ -418,6 +420,7 @@ public static final class Scrap {
 	public static final String operater="operater";
 	public static final String operateDate="operateDate";
 	public static final String repair_id="repair_id";
+	public static final String status="status";
 }
 public static final class Barcode {
 	public static final String ecode="ecode";

@@ -30,6 +30,9 @@ public class InstallOutList  extends UUIDEntity {
 	@Column(length=20)
 	private InstallOutListType installOutListType=InstallOutListType.borrow; 
 	
+	
+	@org.hibernate.annotations.Type(type="yes_no")
+	private Boolean isReturn=false;
 	private Date returnDate;//归还时间。领用时间(任务提交的时间)
 	
 	@Column(length=36)
@@ -78,6 +81,12 @@ public class InstallOutList  extends UUIDEntity {
 	}
 	public void setInstallOutType_content(String installOutType_content) {
 		this.installOutType_content = installOutType_content;
+	}
+	public Boolean getIsReturn() {
+		return isReturn;
+	}
+	public void setIsReturn(Boolean isReturn) {
+		this.isReturn = isReturn;
 	}
 
 }

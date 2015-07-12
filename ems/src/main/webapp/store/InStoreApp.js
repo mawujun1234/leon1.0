@@ -209,7 +209,7 @@ Ext.onReady(function(){
 	
 	//==========================================================================================
 	
-	var pageSize=10;
+	var pageSize=50;
 	var equipStore = Ext.create('Ext.data.Store', {
         autoDestroy: true,
         pageSize:pageSize,

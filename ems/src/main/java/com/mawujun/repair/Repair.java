@@ -27,7 +27,7 @@ public class Repair  implements IdEntity<String>{
 	@Column(length=25)
 	private String prod_id;
 	@Column(length=36) 
-	private String str_out_id;//出库仓库
+	private String str_out_id;//出库仓库  //以设备出来的仓库作为报废单接收仓库
 	@Column(length=36) 
 	private String rpa_id;//维修中心id
 	@Column(length=36) 

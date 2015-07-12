@@ -123,6 +123,7 @@ public class BorrowService extends AbstractService<Borrow, String>{
 		
 		for(BorrowList borrowList:borrowListes){
 			borrowList.setBorrow_id(borrow_id);
+			borrowList.setBorrowListType(BorrowListType.borrow);
 			borrowListRepository.create(borrowList);
 		}
 		return 	borrow_id;
@@ -187,6 +188,7 @@ public class BorrowService extends AbstractService<Borrow, String>{
 //			BorrowList borrowlist=new BorrowList();
 //			borrowlist.setEcode(equipment.getEcode());
 			borrowlist.setBorrow_id(borrow_id);
+			borrowlist.setBorrowListType(BorrowListType.borrow);
 			borrowListRepository.create(borrowlist);
 			
 			//记录设备入库的生命周期

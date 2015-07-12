@@ -17,7 +17,7 @@ Ext.define('Ems.install.BorrowGrid',{
       var me = this;
       me.columns=[
 		{dataIndex:'id',text:'编码'},
-		{dataIndex:'status_name',text:'仓库'},
+		{dataIndex:'status_name',text:'状态',width:70},
 		{dataIndex:'store_name',text:'仓库'},
 		{dataIndex:'workUnit_name',text:'作业单位'},
 		{dataIndex:'project_name',text:'项目'},

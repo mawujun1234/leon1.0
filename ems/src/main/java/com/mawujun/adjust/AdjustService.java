@@ -147,7 +147,7 @@ public class AdjustService extends AbstractService<Adjust, String>{
 				//修改调拨单明细状态为 returnback 已归还
 				adjustListRepository.update(Cnd.update().set(M.AdjustList.adjust_id_returnback, adjust.getId())
 						.set(M.AdjustList.ecode_returnback, adjuestList.getEcode())
-						.set(M.AdjustList.adjustListStatus, AdjustListStatus.returnback)
+						.set(M.AdjustList.isReturn, true)
 						.andEquals(M.AdjustList.id,exists_adjustList_borrow.getId()));
 			} else {
 				throw new BusinessException(adjuestList.getEcode()+"该条码设备的品名不对,在借用单中已经不存在该品名的设备需要归还!");

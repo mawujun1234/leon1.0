@@ -16,12 +16,13 @@ Ext.define('Ems.install.BorrowListGrid',{
 	initComponent: function () {
       var me = this;
       me.columns=[
+      	Ext.create('Ext.grid.RowNumberer'),
 		//{dataIndex:'id',text:'id'},
 		{dataIndex:'ecode',text:'条码',width:130},
 		{dataIndex:'borrowListType_name',text:'借/领'},
 		//{dataIndex:'installIn_id',text:'installIn_id'},
 		//{dataIndex:'isBad',text:'isBad'}
-		{dataIndex:'returnDate',text:'归还日期',xtype: 'datecolumn',   format:'Y-m-d'},
+		{dataIndex:'returnDate',text:'归还/安装日期',xtype: 'datecolumn',   format:'Y-m-d'},
 		{dataIndex:'subtype_name',text:'小类'},
 		{dataIndex:'prod_name',text:'品名'},
 		{dataIndex:'brand_name',text:'品牌'},

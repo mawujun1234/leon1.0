@@ -502,7 +502,8 @@ Ext.define('Ems.task.TaskSendGrid',{
 		var pole_values=pole.getData();
 	
 		var values={};
-		values.pole_id=pole_values.id.split('-')[0];
+		//values.pole_id=pole_values.id.split('-')[0];
+		values.pole_id=pole_values.id;
 		values.pole_name=pole_values.name;
 		values.pole_address=pole_values.province+pole_values.city+pole_values.area+pole_values.address;
 					

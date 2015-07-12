@@ -203,7 +203,8 @@ Ext.onReady(function(){
 							if(exist){
 								Ext.Msg.alert('提示','该设备已经存在');
 							}else{
-								equipStore.insert(0, scanrecord);				
+								//equipStore.insert(0, scanrecord);	
+								equipStore.add(scanrecord);
 							}			
 							store_out_combox.disable();
 							store_in_combox.disable();

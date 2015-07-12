@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -45,6 +47,9 @@ public class Scrap implements IdEntity<String>{
 	
 	@Column(length=18)
 	private String repair_id;//报废单对应的维修单
+	@Enumerated(EnumType.STRING)
+	@Column(length=20)
+	private ScrapStatus status;
 
 	public String getId() {
 		return id;
@@ -132,5 +137,13 @@ public class Scrap implements IdEntity<String>{
 
 	public void setRpa_id(String rpa_id) {
 		this.rpa_id = rpa_id;
+	}
+
+	public ScrapStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(ScrapStatus status) {
+		this.status = status;
 	}
 }

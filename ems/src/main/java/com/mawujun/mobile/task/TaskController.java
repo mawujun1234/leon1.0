@@ -90,10 +90,10 @@ public class TaskController {
 	
 	@RequestMapping("/task/query.do")
 	@ResponseBody
-	public Page query(Integer start,Integer limit,String customer_id,String status,String type,String workunit_id,String pole_id,String pole_name,Boolean isOvertime) {
+	public Page query(Integer start,Integer limit,String customer_id,TaskStatus status,String type,String workunit_id,String pole_id,String pole_name,Boolean isOvertime) {
 		Page page=Page.getInstance(start,limit);
 		page.addParam(M.Task.customer_id, customer_id);
-		if(StringUtils.hasText(status)){
+		if(status!=null){
 			page.addParam(M.Task.status, status);
 		}
 		page.addParam(M.Task.workunit_id, workunit_id);
@@ -103,7 +103,7 @@ public class TaskController {
 		}
 		
 		
-		if(pole_name!=null){
+		if(pole_name!=null && !"".equals(pole_name)){
 			page.addParam(M.Task.pole_name, "%"+pole_name+"%");
 		}
 		if(isOvertime!=null && isOvertime==true){

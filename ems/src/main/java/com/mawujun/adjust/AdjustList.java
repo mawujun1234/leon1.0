@@ -36,6 +36,8 @@ public class AdjustList extends UUIDEntity{
 	
 	
 	//下面两个字段只有在AdjustType.borrow的时候有值
+	@org.hibernate.annotations.Type(type="yes_no")
+	private Boolean isReturn=false;
 	//和主表中的adjust_id_borrow是相反的，这个有值，adjust_id_borrow就没有值
 	@Column(length=36)
 	private String adjust_id_returnback;//归还单明细的id，存在多次归还，所以放在这里了
@@ -93,6 +95,12 @@ public class AdjustList extends UUIDEntity{
 	}
 	public void setAdjust_id_returnback(String adjust_id_returnback) {
 		this.adjust_id_returnback = adjust_id_returnback;
+	}
+	public Boolean getIsReturn() {
+		return isReturn;
+	}
+	public void setIsReturn(Boolean isReturn) {
+		this.isReturn = isReturn;
 	}
 
 

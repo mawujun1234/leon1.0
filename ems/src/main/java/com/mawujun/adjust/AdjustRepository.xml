@@ -72,7 +72,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     <!-- 在设备返还，然后入库的时候，对设备进行判断，如果已经全部归还就修改主表的状态为 归还，否则为部分归还 -->
     <update id="updateAdjustIsAllReturn" parameterType="string">
 		update ems_adjust set status=(
-		       select decode(count(id) ,sum(decode(adjustListStatus,'returnback',1,'lost',1,0)),'over','partreturn')  from ems_adjustlist 
+		       select decode(count(id) ,sum(decode(isReturn,'Y',1,0)),'over','partreturn')  from ems_adjustlist 
 		       where adjust_id=#{adjust_id}
 		) where id=#{adjust_id}
 	</update>

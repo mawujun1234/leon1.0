@@ -68,9 +68,10 @@ public class ScrapService extends AbstractService<Scrap, String>{
 		if(!StringUtils.hasText(scrap.getId())){
 			scrap.setScrpReqDate(new Date());
 			scrap.setScrpReqOper(ShiroUtils.getAuthenticationInfo().getId());
+			scrap.setStatus(ScrapStatus.scrap_confirm);
 			
 			Repair repair=repairRepository.get(scrap.getRepair_id());
-			scrap.setStore_id(repair.getStr_out_id());
+			scrap.setStore_id(repair.getStr_out_id());//以设备出来的仓库作为报废单接收仓库
 			scrap.setRpa_id(repair.getRpa_id());
 			this.create(scrap);
 		}
@@ -85,6 +86,7 @@ public class ScrapService extends AbstractService<Scrap, String>{
 	
 	public Scrap makeSureScrap(String scrap_id) {
 		Scrap scrap=scrapRepository.get(scrap_id);
+		scrap.setStatus(ScrapStatus.scrap);
 		//修改设备状态为报废
 		equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.scrapped)
 				.set(M.Equipment.place, EquipmentPlace.scrap)

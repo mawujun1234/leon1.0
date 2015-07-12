@@ -96,6 +96,7 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 		
 		for(InstallOutList inStoreList:installOutListes){
 			inStoreList.setInstallOut_id(installOut_id);
+			inStoreList.setInstallOutListType(InstallOutListType.borrow);
 			installOutListRepository.create(inStoreList);
 		}
 		return 	installOut_id;
@@ -168,6 +169,7 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 //			InstallOutList inStoreList=new InstallOutList();
 //			inStoreList.setEcode(equipment.getEcode());
 			inStoreList.setInstallOut_id(installOut_id);
+			inStoreList.setInstallOutListType(InstallOutListType.borrow);
 			installOutListRepository.create(inStoreList);
 			
 			//记录设备入库的生命周期
