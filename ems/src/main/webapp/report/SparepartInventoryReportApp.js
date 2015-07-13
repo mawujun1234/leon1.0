@@ -41,9 +41,9 @@ Ext.onReady(function(){
 //	});	
 	
 	var date_start=Ext.create('Ext.form.field.Date',{
-	  	fieldLabel: '时间范围，开始时间',
+	  	fieldLabel: '开始时间',
 	  	labelWidth:50,
-	  	width:150,
+	  	width:170,
 	  	format:'Y-m-d',
 	  	minValue:Ext.Date.parse('2015-07-10','Y-m-d')//从7.10号开始有数据
         //value:  Ext.Date.add(new Date(), Ext.Date.DAY, -7)
@@ -84,16 +84,16 @@ Ext.onReady(function(){
 	var tbar1=Ext.create('Ext.toolbar.Toolbar',{
 		items:[date_start,date_end,store_combox,{
 			text:'计算当天结余',
-			icon:'../icons/page_excel.png',
+			icon:'../icons/atm.png',
 			handler:function(){
 				if(!store_combox.getValue()){
-					alert("没有指定仓库，将会对所有仓库进行计算");
+					alert("没有指定仓库，将会对所有备品备件仓库进行计算");
 				}
-				Ext.confirm("消息","将计算今天截至当前为止的库存情况!",function(btn){
+				Ext.Msg.confirm("消息","将计算今天截至当前为止的库存情况!",function(btn){
 					if(btn=='yes'){
 						Ext.getBody().mask("正在执行...");
 						Ext.Ajax.request({
-							url:Ext.Contextpath+"/inventory/proc_report_day_sparepart.do",
+							url:Ext.ContextPath+"/inventory/proc_report_day_sparepart.do",
 							params:{store_id:store_combox.getValue(),store_type:3},
 							success:function(response){
 								alert("计算成功!");
