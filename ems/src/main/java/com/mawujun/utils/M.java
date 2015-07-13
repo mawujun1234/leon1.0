@@ -303,7 +303,8 @@ public static final class Day_sparepart {
 	public static final String daykey="daykey";
 	public static final String prod_id="prod_id";
 	public static final String store_id="store_id";
-	public static final String fixednum="fixednum";
+	public static final String monthkey="monthkey";
+	public static final String yesterdaynum="yesterdaynum";
 	public static final String purchasenum="purchasenum";
 	public static final String oldnum="oldnum";
 	public static final String installoutnum="installoutnum";

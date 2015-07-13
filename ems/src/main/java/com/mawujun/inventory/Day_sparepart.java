@@ -24,17 +24,26 @@ public class Day_sparepart  implements IdEntity<Day_sparepart_PK>{
 	private Integer daykey;//20140101这种形式
 	@Id
 	@Column(length=36)
-	private String prod_id;//品名id
+	private String store_id;//仓库id，所属仓库
 	@Id
 	@Column(length=36)
-	private String store_id;//仓库id，所属仓库
-	
+	private String prod_id;//品名id
 
-	@Column(columnDefinition="INT default 0")
-	private Integer fixednum;//额定数量，预先定的数量，手工填的
-	@Column(columnDefinition="INT default 0")
-//	private Integer lastnum;//上月结余
+
+	
+	
+	@Column(length=36)
+	private Integer monthkey;//201401 这种情况，主要用来进行月报表统计的
+
 //	@Column(columnDefinition="INT default 0")
+//	private Integer fixednum;//额定数量，预先定的数量，手工填的
+//	@Column(columnDefinition="INT default 0")
+//	private Integer lastmonthnum;//上月结余
+	@Column(columnDefinition="INT default 0")
+	private Integer todaynum;//今日结余=昨天结余+采购新增+旧品新增+(-本期领用数)+维修返还数+(-本期借用数)+本期归还数
+	@Column(columnDefinition="INT default 0")
+	private Integer yesterdaynum;//上期结余，也就是昨天结余，因为是任意时间段，查询，上期 就结余到昨天
+	@Column(columnDefinition="INT default 0")
 	private Integer purchasenum;//采购新增
 	@Column(columnDefinition="INT default 0")
 	private Integer oldnum;//旧品新增
@@ -106,13 +115,6 @@ public class Day_sparepart  implements IdEntity<Day_sparepart_PK>{
 		this.store_id = store_id;
 	}
 
-	public Integer getFixednum() {
-		return fixednum;
-	}
-
-	public void setFixednum(Integer fixednum) {
-		this.fixednum = fixednum;
-	}
 
 
 	public Integer getPurchasenum() {
@@ -186,5 +188,14 @@ public class Day_sparepart  implements IdEntity<Day_sparepart_PK>{
 	public void setBorrowreturnnum(Integer borrowreturnnum) {
 		this.borrowreturnnum = borrowreturnnum;
 	}
+
+	public Integer getMonthkey() {
+		return monthkey;
+	}
+
+	public void setMonthkey(Integer monthkey) {
+		this.monthkey = monthkey;
+	}
+
 
 }

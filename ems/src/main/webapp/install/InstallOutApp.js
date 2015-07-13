@@ -309,6 +309,10 @@ Ext.onReady(function(){
 			alert("请先选择领用类型!");
 			return;
 		}
+		if(!installOutType_content_textfield.getValue()){
+			alert("请填写领用类型的二级内容,如果不确定就填写和领用类型同样的名称!");
+			return;
+		}
 		var form= step1.down('form').getForm();
 		if(newValue.length>=Ext.ecode_length){
 		   if(field.isValid()){

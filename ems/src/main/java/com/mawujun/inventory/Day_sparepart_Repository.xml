@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
+<mapper namespace="com.mawujun.inventory.Day_sparepart_Repository">
+    <!--计算在建仓库
+	<parameterMap type="map" id="proc_dayinventory1_map">  
+	   <parameter property="in_store_id" jdbcType="VARCHAR" mode="IN"/>   
+	   <parameter property="in_todaykey" jdbcType="VARCHAR" mode="IN"/>   
+	</parameterMap>  
+	<update id="proc_dayinventory1" parameterMap="proc_dayinventory1_map" statementType="CALLABLE">  
+       {call proc_dayinventory1(?, ?,'N')}  
+   </update> 
+   -->
+   <!--计算备品备件仓库 -->
+   <parameterMap type="map" id="proc_report_day_sparepart_params">  
+	   <parameter property="in_store_id" jdbcType="VARCHAR" mode="IN"/>   
+	   <parameter property="in_todaykey" jdbcType="VARCHAR" mode="IN"/>   
+	</parameterMap>  
+	<update id="proc_report_day_sparepart" parameterMap="proc_report_day_sparepart_params" statementType="CALLABLE">  
+       {call proc_report_day_sparepart(?, ?)}  
+   </update> 
+   
+   
+    <parameterMap type="map" id="proc_report_day_sparepart_all_params">  
+	   <parameter property="in_todaykey" jdbcType="VARCHAR" mode="IN"/>   
+	</parameterMap>  
+	<update id="proc_report_day_sparepart_all" parameterMap="proc_report_day_sparepart_all_params" statementType="CALLABLE">  
+       {call proc_report_day_sparepart_all(?)}  
+   </update>
+   
+   <select id="queryDay_sparepartVO" resultType="com.mawujun.inventory.Day_sparepartVO">
+   select  a.*,b.name as subtype_name,c.name as prod_name,c.unit as prod_unit,c.style prod_style,d.name as brand_name  ,e.name as store_name
+    from report_day_sparepart a 
+     inner join ems_equipmentprod c on a.prod_id=c.id
+    inner join ems_equipmentsubtype b on c.subtype_id=b.id
+    inner join ems_brand d on c.brand_id=d.id
+    inner join ems_store e on a.store_id=e.id
+    where 
+    <if test="store_id!=null and store_id !=''">
+    	 a.store_id=#{store_id} and 
+    </if>
+    a.daykey&gt;=#{day_start} and a.daykey&lt;=#{day_end}
+    order by a.store_id,a.subtype_id ,a.prod_id,a.brand_id,
+   </select>
+</mapper>
+

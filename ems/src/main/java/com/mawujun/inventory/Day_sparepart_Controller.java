@@ -28,7 +28,19 @@ import com.mawujun.baseinfo.EquipmentTypeRepository;
 @Controller
 public class Day_sparepart_Controller {
 	@Resource
+	private Day_sparepart_Service day_sparepart_Service;
+	@Resource
 	private EquipmentTypeRepository equipmentTypeRepository;
+	
+	@RequestMapping("/inventory/proc_report_day_sparepart.do")
+	public String proc_report_day_sparepart(String store_id,Integer store_type){
+		if(store_id==null || "".equals(store_id.trim())){
+			day_sparepart_Service.proc_report_day_sparepart(store_type);
+		} else {
+			day_sparepart_Service.proc_report_day_sparepart(store_id);
+		}
+		return "success";
+	}
 	
 	public CellStyle getStyle_title(XSSFWorkbook wb,IndexedColors color,Short fontSize){
 		CellStyle style = wb.createCellStyle();
