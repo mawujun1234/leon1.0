@@ -40,25 +40,25 @@ public class Day_sparepart  implements IdEntity<Day_sparepart_PK>{
 //	@Column(columnDefinition="INT default 0")
 //	private Integer lastmonthnum;//上月结余
 	@Column(columnDefinition="INT default 0")
-	private Integer todaynum;//今日结余=昨天结余+采购新增+旧品新增+(-本期领用数)+维修返还数+(-本期借用数)+本期归还数
+	private Integer todaynum=0;//今日结余=昨天结余+采购新增+旧品新增+(-本期领用数)+维修返还数+(-本期借用数)+本期归还数
 	@Column(columnDefinition="INT default 0")
-	private Integer yesterdaynum;//上期结余，也就是昨天结余，因为是任意时间段，查询，上期 就结余到昨天
+	private Integer yesterdaynum=0;//上期结余，也就是昨天结余，因为是任意时间段，查询，上期 就结余到昨天
 	@Column(columnDefinition="INT default 0")
-	private Integer purchasenum;//采购新增
+	private Integer purchasenum=0;//采购新增
 	@Column(columnDefinition="INT default 0")
-	private Integer oldnum;//旧品新增
+	private Integer oldnum=0;//旧品新增
 	@Column(columnDefinition="INT default 0")
-	private Integer installoutnum;//本期领用
+	private Integer installoutnum=0;//本期领用
 	@Column(columnDefinition="INT default 0")
-	private Integer repairinnum;//本期维修返还数
+	private Integer repairinnum=0;//本期维修返还数
 	@Column(columnDefinition="INT default 0")
-	private Integer scrapoutnum;//报废数
+	private Integer scrapoutnum=0;//报废数
 	@Column(columnDefinition="INT default 0")
-	private Integer repairoutnum;//维修出库数量，
+	private Integer repairoutnum=0;//维修出库数量，
 	@Column(columnDefinition="INT default 0")
-	private Integer borrownum;//借用数，
+	private Integer borrownum=0;//借用数，
 	@Column(columnDefinition="INT default 0")
-	private Integer borrowreturnnum;//返还数，
+	private Integer borrowreturnnum=0;//返还数，
 	
 	
 //	@Column(columnDefinition="INT default 0")
@@ -195,6 +195,22 @@ public class Day_sparepart  implements IdEntity<Day_sparepart_PK>{
 
 	public void setMonthkey(Integer monthkey) {
 		this.monthkey = monthkey;
+	}
+
+	public Integer getTodaynum() {
+		return todaynum;
+	}
+
+	public void setTodaynum(Integer todaynum) {
+		this.todaynum = todaynum;
+	}
+
+	public Integer getYesterdaynum() {
+		return yesterdaynum;
+	}
+
+	public void setYesterdaynum(Integer yesterdaynum) {
+		this.yesterdaynum = yesterdaynum;
 	}
 
 

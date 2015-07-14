@@ -5,6 +5,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -42,7 +43,9 @@ public class Day_sparepart_Controller {
 	@Resource
 	private StoreService storeService;
 	
-	SimpleDateFormat yyyyMMdd_formater=new SimpleDateFormat("yyyy-MM-dd");
+	SimpleDateFormat yyyy_MM_dd_formater=new SimpleDateFormat("yyyy-MM-dd");
+	SimpleDateFormat yyyyMMdd_formater=new SimpleDateFormat("yyyyMMdd");
+	SimpleDateFormat MM_dd_formater=new SimpleDateFormat("MM-dd");
 	
 	
 	@RequestMapping("/inventory/day/proc_report_day_sparepart.do")
@@ -70,14 +73,24 @@ public class Day_sparepart_Controller {
 		//String date_start_str= yyyyMMdd_formater.format(date_start);
 		//String date_end_str= yyyyMMdd_formater.format(date_end);
 		
-		long diff = yyyyMMdd_formater.parse(date_end).getTime() - yyyyMMdd_formater.parse(date_start).getTime();	
+		long diff = yyyy_MM_dd_formater.parse(date_end).getTime() - yyyy_MM_dd_formater.parse(date_start).getTime();	
 		long day_length = diff / (1000 * 60 * 60 * 24)+1;//一共显示多少明细数据
 		if(day_length<=0){
 			throw new BusinessException("日期选错了,请重新选择!");
 		}
 		
+		
 		//建立日期范围的key
-		Long date_start_times=yyyyMMdd_formater.parse(date_start).getTime();
+		Long date_start_times=yyyy_MM_dd_formater.parse(date_start).getTime();
+		List<Integer> daykeyes=new ArrayList<Integer>();
+		List<String> daykeys_title=new ArrayList<String>();
+		for (int j = 0; j < day_length; j++) {
+			Date date=new Date(date_start_times+(j*24*60*60*1000));
+			Integer daykey1=Integer.parseInt(yyyyMMdd_formater.format(date));
+			daykeyes.add(daykey1);
+			
+			daykeys_title.add(MM_dd_formater.format(date));
+		}
 		
 		List<Day_sparepart_type> types = day_sparepart_Service.queryDay_sparepart(store_id, store_type,date_start.replaceAll("-", ""),date_end.replaceAll("-", ""));
 		String store_name="所有";
@@ -109,7 +122,7 @@ public class Day_sparepart_Controller {
 		sheet.addMergedRegion(new CellRangeAddress(0, (short) 0, 0, (short) type_group_end_num - 1));
 
 		// 设置第一行,设置列标题
-		StringBuilder[] formulas = sparepart_addRow1(wb, sheet,day_length);
+		StringBuilder[] formulas = sparepart_addRow1(wb, sheet,daykeys_title);
 
 		CellStyle type_name_style = this.getStyle(wb, IndexedColors.BLACK, (short) 12);
 		// black_style.setBorderBottom(CellStyle.BORDER_NONE);
@@ -197,6 +210,7 @@ public class Day_sparepart_Controller {
 					for (int k = 0; k < prods_size; k++) {
 						//主要是为了填写当前行的品名，品牌，所属仓库等信息
 						Day_sparepart_prod prod_first=equipmentSubtype.first();
+						String prod_id=prod_first.getProd_id();
 								
 						nownum_formule_builder = new StringBuilder();
 						nownum_formule_builder.append("SUM(");
@@ -207,15 +221,15 @@ public class Day_sparepart_Controller {
 						Row row_prod = sheet.createRow(rownum++);
 
 						Cell brand_name = row_prod.createCell(cellnum++);
-						// brand_name.setCellValue("测试");
+						brand_name.setCellValue(prod_first.getBrand_name());
 						brand_name.setCellStyle(content_style);
 
 						Cell style = row_prod.createCell(cellnum++);
-						// style.setCellValue("测试");
+						style.setCellValue(prod_first.getProd_style());
 						style.setCellStyle(content_style);
 
 						Cell prod_name = row_prod.createCell(cellnum++);
-						// prod_name.setCellValue("测试");
+						prod_name.setCellValue(prod_first.getProd_name());
 						prod_name.setCellStyle(content_style);
 
 						// Cell store_name=row_prod.createCell(cellnum++);
@@ -223,18 +237,16 @@ public class Day_sparepart_Controller {
 						// store_name.setCellStyle(content_style);
 
 						Cell unit = row_prod.createCell(cellnum++);
-						// unit.setCellValue("台");
+						unit.setCellValue(prod_first.getProd_unit());
 						unit.setCellStyle(content_style);
 
 						// 额定数量
 						Cell fixednum = row_prod.createCell(cellnum++);
-						// fixednum.setCellValue(1);
-						// supplementnum_formule_builder.append(CellReference.convertNumToColString(cellnum-1)+(rownum));
 						fixednum.setCellStyle(fixednum_style);
 
 						// 上月结余
 						Cell lastnum = row_prod.createCell(cellnum++);
-						// lastnum.setCellValue(2);
+						lastnum.setCellValue(prod_first.getYesterdaynum());
 						nownum_formule_builder.append(CellReference.convertNumToColString(cellnum - 1) + (rownum));
 						nownum_formule_builder.append(",");
 						lastnum.setCellStyle(lastnum_style);
@@ -291,51 +303,46 @@ public class Day_sparepart_Controller {
 						nownum.setCellStyle(nownum_style);
 
 						
-						日报表，表头的日期改成真是日期，而不是1，2，3这样的序号，变成月日，或者年月日
-						for (int j = 1; j <= day_length; j++) {
-							Integer daykey=Integer.parseInt(yyyyMMdd_formater.format(new Date(date_start_times+(j*24*60*60*1000))));
-							
-							// CellStyle blue_style = getStyle(wb,
-							// IndexedColors.PALE_BLUE, null);
+						//日报表，表头的日期改成真是日期，而不是1，2，3这样的序号，变成月日，或者年月日
+						for (int j = 0; j < daykeyes.size(); j++) {
+							//Integer daykey=Integer.parseInt(yyyyMMdd_formater.format(new Date(date_start_times+(j*24*60*60*1000))));
+							Day_sparepart_prod prod=equipmentSubtype.getProd(prod_id,daykeyes.get(j));
+							if(prod==null){
+								//continue;
+								prod=new Day_sparepart_prod();
+							}
+
 							Cell purchasenum_mx = row_prod.createCell(cellnum++);
 							purchasenum_mx.setCellStyle(content_blue_style);
-							// purchasenum_mx.setCellValue(1);
+							purchasenum_mx.setCellValue(prod.getPurchasenum());
 
 							Cell oldnum_mx = row_prod.createCell(cellnum++);
 							oldnum_mx.setCellStyle(content_blue_style);
-							// oldnum_mx.setCellValue(2);
+							oldnum_mx.setCellValue(prod.getOldnum());
 
-							// CellStyle red_style = getStyle(wb,
-							// IndexedColors.RED, null);
 							Cell installoutnum_mx = row_prod.createCell(cellnum++);
 							installoutnum_mx.setCellStyle(content_red_style);
-							// installoutnum_mx.setCellValue(3);
+							installoutnum_mx.setCellValue(prod.getInstalloutnum());
 
-							// CellStyle green_style = getStyle(wb,
-							// IndexedColors.GREEN, null);
 							Cell repairinnum_mx = row_prod.createCell(cellnum++);
 							repairinnum_mx.setCellStyle(content_green_style);
-							// repairinnum_mx.setCellValue(4);
+							repairinnum_mx.setCellValue(prod.getRepairinnum());
 
-							// CellStyle orange_style = getStyle(wb,
-							// IndexedColors.ORANGE, null);
 							Cell scrapoutnum_mx = row_prod.createCell(cellnum++);
 							scrapoutnum_mx.setCellStyle(content_orange_style);
-							// scrapoutnum_mx.setCellValue(5);
+							scrapoutnum_mx.setCellValue(prod.getScrapoutnum());
 
 							Cell repairoutnum_mx = row_prod.createCell(cellnum++);
 							repairoutnum_mx.setCellStyle(content_orange_style);
-							// repairoutnum_mx.setCellValue(6);
+							repairoutnum_mx.setCellValue(prod.getRepairoutnum());
 
-							// CellStyle plum_style = getStyle(wb,
-							// IndexedColors.PLUM, null);
-							Cell adjustoutnum_mx = row_prod.createCell(cellnum++);
-							adjustoutnum_mx.setCellStyle(content_plum_style);
-							// adjustoutnum_mx.setCellValue(7);
+							Cell borrownum_mx = row_prod.createCell(cellnum++);
+							borrownum_mx.setCellStyle(content_plum_style);
+							borrownum_mx.setCellValue(prod.getBorrownum());
 
-							Cell adjustinnum_mx = row_prod.createCell(cellnum++);
-							adjustinnum_mx.setCellStyle(content_green_style_last);
-							// adjustinnum_mx.setCellValue(8);
+							Cell borrowreturnnum_mx = row_prod.createCell(cellnum++);
+							borrowreturnnum_mx.setCellStyle(content_green_style_last);
+							borrowreturnnum_mx.setCellValue(prod.getBorrowreturnnum());
 
 						}
 
@@ -435,7 +442,8 @@ public class Day_sparepart_Controller {
 	}
 	
 
-	private StringBuilder[] sparepart_addRow1(XSSFWorkbook wb,Sheet sheet,long day_length){
+	private StringBuilder[] sparepart_addRow1(XSSFWorkbook wb,Sheet sheet,List<String> daykeys_title){
+		Integer day_length=daykeys_title.size();
 		 Row row = sheet.createRow(1);
 		 
 		 CellStyle black_style=getStyle(wb,IndexedColors.BLACK,null);
@@ -684,14 +692,14 @@ public class Day_sparepart_Controller {
 			//创建日期，并合并日期的两列
 			black_style=getStyle_title(wb,IndexedColors.BLACK,null);
 			cellnum_repeat=cellnum;
-			for(int j=1;j<=day_length;j++){
+			for(int j=0;j<day_length;j++){
 				//合并这两个单元格
 				int cellnum_repeat_temp=cellnum_repeat;
 				cellnum_repeat=	cellnum_repeat+8;
 				sheet.addMergedRegion(new CellRangeAddress(1,1,cellnum_repeat_temp,cellnum_repeat-1)); 
 				//设置日期值
 				Cell cell11=row.createCell(cellnum_repeat_temp);
-				cell11.setCellValue(j);
+				cell11.setCellValue(daykeys_title.get(j));
 				cell11.setCellStyle(black_style);
 				//设置单个元样式
 				cellnum_repeat_temp++;//第一格已经创建过了，不用再创建了
@@ -744,9 +752,12 @@ public class Day_sparepart_Controller {
 		//和并单元格
 		sheet.addMergedRegion(new CellRangeAddress(0,(short)0,0,(short)type_group_end_num-1)); 
 		
-		
+		List<String> daykeys_title=new ArrayList<String>();
+		for(int i=0;i<31;i++){
+			daykeys_title.add((i+1)+"");
+		}
 		//设置第一行,设置列标题
-		StringBuilder[] formulas=sparepart_addRow1(wb,sheet,31);
+		StringBuilder[] formulas=sparepart_addRow1(wb,sheet,daykeys_title);
 		
 		
 		CellStyle type_name_style = this.getStyle(wb, IndexedColors.BLACK,(short)12);

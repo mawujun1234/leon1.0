@@ -40,12 +40,25 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     		<id property="subtype_id" column="subtype_id"/>
 		    <result property="subtype_name" column="subtype_name"/>
 		    <collection property="prodes" ofType="com.mawujun.inventory.Day_sparepart_prod">  
-		    	<id property="prod_id" column="prod_id"/>
-		    	<id property="prod_name" column="prod_name"/>
-		    	<id property="prod_unit" column="prod_unit"/>
-		    	<id property="prod_style" column="prod_style"/>
-		    	<id property="store_name" column="store_name"/>
-		    	<id property="brand_name" column="brand_name"/>
+		    	<result property="daykey" column="daykey"/>
+		    	<result property="store_id" column="store_id"/>
+		    	<result property="prod_id" column="prod_id"/>
+		    	<result property="monthkey" column="monthkey"/>
+		    	<result property="todaynum" column="todaynum"/>
+		    	<result property="yesterdaynum" column="yesterdaynum"/>
+		    	<result property="purchasenum" column="purchasenum"/>
+		    	<result property="oldnum" column="oldnum"/>
+		    	<result property="installoutnum" column="installoutnum"/>
+		    	<result property="repairinnum" column="repairinnum"/>
+		    	<result property="scrapoutnum" column="scrapoutnum"/>
+		    	<result property="repairoutnum" column="repairoutnum"/>
+		    	<result property="borrownum" column="borrownum"/>
+		    	<result property="borrowreturnnum" column="borrowreturnnum"/>
+		    	<result property="prod_name" column="prod_name"/>
+		    	<result property="prod_unit" column="prod_unit"/>
+		    	<result property="prod_style" column="prod_style"/>
+		    	<result property="store_name" column="store_name"/>
+		    	<result property="brand_name" column="brand_name"/>
 		    </collection>
        </collection>  
     </resultMap>
