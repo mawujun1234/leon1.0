@@ -19,5 +19,5 @@ public interface Day_sparepart_Repository extends IRepository<Day_sparepart, Day
 	public void proc_report_day_sparepart_all(@Param("in_todaykey")String in_todaykey);
 
 	
-	public List<Day_sparepartVO> queryDay_sparepartVO(@Param("store_id")String store_id,@Param("day_start")String day_start,@Param("day_end")String day_end);
+	public List<com.mawujun.inventory.Day_sparepart_type> queryDay_sparepartVO(@Param("store_id")String store_id,@Param("store_type")Integer store_type,@Param("day_start")String day_start,@Param("day_end")String day_end);
 }

@@ -2,6 +2,11 @@ package com.mawujun.inventory;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -24,6 +29,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.mawujun.baseinfo.EquipmentSubtype;
 import com.mawujun.baseinfo.EquipmentType;
 import com.mawujun.baseinfo.EquipmentTypeRepository;
+import com.mawujun.baseinfo.Store;
+import com.mawujun.baseinfo.StoreService;
+import com.mawujun.exception.BusinessException;
 
 @Controller
 public class Day_sparepart_Controller {
@@ -31,8 +39,13 @@ public class Day_sparepart_Controller {
 	private Day_sparepart_Service day_sparepart_Service;
 	@Resource
 	private EquipmentTypeRepository equipmentTypeRepository;
+	@Resource
+	private StoreService storeService;
 	
-	@RequestMapping("/inventory/proc_report_day_sparepart.do")
+	SimpleDateFormat yyyyMMdd_formater=new SimpleDateFormat("yyyy-MM-dd");
+	
+	
+	@RequestMapping("/inventory/day/proc_report_day_sparepart.do")
 	public String proc_report_day_sparepart(String store_id,Integer store_type){
 		if(store_id==null || "".equals(store_id.trim())){
 			day_sparepart_Service.proc_report_day_sparepart(store_type);
@@ -40,6 +53,315 @@ public class Day_sparepart_Controller {
 			day_sparepart_Service.proc_report_day_sparepart(store_id);
 		}
 		return "success";
+	}
+	/**
+	 * 导出一个时间范围的数据
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param store_id
+	 * @param store_type
+	 * @param date_start
+	 * @param date_end
+	 * @return
+	 * @throws IOException 
+	 * @throws ParseException 
+	 */
+	@RequestMapping("/inventory/day/sparepart/excelExport.do")
+	public void excelExport(HttpServletResponse response,String store_id,Integer store_type,String date_start,String date_end) throws IOException, ParseException{
+		//String date_start_str= yyyyMMdd_formater.format(date_start);
+		//String date_end_str= yyyyMMdd_formater.format(date_end);
+		
+		long diff = yyyyMMdd_formater.parse(date_end).getTime() - yyyyMMdd_formater.parse(date_start).getTime();	
+		long day_length = diff / (1000 * 60 * 60 * 24)+1;//一共显示多少明细数据
+		if(day_length<=0){
+			throw new BusinessException("日期选错了,请重新选择!");
+		}
+		
+		//建立日期范围的key
+		Long date_start_times=yyyyMMdd_formater.parse(date_start).getTime();
+		
+		List<Day_sparepart_type> types = day_sparepart_Service.queryDay_sparepart(store_id, store_type,date_start.replaceAll("-", ""),date_end.replaceAll("-", ""));
+		String store_name="所有";
+		if(store_id!=null && !"".equals(store_id) ){
+			Store store=storeService.get(store_id);
+			store_name=store.getName();
+		}
+		
+
+		// 首先获取大类，小类的内容，然后按照格式输出，最后，设置压缩问题
+		//List<EquipmentType> equipmentTypes = equipmentTypeRepository.queryTypeAndSubtype();
+
+		XSSFWorkbook wb = new XSSFWorkbook();
+		Sheet sheet = wb.createSheet("仓库名称");
+		Row title = sheet.createRow(0);// 一共有11列
+		title.setHeight((short) 660);
+		Cell title_cell = title.createCell(0);
+		title_cell.setCellValue(store_name+"  仓库"+date_start+"到"+date_end+"盘点日报表");
+		CellStyle cs = wb.createCellStyle();
+		Font f = wb.createFont();
+		f.setFontHeightInPoints((short) 16);
+		// f.setColor(IndexedColors.RED.getIndex());
+		f.setBoldweight(Font.BOLDWEIGHT_BOLD);
+		cs.setFont(f);
+		cs.setAlignment(CellStyle.ALIGN_LEFT);
+		cs.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		title_cell.setCellStyle(cs);
+		// 和并单元格
+		sheet.addMergedRegion(new CellRangeAddress(0, (short) 0, 0, (short) type_group_end_num - 1));
+
+		// 设置第一行,设置列标题
+		StringBuilder[] formulas = sparepart_addRow1(wb, sheet,day_length);
+
+		CellStyle type_name_style = this.getStyle(wb, IndexedColors.BLACK, (short) 12);
+		// black_style.setBorderBottom(CellStyle.BORDER_NONE);
+		type_name_style.setWrapText(false);
+		type_name_style.setBorderLeft(CellStyle.BORDER_NONE);
+		type_name_style.setBorderRight(CellStyle.BORDER_NONE);
+		type_name_style.setBorderTop(CellStyle.BORDER_NONE);
+		type_name_style.setAlignment(CellStyle.ALIGN_LEFT);
+		type_name_style.setBorderBottom(CellStyle.BORDER_NONE);
+
+		CellStyle subtype_name_style = this.getStyle(wb, IndexedColors.GREY_80_PERCENT, (short) 11);
+		// black_style.setBorderBottom(CellStyle.BORDER_NONE);
+		subtype_name_style.setWrapText(false);
+		subtype_name_style.setBorderLeft(CellStyle.BORDER_NONE);
+		subtype_name_style.setBorderRight(CellStyle.BORDER_NONE);
+		subtype_name_style.setBorderTop(CellStyle.BORDER_NONE);
+		subtype_name_style.setBorderBottom(CellStyle.BORDER_NONE);
+		subtype_name_style.setAlignment(CellStyle.ALIGN_LEFT);
+
+		CellStyle fixednum_style = getContentStyle(wb, null, (short) 9);
+		fixednum_style.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
+		fixednum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+
+		CellStyle lastnum_style = getContentStyle(wb, null, (short) 9);
+		lastnum_style.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.index);
+		lastnum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+
+		CellStyle nownum_style = getContentStyle(wb, null, (short) 9);
+		nownum_style.setFillForegroundColor(HSSFColor.LIGHT_TURQUOISE.index);
+		nownum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+
+		CellStyle content_style = getContentStyle(wb, null, (short) 9);
+		CellStyle content_blue_style = getContentStyle(wb, IndexedColors.LIGHT_BLUE, (short) 9);
+		CellStyle content_red_style = getContentStyle(wb, IndexedColors.RED, (short) 9);
+		CellStyle content_green_style = getContentStyle(wb, IndexedColors.GREEN, (short) 9);
+		CellStyle content_green_style_last = getContentStyle(wb, IndexedColors.GREEN, (short) 9);
+		content_green_style_last.setBorderRight(CellStyle.BORDER_DOUBLE);
+		CellStyle content_orange_style = getContentStyle(wb, IndexedColors.ORANGE, (short) 9);
+		CellStyle content_plum_style = getContentStyle(wb, IndexedColors.PLUM, (short) 9);
+
+		CellStyle content_subtitle_style = getContentStyle(wb, null, (short) 9);
+		content_subtitle_style.setBorderLeft(CellStyle.BORDER_NONE);
+		content_subtitle_style.setBorderRight(CellStyle.BORDER_NONE);
+		// content_subtitle_style.setBorderTop(CellStyle.BORDER_NONE);
+
+		int cellnum = 0;
+		int rownum = 3;
+		for (int i = 0; i < types.size(); i++) {
+			cellnum = 0;
+			Day_sparepart_type equipmentType = types.get(i);
+
+			// 这一行必须放在分组的前面，否则会有问题
+			Row row = sheet.createRow(rownum++);
+
+			Cell type_name = row.createCell(cellnum++);
+			type_name.setCellValue(equipmentType.getType_name());
+			type_name.setCellStyle(type_name_style);
+			// subtype_name.setCellValue(buildDayReport.getSubtype_name());
+			sheet.addMergedRegion(new CellRangeAddress(rownum - 1, rownum - 1, 0, (short) type_group_end_num - 1));
+			sheet.addMergedRegion(new CellRangeAddress(rownum - 1, rownum - 1, type_group_end_num, (short) type_group_end_num + 2));
+
+			// 描绘小类
+			StringBuilder nownum_formule_builder = new StringBuilder();
+			// StringBuilder supplementnum_formule_builder=new StringBuilder();
+			if (equipmentType.getSubtypes() != null) {
+				int fromRow_type = rownum;
+				for (Day_sparepart_subtype equipmentSubtype : equipmentType.getSubtypes()) {
+					cellnum = 0;
+					Row row_subtype = sheet.createRow(rownum++);
+
+					cellnum++;
+
+					Cell subtype_name = row_subtype.createCell(cellnum++);
+					subtype_name.setCellValue(equipmentSubtype.getSubtype_name());
+					subtype_name.setCellStyle(subtype_name_style);
+
+					sheet.addMergedRegion(new CellRangeAddress(rownum - 1, rownum - 1, 1, (short) type_group_end_num - 1));
+					sheet.addMergedRegion(new CellRangeAddress(rownum - 1, rownum - 1, type_group_end_num, (short) type_group_end_num + 2));
+
+					//要先对prods进行行列转换
+					equipmentSubtype.changeProdes();
+					int prods_size=equipmentSubtype.getProdSize();
+					// 弄几行模拟品名的数据，即几个空行
+					int fromRow_subtype = rownum;
+					for (int k = 0; k < prods_size; k++) {
+						//主要是为了填写当前行的品名，品牌，所属仓库等信息
+						Day_sparepart_prod prod_first=equipmentSubtype.first();
+								
+						nownum_formule_builder = new StringBuilder();
+						nownum_formule_builder.append("SUM(");
+
+						// supplementnum_formule_builder=new StringBuilder();
+
+						cellnum = 2;// 从第3个单元格开始
+						Row row_prod = sheet.createRow(rownum++);
+
+						Cell brand_name = row_prod.createCell(cellnum++);
+						// brand_name.setCellValue("测试");
+						brand_name.setCellStyle(content_style);
+
+						Cell style = row_prod.createCell(cellnum++);
+						// style.setCellValue("测试");
+						style.setCellStyle(content_style);
+
+						Cell prod_name = row_prod.createCell(cellnum++);
+						// prod_name.setCellValue("测试");
+						prod_name.setCellStyle(content_style);
+
+						// Cell store_name=row_prod.createCell(cellnum++);
+						// store_name.setCellValue(sparepartMonthReport.getStore_name());
+						// store_name.setCellStyle(content_style);
+
+						Cell unit = row_prod.createCell(cellnum++);
+						// unit.setCellValue("台");
+						unit.setCellStyle(content_style);
+
+						// 额定数量
+						Cell fixednum = row_prod.createCell(cellnum++);
+						// fixednum.setCellValue(1);
+						// supplementnum_formule_builder.append(CellReference.convertNumToColString(cellnum-1)+(rownum));
+						fixednum.setCellStyle(fixednum_style);
+
+						// 上月结余
+						Cell lastnum = row_prod.createCell(cellnum++);
+						// lastnum.setCellValue(2);
+						nownum_formule_builder.append(CellReference.convertNumToColString(cellnum - 1) + (rownum));
+						nownum_formule_builder.append(",");
+						lastnum.setCellStyle(lastnum_style);
+
+						// 本期采购新增
+						Cell purchasenum = row_prod.createCell(cellnum++);
+						purchasenum.setCellStyle(content_blue_style);
+						purchasenum.setCellFormula(formulas[0].toString().replaceAll("=", (rownum) + ""));
+						nownum_formule_builder.append(CellReference.convertNumToColString(cellnum - 1) + (rownum));
+						nownum_formule_builder.append(",");
+
+						// 本期旧品新增
+						Cell oldnum = row_prod.createCell(cellnum++);
+						oldnum.setCellStyle(content_blue_style);
+						oldnum.setCellFormula(formulas[1].toString().replaceAll("=", (rownum) + ""));
+						nownum_formule_builder.append(CellReference.convertNumToColString(cellnum - 1) + (rownum));
+						nownum_formule_builder.append(",");
+						// 本期领用数
+						Cell installoutnum = row_prod.createCell(cellnum++);
+						installoutnum.setCellStyle(content_red_style);
+						installoutnum.setCellFormula(formulas[2].toString().replaceAll("=", (rownum) + ""));
+						nownum_formule_builder.append(CellReference.convertNumToColString(cellnum - 1) + (rownum));
+						nownum_formule_builder.append(",");
+						// 本期维修返还数
+						Cell repairinnum = row_prod.createCell(cellnum++);
+						repairinnum.setCellStyle(content_green_style);
+						repairinnum.setCellFormula(formulas[3].toString().replaceAll("=", (rownum) + ""));
+						nownum_formule_builder.append(CellReference.convertNumToColString(cellnum - 1) + (rownum));
+						nownum_formule_builder.append(",");
+						// 报废出库
+						Cell scrapoutnum = row_prod.createCell(cellnum++);
+						scrapoutnum.setCellStyle(content_orange_style);
+						scrapoutnum.setCellFormula(formulas[4].toString().replaceAll("=", (rownum) + ""));
+						// 维修出库
+						Cell repairoutnum = row_prod.createCell(cellnum++);
+						repairoutnum.setCellStyle(content_orange_style);
+						repairoutnum.setCellFormula(formulas[5].toString().replaceAll("=", (rownum) + ""));
+
+						// 本期借用数
+						Cell borrownum = row_prod.createCell(cellnum++);
+						borrownum.setCellStyle(content_plum_style);
+						borrownum.setCellFormula(formulas[6].toString().replaceAll("=", (rownum) + ""));
+						nownum_formule_builder.append(CellReference.convertNumToColString(cellnum - 1) + (rownum));
+						nownum_formule_builder.append(",");
+						// 本期归还数
+						Cell borrowreturnnum = row_prod.createCell(cellnum++);
+						borrowreturnnum.setCellStyle(content_green_style);
+						borrowreturnnum.setCellFormula(formulas[7].toString().replaceAll("=", (rownum) + ""));
+						nownum_formule_builder.append(CellReference.convertNumToColString(cellnum - 1) + (rownum));
+						nownum_formule_builder.append(")");
+
+						Cell nownum = row_prod.createCell(cellnum++);
+						nownum.setCellFormula(nownum_formule_builder.toString());
+						nownum.setCellStyle(nownum_style);
+
+						
+						日报表，表头的日期改成真是日期，而不是1，2，3这样的序号，变成月日，或者年月日
+						for (int j = 1; j <= day_length; j++) {
+							Integer daykey=Integer.parseInt(yyyyMMdd_formater.format(new Date(date_start_times+(j*24*60*60*1000))));
+							
+							// CellStyle blue_style = getStyle(wb,
+							// IndexedColors.PALE_BLUE, null);
+							Cell purchasenum_mx = row_prod.createCell(cellnum++);
+							purchasenum_mx.setCellStyle(content_blue_style);
+							// purchasenum_mx.setCellValue(1);
+
+							Cell oldnum_mx = row_prod.createCell(cellnum++);
+							oldnum_mx.setCellStyle(content_blue_style);
+							// oldnum_mx.setCellValue(2);
+
+							// CellStyle red_style = getStyle(wb,
+							// IndexedColors.RED, null);
+							Cell installoutnum_mx = row_prod.createCell(cellnum++);
+							installoutnum_mx.setCellStyle(content_red_style);
+							// installoutnum_mx.setCellValue(3);
+
+							// CellStyle green_style = getStyle(wb,
+							// IndexedColors.GREEN, null);
+							Cell repairinnum_mx = row_prod.createCell(cellnum++);
+							repairinnum_mx.setCellStyle(content_green_style);
+							// repairinnum_mx.setCellValue(4);
+
+							// CellStyle orange_style = getStyle(wb,
+							// IndexedColors.ORANGE, null);
+							Cell scrapoutnum_mx = row_prod.createCell(cellnum++);
+							scrapoutnum_mx.setCellStyle(content_orange_style);
+							// scrapoutnum_mx.setCellValue(5);
+
+							Cell repairoutnum_mx = row_prod.createCell(cellnum++);
+							repairoutnum_mx.setCellStyle(content_orange_style);
+							// repairoutnum_mx.setCellValue(6);
+
+							// CellStyle plum_style = getStyle(wb,
+							// IndexedColors.PLUM, null);
+							Cell adjustoutnum_mx = row_prod.createCell(cellnum++);
+							adjustoutnum_mx.setCellStyle(content_plum_style);
+							// adjustoutnum_mx.setCellValue(7);
+
+							Cell adjustinnum_mx = row_prod.createCell(cellnum++);
+							adjustinnum_mx.setCellStyle(content_green_style_last);
+							// adjustinnum_mx.setCellValue(8);
+
+						}
+
+					}
+					// 小类的收缩
+					sheet.groupRow(fromRow_subtype, rownum);
+					sheet.setRowGroupCollapsed(fromRow_subtype, true);
+				}
+				// 设置最挖曾的收缩,就是类型的收缩
+				sheet.groupRow(fromRow_type, rownum);
+				sheet.setRowGroupCollapsed(fromRow_type, true);
+			}
+		}
+		sheet.setRowSumsBelow(false);
+		sheet.setRowSumsRight(false);
+
+		String filename = "备品备件仓库盘点日报表.xlsx";
+		// FileOutputStream out = new FileOutputStream(filename);
+		response.setHeader("content-disposition", "attachment; filename=" + new String(filename.getBytes("UTF-8"), "ISO8859-1"));
+		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=uft-8");
+
+		OutputStream out = response.getOutputStream();
+		wb.write(out);
+
+		out.flush();
+		out.close();
 	}
 	
 	public CellStyle getStyle_title(XSSFWorkbook wb,IndexedColors color,Short fontSize){
@@ -113,7 +435,7 @@ public class Day_sparepart_Controller {
 	}
 	
 
-	private StringBuilder[] sparepart_addRow1(XSSFWorkbook wb,Sheet sheet){
+	private StringBuilder[] sparepart_addRow1(XSSFWorkbook wb,Sheet sheet,long day_length){
 		 Row row = sheet.createRow(1);
 		 
 		 CellStyle black_style=getStyle(wb,IndexedColors.BLACK,null);
@@ -271,7 +593,7 @@ public class Day_sparepart_Controller {
 			StringBuilder repairoutnum_formula=new StringBuilder("SUM(");
 			StringBuilder adjustoutnum_formula=new StringBuilder("SUM(");
 			StringBuilder adjustinnum_formula=new StringBuilder("SUM(");
-			for(int j=1;j<=31;j++){
+			for(int j=1;j<=day_length;j++){
 				 
 				
 				 Cell purchasenum_repeat=row2.createCell(cellnum_repeat++);
@@ -328,7 +650,7 @@ public class Day_sparepart_Controller {
 				 adjustinnum_formula.append(CellReference.convertNumToColString(cellnum_repeat-1)).append("=");
 
 
-				 if(j!=31){
+				 if(j!=day_length){
 					 purchasenum_formula.append(",");
 					 oldnum_formula.append(",");
 					 installoutnum_formula.append(",");
@@ -362,7 +684,7 @@ public class Day_sparepart_Controller {
 			//创建日期，并合并日期的两列
 			black_style=getStyle_title(wb,IndexedColors.BLACK,null);
 			cellnum_repeat=cellnum;
-			for(int j=1;j<=31;j++){
+			for(int j=1;j<=day_length;j++){
 				//合并这两个单元格
 				int cellnum_repeat_temp=cellnum_repeat;
 				cellnum_repeat=	cellnum_repeat+8;
@@ -409,7 +731,7 @@ public class Day_sparepart_Controller {
 		Row title = sheet.createRow(0);//一共有11列
 		title.setHeight((short)660);
 		Cell title_cell=title.createCell(0);
-		title_cell.setCellValue("__________项目________年_________月备品备件仓库(仓库名称)盘点日报表");
+		title_cell.setCellValue("__________仓库________年_________月盘点日报表");
 		CellStyle cs = wb.createCellStyle();
 		Font f = wb.createFont();
 		f.setFontHeightInPoints((short) 16);
@@ -424,7 +746,7 @@ public class Day_sparepart_Controller {
 		
 		
 		//设置第一行,设置列标题
-		StringBuilder[] formulas=sparepart_addRow1(wb,sheet);
+		StringBuilder[] formulas=sparepart_addRow1(wb,sheet,31);
 		
 		
 		CellStyle type_name_style = this.getStyle(wb, IndexedColors.BLACK,(short)12);

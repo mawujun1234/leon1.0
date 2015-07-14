@@ -272,14 +272,6 @@ Ext.onReady(function(){
 	});
 	
 	function reloadInstallout_content(installout){
-//		store_combox
-//		workUnit_combox
-//		installOutType_combox
-//		installOutType_content_textfield
-//		project_combox
-//		inDate_textfield
-//		memo_textfield
-
 		store_combox.getStore().load();
 		workUnit_combox.getStore().load();
 		installOutType_combox.getStore().load();
@@ -341,7 +333,7 @@ Ext.onReady(function(){
 							var scanrecord = Ext.create('Ems.install.InstallOutList', ret.root);
 
 							ecode_textfield.setValue("");
-							ecode_textfield.clearInvalid( );
+							ecode_textfield.clearInvalid();
 
 							var exist=false;
 							equipStore.each(function(record){

@@ -92,7 +92,7 @@ Ext.onReady(function(){
 					if(btn=='yes'){
 						Ext.getBody().mask("正在执行...");
 						Ext.Ajax.request({
-							url:Ext.ContextPath+"/inventory/proc_report_day_sparepart.do",
+							url:Ext.ContextPath+"/inventory/day/proc_report_day_sparepart.do",
 							params:{store_id:store_combox.getValue(),store_type:1},
 							success:function(response){
 								alert("计算成功!");

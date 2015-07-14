@@ -31,19 +31,41 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
        {call proc_report_day_sparepart_all(?)}  
    </update>
    
-   <select id="queryDay_sparepartVO" resultType="com.mawujun.inventory.Day_sparepartVO">
-   select  a.*,b.name as subtype_name,c.name as prod_name,c.unit as prod_unit,c.style prod_style,d.name as brand_name  ,e.name as store_name
+   
+   <!-- 到处日报表的数据 -->
+   <resultMap type="com.mawujun.inventory.Day_sparepart_type" id="day_sparepart_map">
+     	<id property="type_id" column="type_id"/>
+    	<result property="type_name" column="type_name"/>
+    	<collection property="subtypes" ofType="com.mawujun.inventory.Day_sparepart_subtype">  
+    		<id property="subtype_id" column="subtype_id"/>
+		    <result property="subtype_name" column="subtype_name"/>
+		    <collection property="prodes" ofType="com.mawujun.inventory.Day_sparepart_prod">  
+		    	<id property="prod_id" column="prod_id"/>
+		    	<id property="prod_name" column="prod_name"/>
+		    	<id property="prod_unit" column="prod_unit"/>
+		    	<id property="prod_style" column="prod_style"/>
+		    	<id property="store_name" column="store_name"/>
+		    	<id property="brand_name" column="brand_name"/>
+		    </collection>
+       </collection>  
+    </resultMap>
+   <select id="queryDay_sparepartVO" resultMap="day_sparepart_map">
+   select  a.*,f.name as type_name,f.id as type_id,b.id as subtype_id,b.name as subtype_name,c.id as prod_id,c.name as prod_name,c.unit as prod_unit,c.style prod_style,d.name as brand_name  ,e.name as store_name
     from report_day_sparepart a 
      inner join ems_equipmentprod c on a.prod_id=c.id
     inner join ems_equipmentsubtype b on c.subtype_id=b.id
+    inner join ems_equipmenttype f on b.parent_id=f.id
     inner join ems_brand d on c.brand_id=d.id
     inner join ems_store e on a.store_id=e.id
     where 
     <if test="store_id!=null and store_id !=''">
     	 a.store_id=#{store_id} and 
     </if>
+    <if test="store_id==null or store_id ==''">
+    	 e.type=#{store_type} and 
+    </if>
     a.daykey&gt;=#{day_start} and a.daykey&lt;=#{day_end}
-    order by a.store_id,a.subtype_id ,a.prod_id,a.brand_id,
+    order by a.store_id,f.id,b.id ,c.brand_id,a.prod_id,a.daykey
    </select>
 </mapper>
 

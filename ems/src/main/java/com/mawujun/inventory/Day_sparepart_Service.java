@@ -69,7 +69,7 @@ public class Day_sparepart_Service extends AbstractService<Day_sparepart, Day_sp
 	}
 	
 	
-	public List<Day_sparepartVO> queryDay_sparepart(String store_id,String day_start,String day_end){
-		return day_sparepart_Repository.queryDay_sparepartVO(store_id, day_start,day_end);
+	public List<Day_sparepart_type> queryDay_sparepart(String store_id,Integer store_type,String day_start,String day_end){
+		return day_sparepart_Repository.queryDay_sparepartVO(store_id,store_type, day_start,day_end);
 	}
 }

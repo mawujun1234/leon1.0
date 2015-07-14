@@ -93,7 +93,7 @@ Ext.onReady(function(){
 					if(btn=='yes'){
 						Ext.getBody().mask("正在执行...");
 						Ext.Ajax.request({
-							url:Ext.ContextPath+"/inventory/proc_report_day_sparepart.do",
+							url:Ext.ContextPath+"/inventory/day/proc_report_day_sparepart.do",
 							params:{store_id:store_combox.getValue(),store_type:3},
 							success:function(response){
 								alert("计算成功!");
@@ -112,6 +112,7 @@ Ext.onReady(function(){
 				if(!params){
 					return false;
 				}
+				params.store_type=3;
 				var pp=Ext.Object.toQueryString(params);
 				window.open(Ext.ContextPath+"/monthinventory/sparepart/export.do?"+pp, "_blank");
 			}
@@ -124,8 +125,9 @@ Ext.onReady(function(){
 				if(!params){
 					return false;
 				}
+				params.store_type=3;
 				var pp=Ext.Object.toQueryString(params);
-				window.open(Ext.ContextPath+"/dayinventory/sparepart/export.do?"+pp, "_blank");
+				window.open(Ext.ContextPath+"/inventory/day/sparepart/excelExport.do?"+pp, "_blank");
 			}
 		}
 		
@@ -164,10 +166,10 @@ Ext.onReady(function(){
 			Ext.Msg.alert("提醒","请先选择结束日期!");
 			return false;
 		}
-		if(!params.store_id){
-			Ext.Msg.alert("提醒","请先选择仓库!");
-			return false;
-		}
+//		if(!params.store_id){
+//			Ext.Msg.alert("提醒","请先选择仓库!");
+//			return false;
+//		}
 		return params;
 	}
 	
