@@ -346,6 +346,7 @@ Ext.define('Ems.task.TaskSendGrid',{
 					alert("请先选择点位");
 					return;
 				}
+
 				if(records.length==1){
 					var pole_status=records[0].get("status");
 					//alert(pole_status);
@@ -359,38 +360,39 @@ Ext.define('Ems.task.TaskSendGrid',{
 								}
 					me.showTaskForm(records[0],"repair");
 				} else {
-					Ext.Msg.confirm("提醒","只会为对'使用中','有损坏'的点位发送维修/维护任务,选'是'进行发送",function(btn){
-						if(btn=='yes'){
-							var taskes=[];
-							for(var i=0;i<records.length;i++){
-								if(records[i].get("status")!="using" && records[i].get("status")!="hitch"){
-									alert("点位‘"+records[i].get("name")+"’不能发送维修任务!");
-									return;
-								}
-								var bool=checkTasknum(records[i]);
-								if(!bool){
-									return;
-								}
-								taskes.push(me.initTask_value(records[i],"repair"));
-							}
-							//
-							Ext.Ajax.request({
-								method:'POST',
-								jsonData:taskes,
-								headers:{ 'Content-Type':'application/json;charset=UTF-8'},
-								url:Ext.ContextPath+"/task/create.do",
-								success:function(response){
-									var obj=Ext.decode(response.responseText);
-									if(obj.success){
-										me.getSelectionModel( ).deselectAll();
-										me.getStore().reload();
-										alert("发送成功!");
-									}
-									
-								}
-							});
-						}
-					});
+					alert("维修任务只能一个一个发，因为要选故障时间!");
+//					Ext.Msg.confirm("提醒","只会为对'使用中','有损坏'的点位发送维修/维护任务,选'是'进行发送",function(btn){
+//						if(btn=='yes'){
+//							var taskes=[];
+//							for(var i=0;i<records.length;i++){
+//								if(records[i].get("status")!="using" && records[i].get("status")!="hitch"){
+//									alert("点位‘"+records[i].get("name")+"’不能发送维修任务!");
+//									return;
+//								}
+//								var bool=checkTasknum(records[i]);
+//								if(!bool){
+//									return;
+//								}
+//								taskes.push(me.initTask_value(records[i],"repair"));
+//							}
+//							//
+//							Ext.Ajax.request({
+//								method:'POST',
+//								jsonData:taskes,
+//								headers:{ 'Content-Type':'application/json;charset=UTF-8'},
+//								url:Ext.ContextPath+"/task/create.do",
+//								success:function(response){
+//									var obj=Ext.decode(response.responseText);
+//									if(obj.success){
+//										me.getSelectionModel( ).deselectAll();
+//										me.getStore().reload();
+//										alert("发送成功!");
+//									}
+//									
+//								}
+//							});
+//						}
+//					});
 				}
 				
 			}
@@ -539,6 +541,7 @@ Ext.define('Ems.task.TaskSendGrid',{
 					var form=Ext.create('Ems.task.TaskForm',{
 						url:Ext.ContextPath+'/task/create.do',
 						showSendButton:showSendButton,
+						task_type:task_type,
 						listeners:{
 							sended:function(){
 								win.close();

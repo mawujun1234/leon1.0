@@ -26,6 +26,8 @@ public class HitchReasonTpl implements IdEntity<Integer>{
 	private String name;
 	@Column(length=500)
 	private String tpl;
+	@Column(length=36)
+	private String hitchType_id;
 	
 	public Integer getId() {
 		return id;
@@ -44,5 +46,11 @@ public class HitchReasonTpl implements IdEntity<Integer>{
 	}
 	public void setTpl(String tpl) {
 		this.tpl = tpl;
+	}
+	public String getHitchType_id() {
+		return hitchType_id;
+	}
+	public void setHitchType_id(String hitchType_id) {
+		this.hitchType_id = hitchType_id;
 	}
 }

@@ -69,18 +69,20 @@ public class HitchReasonTplController {
 
 	@RequestMapping("/hitchReasonTpl/query.do")
 	@ResponseBody
-	public List<HitchReasonTpl> query() {	
-		List<HitchReasonTpl> hitchReasonTples=hitchReasonTplService.queryAll();
-		return hitchReasonTples;
+	public List<HitchReasonTpl> query(String hitchType_id) {	
+//		List<HitchReasonTpl> hitchReasonTples=hitchReasonTplService.queryAll();
+//		return hitchReasonTples;
+		return hitchReasonTplService.query(Cnd.select().andEquals(M.HitchReasonTpl.hitchType_id, hitchType_id));
+		
 	}
 	
 	@RequestMapping("/hitchReasonTpl/mobile/query.do")
 	@ResponseBody
-	public List<HitchReasonTpl> mobile_query(Integer version) {	
-		List<HitchReasonTpl> hitchReasonTples=hitchReasonTplService.queryAll();
-		
-		MetaVersion metaVersion=metaVersionService.get(HitchReasonTpl.class.getSimpleName());
-		JsonConfigHolder.addProperty("version", metaVersion==null?0:metaVersion.getVersion());
+	public List<HitchReasonTpl> mobile_query(Integer version,String hitchType_id) {	
+		//List<HitchReasonTpl> hitchReasonTples=hitchReasonTplService.queryAll();
+		List<HitchReasonTpl> hitchReasonTples=hitchReasonTplService.query(Cnd.select().andEquals(M.HitchReasonTpl.hitchType_id, hitchType_id));
+		//MetaVersion metaVersion=metaVersionService.get(HitchReasonTpl.class.getSimpleName());
+		//JsonConfigHolder.addProperty("version", metaVersion==null?0:metaVersion.getVersion());
 		return hitchReasonTples;
 	}
 	
@@ -102,12 +104,12 @@ public class HitchReasonTplController {
 			map.put("hitchType_version", metaVersion.getVersion());
 		}
 		
-		metaVersion=metaVersionService.get(HitchReasonTpl.class.getSimpleName());
-		if(metaVersion!=null && metaVersion.getVersion()!=hitchReasonTpl_version){
-			List<HitchReasonTpl> hitchReasonTples=hitchReasonTplService.queryAll();
-			map.put("hitchReasonTpls", hitchReasonTples);
-			map.put("hitchReasonTpl_version", metaVersion.getVersion());
-		}	
+//		metaVersion=metaVersionService.get(HitchReasonTpl.class.getSimpleName());
+//		if(metaVersion!=null && metaVersion.getVersion()!=hitchReasonTpl_version){
+//			List<HitchReasonTpl> hitchReasonTples=hitchReasonTplService.queryAll();
+//			map.put("hitchReasonTpls", hitchReasonTples);
+//			map.put("hitchReasonTpl_version", metaVersion.getVersion());
+//		}	
 		
 		return map;
 	}

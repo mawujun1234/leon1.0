@@ -27,6 +27,14 @@ Ext.define('Ems.task.HitchReasonTplForm',{
 	        xtype:'hidden',
 	        allowBlank: false
 	    },
+	    {
+	        fieldLabel: 'hitchType_id',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'hitchType_id',
+	        readOnly:true,
+	        xtype:'hidden',
+	        allowBlank: false
+	    },
 		{
 	        fieldLabel: '原因简称',
 	        //afterLabelTextTpl: Ext.required,

@@ -46,7 +46,7 @@ public class Task implements IdEntity<String> {
 	@Transient
 	private String pole_code;
 	
-	
+	private Date hitchDate;//故障时间，就是发现故障的时间
 	private Date createDate;//创建时间
 	private Date startHandDate;//开始处理时间，第一次保存的时候
 	private Date submitDate;//提交时间
@@ -193,6 +193,12 @@ public class Task implements IdEntity<String> {
 	}
 	public void setPole_code(String pole_code) {
 		this.pole_code = pole_code;
+	}
+	public Date getHitchDate() {
+		return hitchDate;
+	}
+	public void setHitchDate(Date hitchDate) {
+		this.hitchDate = hitchDate;
 	}
 	
 	

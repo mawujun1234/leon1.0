@@ -1,0 +1,14 @@
+导入的时候要注意，先导入DateTimePicker.js，后导入DateTimeField.js，不然会有问题。
+
+例:
+
+	<script type="text/javascript" src="/bdyj/EXTJS/ux/DateTimePicker.js"></script>
+	<script type="text/javascript" src="/bdyj/EXTJS/ux/DateTimeField.js"></script>
+
+	var startTimeField = Ext.create('Ext.ux.DateTimeField', {
+	widget.DatetimeField
+		fieldLabel : '开始时间',
+		labelStyle : "text-align:center;width:30;",  
+		name : 'searchCommandException.startDate',
+		width:270
+       });

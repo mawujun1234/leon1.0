@@ -64,6 +64,24 @@ Ext.define('Ems.baseinfo.PoleForm',{
 	    },
 	    {
 	        	xtype:'combobox',
+			    fieldLabel: '点位类型',
+			    store:  Ext.create('Ext.data.Store', {
+				    fields: ['id', 'name'],
+				    data : [
+				        {"id":"pole", "name":"点位"},
+				        {"id":"machineroom", "name":"机房"}
+				    ]
+				}),
+			    queryMode: 'local',
+			    displayField: 'name',
+			    valueField: 'id',  
+			    editable:false,
+			    allowBlank:false,
+			    value:"pole",
+			    name:'poleType'
+		},
+	    {
+	        	xtype:'combobox',
 			    fieldLabel: '省',
 			    store:  Ext.create('Ext.data.Store', {
 				    fields: ['id', 'name'],

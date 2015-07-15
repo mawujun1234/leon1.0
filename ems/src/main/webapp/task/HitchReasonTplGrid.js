@@ -26,16 +26,16 @@ Ext.define('Ems.task.HitchReasonTplGrid',{
 			autoSync:false,
 			pageSize:50,
 			model: 'Ems.task.HitchReasonTpl',
-			autoLoad:true
+			autoLoad:false
 	  });
 	  
-      me.dockedItems= [{
-	        xtype: 'pagingtoolbar',
-	        store: me.store,  
-	        dock: 'bottom',
-	        
-	        displayInfo: true
-	  }];
+//      me.dockedItems= [{
+//	        xtype: 'pagingtoolbar',
+//	        store: me.store,  
+//	        dock: 'bottom',
+//	        
+//	        displayInfo: true
+//	  }];
 	  
 	  me.initAction(); 
       me.callParent();
@@ -117,6 +117,7 @@ Ext.define('Ems.task.HitchReasonTplGrid',{
 		var data=form.getValues();
 		data.customer_id=me.customer_id;
 		data.status=true;
+		data.hitchType_id=me.hitchType_id;
 		var record=new Ems.task.HitchReasonTpl(data);    
 		form.getForm().loadRecord(record);
 		var win=new Ext.window.Window({

@@ -289,43 +289,44 @@ $.tasks={
 			}
 		});
 	},
-	getHitchReasonTpl:function(){
-		
-		return JSON.parse(localStorage.getItem("HitchReasonTpl"));
-	},
-	getHitchReasonTpl_version:function(){
-		return localStorage.getItem("HitchReasonTpl_version")?localStorage.getItem("HitchReasonTpl_version"):0;
-	},
-	updateHitchReasonTpl:function(){
-		$.ajax({   
-			url : $.ServerPath+"/hitchReasonTpl/mobile/query.do",
-			//data:params,   
-			success : function(data){
-				localStorage.setItem("HitchReasonTpl_version",data.version);
-				localStorage.setItem("HitchReasonTpl",JSON.stringify(data.root));
-				//alert(data.root);
-				//alert(localStorage.getItem("HitchReasonTpl"));
-			}
-		});
-	},
-	updateAll:function(hitchType_version,hitchReasonTpl_version,callBack){
+//	getHitchReasonTpl:function(){
+//		
+//		return JSON.parse(localStorage.getItem("HitchReasonTpl"));
+//	},
+//	getHitchReasonTpl_version:function(){
+//		return localStorage.getItem("HitchReasonTpl_version")?localStorage.getItem("HitchReasonTpl_version"):0;
+//	},
+//	updateHitchReasonTpl:function(){
+//		$.ajax({   
+//			url : $.ServerPath+"/hitchReasonTpl/mobile/query.do",
+//			//data:params,   
+//			success : function(data){
+//				localStorage.setItem("HitchReasonTpl_version",data.version);
+//				localStorage.setItem("HitchReasonTpl",JSON.stringify(data.root));
+//				//alert(data.root);
+//				//alert(localStorage.getItem("HitchReasonTpl"));
+//			}
+//		});
+//	},
+//	updateAll:function(hitchType_version,hitchReasonTpl_version,callBack){
+	updateAll:function(hitchType_version,callBack){
 		$.showLoader("正在更新....");
 		$.ajax({   
-			url : $.ServerPath+"/hitchReasonTpl/mobile/queryAll.do",
+			url : $.ServerPath+"/hitchType/mobile/queryAll.do",
 			data:{
-				hitchType_version:hitchType_version,
-				hitchReasonTpl_version:hitchReasonTpl_version
+				hitchType_version:hitchType_version
+				//hitchReasonTpl_version:hitchReasonTpl_version
 			},   
 			success : function(data){
 				if(data.root.hitchTypes){
 					localStorage.setItem("HitchType_version",data.root.hitchType_version);
 					localStorage.setItem("HitchType",JSON.stringify(data.root.hitchTypes));
 				}
-				//alert(JSON.stringify(data.root.hitchReasonTpls));
-				if(data.root.hitchReasonTpls){
-					localStorage.setItem("HitchReasonTpl_version",data.root.hitchReasonTpl_version);
-					localStorage.setItem("HitchReasonTpl",JSON.stringify(data.root.hitchReasonTpls));
-				}
+//				alert(JSON.stringify(data.root.hitchReasonTpls));
+//				if(data.root.hitchReasonTpls){
+//					localStorage.setItem("HitchReasonTpl_version",data.root.hitchReasonTpl_version);
+//					localStorage.setItem("HitchReasonTpl",JSON.stringify(data.root.hitchReasonTpls));
+//				}
 				
 				if(callBack){
 					callBack();
@@ -337,8 +338,9 @@ $.tasks={
 	clearAll:function(){
 		localStorage.removeItem("HitchType_version");
 		localStorage.removeItem("HitchType");
-		localStorage.removeItem("HitchReasonTpl_version");
-		localStorage.removeItem("HitchReasonTpl");
+		//alert($.tasks.getHitchType_version());
+		//localStorage.removeItem("HitchReasonTpl_version");
+		//localStorage.removeItem("HitchReasonTpl");
 	}
 }
 

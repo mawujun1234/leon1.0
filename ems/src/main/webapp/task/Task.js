@@ -3,17 +3,17 @@ Ext.defineModel("Ems.task.Task",{
 	idProperty:'id',
 	fields:[
 		{name:'id',type:'string'},
-		{name:'approveDate',type:'date', dateFormat: 'Y-m-d'},
-		//{name:'completeDate',type:'date', dateFormat: 'Y-m-d'},
-		{name:'createDate',type:'date', dateFormat: 'Y-m-d'},
+		{name:'approveDate',type:'string'},
+		{name:'hitchDate',type:'string'},//, dateFormat: 'Y-m-d H:i:s'
+		{name:'createDate',type:'string'},
 		{name:'customer_id',type:'string'},
 		{name:'hitchReason',type:'string'},
 		{name:'hitchType',type:'string'},
 		{name:'memo',type:'string'},
 		{name:'pole_id',type:'string'},
-		{name:'startHandDate',type:'date', dateFormat: 'Y-m-d'},
+		{name:'startHandDate',type:'string'},
 		{name:'status',type:'string'},
-		{name:'submitDate',type:'date', dateFormat: 'Y-m-d'},
+		{name:'submitDate',type:'string'},
 		{name:'type',type:'auto'},
 		{name:'workunit_id',type:'string'},
 		

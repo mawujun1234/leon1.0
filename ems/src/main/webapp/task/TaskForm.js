@@ -94,6 +94,17 @@ Ext.define('Ems.task.TaskForm',{
 	        xtype:me.showSendButton?'hidden':'textfield',
 	        allowBlank: true
 	    },
+	    {
+            fieldLabel: '故障时间',
+            afterLabelTextTpl: Ext.required,
+            name: 'hitchDate',
+            editable:false,
+            allowBlank: true,
+            xtype: 'DatetimeField'
+            ,hidden:me.task_type=='repair'?false:true
+            //,value:new Date()
+            //,format: 'Y-m-d H:i:s'
+        },
 		{
 	        fieldLabel: '任务描述',
 	        afterLabelTextTpl: Ext.required,
@@ -182,20 +193,44 @@ Ext.define('Ems.task.TaskForm',{
                 if(!form.getForm().isValid()) {
                 	return;
                 }
+                var hitchDate_fiedl=form.getForm().findField("hitchDate");
+                if(!hitchDate_fiedl.getValue()){
+                	alert("请先选故障时间!");
+                	return;
+                }
                 form.getEl().mask("正在执行...");
-                form.getForm().updateRecord();
-				form.getRecord().save({
-					success: function(record, operation) {
-
-						form.getEl().unmask();
+                var values=form.getForm().getValues();
+                values.hitchDate=hitchDate_fiedl.getRawValue();
+                Ext.Ajax.request({
+                	method:'POST',
+                	url:Ext.ContextPath+"/task/create.do",
+                	jsonData:values,
+                	headers:{ 
+                		'Accept':'application/json;',
+                		'Content-Type':'application/json;charset=UTF-8'
+                	},
+                	success:function(){
+                		form.getEl().unmask();
 						alert("发送成功!");
 						me.fireEvent("sended",form);
-						
-					},
-					failure:function(){
+                	},
+                	failure:function(){
 						form.getEl().unmask();
 					}
-				});
+                })
+//                form.getForm().updateRecord();
+//				form.getRecord().save({
+//					success: function(record, operation) {
+//
+//						form.getEl().unmask();
+//						alert("发送成功!");
+//						me.fireEvent("sended",form);
+//						
+//					},
+//					failure:function(){
+//						form.getEl().unmask();
+//					}
+//				});
             }
       });
       

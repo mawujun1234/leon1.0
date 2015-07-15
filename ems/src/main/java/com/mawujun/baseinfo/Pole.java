@@ -24,6 +24,9 @@ public class Pole extends UUIDEntity {
 	@Column(length=50)
 	private String address;//详细地址
 	
+	@Enumerated(EnumType.STRING)
+	@Column(length=20)
+	public PoleType poleType;
 	
 	@Column(length=15)
 	private String longitude;//经度
@@ -140,6 +143,14 @@ public class Pole extends UUIDEntity {
 
 	public void setCode(Integer code) {
 		this.code = code;
+	}
+
+	public PoleType getPoleType() {
+		return poleType;
+	}
+
+	public void setPoleType(PoleType poleType) {
+		this.poleType = poleType;
 	}
 
 

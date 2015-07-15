@@ -18,6 +18,13 @@ public class PoleVO extends Pole {
 	
 	private List<EquipmentVO> equipments;
 	
+	public String getPoleType_name(){
+		if(poleType==null){
+			return null;
+		}
+		return poleType.getName();
+	}
+	
 //	private String task_id;//任务的id
 //	private String task_type;
 //	private String task_status;

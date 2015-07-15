@@ -53,7 +53,7 @@ label.error{
 	</div>
     
 	<footer data-role="footer" ><h1>@2014 宁波东望智能系统工程有限公司</h1>
-    <div style="font-size:13px;text-align:center;">版本1.1.4</div>
+    <div style="font-size:13px;text-align:center;">版本1.1.5</div>
     </footer>
 </div>
 <script type="text/javascript">
@@ -113,7 +113,7 @@ $(function() {
 						if(user.metaVersion==null){
 							user.metaVersion={};
 						}
-						$.tasks.updateAll($.tasks.getHitchType_version(),$.tasks.getHitchReasonTpl_version(),function(){
+						$.tasks.updateAll($.tasks.getHitchType_version(),function(){
 							location.href="taskes.html";
 						});
 						

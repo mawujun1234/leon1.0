@@ -39,6 +39,7 @@ Ext.define('Ems.baseinfo.PoleGrid',{
 		},
 		{dataIndex:'code',text:'编号',width:60},
       	{dataIndex:'name',text:'点位名称',width:160},
+      	{dataIndex:'poleType_name',text:'点位类型',width:160},
       	{dataIndex:'province',text:'地址',flex:1,renderer:function(value,metadata ,record){
       		var aaa=value+record.get("city")+record.get("area")+record.get("address");
       		metadata.tdAttr = "data-qtip='" + aaa+ "'";

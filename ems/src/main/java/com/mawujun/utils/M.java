@@ -173,6 +173,7 @@ public static final class Pole {
 	public static final String city="city";
 	public static final String area="area";
 	public static final String address="address";
+	public static final String poleType="poleType";
 	public static final String longitude="longitude";
 	public static final String latitude="latitude";
 	public static final String customer_id="customer_id";
@@ -343,6 +344,7 @@ public static final class HitchReasonTpl {
 	public static final String id="id";
 	public static final String name="name";
 	public static final String tpl="tpl";
+	public static final String hitchType_id="hitchType_id";
 }
 public static final class HitchType {
 	public static final String id="id";
@@ -367,6 +369,7 @@ public static final class Task {
 	public static final String customer_id="customer_id";
 	public static final String customer_name="customer_name";
 	public static final String pole_code="pole_code";
+	public static final String hitchDate="hitchDate";
 	public static final String createDate="createDate";
 	public static final String startHandDate="startHandDate";
 	public static final String submitDate="submitDate";

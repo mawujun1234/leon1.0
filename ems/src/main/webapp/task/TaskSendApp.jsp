@@ -23,6 +23,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<%@include file="../../common/init.jsp" %>
 	<script type="text/javascript" src="TaskSendApp.js"></script>
+	<script type="text/javascript" src="../scripts/datetime/DateTimePicker.js"></script>
+	<script type="text/javascript" src="../scripts/datetime/DateTimeField.js"></script>
+	
   </head>
   
   <body>

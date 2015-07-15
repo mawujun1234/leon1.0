@@ -1,1 +1,1 @@
-{verCode:114,verName:"1.1.4",changelog:" 1:修正维修任务原因模板选择的兼容性问题。"}
+{verCode:115,verName:"1.1.5",changelog:" 1:调整故障类型和故障原因的模板。"}

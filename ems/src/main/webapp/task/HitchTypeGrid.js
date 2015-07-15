@@ -28,12 +28,12 @@ Ext.define('Ems.task.HitchTypeGrid',{
 			autoLoad:true
 	  });
 	  
-      me.dockedItems= [{
-	        xtype: 'pagingtoolbar',
-	        store: me.store,  
-	        dock: 'bottom',
-	        displayInfo: true
-	  }];
+//      me.dockedItems= [{
+//	        xtype: 'pagingtoolbar',
+//	        store: me.store,  
+//	        dock: 'bottom',
+//	        displayInfo: true
+//	  }];
 	  
 	  me.initAction(); 
       me.callParent();

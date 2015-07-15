@@ -4,7 +4,9 @@ Ext.defineModel("Ems.task.HitchReasonTpl",{
 	fields:[
 		{name:'id',type:'int'},
 		{name:'name',type:'string'},
-		{name:'tpl',type:'string'}
+		{name:'tpl',type:'string'},
+		
+		{name:'hitchType_id',type:'string'}
 	],
 	associations:[
 	]
