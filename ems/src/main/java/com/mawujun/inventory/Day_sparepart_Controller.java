@@ -93,10 +93,10 @@ public class Day_sparepart_Controller {
 		}
 		
 		List<Day_sparepart_type> types = day_sparepart_Service.queryDay_sparepart(store_id, store_type,date_start.replaceAll("-", ""),date_end.replaceAll("-", ""));
-		String store_name="所有";
+		String store_name_title="所有仓库";
 		if(store_id!=null && !"".equals(store_id) ){
 			Store store=storeService.get(store_id);
-			store_name=store.getName();
+			store_name_title=store.getName();
 		}
 		
 
@@ -108,7 +108,7 @@ public class Day_sparepart_Controller {
 		Row title = sheet.createRow(0);// 一共有11列
 		title.setHeight((short) 660);
 		Cell title_cell = title.createCell(0);
-		title_cell.setCellValue(store_name+"  仓库"+date_start+"到"+date_end+"盘点日报表");
+		title_cell.setCellValue(store_name_title+date_start+"到"+date_end+"盘点日报表");
 		CellStyle cs = wb.createCellStyle();
 		Font f = wb.createFont();
 		f.setFontHeightInPoints((short) 16);
@@ -210,7 +210,8 @@ public class Day_sparepart_Controller {
 					for (int k = 0; k < prods_size; k++) {
 						//主要是为了填写当前行的品名，品牌，所属仓库等信息
 						Day_sparepart_prod prod_first=equipmentSubtype.first();
-						String prod_id=prod_first.getProd_id();
+						//String prod_id=prod_first.getProd_id();
+						String prod_key=prod_first.getkey();
 								
 						nownum_formule_builder = new StringBuilder();
 						nownum_formule_builder.append("SUM(");
@@ -232,9 +233,9 @@ public class Day_sparepart_Controller {
 						prod_name.setCellValue(prod_first.getProd_name());
 						prod_name.setCellStyle(content_style);
 
-						// Cell store_name=row_prod.createCell(cellnum++);
-						// store_name.setCellValue(sparepartMonthReport.getStore_name());
-						// store_name.setCellStyle(content_style);
+						 Cell store_name=row_prod.createCell(cellnum++);
+						 store_name.setCellValue(prod_first.getStore_name());
+						 store_name.setCellStyle(content_style);
 
 						Cell unit = row_prod.createCell(cellnum++);
 						unit.setCellValue(prod_first.getProd_unit());
@@ -306,7 +307,7 @@ public class Day_sparepart_Controller {
 						//日报表，表头的日期改成真是日期，而不是1，2，3这样的序号，变成月日，或者年月日
 						for (int j = 0; j < daykeyes.size(); j++) {
 							//Integer daykey=Integer.parseInt(yyyyMMdd_formater.format(new Date(date_start_times+(j*24*60*60*1000))));
-							Day_sparepart_prod prod=equipmentSubtype.getProd(prod_id,daykeyes.get(j));
+							Day_sparepart_prod prod=equipmentSubtype.getProd(prod_key,daykeyes.get(j));
 							if(prod==null){
 								//continue;
 								prod=new Day_sparepart_prod();
@@ -475,10 +476,10 @@ public class Day_sparepart_Controller {
 		 sheet.setColumnWidth(cellnum-1, 3600);
 		 //sheet.autoSizeColumn(cellint-1, true);
 		 
-//		 Cell store_name=row.createCell(cellnum++);
-//		 store_name.setCellValue("仓库");
-//		 store_name.setCellStyle(black_style);
-//		 sheet.setColumnWidth(cellnum-1, "列".getBytes().length*2*256);
+		 Cell store_name=row.createCell(cellnum++);
+		 store_name.setCellValue("仓库");
+		 store_name.setCellStyle(black_style);
+		 sheet.setColumnWidth(cellnum-1, 2400);
 		 
 		 Cell unit=row.createCell(cellnum++);
 		 unit.setCellValue("单位");
@@ -497,7 +498,7 @@ public class Day_sparepart_Controller {
 		 lastnum_style.setFillForegroundColor(HSSFColor.LIGHT_YELLOW.index);
 		 lastnum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 		 Cell lastnum=row.createCell(cellnum++);
-		 lastnum.setCellValue("上月结余数");
+		 lastnum.setCellValue("上期结余数");
 		 lastnum.setCellStyle(lastnum_style);
 		 sheet.setColumnWidth(cellnum-1, 1800);
 		 
@@ -550,7 +551,7 @@ public class Day_sparepart_Controller {
 		 nownum_style.setFillForegroundColor(HSSFColor.LIGHT_TURQUOISE.index);
 		 nownum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 		 Cell nownum=row.createCell(cellnum++);
-		 nownum.setCellValue("本月结余数");
+		 nownum.setCellValue("本期结余数");
 		 nownum.setCellStyle(nownum_style);
 		 sheet.setColumnWidth(cellnum-1, 1800);
 		 
@@ -725,7 +726,7 @@ public class Day_sparepart_Controller {
 		 //sheet.createFreezePane(16, 2);
 		
 	}
-	int sparepart_month_freeze_num=17;//在建仓库月冻结的列数
+	int sparepart_month_freeze_num=18;//在建仓库月冻结的列数
 	int type_group_end_num=17;//小类和大类分组的结束列
 	int day_of_month_num=31;
 	@RequestMapping("/inventory/day/sparepart/excelTpl.do")
@@ -867,9 +868,9 @@ public class Day_sparepart_Controller {
 						// prod_name.setCellValue("测试");
 						 prod_name.setCellStyle(content_style);
 						 
-//						 Cell store_name=row_prod.createCell(cellnum++);
-//						 store_name.setCellValue(sparepartMonthReport.getStore_name());
-//						 store_name.setCellStyle(content_style);
+						 Cell store_name=row_prod.createCell(cellnum++);
+						 //store_name.setCellValue("仓库");
+						 store_name.setCellStyle(content_style);
 						 
 						 Cell unit=row_prod.createCell(cellnum++);
 						// unit.setCellValue("台");

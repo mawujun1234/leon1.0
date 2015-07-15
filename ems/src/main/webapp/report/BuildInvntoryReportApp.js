@@ -66,7 +66,7 @@ Ext.onReady(function(){
 	        name: 'store_id',
 		    displayField: 'name',
 		    valueField: 'id',
-	        allowBlank: false,
+	        allowBlank: true,
 	        store:Ext.create('Ext.data.Store', {
 		    	fields: ['id', 'name'],
 			    proxy:{
@@ -122,8 +122,9 @@ Ext.onReady(function(){
 				if(!params){
 					return false;
 				}
+				params.store_type=1;
 				var pp=Ext.Object.toQueryString(params);
-				window.open(Ext.ContextPath+"/dayinventory/build/export.do?"+pp, "_blank");
+				window.open(Ext.ContextPath+"/inventory/day/sparepart/excelExport.do?"+pp, "_blank");
 			}
 		}
 		
@@ -173,10 +174,10 @@ Ext.onReady(function(){
 			Ext.Msg.alert("提醒","请先选择结束日期!");
 			return false;
 		}
-		if(!params.store_id){
-			Ext.Msg.alert("提醒","请先选择仓库!");
-			return false;
-		}
+//		if(!params.store_id){
+//			Ext.Msg.alert("提醒","请先选择仓库!");
+//			return false;
+//		}
 		return params;
 	}
 

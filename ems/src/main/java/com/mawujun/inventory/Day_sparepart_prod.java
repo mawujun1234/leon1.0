@@ -1,19 +1,17 @@
 package com.mawujun.inventory;
 
 public class Day_sparepart_prod extends Day_sparepart{
-	private String prod_id;
+	//private String prod_id;
 	private String prod_name;
 	private String prod_unit;
 	private String prod_style;
 	private String store_name;
 	private String brand_name;
 	
-	public String getProd_id() {
-		return prod_id;
+	public String getkey(){
+		return this.getProd_id()+this.getStore_id();
 	}
-	public void setProd_id(String prod_id) {
-		this.prod_id = prod_id;
-	}
+
 	public String getProd_name() {
 		return prod_name;
 	}

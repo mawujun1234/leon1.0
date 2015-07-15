@@ -23,8 +23,9 @@ public class Day_sparepart_subtype {
 		String prod_id_temp="";
 		Map<Integer,Day_sparepart_prod> prodes_map_temp=null;
 		for(Day_sparepart_prod prod:prodes){
-			if(!prod_id_temp.equals(prod.getProd_id())){
-				prod_id_temp=prod.getProd_id();		
+			String key=prod.getkey();
+			if(!prod_id_temp.equals(key)){
+				prod_id_temp=key;		
 				HashMap<Integer,Day_sparepart_prod> map=new HashMap<Integer,Day_sparepart_prod>();
 				prodes_map.put(prod_id_temp,map);
 			}
