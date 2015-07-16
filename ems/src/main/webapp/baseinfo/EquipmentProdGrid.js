@@ -112,6 +112,7 @@ Ext.define('Ems.baseinfo.EquipmentProdGrid',{
 		
 		var createTJ = new Ext.Action({
 		    text: '增加套件组成',
+		    hidden:true,
 		    itemId:'createTJ',
 		    handler: function(){
 		    	me.createTJ();

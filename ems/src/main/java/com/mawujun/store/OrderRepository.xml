@@ -227,7 +227,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     </select>
 	-->
 	<select id="getEquipFromBarcode" resultType="com.mawujun.baseinfo.EquipmentVO" parameterType="String">
-    	select a.ecode,a.orderlist_id, 'no_storage' as status,
+    	select a.ecode,a.orderlist_id, decode(a.status,0,'no_storage','in_storage') as status,
     	a.store_id,
 		a.brand_id,
 		a.prod_id,

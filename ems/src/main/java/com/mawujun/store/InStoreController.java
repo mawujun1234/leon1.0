@@ -58,7 +58,8 @@ public class InStoreController {
 		}
 		
 		if(inStoreService.checkEquipmentExist(ecode)){
-			throw new BusinessException("该设备已经存在，不能重复入库!");
+			//下面的if(equipmentVO.getStatus()!=EquipmentStatus.no_storage)也是做同样的判断
+			throw new BusinessException("该设备已经入过库了，不能重复入库!");
 		}
 		
 		
@@ -80,7 +81,7 @@ public class InStoreController {
 			return equipmentVO;
 		} else {
 			//return new EquipmentVO();
-			throw new BusinessException("该条码的设备不存在!");
+			throw new BusinessException("该条码的设备不存在或者已经失效，请重新导出打印!");
 		}
 		
 	}
