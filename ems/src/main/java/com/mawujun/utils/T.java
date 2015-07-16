@@ -114,6 +114,7 @@ public static final class ems_equipmentprod {
 	public static final String type="type";
 	public static final String quality_month="quality_month";
 	public static final String lock_style="lock_style";
+	public static final String id_suffix="id_suffix";
 }
 public static final class ems_equipment_repair {
 	public static final String ecode="ecode";

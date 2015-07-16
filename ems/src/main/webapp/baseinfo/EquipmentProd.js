@@ -3,7 +3,6 @@ Ext.defineModel("Ems.baseinfo.EquipmentProd",{
 	idProperty:'id',
 	fields:[
 		{name:'id',type:'string'},
-		//{name:'levl',type:'int'},
 		{name:'status',type:'bool'},
 		{name:'name',type:'string'},
 		{name:'text',type:'string'},
@@ -11,14 +10,15 @@ Ext.defineModel("Ems.baseinfo.EquipmentProd",{
 		{name:'spec',type:'string'},
 		{name:'style',type:'string'},
 		{name:'brand_id',type:'string'},
-		{name:'parent_id',type:'string'},
+		//{name:'parent_id',type:'string'},
 		{name:'subtype_id',type:'string'},
 		{name:'memo',type:'string'},
-		{name:'type',type:'string'},
+		//{name:'type',type:'string'},
 		{name:'quality_month',type:'int'},
 		{name:'lock_style',type:'bool'},
 		//{name:'type_parent_id',type:'string'},
 		
+		{name:'id_suffix',type:'string'},
 		{name:'type_name',type:'string'},
 		
 		{name:'status_name',type:'String'},

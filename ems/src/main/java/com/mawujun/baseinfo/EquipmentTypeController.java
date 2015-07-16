@@ -153,8 +153,12 @@ public class EquipmentTypeController {
 	@RequestMapping("/equipmentType/createProd.do")
 	@ResponseBody
 	public  EquipmentProd createProd(@RequestBody EquipmentProd equipmentProd) {
-		//合并id
-		equipmentProd.setId(equipmentProd.getSubtype_id()+equipmentProd.getId());
+		if(equipmentProd.getId_suffix()==null || "".equals(equipmentProd.getId_suffix().trim())){
+			equipmentProd.setId(equipmentProd.getSubtype_id()+equipmentProd.getId());
+		}  else {	
+			//合并id
+			equipmentProd.setId(equipmentProd.getSubtype_id()+equipmentProd.getId()+"-"+equipmentProd.getId_suffix().trim());
+		}
 				
 		Long count=equipmentProdService.queryCount(Cnd.select().andEquals(M.EquipmentProd.id, equipmentProd.getId()));
 		if(count>0){
@@ -170,11 +174,11 @@ public class EquipmentTypeController {
 		return equipmentProd;
 	}
 	
-	@RequestMapping("/equipmentType/createProdTJ.do")
-	@ResponseBody
-	public EquipmentProd createProdTJ(@RequestBody EquipmentProd equipmentProd) {
-		return equipmentProdService.createProdTJ(equipmentProd);
-	}
+//	@RequestMapping("/equipmentType/createProdTJ.do")
+//	@ResponseBody
+//	public EquipmentProd createProdTJ(@RequestBody EquipmentProd equipmentProd) {
+//		return equipmentProdService.createProdTJ(equipmentProd);
+//	}
 	
 	@RequestMapping("/equipmentType/update.do")
 	@ResponseBody

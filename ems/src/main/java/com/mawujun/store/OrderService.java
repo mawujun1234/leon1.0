@@ -235,15 +235,15 @@ public class OrderService extends AbstractService<Order, String>{
 		EquipmentProd equipmentProd=equipmentProdRepository.get(orderList.getProd_id());
 		
 		List<EquipmentProd> equipmentProdListes=null;
-		//如果是套件，就取套件下面的拆分的零件进行打印
-		boolean isTj=false;
-		if(equipmentProd.getType()==EquipmentProdType.TJ){
-			isTj=true;
-			equipmentProdListes=equipmentProdRepository.queryProd_tj_children(equipmentProd.getId());
-		} else {
+//		//如果是套件，就取套件下面的拆分的零件进行打印
+//		boolean isTj=false;ll
+//		if(equipmentProd.getType()==EquipmentProdType.TJ){
+//			isTj=true;
+//			equipmentProdListes=equipmentProdRepository.queryProd_tj_children(equipmentProd.getId());
+//		} else {
 			equipmentProdListes=new ArrayList<EquipmentProd>();
 			equipmentProdListes.add(equipmentProd);
-		}
+//		}
 		//同时生成条码
 		//创建该订单的条码号
 		for(EquipmentProd temp:equipmentProdListes){
@@ -256,8 +256,11 @@ public class OrderService extends AbstractService<Order, String>{
 			
 			//
 			String equipmentProd_id=temp.getId();
-			//当打印的是普通条码的时候，就用**作为占位符
-			if(!isTj){
+//			//当打印的是普通条码的时候，就用**作为占位符
+//			if(!isTj){
+//				equipmentProd_id+="-**";
+//			}
+			if(equipmentProd_id.length()==6){
 				equipmentProd_id+="-**";
 			}
 			for (int i = 1; i <= printnum; i++) {

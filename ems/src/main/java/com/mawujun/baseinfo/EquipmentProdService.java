@@ -46,35 +46,35 @@ public class EquipmentProdService extends AbstractService<EquipmentProd, String>
 	public EquipmentProdRepository getRepository() {
 		return equipmentProdRepository;
 	}
-	/**
-	 * 增加套件下面的拆分件
-	 * @author mawujun email:160649888@163.com qq:16064988
-	 * @param equipmentProd
-	 * @return
-	 */
-	public EquipmentProd createProdTJ( EquipmentProd equipmentProd){
-		// 合并id
-				equipmentProd.setId(equipmentProd.getParent_id()+"-" +equipmentProd.getId());
-
-				Long count = this.queryCount(Cnd.select().andEquals(M.EquipmentProd.id, equipmentProd.getId()));
-				if (count > 0) {
-					throw new BusinessException("编码已经存在");
-				}
-
-				EquipmentProd parent = this.get(equipmentProd.getParent_id());
-				if (parent == null || parent.getStatus() == false) {
-					throw new BusinessException("品名已经删除,不能再进行套件拆分");
-				}
-
-				//改变属性
-				equipmentProd.setType(EquipmentProdType.DJ);
-				equipmentProd.setSubtype_id(parent.getSubtype_id());
-				parent.setType(EquipmentProdType.TJ);
-				this.update(parent);
-
-				this.create(equipmentProd);
-				return equipmentProd;
-	}
+//	/**
+//	 * 增加套件下面的拆分件
+//	 * @author mawujun email:160649888@163.com qq:16064988
+//	 * @param equipmentProd
+//	 * @return
+//	 */
+//	public EquipmentProd createProdTJ( EquipmentProd equipmentProd){
+//		// 合并id
+//				equipmentProd.setId(equipmentProd.getParent_id()+"-" +equipmentProd.getId());
+//
+//				Long count = this.queryCount(Cnd.select().andEquals(M.EquipmentProd.id, equipmentProd.getId()));
+//				if (count > 0) {
+//					throw new BusinessException("编码已经存在");
+//				}
+//
+//				EquipmentProd parent = this.get(equipmentProd.getParent_id());
+//				if (parent == null || parent.getStatus() == false) {
+//					throw new BusinessException("品名已经删除,不能再进行套件拆分");
+//				}
+//
+//				//改变属性
+//				equipmentProd.setType(EquipmentProdType.DJ);
+//				equipmentProd.setSubtype_id(parent.getSubtype_id());
+//				parent.setType(EquipmentProdType.TJ);
+//				this.update(parent);
+//
+//				this.create(equipmentProd);
+//				return equipmentProd;
+//	}
 	/**
 	 * 删除品名
 	 */
@@ -94,14 +94,14 @@ public class EquipmentProdService extends AbstractService<EquipmentProd, String>
 		} else {
 			entity=this.getRepository().get(entity.getId());
 			this.getRepository().delete(entity);
-			//只有当套件的配件的才需要判断
-			if(StringUtils.hasText(entity.getParent_id())){
-				List<EquipmentProd> aaaa=this.getRepository().queryProd_tj_children(entity.getParent_id());
-				if(aaaa==null || aaaa.size()==0){
-					EquipmentProd parent=this.getRepository().get(entity.getParent_id());
-					parent.setType(EquipmentProdType.DJ);
-				}
-			}
+//			//只有当套件的配件的才需要判断
+//			if(StringUtils.hasText(entity.getParent_id())){
+//				List<EquipmentProd> aaaa=this.getRepository().queryProd_tj_children(entity.getParent_id());
+//				if(aaaa==null || aaaa.size()==0){
+//					EquipmentProd parent=this.getRepository().get(entity.getParent_id());
+//					parent.setType(EquipmentProdType.DJ);
+//				}
+//			}
 			
 			//判断该品名是否属于套件下的某个配件，如果是，就判断父品名是否还有子配件，如果没有就把type改成LJ
 		}

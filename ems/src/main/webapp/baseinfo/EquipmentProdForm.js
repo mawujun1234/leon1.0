@@ -55,6 +55,14 @@ Ext.define('Ems.baseinfo.EquipmentProdForm',{
 				length : maxLength,
 				xtype : 'textfield',
 				allowBlank : me.isUpdate?true:false
+			},{xtype: 'displayfield', value: '-'},{
+				width : 50,
+				name : 'id_suffix',
+				minLength : 2,
+				maxLength : 2,
+				length : 2,
+				xtype : 'textfield',
+				hidden:me.isUpdate
 			}]
 		}, {
 			fieldLabel : 'type',

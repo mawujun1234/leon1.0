@@ -22,11 +22,9 @@ public class EquipmentProd  implements
 	private String name;
 	@org.hibernate.annotations.Type(type="yes_no")
 	private Boolean status=true;
-//	
-//	@Column(updatable=false)
-//	private Integer levl;
-	@Column(length=12)
-	private String parent_id;
+
+//	@Column(length=12)
+//	private String parent_id;
 	@Column(length=6)
 	private String subtype_id;
 	@Column(length = 100)
@@ -42,9 +40,9 @@ public class EquipmentProd  implements
 	@Column(length = 20)
 	private String brand_id;
 	
-	@Enumerated(EnumType.STRING)
-	@Column(length=6)
-	private EquipmentProdType type=EquipmentProdType.DJ;
+//	@Enumerated(EnumType.STRING)
+//	@Column(length=6)
+//	private EquipmentProdType type=EquipmentProdType.DJ;
 //	@Column(length=6)
 //	private String type_parent_id;//当被拆分后的parent_id
 	
@@ -52,17 +50,18 @@ public class EquipmentProd  implements
 	@org.hibernate.annotations.Type(type="yes_no")
 	private Boolean lock_style=false;//true表示锁定这个品名的型号，这个型号就不能修改了
 	
-	
-	
+	@Transient
+	private String id_suffix;
 	
 	
 	public Boolean getLeaf() {
-		//如果是套件就返回false
-		if(type==EquipmentProdType.TJ){
-			return false;
-		} else {
-			return true;
-		}
+		return false;
+//		//如果是套件就返回false
+//		if(type==EquipmentProdType.TJ){
+//			return false;
+//		} else {
+//			return true;
+//		}
 	}
 	
 	public String getUnit() {
@@ -90,12 +89,12 @@ public class EquipmentProd  implements
 		this.brand_id = brand_id;
 	}
 	
-	public EquipmentProdType getType() {
-		return type;
-	}
-	public void setType(EquipmentProdType type) {
-		this.type = type;
-	}
+//	public EquipmentProdType getType() {
+//		return type;
+//	}
+//	public void setType(EquipmentProdType type) {
+//		this.type = type;
+//	}
 
 
 	@Override
@@ -126,13 +125,13 @@ public class EquipmentProd  implements
 		this.status = status;
 	}
 
-	public String getParent_id() {
-		return parent_id;
-	}
-
-	public void setParent_id(String parent_id) {
-		this.parent_id = parent_id;
-	}
+//	public String getParent_id() {
+//		return parent_id;
+//	}
+//
+//	public void setParent_id(String parent_id) {
+//		this.parent_id = parent_id;
+//	}
 
 	public String getSubtype_id() {
 		return subtype_id;
@@ -164,6 +163,14 @@ public class EquipmentProd  implements
 
 	public void setLock_style(Boolean lock_style) {
 		this.lock_style = lock_style;
+	}
+
+	public String getId_suffix() {
+		return id_suffix;
+	}
+
+	public void setId_suffix(String id_suffix) {
+		this.id_suffix = id_suffix;
 	}
 
 
