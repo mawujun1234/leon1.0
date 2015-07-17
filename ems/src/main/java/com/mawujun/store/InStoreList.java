@@ -25,7 +25,7 @@ public class InStoreList extends UUIDEntity {
 	public void setInStore_id(String inStore_id) {
 		this.inStore_id = inStore_id;
 	}
-	public String getEncode() {
+	public String getEcode() {
 		return ecode;
 	}
 	public void setEcode(String ecode) {

@@ -11,6 +11,10 @@ import com.mawujun.repository.idEntity.UUIDEntity;
 @Entity
 @Table(name="ems_pole")
 public class Pole extends UUIDEntity {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Column(length=15)
 	private Integer code;
 	@Column(length=60)

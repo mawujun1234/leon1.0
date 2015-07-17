@@ -1,3 +1,7 @@
+.icons_help {
+	  background: url(../icons/help.png) left top no-repeat !important; 
+}
+
 .x-form-clear-trigger {
      background-image: url(../images/clear-trigger.gif);
 }

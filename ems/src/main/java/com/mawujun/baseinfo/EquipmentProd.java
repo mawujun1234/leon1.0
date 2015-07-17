@@ -53,9 +53,13 @@ public class EquipmentProd  implements
 	@Transient
 	private String id_suffix;
 	
-	
+	/**
+	 * 这个字段是要删除的
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @return
+	 */
 	public Boolean getLeaf() {
-		return false;
+		return true;
 //		//如果是套件就返回false
 //		if(type==EquipmentProdType.TJ){
 //			return false;

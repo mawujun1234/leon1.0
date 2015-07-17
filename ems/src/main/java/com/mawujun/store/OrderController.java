@@ -127,7 +127,7 @@ public class OrderController {
 	 */
 	@RequestMapping("/order/queryList4Barcode.do")
 	@ResponseBody
-	public List<OrderListVO> queryList4Barcode(String order_id,String parent_id) {	
+	public List<OrderListVO> queryList4Barcode(String order_id) {	
 		//Page page=Page.getInstance(start,limit);
 		//page.addParam(M.OrderList.order_id, order_id);
 		if(!StringUtils.hasText(order_id)){
@@ -135,13 +135,13 @@ public class OrderController {
 		}
 		List<OrderListVO> orderlists=null;
 		Params params=Params.init().add(M.OrderList.order_id, order_id);
-		if(StringUtils.hasText(parent_id)){
-			params.addIf(M.EquipmentProd.parent_id, parent_id);
-			//当点击查看套件内容的时候
-			orderlists=orderService.queryList4Barcode_tj_children(params);
-		} else {
+//		if(StringUtils.hasText(parent_id)){
+//			params.addIf(M.EquipmentProd.parent_id, parent_id);
+//			//当点击查看套件内容的时候
+//			orderlists=orderService.queryList4Barcode_tj_children(params);
+//		} else {
 			orderlists=orderService.queryList4Barcode(params);
-		}
+//		}
 		
 		
 		return orderlists;

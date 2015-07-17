@@ -2,6 +2,7 @@ package com.mawujun.inventory;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.ParseException;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -30,6 +31,11 @@ import com.mawujun.baseinfo.Store;
 public class Month_sparepart_Controller {
 	@Resource
 	private EquipmentTypeRepository equipmentTypeRepository;
+	
+	@RequestMapping("/inventory/month/sparepart/excelExport.do")
+	public void excelExport(HttpServletResponse response,String store_id,Integer store_type,String date_start,String date_end) throws IOException, ParseException{
+		
+	}
 	
 	public CellStyle getStyle(XSSFWorkbook wb,IndexedColors color,Short fontSize){
 		CellStyle style = wb.createCellStyle();
@@ -109,10 +115,10 @@ public class Month_sparepart_Controller {
 		 sheet.setColumnWidth(cellnum-1, "列".getBytes().length*8*256);
 		 //sheet.autoSizeColumn(cellint-1, true);
 		 
-//		 Cell store_name=row.createCell(cellnum++);
-//		 store_name.setCellValue("仓库");
-//		 store_name.setCellStyle(black_style);
-//		 sheet.setColumnWidth(cellnum-1, "列".getBytes().length*2*256);
+		 Cell store_name=row.createCell(cellnum++);
+		 store_name.setCellValue("仓库");
+		 store_name.setCellStyle(black_style);
+		 sheet.setColumnWidth(cellnum-1, 2400);
 		 
 		 Cell unit=row.createCell(cellnum++);
 		 unit.setCellValue("单位");
@@ -131,7 +137,7 @@ public class Month_sparepart_Controller {
 		 lastnum_style.setFillForegroundColor(HSSFColor.LIGHT_YELLOW.index);
 		 lastnum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 		 Cell lastnum=row.createCell(cellnum++);
-		 lastnum.setCellValue("上月结余数");
+		 lastnum.setCellValue("上期结余数");
 		 lastnum.setCellStyle(lastnum_style);
 		 sheet.setColumnWidth(cellnum-1, 1800);
 		 
@@ -184,7 +190,7 @@ public class Month_sparepart_Controller {
 		 nownum_style.setFillForegroundColor(HSSFColor.LIGHT_TURQUOISE.index);
 		 nownum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 		 Cell nownum=row.createCell(cellnum++);
-		 nownum.setCellValue("本月结余数");
+		 nownum.setCellValue("本期结余数");
 		 nownum.setCellStyle(nownum_style);
 		 sheet.setColumnWidth(cellnum-1, 1800);
 		 
@@ -204,7 +210,7 @@ public class Month_sparepart_Controller {
 		 //sheet.createFreezePane(16, 2);
 		 sheet.createFreezePane(sparepart_month_freeze_num, 2);
 	}
-	int sparepart_month_freeze_num=15;//在建仓库月冻结的列数
+	int sparepart_month_freeze_num=17;//在建仓库月冻结的列数
 	int type_group_end_num=15;//小类和大类分组的结束列
 	@RequestMapping("/inventory/month/sparepart/excelTpl.do")
 	public void excelTpl(HttpServletResponse response) throws IOException{
@@ -217,7 +223,7 @@ public class Month_sparepart_Controller {
 		Row title = sheet.createRow(0);//一共有11列
 		title.setHeight((short)660);
 		Cell title_cell=title.createCell(0);
-		title_cell.setCellValue("____________项目________年_________月备品备件仓库(仓库名称)盘点月报表");
+		title_cell.setCellValue("____________仓库________年_________月盘点月报表");
 		CellStyle cs = wb.createCellStyle();
 		Font f = wb.createFont();
 		f.setFontHeightInPoints((short) 16);
@@ -345,9 +351,9 @@ public class Month_sparepart_Controller {
 						// prod_name.setCellValue("测试");
 						 prod_name.setCellStyle(content_style);
 						 
-//						 Cell store_name=row_prod.createCell(cellnum++);
-//						 store_name.setCellValue(sparepartMonthReport.getStore_name());
-//						 store_name.setCellStyle(content_style);
+						 Cell store_name=row_prod.createCell(cellnum++);
+						 //store_name.setCellValue(sparepartMonthReport.getStore_name());
+						 store_name.setCellStyle(content_style);
 						 
 						 Cell unit=row_prod.createCell(cellnum++);
 						 //unit.setCellValue("台");

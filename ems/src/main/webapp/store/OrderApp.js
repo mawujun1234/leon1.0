@@ -279,14 +279,14 @@ Ext.onReady(function(){
 		flex:1,
 		readOnly:true,
 		emptyText:'不可编辑',
-		xtype:'textfield',itemId:'style_field',fieldLabel:'型号',name:'style',labelWidth:50,
+		xtype:'textfield',itemId:'style_field',fieldLabel:'型号',name:'prod_style',labelWidth:50,
 		//allowBlank:false,
 		labelAlign:'right'});
 	var prod_spec=Ext.create('Ext.form.field.Text',{
 		flex:1,
 		readOnly:true,
 		emptyText:'不可编辑',
-		xtype:'textfield',itemId:'style_field',fieldLabel:'规格',name:'prod_spec',labelWidth:50,
+		xtype:'textfield',itemId:'prod_spec_field',fieldLabel:'规格',name:'prod_spec',labelWidth:50,
 		//allowBlank:false,
 		labelAlign:'right'});
 	
@@ -475,7 +475,7 @@ Ext.onReady(function(){
 			prod_name.setValue(record.get("prod_name")); 
 			brand_id.setValue(record.get("brand_id")); 
 			brand_name.setValue(record.get("brand_name")); 
-			style.setValue(record.get("style")); 
+			style.setValue(record.get("prod_style")); 
 			prod_spec.setValue(record.get("prod_spec")); 
 			prod_unit.setValue(record.get("prod_unit")); 
 			

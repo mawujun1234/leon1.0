@@ -62,6 +62,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		    </collection>
        </collection>  
     </resultMap>
+    <!-- 日结报表 -->
    <select id="queryDay_sparepartVO" resultMap="day_sparepart_map">
    select  a.daykey,a.store_id,a.prod_id,a.monthkey,a.todaynum,a.yesterdaynum,a.purchasenum,a.oldnum,a.installoutnum,a.repairinnum,a.scrapoutnum,a.repairoutnum,a.borrownum,a.borrowreturnnum
    ,f.name as type_name,f.id as type_id,b.id as subtype_id,b.name as subtype_name,c.id as prod_id,c.name as prod_name,c.unit as prod_unit,c.style prod_style,d.name as brand_name  ,e.name as store_name
@@ -72,14 +73,66 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     inner join ems_brand d on c.brand_id=d.id
     inner join ems_store e on a.store_id=e.id
     where 
-    <if test="store_id!=null and store_id !=''">
-    	 a.store_id=#{store_id} and 
-    </if>
-    <if test="store_id==null or store_id ==''">
-    	 e.type=#{store_type} and 
-    </if>
+    <if test="use_in!=null and use_in==false">
+		a.store_id=#{store_id} and 
+	</if>
+	<if test="use_in!=null and use_in==true ">
+		a.store_id in (${store_id}) and 
+	</if>
     a.daykey&gt;=#{day_start} and a.daykey&lt;=#{day_end}
-    order by a.store_id,f.id,b.id ,c.brand_id,a.prod_id,a.daykey
+    order by a.store_id,f.id,b.id,a.prod_id ,c.brand_id,a.daykey
+   </select>
+   
+   <!-- 月结报表 -->
+   <resultMap type="com.mawujun.inventory.Month_sparepart_type" id="month_sparepart_map">
+     	<id property="type_id" column="type_id"/>
+    	<result property="type_name" column="type_name"/>
+    	<collection property="subtypes" ofType="com.mawujun.inventory.Month_sparepart_subtype">  
+    		<id property="subtype_id" column="subtype_id"/>
+		    <result property="subtype_name" column="subtype_name"/>
+		    <collection property="prodes" ofType="com.mawujun.inventory.Month_sparepart_prod">  
+		    	<result property="store_id" column="store_id"/>
+		    	<result property="prod_id" column="prod_id"/>
+		    	<!--<result property="monthkey" column="monthkey"/>-->
+		    	<result property="todaynum" column="todaynum"/>
+		    	<result property="yesterdaynum" column="yesterdaynum"/>
+		    	<result property="purchasenum" column="purchasenum"/>
+		    	<result property="oldnum" column="oldnum"/>
+		    	<result property="installoutnum" column="installoutnum"/>
+		    	<result property="repairinnum" column="repairinnum"/>
+		    	<result property="scrapoutnum" column="scrapoutnum"/>
+		    	<result property="repairoutnum" column="repairoutnum"/>
+		    	<result property="borrownum" column="borrownum"/>
+		    	<result property="borrowreturnnum" column="borrowreturnnum"/>
+		    	<result property="prod_name" column="prod_name"/>
+		    	<result property="prod_unit" column="prod_unit"/>
+		    	<result property="prod_style" column="prod_style"/>
+		    	<result property="store_name" column="store_name"/>
+		    	<result property="brand_name" column="brand_name"/>
+		    </collection>
+       </collection>  
+    </resultMap>
+   <select id="queryMonth_sparepartVO" resultMap="month_sparepart_map">
+   	    select a.store_id,a.prod_id
+	   ,f.name as type_name,f.id as type_id,b.id as subtype_id,b.name as subtype_name,c.id as prod_id,c.name as prod_name,c.unit as prod_unit,c.style prod_style,d.name as brand_name  ,e.name as store_name
+	   ,sum(a.todaynum) todaynum,sum(a.yesterdaynum) yesterdaynum,sum(a.purchasenum) purchasenum,sum(a.oldnum) oldnum,sum(a.installoutnum) installoutnum,sum(a.repairinnum) repairinnum,sum(a.scrapoutnum) scrapoutnum,sum(a.repairoutnum) repairoutnum,sum(a.borrownum) borrownum,sum(a.borrowreturnnum) borrowreturnnum
+	   from report_day_sparepart a 
+	     inner join ems_equipmentprod c on a.prod_id=c.id
+	    inner join ems_equipmentsubtype b on c.subtype_id=b.id
+	    inner join ems_equipmenttype f on b.parent_id=f.id
+	    inner join ems_brand d on c.brand_id=d.id
+	    inner join ems_store e on a.store_id=e.id
+	    where 
+	    <if test="use_in!=null and use_in==false">
+			a.store_id=#{store_id} and 
+		</if>
+		<if test="use_in!=null and use_in==true ">
+			a.store_id in (${store_id}) and 
+		</if>
+	    a.daykey&gt;=#{day_start} and a.daykey&lt;=#{day_end}
+	    group by  a.store_id,a.prod_id
+	   ,f.name ,f.id ,b.id ,b.name,c.id ,c.name,c.unit,c.style,d.name  ,e.name
+	    order by a.store_id,f.id,b.id ,a.prod_id
    </select>
 </mapper>
 

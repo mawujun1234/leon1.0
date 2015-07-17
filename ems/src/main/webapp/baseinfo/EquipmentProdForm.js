@@ -25,7 +25,8 @@ Ext.define('Ems.baseinfo.EquipmentProdForm',{
        me.items = [{
 			xtype : 'fieldcontainer',
 			fieldLabel : '编码',
-			afterLabelTextTpl : Ext.required,
+			//afterLabelTextTpl : Ext.required,
+			afterLabelTextTpl: '<span class="icons_help" data-qtip="例子：现在一个新的光纤收发器套装，可以输入04020P，04020Q，也可以是04020P-01,04020P-02">&nbsp;&nbsp;&nbsp;&nbsp;</span>',
 			// labelStyle : 'font-weight:bold;padding:0;',
 			layout : 'hbox',
 			defaultType : 'textfield',

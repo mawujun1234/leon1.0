@@ -104,16 +104,16 @@ public class EquipmentTypeController {
 	 */
 	@RequestMapping("/equipmentType/queryProds.do")
 	@ResponseBody
-	public List<EquipmentProdVO> queryProds(String subtype_id,String parent_id,Boolean status,String style,Boolean all_prod) {
+	public List<EquipmentProdVO> queryProds(String subtype_id,Boolean status,String style,Boolean all_prod) {
 		//当第一次打开设备设备类型的页面的时候
 		if(!StringUtils.hasText(subtype_id)){
 			return new ArrayList<EquipmentProdVO>();
 		}
-		if("root".equals(parent_id)){
-			//return new ArrayList<EquipmentProdVO>();
-			parent_id=null;
-		}
-		return equipmentProdService.queryProdGrid(status,subtype_id,parent_id,all_prod,style);
+//		if("root".equals(parent_id)){
+//			//return new ArrayList<EquipmentProdVO>();
+//			parent_id=null;
+//		}
+		return equipmentProdService.queryProdGrid(status,subtype_id,all_prod,style);
 	}
 	
 	@RequestMapping("/equipmentType/create.do")
@@ -276,7 +276,7 @@ public class EquipmentTypeController {
 			return new ArrayList<EquipmentProd>();
 		}
 		
-		List<EquipmentProd> list= equipmentProdService.query(Cnd.select().andEquals(M.EquipmentProd.status, true).andLike(M.EquipmentProd.name, name).andEquals(M.EquipmentProd.parent_id, equipmentSubtype_id));	
+		List<EquipmentProd> list= equipmentProdService.query(Cnd.select().andEquals(M.EquipmentProd.status, true).andLike(M.EquipmentProd.name, name).andEquals(M.EquipmentProd.subtype_id, equipmentSubtype_id));	
 		if(containAll!=null && containAll){
 			EquipmentProd all=new EquipmentProd();
 			all.setId("");

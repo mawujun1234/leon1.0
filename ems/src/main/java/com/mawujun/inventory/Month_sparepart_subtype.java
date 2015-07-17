@@ -6,7 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Day_sparepart_subtype {
+public class Month_sparepart_subtype {
 	private String subtype_id;
 	private String subtype_name;
 	private List<Day_sparepart_prod> prodes;

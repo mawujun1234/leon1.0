@@ -166,7 +166,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			and c.parent_id is null
 		</if>
     </select>
-    <!-- 查询套件下面的明细 -->
+    <!-- 查询套件下面的明细
     <select id="queryList4Barcode_tj_children" resultType="com.mawujun.store.OrderListVO" parameterType="map">
     	SELECT a.style as prod_style,a.id as prod_id,a.name as prod_name,a.spec as prod_spec,a.memo as prod_memo,a.unit as prod_unit,a.type as prod_type,b.name as brand_name,c.name as subtype_name
     	,'Y' as noedit 
@@ -175,7 +175,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    inner join ems_equipmentsubtype c on a.subtype_id=c.id
 		where  a.parent_id=#{parent_id}
     </select>
-    
+     -->
     <!-- 在条码导出的时候，查询还没有完成的订单 -->
     <select id="queryUncompleteOrderno" resultType="com.mawujun.store.Order" >
     	SELECT distinct a.id,a.orderNo

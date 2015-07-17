@@ -80,14 +80,14 @@ public class EquipmentProdService extends AbstractService<EquipmentProd, String>
 	 */
 	@Override
 	public void delete(EquipmentProd entity) {
-		//先判断是否具有子类型
-		Long aa=this.queryCount(Cnd.select().andEquals(M.EquipmentProd.parent_id, entity.getId()));
-		if(aa>0){
-			throw new BusinessException("该品名是套件或具有零件,不能删除!");
-		} 
+//		//先判断是否具有子类型
+//		Long aa=this.queryCount(Cnd.select().andEquals(M.EquipmentProd.parent_id, entity.getId()));
+//		if(aa>0){
+//			throw new BusinessException("该品名是套件或具有零件,不能删除!");
+//		} 
 		
 		//判断有没有设备在引用，如果有就接着下一个判断，否则就直接删除
-		aa=equipmentRepository.queryCount(Cnd.select().andEquals(M.Equipment.prod_id, entity.getId()));
+		Long aa=equipmentRepository.queryCount(Cnd.select().andEquals(M.Equipment.prod_id, entity.getId()));
 		if(aa>0){
 			this.getRepository().update(Cnd.update().set(M.EquipmentProd.status, false).andEquals(M.EquipmentProd.id, entity.getId()));
 			throw new BusinessException("该品名已经被使用,不能删除,只能无效处理!");
@@ -115,7 +115,7 @@ public class EquipmentProdService extends AbstractService<EquipmentProd, String>
 	}
 	
 	
-	public List<EquipmentProdVO> queryProdGrid(Boolean status,String subtype_id,String parent_id,Boolean all_prod,String style) {
+	public List<EquipmentProdVO> queryProdGrid(Boolean status,String subtype_id,Boolean all_prod,String style) {
 		Map<String,Object> params=new HashMap<String,Object>();
 		//当选择从所有品名中过滤的时候，就不用添加子类型了
 		if(all_prod==null || all_prod==false){
@@ -125,14 +125,14 @@ public class EquipmentProdService extends AbstractService<EquipmentProd, String>
 		if(status!=null){
 			params.put(M.EquipmentProd.status, status);
 		}
-		if(StringUtils.hasText(parent_id) ){
-			params.put(M.EquipmentProd.parent_id, parent_id);
-		} else {
+//		if(StringUtils.hasText(parent_id) ){
+//			params.put(M.EquipmentProd.parent_id, parent_id);
+//		} else {
 			//当展开品名的拆分零件的时候，是不要带上过滤条件的
 			if(StringUtils.hasText(style)){
 				params.put(M.EquipmentProd.style, "%"+style+"%");
 			}
-		}
+//		}
 		
 		
 		return this.getRepository().queryProdGrid(params);

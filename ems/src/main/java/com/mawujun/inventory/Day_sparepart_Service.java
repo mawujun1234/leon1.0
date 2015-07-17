@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.mawujun.baseinfo.Store;
 import com.mawujun.baseinfo.StoreService;
@@ -70,6 +71,39 @@ public class Day_sparepart_Service extends AbstractService<Day_sparepart, Day_sp
 	
 	
 	public List<Day_sparepart_type> queryDay_sparepart(String store_id,Integer store_type,String day_start,String day_end){
-		return day_sparepart_Repository.queryDay_sparepartVO(store_id,store_type, day_start,day_end);
+		if(!StringUtils.hasText(store_id) && store_type!=null){
+			List<Store> stores=storeService.queryCombo(new Integer[]{store_type},true,true);
+			StringBuilder builder=new StringBuilder();
+			for(Store store:stores){
+				builder.append(",'");
+				builder.append(store.getId());
+				builder.append("'");
+				
+			}
+			//查询具体某个一仓库
+			return day_sparepart_Repository.queryDay_sparepartVO(builder.substring(1),true, day_start,day_end);
+		} else {
+			//查询具体某个一仓库
+			return day_sparepart_Repository.queryDay_sparepartVO(store_id,false, day_start,day_end);
+		}
+		
+	}
+	public List<Month_sparepart_type> queryMonth_sparepartVO(String store_id,Integer store_type,String day_start,String day_end){
+		if(!StringUtils.hasText(store_id) && store_type!=null){
+			List<Store> stores=storeService.queryCombo(new Integer[]{store_type},true,true);
+			StringBuilder builder=new StringBuilder();
+			for(Store store:stores){
+				builder.append(",'");
+				builder.append(store.getId());
+				builder.append("'");
+				
+			}
+			//查询具体某个一仓库
+			return day_sparepart_Repository.queryMonth_sparepartVO(builder.substring(1),true, day_start,day_end);
+		} else {
+			//查询具体某个一仓库
+			return day_sparepart_Repository.queryMonth_sparepartVO(store_id,false, day_start,day_end);
+		}
+		
 	}
 }

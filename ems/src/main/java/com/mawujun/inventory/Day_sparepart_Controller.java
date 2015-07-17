@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -204,12 +205,14 @@ public class Day_sparepart_Controller {
 
 					//要先对prods进行行列转换
 					equipmentSubtype.changeProdes();
-					int prods_size=equipmentSubtype.getProdSize();
+					//int prods_size=equipmentSubtype.getProdSize();
+					List<Map<Integer,Day_sparepart_prod>> prodes_list=equipmentSubtype.getProdes_list();
 					// 弄几行模拟品名的数据，即几个空行
 					int fromRow_subtype = rownum;
-					for (int k = 0; k < prods_size; k++) {
+					for (int k = 0; k < prodes_list.size(); k++) {
+						Map<Integer,Day_sparepart_prod> prod_maps=prodes_list.get(k);
 						//主要是为了填写当前行的品名，品牌，所属仓库等信息
-						Day_sparepart_prod prod_first=equipmentSubtype.first();
+						Day_sparepart_prod prod_first=prod_maps.values().iterator().next();
 						//String prod_id=prod_first.getProd_id();
 						String prod_key=prod_first.getkey();
 								
@@ -307,7 +310,7 @@ public class Day_sparepart_Controller {
 						//日报表，表头的日期改成真是日期，而不是1，2，3这样的序号，变成月日，或者年月日
 						for (int j = 0; j < daykeyes.size(); j++) {
 							//Integer daykey=Integer.parseInt(yyyyMMdd_formater.format(new Date(date_start_times+(j*24*60*60*1000))));
-							Day_sparepart_prod prod=equipmentSubtype.getProd(prod_key,daykeyes.get(j));
+							Day_sparepart_prod prod=prod_maps.get(daykeyes.get(j));//equipmentSubtype.getProd(prod_key,daykeyes.get(j));
 							if(prod==null){
 								//continue;
 								prod=new Day_sparepart_prod();

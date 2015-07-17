@@ -86,10 +86,10 @@ public class OrderService extends AbstractService<Order, String>{
 		
 		return orderRepository.queryList4Barcode(params);
 	}
-	public List<OrderListVO> queryList4Barcode_tj_children(Params params) {	
-		
-		return orderRepository.queryList4Barcode_tj_children(params);
-	}
+//	public List<OrderListVO> queryList4Barcode_tj_children(Params params) {	
+//		
+//		return orderRepository.queryList4Barcode_tj_children(params);
+//	}
 	
 	SimpleDateFormat y2mdDateFormat=new SimpleDateFormat("yyMMdd");
 	
