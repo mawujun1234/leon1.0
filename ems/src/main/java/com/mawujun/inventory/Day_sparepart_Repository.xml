@@ -93,9 +93,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		    <collection property="prodes" ofType="com.mawujun.inventory.Month_sparepart_prod">  
 		    	<result property="store_id" column="store_id"/>
 		    	<result property="prod_id" column="prod_id"/>
-		    	<!--<result property="monthkey" column="monthkey"/>-->
-		    	<result property="todaynum" column="todaynum"/>
-		    	<result property="yesterdaynum" column="yesterdaynum"/>
+		    	<!--<result property="monthkey" column="monthkey"/>
+		    	<result property="todaynum" column="todaynum"/>-->
 		    	<result property="purchasenum" column="purchasenum"/>
 		    	<result property="oldnum" column="oldnum"/>
 		    	<result property="installoutnum" column="installoutnum"/>
@@ -112,10 +111,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		    </collection>
        </collection>  
     </resultMap>
+    <!-- 今日和昨日的数据不能汇总 -->
    <select id="queryMonth_sparepartVO" resultMap="month_sparepart_map">
    	    select a.store_id,a.prod_id
 	   ,f.name as type_name,f.id as type_id,b.id as subtype_id,b.name as subtype_name,c.id as prod_id,c.name as prod_name,c.unit as prod_unit,c.style prod_style,d.name as brand_name  ,e.name as store_name
-	   ,sum(a.todaynum) todaynum,sum(a.yesterdaynum) yesterdaynum,sum(a.purchasenum) purchasenum,sum(a.oldnum) oldnum,sum(a.installoutnum) installoutnum,sum(a.repairinnum) repairinnum,sum(a.scrapoutnum) scrapoutnum,sum(a.repairoutnum) repairoutnum,sum(a.borrownum) borrownum,sum(a.borrowreturnnum) borrowreturnnum
+	   ,sum(a.purchasenum) purchasenum,sum(a.oldnum) oldnum,sum(a.installoutnum) installoutnum,sum(a.repairinnum) repairinnum,sum(a.scrapoutnum) scrapoutnum,sum(a.repairoutnum) repairoutnum,sum(a.borrownum) borrownum,sum(a.borrowreturnnum) borrowreturnnum
 	   from report_day_sparepart a 
 	     inner join ems_equipmentprod c on a.prod_id=c.id
 	    inner join ems_equipmentsubtype b on c.subtype_id=b.id
@@ -134,5 +134,47 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	   ,f.name ,f.id ,b.id ,b.name,c.id ,c.name,c.unit,c.style,d.name  ,e.name
 	    order by a.store_id,f.id,b.id ,a.prod_id
    </select>
+   <!-- 获取昨天的数据 -->
+   <select id="queryMonth_yesterdaynum" resultType="com.mawujun.inventory.Month_sparepart_prod">
+   	   select  a.store_id,a.prod_id ,sum(a.yesterdaynum) yesterdaynum
+	   from report_day_sparepart a 
+	    where 
+	    <if test="use_in!=null and use_in==false">
+			a.store_id=#{store_id} and 
+		</if>
+		<if test="use_in!=null and use_in==true ">
+			a.store_id in (${store_id}) and 
+		</if>
+	    a.daykey= #{day_start} 
+	    group by  a.store_id,a.prod_id
+   </select>
+   
+   
+   <!-- 
+   
+   <select id="queryMonth_sparepartVO" resultMap="month_sparepart_map">
+   	    select a.store_id,a.prod_id
+	   ,f.name as type_name,f.id as type_id,b.id as subtype_id,b.name as subtype_name,c.id as prod_id,c.name as prod_name,c.unit as prod_unit,c.style prod_style,d.name as brand_name  ,e.name as store_name
+	   ,sum(a.purchasenum) purchasenum,sum(a.oldnum) oldnum,sum(a.installoutnum) installoutnum,sum(a.repairinnum) repairinnum,sum(a.scrapoutnum) scrapoutnum,sum(a.repairoutnum) repairoutnum,sum(a.borrownum) borrownum,sum(a.borrowreturnnum) borrowreturnnum
+	   from report_day_sparepart a 
+	     inner join ems_equipmentprod c on a.prod_id=c.id
+	    inner join ems_equipmentsubtype b on c.subtype_id=b.id
+	    inner join ems_equipmenttype f on b.parent_id=f.id
+	    inner join ems_brand d on c.brand_id=d.id
+	    inner join ems_store e on a.store_id=e.id
+	    where 
+	    <if test="use_in!=null and use_in==false">
+			a.store_id=#{store_id} and 
+		</if>
+		<if test="use_in!=null and use_in==true ">
+			a.store_id in (${store_id}) and 
+		</if>
+	    a.daykey&gt;=#{day_start} and a.daykey&lt;=#{day_end}
+	    group by  a.store_id,a.prod_id
+	   ,f.name ,f.id ,b.id ,b.name,c.id ,c.name,c.unit,c.style,d.name  ,e.name
+	    order by a.store_id,f.id,b.id ,a.prod_id
+   </select>
+   
+    -->
 </mapper>
 

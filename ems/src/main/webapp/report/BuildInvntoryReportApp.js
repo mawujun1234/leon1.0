@@ -111,8 +111,9 @@ Ext.onReady(function(){
 				if(!params){
 					return false;
 				}
+				params.store_type=1;
 				var pp=Ext.Object.toQueryString(params);
-				window.open(Ext.ContextPath+"/monthinventory/build/export.do?"+pp, "_blank");
+				window.open(Ext.ContextPath+"/inventory/month/sparepart/excelExport.do?"+pp, "_blank");
 			}
 		},{
 			text:'导出日报表',

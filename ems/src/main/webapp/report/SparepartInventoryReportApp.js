@@ -114,7 +114,7 @@ Ext.onReady(function(){
 				}
 				params.store_type=3;
 				var pp=Ext.Object.toQueryString(params);
-				window.open(Ext.ContextPath+"/monthinventory/sparepart/export.do?"+pp, "_blank");
+				window.open(Ext.ContextPath+"/inventory/month/sparepart/excelExport.do?"+pp, "_blank");
 			}
 		},
 		{

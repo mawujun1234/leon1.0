@@ -21,5 +21,6 @@ public interface Day_sparepart_Repository extends IRepository<Day_sparepart, Day
 	
 	public List<Day_sparepart_type> queryDay_sparepartVO(@Param("store_id")String store_id,@Param("use_in")Boolean use_in,@Param("day_start")String day_start,@Param("day_end")String day_end);
 	public List<Month_sparepart_type> queryMonth_sparepartVO(@Param("store_id")String store_id,@Param("use_in")Boolean use_in,@Param("day_start")String day_start,@Param("day_end")String day_end);
+	public List<Month_sparepart_prod> queryMonth_yesterdaynum(@Param("store_id")String store_id,@Param("use_in")Boolean use_in,@Param("day_start")String day_start);
 	
 }

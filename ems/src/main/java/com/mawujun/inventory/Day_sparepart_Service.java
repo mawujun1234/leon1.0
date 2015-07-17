@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -89,6 +90,7 @@ public class Day_sparepart_Service extends AbstractService<Day_sparepart, Day_sp
 		
 	}
 	public List<Month_sparepart_type> queryMonth_sparepartVO(String store_id,Integer store_type,String day_start,String day_end){
+		List<Month_sparepart_type> result;
 		if(!StringUtils.hasText(store_id) && store_type!=null){
 			List<Store> stores=storeService.queryCombo(new Integer[]{store_type},true,true);
 			StringBuilder builder=new StringBuilder();
@@ -99,10 +101,31 @@ public class Day_sparepart_Service extends AbstractService<Day_sparepart, Day_sp
 				
 			}
 			//查询具体某个一仓库
-			return day_sparepart_Repository.queryMonth_sparepartVO(builder.substring(1),true, day_start,day_end);
+			 reslut= day_sparepart_Repository.queryMonth_sparepartVO(builder.substring(1),true, day_start,day_end);
+			 
 		} else {
 			//查询具体某个一仓库
-			return day_sparepart_Repository.queryMonth_sparepartVO(store_id,false, day_start,day_end);
+			reslut= day_sparepart_Repository.queryMonth_sparepartVO(store_id,false, day_start,day_end);
+			//return result;
+		}
+		return result;
+	}
+	
+	public List<Month_sparepart_prod> queryMonth_yesterdaynum(String store_id,Integer store_type,String day_start) {
+		if(!StringUtils.hasText(store_id) && store_type!=null){
+			List<Store> stores=storeService.queryCombo(new Integer[]{store_type},true,true);
+			StringBuilder builder=new StringBuilder();
+			for(Store store:stores){
+				builder.append(",'");
+				builder.append(store.getId());
+				builder.append("'");
+				
+			}
+			 //获取昨天的数据
+			 List<Month_sparepart_prod> yesterdaynums=day_sparepart_Repository.queryMonth_yesterdaynum(builder.substring(1),true, day_start);
+		} else {
+			//获取昨天的数据
+			List<Month_sparepart_prod> yesterday=day_sparepart_Repository.queryMonth_yesterdaynum(store_id,false, day_start);
 		}
 		
 	}

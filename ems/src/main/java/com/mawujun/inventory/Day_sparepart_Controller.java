@@ -364,6 +364,9 @@ public class Day_sparepart_Controller {
 		sheet.setRowSumsRight(false);
 
 		String filename = "备品备件仓库盘点日报表.xlsx";
+		if(store_type==1){
+			 filename = "在建仓库盘点日报表.xlsx";
+		}
 		// FileOutputStream out = new FileOutputStream(filename);
 		response.setHeader("content-disposition", "attachment; filename=" + new String(filename.getBytes("UTF-8"), "ISO8859-1"));
 		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=uft-8");
@@ -1001,6 +1004,7 @@ public class Day_sparepart_Controller {
 		
 		
 		 String filename = "备品备件仓库盘点日报表_样式表.xlsx";
+		
 		 //FileOutputStream out = new FileOutputStream(filename);
 		response.setHeader("content-disposition", "attachment; filename="+ new String(filename.getBytes("UTF-8"), "ISO8859-1"));
 		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=uft-8");
