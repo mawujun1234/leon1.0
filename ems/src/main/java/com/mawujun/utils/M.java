@@ -93,7 +93,6 @@ public static final class EquipmentCycle {
 public static final class EquipmentPole {
 	public static final String ecode="ecode";
 	public static final String pole_id="pole_id";
-	public static final String workunit_id="workunit_id";
 	public static final String num="num";
 	public static final String inDate="inDate";
 	public static final String type="type";
@@ -251,6 +250,7 @@ public static final class BorrowList {
 	public static final String isnew="isnew";
 	public static final String returnDate="returnDate";
 	public static final String borrowListType="borrowListType";
+	public static final String pole_id="pole_id";
 	public static final String memo="memo";
 	public static final String id="id";
 }
@@ -288,6 +288,7 @@ public static final class InstallOutList {
 	public static final String ecode="ecode";
 	public static final String isnew="isnew";
 	public static final String installOutListType="installOutListType";
+	public static final String pole_id="pole_id";
 	public static final String isReturn="isReturn";
 	public static final String returnDate="returnDate";
 	public static final String installOutType_id="installOutType_id";

@@ -43,16 +43,25 @@ public class MyMapperProxy<T> extends MapperProxy<T> {
 
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		//this.sessionFactory = sessionFactory;
-		hibernateDao.setSessionFactory(sessionFactory);
+		//当Repository没有继承IRepository的时候，hibernateDao就为null
+		if(hibernateDao!=null){
+			hibernateDao.setSessionFactory(sessionFactory);
+		}
+		
 	}
 	public MyMapperProxy(SqlSession sqlSession, Class<T> mapperInterface,
 			Map<Method, MapperMethod> methodCache) {
 		super(sqlSession, mapperInterface, methodCache);
 
-		mapperInterface.getGenericSuperclass();
-		Type[] types=((ParameterizedType)mapperInterface.getGenericInterfaces()[0]).getActualTypeArguments();
+		//mapperInterface.getGenericSuperclass();
+		
+		//这个判断是当，Repository没有继承IRepository的时候
+		if(mapperInterface.getGenericInterfaces().length!=0){
+			Type[] types=((ParameterizedType)mapperInterface.getGenericInterfaces()[0]).getActualTypeArguments();
 
-		hibernateDao=new HibernateDao<Object,Serializable>((Class)types[0]);
+			hibernateDao=new HibernateDao<Object,Serializable>((Class)types[0]);
+		}
+		
 		
 		
 		mybatisRepository=new MybatisRepository();

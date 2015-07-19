@@ -8,7 +8,8 @@ package com.mawujun.install;
  *
  */
 public enum InstallOutListType {
-	installout("领用"),borrow("借用");
+	installout("领用"),
+	borrow("借用");
 	
 	private String name;
 	InstallOutListType(String name){

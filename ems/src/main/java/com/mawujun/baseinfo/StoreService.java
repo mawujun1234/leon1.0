@@ -49,7 +49,7 @@ public class StoreService extends AbstractService<Store, String>{
 	@Autowired
 	private StoreRepository storeRepository;
 	
-	private HashMap<String,Store> stores_cache=new HashMap<String,Store>();
+	private static HashMap<String,Store> stores_cache=new HashMap<String,Store>();
 	@Override
 	public Store get(String id) {
 		if(id==null){

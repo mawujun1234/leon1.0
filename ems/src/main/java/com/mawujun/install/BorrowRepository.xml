@@ -95,7 +95,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	
 	 <!-- 在任务提交的时候，发现该设备是从借用单里来的，那就把该设备修改为领用(因为默认是借用) -->
     <update id="changeBorrowListType2installout" >
-    	update ems_borrowlist set borrowListType='installout', isReturn='Y' , returnDate=sysdate where borrow_id=#{borrow_id} and ecode=#{ecode}
+    	update ems_borrowlist set borrowListType=#{borrowListType} , returnDate=sysdate,pole_id=#{pole_id} where borrow_id=#{borrow_id} and ecode=#{ecode}
     </update>
     
     

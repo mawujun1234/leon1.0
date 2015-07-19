@@ -18,7 +18,7 @@ public class InstallOutList  extends UUIDEntity {
 	 */
 	private static final long serialVersionUID = 1L;
 	@Column(length=15)
-	private String installOut_id;//入库单id
+	private String installOut_id;//领用单id
 	@Column(length=25)
 	private String ecode;//设备编码
 	//在领用的时候时候是新设备
@@ -29,8 +29,8 @@ public class InstallOutList  extends UUIDEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(length=20)
 	private InstallOutListType installOutListType=InstallOutListType.borrow; 
-	
-	
+	@Column(length=36)
+	private String pole_id;//点位id，当InstallOutListType==installout的时候，这个pole_id就有值，就表示这个设备被领用安装在哪个点位上了
 	@org.hibernate.annotations.Type(type="yes_no")
 	private Boolean isReturn=false;
 	private Date returnDate;//归还时间。领用时间(任务提交的时间)
@@ -39,6 +39,10 @@ public class InstallOutList  extends UUIDEntity {
 	private String installOutType_id;//领用类型的id,是损坏领用，还是被盗领用
 	@Column(length=50)
 	private String installOutType_content;//领用类型的二级
+	
+	
+	
+	
 
 	public String getEcode() {
 		return ecode;

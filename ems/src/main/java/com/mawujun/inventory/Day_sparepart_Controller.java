@@ -147,9 +147,9 @@ public class Day_sparepart_Controller {
 		fixednum_style.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
 		fixednum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 
-		CellStyle lastnum_style = getContentStyle(wb, null, (short) 9);
-		lastnum_style.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.index);
-		lastnum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		CellStyle yesterdaynum_style = getContentStyle(wb, null, (short) 9);
+		yesterdaynum_style.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.index);
+		yesterdaynum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 
 		CellStyle nownum_style = getContentStyle(wb, null, (short) 9);
 		nownum_style.setFillForegroundColor(HSSFColor.LIGHT_TURQUOISE.index);
@@ -214,7 +214,7 @@ public class Day_sparepart_Controller {
 						//主要是为了填写当前行的品名，品牌，所属仓库等信息
 						Day_sparepart_prod prod_first=prod_maps.values().iterator().next();
 						//String prod_id=prod_first.getProd_id();
-						String prod_key=prod_first.getkey();
+						
 								
 						nownum_formule_builder = new StringBuilder();
 						nownum_formule_builder.append("SUM(");
@@ -248,12 +248,12 @@ public class Day_sparepart_Controller {
 						Cell fixednum = row_prod.createCell(cellnum++);
 						fixednum.setCellStyle(fixednum_style);
 
-						// 上月结余
-						Cell lastnum = row_prod.createCell(cellnum++);
-						lastnum.setCellValue(prod_first.getYesterdaynum());
+						// 上期结余
+						Cell yesterdaynum = row_prod.createCell(cellnum++);
+						yesterdaynum.setCellValue(prod_first.getYesterdaynum());
 						nownum_formule_builder.append(CellReference.convertNumToColString(cellnum - 1) + (rownum));
 						nownum_formule_builder.append(",");
-						lastnum.setCellStyle(lastnum_style);
+						yesterdaynum.setCellStyle(yesterdaynum_style);
 
 						// 本期采购新增
 						Cell purchasenum = row_prod.createCell(cellnum++);
@@ -500,12 +500,12 @@ public class Day_sparepart_Controller {
 		 fixednum.setCellStyle(fixednum_style);
 		 sheet.setColumnWidth(cellnum-1, 1200);
 		 
-		 CellStyle lastnum_style=getStyle(wb,IndexedColors.BLACK,(short)9);
-		 lastnum_style.setFillForegroundColor(HSSFColor.LIGHT_YELLOW.index);
-		 lastnum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		 CellStyle yesterdaynum_style=getStyle(wb,IndexedColors.BLACK,(short)9);
+		 yesterdaynum_style.setFillForegroundColor(HSSFColor.LIGHT_YELLOW.index);
+		 yesterdaynum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 		 Cell lastnum=row.createCell(cellnum++);
 		 lastnum.setCellValue("上期结余数");
-		 lastnum.setCellStyle(lastnum_style);
+		 lastnum.setCellStyle(yesterdaynum_style);
 		 sheet.setColumnWidth(cellnum-1, 1800);
 		 
 		 CellStyle blue_style=getStyle(wb,IndexedColors.LIGHT_BLUE,(short)9);
@@ -789,9 +789,9 @@ public class Day_sparepart_Controller {
 		fixednum_style.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
 		fixednum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 		 
-		CellStyle lastnum_style=getContentStyle(wb,null,(short)9);
-		 lastnum_style.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.index);
-		 lastnum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		CellStyle yesterdaynum_style=getContentStyle(wb,null,(short)9);
+		 yesterdaynum_style.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.index);
+		 yesterdaynum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 		 
 		 CellStyle nownum_style=getContentStyle(wb,null,(short)9);
 		 nownum_style.setFillForegroundColor(HSSFColor.LIGHT_TURQUOISE.index);
@@ -893,7 +893,7 @@ public class Day_sparepart_Controller {
 						 //lastnum.setCellValue(2);
 						 nownum_formule_builder.append(CellReference.convertNumToColString(cellnum-1)+(rownum));
 						 nownum_formule_builder.append(",");
-						 lastnum.setCellStyle(lastnum_style);
+						 lastnum.setCellStyle(yesterdaynum_style);
 						 
 						 //本期采购新增
 						 Cell purchasenum=row_prod.createCell(cellnum++);

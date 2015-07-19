@@ -1,5 +1,7 @@
 package com.mawujun.baseinfo;
 
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -24,6 +26,19 @@ public class ProjectService extends AbstractService<Project, String>{
 	@Override
 	public ProjectRepository getRepository() {
 		return projectRepository;
+	}
+	private static HashMap<String,Project> projects_cache=new HashMap<String,Project>();
+	@Override
+	public Project get(String id) {
+		if(id==null){
+			return null;
+		}
+		Project project=projects_cache.get(id);
+		if(project==null){
+			return projectRepository.get(id);
+		} else {
+			return project;
+		}
 	}
 	@Override
 	public void delete( Project project) {

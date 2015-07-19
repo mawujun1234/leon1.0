@@ -33,7 +33,9 @@ import com.mawujun.baseinfo.PoleRepository;
 import com.mawujun.baseinfo.PoleStatus;
 import com.mawujun.baseinfo.TargetType;
 import com.mawujun.exception.BusinessException;
+import com.mawujun.install.BorrowListType;
 import com.mawujun.install.BorrowRepository;
+import com.mawujun.install.InstallOutListType;
 import com.mawujun.install.InstallOutRepository;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
@@ -794,7 +796,7 @@ public class TaskService extends AbstractService<Task, String>{
 						.set(M.Equipment.last_pole_id, task.getPole_id()).set(M.Equipment.last_task_id, task.getId())
 						.set(M.Equipment.currt_task_id, null).andEquals(M.Equipment.ecode, ecode));
 				//要放在最前面，把设备从借用变成领用
-				changeInstallOutListType2installout(taskEquipmentList.getEcode(),task.getWorkunit_id());
+				changeInstallOutListType2installout(taskEquipmentList.getEcode(),task.getWorkunit_id(),task.getPole_id());
 				
 				// 杆位绑定这个设备
 				EquipmentPole equipmentStore = new EquipmentPole();
@@ -823,7 +825,7 @@ public class TaskService extends AbstractService<Task, String>{
 							.set(M.Equipment.last_pole_id, task.getPole_address()).set(M.Equipment.last_task_id, task.getId())
 							.set(M.Equipment.currt_task_id, null).andEquals(M.Equipment.ecode, ecode));
 					//要放在最前面，把设备从借用变成领用
-					changeInstallOutListType2installout(taskEquipmentList.getEcode(),task.getWorkunit_id());
+					changeInstallOutListType2installout(taskEquipmentList.getEcode(),task.getWorkunit_id(),task.getPole_id());
 					
 					// 杆位绑定这个设备
 					EquipmentPole equipmentStore = new EquipmentPole();
@@ -911,7 +913,7 @@ public class TaskService extends AbstractService<Task, String>{
 	 * @param ecode
 	 * @param workunit_id
 	 */
-	public void changeInstallOutListType2installout(String ecode,String workunit_id){
+	public void changeInstallOutListType2installout(String ecode,String workunit_id,String pole_id){
 		EquipmentWorkunitPK equipmentWorkunitPK = new EquipmentWorkunitPK();
 		equipmentWorkunitPK.setEcode(ecode);
 		equipmentWorkunitPK.setWorkunit_id(workunit_id);
@@ -921,10 +923,10 @@ public class TaskService extends AbstractService<Task, String>{
 		}
 		//表示这个设备是领用出来的，那就把该设备变成是领用的
 		if(equipmentWorkunit.getType()==EquipmentWorkunitType.installout ){
-			installOutRepository.changeInstallOutListType2installout(equipmentWorkunit.getType_id(), ecode);
+			installOutRepository.changeInstallOutListType2installout(equipmentWorkunit.getType_id(),InstallOutListType.installout, ecode,pole_id);
 		}
 		if(equipmentWorkunit.getType()==EquipmentWorkunitType.borrow){
-			borrowRepository.changeBorrowListType2installout(equipmentWorkunit.getType_id(), ecode);
+			borrowRepository.changeBorrowListType2installout(equipmentWorkunit.getType_id(),BorrowListType.installout, ecode,pole_id);
 			//判断该借用单是否已经全部归还了
 			borrowRepository.updateBorrowIsAllReturn(equipmentWorkunit.getType_id());
 		}

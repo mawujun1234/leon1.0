@@ -5,6 +5,7 @@ import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -52,6 +53,7 @@ public class Month_sparepart_Controller {
 		
 		
 		List<Month_sparepart_type> types = day_sparepart_Service.queryMonth_sparepartVO(store_id, store_type,date_start.replaceAll("-", ""),date_end.replaceAll("-", ""));
+		Map<String,Integer> yesterdaynum_map=day_sparepart_Service.queryMonth_yesterdaynum(store_id, store_type, date_start.replaceAll("-", ""));
 		String store_name_title="所有仓库";
 		if(store_id!=null && !"".equals(store_id) ){
 			Store store=storeService.get(store_id);
@@ -199,7 +201,13 @@ public class Month_sparepart_Controller {
 
 						// 上月结余
 						Cell yesterdaynum = row_prod.createCell(cellnum++);
-						yesterdaynum.setCellValue(prod.getYesterdaynum());
+						String prod_key=prod.getProd_id()+"_"+prod.getStore_id();
+						if(yesterdaynum_map.get(prod_key)!=null){
+							yesterdaynum.setCellValue(yesterdaynum_map.get(prod_key));
+						} else {
+							yesterdaynum.setCellValue(0);
+						}
+						//yesterdaynum.setCellValue(prod.getYesterdaynum());
 						yesterdaynum.setCellStyle(yesterdaynum_style);
 						nownum_formule_builder.append(CellReference.convertNumToColString(cellnum - 1) + (rownum));
 

@@ -1,5 +1,6 @@
 package com.mawujun.baseinfo;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
 import com.mawujun.service.AbstractService;
-
-
 import com.mawujun.baseinfo.Customer;
 import com.mawujun.baseinfo.CustomerRepository;
 
@@ -27,7 +27,19 @@ public class CustomerService extends AbstractService<Customer, String>{
 
 	@Autowired
 	private CustomerRepository customerRepository;
-	
+	private static HashMap<String,Customer> customers_cache=new HashMap<String,Customer>();
+	@Override
+	public Customer get(String id) {
+		if(id==null){
+			return null;
+		}
+		Customer customer=customers_cache.get(id);
+		if(customer==null){
+			return customerRepository.get(id);
+		} else {
+			return customer;
+		}
+	}
 	@Override
 	public CustomerRepository getRepository() {
 		return customerRepository;

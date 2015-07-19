@@ -460,9 +460,9 @@ public class Repository1Test  extends DbunitBaseRepositoryTest{
 		assertEquals(3,page.getTotalPages());
 		assertEquals(1,page.getStart());
 		assertEquals(1,page.getPageSize());
-		assertEquals(1,page.getPageNo());
+		assertEquals(2,page.getPageNo());
 		assertEquals(1,page.getPrePageNo());
-		assertEquals(2,page.getNextPageNo());
+		assertEquals(3,page.getNextPageNo());
 		
 		Page page2=Page.getInstance().setStart(2).setPageSize(1);
 		page2=entityTestMapper.queryPage(page2);
@@ -471,8 +471,8 @@ public class Repository1Test  extends DbunitBaseRepositoryTest{
 		assertEquals(3,page2.getTotalPages());
 		assertEquals(2,page2.getStart());
 		assertEquals(1,page2.getPageSize());
-		assertEquals(2,page2.getPageNo());
-		assertEquals(1,page2.getPrePageNo());
+		assertEquals(3,page2.getPageNo());
+		assertEquals(2,page2.getPrePageNo());
 		assertEquals(3,page2.getNextPageNo());
 		
 		Page page3=Page.getInstance().setStart(3).setPageSize(1);
@@ -482,9 +482,9 @@ public class Repository1Test  extends DbunitBaseRepositoryTest{
 		assertEquals(3,page3.getTotalPages());
 		assertEquals(3,page3.getStart());
 		assertEquals(1,page3.getPageSize());
-		assertEquals(3,page3.getPageNo());
-		assertEquals(2,page3.getPrePageNo());
-		assertEquals(3,page3.getNextPageNo());
+		assertEquals(4,page3.getPageNo());
+		assertEquals(3,page3.getPrePageNo());
+		assertEquals(4,page3.getNextPageNo());
 		
 		
 		
@@ -495,9 +495,9 @@ public class Repository1Test  extends DbunitBaseRepositoryTest{
 		assertEquals(3,page4.getTotalPages());
 		assertEquals(1,page4.getStart());
 		assertEquals(1,page4.getPageSize());
-		assertEquals(1,page4.getPageNo());
+		assertEquals(2,page4.getPageNo());
 		assertEquals(1,page4.getPrePageNo());
-		assertEquals(2,page4.getNextPageNo());
+		assertEquals(3,page4.getNextPageNo());
 		
 	}
 	
@@ -510,8 +510,8 @@ public class Repository1Test  extends DbunitBaseRepositoryTest{
 		assertEquals(3,page4.getTotalPages());
 		assertEquals(1,page4.getStart());
 		assertEquals(1,page4.getPageSize());
-		assertEquals(1,page4.getPageNo());
+		assertEquals(2,page4.getPageNo());
 		assertEquals(1,page4.getPrePageNo());
-		assertEquals(2,page4.getNextPageNo());
+		assertEquals(3,page4.getNextPageNo());
 	}
 }

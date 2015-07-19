@@ -2,7 +2,9 @@ package com.mawujun.inventory;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,17 +103,25 @@ public class Day_sparepart_Service extends AbstractService<Day_sparepart, Day_sp
 				
 			}
 			//查询具体某个一仓库
-			 reslut= day_sparepart_Repository.queryMonth_sparepartVO(builder.substring(1),true, day_start,day_end);
+			result= day_sparepart_Repository.queryMonth_sparepartVO(builder.substring(1),true, day_start,day_end);
 			 
 		} else {
 			//查询具体某个一仓库
-			reslut= day_sparepart_Repository.queryMonth_sparepartVO(store_id,false, day_start,day_end);
+			result= day_sparepart_Repository.queryMonth_sparepartVO(store_id,false, day_start,day_end);
 			//return result;
 		}
 		return result;
 	}
-	
-	public List<Month_sparepart_prod> queryMonth_yesterdaynum(String store_id,Integer store_type,String day_start) {
+	/**
+	 * 返回以prodid+store_id为key, yesterdaynum为值的map
+	 * @author mawujun 16064988@qq.com 
+	 * @param store_id
+	 * @param store_type
+	 * @param day_start
+	 * @return
+	 */
+	public Map<String,Integer> queryMonth_yesterdaynum(String store_id,Integer store_type,String day_start) {
+		List<Month_sparepart_prod> yesterdaynums_list;
 		if(!StringUtils.hasText(store_id) && store_type!=null){
 			List<Store> stores=storeService.queryCombo(new Integer[]{store_type},true,true);
 			StringBuilder builder=new StringBuilder();
@@ -122,11 +132,19 @@ public class Day_sparepart_Service extends AbstractService<Day_sparepart, Day_sp
 				
 			}
 			 //获取昨天的数据
-			 List<Month_sparepart_prod> yesterdaynums=day_sparepart_Repository.queryMonth_yesterdaynum(builder.substring(1),true, day_start);
+			yesterdaynums_list=day_sparepart_Repository.queryMonth_yesterdaynum(builder.substring(1),true, day_start);
 		} else {
 			//获取昨天的数据
-			List<Month_sparepart_prod> yesterday=day_sparepart_Repository.queryMonth_yesterdaynum(store_id,false, day_start);
+			yesterdaynums_list=day_sparepart_Repository.queryMonth_yesterdaynum(store_id,false, day_start);
+		}
+		//再转换成使用store_id+prod_id为key，yesterdaynum为value的map，方便后面读取出来填充
+		Map<String,Integer> result=new HashMap<String,Integer>();
+		if(yesterdaynums_list!=null) {
+			for(Month_sparepart_prod prod:yesterdaynums_list) {
+				result.put(prod.getProd_id()+"_"+prod.getStore_id(), prod.getYesterdaynum());
+			}
 		}
 		
+		return result;
 	}
 }

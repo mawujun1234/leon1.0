@@ -9,7 +9,7 @@ public class Day_sparepart_prod extends Day_sparepart{
 	private String brand_name;
 	
 	public String getkey(){
-		return this.getProd_id()+this.getStore_id();
+		return this.getProd_id()+"_"+this.getStore_id();
 	}
 
 	public String getProd_name() {

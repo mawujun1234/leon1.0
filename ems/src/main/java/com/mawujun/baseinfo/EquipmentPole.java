@@ -23,8 +23,8 @@ public class EquipmentPole implements IdEntity<EquipmentPolePK>{
 	@Column(length=36)
 	private String pole_id;
 
-	@Column(length=36)
-	private String workunit_id;//安装的作业单位
+	//@Column(length=36)
+	//private String workunit_id;//安装的作业单位
 	private Integer num=1;
 	private Date inDate;//安装时间或者是维修安装上去的时间
 	
@@ -62,12 +62,12 @@ public class EquipmentPole implements IdEntity<EquipmentPolePK>{
 	public void setPole_id(String pole_id) {
 		this.pole_id = pole_id;
 	}
-	public String getWorkunit_id() {
-		return workunit_id;
-	}
-	public void setWorkunit_id(String workunit_id) {
-		this.workunit_id = workunit_id;
-	}
+//	public String getWorkunit_id() {
+//		return workunit_id;
+//	}
+//	public void setWorkunit_id(String workunit_id) {
+//		this.workunit_id = workunit_id;
+//	}
 	public Integer getNum() {
 		return num;
 	}

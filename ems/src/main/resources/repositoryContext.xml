@@ -86,7 +86,7 @@
 	<!-- 自动搜索IRepository的dao层类和相应的mapper.xml文件 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer" >
 		<property name="basePackage" value="com.mawujun" />
-		<property name="markerInterface" value="com.mawujun.repository1.IRepository" />
+		<!--<property name="markerInterface" value="com.mawujun.repository1.IRepository" />-->
 		<property name="annotationClass" value="org.springframework.stereotype.Repository" />
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property> 
 	</bean>

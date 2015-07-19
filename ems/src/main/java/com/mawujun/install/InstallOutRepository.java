@@ -26,7 +26,7 @@ public interface InstallOutRepository extends IRepository<InstallOut, String>{
 	public InstallOutVO getInstallOutVO(@Param("installOut_id")String installOut_id);
 	public List<InstallOutListVO> queryList(@Param("installOut_id")String installOut_id) ;
 	
-	public void changeInstallOutListType2installout(@Param("installOut_id")String installOut_id,@Param("ecode")String ecode );
+	public void changeInstallOutListType2installout(@Param("installOut_id")String installOut_id,@Param("installOutListType")InstallOutListType installOutListType,@Param("ecode")String ecode,@Param("pole_id")String pole_id );
 	
 	public List<InstallOutVO> queryEditInstallOut();
 }

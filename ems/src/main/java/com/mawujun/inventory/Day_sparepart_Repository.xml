@@ -62,7 +62,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		    </collection>
        </collection>  
     </resultMap>
-    <!-- 日结报表 -->
+    <!-- 日结报表，这里的最后按时间排序很重要，把第一天排在最前面就是为了获取昨天的结余数量，月结获取昨日结余数量就得分开来获取 -->
    <select id="queryDay_sparepartVO" resultMap="day_sparepart_map">
    select  a.daykey,a.store_id,a.prod_id,a.monthkey,a.todaynum,a.yesterdaynum,a.purchasenum,a.oldnum,a.installoutnum,a.repairinnum,a.scrapoutnum,a.repairoutnum,a.borrownum,a.borrowreturnnum
    ,f.name as type_name,f.id as type_id,b.id as subtype_id,b.name as subtype_name,c.id as prod_id,c.name as prod_name,c.unit as prod_unit,c.style prod_style,d.name as brand_name  ,e.name as store_name
@@ -111,7 +111,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		    </collection>
        </collection>  
     </resultMap>
-    <!-- 今日和昨日的数据不能汇总 -->
+    <!-- 今日和昨日的数据不能汇总 ，所以获取昨日结余的时候，需要分开来获取-->
    <select id="queryMonth_sparepartVO" resultMap="month_sparepart_map">
    	    select a.store_id,a.prod_id
 	   ,f.name as type_name,f.id as type_id,b.id as subtype_id,b.name as subtype_name,c.id as prod_id,c.name as prod_name,c.unit as prod_unit,c.style prod_style,d.name as brand_name  ,e.name as store_name

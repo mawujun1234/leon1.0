@@ -34,7 +34,8 @@ public class BorrowList  extends UUIDEntity{
 	@Enumerated(EnumType.STRING)
 	@Column(length=20)
 	private BorrowListType borrowListType=BorrowListType.borrow;
-	//private String task_id;//任务id，当借转领的时候的任务id
+	@Column(length=36)
+	private String pole_id;//点位id，当InstallOutListType==installout的时候，这个pole_id就有值，就表示这个设备被领用安装在哪个点位上了
 	
 	@Column(length=100)
 	private String memo;//归还的时候备注信息
@@ -93,6 +94,14 @@ public class BorrowList  extends UUIDEntity{
 
 	public void setIsnew(Boolean isnew) {
 		this.isnew = isnew;
+	}
+
+	public String getPole_id() {
+		return pole_id;
+	}
+
+	public void setPole_id(String pole_id) {
+		this.pole_id = pole_id;
 	}
 	
 }
