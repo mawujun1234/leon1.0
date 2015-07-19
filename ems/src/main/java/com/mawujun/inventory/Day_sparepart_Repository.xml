@@ -20,7 +20,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	   <parameter property="in_todaykey" jdbcType="VARCHAR" mode="IN"/>   
 	</parameterMap>  
 	<update id="proc_report_day_sparepart" parameterMap="proc_report_day_sparepart_params" statementType="CALLABLE">  
-       {call proc_report_day_sparepart(?, ?)}  
+       {call proc_day_sparepart(?, ?)}  
    </update> 
    
    
@@ -28,7 +28,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	   <parameter property="in_todaykey" jdbcType="VARCHAR" mode="IN"/>   
 	</parameterMap>  
 	<update id="proc_report_day_sparepart_all" parameterMap="proc_report_day_sparepart_all_params" statementType="CALLABLE">  
-       {call proc_report_day_sparepart_all(?)}  
+       {call proc_day_sparepart_all(?)}  
    </update>
    
    

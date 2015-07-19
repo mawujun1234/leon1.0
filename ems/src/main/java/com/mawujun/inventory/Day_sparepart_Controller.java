@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -121,7 +122,7 @@ public class Day_sparepart_Controller {
 		title_cell.setCellStyle(cs);
 		// 和并单元格
 		sheet.addMergedRegion(new CellRangeAddress(0, (short) 0, 0, (short) type_group_end_num - 1));
-
+		
 		// 设置第一行,设置列标题
 		StringBuilder[] formulas = sparepart_addRow1(wb, sheet,daykeys_title);
 
@@ -169,6 +170,8 @@ public class Day_sparepart_Controller {
 		content_subtitle_style.setBorderRight(CellStyle.BORDER_NONE);
 		// content_subtitle_style.setBorderTop(CellStyle.BORDER_NONE);
 
+		//key是cloumn_index，value是数量的值，如果为
+		HideColumn hideColumn=new HideColumn();
 		int cellnum = 0;
 		int rownum = 3;
 		for (int i = 0; i < types.size(); i++) {
@@ -319,35 +322,42 @@ public class Day_sparepart_Controller {
 							Cell purchasenum_mx = row_prod.createCell(cellnum++);
 							purchasenum_mx.setCellStyle(content_blue_style);
 							purchasenum_mx.setCellValue(prod.getPurchasenum());
+							hideColumn.add(cellnum-1, prod.getPurchasenum());
 
 							Cell oldnum_mx = row_prod.createCell(cellnum++);
 							oldnum_mx.setCellStyle(content_blue_style);
 							oldnum_mx.setCellValue(prod.getOldnum());
+							hideColumn.add(cellnum-1,prod.getOldnum());
 
 							Cell installoutnum_mx = row_prod.createCell(cellnum++);
 							installoutnum_mx.setCellStyle(content_red_style);
 							installoutnum_mx.setCellValue(prod.getInstalloutnum());
+							hideColumn.add(cellnum-1,prod.getInstalloutnum());
 
 							Cell repairinnum_mx = row_prod.createCell(cellnum++);
 							repairinnum_mx.setCellStyle(content_green_style);
 							repairinnum_mx.setCellValue(prod.getRepairinnum());
+							hideColumn.add(cellnum-1,prod.getRepairinnum());
 
 							Cell scrapoutnum_mx = row_prod.createCell(cellnum++);
 							scrapoutnum_mx.setCellStyle(content_orange_style);
 							scrapoutnum_mx.setCellValue(prod.getScrapoutnum());
+							hideColumn.add(cellnum-1,prod.getScrapoutnum());
 
 							Cell repairoutnum_mx = row_prod.createCell(cellnum++);
 							repairoutnum_mx.setCellStyle(content_orange_style);
 							repairoutnum_mx.setCellValue(prod.getRepairoutnum());
+							hideColumn.add(cellnum-1,prod.getRepairoutnum());
 
 							Cell borrownum_mx = row_prod.createCell(cellnum++);
 							borrownum_mx.setCellStyle(content_plum_style);
 							borrownum_mx.setCellValue(prod.getBorrownum());
+							hideColumn.add(cellnum-1,prod.getBorrownum());
 
 							Cell borrowreturnnum_mx = row_prod.createCell(cellnum++);
 							borrowreturnnum_mx.setCellStyle(content_green_style_last);
 							borrowreturnnum_mx.setCellValue(prod.getBorrowreturnnum());
-
+							hideColumn.add(cellnum-1,prod.getBorrowreturnnum());
 						}
 
 					}
@@ -362,6 +372,9 @@ public class Day_sparepart_Controller {
 		}
 		sheet.setRowSumsBelow(false);
 		sheet.setRowSumsRight(false);
+		
+		//开始隐藏整列都为0的数据
+		hideColumn.hiddenColumn(sheet);
 
 		String filename = "备品备件仓库盘点日报表.xlsx";
 		if(store_type==1){

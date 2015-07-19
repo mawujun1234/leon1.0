@@ -384,6 +384,7 @@ public class TaskService extends AbstractService<Task, String>{
 	}
 	public TaskEquipmentListVO mobile_getAndCreateTaskEquipmentList(String ecode,String task_id,TaskType task_type,String pole_id){
 		
+		//判断设备是否在该作业单位手上
 		if(task_type!=TaskType.cancel){
 			EquipmentWorkunitPK equipmentWorkunitPK = new EquipmentWorkunitPK();
 			equipmentWorkunitPK.setEcode(ecode);
