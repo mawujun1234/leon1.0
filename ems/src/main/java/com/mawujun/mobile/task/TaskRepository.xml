@@ -185,6 +185,29 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		order by b.code
     </select>
     
+    
+    <!-- 查询所有已经提交的任务 -->
+    <select id="querySubmited" resultType="com.mawujun.mobile.task.Task" parameterType="map">
+    	select a.*,b.code as pole_code from ems_task a,ems_pole b
+    	<where>
+    		a.pole_id=b.id
+			<if test="customer_id!=null and customer_id!=''">
+				and a.customer_id=#{customer_id}
+			</if>
+
+			<if test="type!=null and type!=''">
+				and a.type=#{type}
+			</if>
+			<if test="workunit_id!=null and workunit_id!=''">
+				and a.workunit_id=#{workunit_id}
+			</if>
+			<if test="pole_name!=null">
+				and (a.pole_name like #{pole_name} or b.code like #{pole_name} )
+			</if>
+		</where>
+		order by b.code
+    </select>
+    
     <!-- 维修任务明细报表 -->
     <select id="queryRepairTaskesReport" resultType="com.mawujun.mobile.task.TaskRepairReport" parameterType="map">
     	select a.*,b.code as pole_code from ems_task a,ems_pole b

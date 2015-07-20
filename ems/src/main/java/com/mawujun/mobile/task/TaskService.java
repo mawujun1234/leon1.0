@@ -81,7 +81,8 @@ public class TaskService extends AbstractService<Task, String>{
 	
 	@Autowired
 	private EquipmentCycleService equipmentCycleService;
-	
+	@Autowired
+	private LockEquipmentService lockEquipmentService;
 	
 	@Override
 	public TaskRepository getRepository() {
@@ -381,16 +382,26 @@ public class TaskService extends AbstractService<Task, String>{
 		equipmentRepository.update(Cnd.update()
 				.set(M.Equipment.currt_task_id, null)
 				.andEquals(M.Equipment.ecode, ecode));
+		
+		lockEquipmentService.unlock(ecode);
 	}
 	public TaskEquipmentListVO mobile_getAndCreateTaskEquipmentList(String ecode,String task_id,TaskType task_type,String pole_id){
+		//判断设备是否被不是这个任务的设备锁定了
+		lockEquipmentService.check_locked(ecode, task_id);
 		
 		//判断设备是否在该作业单位手上
 		if(task_type!=TaskType.cancel){
-			EquipmentWorkunitPK equipmentWorkunitPK = new EquipmentWorkunitPK();
-			equipmentWorkunitPK.setEcode(ecode);
-			equipmentWorkunitPK.setWorkunit_id(ShiroUtils.getUserId());
-			EquipmentWorkunit equipmentWorkunit=equipmentWorkunitRepository.get(equipmentWorkunitPK);
-			if(equipmentWorkunit==null){
+			int count=equipmentRepository.check_in_workunit_by_ecode(ecode,ShiroUtils.getUserId());
+	
+			//如果是维修任务,并且不在作业单位上，那要判断是不是在点位上
+			if(count ==0 && task_type==TaskType.repair){
+				count=equipmentRepository.check_in_pole_by_ecode(ecode, pole_id);
+				if(count==0){
+					throw new BusinessException(ecode+"不在该作业单位或点位上!");
+				}
+			}
+			//判断是不是作业单位上的设备
+			if(count==0){
 				throw new BusinessException(ecode+"不在该作业单位手上!");
 			}
 		}
@@ -412,7 +423,7 @@ public class TaskService extends AbstractService<Task, String>{
 		}
 		TaskEquipmentList list=new TaskEquipmentList();
 		list.setEcode(ecode);
-		list.setEquipment_status(equipmentVO.getStatus());
+		//list.setEquipment_status(equipmentVO.getStatus());
 		list.setTask_id(task_id);
 		//list.setType(type);
 		if(TaskType.newInstall==task_type){
@@ -431,6 +442,9 @@ public class TaskService extends AbstractService<Task, String>{
 			list.setType(TaskListTypeEnum.uninstall);
 		}
 		taskEquipmentListRepository.create(list);
+		
+		//对设备进行锁定
+		lockEquipmentService.lockByTask(ecode, task_id);
 		//更新equipment的curr_task_id
 		equipmentRepository.update(Cnd.update()
 				.set(M.Equipment.currt_task_id, task_id)
@@ -632,121 +646,6 @@ public class TaskService extends AbstractService<Task, String>{
 		
 	}
 	
-//	/**
-//	 * 返回的值是  去掉重复的条码后的 扫描了的条码
-//	 * @author mawujun email:160649888@163.com qq:16064988
-//	 * @param task_id
-//	 * @param hitchType_id
-//	 * @param hitchReasonTpl_id
-//	 * @param hitchReason
-//	 * @param ecodes
-//	 * @param equipment_statuses
-//	 * @return
-//	 */
-//	public Set<String> mobile_save(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason,String[] ecodes,EquipmentStatus[] equipment_statuses) {
-//		//已入库的不能删除
-//		check_equip_status(task_id,ecodes);
-//		
-//		taskEquipmentListRepository.deleteBatch(Cnd.delete().andEquals(M.TaskEquipmentList.task_id, task_id));
-//		
-//		Task task=taskRepository.get(task_id);
-//		
-//		task.setHitchType_id(hitchType_id);
-//		task.setHitchType(hitchTypeRepository.get(hitchType_id).getName());
-//		task.setHitchReasonTpl_id(hitchReasonTpl_id);
-//		task.setHitchReason(hitchReason);
-//		task.setStatus(TaskStatus.handling);
-//		
-//		if(task.getStartHandDate()==null){
-//			task.setStartHandDate(new Date());
-//		}
-//		
-//		taskRepository.update(task);
-//		//修改任务状态为"处理中",无论哪种任务类型
-//		//taskRepository.update(Cnd.update().set(M.Task.status, TaskStatus.handling).set(M.Task.startHandDate,new Date()).andEquals(M.Task.id, task_id));
-//		if(ecodes==null){
-//			return null;
-//		}
-//		Set<String> existinsert=new HashSet<String>();
-//		int i=0;
-//		for(String ecode:ecodes){
-//			if(existinsert.contains(ecode)){
-//				i++;
-//				continue;//防止一个设备多次扫描的情况，在这里进行过滤掉
-//			}
-//			TaskEquipmentList tel=new TaskEquipmentList();
-//			tel.setEcode(ecode);
-//			tel.setTask_id(task_id);
-//			tel.setEquipment_status(equipment_statuses[i]);
-//			//tel.setType(TaskListTypeEnum.install);
-//			
-//			if(TaskType.newInstall==task.getType()){
-//				tel.setType(TaskListTypeEnum.install);
-//			} else if(TaskType.repair==task.getType()){
-//				//如果设备将会变成使用中的状态，那这个设备就是安装
-//				if(equipment_statuses[i]==EquipmentStatus.using){
-//					tel.setType(TaskListTypeEnum.install);
-//				} else {
-//					//退换下来的，可能是损坏，也可能是 安装出库状态的设备就是 卸载下来的
-//					tel.setType(TaskListTypeEnum.uninstall);
-//				}
-//			} else if(TaskType.patrol==task.getType()){
-//				tel.setType(TaskListTypeEnum.patrol);
-//			}
-//			taskEquipmentListRepository.create(tel);
-//			
-//			i++;
-//			existinsert.add(ecode);
-//		}
-//		return existinsert;
-//		
-//	}
-//	/**
-//	 * 这个判断主要用于，//已入库的不能删除
-//	 * 返回值是删除的并且已入库的条码
-//	 * @author mawujun 16064988@qq.com 
-//	 * @param task_id
-//	 * @param ecodes
-//	 */
-//	private void check_equip_status(String task_id ,String[] ecodes){
-//		//首先判断要删除的设备是否存在不是指定状态的设备
-//				//获取现有的设备和已经存在的设备的差异，判断差异设备的状态就行了
-//				//查询当前任务中拥有的设备
-//				List<String> eqip_list=taskRepository.query_task_equip_list(task_id);
-//				//循环出删掉的设备
-//				List<String> delEcodes=new ArrayList<String>();
-//				
-//				if(ecodes==null){
-//					delEcodes=eqip_list;
-//				} else {
-//					boolean isDel=true;
-//					for(String ecode:eqip_list){
-//						isDel=true;
-//						for(String newecode:ecodes){
-//							if(ecode.equals(newecode)){
-//								isDel=false;
-//								break;
-//							}
-//						}
-//						if(isDel){
-//							delEcodes.add(ecode);
-//						}
-//						
-//					}
-//				}
-//				
-//				if(delEcodes.size()>0){
-//					List<String> count=taskRepository.count_task_quip_status1(task_id,delEcodes);
-//					if(count.size()>0){
-//						throw new BusinessException("不能保存或提交,"+count.get(0)+"已经入库不能删除!");
-//					}
-//					//return count;
-//				} else {
-//					return;
-//					//return new ArrayList<String>();
-//				}
-//				 
-//	}
 	
 	/**
 	 * 任务提交，不修改设备状态，等管理端确认后，才修改设备的状态
@@ -756,11 +655,15 @@ public class TaskService extends AbstractService<Task, String>{
 	 * @param ecodes
 	 */
 	public void mobile_submit(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason) {
+		Task task=taskRepository.get(task_id);
+		if(task.getStatus()==TaskStatus.submited){
+			throw new BusinessException("任务已经提交,不能再提交!");
+		}
 		//当写好就马上提交了，没有经过保存的时候
 		this.mobile_save(task_id, hitchType_id, hitchReasonTpl_id, hitchReason);
 		//如果是取消杆位，提交前进行判断，扫描了的设备数量和杆位上实际具有的数量是否一致
 		//是否是该杆位上的设备，已经在扫描的时候就判断了
-		Task task=taskRepository.get(task_id);
+		
 		if(TaskType.cancel==task.getType()){
 			//查找杆位上的数量
 			int pole_eqips=poleRepository.query_count_equipment_in_pole(task.getPole_id());
@@ -776,6 +679,48 @@ public class TaskService extends AbstractService<Task, String>{
 		task.setSubmitDate(new Date());
 		taskRepository.update(task);
 		
+		
+//		//String task_type = task.getType().toString();
+//		// 所有这次任务相关的设备清单
+//		List<TaskEquipmentList> taskEquipmentListes = taskEquipmentListRepository.query(Cnd.select().andEquals(M.TaskEquipmentList.task_id, task_id));
+//		for (TaskEquipmentList taskEquipmentList : taskEquipmentListes) {
+//			String ecode = taskEquipmentList.getEcode();
+//			//对任务中的所有设备进行锁定
+//			lockEquipmentService.lockByTask(ecode,task_id);
+//		}
+	}
+	/**
+	 * 后台进行任务确认的
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param task_id
+	 * @param task_type
+	 * @param ecodes
+	 */
+	public void confirm(String task_id) {
+		Task task=taskRepository.get(task_id);
+		if(task.getStatus()==TaskStatus.complete){
+			throw new BusinessException("任务已经完成,不能再确认!");
+		}
+		//当写好就马上提交了，没有经过保存的时候
+//		this.mobile_save(task_id, hitchType_id, hitchReasonTpl_id, hitchReason);
+		//如果是取消杆位，提交前进行判断，扫描了的设备数量和杆位上实际具有的数量是否一致
+		//是否是该杆位上的设备，已经在扫描的时候就判断了
+//		
+//		if(TaskType.cancel==task.getType()){
+//			//查找杆位上的数量
+//			int pole_eqips=poleRepository.query_count_equipment_in_pole(task.getPole_id());
+//			int scan_count=taskRepository.query_count_tasklist_by_task(task_id);
+//			//获取这个任务少苗的设备数量
+//			if(pole_eqips!=scan_count){
+//				throw new BusinessException("该杆位上实际的设备数量为:"+pole_eqips+",但现在只扫描了"+scan_count+"!");
+//			}
+//		}
+		
+		//更新任务状态
+		task.setStatus(TaskStatus.complete);
+		task.setCompleteDate(new Date());
+		taskRepository.update(task);
+		
 		// 修改杆位状态为"使用中"
 		if (task.getType() == TaskType.newInstall) {
 			poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.using).andEquals(M.Pole.id, task.getPole_id()));
@@ -788,6 +733,9 @@ public class TaskService extends AbstractService<Task, String>{
 		List<TaskEquipmentList> taskEquipmentListes = taskEquipmentListRepository.query(Cnd.select().andEquals(M.TaskEquipmentList.task_id, task_id));
 		for (TaskEquipmentList taskEquipmentList : taskEquipmentListes) {
 			String ecode = taskEquipmentList.getEcode();
+			
+			//对设备进行解锁
+			lockEquipmentService.unlock(ecode);
 			//修改对应的设备为领用，因为设备只有当真正被使用过了才叫领用，否则都还是借用
 			
 			if (TaskType.newInstall== task.getType()) {
@@ -800,15 +748,15 @@ public class TaskService extends AbstractService<Task, String>{
 				changeInstallOutListType2installout(taskEquipmentList.getEcode(),task.getWorkunit_id(),task.getPole_id());
 				
 				// 杆位绑定这个设备
-				EquipmentPole equipmentStore = new EquipmentPole();
-				equipmentStore.setEcode(taskEquipmentList.getEcode());
-				equipmentStore.setPole_id(task.getPole_id());
-				equipmentStore.setNum(1);
-				equipmentStore.setInDate(new Date());
-				equipmentStore.setType(EquipmentPoleType.install);
-				equipmentStore.setType_id(task.getId());
-				equipmentStore.setFrom_id(task.getWorkunit_id());
-				equipmentPoleRepository.create(equipmentStore);
+				EquipmentPole equipmentPole = new EquipmentPole();
+				equipmentPole.setEcode(taskEquipmentList.getEcode());
+				equipmentPole.setPole_id(task.getPole_id());
+				equipmentPole.setNum(1);
+				equipmentPole.setInDate(new Date());
+				equipmentPole.setType(EquipmentPoleType.install);
+				equipmentPole.setType_id(task.getId());
+				equipmentPole.setFrom_id(task.getWorkunit_id());
+				equipmentPoleRepository.create(equipmentPole);
 				// workunit减掉这个设备
 				EquipmentWorkunitPK equipmentWorkunitPK = new EquipmentWorkunitPK();
 				equipmentWorkunitPK.setEcode(taskEquipmentList.getEcode());
@@ -829,15 +777,15 @@ public class TaskService extends AbstractService<Task, String>{
 					changeInstallOutListType2installout(taskEquipmentList.getEcode(),task.getWorkunit_id(),task.getPole_id());
 					
 					// 杆位绑定这个设备
-					EquipmentPole equipmentStore = new EquipmentPole();
-					equipmentStore.setEcode(taskEquipmentList.getEcode());
-					equipmentStore.setPole_id(task.getPole_id());
-					equipmentStore.setNum(1);
-					equipmentStore.setInDate(new Date());
-					equipmentStore.setType(EquipmentPoleType.install);
-					equipmentStore.setType_id(task.getId());
-					equipmentStore.setFrom_id(task.getWorkunit_id());
-					equipmentPoleRepository.create(equipmentStore);
+					EquipmentPole equipmentPole = new EquipmentPole();
+					equipmentPole.setEcode(taskEquipmentList.getEcode());
+					equipmentPole.setPole_id(task.getPole_id());
+					equipmentPole.setNum(1);
+					equipmentPole.setInDate(new Date());
+					equipmentPole.setType(EquipmentPoleType.install);
+					equipmentPole.setType_id(task.getId());
+					equipmentPole.setFrom_id(task.getWorkunit_id());
+					equipmentPoleRepository.create(equipmentPole);
 					// workunit减掉这个设备
 					EquipmentWorkunitPK equipmentWorkunitPK = new EquipmentWorkunitPK();
 					equipmentWorkunitPK.setEcode(taskEquipmentList.getEcode());
@@ -907,6 +855,183 @@ public class TaskService extends AbstractService<Task, String>{
 
 		}
 	}
+	/**
+	 * 任务退回工功能
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param task_id
+	 */
+	public void sendBack(String task_id) {
+		Task task=taskRepository.get(task_id);
+		if(task.getStatus()!=TaskStatus.submited){
+			throw new BusinessException("任务不是提交状态,不能退回!");
+		}
+		task.setStatus(TaskStatus.handling);
+		taskRepository.update(task);
+	}
+	
+//	/**
+//	 * 任务提交，不修改设备状态，等管理端确认后，才修改设备的状态
+//	 * @author mawujun email:160649888@163.com qq:16064988
+//	 * @param task_id
+//	 * @param task_type
+//	 * @param ecodes
+//	 */
+//	public void mobile_submit(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason) {
+//		Task task=taskRepository.get(task_id);
+//		if(task.getStatus()==TaskStatus.submited){
+//			throw new BusinessException("任务已经提交,不能再提交!");
+//		}
+//		//当写好就马上提交了，没有经过保存的时候
+//		this.mobile_save(task_id, hitchType_id, hitchReasonTpl_id, hitchReason);
+//		//如果是取消杆位，提交前进行判断，扫描了的设备数量和杆位上实际具有的数量是否一致
+//		//是否是该杆位上的设备，已经在扫描的时候就判断了
+//		
+//		if(TaskType.cancel==task.getType()){
+//			//查找杆位上的数量
+//			int pole_eqips=poleRepository.query_count_equipment_in_pole(task.getPole_id());
+//			int scan_count=taskRepository.query_count_tasklist_by_task(task_id);
+//			//获取这个任务少苗的设备数量
+//			if(pole_eqips!=scan_count){
+//				throw new BusinessException("该杆位上实际的设备数量为:"+pole_eqips+",但现在只扫描了"+scan_count+"!");
+//			}
+//		}
+//		
+//		//更新任务状态
+//		task.setStatus( TaskStatus.submited);
+//		task.setSubmitDate(new Date());
+//		taskRepository.update(task);
+//		
+//		// 修改杆位状态为"使用中"
+//		if (task.getType() == TaskType.newInstall) {
+//			poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.using).andEquals(M.Pole.id, task.getPole_id()));
+//		} else if (task.getType() == TaskType.repair) {
+//			poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.using).andEquals(M.Pole.id, task.getPole_id()));
+//		}
+//
+//		//String task_type = task.getType().toString();
+//		// 所有这次任务相关的设备清单
+//		List<TaskEquipmentList> taskEquipmentListes = taskEquipmentListRepository.query(Cnd.select().andEquals(M.TaskEquipmentList.task_id, task_id));
+//		for (TaskEquipmentList taskEquipmentList : taskEquipmentListes) {
+//			String ecode = taskEquipmentList.getEcode();
+//			//修改对应的设备为领用，因为设备只有当真正被使用过了才叫领用，否则都还是借用
+//			
+//			if (TaskType.newInstall== task.getType()) {
+//				// 更改设备的位置到该杆位上,把设备从昨夜单位身上移动到杆位上
+//				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using).set(M.Equipment.isnew, false)
+//						.set(M.Equipment.place, EquipmentPlace.pole).set(M.Equipment.last_install_date, new Date())
+//						.set(M.Equipment.last_pole_id, task.getPole_id()).set(M.Equipment.last_task_id, task.getId())
+//						.set(M.Equipment.currt_task_id, null).andEquals(M.Equipment.ecode, ecode));
+//				//要放在最前面，把设备从借用变成领用
+//				changeInstallOutListType2installout(taskEquipmentList.getEcode(),task.getWorkunit_id(),task.getPole_id());
+//				
+//				// 杆位绑定这个设备
+//				EquipmentPole equipmentPole = new EquipmentPole();
+//				equipmentPole.setEcode(taskEquipmentList.getEcode());
+//				equipmentPole.setPole_id(task.getPole_id());
+//				equipmentPole.setNum(1);
+//				equipmentPole.setInDate(new Date());
+//				equipmentPole.setType(EquipmentPoleType.install);
+//				equipmentPole.setType_id(task.getId());
+//				equipmentPole.setFrom_id(task.getWorkunit_id());
+//				equipmentPoleRepository.create(equipmentPole);
+//				// workunit减掉这个设备
+//				EquipmentWorkunitPK equipmentWorkunitPK = new EquipmentWorkunitPK();
+//				equipmentWorkunitPK.setEcode(taskEquipmentList.getEcode());
+//				equipmentWorkunitPK.setWorkunit_id(task.getWorkunit_id());
+//				equipmentWorkunitRepository.deleteById(equipmentWorkunitPK);
+//				
+//				//记录设备入库的生命周期
+//				equipmentCycleService.logEquipmentCycle(taskEquipmentList.getEcode(), OperateType.task_install, task.getId(),TargetType.pole,task.getPole_id());
+//			} else if (TaskType.repair== task.getType()) {
+//				// 维修的时候，设备的状态，可能是 损坏或者是安装出库
+//				// 如果设备原来的状态是正在使用，你把设备下架的
+//				if (taskEquipmentList.getType() == TaskListTypeEnum.install) {
+//					equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using).set(M.Equipment.isnew, false)
+//							.set(M.Equipment.place, EquipmentPlace.pole).set(M.Equipment.last_install_date, new Date())
+//							.set(M.Equipment.last_pole_id, task.getPole_address()).set(M.Equipment.last_task_id, task.getId())
+//							.set(M.Equipment.currt_task_id, null).andEquals(M.Equipment.ecode, ecode));
+//					//要放在最前面，把设备从借用变成领用
+//					changeInstallOutListType2installout(taskEquipmentList.getEcode(),task.getWorkunit_id(),task.getPole_id());
+//					
+//					// 杆位绑定这个设备
+//					EquipmentPole equipmentPole = new EquipmentPole();
+//					equipmentPole.setEcode(taskEquipmentList.getEcode());
+//					equipmentPole.setPole_id(task.getPole_id());
+//					equipmentPole.setNum(1);
+//					equipmentPole.setInDate(new Date());
+//					equipmentPole.setType(EquipmentPoleType.install);
+//					equipmentPole.setType_id(task.getId());
+//					equipmentPole.setFrom_id(task.getWorkunit_id());
+//					equipmentPoleRepository.create(equipmentPole);
+//					// workunit减掉这个设备
+//					EquipmentWorkunitPK equipmentWorkunitPK = new EquipmentWorkunitPK();
+//					equipmentWorkunitPK.setEcode(taskEquipmentList.getEcode());
+//					equipmentWorkunitPK.setWorkunit_id(task.getWorkunit_id());
+//					equipmentWorkunitRepository.deleteById(equipmentWorkunitPK);
+//					
+//					//记录设备入库的生命周期
+//					equipmentCycleService.logEquipmentCycle(taskEquipmentList.getEcode(), OperateType.task_install, task.getId(),TargetType.pole,task.getPole_id());
+//					
+//				} else {
+//					// 设备从杆位上卸载下来的情况
+//					equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.out_storage).set(M.Equipment.isnew, false)
+//							.set(M.Equipment.place, EquipmentPlace.workunit)
+//							// .set(M.Equipment.last_install_date, new Date())
+//							.set(M.Equipment.last_workunit_id, task.getWorkunit_id()).set(M.Equipment.last_task_id, task.getId())
+//							.set(M.Equipment.currt_task_id, null).andEquals(M.Equipment.ecode, ecode));
+//
+//					// 把设备挂到这个作业单位身上
+//					EquipmentWorkunit equipmentWorkunit = new EquipmentWorkunit();
+//					equipmentWorkunit.setEcode(taskEquipmentList.getEcode());
+//					equipmentWorkunit.setWorkunit_id(task.getWorkunit_id());
+//					equipmentWorkunit.setInDate(new Date());
+//					equipmentWorkunit.setNum(1);
+//					equipmentWorkunit.setType(EquipmentWorkunitType.task);
+//					equipmentWorkunit.setType_id(task.getId());
+//					equipmentWorkunit.setFrom_id(task.getPole_id());
+//					equipmentWorkunitRepository.create(equipmentWorkunit);
+//					// 从杆位中移除这个设备
+//					EquipmentPolePK equipmentPolePK = new EquipmentPolePK();
+//					equipmentPolePK.setEcode(taskEquipmentList.getEcode());
+//					equipmentPolePK.setPole_id(task.getPole_id());
+//					equipmentPoleRepository.deleteById(equipmentPolePK);
+//					
+//					//记录设备入库的生命周期
+//					equipmentCycleService.logEquipmentCycle(taskEquipmentList.getEcode(), OperateType.task_cancel, task.getId(),TargetType.pole,task.getPole_id());
+//				}
+//
+//			} else if (TaskType.cancel== task.getType()) {
+//				// 设备从杆位上卸载下来的情况
+//				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.out_storage).set(M.Equipment.isnew, false)
+//						.set(M.Equipment.place, EquipmentPlace.workunit)
+//						// .set(M.Equipment.last_install_date, new Date())
+//						.set(M.Equipment.last_workunit_id, task.getWorkunit_id()).set(M.Equipment.last_task_id, task.getId())
+//						.set(M.Equipment.currt_task_id, null).andEquals(M.Equipment.ecode, ecode));
+//
+//				// 插入到workunit中
+//				EquipmentWorkunit equipmentWorkunit = new EquipmentWorkunit();
+//				equipmentWorkunit.setEcode(taskEquipmentList.getEcode());
+//				equipmentWorkunit.setWorkunit_id(task.getWorkunit_id());
+//				equipmentWorkunit.setInDate(new Date());
+//				equipmentWorkunit.setNum(1);
+//				equipmentWorkunit.setType(EquipmentWorkunitType.task);
+//				equipmentWorkunit.setType_id(task.getId());
+//				equipmentWorkunit.setFrom_id(task.getPole_id());
+//				equipmentWorkunitRepository.create(equipmentWorkunit);
+//				// 从杆位中移除这个设备
+//				EquipmentPolePK equipmentPolePK = new EquipmentPolePK();
+//				equipmentPolePK.setEcode(taskEquipmentList.getEcode());
+//				equipmentPolePK.setPole_id(task.getPole_id());
+//				equipmentPoleRepository.deleteById(equipmentPolePK);
+//
+//				//记录设备入库的生命周期
+//				equipmentCycleService.logEquipmentCycle(taskEquipmentList.getEcode(), OperateType.task_cancel, task.getId(),TargetType.pole,task.getPole_id());
+//			} else if (TaskType.patrol== task.getType()) {
+//
+//			}
+//
+//		}
+//	}
 	/**
 	 * 如果这个设备是领用出来的，那就把该设备变为变为领用(因为默认是借用)
 	 * 如果该设备是借用出来的，，那也把该设备变为领用
@@ -1069,4 +1194,8 @@ public class TaskService extends AbstractService<Task, String>{
 		return taskRepository.mobile_queryPoles(pole_name, workunit_id);
 	}
 	
+	
+	public Page querySubmited(Page page) {
+		return taskRepository.querySubmited(page);
+	}
 }

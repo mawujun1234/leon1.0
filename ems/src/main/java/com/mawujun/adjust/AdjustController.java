@@ -140,8 +140,8 @@ public class AdjustController {
 	 */
 	@RequestMapping("/adjust/adjustInStore.do")
 	@ResponseBody
-	public String adjustInStore(@RequestBody AdjustList[] adjustLists,String adjust_id) {	
-		adjustService.adjustInStore(adjustLists,adjust_id);	
+	public String adjustInStore(@RequestBody AdjustList[] adjustLists,String adjust_id,String project_id) {	
+		adjustService.adjustInStore(adjustLists,adjust_id,project_id);	
 		return "success";
 	}
 	

@@ -71,6 +71,10 @@ Ext.define('Ems.adjust.AdjustListInGrid',{
 //	        displayInfo: true
 //	  }];
 	  
+	  var project_combox=Ext.create('Ems.baseinfo.ProjectCombo',{
+		width:350	,
+		allowBlank: false
+	  });
 	  var ecode_textfield=Ext.create('Ext.form.field.Text',{
 		labelAlign:'right',
 		name:'ecode',
@@ -124,7 +128,10 @@ Ext.define('Ems.adjust.AdjustListInGrid',{
 		margin:'0 0 0 5',
 		icon:'../icons/database_save.png',
 		handler:function(){
-			
+			if(!project_combox.getValue()){
+				alert("请先选择项目!");
+				return;
+			}
 			var records=me.getSelectionModel( ).getSelection( );
 			var adjustes=[];
 			for(var i=0;i<records.length;i++){
@@ -137,7 +144,7 @@ Ext.define('Ems.adjust.AdjustListInGrid',{
 				method:'POST',
 				timeout:600000000,
 				//headers:{ 'Content-Type':'application/json;charset=UTF-8'},
-				params:{adjust_id:me.adjust_id},
+				params:{adjust_id:me.adjust_id,project_id:project_combox.getValue()},
 				jsonData:adjustes,
 				//params:{jsonStr:Ext.encode(equiplist)},
 				success:function(response){
@@ -163,7 +170,12 @@ Ext.define('Ems.adjust.AdjustListInGrid',{
 //			//如果发现要入库的设备和实际的设备数量不一致的时候，给出提醒，把未入库的当做是设别丢失了，修改设备状态为丢失，损耗
 //		}
 //	});
-	me.tbar=	[{
+	var tbar1=Ext.create('Ext.toolbar.Toolbar',{
+		items:[project_combox,ecode_textfield,clear_button
+		]
+	})
+	var tbar2=Ext.create('Ext.toolbar.Toolbar',{
+		items:[{
 			text: '刷新',
 			itemId:'reload',
 			disabled:me.disabledAction,
@@ -176,7 +188,16 @@ Ext.define('Ems.adjust.AdjustListInGrid',{
 				grid.getStore().reload();
 			},
 			iconCls: 'form-reload-button'
-		},ecode_textfield,clear_button,part_inStore_button]
+		},part_inStore_button
+		]
+	})
+	me.tbar={
+		  xtype: 'container',
+		  layout: 'anchor',
+		  defaults: {anchor: '0'},
+		  defaultType: 'toolbar',
+		  items: [tbar1, tbar2]
+		}
        
       me.callParent();
 	}

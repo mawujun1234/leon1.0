@@ -67,4 +67,6 @@ public interface TaskRepository extends IRepository<Task, String>{
 	
 	
 	public List<Pole> mobile_queryPoles(@Param("pole_name")String pole_name,@Param("workunit_id")String workunit_id);
+	
+	public Page querySubmited(Page page);
 }

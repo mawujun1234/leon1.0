@@ -34,7 +34,7 @@ public class EquipmentPole implements IdEntity<EquipmentPolePK>{
 	@Column(length=36)
 	private String type_id;//任务id
 	@Column(length=36)
-	private String from_id;//来源的id，比如从仓库来，就是仓库id，如果是从杆位上来就是杆位id
+	private String from_id;//来源的id，基本是作业单位id或点位id(从点位上取消的时候)
 	
 	public EquipmentPolePK getId() {
 		return new EquipmentPolePK(ecode,pole_id);

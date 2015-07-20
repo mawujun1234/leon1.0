@@ -51,7 +51,7 @@ public class Task implements IdEntity<String> {
 	private Date startHandDate;//开始处理时间，第一次保存的时候
 	private Date submitDate;//提交时间
 	//private Date approveDate;//管理人员审批时间
-	//private Date completeDate;//完成时间
+	private Date completeDate;//完成时间
 	
 	
 	private Integer hitchType_id;//故障类型
@@ -199,6 +199,12 @@ public class Task implements IdEntity<String> {
 	}
 	public void setHitchDate(Date hitchDate) {
 		this.hitchDate = hitchDate;
+	}
+	public Date getCompleteDate() {
+		return completeDate;
+	}
+	public void setCompleteDate(Date completeDate) {
+		this.completeDate = completeDate;
 	}
 	
 	

@@ -18,6 +18,12 @@ public class TaskEquipmentListVO extends TaskEquipmentList {
 	
 	private String style;
 	
+	public String getType_name() {
+		if(this.getType()!=null){
+			this.getType().getName();
+		}
+		return null;
+	}
 	
 	public String getSubtype_name() {
 		return subtype_name;

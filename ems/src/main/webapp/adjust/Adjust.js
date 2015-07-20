@@ -18,7 +18,7 @@ Ext.defineModel("Ems.adjust.Adjust",{
 		{name:'str_out_name',type:'string'},
 		{name:'status_name',type:'string'},
 		{name:'ecode',type:'string'},
-		
+		{name:'project_id',type:'string'},
 		{name:'prod_id',type:'string'},
 		
 		

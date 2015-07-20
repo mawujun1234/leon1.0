@@ -194,7 +194,7 @@ Ext.define('Ems.task.TaskForm',{
                 	return;
                 }
                 var hitchDate_fiedl=form.getForm().findField("hitchDate");
-                if(!hitchDate_fiedl.getValue()){
+                if(!hitchDate_fiedl.getValue() && me.task_type=='repair'){
                 	alert("请先选故障时间!");
                 	return;
                 }

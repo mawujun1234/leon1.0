@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html>
   <head>
     
-    <title>Adjust</title>
+    <title>任务确认和回退的功能</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -22,8 +22,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	
 	<%@include file="../../common/init.jsp" %>
-		<script type="text/javascript" src="../baseinfo/CommCombo.js"></script>
-	<script type="text/javascript" src="AdjustInApp.js"></script>
+	<script type="text/javascript">
+
+	</script>
+	<script type="text/javascript" src="TaskConfirmApp.js"></script>
   </head>
   
   <body>

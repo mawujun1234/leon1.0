@@ -189,9 +189,19 @@ public class AdjustService extends AbstractService<Adjust, String>{
 	 * @author mawujun 16064988@qq.com 
 	 * @return
 	 */
-	public void adjustInStore(AdjustList[] adjustLists,String adjust_id) {
+	public void adjustInStore(AdjustList[] adjustLists,String adjust_id,String project_id) {
+		if(project_id==null || "".equals(project_id)){
+			throw new BusinessException("请先选择项目!");
+		}
 		Adjust adjust=adjustRepository.get(adjust_id);
 		
+		if(adjust.getProject_id()!=null && !"".equals(adjust.getProject_id())){
+			if(!adjust.getProject_id().equals(project_id)){
+				throw new BusinessException("两次入库选择的项目不一致!");
+			}
+		} else {
+			adjust.setProject_id(project_id);
+		}
 		Date inDate=new Date();
 		
 		//获取当前调拨下的设备总数,本来应该是sum的，但现在是sum和count一样的

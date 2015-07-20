@@ -5,6 +5,8 @@ import java.io.IOException;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.mawujun.baseinfo.EquipmentCycle;
+import com.mawujun.mobile.task.LockEquipment;
+import com.mawujun.mobile.task.TaskEquipmentList;
 
 import freemarker.template.TemplateException;
 /**
@@ -27,7 +29,7 @@ public class GeneratorMain {
 		//str=generatorService.generatorToString(MenuItem.class,FtlFile.JsModel.toString(),null);	
         //System.out.println(str);
 		
-		GeneratorMain.generateAllFile(EquipmentCycle.class,"D:/gen/");
+		GeneratorMain.generateAllFile(TaskEquipmentList.class,"D:/gen/");
 		
 		
 		

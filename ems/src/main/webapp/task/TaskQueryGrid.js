@@ -45,9 +45,9 @@ Ext.define('Ems.task.TaskQueryGrid',{
 		{dataIndex:'pole_code',text:'点位编号',width:55},
 		{dataIndex:'pole_name',text:'点位名称'},
 		{dataIndex:'pole_address',text:'地址',flex:1},
-		{dataIndex:'createDate',text:'创建时间', renderer: Ext.util.Format.dateRenderer('Y-m-d')},
-		{dataIndex:'submitDate',text:'提交时间', renderer: Ext.util.Format.dateRenderer('Y-m-d')},
-		//{dataIndex:'completeDate',text:'完成时间', renderer: Ext.util.Format.dateRenderer('Y-m-d')},
+		{dataIndex:'createDate',text:'创建时间'},
+		{dataIndex:'submitDate',text:'提交时间'},
+		{dataIndex:'completeDate',text:'完成时间'},
 		{dataIndex:'workunit_name',text:'作业单位'},
 		{dataIndex:'customer_name',text:'所属客户'},
 		{dataIndex:'memo',text:'任务描述',flex:1,renderer:function(value,metadata,record){

@@ -117,6 +117,37 @@ public class TaskController {
 	}
 	
 	/**
+	 * 查询所有已经提交的任务
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param start
+	 * @param limit
+	 * @param customer_id
+	 * @param status
+	 * @param type
+	 * @param workunit_id
+	 * @param pole_id
+	 * @param pole_name
+	 * @param isOvertime
+	 * @return
+	 */
+	@RequestMapping("/task/querySubmited.do")
+	@ResponseBody
+	public Page querySubmited(Integer start,Integer limit,String customer_id,String type,String workunit_id,String pole_name) {
+		Page page=Page.getInstance(start,limit);
+		page.addParam(M.Task.customer_id, customer_id);
+		page.addParam(M.Task.workunit_id, workunit_id);
+		//page.addParam(M.Task.pole_id, pole_id);
+		if(StringUtils.hasText(type)){
+			page.addParam(M.Task.type, type);
+		}
+		
+		if(pole_name!=null && !"".equals(pole_name)){
+			page.addParam(M.Task.pole_name, "%"+pole_name+"%");
+		}
+
+		return taskService.querySubmited(page);
+	}
+	/**
 	 * 获取某个任务的设备列表
 	 * @author mawujun email:160649888@163.com qq:16064988
 	 * @param task_id
@@ -146,19 +177,25 @@ public class TaskController {
 		//JsonConfigHolder.setAutoWrap(false);
 		return builder.toString();
 	}
-//	@RequestMapping("/task/confirm.do")
-//	@ResponseBody
-//	public String confirm(String id) {
-//		taskService.confirm(id);
-//		return "success";
-//	}
 	
-//	@RequestMapping("/task/back.do")
-//	@ResponseBody
-//	public String backs(String id) {
-//		taskService.update(Cnd.update().set(M.Task.status, TaskStatus.handling).andEquals(M.Task.id, id));
-//		return "success";
-//	}
+	@RequestMapping("/task/queryTaskEquipmentList.do")
+	@ResponseBody
+	public String queryTaskEquipmentList(String task_id) {
+		
+	}
+	@RequestMapping("/task/confirm.do")
+	@ResponseBody
+	public String confirm(String id) {
+		taskService.confirm(id);
+		return "success";
+	}
+	
+	@RequestMapping("/task/sendBack.do")
+	@ResponseBody
+	public String sendBack(String id) {
+		taskService.sendBack(id);
+		return "success";
+	}
 	@RequestMapping("/task/cancel.do")
 	@ResponseBody
 	public String cancel(String id) {

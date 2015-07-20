@@ -12,6 +12,7 @@ public static final class Adjust {
 	public static final String memo="memo";
 	public static final String adjustType="adjustType";
 	public static final String adjust_id_borrow="adjust_id_borrow";
+	public static final String project_id="project_id";
 }
 public static final class AdjustList {
 	public static final String adjust_id="adjust_id";
@@ -350,6 +351,12 @@ public static final class HitchType {
 	public static final String id="id";
 	public static final String name="name";
 }
+public static final class LockEquipment {
+	public static final String ecode="ecode";
+	public static final String lockType="lockType";
+	public static final String type_id="type_id";
+	public static final String createDate="createDate";
+}
 public static final class Overtime {
 	public static final String read="read";
 	public static final String handling="handling";
@@ -373,6 +380,7 @@ public static final class Task {
 	public static final String createDate="createDate";
 	public static final String startHandDate="startHandDate";
 	public static final String submitDate="submitDate";
+	public static final String completeDate="completeDate";
 	public static final String hitchType_id="hitchType_id";
 	public static final String hitchType="hitchType";
 	public static final String hitchReasonTpl_id="hitchReasonTpl_id";

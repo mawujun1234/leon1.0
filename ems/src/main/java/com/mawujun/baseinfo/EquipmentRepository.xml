@@ -28,11 +28,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     
     <!-- 通过ecode判断这个设备室不是在某个作业单位上-->
     <select id="check_in_workunit_by_ecode" resultType="int">
-    	select count(ecode) from ems_equipment_workunit where ecode=#{ecode} and workunit_id#{workunit_id}
+    	select count(ecode) from ems_equipment_workunit where ecode=#{ecode} and workunit_id=#{workunit_id}
     </select>
      <!-- 通过ecode判断这个设备室不是在某个仓库上-->
     <select id="check_in_store_by_ecode" resultType="int">
-    	select count(ecode) from ems_equipment_store where ecode=#{ecode} and store_id#{store_ids}
+    	select count(ecode) from ems_equipment_store where ecode=#{ecode} and store_id=#{store_ids}
     </select>
      <!-- 通过ecode判断这个设备室不是在某个作业单位上-->
     <select id="check_in_repair_by_ecode" resultType="int">
@@ -40,7 +40,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     </select>
      <!-- 通过ecode判断这个设备室不是在某个作业单位上-->
     <select id="check_in_pole_by_ecode" resultType="int">
-    	select count(ecode) from ems_equipment_pole where ecode=#{ecode} and pole_id#{pole_id}
+    	select count(ecode) from ems_equipment_pole where ecode=#{ecode} and pole_id=#{pole_id}
     </select>
     
     

@@ -46,6 +46,8 @@ public class Adjust implements IdEntity<String>{
 	@Column(length=36)
 	private String adjust_id_borrow;//对应要归还的id,结果来后要归还的那张单据的id
 	
+	@Column(length=36)
+	private String project_id;//入库的时候指定的项目
 	
 	public String getId() {
 		return id;
@@ -116,6 +118,12 @@ public class Adjust implements IdEntity<String>{
 	}
 	public void setAdjust_id_borrow(String adjust_id_borrow) {
 		this.adjust_id_borrow = adjust_id_borrow;
+	}
+	public String getProject_id() {
+		return project_id;
+	}
+	public void setProject_id(String project_id) {
+		this.project_id = project_id;
 	}
 
 
