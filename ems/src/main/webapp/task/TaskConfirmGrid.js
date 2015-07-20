@@ -36,7 +36,7 @@ Ext.define('Ems.task.TaskConfirmGrid',{
 			autoSync:false,
 			pageSize:me.pageSize,
 			model: 'Ems.task.Task',
-			
+			autoLoad:true,
 			proxy:{
 				type:'ajax',
 				actionMethods:{read:'POST'},
@@ -102,7 +102,7 @@ Ext.define('Ems.task.TaskConfirmGrid',{
 	        fieldLabel: '作业单位',
 	        labelAlign:'right',
             labelWidth:55,
-            //width:250,
+            width:170,
 	        //xtype:'combobox',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'workunit_id',
@@ -127,7 +127,7 @@ Ext.define('Ems.task.TaskConfirmGrid',{
 	        fieldLabel: '类型',
 	        labelAlign:'right',
             labelWidth:40,
-            width:120,
+            //width:120,
 	        //xtype:'combobox',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'status',
@@ -189,8 +189,8 @@ Ext.define('Ems.task.TaskConfirmGrid',{
 						method:'POST',
 						params:{id:records[0].get("id")},
 						success:function(response){
-							records[0].set("status","complete");
-							records[0].set("status_name","完成");
+							me.getStore().reload();
+							me.gridList.getStore().removeAll();
 						}
 					});
 				} else {
@@ -225,12 +225,12 @@ Ext.define('Ems.task.TaskConfirmGrid',{
 							return;
 						}	
 						Ext.Ajax.request({
-							url:Ext.ContextPath+'/task/back.do',
+							url:Ext.ContextPath+'/task/sendBack.do',
 							method:'POST',
 							params:{id:records[0].get("id")},
 							success:function(response){
-								records[0].set("status","handling");
-								records[0].set("status_name","处理中");
+								me.getStore().reload();
+								me.gridList.getStore().removeAll();
 							}
 						});
 					} else {
@@ -254,9 +254,12 @@ Ext.define('Ems.task.TaskConfirmGrid',{
 			defaults: {anchor: '0'},
 			defaultType: 'toolbar',
 			items: [{
-				items: [customer_combox,workunit_combox,task_type_combox,pole_textfield] // toolbar 1
+				items: [customer_combox,workunit_combox] // toolbar 1
 			}, {
-				items: [query_button,confirm_button,sendback_button] // toolbar 2
+				items: [task_type_combox,pole_textfield,query_button] // toolbar 2
+			},{
+			
+				items: [confirm_button,sendback_button]
 			}]
 		  }	
 		

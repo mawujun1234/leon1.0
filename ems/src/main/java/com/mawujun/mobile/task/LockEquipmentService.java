@@ -58,6 +58,9 @@ public class LockEquipmentService extends AbstractService<LockEquipment, String>
 	 */
 	public void check_locked(String ecode,String type_id){
 		LockEquipment lockEquipment=lockEquipmentRepository.get(ecode);
+		if(lockEquipment==null){
+			return;
+		}
 		//==null表示没有被锁定
 		if(ecode==null){
 			return;

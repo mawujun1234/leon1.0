@@ -390,7 +390,6 @@ public static final class TaskEquipmentList {
 	public static final String task_id="task_id";
 	public static final String ecode="ecode";
 	public static final String type="type";
-	public static final String equipment_status="equipment_status";
 	public static final String id="id";
 }
 public static final class Repair {

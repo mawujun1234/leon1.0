@@ -7,8 +7,7 @@ package com.mawujun.mobile.task;
  *
  */
 public enum TaskStatus {
-	newTask("新任务"),read("已阅"),handling("处理中"),submited("已提交")
-	,complete("完成");
+	newTask("新任务"),read("已阅"),handling("处理中"),submited("已提交"),complete("完成");
 	private String name;
 	TaskStatus(String name){
 		this.name=name;

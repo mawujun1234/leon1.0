@@ -16,11 +16,16 @@ Ext.define('Ems.task.TaskEquipmentListGrid',{
 	initComponent: function () {
       var me = this;
       me.columns=[
-		{dataIndex:'id',text:'id'},
-		{dataIndex:'ecode',text:'ecode'},
-		{dataIndex:'equipment_status',text:'equipment_status'},
-		{dataIndex:'task_id',text:'task_id'},
-		{dataIndex:'type',text:'type'}
+      	Ext.create('Ext.grid.RowNumberer'),
+		//{dataIndex:'id',text:'id'},
+		{dataIndex:'ecode',text:'二维码',width:130},
+		{dataIndex:'type_name',text:'动作'},
+		{dataIndex:'prod_name',text:'品名'},
+		{dataIndex:'prod_style',text:'型号'},
+		{dataIndex:'subtype_name',text:'子类型'},
+		
+		{dataIndex:'brand_name',text:'品牌'},
+		{dataIndex:'supplier_name',text:'供应商'}
       ];
       
 	  me.store=Ext.create('Ext.data.Store',{

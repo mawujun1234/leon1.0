@@ -156,16 +156,16 @@ public class TaskController {
 	@RequestMapping("/task/queryEquipList.do")
 	@ResponseBody
 	public String queryEquipList(String task_id) {
-		List<EquipmentVO> list= taskService.queryEquipList(task_id);
+		List<TaskEquipmentListVO> list= taskService.queryTaskEquipmentListVO(task_id);
 		StringBuilder builder=new StringBuilder();
-		for(EquipmentVO vo:list){
+		for(TaskEquipmentListVO vo:list){
 			builder.append(vo.getEcode());
 			builder.append("|");
 			builder.append(vo.getSubtype_name());
 			builder.append("|");
 			builder.append(vo.getProd_name());
 			builder.append("|");
-			builder.append(vo.getStyle());
+			builder.append(vo.getProd_style());
 			builder.append("|");
 			builder.append(vo.getBrand_name());
 			builder.append("|");
@@ -180,8 +180,8 @@ public class TaskController {
 	
 	@RequestMapping("/task/queryTaskEquipmentList.do")
 	@ResponseBody
-	public String queryTaskEquipmentList(String task_id) {
-		
+	public List<TaskEquipmentListVO> queryTaskEquipmentList(String task_id) {
+		return taskService.queryTaskEquipmentListVO(task_id);
 	}
 	@RequestMapping("/task/confirm.do")
 	@ResponseBody

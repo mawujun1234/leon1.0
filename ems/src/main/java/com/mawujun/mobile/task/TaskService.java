@@ -91,8 +91,8 @@ public class TaskService extends AbstractService<Task, String>{
 	
 	SimpleDateFormat ymdHmsDateFormat=new SimpleDateFormat("yyyyMMdd");
 	
-	public List<EquipmentVO> queryEquipList(String task_id) {
-		return taskRepository.queryEquipList(task_id);
+	public List<TaskEquipmentListVO> queryTaskEquipmentListVO(String task_id) {
+		return taskRepository.queryTaskEquipmentListVO(task_id);
 	}
 
 	public Page queryPoles(Page page) {
@@ -453,7 +453,7 @@ public class TaskService extends AbstractService<Task, String>{
 		TaskEquipmentListVO vo=new TaskEquipmentListVO();
 		BeanUtils.copyProperties(list, vo);
 		vo.setSubtype_name(equipmentVO.getSubtype_name());
-		vo.setStyle(equipmentVO.getBrand_name());
+		vo.setProd_style(equipmentVO.getStyle());
 		vo.setSupplier_name(equipmentVO.getSupplier_name());
 		vo.setProd_name(equipmentVO.getProd_name());
 		vo.setBrand_name(equipmentVO.getBrand_name());

@@ -26,7 +26,7 @@ public interface TaskRepository extends IRepository<Task, String>{
 	public Page queryPoles_no_send_task(Page page);
 	public int count_task_quip_status(@Param("task_id")String task_id);
 	
-	public List<EquipmentVO> queryEquipList(@Param("task_id")String task_id);
+	public List<TaskEquipmentListVO> queryTaskEquipmentListVO(@Param("task_id")String task_id);
 	/**
 	 * 返回已经入库的条码
 	 * @author mawujun 16064988@qq.com 

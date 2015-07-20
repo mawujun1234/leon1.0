@@ -103,7 +103,10 @@ Ext.define('Ems.task.HitchReasonTplGrid',{
     },
     onCreate:function(){
     	var me=this;
-
+if(!me.hitchType_id){
+	alert("请先选择一个故障类型");
+	return;
+}
 		var form=new Ems.task.HitchReasonTplForm({
 			listeners:{
 				saved:function(){

@@ -16,11 +16,11 @@ public class TaskEquipmentListVO extends TaskEquipmentList {
 	@Transient
 	private String supplier_name;
 	
-	private String style;
+	private String prod_style;
 	
 	public String getType_name() {
 		if(this.getType()!=null){
-			this.getType().getName();
+			return this.getType().getName();
 		}
 		return null;
 	}
@@ -49,11 +49,13 @@ public class TaskEquipmentListVO extends TaskEquipmentList {
 	public void setSupplier_name(String supplier_name) {
 		this.supplier_name = supplier_name;
 	}
-	public String getStyle() {
-		return style;
+
+	public String getProd_style() {
+		return prod_style;
 	}
-	public void setStyle(String style) {
-		this.style = style;
+
+	public void setProd_style(String prod_style) {
+		this.prod_style = prod_style;
 	}
 	
 }

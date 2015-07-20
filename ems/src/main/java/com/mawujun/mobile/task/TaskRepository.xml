@@ -10,13 +10,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	where to_char(a.createDate,'yyyymmdd')=#{createDate}
     </select>
     <!-- 获取某个任务的设备清单 -->
-    <select id="queryEquipList" resultType="com.mawujun.baseinfo.EquipmentVO" parameterType="string">
-    	select a.*,b.name as subtype_name,c.name as prod_name,d.name as brand_name,e.name as supplier_name from ems_equipment a
+    <select id="queryTaskEquipmentListVO" resultType="com.mawujun.mobile.task.TaskEquipmentListVO" parameterType="string">
+    	select f.*,b.name as subtype_name,c.name as prod_name,c.style as prod_style,d.name as brand_name,e.name as supplier_name from ems_equipment a
 		inner join ems_equipmentsubtype b on a.subtype_id=b.id
 		inner join ems_equipmentprod c on a.prod_id=c.id
 		inner join ems_brand d on a.brand_id=d.id
 		inner join ems_supplier e on a.supplier_id=e.id
-		where a.ecode in (select ecode from ems_taskequipmentlist where task_id=#{task_id})
+		inner join ems_taskequipmentlist f on a.ecode=f.ecode
+		where f.task_id=#{task_id}
     </select>
     
     <!-- 获取最近关联的那个任务 ，用于作业单位设备返库的时候，关联到对应的任务中去
@@ -61,7 +62,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		inner join ems_area b on  a.area_id=b.id
 		inner join Ems_Workunit c on b.workunit_id=c.id
 		inner join ems_customer d on a.customer_id=d.id
-		left join (select pole_id,count(id) as task_num from ems_task where  status!='submited' group by pole_id) e on a.id=e.pole_id
+		left join (select pole_id,count(id) as task_num from ems_task where  status!='complete' group by pole_id) e on a.id=e.pole_id
 		<where>
 			<if test="customer_id!=null">
 				and a.customer_id=#{customer_id}
@@ -190,7 +191,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     <select id="querySubmited" resultType="com.mawujun.mobile.task.Task" parameterType="map">
     	select a.*,b.code as pole_code from ems_task a,ems_pole b
     	<where>
-    		a.pole_id=b.id
+    		a.pole_id=b.id and a.status='submited'
 			<if test="customer_id!=null and customer_id!=''">
 				and a.customer_id=#{customer_id}
 			</if>
@@ -205,7 +206,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				and (a.pole_name like #{pole_name} or b.code like #{pole_name} )
 			</if>
 		</where>
-		order by b.code
+		order by a.id
     </select>
     
     <!-- 维修任务明细报表 -->
@@ -303,7 +304,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     </select> 
      -->
      <select id="mobile_queryTaskEquipmentInfos" resultType="com.mawujun.mobile.task.TaskEquipmentListVO" >
-    	select a.*,b.name as subtype_name,c.name as prod_name,d.name as brand_name,e.name as supplier_name from 
+    	select a.*,b.name as subtype_name,c.name as prod_name,c.style as prod_style,d.name as brand_name,e.name as supplier_name from 
     	(select f.*,a.subtype_id,a.prod_id,a.brand_id,a.supplier_id,a.style from ems_equipment a inner join ems_taskequipmentlist f on a.ecode=f.ecode and f.task_id=#{task_id}) a
 		inner join ems_equipmentsubtype b on a.subtype_id=b.id
 		inner join ems_equipmentprod c on a.prod_id=c.id

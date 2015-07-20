@@ -11,7 +11,7 @@ Ext.onReady(function(){
 		split: true,
 		//collapsible: true,
 		//title:'XXX表格',
-		width:400
+		width:450
 	});
 	
 
@@ -24,10 +24,11 @@ Ext.onReady(function(){
 		gridList.getStore().getProxy().extraParams={task_id:record.get("id")};
 		gridList.getStore().load();
 	});
+	grid.gridList=gridList;
 	
 	var viewPort=Ext.create('Ext.container.Viewport',{
 		layout:'border',
-		items:[grid,list],
+		items:[grid,gridList],
 		listeners:{
 			render:function(){
 

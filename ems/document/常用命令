@@ -2,7 +2,7 @@
 		ems/ems
 
 数据库的导入，导出
-	导出ems的表和数据: exp system/system@ems file=E:\eclipse\workspace\leon\ems\document\dmp\daochu061101.dmp owner=(ems)
+	导出ems的表和数据: exp system/system@ems file=E:\eclipse\workspace\leon\ems\document\dmp\daochu0720.dmp owner=(ems)
 	导入到新的数据库:imp ems/ems@ems   file=E:\eclipse\workspace\leon\ems\document\dmp\daochu0711.dmp full=Y
 	不同名用户导入
 		imp system/test@xe fromuser=hkb touser=hkb_new file=c:\orabackup\hkbfull.dmp

@@ -749,7 +749,7 @@ $(document).ready(function(e) {
 							html+='<option value="'+hitchReasonTples[i].id+'">'+hitchReasonTples[i].name+'</option>';
 						}
 						$("#select-choice-hitchReasonTpl").html(html);//.trigger("create");
-						
+						//$("#select-choice-hitchReasonTpl").val("0").selectmenu( "refresh" );
 						init_update_repair_task();
 					}
 				});
@@ -987,7 +987,7 @@ $(document).ready(function(e) {
 			}
 			//如果设备状态是手持，就是安装，如果是using就是维修或者巡检，巡检任务扫描的设备都是巡检
 			html+='<div data-role="collapsible" taskEquipmentList_id="'+root[i].id+'" ecode="'+root[i].ecode+'" equipment_status="'+root[i].equipment_status+'">'+
-				'<h4><font '+color+'>'+root[i].ecode+':'+root[i].style+'</font></h4>'+
+				'<h4><font '+color+'>'+root[i].ecode+':'+root[i].prod_style+'</font></h4>'+
 				'<p>'+root[i].brand_name+':'+root[i].subtype_name+'>'+root[i].prod_name+'>'+root[i].supplier_name+'</p>'+
 				'</div>';	
 		}
@@ -1034,6 +1034,9 @@ $(document).ready(function(e) {
 	//重新打开维修任务的时候的数据
 	var init_update_repair_task_hitchReasonTpl_id=null;
 	window.init_update_repair_task =function(){
+		if(!init_update_repair_task_hitchReasonTpl_id){
+			return;
+		}
 		$("#select-choice-hitchReasonTpl").val(init_update_repair_task_hitchReasonTpl_id).selectmenu( "refresh" );
 		init_update_repair_task_hitchReasonTpl_id=null;
 	}
