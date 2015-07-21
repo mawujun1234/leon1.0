@@ -226,7 +226,7 @@ Ext.define('Ems.task.TaskQueryGrid',{
 	        //allowBlank: false,
 	        store:Ext.create('Ext.data.Store', {
 		    	fields: ['id', 'name'],
-			    data:[{id:'',name:'无'},{id:'newTask',name:'新任务'},{id:'read',name:'已阅'},{id:'handling',name:'处理中'},{id:'submited',name:'已提交'}]
+			    data:[{id:'',name:'无'},{id:'newTask',name:'新任务'},{id:'read',name:'已阅'},{id:'handling',name:'处理中'},{id:'submited',name:'已提交'},{id:'complete',name:'完成'}]
 		   })
 	  }); 
 	    var pole_textfield=Ext.create('Ext.form.field.Text',{

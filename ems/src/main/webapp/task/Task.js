@@ -14,7 +14,8 @@ Ext.defineModel("Ems.task.Task",{
 		{name:'startHandDate',type:'string'},
 		{name:'status',type:'string'},
 		{name:'submitDate',type:'string'},
-		{name:'type',type:'auto'},
+		{name:'completeDate',type:'string'},
+		{name:'type',type:'string'},
 		{name:'workunit_id',type:'string'},
 		
 		{name:'pole_address',type:'string'},

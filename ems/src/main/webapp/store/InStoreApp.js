@@ -177,23 +177,19 @@ Ext.onReady(function(){
 							ecode_textfield.clearInvalid( );
 							store_combox.disable();
 							
-							//插入到最后，如果发现超过了页数，那就翻页到第二页
-							var currentPage_return=Math.floor(ret.total/pageSize)+1;
-							if(ret.total%pageSize!=0 && currentPage_return!=equipStore.currentPage){
-								equipStore.loadPage(currentPage_return);
-							} else {
-								equipStore.add(scanrecord);
-								equip_grid.getView().refresh();	
-							}
-
-//							equipStore.insert(0, scanrecord);	
-//							equip_grid.getView().refresh();					
-//							if(equipStore.getCount()>=pageSize+20){
-//								//永远获取第一页
-//								equipStore.getProxy().extraParams={store_id:store_combox.getValue(),checkDate:checkDate};
-//								//equipStore.load({params:{start:0,limit:pageSize}})
-//								equip_grid.getDockedItems('toolbar[dock="bottom"]')[0].moveFirst( );
+//							//插入到最后，如果发现超过了页数，那就翻页到第二页
+//							var currentPage_return=Math.floor(ret.total/pageSize)+1;
+//							if(ret.total%pageSize!=0 && currentPage_return!=equipStore.currentPage){
+//								equipStore.loadPage(currentPage_return);
+//							} else {
+//								//equipStore.add(scanrecord);
+//								equipStore.reload();
 //							}
+							equipStore.insert(0, scanrecord);	
+							equip_grid.getView().refresh();	
+							toolbar_title_text_num.update(""+equipStore.getCount());
+							//equipStore.add(scanrecord);	
+
 						} else {
 							Ext.Msg.alert("消息",ret.msg);
 							ecode_textfield.setValue("");
@@ -209,28 +205,37 @@ Ext.onReady(function(){
 	
 	//==========================================================================================
 	
-	var pageSize=50;
+//	var pageSize=10;
+//	var equipStore = Ext.create('Ext.data.Store', {
+//        autoDestroy: true,
+//        pageSize:pageSize,
+//        model: 'Ems.baseinfo.Equipment',
+//        autoLoad:false,
+//        proxy: {
+//	        type: 'ajax',
+//	        url: '/inStore/queryEquipFromCache.do',  // url that will load data with respect to start and limit params
+//	        reader: {
+//	            type: 'json',
+//	            root: 'root',
+//	            totalProperty: 'total'
+//	        }
+//	    },
+//	    listeners:{
+//	    	beforeload:function( store, operation, eOpts ) {
+//	    		equipStore.getProxy().extraParams={store_id:store_combox.getValue(),checkDate:checkDate};
+//	    	}
+//	    }
+//    });
 	var equipStore = Ext.create('Ext.data.Store', {
         autoDestroy: true,
-        pageSize:pageSize,
         model: 'Ems.baseinfo.Equipment',
-        autoLoad:false,
         proxy: {
-	        type: 'ajax',
-	        url: '/inStore/queryEquipFromCache.do',  // url that will load data with respect to start and limit params
-	        reader: {
-	            type: 'json',
-	            root: 'root',
-	            totalProperty: 'total'
-	        }
-	    },
-	    listeners:{
-	    	beforeload:function( store, operation, eOpts ) {
-	    		equipStore.getProxy().extraParams={store_id:store_combox.getValue(),checkDate:checkDate};
-	    	}
-	    }
+            type: 'memory'
+        }
     });
-
+ 	var toolbar_title_text_num=Ext.create('Ext.form.Label',{
+    	html:"0"
+    });
 	var equip_grid=Ext.create('Ext.grid.Panel',{
 		flex:1,
 		store:equipStore,
@@ -284,7 +289,7 @@ Ext.onReady(function(){
   
     	          {header: '状态', dataIndex: 'status_name',width:100}
     	          ],
-        tbar:['<pan id="toolbar-title-text">当前入库记录</span>','->',
+        tbar:['<pan id="toolbar-title-text">当前入库记录:</span>',toolbar_title_text_num,'->',
               {text:'清空所有记录',
         	   iconCls:'icon-clearall',
         	   handler:function(){
@@ -308,38 +313,17 @@ Ext.onReady(function(){
 					});
         	   }
         	}
-        ],
-        bbar:{
-	        xtype: 'pagingtoolbar',
-	        store: equipStore,  
-	        dock: 'bottom',
-	        displayInfo: true
-	    }
+        ]
+//        bbar:{
+//	        xtype: 'pagingtoolbar',
+//	        itemId:'pagingtoolbar',
+//	        store: equipStore,  
+//	        dock: 'bottom',
+//	        displayInfo: true
+//	    }
 	});
 	
 	
-//	function addEquip(){
-//		var equipform=step1.down('form');
-//        var form=equipform.getForm();
-//		if(form.isValid()){
-//			var obj=form.getValues();
-//		    var record=new Ext.create('Ems.store.Equipment',{
-//	            subtype_id:obj.subtype_id,
-//	            subtype_name:subtype_combox.getRawValue(),
-//	            prod_id:obj.prod_id,
-//	            prod_name:prod_combox.getRawValue(),
-//	            brand_id:obj.brand_id,
-//	            brand_name:brand_combox.getRawValue(),
-//	            supplier_id:obj.supplier_id,
-//	            supplier_name:supplier_combox.getRawValue(),
-//	            style:obj.style,
-//	            serialNum:obj.serialNum,
-//	            unitPrice:obj.unitPrice,
-//	            totalprice:obj.totalprice
-//		    })
-//			equipStore.add(record);
-//		}
-//	}
 	
 	var step1=Ext.create('Ext.panel.Panel',{
         layout: {

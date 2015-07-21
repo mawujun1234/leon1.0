@@ -6,6 +6,7 @@ Ext.defineModel("Ems.task.TaskEquipmentList",{
 		{name:'ecode',type:'string'},
 		{name:'task_id',type:'string'},
 		{name:'type',type:'string'},
+		{name:'scanDate',type:'string'},
 		
 		{name:'type_name',type:'string'},
 		{name:'subtype_name',type:'string'},

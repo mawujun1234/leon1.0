@@ -1,1 +1,1 @@
-{verCode:115,verName:"1.1.5",changelog:" 1:调整故障类型和故障原因的模板。"}
+{verCode:116,verName:"1.1.6",changelog:" 1:增加维修时必须强制输入故障原因的功能。"}

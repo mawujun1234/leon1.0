@@ -30,8 +30,9 @@ public class InstallInList  extends UUIDEntity {
 	private InstallInListType installInListType;//返回的设备是领用出去，没使用就马上返回 ，还是从点位上拆下来返回的设备
 	@Column(length=36)
 	private String installout_id;//如果type是领用返回，那这个id就是领用单的id，否则就为null
-	
-	//private String task_id;
+	@Column(length=36)
+	private String project_id;//如果type是拆回入库,那这个id就是设备原来所在点位的所属项目的id，如果是领用或借用返回，那就是领用或借用出去时指定的项目的id
+
 
 	public String getEcode() {
 		return ecode;
@@ -68,5 +69,11 @@ public class InstallInList  extends UUIDEntity {
 	}
 	public void setIsnew(Boolean isnew) {
 		this.isnew = isnew;
+	}
+	public String getProject_id() {
+		return project_id;
+	}
+	public void setProject_id(String project_id) {
+		this.project_id = project_id;
 	}
 }

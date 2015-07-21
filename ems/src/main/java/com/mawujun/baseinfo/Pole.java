@@ -42,6 +42,8 @@ public class Pole extends UUIDEntity {
 	
 	@Column(length=36)
 	private String area_id;
+	@Column(length=36)
+	private String project_id;
 	
 //	@org.hibernate.annotations.Type(type="yes_no")
 //	private Boolean status=true;
@@ -155,6 +157,14 @@ public class Pole extends UUIDEntity {
 
 	public void setPoleType(PoleType poleType) {
 		this.poleType = poleType;
+	}
+
+	public String getProject_id() {
+		return project_id;
+	}
+
+	public void setProject_id(String project_id) {
+		this.project_id = project_id;
 	}
 
 

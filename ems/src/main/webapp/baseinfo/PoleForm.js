@@ -18,6 +18,10 @@ Ext.define('Ems.baseinfo.PoleForm',{
  //   },
 	initComponent: function () {
        var me = this;
+       	var project_combox=Ext.create('Ems.baseinfo.ProjectCombo',{
+			flex:1,
+			allowBlank: false
+		});
        me.items= [
 		{
 	        fieldLabel: 'id',
@@ -80,6 +84,7 @@ Ext.define('Ems.baseinfo.PoleForm',{
 			    value:"pole",
 			    name:'poleType'
 		},
+		project_combox,
 	    {
 	        	xtype:'combobox',
 			    fieldLabel: '省',

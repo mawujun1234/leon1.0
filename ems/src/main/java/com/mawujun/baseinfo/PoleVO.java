@@ -13,6 +13,7 @@ public class PoleVO extends Pole {
 	private String customer_name;
 	private String workunit_id;
 	private String workunit_name;
+	private String project_name;
 	
 	private Integer task_num;//任务数量
 	
@@ -72,6 +73,14 @@ public class PoleVO extends Pole {
 	}
 	public void setEquipments(List<EquipmentVO> equipments) {
 		this.equipments = equipments;
+	}
+
+	public String getProject_name() {
+		return project_name;
+	}
+
+	public void setProject_name(String project_name) {
+		this.project_name = project_name;
 	}
 
 	

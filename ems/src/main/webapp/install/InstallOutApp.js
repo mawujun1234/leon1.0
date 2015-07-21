@@ -346,7 +346,10 @@ Ext.onReady(function(){
 								Ext.Msg.alert('提示','该设备已经存在');
 							}else{
 								//equipStore.insert(0, scanrecord);		
-								equipStore.add(scanrecord);	
+								//equipStore.add(scanrecord);	
+								equipStore.insert(0, scanrecord);	
+							    equip_grid.getView().refresh();	
+								toolbar_title_text_num.update(""+equipStore.getCount());
 							}	
 							workUnit_combox.disable();
 							store_combox.disable();
@@ -373,6 +376,9 @@ Ext.onReady(function(){
         proxy: {
             type: 'memory'
         }
+    });
+    var toolbar_title_text_num=Ext.create('Ext.form.Label',{
+    	html:"0"
     });
 	var equip_grid=Ext.create('Ext.grid.Panel',{
 		flex:1,
@@ -416,7 +422,7 @@ Ext.onReady(function(){
     	         // {header: '库房', dataIndex: 'stock',width:120},
     	          //{header: '状态', dataIndex: 'status_name',width:100}
     	          ],
-        tbar:['<pan id="toolbar-title-text">当前入库记录</span>','->',
+        tbar:['<span id="toolbar-title-text">当前领用记录:</span>',toolbar_title_text_num,'->',
               {text:'清空所有的设备',
         	   iconCls:'icon-clearall',
         	   handler:function(){
@@ -430,6 +436,7 @@ Ext.onReady(function(){
         	   }
         }]
 	});
+
 	
 	
 //	function addEquip(){

@@ -37,7 +37,7 @@ begin
   select prod_id,0 yesterdaynum,0 purchasenum,sum(oldnum) oldnum,0 installoutnum,0 repairinnum,0 scrapoutnum,0 repairoutnum,0 borrownum,0 borrowreturnnum from (
     select c.prod_id,count(b.ecode) as oldnum from ems_installin a,ems_installinlist b,ems_equipment c
     where a.id=b.installIn_id and b.ecode=c.ecode and to_char(a.operatedate,'yyyymmdd') =in_todaykey and a.store_id=in_store_id
-    and b.isBad='N' and b.installInListType='other'
+    and b.isBad='N' and b.installInListType='takedown'
     group by c.prod_id  
     union all
     select c.prod_id,count( b.ecode) as oldnum from ems_adjust a,ems_adjustlist b,ems_equipment c

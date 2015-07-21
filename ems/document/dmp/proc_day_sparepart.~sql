@@ -48,7 +48,7 @@ begin
   group by prod_id
    union all
   --本期领用
-  select prod_id,0 yesterdaynum,0 purchasenum,0 oldnum,sum(installoutnum),0 repairinnum,0 scrapoutnum,0 repairoutnum,0 borrownum,0 borrowreturnnum from (
+  select prod_id,0 yesterdaynum,0 purchasenum,0 oldnum,sum(installoutnum) installoutnum,0 repairinnum,0 scrapoutnum,0 repairoutnum,0 borrownum,0 borrowreturnnum from (
     select c.prod_id,count(b.ecode) as installoutnum from ems_installout a,ems_installoutlist b,ems_equipment c
     where a.id=b.installout_id and b.ecode=c.ecode and to_char(a.operatedate,'yyyymmdd') =in_todaykey and a.store_id=in_store_id
     and b.installOutListType='installout' and a.status='over'

@@ -17,12 +17,14 @@ Ext.defineModel("Ems.baseinfo.Pole",{
 		{name:'area_id',type:'string'},
 		
 		{name:'workunit_id',type:'string'},
+		{name:'project_id',type:'string'},
 		
 		{name:'poleType_name',type:'string'},
 		{name:'status_name',type:'string'},
 		{name:'area_name',type:'string'},
 		{name:'workunit_name',type:'string'},
 		{name:'customer_name',type:'string'},
+		{name:'project_name',type:'string'},
 		
 		{name:'task_num',type:'int'}
 //		{name:'task_id',type:'string'},

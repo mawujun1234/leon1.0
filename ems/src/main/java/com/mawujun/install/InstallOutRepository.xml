@@ -34,6 +34,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="project_id!=null and project_id!=''">
 			and a.project_id =#{project_id}
 		</if>
+		order by a.id desc
     </select>
     <select id="queryMain_count" resultType="int" parameterType="map">
     	select count(a.id) from ems_installout a

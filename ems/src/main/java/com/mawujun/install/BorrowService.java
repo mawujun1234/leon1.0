@@ -182,6 +182,7 @@ public class BorrowService extends AbstractService<Borrow, String>{
 			equipmentWorkunit.setType(EquipmentWorkunitType.borrow);
 			equipmentWorkunit.setType_id(borrow_id);
 			equipmentWorkunit.setFrom_id(borrow.getStore_id());
+			equipmentWorkunit.setProject_id(borrow.getProject_id());
 			equipmentWorkunitRepository.create(equipmentWorkunit);
 			
 //			//插入入库单明细

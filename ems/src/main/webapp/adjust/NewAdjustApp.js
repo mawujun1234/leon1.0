@@ -204,7 +204,10 @@ Ext.onReady(function(){
 								Ext.Msg.alert('提示','该设备已经存在');
 							}else{
 								//equipStore.insert(0, scanrecord);	
-								equipStore.add(scanrecord);
+								//equipStore.add(scanrecord);
+								equipStore.insert(0, scanrecord);	
+							    equip_grid.getView().refresh();	
+								toolbar_title_text_num.update(""+equipStore.getCount());
 							}			
 							store_out_combox.disable();
 							store_in_combox.disable();
@@ -223,7 +226,9 @@ Ext.onReady(function(){
 	}
 	
 	//==========================================================================================
-	
+	var toolbar_title_text_num=Ext.create('Ext.form.Label',{
+    	html:"0"
+    });
 	
 	var equipStore = Ext.create('Ext.data.Store', {
         autoDestroy: true,
@@ -266,7 +271,7 @@ Ext.onReady(function(){
     	          //{header: '出库仓库', dataIndex: 'str_out_name'},
     	          //{header: '入库仓库', dataIndex: 'str_in_name'},
 				  ],
-        tbar:['<pan id="toolbar-title-text">当前入库记录</span>','->',
+        tbar:['<pan id="toolbar-title-text">当前调拨记录:</span>',toolbar_title_text_num,'->',
               {text:'清空列表中设备',
         	   iconCls:'icon-clearall',
         	   handler:function(){

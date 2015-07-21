@@ -33,6 +33,9 @@ public class EquipmentWorkunit implements IdEntity<EquipmentWorkunitPK>{
 	private String type_id;//出库单id，借用单id或者是任务id，这个任务id可能是维修任务的id，维修任务会把从杆位行拆下来的设备放到这里
 	@Column(length=36)
 	private String from_id;//来源的id，比如从仓库来，就是仓库id，如果是从杆位上来就是杆位id
+	//以后还可能会用来判断 只能用于某个项目
+	@Column(length=36)
+	private String project_id;//如果type是拆回入库,那这个id就是设备原来所在点位的所属项目的id，如果是领用或借用返回，那就是领用或借用出去时指定的项目的id
 	
 	public EquipmentWorkunitPK getId() {
 		return new EquipmentWorkunitPK(ecode,workunit_id);
@@ -89,6 +92,12 @@ public class EquipmentWorkunit implements IdEntity<EquipmentWorkunitPK>{
 	}
 	public void setFrom_id(String from_id) {
 		this.from_id = from_id;
+	}
+	public String getProject_id() {
+		return project_id;
+	}
+	public void setProject_id(String project_id) {
+		this.project_id = project_id;
 	}
 
 }

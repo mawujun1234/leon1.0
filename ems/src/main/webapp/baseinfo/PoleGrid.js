@@ -40,6 +40,7 @@ Ext.define('Ems.baseinfo.PoleGrid',{
 		{dataIndex:'code',text:'编号',width:60},
       	{dataIndex:'name',text:'点位名称',width:160},
       	{dataIndex:'poleType_name',text:'点位类型',width:160},
+      	{dataIndex:'project_name',text:'所属项目',width:160},
       	{dataIndex:'province',text:'地址',flex:1,renderer:function(value,metadata ,record){
       		var aaa=value+record.get("city")+record.get("area")+record.get("address");
       		metadata.tdAttr = "data-qtip='" + aaa+ "'";
@@ -176,11 +177,14 @@ Ext.define('Ems.baseinfo.PoleGrid',{
 		data.status="uninstall";
 		var record=new Ems.baseinfo.Pole(data);    
 		form.getForm().loadRecord(record);
+		
+		
+		
 		var win=new Ext.window.Window({
 			items:[form],
 			layout:'fit',
 			closeAction:'destroy',
-			width:300,
+			width:350,
 			height:400,
 			modal:true
 		});
@@ -206,8 +210,8 @@ Ext.define('Ems.baseinfo.PoleGrid',{
 				saved:function(){
 					//form.updateRecord();
 					win.close();
-					//alert(record.get("id")+"_"+record.get("levl"));
-					//me.tree.getStore().getNodeById(record.get("id")+"_"+record.get("levl")).set("text",record.get("text")) 
+					me.getStore().reload();
+
 				}
 			}
 		});
@@ -215,6 +219,10 @@ Ext.define('Ems.baseinfo.PoleGrid',{
 		//var ids=record.get("id").split("_");
 		//form.getForm().findField("id").setValue(ids[0]);
 		form.getForm().findField("id").setReadOnly(true);
+		
+		var project_combox=form.getForm().findField("project_id");
+		var project_model= project_combox.getStore().createModel({id:record.get("project_id"),name:record.get("project_name")});
+		project_combox.setValue(project_model);
 		
 		var win=new Ext.window.Window({
 			items:[form],

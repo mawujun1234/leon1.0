@@ -23,7 +23,7 @@
 	grant dba,connect,resource to emstest;
 	
 	exp system/system@emstest file=d:\daochutest0608.dmp owner=(emstest)
-	imp emstest/emstest@emstest   file=d:\daochutest0608.dmp fromuser=ems touser=emstest
+	imp emstest/emstest@emstest   file=d:\daochutest0721.dmp fromuser=ems touser=emstest
 	
 	
 	

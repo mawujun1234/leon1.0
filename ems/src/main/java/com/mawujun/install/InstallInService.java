@@ -25,6 +25,7 @@ import com.mawujun.baseinfo.StoreService;
 import com.mawujun.baseinfo.TargetType;
 import com.mawujun.baseinfo.WorkUnitService;
 import com.mawujun.exception.BusinessException;
+import com.mawujun.mobile.task.LockEquipmentService;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 import com.mawujun.shiro.ShiroUtils;
@@ -59,6 +60,8 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 	private EquipmentCycleService equipmentCycleService;
 	@Autowired
 	private StoreService storeService;
+	@Autowired
+	private LockEquipmentService lockEquipmentService;
 	
 	SimpleDateFormat ymdHmsDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
 	
@@ -73,6 +76,9 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 //		if(equipmentWorkunit!=null){
 //			throw new BusinessException("该设备是借用设备,不能在这里进行返回!");
 //		}
+		//判断这个设备有没有被任务锁定
+		lockEquipmentService.check_locked(ecode, null);
+		
 		EquipmentWorkunitPK equipmentWorkunitPK=new EquipmentWorkunitPK();
 		equipmentWorkunitPK.setEcode(ecode);
 		equipmentWorkunitPK.setWorkunit_id(workunit_id);
@@ -88,9 +94,9 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 			throw new BusinessException("该设备是借用设备,不能在这里进行返回!");
 		}
 		
-		InstallInListVO equipment= installInRepository.getEquipmentByEcode(ecode,workunit_id);
+		InstallInListVO installInListVO= installInRepository.getEquipmentByEcode(ecode,workunit_id);
 		//若果这个设备不在当前的作业单位身上
-		if(equipment==null){
+		if(installInListVO==null){
 			//equipment=new Equipment();
 			//equipment.setStatus(0);
 			throw new BusinessException("该条码对应的设备不存在，或者该设备挂在其他作业单位或已经入库了!");
@@ -98,13 +104,15 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 		//如果是领用出去，然后直接返回的
 		if(equipmentWorkunit.getType()==EquipmentWorkunitType.installout){
 			//如果领出去然后直接返回时，这个设备还是挂在workunit中，并且最新的单据还是领用单
-			equipment.setInstallInListType(InstallInListType.intallout);
-			equipment.setInstallout_id(equipmentWorkunit.getType_id());
+			installInListVO.setInstallInListType(InstallInListType.intallout);
+			installInListVO.setInstallout_id(equipmentWorkunit.getType_id());
 		} else {
-			equipment.setInstallInListType(InstallInListType.other);
+			//暂时是，不是领用返回就是拆回返回
+			installInListVO.setInstallInListType(InstallInListType.takedown);
 		}
 
-		return equipment;
+		installInListVO.setProject_id(equipmentWorkunit.getProject_id());
+		return installInListVO;
 	}
 	
 	/**

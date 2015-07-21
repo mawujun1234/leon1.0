@@ -412,6 +412,12 @@ public class TaskService extends AbstractService<Task, String>{
 			throw new BusinessException("没有这个设备");
 		}
 		
+		//更新设备状态为处理中
+		taskRepository.update_to_handling_status(task_id);
+		//task.setStatus(TaskStatus.handling);
+		//task.setStartHandDate(new Date());
+		
+		
 		//添加一个字段currt_task_id，绑定任务，就是当扫描后就绑定到一个任务上了，当在任务上删除这个设备的时候，就改到没有绑定任务,里面放的是当前绑定任务id，否则为null
 		//并且巡检
 		//那问题是什么时候把currt_task_id放到last_task_id,现在暂时是在任务提交的时候吧。
@@ -441,6 +447,7 @@ public class TaskService extends AbstractService<Task, String>{
 		}else if(TaskType.cancel==task_type){
 			list.setType(TaskListTypeEnum.uninstall);
 		}
+		list.setScanDate(new Date());
 		taskEquipmentListRepository.create(list);
 		
 		//对设备进行锁定
@@ -458,36 +465,8 @@ public class TaskService extends AbstractService<Task, String>{
 		vo.setProd_name(equipmentVO.getProd_name());
 		vo.setBrand_name(equipmentVO.getBrand_name());
 		
+		
 		return vo;
-//		Task task=taskRepository.get(task_id);
-//		//
-//		checkEquipStatus(task,equipmentVO);
-//		//还要判断是否有其他任务扫描过这个设备了，其他还是处理中和提交状态的
-//		if(!TaskType.patrol.equals(task.getType())){
-//			List<String> taskes=taskRepository.query_other_task_have_scaned(ShiroUtils.getAuthenticationInfo().getId(), ecode);
-//			if(taskes!=null && taskes.size()>0){
-//				throw new BusinessException("任务"+taskes.get(0)+"已经扫描了这个设备");
-//			}
-//		}
-//		
-//		TaskEquipmentListVO vo=new TaskEquipmentListVO();
-//		BeanUtils.copyProperties(equipmentVO, vo);
-//		
-//		if(task.getType()==TaskType.repair){
-//			if(equipmentVO.getStatus()==EquipmentStatus.using){
-//				//如果是证在使用的设备，默认替换下来的设备就设置为损坏out_storage
-//				//vo.setEquipment_status(EquipmentStatus.breakdown.getValue());
-//				//从点位上拆下来也变成是 施工单位持有的状态 2015.06.03,这个是即将变成的状态
-//				vo.setEquipment_status(EquipmentStatus.out_storage);
-//			} else if(equipmentVO.getStatus()==EquipmentStatus.out_storage){
-//				//如果是安装出库状态的设备，默认就设置外i使用中，这里都是临时的
-//				vo.setEquipment_status(EquipmentStatus.using);
-//			} 
-//		} else {
-//			//安装和巡检的时候，都是使用中的状态
-//			vo.setEquipment_status(EquipmentStatus.using);
-//		}
-//		return vo;
 	}
 	
 //	public void checkEquipStatus(Task task,Equipment equipmentVO){
@@ -606,7 +585,7 @@ public class TaskService extends AbstractService<Task, String>{
 		return list;
 	}
 	/**
-	 * 现在改成主要是为了保存额外的任误信息,比如损坏原因等等
+	 * 主要用于维修任务的保存
 	 * @author mawujun email:160649888@163.com qq:16064988
 	 * @param task_id
 	 * @param hitchType_id
@@ -635,6 +614,7 @@ public class TaskService extends AbstractService<Task, String>{
 		task.setHitchReasonTpl_id(hitchReasonTpl_id);
 		task.setHitchReason(hitchReason);
 
+		//主要用在维修任务，没有扫描，然后直接点保存的时候
 		if(task.getStatus()==TaskStatus.newTask || task.getStatus()==TaskStatus.read){
 			task.setStatus(TaskStatus.handling);
 			task.setStartHandDate(new Date());
@@ -803,6 +783,7 @@ public class TaskService extends AbstractService<Task, String>{
 							.set(M.Equipment.last_workunit_id, task.getWorkunit_id()).set(M.Equipment.last_task_id, task.getId())
 							.set(M.Equipment.currt_task_id, null).andEquals(M.Equipment.ecode, ecode));
 
+					Pole pole=poleRepository.get(task.getPole_id());
 					// 把设备挂到这个作业单位身上
 					EquipmentWorkunit equipmentWorkunit = new EquipmentWorkunit();
 					equipmentWorkunit.setEcode(taskEquipmentList.getEcode());
@@ -812,6 +793,7 @@ public class TaskService extends AbstractService<Task, String>{
 					equipmentWorkunit.setType(EquipmentWorkunitType.task);
 					equipmentWorkunit.setType_id(task.getId());
 					equipmentWorkunit.setFrom_id(task.getPole_id());
+					equipmentWorkunit.setProject_id(pole.getProject_id());
 					equipmentWorkunitRepository.create(equipmentWorkunit);
 					// 从杆位中移除这个设备
 					EquipmentPolePK equipmentPolePK = new EquipmentPolePK();
@@ -831,6 +813,7 @@ public class TaskService extends AbstractService<Task, String>{
 						.set(M.Equipment.last_workunit_id, task.getWorkunit_id()).set(M.Equipment.last_task_id, task.getId())
 						.set(M.Equipment.currt_task_id, null).andEquals(M.Equipment.ecode, ecode));
 
+				Pole pole=poleRepository.get(task.getPole_id());
 				// 插入到workunit中
 				EquipmentWorkunit equipmentWorkunit = new EquipmentWorkunit();
 				equipmentWorkunit.setEcode(taskEquipmentList.getEcode());
@@ -840,6 +823,7 @@ public class TaskService extends AbstractService<Task, String>{
 				equipmentWorkunit.setType(EquipmentWorkunitType.task);
 				equipmentWorkunit.setType_id(task.getId());
 				equipmentWorkunit.setFrom_id(task.getPole_id());
+				equipmentWorkunit.setProject_id(pole.getProject_id());
 				equipmentWorkunitRepository.create(equipmentWorkunit);
 				// 从杆位中移除这个设备
 				EquipmentPolePK equipmentPolePK = new EquipmentPolePK();

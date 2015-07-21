@@ -1,5 +1,7 @@
 package com.mawujun.mobile.task;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -21,7 +23,7 @@ public class TaskEquipmentList extends UUIDEntity {
 	private String task_id;
 	@Column(length=36)
 	private String ecode;
-	//private Date scanDate;//扫描的时间
+	private Date scanDate;//扫描的时间
 	@Enumerated(EnumType.STRING)
 	@Column(length=15)
 	private TaskListTypeEnum type;
@@ -49,6 +51,12 @@ public class TaskEquipmentList extends UUIDEntity {
 	}
 	public void setType(TaskListTypeEnum type) {
 		this.type = type;
+	}
+	public Date getScanDate() {
+		return scanDate;
+	}
+	public void setScanDate(Date scanDate) {
+		this.scanDate = scanDate;
 	}
 
 

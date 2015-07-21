@@ -54,7 +54,7 @@ public class LockEquipmentService extends AbstractService<LockEquipment, String>
 	 * 判断设备是不是被某个任务锁定了，
 	 * @author mawujun email:160649888@163.com qq:16064988
 	 * @param ecode
-	 * @param type_id
+	 * @param type_id null:表示只要被锁定就行了 ，如果不为null表示是不是被指定的任务给锁定了
 	 */
 	public void check_locked(String ecode,String type_id){
 		LockEquipment lockEquipment=lockEquipmentRepository.get(ecode);

@@ -13,17 +13,18 @@ Ext.define('Ems.store.InStoreListGridQuery',{
 			}
 		}
 	},
-	features: [{
-            id: 'group',
-            ftype: 'groupingsummary',
-            groupHeaderTpl: '{name}',
-            hideGroupedHeader: true,
-            enableGroupingMenu: false,
-            id:'restaurantGrouping'
-     }],
+//	features: [{
+//            id: 'group',
+//            ftype: 'groupingsummary',
+//            groupHeaderTpl: '{name}',
+//            hideGroupedHeader: true,
+//            enableGroupingMenu: false,
+//            id:'restaurantGrouping'
+//     }],
 	initComponent: function () {
       var me = this;
       me.columns=[
+      	Ext.create('Ext.grid.RowNumberer'),
 		{dataIndex:'ecode',text:'条码',width:120},
 		{dataIndex:'subtype_name',text:'小类'},
 		{dataIndex:'prod_name',text:'品名'},
@@ -34,8 +35,8 @@ Ext.define('Ems.store.InStoreListGridQuery',{
 			metadata.tdAttr = "data-qtip='" + value+ "'";
 		    return value;
 			}
-		},
-		{dataIndex:'num',text:'数量',summaryType: 'sum'}
+		}
+		//{dataIndex:'num',text:'数量',summaryType: 'sum'}
       ];
       
       
@@ -63,55 +64,55 @@ Ext.define('Ems.store.InStoreListGridQuery',{
 	},
 	initAction:function(){
 		var me=this;
-		me.tbar=[{
-			text: '取消分组',
-			
-			handler: function(btn){
-				var grid=btn.up("grid");
-				grid.groupingFeature.disable();
-				//grid.groupBy_brand_name();
-			}
-		},{
-			text: '按小类分组',
-			
-			handler: function(btn){
-				var grid=btn.up("grid");
-				grid.groupingFeature.enable();
-				grid.groupBy_subtype_name();
-			}
-		},{
-			text: '按品名分组',
-			
-			handler: function(btn){
-				var grid=btn.up("grid");
-				grid.groupingFeature.enable();
-				grid.groupBy_prod_name();
-			}
-		},{
-			text: '按供应商分组',
-			
-			handler: function(btn){
-				var grid=btn.up("grid");
-				grid.groupingFeature.enable();
-				grid.groupBy_supplier_name();
-			}
-		},{
-			text: '按型号分组',
-			
-			handler: function(btn){
-				var grid=btn.up("grid");
-				grid.groupingFeature.enable();
-				grid.groupBy_style();
-			}
-		},{
-			text: '按品牌分组',
-			
-			handler: function(btn){
-				var grid=btn.up("grid");
-				grid.groupingFeature.enable();
-				grid.groupBy_brand_name();
-			}
-		}]
+//		me.tbar=[{
+//			text: '取消分组',
+//			
+//			handler: function(btn){
+//				var grid=btn.up("grid");
+//				grid.groupingFeature.disable();
+//				//grid.groupBy_brand_name();
+//			}
+//		},{
+//			text: '按小类分组',
+//			
+//			handler: function(btn){
+//				var grid=btn.up("grid");
+//				grid.groupingFeature.enable();
+//				grid.groupBy_subtype_name();
+//			}
+//		},{
+//			text: '按品名分组',
+//			
+//			handler: function(btn){
+//				var grid=btn.up("grid");
+//				grid.groupingFeature.enable();
+//				grid.groupBy_prod_name();
+//			}
+//		},{
+//			text: '按供应商分组',
+//			
+//			handler: function(btn){
+//				var grid=btn.up("grid");
+//				grid.groupingFeature.enable();
+//				grid.groupBy_supplier_name();
+//			}
+//		},{
+//			text: '按型号分组',
+//			
+//			handler: function(btn){
+//				var grid=btn.up("grid");
+//				grid.groupingFeature.enable();
+//				grid.groupBy_style();
+//			}
+//		},{
+//			text: '按品牌分组',
+//			
+//			handler: function(btn){
+//				var grid=btn.up("grid");
+//				grid.groupingFeature.enable();
+//				grid.groupBy_brand_name();
+//			}
+//		}]
 	},
 	groupBy_brand_name:function(){
 		var params=this.getStore().getProxy().extraParams;
