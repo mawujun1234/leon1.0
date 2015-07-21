@@ -1,10 +1,7 @@
 package com.mawujun.cache;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -15,7 +12,7 @@ import org.springframework.cache.Cache.ValueWrapper;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Component;
 
-import com.mawujun.baseinfo.EquipmentVO;
+import com.mawujun.store.IEcodeCache;
 import com.mawujun.utils.page.Page;
 
 //import net.sf.ehcache.Cache;
@@ -27,22 +24,22 @@ public class CacheMgr {
 	@Resource(name="cacheManager")
 	private EhCacheCacheManager cacheManager;
 	
-	public void putQrcode(EquipKey key,EquipmentVO value){		
+	public void putQrcode(EquipKey key,IEcodeCache value){		
 		Cache cache = cacheManager.getCache("qrcodeCache");
 		ValueWrapper element = cache.get(key);
 		if(element==null){
-			cache.put(key, new LinkedHashMap<String,EquipmentVO>());
+			cache.put(key, new LinkedHashMap<String,IEcodeCache>());
 			element=cache.get(key);
 		}
-		((Map<String,EquipmentVO>)element.get()).put(value.getEcode(), value);
+		((Map<String,IEcodeCache>)element.get()).put(value.getEcode(), value);
 		
 	}
 	public void removeQrcode(EquipKey key,String ecode){		
 		Cache cache = cacheManager.getCache("qrcodeCache");
 		ValueWrapper element = cache.get(key);
 		if(element!=null){
-			((Map<String,EquipmentVO>)element.get()).remove(ecode);
-			if(((Map<String,EquipmentVO>)element.get()).size()==0){
+			((Map<String,IEcodeCache>)element.get()).remove(ecode);
+			if(((Map<String,IEcodeCache>)element.get()).size()==0){
 				cache.evict(key);
 			}
 		}
@@ -52,13 +49,13 @@ public class CacheMgr {
 		cache.evict(key);
 	}
 	
-	public EquipmentVO getQrcode(EquipKey key,String ecode){
+	public IEcodeCache getQrcode(EquipKey key,String ecode){
 		Cache cache = cacheManager.getCache("qrcodeCache");
 		ValueWrapper element = cache.get(key);
 		if(element==null){
 			return null;
 		}
-		Map<String,EquipmentVO> map=(Map<String,EquipmentVO>)element.get();
+		Map<String,IEcodeCache> map=(Map<String,IEcodeCache>)element.get();
 		return map.get(ecode);
 	}
 	/**
@@ -75,10 +72,10 @@ public class CacheMgr {
 		if(element==null){
 			return null;
 		}
-		LinkedHashMap<String,EquipmentVO> map=(LinkedHashMap<String,EquipmentVO>)element.get();
+		LinkedHashMap<String,IEcodeCache> map=(LinkedHashMap<String,IEcodeCache>)element.get();
 		//map.values();
 		
-		ArrayList<EquipmentVO> list=new ArrayList<EquipmentVO>();
+		ArrayList<IEcodeCache> list=new ArrayList<IEcodeCache>();
 		int size=map.size();
 		//当当前页没有数据的时候，就获取前一页的数据
 		if(start>=size){
@@ -86,7 +83,7 @@ public class CacheMgr {
 		}
 		
 		int i=0;
-		for(Entry<String,EquipmentVO> entry:map.entrySet()) {
+		for(Entry<String,IEcodeCache> entry:map.entrySet()) {
 			if((i+1)>start){
 				if(((size-i-1))<=limit){
 					list.add(entry.getValue());
@@ -114,14 +111,14 @@ public class CacheMgr {
 		return page;
 	}
 	
-	public EquipmentVO[] getQrcodesAll(EquipKey key){
+	public IEcodeCache[] getQrcodesAll(EquipKey key){
 		Cache cache = cacheManager.getCache("qrcodeCache");
 		ValueWrapper element = cache.get(key);
 		if(element==null){
 			return null;
 		}
-		LinkedHashMap<String,EquipmentVO> map=(LinkedHashMap<String,EquipmentVO>)element.get();
-		return map.values().toArray(new EquipmentVO[map.size()]);
+		LinkedHashMap<String,IEcodeCache> map=(LinkedHashMap<String,IEcodeCache>)element.get();
+		return map.values().toArray(new IEcodeCache[map.size()]);
 	}
 	
 	

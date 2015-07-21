@@ -6,7 +6,7 @@ package com.mawujun.cache;
  *
  */
 public enum EquipScanType {
-	newInStore("新设备入库");
+	newInStore("新设备入库"),installout("领用");
 	
 	private String name;
 	EquipScanType(String name){

@@ -90,6 +90,10 @@ public class StoreReportController {
 		Cell workunit_name_cell = header_row.createCell(cellnum++);
 		workunit_name_cell.setCellValue("领用单位");
 		workunit_name_cell.setCellStyle(head_style);
+		
+		Cell installouttype_cell = header_row.createCell(cellnum++);
+		installouttype_cell.setCellValue("领用类型");
+		installouttype_cell.setCellStyle(head_style);
 
 		Cell customer_name_cell = header_row.createCell(cellnum++);
 		customer_name_cell.setCellValue("派出所");
@@ -216,6 +220,10 @@ public class StoreReportController {
 				Cell workunit_name_cell = row.createCell(cellnum++);
 				workunit_name_cell.setCellValue(installoutListReport.getWorkunit_name());
 				workunit_name_cell.setCellStyle(content_style);
+				
+				Cell installouttype_cell = row.createCell(cellnum++);
+				installouttype_cell.setCellValue(installoutListReport.getInstallouttype());
+				installouttype_cell.setCellStyle(content_style);
 				
 				Cell customer_name_cell = row.createCell(cellnum++);
 				if(customerService.get(installoutListReport.getCustomer_id())!=null){

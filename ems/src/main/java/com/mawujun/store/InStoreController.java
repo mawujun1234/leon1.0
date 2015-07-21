@@ -50,7 +50,7 @@ public class InStoreController {
 	@ResponseBody
 	public EquipmentVO getEquipFromBarcode(String ecode,String store_id,Long checkDate) {	
 		EquipKey key=EquipKey.getInstance(EquipScanType.newInStore, store_id,checkDate);
-		EquipmentVO equipmentVO=cacheMgr.getQrcode(key, ecode);
+		EquipmentVO equipmentVO=(EquipmentVO)cacheMgr.getQrcode(key, ecode);
 		if(equipmentVO!=null){
 			JsonConfigHolder.setSuccessValue(false);
 			JsonConfigHolder.setMsg("设备已经扫过!");
@@ -76,8 +76,8 @@ public class InStoreController {
 			}
 			cacheMgr.putQrcode(key, equipmentVO);
 			
-			Integer total=cacheMgr.getQrcodesAll(key).length;
-			JsonConfigHolder.setTotal(total);
+			//Integer total=cacheMgr.getQrcodesAll(key).length;
+			//JsonConfigHolder.setTotal(total);
 			return equipmentVO;
 		} else {
 			//return new EquipmentVO();
@@ -97,24 +97,40 @@ public class InStoreController {
 		cacheMgr.clearQrcode(EquipKey.getInstance(EquipScanType.newInStore, store_id,checkDate));
 		return "success";
 	}
+	
 	/**
 	 * 查询缓存中的数据
 	 * @author mawujun email:160649888@163.com qq:16064988
 	 * @param store_id
 	 * @return
 	 */
-	@RequestMapping("/inStore/queryEquipFromCache.do")
+	@RequestMapping("/inStore/refreshEquipFromCache.do")
 	@ResponseBody
-	public Page queryEquipFromCache(String store_id,Integer start,Integer limit,Long checkDate) {	
+	public EquipmentVO[] refreshEquipFromCache(String store_id,Long checkDate) {	
 		if(store_id==null){
-			return new Page();
+			return new EquipmentVO[0];
 		}
-		Page list=cacheMgr.getQrcodes(EquipKey.getInstance(EquipScanType.newInStore, store_id,checkDate),start,limit);
-		if(list==null){
-			return new Page();
-		}
-		return list;
+		return (EquipmentVO[])cacheMgr.getQrcodesAll(EquipKey.getInstance(EquipScanType.newInStore, store_id,checkDate));
+
 	}
+//	/**
+//	 * 查询缓存中的数据
+//	 * @author mawujun email:160649888@163.com qq:16064988
+//	 * @param store_id
+//	 * @return
+//	 */
+//	@RequestMapping("/inStore/queryEquipFromCache.do")
+//	@ResponseBody
+//	public Page queryEquipFromCache(String store_id,Integer start,Integer limit,Long checkDate) {	
+//		if(store_id==null){
+//			return new Page();
+//		}
+//		Page list=cacheMgr.getQrcodes(EquipKey.getInstance(EquipScanType.newInStore, store_id,checkDate),start,limit);
+//		if(list==null){
+//			return new Page();
+//		}
+//		return list;
+//	}
 	
 	
 	@RequestMapping("/inStore/newInStore.do")
@@ -123,7 +139,7 @@ public class InStoreController {
 	public String newInStore(@RequestBody Equipment[] equipments,InStore inStore,Long checkDate) throws  IOException, IllegalAccessException, InvocationTargetException, BeansException, IntrospectionException{
 		//inStoreService.newInStore(equipments,inStore);
 		EquipKey key=EquipKey.getInstance(EquipScanType.newInStore, inStore.getStore_id(),checkDate);
-		EquipmentVO[] equipmentVOs=cacheMgr.getQrcodesAll(key);
+		EquipmentVO[] equipmentVOs=(EquipmentVO[])cacheMgr.getQrcodesAll(key);
 		equipments=new Equipment[equipmentVOs.length];
 		int i=0;
 		for(EquipmentVO equipmentVO:equipmentVOs){

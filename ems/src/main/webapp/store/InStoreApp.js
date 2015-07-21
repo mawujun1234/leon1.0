@@ -258,13 +258,14 @@ Ext.onReady(function(){
 										success : function(response) {//加载成功的处理函数   
 											var ret=Ext.decode(response.responseText);
 											if(ret.success){
-												var currentPage=equipStore.currentPage;
-												if(equipStore.getCount()==1 && currentPage!=1){
-													currentPage-=1;
-												}
+//												var currentPage=equipStore.currentPage;
+//												if(equipStore.getCount()==1 && currentPage!=1){
+//													currentPage-=1;
+//												}
+//												equipStore.remove(record);
+//												//重新加载
+//												equipStore.loadPage(currentPage);
 												equipStore.remove(record);
-												//重新加载
-												equipStore.loadPage(currentPage);
 											}
 										}
 									});
@@ -305,12 +306,27 @@ Ext.onReady(function(){
 									if(ret.success){
 										equipStore.removeAll();
 										store_combox.enable();
-										equip_grid.getDockedItems('toolbar[dock="bottom"]')[0].moveFirst( );
+										//equip_grid.getDockedItems('toolbar[dock="bottom"]')[0].moveFirst( );
 									}
 								}
 							});
 						}
 					});
+        	   }
+        	},'-',{text:'刷新',
+        	   iconCls:'form-reload-button',
+        	   handler:function(){
+					var params={store_id:store_combox.getValue(),checkDate:checkDate};
+					Ext.Ajax.request({
+						url:Ext.ContextPath+'/inStore/refreshEquipFromCache.do',
+						method:'POST',
+						params:params,
+						success:function(response){
+							var obj=Ext.decode(response.responseText);
+							equipStore.loadData( obj.root, false );
+						}
+					});
+        	   	
         	   }
         	}
         ]

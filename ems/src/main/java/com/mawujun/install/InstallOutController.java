@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,12 +17,8 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.export.HtmlExporter;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.engine.export.JRPdfExporterParameter;
 import net.sf.jasperreports.export.SimpleExporterInput;
-import net.sf.jasperreports.export.SimpleHtmlExporterOutput;
-import net.sf.jasperreports.export.SimpleHtmlReportConfiguration;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimplePdfReportConfiguration;
 
@@ -35,12 +30,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mawujun.baseinfo.EquipmentService;
 import com.mawujun.baseinfo.EquipmentStatus;
 import com.mawujun.baseinfo.EquipmentVO;
+import com.mawujun.cache.CacheMgr;
+import com.mawujun.cache.EquipKey;
+import com.mawujun.cache.EquipScanType;
+import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.utils.M;
 import com.mawujun.utils.StringUtils;
 import com.mawujun.utils.page.Page;
-
-import freemarker.template.utility.DateUtil;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
  * @version 1.0
@@ -54,9 +51,9 @@ public class InstallOutController {
 	private InstallOutService installOutStoreService;
 	@Resource
 	private EquipmentService equipmentService;
+	@Resource
+	private CacheMgr cacheMgr;
 
-
-	
 	/**
 	 * 主要用于新品入库的时候
 	 * @author mawujun 16064988@qq.com 
@@ -65,7 +62,15 @@ public class InstallOutController {
 	 */
 	@RequestMapping("/installOut/getEquipmentByEcode.do")
 	@ResponseBody
-	public EquipmentVO getEquipmentByEcode(String ecode,String store_id) {	
+	public InstallOutList getEquipmentByEcode(String ecode,String store_id,Long checkDate) {	
+		EquipKey key=EquipKey.getInstance(EquipScanType.installout, store_id,checkDate);
+		InstallOutList equipmentVO=(InstallOutList)cacheMgr.getQrcode(key, ecode);
+		if(equipmentVO!=null){
+			JsonConfigHolder.setSuccessValue(false);
+			JsonConfigHolder.setMsg("设备已经扫过!");
+			return equipmentVO;
+		}
+		
 		EquipmentVO equipment= equipmentService.getEquipmentByEcode_in_store(ecode,store_id);
 		if(equipment==null){
 			//equipment=new Equipment();
@@ -76,7 +81,67 @@ public class InstallOutController {
 		if(equipment.getStatus()!=EquipmentStatus.in_storage){
 			throw new BusinessException("设备状态不是\"已入库\",不能领用该设备!");
 		}
+		cacheMgr.putQrcode(key, equipment);
 		return equipment;
+	}
+//	/**
+//	 * 主要用于新品入库的时候
+//	 * @author mawujun 16064988@qq.com 
+//	 * @param ecode
+//	 * @return
+//	 */
+//	@RequestMapping("/installOut/getEquipmentByEcode.do")
+//	@ResponseBody
+//	public EquipmentVO getEquipmentByEcode(String ecode,String store_id,Long checkDate) {	
+//		EquipKey key=EquipKey.getInstance(EquipScanType.installout, store_id,checkDate);
+//		EquipmentVO equipmentVO=cacheMgr.getQrcode(key, ecode);
+//		if(equipmentVO!=null){
+//			JsonConfigHolder.setSuccessValue(false);
+//			JsonConfigHolder.setMsg("设备已经扫过!");
+//			return equipmentVO;
+//		}
+//		
+//		EquipmentVO equipment= equipmentService.getEquipmentByEcode_in_store(ecode,store_id);
+//		if(equipment==null){
+//			//equipment=new Equipment();
+//			//equipment.setStatus(0);
+//			throw new BusinessException("对不起，该条码对应的设备不存在，或者该设备挂在其他仓库中!");
+//		}
+//		//设备返库的时候，设备如果不是手持或损坏状态的话，就不能进行返库，说明任务没有扫描或者没有提交
+//		if(equipment.getStatus()!=EquipmentStatus.in_storage){
+//			throw new BusinessException("设备状态不是\"已入库\",不能领用该设备!");
+//		}
+//		cacheMgr.putQrcode(key, equipment);
+//		return equipment;
+//	}
+	
+	@RequestMapping("/installOut/removeEquipFromCache.do")
+	@ResponseBody
+	public String removeEquipFromCache(String ecode,String store_id,Long checkDate) {	
+		cacheMgr.removeQrcode(EquipKey.getInstance(EquipScanType.installout, store_id,checkDate),ecode);
+		return "success";
+	}
+	@RequestMapping("/installOut/clearEquipFromCache.do")
+	@ResponseBody
+	public String clearEquipFromCache(String store_id,Long checkDate) {	
+		cacheMgr.clearQrcode(EquipKey.getInstance(EquipScanType.installout, store_id,checkDate));
+		return "success";
+	}
+	
+	/**
+	 * 查询缓存中的数据
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param store_id
+	 * @return
+	 */
+	@RequestMapping("/installOut/refreshEquipFromCache.do")
+	@ResponseBody
+	public EquipmentVO[] refreshEquipFromCache(String store_id,Long checkDate) {	
+		if(store_id==null){
+			return new EquipmentVO[0];
+		}
+		return cacheMgr.getQrcodesAll(EquipKey.getInstance(EquipScanType.installout, store_id,checkDate));
+
 	}
 	
 	/**

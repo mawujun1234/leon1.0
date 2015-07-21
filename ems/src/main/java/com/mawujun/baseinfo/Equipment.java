@@ -10,10 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.mawujun.repository.idEntity.IdEntity;
+import com.mawujun.store.IEcodeCache;
 
 @Entity
 @Table(name="ems_equipment")
-public class Equipment implements IdEntity<String>{
+public class Equipment implements IdEntity<String>,IEcodeCache{
 	@Id
 	@Column(length=25)
 	private String ecode;

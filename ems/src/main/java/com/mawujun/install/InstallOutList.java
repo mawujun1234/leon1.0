@@ -9,10 +9,11 @@ import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
 import com.mawujun.repository.idEntity.UUIDEntity;
+import com.mawujun.store.IEcodeCache;
 
 @Entity
 @Table(name="ems_installoutlist")
-public class InstallOutList  extends UUIDEntity {
+public class InstallOutList  extends UUIDEntity  implements IEcodeCache {
 	/**
 	 * 
 	 */

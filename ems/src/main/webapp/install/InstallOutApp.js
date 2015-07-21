@@ -310,7 +310,7 @@ Ext.onReady(function(){
 		   if(field.isValid()){
 			  // form.load({
 		   	Ext.Ajax.request({
-					params : {ecode:newValue,store_id:store_combox.getValue()},//传递参数   
+					params : {ecode:newValue,store_id:store_combox.getValue(),checkDate:checkDate},//传递参数   
 					url : Ext.ContextPath+'/installOut/getEquipmentByEcode.do',//请求的url地址   
 					method : 'GET',//请求方式   
 					success : function(response) {//加载成功的处理函数   
@@ -369,7 +369,7 @@ Ext.onReady(function(){
 	
 	//==========================================================================================
 	
-	
+	var checkDate=(new Date()).getTime();
 	var equipStore = Ext.create('Ext.data.Store', {
         autoDestroy: true,
         model: 'Ems.install.InstallOutList',
@@ -394,7 +394,17 @@ Ext.onReady(function(){
 	                        var rec = equipStore.getAt(rowIndex);
 	                        Ext.MessageBox.confirm('确认', '您确认要删除该记录吗?', function(btn){
 	                        	if(btn=='yes'){
-	                        		equipStore.remove(rec);
+	                        		Ext.Ajax.request({
+										params : {ecode:record.get("ecode"),store_id:store_combox.getValue(),checkDate:checkDate},//传递参数   
+										url : Ext.ContextPath+'/installOut/removeEquipFromCache.do',//请求的url地址   
+										method : 'GET',//请求方式   
+										success : function(response) {//加载成功的处理函数   
+											var ret=Ext.decode(response.responseText);
+											if(ret.success){
+												equipStore.remove(record);
+											}
+										}
+									});
 	                        	}
 	                        });
 	                    }
@@ -428,11 +438,36 @@ Ext.onReady(function(){
         	   handler:function(){
         		   Ext.MessageBox.confirm('确认', '您确认要清除所有记录吗?', function(btn){
 						if(btn=='yes'){
-							equipStore.removeAll();
-							workUnit_combox.enable();
-							store_combox.enable();
+							Ext.Ajax.request({
+								params : {store_id:store_combox.getValue(),checkDate:checkDate},//传递参数   
+								url : Ext.ContextPath+'/installOut/clearEquipFromCache.do',//请求的url地址   
+								method : 'GET',//请求方式   
+								success : function(response) {//加载成功的处理函数   
+									var ret=Ext.decode(response.responseText);
+									if(ret.success){
+										equipStore.removeAll();
+										workUnit_combox.enable();
+										store_combox.enable();
+									}
+								}
+							});
 						}
 					});
+        	   }
+        },'-',{text:'刷新',
+        	   iconCls:'form-reload-button',
+        	   handler:function(){
+					var params={store_id:store_combox.getValue(),checkDate:checkDate};
+					Ext.Ajax.request({
+						url:Ext.ContextPath+'/installOut/refreshEquipFromCache.do',
+						method:'POST',
+						params:params,
+						success:function(response){
+							var obj=Ext.decode(response.responseText);
+							equipStore.loadData( obj.root, false );
+						}
+					});
+        	   	
         	   }
         }]
 	});
