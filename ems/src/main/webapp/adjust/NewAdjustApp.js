@@ -308,7 +308,11 @@ Ext.onReady(function(){
         //{html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;库房人员应当根据采购单，对设备分类后，一次对同类设备批量“添加”入库，直到所有采购单设备根据设备类型都已经“添加”到入库清单后，可以选择“下一步”，进入到二维码生成步骤'}],
         {html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;一次调拨出库只能选择一个仓库'}],
         buttons:[{text:'调拨出库',handler:function(btn){
-            if (equipStore.getCount()> 0) { 
+        	
+        	
+            Ext.Msg.confirm("提示","当前维修出库的记录是:"+equipStore.getCount()+",是否继续?",function(btn){	
+        	
+            if (btn=='yes') { 
             	var form= step1.down('form').getForm();
 	        	if(!form.isValid()){
 	        		alert("请在出现红框的地方选择值!");
@@ -348,9 +352,8 @@ Ext.onReady(function(){
 						Ext.getBody().unmask();
 					}
 				});
-            }else{
-            	Ext.Msg.alert('提示','请先添加一个设备');
             }
+            })
 		}}]
 	});
 	

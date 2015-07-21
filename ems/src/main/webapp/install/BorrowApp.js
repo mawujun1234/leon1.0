@@ -383,7 +383,8 @@ Ext.onReady(function(){
         		alert("请在出现红框的地方选择值!");
         		return;
         	}
-            if (equipStore.getCount()> 0) { 
+        	Ext.Msg.confirm("提示","当前借用的记录是"+equipStore.getCount()+",是否继续?",function(btn){	
+            if (btn=='yes') { 
             	Ext.getBody().mask("正在执行....");
             	var equipments = new Array();
             	equipStore.each(function(record){
@@ -422,16 +423,16 @@ Ext.onReady(function(){
 						Ext.getBody().unmask();
 					}
 				});
-            }else{
-            	Ext.Msg.alert('提示','请先添加一个设备');
             }
+            })
 		}},{text:'借用出库',handler:function(btn){
         	var form= step1.down('form').getForm();
         	if(!form.isValid()){
         		alert("请在出现红框的地方选择值!");
         		return;
         	}
-            if (equipStore.getCount()> 0) { 
+            Ext.Msg.confirm("提示","当前借用的记录是:"+equipStore.getCount()+",是否继续?",function(btn){	
+            if (btn=='yes') { 
             	Ext.getBody().mask("正在执行....");
             	var equipments = new Array();
             	equipStore.each(function(record){
@@ -470,9 +471,9 @@ Ext.onReady(function(){
 						Ext.getBody().unmask();
 					}
 				});
-            }else{
-            	Ext.Msg.alert('提示','请先添加一个设备');
             }
+            
+            })
 		}}]
 	});
 	

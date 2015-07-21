@@ -438,30 +438,6 @@ Ext.onReady(function(){
 	});
 
 	
-	
-//	function addEquip(){
-//		var equipform=step1.down('form');
-//        var form=equipform.getForm();
-//		if(form.isValid()){
-//			var obj=form.getValues();
-//		    var record=new Ext.create('Ems.store.Equipment',{
-//	            subtype_id:obj.subtype_id,
-//	            subtype_name:subtype_combox.getRawValue(),
-//	            prod_id:obj.prod_id,
-//	            prod_name:prod_combox.getRawValue(),
-//	            brand_id:obj.brand_id,
-//	            brand_name:brand_combox.getRawValue(),
-//	            supplier_id:obj.supplier_id,
-//	            supplier_name:supplier_combox.getRawValue(),
-//	            style:obj.style,
-//	            serialNum:obj.serialNum,
-//	            unitPrice:obj.unitPrice,
-//	            totalprice:obj.totalprice
-//		    })
-//			equipStore.add(record);
-//		}
-//	}
-	
 	var installOut_id=null;
 	var step1=Ext.create('Ext.panel.Panel',{
         layout: {
@@ -489,8 +465,8 @@ Ext.onReady(function(){
         		alert("请在出现红框的地方选择值!");
         		return;
         	}
-        	
-            if (equipStore.getCount()> 0) { 
+        	Ext.Msg.confirm("提示","当前领用的记录是:"+equipStore.getCount()+",是否继续?",function(btn){	
+            if (btn=='yes') { 
             	Ext.getBody().mask("正在执行....");
             	var equipments = new Array();
             	equipStore.each(function(record){
@@ -526,10 +502,11 @@ Ext.onReady(function(){
 					failure:function(){
 						Ext.getBody().unmask();
 					}
+					
 				});
-            }else{
-            	Ext.Msg.alert('提示','请先添加一个设备');
             }
+            
+            })
 		}},{
 			text:'领用出库',
 			handler:function(){
@@ -539,7 +516,8 @@ Ext.onReady(function(){
 	        		return;
 	        	}
 
-	            if (equipStore.getCount()> 0) {
+	            Ext.Msg.confirm("提示","当前领用的记录是:"+equipStore.getCount()+",是否继续?",function(btn){	
+            	if (btn=='yes') { 
 		            Ext.Msg.confirm("消息","正准备领用出库,是否确认要领用出库?",function(btn){	
 		            	if(btn=='yes'){
 			            	Ext.getBody().mask("正在执行....");
@@ -582,9 +560,9 @@ Ext.onReady(function(){
 							});
 						}
 					});//Ext.Msg.confirm
-				}else{
-	            	Ext.Msg.alert('提示','请先添加一个设备');
-	            }
+				}
+				
+				})
 					
 			}
 		}]
