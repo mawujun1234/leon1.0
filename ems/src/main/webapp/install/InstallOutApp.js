@@ -167,7 +167,12 @@ Ext.onReady(function(){
 			    		root:'root'
 			    	}
 			    }
-		   })
+		   }),
+		   listeners:{
+		   	change:function(field,newValue, oldValue){
+				installOutType_content_textfield.setValue(field.getRawValue());
+			}
+		   }
 	});
 	var installOutType_content_textfield=Ext.create('Ext.form.field.Text',{
 		labelAlign:'right',
@@ -280,12 +285,12 @@ Ext.onReady(function(){
 		form.loadRecord(installout);
 		var project_model= project_combox.getStore().createModel({id:installout.get("project_id"),name:installout.get("project_name")});
 		project_combox.setValue(project_model);
-		
+
 		//获取领用单的明细数据
 		Ext.Ajax.request({
-			url:Ext.ContextPath+"/installOut/queryList.do",
+			url:Ext.ContextPath+"/installOut/qeryEditInstallOutListVO.do",
 			method:'POST',
-			params:{installOut_id:installout.get("id")},
+			params:{installOut_id:installout.get("id"),store_id:installout.get("store_id"),checkDate:checkDate},
 			success:function(response){
 				var obj=Ext.decode(response.responseText);
 				equipStore.removeAll();
@@ -310,17 +315,19 @@ Ext.onReady(function(){
 		   if(field.isValid()){
 			  // form.load({
 		   	Ext.Ajax.request({
-					params : {ecode:newValue,store_id:store_combox.getValue(),checkDate:checkDate},//传递参数   
+					params : {
+						ecode:newValue,
+						store_id:store_combox.getValue(),
+						checkDate:checkDate,
+						installOutType_content:installOutType_content_textfield.getValue(),
+						installOutType_id:installOutType_combox.getValue(),
+						installOutType_name:installOutType_combox.getRawValue()
+					},//传递参数   
 					url : Ext.ContextPath+'/installOut/getEquipmentByEcode.do',//请求的url地址   
 					method : 'GET',//请求方式   
 					success : function(response) {//加载成功的处理函数   
 						var ret=Ext.decode(response.responseText);
 						if(ret.success){
-							//alert(ret.root.status);
-							if(ret.root.status!='in_storage'){//这是新设备入库的情况
-								Ext.Msg.alert("消息","该设备为非可用库存设备,不能添加到出库列表.");
-								return;
-							}
 							//为新增的equipment添加仓库等其他信息
 							//ret.root.workUnit_id=workUnit_combox.getValue();
 							//ret.root.workUnit_name=workUnit_combox.getRawValue();
@@ -335,31 +342,31 @@ Ext.onReady(function(){
 							ecode_textfield.setValue("");
 							ecode_textfield.clearInvalid();
 
-							var exist=false;
-							equipStore.each(function(record){
-								if(newValue==record.get('ecode')){
-								    exist=true;
-								    return !exist;
-								}
-							});
-							if(exist){
-								Ext.Msg.alert('提示','该设备已经存在');
-							}else{
+//							var exist=false;
+//							equipStore.each(function(record){
+//								if(newValue==record.get('ecode')){
+//								    exist=true;
+//								    return !exist;
+//								}
+//							});
+//							if(exist){
+//								Ext.Msg.alert('提示','该设备已经存在');
+//							}else{
 								//equipStore.insert(0, scanrecord);		
 								//equipStore.add(scanrecord);	
 								equipStore.insert(0, scanrecord);	
 							    equip_grid.getView().refresh();	
 								toolbar_title_text_num.update(""+equipStore.getCount());
-							}	
+							//}	
 							workUnit_combox.disable();
 							store_combox.disable();
 						}
+					},
+					failure : function(response) {//加载失败的处理函数   
+						Ext.Msg.alert("消息",ret.msg);
+						ecode_textfield.setValue("");
+						ecode_textfield.clearInvalid( );
 					}
-//					failure : function(response) {//加载失败的处理函数   
-//						Ext.Msg.alert('提示', '设备加载失败：'+ response.responseText);
-//						ecode_textfield.setValue("");
-//						ecode_textfield.clearInvalid( );
-//					}
 				});
 		   }
 		}else{
@@ -391,7 +398,7 @@ Ext.onReady(function(){
 	                    icon   : '../images/delete.gif',  // Use a URL in the icon config
 	                    tooltip: '删除',
 	                    handler: function(grid, rowIndex, colIndex) {
-	                        var rec = equipStore.getAt(rowIndex);
+	                        var record = equipStore.getAt(rowIndex);
 	                        Ext.MessageBox.confirm('确认', '您确认要删除该记录吗?', function(btn){
 	                        	if(btn=='yes'){
 	                        		Ext.Ajax.request({
@@ -402,6 +409,7 @@ Ext.onReady(function(){
 											var ret=Ext.decode(response.responseText);
 											if(ret.success){
 												equipStore.remove(record);
+												toolbar_title_text_num.update(""+equipStore.getCount());
 											}
 										}
 									});
@@ -448,6 +456,7 @@ Ext.onReady(function(){
 										equipStore.removeAll();
 										workUnit_combox.enable();
 										store_combox.enable();
+										toolbar_title_text_num.update(""+equipStore.getCount());
 									}
 								}
 							});
@@ -465,6 +474,7 @@ Ext.onReady(function(){
 						success:function(response){
 							var obj=Ext.decode(response.responseText);
 							equipStore.loadData( obj.root, false );
+							toolbar_title_text_num.update(""+equipStore.getCount());
 						}
 					});
         	   	
@@ -512,12 +522,13 @@ Ext.onReady(function(){
 					url:Ext.ContextPath+'/installOut/equipmentOutStoreSaveAndPrint.do',
 					method:'POST',
 					timeout:600000000,
-					headers:{ 'Content-Type':'application/json;charset=UTF-8'},
+					//headers:{ 'Content-Type':'application/json;charset=UTF-8'},
 					params:{memo:memo_textfield.getValue(),store_id:store_combox.getValue(),workUnit_id:workUnit_combox.getValue()
 					,project_id:project_combox.getValue()
 					,installOut_id:installOut_id
+					,checkDate:checkDate
 					},
-					jsonData:equipments,
+					//jsonData:equipments,
 					success:function(response){
 						var obj=Ext.decode(response.responseText);
 						
@@ -564,12 +575,13 @@ Ext.onReady(function(){
 								url:Ext.ContextPath+'/installOut/equipmentOutStore.do',
 								method:'POST',
 								timeout:600000000,
-								headers:{ 'Content-Type':'application/json;charset=UTF-8'},
+								//headers:{ 'Content-Type':'application/json;charset=UTF-8'},
 								params:{memo:memo_textfield.getValue(),store_id:store_combox.getValue(),workUnit_id:workUnit_combox.getValue()
 								,project_id:project_combox.getValue()
 								,installOut_id:installOut_id
+								,checkDate:checkDate
 								},
-								jsonData:equipments,
+								//jsonData:equipments,
 								//params:{jsonStr:Ext.encode(equiplist)},
 								success:function(response){
 									//store_id_temp=null;//用来判断仓库的id有没有变

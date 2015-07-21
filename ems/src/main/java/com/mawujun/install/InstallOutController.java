@@ -1,4 +1,5 @@
 package com.mawujun.install;
+import java.beans.IntrospectionException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -22,11 +23,13 @@ import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimplePdfReportConfiguration;
 
+import org.springframework.beans.BeansException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mawujun.baseinfo.Equipment;
 import com.mawujun.baseinfo.EquipmentService;
 import com.mawujun.baseinfo.EquipmentStatus;
 import com.mawujun.baseinfo.EquipmentVO;
@@ -35,6 +38,8 @@ import com.mawujun.cache.EquipKey;
 import com.mawujun.cache.EquipScanType;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.exception.BusinessException;
+import com.mawujun.store.IEcodeCache;
+import com.mawujun.utils.BeanUtils;
 import com.mawujun.utils.M;
 import com.mawujun.utils.StringUtils;
 import com.mawujun.utils.page.Page;
@@ -49,8 +54,8 @@ public class InstallOutController {
 
 	@Resource
 	private InstallOutService installOutStoreService;
-	@Resource
-	private EquipmentService equipmentService;
+	//@Resource
+	//private EquipmentService equipmentService;
 	@Resource
 	private CacheMgr cacheMgr;
 
@@ -62,7 +67,7 @@ public class InstallOutController {
 	 */
 	@RequestMapping("/installOut/getEquipmentByEcode.do")
 	@ResponseBody
-	public InstallOutList getEquipmentByEcode(String ecode,String store_id,Long checkDate) {	
+	public InstallOutList getEquipmentByEcode(String ecode,String store_id,Long checkDate,String installOutType_content,String installOutType_id,String installOutType_name) {	
 		EquipKey key=EquipKey.getInstance(EquipScanType.installout, store_id,checkDate);
 		InstallOutList equipmentVO=(InstallOutList)cacheMgr.getQrcode(key, ecode);
 		if(equipmentVO!=null){
@@ -71,16 +76,16 @@ public class InstallOutController {
 			return equipmentVO;
 		}
 		
-		EquipmentVO equipment= equipmentService.getEquipmentByEcode_in_store(ecode,store_id);
+		InstallOutListVO equipment= installOutStoreService.getInstallOutListVOByEcode(ecode,store_id);
 		if(equipment==null){
 			//equipment=new Equipment();
 			//equipment.setStatus(0);
-			throw new BusinessException("对不起，该条码对应的设备不存在，或者该设备挂在其他仓库中!");
+			throw new BusinessException("对不起，该条码对应的设备不存在，或者该设备挂在其他仓库中,或者设备状态不对!");
 		}
-		//设备返库的时候，设备如果不是手持或损坏状态的话，就不能进行返库，说明任务没有扫描或者没有提交
-		if(equipment.getStatus()!=EquipmentStatus.in_storage){
-			throw new BusinessException("设备状态不是\"已入库\",不能领用该设备!");
-		}
+		equipment.setInstallOutType_id(installOutType_id);
+		equipment.setInstallOutType_name(installOutType_name);
+		equipment.setInstallOutType_content(installOutType_content);
+
 		cacheMgr.putQrcode(key, equipment);
 		return equipment;
 	}
@@ -136,12 +141,15 @@ public class InstallOutController {
 	 */
 	@RequestMapping("/installOut/refreshEquipFromCache.do")
 	@ResponseBody
-	public EquipmentVO[] refreshEquipFromCache(String store_id,Long checkDate) {	
+	public IEcodeCache[] refreshEquipFromCache(String store_id,Long checkDate) {	
 		if(store_id==null){
-			return new EquipmentVO[0];
+			return new InstallOutListVO[0];
 		}
-		return cacheMgr.getQrcodesAll(EquipKey.getInstance(EquipScanType.installout, store_id,checkDate));
-
+		IEcodeCache[] result =cacheMgr.getQrcodesAll(EquipKey.getInstance(EquipScanType.installout, store_id,checkDate));
+		if(result==null){
+			return new InstallOutListVO[0];
+		}
+		return result;
 	}
 	
 	/**
@@ -149,14 +157,26 @@ public class InstallOutController {
 	 * @author mawujun 16064988@qq.com 
 	 * @param equipments
 	 * @return
+	 * @throws IntrospectionException 
+	 * @throws BeansException 
 	 * @throws IOException
 	 */
 	@RequestMapping("/installOut/equipmentOutStoreSaveAndPrint.do")
 	@ResponseBody
-	public String equipmentOutStoreSaveAndPrint(@RequestBody InstallOutList[] installOutListes, InstallOut outStore, String installOut_id) { 
+	//public String equipmentOutStoreSaveAndPrint(@RequestBody InstallOutList[] installOutListes, InstallOut outStore, String installOut_id) { 
+	public String equipmentOutStoreSaveAndPrint(InstallOut installOut, String installOut_id,Long checkDate) throws BeansException, IntrospectionException { 
 		
-			
-		String installOut_id_re=installOutStoreService.equipOutStoreSaveAndPrint(installOutListes, outStore,installOut_id);
+		EquipKey key=EquipKey.getInstance(EquipScanType.installout, installOut.getStore_id(),checkDate);
+		IEcodeCache[] equipmentVOs=cacheMgr.getQrcodesAll(key);
+		InstallOutList[] installOutListes=new InstallOutList[equipmentVOs.length];
+		int i=0;
+		for(IEcodeCache equipmentVO:equipmentVOs){
+			//org.apache.commons.beanutils.BeanUtils.copyProperties(dest, orig);
+			installOutListes[i]=new InstallOutList();
+			BeanUtils.copyExcludeNull(equipmentVO,installOutListes[i]);
+			i++;
+		}
+		String installOut_id_re=installOutStoreService.equipOutStoreSaveAndPrint(installOutListes, installOut,installOut_id);
 		
 		
 		return installOut_id_re;
@@ -166,15 +186,77 @@ public class InstallOutController {
 	 * @author mawujun 16064988@qq.com 
 	 * @param equipments
 	 * @return
+	 * @throws IntrospectionException 
+	 * @throws BeansException 
 	 * @throws IOException
 	 */
 	@RequestMapping("/installOut/equipmentOutStore.do")
 	@ResponseBody
-	public String equipOutStore(@RequestBody InstallOutList[] installOutListes, InstallOut outStore , String installOut_id) { 
-		
-		installOut_id=installOutStoreService.equipOutStore(installOutListes, outStore,installOut_id);
+	//public String equipOutStore(@RequestBody InstallOutList[] installOutListes, InstallOut outStore , String installOut_id) { 
+	public String equipOutStore( InstallOut installOut , String installOut_id,Long checkDate) throws BeansException, IntrospectionException { 
+		EquipKey key=EquipKey.getInstance(EquipScanType.installout, installOut.getStore_id(),checkDate);
+		IEcodeCache[] equipmentVOs=cacheMgr.getQrcodesAll(key);
+		InstallOutList[] installOutListes=new InstallOutList[equipmentVOs.length];
+		int i=0;
+		for(IEcodeCache equipmentVO:equipmentVOs){
+			//org.apache.commons.beanutils.BeanUtils.copyProperties(dest, orig);
+			installOutListes[i]=new InstallOutList();
+			BeanUtils.copyExcludeNull(equipmentVO,installOutListes[i]);
+			i++;
+		}
+		installOut_id=installOutStoreService.equipOutStore(installOutListes, installOut,installOut_id);
+		cacheMgr.clearQrcode(key);
 		return installOut_id;
 	}
+	@RequestMapping("/installOut/qeryEditInstallOutListVO.do")
+	@ResponseBody
+	public List<InstallOutListVO> qeryEditInstallOutListVO(String installOut_id,String store_id,Long checkDate) { 
+		if(!StringUtils.hasText(installOut_id)){
+			throw new BusinessException("请先选择一条单据!");
+		}
+		List<InstallOutListVO> page=installOutStoreService.queryList(installOut_id);
+		
+		EquipKey key=EquipKey.getInstance(EquipScanType.installout, store_id,checkDate);
+		cacheMgr.clearQrcode(key);
+		for(InstallOutListVO equipment:page){
+			cacheMgr.putQrcode(key, equipment);
+		}
+		
+		
+		return page;
+	}
+//	
+//	/**
+//	 * 设备出库，设备领用
+//	 * @author mawujun 16064988@qq.com 
+//	 * @param equipments
+//	 * @return
+//	 * @throws IOException
+//	 */
+//	@RequestMapping("/installOut/equipmentOutStoreSaveAndPrint.do")
+//	@ResponseBody
+//	public String equipmentOutStoreSaveAndPrint(@RequestBody InstallOutList[] installOutListes, InstallOut outStore, String installOut_id) { 
+//		
+//			
+//		String installOut_id_re=installOutStoreService.equipOutStoreSaveAndPrint(installOutListes, outStore,installOut_id);
+//		
+//		
+//		return installOut_id_re;
+//	}
+//	/**
+//	 * 设备出库，设备领用
+//	 * @author mawujun 16064988@qq.com 
+//	 * @param equipments
+//	 * @return
+//	 * @throws IOException
+//	 */
+//	@RequestMapping("/installOut/equipmentOutStore.do")
+//	@ResponseBody
+//	public String equipOutStore(@RequestBody InstallOutList[] installOutListes, InstallOut outStore , String installOut_id) { 
+//		
+//		installOut_id=installOutStoreService.equipOutStore(installOutListes, outStore,installOut_id);
+//		return installOut_id;
+//	}
 	SimpleDateFormat yyyyMMdd=new SimpleDateFormat("yyyy-MM-dd");
 	/**
 	 * 设备出库，设备领用

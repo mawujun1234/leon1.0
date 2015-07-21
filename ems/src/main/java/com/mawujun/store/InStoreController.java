@@ -20,6 +20,7 @@ import com.mawujun.cache.EquipKey;
 import com.mawujun.cache.EquipScanType;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.exception.BusinessException;
+import com.mawujun.install.InstallOutListVO;
 import com.mawujun.utils.BeanUtils;
 import com.mawujun.utils.M;
 import com.mawujun.utils.page.Page;
@@ -106,12 +107,15 @@ public class InStoreController {
 	 */
 	@RequestMapping("/inStore/refreshEquipFromCache.do")
 	@ResponseBody
-	public EquipmentVO[] refreshEquipFromCache(String store_id,Long checkDate) {	
+	public IEcodeCache[] refreshEquipFromCache(String store_id,Long checkDate) {	
 		if(store_id==null){
 			return new EquipmentVO[0];
 		}
-		return (EquipmentVO[])cacheMgr.getQrcodesAll(EquipKey.getInstance(EquipScanType.newInStore, store_id,checkDate));
-
+		IEcodeCache[] result = cacheMgr.getQrcodesAll(EquipKey.getInstance(EquipScanType.newInStore, store_id,checkDate));
+		if(result==null){
+			return new InstallOutListVO[0];
+		}
+		return result;
 	}
 //	/**
 //	 * 查询缓存中的数据
@@ -135,14 +139,14 @@ public class InStoreController {
 	
 	@RequestMapping("/inStore/newInStore.do")
 	@ResponseBody
-	//public String newInStore(@RequestBody Equipment[] equipments,String memo,String inStore_type,String store_id) throws  IOException{
-	public String newInStore(@RequestBody Equipment[] equipments,InStore inStore,Long checkDate) throws  IOException, IllegalAccessException, InvocationTargetException, BeansException, IntrospectionException{
+	//public String newInStore(@RequestBody Equipment[] equipments,InStore inStore,Long checkDate) throws  IOException, IllegalAccessException, InvocationTargetException, BeansException, IntrospectionException{
+	public String newInStore(InStore inStore,Long checkDate) throws  IOException, IllegalAccessException, InvocationTargetException, BeansException, IntrospectionException{
 		//inStoreService.newInStore(equipments,inStore);
 		EquipKey key=EquipKey.getInstance(EquipScanType.newInStore, inStore.getStore_id(),checkDate);
-		EquipmentVO[] equipmentVOs=(EquipmentVO[])cacheMgr.getQrcodesAll(key);
-		equipments=new Equipment[equipmentVOs.length];
+		IEcodeCache[] equipmentVOs=cacheMgr.getQrcodesAll(key);
+		Equipment[] equipments=new Equipment[equipmentVOs.length];
 		int i=0;
-		for(EquipmentVO equipmentVO:equipmentVOs){
+		for(IEcodeCache equipmentVO:equipmentVOs){
 			//org.apache.commons.beanutils.BeanUtils.copyProperties(dest, orig);
 			equipments[i]=new Equipment();
 			BeanUtils.copyExcludeNull(equipmentVO,equipments[i]);

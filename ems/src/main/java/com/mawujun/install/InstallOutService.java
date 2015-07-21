@@ -19,6 +19,7 @@ import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.EquipmentStatus;
 import com.mawujun.baseinfo.EquipmentStorePK;
 import com.mawujun.baseinfo.EquipmentStoreRepository;
+import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.baseinfo.EquipmentWorkunit;
 import com.mawujun.baseinfo.EquipmentWorkunitRepository;
 import com.mawujun.baseinfo.EquipmentWorkunitType;
@@ -66,6 +67,10 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 	@Override
 	public InstallOutRepository getRepository() {
 		return installOutRepository;
+	}
+	
+	public InstallOutListVO getInstallOutListVOByEcode(String ecode,String store_id) {
+		return installOutRepository.getInstallOutListVOByEcode(ecode, store_id);
 	}
 
 	/**

@@ -266,6 +266,7 @@ Ext.onReady(function(){
 //												//重新加载
 //												equipStore.loadPage(currentPage);
 												equipStore.remove(record);
+												toolbar_title_text_num.update(""+equipStore.getCount());
 											}
 										}
 									});
@@ -306,7 +307,7 @@ Ext.onReady(function(){
 									if(ret.success){
 										equipStore.removeAll();
 										store_combox.enable();
-										//equip_grid.getDockedItems('toolbar[dock="bottom"]')[0].moveFirst( );
+										toolbar_title_text_num.update(""+equipStore.getCount());
 									}
 								}
 							});
@@ -324,6 +325,7 @@ Ext.onReady(function(){
 						success:function(response){
 							var obj=Ext.decode(response.responseText);
 							equipStore.loadData( obj.root, false );
+							toolbar_title_text_num.update(""+equipStore.getCount());
 						}
 					});
         	   	
@@ -369,19 +371,18 @@ Ext.onReady(function(){
         	
             if (btn=='yes') { 
             	Ext.getBody().mask("正在入库....");
-            	var equipments = new Array();
-            	equipStore.each(function(record){
-            		equipments.push(record.data);
-            	});
-            	//ret.root.memo=memo_textfield.getValue();
-							//ret.root.inStore_type=type_radio.getValue().type;
+//            	var equipments = new Array();
+//            	equipStore.each(function(record){
+//            		equipments.push(record.data);
+//            	});
+
 				Ext.Ajax.request({
 					url:Ext.ContextPath+'/inStore/newInStore.do',
 					method:'POST',
 					timeout:600000000,
-					headers:{ 'Content-Type':'application/json;charset=UTF-8'},
+					//headers:{ 'Content-Type':'application/json;charset=UTF-8'},
 					params:{memo:memo_textfield.getValue(),store_id:store_combox.getValue(),checkDate:checkDate},
-					jsonData:equipments,
+					//jsonData:equipments,
 					//params:{jsonStr:Ext.encode(equiplist)},
 					success:function(response){
 						var obj=Ext.decode(response.responseText);
