@@ -109,7 +109,7 @@ public class AdjustController {
 	}
 	
 	/**
-	 * 入库仓库查询调拨单
+	 * 在调拨如的时候，用来查找需要入库的调拨单
 	 * @author mawujun 16064988@qq.com 
 	 * @return
 	 */
@@ -131,6 +131,17 @@ public class AdjustController {
 	public List<AdjustListVO> query4InStrList(String adjust_id) {	
 		
 		return adjustService.query4InStoreList(adjust_id);
+	}
+	
+	/**
+	 * 在调拨归还的时候，用来选择未归还的调拨单的
+	 * @author mawujun 16064988@qq.com 
+	 * @return
+	 */
+	@RequestMapping("/adjust/queryBorrowAdjuest.do")
+	@ResponseBody
+	public List<AdjustVO> queryBorrowAdjuest() {	
+		return adjustService.queryBorrowAdjuest();
 	}
 	
 	/**

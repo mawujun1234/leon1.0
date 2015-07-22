@@ -13,6 +13,8 @@ Ext.onReady(function(){
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'store_out_id',
 		    displayField: 'name',
+		    editable:false,
+		    
 		    valueField: 'id',
 		    //queryParam: 'name',
     		//queryMode: 'remote',
@@ -47,6 +49,7 @@ Ext.onReady(function(){
 	        name: 'store_in_id',
 		    displayField: 'name',
 		    valueField: 'id',
+		    editable:false,
 		    //queryParam: 'name',
     		//queryMode: 'remote',
     		//triggerAction: 'query',

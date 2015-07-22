@@ -365,4 +365,18 @@ public class AdjustService extends AbstractService<Adjust, String>{
 		adjust.setStatus(AdjustStatus.over);
 		adjustRepository.update(adjust);
 	}
+	
+	public List<AdjustVO> queryBorrowAdjuest() {
+		List<AdjustVO> list=adjustRepository.queryBorrowAdjuest(ShiroUtils.getUserId());
+		for(AdjustVO adjustVO:list){
+			if(storeService.get(adjustVO.getStr_out_id())!=null){
+				adjustVO.setStr_out_name(storeService.get(adjustVO.getStr_out_id()).getName());
+			}
+			if(storeService.get(adjustVO.getStr_in_id())!=null){
+				adjustVO.setStr_in_name(storeService.get(adjustVO.getStr_in_id()).getName());
+			}
+
+		}
+		return list;
+	}
 }

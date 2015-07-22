@@ -23,5 +23,7 @@ public interface AdjustRepository extends IRepository<Adjust, String>{
 	public List<AdjustList> query_borrow_in_adjustList(@Param("adjust_id")String adjust_id);
 	
 	public void updateAdjustIsAllReturn(@Param("adjust_id")String adjust_id);
+	
+	public List<AdjustVO> queryBorrowAdjuest(@Param("user_id")String user_id);
 
 }

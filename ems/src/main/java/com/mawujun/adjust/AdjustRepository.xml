@@ -16,7 +16,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		where a.ecode=#{ecode} and f.store_id=#{store_id} 
     </select> 
     
-	<!-- 仓库入库的时候查询-->
+	<!-- 在调拨如的时候，用来查找需要入库的调拨单-->
 	<select id="query4InStore" resultType="com.mawujun.adjust.AdjustVO" parameterType="map">
 		select a.* from ems_adjust a where (a.status='carry' or a.status='partin')
 		and a.str_in_id in (select store_id from sys_userstore c where c.user_id=#{user_id} and c.edit='Y')
@@ -24,7 +24,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	
 	<!--
 	 -->
-	<!-- 获取调拨单明细-->
+	<!-- 在调拨如的时候，获取调拨单明细-->
 	<select id="query4InStoreList" resultType="com.mawujun.adjust.AdjustListVO" parameterType="java.lang.String">
     	select f.*,b.name as subtype_name,c.id as prod_id,c.name as prod_name,c.style as prod_style,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name 
     	from ems_equipment a
@@ -76,5 +76,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		       where adjust_id=#{adjust_id}
 		) where id=#{adjust_id}
 	</update>
+	
+	<!-- 查询所有还没有归还的调拨单，在归还单的时候，弹出框用的-->
+	<select id="queryBorrowAdjuest" resultType="com.mawujun.adjust.AdjustVO" parameterType="map">
+		select a.* from ems_adjust a where (a.returnstatus='nonereturn' or a.returnstatus='partreturn') and a.adjustType='borrow'
+		and a.str_out_id in (select store_id from sys_userstore c where c.user_id=#{user_id} and c.look='Y')
+	</select>
 </mapper>
 

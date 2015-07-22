@@ -1,6 +1,6 @@
 //Ext.require("Ems.store.Barcode");
 Ext.require("Ems.adjust.Adjust");
-//Ext.require("Ems.store.BarcodeTree");
+Ext.require("Ems.adjust.AdjustBorrowGrid");
 //Ext.require("Ems.store.BarcodeForm");
 Ext.onReady(function(){
         
@@ -13,18 +13,12 @@ Ext.onReady(function(){
 	        name: 'store_out_id',
 		    displayField: 'name',
 		    valueField: 'id',
-		    //queryParam: 'name',
-    		//queryMode: 'remote',
-    		//triggerAction: 'query',
-    		//minChars:-1,
-		    //trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
-		    //trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
-			//onTrigger1Click : function(){
-			//    var me = this;
-			//    me.setValue('');
-			//},
+		    readOnly:true,
+		    emptyText:'点击选择按钮',
+		    editable:false,
 	        allowBlank: false,
 	        store:Ext.create('Ext.data.Store', {
+	        	autoLoad:true,
 		    	fields: ['id', 'name'],
 			    proxy:{
 			    	type:'ajax',
@@ -46,18 +40,12 @@ Ext.onReady(function(){
 	        name: 'store_in_id',
 		    displayField: 'name',
 		    valueField: 'id',
-		    //queryParam: 'name',
-    		//queryMode: 'remote',
-    		//triggerAction: 'query',
-    		//minChars:-1,
-		    //trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
-		    //trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
-			//onTrigger1Click : function(){
-			//    var me = this;
-			//    me.setValue('');
-			//},
+		    readOnly:true,
+		    emptyText:'点击选择按钮',
+		    editable:false,
 	        allowBlank: false,
 	        store:Ext.create('Ext.data.Store', {
+	        	autoLoad:true,
 		    	fields: ['id', 'name'],
 			    proxy:{
 			    	type:'ajax',
@@ -77,9 +65,38 @@ Ext.onReady(function(){
 	//要归还的借用单的id
 	var adjust_id_borrow_textfield=Ext.create('Ext.form.field.Text',{
 		fieldLabel: '借用调拨单号',
+		 emptyText:'点击选择按钮',
 	        name: 'adjust_id_borrow',
 	        allowBlank:false,
+	        readOnly:true,
 		    value:''
+	});
+	var select_borrow_adjust_id=Ext.create('Ext.button.Button',{
+		text:'选择',
+		handler:function(){
+			var borrowAdjuestGrid=Ext.create('Ems.adjust.AdjustBorrowGrid',{
+				listeners:{
+					itemdblclick:function( view, record, item, index, e, eOpts ) {
+						var adjust_id=record.get("id");//全局变量保存当前的订单
+						adjust_id_borrow_textfield.setValue(adjust_id);
+						//正好相反
+						store_out_combox.setValue(record.get("str_in_id"));
+						store_in_combox.setValue(record.get("str_out_id"));
+						win.close();
+					}
+				}
+			});
+			var win=Ext.create('Ext.window.Window',{
+				layout:'fit',
+				title:'双击选择',
+				items:[borrowAdjuestGrid],
+				modal:true,
+				width:650,
+				height:360
+			});
+			win.show();
+		
+		}
 	});
 	var ecode_textfield=Ext.create('Ext.form.field.Text',{
 		labelAlign:'right',
@@ -293,7 +310,7 @@ Ext.onReady(function(){
             align:'stretch'
         },
         defaults:{margins:'0 0 5 0',border:false},
-        items:[{xtype:'form',items:[{xtype:'fieldcontainer',layout: 'hbox',items:[store_out_combox,store_in_combox,adjustType_combox,adjust_id_borrow_textfield,ecode_textfield,clear_button]},
+        items:[{xtype:'form',items:[{xtype:'fieldcontainer',layout: 'hbox',items:[adjust_id_borrow_textfield,select_borrow_adjust_id,store_out_combox,store_in_combox,adjustType_combox,ecode_textfield,clear_button]},
                                     {xtype:'fieldcontainer',layout: 'hbox',items:[storeman_textfield,inDate_textfield,memo_textfield]}
 		            		        //{xtype:'columnbox',columnSize:4,items:[{xtype:'listcombox',url:Ext.ContextPath+'/dataExtra/stockList.do',itemId:'stock_field',fieldLabel:'库房',name:'stid',allowBlank:false,emptyText:'未选择库房',labelAlign:'right'},{xtype:'textfield',name:'stmemo',fieldLabel:'库房描述',columnWidth:3/4,labelAlign:'right'}]}
 		            		        ]},
