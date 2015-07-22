@@ -10,7 +10,7 @@ public class InstalloutListReport {
 	private String installout_id;
 	private String project_id;
 	//private String project_name;
-	private String returndate;
+	private String operatedate;
 	private String ecode;
 	private String store_id;
 	//private String store_name;
@@ -37,12 +37,7 @@ public class InstalloutListReport {
 	public void setProject_id(String project_id) {
 		this.project_id = project_id;
 	}
-	public String getReturndate() {
-		return returndate;
-	}
-	public void setReturndate(String returndate) {
-		this.returndate = returndate;
-	}
+
 	public String getEcode() {
 		return ecode;
 	}
@@ -114,6 +109,12 @@ public class InstalloutListReport {
 	}
 	public void setMemo(String memo) {
 		this.memo = memo;
+	}
+	public String getOperatedate() {
+		return operatedate;
+	}
+	public void setOperatedate(String operatedate) {
+		this.operatedate = operatedate;
 	}
 	
 	

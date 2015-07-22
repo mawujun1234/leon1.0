@@ -17,10 +17,18 @@ Ext.define('Ems.adjust.AdjustListGrid',{
 	initComponent: function () {
       var me = this;
       me.columns=[
+      	Ext.create('Ext.grid.RowNumberer'),
 		//{dataIndex:'id',text:'id'},
 		//{dataIndex:'adjust_id',text:'adjust_id'},
 		{dataIndex:'ecode',text:'条码',width:130},
 		{dataIndex:'adjustListStatus_name',text:'状态',width:60},
+		{itemId: 'isReturnColumn',dataIndex:'isReturn',hidden:true,text:'是否归还',width:60,renderer:function(value,metadata,record){
+			if(value==true){
+				return "已归还";
+			} else {
+				return "否";
+			}
+		}},
 		//{dataIndex:'in_num',text:'in_num',xtype: 'numbercolumn', format:'0.00'},
 		//{dataIndex:'out_num',text:'out_num',xtype: 'numbercolumn', format:'0.00'},
 		{header: '设备类型', dataIndex: 'subtype_name',width:120},

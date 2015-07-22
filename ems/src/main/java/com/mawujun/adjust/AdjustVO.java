@@ -19,7 +19,12 @@ public class AdjustVO extends Adjust {
 		}
 		return null;
 	}
-	
+	public String getReturnStatus_name() {
+		if(this.getReturnStatus()!=null){
+			return this.getReturnStatus().getName();
+		}
+		return null;
+	}
 	public String getStatus_name() {
 		if(this.getStatus()!=null){
 			return this.getStatus().getName();

@@ -6,7 +6,7 @@ package com.mawujun.install;
  *
  */
 public enum InstallInListType {
-	intallout("领用返回"),
+	installout("领用返回"),
 	takedown("拆回入库");
 	private String name;
 	InstallInListType(String name) {

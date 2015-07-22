@@ -69,6 +69,12 @@ public class AdjustService extends AbstractService<Adjust, String>{
 		adjust.setId(ymdHmsDateFormat.format(new Date()));
 		adjust.setStr_out_date(new Date());
 		adjust.setStatus(AdjustStatus.carry);
+		if(adjust.getAdjustType()==AdjustType.borrow){
+			adjust.setReturnStatus(AdjustReturnStatus.nonereturn);
+		} else {
+			adjust.setReturnStatus(AdjustReturnStatus.neednot);
+		}
+		
 		adjust.setStr_out_oper_id(ShiroUtils.getAuthenticationInfo().getId());
 
 		adjustRepository.create(adjust);
@@ -89,7 +95,7 @@ public class AdjustService extends AbstractService<Adjust, String>{
 		//
 	}
 	/**
-	 * 设备归还
+	 * 建立设备归还的领用单
 	 * @author mawujun 16064988@qq.com 
 	 * @param adjust
 	 * @param adjuestLists
@@ -98,6 +104,9 @@ public class AdjustService extends AbstractService<Adjust, String>{
 	public void adjuestReturn(Adjust adjust,AdjustList[] adjuestLists,String adjust_id_borrow) {
 		adjust.setAdjustType(AdjustType.returnback);
 		adjust.setAdjust_id_borrow(adjust_id_borrow);
+		adjust.setStatus(AdjustStatus.carry);
+		adjust.setReturnStatus(AdjustReturnStatus.neednot);
+		//被归还的调拨单
 		Adjust adjust_borrow=adjustRepository.get(adjust_id_borrow);
 		if(adjust_borrow==null){
 			throw new BusinessException("借用调拨单不存在，请检查是否输错了!");
@@ -107,11 +116,11 @@ public class AdjustService extends AbstractService<Adjust, String>{
 			throw new BusinessException("你选择的调拨单不是借用类型!");
 		}
 		
-		if(adjust_borrow.getStatus()==AdjustStatus.over){
+		if(adjust_borrow.getReturnStatus()==AdjustReturnStatus.over){
 			throw new BusinessException("该调拨单已经全部归还，不能再归还了!");
 		}
 		//这条很重要，不然数据很容易出现混乱
-		if(adjust_borrow.getStatus()==AdjustStatus.noallin || adjust_borrow.getStatus()==AdjustStatus.carry){
+		if(adjust_borrow.getStatus()==AdjustStatus.partin || adjust_borrow.getStatus()==AdjustStatus.carry){
 			throw new BusinessException("该调拨单还没有完全接收，不能进行归还操作!");
 		}
 
@@ -145,9 +154,10 @@ public class AdjustService extends AbstractService<Adjust, String>{
 				adjustlist_borrowes.remove(exists_adjustList_borrow);
 				//更新出借方明细单上的数据
 				//修改调拨单明细状态为 returnback 已归还
-				adjustListRepository.update(Cnd.update().set(M.AdjustList.adjust_id_returnback, adjust.getId())
+				//先在出借单上记录归还单的id和ecode
+				adjustListRepository.update(Cnd.update().set(M.AdjustList.adjustlist_id_returnback, adjuestList.getId())
 						.set(M.AdjustList.ecode_returnback, adjuestList.getEcode())
-						.set(M.AdjustList.isReturn, true)
+						.set(M.AdjustList.isReturn, false)
 						.andEquals(M.AdjustList.id,exists_adjustList_borrow.getId()));
 			} else {
 				throw new BusinessException(adjuestList.getEcode()+"该条码设备的品名不对,在借用单中已经不存在该品名的设备需要归还!");
@@ -210,12 +220,17 @@ public class AdjustService extends AbstractService<Adjust, String>{
 		
 		//int total=0;
 		for(AdjustList adjustList:adjustLists) {
-			//adjustList.setStatus(true);
-			//adjustListRepository.update(adjustList);
 			//更新调拨单明细的状态为已经入库
 			adjustListRepository.update(Cnd.update().set(M.AdjustList.adjustListStatus, AdjustListStatus.in)
 					.set(M.AdjustList.indate, inDate)
 					.andEquals(M.AdjustList.id, adjustList.getId()));
+			
+			
+			//更新出借方明细单上的数据表示已经归还
+			adjustListRepository.update(Cnd.update()
+					.set(M.AdjustList.isReturn, true)
+					.andEquals(M.AdjustList.adjustlist_id_returnback,adjustList.getId())
+					.andEquals(M.AdjustList.ecode_returnback, adjustList.getEcode()));
 			
 			//同时更改设备状态，从A仓库到B仓库
 			//同时修改设备状态
@@ -253,20 +268,16 @@ public class AdjustService extends AbstractService<Adjust, String>{
 		//if(adjustRepository.sumInnumByadjust_id(adjust_id)==out_num_total){
 		//入的数量和出的数量
 		if(in_num_total==out_num_total){
-			
-			if(adjust.getAdjustType()==AdjustType.borrow){
-				//adjustRepository.update(Cnd.update().set(M.Adjust.status, AdjustStatus.noreturn).andEquals(M.Adjust.id, adjust_id));
-				adjust.setStatus(AdjustStatus.noreturn);
-			} else {
-				//adjustRepository.update(Cnd.update().set(M.Adjust.status, AdjustStatus.over).andEquals(M.Adjust.id, adjust_id));
-				adjust.setStatus(AdjustStatus.over);
-			}
-			
+			adjust.setStatus(AdjustStatus.over);
 		} else {
 			//这里表示未完全入库
 			//adjustRepository.update(Cnd.update().set(M.Adjust.status, AdjustStatus.noallin).andEquals(M.Adjust.id, adjust_id));
-			adjust.setStatus(AdjustStatus.noallin);
+			adjust.setStatus(AdjustStatus.partin);
 		}
+		//如果是借用单，设置归还状态为未归还，其实这个不执行也可以，因为在建立调拨单的时候，就已经指定了
+		if(adjust.getAdjustType()==AdjustType.borrow){
+			adjust.setReturnStatus(AdjustReturnStatus.nonereturn);
+		} 
 		adjust.setStr_in_date(inDate);
 		adjust.setStr_in_oper_id(ShiroUtils.getAuthenticationInfo().getId());
 		adjustRepository.update(adjust);
@@ -332,11 +343,11 @@ public class AdjustService extends AbstractService<Adjust, String>{
 		}
 		
 		//如果该借用单已经有过入库了，但还有一部分设备没有入库的时候，那是不能转的，先把那部分设备处理掉
-		if(adjust.getStatus()==AdjustStatus.noallin){
+		if(adjust.getStatus()==AdjustStatus.partin){
 			throw new BusinessException("设备还没有完全入库，请先完全入库后，再转为领用!");
 		}
 		//已经有部分归还的，也不能转
-		if(adjust.getStatus()==AdjustStatus.partreturn){
+		if(adjust.getReturnStatus()==AdjustReturnStatus.partreturn){
 			throw new BusinessException("设备已经部分归还，不能转为领用!");
 		}
 		

@@ -367,7 +367,7 @@ Ext.onReady(function(){
         		alert("请在出现红框的地方选择值!");
         		return;
         	}
-        	Ext.Msg.confirm("提示","当前新品入库的记录是:"+equipStore.getCount()+",是否继续?",function(btn){	
+        	Ext.Msg.confirm("提示","当前新品入库的记录是:<span style='color:red;'>"+equipStore.getCount()+"</span>,是否继续?",function(btn){	
         	
             if (btn=='yes') { 
             	Ext.getBody().mask("正在入库....");

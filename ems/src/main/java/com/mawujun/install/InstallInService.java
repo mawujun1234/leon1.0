@@ -104,7 +104,7 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 		//如果是领用出去，然后直接返回的
 		if(equipmentWorkunit.getType()==EquipmentWorkunitType.installout){
 			//如果领出去然后直接返回时，这个设备还是挂在workunit中，并且最新的单据还是领用单
-			installInListVO.setInstallInListType(InstallInListType.intallout);
+			installInListVO.setInstallInListType(InstallInListType.installout);
 			installInListVO.setInstallout_id(equipmentWorkunit.getType_id());
 		} else {
 			//暂时是，不是领用返回就是拆回返回

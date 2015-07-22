@@ -53,6 +53,7 @@ Ext.onReady(function(){
 	  	format:'Y-m-d',
 	  	labelWidth:15,
 	  	labelWidth:15,
+	  	minValue:Ext.Date.parse('2015-07-10','Y-m-d'),
 	  	maxValue:new Date(),
         value: new Date()
 	  });

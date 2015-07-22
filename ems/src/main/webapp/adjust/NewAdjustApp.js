@@ -1,5 +1,6 @@
 //Ext.require("Ems.store.Barcode");
 Ext.require("Ems.adjust.Adjust");
+ Ext.require('Ems.adjust.AdjustList');
 //Ext.require("Ems.store.BarcodeTree");
 //Ext.require("Ems.store.BarcodeForm");
 Ext.onReady(function(){
@@ -310,7 +311,7 @@ Ext.onReady(function(){
         buttons:[{text:'调拨出库',handler:function(btn){
         	
         	
-            Ext.Msg.confirm("提示","当前维修出库的记录是:"+equipStore.getCount()+",是否继续?",function(btn){	
+            Ext.Msg.confirm("提示","当前调拨出库的记录是:<span style='color:red;'>"+equipStore.getCount()+"</span>,是否继续?",function(btn){	
         	
             if (btn=='yes') { 
             	var form= step1.down('form').getForm();

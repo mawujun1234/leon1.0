@@ -15,12 +15,13 @@ Ext.onReady(function(){
 	  	format:'Y-m-d',
 	  	labelWidth:15,
 	  	labelWidth:15,
+	  	minValue:Ext.Date.parse('2015-07-10','Y-m-d'),
 	  	maxValue:new Date(),
         value: new Date()
 	  });
 	
 	var store_combox=Ext.create('Ext.form.field.ComboBox',{
-	        fieldLabel: '备品备件仓库',
+	        fieldLabel: '仓库',
 	        labelAlign:'right',
             labelWidth:80,
 	        //xtype:'combobox',
@@ -28,7 +29,7 @@ Ext.onReady(function(){
 	        name: 'store_id',
 		    displayField: 'name',
 		    valueField: 'id',
-	        allowBlank: false,
+	        allowBlank: true,
 	        store:Ext.create('Ext.data.Store', {
 		    	fields: ['id', 'name'],
 			    proxy:{

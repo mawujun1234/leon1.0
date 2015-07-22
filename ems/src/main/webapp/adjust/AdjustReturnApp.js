@@ -198,7 +198,10 @@ Ext.onReady(function(){
 								Ext.Msg.alert('提示','该设备已经存在');
 							}else{
 								//equipStore.insert(0, scanrecord);	
-								equipStore.add(scanrecord);
+								//equipStore.add(scanrecord);
+								equipStore.insert(0, scanrecord);	
+							    equip_grid.getView().refresh();	
+								toolbar_title_text_num.update(""+equipStore.getCount());
 							}			
 							store_out_combox.disable();
 							store_in_combox.disable();
@@ -218,7 +221,9 @@ Ext.onReady(function(){
 	
 	//==========================================================================================
 	
-	
+	var toolbar_title_text_num=Ext.create('Ext.form.Label',{
+    	html:"0"
+    });
 	var equipStore = Ext.create('Ext.data.Store', {
         autoDestroy: true,
         model: 'Ems.adjust.Adjust',
@@ -226,6 +231,7 @@ Ext.onReady(function(){
             type: 'memory'
         }
     });
+    
 	var equip_grid=Ext.create('Ext.grid.Panel',{
 		flex:1,
 		store:equipStore,
@@ -241,6 +247,7 @@ Ext.onReady(function(){
 	                        Ext.MessageBox.confirm('确认', '您确认要删除该记录吗?', function(btn){
 	                        	if(btn=='yes'){
 	                        		equipStore.remove(rec);
+	                        		toolbar_title_text_num.update(""+equipStore.getCount());
 	                        	}
 	                        });
 	                    }
@@ -260,7 +267,7 @@ Ext.onReady(function(){
     	          //{header: '出库仓库', dataIndex: 'str_out_name'},
     	          //{header: '入库仓库', dataIndex: 'str_in_name'},
 				  ],
-        tbar:['<pan id="toolbar-title-text">当前入库记录</span>','->',
+        tbar:['<pan id="toolbar-title-text">当前归还记录:</span>',toolbar_title_text_num,'->',
               {text:'清空列表中设备',
         	   iconCls:'icon-clearall',
         	   handler:function(){
@@ -269,6 +276,7 @@ Ext.onReady(function(){
 							equipStore.removeAll();
 							store_out_combox.enable();
 							store_in_combox.enable();
+							toolbar_title_text_num.update(""+equipStore.getCount());
 						}
 					});
         	   }
@@ -297,7 +305,9 @@ Ext.onReady(function(){
         //{html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;库房人员应当根据采购单，对设备分类后，一次对同类设备批量“添加”入库，直到所有采购单设备根据设备类型都已经“添加”到入库清单后，可以选择“下一步”，进入到二维码生成步骤'}],
         {html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;一次调拨出库只能选择一个仓库'}],
         buttons:[{text:'归还',handler:function(btn){
-            if (equipStore.getCount()> 0) {
+            Ext.Msg.confirm("提示","当前归还出库的记录是:<span style='color:red;'>"+equipStore.getCount()+"</span>,是否继续?",function(btn){	
+        	
+            if (btn=='yes') { 
             	var form= step1.down('form').getForm();
 	        	if(!form.isValid()){
 	        		alert("请在出现红框的地方选择值!");
@@ -338,9 +348,9 @@ Ext.onReady(function(){
 						Ext.getBody().unmask();
 					}
 				});
-            }else{
-            	Ext.Msg.alert('提示','请先添加一个设备');
             }
+            
+            })
 		}}]
 	});
 	

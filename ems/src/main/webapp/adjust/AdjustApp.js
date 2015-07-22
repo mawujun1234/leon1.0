@@ -24,6 +24,12 @@ Ext.onReady(function(){
 		gridList.getStore().load();
 		
 		gridList.adjust_id=record.get("id");
+		
+		if(record.get("adjustType")=="borrow"){
+			gridList.down('#isReturnColumn').show();
+		} else {
+			gridList.down('#isReturnColumn').hide();
+		}
 	});
 	
 	var viewPort=Ext.create('Ext.container.Viewport',{

@@ -324,19 +324,14 @@ Ext.onReady(function(){
 						installOutType_name:installOutType_combox.getRawValue()
 					},//传递参数   
 					url : Ext.ContextPath+'/installOut/getEquipmentByEcode.do',//请求的url地址   
-					method : 'GET',//请求方式   
+					method : 'POST',//请求方式   
 					success : function(response) {//加载成功的处理函数   
 						var ret=Ext.decode(response.responseText);
 						if(ret.success){
 							//为新增的equipment添加仓库等其他信息
-							//ret.root.workUnit_id=workUnit_combox.getValue();
-							//ret.root.workUnit_name=workUnit_combox.getRawValue();
-							//ret.root.store_id=store_combox.getValue();
-							//ret.root.store_name=store_combox.getRawValue();
-							//ret.root.memo=memo_textfield.getValue();
-							ret.root.installOutType_id=installOutType_combox.getValue();
-							ret.root.installOutType_content=installOutType_content_textfield.getValue();
-							ret.root.installOutType_name=installOutType_combox.getRawValue();
+							//ret.root.installOutType_id=installOutType_combox.getValue();
+							//ret.root.installOutType_content=installOutType_content_textfield.getValue();
+							//ret.root.installOutType_name=installOutType_combox.getRawValue();
 							var scanrecord = Ext.create('Ems.install.InstallOutList', ret.root);
 
 							ecode_textfield.setValue("");
@@ -363,7 +358,8 @@ Ext.onReady(function(){
 						}
 					},
 					failure : function(response) {//加载失败的处理函数   
-						Ext.Msg.alert("消息",ret.msg);
+						//var ret=Ext.decode(response.responseText);
+						//Ext.Msg.alert("消息",response.msg);
 						ecode_textfield.setValue("");
 						ecode_textfield.clearInvalid( );
 					}
@@ -510,7 +506,7 @@ Ext.onReady(function(){
         		alert("请在出现红框的地方选择值!");
         		return;
         	}
-        	Ext.Msg.confirm("提示","当前领用的记录是:"+equipStore.getCount()+",是否继续?",function(btn){	
+        	Ext.Msg.confirm("提示","当前领用的记录是:<span style='color:red;'>"+equipStore.getCount()+"</span>,是否继续?",function(btn){	
             if (btn=='yes') { 
             	Ext.getBody().mask("正在执行....");
             	var equipments = new Array();
@@ -562,7 +558,7 @@ Ext.onReady(function(){
 	        		return;
 	        	}
 
-	            Ext.Msg.confirm("提示","当前领用的记录是:"+equipStore.getCount()+",是否继续?",function(btn){	
+	            Ext.Msg.confirm("提示","当前领用的记录是:<span style='color:red;'>"+equipStore.getCount()+"</span>,是否继续?",function(btn){	
             	if (btn=='yes') { 
 		            Ext.Msg.confirm("消息","正准备领用出库,是否确认要领用出库?",function(btn){	
 		            	if(btn=='yes'){

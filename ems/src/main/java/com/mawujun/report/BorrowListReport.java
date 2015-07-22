@@ -20,7 +20,7 @@ public class BorrowListReport {
 	private String prod_name;
 	private String prod_style;
 	private String prod_unit;
-	private String installouttype;//该领用是还是领
+	private String borrowtype;//从借用出去的还是领用借出去的，还是调拨借出去的
 	private String status;
 	private String memo;//备注
 	public String getBorrow_id() {
@@ -95,12 +95,7 @@ public class BorrowListReport {
 	public void setProd_unit(String prod_unit) {
 		this.prod_unit = prod_unit;
 	}
-	public String getInstallouttype() {
-		return installouttype;
-	}
-	public void setInstallouttype(String installouttype) {
-		this.installouttype = installouttype;
-	}
+
 	public String getStatus() {
 		return status;
 	}
@@ -112,6 +107,12 @@ public class BorrowListReport {
 	}
 	public void setMemo(String memo) {
 		this.memo = memo;
+	}
+	public String getBorrowtype() {
+		return borrowtype;
+	}
+	public void setBorrowtype(String borrowtype) {
+		this.borrowtype = borrowtype;
 	}
 	
 	

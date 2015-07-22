@@ -18,7 +18,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     
 	<!-- 仓库入库的时候查询-->
 	<select id="query4InStore" resultType="com.mawujun.adjust.AdjustVO" parameterType="map">
-		select a.* from ems_adjust a where (a.status='carry' or a.status='noallin')
+		select a.* from ems_adjust a where (a.status='carry' or a.status='partin')
 		and a.str_in_id in (select store_id from sys_userstore c where c.user_id=#{user_id} and c.edit='Y')
 	</select>
 	
@@ -71,7 +71,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     </select> 
     <!-- 在设备返还，然后入库的时候，对设备进行判断，如果已经全部归还就修改主表的状态为 归还，否则为部分归还 -->
     <update id="updateAdjustIsAllReturn" parameterType="string">
-		update ems_adjust set status=(
+		update ems_adjust set returnStatus=(
 		       select decode(count(id) ,sum(decode(isReturn,'Y',1,0)),'over','partreturn')  from ems_adjustlist 
 		       where adjust_id=#{adjust_id}
 		) where id=#{adjust_id}

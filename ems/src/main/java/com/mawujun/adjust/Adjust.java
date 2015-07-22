@@ -23,8 +23,11 @@ public class Adjust implements IdEntity<String>{
 	@Column(length=18)
 	private String id;
 	@Enumerated(EnumType.STRING)
-	@Column(length=8)
+	@Column(length=10)
 	private AdjustStatus status;//edit,carry,over
+	@Enumerated(EnumType.STRING)
+	@Column(length=15)
+	private AdjustReturnStatus returnStatus;//归还状态
 	
 	@Column(length=36)
 	private String str_out_id;//出库仓库
@@ -125,6 +128,13 @@ public class Adjust implements IdEntity<String>{
 	public void setProject_id(String project_id) {
 		this.project_id = project_id;
 	}
+	public AdjustReturnStatus getReturnStatus() {
+		return returnStatus;
+	}
+	public void setReturnStatus(AdjustReturnStatus returnStatus) {
+		this.returnStatus = returnStatus;
+	}
+
 
 
 }

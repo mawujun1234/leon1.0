@@ -16,6 +16,7 @@ Ext.define('Ems.adjust.AdjustInGrid',{
 	initComponent: function () {
       var me = this;
       me.columns=[
+      	Ext.create('Ext.grid.RowNumberer'),
 		{dataIndex:'id',text:'单号'},
 		{dataIndex:'status_name',text:'状态',width:60},
 		{dataIndex:'adjustType_name',text:'类型',width:60},

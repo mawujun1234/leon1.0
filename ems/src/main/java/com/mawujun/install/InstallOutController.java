@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.mawujun.baseinfo.Equipment;
 import com.mawujun.baseinfo.EquipmentService;
 import com.mawujun.baseinfo.EquipmentStatus;
@@ -51,7 +52,6 @@ import com.mawujun.utils.page.Page;
 @Controller
 //@RequestMapping("/installOut")
 public class InstallOutController {
-
 	@Resource
 	private InstallOutService installOutStoreService;
 	//@Resource
@@ -67,13 +67,13 @@ public class InstallOutController {
 	 */
 	@RequestMapping("/installOut/getEquipmentByEcode.do")
 	@ResponseBody
-	public InstallOutList getEquipmentByEcode(String ecode,String store_id,Long checkDate,String installOutType_content,String installOutType_id,String installOutType_name) {	
+	public InstallOutListVO getEquipmentByEcode(String ecode,String store_id,Long checkDate,String installOutType_content,String installOutType_id,String installOutType_name) {	
 		EquipKey key=EquipKey.getInstance(EquipScanType.installout, store_id,checkDate);
-		InstallOutList equipmentVO=(InstallOutList)cacheMgr.getQrcode(key, ecode);
+		IEcodeCache equipmentVO=cacheMgr.getQrcode(key, ecode);
 		if(equipmentVO!=null){
 			JsonConfigHolder.setSuccessValue(false);
 			JsonConfigHolder.setMsg("设备已经扫过!");
-			return equipmentVO;
+			return (InstallOutListVO)equipmentVO;
 		}
 		
 		InstallOutListVO equipment= installOutStoreService.getInstallOutListVOByEcode(ecode,store_id);
@@ -87,6 +87,13 @@ public class InstallOutController {
 		equipment.setInstallOutType_content(installOutType_content);
 
 		cacheMgr.putQrcode(key, equipment);
+		//System.out.println("===========================================================================");
+		//System.out.println(equipment.getProd_spec());
+		//System.out.println(installOutType_name);
+		//System.out.println(installOutType_content);
+		//equipment.setProd_spec(null);
+		//equipment.setStyle(null);
+		//System.out.println(JSON.toJSONString(equipment));
 		return equipment;
 	}
 //	/**

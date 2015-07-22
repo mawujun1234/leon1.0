@@ -93,5 +93,11 @@ public class InstallOutList  extends UUIDEntity  implements IEcodeCache {
 	public void setIsReturn(Boolean isReturn) {
 		this.isReturn = isReturn;
 	}
+	public String getPole_id() {
+		return pole_id;
+	}
+	public void setPole_id(String pole_id) {
+		this.pole_id = pole_id;
+	}
 
 }

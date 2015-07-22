@@ -17,7 +17,8 @@ public class InStoreList extends UUIDEntity {
 	private String inStore_id;//入库单id
 	@Column(length=25)
 	private String ecode;//设备编码
-	
+	@Column(length=36)
+	private String orderlist_id;//订单明细id
 	
 	public String getInStore_id() {
 		return inStore_id;
@@ -30,6 +31,12 @@ public class InStoreList extends UUIDEntity {
 	}
 	public void setEcode(String ecode) {
 		this.ecode = ecode;
+	}
+	public String getOrderlist_id() {
+		return orderlist_id;
+	}
+	public void setOrderlist_id(String orderlist_id) {
+		this.orderlist_id = orderlist_id;
 	}
 	
 

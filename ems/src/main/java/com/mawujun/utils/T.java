@@ -3,6 +3,7 @@ public final class T {
 public static final class ems_adjust {
 	public static final String id="id";
 	public static final String status="status";
+	public static final String returnStatus="returnStatus";
 	public static final String str_out_id="str_out_id";
 	public static final String str_out_date="str_out_date";
 	public static final String str_out_oper_id="str_out_oper_id";
@@ -21,7 +22,7 @@ public static final class ems_adjustlist {
 	public static final String adjustListStatus="adjustListStatus";
 	public static final String indate="indate";
 	public static final String isReturn="isReturn";
-	public static final String adjust_id_returnback="adjust_id_returnback";
+	public static final String adjustlist_id_returnback="adjustlist_id_returnback";
 	public static final String ecode_returnback="ecode_returnback";
 	public static final String prod_id="prod_id";
 	public static final String id="id";
@@ -463,6 +464,7 @@ public static final class ems_instore {
 public static final class ems_instorelist {
 	public static final String inStore_id="inStore_id";
 	public static final String ecode="ecode";
+	public static final String orderlist_id="orderlist_id";
 	public static final String id="id";
 }
 public static final class ems_order {

@@ -104,6 +104,20 @@
 					<!-- http://blog.csdn.net/jbgtwang/article/details/7696908 <warSourceDirectory>${project.build.directory}/WebContent</warSourceDirectory> -->
 				</configuration>
 			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<!-- --> <version>2.1</version>
+				<configuration>
+					<port>8081</port>
+					<path>/</path>
+					<uriEncoding>utf-8</uriEncoding>
+					<contextReloadable>false</contextReloadable>
+					<!--<backgroundProcessorDelay>0</backgroundProcessorDelay> -->
+					<!-- http://blog.csdn.net/jbgtwang/article/details/7696908 <warSourceDirectory>${project.build.directory}/WebContent</warSourceDirectory> -->
+				</configuration>
+			</plugin>
 
 			
 			<!-- jrebel热替换功能的插件  http://zeroturnaround.com/forums/topic/jrebel-maven-plugin-not-available-in-eclipse-juno-solved/ 

@@ -1,6 +1,10 @@
 package com.mawujun.install;
 
 public class InstallOutListVO extends InstallOutList {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String subtype_name;
 	private String prod_name;
 	private String prod_spec;

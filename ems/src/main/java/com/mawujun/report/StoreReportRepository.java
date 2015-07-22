@@ -11,4 +11,6 @@ public interface StoreReportRepository {
 			@Param("date_start")String date_start,@Param("date_end")String date_end);
 	public List<BorrowListReport> queryBorrowListReport(@Param("store_id")String store_id,@Param("project_id")String project_id,
 			@Param("date_start")String date_start,@Param("date_end")String date_end);
+	public List<InstoreListReport> queryInstoreListReport(@Param("store_id")String store_id,@Param("project_id")String project_id,
+			@Param("date_start")String date_start,@Param("date_end")String date_end);
 }

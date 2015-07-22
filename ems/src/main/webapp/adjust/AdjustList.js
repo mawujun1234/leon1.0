@@ -12,7 +12,7 @@ Ext.defineModel("Ems.adjust.AdjustList",{
 		{name:'prod_id',type:'string'},
 		{name:'adjustListStatus',type:'string'},
 		{name:'isReturn',type:'bool'},
-		{name:'adjust_id_returnback',type:'string'},
+		{name:'adjustlist_id_returnback',type:'string'},
 		{name:'ecode_returnback',type:'string'},
 		
 		{name:'adjustListStatus_name',type:'string'},

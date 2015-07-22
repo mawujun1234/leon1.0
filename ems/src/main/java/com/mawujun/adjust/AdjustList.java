@@ -35,14 +35,14 @@ public class AdjustList extends UUIDEntity{
 	private Date indate;//设备入库时间
 	
 	
-	//下面两个字段只有在AdjustType.borrow的时候有值
+	//下面的几个字段只有在AdjustType.borrow的时候有值
 	@org.hibernate.annotations.Type(type="yes_no")
 	private Boolean isReturn=false;
 	//和主表中的adjust_id_borrow是相反的，这个有值，adjust_id_borrow就没有值
 	@Column(length=36)
-	private String adjust_id_returnback;//归还单明细的id，存在多次归还，所以放在这里了
+	private String adjustlist_id_returnback;//归还单明细的id，存在多次归还，所以放在这里了
 	@Column(length=25)
-	private String ecode_returnback;//归还单的条码
+	private String ecode_returnback;//归还的条码
 	
 	@Transient
 	private String prod_id;//在归还的时候，需要判断设备类型的时候用的
@@ -90,17 +90,18 @@ public class AdjustList extends UUIDEntity{
 	public void setEcode_returnback(String ecode_returnback) {
 		this.ecode_returnback = ecode_returnback;
 	}
-	public String getAdjust_id_returnback() {
-		return adjust_id_returnback;
-	}
-	public void setAdjust_id_returnback(String adjust_id_returnback) {
-		this.adjust_id_returnback = adjust_id_returnback;
-	}
+
 	public Boolean getIsReturn() {
 		return isReturn;
 	}
 	public void setIsReturn(Boolean isReturn) {
 		this.isReturn = isReturn;
+	}
+	public String getAdjustlist_id_returnback() {
+		return adjustlist_id_returnback;
+	}
+	public void setAdjustlist_id_returnback(String adjustlist_id_returnback) {
+		this.adjustlist_id_returnback = adjustlist_id_returnback;
 	}
 
 

@@ -28,7 +28,7 @@ begin
     union all
     select c.prod_id,count( b.ecode) as purchasenum from ems_adjust a,ems_adjustlist b,ems_equipment c
     where a.id=b.adjust_id and b.ecode=c.ecode and to_char(a.str_in_date,'yyyymmdd') =in_todaykey and a.str_in_id=in_store_id  
-    and b.isnew='Y' and b.adjustListStatus='in'
+    and b.isnew='Y' and b.adjustListStatus='in' and a.adjustType!='returnback'
     group by c.prod_id
   )
   group by prod_id
@@ -42,7 +42,7 @@ begin
     union all
     select c.prod_id,count( b.ecode) as oldnum from ems_adjust a,ems_adjustlist b,ems_equipment c
     where a.id=b.adjust_id and b.ecode=c.ecode and to_char(a.str_in_date,'yyyymmdd') =in_todaykey and a.str_in_id=in_store_id  
-    and b.isnew='N' and b.adjustListStatus='in'
+    and b.isnew='N' and b.adjustListStatus='in' and a.adjustType!='returnback'
     group by c.prod_id    
   )
   group by prod_id
@@ -66,7 +66,7 @@ begin
     union all
     select c.prod_id,count( b.ecode) as borrowreturnnum from ems_adjust a,ems_adjustlist b,ems_equipment c
     where a.id=b.adjust_id and b.ecode=c.ecode and to_char(a.str_out_date,'yyyymmdd') =in_todaykey and a.str_out_id=in_store_id 
-    and a.adjustType='returnback' and b.adjustListStatus='in'
+    and a.adjustType='returnback' --and b.adjustListStatus='in'
     group by c.prod_id 
   )
   group by prod_id

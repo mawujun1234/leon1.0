@@ -5,6 +5,7 @@ Ext.defineModel("Ems.adjust.Adjust",{
 		{name:'id',type:'string'},
 		{name:'memo',type:'string'},
 		{name:'status',type:'string'},
+		{name:'returnStatus',type:'string'},
 		{name:'str_in_date',type:'date', dateFormat: 'Y-m-d'},
 		{name:'str_in_id',type:'string'},
 		{name:'str_in_oper_id',type:'string'},
@@ -18,6 +19,7 @@ Ext.defineModel("Ems.adjust.Adjust",{
 		{name:'str_out_name',type:'string'},
 		{name:'status_name',type:'string'},
 		{name:'ecode',type:'string'},
+		{name:'returnStatus_name',type:'string'},
 		{name:'project_id',type:'string'},
 		{name:'prod_id',type:'string'},
 		

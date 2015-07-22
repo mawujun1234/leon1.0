@@ -16,9 +16,11 @@ Ext.define('Ems.adjust.AdjustGrid',{
 	initComponent: function () {
       var me = this;
       me.columns=[
+      	Ext.create('Ext.grid.RowNumberer'),
 		{dataIndex:'id',text:'单号'},
 		{dataIndex:'status_name',text:'状态',width:60},
-		{dataIndex:'adjustType_name',text:'调拨类型'},
+		{dataIndex:'adjustType_name',text:'调拨单类型'},
+		{dataIndex:'returnStatus_name',text:'归还状态',width:60},
 		{dataIndex: 'str_out_name',text: '出库仓库'},
     	{dataIndex: 'str_in_name',text: '入库仓库'},
     	{dataIndex:'str_out_date',text:'出库时间',xtype: 'datecolumn',   format:'Y-m-d',width:80},
@@ -126,7 +128,7 @@ Ext.define('Ems.adjust.AdjustGrid',{
 	        allowBlank: false,
 	        store:Ext.create('Ext.data.Store', {
 		    	fields: ['id', 'name'],
-			    data:[{id:"",name:"所有"},{id:"carry",name:"在途"},{id:"noallin",name:"未全入"},{id:"noreturn",name:"未归还"},{id:"partreturn",name:"部分归还"},{id:"over",name:"完成"}]//,{id:"edit",name:"编辑中"}
+			    data:[{id:"",name:"所有"},{id:"carry",name:"在途"},{id:"partin",name:"未全入"},{id:"over",name:"完成"}]//,{id:"edit",name:"编辑中"}
 		   })
 	  }); 
 	  
