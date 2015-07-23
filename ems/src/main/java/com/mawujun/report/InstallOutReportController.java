@@ -60,7 +60,12 @@ public class InstallOutReportController {
 		if(day_length<=0){
 			throw new BusinessException("日期选错了,请重新选择!");
 		}
-		String store_name_title="所有仓库";
+		
+		//零星报表都是备品备件报表
+		String store_name_title="备品备件仓库";
+//		if (store_type == 1) {
+//			store_name_title = "在建仓库";
+//		}
 		if(store_id!=null && !"".equals(store_id) ){
 			Store store=storeService.get(store_id);
 			store_name_title=store.getName();
@@ -90,18 +95,31 @@ public class InstallOutReportController {
 		Row title = sheet.createRow(0);// 一共有11列
 		title.setHeight((short) 660);
 		Cell title_cell = title.createCell(0);
-		title_cell.setCellValue(store_name_title+date_start+"到"+date_end+"零星项目领用报表");
+		title_cell.setCellValue(store_name_title+"零星项目领用报表");
 		CellStyle cs = wb.createCellStyle();
 		Font f = wb.createFont();
 		f.setFontHeightInPoints((short) 16);
 		// f.setColor(IndexedColors.RED.getIndex());
 		f.setBoldweight(Font.BOLDWEIGHT_BOLD);
 		cs.setFont(f);
-		cs.setAlignment(CellStyle.ALIGN_LEFT);
+		cs.setAlignment(CellStyle.ALIGN_CENTER);
 		cs.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
 		title_cell.setCellStyle(cs);
 		// 和并单元格
 		sheet.addMergedRegion(new CellRangeAddress(0, (short) 0, 0, (short) sparepart_month_freeze_num-1));
+		
+		Row row_date = sheet.createRow(1);
+		Cell cell_date=row_date.createCell(0);
+		CellStyle cell_date_style = wb.createCellStyle();
+		Font cell_date_f = wb.createFont();
+		cell_date_f.setFontHeightInPoints((short) 12);
+		cell_date_f.setBoldweight(Font.BOLDWEIGHT_BOLD);
+		cell_date_style.setFont(cell_date_f);
+		cell_date_style.setAlignment(CellStyle.ALIGN_LEFT);
+		cell_date_style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		cell_date.setCellStyle(cell_date_style);
+		cell_date.setCellValue("统计日期:"+date_start+"到"+date_end);
+		sheet.addMergedRegion(new CellRangeAddress(1, (short) 1, 0, (short) type_group_end_num+1));
 
 		// 设置第一行,设置列标题
 		sparepart_addRow1(wb, sheet);
@@ -153,13 +171,13 @@ public class InstallOutReportController {
 		// content_subtitle_style.setBorderTop(CellStyle.BORDER_NONE);
 
 		int cellnum = 0;
-		int rownum = 3;//从第3行开始
+		int rownum = 4;//从第3行开始
 		//用来存放领用类型所属的单元格第一个key是第一级的name，第二个map的key是第二级的name
 		Map<String,Map<String,Integer>> installtype_map=new HashMap<String,Map<String,Integer>>();
 		Set<Integer> haveDataRow=new HashSet<Integer>();
 		int exists_cellnum=sparepart_month_freeze_num;//领用类型的迁移量
-		Row row1 = sheet.getRow(1);
-		Row row2 = sheet.getRow(2);
+		Row row1 = sheet.getRow(2);
+		Row row2 = sheet.getRow(3);
 		for (int i = 0; i < types.size(); i++) {
 			cellnum = 0;
 			InstallOutReport_type equipmentType = types.get(i);
@@ -171,7 +189,7 @@ public class InstallOutReportController {
 			type_name.setCellValue(equipmentType.getType_name());
 			type_name.setCellStyle(type_name_style);
 			// subtype_name.setCellValue(buildDayReport.getSubtype_name());
-			sheet.addMergedRegion(new CellRangeAddress(rownum - 1, rownum - 1, 0, (short) type_group_end_num - 1));
+			sheet.addMergedRegion(new CellRangeAddress(rownum - 1, rownum - 1, 0, (short) type_group_end_num ));
 			//sheet.addMergedRegion(new CellRangeAddress(rownum - 1, rownum - 1, type_group_end_num, (short) type_group_end_num + 2));
 
 			if (equipmentType.getSubtypes() != null) {
@@ -186,7 +204,7 @@ public class InstallOutReportController {
 					subtype_name.setCellValue(equipmentSubtype.getSubtype_name());
 					subtype_name.setCellStyle(subtype_name_style);
 
-					sheet.addMergedRegion(new CellRangeAddress(rownum - 1, rownum - 1, 1, (short) type_group_end_num - 1));
+					sheet.addMergedRegion(new CellRangeAddress(rownum - 1, rownum - 1, 1, (short) type_group_end_num ));
 					//sheet.addMergedRegion(new CellRangeAddress(rownum - 1, rownum - 1, type_group_end_num, (short) type_group_end_num + 2));
 
 					// 弄几行模拟品名的数据，即几个空行
@@ -280,7 +298,7 @@ public class InstallOutReportController {
 		//表头合并单元格
 		for(Entry<String,Map<String,Integer>> installtype_entry:installtype_map.entrySet()){
 			//渲染比表头
-			Row row = sheet.getRow(1);
+			Row row = sheet.getRow(2);
 			Integer first_cellnum=installtype_entry.getValue().get("first_cellnum");
 			for(int i=first_cellnum;i<first_cellnum+installtype_entry.getValue().size()-1;i++){
 				Cell cell=row.getCell(i);
@@ -290,7 +308,7 @@ public class InstallOutReportController {
 				}
 			}
 			//-2是减掉first_cellnum这个占据的容量，还有本来要减掉的1
-			sheet.addMergedRegion(new CellRangeAddress(1, 1, first_cellnum, first_cellnum+installtype_entry.getValue().size()-2));
+			sheet.addMergedRegion(new CellRangeAddress(2, 2, first_cellnum, first_cellnum+installtype_entry.getValue().size()-2));
 		}
 
 		String filename = "零星项目领用报表.xlsx";
@@ -307,8 +325,8 @@ public class InstallOutReportController {
 	}
 	
 	private void sparepart_addRow1(XSSFWorkbook wb, Sheet sheet) {
-		Row row = sheet.createRow(1);
-		Row row2 = sheet.createRow(2);
+		Row row = sheet.createRow(2);
+		Row row2 = sheet.createRow(3);
 
 		CellStyle black_style = getStyle(wb, IndexedColors.BLACK, null);
 		int cellnum = 0;
@@ -318,7 +336,7 @@ public class InstallOutReportController {
 		type_name.setCellStyle(black_style);
 		sheet.setColumnWidth(cellnum - 1, 600);
 		row2.createCell(cellnum-1).setCellStyle(black_style);	
-		sheet.addMergedRegion(new CellRangeAddress(1, (short) 2, cellnum - 1, (short) cellnum - 1));
+		sheet.addMergedRegion(new CellRangeAddress(2, (short) 3, cellnum - 1, (short) cellnum - 1));
 		
 
 		Cell subtype_name = row.createCell(cellnum++);
@@ -326,21 +344,21 @@ public class InstallOutReportController {
 		subtype_name.setCellStyle(black_style);
 		sheet.setColumnWidth(cellnum - 1, 600);
 		row2.createCell(cellnum-1).setCellStyle(black_style);	
-		sheet.addMergedRegion(new CellRangeAddress(1, (short) 2, cellnum - 1, (short) cellnum - 1));
+		sheet.addMergedRegion(new CellRangeAddress(2, (short) 3, cellnum - 1, (short) cellnum - 1));
 
 		Cell brand_name = row.createCell(cellnum++);
 		brand_name.setCellValue("品牌");
 		brand_name.setCellStyle(black_style);
 		sheet.setColumnWidth(cellnum - 1, 3000);
 		row2.createCell(cellnum-1).setCellStyle(black_style);	
-		sheet.addMergedRegion(new CellRangeAddress(1, (short) 2, cellnum - 1, (short) cellnum - 1));
+		sheet.addMergedRegion(new CellRangeAddress(2, (short) 3, cellnum - 1, (short) cellnum - 1));
 
 		Cell style = row.createCell(cellnum++);
 		style.setCellValue("型号");
 		style.setCellStyle(black_style);
 		sheet.setColumnWidth(cellnum - 1, "列".getBytes().length * 8 * 256);
 		row2.createCell(cellnum-1).setCellStyle(black_style);	
-		sheet.addMergedRegion(new CellRangeAddress(1, (short) 2, cellnum - 1, (short) cellnum - 1));
+		sheet.addMergedRegion(new CellRangeAddress(2, (short) 3, cellnum - 1, (short) cellnum - 1));
 		// sheet.autoSizeColumn(cellint-1, true);
 
 		Cell prod_name = row.createCell(cellnum++);
@@ -348,7 +366,7 @@ public class InstallOutReportController {
 		prod_name.setCellStyle(black_style);
 		sheet.setColumnWidth(cellnum - 1, "列".getBytes().length * 8 * 256);
 		row2.createCell(cellnum-1).setCellStyle(black_style);	
-		sheet.addMergedRegion(new CellRangeAddress(1, (short) 2, cellnum - 1, (short) cellnum - 1));
+		sheet.addMergedRegion(new CellRangeAddress(2, (short) 3, cellnum - 1, (short) cellnum - 1));
 		// sheet.autoSizeColumn(cellint-1, true);
 
 		Cell store_name = row.createCell(cellnum++);
@@ -356,14 +374,14 @@ public class InstallOutReportController {
 		store_name.setCellStyle(black_style);
 		sheet.setColumnWidth(cellnum - 1, 2400);
 		row2.createCell(cellnum-1).setCellStyle(black_style);	
-		sheet.addMergedRegion(new CellRangeAddress(1, (short) 2, cellnum - 1, (short) cellnum - 1));
+		sheet.addMergedRegion(new CellRangeAddress(2, (short) 3, cellnum - 1, (short) cellnum - 1));
 
 		Cell unit = row.createCell(cellnum++);
 		unit.setCellValue("单位");
 		unit.setCellStyle(black_style);
 		sheet.setColumnWidth(cellnum - 1, 600);
 		row2.createCell(cellnum-1).setCellStyle(black_style);	
-		sheet.addMergedRegion(new CellRangeAddress(1, (short) 2, cellnum - 1, (short) cellnum - 1));
+		sheet.addMergedRegion(new CellRangeAddress(2, (short) 3, cellnum - 1, (short) cellnum - 1));
 
 
 //		Cell memo = row.createCell(cellnum++);
@@ -372,7 +390,7 @@ public class InstallOutReportController {
 //		sheet.setColumnWidth(cellnum - 1, 2400);
 
 		// sheet.createFreezePane(16, 2);
-		sheet.createFreezePane(sparepart_month_freeze_num, 3);
+		sheet.createFreezePane(sparepart_month_freeze_num, 4);
 	}
 	
 	public CellStyle getStyle(XSSFWorkbook wb, IndexedColors color, Short fontSize) {

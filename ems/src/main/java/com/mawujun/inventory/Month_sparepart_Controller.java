@@ -54,32 +54,48 @@ public class Month_sparepart_Controller {
 		
 		List<Month_sparepart_type> types = day_sparepart_Service.queryMonth_sparepartVO(store_id, store_type,date_start.replaceAll("-", ""),date_end.replaceAll("-", ""));
 		Map<String,Integer> yesterdaynum_map=day_sparepart_Service.queryMonth_yesterdaynum(store_id, store_type, date_start.replaceAll("-", ""));
-		String store_name_title="所有仓库";
+		String store_name_title="备品备件仓库";
+		if (store_type == 1) {
+			store_name_title = "在建仓库";
+		}
 		if(store_id!=null && !"".equals(store_id) ){
 			Store store=storeService.get(store_id);
 			store_name_title=store.getName();
 		}
 
 		XSSFWorkbook wb = new XSSFWorkbook();
-		Sheet sheet = wb.createSheet("仓库名称");
+		Sheet sheet = wb.createSheet("盘点汇总表");
 		Row title = sheet.createRow(0);// 一共有11列
 		title.setHeight((short) 660);
 		Cell title_cell = title.createCell(0);
-		title_cell.setCellValue(store_name_title+date_start+"到"+date_end+"盘点月报表");
+		title_cell.setCellValue(store_name_title+"盘点汇总表");
 		CellStyle cs = wb.createCellStyle();
 		Font f = wb.createFont();
 		f.setFontHeightInPoints((short) 16);
 		// f.setColor(IndexedColors.RED.getIndex());
 		f.setBoldweight(Font.BOLDWEIGHT_BOLD);
 		cs.setFont(f);
-		cs.setAlignment(CellStyle.ALIGN_LEFT);
+		cs.setAlignment(CellStyle.ALIGN_CENTER);
 		cs.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
 		title_cell.setCellStyle(cs);
 		// 和并单元格
-		sheet.addMergedRegion(new CellRangeAddress(0, (short) 0, 0, (short) type_group_end_num));
-
+		sheet.addMergedRegion(new CellRangeAddress(0, (short) 0, 0, (short) type_group_end_num+1));
+		
 		// 设置第一行,设置列标题
 		sparepart_addRow1(wb, sheet);
+		
+		Row row_date = sheet.createRow(1);
+		Cell cell_date=row_date.createCell(0);
+		CellStyle cell_date_style = wb.createCellStyle();
+		Font cell_date_f = wb.createFont();
+		cell_date_f.setFontHeightInPoints((short) 12);
+		cell_date_f.setBoldweight(Font.BOLDWEIGHT_BOLD);
+		cell_date_style.setFont(cell_date_f);
+		cell_date_style.setAlignment(CellStyle.ALIGN_LEFT);
+		cell_date_style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		cell_date.setCellStyle(cell_date_style);
+		cell_date.setCellValue("统计日期:"+date_start+"到"+date_end);
+		sheet.addMergedRegion(new CellRangeAddress(1, (short) 1, 0, (short) type_group_end_num+1));
 
 		CellStyle type_name_style = this.getStyle(wb, IndexedColors.BLACK, (short) 12);
 		// black_style.setBorderBottom(CellStyle.BORDER_NONE);
@@ -128,7 +144,7 @@ public class Month_sparepart_Controller {
 		// content_subtitle_style.setBorderTop(CellStyle.BORDER_NONE);
 
 		int cellnum = 0;
-		int rownum = 2;
+		int rownum = 3;
 		for (int i = 0; i < types.size(); i++) {
 			cellnum = 0;
 			Month_sparepart_type equipmentType = types.get(i);
@@ -140,8 +156,8 @@ public class Month_sparepart_Controller {
 			type_name.setCellValue(equipmentType.getType_name());
 			type_name.setCellStyle(type_name_style);
 			// subtype_name.setCellValue(buildDayReport.getSubtype_name());
-			sheet.addMergedRegion(new CellRangeAddress(rownum - 1, rownum - 1, 0, (short) type_group_end_num - 1));
-			sheet.addMergedRegion(new CellRangeAddress(rownum - 1, rownum - 1, type_group_end_num, (short) type_group_end_num + 2));
+			sheet.addMergedRegion(new CellRangeAddress(rownum - 1, rownum - 1, 0, (short) type_group_end_num+1 ));
+			sheet.addMergedRegion(new CellRangeAddress(rownum - 1, rownum - 1, type_group_end_num+2, (short) type_group_end_num + 4));
 
 			// 描绘小类
 			StringBuilder nownum_formule_builder = new StringBuilder();
@@ -158,8 +174,8 @@ public class Month_sparepart_Controller {
 					subtype_name.setCellValue(equipmentSubtype.getSubtype_name());
 					subtype_name.setCellStyle(subtype_name_style);
 
-					sheet.addMergedRegion(new CellRangeAddress(rownum - 1, rownum - 1, 1, (short) type_group_end_num - 1));
-					sheet.addMergedRegion(new CellRangeAddress(rownum - 1, rownum - 1, type_group_end_num, (short) type_group_end_num + 2));
+					sheet.addMergedRegion(new CellRangeAddress(rownum - 1, rownum - 1, 1, (short) type_group_end_num+1));
+					sheet.addMergedRegion(new CellRangeAddress(rownum - 1, rownum - 1, type_group_end_num+2, (short) type_group_end_num + 4));
 
 					// 弄几行模拟品名的数据，即几个空行
 					int fromRow_subtype = rownum;
@@ -285,9 +301,9 @@ public class Month_sparepart_Controller {
 		sheet.setRowSumsBelow(false);
 		sheet.setRowSumsRight(false);
 
-		String filename = "备品备件仓库盘点月报表.xlsx";
+		String filename = "备品备件仓库盘点汇总表.xlsx";
 		if (store_type == 1) {
-			filename = "在建仓库盘点月报表.xlsx";
+			filename = "在建仓库盘点汇总表.xlsx";
 		}
 		// FileOutputStream out = new FileOutputStream(filename);
 		response.setHeader("content-disposition", "attachment; filename=" + new String(filename.getBytes("UTF-8"), "ISO8859-1"));
@@ -346,7 +362,7 @@ public class Month_sparepart_Controller {
 	}
 
 	private void sparepart_addRow1(XSSFWorkbook wb, Sheet sheet) {
-		Row row = sheet.createRow(1);
+		Row row = sheet.createRow(2);
 
 		CellStyle black_style = getStyle(wb, IndexedColors.BLACK, null);
 		int cellnum = 0;
@@ -470,7 +486,7 @@ public class Month_sparepart_Controller {
 		sheet.setColumnWidth(cellnum - 1, 2400);
 
 		// sheet.createFreezePane(16, 2);
-		sheet.createFreezePane(sparepart_month_freeze_num, 2);
+		sheet.createFreezePane(sparepart_month_freeze_num, 3);
 	}
 
 	int sparepart_month_freeze_num = 17;// 在建仓库月冻结的列数

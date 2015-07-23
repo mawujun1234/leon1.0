@@ -95,7 +95,10 @@ public class Day_sparepart_Controller {
 		}
 		
 		List<Day_sparepart_type> types = day_sparepart_Service.queryDay_sparepart(store_id, store_type,date_start.replaceAll("-", ""),date_end.replaceAll("-", ""));
-		String store_name_title="所有仓库";
+		String store_name_title="备品备件仓库";
+		if (store_type == 1) {
+			store_name_title = "在建仓库";
+		}
 		if(store_id!=null && !"".equals(store_id) ){
 			Store store=storeService.get(store_id);
 			store_name_title=store.getName();
@@ -106,22 +109,35 @@ public class Day_sparepart_Controller {
 		//List<EquipmentType> equipmentTypes = equipmentTypeRepository.queryTypeAndSubtype();
 
 		XSSFWorkbook wb = new XSSFWorkbook();
-		Sheet sheet = wb.createSheet("仓库名称");
+		Sheet sheet = wb.createSheet("盘点日报表");
 		Row title = sheet.createRow(0);// 一共有11列
 		title.setHeight((short) 660);
 		Cell title_cell = title.createCell(0);
-		title_cell.setCellValue(store_name_title+date_start+"到"+date_end+"盘点日报表");
+		title_cell.setCellValue(store_name_title+"盘点日报表");
 		CellStyle cs = wb.createCellStyle();
 		Font f = wb.createFont();
 		f.setFontHeightInPoints((short) 16);
 		// f.setColor(IndexedColors.RED.getIndex());
 		f.setBoldweight(Font.BOLDWEIGHT_BOLD);
 		cs.setFont(f);
-		cs.setAlignment(CellStyle.ALIGN_LEFT);
+		cs.setAlignment(CellStyle.ALIGN_CENTER);
 		cs.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
 		title_cell.setCellStyle(cs);
 		// 和并单元格
-		sheet.addMergedRegion(new CellRangeAddress(0, (short) 0, 0, (short) type_group_end_num - 1));
+		sheet.addMergedRegion(new CellRangeAddress(0, (short) 0, 0, (short) type_group_end_num ));
+		
+		Row row_date = sheet.createRow(1);
+		Cell cell_date=row_date.createCell(0);
+		CellStyle cell_date_style = wb.createCellStyle();
+		Font cell_date_f = wb.createFont();
+		cell_date_f.setFontHeightInPoints((short) 12);
+		cell_date_f.setBoldweight(Font.BOLDWEIGHT_BOLD);
+		cell_date_style.setFont(cell_date_f);
+		cell_date_style.setAlignment(CellStyle.ALIGN_LEFT);
+		cell_date_style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		cell_date.setCellStyle(cell_date_style);
+		cell_date.setCellValue("统计日期:"+date_start+"到"+date_end);
+		sheet.addMergedRegion(new CellRangeAddress(1, (short) 1, 0, (short) type_group_end_num+1));
 		
 		// 设置第一行,设置列标题
 		StringBuilder[] formulas = sparepart_addRow1(wb, sheet,daykeys_title);
@@ -173,7 +189,7 @@ public class Day_sparepart_Controller {
 		//key是cloumn_index，value是数量的值，如果为
 		HideColumn hideColumn=new HideColumn();
 		int cellnum = 0;
-		int rownum = 3;
+		int rownum = 4;
 		for (int i = 0; i < types.size(); i++) {
 			cellnum = 0;
 			Day_sparepart_type equipmentType = types.get(i);
@@ -185,8 +201,8 @@ public class Day_sparepart_Controller {
 			type_name.setCellValue(equipmentType.getType_name());
 			type_name.setCellStyle(type_name_style);
 			// subtype_name.setCellValue(buildDayReport.getSubtype_name());
-			sheet.addMergedRegion(new CellRangeAddress(rownum - 1, rownum - 1, 0, (short) type_group_end_num - 1));
-			sheet.addMergedRegion(new CellRangeAddress(rownum - 1, rownum - 1, type_group_end_num, (short) type_group_end_num + 2));
+			sheet.addMergedRegion(new CellRangeAddress(rownum - 1, rownum - 1, 0, (short) type_group_end_num ));
+			//sheet.addMergedRegion(new CellRangeAddress(rownum - 1, rownum - 1, type_group_end_num+1, (short) type_group_end_num + 2));
 
 			// 描绘小类
 			StringBuilder nownum_formule_builder = new StringBuilder();
@@ -203,8 +219,8 @@ public class Day_sparepart_Controller {
 					subtype_name.setCellValue(equipmentSubtype.getSubtype_name());
 					subtype_name.setCellStyle(subtype_name_style);
 
-					sheet.addMergedRegion(new CellRangeAddress(rownum - 1, rownum - 1, 1, (short) type_group_end_num - 1));
-					sheet.addMergedRegion(new CellRangeAddress(rownum - 1, rownum - 1, type_group_end_num, (short) type_group_end_num + 2));
+					sheet.addMergedRegion(new CellRangeAddress(rownum - 1, rownum - 1, 1, (short) type_group_end_num ));
+					//sheet.addMergedRegion(new CellRangeAddress(rownum - 1, rownum - 1, type_group_end_num+1, (short) type_group_end_num + 2));
 
 					//要先对prods进行行列转换
 					equipmentSubtype.changeProdes();
@@ -464,7 +480,7 @@ public class Day_sparepart_Controller {
 
 	private StringBuilder[] sparepart_addRow1(XSSFWorkbook wb,Sheet sheet,List<String> daykeys_title){
 		Integer day_length=daykeys_title.size();
-		 Row row = sheet.createRow(1);
+		 Row row = sheet.createRow(2);
 		 
 		 CellStyle black_style=getStyle(wb,IndexedColors.BLACK,null);
 		 int cellnum=0;
@@ -597,10 +613,10 @@ public class Day_sparepart_Controller {
 		 
 		 //------------------------------------------------
 
-		 Row row2 = sheet.createRow(2);
+		 Row row2 = sheet.createRow(3);
 		for (int j = 0; j < cellnum; j++) {
 
-			sheet.addMergedRegion(new CellRangeAddress(1, 2, (short) j, (short) j));
+			sheet.addMergedRegion(new CellRangeAddress(2, 3, (short) j, (short) j));
 			// 同时设置第二行的单元格的样式
 			Cell temp = row2.createCell(j);
 			temp.setCellStyle(black_style);
@@ -716,7 +732,7 @@ public class Day_sparepart_Controller {
 				//合并这两个单元格
 				int cellnum_repeat_temp=cellnum_repeat;
 				cellnum_repeat=	cellnum_repeat+8;
-				sheet.addMergedRegion(new CellRangeAddress(1,1,cellnum_repeat_temp,cellnum_repeat-1)); 
+				sheet.addMergedRegion(new CellRangeAddress(2,2,cellnum_repeat_temp,cellnum_repeat-1)); 
 				//设置日期值
 				Cell cell11=row.createCell(cellnum_repeat_temp);
 				cell11.setCellValue(daykeys_title.get(j));
@@ -736,7 +752,7 @@ public class Day_sparepart_Controller {
 
 			 
 			 //冻结行和列
-			 sheet.createFreezePane(sparepart_month_freeze_num, 3);
+			 sheet.createFreezePane(sparepart_month_freeze_num, 4);
 			 
 			 //生成本期新增数公式
 			 StringBuilder[] formulas=new StringBuilder[]{purchasenum_formula,oldnum_formula,installoutnum_formula,repairinnum_formula,scrapoutnum_formula,repairoutnum_formula,adjustoutnum_formula,adjustinnum_formula};
