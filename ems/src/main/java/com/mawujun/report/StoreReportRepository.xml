@@ -183,6 +183,75 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		where a.ecode=b.ecode and b.prod_id=c.id and b.subtype_id=d.id and b.brand_id=e.id
 		order by a.operatedate
     </select>
+    
+    <!-- 查询零星项目 领用报表 -->
+    <resultMap id="installout_report_map" type="com.mawujun.report.InstallOutReport_type" >
+     	<id property="type_id" column="type_id"/>
+    	<result property="type_name" column="type_name"/>
+    	<collection property="subtypes" ofType="com.mawujun.report.InstallOutReport_subtype">  
+    		<id property="subtype_id" column="subtype_id"/>
+		    <result property="subtype_name" column="subtype_name"/>
+		    <collection property="prodes" ofType="com.mawujun.report.InstallOutReport_prod">  
+		    	<id property="prod_id" column="prod_id"/>
+		    	<id property="installouttype_content" column="installouttype_content"/>
+		    	<result property="store_id" column="store_id"/>
+		    	<result property="installouttype_name" column="installouttype_name"/>
+		    	
+		    	<result property="prod_name" column="prod_name"/>
+		    	<result property="prod_unit" column="prod_unit"/>
+		    	<result property="prod_style" column="prod_style"/>
+		    	<result property="brand_name" column="brand_name"/>
+
+		    	<result property="installoutnum" column="installoutnum"/>
+		    </collection>
+       </collection>  
+    </resultMap>
+    <select id="queryInstalloutReport" resultMap="installout_report_map" parameterType="map">
+    	select  a.store_id,a.installouttype_name,a.installouttype_content,
+		e.id as type_id,e.name as type_name,d.id as subtype_id,d.name as subtype_name,c.id as prod_id,c.name as prod_name,c.unit as prod_unit,c.style prod_style,f.name as brand_name,count(a.installoutlist_id) as installoutnum 
+		from (
+		select a.store_id,b.ecode,c.name as installouttype_name,b.installouttype_content,b.id as installoutlist_id
+		from ems_installout a,ems_installoutlist b,ems_installouttype c
+		where a.id=b.installout_id and b.installouttype_id=c.id  and b.installoutlisttype='installout'
+		<if test="use_in!=null and use_in==false">
+			and a.store_id=#{store_id}  
+		</if>
+		<if test="use_in!=null and use_in==true ">
+			and a.store_id in (${store_id})  
+		</if>
+	    and to_char(a.operatedate,'yyyy-mm-dd') &gt;=#{date_start}  and to_char(a.operatedate,'yyyy-mm-dd') &lt;=#{date_end}
+		union all
+		select a.store_id,b.ecode,'借用' installouttype_name,'借变领' as installouttype_content,b.id as installoutlist_id
+		from ems_borrow a,ems_borrowlist b
+		where a.id=b.borrow_id and b.borrowlisttype='installout'
+		<if test="use_in!=null and use_in==false">
+			and a.store_id=#{store_id}  
+		</if>
+		<if test="use_in!=null and use_in==true ">
+			and a.store_id in (${store_id})  
+		</if>
+	    and to_char(a.operatedate,'yyyy-mm-dd') &gt;=#{date_start}  and to_char(a.operatedate,'yyyy-mm-dd') &lt;=#{date_end}
+		union all
+		select a.str_out_id store_id,b.ecode,'调拨' installouttype_name,c.name as installouttype_content,b.id as installoutlist_id
+		from ems_adjust a,ems_adjustlist b,ems_store c
+		where a.id=b.adjust_id and a.str_in_id=c.id and a.adjusttype in ('installout','returnback') 
+		<if test="use_in!=null and use_in==false">
+			and a.str_out_id=#{store_id}  
+		</if>
+		<if test="use_in!=null and use_in==true ">
+			and a.str_out_id in (${store_id})  
+		</if>
+	    and to_char(a.str_out_date,'yyyy-mm-dd') &gt;=#{date_start}  and to_char(a.str_out_date,'yyyy-mm-dd') &lt;=#{date_end}
+		) a
+		inner join ems_equipment b on a.ecode=b.ecode
+		inner join ems_equipmentprod c on b.prod_id=c.id
+		inner join ems_equipmentsubtype d on c.subtype_id=d.id
+		inner join ems_equipmenttype e on d.parent_id=e.id
+		inner join ems_brand f on c.brand_id=f.id
+		group by a.store_id,a.installouttype_name ,a.installouttype_content,
+		e.id,e.name ,d.id,d.name,c.id,c.name ,c.unit,c.style ,f.name
+    	
+    </select>
 
 </mapper>
 
