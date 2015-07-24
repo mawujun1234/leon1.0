@@ -168,8 +168,8 @@ public class TaskController {
 			builder.append(vo.getProd_style());
 			builder.append("|");
 			builder.append(vo.getBrand_name());
-			builder.append("|");
-			builder.append(vo.getSupplier_name());
+//			builder.append("|");
+//			builder.append(vo.getSupplier_name());
 //			builder.append("|");
 //			builder.append(vo.getStatus_name());
 			builder.append("<br/>");

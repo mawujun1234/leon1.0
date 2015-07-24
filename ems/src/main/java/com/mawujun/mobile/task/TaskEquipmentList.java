@@ -9,6 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.mawujun.baseinfo.EquipmentWorkunitType;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
 /**
@@ -26,7 +27,10 @@ public class TaskEquipmentList extends UUIDEntity {
 	private Date scanDate;//扫描的时间
 	@Enumerated(EnumType.STRING)
 	@Column(length=15)
-	private TaskListTypeEnum type;
+	private TaskListTypeEnum type;//这个设备的来源类型,是安装还是卸载，还是查看
+	@Enumerated(EnumType.STRING)
+	@Column(length=15)
+	private EquipmentInstalloutType installoutType;//这个设备是领用出来的，还是借用出来的
 	//提交任务的时候设备的状态，主要用于维修的时候
 	//private Integer equipment_status;
 	//@Enumerated(EnumType.STRING)
@@ -58,6 +62,13 @@ public class TaskEquipmentList extends UUIDEntity {
 	public void setScanDate(Date scanDate) {
 		this.scanDate = scanDate;
 	}
+	public EquipmentInstalloutType getInstalloutType() {
+		return installoutType;
+	}
+	public void setInstalloutType(EquipmentInstalloutType installoutType) {
+		this.installoutType = installoutType;
+	}
+
 
 
 }

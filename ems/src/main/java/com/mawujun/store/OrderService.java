@@ -260,6 +260,7 @@ public class OrderService extends AbstractService<Order, String>{
 //			if(!isTj){
 //				equipmentProd_id+="-**";
 //			}
+			//如果设备默认是6位的，就自动补全-**到9位,注意这-**也不能替换了啊，在EquipmentProdService.splitEcode中就按这个进行拆分获取prod_id的
 			if(equipmentProd_id.length()==6){
 				equipmentProd_id+="-**";
 			}

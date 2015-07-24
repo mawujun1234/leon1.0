@@ -25,4 +25,6 @@ public interface EquipmentProdRepository extends IRepository<EquipmentProd, Stri
 	public String get_style_by_prod_id(@Param("prod_id") String prod_id);
 	public void update_lock_style(@Param("prod_id") String prod_id,@Param("lock_style") Boolean lock_style);
 	//public List<Brand> queryProdGrid(@Param("subtype_id") String subtype_id);
+	
+	public EquipmentProdVO getEquipmentProdVO(@Param("prod_id") String prod_id);
 }

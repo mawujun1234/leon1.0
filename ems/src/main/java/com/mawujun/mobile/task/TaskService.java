@@ -19,6 +19,9 @@ import com.mawujun.baseinfo.EquipmentPole;
 import com.mawujun.baseinfo.EquipmentPolePK;
 import com.mawujun.baseinfo.EquipmentPoleRepository;
 import com.mawujun.baseinfo.EquipmentPoleType;
+import com.mawujun.baseinfo.EquipmentProdRepository;
+import com.mawujun.baseinfo.EquipmentProdService;
+import com.mawujun.baseinfo.EquipmentProdVO;
 import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.EquipmentService;
 import com.mawujun.baseinfo.EquipmentStatus;
@@ -83,6 +86,8 @@ public class TaskService extends AbstractService<Task, String>{
 	private EquipmentCycleService equipmentCycleService;
 	@Autowired
 	private LockEquipmentService lockEquipmentService;
+	@Autowired
+	private EquipmentProdService equipmentProdService;
 	
 	@Override
 	public TaskRepository getRepository() {
@@ -390,63 +395,104 @@ public class TaskService extends AbstractService<Task, String>{
 		lockEquipmentService.check_locked(ecode, task_id);
 		
 		//判断设备是否在该作业单位手上
-		if(task_type!=TaskType.cancel){
-			int count=equipmentRepository.check_in_workunit_by_ecode(ecode,ShiroUtils.getUserId());
-	
-			//如果是维修任务,并且不在作业单位上，那要判断是不是在点位上
-			if(count ==0 && task_type==TaskType.repair){
-				count=equipmentRepository.check_in_pole_by_ecode(ecode, pole_id);
-				if(count==0){
-					throw new BusinessException(ecode+"不在该作业单位或点位上!");
-				}
-			}
+		TaskListTypeEnum taskListTypeEnum=TaskListTypeEnum.install;
+		EquipmentInstalloutType installoutType=EquipmentInstalloutType.other;
+		if(task_type==TaskType.cancel){
+			int count=equipmentRepository.check_in_pole_by_ecode(ecode, pole_id);
 			//判断是不是作业单位上的设备
 			if(count==0){
-				throw new BusinessException(ecode+"不在该作业单位手上!");
+				throw new BusinessException(ecode+"不在这个点位上!");
 			}
+			taskListTypeEnum=TaskListTypeEnum.uninstall;
+		}  else if(task_type==TaskType.patrol){
+			int count=equipmentRepository.check_in_pole_by_ecode(ecode, pole_id);
+			//判断是不是作业单位上的设备
+			if(count==0){
+				throw new BusinessException(ecode+"不在这个点位上!");
+			}
+			taskListTypeEnum=TaskListTypeEnum.patrol;
+		} else if(task_type==TaskType.newInstall){
+			//int count=equipmentRepository.check_in_workunit_by_ecode(ecode, ShiroUtils.getUserId());
+			EquipmentWorkunitPK id=new EquipmentWorkunitPK(ecode,ShiroUtils.getUserId());
+			EquipmentWorkunit equipmentWorkunit=equipmentWorkunitRepository.get(id);
+			//判断是不是作业单位上的设备
+			if(equipmentWorkunit==null){
+				throw new BusinessException(ecode+"不在这个作业单位上!");
+			}
+			taskListTypeEnum=TaskListTypeEnum.install;
+			if(equipmentWorkunit.getType()==EquipmentWorkunitType.borrow){
+				installoutType=EquipmentInstalloutType.borrow;
+			}
+			if(equipmentWorkunit.getType()==EquipmentWorkunitType.installout){
+				installoutType=EquipmentInstalloutType.installout;
+			}
+		}else if(task_type==TaskType.repair){
+			EquipmentWorkunitPK id=new EquipmentWorkunitPK(ecode,ShiroUtils.getUserId());
+			EquipmentWorkunit equipmentWorkunit=equipmentWorkunitRepository.get(id);
+
+			if(equipmentWorkunit!=null){
+				taskListTypeEnum=TaskListTypeEnum.install;
+			}
+			//如果是维修任务,并且不在作业单位上，那要判断是不是在点位上
+			if(equipmentWorkunit==null){
+				int count=equipmentRepository.check_in_pole_by_ecode(ecode, pole_id);
+				if(count==0){
+					throw new BusinessException(ecode+"不在该作业单位或点位上!");
+				} else {
+					//如果是维修任务，并且这个设备在点位上，那就是卸载这个设备
+					taskListTypeEnum=TaskListTypeEnum.uninstall;
+				}
+			} else {
+				if(equipmentWorkunit.getType()==EquipmentWorkunitType.borrow){
+					installoutType=EquipmentInstalloutType.borrow;
+				}
+				if(equipmentWorkunit.getType()==EquipmentWorkunitType.installout){
+					installoutType=EquipmentInstalloutType.installout;
+				}
+			}
+			
 		}
-		
-		
-		EquipmentVO equipmentVO=equipmentService.getEquipmentInfo(ecode);
-		if(equipmentVO==null){
-			throw new BusinessException("没有这个设备");
-		}
+//		if(task_type!=TaskType.cancel){
+//			//int count=equipmentRepository.check_in_workunit_by_ecode(ecode,ShiroUtils.getUserId());
+//			EquipmentWorkunitPK id=new EquipmentWorkunitPK(ecode,ShiroUtils.getUserId());
+//			EquipmentWorkunit equipmentWorkunit=equipmentWorkunitRepository.get(id);
+//	
+//			if(equipmentWorkunit!=null){
+//				taskListTypeEnum=TaskListTypeEnum.install;
+//			}
+//			//如果是维修任务,并且不在作业单位上，那要判断是不是在点位上
+//			if(taskListTypeEnum==null && task_type==TaskType.repair){
+//				int count=equipmentRepository.check_in_pole_by_ecode(ecode, pole_id);
+//				if(count==0){
+//					throw new BusinessException(ecode+"不在该作业单位或点位上!");
+//				} else {
+//					//如果是维修任务，并且这个设备在点位上，那就是卸载这个设备
+//					taskListTypeEnum=TaskListTypeEnum.uninstall;
+//				}
+//			}
+//			
+//		}
 		
 		//更新设备状态为处理中
 		taskRepository.update_to_handling_status(task_id);
-		//task.setStatus(TaskStatus.handling);
-		//task.setStartHandDate(new Date());
-		
-		
-		//添加一个字段currt_task_id，绑定任务，就是当扫描后就绑定到一个任务上了，当在任务上删除这个设备的时候，就改到没有绑定任务,里面放的是当前绑定任务id，否则为null
-		//并且巡检
-		//那问题是什么时候把currt_task_id放到last_task_id,现在暂时是在任务提交的时候吧。
-		//checkEquipStatus中的判断查询的话，分别通过查询数据库获得内容
-		//保存任务明细数据，上面的当前任务id，
-		//取消往前台传递，设备状态的内容，
-		if(equipmentVO.getCurrt_task_id()!=null && !"".equals(equipmentVO.getCurrt_task_id())){
-			throw new BusinessException("任务"+equipmentVO.getCurrt_task_id()+"已经扫描了这个设备");
-		}
+
 		TaskEquipmentList list=new TaskEquipmentList();
 		list.setEcode(ecode);
 		//list.setEquipment_status(equipmentVO.getStatus());
 		list.setTask_id(task_id);
-		//list.setType(type);
-		if(TaskType.newInstall==task_type){
-			list.setType(TaskListTypeEnum.install);
-		} else if(TaskType.repair==task_type){
-			//如果设备将会变成使用中的状态，那这个设备就是安装
-			if(equipmentVO.getStatus()==EquipmentStatus.out_storage){
-				list.setType(TaskListTypeEnum.install);
-			} else {
-				//退换下来的，可能是损坏，也可能是 安装出库状态的设备就是 卸载下来的
-				list.setType(TaskListTypeEnum.uninstall);
-			}
-		} else if(TaskType.patrol==task_type){
-			list.setType(TaskListTypeEnum.patrol);
-		}else if(TaskType.cancel==task_type){
-			list.setType(TaskListTypeEnum.uninstall);
-		}
+		list.setType(taskListTypeEnum);
+		list.setInstalloutType(installoutType);
+//		//list.setType(type);
+//		if(TaskType.newInstall==task_type){
+//			list.setType(TaskListTypeEnum.install);
+//		} else if(TaskType.repair==task_type){
+//			list.setType(taskListTypeEnum);
+//			
+//		} else if(TaskType.patrol==task_type){
+//			list.setType(TaskListTypeEnum.patrol);
+//		}else if(TaskType.cancel==task_type){
+//			list.setType(TaskListTypeEnum.uninstall);
+//		}
 		list.setScanDate(new Date());
 		taskEquipmentListRepository.create(list);
 		
@@ -455,15 +501,18 @@ public class TaskService extends AbstractService<Task, String>{
 		//更新equipment的curr_task_id
 		equipmentRepository.update(Cnd.update()
 				.set(M.Equipment.currt_task_id, task_id)
-				.andEquals(M.Equipment.ecode, equipmentVO.getEcode()));
+				.andEquals(M.Equipment.ecode, ecode));
+		
+		//获取某个品名的相关信息
+		EquipmentProdVO equipmentProd=equipmentProdService.getEquipmentProdVO(equipmentProdService.splitEcode(ecode));
 		
 		TaskEquipmentListVO vo=new TaskEquipmentListVO();
 		BeanUtils.copyProperties(list, vo);
-		vo.setSubtype_name(equipmentVO.getSubtype_name());
-		vo.setProd_style(equipmentVO.getStyle());
-		vo.setSupplier_name(equipmentVO.getSupplier_name());
-		vo.setProd_name(equipmentVO.getProd_name());
-		vo.setBrand_name(equipmentVO.getBrand_name());
+		vo.setSubtype_name(equipmentProd.getSubtype_name());
+		vo.setProd_style(equipmentProd.getStyle());
+		//vo.setSupplier_name(equipmentVO.getSupplier_name());
+		vo.setProd_name(equipmentProd.getName());
+		vo.setBrand_name(equipmentProd.getBrand_name());
 		
 		
 		return vo;

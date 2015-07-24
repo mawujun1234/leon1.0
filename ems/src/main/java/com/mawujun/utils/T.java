@@ -387,6 +387,7 @@ public static final class ems_taskequipmentlist {
 	public static final String ecode="ecode";
 	public static final String scanDate="scanDate";
 	public static final String type="type";
+	public static final String installoutType="installoutType";
 	public static final String id="id";
 }
 public static final class ems_repair {

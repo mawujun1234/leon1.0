@@ -24,8 +24,8 @@ Ext.define('Ems.task.TaskEquipmentListGrid',{
 		{dataIndex:'prod_style',text:'型号'},
 		{dataIndex:'subtype_name',text:'子类型'},
 		
-		{dataIndex:'brand_name',text:'品牌'},
-		{dataIndex:'supplier_name',text:'供应商'}
+		{dataIndex:'brand_name',text:'品牌'}
+		//{dataIndex:'supplier_name',text:'供应商'}
       ];
       
 	  me.store=Ext.create('Ext.data.Store',{

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -46,6 +47,25 @@ public class EquipmentProdService extends AbstractService<EquipmentProd, String>
 	public EquipmentProdRepository getRepository() {
 		return equipmentProdRepository;
 	}
+	
+	public EquipmentProdVO getEquipmentProdVO(String prod_id){
+		return equipmentProdRepository.getEquipmentProdVO(prod_id);
+	}
+	/**
+	 * 吧ecode拆分，获取prod_id
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param ecode
+	 * @return
+	 */
+	public String splitEcode(String ecode){
+		String[] ecodes=ecode.split("-");
+		if("**".equals(ecodes[1])){
+			return ecodes[0];
+		}else {
+			return ecodes[0]+"-"+ecodes[1];
+		}
+	}
+	
 //	/**
 //	 * 增加套件下面的拆分件
 //	 * @author mawujun email:160649888@163.com qq:16064988

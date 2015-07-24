@@ -768,8 +768,6 @@ $(document).ready(function(e) {
 	</script>
     <div data-role="popup" id="page_repair_deleteEquipmentInfo_popup" data-arrow="b" data-theme="b">
         <a href="javascript:void(0);" data-role="button" name="deleteEquipmentInfo">删除</a>
-        <!--<a href="javascript:void(0);" data-role="button" name="out_storageEquipmentInfo">未损坏</a>
-         <a href="javascript:void(0);" data-role="button" name="breakdownEquipmentInfo">已损坏</a>-->
     </div>
 </div>
 
@@ -980,15 +978,19 @@ $(document).ready(function(e) {
 			root=[obj];
 		} 
 		var color="";
+		var installoutType_name="";
 		for(var i=0;i<root.length;i++){
 			color="";
-			if(root[i].equipment_status==4){
+			if(root[i].type=='uninstall'){
 				color='color="#F00"';//如果是损坏设备就表示为红色
 			}
+			if(root[i].installoutType_name){
+				installoutType_name="("+root[i].installoutType_name+")";
+			}
 			//如果设备状态是手持，就是安装，如果是using就是维修或者巡检，巡检任务扫描的设备都是巡检
-			html+='<div data-role="collapsible" taskEquipmentList_id="'+root[i].id+'" ecode="'+root[i].ecode+'" equipment_status="'+root[i].equipment_status+'">'+
-				'<h4><font '+color+'>'+root[i].ecode+':'+root[i].prod_style+'</font></h4>'+
-				'<p>'+root[i].brand_name+':'+root[i].subtype_name+'>'+root[i].prod_name+'>'+root[i].supplier_name+'</p>'+
+			html+='<div data-role="collapsible" taskEquipmentList_id="'+root[i].id+'" ecode="'+root[i].ecode+'">'+
+				'<h4><font '+color+'>'+installoutType_name+root[i].ecode+':'+root[i].prod_style+'</font></h4>'+
+				'<p>'+root[i].brand_name+':'+root[i].subtype_name+'>'+root[i].prod_name+'>'+root[i].prod_style+installoutType_name+'</p>'+
 				'</div>';	
 		}
 		var page_id=taskInfoParam.page_id;
@@ -1103,21 +1105,21 @@ $(document).ready(function(e) {
 		//alert(2);
 		
 	}
-	//把设备标识为“安装出库”状态
-	function out_storageEquipmentInfo(){
-		var li=$(window.equipmentInfoCollapsible);
-		var equipment_status=li.attr("equipment_status");
-		//alert(equipment_status);
-		if(equipment_status==4){
-			li.attr("equipment_status",2);
-			//修改颜色为黑色
-			//alert(li.find("font"));
-			li.find("font").removeAttr("color");
-			//$( "#"+page_id+"_equipments_list" ).trigger( "updatelayout" );
-		}
-		var page_id=taskInfoParam.page_id;
-		$( "#"+page_id+"_deleteEquipmentInfo_popup" ).popup( "close");
-	}
+//	//把设备标识为“安装出库”状态
+//	function out_storageEquipmentInfo(){
+//		var li=$(window.equipmentInfoCollapsible);
+//		var equipment_status=li.attr("equipment_status");
+//		//alert(equipment_status);
+//		if(equipment_status==4){
+//			li.attr("equipment_status",2);
+//			//修改颜色为黑色
+//			//alert(li.find("font"));
+//			li.find("font").removeAttr("color");
+//			//$( "#"+page_id+"_equipments_list" ).trigger( "updatelayout" );
+//		}
+//		var page_id=taskInfoParam.page_id;
+//		$( "#"+page_id+"_deleteEquipmentInfo_popup" ).popup( "close");
+//	}
 	//把设备标识为损坏
 	function breakdownEquipmentInfo(){
 		
@@ -1149,9 +1151,9 @@ $(document).ready(function(e) {
 		    }
 		); 
 	});
-	$("a[name='out_storageEquipmentInfo']").click(function(event){
-	  	out_storageEquipmentInfo();
-	});
+//	$("a[name='out_storageEquipmentInfo']").click(function(event){
+//	  	out_storageEquipmentInfo();
+//	});
 	$("a[name='deleteEquipmentInfo']").click(function(event){
 	  	deleteEquipmentInfo();
 	});

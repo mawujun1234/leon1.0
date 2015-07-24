@@ -43,7 +43,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     </select>
     -->
     <!-- 当更新品名的嘶吼，如果发现型号不一致了，就不准更新 -->
-     <select id="get_style_by_prod_id" resultType="String">
+    <select id="get_style_by_prod_id" resultType="String">
     	select style from ems_equipmentprod
     	where id=#{prod_id}
     </select>
@@ -51,6 +51,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     <update id="update_lock_style" >
     	update ems_equipmentprod set lock_style=#{lock_style} where id=#{prod_id}
     </update>
+    
+    <select id="getEquipmentProdVO" resultType="com.mawujun.baseinfo.EquipmentProdVO">
+    	select a.*,b.name as subtype_name,c.name as brand_name from ems_equipmentprod a,ems_equipmentsubtype b,ems_brand c
+        where a.subtype_id=b.id and a.brand_id=c.id  and a.id=#{prod_id}
+    </select>
   
 </mapper>
 

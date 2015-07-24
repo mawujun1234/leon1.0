@@ -154,9 +154,13 @@ public class EquipmentTypeController {
 	@ResponseBody
 	public  EquipmentProd createProd(@RequestBody EquipmentProd equipmentProd) {
 		if(equipmentProd.getId_suffix()==null || "".equals(equipmentProd.getId_suffix().trim())){
+			//在OrderService.insertBarcode中会自动补全-**,达到ecode长度一致
 			equipmentProd.setId(equipmentProd.getSubtype_id()+equipmentProd.getId());
 		}  else {	
-			//合并id
+			if("**".equals(equipmentProd.getId_suffix())){
+				throw new BusinessException("不能使用**作为二级编码");
+			}
+			//合并id,注意这里的-千万不能删除，因为为了效率考虑已经有地方已经通过拆分ecode来获取品名编码了，和品名相关数据了
 			equipmentProd.setId(equipmentProd.getSubtype_id()+equipmentProd.getId()+"-"+equipmentProd.getId_suffix().trim());
 		}
 				

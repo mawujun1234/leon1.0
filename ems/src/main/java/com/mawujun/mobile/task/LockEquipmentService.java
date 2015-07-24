@@ -57,16 +57,23 @@ public class LockEquipmentService extends AbstractService<LockEquipment, String>
 	 * @param type_id null:表示只要被锁定就行了 ，如果不为null表示是不是被指定的任务给锁定了
 	 */
 	public void check_locked(String ecode,String type_id){
+		// ==null表示没有被锁定
+		if (ecode == null) {
+			return;
+		}
 		LockEquipment lockEquipment=lockEquipmentRepository.get(ecode);
 		if(lockEquipment==null){
 			return;
-		}
-		//==null表示没有被锁定
-		if(ecode==null){
-			return;
-		}
+		} 
+//		else {
+//			throw new BusinessException("设备已经被任务"+lockEquipment.getType_id()+"锁定,不能扫描");
+//		}
+		
 		if(!lockEquipment.getType_id().equals(type_id)){
 			throw new BusinessException("设备已经被任务"+lockEquipment.getType_id()+"锁定,不能扫描");
+		} else {
+			throw new BusinessException("设备已经扫描过了");
+			
 		}
 	}
 }
