@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
 @Entity
@@ -40,6 +41,13 @@ public class OrderList extends UUIDEntity {
 	
 	@Transient
 	private Integer  printNum;//要打印的数目
+	
+	public void addTotalnum(int add){
+		this.totalNum=this.totalNum+add;
+		if(this.totalNum>this.orderNum){
+			throw new BusinessException("订单订购数量已经全部入库，不能再入库了，条码打印重复了。");
+		}
+	}
 	
 	public String getOrder_id() {
 		return order_id;

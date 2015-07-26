@@ -2,8 +2,8 @@ Ext.define('Ems.baseinfo.PoleGrid',{
 	extend:'Ext.grid.Panel',
 	requires: [
 	     'Ems.baseinfo.Pole',
-	     'Ems.baseinfo.PoleForm',
-	     'Ems.baseinfo.EquipmentGrid'
+	     'Ems.baseinfo.PoleForm'
+	     //'Ems.baseinfo.PoleEquipmentGrid'
 	],
 	columnLines :true,
 	stripeRows:true,

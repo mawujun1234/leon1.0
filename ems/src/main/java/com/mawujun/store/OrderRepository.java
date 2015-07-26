@@ -30,7 +30,7 @@ public interface OrderRepository extends IRepository<Order, String>{
 	public EquipmentVO getEquipFromBarcode(@Param("ecode")String ecode);
 	
 	
-	public void updateTotalNum(@Param("orderlist_id")String orderlist_id,@Param("totalNum")String totalNum);
+	//public void updateTotalNum(@Param("orderlist_id")String orderlist_id,@Param("totalNum")String totalNum);
 	
 	public List<BarcodeVO> getBarcodesRange(Map<String,Object> params);
 	public void deleteBarcodesRange(Map<String,Object> params);
@@ -38,6 +38,12 @@ public interface OrderRepository extends IRepository<Order, String>{
 	public String queryStatus(@Param("id")String id);
 	
 	public List<OrderListVO> queryList4Barcode(Params params);
+	
+	/**
+	 * 当某个订单明细中的数量已经全部入库后，就删除在barcode中所有还没有入库的条码，因为这些条码已经失效了
+	 * @author mawujun 16064988@qq.com
+	 */
+	public void deleteBarcodeWhenAllin(@Param("orderlist_id")String orderlist_id);
 	//public List<OrderListVO> queryList4Barcode_tj_children(Params params);
 	
 	//public Order getMainInfo(@Param("orderNo")String orderNo);

@@ -52,6 +52,8 @@ public class InStoreService extends AbstractService<InStore, String>{
 	@Autowired
 	private OrderRepository orderRepository;
 	@Autowired
+	private OrderListRepository orderListRepository;
+	@Autowired
 	private EquipmentCycleService equipmentCycleService;
 	@Autowired
 	private StoreService storeService;
@@ -80,6 +82,7 @@ public class InStoreService extends AbstractService<InStore, String>{
 		//inStore.setType(1);
 		inStoreRepository.create(inStore);
 		
+		//以订单明细id为key，入库数量为num为value的map
 		Map<String,Integer> totalnumMap=new HashMap<String,Integer>();
 		//插入设备表,同时设置仓库，入库时间，是否新设备
 		for(Equipment equipment:equipments){
@@ -130,8 +133,14 @@ public class InStoreService extends AbstractService<InStore, String>{
 		}
 		
 		for(Entry<String,Integer> entry:totalnumMap.entrySet()) {
-			//更新总共入库的数量，如果建有拆分，最后的录入数量将会是订单数量的N倍
-			orderRepository.updateTotalNum(entry.getKey(), M.OrderList.totalNum+"+"+entry.getValue());
+			//更新某个订单明细的入库数量
+			OrderList orderList=orderListRepository.get(entry.getKey());
+			orderList.addTotalnum(entry.getValue());
+			orderListRepository.update(orderList);
+			//orderRepository.updateTotalNum(entry.getKey(), M.OrderList.totalNum+"+"+entry.getValue());
+			//当某个订单明细中的数量已经全部入库后，就删除在barcode中所有还没有入库的条码，因为这些条码已经失效了
+			//防止以前打印的条码又拿过来入库了，同时可以减少ems_barcode中无效的数量
+			orderRepository.deleteBarcodeWhenAllin(entry.getKey());
 		}
 		
 	}

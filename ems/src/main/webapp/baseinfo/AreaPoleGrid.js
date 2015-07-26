@@ -238,15 +238,7 @@ Ext.define('Ems.baseinfo.AreaPoleGrid',{
 //		});
 //		actions.push(showEquipment);
 		
-		var exportPoles = new Ext.Action({
-		    text: '导出',
-		    //itemId:'reload',
-		    icon:'../icons/page_excel.png',
-		    handler: function(){
-		    	me.onExportPoles();
-		    }
-		});
-		actions.push(exportPoles);
+		
 		
 		me.tbar={
 			xtype: 'container',
@@ -359,7 +351,7 @@ Ext.define('Ems.baseinfo.AreaPoleGrid',{
     	var me=this;
     	//me.getStore().reload();	   
     	me.getStore().loadPage(1);
-    },
+    }
 //    onShowEquipment:function(){
 //    	var me=this;
 //    	var record=me.getSelectionModel( ).getLastSelected( );
@@ -377,12 +369,5 @@ Ext.define('Ems.baseinfo.AreaPoleGrid',{
 //		//form.win=win
 //		win.show();	
 //    },
-    onExportPoles:function(){
-    	var me=this;
-    	var params={
-    		area_id:me.area_id
-    	}
-		var pp=Ext.Object.toQueryString(params);
-		window.open(Ext.ContextPath+"/area/exportPoles.do?"+pp, "_blank");
-    }
+
 });

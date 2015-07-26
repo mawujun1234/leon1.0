@@ -1,6 +1,8 @@
 Ext.require("Ems.baseinfo.Customer");
 Ext.require("Ems.baseinfo.CustomerTreeGrid");
 Ext.require("Ems.baseinfo.PoleGrid");
+Ext.require("Ems.baseinfo.PoleEquipmentGrid");
+Ext.require("Ems.baseinfo.EquipmentCycleGrid");
 Ext.require("Ems.baseinfo.CustomerContactGrid");
 Ext.require("Ems.baseinfo.CustomerForm");
 Ext.onReady(function(){
@@ -43,7 +45,7 @@ Ext.onReady(function(){
 	});
 	
 	//var record=me.getSelectionModel( ).getLastSelected( );
-    var equipment_grid=Ext.create('Ems.baseinfo.EquipmentGrid',{
+    var equipment_grid=Ext.create('Ems.baseinfo.PoleEquipmentGrid',{
     	title:'拥有的设备',
     	height:300,
     	split: true,
@@ -59,11 +61,6 @@ Ext.onReady(function(){
 		region:'center',
 		layout:'border',
 		items:[poleGrid,equipment_grid]
-//		listeners:{
-//			render:function(panel){
-//				panel.getEl().mask();
-//			}
-//		}
 	});
 
 	var tabpanel=Ext.create('Ext.tab.Panel',{

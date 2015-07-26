@@ -33,7 +33,7 @@ Ext.define('Ems.store.OrderListGrid',{
 		},
 		{header: '单位', dataIndex: 'prod_unit',width:60},
     	{header: '订购数量',dataIndex:'orderNum',xtype: 'numbercolumn', format:'0',width:60},
-    	{header: '单价',dataIndex:'unitPrice',xtype: 'numbercolumn', format:'0',width:60},
+    	{header: '单价',dataIndex:'unitPrice',xtype: 'numbercolumn', format:'0',width:60,hidden:me.onlyRead},
     	{header: '入库数量',dataIndex:'totalNum',xtype: 'numbercolumn', format:'0',width:60}
       ];
       

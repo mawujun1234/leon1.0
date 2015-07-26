@@ -81,6 +81,16 @@ Ext.define('Ems.baseinfo.AreaGrid',{
 		//me.addAction(destroy);
 		actions.push(destroy)
 		
+		var exportPoles = new Ext.Action({
+		    text: '导出点位',
+		    //itemId:'reload',
+		    icon:'../icons/page_excel.png',
+		    handler: function(){
+		    	me.onExportPoles();
+		    }
+		});
+		actions.push(exportPoles);
+		
 		var reload = new Ext.Action({
 		    text: '刷新',
 		    itemId:'reload',
@@ -211,5 +221,19 @@ Ext.define('Ems.baseinfo.AreaGrid',{
     onReload:function(){
     	var me=this;
     	me.getStore().reload();	      
+    },
+    onExportPoles:function(){
+    	var me=this;
+    	var record=me.getSelectionModel( ).getLastSelected( );
+
+		if(!record){
+		    Ext.Msg.alert("消息","请先选择一个皮片区!");	
+			return;
+		}
+    	var params={
+    		area_id:record.get("id")
+    	}
+		var pp=Ext.Object.toQueryString(params);
+		window.open(Ext.ContextPath+"/area/exportPoles.do?"+pp, "_blank");
     }
 });

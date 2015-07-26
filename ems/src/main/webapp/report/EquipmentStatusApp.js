@@ -2,6 +2,7 @@
 //Ext.require("Ems.store.OrderGrid");
 //Ext.require("Ems.store.OrderTree");
 //Ext.require("Ems.store.OrderForm");
+Ext.require('Ems.baseinfo.EquipmentCycleGrid');
 Ext.onReady(function(){
 	var ecode_textfield=Ext.create('Ext.form.field.Text',{
 		labelAlign:'right',
@@ -25,6 +26,7 @@ Ext.onReady(function(){
 			},
 			change:function(field,newValue,oldValue,e){
 				if(newValue.length==Ext.ecode_length){
+					Ext.getBody().mask("正在查询，请稍候....");
 					Ext.Ajax.request({
 						url:Ext.ContextPath+'/equipmentstatus/query.do',
 						method:'POST',
@@ -32,12 +34,14 @@ Ext.onReady(function(){
 						success:function(response){
 							var obj=Ext.decode(response.responseText);
 							//console.dir(obj.baseinfo);
-							baseinfo_form.getForm().setValues(obj.root.baseinfo);
-							firstinstore_form.getForm().setValues(obj.root.firstinstore);
+							baseinfo_form.getForm().setValues(obj.root);
+							
 							ecode_textfield.setValue('');
+							Ext.getBody().unmask();
 						}
 					});
-				
+					lifecycle_panel.getStore().getProxy().extraParams={ecode:newValue};
+					lifecycle_panel.getStore().reload();
 				}
 			}
 		}
@@ -109,57 +113,13 @@ Ext.onReady(function(){
 	        allowBlank: true
 	    }]
 	});
-	//首次入库信息
-	var firstinstore_form=Ext.create('Ext.form.Panel',{
-		title:'其他信息',
-		items:[{
-			xtype:'fieldset',
-			defaultType: 'textfield',
-			title:'首次入库信息',
-			items:[{
-		        fieldLabel: '订单号',
-		        name: 'orderNo',
-		        allowBlank: true
-		    },{
-		        fieldLabel: '采购日期',
-		        name: 'orderDate',
-		        allowBlank: true
-		    },{
-		        fieldLabel: '首次入库日期',
-		        name: 'instore_date',
-		        allowBlank: true
-		    },{
-		        fieldLabel: '首次入库仓库',
-		        name: 'instore_name',
-		        allowBlank: true
-		    },{
-		        fieldLabel: '首次入库经手人',
-		        name: 'instore_operater',
-		        allowBlank: true
-	    	}]
-		},{
-			xtype:'fieldset',
-			defaultType: 'textfield',
-			title:'最新领用信息',
-			items:[{
-		        fieldLabel: '领用日期',
-		        name: 'installout_date',
-		        allowBlank: true
-		    },{
-		        fieldLabel: '领用经办人',
-		        name: 'installout_operater',
-		        allowBlank: true
-		    },{
-		        fieldLabel: '领用作业单位',
-		        name: 'installout_workunit_name',
-		        allowBlank: true
-		    }]
-		}]
-
+	
+	var lifecycle_panel=Ext.create('Ems.baseinfo.EquipmentCycleGrid',{
+		title:'生命周期'
 	});
 	var tabPanel=Ext.create("Ext.tab.Panel",{
 		region:'center',
-		items:[baseinfo_form,firstinstore_form]
+		items:[baseinfo_form,lifecycle_panel]
 	});
 	
 	

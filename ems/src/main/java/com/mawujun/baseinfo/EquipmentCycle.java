@@ -19,7 +19,6 @@ public class EquipmentCycle extends UUIDEntity{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Id
 	@Column(length=25)
 	private String ecode;
 	
@@ -41,13 +40,19 @@ public class EquipmentCycle extends UUIDEntity{
 	@Column(length=50)
 	private String target_name;
 	
-	/**
-	 * 获取生命周期的信息
-	 * @author mawujun 16064988@qq.com 
-	 * @return
-	 */
-	public String getCycleInfo(){
-		return this.getOperateDate()+",操作类型:"+this.getOperateType().getName()+"("+this.getTarget_id()+")"+",主体:"+this.getTarget_name()+" ,操作者:"+this.getOperater_name();
+//	/**
+//	 * 获取生命周期的信息
+//	 * @author mawujun 16064988@qq.com 
+//	 * @return
+//	 */
+//	public String getCycleInfo(){
+//		return this.getOperateDate()+"&nbsp;&nbsp;&nbsp;&nbsp;"+this.getOperateType().getName()+"("+this.getType_id()+")"+"&nbsp;&nbsp;&nbsp;&nbsp;主体:"+this.getTarget_name()+"&nbsp;&nbsp;&nbsp;&nbsp;操作者:"+this.getOperater_name();
+//	}
+	public String getOperateType_name() {
+		if(operateType==null){
+			return "";
+		}
+		return operateType.getName();
 	}
 	
 	public String getEcode() {

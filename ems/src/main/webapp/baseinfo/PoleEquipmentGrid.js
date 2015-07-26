@@ -1,7 +1,7 @@
 /**
  * 显示点位上有哪些设备的
  */
-Ext.define('Ems.baseinfo.EquipmentGrid',{
+Ext.define('Ems.baseinfo.PoleEquipmentGrid',{
 	extend:'Ext.grid.Panel',
 	requires: [
 	     'Ems.baseinfo.Equipment'
@@ -16,11 +16,34 @@ Ext.define('Ems.baseinfo.EquipmentGrid',{
 			}
 		}
 	},
+	listeners : {
+		cellclick : function(view, td, cellIndex, record, tr, rowIndex,e, eOpts) {
+			if (cellIndex == 1) {
+				var lifecycle_panel = Ext.create('Ems.baseinfo.EquipmentCycleGrid', {
+							
+				});
+				lifecycle_panel.getStore().getProxy().extraParams={ecode:record.get("ecode")};
+				lifecycle_panel.getStore().reload();
+
+				var win = Ext.create('Ext.window.Window', {
+					width : 600,
+					height : 300,
+					layout : 'fit',
+					modal : true,
+					title : '生命周期记录',
+					items : [lifecycle_panel]
+				});
+				win.show();
+			}
+		}
+	},
 	initComponent: function () {
       var me = this;
       me.columns=[
 		Ext.create('Ext.grid.RowNumberer'),
-    	{header: '条码', dataIndex: 'ecode',width:120},
+    	{header: '条码', dataIndex: 'ecode',width:140,renderer:function(value,metadata,record){
+    		return "<a href='javascript:void(0);' >"+value+"</a>";
+    	}},
     	{header: '设备类型', dataIndex: 'subtype_name',width:120},
     	{header: '品名', dataIndex: 'prod_name'},
     	{header: '设备型号', dataIndex: 'style',width:120},

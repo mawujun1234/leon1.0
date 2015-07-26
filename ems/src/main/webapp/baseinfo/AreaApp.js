@@ -2,6 +2,7 @@ Ext.require("Ems.baseinfo.Area");
 Ext.require("Ems.baseinfo.AreaGrid");
 Ext.require("Ems.baseinfo.AreaPoleGrid");
 Ext.require("Ems.baseinfo.AreaForm");
+Ext.require("Ems.baseinfo.PoleEquipmentGrid");
 Ext.onReady(function(){
 	var grid=Ext.create('Ems.baseinfo.AreaGrid',{
 		region:'west',
@@ -35,12 +36,12 @@ Ext.onReady(function(){
 		}
 	});
 	
-	var equipment_grid=Ext.create('Ems.baseinfo.EquipmentGrid',{
+	var equipment_grid=Ext.create('Ems.baseinfo.PoleEquipmentGrid',{
     	title:'拥有的设备',
     	height:200,
     	split: true,
     	collapsible: true,
-    	collapsed:true,
+    	//collapsed:true,
     	region:'south'
     });
     areaPoleGrid.on('itemclick',function(view,record,item,index){
