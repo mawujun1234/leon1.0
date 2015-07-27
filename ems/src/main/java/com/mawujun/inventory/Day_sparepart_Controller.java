@@ -765,28 +765,50 @@ public class Day_sparepart_Controller {
 	int type_group_end_num=17;//小类和大类分组的结束列
 	int day_of_month_num=31;
 	@RequestMapping("/inventory/day/sparepart/excelTpl.do")
-	public void excelTpl(HttpServletResponse response) throws IOException{
+	public void excelTpl(HttpServletResponse response,Integer store_type) throws IOException{
 		
 		//首先获取大类，小类的内容，然后按照格式输出，最后，设置压缩问题
 		List<EquipmentType> equipmentTypes=equipmentTypeRepository.queryTypeAndSubtype();
 		
-		XSSFWorkbook wb =new XSSFWorkbook();
-		Sheet sheet = wb.createSheet("仓库名称");
-		Row title = sheet.createRow(0);//一共有11列
-		title.setHeight((short)660);
-		Cell title_cell=title.createCell(0);
-		title_cell.setCellValue("__________仓库________年_________月盘点日报表");
+		String store_name_title="备品备件仓库";
+		if (store_type == 1) {
+			store_name_title = "在建仓库";
+		}
+		
+
+		// 首先获取大类，小类的内容，然后按照格式输出，最后，设置压缩问题
+		//List<EquipmentType> equipmentTypes = equipmentTypeRepository.queryTypeAndSubtype();
+
+		XSSFWorkbook wb = new XSSFWorkbook();
+		Sheet sheet = wb.createSheet("盘点日报表");
+		Row title = sheet.createRow(0);// 一共有11列
+		title.setHeight((short) 660);
+		Cell title_cell = title.createCell(0);
+		title_cell.setCellValue(store_name_title+"盘点日报表");
 		CellStyle cs = wb.createCellStyle();
 		Font f = wb.createFont();
 		f.setFontHeightInPoints((short) 16);
-		//f.setColor(IndexedColors.RED.getIndex());
+		// f.setColor(IndexedColors.RED.getIndex());
 		f.setBoldweight(Font.BOLDWEIGHT_BOLD);
 		cs.setFont(f);
-		cs.setAlignment(CellStyle.ALIGN_LEFT);
+		cs.setAlignment(CellStyle.ALIGN_CENTER);
 		cs.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
 		title_cell.setCellStyle(cs);
-		//和并单元格
-		sheet.addMergedRegion(new CellRangeAddress(0,(short)0,0,(short)type_group_end_num-1)); 
+		// 和并单元格
+		sheet.addMergedRegion(new CellRangeAddress(0, (short) 0, 0, (short) type_group_end_num ));
+		
+		Row row_date = sheet.createRow(1);
+		Cell cell_date=row_date.createCell(0);
+		CellStyle cell_date_style = wb.createCellStyle();
+		Font cell_date_f = wb.createFont();
+		cell_date_f.setFontHeightInPoints((short) 12);
+		cell_date_f.setBoldweight(Font.BOLDWEIGHT_BOLD);
+		cell_date_style.setFont(cell_date_f);
+		cell_date_style.setAlignment(CellStyle.ALIGN_LEFT);
+		cell_date_style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		cell_date.setCellStyle(cell_date_style);
+		cell_date.setCellValue("统计日期:________到________");
+		sheet.addMergedRegion(new CellRangeAddress(1, (short) 1, 0, (short) type_group_end_num+1));
 		
 		List<String> daykeys_title=new ArrayList<String>();
 		for(int i=0;i<31;i++){
@@ -847,7 +869,7 @@ public class Day_sparepart_Controller {
 		
 		
 		int cellnum=0;
-		int rownum=3;
+		int rownum=4;
 		for(int i=0;i<equipmentTypes.size();i++){
 			cellnum = 0;
 			EquipmentType equipmentType = equipmentTypes.get(i);
@@ -1033,6 +1055,9 @@ public class Day_sparepart_Controller {
 		
 		
 		 String filename = "备品备件仓库盘点日报表_样式表.xlsx";
+		if(store_type==1){
+			filename = "在建仓库盘点日报表_样式表.xlsx";
+		}
 		
 		 //FileOutputStream out = new FileOutputStream(filename);
 		response.setHeader("content-disposition", "attachment; filename="+ new String(filename.getBytes("UTF-8"), "ISO8859-1"));

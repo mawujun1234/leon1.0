@@ -139,14 +139,14 @@ Ext.onReady(function(){
 			text:'导出月报表模板',
 			icon:'../icons/page_excel.png',
 			handler:function(){
-				window.open(Ext.ContextPath+"/inventory/month/build/excelTpl.do", "_blank");
+				window.open(Ext.ContextPath+"/inventory/month/sparepart/excelTpl.do?store_type=1", "_blank");
 			}
 		},
 		{
 			text:'导出日报表模板',
 			icon:'../icons/page_excel.png',
 			handler:function(){
-				window.open(Ext.ContextPath+"/inventory/day/build/excelTpl.do", "_blank");
+				window.open(Ext.ContextPath+"/inventory/day/sparepart/excelTpl.do?store_type=1", "_blank");
 			}
 		}
 		]

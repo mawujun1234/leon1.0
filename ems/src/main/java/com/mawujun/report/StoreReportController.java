@@ -240,7 +240,7 @@ public class StoreReportController {
 				installout_id_cell.setCellStyle(content_style);
 				
 				Cell memo_cell = row.createCell(cellnum++);
-				memo_cell.setCellValue("备注");
+				//memo_cell.setCellValue("备注");
 				memo_cell.setCellStyle(content_style);
 			}
 		}
