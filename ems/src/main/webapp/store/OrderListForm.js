@@ -215,7 +215,7 @@ Ext.define('Ems.store.OrderListForm',{
 	me.totalprice_display=totalprice_display;
 	var totalNum_display=Ext.create('Ext.form.field.Number',{
 		hidden:true,
-		xtype:'numberfield',fieldLabel:'已入库数量',name:'totalNum',labelWidth:60,submitValue : true,labelAlign:'right',width:180
+		xtype:'numberfield',fieldLabel:'已入库数量',name:'totalNum',labelWidth:60,submitValue : true,labelAlign:'right',width:180,value:0
 	});
 	me.totalNum_display=totalNum_display;
 	

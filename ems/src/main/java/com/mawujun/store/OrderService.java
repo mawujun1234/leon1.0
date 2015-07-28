@@ -124,22 +124,12 @@ public class OrderService extends AbstractService<Order, String>{
 		
 		for(OrderList orderList:orderListes){	
 			orderList.setOrder_id(order.getId());
+			orderList.setTotalNum(0);
 			//创建订单
 			orderListRepository.create(orderList);
 			
 		}
-//		Long count=orderRepository.queryCount(Cnd.count(M.Order.orderNo).andEquals(M.Order.orderNo, orderes[0].getOrderNo()));
-//		if(count!=null && count>0){
-//			throw new BusinessException("该订单号已经存在");
-//		}
-////		String y2md=y2mdDateFormat.format(new Date());//年月日
-//		Date createDate=new Date();
-//		for(Order order:orderes){	
-//			order.setCreateDate(createDate);
-//			//创建订单
-//			orderRepository.create(order);
-//			
-//		}
+
 	}
 	/**
 	 * 把订单确认为 订单编辑完成了
@@ -439,7 +429,7 @@ public class OrderService extends AbstractService<Order, String>{
 		if(main.getStatus().equals(OrderStatus.editover)){
 			throw new BusinessException("该订单已经不能编辑!");
 		}
-		
+		orderList.setTotalNum(0);
 		orderListRepository.create(orderList);
 	}
 	
@@ -466,22 +456,6 @@ public class OrderService extends AbstractService<Order, String>{
 		orderList.setTotalNum(totalNum);
 
 		orderListRepository.update(orderList);
-				
-//		// 获取主订单的信息
-//		Order main = orderRepository.get(order.getId());
-//		if(main.getStatus().equals(OrderStatus.editover)){
-//			throw new BusinessException("该订单已经不能编辑!");
-//		}
-//
-//		main.setProd_id(order.getProd_id());
-//		main.setBrand_id(order.getBrand_id());
-//		main.setSupplier_id(order.getSupplier_id());
-//		main.setStyle(order.getStyle());
-//		main.setUnitPrice(order.getUnitPrice());
-//		main.setOrderNum(order.getOrderNum());
-//		
-//
-//		orderRepository.update(main);
 	}
 	
 	/**

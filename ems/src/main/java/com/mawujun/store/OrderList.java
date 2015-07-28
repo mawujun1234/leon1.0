@@ -43,6 +43,9 @@ public class OrderList extends UUIDEntity {
 	private Integer  printNum;//要打印的数目
 	
 	public void addTotalnum(int add){
+		if(this.totalNum==null){
+			this.totalNum=0;
+		}
 		this.totalNum=this.totalNum+add;
 		if(this.totalNum>this.orderNum){
 			throw new BusinessException("订单订购数量已经全部入库，不能再入库了，条码打印重复了。");
