@@ -405,9 +405,9 @@ public static final class Repair {
 	public static final String str_out_id="str_out_id";
 	public static final String rpa_id="rpa_id";
 	public static final String str_in_id="str_in_id";
+	public static final String installIn_id="installIn_id";
 	public static final String repair_date="repair_date";
 	public static final String workunit_id="workunit_id";
-	public static final String installIn_id="installIn_id";
 	public static final String task_id="task_id";
 	public static final String broken_memo="broken_memo";
 	public static final String str_out_oper_id="str_out_oper_id";
@@ -425,6 +425,10 @@ public static final class Repair {
 	public static final String broken_reson="broken_reson";
 	public static final String handler_method="handler_method";
 	public static final String memo="memo";
+	public static final String send_date="send_date";
+	public static final String sendno="sendno";
+	public static final String receive_date="receive_date";
+	public static final String repairFactory="repairFactory";
 }
 public static final class Scrap {
 	public static final String id="id";

@@ -326,10 +326,11 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 							ecode:records[i].get("ecode"),
 							id:records[i].get("id"),
 							rpa_id:rpa_id,
+							rpa_type:records[i].get("rpa_type"),
+							receive_date:records[i].get("receive_date"),
 							str_out_id:records[i].get("str_out_id")
 						});
-						//ids.push(records[i].get("id"));
-						//ecodes.push(records[i].get("ecode"));
+						
 					}
 					Ext.getBody().mask("正在执行,请稍候.....");
 					Ext.Ajax.request({
@@ -410,7 +411,7 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 			title:'编辑维修单',
 			layout:'fit',
 			modal:true,
-			width:500,
+			width:700,
 			constrainHeader:true,
 			items:[form]
 		});

@@ -28,7 +28,9 @@ import com.mawujun.baseinfo.StoreRepository;
 import com.mawujun.baseinfo.StoreService;
 import com.mawujun.baseinfo.TargetType;
 import com.mawujun.exception.BusinessException;
+import com.mawujun.install.InstallIn;
 import com.mawujun.install.InstallInRepository;
+import com.mawujun.mobile.task.Task;
 import com.mawujun.mobile.task.TaskRepository;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
@@ -115,6 +117,14 @@ public class RepairService extends AbstractService<Repair, String>{
 			repair.setStatus(RepairStatus.to_repair);
 			repair.setStr_out_date(new Date());
 			repair.setStr_out_oper_id(oper_id);
+			//获取报修时间
+			InstallIn installIn=installInRepository.get(repair.getInstallIn_id());
+			repair.setRepair_date(installIn.getOperateDate());
+			if(repair.getTask_id()!=null && !"".equals(repair.getTask_id())){
+				Task task=taskRepository.get(repair.getTask_id());
+				repair.setBroken_memo(task.getHitchType()+"-"+task.getHitchReason());
+			}
+			
 			
 			
 			repairRepository.create(repair);	
@@ -133,6 +143,7 @@ public class RepairService extends AbstractService<Repair, String>{
 	 * 把仓库中所有是坏的设备全部转换为维修单
 	 * @author mawujun 16064988@qq.com 
 	 * @param store_id
+	 * @param rpa_id 维修中心id
 	 * @return
 	 */
 	public void brokenEquipment2Repair(String store_id,String rpa_id) {

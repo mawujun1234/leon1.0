@@ -47,4 +47,6 @@ public interface OrderRepository extends IRepository<Order, String>{
 	//public List<OrderListVO> queryList4Barcode_tj_children(Params params);
 	
 	//public Order getMainInfo(@Param("orderNo")String orderNo);
+	
+	public int getTotalNumByOrderList_id(@Param("orderlist_id")String orderlist_id);
 }

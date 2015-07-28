@@ -5,7 +5,7 @@ Ext.define('Ems.repair.RepairForm',{
 	],
 	fieldDefaults: {
         msgTarget: 'side',
-        labelWidth: 75,
+        labelWidth: 65,
         labelAlign:'right',
         anchor: '90%'
     },
@@ -45,6 +45,25 @@ Ext.define('Ems.repair.RepairForm',{
                     },{
                         name: 'workunit_name',
                         fieldLabel: '作业单位',
+                        labelWidth: 65,
+                        flex: 1,
+                        readOnly:true,
+                        allowBlank: true
+                    },{
+                        name: 'str_out_name',
+                        fieldLabel: '来源仓库',
+                         labelWidth: 65,
+                        flex: 1,
+                        //emptyText: 'First',
+                        readOnly:true,
+                        allowBlank: true
+                    },{
+                        name: 'str_out_date',
+                        xtype:'datefield',
+                        format:'Y-m-d',
+                        
+                        fieldLabel: '出仓时间',
+                         labelWidth: 65,
                         flex: 1,
                         readOnly:true,
                         allowBlank: true
@@ -62,32 +81,8 @@ Ext.define('Ems.repair.RepairForm',{
                         name: 'broken_memo',
                         fieldLabel: '故障描述',
                         flex: 1,
-                        xtype:'textarea',
-                        readOnly:true,
-                        allowBlank: true
-                    }]
-     },{
-                    xtype: 'fieldcontainer',
-                    //fieldLabel: 'Name',
-                    layout: 'hbox',
-                    combineErrors: true,
-                    defaultType: 'textfield',
-                    defaults: {
-                        //hideLabel: 'true'
-                    },
-                    items: [{
-                        name: 'str_out_name',
-                        fieldLabel: '来源仓库',
-                        flex: 1,
-                        //emptyText: 'First',
-                        readOnly:true,
-                        allowBlank: true
-                    },{
-                        name: 'str_out_date',
-                        xtype:'datefield',
-                        format:'Y-m-d',
-                        fieldLabel: '出仓时间',
-                        flex: 1,
+                        //height:45,
+                        //xtype:'textarea',
                         readOnly:true,
                         allowBlank: true
                     }]
@@ -132,35 +127,7 @@ Ext.define('Ems.repair.RepairForm',{
 						    	}
 						    }
 					   })
-                    }]
-     },{
-                    xtype: 'fieldcontainer',
-                    //fieldLabel: 'Name',
-                    layout: 'hbox',
-                    combineErrors: true,
-                    defaultType: 'textfield',
-                    defaults: {
-                        //hideLabel: 'true'
-                    },
-                    items: [{
-                        name: 'broken_reson',
-                        fieldLabel: '故障原因',
-                        afterLabelTextTpl: Ext.required,
-                        flex: 1,
-                        xtype:'textarea',
-                        readOnly:false,
-                        allowBlank: false
-                    }]
-     },{
-                    xtype: 'fieldcontainer',
-                    //fieldLabel: 'Name',
-                    layout: 'hbox',
-                    combineErrors: true,
-                    defaultType: 'textfield',
-                    defaults: {
-                        //hideLabel: 'true'
-                    },
-                    items: [{
+                    },{
 				        fieldLabel: '维修类型',
 				        labelAlign:'right',
 			            //labelWidth:60,
@@ -176,8 +143,93 @@ Ext.define('Ems.repair.RepairForm',{
 						    data:[{id:"innerrpa",name:"维修"},{id:"outrpa",name:"外修"}]
 					   }),
 					   listeners:{
+					   		change:function( field, newValue, oldValue, eOpts ) {
+					   			var form=field.up("form");
+					   			if(newValue=='innerrpa'){
+					   				form.getComponent( "outrpa_need_fillin" ).hide();
+					   			} else {
+					   				form.getComponent( "outrpa_need_fillin" ).show();
+					   			}
+					   			
+					   		}
 					   }
 				  }]
+     },{
+                    xtype: 'fieldcontainer',
+                    //fieldLabel: 'Name',
+                    itemId:'outrpa_need_fillin',
+                    layout: 'hbox',
+                    hidden:true,
+                    combineErrors: true,
+                    defaultType: 'textfield',
+                    defaults: {
+                        //hideLabel: 'true'
+                    },
+                    items: [{
+                        name: 'send_date',
+                        xtype:'datefield',
+                        fieldLabel: '寄出时间',
+                        editable:false,
+                        afterLabelTextTpl: Ext.required,
+                        format:'Y-m-d',
+                        flex: 1,
+                        readOnly:false,
+                        allowBlank: true
+                    },{
+                        name: 'sendno',
+                        fieldLabel: '运单号',
+                        labelWidth: 55,
+                        flex: 1,
+                        afterLabelTextTpl: Ext.required,
+                        readOnly:false,
+                        allowBlank: true
+                    },{
+                        name: 'repairFactory',
+                        fieldLabel: '维修厂方',
+                        flex: 1,
+                        afterLabelTextTpl: Ext.required,
+                        readOnly:false,
+                        allowBlank: true
+                    },{
+                        name: 'receive_date',
+                        xtype:'datefield',
+                        editable:false,
+                        fieldLabel: '收到时间',
+                        format:'Y-m-d',
+                        flex: 1,
+                        afterLabelTextTpl: Ext.required,
+                        readOnly:false,
+                        allowBlank: true
+                    }
+                    ]
+     },{
+                    xtype: 'fieldcontainer',
+                    //fieldLabel: 'Name',
+                    layout: 'hbox',
+                    combineErrors: true,
+                    defaultType: 'textfield',
+                    defaults: {
+                        //hideLabel: 'true'
+                    },
+                    items: [{
+                        name: 'broken_reson',
+                        fieldLabel: '故障/外修原因',
+                        afterLabelTextTpl: Ext.required,
+                        flex: 1,
+                        xtype:'textarea',
+                        readOnly:false,
+                        allowBlank: false
+                    }]
+     },{
+                    xtype: 'fieldcontainer',
+                    //fieldLabel: 'Name',
+                    layout: 'hbox',
+                    combineErrors: true,
+                    defaultType: 'textfield',
+                    defaults: {
+                        //hideLabel: 'true'
+                    },
+                    items: []
      },{
                     xtype: 'fieldcontainer',
                     //fieldLabel: 'Name',
@@ -208,7 +260,7 @@ Ext.define('Ems.repair.RepairForm',{
                         name: 'memo',
                         fieldLabel: '备注',
                         flex: 1,
-                        xtype:'textarea',
+                        //xtype:'textarea',
                         readOnly:false,
                         allowBlank: true
                     }]
@@ -330,6 +382,33 @@ Ext.define('Ems.repair.RepairForm',{
                 if(!form.getForm().isValid()) {
                 	return;
                 }
+                var rpa_type=form.getForm().findField("rpa_type") ;
+               
+				//如果是外修就得判断外修的结果字段是否输值了
+				if(rpa_type.getValue()=='outrpa'){
+					var send_date=form.getForm().findField("send_date") ;
+					if(!send_date.getValue()){
+						alert("请输入寄货时间");
+						return;
+					}
+					var sendno=form.getForm().findField("sendno") ;
+					if(!sendno.getValue()){
+						alert("请输入快递单号");
+						return;
+					}
+					
+					var repairFactory=form.getForm().findField("repairFactory") ;
+					if(!repairFactory.getValue()){
+						alert("请输入维修厂方");
+						return;
+					}
+//					var receive_date=form.getForm().findField("receive_date") ;
+//					if(!receive_date.getValue()){
+//						alert("请输入收货时间");
+//						return;
+//					}
+				}
+				
                 form.getForm().updateRecord();
 				form.getRecord().save({
 					success: function(record, operation) {

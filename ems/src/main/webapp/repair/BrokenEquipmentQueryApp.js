@@ -1,4 +1,4 @@
-Ext.require("Ems.baseinfo.Equipment");
+Ext.require("Ems.repair.Repair");
 
 Ext.onReady(function(){
 	var store_combox=Ext.create('Ext.form.field.ComboBox',{
@@ -53,7 +53,7 @@ Ext.onReady(function(){
 	 var equipStore = Ext.create('Ext.data.Store', {
         autoDestroy: true,
         pageSize:50,
-        model: 'Ems.baseinfo.Equipment',
+        model: 'Ems.repair.Repair',
         autoLoad:false,
         proxy: {
 	        type: 'ajax',

@@ -11,6 +11,7 @@ Ext.define('Ems.store.OrderListForm',{
         anchor: '90%'
     },
     frame: true,
+    canEditType:true,
     bodyPadding: '5 5 0',
 
  //   layout: {
@@ -19,7 +20,7 @@ Ext.define('Ems.store.OrderListForm',{
  //   },
 	initComponent: function () {
        var me = this;
-       
+       var canEditType=me.canEditType;
       // alert(me.order_id);
      var order_id=Ext.create('Ext.form.field.Hidden',{
 		fieldLabel:'订单号',
@@ -44,6 +45,7 @@ Ext.define('Ems.store.OrderListForm',{
 		labelAlign:'right',
 		allowBlank: false,
 		labelWidth:50,
+		readOnly:!canEditType,
 		//minChars:-1
 		listeners:{
 			change:function(field,newValue, oldValue){
@@ -62,6 +64,7 @@ Ext.define('Ems.store.OrderListForm',{
 		labelAlign:'right',
 		allowBlank: false,
 		labelWidth:50,
+		readOnly:!canEditType,
 		//minChars:-1，
 		listeners:{
 			beforeload:function(store){
@@ -116,6 +119,7 @@ Ext.define('Ems.store.OrderListForm',{
 	me.prod_unit=prod_unit;
 	var queryProd_button=Ext.create('Ext.button.Button',{
 		text:'选择品名',
+		hidden:!canEditType,
 		margin:'0 0 0 5',
 		handler:function(){
 			var subtype_id=subtype_combox.getValue();
@@ -209,6 +213,11 @@ Ext.define('Ems.store.OrderListForm',{
 		xtype:'displayfield',fieldLabel:'总价(元)',name:'totalprice',labelWidth:60,submitValue : true,labelAlign:'right',width:180
 	});
 	me.totalprice_display=totalprice_display;
+	var totalNum_display=Ext.create('Ext.form.field.Number',{
+		hidden:true,
+		xtype:'numberfield',fieldLabel:'已入库数量',name:'totalNum',labelWidth:60,submitValue : true,labelAlign:'right',width:180
+	});
+	me.totalNum_display=totalNum_display;
 	
 	me.items=[
 			{xtype:'fieldcontainer',layout: 'hbox',items:[id_field,order_id,brand_id,prod_id]},
@@ -218,7 +227,8 @@ Ext.define('Ems.store.OrderListForm',{
                                    		quality_month_field,
                                     	orderNum_field,
                                     	unitprice_field,
-										totalprice_display
+										totalprice_display,
+										totalNum_display
 									  ]
 									}
 		            		       
@@ -297,6 +307,7 @@ Ext.define('Ems.store.OrderListForm',{
 		this.orderNum_field.setValue(orderlist.get("orderNum"));
 		this.unitprice_field.setValue(orderlist.get("unitPrice"));
 		this.totalprice_display.setValue(orderlist.get("totalprice"));
+		this.totalNum_display.setValue(orderlist.get("totalNum"));
 
 		this.type_combox.setReadOnly(true);
 		this.subtype_combox.setReadOnly(true);

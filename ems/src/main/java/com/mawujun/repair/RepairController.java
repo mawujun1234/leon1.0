@@ -211,6 +211,14 @@ public class RepairController {
 	@RequestMapping("/repair/repairOutStore.do")
 	@ResponseBody
 	public String repairOutStore(@RequestBody Repair[] repairs){
+		for(Repair repair:repairs){
+			//如果是外修，检查回收字段是否已经填好了
+			if(repair.getRpa_type()==RepairType.outrpa){
+				if(repair.getReceive_date()==null){
+					throw new BusinessException(repair.getId()+"单据的'收到日期'没有填写!");
+				}
+			}
+		}
 		repairService.repairOutStore(repairs);
 		return "success";
 	}

@@ -178,6 +178,7 @@ Ext.define('Ems.store.OrderGrid',{
 							params:{id:record.get("id")},
 							success:function(resposne){
 								me.store.reload();
+								me.getSelectionModel().deselect(record);
 							}
 						});
 					
@@ -238,6 +239,7 @@ Ext.define('Ems.store.OrderGrid',{
 							params:{id:record.get("id")},
 							success:function(resposne){
 								me.store.reload();
+								me.getSelectionModel().deselect(record);
 							}
 						});
 					

@@ -261,5 +261,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			select decode(totalnum,ordernum,1,0) from ems_orderlist where  id=#{orderlist_id}
 		)
     </delete>
+    
+    <select id="getTotalNumByOrderList_id" resultType="int">
+    	select count(ecode) from ems_equipment where orderlist_id=#{orderlist_id}
+    </select>
 </mapper>
 

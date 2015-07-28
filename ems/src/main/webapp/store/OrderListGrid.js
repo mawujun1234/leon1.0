@@ -151,10 +151,13 @@ Ext.define('Ems.store.OrderListGrid',{
 			alert("请先选择一个订单明细!");
        		return;		
 		}
+		//是否可以编辑订单的类型，当有入库过后，就不能编辑，只能编辑质保月，数目，单价等
+		var canEditType=record.get("totalNum")?false:true;
 		//console.log(record.get("unitPrice"));
 		var form=Ext.create('Ems.store.OrderListForm',{
 			//order_id:order_id,
 			order_id:order_id,
+			canEditType:canEditType,
 			url:Ext.ContextPath+'/order/updateList.do',
 			listeners:{
 				saved:function(){

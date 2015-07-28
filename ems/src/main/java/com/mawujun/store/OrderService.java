@@ -460,6 +460,10 @@ public class OrderService extends AbstractService<Order, String>{
 		if(orderList.getTotalNum()!=null &&orderList.getTotalNum()>orderList.getOrderNum()){
 			throw new BusinessException("以入库数量大于订单数量，不准备修改!");
 		}
+		
+		//获取当前订单明细中已经入库的设备数量，主要目的是为了防止，先打开订单明细，然后入库，然后强制回退，然后再修改订单明细，导致入库数量发生错误的问题
+		int totalNum=orderRepository.getTotalNumByOrderList_id(orderList.getId());
+		orderList.setTotalNum(totalNum);
 
 		orderListRepository.update(orderList);
 				
@@ -492,6 +496,10 @@ public class OrderService extends AbstractService<Order, String>{
 		Order main = orderRepository.get(orderList.getOrder_id());
 		if(main.getStatus().equals(OrderStatus.editover)){
 			throw new BusinessException("该订单已经结束编辑，不能删除!");
+		}
+		//如果订单已经有入库，那也不能删除
+		if(orderList.getTotalNum()!=0){
+			throw new BusinessException("该明细数据已经有入库，不能删除!");
 		}
 		orderListRepository.delete(orderList);
 	}

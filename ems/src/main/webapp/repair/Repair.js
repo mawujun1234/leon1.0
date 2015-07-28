@@ -30,6 +30,11 @@ Ext.defineModel("Ems.repair.Repair",{
 		{name:'broken_reson',type:'string'},
 		{name:'memo',type:'string'},
 		
+		{name:'send_date',type:'date', dateFormat: 'Y-m-d'},
+		{name:'sendno',type:'string'},
+		{name:'receive_date',type:'date', dateFormat: 'Y-m-d'},
+		{name:'repairFactory',type:'string'},
+		
 		{name:'workunit_name',type:'string'},
 		{name:'rpa_name',type:'string'},
 		{name:'rpa_user_name',type:'string'},

@@ -29,7 +29,14 @@ public class RepairVO extends Repair {
 	private String scrap_residual;//报废残值
 	private Date scrap_operateDate;//报废确认时间
 	
-
+	public String getRpa_type_name() {
+		if(this.getRpa_type()!=null){
+			return this.getRpa_type().getName();
+		} else {
+			return null;
+		}
+		
+	}
 	public String getStatus_name() {
 		if(this.getStatus()!=null){
 			return this.getStatus().getName();

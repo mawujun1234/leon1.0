@@ -34,16 +34,16 @@ public class Repair  implements IdEntity<String>{
 	private String str_in_id;//入库仓库
 	
 	
+	@Column(length=15)
+	private String installIn_id;//最后入库的单子
 	//下面三行是在创建的时候填的，故障描述是实施人员填的
-	private Date repair_date;//报修时间
+	private Date repair_date;//报修时间，就是取坏设备入库的时候
 	@Column(length=36) 
 	private String workunit_id;//报修人,就是维修小组
-	@Column(length=15)
-	private String installIn_id;//实施人员入库的单子
 	@Column(length=36) 
-	private String task_id;//故障描述
+	private String task_id;//最后一个任务
 	@Column(length=500) 
-	private String broken_memo;//故障描述
+	private String broken_memo;//故障描述，故障类型+故障原因
 	
 	@Column(length=36)
 	private String str_out_oper_id;//仓库出库的操作人
@@ -67,8 +67,9 @@ public class Repair  implements IdEntity<String>{
 	private String str_in_oper_id;//仓库入库的操作人
 	private Date str_in_date;//仓库入库时间，也就是维修好后的入库时间
 	
+	@Enumerated(EnumType.STRING)
 	@Column(length=8) 
-	private String rpa_type="innerrpa";//维修类型，维修 (innerrpa)还是外修(outrpa)
+	private RepairType rpa_type=RepairType.innerrpa;//维修类型，维修 (innerrpa)还是外修(outrpa)
 	
 	@Enumerated(EnumType.STRING)
 	@Column(length=18) 
@@ -83,15 +84,14 @@ public class Repair  implements IdEntity<String>{
 	@Column(length=500) 
 	private String memo;
 	
-	public String getRpa_type_name() {
-		if("innerrpa".equals(this.getRpa_type())){
-			return "维修";
-		} else if("outrpa".equals(this.getRpa_type())){
-			return "外修";
-		} else {
-			return null;
-		}
-	}
+	//====下面的是外修的字段
+	private Date send_date;//寄出时间
+	@Column(length=30) 
+	private String sendno;//运单号
+	private Date receive_date;//维修好后 ，收货时间
+	@Column(length=80) 
+	private String repairFactory;//维修厂方
+
 	public String getId() {
 		return id;
 	}
@@ -213,10 +213,10 @@ public class Repair  implements IdEntity<String>{
 	public void setRpa_user_id(String rpa_user_id) {
 		this.rpa_user_id = rpa_user_id;
 	}
-	public String getRpa_type() {
+	public RepairType getRpa_type() {
 		return rpa_type;
 	}
-	public void setRpa_type(String rpa_type) {
+	public void setRpa_type(RepairType rpa_type) {
 		this.rpa_type = rpa_type;
 	}
 	public String getTask_id() {
@@ -248,6 +248,30 @@ public class Repair  implements IdEntity<String>{
 	}
 	public void setStatus(RepairStatus status) {
 		this.status = status;
+	}
+	public Date getSend_date() {
+		return send_date;
+	}
+	public void setSend_date(Date send_date) {
+		this.send_date = send_date;
+	}
+	public String getSendno() {
+		return sendno;
+	}
+	public void setSendno(String sendno) {
+		this.sendno = sendno;
+	}
+	public Date getReceive_date() {
+		return receive_date;
+	}
+	public void setReceive_date(Date receive_date) {
+		this.receive_date = receive_date;
+	}
+	public String getRepairFactory() {
+		return repairFactory;
+	}
+	public void setRepairFactory(String repairFactory) {
+		this.repairFactory = repairFactory;
 	}
 
 }
