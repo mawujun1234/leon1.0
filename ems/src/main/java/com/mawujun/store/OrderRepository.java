@@ -49,4 +49,7 @@ public interface OrderRepository extends IRepository<Order, String>{
 	//public Order getMainInfo(@Param("orderNo")String orderNo);
 	
 	public int getTotalNumByOrderList_id(@Param("orderlist_id")String orderlist_id);
+	public int getTotalNumByOrder_id(@Param("order_id")String order_id);
+	
+	public void deleteBarcodeByOrder(@Param("order_id")String order_id);
 }

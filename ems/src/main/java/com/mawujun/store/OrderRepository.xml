@@ -261,9 +261,19 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			select decode(totalnum,ordernum,1,0) from ems_orderlist where  id=#{orderlist_id}
 		)
     </delete>
-    
+    <!-- 在删除订单的时候，清除该订单中所有条码 -->
+     <delete id="deleteBarcodeByOrder">
+    	delete ems_barcode where orderlist_id in (
+    		select id from ems_orderlist where order_id=#{order_id}
+    	)
+    </delete>
+    <!-- 获取某个订单明细的入库数量，更新订单明细的时候 -->
     <select id="getTotalNumByOrderList_id" resultType="int">
     	select count(ecode) from ems_equipment where orderlist_id=#{orderlist_id}
+    </select>
+    <!-- 判断某个订单是否有设备入库了 ，删除订单的时候-->
+    <select id="getTotalNumByOrder_id" resultType="int">
+    	select count(ecode) from ems_equipment a,ems_orderlist b where a.orderlist_id=b.id and b.order_id=#{order_id}
     </select>
 </mapper>
 

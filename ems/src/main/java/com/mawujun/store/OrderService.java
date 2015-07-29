@@ -191,6 +191,14 @@ public class OrderService extends AbstractService<Order, String>{
 		if(OrderStatus.editover.toString().equalsIgnoreCase(status)){
 			throw new BusinessException("订单已确认，不能删除!");
 		}
+		//如果订单已经有入库就不能删除
+		int totalnum=orderRepository.getTotalNumByOrder_id(id);
+		if(totalnum>0){
+			throw new BusinessException("订单已有入库，不能删除!");
+		}
+		
+		orderRepository.deleteBarcodeByOrder(id);
+		orderListRepository.deleteBatch(Cnd.delete().andEquals(M.OrderList.order_id, id));
 		orderRepository.deleteBatch(Cnd.delete().andEquals(M.Order.id, id));
 	}
 	/**
