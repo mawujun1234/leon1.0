@@ -46,7 +46,7 @@ public interface TaskRepository extends IRepository<Task, String>{
 	public List<String> query_other_task_have_scaned(@Param("workunit_id")String workunit_id,@Param("ecode")String ecode);
 	
 	public Page queryRepairTaskesReport(Page page);
-	public List<TaskRepairReport> queryRepairTaskesReport(Params params);
+	public List<Task> exportUnrepairPoleReport(Params params);
 	public Page queryUnrepairPoleReport(Page page);
 	/**
 	 * 根据条码查询最新的任务信息

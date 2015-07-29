@@ -78,85 +78,89 @@ Ext.onReady(function(){
 //        ,value: new Date()
 //	});
 	
-	var query_button=Ext.create('Ext.button.Button',{
-			text:'查询',
-			margin:'0 0 0 5',
-			iconCls:'form-search-button',
-			handler:function(){
-				store.loadPage(1);
-			}
-	});
-//	var exportPoles = new Ext.Action({
-//		    text: '导出点位设备信息',
-//		    //itemId:'reload',
-//		    icon:'../icons/page_excel.png',
-//		    handler: function(){
-//		    	var me=this;
-//		    	var params={
-//		    		customer_id:customer_combox.getValue(),
-//		    		workunit_id:workunit_combox.getValue()
-//		    	}
-//				var pp=Ext.Object.toQueryString(params);
-//				window.open(Ext.ContextPath+"/task/exportRepairTaskesReport.do?"+pp, "_blank");
-//		    }
-//		});
+//	var query_button=Ext.create('Ext.button.Button',{
+//			text:'查询',
+//			margin:'0 0 0 5',
+//			iconCls:'form-search-button',
+//			handler:function(){
+//				store.loadPage(1);
+//			}
+//	});
+	var exportPoles = Ext.create('Ext.button.Button',{
+		    text: '导出',
+		    //itemId:'reload',
+		    icon:'../icons/page_excel.png',
+		    handler: function(){
+		    	var me=this;
+		    	var params={
+		    		customer_id:customer_combox.getValue(),
+		    		workunit_id:workunit_combox.getValue()
+		    	}
+				var pp=Ext.Object.toQueryString(params);
+				window.open(Ext.ContextPath+"/report/task/exportUnrepairPoleReport.do?"+pp, "_blank");
+		    }
+		});
 	var toolbar=Ext.create('Ext.toolbar.Toolbar',{
-		items:[workunit_combox,customer_combox,query_button]
+		items:[workunit_combox,customer_combox,exportPoles]
 	});
-	var store=Ext.create('Ext.data.Store',{
-			autoSync:false,
-			pageSize:50,
-			model: 'Ems.task.TaskRepairReport',
-			autoLoad:false,
-			proxy:{
-				type:'ajax',
-				actionMethods: {
-			        create : 'POST',
-			        read   : 'POST',
-			        update : 'POST',
-			        destroy: 'POST'
-			    },
-				url:Ext.ContextPath+'/task/queryUnrepairPoleReport.do',
-				reader:{
-					type:'json',
-					root:'root'
-				}
-			}
+	
+	var grid=Ext.create('Ext.panel.Panel',{
+		tbar:toolbar
 	});
-	store.on("beforeload",function(store){
-		store.getProxy().extraParams={
-				customer_id:customer_combox.getValue(),
-		    	workunit_id:workunit_combox.getValue()
-		};
-	});
-	var grid=Ext.create('Ext.grid.Panel',{
-		columnLines :true,
-		stripeRows:true,
-		columns:[
-			{xtype: 'rownumberer'},
-			
-	        {dataIndex:'customer_name',text:'派出所'},
-	        {dataIndex:'pole_code',text:'点位编号',width:55},
-	        {dataIndex:'pole_name',text:'点位名称'},
-	        {dataIndex:'workunit_name',text:'作业单位'},
-	        {dataIndex:'id',text:'任务编号',width:100},
-	        {dataIndex:'hitchReason',text:'故障现象'},
-	        {dataIndex:'createDate',text:'任务下派时间',width:120},
-			{dataIndex:'startHandDate',text:'维修到达时间',width:120},
-			{dataIndex:'hitchType',text:'故障类型'}
-			//{dataIndex:'',text:'维修未完成原因'},
-			//{dataIndex:'',text:'故障后续处理方法'}
-	    ],
-      	store:store,
-      	tbar:toolbar,
-      	dockedItems: [{
-	        xtype: 'pagingtoolbar',
-	        store: store,  
-	        dock: 'bottom',
-	        displayInfo: true
-	  	}]
-	  	 
-	});
+//	var store=Ext.create('Ext.data.Store',{
+//			autoSync:false,
+//			pageSize:50,
+//			model: 'Ems.task.TaskRepairReport',
+//			autoLoad:false,
+//			proxy:{
+//				type:'ajax',
+//				actionMethods: {
+//			        create : 'POST',
+//			        read   : 'POST',
+//			        update : 'POST',
+//			        destroy: 'POST'
+//			    },
+//				url:Ext.ContextPath+'/task/queryUnrepairPoleReport.do',
+//				reader:{
+//					type:'json',
+//					root:'root'
+//				}
+//			}
+//	});
+//	store.on("beforeload",function(store){
+//		store.getProxy().extraParams={
+//				customer_id:customer_combox.getValue(),
+//		    	workunit_id:workunit_combox.getValue()
+//		};
+//	});
+//	var grid=Ext.create('Ext.grid.Panel',{
+//		columnLines :true,
+//		stripeRows:true,
+//		columns:[
+//			{xtype: 'rownumberer'},
+//			
+//	        {dataIndex:'customer_name',text:'派出所'},
+//	        {dataIndex:'pole_code',text:'点位编号',width:55},
+//	        {dataIndex:'pole_name',text:'点位名称'},
+//	        {dataIndex:'workunit_name',text:'作业单位'},
+//	        {dataIndex:'id',text:'任务编号',width:100},
+//	        {dataIndex:'hitchReason',text:'故障现象'},
+//	        {dataIndex:'createDate',text:'任务下派时间',width:120},
+//			{dataIndex:'startHandDate',text:'维修到达时间',width:120},
+//			{dataIndex:'hitchType',text:'故障类型'}
+//			//{dataIndex:'',text:'维修未完成原因'},
+//			//{dataIndex:'',text:'故障后续处理方法'}
+//	    ],
+//      	store:store,
+//      	tbar:toolbar,
+//      	dockedItems: [{
+//	        xtype: 'pagingtoolbar',
+//	        store: store,  
+//	        dock: 'bottom',
+//	        displayInfo: true
+//	  	}]
+//	  	 
+//	});
 	
 
 

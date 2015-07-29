@@ -624,13 +624,13 @@ public class TaskService extends AbstractService<Task, String>{
 	}
 	
 	
-	public List<TaskRepairReport> exportRepairTaskesReport(String workunit_id,String date_start,String date_end) {
-		Overtime overtime=overtimeService.get("overtime");
-		Params params=Params.init().add(M.Task.workunit_id, workunit_id).add("date_start", date_start).add("date_end", date_end);
-		List<TaskRepairReport> list= this.getRepository().queryRepairTaskesReport(params);
-		for(TaskRepairReport task:list){
-			task.checkIsOverTime(overtime.getHandling());
-		}
+	public List<Task> exportUnrepairPoleReport(String workunit_id,String customer_id) {
+		//Overtime overtime=overtimeService.get("overtime");
+		Params params=Params.init().add(M.Task.workunit_id, workunit_id).add("customer_id", customer_id);
+		List<Task> list= this.getRepository().exportUnrepairPoleReport(params);
+//		for(TaskRepairReport task:list){
+//			task.checkIsOverTime(overtime.getHandling());
+//		}
 		return list;
 	}
 	/**
