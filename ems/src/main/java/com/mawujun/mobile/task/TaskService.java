@@ -19,13 +19,11 @@ import com.mawujun.baseinfo.EquipmentPole;
 import com.mawujun.baseinfo.EquipmentPolePK;
 import com.mawujun.baseinfo.EquipmentPoleRepository;
 import com.mawujun.baseinfo.EquipmentPoleType;
-import com.mawujun.baseinfo.EquipmentProdRepository;
 import com.mawujun.baseinfo.EquipmentProdService;
 import com.mawujun.baseinfo.EquipmentProdVO;
 import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.EquipmentService;
 import com.mawujun.baseinfo.EquipmentStatus;
-import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.baseinfo.EquipmentWorkunit;
 import com.mawujun.baseinfo.EquipmentWorkunitPK;
 import com.mawujun.baseinfo.EquipmentWorkunitRepository;
@@ -624,9 +622,10 @@ public class TaskService extends AbstractService<Task, String>{
 	}
 	
 	
-	public List<Task> exportUnrepairPoleReport(String workunit_id,String customer_id) {
+	public List<Task> exportUnrepairPoleReport(String workunit_id,String customer_id,String date_start,String date_end) {
 		//Overtime overtime=overtimeService.get("overtime");
-		Params params=Params.init().add(M.Task.workunit_id, workunit_id).add("customer_id", customer_id);
+		Params params=Params.init().add(M.Task.workunit_id, workunit_id).add("customer_id", customer_id)
+				.add("date_start", date_start).add("date_end", date_end);
 		List<Task> list= this.getRepository().exportUnrepairPoleReport(params);
 //		for(TaskRepairReport task:list){
 //			task.checkIsOverTime(overtime.getHandling());

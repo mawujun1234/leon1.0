@@ -220,6 +220,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="customer_id!=null and customer_id!=''">
 				and a.customer_id=#{customer_id}
 			</if>
+			<if test="date_start!=null and date_start!=''">
+				and to_char(a.createDate,'yyyy-mm-dd')&gt;=#{date_start}
+			</if>
+			<if test="date_end!=null and date_end!=''">
+				and to_char(a.createDate,'yyyy-mm-dd')&lt;=#{date_end}
+			</if>
     </select>
     
     <!-- 查询当天还没有完成的任务，也就是查询所有还未完成的任务-->
@@ -234,7 +240,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="customer_id!=null">
 				and a.customer_id=#{customer_id}
 			</if>
-			
+			<if test="date_start!=null and date_start!=''">
+				and to_char(a.createDate,'yyyy-mm-dd')&gt;=#{date_start}
+			</if>
+			<if test="date_end!=null and date_end!=''">
+				and to_char(a.createDate,'yyyy-mm-dd')&lt;=#{date_end}
+			</if>
     </select>
     
     

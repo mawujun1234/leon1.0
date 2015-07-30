@@ -1,19 +1,11 @@
 package com.mawujun.mobile.task;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,13 +13,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.baseinfo.Customer;
 import com.mawujun.baseinfo.CustomerService;
-import com.mawujun.baseinfo.EquipmentStatus;
-import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.baseinfo.Pole;
 import com.mawujun.baseinfo.PoleService;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.exception.BusinessException;
-import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.M;
 import com.mawujun.utils.StringUtils;
@@ -422,10 +411,12 @@ public class TaskController {
 	
 	@RequestMapping("/task/queryUnrepairPoleReport.do")
 	@ResponseBody
-	public Page queryUnrepairPoleReport(Integer start,Integer limit,String workunit_id,String customer_id) {
+	public Page queryUnrepairPoleReport(Integer start,Integer limit,String workunit_id,String customer_id,String date_start,String date_end) {
 		Page page=Page.getInstance(start,limit);
 		page.addParam(M.Task.workunit_id, workunit_id);
 		page.addParam(M.Task.customer_id, customer_id);
+		page.addParam("date_start", date_start);
+		page.addParam("date_end", date_end);
 
 		JsonConfigHolder.setDatePattern("yyyy-MM-dd HH:mm:ss");
 		return taskService.queryUnrepairPoleReport(page);

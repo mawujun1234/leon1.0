@@ -29,8 +29,8 @@ public class TaskReportController {
 	
 	@RequestMapping("/report/task/exportUnrepairPoleReport.do")
 	@ResponseBody
-	public void exportUnrepairPoleReport(HttpServletResponse response,String workunit_id,String customer_id) throws IOException {
-		List<Task> taskes=taskService.exportUnrepairPoleReport(workunit_id,customer_id);
+	public void exportUnrepairPoleReport(HttpServletResponse response,String workunit_id,String customer_id,String date_start,String date_end) throws IOException {
+		List<Task> taskes=taskService.exportUnrepairPoleReport(workunit_id,customer_id, date_start, date_end);
 		
 		XSSFWorkbook wb =new XSSFWorkbook();
 		Sheet sheet = wb.createSheet();
