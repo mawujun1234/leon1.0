@@ -140,7 +140,7 @@ public class Day_sparepart_Controller {
 		sheet.addMergedRegion(new CellRangeAddress(1, (short) 1, 0, (short) type_group_end_num+1));
 		
 		// 设置第一行,设置列标题
-		StringBuilder[] formulas = sparepart_addRow1(wb, sheet,daykeys_title);
+		StringBuilder[] formulas = sparepart_addRow1(wb, sheet,daykeys_title,store_type);
 
 		CellStyle type_name_style = this.getStyle(wb, IndexedColors.BLACK, (short) 12);
 		// black_style.setBorderBottom(CellStyle.BORDER_NONE);
@@ -264,8 +264,11 @@ public class Day_sparepart_Controller {
 						unit.setCellStyle(content_style);
 
 						// 额定数量
-						Cell fixednum = row_prod.createCell(cellnum++);
-						fixednum.setCellStyle(fixednum_style);
+						if(store_type == 3){
+							Cell fixednum = row_prod.createCell(cellnum++);
+							fixednum.setCellStyle(fixednum_style);
+						}
+						
 
 						// 上期结余
 						Cell yesterdaynum = row_prod.createCell(cellnum++);
@@ -478,7 +481,7 @@ public class Day_sparepart_Controller {
 	}
 	
 
-	private StringBuilder[] sparepart_addRow1(XSSFWorkbook wb,Sheet sheet,List<String> daykeys_title){
+	private StringBuilder[] sparepart_addRow1(XSSFWorkbook wb,Sheet sheet,List<String> daykeys_title,int store_type){
 		Integer day_length=daykeys_title.size();
 		 Row row = sheet.createRow(2);
 		 
@@ -521,13 +524,16 @@ public class Day_sparepart_Controller {
 		 unit.setCellStyle(black_style);
 		 sheet.setColumnWidth(cellnum-1,600);
 		 
-		 CellStyle fixednum_style=getStyle(wb,IndexedColors.BLACK,(short)9);
-		 fixednum_style.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);
-		 fixednum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		 Cell fixednum=row.createCell(cellnum++);
-		 fixednum.setCellValue("额定数量");
-		 fixednum.setCellStyle(fixednum_style);
-		 sheet.setColumnWidth(cellnum-1, 1200);
+		 if(store_type == 3){
+			 CellStyle fixednum_style=getStyle(wb,IndexedColors.BLACK,(short)9);
+			 fixednum_style.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);
+			 fixednum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+			 Cell fixednum=row.createCell(cellnum++);
+			 fixednum.setCellValue("额定数量");
+			 fixednum.setCellStyle(fixednum_style);
+			 sheet.setColumnWidth(cellnum-1, 1200);
+		 }
+		
 		 
 		 CellStyle yesterdaynum_style=getStyle(wb,IndexedColors.BLACK,(short)9);
 		 yesterdaynum_style.setFillForegroundColor(HSSFColor.LIGHT_YELLOW.index);
@@ -815,7 +821,7 @@ public class Day_sparepart_Controller {
 			daykeys_title.add((i+1)+"");
 		}
 		//设置第一行,设置列标题
-		StringBuilder[] formulas=sparepart_addRow1(wb,sheet,daykeys_title);
+		StringBuilder[] formulas=sparepart_addRow1(wb,sheet,daykeys_title,store_type);
 		
 		
 		CellStyle type_name_style = this.getStyle(wb, IndexedColors.BLACK,(short)12);
@@ -933,11 +939,14 @@ public class Day_sparepart_Controller {
 						// unit.setCellValue("台");
 						 unit.setCellStyle(content_style);
 						 
-						 //额定数量
-						 Cell fixednum=row_prod.createCell(cellnum++);
-						 //fixednum.setCellValue(1);
-						 //supplementnum_formule_builder.append(CellReference.convertNumToColString(cellnum-1)+(rownum));
-						 fixednum.setCellStyle(fixednum_style);
+						 if(store_type==3){
+							 //额定数量
+							 Cell fixednum=row_prod.createCell(cellnum++);
+							 //fixednum.setCellValue(1);
+							 //supplementnum_formule_builder.append(CellReference.convertNumToColString(cellnum-1)+(rownum));
+							 fixednum.setCellStyle(fixednum_style);
+						 }
+
 						 
 						 //上月结余
 						 Cell lastnum=row_prod.createCell(cellnum++);

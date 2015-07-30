@@ -82,7 +82,7 @@ public class Month_sparepart_Controller {
 		sheet.addMergedRegion(new CellRangeAddress(0, (short) 0, 0, (short) type_group_end_num+1));
 		
 		// 设置第一行,设置列标题
-		sparepart_addRow1(wb, sheet);
+		sparepart_addRow1(wb, sheet,store_type);
 		
 		Row row_date = sheet.createRow(1);
 		Cell cell_date=row_date.createCell(0);
@@ -209,11 +209,13 @@ public class Month_sparepart_Controller {
 						unit.setCellValue(prod.getProd_unit());
 						unit.setCellStyle(content_style);
 
-						// 额定数量
-						Cell fixednum = row_prod.createCell(cellnum++);
-						//fixednum.setCellValue();
-						fixednum.setCellStyle(fixednum_style);
-						supplementnum_formule_builder.append(CellReference.convertNumToColString(cellnum - 1) + (rownum));
+						if (store_type == 3) {
+							// 额定数量
+							Cell fixednum = row_prod.createCell(cellnum++);
+							//fixednum.setCellValue();
+							fixednum.setCellStyle(fixednum_style);
+							supplementnum_formule_builder.append(CellReference.convertNumToColString(cellnum - 1) + (rownum));
+						}
 
 						// 上月结余
 						Cell yesterdaynum = row_prod.createCell(cellnum++);
@@ -278,11 +280,14 @@ public class Month_sparepart_Controller {
 						nownum.setCellFormula(nownum_formule_builder.toString());
 						nownum.setCellStyle(nownum_style);
 						supplementnum_formule_builder.append("-" + CellReference.convertNumToColString(cellnum - 1) + (rownum));
-						//增补数量
-						Cell supplementnum = row_prod.createCell(cellnum++);
-						// supplementnum.setCellValue(12);
-						supplementnum.setCellStyle(supplementnum_style);
-						supplementnum.setCellFormula(supplementnum_formule_builder.toString());
+						
+						if (store_type == 3) {
+							//增补数量
+							Cell supplementnum = row_prod.createCell(cellnum++);
+							// supplementnum.setCellValue(12);
+							supplementnum.setCellStyle(supplementnum_style);
+							supplementnum.setCellFormula(supplementnum_formule_builder.toString());
+						}
 
 						Cell memo = row_prod.createCell(cellnum++);
 						memo.setCellValue("");
@@ -361,7 +366,7 @@ public class Month_sparepart_Controller {
 		return style;
 	}
 
-	private void sparepart_addRow1(XSSFWorkbook wb, Sheet sheet) {
+	private void sparepart_addRow1(XSSFWorkbook wb, Sheet sheet,int store_type) {
 		Row row = sheet.createRow(2);
 
 		CellStyle black_style = getStyle(wb, IndexedColors.BLACK, null);
@@ -403,13 +408,16 @@ public class Month_sparepart_Controller {
 		unit.setCellStyle(black_style);
 		sheet.setColumnWidth(cellnum - 1, 600);
 
-		CellStyle fixednum_style = getStyle(wb, IndexedColors.BLACK, null);
-		fixednum_style.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);
-		fixednum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		Cell fixednum = row.createCell(cellnum++);
-		fixednum.setCellValue("额定数量");
-		fixednum.setCellStyle(fixednum_style);
-		sheet.setColumnWidth(cellnum - 1, 1200);
+		if (store_type == 3) {
+			CellStyle fixednum_style = getStyle(wb, IndexedColors.BLACK, null);
+			fixednum_style.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);
+			fixednum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+			Cell fixednum = row.createCell(cellnum++);
+			fixednum.setCellValue("额定数量");
+			fixednum.setCellStyle(fixednum_style);
+			sheet.setColumnWidth(cellnum - 1, 1200);
+		}
+		
 
 		CellStyle yesterdaynum_style = getStyle(wb, IndexedColors.BLACK, null);
 		yesterdaynum_style.setFillForegroundColor(HSSFColor.LIGHT_YELLOW.index);
@@ -472,13 +480,15 @@ public class Month_sparepart_Controller {
 		nownum.setCellStyle(nownum_style);
 		sheet.setColumnWidth(cellnum - 1, 1800);
 
-		CellStyle supplementnum_style = getStyle(wb, IndexedColors.BLACK, null);
-		supplementnum_style.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);
-		supplementnum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		Cell supplementnum = row.createCell(cellnum++);
-		supplementnum.setCellValue("增补数量");
-		supplementnum.setCellStyle(supplementnum_style);
-		sheet.setColumnWidth(cellnum - 1, 1200);
+		if (store_type == 3) {
+			CellStyle supplementnum_style = getStyle(wb, IndexedColors.BLACK, null);
+			supplementnum_style.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);
+			supplementnum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+			Cell supplementnum = row.createCell(cellnum++);
+			supplementnum.setCellValue("增补数量");
+			supplementnum.setCellStyle(supplementnum_style);
+			sheet.setColumnWidth(cellnum - 1, 1200);
+		}
 
 		Cell memo = row.createCell(cellnum++);
 		memo.setCellValue("备注");
@@ -522,7 +532,7 @@ public class Month_sparepart_Controller {
 		sheet.addMergedRegion(new CellRangeAddress(0, (short) 0, 0, (short) type_group_end_num+1));
 		
 		// 设置第一行,设置列标题
-		sparepart_addRow1(wb, sheet);
+		//sparepart_addRow1(wb, sheet,store_type);
 		
 		Row row_date = sheet.createRow(1);
 		Cell cell_date=row_date.createCell(0);
@@ -538,7 +548,7 @@ public class Month_sparepart_Controller {
 		sheet.addMergedRegion(new CellRangeAddress(1, (short) 1, 0, (short) type_group_end_num+1));
 
 		// 设置第一行,设置列标题
-		sparepart_addRow1(wb, sheet);
+		sparepart_addRow1(wb, sheet,store_type);
 
 		CellStyle type_name_style = this.getStyle(wb, IndexedColors.BLACK, (short) 12);
 		// black_style.setBorderBottom(CellStyle.BORDER_NONE);
@@ -558,10 +568,11 @@ public class Month_sparepart_Controller {
 		subtype_name_style.setBorderBottom(CellStyle.BORDER_NONE);
 		subtype_name_style.setAlignment(CellStyle.ALIGN_LEFT);
 
+
 		CellStyle fixednum_style = getContentStyle(wb, null);
 		fixednum_style.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
 		fixednum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-
+		
 		CellStyle yesterdaynum_style = getContentStyle(wb, null);
 		yesterdaynum_style.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.index);
 		yesterdaynum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
@@ -651,12 +662,13 @@ public class Month_sparepart_Controller {
 						Cell unit = row_prod.createCell(cellnum++);
 						// unit.setCellValue("台");
 						unit.setCellStyle(content_style);
-
-						// 额定数量
-						Cell fixednum = row_prod.createCell(cellnum++);
-						// fixednum.setCellValue(1);
-						fixednum.setCellStyle(fixednum_style);
-						supplementnum_formule_builder.append(CellReference.convertNumToColString(cellnum - 1) + (rownum));
+						if (store_type == 3) {
+							// 额定数量
+							Cell fixednum = row_prod.createCell(cellnum++);
+							// fixednum.setCellValue(1);
+							fixednum.setCellStyle(fixednum_style);
+							supplementnum_formule_builder.append(CellReference.convertNumToColString(cellnum - 1) + (rownum));
+						}
 
 						// 上月结余
 						Cell lastnum = row_prod.createCell(cellnum++);
@@ -716,10 +728,12 @@ public class Month_sparepart_Controller {
 						nownum.setCellStyle(nownum_style);
 						supplementnum_formule_builder.append("-" + CellReference.convertNumToColString(cellnum - 1) + (rownum));
 
-						Cell supplementnum = row_prod.createCell(cellnum++);
-						// supplementnum.setCellValue(12);
-						supplementnum.setCellStyle(supplementnum_style);
-						supplementnum.setCellFormula(supplementnum_formule_builder.toString());
+						if (store_type == 3) {
+							Cell supplementnum = row_prod.createCell(cellnum++);
+							// supplementnum.setCellValue(12);
+							supplementnum.setCellStyle(supplementnum_style);
+							supplementnum.setCellFormula(supplementnum_formule_builder.toString());
+						}
 
 						Cell memo = row_prod.createCell(cellnum++);
 						memo.setCellValue("");
