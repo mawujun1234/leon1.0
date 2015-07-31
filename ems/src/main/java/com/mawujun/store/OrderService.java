@@ -42,7 +42,7 @@ import com.mawujun.utils.page.Page;
  */
 @Service
 @Transactional(propagation=Propagation.REQUIRED)
-public class OrderService extends AbstractService<Order, String>{
+public class OrderService extends AbstractService<Order, String> {
 
 	@Autowired
 	private OrderRepository orderRepository;
@@ -60,6 +60,14 @@ public class OrderService extends AbstractService<Order, String>{
 	@Override
 	public OrderRepository getRepository() {
 		return orderRepository;
+	}
+	
+	@Override
+	public void update(Order order) {
+		//更新条码中的所有store_id,因为存在订单输错仓库的可能性
+		orderRepository.updateBarcodeStore_id(order.getId(), order.getStore_id());
+		
+		this.getRepository().update(order);
 	}
 	
 	public Page queryMain(Page page) {

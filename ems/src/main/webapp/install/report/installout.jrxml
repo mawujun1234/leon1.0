@@ -8,6 +8,7 @@
 	<parameter name="workunit_name" class="java.lang.String"/>
 	<parameter name="operater_name" class="java.lang.String"/>
 	<parameter name="operateDate" class="java.lang.String"/>
+	<parameter name="totalnum" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -65,23 +66,34 @@
 				<text><![CDATA[项目名称:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="447" y="1" width="108" height="20" uuid="62ef750d-49e5-4041-8fe3-5227f804e1b3"/>
+				<reportElement x="359" y="1" width="108" height="20" uuid="62ef750d-49e5-4041-8fe3-5227f804e1b3"/>
 				<textFieldExpression><![CDATA[$P{installout_id}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="70" y="1" width="324" height="20" uuid="df2bc3de-2f78-4c84-b090-f6ebdf65d6aa"/>
+				<reportElement x="70" y="1" width="252" height="20" uuid="df2bc3de-2f78-4c84-b090-f6ebdf65d6aa"/>
 				<textElement>
 					<font fontName="黑体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{project_name}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="414" y="0" width="33" height="20" uuid="ca419364-dfc6-4842-86a4-98b9655ea7d9"/>
+				<reportElement x="326" y="0" width="33" height="20" uuid="ca419364-dfc6-4842-86a4-98b9655ea7d9"/>
 				<textElement>
 					<font fontName="宋体" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[编号:]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="472" y="1" width="28" height="20" uuid="17561379-25d4-4bc6-97f0-e711f3bf8953"/>
+				<textElement>
+					<font isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[总数:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="500" y="1" width="55" height="20" uuid="6bc1f8d9-2e33-48ce-8f57-cc92e5601d7f"/>
+				<textFieldExpression><![CDATA[$P{totalnum}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>

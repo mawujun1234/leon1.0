@@ -150,6 +150,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</if>
     </select>
     -->
+    <!-- 更新条码表中的store_id,就是当更新订单的时候，会更新仓库(有时候会输错了) -->
+    <update id="updateBarcodeStore_id">
+    	update ems_barcode set store_id=#{store_id}
+		where orderlist_id in(
+		      select id from ems_orderlist where order_id=#{order_id}
+		)
+    </update>
     <!-- 条码打印的时候，查询订单明细的数据-->
     <select id="queryList4Barcode" resultType="com.mawujun.store.OrderListVO" parameterType="map">
     	SELECT a.*

@@ -40,7 +40,7 @@ Ext.onReady(function(){
 		    		date_end:date_end.getRawValue()
 		    	}
 				var pp=Ext.Object.toQueryString(params);
-				window.open(Ext.ContextPath+"/repair/exportRepairReport.do?"+pp, "_blank");
+				window.open(Ext.ContextPath+"/report/repair/exportRepairReport.do?"+pp, "_blank");
 		    }
 		});
 	var toolbar=Ext.create('Ext.toolbar.Toolbar',{
@@ -59,7 +59,7 @@ Ext.onReady(function(){
 			        update : 'POST',
 			        destroy: 'POST'
 			    },
-				url:Ext.ContextPath+'/repair/queryRepairReport.do',
+				url:Ext.ContextPath+'/report/repair/queryRepairReport.do',
 				reader:{
 					type:'json',
 					root:'root'

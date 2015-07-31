@@ -173,15 +173,6 @@ public class RepairService extends AbstractService<Repair, String>{
 		Page results=repairRepository.storeMgrQuery(page);
 		List<RepairVO> list=results.getResult();
 		for(RepairVO repairVO:list){
-//			for(Store store:stores){
-//				if(store.getId().equals(repairVO.getStr_out_id())){
-//					repairVO.setStr_out_name(store.getName());
-//				} else if(store.getId().equals(repairVO.getRpa_id())){
-//					repairVO.setRpa_name(store.getName());
-//				} else if(store.getId().equals(repairVO.getStr_in_id())){
-//					repairVO.setStr_in_name(store.getName());
-//				}
-//			}
 			if(storeService.get(repairVO.getStr_out_id())!=null){
 				repairVO.setStr_out_name(storeService.get(repairVO.getStr_out_id()).getName());
 			}

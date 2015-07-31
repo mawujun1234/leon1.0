@@ -278,13 +278,14 @@ public class InstallOutController {
 	public void equipmentOutStorePrint(HttpServletRequest request,HttpServletResponse response,String installOut_id) throws  IOException, JRException { 
 		
 		InstallOutVO installOutVO=installOutStoreService.getInstallOutVO(installOut_id);
+		List<InstallOutListVO> installOutListes=installOutStoreService.queryList(installOut_id);
 		Map<String,Object> params=new HashMap<String,Object>();
 		params.put("project_name", installOutVO.getProject_name()); 
 		params.put("installout_id", installOutVO.getId());  
 		params.put("workunit_name", installOutVO.getWorkUnit_name()); 
 		params.put("operater_name", installOutVO.getOperater_name());//仓管姓名
 		params.put("operateDate", yyyyMMdd.format(installOutVO.getOperateDate()));
-		List<InstallOutListVO> installOutListes=installOutStoreService.queryList(installOut_id);
+		params.put("totalnum", installOutListes.size());  
 		
 		
 //		List<InstallOutListVO> installOutListes=new ArrayList<InstallOutListVO>();

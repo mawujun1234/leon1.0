@@ -122,13 +122,16 @@ public class BorrowController {
 	//public String equipOutStore(@RequestBody Equipment[] equipments,String store_id,String workUnit_id,String type,String memo) {
 	public void equipmentOutStorePrint(HttpServletRequest request,HttpServletResponse response,String borrow_id) throws IOException, JRException {
 		BorrowVO borrowVO=borrowService.getBorrowVO(borrow_id);
+		List<BorrowListVO> borrowListVOs=borrowService.queryList(borrow_id);
+		
 		Map<String,Object> params=new HashMap<String,Object>();
 		params.put("project_name", borrowVO.getProject_name()); 
 		params.put("borrow_id", borrowVO.getId());  
 		params.put("workunit_name", borrowVO.getWorkUnit_name()); 
 		params.put("operater_name", borrowVO.getOperater_name());//仓管姓名
 		params.put("operateDate", yyyyMMdd.format(borrowVO.getOperateDate()));
-		List<BorrowListVO> borrowListVOs=borrowService.queryList(borrow_id);
+		params.put("totalnum", borrowListVOs.size());  
+		
 		
 		
 		JRBeanCollectionDataSource dataSource=new JRBeanCollectionDataSource(borrowListVOs);

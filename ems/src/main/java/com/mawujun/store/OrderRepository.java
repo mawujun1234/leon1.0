@@ -52,4 +52,6 @@ public interface OrderRepository extends IRepository<Order, String>{
 	public int getTotalNumByOrder_id(@Param("order_id")String order_id);
 	
 	public void deleteBarcodeByOrder(@Param("order_id")String order_id);
+	
+	public void updateBarcodeStore_id(@Param("order_id")String order_id,@Param("store_id")String store_id);
 }
