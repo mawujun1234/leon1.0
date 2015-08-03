@@ -119,11 +119,11 @@ public class ScrapService extends AbstractService<Scrap, String>{
 	}
 
 	
-	public Page queryScrapReport(Page page) {
-		return scrapRepository.queryScrapReport(page);
-	}
-	
-	public List<RepairVO> exportRepairReport(Params params) {
-		return scrapRepository.queryScrapReport(params);
-	}
+//	public Page queryScrapReport(Page page) {
+//		return scrapRepository.queryScrapReport(page);
+//	}
+//	
+//	public List<RepairVO> exportRepairReport(Params params) {
+//		return scrapRepository.queryScrapReport(params);
+//	}
 }

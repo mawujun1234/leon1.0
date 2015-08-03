@@ -15,6 +15,6 @@ import com.mawujun.utils.page.Page;
 @Repository
 public interface ScrapRepository extends IRepository<Scrap, String>{
 
-	public Page queryScrapReport(Page page);
-	public List<RepairVO> queryScrapReport(Params params);
+//	public Page queryScrapReport(Page page);
+//	public List<RepairVO> queryScrapReport(Params params);
 }

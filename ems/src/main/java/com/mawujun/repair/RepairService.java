@@ -380,21 +380,21 @@ public class RepairService extends AbstractService<Repair, String>{
 	}
 	
 
-	public Page queryRepairReport(Page page) {
-		return repairRepository.queryRepairReport(page);
-	}
-	
-	public List<RepairVO> exportRepairReport(Params params) {
-		return repairRepository.queryRepairReport(params);
-	}
-	
-	public Page queryCompleteRepairReport(Page page) {
-		return repairRepository.queryCompleteRepairReport(page);
-	}
-	
-	public List<RepairVO> exportCompleteRepairReport(Params params) {
-		return repairRepository.queryCompleteRepairReport(params);
-	}
+//	public Page queryRepairReport(Page page) {
+//		return repairRepository.queryRepairReport(page);
+//	}
+//	
+//	public List<RepairVO> exportRepairReport(Params params) {
+//		return repairRepository.queryRepairReport(params);
+//	}
+//	
+//	public Page queryCompleteRepairReport(Page page) {
+//		return repairRepository.queryCompleteRepairReport(page);
+//	}
+//	
+//	public List<RepairVO> exportCompleteRepairReport(Params params) {
+//		return repairRepository.queryCompleteRepairReport(params);
+//	}
 	
 	
 }

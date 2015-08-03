@@ -1,4 +1,4 @@
-Ext.require("Ems.task.TaskRepairReport");
+Ext.require("Ems.task.Task");
 Ext.onReady(function(){
 	var customer_combox=Ext.create('Ext.form.field.ComboBox',{
 	        fieldLabel: '客户名称',
@@ -64,9 +64,9 @@ Ext.onReady(function(){
 	  	labelWidth:60,
 	  	hidden:false,
 	  	//editable:false,
-	  	format:'Y-m-d'
+	  	format:'Y-m-d',
         //name: 'str_out_date_start',
-        //value:  Ext.Date.add(new Date(), Ext.Date.DAY, -7)
+        value:  Ext.Date.add(new Date(), Ext.Date.DAY, -7)
 	});
 	var date_end=Ext.create('Ext.form.field.Date',{
 	  	fieldLabel: '到',
@@ -122,7 +122,7 @@ Ext.onReady(function(){
 			        update : 'POST',
 			        destroy: 'POST'
 			    },
-				url:Ext.ContextPath+'/task/queryUnrepairPoleReport.do',
+				url:Ext.ContextPath+'/report/task/queryUnrepairPoleReport.do',
 				reader:{
 					type:'json',
 					root:'root'

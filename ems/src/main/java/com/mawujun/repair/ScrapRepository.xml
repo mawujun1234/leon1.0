@@ -5,7 +5,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
 <mapper namespace="com.mawujun.repair.ScrapRepository">
-    <!-- 某端时间 维修任务查询 -->
+    <!-- 某端时间 维修任务查询 
     <select id="queryScrapReport" resultType="com.mawujun.repair.RepairVO" parameterType="map">
     	select a.*,d.name as prod_name,d.style as equipment_style ,e.name as rpa_user_name 
     	from (select a.*,b.id as scrap_id,b.reason as scrap_reason,b.residual as scrap_residual, b.operateDate as scrap_operateDate from ems_repair a INNER JOIN Ems_Scrap b on a.id=b.repair_id) a
@@ -15,6 +15,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		where to_char(a.rpa_in_date,'yyyy-mm-dd') &lt;= #{date_end}
 			and to_char(a.rpa_in_date,'yyyy-mm-dd') &gt;= #{date_start}
     </select>
-
+-->
 </mapper>
 

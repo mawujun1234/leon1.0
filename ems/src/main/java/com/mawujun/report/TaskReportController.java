@@ -19,18 +19,38 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.mobile.task.Task;
 import com.mawujun.mobile.task.TaskService;
+import com.mawujun.utils.M;
+import com.mawujun.utils.Params;
+import com.mawujun.utils.page.Page;
 
 @Controller
 public class TaskReportController {
 	@Resource
-	private TaskService taskService;
+	private TaskReportRepository taskReportRepository;
+	
+	@RequestMapping("/report/task/queryUnrepairPoleReport.do")
+	@ResponseBody
+	public Page queryUnrepairPoleReport(Integer start,Integer limit,String workunit_id,String customer_id,String date_start,String date_end) {
+		Page page=Page.getInstance(start,limit);
+		page.addParam(M.Task.workunit_id, workunit_id);
+		page.addParam(M.Task.customer_id, customer_id);
+		page.addParam("date_start", date_start);
+		page.addParam("date_end", date_end);
+
+		JsonConfigHolder.setDatePattern("yyyy-MM-dd HH:mm:ss");
+		return taskReportRepository.queryUnrepairPoleReport(page);
+	}
+	
 	
 	@RequestMapping("/report/task/exportUnrepairPoleReport.do")
 	@ResponseBody
 	public void exportUnrepairPoleReport(HttpServletResponse response,String workunit_id,String customer_id,String date_start,String date_end) throws IOException {
-		List<Task> taskes=taskService.exportUnrepairPoleReport(workunit_id,customer_id, date_start, date_end);
+		Params params=Params.init().add(M.Task.workunit_id, workunit_id).add("customer_id", customer_id)
+				.add("date_start", date_start).add("date_end", date_end);
+		List<Task> taskes=taskReportRepository.exportUnrepairPoleReport(params);
 		
 		XSSFWorkbook wb =new XSSFWorkbook();
 		Sheet sheet = wb.createSheet();

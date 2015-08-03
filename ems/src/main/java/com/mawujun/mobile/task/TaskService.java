@@ -600,38 +600,38 @@ public class TaskService extends AbstractService<Task, String>{
 //		return vo;
 //	}
 	
-	public Page queryRepairTaskesReport(Page page) {
-		//获取超期时间
-		Overtime overtime=overtimeService.get("overtime");
-		Page result= this.getRepository().queryRepairTaskesReport(page);
-		List<TaskRepairReport> list=result.getResult();
-		for(TaskRepairReport task:list){
-			task.checkIsOverTime(overtime.getHandling());
-		}
-		return result;
-	}
-	public Page queryUnrepairPoleReport(Page page) {
-		//获取超期时间
-		//Overtime overtime=overtimeService.get("overtime");
-		Page result= this.getRepository().queryUnrepairPoleReport(page);
-//		List<Task> list=result.getResult();
-//		for(Task task:list){
-//			task.checkIsOverTime(overtime.getHandling());
-//		}
-		return result;
-	}
-	
-	
-	public List<Task> exportUnrepairPoleReport(String workunit_id,String customer_id,String date_start,String date_end) {
-		//Overtime overtime=overtimeService.get("overtime");
-		Params params=Params.init().add(M.Task.workunit_id, workunit_id).add("customer_id", customer_id)
-				.add("date_start", date_start).add("date_end", date_end);
-		List<Task> list= this.getRepository().exportUnrepairPoleReport(params);
+//	public Page queryRepairTaskesReport(Page page) {
+//		//获取超期时间
+//		Overtime overtime=overtimeService.get("overtime");
+//		Page result= this.getRepository().queryRepairTaskesReport(page);
+//		List<TaskRepairReport> list=result.getResult();
 //		for(TaskRepairReport task:list){
 //			task.checkIsOverTime(overtime.getHandling());
 //		}
-		return list;
-	}
+//		return result;
+//	}
+//	public Page queryUnrepairPoleReport(Page page) {
+//		//获取超期时间
+//		//Overtime overtime=overtimeService.get("overtime");
+//		Page result= this.getRepository().queryUnrepairPoleReport(page);
+////		List<Task> list=result.getResult();
+////		for(Task task:list){
+////			task.checkIsOverTime(overtime.getHandling());
+////		}
+//		return result;
+//	}
+//	
+//	
+//	public List<Task> exportUnrepairPoleReport(String workunit_id,String customer_id,String date_start,String date_end) {
+//		//Overtime overtime=overtimeService.get("overtime");
+//		Params params=Params.init().add(M.Task.workunit_id, workunit_id).add("customer_id", customer_id)
+//				.add("date_start", date_start).add("date_end", date_end);
+//		List<Task> list= this.getRepository().exportUnrepairPoleReport(params);
+////		for(TaskRepairReport task:list){
+////			task.checkIsOverTime(overtime.getHandling());
+////		}
+//		return list;
+//	}
 	/**
 	 * 主要用于维修任务的保存
 	 * @author mawujun email:160649888@163.com qq:16064988

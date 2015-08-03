@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
+<mapper namespace="com.mawujun.report.RepairReportRepository">
+	    <!-- 某端时间 维修任务查询 
+    <select id="queryRepairReport" resultType="com.mawujun.repair.RepairVO" parameterType="map">
+    	select a.*,d.name as prod_name,d.style as equipment_style ,e.name as rpa_user_name 
+    	from ems_repair a
+    	left join ems_equipmentprod d on a.prod_id=d.id
+    	left join sys_user e on a.rpa_user_id=e.id
+		where to_char(a.rpa_in_date,'yyyy-mm-dd') &lt;= #{date_end}
+			and to_char(a.rpa_in_date,'yyyy-mm-dd') &gt;= #{date_start}
+			and not exists (select 1 from Ems_Scrap eeee where a.id=eeee.repair_id)
+    </select>
+-->
+
+ 	<!-- 已完成（自修）的维修单明细和已完成（外修）维修单明细 -->
+    <select id="queryRepairReport" resultType="com.mawujun.report.RepairReport" parameterType="map">
+    	select a.*,d.name as prod_name,d.style as prod_style ,e.name as subtype_name,f.name as brand_name
+    	,g.name as str_out_name
+    	from ems_repair a
+    	left join ems_equipmentprod d on a.prod_id=d.id
+    	left join ems_equipmentsubtype e on d.subtype_id=e.id
+    	left join ems_brand f on d.brand_id=f.id
+    	left join ems_store g on a.str_out_id=g.id
+		where to_char(a.str_in_date,'yyyy-mm-dd') &lt;= #{date_end}
+			and to_char(a.str_in_date,'yyyy-mm-dd') &gt;= #{date_start}
+			and a.status in ('over','scrap')
+    </select>
+    <select id="queryRepairReport_count" resultType="int" parameterType="map">
+    	select count(a.ecode)
+    	from ems_repair a
+		where to_char(a.str_in_date,'yyyy-mm-dd') &lt;= #{date_end}
+			and to_char(a.str_in_date,'yyyy-mm-dd') &gt;= #{date_start}
+			and a.status in ('over','scrap')
+    </select>
+</mapper>
+

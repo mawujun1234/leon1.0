@@ -8,6 +8,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -17,15 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
-import com.mawujun.repair.RepairService;
-import com.mawujun.repair.RepairVO;
 import com.mawujun.utils.Params;
 import com.mawujun.utils.page.Page;
 
 @Controller
 public class RepairReportController {
 	@Resource
-	private RepairService repairService;
+	private RepairReportRepository repairReportRepository;
 	
 	@RequestMapping("/report/repair/queryRepairReport.do")
 	@ResponseBody
@@ -34,8 +33,8 @@ public class RepairReportController {
 		page.addParam("date_start", date_start);
 		page.addParam("date_end", date_end);
 
-		JsonConfigHolder.setDatePattern("yyyy-MM-dd HH:mm:ss");
-		Page result=repairService.queryRepairReport(page);
+		//JsonConfigHolder.setDatePattern("yyyy-MM-dd HH:mm:ss");
+		Page result=repairReportRepository.queryRepairReport(page);
 		return result;
 	}
 	
@@ -46,7 +45,7 @@ public class RepairReportController {
 		Params params=Params.init().add("date_start", date_start).add("date_end", date_end);
 
 		JsonConfigHolder.setDatePattern("yyyy-MM-dd HH:mm:ss");
-		List<RepairVO> result=repairService.exportRepairReport(params);
+		List<RepairReport> result=repairReportRepository.queryRepairReport(params);
 		
 		
 		XSSFWorkbook wb =new XSSFWorkbook();
@@ -79,26 +78,26 @@ public class RepairReportController {
 		Row row = sheet.createRow(rowInt);
 		int cellnum=0;
 		
-		Cell id=row.createCell(cellnum++);
-		id.setCellValue("维修单号");
+		Cell str_out_name=row.createCell(cellnum++);
+		str_out_name.setCellValue("出库仓库");
 		
-		Cell rpa_in_date=row.createCell(cellnum++);
-		rpa_in_date.setCellValue("坏件领料时间");
+		Cell brand_name=row.createCell(cellnum++);
+		brand_name.setCellValue("品牌");
 		
-		Cell rpa_user_name=row.createCell(cellnum++);
-		rpa_user_name.setCellValue("维修人员");
+		Cell subtype_name=row.createCell(cellnum++);
+		subtype_name.setCellValue("类型");
+		
+		Cell prod_style=row.createCell(cellnum++);
+		prod_style.setCellValue("型号");
 		
 		Cell ecode=row.createCell(cellnum++);
 		ecode.setCellValue("条码");
 		
-		Cell prod_name=row.createCell(cellnum++);
-		prod_name.setCellValue("品名");
+		Cell str_out_date=row.createCell(cellnum++);
+		str_out_date.setCellValue("送修时间");
 		
-		Cell equipment_style=row.createCell(cellnum++);
-		equipment_style.setCellValue("型号");
-		
-		Cell broken_memo=row.createCell(cellnum++);
-		broken_memo.setCellValue("故障现象");
+		Cell repair_take_time=row.createCell(cellnum++);
+		repair_take_time.setCellValue("维修时间");
 		
 		Cell broken_reson=row.createCell(cellnum++);
 		broken_reson.setCellValue("故障原因");
@@ -106,45 +105,51 @@ public class RepairReportController {
 		Cell handler_method=row.createCell(cellnum++);
 		handler_method.setCellValue("处理方法");
 		
-		Cell rpa_out_date=row.createCell(cellnum++);
-		rpa_out_date.setCellValue("修复时间");
+		Cell status_name=row.createCell(cellnum++);
+		status_name.setCellValue("维修结果");
+		
+		Cell send_date=row.createCell(cellnum++);
+		send_date.setCellValue("返厂时间");
+		
+		Cell receive_date=row.createCell(cellnum++);
+		receive_date.setCellValue("返回时间");
 		
 		Cell str_in_date=row.createCell(cellnum++);
-		str_in_date.setCellValue("好件还库时间");
+		str_in_date.setCellValue("入库时间");
 		
 		Cell memo=row.createCell(cellnum++);
-		memo.setCellValue("信息反馈及备注");
+		memo.setCellValue("备注");
 		
 	}
 	
-	SimpleDateFormat yMdHms=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	private void build_content(List<RepairVO> list,XSSFWorkbook wb,Sheet sheet,int rownum){
+	SimpleDateFormat yMdHms=new SimpleDateFormat("yyyy-MM-dd");
+	private void build_content(List<RepairReport> list,XSSFWorkbook wb,Sheet sheet,int rownum){
 		int cellnum=0;
 
-		for(RepairVO repairVO:list){
+		for(RepairReport repairVO:list){
 			cellnum=0;
 			Row row = sheet.createRow(rownum++);
 			
-			Cell id=row.createCell(cellnum++);
-			id.setCellValue(repairVO.getId());
+			Cell str_out_name=row.createCell(cellnum++);
+			str_out_name.setCellValue(repairVO.getStr_out_name());
 			
-			Cell rpa_in_date=row.createCell(cellnum++);
-			rpa_in_date.setCellValue(repairVO.getRpa_in_date()!=null?yMdHms.format(repairVO.getRpa_in_date()):"");
+			Cell brand_name=row.createCell(cellnum++);
+			brand_name.setCellValue(repairVO.getBrand_name());
 			
-			Cell rpa_user_name=row.createCell(cellnum++);
-			rpa_user_name.setCellValue(repairVO.getRpa_user_name());
+			Cell subtype_name=row.createCell(cellnum++);
+			subtype_name.setCellValue(repairVO.getSubtype_name());
+			
+			Cell prod_style=row.createCell(cellnum++);
+			prod_style.setCellValue(repairVO.getProd_style());
 			
 			Cell ecode=row.createCell(cellnum++);
 			ecode.setCellValue(repairVO.getEcode());
 			
-			Cell prod_name=row.createCell(cellnum++);
-			prod_name.setCellValue(repairVO.getProd_name());
+			Cell str_out_date=row.createCell(cellnum++);
+			str_out_date.setCellValue(yMdHms.format(repairVO.getStr_out_date()));
 			
-			Cell equipment_style=row.createCell(cellnum++);
-			equipment_style.setCellValue(repairVO.getEquipment_style());
-			
-			Cell broken_memo=row.createCell(cellnum++);
-			broken_memo.setCellValue(repairVO.getBroken_memo());
+			Cell repair_take_time=row.createCell(cellnum++);
+			repair_take_time.setCellValue(repairVO.getRepair_take_time());
 			
 			Cell broken_reson=row.createCell(cellnum++);
 			broken_reson.setCellValue(repairVO.getBroken_reson());
@@ -152,14 +157,29 @@ public class RepairReportController {
 			Cell handler_method=row.createCell(cellnum++);
 			handler_method.setCellValue(repairVO.getHandler_method());
 			
-			Cell rpa_out_date=row.createCell(cellnum++);
-			rpa_out_date.setCellValue(repairVO.getRpa_out_date()!=null?yMdHms.format(repairVO.getRpa_out_date()):"");
+			Cell status_name=row.createCell(cellnum++);
+			status_name.setCellValue(repairVO.getStatus_name());
+			
+			Cell send_date=row.createCell(cellnum++);
+			if(repairVO.getSend_date()!=null){
+				send_date.setCellValue(yMdHms.format(repairVO.getSend_date()));
+			}
+			
+			
+			Cell receive_date=row.createCell(cellnum++);
+			if(repairVO.getReceive_date()!=null){
+				receive_date.setCellValue(yMdHms.format(repairVO.getReceive_date()));
+			}
+			
 			
 			Cell str_in_date=row.createCell(cellnum++);
-			str_in_date.setCellValue(repairVO.getStr_in_date()!=null?yMdHms.format(repairVO.getStr_in_date()):"");
+			if(repairVO.getStr_in_date()!=null){
+				str_in_date.setCellValue(yMdHms.format(repairVO.getStr_in_date()));
+			}
+			
 			
 			Cell memo=row.createCell(cellnum++);
-			memo.setCellValue(repairVO.getMemo());
+			memo.setCellValue("");
 		}
 	}
 }

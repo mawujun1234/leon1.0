@@ -182,6 +182,8 @@ public class RepairController {
 		.addParam("ecode", ecode).addParam("status", status)
 		.addParam("only_have_scap", only_have_scap);
 		page.addParam("user_id", ShiroUtils.getAuthenticationInfo().getId());
+		
+		//JsonConfigHolder.setDatePattern("yyyy-MM-dd HH:mm:ss");
 		return repairService.repairMgrQuery(page);
 	}
 	
@@ -246,158 +248,158 @@ public class RepairController {
 
 	SimpleDateFormat yMdHms=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
-	/**
-	 * 已完成（自修）的维修单明细和已完成（外修）维修单明细
-	 * @author mawujun email:160649888@163.com qq:16064988
-	 * @param start
-	 * @param limit
-	 * @param date_start
-	 * @param date_end
-	 * @return
-	 */
-	@RequestMapping("/repair/queryCompleteRepairReport.do")
-	@ResponseBody
-	public Page queryCompleteRepairReport(Integer start,Integer limit,String date_start,String date_end){
-		Page page=Page.getInstance(start,limit);
-		page.addParam("date_start", date_start);
-		page.addParam("date_end", date_end);
-
-		JsonConfigHolder.setDatePattern("yyyy-MM-dd HH:mm:ss");
-		Page result=repairService.queryCompleteRepairReport(page);
-		return result;
-	}
-	
-	@RequestMapping("/repair/exportCompleteRepairReport.do")
-	@ResponseBody
-	public void exportCompleteRepairReport(HttpServletResponse response,String date_start,String date_end) throws IOException{
-
-		Params params=Params.init().add("date_start", date_start).add("date_end", date_end);
-
-		JsonConfigHolder.setDatePattern("yyyy-MM-dd HH:mm:ss");
-		List<RepairVO> result=repairService.exportRepairReport(params);
-		
-		
-		XSSFWorkbook wb =new XSSFWorkbook();
-		Sheet sheet = wb.createSheet();
-		int rownum=0;
-		
-		build_addColumnName_complete(wb,sheet,rownum);
-		
-		// 开始构建整个excel的文件
-		if (result != null && result.size() > 0) {
-			rownum++;
-			build_content_complete(result, wb, sheet, rownum);
-		}
-		String filename = "已完成维修明细报表.xlsx";
-		 //FileOutputStream out = new FileOutputStream(filename);
-		response.setHeader("content-disposition", "attachment; filename="+ new String(filename.getBytes("UTF-8"), "ISO8859-1"));
-		//response.setContentType("application/vnd.ms-excel;charset=uft-8");
-		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=uft-8");
-
-		OutputStream out = response.getOutputStream();
-		wb.write(out);
-		
-		out.flush();
-		out.close();
-	}
-	
-	private void build_addColumnName_complete(XSSFWorkbook wb,Sheet sheet,int rowInt){
-		//CellStyle black_style=getStyle(wb,IndexedColors.BLACK,(short)11);
-		 
-		Row row = sheet.createRow(rowInt);
-		int cellnum=0;
-		
-		Cell id=row.createCell(cellnum++);
-		id.setCellValue("维修单号");
-	
-		Cell ecode=row.createCell(cellnum++);
-		ecode.setCellValue("条码");
-		
-		Cell prod_name=row.createCell(cellnum++);
-		prod_name.setCellValue("品名");
-		
-		Cell equipment_style=row.createCell(cellnum++);
-		equipment_style.setCellValue("型号");
-		
-		Cell str_out_name=row.createCell(cellnum++);
-		str_out_name.setCellValue("发货仓库");
-		
-		Cell rpa_type_name=row.createCell(cellnum++);
-		rpa_type_name.setCellValue("维修类型");
-		
-		Cell str_out_date=row.createCell(cellnum++);
-		str_out_date.setCellValue("开单日期");
-		
-		Cell str_in_date=row.createCell(cellnum++);
-		str_in_date.setCellValue("结单日期");
-		
-		Cell rpa_user_name=row.createCell(cellnum++);
-		rpa_user_name.setCellValue("维修人员");
-		
-		Cell rpa_in_date=row.createCell(cellnum++);
-		rpa_in_date.setCellValue("入库时间");
-		
-	}
-
-	private void build_content_complete(List<RepairVO> list,XSSFWorkbook wb,Sheet sheet,int rownum){
-		int cellnum=0;
-
-		for(RepairVO repairVO:list){
-			cellnum=0;
-			Row row = sheet.createRow(rownum++);
-			
-			Cell id=row.createCell(cellnum++);
-			id.setCellValue(repairVO.getId());
-
-			Cell ecode=row.createCell(cellnum++);
-			ecode.setCellValue(repairVO.getEcode());
-			
-			Cell prod_name=row.createCell(cellnum++);
-			prod_name.setCellValue(repairVO.getProd_name());
-			
-			Cell equipment_style=row.createCell(cellnum++);
-			equipment_style.setCellValue(repairVO.getEquipment_style());
-			
-			
-			Cell str_out_name=row.createCell(cellnum++);
-			str_out_name.setCellValue(repairVO.getStr_out_name());
-			
-			Cell rpa_type_name=row.createCell(cellnum++);
-			rpa_type_name.setCellValue(repairVO.getRpa_type_name());
-			
-			Cell str_out_date=row.createCell(cellnum++);
-			str_out_date.setCellValue(repairVO.getStr_out_date());
-			
-			Cell rpa_out_date=row.createCell(cellnum++);
-			rpa_out_date.setCellValue(repairVO.getRpa_out_date()!=null?yMdHms.format(repairVO.getRpa_out_date()):"");
-			
-			Cell rpa_user_name=row.createCell(cellnum++);
-			rpa_user_name.setCellValue(repairVO.getRpa_user_name());
-			
-			Cell str_in_date=row.createCell(cellnum++);
-			str_in_date.setCellValue(repairVO.getStr_in_date()!=null?yMdHms.format(repairVO.getStr_in_date()):"");
-
-			
-			
-			
-//			Cell broken_memo=row.createCell(cellnum++);
-//			broken_memo.setCellValue(repairVO.getBroken_memo());
+//	/**
+//	 * 已完成（自修）的维修单明细和已完成（外修）维修单明细
+//	 * @author mawujun email:160649888@163.com qq:16064988
+//	 * @param start
+//	 * @param limit
+//	 * @param date_start
+//	 * @param date_end
+//	 * @return
+//	 */
+//	@RequestMapping("/repair/queryCompleteRepairReport.do")
+//	@ResponseBody
+//	public Page queryCompleteRepairReport(Integer start,Integer limit,String date_start,String date_end){
+//		Page page=Page.getInstance(start,limit);
+//		page.addParam("date_start", date_start);
+//		page.addParam("date_end", date_end);
+//
+//		JsonConfigHolder.setDatePattern("yyyy-MM-dd HH:mm:ss");
+//		Page result=repairService.queryCompleteRepairReport(page);
+//		return result;
+//	}
+//	
+//	@RequestMapping("/repair/exportCompleteRepairReport.do")
+//	@ResponseBody
+//	public void exportCompleteRepairReport(HttpServletResponse response,String date_start,String date_end) throws IOException{
+//
+//		Params params=Params.init().add("date_start", date_start).add("date_end", date_end);
+//
+//		JsonConfigHolder.setDatePattern("yyyy-MM-dd HH:mm:ss");
+//		List<RepairVO> result=repairService.exportRepairReport(params);
+//		
+//		
+//		XSSFWorkbook wb =new XSSFWorkbook();
+//		Sheet sheet = wb.createSheet();
+//		int rownum=0;
+//		
+//		build_addColumnName_complete(wb,sheet,rownum);
+//		
+//		// 开始构建整个excel的文件
+//		if (result != null && result.size() > 0) {
+//			rownum++;
+//			build_content_complete(result, wb, sheet, rownum);
+//		}
+//		String filename = "已完成维修明细报表.xlsx";
+//		 //FileOutputStream out = new FileOutputStream(filename);
+//		response.setHeader("content-disposition", "attachment; filename="+ new String(filename.getBytes("UTF-8"), "ISO8859-1"));
+//		//response.setContentType("application/vnd.ms-excel;charset=uft-8");
+//		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=uft-8");
+//
+//		OutputStream out = response.getOutputStream();
+//		wb.write(out);
+//		
+//		out.flush();
+//		out.close();
+//	}
+//	
+//	private void build_addColumnName_complete(XSSFWorkbook wb,Sheet sheet,int rowInt){
+//		//CellStyle black_style=getStyle(wb,IndexedColors.BLACK,(short)11);
+//		 
+//		Row row = sheet.createRow(rowInt);
+//		int cellnum=0;
+//		
+//		Cell id=row.createCell(cellnum++);
+//		id.setCellValue("维修单号");
+//	
+//		Cell ecode=row.createCell(cellnum++);
+//		ecode.setCellValue("条码");
+//		
+//		Cell prod_name=row.createCell(cellnum++);
+//		prod_name.setCellValue("品名");
+//		
+//		Cell equipment_style=row.createCell(cellnum++);
+//		equipment_style.setCellValue("型号");
+//		
+//		Cell str_out_name=row.createCell(cellnum++);
+//		str_out_name.setCellValue("发货仓库");
+//		
+//		Cell rpa_type_name=row.createCell(cellnum++);
+//		rpa_type_name.setCellValue("维修类型");
+//		
+//		Cell str_out_date=row.createCell(cellnum++);
+//		str_out_date.setCellValue("开单日期");
+//		
+//		Cell str_in_date=row.createCell(cellnum++);
+//		str_in_date.setCellValue("结单日期");
+//		
+//		Cell rpa_user_name=row.createCell(cellnum++);
+//		rpa_user_name.setCellValue("维修人员");
+//		
+//		Cell rpa_in_date=row.createCell(cellnum++);
+//		rpa_in_date.setCellValue("入库时间");
+//		
+//	}
+//
+//	private void build_content_complete(List<RepairVO> list,XSSFWorkbook wb,Sheet sheet,int rownum){
+//		int cellnum=0;
+//
+//		for(RepairVO repairVO:list){
+//			cellnum=0;
+//			Row row = sheet.createRow(rownum++);
 //			
-//			Cell broken_reson=row.createCell(cellnum++);
-//			broken_reson.setCellValue(repairVO.getBroken_reson());
+//			Cell id=row.createCell(cellnum++);
+//			id.setCellValue(repairVO.getId());
+//
+//			Cell ecode=row.createCell(cellnum++);
+//			ecode.setCellValue(repairVO.getEcode());
 //			
-//			Cell handler_method=row.createCell(cellnum++);
-//			handler_method.setCellValue(repairVO.getHandler_method());
+//			Cell prod_name=row.createCell(cellnum++);
+//			prod_name.setCellValue(repairVO.getProd_name());
+//			
+//			Cell equipment_style=row.createCell(cellnum++);
+//			equipment_style.setCellValue(repairVO.getEquipment_style());
+//			
+//			
+//			Cell str_out_name=row.createCell(cellnum++);
+//			str_out_name.setCellValue(repairVO.getStr_out_name());
+//			
+//			Cell rpa_type_name=row.createCell(cellnum++);
+//			rpa_type_name.setCellValue(repairVO.getRpa_type_name());
+//			
+//			Cell str_out_date=row.createCell(cellnum++);
+//			str_out_date.setCellValue(repairVO.getStr_out_date());
 //			
 //			Cell rpa_out_date=row.createCell(cellnum++);
 //			rpa_out_date.setCellValue(repairVO.getRpa_out_date()!=null?yMdHms.format(repairVO.getRpa_out_date()):"");
 //			
+//			Cell rpa_user_name=row.createCell(cellnum++);
+//			rpa_user_name.setCellValue(repairVO.getRpa_user_name());
+//			
 //			Cell str_in_date=row.createCell(cellnum++);
 //			str_in_date.setCellValue(repairVO.getStr_in_date()!=null?yMdHms.format(repairVO.getStr_in_date()):"");
+//
 //			
-//			Cell memo=row.createCell(cellnum++);
-//			memo.setCellValue(repairVO.getMemo());
-		}
-	}
+//			
+//			
+////			Cell broken_memo=row.createCell(cellnum++);
+////			broken_memo.setCellValue(repairVO.getBroken_memo());
+////			
+////			Cell broken_reson=row.createCell(cellnum++);
+////			broken_reson.setCellValue(repairVO.getBroken_reson());
+////			
+////			Cell handler_method=row.createCell(cellnum++);
+////			handler_method.setCellValue(repairVO.getHandler_method());
+////			
+////			Cell rpa_out_date=row.createCell(cellnum++);
+////			rpa_out_date.setCellValue(repairVO.getRpa_out_date()!=null?yMdHms.format(repairVO.getRpa_out_date()):"");
+////			
+////			Cell str_in_date=row.createCell(cellnum++);
+////			str_in_date.setCellValue(repairVO.getStr_in_date()!=null?yMdHms.format(repairVO.getStr_in_date()):"");
+////			
+////			Cell memo=row.createCell(cellnum++);
+////			memo.setCellValue(repairVO.getMemo());
+//		}
+//	}
 	
 }

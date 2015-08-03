@@ -24,11 +24,11 @@ public interface RepairRepository extends IRepository<Repair, String>{
 	public Page repairMgrQuery(Page page);
 	public Page storeMgrQuery(Page page);
 	
-	public Page queryRepairReport(Page page);
-	public List<RepairVO> queryRepairReport(Params params);
-	
-	public Page queryCompleteRepairReport(Page page);
-	public List<RepairVO> queryCompleteRepairReport(Params params);
+//	public Page queryRepairReport(Page page);
+//	public List<RepairVO> queryRepairReport(Params params);
+//	
+//	public Page queryCompleteRepairReport(Page page);
+//	public List<RepairVO> queryCompleteRepairReport(Params params);
 	
 	
 	public List<EquipmentVO> queryBrokenEquipment(@Param("store_id")String store_id);

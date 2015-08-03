@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
+<mapper namespace="com.mawujun.report.TaskReportRepository">
+	  <!-- 未修复点位明细报表 -->
+    <select id="exportUnrepairPoleReport" resultType="com.mawujun.mobile.task.Task" parameterType="map">
+    	select a.*,b.code as pole_code from ems_task a,ems_pole b
+		where a.pole_id=b.id
+			and a.type='repair' and a.status!='complete'
+			<if test="workunit_id!=null and workunit_id!=''">
+				and a.workunit_id=#{workunit_id}
+			</if>
+			<if test="customer_id!=null and customer_id!=''">
+				and a.customer_id=#{customer_id}
+			</if>
+			<if test="date_start!=null and date_start!=''">
+				and to_char(a.createDate,'yyyy-mm-dd')&gt;=#{date_start}
+			</if>
+			<if test="date_end!=null and date_end!=''">
+				and to_char(a.createDate,'yyyy-mm-dd')&lt;=#{date_end}
+			</if>
+    </select>
+    
+    <!-- 查询当天还没有完成的任务，也就是查询所有还未完成的任务-->
+    <select id="queryUnrepairPoleReport" resultType="com.mawujun.mobile.task.Task" parameterType="map">
+    	select a.*,b.code as pole_code from ems_task a,ems_pole b
+		where a.pole_id=b.id
+			and a.type='repair'
+			and a.status !='complete'
+			<if test="workunit_id!=null">
+				and a.workunit_id=#{workunit_id}
+			</if>
+			<if test="customer_id!=null">
+				and a.customer_id=#{customer_id}
+			</if>
+			<if test="date_start!=null and date_start!=''">
+				and to_char(a.createDate,'yyyy-mm-dd')&gt;=#{date_start}
+			</if>
+			<if test="date_end!=null and date_end!=''">
+				and to_char(a.createDate,'yyyy-mm-dd')&lt;=#{date_end}
+			</if>
+    </select>
+</mapper>
+
