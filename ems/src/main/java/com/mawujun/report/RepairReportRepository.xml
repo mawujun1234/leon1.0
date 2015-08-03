@@ -37,5 +37,19 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			and to_char(a.str_in_date,'yyyy-mm-dd') &gt;= #{date_start}
 			and a.status in ('over','scrap')
     </select>
+    
+    
+    <!-- 重复维修明细报表 -->
+    <select id="queryRepeatRepairReport" resultType="com.mawujun.report.RepeatRepairReport" parameterType="map">
+    	select a.*,b.repeate_count,d.name as prod_name from ems_repair a,(
+		select ecode,count(ecode) repeate_count from ems_repair 
+		group by ecode
+		having count(ecode)>=#{repeatnum}
+		) b,ems_equipment c,ems_equipmentprod d
+		where a.ecode=b.ecode and a.ecode=c.ecode and c.prod_id=d.id 
+		and to_char(a.rpa_in_date,'yyyy-mm-dd') &gt;= #{date_start} 
+		and to_char(a.rpa_in_date,'yyyy-mm-dd') &lt;= #{date_end}
+		order by a.ecode
+    </select>
 </mapper>
 
