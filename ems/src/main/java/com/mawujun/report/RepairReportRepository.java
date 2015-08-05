@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import com.mawujun.repair.RepairVO;
 import com.mawujun.utils.Params;
 import com.mawujun.utils.page.Page;
 
@@ -17,4 +18,7 @@ public interface RepairReportRepository {
 	
 //	public Page queryCompleteRepairReport(Page page);
 //	public List<RepairVO> queryCompleteRepairReport(Params params);
+	
+	public Page queryScrapReport(Page page);
+	public List<RepairVO> queryScrapReport(Params params);
 }

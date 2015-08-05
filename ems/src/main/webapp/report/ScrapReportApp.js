@@ -1,4 +1,4 @@
-Ext.require("Ems.repair.ScrapReport");
+Ext.require("Ems.report.ScrapReport");
 Ext.onReady(function(){
 
 	var date_start=Ext.create('Ext.form.field.Date',{
@@ -6,9 +6,9 @@ Ext.onReady(function(){
 	  	labelWidth:60,
 	  	hidden:false,
 	  	//editable:false,
-	  	format:'Y-m-d'
+	  	format:'Y-m-d',
         //name: 'str_out_date_start',
-        //value:  Ext.Date.add(new Date(), Ext.Date.DAY, -7)
+        value:  Ext.Date.add(new Date(), Ext.Date.DAY, -14)
 	});
 	var date_end=Ext.create('Ext.form.field.Date',{
 	  	fieldLabel: '到',
@@ -40,7 +40,7 @@ Ext.onReady(function(){
 		    		date_end:date_end.getRawValue()
 		    	}
 				var pp=Ext.Object.toQueryString(params);
-				window.open(Ext.ContextPath+"/scrap/exportScrapReport.do?"+pp, "_blank");
+				window.open(Ext.ContextPath+"/report/scrap/exportScrapReport.do?"+pp, "_blank");
 		    }
 		});
 	var toolbar=Ext.create('Ext.toolbar.Toolbar',{
@@ -49,7 +49,7 @@ Ext.onReady(function(){
 	var store=Ext.create('Ext.data.Store',{
 			autoSync:false,
 			pageSize:50,
-			model: 'Ems.repair.ScrapReport',
+			model: 'Ems.report.ScrapReport',
 			autoLoad:false,
 			proxy:{
 				type:'ajax',
@@ -59,7 +59,7 @@ Ext.onReady(function(){
 			        update : 'POST',
 			        destroy: 'POST'
 			    },
-				url:Ext.ContextPath+'/scrap/queryScrapReport.do',
+				url:Ext.ContextPath+'/report/scrap/queryScrapReport.do',
 				reader:{
 					type:'json',
 					root:'root'
@@ -78,6 +78,7 @@ Ext.onReady(function(){
 		columns:[
 			{xtype: 'rownumberer'},
 			{dataIndex:'id',text:'维修单号',width:130},
+			{dataIndex:'str_out_name',text:'出库仓库'},
 			{dataIndex:'rpa_in_date',text:'坏件领料时间',width:120},
 			{dataIndex:'rpa_user_name',text:'维修人员'},
 			{dataIndex:'ecode',text:'条码',width:150},

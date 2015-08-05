@@ -8,7 +8,7 @@ Ext.onReady(function(){
 	  	//editable:false,
 	  	format:'Y-m-d',
         //name: 'str_out_date_start',
-        value:  Ext.Date.add(new Date(), Ext.Date.DAY, -7)
+        value:  Ext.Date.add(new Date(), Ext.Date.DAY, -14)
 	});
 	var date_end=Ext.create('Ext.form.field.Date',{
 	  	fieldLabel: '到',
