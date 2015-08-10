@@ -371,6 +371,11 @@ public class TaskService extends AbstractService<Task, String>{
 		}
 					
 	}
+	
+	public void mobile_updateTaskEquipmentListType(String taskEquipmentList_id,String ecode,TaskListTypeEnum type){
+		taskEquipmentListRepository.update(Cnd.update().set(M.TaskEquipmentList.type, type).andEquals(M.TaskEquipmentList.id, taskEquipmentList_id));
+		
+	}
 	public void mobile_deleteTaskEquipmentList(String ecode,String taskEquipmentList_id) {
 		//先判断，如果该设备已经入库了，那该设备就不能删除
 		Equipment equipment=equipmentRepository.getEquipmentInfo(ecode);
@@ -823,7 +828,7 @@ public class TaskService extends AbstractService<Task, String>{
 					//记录设备入库的生命周期
 					equipmentCycleService.logEquipmentCycle(taskEquipmentList.getEcode(), OperateType.task_install, task.getId(),TargetType.pole,task.getPole_id());
 					
-				} else {
+				} else if(taskEquipmentList.getType() == TaskListTypeEnum.uninstall){
 					// 设备从杆位上卸载下来的情况
 					equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.out_storage).set(M.Equipment.isnew, false)
 							.set(M.Equipment.place, EquipmentPlace.workunit)
@@ -851,6 +856,8 @@ public class TaskService extends AbstractService<Task, String>{
 					
 					//记录设备入库的生命周期
 					equipmentCycleService.logEquipmentCycle(taskEquipmentList.getEcode(), OperateType.task_cancel, task.getId(),TargetType.pole,task.getPole_id());
+				} else {
+					//设备是巡检的时候就不做任何处理，
 				}
 
 			} else if (TaskType.cancel== task.getType()) {

@@ -969,8 +969,26 @@ $(document).ready(function(e) {
 			}
 		});	
 	}
-
+	/**
+	  *  当维修任务的时候，如果发现设备不需要拆下来的时候，就更新任务设备的状态为patrol
+	**/
+	function updateTasklistType(ecode,taskEquipmentList_id,type){
+		$.ajax({   
+			url : $.ServerPath+"/task/mobile/updateTaskEquipmentListType.do",  
+			data:{ecode:ecode,taskEquipmentList_id:taskEquipmentList_id,type:type},  
+			success : function(data){
+				if(!data.success){	
+					alert("设备状态更新失败，请删除该设备，重新扫描!");
+				}
+				$.hideLoader();  
+			},
+			error:function(){
+				alert("设备状态更新失败，请删除该设备，重新扫描!");
+			}
+		});
+	}
 	//渲染设备列表
+	//coverHtml表示是在查询某个任务下的所有设备的时候，要覆盖任务
 	function renderEquipmentInfo(obj,coverHtml){
 		var html="";
 		var root=obj.equipmentVOs;
@@ -982,7 +1000,21 @@ $(document).ready(function(e) {
 		for(var i=0;i<root.length;i++){
 			color="";
 			if(root[i].type=='uninstall'){
-				color='color="#F00"';//如果是损坏设备就表示为红色
+				//如果是uninstall。就表示点位上的设备，这个时候要让施工人员选择是替换还是不替换
+				//如果不替换，那就变成了巡检
+				if(coverHtml==false){
+					var r=confirm("该设备是否要拆卸下来!如果不需要，请选择'取消'");
+					if(!r){
+						root[i].type=='patrol';
+						updateTasklistType(root[i].ecode,root[i].id,'patrol')
+					} else {
+						color='color="#F00"';//如果是损坏设备就表示为红色
+					}
+				} else {
+					color='color="#F00"';
+				}
+				
+				
 			}
 			if(root[i].installoutType_name){
 				installoutType_name="("+root[i].installoutType_name+")";
@@ -1074,7 +1106,7 @@ $(document).ready(function(e) {
 //						alert("设备没有不是'使用中'状态，不能进行扫描!");
 //						return;
 //					}
-					renderEquipmentInfo(root);
+					renderEquipmentInfo(root,false);
 				}
 				$.hideLoader();  
 			}

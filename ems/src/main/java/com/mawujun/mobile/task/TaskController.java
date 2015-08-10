@@ -17,6 +17,7 @@ import com.mawujun.baseinfo.Pole;
 import com.mawujun.baseinfo.PoleService;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.exception.BusinessException;
+import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.M;
 import com.mawujun.utils.StringUtils;
@@ -293,9 +294,17 @@ public class TaskController {
 	 */
 	@RequestMapping("/task/mobile/getTaskEquipmentList.do")
 	@ResponseBody
-	public TaskEquipmentListVO getTaskEquipmentList(String ecode,String task_id,TaskType task_type,String pole_id){
+	public TaskEquipmentListVO mobile_getTaskEquipmentList(String ecode,String task_id,TaskType task_type,String pole_id){
 		return taskService.mobile_getAndCreateTaskEquipmentList(ecode, task_id,task_type,pole_id);
 		//return equipmentVO;
+	}
+	
+	@RequestMapping("/task/mobile/updateTaskEquipmentListType.do")
+	@ResponseBody
+	public String mobile_updateTaskEquipmentListType(String taskEquipmentList_id,String ecode,TaskListTypeEnum type){
+		
+		taskService.mobile_updateTaskEquipmentListType(taskEquipmentList_id,ecode,type);
+		return "success";
 	}
 	/**
 	 * 在某个任务上删除某个设备
