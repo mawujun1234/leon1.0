@@ -36,6 +36,10 @@ public class BorrowList  extends UUIDEntity{
 	private BorrowListType borrowListType=BorrowListType.borrow;
 	@Column(length=36)
 	private String pole_id;//点位id，当InstallOutListType==installout的时候，这个pole_id就有值，就表示这个设备被领用安装在哪个点位上了
+	@Column(length=36)
+	private String installOutType_id;//领用类型
+	@Column(length=60)
+	private String installOutType_content;//二级领用各类型
 	
 	@Column(length=100)
 	private String memo;//归还的时候备注信息
@@ -102,6 +106,22 @@ public class BorrowList  extends UUIDEntity{
 
 	public void setPole_id(String pole_id) {
 		this.pole_id = pole_id;
+	}
+
+	public String getInstallOutType_id() {
+		return installOutType_id;
+	}
+
+	public void setInstallOutType_id(String installOutType_id) {
+		this.installOutType_id = installOutType_id;
+	}
+
+	public String getInstallOutType_content() {
+		return installOutType_content;
+	}
+
+	public void setInstallOutType_content(String installOutType_content) {
+		this.installOutType_content = installOutType_content;
 	}
 	
 }

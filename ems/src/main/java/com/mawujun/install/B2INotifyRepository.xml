@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
+<mapper namespace="com.mawujun.install.B2INotifyRepository">
+
+	<select id="queryAllVO" resultType="com.mawujun.install.B2INotifyVO">
+		select a.*,b.name as store_name,c.name as workunit_name,e.name as subtype_name
+		,f.name as prod_name,f.style as prod_style,f.spec as prod_spec
+		,g.name as brand_name
+		 from ems_b2inotify a
+		inner join ems_store b on a.store_id=b.id
+		inner join ems_workunit c on a.workunit_id=c.id
+		inner join ems_equipment d on a.ecode=d.ecode
+		    inner join ems_equipmentsubtype e on d.subtype_id=e.id
+				inner join ems_equipmentprod f on d.prod_id=f.id
+				inner join ems_brand g on d.brand_id=g.id
+		where store_id in (select store_id from sys_userstore where user_id='admin' and edit='Y')
+		and a.ishandled='N'
+	</select>
+
+</mapper>
+

@@ -237,5 +237,24 @@ public class BorrowController {
 	public List<BorrowVO> queryEditBorrow() { 
 		return borrowService.queryEditBorrow();
 	}
+	
+	/**
+	 * 结转领发生后，要为领用补填领用类型
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param ecode
+	 * @param borrow_id
+	 * @param installOutType_id
+	 * @param installOutType_content
+	 * @return
+	 */
+	@RequestMapping("/borrow/updateInstalloutListType.do")
+	@ResponseBody
+	public  String updateInstalloutListType(String b2INotify_id,String ecode,String borrow_id,String installOutType_id,String installOutType_content) {
+		if(!StringUtils.hasText(installOutType_id) || !StringUtils.hasText(installOutType_content) ){
+			throw new BusinessException("请选择领用类型!");
+		}
+		borrowService.updateInstalloutListType(b2INotify_id,ecode, borrow_id, installOutType_id, installOutType_content);
+		return "success";
+	}
 
 }

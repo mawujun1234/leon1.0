@@ -237,6 +237,17 @@ public static final class WorkUnitContact {
 	public static final String workunit_id="workunit_id";
 	public static final String id="id";
 }
+public static final class B2INotify {
+	public static final String ecode="ecode";
+	public static final String store_id="store_id";
+	public static final String borrow_id="borrow_id";
+	public static final String workunit_id="workunit_id";
+	public static final String pole_id="pole_id";
+	public static final String task_id="task_id";
+	public static final String createDate="createDate";
+	public static final String ishandled="ishandled";
+	public static final String id="id";
+}
 public static final class Borrow {
 	public static final String id="id";
 	public static final String store_id="store_id";
@@ -255,6 +266,8 @@ public static final class BorrowList {
 	public static final String returnDate="returnDate";
 	public static final String borrowListType="borrowListType";
 	public static final String pole_id="pole_id";
+	public static final String installOutType_id="installOutType_id";
+	public static final String installOutType_content="installOutType_content";
 	public static final String memo="memo";
 	public static final String id="id";
 }

@@ -37,6 +37,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
+
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 import com.mawujun.shiro.ShiroUtils;
@@ -90,6 +92,8 @@ public class BorrowService extends AbstractService<Borrow, String>{
 //	private WorkUnitService workUnitService;
 	@Autowired
 	private EquipmentCycleService equipmentCycleService;
+	@Autowired
+	private B2INotifyService b2INotifyService;
 //	@Autowired
 //	private StoreService storeService;
 	
@@ -281,5 +285,21 @@ public class BorrowService extends AbstractService<Borrow, String>{
 	
 	public List<BorrowVO> queryEditBorrow() {
 		return borrowRepository.queryEditBorrow();
+	}
+	
+	/**
+	 * 结转领发生后，要为领用补填领用类型
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param ecode
+	 * @param borrow_id
+	 * @param installOutType_id
+	 * @param installOutType_content
+	 * @return
+	 */
+	public void updateInstalloutListType(String b2INotify_id,String ecode,String borrow_id,String installOutType_id,String installOutType_content) {
+		borrowRepository.updateInstalloutListType(ecode, borrow_id, installOutType_id, installOutType_content);
+		//同时更新B2INotify为要已经处理过了
+		b2INotifyService.update(Cnd.update().set(M.B2INotify.ishandled, true).andEquals(M.B2INotify.id, b2INotify_id));
+		
 	}
 }

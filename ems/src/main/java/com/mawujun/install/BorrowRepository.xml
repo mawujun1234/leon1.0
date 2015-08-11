@@ -105,5 +105,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		where a.store_id=b.id and a.workunit_id=c.id and a.project_id=d.id
 		and a.status='edit'
     </select>
+    
+    <update id="updateInstalloutListType">
+    	update ems_borrowlist set installOutType_id=#{installOutType_id},installOutType_content=#{installOutType_content}
+    	where ecode=#{ecode} and borrow_id=#{borrow_id}
+    </update>
 </mapper>
 

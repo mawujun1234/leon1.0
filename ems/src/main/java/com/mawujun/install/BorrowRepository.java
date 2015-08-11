@@ -30,4 +30,6 @@ public interface BorrowRepository extends IRepository<Borrow, String>{
 	
 	public List<BorrowVO> queryEditBorrow();
 
+	public void updateInstalloutListType(@Param("ecode")String ecode,@Param("borrow_id")String borrow_id
+			,@Param("installOutType_id")String installOutType_id,@Param("installOutType_content")String installOutType_content) ;
 }
