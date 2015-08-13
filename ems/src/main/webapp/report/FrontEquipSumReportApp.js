@@ -39,7 +39,7 @@ Ext.onReady(function(){
 							}
 						}
 					});
-			actions0.push(customer_2);
+			//actions0.push(customer_2);
 			// 具体的客户
 			var customer_0or1 = Ext.create('Ext.form.field.ComboBox', {
 						fieldLabel : '客户',
@@ -116,14 +116,7 @@ Ext.onReady(function(){
 			Ext.Msg.alert("提醒","请先选择一个区!");
 			return false;
 		}
-		if(!params.date_end){
-			Ext.Msg.alert("提醒","请先选择结束日期!");
-			return false;
-		}
-//		if(!params.store_id){
-//			Ext.Msg.alert("提醒","请先选择仓库!");
-//			return false;
-//		}
+
 		return params;
 	}
 	
