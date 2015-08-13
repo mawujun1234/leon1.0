@@ -11,7 +11,7 @@ import java.util.List;
 public class FrontEquipSumReport {
 	private String customer_id;
 	private String customer_name;
-	private List<FrontEquipSumReport_subtype> subtypes;
+	private List<FrontEquipSumReport_prod> prodes;
 	
 	public String getCustomer_id() {
 		return customer_id;
@@ -25,13 +25,12 @@ public class FrontEquipSumReport {
 	public void setCustomer_name(String customer_name) {
 		this.customer_name = customer_name;
 	}
-	public List<FrontEquipSumReport_subtype> getSubtypes() {
-		return subtypes;
+	public List<FrontEquipSumReport_prod> getProdes() {
+		return prodes;
 	}
-	public void setSubtypes(List<FrontEquipSumReport_subtype> subtypes) {
-		this.subtypes = subtypes;
+	public void setProdes(List<FrontEquipSumReport_prod> prodes) {
+		this.prodes = prodes;
 	}
-	
 	
 
 }

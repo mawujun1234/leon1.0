@@ -40,9 +40,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     		<id property="subtype_id" column="subtype_id"/>
 		    <result property="subtype_name" column="subtype_name"/>
 		    <collection property="prodes" ofType="com.mawujun.inventory.Day_sparepart_prod">  
-		    	<result property="daykey" column="daykey"/>
-		    	<result property="store_id" column="store_id"/>
-		    	<result property="prod_id" column="prod_id"/>
+		    	<id property="daykey" column="daykey"/>
+		    	<id property="store_id" column="store_id"/>
+		    	<id property="prod_id" column="prod_id"/>
 		    	<result property="monthkey" column="monthkey"/>
 		    	<result property="todaynum" column="todaynum"/>
 		    	<result property="yesterdaynum" column="yesterdaynum"/>
@@ -91,8 +91,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     		<id property="subtype_id" column="subtype_id"/>
 		    <result property="subtype_name" column="subtype_name"/>
 		    <collection property="prodes" ofType="com.mawujun.inventory.Month_sparepart_prod">  
-		    	<result property="store_id" column="store_id"/>
-		    	<result property="prod_id" column="prod_id"/>
+		    	<id property="store_id" column="store_id"/>
+		    	<id property="prod_id" column="prod_id"/>
 		    	<!--<result property="monthkey" column="monthkey"/>
 		    	<result property="todaynum" column="todaynum"/>-->
 		    	<result property="purchasenum" column="purchasenum"/>

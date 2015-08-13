@@ -95,7 +95,7 @@ public class FrontEquipReportController {
 	
 	@RequestMapping("/report/frontequip/exportFrontEquipSumReport.do")
 	public void exportFrontEquipSumReport(HttpServletResponse response,String customer_2,String customer_2_name,String customer_0or1) throws IOException {
-		//List<FrontEquipSumReport> list=frontEquipReportRepository.queryFrontEquipSumReport(customer_2, customer_0or1);
+		List<FrontEquipSumReport> list=frontEquipReportRepository.queryFrontEquipSumReport(customer_2, customer_0or1);
 		
 		List<FrontEquipSumReport_subtype> list_subtype_prod=frontEquipReportRepository.queryFrontEquipSumReport_header(customer_2, customer_0or1);
 		
@@ -123,9 +123,16 @@ public class FrontEquipReportController {
 		//=============================================================================================
 		// 开始构建整个excel的文件
 		if (list != null && list.size() > 0) {
-			for(FrontEquipSumReport customer:list){
+			for(FrontEquipSumReport_subtype subtype:list_subtype_prod){
 				
+				for(FrontEquipSumReport_prod prod:subtype.getProds()){
+					for(FrontEquipSumReport customer:list){
+						//dd
+					}
+				}
 			}
+			
+			
 		}
 		String filename = customer_2_name+"前端设备汇总表.xlsx";
 		 //FileOutputStream out = new FileOutputStream(filename);
