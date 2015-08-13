@@ -221,9 +221,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</if>
 	    and to_char(a.operatedate,'yyyy-mm-dd') &gt;=#{date_start}  and to_char(a.operatedate,'yyyy-mm-dd') &lt;=#{date_end}
 		union all
-		select a.store_id,b.ecode,'借用' installouttype_name,'借变领' as installouttype_content,b.id as installoutlist_id
-		from ems_borrow a,ems_borrowlist b
-		where a.id=b.borrow_id and b.borrowlisttype='installout'
+		select a.store_id,b.ecode,c.name as installouttype_name,b.installouttype_content,b.id as installoutlist_id
+		from ems_borrow a,ems_borrowlist b,ems_installouttype c
+		where a.id=b.borrow_id and b.installouttype_id=c.id and b.borrowlisttype='installout'
 		<if test="use_in!=null and use_in==false">
 			and a.store_id=#{store_id}  
 		</if>

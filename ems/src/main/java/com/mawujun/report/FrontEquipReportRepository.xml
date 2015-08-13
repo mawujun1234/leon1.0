@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
+<mapper namespace="com.mawujun.report.FrontEquipReportRepository">
+	<!-- 前端设备汇总表 -->
+	<resultMap id="frontEquipSumReport_header_map" type="com.mawujun.report.FrontEquipSumReport_subtype" >
+     	<id property="subtype_id" column="subtype_id"/>
+		<result property="subtype_name" column="subtype_name"/>
+		<collection property="prods" ofType="com.mawujun.report.FrontEquipSumReport_prod">  
+			<id property="prod_id" column="prod_id"/>
+			<result property="prod_name" column="prod_name"/>
+		</collection>
+    </resultMap>
+    <select id="queryFrontEquipSumReport_header" resultMap="frontEquipSumReport_header_map" parameterType="map">
+    	select a.subtype_id,b.name as subtype_name,a.prod_id,c.name as prod_name from (
+		select c.id,c.name,b.ecode,d.subtype_id,d.prod_id from ems_pole a,ems_equipment_pole b,ems_customer c,ems_equipment d
+		where a.id=b.pole_id and a.customer_id=c.id and b.ecode=d.ecode
+		and c.parent_id='8FE850E88E3C4BDBAC4E421B1AA2DC5A' and c.type!=2
+		) a,ems_equipmentsubtype b,ems_equipmentprod c
+		where a.subtype_id=b.id and a.prod_id=c.id
+		group by a.subtype_id,b.name,a.prod_id,c.name
+		order by a.subtype_id,a.prod_id
+    </select>
+    <!-- 
+    <resultMap id="frontEquipSumReport_map" type="com.mawujun.report.FrontEquipSumReport" >
+     	<id property="customer_id" column="customer_id"/>
+    	<result property="customer_name" column="customer_name"/>
+    	<collection property="subtypes" ofType="com.mawujun.report.FrontEquipSumReport_subtype">  
+    		<id property="subtype_id" column="subtype_id"/>
+		    <result property="subtype_name" column="subtype_name"/>
+		    <collection property="prods" ofType="com.mawujun.report.FrontEquipSumReport_prod">  
+		    	<id property="prod_id" column="prod_id"/>
+		    	<result property="prod_name" column="prod_name"/>
+		    	<result property="num" column="num"/>
+		    </collection>
+       </collection>  
+    </resultMap>
+    <select id="queryFrontEquipSumReport" resultMap="frontEquipSumReport_map" parameterType="map">
+    	select a.id as customer_id,a.name as customer_name,a.subtype_id,b.name as subtype_name,a.prod_id,c.name as prod_name,count(a.ecode) from (
+		select c.id,c.name,b.ecode,d.subtype_id,d.prod_id from ems_pole a,ems_equipment_pole b,ems_customer c,ems_equipment d
+		where a.id=b.pole_id and a.customer_id=c.id and b.ecode=d.ecode
+		and c.parent_id=#{customer_2} and c.type!=2
+		<if test="customer_0or1!=null and customer_0or1!=''">
+				and c.id=#{customer_0or1}
+		</if>
+		) a,ems_equipmentsubtype b,ems_equipmentprod c
+		where a.subtype_id=b.id and a.prod_id=c.id
+		group by a.id,a.name,a.subtype_id,b.name,a.prod_id,c.name
+		order by a.id,a.subtype_id,a.prod_id
+    </select>
+     -->
+   
+</mapper>
+
