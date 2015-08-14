@@ -19,7 +19,7 @@ Ext.define('Ems.baseinfo.EquipmentCycleGrid',{
       	{xtype: 'rownumberer'},
 		//{dataIndex:'id',text:'id'},
       	{dataIndex:'operateDate',text:'时间',width:130},
-		//{dataIndex:'ecode',text:'ecode'},
+		{dataIndex:'ecode',text:'ecode',width:140},
 		{dataIndex:'operateType_name',text:'类型',width:80},
 		{dataIndex:'type_id',text:'单据号'},
 		{dataIndex:'target_name',text:'设备去向',flex:1},
@@ -43,6 +43,13 @@ Ext.define('Ems.baseinfo.EquipmentCycleGrid',{
 				grid.getStore().reload();
 			},
 			iconCls: 'form-reload-button'
+		},{
+			text: '导出重新打印',
+			icon:'../icons/page_excel.png',
+			handler: function(btn){
+				var grid=btn.up("grid");
+				window.open(Ext.ContextPath+"/equipment/exportEcode.do?ecode="+grid.ecode, "_blank");
+			}
 		}]
        
       me.callParent();

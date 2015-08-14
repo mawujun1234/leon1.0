@@ -9,6 +9,7 @@ public class EquipmentVO extends Equipment {
 	private String prod_name;
 	
 	private String prod_spec;
+	private Integer prod_quality_month;//质保
 	
 	private String brand_name;
 	
@@ -116,5 +117,13 @@ public class EquipmentVO extends Equipment {
 
 	public void setWorkUnit_id(String workUnit_id) {
 		this.workUnit_id = workUnit_id;
+	}
+
+	public Integer getProd_quality_month() {
+		return prod_quality_month;
+	}
+
+	public void setProd_quality_month(Integer prod_quality_month) {
+		this.prod_quality_month = prod_quality_month;
 	}
 }

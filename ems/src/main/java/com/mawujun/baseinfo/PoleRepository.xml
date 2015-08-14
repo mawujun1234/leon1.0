@@ -24,12 +24,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</update>
 	<!-- 查询某个杆位下的所有设备 -->
 	<select id="queryEquipments" resultType="com.mawujun.baseinfo.EquipmentVO" >
-    	select a.*,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name from ems_equipment a
+    	select a.*,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name,g.quality_month as prod_quality_month
+    	from ems_equipment a
 		inner join ems_equipmentsubtype b on a.subtype_id=b.id
 		inner join ems_equipmentprod c on a.prod_id=c.id
 		inner join ems_brand d on a.brand_id=d.id
 		inner join ems_supplier e on a.supplier_id=e.id
 		inner join ems_equipment_pole f on a.ecode=f.ecode
+		inner join ems_orderlist g on a.orderlist_id=g.id
 		where f.pole_id=#{id}
     </select>
     

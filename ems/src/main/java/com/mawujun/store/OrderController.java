@@ -2,33 +2,27 @@ package com.mawujun.store;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.math.RandomUtils;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.baseinfo.EquipmentProdService;
-import com.mawujun.exception.BusinessException;
-import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.M;
 import com.mawujun.utils.Params;
@@ -209,7 +203,7 @@ public class OrderController {
 		String contextPath=request.getSession().getServletContext().getRealPath("/");
 		
 		orderno=orderno.replaceAll("\\\\", "_");
-		String fileName="qrcode("+orderno+").xls";
+		String fileName="qrcode("+orderno+").xlsx";
 		String filePath="temp"+File.separatorChar+fileName;
 		String path=contextPath+filePath;
 		File file=new File(path);
@@ -222,44 +216,46 @@ public class OrderController {
 		}
 		
 
-        HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
-        HSSFSheet hssfSheet = hssfWorkbook.createSheet("二维码数据源");
+        //HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
+        //HSSFSheet hssfSheet = hssfWorkbook.createSheet("二维码数据源");
+		XSSFWorkbook wb =new XSSFWorkbook();
+		Sheet hssfSheet = wb.createSheet("二维码数据源");
         
-        HSSFRow hssfRow0 = hssfSheet.createRow(0);
-    	HSSFCell cell00 = hssfRow0.createCell(0);
+        Row hssfRow0 = hssfSheet.createRow(0);
+    	Cell cell00 = hssfRow0.createCell(0);
     	cell00.setCellValue("条码");
-    	HSSFCell cell011 = hssfRow0.createCell(1);
+    	Cell cell011 = hssfRow0.createCell(1);
     	cell011.setCellValue("型号");
-    	HSSFCell cell012= hssfRow0.createCell(2);
+    	Cell cell012= hssfRow0.createCell(2);
     	cell012.setCellValue("品牌");
-    	HSSFCell cell013 = hssfRow0.createCell(3);
+    	Cell cell013 = hssfRow0.createCell(3);
     	cell013.setCellValue("供应商");
-    	HSSFCell cell014 = hssfRow0.createCell(4);
+    	Cell cell014 = hssfRow0.createCell(4);
     	cell014.setCellValue("小类");
-    	HSSFCell cell015 = hssfRow0.createCell(5);
+    	Cell cell015 = hssfRow0.createCell(5);
     	cell015.setCellValue("品名");
     	
         for(int i=1;i<=results.size();i++){
         	BarcodeVO barcodeVO=results.get(i-1);
         	
-        	HSSFRow hssfRow = hssfSheet.createRow(i);
-        	HSSFCell cell0 = hssfRow.createCell(0);
+        	Row hssfRow = hssfSheet.createRow(i);
+        	Cell cell0 = hssfRow.createCell(0);
         	cell0.setCellValue(barcodeVO.getEcode());
-        	HSSFCell cell1 = hssfRow.createCell(1);
+        	Cell cell1 = hssfRow.createCell(1);
         	cell1.setCellValue(barcodeVO.getProd_style());
         	
-        	HSSFCell cell2 = hssfRow.createCell(2);
+        	Cell cell2 = hssfRow.createCell(2);
         	cell2.setCellValue(barcodeVO.getBrand_name());
-        	HSSFCell cell3 = hssfRow.createCell(3);
+        	Cell cell3 = hssfRow.createCell(3);
         	cell3.setCellValue(barcodeVO.getSupplier_name());
-        	HSSFCell cell4 = hssfRow.createCell(4);
+        	Cell cell4 = hssfRow.createCell(4);
         	cell4.setCellValue(barcodeVO.getSubtype_name());
-        	HSSFCell cell5 = hssfRow.createCell(5);
+        	Cell cell5 = hssfRow.createCell(5);
         	cell5.setCellValue(barcodeVO.getProd_name());
         	 
         }
         OutputStream out = new FileOutputStream(file);
-        hssfWorkbook.write(out);
+        wb.write(out);
         out.close();
 
 
@@ -273,7 +269,7 @@ public class OrderController {
 		orderno=orderno.replaceAll("\\\\", "_");
 		
 		String contextPath=request.getSession().getServletContext().getRealPath("/");
-		String fileName="qrcode("+orderno+").xls";
+		String fileName="qrcode("+orderno+").xlsx";
 		String filePath="temp"+File.separatorChar+fileName;
 		String path=contextPath+filePath;
 		File file=new File(path);
@@ -281,7 +277,8 @@ public class OrderController {
 		FileInputStream in=new FileInputStream(file);
 		
 		response.setHeader("content-disposition","attachment; filename="+fileName);
-		response.setContentType("application/vnd.ms-excel;charset=uft-8");
+		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=uft-8");
+		//response.setContentType("application/vnd.ms-excel;charset=uft-8");
 		//response.setContentType("text/plain; charset=gb2312");
 		
 		OutputStream  out = response.getOutputStream();

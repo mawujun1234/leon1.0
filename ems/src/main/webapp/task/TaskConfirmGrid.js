@@ -178,7 +178,7 @@ Ext.define('Ems.task.TaskConfirmGrid',{
 					alert("请先选择任务");
 					return;
 				}
-				
+				Ext.getBody().mask("正在处理,请稍候....");
 				if(records.length==1){
 					if(records[0].get("status")!="submited"){
 						alert("只有'已提交'状态下，才能确认!");
@@ -191,6 +191,7 @@ Ext.define('Ems.task.TaskConfirmGrid',{
 						success:function(response){
 							me.getStore().reload();
 							me.gridList.getStore().removeAll();
+							Ext.getBody().unmask();
 						}
 					});
 				} else {

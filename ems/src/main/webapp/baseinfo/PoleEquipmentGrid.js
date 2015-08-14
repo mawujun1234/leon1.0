@@ -23,10 +23,11 @@ Ext.define('Ems.baseinfo.PoleEquipmentGrid',{
 							
 				});
 				lifecycle_panel.getStore().getProxy().extraParams={ecode:record.get("ecode")};
+				lifecycle_panel.ecode=record.get("ecode");
 				lifecycle_panel.getStore().reload();
 
 				var win = Ext.create('Ext.window.Window', {
-					width : 600,
+					width : 780,
 					height : 300,
 					layout : 'fit',
 					modal : true,
@@ -53,6 +54,7 @@ Ext.define('Ems.baseinfo.PoleEquipmentGrid',{
 					}
 		},
     	{header: '品牌', dataIndex: 'brand_name',width:60},
+    	{header: '质保', dataIndex: 'prod_quality_month',width:60},
     	{header: '供应商', dataIndex: 'supplier_name'},
     	{header: '安装时间', dataIndex: 'last_install_date',renderer:Ext.util.Format.dateRenderer('Y-m-d')}
       ];

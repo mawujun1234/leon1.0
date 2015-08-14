@@ -99,6 +99,7 @@ Ext.onReady(function(){
 				if(!params){
 					return false;
 				}
+				params.isMaching=false;
 				var pp=Ext.Object.toQueryString(params);
 				window.open(Ext.ContextPath+"/report/frontequip/exportFrontEquipSumReport.do?"+pp, "_blank");
 			}
