@@ -83,11 +83,16 @@ public class Day_sparepart_Controller {
 		
 		
 		//建立日期范围的key
-		Long date_start_times=yyyy_MM_dd_formater.parse(date_start).getTime();
+		//Long date_start_times=yyyy_MM_dd_formater.parse(date_start).getTime();
+		Calendar cal=Calendar.getInstance();
+		cal.setTime(yyyy_MM_dd_formater.parse(date_start));
+		cal.add(Calendar.DAY_OF_MONTH, -1);
 		List<Integer> daykeyes=new ArrayList<Integer>();
 		List<String> daykeys_title=new ArrayList<String>();
 		for (int j = 0; j < day_length; j++) {
-			Date date=new Date(date_start_times+(j*24*60*60*1000));
+			//Date date=new Date(date_start_times+(j*24*60*60*1000));
+			cal.add(Calendar.DAY_OF_MONTH, 1);
+			Date date=cal.getTime();
 			Integer daykey1=Integer.parseInt(yyyyMMdd_formater.format(date));
 			daykeyes.add(daykey1);
 			
