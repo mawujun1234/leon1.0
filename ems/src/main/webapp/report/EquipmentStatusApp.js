@@ -40,6 +40,7 @@ Ext.onReady(function(){
 							Ext.getBody().unmask();
 						}
 					});
+					lifecycle_panel.ecode=newValue;
 					lifecycle_panel.getStore().getProxy().extraParams={ecode:newValue};
 					lifecycle_panel.getStore().reload();
 				}

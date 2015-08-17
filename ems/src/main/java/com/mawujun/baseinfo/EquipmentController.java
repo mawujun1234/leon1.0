@@ -10,10 +10,16 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.mawujun.exception.BusinessException;
+import com.mawujun.repository.cnd.Cnd;
+import com.mawujun.shiro.ShiroUtils;
+import com.mawujun.utils.M;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
  * @version 1.0
@@ -78,25 +84,122 @@ public class EquipmentController {
 		return equipment;
 	}
 	
-	@RequestMapping("/equipment/update.do")
+//	@RequestMapping("/equipment/update.do")
+//	@ResponseBody
+//	public  Equipment update(@RequestBody Equipment equipment) {
+//		equipmentService.update(equipment);
+//		return equipment;
+//	}
+//	
+//	@RequestMapping("/equipment/deleteById.do")
+//	@ResponseBody
+//	public String deleteById(String id) {
+//		equipmentService.deleteById(id);
+//		return id;
+//	}
+//	
+//	@RequestMapping("/equipment/destroy.do")
+//	@ResponseBody
+//	public Equipment destroy(@RequestBody Equipment equipment) {
+//		equipmentService.delete(equipment);
+//		return equipment;
+//	}
+	
+	/**主要用于当某个设备入库的时候，本来是坏件但是最后不小心好件入库的时候，用来手工修改为坏件的
+	 * 
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param equipment
+	 * @return
+	 */
+	@RequestMapping("/equipment/wait_for_repair.do")
 	@ResponseBody
-	public  Equipment update(@RequestBody Equipment equipment) {
-		equipmentService.update(equipment);
-		return equipment;
+	public String wait_for_repair(String ecode,String reason) {
+//		Equipment equip=equipmentService.get(ecode);
+//		if(equip.getStatus()== EquipmentStatus.wait_for_repair){
+//			//return "已经是损坏设备，不需要重复设置为损坏设备!";
+//			throw new BusinessException("已经是损坏设备，不需要重复设置为损坏设备!");
+//		} else if(equip.getStatus() != EquipmentStatus.in_storage){
+//			throw new BusinessException("设备不在仓库，不能修改为待维修状态!");
+//		} else {
+//
+//			
+//			EquipmentStoreVO equipmentStoreVO=equipmentService.getEquipmentStoreVO(ecode);
+//			if(equipmentStoreVO==null){
+//				throw new BusinessException("设备不在仓库中，请注意!");
+//			}
+//			equip.setStatus(EquipmentStatus.wait_for_repair);
+//			equipmentService.update(equip);
+//			EquipmentCycle equipmentCycle=equipmentCycleService.logEquipmentCycle(ecode, OperateType.manual_wait_for_repair, ShiroUtils.getLoginName(), TargetType.store,equipmentStoreVO.getStore_id());
+//			equipmentCycle.setMemo(reason);
+//			equipmentCycleService.update(equipmentCycle);
+//		}
+		equipmentService.wait_for_repair(ecode, reason);
+		return "success";
 	}
 	
-	@RequestMapping("/equipment/deleteById.do")
+	/**
+	 * 主要用来手工修改设备从新件变成老件，例如被借去非作业单位使用的时候
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param equipment
+	 * @return
+	 */
+	@RequestMapping("/equipment/to_old.do")
 	@ResponseBody
-	public String deleteById(String id) {
-		equipmentService.deleteById(id);
-		return id;
-	}
-	
-	@RequestMapping("/equipment/destroy.do")
-	@ResponseBody
-	public Equipment destroy(@RequestBody Equipment equipment) {
-		equipmentService.delete(equipment);
-		return equipment;
+	public String to_old(String ecode,String reason) {
+//		Equipment equip=equipmentService.get(ecode);
+//		if(equip.getIsnew()==false){
+//			throw new BusinessException("已经是旧设备，不需要重复设置为旧设备!");
+//		} else {
+//			equip.setIsnew(false);
+//			equipmentService.update(equip);
+//			
+//			EquipmentWorkunitVO aa=equipmentService.getEquipmentWorkunitVO(ecode);
+//			EquipmentStoreVO bb=null;
+//			EquipmentPoleVO cc=null;
+//			EquipmentRepairVO dd=null;
+//			
+//			TargetType targetType=TargetType.workunit;
+//			String targetType_id=null;
+//			if(aa==null){
+//				bb=equipmentService.getEquipmentStoreVO(ecode);
+//
+//				if(bb!=null){
+//					targetType=TargetType.store;
+//					targetType_id=bb.getStore_id();
+//					
+//				} else {
+//					cc=equipmentService.getEquipmentPoleVO(ecode);
+//					
+//					if(cc!=null){
+//						targetType=TargetType.pole;	
+//						targetType_id=cc.getPole_id();
+//						
+//					} else {
+//						dd=equipmentService.getEquipmentRepairVO(ecode);
+//						
+//						if(dd!=null){
+//							targetType=TargetType.repair;
+//							targetType_id=dd.getRepair_id();		
+//						} else {
+//							throw new BusinessException("该设备不在仓库，点位，作业单位和维修中心,不能进行手工设旧处理!");
+//						}
+//					}
+//				}
+//			} else {
+//				targetType_id=aa.getWorkunit_id();
+//				targetType=TargetType.workunit;
+//			}
+//			
+//			
+//			
+//			
+//			EquipmentCycle equipmentCycle=equipmentCycleService.logEquipmentCycle(ecode, OperateType.manual_to_old, ShiroUtils.getLoginName(), targetType,targetType_id);
+//			equipmentCycle.setMemo(reason);
+//			equipmentCycleService.update(equipmentCycle);
+//		}
+//		//equipmentService.update(Cnd.update().set(M.Equipment.isnew, false).andEquals(M.Equipment.ecode, ecode));
+		equipmentService.to_old(ecode, reason);
+		return "success";
 	}
 	
 	/**

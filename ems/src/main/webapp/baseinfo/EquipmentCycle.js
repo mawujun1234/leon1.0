@@ -11,7 +11,9 @@ Ext.defineModel("Ems.baseinfo.EquipmentCycle",{
 		{name:'operater_name',type:'string'},
 		{name:'target_id',type:'string'},
 		{name:'target_name',type:'string'},
-		{name:'type_id',type:'string'}
+		{name:'type_id',type:'string'},
+		
+		{name:'memo',type:'string'}
 	],
 	associations:[
 	]

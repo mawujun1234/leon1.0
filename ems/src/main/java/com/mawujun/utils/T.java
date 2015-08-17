@@ -90,6 +90,7 @@ public static final class ems_equipmentcycle {
 	public static final String type_id="type_id";
 	public static final String target_id="target_id";
 	public static final String target_name="target_name";
+	public static final String memo="memo";
 	public static final String id="id";
 }
 public static final class ems_equipment_pole {

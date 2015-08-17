@@ -30,15 +30,17 @@ public class EquipmentCycle extends UUIDEntity{
 	private String operater_name;//操作者名称
 	
 	@Enumerated(EnumType.STRING)
-	@Column(length=20)
+	@Column(length=30)
 	private OperateType operateType;//操作类型，入库，出库，领用，返库等等
 	@Column(length=36)
-	private String type_id;//入库id，领用单id等等 各种单据id,还有任务id
+	private String type_id;//入库id，领用单id等等 各种单据id,还有任务id，如果是手动修改，就填写修改人的id
 	
 	@Column(length=36)
 	private String target_id;//目标id。仓库id，作业单位id，维修中心id等,维修出库的时候，就是仓库id，维修中心入库的时候就是维修中心id
 	@Column(length=50)
 	private String target_name;
+	@Column(length=100)
+	private String memo;//默认是使用在自定义的时候会使用
 	
 //	/**
 //	 * 获取生命周期的信息
@@ -105,6 +107,14 @@ public class EquipmentCycle extends UUIDEntity{
 	}
 	public void setTarget_name(String target_name) {
 		this.target_name = target_name;
+	}
+
+	public String getMemo() {
+		return memo;
+	}
+
+	public void setMemo(String memo) {
+		this.memo = memo;
 	}
 
 }
