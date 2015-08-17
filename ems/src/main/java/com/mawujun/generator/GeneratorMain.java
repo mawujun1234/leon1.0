@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.mawujun.install.B2INotify;
+import com.mawujun.mobile.task.HandleMethod;
 
 import freemarker.template.TemplateException;
 /**
@@ -27,7 +27,7 @@ public class GeneratorMain {
 		//str=generatorService.generatorToString(MenuItem.class,FtlFile.JsModel.toString(),null);	
         //System.out.println(str);
 		
-		GeneratorMain.generateAllFile(B2INotify.class,"D:/gen/");
+		GeneratorMain.generateAllFile(HandleMethod.class,"D:/gen/");
 		
 		
 		

@@ -351,6 +351,10 @@ public static final class ems_message {
 	public static final String readDate="readDate";
 	public static final String id="id";
 }
+public static final class ems_handlemethod {
+	public static final String name="name";
+	public static final String id="id";
+}
 public static final class ems_hitchreasontpl {
 	public static final String id="id";
 	public static final String name="name";
@@ -395,6 +399,8 @@ public static final class ems_task {
 	public static final String hitchType="hitchType";
 	public static final String hitchReasonTpl_id="hitchReasonTpl_id";
 	public static final String hitchReason="hitchReason";
+	public static final String handleMethod_id="handleMethod_id";
+	public static final String handle_contact="handle_contact";
 }
 public static final class ems_taskequipmentlist {
 	public static final String task_id="task_id";

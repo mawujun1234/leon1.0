@@ -698,10 +698,16 @@ $(document).ready(function(e) {
         	<option selected value="0">请选择故障类型</option>
         </select>
 
-        <select name="select-choice-a" id="select-choice-hitchReasonTpl" >
+        <select name="select-choice-b" id="select-choice-hitchReasonTpl" >
         	<option selected value="0">请选择原因</option>
         </select>
         <textarea  name="textarea" id="textarea-hitchReasonTpl" placeholder="请填写设备故障原因情况"></textarea>
+        
+        <select name="select-choice-c" id="select-choice-handleMethod" >
+        	<option selected value="0">请选择处理方法</option>
+        </select>
+        <textarea  name="textarea" id="textarea-handle_contact" placeholder="请填写相关联系人"></textarea>
+        
          <a href="#" class="ui-btn ui-corner-all actionbutton" name="scan_button">扫描设备</a>
          <input type="text" name="scan_textfield" class="actionbutton"  value="" placeholder="请扫描或手动输入...">
          <div id="page_repair_equipments_list">
@@ -1056,11 +1062,6 @@ $(document).ready(function(e) {
 			} else {
 				$("#select-choice-hitchType").val("0").selectmenu( "refresh" );
 			}
-	//		if(obj.hitchReasonTpl_id){
-//				$("#select-choice-hitchReasonTpl").val(obj.hitchReasonTpl_id).selectmenu( "refresh" );
-//			}else {
-//				$("#select-choice-hitchReasonTpl").val("0").selectmenu( "refresh" );
-//			}
 			$("#textarea-hitchReasonTpl").val(obj.hitchReason);
 		}
 		

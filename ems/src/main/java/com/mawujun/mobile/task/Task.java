@@ -61,6 +61,12 @@ public class Task implements IdEntity<String> {
 	@Column(length=500)
 	private String hitchReason;//故障原因，也用来存放维护内容
 	
+	
+	@Column(length=36)
+	private String handleMethod_id;//处理方法
+	@Column(length=100)
+	private String handle_contact;//相关联系人的号码
+	
 	public String getType_name() {
 		if(this.getType()!=null){
 			return this.getType().getName();
@@ -205,6 +211,18 @@ public class Task implements IdEntity<String> {
 	}
 	public void setCompleteDate(Date completeDate) {
 		this.completeDate = completeDate;
+	}
+	public String getHandleMethod_id() {
+		return handleMethod_id;
+	}
+	public void setHandleMethod_id(String handleMethod_id) {
+		this.handleMethod_id = handleMethod_id;
+	}
+	public String getHandle_contact() {
+		return handle_contact;
+	}
+	public void setHandle_contact(String handle_contact) {
+		this.handle_contact = handle_contact;
 	}
 	
 	

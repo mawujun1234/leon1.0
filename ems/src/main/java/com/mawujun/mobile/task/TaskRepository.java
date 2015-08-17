@@ -70,4 +70,6 @@ public interface TaskRepository extends IRepository<Task, String>{
 	public Page querySubmited(Page page);
 	
 	public void update_to_handling_status(@Param("task_id")String task_id);
+	
+	public int check_handleMethod_used(@Param("handleMethod_id")String handleMethod_id);
 }

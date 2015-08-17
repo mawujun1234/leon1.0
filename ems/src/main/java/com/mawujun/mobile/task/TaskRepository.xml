@@ -351,5 +351,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     <update id="update_to_handling_status">
     	update ems_task set status='handling',startHandDate=sysdate where id=#{task_id}
     </update>
+    
+    <!-- 在删除维修处理方法之前，先判断有没有被引用 -->
+    <select id="check_handleMethod_used">
+    	select count(id) from esm_task where handleMethod_id=#{handleMethod_id}
+    </select>
 </mapper>
 
