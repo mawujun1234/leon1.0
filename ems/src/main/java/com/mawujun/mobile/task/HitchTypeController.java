@@ -34,6 +34,8 @@ public class HitchTypeController {
 	@Resource
 	private MetaVersionService metaVersionService;
 
+	@Resource
+	private HandleMethodService handleMethodService;
 
 //	/**
 //	 * 请按自己的需求修改
@@ -120,7 +122,7 @@ public class HitchTypeController {
 	 */
 	@RequestMapping("/hitchType/mobile/queryAll.do")
 	@ResponseBody
-	public Map<String,Object> mobile_queryAll(Integer hitchType_version,Integer hitchReasonTpl_version) {
+	public Map<String,Object> mobile_queryAll(Integer hitchType_version,Integer handleMethod_version,Integer hitchReasonTpl_version) {
 		Map<String,Object> map=new HashMap<String,Object>();
 		
 		MetaVersion metaVersion=metaVersionService.get(HitchType.class.getSimpleName());
@@ -128,6 +130,13 @@ public class HitchTypeController {
 			List<HitchType> hitchTypes=hitchTypeService.queryAll();
 			map.put("hitchTypes", hitchTypes);
 			map.put("hitchType_version", metaVersion.getVersion());
+		}
+		
+		metaVersion=metaVersionService.get( HandleMethod.class.getSimpleName());
+		if(metaVersion!=null && metaVersion.getVersion()!=hitchType_version){
+			List<HandleMethod> handleMethodes=handleMethodService.queryAll();
+			map.put("HandleMethod", handleMethodes);
+			map.put("HandleMethod_version", metaVersion.getVersion());
 		}
 		
 //		metaVersion=metaVersionService.get(HitchReasonTpl.class.getSimpleName());

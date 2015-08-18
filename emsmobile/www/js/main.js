@@ -289,6 +289,22 @@ $.tasks={
 			}
 		});
 	},
+	getHandleMethod:function(){
+		
+		return JSON.parse(localStorage.getItem("HandleMethod"));
+	},
+	getHandleMethod_version:function(){
+		return localStorage.getItem("HandleMethod_version")?localStorage.getItem("HandleMethod_version"):0;
+	},
+	updateHandleMethod:function(){
+		$.ajax({   
+			url : $.ServerPath+"/handleMethod/mobile/query.do",  
+			success : function(data){
+				localStorage.setItem("HandleMethod_version",data.version);
+				localStorage.setItem("HandleMethod",JSON.stringify(data.root));
+			}
+		});
+	},
 //	getHitchReasonTpl:function(){
 //		
 //		return JSON.parse(localStorage.getItem("HitchReasonTpl"));
@@ -314,13 +330,18 @@ $.tasks={
 		$.ajax({   
 			url : $.ServerPath+"/hitchType/mobile/queryAll.do",
 			data:{
-				hitchType_version:hitchType_version
+				hitchType_version:0,
+				handleMethod_version:0
 				//hitchReasonTpl_version:hitchReasonTpl_version
 			},   
 			success : function(data){
 				if(data.root.hitchTypes){
 					localStorage.setItem("HitchType_version",data.root.hitchType_version);
 					localStorage.setItem("HitchType",JSON.stringify(data.root.hitchTypes));
+				}
+				if(data.root.handleMethod){
+					localStorage.setItem("HandleMethod_version",data.root.HandleMethod_version);
+					localStorage.setItem("HandleMethod",JSON.stringify(data.root.HandleMethod));
 				}
 //				alert(JSON.stringify(data.root.hitchReasonTpls));
 //				if(data.root.hitchReasonTpls){
@@ -338,6 +359,8 @@ $.tasks={
 	clearAll:function(){
 		localStorage.removeItem("HitchType_version");
 		localStorage.removeItem("HitchType");
+		localStorage.removeItem("HandleMethod_version");
+		localStorage.removeItem("HandleMethod");
 		//alert($.tasks.getHitchType_version());
 		//localStorage.removeItem("HitchReasonTpl_version");
 		//localStorage.removeItem("HitchReasonTpl");
