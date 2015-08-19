@@ -282,6 +282,11 @@ public class TaskController {
 		map.put(M.Task.hitchReasonTpl_id, task.getHitchReasonTpl_id());
 		map.put(M.Task.hitchType_id, task.getHitchType_id());
 		map.put(M.Task.type, task.getType());
+		
+		map.put(M.Task.handleMethod_id, task.getHandleMethod_id());
+		map.put(M.Task.handle_contact, task.getHandle_contact());
+		
+		
 		map.put("equipmentVOs", equipmentVOs);
 		return map;
 		//return equipmentVOs;
@@ -332,9 +337,10 @@ public class TaskController {
 	@RequestMapping("/task/mobile/save.do")
 	@ResponseBody
 	//public String mobile_save(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason,String[] ecodes,Integer[] equipment_statuses) {
-	public String mobile_save(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason) {
+	public String mobile_save(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason
+			,String handleMethod_id,String handle_contact) {
 		//jquery 2 json地方有文图，，不能将数组正确的转换
-		taskService.mobile_save(task_id,hitchType_id,hitchReasonTpl_id,hitchReason);
+		taskService.mobile_save(task_id,hitchType_id,hitchReasonTpl_id,hitchReason,handleMethod_id,handle_contact);
 		return "success";
 	}
 	
@@ -347,9 +353,9 @@ public class TaskController {
 	@RequestMapping("/task/mobile/submit.do")
 	@ResponseBody
 	//public String mobile_submit(String task_id,String task_type,String[] ecodes,Integer[] equipment_statuses) {
-	public String mobile_submit(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason) {
+	public String mobile_submit(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason,String handleMethod_id,String handle_contact) {
 		//jquery 2 json地方有文图，，不能将数组正确的转换
-		taskService.mobile_submit(task_id,hitchType_id,hitchReasonTpl_id,hitchReason);
+		taskService.mobile_submit(task_id,hitchType_id,hitchReasonTpl_id,hitchReason,handleMethod_id,handle_contact);
 		return "success";
 	}
 	

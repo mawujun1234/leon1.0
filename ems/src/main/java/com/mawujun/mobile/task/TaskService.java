@@ -651,7 +651,7 @@ public class TaskService extends AbstractService<Task, String>{
 	 * @param equipment_statuses
 	 * @return
 	 */
-	public void mobile_save(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason) {
+	public void mobile_save(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason,String handleMethod_id,String handle_contact) {
 		//hitchType_id=0 表示是维修任务传递过来的
 		if(hitchType_id!=null && hitchType_id==0){
 			throw new BusinessException("请选择故障类型");
@@ -669,6 +669,9 @@ public class TaskService extends AbstractService<Task, String>{
 		}
 		task.setHitchReasonTpl_id(hitchReasonTpl_id);
 		task.setHitchReason(hitchReason);
+		
+		task.setHandleMethod_id(handleMethod_id);
+		task.setHandle_contact(handle_contact);
 
 		//主要用在维修任务，没有扫描，然后直接点保存的时候
 		if(task.getStatus()==TaskStatus.newTask || task.getStatus()==TaskStatus.read){
@@ -690,13 +693,13 @@ public class TaskService extends AbstractService<Task, String>{
 	 * @param task_type
 	 * @param ecodes
 	 */
-	public void mobile_submit(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason) {
+	public void mobile_submit(String task_id,Integer hitchType_id,Integer hitchReasonTpl_id,String hitchReason,String handleMethod_id,String handle_contact) {
 		Task task=taskRepository.get(task_id);
 		if(task.getStatus()==TaskStatus.submited){
 			throw new BusinessException("任务已经提交,不能再提交!");
 		}
 		//当写好就马上提交了，没有经过保存的时候
-		this.mobile_save(task_id, hitchType_id, hitchReasonTpl_id, hitchReason);
+		this.mobile_save(task_id, hitchType_id, hitchReasonTpl_id, hitchReason,handleMethod_id,handle_contact);
 		//如果是取消杆位，提交前进行判断，扫描了的设备数量和杆位上实际具有的数量是否一致
 		//是否是该杆位上的设备，已经在扫描的时候就判断了
 		

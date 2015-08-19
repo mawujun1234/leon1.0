@@ -43,5 +43,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				and to_char(a.createDate,'yyyy-mm-dd')&lt;=#{date_end}
 			</if>
     </select>
+    
+    <!-- 查询维修任务明细表 -->
+    <select id="queryRepairReport" resultType="com.mawujun.report.RepairTaskReport" parameterType="map">
+    </select>
+    <select id="queryRepairReport_count" resultType="com.mawujun.report.RepairTaskReport" parameterType="map">
+    </select>
+    <!-- 导出维修任务明细表 -->
+    <select id="exportRepairReport" resultType="com.mawujun.report.RepairTaskReport" parameterType="map">
+    </select>
 </mapper>
 

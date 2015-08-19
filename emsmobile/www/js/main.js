@@ -339,7 +339,7 @@ $.tasks={
 					localStorage.setItem("HitchType_version",data.root.hitchType_version);
 					localStorage.setItem("HitchType",JSON.stringify(data.root.hitchTypes));
 				}
-				if(data.root.handleMethod){
+				if(data.root.HandleMethod){
 					localStorage.setItem("HandleMethod_version",data.root.HandleMethod_version);
 					localStorage.setItem("HandleMethod",JSON.stringify(data.root.HandleMethod));
 				}
@@ -364,6 +364,21 @@ $.tasks={
 		//alert($.tasks.getHitchType_version());
 		//localStorage.removeItem("HitchReasonTpl_version");
 		//localStorage.removeItem("HitchReasonTpl");
+	},
+	getSelectOption:function(type){
+		var content=null;
+		if(type=="HandleMethod"){
+			content=$.tasks.getHandleMethod();
+		} else if(type=="HitchType"){
+			content=$.tasks.getHitchType();
+		}
+		
+		content=content==null?[]:content;
+		var html="";
+		for(var i=0;i<content.length;i++){
+			html+='<option value="'+content[i].id+'">'+content[i].name+'</option>';
+		}
+		return html;
 	}
 }
 

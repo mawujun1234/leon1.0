@@ -706,7 +706,7 @@ $(document).ready(function(e) {
         <select name="select-choice-c" id="select-choice-handleMethod" >
         	<option selected value="0">请选择处理方法</option>
         </select>
-        <textarea  name="textarea" id="textarea-handle_contact" placeholder="请填写相关联系人"></textarea>
+        <textarea  name="textarea" id="textarea-handle_contact" placeholder="请填写处理备注信息"></textarea>
         
          <a href="#" class="ui-btn ui-corner-all actionbutton" name="scan_button">扫描设备</a>
          <input type="text" name="scan_textfield" class="actionbutton"  value="" placeholder="请扫描或手动输入...">
@@ -724,21 +724,16 @@ $(document).ready(function(e) {
 		
 		$(function(){
 			//初始化故障类型和原因模板
-			var hitchTypes=$.tasks.getHitchType();
-			hitchTypes=hitchTypes==null?[]:hitchTypes;
-			var html="";
-			for(var i=0;i<hitchTypes.length;i++){
-				html+='<option value="'+hitchTypes[i].id+'">'+hitchTypes[i].name+'</option>';
-			}
-			$("#select-choice-hitchType").append(html);//.trigger("create");;
-//			var hitchReasonTples=$.tasks.getHitchReasonTpl();
-//			hitchReasonTples=hitchReasonTples==null?[]:hitchReasonTples;
-//			html="";
-//			for(var i=0;i<hitchReasonTples.length;i++){
-//				html+='<option value="'+hitchReasonTples[i].id+'">'+hitchReasonTples[i].name+'</option>';
+//			var hitchTypes=$.tasks.getHitchType();
+//			hitchTypes=hitchTypes==null?[]:hitchTypes;
+//			var html="";
+//			for(var i=0;i<hitchTypes.length;i++){
+//				html+='<option value="'+hitchTypes[i].id+'">'+hitchTypes[i].name+'</option>';
 //			}
-//			$("#select-choice-hitchReasonTpl").append(html);//.trigger("create");
+//			$("#select-choice-hitchType").append(html);//.trigger("create");;
 
+			$("#select-choice-hitchType").append($.tasks.getSelectOption('HitchType'));
+			$("#select-choice-handleMethod").append($.tasks.getSelectOption('HandleMethod'));
 			var hitchReasonTples=[];
 			$("#select-choice-hitchType").change(function(e){
 				//去后台获取数据
@@ -912,8 +907,19 @@ $(document).ready(function(e) {
 			}
 			params+="&hitchType_id="+hitchType_id;
 			params+="&hitchReasonTpl_id="+hitchReasonTpl_id;
-			
 			params+="&hitchReason="+$("#textarea-hitchReasonTpl").val();
+			
+			var handleMethod_id=$("#select-choice-handleMethod").val();
+			if(handleMethod_id=="0"){
+				alert("请先选择处理方法!");
+				return false;
+			}
+			params+="&handleMethod_id="+handleMethod_id;
+			
+			var handle_contact=$("#textarea-handle_contact").val();
+			if(handle_contact){
+				params+="&handle_contact="+handle_contact;
+			}	
 		}
 		return params;
 	}
@@ -944,6 +950,7 @@ $(document).ready(function(e) {
 		$.showLoader("正在提交....");
 
 		var params=getSubmitParams(true);
+		
 		if(params==false){
 			$.hideLoader();  
 			return;
@@ -1063,6 +1070,13 @@ $(document).ready(function(e) {
 				$("#select-choice-hitchType").val("0").selectmenu( "refresh" );
 			}
 			$("#textarea-hitchReasonTpl").val(obj.hitchReason);
+			
+			if(obj.handleMethod_id){
+				$("#select-choice-handleMethod").val(obj.handleMethod_id).selectmenu( "refresh" );	
+			} else {
+				$("#select-choice-handleMethod").val("0").selectmenu( "refresh" );	
+			}
+			$("#textarea-handle_contact").val(obj.handle_contact);
 		}
 		
 	}

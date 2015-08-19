@@ -12,4 +12,7 @@ import com.mawujun.utils.page.Page;
 public interface TaskReportRepository {
 	public List<Task> exportUnrepairPoleReport(Params params);
 	public Page queryUnrepairPoleReport(Page page);
+	
+	public Page queryRepairReport(Page page);
+	public Page exportRepairReport(Params params);
 }
