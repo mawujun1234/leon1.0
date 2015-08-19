@@ -44,8 +44,22 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			</if>
     </select>
     
-    <!-- 查询维修任务明细表 -->
+    <!-- 查询维修任务明细表 -->顾客表还没有关联
     <select id="queryRepairReport" resultType="com.mawujun.report.RepairTaskReport" parameterType="map">
+    	select a.*,b.code as pole_code, c.name as handleMethod_name
+		,case when  a.status='over' then '已修复' else '未修复' end  as result
+		from ems_task a
+		inner join ems_pole b on a.pole_id=b.id
+		left join ems_handlemethod c on a.handleMethod_id=c.id
+		where a.type='repair'
+		and to_char(a.createDate,'yyyy-mm-dd')&gt;=#{date_start}
+		and to_char(a.createDate,'yyyy-mm-dd')&lt;=#{date_end}
+		<if test="pole_code!=null and pole_code!=''">
+			and b.code =#{pole_code}
+		</if>
+		<if test="hitchType_id!=null and hitchType_id!=''">
+			and a.hitchType_id =#{hitchType_id}
+		</if>
     </select>
     <select id="queryRepairReport_count" resultType="com.mawujun.report.RepairTaskReport" parameterType="map">
     </select>

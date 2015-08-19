@@ -2,6 +2,7 @@ package com.mawujun.report;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.mawujun.mobile.task.Task;
@@ -14,5 +15,5 @@ public interface TaskReportRepository {
 	public Page queryUnrepairPoleReport(Page page);
 	
 	public Page queryRepairReport(Page page);
-	public Page exportRepairReport(Params params);
+	public Page exportRepairReport(@Param("date_start")String date_start,@Param("date_end")String date_end,@Param("pole_code")String pole_code,@Param("hitchType_id")String hitchType_id);
 }
