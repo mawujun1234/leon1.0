@@ -20,15 +20,7 @@ Ext.defineModel("Ems.report.ScrapReport",{
 		{name:'hitchType',type:'string'},
 		{name:'hitchReason',type:'string'},
 		{name:'handleMethod_name',type:'string'},
-		{name:'handle_contact',type:'string'},
-		{name:'',type:'string'},
-		{name:'',type:'string'},
-		{name:'',type:'string'},
-		{name:'',type:'string'},
-		{name:'',type:'string'},
-
-		
-		
+		{name:'handle_contact',type:'string'}	
 	],
 	associations:[
 	]
