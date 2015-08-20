@@ -1,4 +1,4 @@
-Ext.require("Ems.report.RepairReport");
+Ext.require("Ems.report.TaskRepairReport");
 Ext.onReady(function(){
 
 	var date_start=Ext.create('Ext.form.field.Date',{
@@ -16,18 +16,20 @@ Ext.onReady(function(){
 	  	hidden:false,
 	  	format:'Y-m-d',
 	  	//editable:false,
-	  	labelWidth:15
+	  	labelWidth:15,
 	  	editable:false,
         //name: 'str_out_date_end',
-        ,value: new Date()
+        value: new Date()
 	});
 	var pole_code=Ext.create('Ext.form.field.Text',{
 		fieldLabel: '点位号',
+		labelWidth:60,
 		name: 'pole_code'
 	})
 	
-	var hitchType_id=Ext.create('Ext.form.field.Combobox',{
+	var hitchType_id=Ext.create('Ext.form.field.ComboBox',{
 		fieldLabel: '故障类型',
+		labelWidth:60,
 	    queryMode: 'remote',
 	    displayField: 'name',
 	    valueField: 'id',
@@ -61,7 +63,7 @@ Ext.onReady(function(){
 		    	var me=this;
 		    	var params=getParams();
 				var pp=Ext.Object.toQueryString(params);
-				window.open(Ext.ContextPath+"/repare/taskrepair/exportRepairReport.do?"+pp, "_blank");
+				window.open(Ext.ContextPath+"/report/taskrepair/exportRepairReport.do?"+pp, "_blank");
 		    }
 		});
 	var toolbar=Ext.create('Ext.toolbar.Toolbar',{
@@ -80,7 +82,7 @@ Ext.onReady(function(){
 	var store=Ext.create('Ext.data.Store',{
 			autoSync:false,
 			pageSize:50,
-			model: 'Ems.report.RepairReport',
+			model: 'Ems.report.TaskRepairReport',
 			autoLoad:false,
 			proxy:{
 				type:'ajax',
@@ -90,7 +92,7 @@ Ext.onReady(function(){
 			        update : 'POST',
 			        destroy: 'POST'
 			    },
-				url:Ext.ContextPath+'/repare/taskrepair/queryRepairReport.do',
+				url:Ext.ContextPath+'/report/taskrepair/queryRepairReport.do',
 				reader:{
 					type:'json',
 					root:'root'
@@ -100,23 +102,30 @@ Ext.onReady(function(){
 	store.on("beforeload",function(store){
 		store.getProxy().extraParams=getParams();
 	});
+			
 	var grid=Ext.create('Ext.grid.Panel',{
 		columnLines :true,
 		stripeRows:true,
 		columns:[
 			{xtype: 'rownumberer'},
-			{dataIndex:'str_out_name',text:'出库仓库',width:130},
-			{dataIndex:'brand_name',text:'品牌',width:120},
-			{dataIndex:'prod_style',text:'型号'},
-			{dataIndex:'subtype_name',text:'类型',width:150},
-			{dataIndex:'str_out_date',text:'送修时间',width:140},
-			{dataIndex:'repair_take_time',text:'维修时间',width:140},
-			{dataIndex:'broken_reson',text:'故障原因',width:140},
-			{dataIndex:'handler_method',text:'解决方案'},
-			{dataIndex:'status_name',text:'维修结果'},
-			{dataIndex:'send_date',text:'返厂时间'},
-			{dataIndex:'receive_date',text:'返回时间',width:120},
-			{dataIndex:'str_in_date',text:'入库时间',width:120}
+			{dataIndex:'customer_name',text:'客户名称'},
+			{dataIndex:'pole_code',text:'点位编号',width:60},
+			{dataIndex:'pole_name',text:'点位名称'},
+			{dataIndex:'workunit_name',text:''},
+			{dataIndex:'memo',text:'故障现象'},
+			{dataIndex:'hitchDate',text:'故障时间',width:130},
+			{dataIndex:'createDate',text:'任务下发时间',width:130},
+			{dataIndex:'startHandDate',text:'开始处理时间',width:130},
+			{dataIndex:'submitDate',text:'提交时间',width:130},
+			{dataIndex:'completeDate',text:'完成时间',width:130},
+			{dataIndex:'usedTime',text:'总耗时'},
+			{dataIndex:'repairUsedTime',text:'维修耗时'},
+			{dataIndex:'result',text:'维修结果'},
+			{dataIndex:'overtime',text:'超时',width:60},
+			{dataIndex:'hitchType',text:'故障类型'},
+			{dataIndex:'hitchReason',text:'故障原因'},
+			{dataIndex:'handleMethod_name',text:'处理方法'},
+			{dataIndex:'handle_contact',text:'备注'}
 	    ],
       	store:store,
       	tbar:toolbar,

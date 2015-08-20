@@ -1,4 +1,4 @@
-Ext.defineModel("Ems.report.ScrapReport",{
+Ext.defineModel("Ems.report.TaskRepairReport",{
 	extend:"Ext.data.Model",
 	idProperty:'id',
 	fields:[

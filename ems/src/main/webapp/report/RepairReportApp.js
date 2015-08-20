@@ -89,6 +89,7 @@ Ext.onReady(function(){
 			{dataIndex:'send_date',text:'返厂时间'},
 			{dataIndex:'receive_date',text:'返回时间',width:120},
 			{dataIndex:'str_in_date',text:'入库时间',width:120}
+			
 	    ],
       	store:store,
       	tbar:toolbar,

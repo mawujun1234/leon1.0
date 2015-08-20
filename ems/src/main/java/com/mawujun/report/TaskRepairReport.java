@@ -30,11 +30,41 @@ public class TaskRepairReport {
 	private String handleMethod_name;//处理方法
 	private String handle_contact;
 	
+	/**
+	 * 总耗时=完成时间-任务下发时间
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @return
+	 */
 	public String getUsedTime() {
-		return usedTime;
+		if(completeDate!=null){
+			long ltime=completeDate.getTime()-this.createDate.getTime();
+			//String day=(ltime/(60*60*1000))+"小时"+(ltime%(60*60*1000))/(60*1000)+"分钟";
+			long day=ltime/(24*60*60*1000);
+			long hour=(ltime-(day*(24*60*60*1000)))/(60*60*1000);
+			
+			return day+"天"+hour+"小时";
+			//String day=(ltime/(60*60*1000))+"小时"+(ltime%(60*60*1000))/(60*1000)+"分钟";
+			//return day;
+		}
+		return "";
 	}
+	/**
+	 * 修复耗时=提交时间-任务下发时间
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @return
+	 */
 	public String getRepairUsedTime() {
-		return repairUsedTime;
+		if(submitDate!=null){
+			long ltime=submitDate.getTime()-this.createDate.getTime();
+			//String day=(ltime/(60*60*1000))+"小时"+(ltime%(60*60*1000))/(60*1000)+"分钟";
+			long day=ltime/(24*60*60*1000);
+			long hour=(ltime-(day*(24*60*60*1000)))/(60*60*1000);
+			
+			return day+"天"+hour+"小时";
+			//String day=(ltime/(60*60*1000))+"小时"+(ltime%(60*60*1000))/(60*1000)+"分钟";
+			//return day;
+		}
+		return "";
 	}
 	
 	

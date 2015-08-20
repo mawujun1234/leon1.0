@@ -15,5 +15,6 @@ public interface TaskReportRepository {
 	public Page queryUnrepairPoleReport(Page page);
 	
 	public Page queryRepairReport(Page page);
-	public Page exportRepairReport(@Param("date_start")String date_start,@Param("date_end")String date_end,@Param("pole_code")String pole_code,@Param("hitchType_id")String hitchType_id);
+	public List<TaskRepairReport> queryRepairReport(@Param("date_start")String date_start,@Param("date_end")String date_end
+			,@Param("pole_code")String pole_code,@Param("hitchType_id")String hitchType_id);
 }
