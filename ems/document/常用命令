@@ -26,8 +26,14 @@
 	imp emstest/emstest@emstest   file=d:\daochutest0814.dmp fromuser=ems touser=emstest
 	
 	
-	
-	
+	从新计算所有仓库的所有日结，月结报表
+	begin
+  for store in (
+    select * from ems_store  where type in (1,3)
+  ) loop
+    proc_day_sparepart_init(store.id,'20150710');
+  END LOOP;
+end;
 	
 	
 	

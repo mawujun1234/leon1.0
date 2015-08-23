@@ -55,7 +55,7 @@ begin
     group by c.prod_id  
     union all
     select c.prod_id,count(b.ecode) as installoutnum from ems_borrow a,ems_borrowlist b,ems_equipment c
-    where a.id=b.borrow_id and b.ecode=c.ecode and to_char(a.operatedate,'yyyymmdd') =in_todaykey and a.store_id=in_store_id
+    where a.id=b.borrow_id and b.ecode=c.ecode and to_char(b.returnDate,'yyyymmdd') =in_todaykey and a.store_id=in_store_id
     and b.borrowListType='installout'
     group by c.prod_id  
     union all
@@ -110,12 +110,12 @@ begin
   --¹é»¹Êý
   select prod_id,0 yesterdaynum,0 purchasenum,0 oldnum,0 installoutnum,0 repairinnum,0 scrapoutnum,0 repairoutnum,0 borrownum,sum(borrowreturnnum) as borrowreturnnum from  (
    select c.prod_id,count(b.ecode) as borrowreturnnum from ems_installout a,ems_installoutlist b,ems_equipment c
-    where a.id=b.installout_id and b.ecode=c.ecode and to_char(a.operatedate,'yyyymmdd') =in_todaykey and a.store_id=in_store_id
+    where a.id=b.installout_id and b.ecode=c.ecode and to_char(b.returnDate,'yyyymmdd') =in_todaykey and a.store_id=in_store_id
     and b.installOutListType='borrow' and a.status='over' and b.isreturn='Y'
     group by c.prod_id  
     union all
     select c.prod_id,count(b.ecode) as borrowreturnnum from ems_borrow a,ems_borrowlist b,ems_equipment c
-    where a.id=b.borrow_id and b.ecode=c.ecode and to_char(a.operatedate,'yyyymmdd') =in_todaykey and a.store_id=in_store_id
+    where a.id=b.borrow_id and b.ecode=c.ecode and to_char(b.returnDate,'yyyymmdd') =in_todaykey and a.store_id=in_store_id
     and b.borrowListType='borrow' and a.status in ('over','noreturn') and b.isreturn='Y'
     group by c.prod_id  
      union all

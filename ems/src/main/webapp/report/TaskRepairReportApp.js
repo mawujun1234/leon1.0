@@ -2,7 +2,7 @@ Ext.require("Ems.report.TaskRepairReport");
 Ext.onReady(function(){
 
 	var date_start=Ext.create('Ext.form.field.Date',{
-	  	fieldLabel: '开始时间',
+	  	fieldLabel: '创建时间',
 	  	labelWidth:60,
 	  	hidden:false,
 	  	//editable:false,
@@ -111,7 +111,7 @@ Ext.onReady(function(){
 			{dataIndex:'customer_name',text:'客户名称'},
 			{dataIndex:'pole_code',text:'点位编号',width:60},
 			{dataIndex:'pole_name',text:'点位名称'},
-			{dataIndex:'workunit_name',text:''},
+			{dataIndex:'workunit_name',text:'作业单位'},
 			{dataIndex:'memo',text:'故障现象'},
 			{dataIndex:'hitchDate',text:'故障时间',width:130},
 			{dataIndex:'createDate',text:'任务下发时间',width:130},
