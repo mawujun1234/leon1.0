@@ -219,7 +219,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="use_in!=null and use_in==true ">
 			and a.store_id in (${store_id})  
 		</if>
-	    and to_char(a.operatedate,'yyyy-mm-dd') &gt;=#{date_start}  and to_char(a.operatedate,'yyyy-mm-dd') &lt;=#{date_end}
+	    and to_char(b.returnDate,'yyyy-mm-dd') &gt;=#{date_start}  and to_char(b.returnDate,'yyyy-mm-dd') &lt;=#{date_end}
 		union all
 		select a.store_id,b.ecode,c.name as installouttype_name,b.installouttype_content,b.id as installoutlist_id
 		from ems_borrow a,ems_borrowlist b,ems_installouttype c
@@ -230,7 +230,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="use_in!=null and use_in==true ">
 			and a.store_id in (${store_id})  
 		</if>
-	    and to_char(a.operatedate,'yyyy-mm-dd') &gt;=#{date_start}  and to_char(a.operatedate,'yyyy-mm-dd') &lt;=#{date_end}
+	    and to_char(b.returnDate,'yyyy-mm-dd') &gt;=#{date_start}  and to_char(b.returnDate,'yyyy-mm-dd') &lt;=#{date_end}
 		union all
 		select a.str_out_id store_id,b.ecode,'调拨' installouttype_name,c.name as installouttype_content,b.id as installoutlist_id
 		from ems_adjust a,ems_adjustlist b,ems_store c
