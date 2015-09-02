@@ -7,6 +7,7 @@ Ext.defineModel("Ems.repair.Repair",{
 		{name:'prod_id',type:'string'},
 		{name:'rpa_id',type:'string'},
 		
+		{name:'installIn_id',type:'string'},
 		{name:'repair_date',type:'date', dateFormat: 'Y-m-d'},
 		{name:'workunit_id',type:'string'},
 		{name:'broken_memo',type:'string'},

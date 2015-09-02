@@ -740,6 +740,9 @@ public class TaskService extends AbstractService<Task, String>{
 		if(task.getStatus()==TaskStatus.complete){
 			throw new BusinessException("任务已经完成,不能再确认!");
 		}
+		if(task.getStatus()!=TaskStatus.submited){
+			throw new BusinessException("任务不是提交状态,不能确认!");
+		}
 		//当写好就马上提交了，没有经过保存的时候
 //		this.mobile_save(task_id, hitchType_id, hitchReasonTpl_id, hitchReason);
 		//如果是取消杆位，提交前进行判断，扫描了的设备数量和杆位上实际具有的数量是否一致
