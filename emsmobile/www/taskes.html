@@ -1001,7 +1001,7 @@ $(document).ready(function(e) {
 		});
 	}
 	//渲染设备列表
-	//coverHtml表示是在查询某个任务下的所有设备的时候，要覆盖任务
+	//coverHtml=true表示是在查询某个任务下的所有设备的时候，要覆盖任务
 	function renderEquipmentInfo(obj,coverHtml){
 		var html="";
 		var root=obj.equipmentVOs;
@@ -1014,8 +1014,8 @@ $(document).ready(function(e) {
 			color="";
 			if(root[i].type=='uninstall'){
 				//如果是uninstall。就表示点位上的设备，这个时候要让施工人员选择是替换还是不替换
-				//如果不替换，那就变成了巡检
-				if(coverHtml==false){
+				//如果不替换，那就变成了巡检设备
+				if(coverHtml==false && obj.type=='repair'){
 					var r=confirm("该设备是否要拆卸下来!如果不需要，请选择'取消'");
 					if(!r){
 						root[i].type=='patrol';

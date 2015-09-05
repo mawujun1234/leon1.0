@@ -768,6 +768,8 @@ public class TaskService extends AbstractService<Task, String>{
 			poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.using).andEquals(M.Pole.id, task.getPole_id()));
 		} else if (task.getType() == TaskType.repair) {
 			poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.using).andEquals(M.Pole.id, task.getPole_id()));
+		} else if (task.getType() == TaskType.cancel) {
+			poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.cancel).andEquals(M.Pole.id, task.getPole_id()));
 		}
 
 		//String task_type = task.getType().toString();

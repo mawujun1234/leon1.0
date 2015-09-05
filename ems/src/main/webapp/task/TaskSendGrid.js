@@ -269,8 +269,8 @@ Ext.define('Ems.task.TaskSendGrid',{
 		});
 		//判断一个点位是否能存在多个任务
 		function checkTasknum(record){
-			if(record.get("task_num")>0){
-				alert("点位‘"+record.get("name")+"’已经存在任务,不能再发送了。");
+			if(record.get("task_num")>2){
+				alert("点位‘"+record.get("name")+"’已经存在3个任务,不能再发送了。");
 				return false;
 			} else {
 				return true;
@@ -288,8 +288,8 @@ Ext.define('Ems.task.TaskSendGrid',{
 				}
 				
 				if(records.length==1){
-					if(records[0].get("status")!="uninstall"){
-						alert("只有'未安装'状态的点位，才能发送新安装任务!");
+					if(records[0].get("status")!="uninstall" && records[0].get("status")!="cancel"){
+						alert("只有'未安装'或'取消'状态的点位，才能发送新安装任务!");
 						return;
 					}
 					var bool=checkTasknum(records[0]);

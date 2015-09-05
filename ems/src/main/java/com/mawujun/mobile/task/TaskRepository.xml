@@ -31,25 +31,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
      ) where rownum=1
     </select>
     -->
-    <!-- 
-    select 
-		//a.*,
-		a.id,a.name,a.province,a.city,a.area,a.address,a.status
-		b.name as area_name,
-		c.id as workunit_id,
-		c.name as workunit_name,
-		d.name as customer_name,
-		count(e.id)
-		//e.id as task_id,
-		//e.type as task_type,
-		//e.status as task_status,
-		//e.memo as task_memo
-		from EMS_pole a 
-		inner join ems_area b on  a.area_id=b.id
-		inner join Ems_Workunit c on b.workunit_id=c.id
-		inner join ems_customer d on a.customer_id=d.id
-		left join ems_task e on a.id=e.pole_id and e.status!='complete'
-    -->
 	<select id="queryPoles" resultType="com.mawujun.baseinfo.PoleVO" parameterType="map">
     	select 
 		a.*,
