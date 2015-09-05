@@ -410,6 +410,19 @@ public class TaskController {
 		return "success";
 	}
 	
+	/**
+	 * 用于处理，单子已经派发出去，但是没有经过修理就自动好了的设备
+	 * @author mawujun 16064988@qq.com 
+	 * @param task
+	 * @return
+	 */
+	@RequestMapping("/task/finishRepairTask.do")
+	@ResponseBody
+	public String finishRepairTask(String task_id,Integer hitchType_id,String hitchType,Integer hitchReasonTpl_id,String hitchReason,String handleMethod_id) {
+		taskService.finishRepairTask(task_id,hitchType_id,hitchType,hitchReasonTpl_id,hitchReason,handleMethod_id);
+		return "success";
+	}
+	
 	
 	
 //	@RequestMapping("/task/queryRepairTaskesReport.do")

@@ -1,4 +1,4 @@
-
+ Ext.require('Ems.task.FinishRepairForm') ;
 Ext.define('Ems.task.TaskQueryGrid',{
 	extend:'Ext.grid.Panel',
 	requires: [
@@ -385,6 +385,56 @@ Ext.define('Ems.task.TaskQueryGrid',{
 			
 		});
 		
+		//手工结束维修任务
+		var finish_repair_task_button=Ext.create('Ext.button.Button',{
+			text:'手工结束维修任务',
+			margin:'0 0 0 5',
+			icon:'../icons/arrow_undo.png',
+			handler:function(){
+				
+				Ext.Msg.confirm("消息","只有没有扫描过设备的任务才能后台结束任务，确定要结束该任务吗?",function(btn){
+					if(btn=='no'){
+						return;
+					}
+					var records=me.getSelectionModel().getSelection();
+					if(!records || records.length==0){
+						alert("请先选择任务");
+						return;
+					}
+					
+					if(records.length==1){
+						if(records[0].get("type")!="repair"){
+							alert("只有维修任务才能手工结束!");
+							return
+						}	
+						if(records[0].get("status")=="submited" || records[0].get("status")=="complete"){
+							alert("'已提交'和完'成状'态下的任务不能结束!");
+							return;
+						}	
+						
+						var finish_form=Ext.create('Ems.task.FinishRepairForm',{
+							task_id:records[0].get("id"),
+							listeners:{
+								sended:function(){
+									me.getStore().reload();
+									win.close();
+									
+								}							
+							}
+						});
+						var win=Ext.create('Ext.window.Window',{
+							layout:'fit',
+							width:260,
+							height:300,
+							items:[finish_form]
+						});
+						win.show();
+					} 
+				});
+			}
+			
+		});
+		
 		
 		me.tbar={
 			xtype: 'container',
@@ -394,7 +444,7 @@ Ext.define('Ems.task.TaskQueryGrid',{
 			items: [{
 				items: [customer_combox,workunit_combox,status_combox,task_type_combox,pole_textfield,isOvertime_checkbox,query_button] // toolbar 1
 			}, {
-				items: [cancel_button] // toolbar 2
+				items: [cancel_button,finish_repair_task_button] // toolbar 2
 			}]
 		  }	
 		

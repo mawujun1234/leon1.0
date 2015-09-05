@@ -1259,4 +1259,30 @@ public class TaskService extends AbstractService<Task, String>{
 	public Page querySubmited(Page page) {
 		return taskRepository.querySubmited(page);
 	}
+	
+	
+	public void finishRepairTask(String task_id,Integer hitchType_id,String hitchType,Integer hitchReasonTpl_id,String hitchReason,String handleMethod_id) {
+		//判断是否有扫描了，如果已经有扫描了就不能处理了
+		int count=taskRepository.query_count_tasklist_by_task(task_id);
+		if(count>0){
+			throw new BusinessException("该任务已经有扫描设备，不能在后台结束!");
+		}
+		
+		Task task=taskRepository.get(task_id);
+		
+		task.setHitchType_id(hitchType_id);
+		task.setHitchType(hitchType);
+		task.setHitchReasonTpl_id(hitchReasonTpl_id);
+		task.setHitchReason(hitchReason);
+		task.setHandleMethod_id(handleMethod_id);
+		
+		Date date=new Date();
+		task.setStartHandDate(date);
+		task.setSubmitDate(date);
+		task.setCompleteDate(date);
+		
+		task.setStatus(TaskStatus.complete);
+		
+		taskRepository.update(task);
+	}
 }
