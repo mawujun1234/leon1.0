@@ -19,10 +19,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.mawujun.baseinfo.CustomerService;
+
 @Controller
 public class FrontEquipReportController {
 	@Autowired
 	private FrontEquipReportRepository frontEquipReportRepository;
+	@Autowired
+	private CustomerService customerService;
 	
 	public CellStyle getHeaderStyle(XSSFWorkbook wb, Short fontSize) {
 		CellStyle style = wb.createCellStyle();
@@ -108,9 +112,9 @@ public class FrontEquipReportController {
 	 * @throws IOException
 	 */
 	@RequestMapping("/report/frontequip/exportFrontEquipSumReport.do")
-	public void exportFrontEquipSumReport(HttpServletResponse response,String customer_2,String customer_2_name,String customer_0or1,Boolean isMaching) throws IOException {
+	public void exportFrontEquipSumReport(HttpServletResponse response,String customer_2,String customer_0or1,Boolean isMaching) throws IOException {
 		
-		
+		String customer_2_name=customerService.get(customer_2).getName();
 		List<FrontEquipSumReport_subtype> list_subtype_prod=null;
 		if(isMaching){
 			 list_subtype_prod=frontEquipReportRepository.queryMachineroomEquipSumReport_header(customer_2, customer_0or1);
@@ -259,9 +263,11 @@ public class FrontEquipReportController {
 		return rownum;
 	}
 	@RequestMapping("/report/frontequip/exportFrontEquipListReport.do")
-	public void exportFrontEquipListReport(HttpServletResponse response,String customer_2,String customer_2_name,
-			String customer_0or1,String customer_0or1_name) throws IOException {
+	public void exportFrontEquipListReport(HttpServletResponse response,String customer_2,
+			String customer_0or1) throws IOException {
 		
+		String customer_2_name=customerService.get(customer_2).getName();
+		String customer_0or1_name=customerService.get(customer_0or1).getName();
 		List<FrontEquipListReport> list=frontEquipReportRepository.queryFrontEquipListReport(customer_2, customer_0or1);
 		
 		List<FrontEquipListReport_subtype> list_subtype_prod=frontEquipReportRepository.queryFrontEquipListReport_header(customer_2, customer_0or1);

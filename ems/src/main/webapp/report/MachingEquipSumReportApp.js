@@ -101,6 +101,7 @@ Ext.onReady(function(){
 				}
 				params.isMaching=true;
 				var pp=Ext.Object.toQueryString(params);
+				//alert(pp);
 				window.open(Ext.ContextPath+"/report/frontequip/exportFrontEquipSumReport.do?"+pp, "_blank");
 			}
 		}]
@@ -110,7 +111,7 @@ Ext.onReady(function(){
 	function getParams(){
 		var params={
 			customer_2:customer_2.getValue(),
-			customer_2_name:customer_2.getRawValue(),
+			//customer_2_name:customer_2.getRawValue(),
 			customer_0or1:customer_0or1.getValue()
 		}
 		if(!params.customer_2){

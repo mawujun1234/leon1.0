@@ -60,6 +60,9 @@ public class Pole extends UUIDEntity {
 	}
 	
 	public String geetFullAddress() {
+		if(this.getAddress()==null){
+			this.setAddress("");
+		}
 		return this.getProvince()+this.getCity()+this.getArea()+this.getAddress();
 	}
 	

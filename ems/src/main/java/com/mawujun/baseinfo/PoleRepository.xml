@@ -56,5 +56,29 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		order by a.code asc
     </select>
     
+    
+    
+    <!-- 查询所有还没有经纬度设置过的点位，在初始化经纬度的时候用的 -->
+    <select id="queryNoLngLatPole" resultType="com.mawujun.baseinfo.Pole">
+    	select * from ems_pole where  longitude is null or latitude is null
+    </select>
+    <!-- 更新点位的经纬度 -->
+    <update id="updateCoordes">
+    	update ems_pole set longitude=#{longitude} , latitude=#{latitude} where id=#{pole_id}
+    </update>
+    <!-- 获取要在地图上显示的点位 -->
+    <select id="queryPoles4Map" resultType="com.mawujun.baseinfo.Pole"  parameterType="map">
+    	select a.* from ems_pole a ,ems_area b
+		where a.area_id=b.id
+    	<if test="customer_0or1_id!=null and customer_0or1_id!=''">
+    		and a.customer_id=#{customer_0or1_id}
+    	</if>
+    	<if test="customer_2_id!=null and customer_2_id!='' and (customer_0or1_id==null or customer_0or1_id=='')">
+    		and exists (select 1 from ems_customer c where a.customer_id=c.id and c.parent_id=#{customer_2_id})
+    	</if>
+    	<if test="workunit_id!=null and workunit_id!=''">
+    		and b.workunit_id=#{workunit_id}
+    	</if>
+    </select>
 </mapper>
 
