@@ -118,12 +118,15 @@ Ext.onReady(function(){
 		    		alert("请选择一个区或者作业单位!");
 		    		return;
 		    	}
+		    	//alert("在查询的同时，将会对所有查询结果在地图上进行初始化!如果数据量较大，速度将会有点慢!");
 		    	poleStore.getProxy().extraParams=Ext.apply(poleStore.getProxy().extraParams,{
+		    		queryNoLngLatPole:false,
 		    		customer_2_id:customer_2.getValue(),
 		    		customer_0or1_id:customer_0or1.getValue(),
 		    		workunit_id:workUnit_combox.getValue()
 		    	});
 		    	poleStore.loadPage(1);
+		    	showMap(poleStore.getProxy().extraParams);
 		    },
 		    iconCls: 'form-reload-button'
 		});	
@@ -141,10 +144,11 @@ Ext.onReady(function(){
 								Ext.getBody().unmask();
 								var obj=Ext.decode(response.responseText);
 								if(obj.root){
-									alert(obj.root+"以上点位由于地址问题获取失败，请手工进行调整!");
+									alert(obj.root+"\n等点位由于地址问题获取失败，请手工进行调整或者修改地址!");
 								} else {
 									alert("成功");
 								}
+								poleStore.loadPage(1);
 								
 							},
 							failure:function(){
@@ -155,6 +159,23 @@ Ext.onReady(function(){
 				});
 		    },
 		    icon: '../icons/database_refresh.png'
+		});	
+		
+		
+		var queryNoLngLatPole = new Ext.Action({
+		    text: '未初始化点位',
+		    
+		    handler: function(){
+				Ext.Msg.confirm("提醒","这里查询的是没有设置经纬度的点位!!不受查询条件影响!",function(btn){
+					if(btn=='yes'){
+						poleStore.getProxy().extraParams={
+							queryNoLngLatPole:true
+						}
+						poleStore.loadPage(1);
+					}
+				});
+		    },
+		    icon: '../icons/zoom_refresh.png'
 		});	
 	var poleStore=Ext.create('Ext.data.Store',{
 				autoSync:false,
@@ -183,7 +204,9 @@ Ext.onReady(function(){
 			items: [{
 				items: [customer_2,customer_0or1] // toolbar 1
 			},{
-				items: [workUnit_combox,reload,initAllPoleNoLngLat] // toolbar 1
+				items: [workUnit_combox,reload] // toolbar 1
+			},{
+				items: [queryNoLngLatPole,initAllPoleNoLngLat] // toolbar 1
 			}]
 		},
     	columns:[
@@ -222,9 +245,19 @@ Ext.onReady(function(){
 	
 	var viewPort=Ext.create('Ext.container.Viewport',{
 		layout:'border',
-		items:[polePanel,{html:'地图',region:'center',
-		split: true,
-		collapsible: true}]
+		items:[polePanel,{html:'<div id="allmap" style="height:100%;width:100%;"></div>',region:'center',
+		split: true
+		}]
 	});
-
+ 
 });
+
+function showMap(){
+	// 百度地图API功能
+	var map = new BMap.Map("allmap");
+	var point = new BMap.Point(121.551852,29.834513);
+	map.centerAndZoom(point, 15);
+	var marker = new BMap.Marker(point);  // 创建标注
+	map.addOverlay(marker);               // 将标注添加到地图中
+	marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+}

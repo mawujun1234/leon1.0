@@ -62,6 +62,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     <select id="queryNoLngLatPole" resultType="com.mawujun.baseinfo.Pole">
     	select * from ems_pole where  longitude is null or latitude is null
     </select>
+     <select id="queryNoLngLatPole_count" resultType="com.mawujun.baseinfo.Pole">
+    	select count(id) from ems_pole where  longitude is null or latitude is null
+    </select>
     <!-- 更新点位的经纬度 -->
     <update id="updateCoordes">
     	update ems_pole set longitude=#{longitude} , latitude=#{latitude} where id=#{pole_id}
@@ -79,6 +82,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	<if test="workunit_id!=null and workunit_id!=''">
     		and b.workunit_id=#{workunit_id}
     	</if>
+    </select>
+     <!-- 获取地址 -->
+    <select id="geetFullAddress" resultType="com.mawujun.baseinfo.Pole">
+    	select * from ems_pole where id=#{pole_id}
     </select>
 </mapper>
 

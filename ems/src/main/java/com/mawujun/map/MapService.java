@@ -23,6 +23,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mawujun.baseinfo.Pole;
 import com.mawujun.baseinfo.PoleRepository;
+import com.mawujun.utils.StringUtils;
 
 @Service
 public class MapService {
@@ -38,7 +39,7 @@ public class MapService {
 	 * 
 	 * @author mawujun email:160649888@163.com qq:16064988
 	 * @param address
-	 * @return 如果发生异常，将会返回null
+	 * @return 如果发生异常，将会返回null,如果获取不到经纬度也会返回null
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
@@ -105,17 +106,18 @@ public class MapService {
 		// 查询所有还没有经纬度的点位
 		List<Pole> poles = poleRepository.queryNoLngLatPole();
 		for (Pole pole : poles) {
-			String[] result = getLngLat(pole.geetFullAddress());
-			//以浙江省宁波市鄞州区，这样的地址去获取
-			if(result==null){
-				result = getLngLat(pole.getProvince()+pole.getCity()+pole.getArea());
-				error.append(",");
-				error.append(pole.getCode());
+			String[] result = null;
+			if(StringUtils.hasText(pole.getAddress())){
+				result = getLngLat(pole.geetFullAddress());
 			}
 			if (result != null) {
 				//pole.setLongitude(result[0]);// 经度
 				//pole.setLatitude(result[1]);
 				poleRepository.updateCoordes(result[0],result[1],pole.getId());
+			} else {
+				
+				error.append(pole.getCode());
+				error.append(",");
 			}
 		}
 		

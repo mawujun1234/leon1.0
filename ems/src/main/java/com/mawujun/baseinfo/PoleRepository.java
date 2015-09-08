@@ -36,7 +36,11 @@ public interface PoleRepository extends IRepository<Pole, String>{
 	
 	//======================下面的是地图上用的
 	public List<Pole> queryNoLngLatPole();
+	public Page queryNoLngLatPole(Page page);
+	
 	public void updateCoordes(@Param("longitude")String longitude,@Param("latitude")String latitude,@Param("pole_id")String pole_id);
 	//查询某个客户下的点位
 	public Page queryPoles4Map(Page page);
+	
+	public Pole geetFullAddress(@Param("pole_id")String pole_id);
 }
