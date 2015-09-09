@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,6 +58,7 @@ import com.mawujun.utils.page.Page;
 @Service
 @Transactional(propagation=Propagation.REQUIRED)
 public class TaskService extends AbstractService<Task, String>{
+	static Logger logger=LogManager.getLogger(TaskService.class);
 
 	@Autowired
 	private TaskRepository taskRepository;
@@ -441,6 +444,7 @@ public class TaskService extends AbstractService<Task, String>{
 			}
 			//如果是维修任务,并且不在作业单位上，那要判断是不是在点位上
 			if(equipmentWorkunit==null){
+				logger.info("这里可能出现为null的情况:ecode={},,pole_id={},task_id={}",ecode,pole_id,task_id);
 				int count=equipmentRepository.check_in_pole_by_ecode(ecode, pole_id);
 				if(count==0){
 					throw new BusinessException(ecode+"不在该作业单位或点位上!");
