@@ -1,6 +1,7 @@
 package com.mawujun.baseinfo;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -41,6 +42,8 @@ public interface PoleRepository extends IRepository<Pole, String>{
 	public void updateCoordes(@Param("longitude")String longitude,@Param("latitude")String latitude,@Param("pole_id")String pole_id);
 	//查询某个客户下的点位
 	public Page queryPoles4Map(Page page);
+	//查询某个客户下的点位
+	public List<Pole> queryPoles4Map(Map<String,Object> params);
 	
 	public Pole geetFullAddress(@Param("pole_id")String pole_id);
 }

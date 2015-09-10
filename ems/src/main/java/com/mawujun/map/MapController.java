@@ -1,11 +1,19 @@
 package com.mawujun.map;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mawujun.baseinfo.Pole;
 import com.mawujun.baseinfo.PoleRepository;
+import com.mawujun.utils.M;
+import com.mawujun.utils.Params;
 import com.mawujun.utils.page.Page;
 
 @Controller
@@ -53,6 +61,29 @@ public class MapController {
 		
 //		List<Pole> poles=poleService.query(Cnd.where().andEquals(M.Pole.area_id, area_id).asc(M.Pole.code));
 //		return poles;
+	}
+	
+	@RequestMapping("/map/queryPolesAll.do")
+	@ResponseBody
+	public List<Pole> queryPolesAll(Integer start,Integer limit,String customer_2_id,String customer_0or1_id,String workunit_id) {	
+
+		Params param=Params.init();
+		param.addIf("customer_2_id", customer_2_id);
+		param.addIf("customer_0or1_id", customer_0or1_id);
+		param.addIf("workunit_id", workunit_id);
+		param.addIf("novalue", "novalue");
+		
+		List<Pole> list= poleRepository.queryPoles4Map(param);
+//		List<Map<String,Object>> result=new ArrayList<Map<String,Object>>();
+//		for(Pole pole:list){
+//			Map<String,Object> map=new HashMap<String,Object>();
+//			map.put(M.Pole.id, pole.getId());
+//			map.put("fulladdress",pole.geetFullAddress());
+//			map.put(M.Pole.longitude, pole.getLongitude());
+//			map.put(M.Pole.latitude, pole.getLatitude());
+//			result.add(map);
+//		}
+		return list;
 	}
 //	/**
 //	 * 查询所有还未设置了经纬度的点位

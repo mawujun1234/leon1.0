@@ -110,12 +110,13 @@ Ext.onReady(function(){
 		    text: '查询',
 		    itemId:'reload',
 		    handler: function(){
-//		    	if(customer_2.getValue() && !customer_0or1.getValue()){
-//		    		alert("请选择一个客户");
-//		    		return;
-//		    	}
+
 		    	if(!customer_2.getValue() && !workUnit_combox.getValue()){
-		    		alert("请选择一个区或者作业单位!");
+		    		alert("请选择一个客户或者作业单位!");
+		    		return;
+		    	}
+		    	if(customer_2.getValue() && !customer_0or1.getValue()){
+		    		alert("请选择一个客户,不选的话，将会由于数据量太大，导致浏览那群奔溃!");
 		    		return;
 		    	}
 		    	//alert("在查询的同时，将会对所有查询结果在地图上进行初始化!如果数据量较大，速度将会有点慢!");
@@ -210,6 +211,7 @@ Ext.onReady(function(){
 			}]
 		},
     	columns:[
+    		Ext.create('Ext.grid.RowNumberer'),
 	      	{dataIndex:'status',text:'状态',width:40,menuDisabled:true,renderer : function(value,metadata, record, rowIndex, columnIndex, store) {
 	      	   metadata.tdAttr = "data-qtip='" + record.get("status_name")+ "'";
 			   if (value == 'uninstall') {
@@ -229,7 +231,9 @@ Ext.onReady(function(){
 			{dataIndex:'code',text:'编号',width:60},
 			{dataIndex:'name',text:'点位名称',width:160},
 	      	{dataIndex:'province',text:'地址',flex:1,renderer:function(value,metaData ,record){
-	      		return value+record.get("city")+record.get("area")+record.get("address")
+	      		var fulladdress= value+record.get("city")+record.get("area")+record.get("address");
+	      		metadata.tdAttr = "data-qtip='" + fulladdress+ "'";
+	      		return 
 	      	}}
 	      ],
 	      store:poleStore,
@@ -252,12 +256,31 @@ Ext.onReady(function(){
  
 });
 
-function showMap(){
+function showMap(params){
 	// 百度地图API功能
 	var map = new BMap.Map("allmap");
-	var point = new BMap.Point(121.551852,29.834513);
+	var point = new BMap.Point(121.551852,29.834513);//定位到宁波的某个地方，中心点显示
 	map.centerAndZoom(point, 15);
-	var marker = new BMap.Marker(point);  // 创建标注
-	map.addOverlay(marker);               // 将标注添加到地图中
-	marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+	
+	
+	//查询符合条件的所有数据,排除了没有经纬度的数据，然后再地图上进行展示
+	Ext.Ajax.request({
+		url : Ext.ContextPath + '/map/queryPolesAll.do',
+		params:params,
+		method:'POST',
+		success : function(response) {
+			Ext.getBody().unmask();
+			var obj = Ext.decode(response.responseText);
+			for(var i=0;i<obj.root.length;i++){
+				console.log("longitude:"+obj.root[i].longitude+",latitude:"+obj.root[i].latitude);
+				var point = new BMap.Point(obj.root[i].longitude,obj.root[i].latitude);
+				var marker = new BMap.Marker(point);  // 创建标注
+				map.addOverlay(marker);               // 将标注添加到地图中
+				//marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+			}
+		},
+		failure : function() {
+				//Ext.getBody().unmask();
+		}
+	});
 }

@@ -82,8 +82,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	<if test="workunit_id!=null and workunit_id!=''">
     		and b.workunit_id=#{workunit_id}
     	</if>
+    	and a.longitude is not null and a.latitude is not null
     </select>
-     <!-- 获取地址 -->
+     <!-- 获取地址,在更新pole用的，用来判断点位的地址 有没有变化 -->
     <select id="geetFullAddress" resultType="com.mawujun.baseinfo.Pole">
     	select * from ems_pole where id=#{pole_id}
     </select>
