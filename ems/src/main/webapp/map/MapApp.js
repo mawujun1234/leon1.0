@@ -233,7 +233,7 @@ Ext.onReady(function(){
 	      	{dataIndex:'province',text:'地址',flex:1,renderer:function(value,metaData ,record){
 	      		var fulladdress= value+record.get("city")+record.get("area")+record.get("address");
 	      		metadata.tdAttr = "data-qtip='" + fulladdress+ "'";
-	      		return 
+	      		return fulladdress;
 	      	}}
 	      ],
 	      store:poleStore,
@@ -245,6 +245,14 @@ Ext.onReady(function(){
 		  }]
     });   
 	
+    polePanel.on("itemclick",function(view, record, item, index, e, eOpts){
+    	if(markeres.lastedClickMarker){
+    		markeres.lastedClickMarker.setAnimation(null);
+    	}
+    	var id=record.get("id");
+    	markeres[id].setAnimation(BMAP_ANIMATION_BOUNCE);
+    	markeres.lastedClickMarker=markeres[id];
+    });
 	
 	
 	var viewPort=Ext.create('Ext.container.Viewport',{
@@ -255,7 +263,7 @@ Ext.onReady(function(){
 	});
  
 });
-
+var markeres={};
 function showMap(params){
 	// 百度地图API功能
 	var map = new BMap.Map("allmap");
@@ -276,6 +284,7 @@ function showMap(params){
 				var point = new BMap.Point(obj.root[i].longitude,obj.root[i].latitude);
 				var marker = new BMap.Marker(point);  // 创建标注
 				map.addOverlay(marker);               // 将标注添加到地图中
+				markeres[obj.root[i].id]=marker;
 				//marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
 			}
 		},
