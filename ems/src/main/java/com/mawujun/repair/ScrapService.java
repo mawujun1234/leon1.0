@@ -57,6 +57,9 @@ public class ScrapService extends AbstractService<Scrap, String>{
 		return scrapRepository;
 	}
 	
+	/**
+	 * 点保存的时候，
+	 */
 	public String create(Scrap scrap) {
 		scrap.setId(ymdHmsDateFormat.format(new Date()));
 		super.create(scrap);
@@ -66,16 +69,17 @@ public class ScrapService extends AbstractService<Scrap, String>{
 	//如果报废单还没有建立，就先建立报废单，如果已经建立过了，就走下面的流程
 	public Scrap scrap(Scrap scrap) {
 		if(!StringUtils.hasText(scrap.getId())){
-			scrap.setScrpReqDate(new Date());
-			scrap.setScrpReqOper(ShiroUtils.getAuthenticationInfo().getId());
-			scrap.setStatus(ScrapStatus.scrap_confirm);
-			
-			Repair repair=repairRepository.get(scrap.getRepair_id());
-			scrap.setStore_id(repair.getStr_out_id());//以设备出来的仓库作为报废单接收仓库
-			scrap.setRpa_id(repair.getRpa_id());
 			this.create(scrap);
 		}
 		
+		scrap.setScrpReqDate(new Date());
+		scrap.setScrpReqOper(ShiroUtils.getAuthenticationInfo().getId());
+		scrap.setStatus(ScrapStatus.scrap_confirm);
+		
+		Repair repair=repairRepository.get(scrap.getRepair_id());
+		scrap.setStore_id(repair.getStr_out_id());//以设备出来的仓库作为报废单接收仓库
+		scrap.setRpa_id(repair.getRpa_id());
+		this.update(scrap);
 		
 
 		//把维修单状态改为"报废中"
