@@ -154,8 +154,9 @@ public class InstallInController {
 	
 	@RequestMapping("/installIn/equipmentInStore.do")
 	@ResponseBody
-	//public String equipOutStore(@RequestBody Equipment[] equipments,String store_id,String workUnit_id,String type,String memo) {
-	public String equipmentInStore(@RequestBody InstallInList[] installInLists, InstallIn installin) { 
+	public String equipmentInStore(@RequestBody InstallInList[] installInLists,InstallIn installin) { 
+		乱码，解决方案，浏览器有没有进行转换，2使用一个主体进行封装在一起，然后再传送过来
+		3：还有其他有备注的地方都这样修改
 		installInService.equipmentInStore(installInLists, installin);
 		return "success";
 	}

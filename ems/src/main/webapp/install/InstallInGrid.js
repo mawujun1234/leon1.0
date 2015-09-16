@@ -22,7 +22,7 @@ Ext.define('Ems.install.InstallInGrid',{
 		{dataIndex:'store_name',text:'仓库名称'},
 		{dataIndex:'type_name',text:'入库类型'},
 		{dataIndex:'workUnit_name',text:'作业单位'},
-		{dataIndex:'operater',text:'操作者'},
+		//{dataIndex:'operater',text:'操作者'},
 		{dataIndex:'operateDate',text:'返库时间',xtype: 'datecolumn',   format:'Y-m-d'},
 		{dataIndex:'memo',text:'备注'}
       ];
