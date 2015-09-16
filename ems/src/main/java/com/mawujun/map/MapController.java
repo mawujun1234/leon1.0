@@ -45,7 +45,7 @@ public class MapController {
 	 */
 	@RequestMapping("/map/queryPoles.do")
 	@ResponseBody
-	public Page queryPoles(Integer start,Integer limit,String customer_2_id,String customer_0or1_id,String workunit_id,Boolean queryNoLngLatPole) {	
+	public Page queryPoles(Integer start,Integer limit,String customer_2_id,String[] customer_0or1_id,String workunit_id,Boolean queryNoLngLatPole) {	
 		Page page=Page.getInstance(start,limit);
 		//查询所有没有设置过经纬度的数据
 		if(queryNoLngLatPole==true){	
@@ -53,7 +53,13 @@ public class MapController {
 		}
 		
 		page.addParam("customer_2_id", customer_2_id);
-		page.addParam("customer_0or1_id", customer_0or1_id);
+		StringBuilder builder=new StringBuilder("");
+		for(String aa:customer_0or1_id){
+			builder.append(",'");
+			builder.append(aa);
+			builder.append("'");
+		}
+		page.addParam("customer_0or1_id", builder.substring(1).toString());
 		page.addParam("workunit_id", workunit_id);
 		page.addParam("novalue", "novalue");
 		
@@ -65,11 +71,17 @@ public class MapController {
 	
 	@RequestMapping("/map/queryPolesAll.do")
 	@ResponseBody
-	public List<Pole> queryPolesAll(Integer start,Integer limit,String customer_2_id,String customer_0or1_id,String workunit_id) {	
+	public List<Pole> queryPolesAll(Integer start,Integer limit,String customer_2_id,String[] customer_0or1_id,String workunit_id) {	
 
 		Params param=Params.init();
 		param.addIf("customer_2_id", customer_2_id);
-		param.addIf("customer_0or1_id", customer_0or1_id);
+		StringBuilder builder=new StringBuilder("");
+		for(String aa:customer_0or1_id){
+			builder.append(",'");
+			builder.append(aa);
+			builder.append("'");
+		}
+		param.addIf("customer_0or1_id", builder.substring(1));
 		param.addIf("workunit_id", workunit_id);
 		param.addIf("novalue", "novalue");
 		
@@ -84,6 +96,22 @@ public class MapController {
 //			result.add(map);
 //		}
 		return list;
+	}
+	/**
+	 * 更新某个点位的经纬度
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param start
+	 * @param limit
+	 * @param customer_2_id
+	 * @param customer_0or1_id
+	 * @param workunit_id
+	 * @return
+	 */
+	@RequestMapping("/map/updatePoleLngLat.do")
+	@ResponseBody
+	public String updatePoleLngLat(String pole_id,String longitude,String latitude) {	
+		poleRepository.updateCoordes(longitude, latitude, pole_id);
+		return "success";
 	}
 //	/**
 //	 * 查询所有还未设置了经纬度的点位

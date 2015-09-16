@@ -62,7 +62,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     <select id="queryNoLngLatPole" resultType="com.mawujun.baseinfo.Pole">
     	select * from ems_pole where  longitude is null or latitude is null
     </select>
-     <select id="queryNoLngLatPole_count" resultType="com.mawujun.baseinfo.Pole">
+     <select id="queryNoLngLatPole_count" resultType="int">
     	select count(id) from ems_pole where  longitude is null or latitude is null
     </select>
     <!-- 更新点位的经纬度 -->
@@ -74,7 +74,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	select a.* from ems_pole a ,ems_area b
 		where a.area_id=b.id
     	<if test="customer_0or1_id!=null and customer_0or1_id!=''">
-    		and a.customer_id=#{customer_0or1_id}
+    		and a.customer_id in (${customer_0or1_id})
     	</if>
     	<if test="customer_2_id!=null and customer_2_id!='' and (customer_0or1_id==null or customer_0or1_id=='')">
     		and exists (select 1 from ems_customer c where a.customer_id=c.id and c.parent_id=#{customer_2_id})
