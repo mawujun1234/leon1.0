@@ -1,18 +1,16 @@
 package com.mawujun.install;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.mawujun.baseinfo.Equipment;
 import com.mawujun.baseinfo.EquipmentService;
-import com.mawujun.baseinfo.EquipmentStatus;
-import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.utils.M;
 import com.mawujun.utils.StringUtils;
@@ -25,6 +23,7 @@ import com.mawujun.utils.page.Page;
 @Controller
 //@RequestMapping("/installIn")
 public class InstallInController {
+	private static Logger logger=LogManager.getLogger(InstallInController.class);
 
 	@Resource
 	private InstallInService installInService;
@@ -155,8 +154,9 @@ public class InstallInController {
 	@RequestMapping("/installIn/equipmentInStore.do")
 	@ResponseBody
 	public String equipmentInStore(@RequestBody InstallInList[] installInLists,InstallIn installin) { 
-		乱码，解决方案，浏览器有没有进行转换，2使用一个主体进行封装在一起，然后再传送过来
-		3：还有其他有备注的地方都这样修改
+		//乱码，解决方案，浏览器有没有进行转换，2使用一个主体进行封装在一起，然后再传送过来
+		//3：还有其他有备注的地方都这样修改
+		logger.info("========================{}",installin.getMemo());
 		installInService.equipmentInStore(installInLists, installin);
 		return "success";
 	}

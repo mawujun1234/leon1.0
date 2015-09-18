@@ -421,15 +421,15 @@ Ext.onReady(function(){
             	equipStore.each(function(record){
             		equipments.push(record.data);
             	});
-            	
+            	//alert(Ext.Object.toQueryString({"aa":'水电费'}));
 				Ext.Ajax.request({
 					url:Ext.ContextPath+'/installIn/equipmentInStore.do',
 					method:'POST',
 					timeout:600000000,
 					headers:{ 'Content-Type':'application/json;charset=UTF-8'},
-					//params:{memo:memo_textfield.getValue(),store_id:store_combox.getValue(),workUnit_id:workUnit_combox.getValue(),type:type_combox.getValue()},
-					//jsonData:equipments,
-					jsonData:{installInLists:equipments,installin:{memo:memo_textfield.getValue(),store_id:store_combox.getValue(),workUnit_id:workUnit_combox.getValue(),type:type_combox.getValue()}},
+					params:{memo:memo_textfield.getValue(),store_id:store_combox.getValue(),workUnit_id:workUnit_combox.getValue(),type:type_combox.getValue()},
+					jsonData:equipments,
+					//jsonData:{installInLists:equipments,installin:{memo:memo_textfield.getValue(),store_id:store_combox.getValue(),workUnit_id:workUnit_combox.getValue(),type:type_combox.getValue()}},
 					success:function(response){
 						store_id_temp=null;//用来判断仓库的id有没有变
 						//workUnit_id_temp=null;
