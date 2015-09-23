@@ -109,9 +109,7 @@ Ext.onReady(function(){
 	function getParams(){
 		var params={
 			customer_2:customer_2.getValue(),
-			//customer_2_name:customer_2.getRawValue(),
-			customer_0or1:customer_0or1.getValue(),
-			//customer_0or1_name:customer_0or1.getRawValue()
+			customer_0or1:customer_0or1.getValue()
 		}
 		if(!params.customer_2){
 			Ext.Msg.alert("提醒","请先选择一个区!");
