@@ -1,0 +1,46 @@
+{
+    "cordova-plugin-device": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-device"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-dialogs": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-dialogs"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-splashscreen": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-splashscreen"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "com.mawujun.plugins.barcodescanner": {
+        "source": {
+            "type": "local",
+            "path": "E:\\eclipse\\mobile\\cordova_plugins\\platforms\\android\\BarcodeScanner"
+        }
+    },
+    "com.mawujun.plugins.updateApp": {
+        "source": {
+            "type": "local",
+            "path": "E:\\eclipse\\mobile\\cordova_plugins\\platforms\\android\\UpdateApp"
+        }
+    },
+    "com.mawujun.plugins.baiduLocation": {
+        "source": {
+            "type": "local",
+            "path": "E:\\eclipse\\mobile\\cordova_plugins\\platforms\\android\\BaiduLocation"
+        },
+        "is_top_level": true,
+        "variables": {}
+    }
+}
