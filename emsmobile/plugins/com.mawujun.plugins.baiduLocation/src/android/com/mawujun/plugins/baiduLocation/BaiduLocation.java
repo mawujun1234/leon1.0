@@ -53,7 +53,7 @@ public class BaiduLocation  extends CordovaPlugin {
 		setCallbackContext(callbackContext);
 		if (GET_ACTION.equals(action)) {
 			cordova.getActivity().runOnUiThread(new Runnable() {
-			// cordova.getThreadPool().execute(new Runnable() {
+			// cordova.getThreadPool().execute(new Runnable() {//使用这个线程，一运行就报错，一运行就报错
 				@Override
 				public void run() {
 					Log.d(LOG_TAG, "开始获取gps地址!");

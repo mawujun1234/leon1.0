@@ -10,8 +10,30 @@
 		cordova run android -release
 	6：把生成的apk文件拷贝到ems文件的webapp文件夹下，并重名名为	emsmobile-release.apk
 	7：更新到远程服务器
-		122.227.163.82:8083 administrator nbdw001
+		122.227.163.82:8083 administrator 
 		只要把emsmobile-release.apk文件和apkVersion.jss文件拷贝到服务器的webapp目录下就可以了，就可以实现更新了
 		
 		生成android的正式版本
 cordova run android -release
+
+
+
+
+
+ems中安装的插件：
+cordova plugin rm org.apache.cordova.device
+cordova plugin add cordova-plugin-device
+
+cordova plugin rm org.apache.cordova.dialogs
+cordova plugin add cordova-plugin-dialogs
+
+
+cordova plugin rm org.apache.cordova.splashscreen
+cordova plugin add cordova-plugin-splashscreen
+
+
+cordova plugins rm com.mawujun.plugins.baiduLocation
+cordova plugin add E:\eclipse\mobile\cordova_plugins\platforms\android\BaiduLocation
+
+cordova plugins rm com.mawujun.plugins.barcodescanner
+cordova plugin add E:\eclipse\mobile\cordova_plugins\platforms\android\BarcodeScanner

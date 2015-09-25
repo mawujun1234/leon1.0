@@ -13,6 +13,10 @@
                             "count": 1
                         },
                         {
+                            "xml": "<feature name=\"UpdateApp\"><param name=\"android-package\" value=\"com.mawujun.plugins.updateApp.UpdateApp\" /></feature>",
+                            "count": 1
+                        },
+                        {
                             "xml": "<feature name=\"Device\"><param name=\"android-package\" value=\"org.apache.cordova.device.Device\" /></feature>",
                             "count": 1
                         },
@@ -21,15 +25,11 @@
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"SplashScreen\"><param name=\"android-package\" value=\"org.apache.cordova.splashscreen.SplashScreen\" /></feature>",
+                            "xml": "<feature name=\"SplashScreen\"><param name=\"android-package\" value=\"org.apache.cordova.splashscreen.SplashScreen\" /><param name=\"onload\" value=\"true\" /></feature>",
                             "count": 1
                         },
                         {
                             "xml": "<feature name=\"BaiduLocation\"><param name=\"android-package\" value=\"com.mawujun.plugins.baiduLocation.BaiduLocation\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"UpdateApp\"><param name=\"android-package\" value=\"com.mawujun.plugins.updateApp.UpdateApp\" /></feature>",
                             "count": 1
                         }
                     ]
@@ -37,6 +37,52 @@
             },
             "AndroidManifest.xml": {
                 "parents": {
+                    "/*": [
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />",
+                            "count": 2
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.INTERNET\" />",
+                            "count": 2
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\" />",
+                            "count": 2
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.READ_LOGS\" />",
+                            "count": 1
+                        }
+                    ],
                     "/manifest/application": [
                         {
                             "xml": "<activity android:clearTaskOnLaunch=\"true\" android:configChanges=\"orientation|keyboardHidden\" android:exported=\"false\" android:name=\"com.google.zxing.client.android.CaptureActivity\" android:screenOrientation=\"portrait\" android:theme=\"@android:style/Theme.NoTitleBar.Fullscreen\" android:windowSoftInputMode=\"stateAlwaysHidden\"><intent-filter><action android:name=\"com.mawujun.plugins.barcodescanner.SCAN\" /><category android:name=\"android.intent.category.DEFAULT\" /></intent-filter></activity>",
@@ -130,52 +176,6 @@
                         },
                         {
                             "xml": "<uses-permission android:name=\"android.permission.BROADCAST_STICKY\" />",
-                            "count": 1
-                        }
-                    ],
-                    "/*": [
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.INTERNET\" />",
-                            "count": 2
-                        },
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />",
-                            "count": 2
-                        },
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\" />",
-                            "count": 2
-                        },
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.READ_LOGS\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\" />",
                             "count": 1
                         }
                     ]
@@ -669,19 +669,19 @@
         "com.mawujun.plugins.barcodescanner": {
             "PACKAGE_NAME": "com.mawujun.mobile"
         },
-        "org.apache.cordova.device": {
+        "com.mawujun.plugins.updateApp": {
             "PACKAGE_NAME": "com.mawujun.mobile"
         },
-        "org.apache.cordova.dialogs": {
+        "cordova-plugin-device": {
             "PACKAGE_NAME": "com.mawujun.mobile"
         },
-        "org.apache.cordova.splashscreen": {
+        "cordova-plugin-dialogs": {
+            "PACKAGE_NAME": "com.mawujun.mobile"
+        },
+        "cordova-plugin-splashscreen": {
             "PACKAGE_NAME": "com.mawujun.mobile"
         },
         "com.mawujun.plugins.baiduLocation": {
-            "PACKAGE_NAME": "com.mawujun.mobile"
-        },
-        "com.mawujun.plugins.updateApp": {
             "PACKAGE_NAME": "com.mawujun.mobile"
         }
     },
