@@ -60,7 +60,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		where a.repair_id=b.id and a.ecode=#{ecode}
 	</select>
 	<select id="getEquipmentPoleVO" resultType="com.mawujun.baseinfo.EquipmentPoleVO">
-		select a.*,b.name as pole_name,b.address as pole_address from 
+		select a.*,b.code as pole_code,b.name as pole_name,b.address as pole_address from 
 		ems_equipment_pole a,ems_pole b
 		where a.pole_id=b.id and a.ecode=#{ecode}
 	</select>

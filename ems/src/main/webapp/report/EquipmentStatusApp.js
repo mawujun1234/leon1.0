@@ -109,6 +109,11 @@ Ext.onReady(function(){
 	        allowBlank: true
 	    },
 	    {
+	        fieldLabel: '点位编号',
+	        name: 'pole_code',
+	        allowBlank: true
+	    },
+	    {
 	        fieldLabel: '点位地址',
 	        name: 'pole_address',
 	        allowBlank: true

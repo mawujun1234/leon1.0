@@ -16,7 +16,7 @@ public class Pole extends UUIDEntity {
 	 */
 	private static final long serialVersionUID = 1L;
 	@Column(length=15)
-	private Integer code;
+	private String code;
 	@Column(length=60)
 	private String name;
 	@Column(length=20)
@@ -146,11 +146,11 @@ public class Pole extends UUIDEntity {
 		this.status = status;
 	}
 
-	public Integer getCode() {
+	public String getCode() {
 		return code;
 	}
 
-	public void setCode(Integer code) {
+	public void setCode(String code) {
 		this.code = code;
 	}
 

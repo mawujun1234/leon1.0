@@ -1,6 +1,5 @@
 package com.mawujun.baseinfo;
 
-import javax.persistence.Transient;
 
 public class EquipmentVO extends Equipment {
 	
@@ -23,6 +22,7 @@ public class EquipmentVO extends Equipment {
 	
 	private Integer num;
 	
+	private String pole_code;
 	private String pole_address;
 	//
 	//private String status_name;
@@ -125,5 +125,13 @@ public class EquipmentVO extends Equipment {
 
 	public void setProd_quality_month(Integer prod_quality_month) {
 		this.prod_quality_month = prod_quality_month;
+	}
+
+	public String getPole_code() {
+		return pole_code;
+	}
+
+	public void setPole_code(String pole_code) {
+		this.pole_code = pole_code;
 	}
 }

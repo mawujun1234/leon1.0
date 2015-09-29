@@ -258,15 +258,15 @@ $(function(){
 		document.addEventListener("backbutton", logout, false);//backbutton
 		
 		navigator.splashscreen.hide();
-	//	//alert(sessionStorage.getItem("user") +"====" +sessionStorage.getItem("watchID"));
-//		if(sessionStorage.getItem("user") && !sessionStorage.getItem("watchID")){
-//			//setTimeout(uploadGeolocation,2000);
-//			//alert(0);
-//			var watchID=window.setInterval("uploadGeolocation()",1000*60*1);
-//			//用来控制应用只发送一个请求
-//			sessionStorage.setItem("watchID",watchID);
-//			//uploadGeolocation();
-//		}
+		//alert(sessionStorage.getItem("user") +"====" +sessionStorage.getItem("watchID"));
+		if(sessionStorage.getItem("user") && !sessionStorage.getItem("watchID")){
+			//setTimeout(uploadGeolocation,2000);
+			//alert(0);
+			var watchID=window.setInterval("uploadGeolocation()",1000*60*1);
+			//用来控制应用只发送一个请求
+			sessionStorage.setItem("watchID",watchID);
+			//uploadGeolocation();
+		}
 		
 		checkOrUpdateApp();//检查版本信息，并更新
 	}, false); //deviceready

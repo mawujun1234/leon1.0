@@ -37,3 +37,7 @@ cordova plugin add E:\eclipse\mobile\cordova_plugins\platforms\android\BaiduLoca
 
 cordova plugins rm com.mawujun.plugins.barcodescanner
 cordova plugin add E:\eclipse\mobile\cordova_plugins\platforms\android\BarcodeScanner
+
+下面两个是因为更新到codova后，网络访问不了然后再添加的，以后可能会去掉
+cordova plugins add cordova-plugin-whitelist
+cordova plugins add cordova-plugin-legacy-whitelist

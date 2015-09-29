@@ -56,7 +56,7 @@ Ext.define('Ems.baseinfo.PoleForm',{
 	        fieldLabel: '编号',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'code',        
-	        xtype:'numberfield',
+	        xtype:'textfield',
 	        allowBlank: true
 	    },
 	    {

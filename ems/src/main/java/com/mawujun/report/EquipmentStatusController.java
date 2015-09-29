@@ -1,9 +1,5 @@
 package com.mawujun.report;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,19 +7,15 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.mawujun.baseinfo.EquipmentCycle;
-import com.mawujun.baseinfo.EquipmentCycleService;
 import com.mawujun.baseinfo.EquipmentPlace;
+import com.mawujun.baseinfo.EquipmentPoleVO;
 import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.EquipmentService;
-import com.mawujun.baseinfo.EquipmentStatus;
 import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.baseinfo.PoleService;
 import com.mawujun.baseinfo.StoreService;
 import com.mawujun.baseinfo.WorkUnitService;
 import com.mawujun.exception.BusinessException;
-import com.mawujun.repository.cnd.Cnd;
-import com.mawujun.utils.M;
 /**
  * 
  * @author mawujun email:16064988@qq.com qq:16064988
@@ -67,9 +59,11 @@ public class EquipmentStatusController {
 		} else if(baseinfo.getPlace()==EquipmentPlace.store ){
 			baseinfo.setStore_name(equipmentRepository.getEquipmentStoreVO(ecode).getStore_name());
 		} else if(baseinfo.getPlace()==EquipmentPlace.repair){
-			baseinfo.setPole_address(equipmentRepository.getEquipmentRepairVO(ecode).getRepair_name());
+			baseinfo.setStore_name(equipmentRepository.getEquipmentRepairVO(ecode).getRepair_name());
 		} else if(baseinfo.getPlace()==EquipmentPlace.pole){
-			baseinfo.setPole_address(equipmentRepository.getEquipmentPoleVO(ecode).getPole_address());
+			EquipmentPoleVO aaaa=equipmentRepository.getEquipmentPoleVO(ecode);
+			baseinfo.setPole_address(aaaa.getPole_address());
+			baseinfo.setPole_code(aaaa.getPole_code());
 		}
 
 		baseinfo.setFisData(null);
