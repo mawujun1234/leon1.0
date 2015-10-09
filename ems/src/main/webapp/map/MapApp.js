@@ -263,6 +263,7 @@ Ext.onReady(function(){
 		    handler: function(){
 				Ext.Msg.confirm("提醒","这里查询的是没有设置经纬度的点位!!不受查询条件影响!",function(btn){
 					if(btn=='yes'){
+						showMap(null);
 						poleStore.getProxy().extraParams={
 							queryNoLngLatPole:true
 						}
@@ -341,8 +342,16 @@ Ext.onReady(function(){
 	
     polePanel.on("itemclick",function(view, record, item, index, e, eOpts){
     	
+    	//如果有经纬度，说明已经在界面上初始化了
+    	if(record.get("longitude")){
+    		
+    	} else {
+    		//否则，就表示查询的是“未初始化”的点位
+    		addMarker2Map(record.getData());
+    	}
     	var id=record.get("id");
     	selectedMarker(markeres[id]);
+    		
     });
 	
 	
@@ -356,12 +365,18 @@ Ext.onReady(function(){
 });
 //档点位被选中的时候
 function selectedMarker(marker){
+	
 	if(markeres.lastedClickMarker){
     	markeres.lastedClickMarker.setAnimation(null);
     }
 	marker.setAnimation(BMAP_ANIMATION_BOUNCE);
     markeres.lastedClickMarker=marker;
     map.setCenter(marker.getPosition());
+}
+
+function clearMarker() {
+	map.clearOverlays();
+	markeres={};
 }
 	function addClickHandler(content,marker){
 		marker.addEventListener("mouseover",function(e){		
@@ -377,7 +392,77 @@ function selectedMarker(marker){
 		var infoWindow = new BMap.InfoWindow(content,opts);  // 创建信息窗口对象 
 		map.openInfoWindow(infoWindow,point); //开启信息窗口
 	}
-var markeres={};
+	
+function addMarker2Map(pole){
+	var point =center_point;// new BMap.Point(pole.longitude, pole.latitude);
+	if(pole.longitude){
+		point = new BMap.Point(pole.longitude, pole.latitude);
+	}
+	var marker = null;
+	if (pole.status == 'hitch') {
+		marker = new BMap.Marker(point, {
+					icon : brokenIcon
+				}); // 创建标注
+	} else {
+		marker = new BMap.Marker(point, {
+					icon : poleIcon
+				}); // 创建标注
+	}
+
+	map.addOverlay(marker); // 将标注添加到地图中
+	marker.enableDragging();
+	marker.pole_id = pole.id;
+
+	addClickHandler("编码:" + pole.code + "<br/>名称:" + pole.name + "<br/>地址:"
+					+ pole.province + pole.city + pole.area + pole.address,
+			marker);
+
+	marker.addEventListener("dragstart", function(type, target) {
+				type.target.orgin_point = type.target.getPosition();
+			});
+	marker.addEventListener("dragend", function(type, target, pixel, point) {
+
+		var marker = type.target;
+		Ext.Msg.confirm("消息", "确定是否要修改这个点位的经纬度?", function(btn) {
+					if (btn == 'no') {
+						marker.setPosition(marker.orgin_point);
+						marker.orgin_point = null;
+						// map.setCenter(marker.orgin_point)
+					} else {
+						Ext.Ajax.request({
+									url : Ext.ContextPath
+											+ '/map/updatePoleLngLat.do',
+									method : 'POST',
+									params : {
+										pole_id : marker.pole_id,
+										longitude : marker.getPosition().lng,
+										latitude : marker.getPosition().lat
+									},
+									success : function(response) {
+										var obj = Ext
+												.decode(response.responseText);
+										if (obj.success) {
+
+										} else {
+											alert("更新失败!");
+											marker
+													.setPosition(marker.orgin_point);
+											marker.orgin_point = null;
+										}
+									},
+									failure : function() {
+										alert("更新失败!");
+										marker.setPosition(marker.orgin_point);
+										marker.orgin_point = null;
+									}
+								});
+
+					}
+				})
+	});
+	markeres[pole.id] = marker;
+}
+var markeres={};//界面上已经展示的点位
 var map=null;
 var opts = {
 	width : 250,     // 信息窗口宽度
@@ -390,11 +475,12 @@ var poleIcon = new BMap.Icon("./images/camera48.png", new BMap.Size(48,48));
 //http://www.easyicon.net/1187198-Status_dialog_error_symbolic_icon.html
 //http://www.easyicon.net/1187197-Status_dialog_error_icon.html
 var brokenIcon = new BMap.Icon("./images/broken48.png", new BMap.Size(48,48));
+var center_point = new BMap.Point(121.551852,29.834513);//宁波的中心位置，而且对于未定位的点位也是定位在这个地方的
 function showMap(params){
 	// 百度地图API功能
 	map = new BMap.Map("allmap");
-	var point = new BMap.Point(121.551852,29.834513);//定位到宁波的某个地方，中心点显示
-	map.centerAndZoom(point, 15);
+	//定位到宁波的某个地方，中心点显示
+	map.centerAndZoom(center_point, 15);
 	map.addEventListener("zoomstart", function(type, target){
 		map.orgion_center_point=map.getCenter();
 		//map.setCenter(markeres.lastedClickMarker.getPosition());
@@ -405,6 +491,10 @@ function showMap(params){
 	});
 	
 	//查询符合条件的所有数据,排除了没有经纬度的数据，然后再地图上进行展示
+	if(params==null){//如果没有参数就表示，不需要去获取点位信息
+		clearMarker();
+		return;
+	}
 	Ext.Ajax.request({
 		url : Ext.ContextPath + '/map/queryPolesAll.do',
 		params:params,
@@ -415,61 +505,62 @@ function showMap(params){
 			for(var i=0;i<obj.root.length;i++){
 				//console.log("longitude:"+pole.longitude+",latitude:"+pole.latitude);
 				var pole=obj.root[i];
-				var point = new BMap.Point(pole.longitude,pole.latitude);
-				var marker =null;
-				if(pole.status=='hitch'){
-					marker = new BMap.Marker(point,{icon:brokenIcon});  // 创建标注
-				} else {
-					marker = new BMap.Marker(point,{icon:poleIcon});  // 创建标注
-				}
-				
-				map.addOverlay(marker);               // 将标注添加到地图中
-				marker.enableDragging(); 
-				marker.pole_id=pole.id;
-				
-				addClickHandler("编码:"+pole.code+"<br/>名称:"+pole.name+"<br/>地址:"+pole.province+pole.city+pole.area+pole.address,marker);
-				
-				marker.addEventListener("dragstart", function(type, target){
-					type.target.orgin_point=type.target.getPosition();
-				});
-				marker.addEventListener("dragend", function(type, target, pixel, point){
-
-					var marker=type.target;
-					Ext.Msg.confirm("消息","确定是否要修改这个点位的经纬度?",function(btn){
-						if(btn=='no'){
-							marker.setPosition(marker.orgin_point);
-							marker.orgin_point=null;
-							//map.setCenter(marker.orgin_point)
-						} else {
-							Ext.Ajax.request({
-								url:Ext.ContextPath+'/map/updatePoleLngLat.do',
-								method:'POST',
-								params:{
-									pole_id:marker.pole_id,
-									longitude:marker.getPosition().lng,
-									latitude:marker.getPosition().lat
-								},
-								success:function(response){
-									var obj=Ext.decode(response.responseText);
-									if(obj.success){
-									
-									} else {
-										alert("更新失败!");
-										marker.setPosition(marker.orgin_point);
-										marker.orgin_point=null;
-									}
-								},
-								failure:function(){
-									alert("更新失败!");
-									marker.setPosition(marker.orgin_point);
-									marker.orgin_point=null;
-								}
-							});
-							
-						}
-					})
-				});
-				markeres[pole.id]=marker;
+				addMarker2Map(pole);
+//				var point = new BMap.Point(pole.longitude,pole.latitude);
+//				var marker =null;
+//				if(pole.status=='hitch'){
+//					marker = new BMap.Marker(point,{icon:brokenIcon});  // 创建标注
+//				} else {
+//					marker = new BMap.Marker(point,{icon:poleIcon});  // 创建标注
+//				}
+//				
+//				map.addOverlay(marker);               // 将标注添加到地图中
+//				marker.enableDragging(); 
+//				marker.pole_id=pole.id;
+//				
+//				addClickHandler("编码:"+pole.code+"<br/>名称:"+pole.name+"<br/>地址:"+pole.province+pole.city+pole.area+pole.address,marker);
+//				
+//				marker.addEventListener("dragstart", function(type, target){
+//					type.target.orgin_point=type.target.getPosition();
+//				});
+//				marker.addEventListener("dragend", function(type, target, pixel, point){
+//
+//					var marker=type.target;
+//					Ext.Msg.confirm("消息","确定是否要修改这个点位的经纬度?",function(btn){
+//						if(btn=='no'){
+//							marker.setPosition(marker.orgin_point);
+//							marker.orgin_point=null;
+//							//map.setCenter(marker.orgin_point)
+//						} else {
+//							Ext.Ajax.request({
+//								url:Ext.ContextPath+'/map/updatePoleLngLat.do',
+//								method:'POST',
+//								params:{
+//									pole_id:marker.pole_id,
+//									longitude:marker.getPosition().lng,
+//									latitude:marker.getPosition().lat
+//								},
+//								success:function(response){
+//									var obj=Ext.decode(response.responseText);
+//									if(obj.success){
+//									
+//									} else {
+//										alert("更新失败!");
+//										marker.setPosition(marker.orgin_point);
+//										marker.orgin_point=null;
+//									}
+//								},
+//								failure:function(){
+//									alert("更新失败!");
+//									marker.setPosition(marker.orgin_point);
+//									marker.orgin_point=null;
+//								}
+//							});
+//							
+//						}
+//					})
+//				});
+//				markeres[pole.id]=marker;
 				//marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
 			}
 		},
