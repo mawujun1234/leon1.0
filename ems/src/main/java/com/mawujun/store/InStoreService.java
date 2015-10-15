@@ -89,7 +89,7 @@ public class InStoreService extends AbstractService<InStore, String>{
 			equipment.setFisData(new Date());
 			//equipment.setLastInDate(new Date());
 			equipment.setStatus(EquipmentStatus.in_storage);
-			equipment.setIsnew(true);
+			//equipment.setIsnew(true);
 			//equipment.setStore_id(inStore.getStore_id());
 			equipment.setPlace(EquipmentPlace.store);
 			equipment.setMemo("");
@@ -119,6 +119,7 @@ public class InStoreService extends AbstractService<InStore, String>{
 			InStoreList inStoreList=new InStoreList();
 			inStoreList.setEcode(equipment.getEcode());
 			inStoreList.setInStore_id(instore_id);
+			inStoreList.setIsnew(equipment.getIsnew());
 			inStoreList.setOrderlist_id(equipment.getOrderlist_id());
 			inStoreListRepository.create(inStoreList);
 			

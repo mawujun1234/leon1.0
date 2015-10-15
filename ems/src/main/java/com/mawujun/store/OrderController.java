@@ -81,7 +81,8 @@ public class OrderController {
 	 */
 	@RequestMapping("/order/queryMain.do")
 	@ResponseBody
-	public Page queryMain(Integer start,Integer limit,String store_id,String date_start,String date_end,String orderNo,String project_id,String supplier_id,String status) {
+	public Page queryMain(Integer start,Integer limit,String store_id,String date_start,String date_end,String orderNo
+			,String project_id,String supplier_id,String status,String orderType) {
 		Page page=Page.getInstance(start,limit);
 		page.addParam(M.Order.store_id, store_id);
 		if(orderNo!=null && !"".equals(orderNo.trim())){
@@ -93,6 +94,7 @@ public class OrderController {
 		page.addParam("date_end", date_end);
 		page.addParam(M.Order.status, status);
 		page.addParam("user_id", ShiroUtils.getAuthenticationInfo().getId());
+		page.addParam("orderType", orderType);
 		Page orderes=orderService.queryMain(page);
 		return orderes;
 	}

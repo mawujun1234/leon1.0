@@ -85,7 +85,28 @@ Ext.define('Ems.store.OrderGrid',{
 		flex:1,
 		allowBlank: true
 	});
-	
+	var orderType = Ext.create('Ext.form.field.ComboBox', {
+				fieldLabel : '订单类型',
+				labelAlign : 'right',
+				labelWidth:60,
+				//xtype : 'combobox',
+				// afterLabelTextTpl: Ext.required,
+				name : 'orderType',
+				displayField : 'name',
+				valueField : 'id',
+				// value:"1",
+				allowBlank: false,
+				store : Ext.create('Ext.data.Store', {
+							fields : ['id', 'name'],
+							data : [{
+										id : "old_equipment",
+										name : "旧品订单"
+									}, {
+										id : "new_equipment",
+										name : "新品订单"
+									}]
+						})
+	});
 	 var status_combox=Ext.create('Ext.form.field.ComboBox',{
 	        fieldLabel: '状态',
 	        labelAlign:'right',
@@ -130,6 +151,7 @@ Ext.define('Ems.store.OrderGrid',{
 	  
 	me.store.on("beforeload",function(store){
 		store.getProxy().extraParams={
+				orderType:orderType.getValue(),
 					store_id:store_combox.getValue(),
 					date_start: date_start.getRawValue(),
 					date_end: date_end.getRawValue(),
@@ -150,6 +172,8 @@ Ext.define('Ems.store.OrderGrid',{
 			items: [supplier_combox] // toolbar 1
 		},{
 			items: [project_combox] // toolbar 1
+		},{
+			items: [orderType] // toolbar 1
 		}, {
 			items: [status_combox,order_no,{
 			text: '查询',

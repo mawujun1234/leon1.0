@@ -22,8 +22,10 @@ begin
  ----下面的所有这些应该是当日得发生额
  --采购新增
   select prod_id,0 yesterdaynum,sum(purchasenum) purchasenum,0 oldnum,0 installoutnum,0 repairinnum,0 scrapoutnum,0 repairoutnum,0 borrownum,0 borrowreturnnum from (
+    --订单录入的时候，新品新增数量
     select c.prod_id,count(b.ecode) as purchasenum from ems_instore a,ems_instorelist b,ems_equipment c
     where a.id=b.instore_id and b.ecode=c.ecode and to_char(a.operatedate,'yyyymmdd') =in_todaykey and a.store_id=in_store_id
+    and b.isnew='Y'
     group by c.prod_id
     union all
     select c.prod_id,count( b.ecode) as purchasenum from ems_adjust a,ems_adjustlist b,ems_equipment c
@@ -35,6 +37,12 @@ begin
    union all
   --旧品新增
   select prod_id,0 yesterdaynum,0 purchasenum,sum(oldnum) oldnum,0 installoutnum,0 repairinnum,0 scrapoutnum,0 repairoutnum,0 borrownum,0 borrowreturnnum from (
+    --订单录入的时候，旧品新增数量
+    select c.prod_id,count(b.ecode) as purchasenum from ems_instore a,ems_instorelist b,ems_equipment c
+    where a.id=b.instore_id and b.ecode=c.ecode and to_char(a.operatedate,'yyyymmdd') =in_todaykey and a.store_id=in_store_id
+    and b.isnew='N'
+    group by c.prod_id
+    union all
     select c.prod_id,count(b.ecode) as oldnum from ems_installin a,ems_installinlist b,ems_equipment c
     where a.id=b.installIn_id and b.ecode=c.ecode and to_char(a.operatedate,'yyyymmdd') =in_todaykey and a.store_id=in_store_id
     and b.isBad='N' and b.installInListType='takedown'

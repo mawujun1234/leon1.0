@@ -17,6 +17,10 @@ public class InStoreList extends UUIDEntity {
 	private String inStore_id;//入库单id
 	@Column(length=25)
 	private String ecode;//设备编码
+	
+	@org.hibernate.annotations.Type(type="yes_no")
+	private Boolean isnew=true;//是否是新产品,在入库的时候是新品还是旧品
+	
 	@Column(length=36)
 	private String orderlist_id;//订单明细id
 	
@@ -37,6 +41,12 @@ public class InStoreList extends UUIDEntity {
 	}
 	public void setOrderlist_id(String orderlist_id) {
 		this.orderlist_id = orderlist_id;
+	}
+	public Boolean getIsnew() {
+		return isnew;
+	}
+	public void setIsnew(Boolean isnew) {
+		this.isnew = isnew;
 	}
 	
 

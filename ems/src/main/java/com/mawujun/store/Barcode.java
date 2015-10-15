@@ -35,6 +35,9 @@ public class Barcode implements IdEntity<String>{
 	@Column(length=36)
 	private String store_id;//要入库的仓库id,是订单指定的入库仓库
 	
+	@org.hibernate.annotations.Type(type="yes_no")
+	private Boolean isnew=true;//是否是新产品,如果订单是旧品订单，那就是旧的
+	
 	//private Integer seqNum;//序号，就是从1开始，用于在导出条码的时候获取哪个范围的条码
 	
 	//用于判断某个订单本次条码生成的判断条件
@@ -133,6 +136,12 @@ public class Barcode implements IdEntity<String>{
 	}
 	public void setStore_id(String store_id) {
 		this.store_id = store_id;
+	}
+	public Boolean getIsnew() {
+		return isnew;
+	}
+	public void setIsnew(Boolean isnew) {
+		this.isnew = isnew;
 	}
 
 }

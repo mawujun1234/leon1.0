@@ -276,6 +276,13 @@ Ext.onReady(function(){
 	                }]
 	            },
     			  {header: '条码', dataIndex: 'ecode',width:150},
+    			  {header: '新/旧', dataIndex: 'isnew',width:100,renderer:function(value,metadata,record){
+						if(value){
+							return "新品";
+						} else {
+							return "<span style='color:red;'>旧品</span>";
+						}
+				  }},
     	          {header: '设备类型', dataIndex: 'subtype_name',width:120},
     	          {header: '品名', dataIndex: 'prod_name'},
     	          {header: '品牌', dataIndex: 'brand_name',width:120},
@@ -285,11 +292,11 @@ Ext.onReady(function(){
 						metadata.tdAttr = "data-qtip='" + value+ "'";
 					    return value;
 					}
-				  },
+				  }
     	          //{header: '仓库', dataIndex: 'store_name'},
     	          //{header: '数量', dataIndex: 'serialNum',width:70},
   
-    	          {header: '状态', dataIndex: 'status_name',width:100}
+    	         
     	          ],
         tbar:['<pan id="toolbar-title-text">当前入库记录:</span>',toolbar_title_text_num,'->',
               {text:'清空所有记录',

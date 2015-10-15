@@ -466,6 +466,7 @@ public static final class ems_barcode {
 	public static final String brand_id="brand_id";
 	public static final String supplier_id="supplier_id";
 	public static final String store_id="store_id";
+	public static final String isnew="isnew";
 	public static final String randomStr="randomStr";
 	public static final String createDate="createDate";
 	public static final String status="status";
@@ -489,6 +490,7 @@ public static final class ems_instore {
 public static final class ems_instorelist {
 	public static final String inStore_id="inStore_id";
 	public static final String ecode="ecode";
+	public static final String isnew="isnew";
 	public static final String orderlist_id="orderlist_id";
 	public static final String id="id";
 }
@@ -501,6 +503,7 @@ public static final class ems_order {
 	public static final String project_id="project_id";
 	public static final String createDate="createDate";
 	public static final String supplier_id="supplier_id";
+	public static final String orderType="orderType";
 	public static final String id="id";
 }
 public static final class ems_orderlist {

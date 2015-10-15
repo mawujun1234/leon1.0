@@ -250,6 +250,11 @@ public class OrderService extends AbstractService<Order, String> {
 			equipmentProdListes=new ArrayList<EquipmentProd>();
 			equipmentProdListes.add(equipmentProd);
 //		}
+			
+			boolean isnew=true;
+			if(order.getOrderType()==OrderType.old_equipment){
+				isnew=false;
+			}
 		//同时生成条码
 		//创建该订单的条码号
 		for(EquipmentProd temp:equipmentProdListes){
@@ -279,6 +284,7 @@ public class OrderService extends AbstractService<Order, String> {
 				bar.setOrderlist_id(orderList.getId());
 				bar.setYmd(y2md);
 				
+				bar.setIsnew(isnew);
 				
 				bar.setType_id(orderList.getType_id());
 				bar.setSubtype_id(temp.getSubtype_id());

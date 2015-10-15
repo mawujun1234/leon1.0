@@ -5,6 +5,7 @@ Ext.defineModel("Ems.store.InStoreList",{
 		{name:'id',type:'string'},
 		{name:'ecode',type:'string'},
 		{name:'inStore_id',type:'string'},
+		{name:'isnew',type:'bool'},
 		
 		{name:'subtype_name',type:'string'},
 		{name:'prod_name',type:'string'},

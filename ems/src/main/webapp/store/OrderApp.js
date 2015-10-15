@@ -12,6 +12,29 @@ Ext.onReady(function(){
 		allowBlank:false,
 		labelAlign:'right'
 	});
+	var orderType = Ext.create('Ext.form.field.ComboBox', {
+				fieldLabel : '订单类型',
+				labelAlign : 'right',
+				labelWidth:60,
+				editable:false,
+				//xtype : 'combobox',
+				// afterLabelTextTpl: Ext.required,
+				name : 'orderType',
+				displayField : 'name',
+				valueField : 'id',
+				// value:"1",
+				allowBlank: false,
+				store : Ext.create('Ext.data.Store', {
+							fields : ['id', 'name'],
+							data : [{
+										id : "old_equipment",
+										name : "旧品订单"
+									}, {
+										id : "new_equipment",
+										name : "新品订单"
+									}]
+						})
+	});
 	var store_combox=Ext.create('Ext.form.field.ComboBox',{
 	        fieldLabel: '入库仓库',
 	        labelAlign:'right',
@@ -315,6 +338,11 @@ Ext.onReady(function(){
             type: 'memory'
         }
     });
+    
+    
+
+	
+	
 	var equip_grid=Ext.create('Ext.grid.Panel',{
 		flex:1,
 		store:equipStore,
@@ -448,6 +476,7 @@ Ext.onReady(function(){
 			orderNum_field.setValue(1); 
 			unitprice_field.setValue(0);
 			totalprice_display.setValue(0);
+			
 		}
 		
 		
@@ -488,6 +517,7 @@ Ext.onReady(function(){
 			orderNum_field.setValue(record.get("orderNum")); 
 			unitprice_field.setValue(record.get("unitPrice"));
 			totalprice_display.setValue(record.get("totalprice"));
+			//orderType.setValue(record.get("orderType"));
 			
 			type_combox.disable();
 			subtype_combox.disable();
@@ -503,11 +533,12 @@ Ext.onReady(function(){
         },
         defaults:{margins:'0 0 5 0',border:false},
         items:[{xtype:'form',items:[
-        							{xtype:'fieldcontainer',layout: 'hbox',items:[order_no,store_combox,orderDate,operater,project_combox]},
-        							{xtype:'fieldcontainer',layout: 'hbox',items:[supplier_combox]},
+        							{xtype:'fieldcontainer',layout: 'hbox',items:[order_no,orderType,store_combox,orderDate,operater]},
+        							{xtype:'fieldcontainer',layout: 'hbox',items:[project_combox,supplier_combox]},
         							{xtype:'fieldcontainer',layout: 'hbox',items:[type_combox,subtype_combox,prod_name,queryProd_button,brand_name,style]},
         							{xtype:'fieldcontainer',layout: 'hbox',items:[prod_spec,prod_unit]},
                                     {xtype:'fieldcontainer',layout: 'hbox',items:[
+                                    	
                                     	quality_month_field,
                                     	orderNum_field,
                                     	unitprice_field,
@@ -522,6 +553,10 @@ Ext.onReady(function(){
         {html:'<HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=3>'},
         {html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;一次只能输入一个订单'}],
         buttons:[{text:'保存',handler:function(btn){
+        	if(orderType.getValue()){
+        		alert("请先选择订单类型!");
+        		return;
+        	}
             if (equipStore.getCount()> 0) { 
             	Ext.getBody().mask("正在保存....");
 //            	var order=new Ext.create('Ems.store.Order',{
@@ -540,7 +575,8 @@ Ext.onReady(function(){
 		            project_id:project_combox.getValue(),
 		            supplier_id:supplier_combox.getValue(),
 	            	supplier_name:supplier_combox.getRawValue(),
-		            operater:loginUserId
+		            operater:loginUserId,
+		            orderType:orderType.getValue()
 		            
 				};
             	var barcodes = new Array();
@@ -572,6 +608,7 @@ Ext.onReady(function(){
 							equipform.getForm().loadRecord(record);
 							
 							order_no.setValue("");
+							orderType.setValue("");
 							store_combox.clearValue();
 							project_combox.clearValue();
 							orderDate.setValue(new Date());

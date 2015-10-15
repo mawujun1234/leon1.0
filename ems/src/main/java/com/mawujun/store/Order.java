@@ -1,16 +1,13 @@
 package com.mawujun.store;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.mawujun.repository.idEntity.IdEntity;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
 @Entity
@@ -37,7 +34,17 @@ public class Order extends UUIDEntity {
 	private Date createDate;//订单建立日期
 	@Column(length=3)
 	private String supplier_id;//供应商id
+	@Enumerated(EnumType.STRING)
+	@Column(length=15)
+	private OrderType orderType;
 	
+	public String getOrderType_name() {
+		if(orderType!=null){
+			return orderType.getName();
+		} else {
+			return null;
+		}
+	}
 	public void setOrderNo(String orderNo) {
 		if(orderNo!=null){
 			this.orderNo = orderNo.trim();
@@ -129,6 +136,24 @@ public class Order extends UUIDEntity {
 	}
 	public void setSupplier_id(String supplier_id) {
 		this.supplier_id = supplier_id;
+	}
+
+
+
+
+
+
+	public OrderType getOrderType() {
+		return orderType;
+	}
+
+
+
+
+
+
+	public void setOrderType(OrderType orderType) {
+		this.orderType = orderType;
 	}
 
 

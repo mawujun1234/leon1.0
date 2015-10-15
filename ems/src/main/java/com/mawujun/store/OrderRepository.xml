@@ -33,6 +33,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    	<if test="status!=null and status!=''">
 	    		and a.status = #{status}
 	    	</if>
+	    	<if test="orderType!=null and orderType!=''">
+	    		and a.orderType = #{orderType}
+	    	</if>
     	</where>
     	order by a.orderDate desc
     </select>
@@ -221,6 +224,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		a.subtype_id,
 		a.supplier_id,
 		a.type_id,
+		a.isnew,
 		b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name
 		from ems_barcode a 
 		inner join ems_equipmentsubtype b on a.subtype_id=b.id

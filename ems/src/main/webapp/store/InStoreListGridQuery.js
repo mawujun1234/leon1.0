@@ -26,6 +26,13 @@ Ext.define('Ems.store.InStoreListGridQuery',{
       me.columns=[
       	Ext.create('Ext.grid.RowNumberer'),
 		{dataIndex:'ecode',text:'条码',width:120},
+		{header: '新/旧', dataIndex: 'isnew',width:100,renderer:function(value,metadata,record){
+						if(value){
+							return "新品";
+						} else {
+							return "<span style='color:red;'>旧品</span>";
+						}
+				  }},
 		{dataIndex:'subtype_name',text:'小类'},
 		{dataIndex:'prod_name',text:'品名'},
 		{dataIndex:'brand_name',text:'品牌'},
