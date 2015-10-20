@@ -58,5 +58,13 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "com.mawujun.plugins.callActivityPlugin": {
+        "source": {
+            "type": "local",
+            "path": "E:\\eclipse\\mobile\\cordova_plugins\\platforms\\android\\CallActivityPlugin"
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }

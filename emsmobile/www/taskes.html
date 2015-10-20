@@ -654,6 +654,7 @@ $(document).ready(function(e) {
             <input readonly type="text" id="page_newInstall_pole_name" placeholder="只读" value="">
         	<label  for="memo">任务描述:</label>
     		<textarea readonly id="page_newInstall_memo" placeholder="只读" data-mini="true"></textarea>
+            <a href="#" class="ui-btn ui-corner-all actionbutton"  id="page_newInstall_nav_button" name="nav_button">导航</a>
          </div>	
          <a href="#" class="ui-btn ui-corner-all actionbutton"  id="page_newInstall_scan_button" name="scan_button">扫描新设备</a>
          <input type="text" id="page_newInstall_scan_textfield" class="actionbutton" name="scan_textfield"  value="" placeholder="请扫描或手动输入...">
@@ -693,6 +694,7 @@ $(document).ready(function(e) {
             <input readonly type="text" id="page_repair_pole_name" placeholder="只读" value="">
         	<label  for="memo">任务描述:</label>
     		<textarea readonly  id="page_repair_memo" placeholder="只读" data-mini="true"></textarea>
+            <a href="#" class="ui-btn ui-corner-all actionbutton"  id="page_repair_nav_button" name="nav_button">导航</a>
          </div>	
          <select name="select-choice-a" id="select-choice-hitchType">
         	<option selected value="0">请选择故障类型</option>
@@ -788,6 +790,7 @@ $(document).ready(function(e) {
             <input readonly type="text" id="page_patrol_pole_name" placeholder="只读" value="">
         	<label  for="memo">任务描述:</label>
     		<textarea readonly  id="page_patrol_memo" placeholder="只读" data-mini="true"></textarea>
+            <a href="#" class="ui-btn ui-corner-all actionbutton"  id="page_patrol_nav_button" name="nav_button">导航</a>
          </div>	
          <a href="#" class="ui-btn ui-corner-all actionbutton" name="scan_button">扫描设备</a>
          <input type="text" name="scan_textfield" class="actionbutton"  value="" placeholder="请扫描或手动输入...">
@@ -825,6 +828,7 @@ $(document).ready(function(e) {
             <input readonly type="text" id="page_cancel_pole_name" placeholder="只读" value="">
         	<label  for="memo">任务描述:</label>
     		<textarea readonly  id="page_cancel_memo" placeholder="只读" data-mini="true"></textarea>
+            <a href="#" class="ui-btn ui-corner-all actionbutton"  id="page_cancel_nav_button" name="nav_button">导航</a>
          </div>	
          <a href="#" class="ui-btn ui-corner-all actionbutton" name="scan_button">扫描设备</a>
          <input type="text" name="scan_textfield" class="actionbutton"  value="" placeholder="请扫描或手动输入...">
@@ -1211,6 +1215,16 @@ $(document).ready(function(e) {
 	});
 	$("button[name='submitTask']").click(function(event){
 	  	submitTask();
+	});
+	//导航按钮按下去的时候
+	$("a[name='nav_button']").click(function(event){
+		alert(0);
+	  	cordova.plugins.CallActivityPlugin.callActivityPlugin(
+			"com.mawujun.plugins.callActivityPlugin.MyActivity",
+			function (result) {
+		    	alert(1);
+		    }
+		); 
 	});
 	
 });

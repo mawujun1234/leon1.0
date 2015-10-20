@@ -1,0 +1,1 @@
+这个插件的主要作用用来调用Activity的，在cordova中调用android的Activity

@@ -39,6 +39,10 @@
                         {
                             "xml": "<feature name=\"Whitelist\"><param name=\"android-package\" value=\"org.apache.cordova.whitelist.LegacyWhitelistPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"CallActivityPlugin\"><param name=\"android-package\" value=\"com.mawujun.plugins.callActivityPlugin.CallActivityPlugin\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -110,6 +114,10 @@
                         },
                         {
                             "xml": "<meta-data android:name=\"com.baidu.lbsapi.API_KEY\" android:value=\"ED0fe5c7c869da5ee4260b4006e811b8\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<activity android:label=\"test\" android:name=\"com.mawujun.plugins.callActivityPlugin.MyActivity\"><intent-filter><action android:name=\"android.intent.action.VIEW\" /><category android:name=\"android.intent.category.DEFAULT\" /></intent-filter></activity>",
                             "count": 1
                         }
                     ],
@@ -696,6 +704,9 @@
             "PACKAGE_NAME": "com.mawujun.mobile"
         },
         "cordova-plugin-legacy-whitelist": {
+            "PACKAGE_NAME": "com.mawujun.mobile"
+        },
+        "com.mawujun.plugins.callActivityPlugin": {
             "PACKAGE_NAME": "com.mawujun.mobile"
         }
     },
