@@ -553,7 +553,7 @@ Ext.onReady(function(){
         {html:'<HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=3>'},
         {html:'<img src="../images/error.gif" style="vertical-align:middle">&nbsp;一次只能输入一个订单'}],
         buttons:[{text:'保存',handler:function(btn){
-        	if(orderType.getValue()){
+        	if(!orderType.getValue()){
         		alert("请先选择订单类型!");
         		return;
         	}
