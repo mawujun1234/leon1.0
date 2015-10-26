@@ -77,9 +77,11 @@ Ext.onReady(function(){
 		stripeRows:true,
 		columns:[
 			{xtype: 'rownumberer'},
+			
 			{dataIndex:'str_out_name',text:'出库仓库',width:130},
 			{dataIndex:'brand_name',text:'品牌',width:120},
 			{dataIndex:'prod_style',text:'型号'},
+			{dataIndex:'ecode',text:'条码',width:130},
 			{dataIndex:'subtype_name',text:'类型',width:150},
 			{dataIndex:'str_out_date',text:'送修时间',width:140},
 			{dataIndex:'repair_take_time',text:'维修时间',width:140},
