@@ -41,18 +41,18 @@
 			<uses-permission android:name="android.permission.INTERNET" />
 			<!-- SD卡读取权限，用户写入离线定位数据-->
 			<uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"></uses-permission>
-			<!--允许应用读取低级别的系统日志文件 -->
-			<uses-permission android:name="android.permission.READ_LOGS"></uses-permission>
         </config-file>
 
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
             <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote"></service>
             <!-- //key:开发者申请的key -->
-            <meta-data android:name="com.baidu.lbsapi.API_KEY" android:value="ED0fe5c7c869da5ee4260b4006e811b8" />
+            <meta-data android:name="com.baidu.lbsapi.API_KEY" android:value="Gf2Q8bxraGg8SASQuOmvenLS" />
         </config-file>
         
         <source-file src="src/android/com/mawujun/plugins/baiduLocation/BaiduLocation.java" target-dir="src/com/mawujun/plugins/baiduLocation" />   
         <source-file src="libs/android/BaiduLBS_Android.jar" target-dir="libs" framework="true"/>      
-        <source-file src="libs/android/armeabi/liblocSDK4d.so" target-dir="libs/armeabi" framework="true"/>   
+        <source-file src="libs/android/armeabi/liblocSDK6a.so" target-dir="libs/armeabi" framework="true"/>   
+        <source-file src="libs/android/arm64-v8a/liblocSDK6a.so" target-dir="libs/arm64-v8a" framework="true"/>   
+        <source-file src="libs/android/armeabi-v7a/liblocSDK6a.so" target-dir="libs/armeabi-v7a" framework="true"/>   
     </platform>         
 </plugin>

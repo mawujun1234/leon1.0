@@ -29,10 +29,6 @@
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"BaiduLocation\"><param name=\"android-package\" value=\"com.mawujun.plugins.baiduLocation.BaiduLocation\" /></feature>",
-                            "count": 1
-                        },
-                        {
                             "xml": "<feature name=\"Whitelist\"><param name=\"android-package\" value=\"org.apache.cordova.whitelist.WhitelistPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
                             "count": 1
                         },
@@ -42,6 +38,10 @@
                         },
                         {
                             "xml": "<feature name=\"CallActivityPlugin\"><param name=\"android-package\" value=\"com.mawujun.plugins.callActivityPlugin.CallActivityPlugin\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"BaiduLocation\"><param name=\"android-package\" value=\"com.mawujun.plugins.baiduLocation.BaiduLocation\" /></feature>",
                             "count": 1
                         }
                     ]
@@ -89,10 +89,6 @@
                         {
                             "xml": "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\" />",
                             "count": 1
-                        },
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.READ_LOGS\" />",
-                            "count": 1
                         }
                     ],
                     "/manifest/application": [
@@ -109,15 +105,15 @@
                             "count": 1
                         },
                         {
+                            "xml": "<activity android:label=\"test\" android:name=\"com.mawujun.plugins.callActivityPlugin.MyActivity\"><intent-filter><action android:name=\"android.intent.action.VIEW\" /><category android:name=\"android.intent.category.DEFAULT\" /></intent-filter></activity>",
+                            "count": 1
+                        },
+                        {
                             "xml": "<service android:enabled=\"true\" android:name=\"com.baidu.location.f\" android:process=\":remote\" />",
                             "count": 1
                         },
                         {
-                            "xml": "<meta-data android:name=\"com.baidu.lbsapi.API_KEY\" android:value=\"ED0fe5c7c869da5ee4260b4006e811b8\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<activity android:label=\"test\" android:name=\"com.mawujun.plugins.callActivityPlugin.MyActivity\"><intent-filter><action android:name=\"android.intent.action.VIEW\" /><category android:name=\"android.intent.category.DEFAULT\" /></intent-filter></activity>",
+                            "xml": "<meta-data android:name=\"com.baidu.lbsapi.API_KEY\" android:value=\"Gf2Q8bxraGg8SASQuOmvenLS\" />",
                             "count": 1
                         }
                     ],
@@ -697,9 +693,6 @@
         "cordova-plugin-splashscreen": {
             "PACKAGE_NAME": "com.mawujun.mobile"
         },
-        "com.mawujun.plugins.baiduLocation": {
-            "PACKAGE_NAME": "com.mawujun.mobile"
-        },
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.mawujun.mobile"
         },
@@ -707,6 +700,9 @@
             "PACKAGE_NAME": "com.mawujun.mobile"
         },
         "com.mawujun.plugins.callActivityPlugin": {
+            "PACKAGE_NAME": "com.mawujun.mobile"
+        },
+        "com.mawujun.plugins.baiduLocation": {
             "PACKAGE_NAME": "com.mawujun.mobile"
         }
     },
