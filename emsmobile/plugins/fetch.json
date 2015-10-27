@@ -35,14 +35,6 @@
             "path": "E:\\eclipse\\mobile\\cordova_plugins\\platforms\\android\\UpdateApp"
         }
     },
-    "com.mawujun.plugins.baiduLocation": {
-        "source": {
-            "type": "local",
-            "path": "E:\\eclipse\\mobile\\cordova_plugins\\platforms\\android\\BaiduLocation"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
     "cordova-plugin-whitelist": {
         "source": {
             "type": "registry",
@@ -63,6 +55,14 @@
         "source": {
             "type": "local",
             "path": "E:\\eclipse\\mobile\\cordova_plugins\\platforms\\android\\CallActivityPlugin"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "com.mawujun.plugins.baiduLocation": {
+        "source": {
+            "type": "local",
+            "path": "E:\\eclipse\\mobile\\cordova_plugins\\platforms\\android\\BaiduLocation"
         },
         "is_top_level": true,
         "variables": {}
