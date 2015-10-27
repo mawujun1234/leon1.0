@@ -12,10 +12,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<collection property="prods" ofType="com.mawujun.report.FrontEquipSumReport_prod">  
 			<id property="prod_id" column="prod_id"/>
 			<result property="prod_name" column="prod_name"/>
+			<result property="prod_style" column="prod_style"/>
 		</collection>
     </resultMap>
     <select id="queryFrontEquipSumReport_header" resultMap="frontEquipSumReport_header_map" parameterType="map">
-    	select a.subtype_id,b.name as subtype_name,a.prod_id,c.name as prod_name from (
+    	select a.subtype_id,b.name as subtype_name,a.prod_id,c.name as prod_name,c.style as prod_style from (
 		select c.id,c.name,b.ecode,d.subtype_id,d.prod_id from ems_pole a,ems_equipment_pole b,ems_customer c,ems_equipment d
 		where a.id=b.pole_id and a.customer_id=c.id and b.ecode=d.ecode
 		and c.parent_id=#{customer_2} and c.type!=2
@@ -24,7 +25,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</if>
 		) a,ems_equipmentsubtype b,ems_equipmentprod c
 		where a.subtype_id=b.id and a.prod_id=c.id
-		group by a.subtype_id,b.name,a.prod_id,c.name
+		group by a.subtype_id,b.name,a.prod_id,c.name,c.style
 		order by a.subtype_id,a.prod_id
     </select>
     <!-- -->
@@ -54,7 +55,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     
     <!--  查询机房设备的汇总表 -->
     <select id="queryMachineroomEquipSumReport_header" resultMap="frontEquipSumReport_header_map" parameterType="map">
-    	select a.subtype_id,b.name as subtype_name,a.prod_id,c.name as prod_name from (
+    	select a.subtype_id,b.name as subtype_name,a.prod_id,c.name as prod_name,c.style as prod_style from (
 		select a.id,a.name,b.ecode,d.subtype_id,d.prod_id from ems_pole a,ems_equipment_pole b,ems_customer c,ems_equipment d
 		where a.id=b.pole_id and a.customer_id=c.id and b.ecode=d.ecode
 		and c.parent_id=#{customer_2} and c.type!=2 and a.poleType='machineroom'
@@ -63,7 +64,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</if>
 		) a,ems_equipmentsubtype b,ems_equipmentprod c
 		where a.subtype_id=b.id and a.prod_id=c.id
-		group by a.subtype_id,b.name,a.prod_id,c.name
+		group by a.subtype_id,b.name,a.prod_id,c.name,c.style
 		order by a.subtype_id,a.prod_id
     </select>
     <select id="queryMachineroomEquipSumReport" resultMap="frontEquipSumReport_map" parameterType="map">
@@ -87,17 +88,18 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<collection property="prods" ofType="com.mawujun.report.FrontEquipListReport_prod">  
 			<id property="prod_id" column="prod_id"/>
 			<result property="prod_name" column="prod_name"/>
+			<result property="prod_style" column="prod_style"/>
 		</collection>
     </resultMap>
    <select id="queryFrontEquipListReport_header" resultMap="frontEquipListReport_header_map" parameterType="map">
-   		select a.subtype_id,b.name as subtype_name,a.prod_id,c.name as prod_name from (
+   		select a.subtype_id,b.name as subtype_name,a.prod_id,c.name as prod_name,c.style as prod_style from (
 		select c.id,c.name,b.ecode,d.subtype_id,d.prod_id from ems_pole a,ems_equipment_pole b,ems_customer c,ems_equipment d
 		where a.id=b.pole_id and a.customer_id=c.id and b.ecode=d.ecode
 		and c.parent_id=#{customer_2} and c.type!=2
 			and c.id=#{customer_0or1}
 		) a,ems_equipmentsubtype b,ems_equipmentprod c
 		where a.subtype_id=b.id and a.prod_id=c.id
-		group by a.subtype_id,b.name,a.prod_id,c.name
+		group by a.subtype_id,b.name,a.prod_id,c.name,c.style
 		order by a.subtype_id,a.prod_id
    </select>
    <resultMap id="frontEquipListReport_map" type="com.mawujun.report.FrontEquipListReport" >

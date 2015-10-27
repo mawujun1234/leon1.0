@@ -90,7 +90,7 @@ public class FrontEquipReportController {
 				
 				
 				Cell cell_prod=row_prod.createCell(cell_num);
-				cell_prod.setCellValue(prod.getProd_name());
+				cell_prod.setCellValue(prod.getProd_name()+"("+prod.getProd_style()+")");
 				cell_prod.setCellStyle(style2);
 				cell_num++;
 			}
@@ -251,7 +251,7 @@ public class FrontEquipReportController {
 				
 				
 				Cell cell_prod=row_prod.createCell(cell_num);
-				cell_prod.setCellValue(prod.getProd_name());
+				cell_prod.setCellValue(prod.getProd_name()+"("+prod.getProd_style()+")");
 				cell_prod.setCellStyle(style2);
 				cell_num++;
 			}

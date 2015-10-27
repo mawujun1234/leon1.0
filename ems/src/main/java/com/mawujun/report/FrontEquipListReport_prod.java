@@ -8,6 +8,7 @@ package com.mawujun.report;
 public class FrontEquipListReport_prod {
 	private String prod_id;
 	private String prod_name;
+	private String prod_style;
 	private Integer num;
 	public String getProd_id() {
 		return prod_id;
@@ -26,6 +27,12 @@ public class FrontEquipListReport_prod {
 	}
 	public void setNum(Integer num) {
 		this.num = num;
+	}
+	public String getProd_style() {
+		return prod_style;
+	}
+	public void setProd_style(String prod_style) {
+		this.prod_style = prod_style;
 	}
 	
 
