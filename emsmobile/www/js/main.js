@@ -145,9 +145,8 @@ $(function(){
 		var uuid=device.uuid;
 		
 		//获取设备的地理位置
-		cordova.plugins.baiduLocation.getCurrentPosition(
+		cordova.plugins.baiduMapAll.getCurrentPosition(
 			function(position){
-				
 				var params={};
 				params.longitude=position.coords.longitude;
 				params.latitude=position.coords.latitude;
@@ -162,7 +161,7 @@ $(function(){
 				});	
 			}, 
 			function(error){
-				alert(error.message + ":"+error.code);
+				alert(error.message + ":"+error.errorcode);
 			}
 		);	
 		
@@ -240,15 +239,6 @@ $(function(){
 		);	
 	}
 	
-//	if(sessionStorage.getItem("user") && !sessionStorage.getItem("watchID")){
-//			//setTimeout(uploadGeolocation,2000);
-//			//alert(0);
-//			var watchID=window.setInterval("uploadGeolocation()",1000*5);
-//			alert(watchID);
-//			//用来控制应用只发送一个请求
-//			sessionStorage.setItem("watchID",watchID);
-//			//uploadGeolocation();
-//	}	
 		
 	document.addEventListener("deviceready", function(){
 /*		document.addEventListener("backbutton", function(){
@@ -259,6 +249,7 @@ $(function(){
 		
 		navigator.splashscreen.hide();
 		//alert(sessionStorage.getItem("user") +"====" +sessionStorage.getItem("watchID"));
+		//只有当用户登录，并且没有开始定时获取
 		if(sessionStorage.getItem("user") && !sessionStorage.getItem("watchID")){
 			//setTimeout(uploadGeolocation,2000);
 			//alert(0);

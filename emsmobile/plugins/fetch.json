@@ -51,18 +51,10 @@
         "is_top_level": true,
         "variables": {}
     },
-    "com.mawujun.plugins.callActivityPlugin": {
+    "com.mawujun.plugins.baiduMapAll": {
         "source": {
             "type": "local",
-            "path": "E:\\eclipse\\mobile\\cordova_plugins\\platforms\\android\\CallActivityPlugin"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "com.mawujun.plugins.baiduLocation": {
-        "source": {
-            "type": "local",
-            "path": "E:\\eclipse\\mobile\\cordova_plugins\\platforms\\android\\BaiduLocation"
+            "path": "E:\\eclipse\\mobile\\cordova_plugins\\platforms\\android\\BaiduMapAll"
         },
         "is_top_level": true,
         "variables": {}

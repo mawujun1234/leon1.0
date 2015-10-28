@@ -14,6 +14,7 @@ import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -184,7 +185,34 @@ public class FrontEquipReportController {
 			//对标题行 进行单元格合并
 			sheet.addMergedRegion(new CellRangeAddress(0, (short) 0, 0, (short) prod_col_index_map.size()));
 		}
+		//冻结2列3行
 		sheet.createFreezePane(2, 3);
+		
+		//添加总计一行
+		CellStyle style_sum=wb.createCellStyle();
+		Font style_sum_font = wb.createFont();
+		style_sum_font.setFontHeightInPoints((short) 12);
+		// f.setColor(IndexedColors.RED.getIndex());
+		style_sum_font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+		style_sum.setFont(style_sum_font);
+		style_sum.setAlignment(CellStyle.ALIGN_RIGHT);
+		style_sum.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		
+		Row row_sum = sheet.createRow(rownum++);
+		Cell cell_sum_1 = row_sum.createCell(1);
+		cell_sum_1.setCellValue("总计:");
+		cell_sum_1.setCellStyle(style_sum);
+		for(int i=2;i<cellIndex;i++){
+			String col=CellReference.convertNumToColString(i);
+			
+			Cell cell_sum = row_sum.createCell(i);
+			//=SUM(C4:C29)  从第4行开始到最后一样
+			//cell_sum.setCellValue("SUM("+col+"4:"+col+(rownum-1)+")");
+			cell_sum.setCellFormula("SUM("+col+"4:"+col+(rownum-1)+")");
+			cell_sum.setCellStyle(style_sum);
+		}
+		
+		
 		String filename = customer_2_name+"前端设备汇总表.xlsx";
 		if(isMaching){
 			filename=customer_2_name+"机房设备汇总表.xlsx";
@@ -327,6 +355,31 @@ public class FrontEquipReportController {
 			sheet.addMergedRegion(new CellRangeAddress(0, (short) 0, 0, (short) prod_col_index_map.size()));
 		}
 		sheet.createFreezePane(3, 3);
+		
+		// 添加总计一行
+		CellStyle style_sum = wb.createCellStyle();
+		Font style_sum_font = wb.createFont();
+		style_sum_font.setFontHeightInPoints((short) 12);
+		// f.setColor(IndexedColors.RED.getIndex());
+		style_sum_font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+		style_sum.setFont(style_sum_font);
+		style_sum.setAlignment(CellStyle.ALIGN_RIGHT);
+		style_sum.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+
+		Row row_sum = sheet.createRow(rownum++);
+		Cell cell_sum_2 = row_sum.createCell(2);
+		cell_sum_2.setCellValue("小计:");
+		cell_sum_2.setCellStyle(style_sum);
+		for (int i = 3; i < cellIndex; i++) {
+			String col = CellReference.convertNumToColString(i);
+
+			Cell cell_sum = row_sum.createCell(i);
+			// =SUM(C4:C29) 从第4行开始到最后一样
+			// cell_sum.setCellValue("SUM("+col+"4:"+col+(rownum-1)+")");
+			cell_sum.setCellFormula("SUM(" + col + "4:" + col + (rownum - 1) + ")");
+			cell_sum.setCellStyle(style_sum);
+		}
+				
 		String filename = customer_2_name+customer_0or1_name+"前端设备明细表.xlsx";
 		 //FileOutputStream out = new FileOutputStream(filename);
 		response.setHeader("content-disposition", "attachment; filename="+ new String(filename.getBytes("UTF-8"), "ISO8859-1"));
