@@ -28,8 +28,11 @@ BaiduMapAll.prototype.execute=function(action, successCallback, errorCallback) {
 BaiduMapAll.prototype.getCurrentPosition=function(successCallback, errorCallback) {
 		this.execute("getCurrentPosition", successCallback, errorCallback);
 };
-BaiduMapAll.prototype.stopGetPosition= function(action, successCallback, errorCallback) {
+BaiduMapAll.prototype.stopGetPosition= function( successCallback, errorCallback) {
 		this.execute("stopGetPosition", successCallback, errorCallback);
+}
+BaiduMapAll.prototype.navi= function(successCallback, errorCallback) {
+		this.execute("navi", successCallback, errorCallback);
 }
 var baiduMapAll=new BaiduMapAll();
 module.exports = baiduMapAll;

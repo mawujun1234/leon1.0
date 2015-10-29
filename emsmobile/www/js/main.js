@@ -253,6 +253,7 @@ $(function(){
 		if(sessionStorage.getItem("user") && !sessionStorage.getItem("watchID")){
 			//setTimeout(uploadGeolocation,2000);
 			//alert(0);
+			uploadGeolocation();//已启动就马上执行一次先，主要目的是未了获取当前的gps信息，供导航使用
 			var watchID=window.setInterval("uploadGeolocation()",1000*60*1);
 			//用来控制应用只发送一个请求
 			sessionStorage.setItem("watchID",watchID);

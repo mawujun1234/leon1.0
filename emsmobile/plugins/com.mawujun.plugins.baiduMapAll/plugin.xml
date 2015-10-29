@@ -59,7 +59,27 @@
         </config-file>
         
         <source-file src="src/android/com/mawujun/plugins/baiduMapAll/BaiduMapAll.java" target-dir="src/com/mawujun/plugins/baiduMapAll" />
-        <source-file src="src/android/com/mawujun/plugins/baiduMapAll/LocationApplication.java" target-dir="src/com/mawujun/plugins/baiduMapAll" />   
+        <source-file src="src/android/com/mawujun/plugins/baiduMapAll/LocationApplication.java" target-dir="src/com/mawujun/plugins/baiduMapAll" /> 
+        
+        
+        <!-- 导航相关的Active -->
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+			<activity
+	            android:name="com.mawujun.plugins.baiduMapAll.BNDemoMainActivity"
+	            android:configChanges="orientation|screenSize|keyboard|keyboardHidden"
+	            android:label="初始化" >
+	        </activity>
+        	<activity
+	            android:name="com.mawujun.plugins.baiduMapAll.BNDemoGuideActivity"
+	            android:configChanges="orientation|screenSize|keyboard|keyboardHidden"
+	            android:label="导航" >
+	        </activity>
+        </config-file>
+        <source-file src="libs/android/assets/BaiduNaviSDK_Resource_2.0.png" target-dir="assets" framework="true"/>  
+        <source-file src="libs/android/assets/channel" target-dir="assets" framework="true"/>  
+        <source-file src="src/android/layout/bndemomainactivity.xml" target-dir="res/layout" /> 
+        <source-file src="src/android/com/mawujun/plugins/baiduMapAll/BNDemoMainActivity.java" target-dir="src/com/mawujun/plugins/baiduMapAll" />
+        <source-file src="src/android/com/mawujun/plugins/baiduMapAll/BNDemoGuideActivity.java" target-dir="src/com/mawujun/plugins/baiduMapAll" />
         
         
         <source-file src="libs/android/libs/BaiduLBS_Android.jar" target-dir="libs" framework="true"/>      

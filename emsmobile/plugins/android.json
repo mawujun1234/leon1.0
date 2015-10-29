@@ -163,6 +163,14 @@
                         {
                             "xml": "<meta-data android:name=\"com.baidu.lbsapi.API_KEY\" android:value=\"Gf2Q8bxraGg8SASQuOmvenLS\" />",
                             "count": 1
+                        },
+                        {
+                            "xml": "<activity android:configChanges=\"orientation|screenSize|keyboard|keyboardHidden\" android:label=\"初始化\" android:name=\"com.mawujun.plugins.baiduMapAll.BNDemoMainActivity\"></activity>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<activity android:configChanges=\"orientation|screenSize|keyboard|keyboardHidden\" android:label=\"导航\" android:name=\"com.mawujun.plugins.baiduMapAll.BNDemoGuideActivity\"></activity>",
+                            "count": 1
                         }
                     ],
                     "/manifest": [

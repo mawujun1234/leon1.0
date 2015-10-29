@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.mawujun.mobile.task.HandleMethod;
+import com.mawujun.mobile.geolocation.GpsConfig;
 
 import freemarker.template.TemplateException;
 /**
@@ -27,7 +27,7 @@ public class GeneratorMain {
 		//str=generatorService.generatorToString(MenuItem.class,FtlFile.JsModel.toString(),null);	
         //System.out.println(str);
 		
-		GeneratorMain.generateAllFile(HandleMethod.class,"D:/gen/");
+		GeneratorMain.generateAllFile(GpsConfig.class,"D:/gen/");
 		
 		
 		

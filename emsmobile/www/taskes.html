@@ -1218,9 +1218,7 @@ $(document).ready(function(e) {
 	});
 	//导航按钮按下去的时候
 	$("a[name='nav_button']").click(function(event){
-		alert(0);
-	  	cordova.plugins.CallActivityPlugin.callActivityPlugin(
-			"com.mawujun.plugins.callActivityPlugin.MyActivity",
+	  	cordova.plugins.baiduMapAll.navi(
 			function (result) {
 		    	alert(1);
 		    }

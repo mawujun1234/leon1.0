@@ -15,6 +15,7 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.location.LocationClientOption.LocationMode;
+import com.baidu.platform.comapi.location.CoordinateType;
 
 /**
  * 主Application，所有百度定位SDK的接口说明请参考线上文档：http://developer.baidu.com/map/loc_refer/index.html
@@ -28,6 +29,9 @@ public class LocationApplication {
     //
     
     public CallbackContext callbackContext;
+    
+    public double  currentLongitude;
+    public double  currentLatitude;
     //public Vibrator mVibrator;
 
     private static final Map<Integer, String> ERROR_MESSAGE_MAP = new HashMap<Integer, String>();
@@ -52,17 +56,29 @@ public class LocationApplication {
 		ERROR_MESSAGE_MAP.put(601, "key服务被开发者自己禁用，请按照说明文档重新申请KEY。");
 		ERROR_MESSAGE_MAP.put(602, " key mcode不匹配，您的ak配置过程中安全码设置有问题，请确保：sha1正确");
 	};
+	
+	public void start(){
+		mLocationClient.start();
+	}
+	public void stop(){
+		if (mLocationClient != null && mLocationClient.isStarted()) {
+			mLocationClient.stop();
+		}
+	}
 
 	/**
 	 * 初始化定位代码
 	 * @param context
 	 */
     public void onCreate(Context context) {
-        mLocationClient = new LocationClient(context);
-        mMyLocationListener = new MyLocationListener();
-        mLocationClient.registerLocationListener(mMyLocationListener);
-        
-        initLocation();
+    	//if(mLocationClient==null){
+    		 mLocationClient = new LocationClient(context);
+    	     mMyLocationListener = new MyLocationListener();
+    	     mLocationClient.registerLocationListener(mMyLocationListener);
+    	        
+    	     initLocation();
+    	//}
+       
         //mVibrator =(Vibrator)getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
     }
 	
@@ -94,7 +110,7 @@ public class LocationApplication {
         option.SetIgnoreCacheException(false);//可选，默认false，设置是否收集CRASH信息，默认收集
         option.setEnableSimulateGps(false);//可选，默认false，设置是否需要过滤gps仿真结果，默认需要
 
-		option.setCoorType("bd09ll");// 返回的定位结果是百度经纬度，默认值gcj02
+		option.setCoorType(CoordinateType.GCJ02);// 返回的定位结果是百度经纬度，默认值gcj02,//wgs84:国际经纬度坐标  "gcj02":国家测绘局标准,"bd09ll":百度经纬度标准,"bd09":百度墨卡托标准
 		option.setProdName("BaiduLoc");
 		mLocationClient.setLocOption(option);
 	}
@@ -116,6 +132,9 @@ public class LocationApplication {
 				coords.put("longitude", location.getLongitude());
 				coords.put("radius", location.getRadius());
 				jsonObj.put("coords", coords);
+				
+				currentLongitude=location.getLongitude();
+				currentLatitude=location.getLatitude();
 
 				int locationType = location.getLocType();
 				jsonObj.put("time", location.getTime());
