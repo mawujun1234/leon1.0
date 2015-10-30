@@ -59,15 +59,7 @@ public class GpsConfigController {
 	int id=1;
 	@RequestMapping("/gpsConfig/get.do")
 	public GpsConfig get() {
-		Integer id=1;
-		GpsConfig config =gpsConfigService.get(id);
-		if(config==null) {
-			config=new GpsConfig();
-			config.setId(id);
-			gpsConfigService.create(config);
-			config =gpsConfigService.get(id);
-		}
-		return config;
+		return gpsConfigService.get();
 	}
 	
 //	@RequestMapping("/gpsConfig/create.do")
@@ -79,7 +71,7 @@ public class GpsConfigController {
 	
 	@RequestMapping("/gpsConfig/update.do")
 	@ResponseBody
-	public  GpsConfig update(@RequestBody GpsConfig gpsConfig) {
+	public  GpsConfig update(GpsConfig gpsConfig) {
 		gpsConfig.setId(id);
 		gpsConfigService.update(gpsConfig);
 		return gpsConfig;

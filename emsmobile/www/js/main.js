@@ -161,7 +161,8 @@ $(function(){
 				});	
 			}, 
 			function(error){
-				alert(error.message + ":"+error.errorcode);
+				alert(error);
+				//alert(error.message + ":"+error.errorcode);
 			}
 		);	
 		
@@ -254,7 +255,11 @@ $(function(){
 			//setTimeout(uploadGeolocation,2000);
 			//alert(0);
 			uploadGeolocation();//已启动就马上执行一次先，主要目的是未了获取当前的gps信息，供导航使用
-			var watchID=window.setInterval("uploadGeolocation()",1000*60*1);
+			var gps_interval=localStorage.getItem("gps_interval");
+			if(!gps_interval){
+				gps_interval="60";
+			}
+			var watchID=window.setInterval("uploadGeolocation()",parseInt(gps_interval)*1000);
 			//用来控制应用只发送一个请求
 			sessionStorage.setItem("watchID",watchID);
 			//uploadGeolocation();

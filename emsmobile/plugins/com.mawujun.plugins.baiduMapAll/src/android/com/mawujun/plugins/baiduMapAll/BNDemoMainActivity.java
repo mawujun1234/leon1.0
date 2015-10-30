@@ -37,6 +37,9 @@ public class BNDemoMainActivity extends Activity {
 	
 	private Context context = this;
 	
+	String longitude=null;
+	String latitude=null;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -54,10 +57,20 @@ public class BNDemoMainActivity extends Activity {
 		mGcjNaviBtn = (Button) findViewById(context.getResources().getIdentifier("gcjNaviBtn","id", context.getPackageName()));
 		mBdmcNaviBtn = (Button) findViewById(context.getResources().getIdentifier("bdmcNaviBtn","id", context.getPackageName()));
 		
+		
+		
 //		initListener();
 		if ( initDirs() ) {
 			initNavi();
 		}
+	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		Intent intent=getIntent();
+		longitude=intent.getStringExtra("com.mawujun.plugins.baiduMapAll.longitude");
+		latitude=intent.getStringExtra("com.mawujun.plugins.baiduMapAll.latitude");
 	}
 	
 	@Override
@@ -177,7 +190,7 @@ public class BNDemoMainActivity extends Activity {
 		//BNRoutePlanNode sNode = new BNRoutePlanNode(bDLocation.getLongitude(), bDLocation.getLatitude(),bDLocation.getBuildingName(), null, coType);
 		BNRoutePlanNode sNode = new BNRoutePlanNode( BaiduMapAll.locationApplication.currentLongitude,  BaiduMapAll.locationApplication.currentLatitude,"起点", null, coType);
 		//Log.i(BaiduMapAll.LOG_TAG, bDLocation.getLongitude()+","+bDLocation.getLatitude()+","+bDLocation.getBuildingName());
-	    BNRoutePlanNode eNode = new BNRoutePlanNode(116.560377, 40.100691, "北京天安门", null, coType);
+	    BNRoutePlanNode eNode = new BNRoutePlanNode(Double.parseDouble(longitude), Double.parseDouble(latitude), "北京天安门", null, coType);
 	    if (sNode != null && eNode != null) {
 	        List<BNRoutePlanNode> list = new ArrayList<BNRoutePlanNode>();
 	        list.add(sNode);

@@ -341,6 +341,10 @@ public static final class ems_geolocation {
 	public static final String radius="radius";
 	public static final String id="id";
 }
+public static final class ems_gpsconfig {
+	public static final String id="id";
+	public static final String interval="interval";
+}
 public static final class ems_message {
 	public static final String task_id="task_id";
 	public static final String workunit_id="workunit_id";

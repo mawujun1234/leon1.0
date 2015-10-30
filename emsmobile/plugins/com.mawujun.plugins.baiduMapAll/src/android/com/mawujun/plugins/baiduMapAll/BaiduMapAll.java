@@ -5,6 +5,7 @@ import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import android.content.Intent;
 import android.util.Log;
@@ -23,7 +24,7 @@ public class BaiduMapAll  extends CordovaPlugin {
 
 
 	@Override
-	public boolean execute(String action, JSONArray args,
+	public boolean execute(String action, final JSONArray args,
 			final CallbackContext callbackContext) {
 		//setCallbackContext(callbackContext);
 		//final LocationApplication locationApplication=(LocationApplication)cordova.getActivity().getApplication();
@@ -58,7 +59,21 @@ public class BaiduMapAll  extends CordovaPlugin {
 				@Override
 				public void run() {
 					Log.i(LOG_TAG, "开始调用MainActivity");
+					String longitude=null;
+					String latitude=null;
+					try {
+						longitude=args.getString(0);
+						latitude=args.getString(1);
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						Log.e(LOG_TAG, e.getMessage());
+						callbackContext.error(PluginResult.Status.ERROR.toString());
+					}
+					
 					Intent intent = new Intent().setClass(cordova.getActivity(), BNDemoMainActivity.class);  
+					intent.putExtra("com.mawujun.plugins.baiduMapAll.longitude", longitude);
+					intent.putExtra("com.mawujun.plugins.baiduMapAll.latitude", latitude);
 					cordova.startActivityForResult(cordovaPlugin, intent, 1); 
 		            
 					//下面三句为cordova插件回调页面的逻辑代码  

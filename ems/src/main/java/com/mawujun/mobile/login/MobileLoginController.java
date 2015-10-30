@@ -13,7 +13,6 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.apache.shiro.web.util.SavedRequest;
@@ -24,6 +23,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.baseinfo.WorkUnitService;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
+import com.mawujun.mobile.geolocation.GpsConfig;
+import com.mawujun.mobile.geolocation.GpsConfigService;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.shiro.MobileUsernamePasswordToken;
 import com.mawujun.shiro.ShiroUtils;
@@ -40,6 +41,9 @@ public class MobileLoginController {
 	private static Logger logger = LogManager.getLogger(MobileLoginController.class.getName());
 	@Resource
 	private WorkUnitService workUnitService;
+	@Resource
+	private GpsConfigService gpsConfigService;
+	
 	@RequestMapping("/mobile/login.do")
 	@ResponseBody
 	public User logIn(HttpServletRequest request,HttpServletResponse response ,String loginName,String password,Boolean rememberMe
@@ -95,6 +99,8 @@ public class MobileLoginController {
             	 successUrl="/message.html";
              }
              JsonConfigHolder.setDatePattern("yyyy-MM-dd hh:mm:ss");
+
+             JsonConfigHolder.addProperty("gps_interval",gpsConfigService.get().getInterval());
              return ShiroUtils.getAuthenticationInfo();
         }  
 		

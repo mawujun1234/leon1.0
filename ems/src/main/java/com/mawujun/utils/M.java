@@ -349,6 +349,10 @@ public static final class Geolocation {
 	public static final String radius="radius";
 	public static final String id="id";
 }
+public static final class GpsConfig {
+	public static final String id="id";
+	public static final String interval="interval";
+}
 public static final class Message {
 	public static final String task_id="task_id";
 	public static final String workunit_id="workunit_id";

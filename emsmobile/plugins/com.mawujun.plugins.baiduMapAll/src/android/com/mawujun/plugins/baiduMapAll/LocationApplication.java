@@ -152,7 +152,9 @@ public class LocationApplication {
 		            } else if (location.getLocType() == BDLocation.TypeNetWorkLocation){// 网络定位结果
 		            	coords.put("addr", location.getAddrStr());
 						coords.put("operationers", location.getOperators());
-		            } 
+		            } else {
+		            	callbackContext.error(getErrorMessage(locationType));
+		            }
 
 				Log.d(BaiduMapAll.LOG_TAG, "run: " + jsonObj.toString());
 				callbackContext.success(jsonObj);

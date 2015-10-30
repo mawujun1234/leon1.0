@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 
+
 import com.mawujun.service.AbstractService;
 
 
@@ -29,5 +30,16 @@ public class GpsConfigService extends AbstractService<GpsConfig, Integer>{
 	public GpsConfigRepository getRepository() {
 		return gpsConfigRepository;
 	}
-
+	
+	public GpsConfig get() {
+		Integer id=1;
+		GpsConfig config =gpsConfigRepository.get(id);
+		if(config==null) {
+			config=new GpsConfig();
+			config.setId(id);
+			gpsConfigRepository.create(config);
+			config =gpsConfigRepository.get(id);
+		}
+		return config;
+	}
 }
