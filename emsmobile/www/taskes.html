@@ -157,7 +157,8 @@ function queryTasks(type,appendDir,callBack){
 				var html='';
 				var status_name="";
 				for(var i=0;i<root.length;i++){
-					var taskInfoParamStr='?id='+root[i].id+'&pole_id='+root[i].pole_id+'&pole_code='+root[i].pole_code+'&pole_name='+root[i].pole_name+'&memo='+root[i].memo+'&type='+root[i].type+'&canEdit='+(status=="working"?true:false);
+	//				var taskInfoParamStr='?id='+root[i].id+'&pole_id='+root[i].pole_id+'&pole_code='+root[i].pole_code+'&pole_name='+root[i].pole_name+'&memo='+root[i].memo+'&type='+root[i].type+'&canEdit='+(status=="working"?true:false);
+					var taskInfoParamStr=JSON.stringify(root[i]);
 					//alert(taskInfoParamStr);
 					var page_id="page_"+root[i].type;
 					var h2_title=root[i].pole_code;
@@ -187,7 +188,8 @@ function queryTasks(type,appendDir,callBack){
 						status_name="";	
 					}
 					html+='<li id="li_'+root[i].id+'">'+
-					'<a href="#'+page_id+'" onclick="sessionStorage.taskInfoParamStr=\''+taskInfoParamStr+'\'" data-transition="slide" >'+
+					//'<a href="#'+page_id+'" onclick="sessionStorage.taskInfoParamStr=\''+taskInfoParamStr+'\'" data-transition="slide" >'+
+						'<a href="#'+page_id+'" onclick=\'window.taskInfoParam='+taskInfoParamStr+'\' data-transition="slide" >'+
 						//'<img src="'+img+'">'+
 						'<h2>'+root[i].id+'</h2>'+
 						'<p>'+h2_title+':'+root[i].pole_name+'</p>'+
@@ -515,7 +517,8 @@ $(document).ready(function(e) {
 						var root=data.root;
 						var html='';//'newTask','read','handling'
 						for(var i=0;i<root.length;i++){
-							var taskInfoParamStr='?id='+root[i].id+'&pole_code='+root[i].pole_code+'&pole_name='+root[i].pole_name+'&memo='+root[i].memo+'&type='+root[i].type+'&canEdit='+((root[i].status=="newTask"|| root[i].status=="read"|| root[i].status=="handling")?true:false);
+//							var taskInfoParamStr='?id='+root[i].id+'&pole_code='+root[i].pole_code+'&pole_name='+root[i].pole_name+'&memo='+root[i].memo+'&type='+root[i].type+'&canEdit='+((root[i].status=="newTask"|| root[i].status=="read"|| root[i].status=="handling")?true:false);
+							var taskInfoParamStr=JSON.stringify(root[i]);
 							//alert(taskInfoParamStr);
 							var page_id="page_"+root[i].type;
 							var h2_title="";
@@ -545,8 +548,9 @@ $(document).ready(function(e) {
 							//h2_title+="<br/>新任务"
 							//console.log(h2_title);
 							html+='<li id="li_'+root[i].id+'">'+
-							'<a href="#'+page_id+'" onclick="sessionStorage.taskInfoParamStr=\''+taskInfoParamStr+'\'" data-transition="slide" >'+
+							//'<a href="#'+page_id+'" onclick="sessionStorage.taskInfoParamStr=\''+taskInfoParamStr+'\'" data-transition="slide" >'+
 								//'<img src="'+img+'">'+
+								'<a href="#'+page_id+'" onclick=\'window.taskInfoParam='+taskInfoParamStr+'\' data-transition="slide" >'+
 								'<h2>'+root[i].id+'</h2>'+
 								'<p>'+root[i].pole_code+':'+root[i].pole_name+'</p>'+
 								'<p class="longContent">地址:'+root[i].pole_address+'</p>'+
@@ -654,7 +658,7 @@ $(document).ready(function(e) {
             <input readonly type="text" id="page_newInstall_pole_name" placeholder="只读" value="">
         	<label  for="memo">任务描述:</label>
     		<textarea readonly id="page_newInstall_memo" placeholder="只读" data-mini="true"></textarea>
-            <a href="#" class="ui-btn ui-corner-all actionbutton"  id="page_newInstall_nav_button" name="nav_button">导航</a>
+            <a href="#" class="ui-btn ui-corner-all"  id="page_newInstall_nav_button" name="nav_button">导航</a>
          </div>	
          <a href="#" class="ui-btn ui-corner-all actionbutton"  id="page_newInstall_scan_button" name="scan_button">扫描新设备</a>
          <input type="text" id="page_newInstall_scan_textfield" class="actionbutton" name="scan_textfield"  value="" placeholder="请扫描或手动输入...">
@@ -694,7 +698,7 @@ $(document).ready(function(e) {
             <input readonly type="text" id="page_repair_pole_name" placeholder="只读" value="">
         	<label  for="memo">任务描述:</label>
     		<textarea readonly  id="page_repair_memo" placeholder="只读" data-mini="true"></textarea>
-            <a href="#" class="ui-btn ui-corner-all actionbutton"  id="page_repair_nav_button" name="nav_button">导航</a>
+            <a href="#" class="ui-btn ui-corner-all"  id="page_repair_nav_button" name="nav_button">导航</a>
          </div>	
          <select name="select-choice-a" id="select-choice-hitchType">
         	<option selected value="0">请选择故障类型</option>
@@ -790,7 +794,7 @@ $(document).ready(function(e) {
             <input readonly type="text" id="page_patrol_pole_name" placeholder="只读" value="">
         	<label  for="memo">任务描述:</label>
     		<textarea readonly  id="page_patrol_memo" placeholder="只读" data-mini="true"></textarea>
-            <a href="#" class="ui-btn ui-corner-all actionbutton"  id="page_patrol_nav_button" name="nav_button">导航</a>
+            <a href="#" class="ui-btn ui-corner-all"  id="page_patrol_nav_button" name="nav_button">导航</a>
          </div>	
          <a href="#" class="ui-btn ui-corner-all actionbutton" name="scan_button">扫描设备</a>
          <input type="text" name="scan_textfield" class="actionbutton"  value="" placeholder="请扫描或手动输入...">
@@ -828,7 +832,7 @@ $(document).ready(function(e) {
             <input readonly type="text" id="page_cancel_pole_name" placeholder="只读" value="">
         	<label  for="memo">任务描述:</label>
     		<textarea readonly  id="page_cancel_memo" placeholder="只读" data-mini="true"></textarea>
-            <a href="#" class="ui-btn ui-corner-all actionbutton"  id="page_cancel_nav_button" name="nav_button">导航</a>
+            <a href="#" class="ui-btn ui-corner-all"  id="page_cancel_nav_button" name="nav_button">导航</a>
          </div>	
          <a href="#" class="ui-btn ui-corner-all actionbutton" name="scan_button">扫描设备</a>
          <input type="text" name="scan_textfield" class="actionbutton"  value="" placeholder="请扫描或手动输入...">
@@ -858,8 +862,10 @@ $(document).ready(function(e) {
 		//if (sessionStorage.taskInfoParamStr!='null') {
 		if (page_id=="page_newInstall" || page_id=="page_repair" || page_id=="page_patrol" || page_id=="page_cancel") {
 			//从url中解析参数  
-			var params = $.getUrlParam(sessionStorage.taskInfoParamStr);  
-			window.taskInfoParam=params;
+			//var params = $.getUrlParam(sessionStorage.taskInfoParamStr);  
+			//var params =JSON.parse(sessionStorage.taskInfoParamStr);
+			//window.taskInfoParam=params;
+			var params=window.taskInfoParam;
 			taskInfoParam.page_id=page_id; 
 			//alert(params.canEdit);
 			if(params.canEdit=="true"){//隐藏按钮
@@ -1218,6 +1224,12 @@ $(document).ready(function(e) {
 	});
 	//导航按钮按下去的时候
 	$("a[name='nav_button']").click(function(event){
+		alert(window.taskInfoParam.pole_longitude+"----"+window.taskInfoParam.pole_latitude);
+		//return;
+		if(!window.taskInfoParam.pole_longitude || !window.taskInfoParam.pole_latitude ){
+			alert("当前点位未设置gps数据，不能导航!");
+			return;
+		}
 	  	cordova.plugins.baiduMapAll.navi(
 			function (result) {
 		    	//alert(1);
@@ -1227,7 +1239,7 @@ $(document).ready(function(e) {
 				//alert(JSON.stringify(error));
 				//alert("后台发生异常!");
 			},
-			["121.53783481355","29.78545893326"]
+			[window.taskInfoParam.pole_longitude,window.taskInfoParam.pole_latitude]
 		); 
 	});
 	

@@ -67,6 +67,14 @@ public class Task implements IdEntity<String> {
 	@Column(length=100)
 	private String handle_contact;//相关联系人的号码
 	
+	public Boolean getCanEdit(){
+		if(this.getStatus()==TaskStatus.newTask || this.getStatus()==TaskStatus.handling || this.getStatus()==TaskStatus.read){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	public String getType_name() {
 		if(this.getType()!=null){
 			return this.getType().getName();

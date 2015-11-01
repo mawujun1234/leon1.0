@@ -193,8 +193,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
    
     
     
-    <select id="mobile_queryPage" resultType="com.mawujun.mobile.task.Task" parameterType="map">
-    	select a.id,a.memo,a.type,a.status,a.pole_id,b.code as pole_code,a.pole_name,a.pole_address,a.createDate from ems_task a,ems_pole b
+    <select id="mobile_queryPage" resultType="com.mawujun.mobile.task.TaskVO" parameterType="map">
+    	select a.id,a.memo,a.type,a.status,a.pole_id,b.code as pole_code,b.longitude as pole_longitude,b.latitude as pole_latitude,a.pole_name,a.pole_address,a.createDate from ems_task a,ems_pole b
     	where a.workunit_id=#{workunit_id} and a.pole_id=b.id
     	and a.type=#{type}
     	<if test="status=='working'">
@@ -226,8 +226,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	-->
     </select>
     
-    <select id="mobile_search" resultType="com.mawujun.mobile.task.Task" parameterType="map">
-    	select a.id,a.memo,a.type,a.status,a.pole_id,b.code as pole_code,a.pole_name,a.pole_address,a.createDate from ems_task a,ems_pole b
+    <select id="mobile_search" resultType="com.mawujun.mobile.task.TaskVO" parameterType="map">
+    	select a.id,a.memo,a.type,a.status,a.pole_id,b.code as pole_code,b.longitude as pole_longitude,b.latitude as pole_latitude,a.pole_name,a.pole_address,a.createDate from ems_task a,ems_pole b
     	where a.workunit_id=#{workunit_id} and a.pole_id=b.id	
     	and (b.address like #{searchStr} or b.name like #{searchStr} or b.code like #{searchStr})
     	order by a.createDate desc

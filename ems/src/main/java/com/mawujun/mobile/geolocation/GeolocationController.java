@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.mawujun.mobile.login.MobileLoginController;
+
 @Controller
 public class GeolocationController {
 	static Logger logger=LogManager.getLogger(GeolocationController.class);
@@ -39,7 +41,7 @@ public class GeolocationController {
 		geolocation.setCreateDate(new Date());
 		
 		geolocationService.create(geolocation);
-		
+		MobileLoginController.updateGpsUploadTime(loginName);
 		return "success";
 	}
 
