@@ -44,6 +44,7 @@ public interface PoleRepository extends IRepository<Pole, String>{
 	public Page queryPoles4Map(Page page);
 	//查询某个客户下的点位
 	public List<Pole> queryPoles4Map(Map<String,Object> params);
+	public List<Pole> queryBrokenPoles();
 	
 	public Pole geetFullAddress(@Param("pole_id")String pole_id);
 }

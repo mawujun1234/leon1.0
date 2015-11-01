@@ -10,9 +10,12 @@ import java.util.Date;
 public class WaringGps {
 	
 	private String loginName;
+	private Date loginTime;
+	
 	private Boolean isUploadGps=false;
 	private Date lastedUploadTime;//最近一次上传时间
-	private Date loginTime;
+	private String lasted_longitude;
+	private String lasted_latitude;
 	
 	
 	public String getLoginName() {
@@ -38,6 +41,18 @@ public class WaringGps {
 	}
 	public void setLoginTime(Date loginTime) {
 		this.loginTime = loginTime;
+	}
+	public String getLasted_longitude() {
+		return lasted_longitude;
+	}
+	public void setLasted_longitude(String lasted_longitude) {
+		this.lasted_longitude = lasted_longitude;
+	}
+	public String getLasted_latitude() {
+		return lasted_latitude;
+	}
+	public void setLasted_latitude(String lasted_latitude) {
+		this.lasted_latitude = lasted_latitude;
 	}
 	
 

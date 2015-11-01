@@ -1,4 +1,4 @@
-package com.mawujun.map;
+package com.mawujun.mobile.geolocation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,7 +71,10 @@ public class MapController {
 	
 	@RequestMapping("/map/queryPolesAll.do")
 	@ResponseBody
-	public List<Pole> queryPolesAll(Integer start,Integer limit,String customer_2_id,String[] customer_0or1_id,String workunit_id) {	
+	public List<Pole> queryPolesAll(Integer start,Integer limit,String customer_2_id,String[] customer_0or1_id,String workunit_id,Boolean queryBrokenPoles) {	
+		if(queryBrokenPoles!=null && queryBrokenPoles==true){
+			return queryBrokenPoles();
+		}
 
 		Params param=Params.init();
 		param.addIf("customer_2_id", customer_2_id);
@@ -95,6 +98,13 @@ public class MapController {
 //			map.put(M.Pole.latitude, pole.getLatitude());
 //			result.add(map);
 //		}
+		return list;
+	}
+	
+	@RequestMapping("/map/queryBrokenPoles.do")
+	@ResponseBody
+	public List<Pole> queryBrokenPoles() {
+		List<Pole> list= poleRepository.queryBrokenPoles();
 		return list;
 	}
 	/**

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mawujun.map.MapService;
+import com.mawujun.mobile.geolocation.MapService;
 import com.mawujun.service.AbstractService;
 import com.mawujun.utils.StringUtils;
 

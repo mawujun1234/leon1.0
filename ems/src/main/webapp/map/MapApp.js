@@ -222,10 +222,30 @@ Ext.onReady(function(){
 		    	});
 		    	poleStore.loadPage(1);
 		    	showMap(poleStore.getProxy().extraParams);
+		    	
+		    	showWorkunitCar();
 		    },
 		    iconCls: 'form-reload-button'
 		});	
-		
+	
+		var queryNoLngLatPole = new Ext.Action({
+		    text: '所有损坏点位',
+		    
+		    handler: function(){
+				Ext.Msg.confirm("提醒","这里查询的是所有损坏的点位!!不受查询条件影响!",function(btn){
+					if(btn=='yes'){
+						
+						poleStore.getProxy().extraParams={
+							queryBrokenPoles:true
+						}
+						poleStore.loadPage(1);
+						showMap(poleStore.getProxy().extraParams);
+						showWorkunitCar();
+					}
+				});
+		    },
+		    icon: '../icons/zoom_refresh.png'
+		});	
 	var initAllPoleNoLngLat = new Ext.Action({
 		    text: '初始化',
 		    
@@ -363,6 +383,46 @@ Ext.onReady(function(){
 	});
  
 });
+
+//在地图上显示作业单位在哪里
+function showWorkunitCar(){
+	Ext.Ajax.request({
+		url : Ext.ContextPath + '/map/queryWorkingWorkunit.do',
+		//params:params,
+		method:'POST',
+		success : function(response) {
+			Ext.getBody().unmask();
+			var obj = Ext.decode(response.responseText);
+			for(var i=0;i<obj.root.length;i++){
+				var workunit=obj.root[i];
+				//addMarker2Map(pole);
+				addCar2Map(workunit);
+			}
+		},
+		failure : function() {
+				//Ext.getBody().unmask();
+		}
+	});
+
+}
+function addCar2Map(workunit){
+	var point = new BMap.Point(workunit.lasted_longitude, workunit.lasted_latitude);
+	var marker = new BMap.Marker(point, {
+		icon : carIcon
+	});
+	
+
+	map.addOverlay(marker); // 将标注添加到地图中
+	//marker.enableDragging();
+	//marker.pole_id = pole.id;
+
+//	addClickHandler("编码:" + pole.code + "<br/>名称:" + pole.name + "<br/>地址:"
+//					+ pole.province + pole.city + pole.area + pole.address,
+//			marker);
+
+}
+
+
 //档点位被选中的时候
 function selectedMarker(marker){
 	
@@ -421,7 +481,6 @@ function addMarker2Map(pole){
 				type.target.orgin_point = type.target.getPosition();
 			});
 	marker.addEventListener("dragend", function(type, target, pixel, point) {
-
 		var marker = type.target;
 		Ext.Msg.confirm("消息", "确定是否要修改这个点位的经纬度?", function(btn) {
 					if (btn == 'no') {
@@ -475,6 +534,7 @@ var poleIcon = new BMap.Icon("./images/camera48.png", new BMap.Size(48,48));
 //http://www.easyicon.net/1187198-Status_dialog_error_symbolic_icon.html
 //http://www.easyicon.net/1187197-Status_dialog_error_icon.html
 var brokenIcon = new BMap.Icon("./images/broken48.png", new BMap.Size(48,48));
+var carIcon = new BMap.Icon("./images/car.png", new BMap.Size(48,48));
 var center_point = new BMap.Point(121.551852,29.834513);//宁波的中心位置，而且对于未定位的点位也是定位在这个地方的
 function showMap(params){
 	// 百度地图API功能

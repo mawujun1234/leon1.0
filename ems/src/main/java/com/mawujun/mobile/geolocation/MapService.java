@@ -1,4 +1,4 @@
-package com.mawujun.map;
+package com.mawujun.mobile.geolocation;
 
 import java.io.BufferedReader;
 import java.io.IOException;

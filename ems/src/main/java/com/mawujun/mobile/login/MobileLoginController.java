@@ -1,11 +1,8 @@
 package com.mawujun.mobile.login;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -21,12 +18,14 @@ import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.apache.shiro.web.util.SavedRequest;
 import org.apache.shiro.web.util.WebUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.baseinfo.WorkUnitService;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
+import com.mawujun.mobile.geolocation.GeolocationController;
 import com.mawujun.mobile.geolocation.GpsConfigService;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.shiro.MobileUsernamePasswordToken;
@@ -46,8 +45,8 @@ public class MobileLoginController {
 	private WorkUnitService workUnitService;
 	@Resource
 	private GpsConfigService gpsConfigService;
-	
-	private static Map<String,WaringGps> waringGpsMap=new HashMap<String,WaringGps>();
+	@Autowired
+	private GeolocationController geolocationController;
 	
 	@RequestMapping("/mobile/login.do")
 	@ResponseBody
@@ -111,7 +110,7 @@ public class MobileLoginController {
              waringGps.setLoginName(loginName);
              waringGps.setIsUploadGps(false);
              waringGps.setLoginTime(new Date());
-             waringGpsMap.put(loginName, waringGps);
+             geolocationController.getWaringGpsMap().put(loginName, waringGps);
              return ShiroUtils.getAuthenticationInfo();
         }  
 		
@@ -120,7 +119,7 @@ public class MobileLoginController {
 	@RequestMapping("/mobile/logout.do")
 	@ResponseBody
 	public String logout(){
-		waringGpsMap.remove(ShiroUtils.getAuthenticationInfo().getUsername());
+		 geolocationController.getWaringGpsMap().remove(ShiroUtils.getAuthenticationInfo().getUsername());
 		Subject subject = SecurityUtils.getSubject(); 
 		subject.logout();
 		
@@ -138,47 +137,5 @@ public class MobileLoginController {
 		return "success";
 	}
 	
-	/**
-	 * 当登录了，单没有gps信息上传过来的作业单位
-	 * @author mawujun 16064988@qq.com 
-	 * @return
-	 */
-	@RequestMapping("/mobile/unuploadGpsWorkunit.do")
-	@ResponseBody
-	public List<WaringGps> unuploadGpsWorkunit(String status){
-		List<WaringGps> list=new ArrayList<WaringGps>();
-		if("unuploadgps".equals(status)){
-			for(Entry<String,WaringGps> entry:waringGpsMap.entrySet()){
-				WaringGps waringGps=entry.getValue();
-				if(!waringGps.getIsUploadGps()){
-					list.add(waringGps);
-				}
-				
-			}
-		} else if("logined".equals(status)) {
-			for(Entry<String,WaringGps> entry:waringGpsMap.entrySet()){
-				WaringGps waringGps=entry.getValue();
-				list.add(waringGps);
-				
-			}
-		} else {
-			for(Entry<String,WaringGps> entry:waringGpsMap.entrySet()){
-				WaringGps waringGps=entry.getValue();
-				list.add(waringGps);
-				
-			}
-		}
-		
-		JsonConfigHolder.setDatePattern("yyyy-MM-dd HH:mm:ss");
-		return list;
-	}
-	/**
-	 * 更新某个作业单位最近一次gps上传信息
-	 * @author mawujun 16064988@qq.com 
-	 * @param loginName
-	 */
-	public static void updateGpsUploadTime(String loginName){
-		waringGpsMap.get(loginName).setIsUploadGps(true);
-		waringGpsMap.get(loginName).setLastedUploadTime(new Date());
-	}
+	
 }

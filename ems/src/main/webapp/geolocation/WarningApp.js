@@ -48,7 +48,7 @@ Ext.onReady(function(){
 	    autoLoad:true,
 	    proxy: {
 	        type: 'ajax',
-	        url:Ext.ContextPath+"/mobile/unuploadGpsWorkunit.do",
+	        url:Ext.ContextPath+"/geolocation/unuploadGpsWorkunit.do",
 	        reader: {
 	            type: 'json',
 	            root: 'root'
