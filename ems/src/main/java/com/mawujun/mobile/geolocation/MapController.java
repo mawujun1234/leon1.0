@@ -45,7 +45,16 @@ public class MapController {
 	 */
 	@RequestMapping("/map/queryPoles.do")
 	@ResponseBody
-	public Page queryPoles(Integer start,Integer limit,String customer_2_id,String[] customer_0or1_id,String workunit_id,Boolean queryNoLngLatPole) {	
+	public Page queryPoles(Integer start,Integer limit,String customer_2_id,String[] customer_0or1_id,String workunit_id,Boolean queryNoLngLatPole,Boolean queryBrokenPoles) {	
+		if(queryBrokenPoles!=null && queryBrokenPoles==true){
+			List<Pole> list= queryBrokenPoles();
+			Page page=new Page();
+			page.setStart(start);
+			page.setTotal(list.size());
+			page.setPageSize(limit);
+			page.setResult(list);
+			return page;
+		}
 		Page page=Page.getInstance(start,limit);
 		//查询所有没有设置过经纬度的数据
 		if(queryNoLngLatPole==true){	
@@ -69,6 +78,17 @@ public class MapController {
 //		return poles;
 	}
 	
+	/**
+	 * 地图上显示的时候，查询所有的点位，要把所有点位显示出来 ，和/map/queryPoles.do是同步变化的
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param start
+	 * @param limit
+	 * @param customer_2_id
+	 * @param customer_0or1_id
+	 * @param workunit_id
+	 * @param queryBrokenPoles
+	 * @return
+	 */
 	@RequestMapping("/map/queryPolesAll.do")
 	@ResponseBody
 	public List<Pole> queryPolesAll(Integer start,Integer limit,String customer_2_id,String[] customer_0or1_id,String workunit_id,Boolean queryBrokenPoles) {	

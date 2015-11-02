@@ -216,6 +216,7 @@ Ext.onReady(function(){
 		    	//alert("在查询的同时，将会对所有查询结果在地图上进行初始化!如果数据量较大，速度将会有点慢!");
 		    	poleStore.getProxy().extraParams=Ext.apply(poleStore.getProxy().extraParams,{
 		    		queryNoLngLatPole:false,
+		    		queryBrokenPoles:false,
 		    		customer_2_id:customer_2.getValue(),
 		    		customer_0or1_id:customer_0or1.getValue(),
 		    		workunit_id:workUnit_combox.getValue()
@@ -228,7 +229,7 @@ Ext.onReady(function(){
 		    iconCls: 'form-reload-button'
 		});	
 	
-		var queryNoLngLatPole = new Ext.Action({
+		var brokenPolequery = new Ext.Action({
 		    text: '所有损坏点位',
 		    
 		    handler: function(){
@@ -322,7 +323,7 @@ Ext.onReady(function(){
 			},{
 				items: [workUnit_combox,reload] // toolbar 1
 			},{
-				items: [queryNoLngLatPole,initAllPoleNoLngLat] // toolbar 1
+				items: [brokenPolequery,queryNoLngLatPole,initAllPoleNoLngLat] // toolbar 1
 			}]
 		},
     	columns:[
@@ -371,6 +372,11 @@ Ext.onReady(function(){
     	}
     	var id=record.get("id");
     	selectedMarker(markeres[id]);
+    	
+    	//当是损坏节点的时候，就把节点和所有在线的作业单位连线起来
+    	//if(record.get("status")=="hitch"){
+    		polylineToworkunit(markeres[id]);
+    	//}
     		
     });
 	
@@ -385,14 +391,16 @@ Ext.onReady(function(){
 });
 
 //在地图上显示作业单位在哪里
+window.cares=null;
 function showWorkunitCar(){
 	Ext.Ajax.request({
-		url : Ext.ContextPath + '/map/queryWorkingWorkunit.do',
+		url : Ext.ContextPath + '/geolocation/queryWorkingWorkunit.do',
 		//params:params,
 		method:'POST',
 		success : function(response) {
 			Ext.getBody().unmask();
 			var obj = Ext.decode(response.responseText);
+			window.cares=obj.root;
 			for(var i=0;i<obj.root.length;i++){
 				var workunit=obj.root[i];
 				//addMarker2Map(pole);
@@ -403,26 +411,46 @@ function showWorkunitCar(){
 				//Ext.getBody().unmask();
 		}
 	});
-
+	setTimeout("showWorkunitCar()",60*1000);//每一分钟发送一次
 }
 function addCar2Map(workunit){
 	var point = new BMap.Point(workunit.lasted_longitude, workunit.lasted_latitude);
-	var marker = new BMap.Marker(point, {
+	var car_marker = new BMap.Marker(point, {
 		icon : carIcon
 	});
 	
 
-	map.addOverlay(marker); // 将标注添加到地图中
+	map.addOverlay(car_marker); // 将标注添加到地图中
 	//marker.enableDragging();
 	//marker.pole_id = pole.id;
 
-//	addClickHandler("编码:" + pole.code + "<br/>名称:" + pole.name + "<br/>地址:"
-//					+ pole.province + pole.city + pole.area + pole.address,
-//			marker);
+	addClickHandler("账号:"+workunit.loginName+"<br/>作业单位:"+workunit.name+"<br/>电话:"+workunit.phone+"<br/>登录时间:"+workunit.loginTime ,car_marker);
 
 }
 
+//当点击的点位是损坏的点位的时候，把当前点位和在线的作业单位连接起来
+window.polylines=[];//存放的是所有地图上的折线
+function polylineToworkunit(marker){
+	//去掉已经存在的折线
+	if(window.polylines){
+		for(var i=0;i<window.polylines.length;i++){
+			map.removeOverlay(window.polylines[i]);
+		}
+	}
+	window.polylines=[];
+	if(window.cares){
+		for(var i=0;i<window.cares.length;i++){
+			var workunit=window.cares[i];
+				var polyline = new BMap.Polyline([
+					new BMap.Point(marker.getPosition().lng, marker.getPosition().lat),//损坏的点位
+					new BMap.Point(workunit.lasted_longitude, workunit.lasted_latitude)//car所在的位置
+				], {strokeColor:"blue", strokeWeight:2, strokeOpacity:0.5});   //创建折线
+				map.addOverlay(polyline); 
+				window.polylines.push(polyline);
+		}
+	}
 
+}
 //档点位被选中的时候
 function selectedMarker(marker){
 	
@@ -438,20 +466,20 @@ function clearMarker() {
 	map.clearOverlays();
 	markeres={};
 }
-	function addClickHandler(content,marker){
+function addClickHandler(content,marker){
 		marker.addEventListener("mouseover",function(e){		
 			openMarkerInfo(content,e);
 		});
 		marker.addEventListener("mouseout",function(e){		
 			map.closeInfoWindow();
 		});
-	}
-	function openMarkerInfo(content,e){
+}
+function openMarkerInfo(content,e){
 		var marker = e.target;
 		var point = new BMap.Point(marker.getPosition().lng, marker.getPosition().lat);
 		var infoWindow = new BMap.InfoWindow(content,opts);  // 创建信息窗口对象 
 		map.openInfoWindow(infoWindow,point); //开启信息窗口
-	}
+}
 	
 function addMarker2Map(pole){
 	var point =center_point;// new BMap.Point(pole.longitude, pole.latitude);

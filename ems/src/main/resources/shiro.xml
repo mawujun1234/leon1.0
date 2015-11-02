@@ -58,10 +58,24 @@
 
 
 	
-	
+	<!-- 会话管理器 -->
+	<bean id="sessionListener" class="com.mawujun.shiro.ShiroSessionListener">
+	</bean>
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+    	<property name="globalSessionTimeout" value="1800000"/>  
+	    <property name="deleteInvalidSessions" value="true"/>  
+	    <property name="sessionValidationSchedulerEnabled" value="true"/>
+
+        <property name ="sessionListeners">  
+          <list>  
+        	<ref local="sessionListener"/>
+          </list>  
+        </property>
+   </bean>
 	
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 		<property name="realm" ref="myShiroRealm" />
+		<property name="sessionManager" ref="sessionManager"/>  
 	</bean>
 
 	<bean id="myShiroRealm" class="com.mawujun.shiro.MyAuthorizingRealm">
@@ -87,4 +101,6 @@
 		
 	</bean>
 	<bean id="uRLPermissionsFilter" class="com.mawujun.shiro.URLPermissionsFilter" />  
+	
+	
 </beans>

@@ -110,7 +110,7 @@ public class LocationApplication {
         option.SetIgnoreCacheException(false);//可选，默认false，设置是否收集CRASH信息，默认收集
         option.setEnableSimulateGps(false);//可选，默认false，设置是否需要过滤gps仿真结果，默认需要
 
-		option.setCoorType(CoordinateType.GCJ02);// 返回的定位结果是百度经纬度，默认值gcj02,//wgs84:国际经纬度坐标  "gcj02":国家测绘局标准,"bd09ll":百度经纬度标准,"bd09":百度墨卡托标准
+		option.setCoorType(CoordinateType.BD09LL);// 返回的定位结果是百度经纬度，默认值gcj02,//wgs84:国际经纬度坐标  "gcj02":国家测绘局标准,"bd09ll":百度经纬度标准,"bd09":百度墨卡托标准
 		option.setProdName("BaiduLoc");
 		mLocationClient.setLocOption(option);
 	}

@@ -10,6 +10,8 @@ import java.util.Date;
 public class WaringGps {
 	
 	private String loginName;
+	private String name;
+	private String phone;
 	private Date loginTime;
 	
 	private Boolean isUploadGps=false;
@@ -53,6 +55,18 @@ public class WaringGps {
 	}
 	public void setLasted_latitude(String lasted_latitude) {
 		this.lasted_latitude = lasted_latitude;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 	
 

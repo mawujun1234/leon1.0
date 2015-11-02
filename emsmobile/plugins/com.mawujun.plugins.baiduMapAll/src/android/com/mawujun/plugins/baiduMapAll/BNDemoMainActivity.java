@@ -9,14 +9,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.utils.CoordinateConverter;
 import com.baidu.navisdk.adapter.BNOuterTTSPlayerCallback;
 import com.baidu.navisdk.adapter.BNRoutePlanNode;
 import com.baidu.navisdk.adapter.BNRoutePlanNode.CoordinateType;
@@ -171,6 +170,9 @@ public class BNDemoMainActivity extends Activity {
 	
 	
 	private String getSdcardDir() {
+ 
+		
+		
 		if (Environment.getExternalStorageState().equalsIgnoreCase(
 				Environment.MEDIA_MOUNTED)) {
 			return Environment.getExternalStorageDirectory().toString();
@@ -178,9 +180,13 @@ public class BNDemoMainActivity extends Activity {
 		return null;
 	}
 	
-	private BDLocation getBDLocation(){
-		LocationClient mLocationClient = new LocationClient(context);
-		return mLocationClient.getLastKnownLocation();
+	private BDLocation bd09llTOgcj02(Double db09ll_longitude,Double db09ll_latitude){
+
+		BDLocation bd=new BDLocation();
+		bd.setLatitude(db09ll_latitude);
+		bd.setLongitude(db09ll_longitude);
+		
+		return LocationClient.getBDLocationInCoorType(bd, BDLocation.BDLOCATION_BD09LL_TO_GCJ02);
 		
 	}
 	
@@ -188,9 +194,12 @@ public class BNDemoMainActivity extends Activity {
 		//BDLocation bDLocation= BaiduMapAll.locationApplication.mLocationClient.getLastKnownLocation();
 		
 		//BNRoutePlanNode sNode = new BNRoutePlanNode(bDLocation.getLongitude(), bDLocation.getLatitude(),bDLocation.getBuildingName(), null, coType);
-		BNRoutePlanNode sNode = new BNRoutePlanNode( BaiduMapAll.locationApplication.currentLongitude,  BaiduMapAll.locationApplication.currentLatitude,"起点", null, coType);
+		BDLocation start_dest=bd09llTOgcj02(BaiduMapAll.locationApplication.currentLongitude,BaiduMapAll.locationApplication.currentLatitude);
+		BNRoutePlanNode sNode = new BNRoutePlanNode( start_dest.getLongitude(),start_dest.getLatitude(),"起点", null, coType);
 		//Log.i(BaiduMapAll.LOG_TAG, bDLocation.getLongitude()+","+bDLocation.getLatitude()+","+bDLocation.getBuildingName());
-	    BNRoutePlanNode eNode = new BNRoutePlanNode(Double.parseDouble(longitude), Double.parseDouble(latitude), "北京天安门", null, coType);
+		BDLocation end_dest=bd09llTOgcj02(Double.parseDouble(longitude),Double.parseDouble(latitude));
+	    BNRoutePlanNode eNode = new BNRoutePlanNode(end_dest.getLongitude(),end_dest.getLatitude() , "终点", null, coType);
+	    
 	    if (sNode != null && eNode != null) {
 	        List<BNRoutePlanNode> list = new ArrayList<BNRoutePlanNode>();
 	        list.add(sNode);

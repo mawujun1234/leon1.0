@@ -108,6 +108,8 @@ public class MobileLoginController {
              
              WaringGps waringGps=new WaringGps();
              waringGps.setLoginName(loginName);
+             waringGps.setName(ShiroUtils.getAuthenticationInfo().getName());
+             waringGps.setPhone(ShiroUtils.getAuthenticationInfo().getPhone());
              waringGps.setIsUploadGps(false);
              waringGps.setLoginTime(new Date());
              geolocationController.getWaringGpsMap().put(loginName, waringGps);

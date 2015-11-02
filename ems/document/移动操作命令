@@ -32,8 +32,8 @@ cordova plugin rm org.apache.cordova.splashscreen
 cordova plugin add cordova-plugin-splashscreen
 
 
-cordova plugins rm com.mawujun.plugins.baiduLocation
-cordova plugin add E:\eclipse\mobile\cordova_plugins\platforms\android\BaiduLocation
+cordova plugin rm com.mawujun.plugins.baiduMapAll
+cordova plugin add E:\eclipse\mobile\cordova_plugins\platforms\android\BaiduMapAll
 
 cordova plugins rm com.mawujun.plugins.barcodescanner
 cordova plugin add E:\eclipse\mobile\cordova_plugins\platforms\android\BarcodeScanner
