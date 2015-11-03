@@ -112,7 +112,7 @@ public class MobileLoginController {
              waringGps.setPhone(ShiroUtils.getAuthenticationInfo().getPhone());
              waringGps.setIsUploadGps(false);
              waringGps.setLoginTime(new Date());
-             geolocationController.getWaringGpsMap().put(loginName, waringGps);
+             geolocationController.getWaringGpsMap().put(subject.getSession().getId().toString(), waringGps);
              return ShiroUtils.getAuthenticationInfo();
         }  
 		
@@ -121,8 +121,9 @@ public class MobileLoginController {
 	@RequestMapping("/mobile/logout.do")
 	@ResponseBody
 	public String logout(){
-		 geolocationController.getWaringGpsMap().remove(ShiroUtils.getAuthenticationInfo().getUsername());
+		
 		Subject subject = SecurityUtils.getSubject(); 
+		 //geolocationController.getWaringGpsMap().remove(subject.getSession().getId().toString());
 		subject.logout();
 		
 		

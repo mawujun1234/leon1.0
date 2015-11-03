@@ -13,7 +13,7 @@
 		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd"
 		default-lazy-init="true">
-
+<bean id="springContextHolder" class="com.mawujun.controller.spring.SpringContextHolder" lazy-init="false" ></bean>
      
     <!-- ①：对web包中的所有类进行扫描，以完成Bean创建和自动依赖注入的功能 ，mvc 的只扫描controller组件 注意使用 use-default-filters="false" 
     1、如果不设置use-default-filters="false"，则Spring会扫描并优先注册默认的bean（当然包括标记为@Service的bean），这样，标记为@Transactional的service由于transaction manager尚未注册而未能生效，导致事务管理失效。 

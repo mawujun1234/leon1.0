@@ -11,22 +11,28 @@ public class ShiroSessionListener extends SessionListenerAdapter {
 	private GeolocationController geolocationController;
 
 	public void onExpiration(Session session) {// 会话过期时触发
-		改成直接结束应用，然后看看会不会进入到这来
-		http://jinnianshilongnian.iteye.com/blog/2028675
-			http://jinnianshilongnian.iteye.com/blog/2029717/
-		removeWaringGpsMap();
+		//改成直接结束应用，然后看看会不会进入到这来
+		//http://jinnianshilongnian.iteye.com/blog/2028675
+		//	http://jinnianshilongnian.iteye.com/blog/2029717/
+		super.onExpiration(session);
+		removeWaringGpsMap(session);
 	}
 
+	@Override
+	public void onStop(Session session) {
+		// TODO Auto-generated method stub
+		super.onStop(session);
+		 removeWaringGpsMap(session);
+	}
 
-
-	public void removeWaringGpsMap() {
+	public void removeWaringGpsMap(Session session) {
 		if (geolocationController == null) {
-			geolocationController = SpringContextHolder.getBean(GeolocationController.class);
+			geolocationController = (GeolocationController)SpringContextHolder.getBean("geolocationController");
 		}
-		System.out.println("22222222222222222");
+		//System.out.println(session.getId());
 		//String loginName=ShiroUtils.getAuthenticationInfo().getUsername();
 		// no-op
-		//geolocationController.getWaringGpsMap().remove(loginName);
+		geolocationController.getWaringGpsMap().remove(session.getId().toString());
 	}
 
 	public GeolocationController getGeolocationController() {
@@ -36,5 +42,9 @@ public class ShiroSessionListener extends SessionListenerAdapter {
 	public void setGeolocationController(GeolocationController geolocationController) {
 		this.geolocationController = geolocationController;
 	}
+
+
+
+	
 
 }
