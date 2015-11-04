@@ -40,32 +40,32 @@ public class PoleService extends AbstractService<Pole, String>{
 	@Override
 	public String create(Pole entity) {
 		this.getRepository().create(entity);
-		//获取该点位的经纬度
-		if(StringUtils.hasText(entity.getAddress())){
-			String[] coorde= mapService.getLngLat(entity.geetFullAddress());
-			if(coorde!=null){
-				entity.setLongitude(coorde[0]);
-				entity.setLatitude(coorde[1]);
-				this.getRepository().update(entity);
-			}
-		}
+//		//获取该点位的经纬度
+//		if(StringUtils.hasText(entity.getAddress())){
+//			String[] coorde= mapService.getLngLat(entity.geetFullAddress());
+//			if(coorde!=null){
+//				entity.setLongitude(coorde[0]);
+//				entity.setLatitude(coorde[1]);
+//				this.getRepository().update(entity);
+//			}
+//		}
 		return entity.getId();
 	}
 	@Override
 	public void update(Pole entity) {
 		//去获取当前点位的地址，然后比对是否一致，如果不一致，就进行经纬度初始化
 		//如果新地址获取不到经纬，就把经纬度设置为null
-		Pole temp=this.getRepository().geetFullAddress(entity.getId());
-		if(!temp.geetFullAddress().equals(entity.geetFullAddress())){
-			String[] coorde= mapService.getLngLat(entity.geetFullAddress());
-			if(coorde!=null){
-				entity.setLongitude(coorde[0]);
-				entity.setLatitude(coorde[1]);
-			} else {
-				entity.setLongitude(null);
-				entity.setLatitude(null);
-			}
-		}
+//		Pole temp=this.getRepository().geetFullAddress(entity.getId());
+//		if(!temp.geetFullAddress().equals(entity.geetFullAddress())){
+//			String[] coorde= mapService.getLngLat(entity.geetFullAddress());
+//			if(coorde!=null){
+//				entity.setLongitude(coorde[0]);
+//				entity.setLatitude(coorde[1]);
+//			} else {
+//				entity.setLongitude(null);
+//				entity.setLatitude(null);
+//			}
+//		}
 		
 		this.getRepository().update(entity);
 	}

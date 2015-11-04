@@ -36,6 +36,10 @@ public class Pole extends UUIDEntity {
 	private String longitude;//经度
 	@Column(length=15)
 	private String latitude;//纬度
+	@Column(length=15)
+	private String longitude_orgin;//经度,原始的导过来的经纬度
+	@Column(length=15)
+	private String latitude_orgin;//纬度,原始的导过来的经纬度
 	
 	@Column(length=36)
 	private String customer_id;
@@ -168,6 +172,22 @@ public class Pole extends UUIDEntity {
 
 	public void setProject_id(String project_id) {
 		this.project_id = project_id;
+	}
+
+	public String getLongitude_orgin() {
+		return longitude_orgin;
+	}
+
+	public void setLongitude_orgin(String longitude_orgin) {
+		this.longitude_orgin = longitude_orgin;
+	}
+
+	public String getLatitude_orgin() {
+		return latitude_orgin;
+	}
+
+	public void setLatitude_orgin(String latitude_orgin) {
+		this.latitude_orgin = latitude_orgin;
 	}
 
 

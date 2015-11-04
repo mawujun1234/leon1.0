@@ -1,18 +1,27 @@
 package com.mawujun.mobile.geolocation;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.mawujun.baseinfo.Pole;
 import com.mawujun.baseinfo.PoleRepository;
-import com.mawujun.utils.M;
+import com.mawujun.exception.BusinessException;
 import com.mawujun.utils.Params;
 import com.mawujun.utils.page.Page;
 
@@ -22,16 +31,68 @@ public class MapController {
 	private MapService mapService;
 	@Autowired
 	private PoleRepository poleRepository;
-	/**
-	 * 初始化所有不存在经纬度的点位
-	 * @author mawujun email:160649888@163.com qq:16064988
-	 */
+//	/**
+//	 * 初始化所有不存在经纬度的点位
+//	 * @author mawujun email:160649888@163.com qq:16064988
+//	 */
+//	@RequestMapping("/map/initAllPoleNoLngLat.do")
+//	@ResponseBody
+//	public String initAllPoleNoLngLat(){
+//		String result=mapService.initAllPoleNoLngLat();
+//		//return "".equals(result)?"nodata":result;
+//		return result;
+//	}
+	
 	@RequestMapping("/map/initAllPoleNoLngLat.do")
 	@ResponseBody
-	public String initAllPoleNoLngLat(){
-		String result=mapService.initAllPoleNoLngLat();
-		//return "".equals(result)?"nodata":result;
-		return result;
+	public String initAllPoleNoLngLat(@RequestParam(value = "excel") MultipartFile file, HttpServletRequest request) throws InvalidFormatException, IOException{
+//		System.out.println("开始");  
+//        String path = request.getSession().getServletContext().getRealPath("upload");  
+//        String fileName = file.getOriginalFilename();  
+//        System.out.println(path);  
+//        File targetFile = new File(path, fileName);  
+//        if(!targetFile.exists()){  
+//            targetFile.mkdirs();  
+//        }  
+//  
+//        
+//        //保存  
+//        try {  
+//            file.transferTo(targetFile);  
+//        } catch (Exception e) {  
+//            e.printStackTrace();  
+//        }  
+        
+		String fileName = file.getOriginalFilename();  
+		Workbook wb=null;
+		if (fileName.endsWith("xls")) {
+			wb = new HSSFWorkbook(file.getInputStream());
+//			Sheet sheet = wb.getSheetAt(0);
+//	        int row_num=sheet.getLastRowNum();
+//	        for(int i=2;i<row_num;i++){
+//	        	Cell cell=sheet.getRow(i).getCell(1);
+//	        	System.out.println(cell.getStringCellValue());
+//	        }
+		} else if (fileName.endsWith("xlsx")) {
+			 //OPCPackage pkg = OPCPackage.open(file.getInputStream());
+		     wb = new XSSFWorkbook(file.getInputStream());
+		} else {
+			//throw new BusinessException("文件类型不对!");
+			return "文件类型不对!";
+		}
+		
+       
+        Sheet sheet = wb.getSheetAt(0);
+        int row_num=sheet.getLastRowNum();
+        for(int i=2;i<row_num;i++){
+        	Cell cell=sheet.getRow(i).getCell(1);
+        	//取出所有的编码和经纬度，然后直接update
+        	System.out.println(cell.getStringCellValue());
+        }
+        
+        //pkg.close();
+		
+		return "已经成功初始化！"+fileName;
 	}
 	
 	

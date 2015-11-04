@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.mobile.task.Task;
-import com.mawujun.mobile.task.TaskService;
+import com.mawujun.mobile.task.TaskVO;
 import com.mawujun.utils.M;
 import com.mawujun.utils.Params;
 import com.mawujun.utils.page.Page;
@@ -50,7 +50,7 @@ public class TaskReportController {
 	public void exportUnrepairPoleReport(HttpServletResponse response,String workunit_id,String customer_id,String date_start,String date_end) throws IOException {
 		Params params=Params.init().add(M.Task.workunit_id, workunit_id).add("customer_id", customer_id)
 				.add("date_start", date_start).add("date_end", date_end);
-		List<Task> taskes=taskReportRepository.exportUnrepairPoleReport(params);
+		List<TaskVO> taskes=taskReportRepository.exportUnrepairPoleReport(params);
 		
 		XSSFWorkbook wb =new XSSFWorkbook();
 		Sheet sheet = wb.createSheet();
@@ -162,11 +162,11 @@ public class TaskReportController {
 			
 	}
 	SimpleDateFormat yMdHms=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	private void build_content(List<Task> taskes,XSSFWorkbook wb,Sheet sheet,int rownum){
+	private void build_content(List<TaskVO> taskes,XSSFWorkbook wb,Sheet sheet,int rownum){
 		int cellnum=0;
 
 		int i=1;
-		for(Task task:taskes){
+		for(TaskVO task:taskes){
 			cellnum=0;
 			Row row = sheet.createRow(rownum++);
 			

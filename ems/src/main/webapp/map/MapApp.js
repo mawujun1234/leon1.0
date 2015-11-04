@@ -251,28 +251,76 @@ Ext.onReady(function(){
 		    text: '初始化',
 		    
 		    handler: function(){
-				Ext.Msg.confirm("提醒","这里将初始化所有没有设置经纬度的点位!不受查询条件影响!",function(btn){
-					if(btn=='yes'){
-						Ext.getBody().mask("正在初始化....");
-						Ext.Ajax.request({
-							url:Ext.ContextPath+'/map/initAllPoleNoLngLat.do',
-							success:function(response){
-								Ext.getBody().unmask();
-								var obj=Ext.decode(response.responseText);
-								if(obj.root){
-									alert(obj.root+"\n等点位由于地址问题获取失败，请手工进行调整或者修改地址!");
-								} else {
-									alert("成功");
-								}
-								poleStore.loadPage(1);
-								
-							},
-							failure:function(){
-								Ext.getBody().unmask();
-							}
-						});
-					}
+		    	var form=Ext.create('Ext.form.Panel', {
+				    
+				    width: 400,
+				    bodyPadding: 10,
+				    frame: true,
+				    items: [{
+				        xtype: 'filefield',
+				        name: 'excel',
+				        //fieldLabel: 'excel',
+				        labelWidth: 50,
+				        msgTarget: 'side',
+				        allowBlank: false,
+				        anchor: '100%',
+				        buttonText: '选择excel文件...'
+				    }],
+				
+				    buttons: [{
+				        text: '上传',
+				        handler: function() {
+				            var form = this.up('form').getForm();
+				            if(form.isValid()){
+				                form.submit({
+				                    url: Ext.ContextPath+'/map/initAllPoleNoLngLat.do',
+				                    waitMsg: '正在上传...',
+				                    success: function(form, action) {
+				                    	//console.log(action)
+				                        Ext.Msg.alert('成功',action.result.root);
+				                        win.close();
+				                    },
+				                    failure:function(form, action){
+				                    	console.log(action)
+				                    	 Ext.Msg.alert('失败','初始化失败!');
+				                    	
+				                    }
+				                });
+				            }
+				        }
+				    }]
 				});
+				
+				var win=Ext.create('Ext.window.Window',{
+					title: '上传excel文件',
+					layout:'fit',
+					items:[form],
+					modal:true
+				});
+				win.show()
+		    	
+//				Ext.Msg.confirm("提醒","这里将初始化所有没有设置经纬度的点位!不受查询条件影响!",function(btn){
+//					if(btn=='yes'){
+//						Ext.getBody().mask("正在初始化....");
+//						Ext.Ajax.request({
+//							url:Ext.ContextPath+'/map/initAllPoleNoLngLat.do',
+//							success:function(response){
+//								Ext.getBody().unmask();
+//								var obj=Ext.decode(response.responseText);
+//								if(obj.root){
+//									alert(obj.root+"\n等点位由于地址问题获取失败，请手工进行调整或者修改地址!");
+//								} else {
+//									alert("成功");
+//								}
+//								poleStore.loadPage(1);
+//								
+//							},
+//							failure:function(){
+//								Ext.getBody().unmask();
+//							}
+//						});
+//					}
+//				});
 		    },
 		    icon: '../icons/database_refresh.png'
 		});	
@@ -424,7 +472,7 @@ function addCar2Map(workunit){
 	//marker.enableDragging();
 	//marker.pole_id = pole.id;
 
-	addClickHandler("账号:"+workunit.loginName+"<br/>作业单位:"+workunit.name+"<br/>电话:"+workunit.phone+"<br/>登录时间:"+workunit.loginTime ,car_marker);
+	addMouseoverHandler("账号:"+workunit.loginName+"<br/>作业单位:"+workunit.name+"<br/>电话:"+workunit.phone+"<br/>登录时间:"+workunit.loginTime ,car_marker);
 
 }
 
@@ -466,7 +514,7 @@ function clearMarker() {
 	map.clearOverlays();
 	markeres={};
 }
-function addClickHandler(content,marker){
+function addMouseoverHandler(content,marker){
 		marker.addEventListener("mouseover",function(e){		
 			openMarkerInfo(content,e);
 		});
@@ -501,9 +549,13 @@ function addMarker2Map(pole){
 	marker.enableDragging();
 	marker.pole_id = pole.id;
 
-	addClickHandler("编码:" + pole.code + "<br/>名称:" + pole.name + "<br/>地址:"
+	addMouseoverHandler("编码:" + pole.code + "<br/>名称:" + pole.name + "<br/>地址:"
 					+ pole.province + pole.city + pole.area + pole.address,
 			marker);
+			
+	marker.addEventListener("click",function(e,target){		
+			alert("弹出定位的设备信息和设备生命周期");
+	});
 
 	marker.addEventListener("dragstart", function(type, target) {
 				type.target.orgin_point = type.target.getPosition();
@@ -606,7 +658,7 @@ function showMap(params){
 //				marker.enableDragging(); 
 //				marker.pole_id=pole.id;
 //				
-//				addClickHandler("编码:"+pole.code+"<br/>名称:"+pole.name+"<br/>地址:"+pole.province+pole.city+pole.area+pole.address,marker);
+//				addMouseoverHandler("编码:"+pole.code+"<br/>名称:"+pole.name+"<br/>地址:"+pole.province+pole.city+pole.area+pole.address,marker);
 //				
 //				marker.addEventListener("dragstart", function(type, target){
 //					type.target.orgin_point=type.target.getPosition();

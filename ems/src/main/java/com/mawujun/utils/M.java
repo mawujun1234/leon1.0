@@ -178,6 +178,8 @@ public static final class Pole {
 	public static final String poleType="poleType";
 	public static final String longitude="longitude";
 	public static final String latitude="latitude";
+	public static final String longitude_orgin="longitude_orgin";
+	public static final String latitude_orgin="latitude_orgin";
 	public static final String customer_id="customer_id";
 	public static final String area_id="area_id";
 	public static final String project_id="project_id";
@@ -401,7 +403,6 @@ public static final class Task {
 	public static final String workunit_name="workunit_name";
 	public static final String customer_id="customer_id";
 	public static final String customer_name="customer_name";
-	public static final String pole_code="pole_code";
 	public static final String hitchDate="hitchDate";
 	public static final String createDate="createDate";
 	public static final String startHandDate="startHandDate";

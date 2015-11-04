@@ -10,6 +10,8 @@ Ext.defineModel("Ems.baseinfo.Pole",{
 		{name:'customer_id',type:'string'},
 		{name:'latitude',type:'string'},
 		{name:'longitude',type:'string'},
+		{name:'latitude_orgin',type:'string'},
+		{name:'longitude_orgin',type:'string'},
 		{name:'name',type:'string'},
 		{name:'province',type:'string'},
 		{name:'status',type:'string'},

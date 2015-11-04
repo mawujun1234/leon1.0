@@ -43,8 +43,7 @@ public class Task implements IdEntity<String> {
 	@Column(length=50)
 	private String customer_name;
 	
-	@Transient
-	private String pole_code;
+	
 	
 	private Date hitchDate;//故障时间，就是发现故障的时间
 	private Date createDate;//创建时间
@@ -202,12 +201,7 @@ public class Task implements IdEntity<String> {
 	public void setCreaterType(TaskCreaterType createrType) {
 		this.createrType = createrType;
 	}
-	public String getPole_code() {
-		return pole_code;
-	}
-	public void setPole_code(String pole_code) {
-		this.pole_code = pole_code;
-	}
+
 	public Date getHitchDate() {
 		return hitchDate;
 	}

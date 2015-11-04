@@ -138,7 +138,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     </select>
     
     <!-- 任务查询管理 -->
-    <select id="queryPage" resultType="com.mawujun.mobile.task.Task" parameterType="map">
+    <select id="queryPage" resultType="com.mawujun.mobile.task.TaskVO" parameterType="map">
     	select a.*,b.code as pole_code from ems_task a,ems_pole b
     	<where>
     		a.pole_id=b.id
@@ -169,7 +169,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     
     
     <!-- 查询所有已经提交的任务 -->
-    <select id="querySubmited" resultType="com.mawujun.mobile.task.Task" parameterType="map">
+    <select id="querySubmited" resultType="com.mawujun.mobile.task.TaskVO" parameterType="map">
     	select a.*,b.code as pole_code from ems_task a,ems_pole b
     	<where>
     		a.pole_id=b.id and a.status='submited'
@@ -270,13 +270,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		inner join ems_brand d on a.brand_id=d.id	
     </select> 
     <!-- 
-    <select id="queryReadOvertimeTask" resultType="com.mawujun.mobile.task.Task" >
+    <select id="queryReadOvertimeTask" resultType="com.mawujun.mobile.task.TaskVO" >
     	select * from ems_task a
     	where a.status='newTask' and floor(to_number(sysdate-(a.createDate+0))*24*60) &gt; #{read}
     	and not exists (select 1 from ems_message b where a.id=b.task_id and floor(to_number((a.createdate+0)-(b.createDate+0))*24*60) &lt; #{read})
     </select> 
      -->
-    <select id="queryHandlingOvertimeTask" resultType="com.mawujun.mobile.task.Task" >
+    <select id="queryHandlingOvertimeTask" resultType="com.mawujun.mobile.task.TaskVO" >
     	select * from ems_task a
     	where a.status in ('newTask','read') and floor(to_number(sysdate-(a.createDate+0))*24*60) &gt; #{handling}
     	and not exists (select 1 from ems_message b where a.id=b.task_id and floor(to_number((a.createdate+0)-(b.createDate+0))*24*60) &lt; #{handling})

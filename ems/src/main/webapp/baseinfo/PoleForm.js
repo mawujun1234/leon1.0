@@ -168,6 +168,22 @@ Ext.define('Ems.baseinfo.PoleForm',{
 	        xtype:'textfield',
 	         hidden:true,
 	        allowBlank: true
+	    },
+	     {
+	        fieldLabel: '经度',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'longitude_orgin',   
+	        xtype:'textfield',
+	        hidden:true,
+	        allowBlank: true
+	    },	
+		{
+	        fieldLabel: '纬度',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'latitude_orgin',      
+	        xtype:'textfield',
+	         hidden:true,
+	        allowBlank: true
 	    }
 	  ];   
 	  
