@@ -9,13 +9,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
-import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.utils.CoordinateConverter;
 import com.baidu.navisdk.adapter.BNOuterTTSPlayerCallback;
 import com.baidu.navisdk.adapter.BNRoutePlanNode;
 import com.baidu.navisdk.adapter.BNRoutePlanNode.CoordinateType;
@@ -27,9 +33,19 @@ public class BNDemoMainActivity extends Activity {
 
 	public static final String TAG = "NaviSDkDemo";
 	private static final String APP_FOLDER_NAME = "BNSDKDemo";
-	private Button mWgsNaviBtn = null;
-	private Button mGcjNaviBtn = null;
-	private Button mBdmcNaviBtn = null;
+
+	
+	private RadioGroup routePlanPreferenceRadio;
+	private RadioButton ROUTE_PLAN_MOD_AVOID_TAFFICJAM;
+	private RadioButton ROUTE_PLAN_MOD_MIN_DIST;
+	private RadioButton ROUTE_PLAN_MOD_MIN_TIME;
+	private RadioButton ROUTE_PLAN_MOD_MIN_TOLL;
+	private RadioButton ROUTE_PLAN_MOD_RECOMMEND;
+	
+	
+	private ToggleButton isGPSNavButton;
+	private Button mBd09llNaviBtn = null;
+	
 	private String mSDCardPath = null;
 	
 	public static final String ROUTE_PLAN_NODE = "routePlanNode";
@@ -39,8 +55,11 @@ public class BNDemoMainActivity extends Activity {
 	String longitude=null;
 	String latitude=null;
 	
+	private Boolean isGPSNav=true;//是导航 还是模拟导航 true是直接导航
+	private int routePlanPreference=BaiduNaviManager.RoutePlanPreference.ROUTE_PLAN_MOD_RECOMMEND;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);  
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		
@@ -52,13 +71,20 @@ public class BNDemoMainActivity extends Activity {
 		
 		setContentView(context.getResources().getIdentifier("bndemomainactivity","layout", context.getPackageName()));
 		
-		mWgsNaviBtn = (Button) findViewById(context.getResources().getIdentifier("wgsNaviBtn","id", context.getPackageName()));
-		mGcjNaviBtn = (Button) findViewById(context.getResources().getIdentifier("gcjNaviBtn","id", context.getPackageName()));
-		mBdmcNaviBtn = (Button) findViewById(context.getResources().getIdentifier("bdmcNaviBtn","id", context.getPackageName()));
+		routePlanPreferenceRadio = (RadioGroup) findViewById(context.getResources().getIdentifier("routePlanPreferenceRadio","id", context.getPackageName()));
+		ROUTE_PLAN_MOD_AVOID_TAFFICJAM= (RadioButton) findViewById(context.getResources().getIdentifier("ROUTE_PLAN_MOD_AVOID_TAFFICJAM","id", context.getPackageName()));
+		ROUTE_PLAN_MOD_MIN_DIST = (RadioButton) findViewById(context.getResources().getIdentifier("ROUTE_PLAN_MOD_MIN_DIST","id", context.getPackageName()));
+		ROUTE_PLAN_MOD_MIN_TIME = (RadioButton) findViewById(context.getResources().getIdentifier("ROUTE_PLAN_MOD_MIN_TIME","id", context.getPackageName()));
+		ROUTE_PLAN_MOD_MIN_TOLL = (RadioButton) findViewById(context.getResources().getIdentifier("ROUTE_PLAN_MOD_MIN_TOLL","id", context.getPackageName()));
+		ROUTE_PLAN_MOD_RECOMMEND = (RadioButton) findViewById(context.getResources().getIdentifier("ROUTE_PLAN_MOD_RECOMMEND","id", context.getPackageName()));
+		
+		
+		isGPSNavButton = (ToggleButton) findViewById(context.getResources().getIdentifier("isGPSNavButton","id", context.getPackageName()));
+		mBd09llNaviBtn = (Button) findViewById(context.getResources().getIdentifier("mBd09llNaviBtn","id", context.getPackageName()));
 		
 		
 		
-//		initListener();
+		initListener();
 		if ( initDirs() ) {
 			initNavi();
 		}
@@ -78,41 +104,52 @@ public class BNDemoMainActivity extends Activity {
 		super.onResume();
 	}
 	
-//	private void initListener() {
-////		if ( mWgsNaviBtn != null ) {
-////			mWgsNaviBtn.setOnClickListener(new OnClickListener() {
-////				
-////				@Override
-////				public void onClick(View arg0) {
-////					if ( BaiduNaviManager.isNaviInited() ) {
-////						routeplanToNavi(CoordinateType.WGS84);
-////					}
-////				}
-////			});
-////		}
-////		if ( mGcjNaviBtn != null ) {
-////			mGcjNaviBtn.setOnClickListener(new OnClickListener() {
-////				
-////				@Override
-////				public void onClick(View arg0) {
-////					if ( BaiduNaviManager.isNaviInited() ) {
-////						routeplanToNavi(CoordinateType.GCJ02);
-////					}
-////				}
-////			});
-////		}
-////		if ( mBdmcNaviBtn != null ) {
-////			mBdmcNaviBtn.setOnClickListener(new OnClickListener() {
-////				
-////				@Override
-////				public void onClick(View arg0) {
-////					if ( BaiduNaviManager.isNaviInited() ) {
-////						routeplanToNavi(CoordinateType.BD09_MC);
-////					}
-////				}
-////			});
-////		}
-//	}
+	private void initListener() {
+		if ( routePlanPreferenceRadio != null ) {
+			routePlanPreferenceRadio.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+				@Override
+				public void onCheckedChanged(RadioGroup group, int checkedId) {
+					// TODO Auto-generated method stub
+					if(ROUTE_PLAN_MOD_AVOID_TAFFICJAM.getId()==checkedId){
+						routePlanPreference=BaiduNaviManager.RoutePlanPreference.ROUTE_PLAN_MOD_AVOID_TAFFICJAM;
+			        } else if(ROUTE_PLAN_MOD_MIN_DIST.getId()==checkedId){
+			        	routePlanPreference=BaiduNaviManager.RoutePlanPreference.ROUTE_PLAN_MOD_MIN_DIST;
+			        } else if(ROUTE_PLAN_MOD_MIN_TIME.getId()==checkedId){
+			        	routePlanPreference=BaiduNaviManager.RoutePlanPreference.ROUTE_PLAN_MOD_MIN_TIME;
+			        } else if(ROUTE_PLAN_MOD_MIN_TOLL.getId()==checkedId){
+			        	routePlanPreference=BaiduNaviManager.RoutePlanPreference.ROUTE_PLAN_MOD_MIN_TOLL;
+			        } else{
+			        	routePlanPreference=BaiduNaviManager.RoutePlanPreference.ROUTE_PLAN_MOD_RECOMMEND;
+			        }
+
+				}
+
+			});
+		}
+		if ( isGPSNavButton != null ) {
+			isGPSNavButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+				@Override
+				 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					isGPSNav=!isChecked;
+				}
+			});
+		}
+		if ( mBd09llNaviBtn != null ) {
+			mBd09llNaviBtn.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View arg0) {
+					//Toast.makeText(BNDemoMainActivity.this, "按钮点击", Toast.LENGTH_SHORT).show();
+					if ( BaiduNaviManager.isNaviInited() ) {
+						routeplanToNavi(CoordinateType.GCJ02);
+					}  else {
+						Toast.makeText(BNDemoMainActivity.this, "导航正在初始化，请稍候!", Toast.LENGTH_SHORT).show();
+					}
+				}
+			});
+		}
+	}
 	
 	private boolean initDirs() {
 		mSDCardPath = getSdcardDir();
@@ -154,18 +191,18 @@ public class BNDemoMainActivity extends Activity {
 
             }
 				public void initSuccess() {
-					Toast.makeText(BNDemoMainActivity.this, "百度导航引擎初始化成功", Toast.LENGTH_SHORT).show();
-					routeplanToNavi(CoordinateType.GCJ02);
+					Toast.makeText(BNDemoMainActivity.this, "导航引擎初始化成功", Toast.LENGTH_SHORT).show();
+					
 				}
 				
 				public void initStart() {
-					Toast.makeText(BNDemoMainActivity.this, "百度导航引擎初始化开始", Toast.LENGTH_SHORT).show();
+					Toast.makeText(BNDemoMainActivity.this, "导航引擎初始化开始", Toast.LENGTH_SHORT).show();
 				}
 				
 				public void initFailed() {
-					Toast.makeText(BNDemoMainActivity.this, "百度导航引擎初始化失败", Toast.LENGTH_SHORT).show();
+					Toast.makeText(BNDemoMainActivity.this, "导航引擎初始化失败", Toast.LENGTH_SHORT).show();
 				}
-		}, null /*mTTSCallback*/);
+		}, mTTSCallback);
 	}
 	
 	
@@ -204,7 +241,7 @@ public class BNDemoMainActivity extends Activity {
 	        List<BNRoutePlanNode> list = new ArrayList<BNRoutePlanNode>();
 	        list.add(sNode);
 	        list.add(eNode);
-	        BaiduNaviManager.getInstance().launchNavigator(this, list, 1, true, new DemoRoutePlanListener(sNode));
+	        BaiduNaviManager.getInstance().launchNavigator(this, list, routePlanPreference, isGPSNav, new DemoRoutePlanListener(sNode));
 		}
 	    
 	}

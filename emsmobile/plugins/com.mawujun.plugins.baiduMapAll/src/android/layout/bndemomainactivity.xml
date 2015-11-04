@@ -2,33 +2,105 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="16dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
-    android:orientation="vertical"
+    android:background="#FFF5F5F5"
     tools:context=".BNDemoMainActivity" >
 
-    <Button 
-        android:id="@+id/wgsNaviBtn"
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/tvSound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="算路偏好:"
+            android:textColor="@android:color/black"
+            android:textSize="14.0sp" />
+
+        <RadioGroup
+            android:id="@+id/routePlanPreferenceRadio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:textColor="@android:color/black">
+
+            <RadioButton
+                android:id="@+id/ROUTE_PLAN_MOD_AVOID_TAFFICJAM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:text="躲避拥堵" >
+            </RadioButton>
+
+            <RadioButton
+                android:id="@+id/ROUTE_PLAN_MOD_MIN_DIST"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:text="少走高速" >
+            </RadioButton>
+
+            <RadioButton
+                android:id="@+id/ROUTE_PLAN_MOD_MIN_TIME"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:text="高速优先" >
+            </RadioButton>
+
+            <RadioButton
+                android:id="@+id/ROUTE_PLAN_MOD_MIN_TOLL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:text="少收费" >
+            </RadioButton>
+
+            <RadioButton
+                android:id="@+id/ROUTE_PLAN_MOD_RECOMMEND"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:checked="true"
+                android:text="推荐" >
+            </RadioButton>
+        </RadioGroup>
+    </LinearLayout>
+
+    <!-- 是否走模拟 -->
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="模拟导航:"
+            android:textColor="@android:color/black"
+            android:textSize="14.0sp" />
+
+        <ToggleButton
+            android:id="@+id/isGPSNavButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_butn_toggle"
+            android:checked="false"
+            android:textOff=""
+            android:textOn="" />
+    </LinearLayout>
+
+    <Button
+        android:layout_marginTop="30dp"
+        android:id="@+id/mBd09llNaviBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="国际经纬度坐标"
-        />
-     <Button 
-        android:id="@+id/gcjNaviBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="国测局坐标"
-        />
-      <Button 
-        android:id="@+id/bdmcNaviBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="百度墨卡托坐标"
-        />
+        android:text="开始导航" />
 
 </LinearLayout>

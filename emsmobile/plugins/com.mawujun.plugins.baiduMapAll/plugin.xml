@@ -81,6 +81,10 @@
         <source-file src="src/android/com/mawujun/plugins/baiduMapAll/BNDemoMainActivity.java" target-dir="src/com/mawujun/plugins/baiduMapAll" />
         <source-file src="src/android/com/mawujun/plugins/baiduMapAll/BNDemoGuideActivity.java" target-dir="src/com/mawujun/plugins/baiduMapAll" />
         
+        <source-file src="src/android/drawable/selector_butn_toggle.xml" target-dir="res/drawable" /> 
+        <source-file src="src/android/drawable/butn_close.png" target-dir="res/drawable" /> 
+        <source-file src="src/android/drawable/butn_open.png" target-dir="res/drawable" /> 
+        
         
         <source-file src="libs/android/libs/BaiduLBS_Android.jar" target-dir="libs" framework="true"/>      
         <source-file src="libs/android/libs/httpmime-4.1.2.jar" target-dir="libs" framework="true"/> 

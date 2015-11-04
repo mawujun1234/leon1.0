@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +28,7 @@ public class GeolocationController {
 	private Map<String,WaringGps> waringGpsMap=new HashMap<String,WaringGps>();
 	
 	@RequestMapping("/geolocation/mobile/upload.do")
-	public String upload(String longitude,String latitude,String uuid,String loginName){
+	public String upload(String longitude,String latitude,String uuid,String loginName) {
 		//地理信息没有上报
 		//System.out.println(longitude);
 		//System.out.println(latitude);
@@ -51,7 +52,7 @@ public class GeolocationController {
 		geolocation.setCreateDate(new Date());
 		
 		geolocationService.create(geolocation);
-		updateGpsUploadTime(loginName,longitude,latitude);
+		updateGpsUploadTime(SecurityUtils.getSubject().getSession().getId().toString(),longitude,latitude);
 		return "success";
 	}
 	
@@ -60,7 +61,7 @@ public class GeolocationController {
 	 * @author mawujun 16064988@qq.com 
 	 * @param loginName
 	 */
-	public void updateGpsUploadTime(String loginName,String lasted_longitude, String lasted_latitude){
+	public void updateGpsUploadTime(String loginName,String lasted_longitude, String lasted_latitude) {
 		WaringGps waringGps=waringGpsMap.get(loginName);
 		waringGps.setIsUploadGps(true);
 		waringGps.setLastedUploadTime(new Date());
@@ -77,7 +78,7 @@ public class GeolocationController {
 	 */
 	@RequestMapping("/geolocation/unuploadGpsWorkunit.do")
 	@ResponseBody
-	public List<WaringGps> unuploadGpsWorkunit(String status){
+	public List<WaringGps> unuploadGpsWorkunit(String status) {
 		List<WaringGps> list=new ArrayList<WaringGps>();
 		if("unuploadgps".equals(status)){
 			for(Entry<String,WaringGps> entry:waringGpsMap.entrySet()){
