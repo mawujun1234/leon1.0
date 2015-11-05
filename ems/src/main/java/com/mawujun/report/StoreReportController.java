@@ -240,7 +240,7 @@ public class StoreReportController {
 				installout_id_cell.setCellStyle(content_style);
 				
 				Cell memo_cell = row.createCell(cellnum++);
-				//memo_cell.setCellValue("备注");
+				memo_cell.setCellValue(installoutListReport.getMemo());
 				memo_cell.setCellStyle(content_style);
 			}
 		}
@@ -448,7 +448,7 @@ public class StoreReportController {
 				borrow_id_cell.setCellStyle(content_style);
 				
 				Cell memo_cell = row.createCell(cellnum++);
-				//memo_cell.setCellValue("备注");
+				memo_cell.setCellValue(borrowListReport.getMemo());
 				memo_cell.setCellStyle(content_style);
 			}
 		}
@@ -643,7 +643,7 @@ public class StoreReportController {
 						instore_id_cell.setCellStyle(content_style);
 						
 						Cell memo_cell = row.createCell(cellnum++);
-						//memo_cell.setCellValue("备注");
+						memo_cell.setCellValue(instoreListReport.getMemo());
 						memo_cell.setCellStyle(content_style);
 					}
 				}
