@@ -202,7 +202,7 @@ public class BNDemoMainActivity extends Activity {
 				public void initFailed() {
 					Toast.makeText(BNDemoMainActivity.this, "导航引擎初始化失败", Toast.LENGTH_SHORT).show();
 				}
-		}, mTTSCallback);
+		}, null /*mTTSCallback*/);
 	}
 	
 	

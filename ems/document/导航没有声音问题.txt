@@ -1,8 +1,10 @@
 应用包名  com.mawujun.mobile
-应用签名  89b197a360a12fe7b2071f991b40732f
+应用签名  48E0849D748296AD6BFDD13BD827E692
 AK    Gf2Q8bxraGg8SASQuOmvenLS
      160649888@163.com
 	 
+	
+	
 	 
 	 
 bundle id:com.mawujun.mobile

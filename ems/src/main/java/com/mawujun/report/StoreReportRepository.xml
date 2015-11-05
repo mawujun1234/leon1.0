@@ -250,7 +250,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		inner join ems_brand f on c.brand_id=f.id
 		group by a.store_id,a.installouttype_name ,a.installouttype_content,
 		e.id,e.name ,d.id,d.name,c.id,c.name ,c.unit,c.style ,f.name
-    	
+    	order by installouttype_name,installouttype_content
     </select>
 
 </mapper>

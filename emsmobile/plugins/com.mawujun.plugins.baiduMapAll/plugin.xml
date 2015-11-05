@@ -75,8 +75,7 @@
 	            android:label="导航" >
 	        </activity>
         </config-file>
-        <source-file src="libs/android/assets/BaiduNaviSDK_Resource_2.0.png" target-dir="assets" framework="true"/>  
-        <source-file src="libs/android/assets/channel" target-dir="assets" framework="true"/>  
+         
         <source-file src="src/android/layout/bndemomainactivity.xml" target-dir="res/layout" /> 
         <source-file src="src/android/com/mawujun/plugins/baiduMapAll/BNDemoMainActivity.java" target-dir="src/com/mawujun/plugins/baiduMapAll" />
         <source-file src="src/android/com/mawujun/plugins/baiduMapAll/BNDemoGuideActivity.java" target-dir="src/com/mawujun/plugins/baiduMapAll" />
@@ -90,6 +89,9 @@
         <source-file src="libs/android/libs/httpmime-4.1.2.jar" target-dir="libs" framework="true"/> 
         <source-file src="libs/android/libs/IndoorscapeAlbumPlugin.jar" target-dir="libs" framework="true"/> 
          
+        <source-file src="libs/android/assets/BaiduNaviSDK_Resource_2.0.png" target-dir="assets" framework="true"/>  
+        <source-file src="libs/android/assets/channel" target-dir="assets" framework="true"/> 
+        
          <source-file src="libs/android/libs/armeabi/libapp_BaiduNaviApplib.so" target-dir="libs/armeabi" framework="true"/>   
          <source-file src="libs/android/libs/armeabi/libapp_BaiduPanoramaAppLib.so" target-dir="libs/armeabi" framework="true"/>
          <source-file src="libs/android/libs/armeabi/libapp_BaiduVIlib.so" target-dir="libs/armeabi" framework="true"/>   

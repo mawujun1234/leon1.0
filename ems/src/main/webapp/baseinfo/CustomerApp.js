@@ -24,7 +24,7 @@ Ext.onReady(function(){
 		
 		poleGrid.customer_id=record.get("id");
 		poleGrid.getStore().getProxy().extraParams={customer_id:record.get("id")};
-		poleGrid.getStore().load();
+		poleGrid.getStore().loadPage(1);
 		
 		equipment_grid.getStore().removeAll();
 		tabpanel.getEl().unmask();
