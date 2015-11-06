@@ -20,7 +20,8 @@ import com.mawujun.utils.page.Page;
 public interface RepairRepository extends IRepository<Repair, String>{
 
 	public RepairVO getRepairVOByEcode(@Param("ecode")String ecode,@Param("store_id")String store_id);
-	public RepairVO getRepairVOByEcodeAtStore(@Param("ecode")String ecode);
+	public RepairVO getRepairVOByEcodeStatus(@Param("ecode")String ecode,@Param("status")String status);
+	public int checkEcodeIsInRepair(@Param("ecode")String ecode);
 	
 	public Page repairInQuery(Page page);
 	public Page repairMgrQuery(Page page);

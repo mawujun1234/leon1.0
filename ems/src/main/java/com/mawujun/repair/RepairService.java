@@ -23,8 +23,6 @@ import com.mawujun.baseinfo.EquipmentStoreRepository;
 import com.mawujun.baseinfo.EquipmentStoreType;
 import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.baseinfo.OperateType;
-import com.mawujun.baseinfo.Store;
-import com.mawujun.baseinfo.StoreRepository;
 import com.mawujun.baseinfo.StoreService;
 import com.mawujun.baseinfo.TargetType;
 import com.mawujun.exception.BusinessException;
@@ -35,8 +33,8 @@ import com.mawujun.mobile.task.TaskRepository;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 import com.mawujun.shiro.ShiroUtils;
+import com.mawujun.user.UserService;
 import com.mawujun.utils.M;
-import com.mawujun.utils.Params;
 import com.mawujun.utils.StringUtils;
 import com.mawujun.utils.page.Page;
 
@@ -66,6 +64,8 @@ public class RepairService extends AbstractService<Repair, String>{
 	private InstallInRepository installInRepository;
 	@Autowired
 	private TaskRepository taskRepository;
+	@Autowired
+	private UserService userService;
 	
 	@Autowired
 	private EquipmentCycleService equipmentCycleService;
@@ -86,6 +86,10 @@ public class RepairService extends AbstractService<Repair, String>{
 		if(repairvo==null){
 			throw new BusinessException("该设备不在该仓库");
 		}
+		int count=repairRepository.checkEcodeIsInRepair(ecode);
+		if(count>0){
+			throw new BusinessException("该设备已经存在维修单!");
+		}
 //		//获取报修人的相关信息，和报修单id
 //		InstallIn installIn=installInRepository.getInstallInByEcode(ecode);
 //		if(installIn!=null){
@@ -98,18 +102,6 @@ public class RepairService extends AbstractService<Repair, String>{
 		return repairvo;	
 	}
 	
-	public RepairVO getRepairVOByEcodeAtStore(String ecode,String store_id) {
-		//获取当前条码，状态不是完成的维修单，然后判断仓库和维修中心是否一致，如果不一致，就报错
-		RepairVO repairvo= repairRepository.getRepairVOByEcodeAtStore(ecode);
-		if(repairvo==null){
-			throw new BusinessException("该设备还没维修好或者该设备不是维修设备!");
-		}
-		if(!repairvo.getStr_in_id().equals(store_id)){
-			throw new BusinessException("该设备入库能入库这个仓库，不是从这里出去的!");
-		}
-		
-		return repairvo;
-	}
 
 	/**
 	 * 创建维修单
@@ -203,6 +195,8 @@ public class RepairService extends AbstractService<Repair, String>{
 		}
 		return results;
 	}
+	
+	
 	public Page repairInQuery(Page page){
 		//List<Store> stores=storeRepository.queryAll();
 		Page results=repairRepository.repairInQuery(page);
@@ -254,6 +248,31 @@ public class RepairService extends AbstractService<Repair, String>{
 			}
 		}
 		return results;
+	}
+	
+	/**
+	 * 获取已经存在的维修单
+	 * @author mawujun 16064988@qq.com 
+	 * @param ecode
+	 * @return
+	 */
+	public RepairVO getRepairVOByEcodeStatus(String ecode,RepairStatus status) {
+		//获取当前条码，状态不是完成的维修单，然后判断仓库和维修中心是否一致，如果不一致，就报错
+		RepairVO repairVO= repairRepository.getRepairVOByEcodeStatus(ecode,status.toString());
+		if(repairVO==null){
+			//throw new BusinessException("该设备状态不对或者该设备不是维修设备!");
+			return null;
+		}
+		repairVO.setStr_out_name(storeService.get(repairVO.getStr_out_id()).getName());
+		repairVO.setStr_in_name(storeService.get(repairVO.getStr_in_id()).getName());
+		repairVO.setRpa_name(storeService.get(repairVO.getRpa_id()).getName());
+		
+		if(repairVO.getRpa_user_id()!=null){
+			
+			repairVO.setRpa_user_name(userService.get(repairVO.getRpa_user_id()).getName());
+		}
+		
+		return repairVO;
 	}
 	/**
 	 * 维修中心入库
@@ -346,7 +365,7 @@ public class RepairService extends AbstractService<Repair, String>{
 	 * @param ids
 	 * @param ecodes
 	 */
-	public void storeInStore(Repair[] repairs,String str_in_id){
+	public void storeInStore(Repair[] repairs){
 		String oper_id=ShiroUtils.getAuthenticationInfo().getId();
 		for(Repair repair:repairs){
 			//修改设备状态为"已入库"

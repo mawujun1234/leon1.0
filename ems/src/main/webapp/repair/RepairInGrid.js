@@ -293,6 +293,7 @@ Ext.define('Ems.repair.RepairInGrid',{
 		items: [{
 			items: [store_combox,repair_combox,str_out_date_start,str_out_date_end,query_button] // toolbar 1
 		}, {
+			hidden:true,
 			items: [ecode_textfield,str_in_button] // toolbar 2
 		}]
 	  }	

@@ -377,6 +377,7 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 		items: [{
 			items: [store_combox,repair_combox,str_out_date_start,str_out_date_end,status_combo,only_have_scap_checkbox,query_button] // toolbar 1
 		}, {
+				hidden:true,
 			items: [ecode_textfield,str_in_button] // toolbar 2
 		}]
 	}	

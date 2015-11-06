@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html>
   <head>
     
-    <title>仓库入库维修好的设备</title>
+    <title>维修中心维修入库</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -22,7 +22,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	
 	<%@include file="../../common/init.jsp" %>
-	<script type="text/javascript" src="RepairStoreInApp.js"></script>
+	<script type="text/javascript" src="RepairRepairInApp.js"></script>
 	<script type="text/javascript">
 		var loginName='<%=ShiroUtils.getUserName()%>';
 		var loginUserId='<%=ShiroUtils.getAuthenticationInfo().getId()%>';

@@ -21,12 +21,16 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		inner join ems_store g on f.store_id=g.id
 		where a.ecode=#{ecode} and f.store_id=#{store_id}
     </select> 
-    <!-- 维修好仓库入库的时候，获取这个设备 ,只有返库途中的设备才会被获取-->
-    <select id="getRepairVOByEcodeAtStore" resultType="com.mawujun.repair.RepairVO" parameterType="java.lang.String">
+    <!--判断设备是否已经建立维修单  -->
+	<select id="checkEcodeIsInRepair" resultType="int" parameterType="java.lang.String">
+		select count(id) from ems_repair where ecode=#{ecode} and status not in ('over','scrap')
+	</select>
+    <!-- 获取已经存在的维修单-->
+    <select id="getRepairVOByEcodeStatus" resultType="com.mawujun.repair.RepairVO" parameterType="java.lang.String">
     	select a.*,b.id as scrap_id,d.name as prod_name,d.style as equipment_style from ems_repair a 
     	left join ems_scrap b on a.id=b.repair_id
     	left join ems_equipmentprod d on a.prod_id=d.id
-		where a.ecode=#{ecode} and a.status='back_store'
+		where a.ecode=#{ecode} and a.status=#{status}
     </select> 
     
      <!-- 查询所有损坏的设备 -->

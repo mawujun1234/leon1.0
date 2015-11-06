@@ -177,6 +177,26 @@ public class RepairController {
 	}
 	
 	/**
+	 * 当维修中心入库的时候
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param ecode
+	 * @param store_id
+	 * @return
+	 */
+	@RequestMapping("/repair/getRepairVOByEcodeAtTo_repair.do")
+	@ResponseBody
+	public RepairVO getRepairVOByEcodeAtTo_repair(String ecode,String rpa_id) {	
+		RepairVO repairvo= repairService.getRepairVOByEcodeStatus(ecode,RepairStatus.to_repair);
+		
+		if(repairvo==null){
+			throw new BusinessException("该设备状态不对或者该设备不是维修设备!");
+		}
+		if(!repairvo.getRpa_id().equals(rpa_id)){
+			throw new BusinessException("该设备入库能入库这个维修中心!");
+		}
+		return repairvo;
+	}
+	/**
 	 * 维修中心入库
 	 * @author mawujun email:16064988@163.com qq:16064988
 	 * @param start
@@ -221,11 +241,17 @@ public class RepairController {
 	 * @param store_id
 	 * @return
 	 */
-	@RequestMapping("/repair/getRepairVOByEcodeAtStore.do")
+	@RequestMapping("/repair/getRepairVOByEcodeAtBack_store.do")
 	@ResponseBody
-	public RepairVO getRepairVOByEcodeAtStore(String ecode,String store_id,String rap_id) {	
-		RepairVO repairvo= repairService.getRepairVOByEcode(ecode,store_id);
+	public RepairVO getRepairVOByEcodeAtBack_store(String ecode,String store_id) {	
+		RepairVO repairvo= repairService.getRepairVOByEcodeStatus(ecode,RepairStatus.back_store);
 		
+		if(repairvo==null){
+			throw new BusinessException("该设备还没维修好或者该设备不是维修设备!");
+		}
+		if(!repairvo.getStr_in_id().equals(store_id)){
+			throw new BusinessException("该设备入库能入库这个仓库，不是从这里出去的!");
+		}
 		return repairvo;
 	}
 	
@@ -239,13 +265,13 @@ public class RepairController {
 	 */
 	@RequestMapping("/repair/storeInStore.do")
 	@ResponseBody
-	public String storeInStore(@RequestBody Repair[] repairs,String str_in_id){
-		for(Repair repair:repairs){
-			if(str_in_id==null || !str_in_id.equalsIgnoreCase(repair.getStr_in_id())){
-				throw new BusinessException("产品要发往的仓库和要入库的仓库部一致!");
-			}
-		}
-		repairService.storeInStore(repairs,str_in_id);
+	public String storeInStore(@RequestBody Repair[] repairs){
+//		for(Repair repair:repairs){
+//			if(str_in_id==null || !str_in_id.equalsIgnoreCase(repair.getStr_in_id())){
+//				throw new BusinessException("产品要发往的仓库和要入库的仓库部一致!");
+//			}
+//		}
+		repairService.storeInStore(repairs);
 		return "success";
 	}
 	
