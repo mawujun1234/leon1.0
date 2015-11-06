@@ -1,31 +1,18 @@
 package com.mawujun.repair;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.mawujun.baseinfo.EquipmentService;
 import com.mawujun.baseinfo.EquipmentStatus;
 import com.mawujun.baseinfo.EquipmentVO;
-import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.exception.BusinessException;
-import com.mawujun.mobile.task.TaskRepairReport;
 import com.mawujun.shiro.ShiroUtils;
-import com.mawujun.user.User;
-import com.mawujun.utils.M;
-import com.mawujun.utils.Params;
 import com.mawujun.utils.StringUtils;
 import com.mawujun.utils.page.Page;
 /**
@@ -117,6 +104,8 @@ public class RepairController {
 		repairvo.setStatus(RepairStatus.to_repair);
 		return repairvo;
 	}
+	
+	
 	
 	/**
 	 * 创建信的维修单
@@ -223,6 +212,21 @@ public class RepairController {
 		}
 		repairService.repairOutStore(repairs);
 		return "success";
+	}
+	
+	/**
+	 * 当维修好后，仓库入库的时候
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param ecode
+	 * @param store_id
+	 * @return
+	 */
+	@RequestMapping("/repair/getRepairVOByEcodeAtStore.do")
+	@ResponseBody
+	public RepairVO getRepairVOByEcodeAtStore(String ecode,String store_id,String rap_id) {	
+		RepairVO repairvo= repairService.getRepairVOByEcode(ecode,store_id);
+		
+		return repairvo;
 	}
 	
 	/**

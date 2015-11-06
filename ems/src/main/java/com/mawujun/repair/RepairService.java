@@ -97,6 +97,20 @@ public class RepairService extends AbstractService<Repair, String>{
 		//获取任务单的id和其中的故障描述,这里要考虑是否把任务单号直接放置在InstallInList里面
 		return repairvo;	
 	}
+	
+	public RepairVO getRepairVOByEcodeAtStore(String ecode,String store_id) {
+		//获取当前条码，状态不是完成的维修单，然后判断仓库和维修中心是否一致，如果不一致，就报错
+		RepairVO repairvo= repairRepository.getRepairVOByEcodeAtStore(ecode);
+		if(repairvo==null){
+			throw new BusinessException("该设备还没维修好或者该设备不是维修设备!");
+		}
+		if(!repairvo.getStr_in_id().equals(store_id)){
+			throw new BusinessException("该设备入库能入库这个仓库，不是从这里出去的!");
+		}
+		
+		return repairvo;
+	}
+
 	/**
 	 * 创建维修单
 	 * @author mawujun email:160649888@163.com qq:16064988
@@ -117,6 +131,7 @@ public class RepairService extends AbstractService<Repair, String>{
 			repair.setStatus(RepairStatus.to_repair);
 			repair.setStr_out_date(new Date());
 			repair.setStr_out_oper_id(oper_id);
+			repair.setStr_in_id(repair.getStr_out_id());//出库和入库的仓库必须一致
 			//获取报修时间
 			InstallIn installIn=installInRepository.get(repair.getInstallIn_id());
 			repair.setRepair_date(installIn.getOperateDate());
@@ -130,7 +145,7 @@ public class RepairService extends AbstractService<Repair, String>{
 			repairRepository.create(repair);	
 			
 			//记录设备入库的生命周期,目标记录的是出库仓库
-			equipmentCycleService.logEquipmentCycle(repair.getEcode(), OperateType.repair_store_out, repair.getId(),TargetType.store,repair.getStr_out_id());
+			equipmentCycleService.logEquipmentCycle(repair.getEcode(), OperateType.repair_store_out, repair.getId(),TargetType.repair,repair.getRpa_id());
 		}
 		
 	}
@@ -320,8 +335,8 @@ public class RepairService extends AbstractService<Repair, String>{
 					.set(M.Repair.rpa_out_date, new Date())
 					.set(M.Repair.status, RepairStatus.back_store).andEquals(M.Repair.id, repair.getId()));
 			
-			//记录设备入库的生命周期
-			equipmentCycleService.logEquipmentCycle(repair.getEcode(), OperateType.repair_out, repair.getId(),TargetType.repair,repair.getRpa_id());
+			//记录设备入库的生命周期，//出库和入库的仓库必须一致，所以使用了str_out_id
+			equipmentCycleService.logEquipmentCycle(repair.getEcode(), OperateType.repair_out, repair.getId(),TargetType.store,repair.getStr_in_id());
 		}
 	}
 	
@@ -374,7 +389,7 @@ public class RepairService extends AbstractService<Repair, String>{
 					.set(M.Repair.status, RepairStatus.over).andEquals(M.Repair.id, repair.getId()));
 			
 			//记录设备入库的生命周期
-			equipmentCycleService.logEquipmentCycle(repair.getEcode(), OperateType.repair_out, repair.getId(),TargetType.store,repair.getStr_in_id());
+			equipmentCycleService.logEquipmentCycle(repair.getEcode(), OperateType.repair_store_in, repair.getId(),TargetType.store,repair.getStr_in_id());
 	
 		}
 	}

@@ -47,8 +47,8 @@ public class EquipmentCycleService extends AbstractService<EquipmentCycle, Strin
 	 * @param ecode
 	 * @param operateType 操作类型，入库，出库，领用，返库等等
 	 * @param type_id 入库id，领用单id等等 各种单据id,如果是手动修改，就填写修改人的id
+	 * @param targetType 
 	 * @param target_id 目标id。仓库id，作业单位id，维修中心id等
-	 * @param target_name 目标的名称。仓库名称，作业单位名称，维修中心名称等
 	 */
 	public EquipmentCycle logEquipmentCycle(String ecode,OperateType operateType,String type_id,TargetType targetType,String target_id){
 		EquipmentCycle cycle=new EquipmentCycle();

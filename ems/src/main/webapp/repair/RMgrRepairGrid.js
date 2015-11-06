@@ -322,14 +322,17 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 					//var ecodes=[];
 					var repairs=[];
 					for(var i=0;i<records.length;i++){
-						repairs.push({
-							ecode:records[i].get("ecode"),
-							id:records[i].get("id"),
-							rpa_id:rpa_id,
-							rpa_type:records[i].get("rpa_type"),
-							receive_date:records[i].get("receive_date"),
-							str_out_id:records[i].get("str_out_id")
-						});
+//						repairs.push({
+//							ecode:records[i].get("ecode"),
+//							id:records[i].get("id"),
+//							rpa_id:rpa_id,
+//							rpa_type:records[i].get("rpa_type"),
+//							receive_date:records[i].get("receive_date"),
+//							str_out_id:records[i].get("str_out_id")
+//						});
+						var data=records[i].getData();
+						//data.rpa_id=rpa_id;
+						repairs.push(data);
 						
 					}
 					Ext.getBody().mask("正在执行,请稍候.....");

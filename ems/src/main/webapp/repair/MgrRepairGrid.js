@@ -321,14 +321,15 @@ Ext.define('Ems.repair.MgrRepairGrid',{
 						if(records && records.length>0){
 							var repairs=[];
 							for(var i=0;i<records.length;i++){
-								repairs.push({
-									ecode:records[i].get("ecode"),
-									id:records[i].get("id"),
-									rpa_id:records[i].get("rpa_id"),
-									str_in_id:records[i].get("str_out_id")//入库仓库和发货仓库要一致
-								});
-								//ids.push(records[i].get("id"));
-								//ecodes.push(records[i].get("ecode"));
+//								repairs.push({
+//									ecode:records[i].get("ecode"),
+//									id:records[i].get("id"),
+//									rpa_id:records[i].get("rpa_id"),
+//									str_in_id:records[i].get("str_out_id")//入库仓库和发货仓库要一致
+//								});
+								var data=records[i].getData();
+								//data.rpa_id=rpa_id;
+								repairs.push(data);
 							}
 							Ext.getBody().mask("正在执行,请稍候.....");
 							Ext.Ajax.request({
