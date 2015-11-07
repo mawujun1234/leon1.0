@@ -870,7 +870,7 @@ public class TaskService extends AbstractService<Task, String>{
 					equipmentPoleRepository.deleteById(equipmentPolePK);
 					
 					//记录设备入库的生命周期
-					equipmentCycleService.logEquipmentCycle(taskEquipmentList.getEcode(), OperateType.task_cancel, task.getId(),TargetType.pole,task.getPole_id());
+					equipmentCycleService.logEquipmentCycle(taskEquipmentList.getEcode(), OperateType.task_cancel, task.getId(),TargetType.workunit,task.getWorkunit_id());
 				} else {
 					//设备是巡检的时候就不做任何处理，
 				}

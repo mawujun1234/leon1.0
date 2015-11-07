@@ -137,7 +137,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				and to_char(a.rpa_in_date,'yyyy-mm-dd') &lt;= #{rpa_in_date_end}
 			</if>
 			<if test="ecode!=null">
-				and a.ecode=#{ecodes}
+				and a.ecode=#{ecode}
 			</if>
 			<if test="status!=null">
 				and a.status=#{status}
@@ -146,7 +146,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    		and b.id is not null
 	    	</if>
 		</where>
-		order by a.status
+		order by a.id desc
     </select>
     
 

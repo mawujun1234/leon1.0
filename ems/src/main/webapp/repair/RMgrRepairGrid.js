@@ -219,7 +219,7 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 	        name: 'status',
 		    displayField: 'name',
 		    valueField: 'id',
-		    
+		    value:'repairing',
 	        store:Ext.create('Ext.data.Store', {
 		    	fields: ['id', 'name'],
 			    data:[{id:"",name:"所有"},{id:"to_repair",name:"发往维修中心"},{id:"repairing",name:"维修中"},{id:"back_store",name:"返库途中"}
@@ -243,7 +243,8 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 					rpa_in_date_start: rpa_in_date_start.getRawValue(),
 					rpa_in_date_end: rpa_in_date_end.getRawValue(),
 					status:status_combo.getValue(),
-					only_have_scap:only_have_scap_checkbox.getValue()
+					only_have_scap:only_have_scap_checkbox.getValue(),
+					ecode:ecode_textfield.getValue()
 		};
 	 });
 	  var query_button=Ext.create("Ext.button.Button",{
@@ -252,18 +253,7 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 			iconCls:'form-search-button',
 			handler:function(){
 				me.store.loadPage(1);
-//				me.store.load({params:{
-//					str_out_id:store_combox.getValue(),
-//					rpa_id:repair_combox.getValue(),
-//					rpa_in_date_start: rpa_in_date_start.getRawValue(),
-//					rpa_in_date_end: rpa_in_date_end.getRawValue(),
-//					status:status_combo.getValue(),
-//					only_have_scap:only_have_scap_checkbox.getValue()
-//				}
-//			  });
-			  
-			  
-				
+	
 			}
 	  });
 
@@ -274,8 +264,8 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 		name:'ecode',
 		labelWidth:60,
 		width:230,
-		hidden:true,
-		disabled:true,
+		//hidden:true,
+		//disabled:true,
 		fieldLabel: '扫描选择',
 		minLength:Ext.ecode_length,
 		maxLength:Ext.ecode_length,
@@ -288,19 +278,21 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 				if(newValue.length<Ext.ecode_length){
 					return;
 				}
-				var flag=true;
-				me.store.each(function(record){
-					//flag=true;
-					if(record.get("ecode")==newValue){
-						flag=false;
-						me.getSelectionModel( ).select(record,true);
-						return;
-					} 
-				});
+//				var flag=true;
+//				me.store.each(function(record){
+//					//flag=true;
+//					if(record.get("ecode")==newValue){
+//						flag=false;
+//						me.getSelectionModel( ).select(record,true);
+//						return;
+//					} 
+//				});
+//				
+//				if(flag){
+//					Ext.Msg.alert("消息","该设备状态不是'发往维修中心'和'维修中'或者该设备在下一页,请注意");	
+//				}
 				
-				if(flag){
-					Ext.Msg.alert("消息","该设备状态不是'发往维修中心'和'维修中'或者该设备在下一页,请注意");	
-				}
+				me.store.loadPage(1);
 				ecode_textfield.setValue("");
 				ecode_textfield.clearInvalid( );
 			}
@@ -312,6 +304,7 @@ Ext.define('Ems.repair.RMgrRepairGrid',{
 	  var str_out_button=Ext.create("Ext.button.Button",{
 			text:'出库',
 			margin:'0 0 0 5',
+			hidden:true,
 			disabled:true,
 			icon:Ext.ContextPath+"/icons/database_go.png",
 			handler:function(btn){

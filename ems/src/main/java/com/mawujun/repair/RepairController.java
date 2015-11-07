@@ -212,6 +212,30 @@ public class RepairController {
 	}
 	
 	/**
+	 * 当维修好后，维修中心出库的时候
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param ecode
+	 * @param store_id
+	 * @return
+	 */
+	@RequestMapping("/repair/getRepairVOByEcodeAtRepairing.do")
+	@ResponseBody
+	public RepairVO getRepairVOByEcodeAtRepairing(String ecode,String store_id) {	
+		RepairVO repairvo= repairService.getRepairVOByEcodeStatus(ecode,RepairStatus.repairing);
+		
+		if(repairvo==null){
+			throw new BusinessException("该设备不在维修状态或者该设备不是维修设备!");
+		}
+		if(!repairvo.getStr_in_id().equals(store_id)){
+			throw new BusinessException("该设备入库能出库这个仓库，因为不是从这里来的!");
+		}
+		//如果是内修。判断维修人和原因是否填写了
+		if(!StringUtils.hasText(repairvo.getRpa_user_id())){
+			throw new BusinessException("请先填写维修人，故障原因等维修信息!");
+		}
+		return repairvo;
+	}
+	/**
 	 * 维修中心出库
 	 * @author mawujun email:16064988@163.com qq:16064988
 	 * @param start
