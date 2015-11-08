@@ -812,7 +812,7 @@ public class TaskService extends AbstractService<Task, String>{
 				equipmentWorkunitRepository.deleteById(equipmentWorkunitPK);
 				
 				//记录设备入库的生命周期
-				equipmentCycleService.logEquipmentCycle(taskEquipmentList.getEcode(), OperateType.task_install, task.getId(),TargetType.pole,task.getPole_id());
+				equipmentCycleService.logEquipmentCycle(taskEquipmentList.getEcode(), OperateType.task_install, task.getId(),TargetType.pole,task.getPole_id(),task.getMemo());
 			} else if (TaskType.repair== task.getType()) {
 				// 维修的时候，设备的状态，可能是 损坏或者是安装出库
 				// 如果设备原来的状态是正在使用，你把设备下架的
@@ -841,7 +841,7 @@ public class TaskService extends AbstractService<Task, String>{
 					equipmentWorkunitRepository.deleteById(equipmentWorkunitPK);
 					
 					//记录设备入库的生命周期
-					equipmentCycleService.logEquipmentCycle(taskEquipmentList.getEcode(), OperateType.task_install, task.getId(),TargetType.pole,task.getPole_id());
+					equipmentCycleService.logEquipmentCycle(taskEquipmentList.getEcode(), OperateType.task_install, task.getId(),TargetType.pole,task.getPole_id(),task.getMemo());
 					
 				} else if(taskEquipmentList.getType() == TaskListTypeEnum.uninstall){
 					// 设备从杆位上卸载下来的情况
@@ -870,7 +870,7 @@ public class TaskService extends AbstractService<Task, String>{
 					equipmentPoleRepository.deleteById(equipmentPolePK);
 					
 					//记录设备入库的生命周期
-					equipmentCycleService.logEquipmentCycle(taskEquipmentList.getEcode(), OperateType.task_cancel, task.getId(),TargetType.workunit,task.getWorkunit_id());
+					equipmentCycleService.logEquipmentCycle(taskEquipmentList.getEcode(), OperateType.task_cancel, task.getId(),TargetType.workunit,task.getWorkunit_id(),task.getMemo());
 				} else {
 					//设备是巡检的时候就不做任何处理，
 				}
@@ -902,7 +902,7 @@ public class TaskService extends AbstractService<Task, String>{
 				equipmentPoleRepository.deleteById(equipmentPolePK);
 
 				//记录设备入库的生命周期
-				equipmentCycleService.logEquipmentCycle(taskEquipmentList.getEcode(), OperateType.task_cancel, task.getId(),TargetType.pole,task.getPole_id());
+				equipmentCycleService.logEquipmentCycle(taskEquipmentList.getEcode(), OperateType.task_cancel, task.getId(),TargetType.pole,task.getPole_id(),task.getMemo());
 			} else if (TaskType.patrol== task.getType()) {
 
 			}

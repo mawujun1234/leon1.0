@@ -72,9 +72,11 @@ public class EquipmentService extends AbstractService<Equipment, String>{
 			}
 			equip.setStatus(EquipmentStatus.wait_for_repair);
 			this.update(equip);
-			EquipmentCycle equipmentCycle=equipmentCycleService.logEquipmentCycle(ecode, OperateType.manual_wait_for_repair, ShiroUtils.getLoginName(), TargetType.store,equipmentStoreVO.getStore_id());
-			equipmentCycle.setMemo(reason);
-			equipmentCycleService.update(equipmentCycle);
+			EquipmentCycle equipmentCycle=equipmentCycleService.logEquipmentCycle(ecode, OperateType.manual_wait_for_repair, ShiroUtils.getLoginName()
+					, TargetType.store,equipmentStoreVO.getStore_id()
+					,reason);
+			//equipmentCycle.setMemo(reason);
+			//equipmentCycleService.update(equipmentCycle);
 		}
 		//equipmentService.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.wait_for_repair).andEquals(M.Equipment.ecode, ecode));
 		return "success";
@@ -128,9 +130,9 @@ public class EquipmentService extends AbstractService<Equipment, String>{
 			
 			
 			
-			EquipmentCycle equipmentCycle=equipmentCycleService.logEquipmentCycle(ecode, OperateType.manual_to_old, ShiroUtils.getLoginName(), targetType,targetType_id);
-			equipmentCycle.setMemo(reason);
-			equipmentCycleService.update(equipmentCycle);
+			EquipmentCycle equipmentCycle=equipmentCycleService.logEquipmentCycle(ecode, OperateType.manual_to_old, ShiroUtils.getLoginName(), targetType,targetType_id,reason);
+			//equipmentCycle.setMemo(reason);
+			//equipmentCycleService.update(equipmentCycle);
 		}
 		//equipmentService.update(Cnd.update().set(M.Equipment.isnew, false).andEquals(M.Equipment.ecode, ecode));
 		return "success";

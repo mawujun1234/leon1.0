@@ -137,7 +137,7 @@ public class RepairService extends AbstractService<Repair, String>{
 			repairRepository.create(repair);	
 			
 			//记录设备入库的生命周期,目标记录的是出库仓库
-			equipmentCycleService.logEquipmentCycle(repair.getEcode(), OperateType.repair_store_out, repair.getId(),TargetType.repair,repair.getRpa_id());
+			equipmentCycleService.logEquipmentCycle(repair.getEcode(), OperateType.repair_store_out, repair.getId(),TargetType.repair,repair.getRpa_id(),"");
 		}
 		
 	}
@@ -322,7 +322,7 @@ public class RepairService extends AbstractService<Repair, String>{
 					.andEquals(M.Repair.id, repair.getId()));		
 			
 			//记录设备入库的生命周期
-			equipmentCycleService.logEquipmentCycle(repair.getEcode(), OperateType.repair_in, repair.getId(),TargetType.repair,repair.getRpa_id());
+			equipmentCycleService.logEquipmentCycle(repair.getEcode(), OperateType.repair_in, repair.getId(),TargetType.repair,repair.getRpa_id(),"");
 		}
 		
 		
@@ -355,7 +355,7 @@ public class RepairService extends AbstractService<Repair, String>{
 					.set(M.Repair.status, RepairStatus.back_store).andEquals(M.Repair.id, repair.getId()));
 			
 			//记录设备入库的生命周期，//出库和入库的仓库必须一致，所以使用了str_out_id
-			equipmentCycleService.logEquipmentCycle(repair.getEcode(), OperateType.repair_out, repair.getId(),TargetType.store,repair.getStr_in_id());
+			equipmentCycleService.logEquipmentCycle(repair.getEcode(), OperateType.repair_out, repair.getId(),TargetType.store,repair.getStr_in_id(),"");
 		}
 	}
 	
@@ -408,7 +408,7 @@ public class RepairService extends AbstractService<Repair, String>{
 					.set(M.Repair.status, RepairStatus.over).andEquals(M.Repair.id, repair.getId()));
 			
 			//记录设备入库的生命周期
-			equipmentCycleService.logEquipmentCycle(repair.getEcode(), OperateType.repair_store_in, repair.getId(),TargetType.store,repair.getStr_in_id());
+			equipmentCycleService.logEquipmentCycle(repair.getEcode(), OperateType.repair_store_in, repair.getId(),TargetType.store,repair.getStr_in_id(),"");
 	
 		}
 	}

@@ -438,6 +438,29 @@ Ext.onReady(function(){
  
 });
 
+function showEquipments(){
+	var equipments=Ext.create('Ems.map.PoleEquipmentGrid',{
+		region:'center'
+	});
+	var equipmentCycle=Ext.create('Ems.map.EquipmentCycleGrid',{
+		region:'south',
+		height:200
+	});
+	
+	var win=Ext.create('Ext.window.Window',{
+		layout:'border',
+		width:700,
+		height:600,
+		modal:true,
+		items:[equipments,equipmentCycle]
+		
+	});
+	window.show();
+
+}
+
+
+
 //在地图上显示作业单位在哪里
 window.cares=null;
 function showWorkunitCar(){
@@ -555,6 +578,7 @@ function addMarker2Map(pole){
 			
 	marker.addEventListener("click",function(e,target){		
 			alert("弹出定位的设备信息和设备生命周期");
+			showEquipments();
 	});
 
 	marker.addEventListener("dragstart", function(type, target) {

@@ -130,7 +130,7 @@ public class InStoreService extends AbstractService<InStore, String>{
 			equipmentProdRepository.update_lock_style(equipment.getProd_id(),true);
 			
 			//记录设备入库的生命周期
-			equipmentCycleService.logEquipmentCycle(equipment.getEcode(), OperateType.newinstore, instore_id, TargetType.store,inStore.getStore_id());
+			equipmentCycleService.logEquipmentCycle(equipment.getEcode(), OperateType.newinstore, instore_id, TargetType.store,inStore.getStore_id(),inStore.getMemo());
 		}
 		
 		for(Entry<String,Integer> entry:totalnumMap.entrySet()) {

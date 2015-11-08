@@ -187,7 +187,7 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 			installInListRepository.create(list);
 			
 			//记录设备入库的生命周期
-			equipmentCycleService.logEquipmentCycle(list.getEcode(), OperateType.install_in, list.getInstallIn_id(),TargetType.store,installin.getStore_id());
+			equipmentCycleService.logEquipmentCycle(list.getEcode(), OperateType.install_in, list.getInstallIn_id(),TargetType.store,installin.getStore_id(),installin.getMemo());
 		}
 	}
 

@@ -197,7 +197,7 @@ public class BorrowService extends AbstractService<Borrow, String>{
 			borrowListRepository.create(borrowlist);
 			
 			//记录设备入库的生命周期
-			equipmentCycleService.logEquipmentCycle(borrowlist.getEcode(), OperateType.borrow_out, borrow_id, TargetType.workunit,borrow.getWorkUnit_id());
+			equipmentCycleService.logEquipmentCycle(borrowlist.getEcode(), OperateType.borrow_out, borrow_id, TargetType.workunit,borrow.getWorkUnit_id(),borrow.getMemo());
 		}
 		return borrow_id;
 	}
@@ -277,7 +277,7 @@ public class BorrowService extends AbstractService<Borrow, String>{
 			equipmentWorkunitRepository.deleteById(equipmentWorkunitPK);
 			
 			//记录设备入库的生命周期
-			equipmentCycleService.logEquipmentCycle(borrowList.getEcode(), OperateType.borrow_return, borrowList.getBorrow_id(), TargetType.store,borrow.getStore_id());
+			equipmentCycleService.logEquipmentCycle(borrowList.getEcode(), OperateType.borrow_return, borrowList.getBorrow_id(), TargetType.store,borrow.getStore_id(),"");
 			
 		}
 	}

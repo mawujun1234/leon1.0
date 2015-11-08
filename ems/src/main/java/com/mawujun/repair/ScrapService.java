@@ -118,7 +118,7 @@ public class ScrapService extends AbstractService<Scrap, String>{
 		//repairRepository.update(Cnd.update().set(M.Repair.status, RepairStatus.scrap.getValue()).andEquals(M.Repair.id, scrap.getRepair_id()));
 		
 		//记录设备入库的生命周期,目标记录的是出库仓库
-		equipmentCycleService.logEquipmentCycle(repair.getEcode(), OperateType.scrap, scrap.getId(),TargetType.store,scrap.getStore_id());
+		equipmentCycleService.logEquipmentCycle(repair.getEcode(), OperateType.scrap, scrap.getId(),TargetType.store,scrap.getStore_id(),"");
 		return scrap;
 	}
 
