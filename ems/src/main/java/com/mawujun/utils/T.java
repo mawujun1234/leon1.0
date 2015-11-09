@@ -67,11 +67,13 @@ public static final class ems_equipment {
 	public static final String supplier_id="supplier_id";
 	public static final String style="style";
 	public static final String orderlist_id="orderlist_id";
-	public static final String unitPrice="unitPrice";
 	public static final String isnew="isnew";
 	public static final String memo="memo";
 	public static final String status="status";
 	public static final String place="place";
+	public static final String unitPrice="unitPrice";
+	public static final String unitPrice_nav="unitPrice_nav";
+	public static final String first_install_date="first_install_date";
 	public static final String fisData="fisData";
 	public static final String last_installIn_id="last_installIn_id";
 	public static final String last_borrow_id="last_borrow_id";

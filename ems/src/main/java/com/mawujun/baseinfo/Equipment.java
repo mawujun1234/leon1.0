@@ -34,8 +34,8 @@ public class Equipment implements IdEntity<String>,IEcodeCache{
 	private String orderlist_id;//订单明细id
 	
 	//private Date lastInDate;//最新一次入库时间
-	@Column(precision=10,scale=2)
-	private Double unitPrice;//价格
+	
+	
 	@org.hibernate.annotations.Type(type="yes_no")
 	private Boolean isnew=true;//是否是新产品
 	//@org.hibernate.annotations.Type(type="yes_no")
@@ -52,6 +52,14 @@ public class Equipment implements IdEntity<String>,IEcodeCache{
 	@Enumerated(EnumType.STRING)
 	@Column(length=20)
 	private EquipmentPlace place;
+	
+	@Column(precision=10,scale=2)
+	private Double unitPrice;//价格
+	@Column(precision=10,scale=2)
+	private Double unitPrice_nav;//资产净值  Net Asset Value,简称NAV
+	@Column(updatable=false)
+	private Date first_install_date;//第一次安装的时间,现在是在任务确认的时候设置初次安装时间
+	
 	
 	@Column(updatable=false)
 	private Date fisData;//first in stock date第一次入库时间
@@ -232,6 +240,24 @@ public class Equipment implements IdEntity<String>,IEcodeCache{
 	}
 	public void setCurrt_task_id(String currt_task_id) {
 		this.currt_task_id = currt_task_id;
+	}
+	public Double getUnitPrice_nav() {
+		return unitPrice_nav;
+	}
+	public void setUnitPrice_nav(Double unitPrice_nav) {
+		this.unitPrice_nav = unitPrice_nav;
+	}
+	public Date getFirst_install_date() {
+		return first_install_date;
+	}
+	public void setFirst_install_date(Date first_install_date) {
+		this.first_install_date = first_install_date;
+	}
+	public String getLast_pole_id() {
+		return last_pole_id;
+	}
+	public void setLast_pole_id(String last_pole_id) {
+		this.last_pole_id = last_pole_id;
 	}
 
 

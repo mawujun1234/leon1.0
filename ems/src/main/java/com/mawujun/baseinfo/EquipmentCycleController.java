@@ -38,8 +38,8 @@ public class EquipmentCycleController {
 	@RequestMapping("/equipmentCycle/query.do")
 	@ResponseBody
 	public List<EquipmentCycle> query(String ecode) {
-		List<EquipmentCycle> lifeCycles=equipmentCycleService.query(Cnd.select().andEquals(M.EquipmentCycle.ecode, ecode).desc(M.EquipmentCycle.operateDate));
-		JsonConfigHolder.setDatePattern("yyyy-MM-dd hh:mm:ss");
+		List<EquipmentCycle> lifeCycles=equipmentCycleService.query(Cnd.select().andEquals(M.EquipmentCycle.ecode, ecode).asc(M.EquipmentCycle.operateDate));
+		JsonConfigHolder.setDatePattern("yyyy-MM-dd HH:mm:ss");
 		return lifeCycles;
 	}
 

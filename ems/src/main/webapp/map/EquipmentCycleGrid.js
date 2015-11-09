@@ -33,9 +33,7 @@ Ext.define('Ems.map.EquipmentCycleGrid',{
 			model: 'Ems.baseinfo.EquipmentCycle',
 			autoLoad:false
 	  });
-	  
-	  
-	  me.tbar=	[{
+	   me.tbar=	[{
 			text: '刷新',
 			itemId:'reload',
 			disabled:me.disabledAction,
@@ -44,54 +42,65 @@ Ext.define('Ems.map.EquipmentCycleGrid',{
 				grid.getStore().reload();
 			},
 			iconCls: 'form-reload-button'
-		},{
-			text: '导出重新打印',
-			icon:'../icons/page_excel.png',
-			handler: function(btn){
-				var grid=btn.up("grid");
-				window.open(Ext.ContextPath+"/equipment/exportEcode.do?ecode="+grid.ecode, "_blank");
-			}
-		},{
-			text: '手工设置为损坏',
-			icon:'../icons/webcam_delete.png',
-			handler: function(btn){
-				//alert("还没有做好");
-				//return;
-				Ext.Msg.prompt("原因","请输入手工修改原因。",function(btn1,txt){
-					if(btn1=='ok'){
-						Ext.Ajax.request({
-							url:Ext.ContextPath+'/equipment/wait_for_repair.do',
-							params:{ecode:me.ecode,reason:txt},
-							method:'POST',
-							success:function(response){
-								var grid=btn.up("grid");
-								grid.getStore().reload();
-							}
-						});
-					}
-				});
-			}
-		},{
-			text: '手工设置为旧品',
-			icon:'../icons/webcam_error.png',
-			handler: function(btn){
-				//alert("还没有做好");
-				//return;
-				Ext.Msg.prompt("原因","请输入手工修改原因。",function(btn1,txt){
-					if(btn1=='ok'){
-						Ext.Ajax.request({
-							url:Ext.ContextPath+'/equipment/to_old.do',
-							params:{ecode:me.ecode,reason:txt},
-							method:'POST',
-							success:function(response){
-								var grid=btn.up("grid");
-								grid.getStore().reload();
-							}
-						});
-					}
-				});
-			}
-		}]
+		}];
+	  
+//	  me.tbar=	[{
+//			text: '刷新',
+//			itemId:'reload',
+//			disabled:me.disabledAction,
+//			handler: function(btn){
+//				var grid=btn.up("grid");
+//				grid.getStore().reload();
+//			},
+//			iconCls: 'form-reload-button'
+//		},{
+//			text: '导出重新打印',
+//			icon:'../icons/page_excel.png',
+//			handler: function(btn){
+//				var grid=btn.up("grid");
+//				window.open(Ext.ContextPath+"/equipment/exportEcode.do?ecode="+grid.ecode, "_blank");
+//			}
+//		},{
+//			text: '手工设置为损坏',
+//			icon:'../icons/webcam_delete.png',
+//			handler: function(btn){
+//				//alert("还没有做好");
+//				//return;
+//				Ext.Msg.prompt("原因","请输入手工修改原因。",function(btn1,txt){
+//					if(btn1=='ok'){
+//						Ext.Ajax.request({
+//							url:Ext.ContextPath+'/equipment/wait_for_repair.do',
+//							params:{ecode:me.ecode,reason:txt},
+//							method:'POST',
+//							success:function(response){
+//								var grid=btn.up("grid");
+//								grid.getStore().reload();
+//							}
+//						});
+//					}
+//				});
+//			}
+//		},{
+//			text: '手工设置为旧品',
+//			icon:'../icons/webcam_error.png',
+//			handler: function(btn){
+//				//alert("还没有做好");
+//				//return;
+//				Ext.Msg.prompt("原因","请输入手工修改原因。",function(btn1,txt){
+//					if(btn1=='ok'){
+//						Ext.Ajax.request({
+//							url:Ext.ContextPath+'/equipment/to_old.do',
+//							params:{ecode:me.ecode,reason:txt},
+//							method:'POST',
+//							success:function(response){
+//								var grid=btn.up("grid");
+//								grid.getStore().reload();
+//							}
+//						});
+//					}
+//				});
+//			}
+//		}]
        
       me.callParent();
 	}

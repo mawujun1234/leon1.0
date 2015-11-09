@@ -787,11 +787,18 @@ public class TaskService extends AbstractService<Task, String>{
 			//修改对应的设备为领用，因为设备只有当真正被使用过了才叫领用，否则都还是借用
 			
 			if (TaskType.newInstall== task.getType()) {
+				Date date=new Date();
+				//设置设备的第一次安装时间,如果设备是新设备，就保存第一次安装时间
+				equipmentRepository.update(Cnd.update().set(M.Equipment.first_install_date, date)
+						.andEquals(M.Equipment.ecode, ecode).andEquals(M.Equipment.isnew, true));
+				
 				// 更改设备的位置到该杆位上,把设备从昨夜单位身上移动到杆位上
 				equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using).set(M.Equipment.isnew, false)
-						.set(M.Equipment.place, EquipmentPlace.pole).set(M.Equipment.last_install_date, new Date())
+						.set(M.Equipment.place, EquipmentPlace.pole).set(M.Equipment.last_install_date, date)
 						.set(M.Equipment.last_pole_id, task.getPole_id()).set(M.Equipment.last_task_id, task.getId())
 						.set(M.Equipment.currt_task_id, null).andEquals(M.Equipment.ecode, ecode));
+				
+				
 				//要放在最前面，把设备从借用变成领用
 				changeInstallOutListType2installout(taskEquipmentList.getEcode(),task.getWorkunit_id(),task.getPole_id(),task_id);
 				
@@ -817,8 +824,13 @@ public class TaskService extends AbstractService<Task, String>{
 				// 维修的时候，设备的状态，可能是 损坏或者是安装出库
 				// 如果设备原来的状态是正在使用，你把设备下架的
 				if (taskEquipmentList.getType() == TaskListTypeEnum.install) {
+					Date date=new Date();
+					//设置设备的第一次安装时间,如果设备是新设备，就保存第一次安装时间
+					equipmentRepository.update(Cnd.update().set(M.Equipment.first_install_date, date)
+							.andEquals(M.Equipment.ecode, ecode).andEquals(M.Equipment.isnew, true));
+					
 					equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using).set(M.Equipment.isnew, false)
-							.set(M.Equipment.place, EquipmentPlace.pole).set(M.Equipment.last_install_date, new Date())
+							.set(M.Equipment.place, EquipmentPlace.pole).set(M.Equipment.last_install_date, date)
 							.set(M.Equipment.last_pole_id, task.getPole_address()).set(M.Equipment.last_task_id, task.getId())
 							.set(M.Equipment.currt_task_id, null).andEquals(M.Equipment.ecode, ecode));
 					//要放在最前面，把设备从借用变成领用

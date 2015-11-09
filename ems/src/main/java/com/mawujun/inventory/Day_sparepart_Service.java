@@ -30,6 +30,16 @@ public class Day_sparepart_Service extends AbstractService<Day_sparepart, Day_sp
 		// TODO Auto-generated method stub
 		return day_sparepart_Repository;
 	}
+	
+	/**
+	 * 计算设备的净值
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 */
+	public void proc_equipment_unitprice(){	
+		day_sparepart_Repository.proc_equipment_unitprice();
+	}
+	
+	
 	/**
 	 * 计算指定仓库，指定日期的的库存结余情况
 	 * @author mawujun 16064988@qq.com

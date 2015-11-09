@@ -14,14 +14,18 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
        {call proc_dayinventory1(?, ?,'N')}  
    </update> 
    -->
+   <!-- 计算设备的净值 -->
+    <update id="proc_equipment_unitprice"  statementType="CALLABLE">  
+       {call proc_equipment_unitprice()}  
+    </update> 
    <!--计算备品备件仓库 -->
    <parameterMap type="map" id="proc_report_day_sparepart_params">  
 	   <parameter property="in_store_id" jdbcType="VARCHAR" mode="IN"/>   
 	   <parameter property="in_todaykey" jdbcType="VARCHAR" mode="IN"/>   
 	</parameterMap>  
-	<update id="proc_report_day_sparepart" parameterMap="proc_report_day_sparepart_params" statementType="CALLABLE">  
+    <update id="proc_report_day_sparepart" parameterMap="proc_report_day_sparepart_params" statementType="CALLABLE">  
        {call proc_day_sparepart(?, ?)}  
-   </update> 
+    </update> 
    
    
     <parameterMap type="map" id="proc_report_day_sparepart_all_params">  
@@ -176,5 +180,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
    </select>
    
     -->
+    
+    
+   
 </mapper>
 

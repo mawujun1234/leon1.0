@@ -1,4 +1,6 @@
 Ext.require("Ems.baseinfo.Pole");
+Ext.require('Ems.map.PoleEquipmentGrid');
+Ext.require('Ems.map.EquipmentCycleGrid');
 Ext.onReady(function(){
 	Ext.define('Ext.ux.MultiComboBox', {
 	    extend: 'Ext.form.ComboBox',
@@ -438,24 +440,35 @@ Ext.onReady(function(){
  
 });
 
-function showEquipments(){
+function showEquipments(pole_id){
 	var equipments=Ext.create('Ems.map.PoleEquipmentGrid',{
 		region:'center'
 	});
+	equipments.getStore().load({params:{
+		id:pole_id
+	}
+	});
 	var equipmentCycle=Ext.create('Ems.map.EquipmentCycleGrid',{
 		region:'south',
-		height:200
+		split:true,
+		height:230
+	});
+	equipments.on("itemclick",function(view, record, item, index, e, eOpts){
+		equipmentCycle.getStore().getProxy().extraParams={ecode:record.get("ecode")};
+		equipmentCycle.ecode=record.get("ecode");
+		equipmentCycle.getStore().reload();
 	});
 	
 	var win=Ext.create('Ext.window.Window',{
 		layout:'border',
+		title:'点位设备信息',
 		width:700,
-		height:600,
+		height:500,
 		modal:true,
 		items:[equipments,equipmentCycle]
 		
 	});
-	window.show();
+	win.show();
 
 }
 
@@ -576,9 +589,9 @@ function addMarker2Map(pole){
 					+ pole.province + pole.city + pole.area + pole.address,
 			marker);
 			
-	marker.addEventListener("click",function(e,target){		
-			alert("弹出定位的设备信息和设备生命周期");
-			showEquipments();
+	marker.addEventListener("click",function(type,target){		
+			//alert("弹出定位的设备信息和设备生命周期");
+			showEquipments(type.target.pole_id);
 	});
 
 	marker.addEventListener("dragstart", function(type, target) {
