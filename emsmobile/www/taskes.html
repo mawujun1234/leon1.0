@@ -868,7 +868,7 @@ $(document).ready(function(e) {
 			var params=window.taskInfoParam;
 			taskInfoParam.page_id=page_id; 
 			//alert(params.canEdit);
-			if(params.canEdit=="true"){//隐藏按钮
+			if(params.canEdit==true){//隐藏按钮
 				$(".actionbutton").show();
 			} else {
 				$(".actionbutton").hide();
@@ -1224,7 +1224,7 @@ $(document).ready(function(e) {
 	});
 	//导航按钮按下去的时候
 	$("a[name='nav_button']").click(function(event){
-		alert(window.taskInfoParam.pole_longitude+"----"+window.taskInfoParam.pole_latitude);
+		//alert(window.taskInfoParam.pole_longitude+"----"+window.taskInfoParam.pole_latitude);
 		//return;
 		if(!window.taskInfoParam.pole_longitude || !window.taskInfoParam.pole_latitude ){
 			alert("当前点位未设置gps数据，不能导航!");
