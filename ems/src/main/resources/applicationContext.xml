@@ -60,8 +60,8 @@
 		<!-- 任务超期扫描工具 -->
 		<task:scheduled ref="overtimeService" method="createOvertimeMessage" cron="0 0/10 * * * ?"/> 
         <task:scheduled ref="day_sparepart_Service" method="proc_report_day_sparepart_all" cron="0 0 23 * * ?"/> 
-        <!-- 计算设备的净值 
-        <task:scheduled ref="day_sparepart_Service" method="proc_equipment_unitprice" cron="0 52 02 * * ?"/> -->
+        <!-- 计算设备的净值 -->
+        <task:scheduled ref="day_sparepart_Service" method="proc_equipment_unitprice" cron="0 52 02 * * ?"/> 
         
         <!-- ==============================在建仓库=================================== -->
         <!-- 每个月的最后一天执行0 10 0 1 * ?  ,在代码中判断了，如果是每个月的1号执行，就往前推一天，表示计算的是上个月的数据
