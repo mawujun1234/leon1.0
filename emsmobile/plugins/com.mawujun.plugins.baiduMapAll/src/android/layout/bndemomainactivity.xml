@@ -7,7 +7,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
-    android:background="#FFF5F5F5"
+    android:background="#FFFFFF"
     tools:context=".BNDemoMainActivity" >
 
     <LinearLayout

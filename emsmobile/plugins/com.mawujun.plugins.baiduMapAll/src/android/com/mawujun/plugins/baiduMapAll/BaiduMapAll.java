@@ -1,11 +1,11 @@
 package com.mawujun.plugins.baiduMapAll;
 
 import org.apache.cordova.CallbackContext;
-import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.content.Intent;
 import android.util.Log;
@@ -30,10 +30,28 @@ public class BaiduMapAll  extends CordovaPlugin {
 		//final LocationApplication locationApplication=(LocationApplication)cordova.getActivity().getApplication();
 		if(locationApplication==null){
 			locationApplication=new LocationApplication();
-			locationApplication.onCreate(cordova.getActivity());
+			try {
+//				locationApplication.setSessionId(args.getString(0));
+//				locationApplication.setLoginName(args.getString(1));
+//				locationApplication.setUuid(args.getString(2));
+				JSONObject params= args.getJSONObject(0);
+				locationApplication.setUploadUrl(params.getString("uploadUrl"));
+				locationApplication.setGps_interval(params.getInt("gps_interval"));
+				locationApplication.setParams(params);
+				
+				
+				locationApplication.onCreate(cordova.getActivity());
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				callbackContext.error("传递的参数有问题!");
+				return false;
+			}
+			
+			
+			
 		}
-		locationApplication.callbackContext=callbackContext;
-		//mLocationClient=locationApplication.mLocationClient;
+		//locationApplication.callbackContext=callbackContext;
 		
 		if (GET_ACTION.equals(action)) {
 			cordova.getActivity().runOnUiThread(new Runnable() {
@@ -45,6 +63,7 @@ public class BaiduMapAll  extends CordovaPlugin {
 					//locationApplication.initLocation();
 					locationApplication.start();
 					locationApplication.mLocationClient.requestLocation();
+					callbackContext.success("success");
 				}
 
 			});

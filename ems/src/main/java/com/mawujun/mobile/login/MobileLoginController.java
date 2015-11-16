@@ -104,7 +104,9 @@ public class MobileLoginController {
              }
              JsonConfigHolder.setDatePattern("yyyy-MM-dd hh:mm:ss");
 
-             JsonConfigHolder.addProperty("gps_interval",gpsConfigService.get().getInterval());
+             //JsonConfigHolder.addProperty("gps_interval",gpsConfigService.get().getInterval());
+             ShiroUtils.getAuthenticationInfo().setGps_interval(gpsConfigService.get().getInterval());
+             ShiroUtils.getAuthenticationInfo().setSessionId(subject.getSession().getId().toString());//就是用来和WaringGps统一管理的
              
              WaringGps waringGps=new WaringGps();
              waringGps.setLoginName(loginName);

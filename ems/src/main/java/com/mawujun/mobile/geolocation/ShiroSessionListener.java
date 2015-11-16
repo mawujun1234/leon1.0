@@ -1,10 +1,9 @@
-package com.mawujun.shiro;
+package com.mawujun.mobile.geolocation;
 
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.SessionListenerAdapter;
 
 import com.mawujun.controller.spring.SpringContextHolder;
-import com.mawujun.mobile.geolocation.GeolocationController;
 
 public class ShiroSessionListener extends SessionListenerAdapter {
 

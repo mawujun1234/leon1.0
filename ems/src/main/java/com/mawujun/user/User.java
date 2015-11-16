@@ -44,6 +44,11 @@ public class User extends UUIDEntity{
 	//@Transient
 	//private Map<String,Integer> metaVersion;
 	
+	@Transient
+	private String sessionId;//回话的id
+	@Transient
+	private int gps_interval;//作业单位获取gps上传的时间间隔
+	
 	public String toString(){
 		return username;
 	}
@@ -111,6 +116,22 @@ public class User extends UUIDEntity{
 
 	public void setIsWorkunit(Boolean isWorkunit) {
 		this.isWorkunit = isWorkunit;
+	}
+
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
+
+	public int getGps_interval() {
+		return gps_interval;
+	}
+
+	public void setGps_interval(int gps_interval) {
+		this.gps_interval = gps_interval;
 	}
 
 

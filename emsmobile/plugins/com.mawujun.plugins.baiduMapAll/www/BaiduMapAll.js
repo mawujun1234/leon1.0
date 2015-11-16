@@ -26,8 +26,8 @@ BaiduMapAll.prototype.execute=function(action, successCallback, errorCallback,ar
 		)
 };
 
-BaiduMapAll.prototype.getCurrentPosition=function(successCallback, errorCallback) {
-		this.execute("getCurrentPosition", successCallback, errorCallback);
+BaiduMapAll.prototype.getCurrentPosition=function(successCallback, errorCallback,array) {
+		this.execute("getCurrentPosition", successCallback, errorCallback,array);
 };
 BaiduMapAll.prototype.stopGetPosition= function( successCallback, errorCallback) {
 		this.execute("stopGetPosition", successCallback, errorCallback);

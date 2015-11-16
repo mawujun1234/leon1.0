@@ -143,27 +143,26 @@ $(function(){
 	window.uploadGeolocation=function() {
 		var user=$.parseJSON(sessionStorage.getItem("user"));
 		var uuid=device.uuid;
+		//除了uploadUrl和gps_interval，其他参数将都会post通过发送到uploadUrl上
+		//经纬度接受参数名称是：longitude和latitude
+		var params={
+			sessionId:user.sessionId,
+			loginName:user.username,
+			uuid:uuid,
+			uploadUrl:$.ServerPath+"/geolocation/mobile/upload.do",//必须要有
+			gps_interval:user.gps_interval*1000//必须要有
+		}
 		
 		//获取设备的地理位置
 		cordova.plugins.baiduMapAll.getCurrentPosition(
 			function(position){
-				var params={};
-				params.longitude=position.coords.longitude;
-				params.latitude=position.coords.latitude;
-				params.loginName=user.username;
-				params.uuid=uuid;
-				
-				$.ajax({   
-					url : $.ServerPath+"/geolocation/mobile/upload.do",
-					data:params,   
-					success : function(data){
-					}
-				});	
+
 			}, 
 			function(error){
 				alert(error);
 				//alert(error.message + ":"+error.errorcode);
-			}
+			},
+			[params]
 		);	
 		
 	}//uploadGeolocation
@@ -255,13 +254,14 @@ $(function(){
 			//setTimeout(uploadGeolocation,2000);
 			//alert(0);
 			uploadGeolocation();//已启动就马上执行一次先，主要目的是未了获取当前的gps信息，供导航使用
-			var gps_interval=localStorage.getItem("gps_interval");
-			if(!gps_interval){
-				gps_interval="60";
-			}
-			var watchID=window.setInterval("uploadGeolocation()",parseInt(gps_interval)*1000);
+			//var gps_interval=localStorage.getItem("gps_interval");
+//			if(!gps_interval){
+//				gps_interval="60";
+//			}
+			//var watchID=window.setInterval("uploadGeolocation()",parseInt(gps_interval)*1000);
 			//用来控制应用只发送一个请求
-			sessionStorage.setItem("watchID",watchID);
+			//sessionStorage.setItem("watchID",watchID);
+			sessionStorage.setItem("watchID",111);
 			//uploadGeolocation();
 		}
 		

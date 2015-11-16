@@ -577,6 +577,8 @@ public static final class User {
 	public static final String loginDate="loginDate";
 	public static final String status="status";
 	public static final String isWorkunit="isWorkunit";
+	public static final String sessionId="sessionId";
+	public static final String gps_interval="gps_interval";
 	public static final String id="id";
 }
 public static final class UserStore {

@@ -1,14 +1,28 @@
 package com.mawujun.plugins.baiduMapAll;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
-import org.apache.cordova.CallbackContext;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.util.Log;
+import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -28,16 +42,52 @@ public class LocationApplication {
     public MyLocationListener mMyLocationListener;
     //
     
-    public CallbackContext callbackContext;
+   // public CallbackContext callbackContext;
     
     public double  currentLongitude;
     public double  currentLatitude;
+    
+//    private String sessionId;//回话的id
+//    public String getSessionId() {
+//		return sessionId;
+//	}
+//	public void setSessionId(String sessionId) {
+//		this.sessionId = sessionId;
+//	}
+//
+//	private String uuid;
+//    private String loginName;
+    private String uploadUrl;
+    private int gps_interval;
+    private JSONObject params;//需要传递到后台的数据
     //public Vibrator mVibrator;
 
-    private static final Map<Integer, String> ERROR_MESSAGE_MAP = new HashMap<Integer, String>();
+    public JSONObject getParams() {
+		return params;
+	}
+	public void setParams(JSONObject params) {
+		this.params = params;
+	}
+	public int getGps_interval() {
+		return gps_interval;
+	}
+	public void setGps_interval(int gps_interval) {
+		this.gps_interval = gps_interval;
+	}
+	public String getUploadUrl() {
+		return uploadUrl;
+	}
+	public void setUploadUrl(String uploadUrl) {
+		this.uploadUrl = uploadUrl;
+	}
+
+
+	private static final Map<Integer, String> ERROR_MESSAGE_MAP = new HashMap<Integer, String>();
 
 	//private static final String DEFAULT_ERROR_MESSAGE = "服务端定位失败";
-
+    Context activityContex;
+    
+    
 	
 	static {
 		ERROR_MESSAGE_MAP.put(61, "GPS定位结果，GPS定位成功");
@@ -75,7 +125,7 @@ public class LocationApplication {
     		 mLocationClient = new LocationClient(context);
     	     mMyLocationListener = new MyLocationListener();
     	     mLocationClient.registerLocationListener(mMyLocationListener);
-    	        
+    	    this.activityContex=context;  
     	     initLocation();
     	//}
        
@@ -101,7 +151,7 @@ public class LocationApplication {
 		//低功耗定位模式：这种定位模式下，不会使用GPS，只会使用网络定位（Wi-Fi和基站定位）；
 		//仅用设备定位模式：这种定位模式下，不需要连接网络，只使用GPS进行定位，这种模式下不支持室内环境的定位。
 		option.setLocationMode(LocationMode.Hight_Accuracy);////可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
-        option.setScanSpan(1000);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
+        option.setScanSpan(this.getGps_interval());//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
         option.setIsNeedAddress(true);//可选，设置是否需要地址信息，默认不需要
         option.setLocationNotify(true);//可选，默认false，设置是否当gps有效时按照1S1次频率输出GPS结果
         option.setIsNeedLocationDescribe(false);//可选，默认false，设置是否需要位置语义化结果，可以在BDLocation.getLocationDescribe里得到，结果类似于“在北京天安门附近”
@@ -123,47 +173,114 @@ public class LocationApplication {
     	
         @Override
         public void onReceiveLocation(BDLocation location) {
-        	JSONObject jsonObj = new JSONObject();
-        	if (location == null)
-				return;
-			try {
-				JSONObject coords = new JSONObject();
-				coords.put("latitude", location.getLatitude());
-				coords.put("longitude", location.getLongitude());
-				coords.put("radius", location.getRadius());
-				jsonObj.put("coords", coords);
-				
-				currentLongitude=location.getLongitude();
-				currentLatitude=location.getLatitude();
+        	//JSONObject jsonObj = new JSONObject();
+        	if (location == null) {
+        		Toast.makeText(activityContex, "没有获取到经纬度数据!", Toast.LENGTH_LONG).show();
+        		return;
+        	}
+        	
+			currentLongitude=location.getLongitude();
+			currentLatitude=location.getLatitude();
+			if (location.getLocType() == BDLocation.TypeGpsLocation) {// GPS定位结果
+				 postCoords(location.getLatitude()+"",location.getLongitude()+"");
 
+			} else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {// 网络定位结果
+				 postCoords(location.getLatitude()+"",location.getLongitude()+"");
+			} else {
 				int locationType = location.getLocType();
-				jsonObj.put("time", location.getTime());
-				jsonObj.put("locationType", locationType);
-				jsonObj.put("errorcode", locationType);
-				jsonObj.put("message", getErrorMessage(locationType));
-				
-				 if (location.getLocType() == BDLocation.TypeGpsLocation){// GPS定位结果
-					 	coords.put("speed", location.getSpeed());// 单位：公里每小时
-						coords.put("height", location.getAltitude());// 单位：米
-						coords.put("satellite", location.getSatelliteNumber());
-						coords.put("direction", location.getDirection());// 单位度
-						coords.put("addr", location.getAddrStr());
-		 
-		            } else if (location.getLocType() == BDLocation.TypeNetWorkLocation){// 网络定位结果
-		            	coords.put("addr", location.getAddrStr());
-						coords.put("operationers", location.getOperators());
-		            } else {
-		            	callbackContext.error(getErrorMessage(locationType));
-		            }
-
-				Log.d(BaiduMapAll.LOG_TAG, "run: " + jsonObj.toString());
-				callbackContext.success(jsonObj);
-			} catch (JSONException e) {
-				callbackContext.error(e.getMessage());
+				Toast.makeText(activityContex, "获取地址失败:"+getErrorMessage(locationType), Toast.LENGTH_LONG).show();
 			}
+				
+//			try {
+//				JSONObject coords = new JSONObject();
+//				coords.put("latitude", location.getLatitude());
+//				coords.put("longitude", location.getLongitude());
+//				coords.put("radius", location.getRadius());
+//				jsonObj.put("coords", coords);
+//				
+//				currentLongitude=location.getLongitude();
+//				currentLatitude=location.getLatitude();
+//
+//				int locationType = location.getLocType();
+//				jsonObj.put("time", location.getTime());
+//				jsonObj.put("locationType", locationType);
+//				jsonObj.put("errorcode", locationType);
+//				jsonObj.put("message", getErrorMessage(locationType));
+//				
+//				 if (location.getLocType() == BDLocation.TypeGpsLocation){// GPS定位结果
+//					 	coords.put("speed", location.getSpeed());// 单位：公里每小时
+//						coords.put("height", location.getAltitude());// 单位：米
+//						coords.put("satellite", location.getSatelliteNumber());
+//						coords.put("direction", location.getDirection());// 单位度
+//						coords.put("addr", location.getAddrStr());
+//		 
+//		            } else if (location.getLocType() == BDLocation.TypeNetWorkLocation){// 网络定位结果
+//		            	coords.put("addr", location.getAddrStr());
+//						coords.put("operationers", location.getOperators());
+//		            } else {
+//		            	//callbackContext.error(getErrorMessage(locationType));
+//		            }
+//				 postCoords();
+//
+//				 Log.i(BaiduMapAll.LOG_TAG, "======================== " );
+//				Log.d(BaiduMapAll.LOG_TAG, "run: " + jsonObj.toString());
+//				//callbackContext.success(jsonObj);
+//				Toast.makeText(activityContex, "获取地址成功", Toast.LENGTH_SHORT).show();
+//			} catch (JSONException e) {
+//				//callbackContext.error(e.getMessage());
+//				Toast.makeText(activityContex, "获取地址失败:"+getErrorMessage(locationType), Toast.LENGTH_LONG).show();
+//			}
         }
 
 
+    }
+    
+    public void postCoords(String latitude,String longitude){
+    	
+           
+		HttpResponse httpResponse;
+		try {
+			HttpPost httpPost = new HttpPost(this.getUploadUrl());
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+//			params.add(new BasicNameValuePair("sessionId", this.getSessionId()));
+//			params.add(new BasicNameValuePair("loginName", this.getLoginName()));
+//			params.add(new BasicNameValuePair("uuid", this.getUuid()));
+			
+			Iterator<String> iterator=params.keys();
+			while(iterator.hasNext()){
+				String key=iterator.next();
+				if("uploadUrl".equals(key) || "gps_interval".equals(key)){
+					continue;
+				}
+				nameValuePairs.add(new BasicNameValuePair(key, params.getString(key)));
+			}
+			nameValuePairs.add(new BasicNameValuePair("longitude", longitude));
+			nameValuePairs.add(new BasicNameValuePair("latitude", latitude));
+			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
+			
+			
+			HttpParams httpParameters = new BasicHttpParams();
+			HttpConnectionParams.setConnectionTimeout(httpParameters, 50000);
+			// Set the default socket timeout (SO_TIMEOUT) // in milliseconds which is the timeout for waiting for data.  
+		    HttpConnectionParams.setSoTimeout(httpParameters, 30000);  
+		    HttpClient client = new DefaultHttpClient(httpParameters);
+			httpResponse = client.execute(httpPost);
+			if (httpResponse.getStatusLine().getStatusCode() == 200) {
+				//String result = EntityUtils.toString(httpResponse.getEntity());
+				//Log.d(BaiduMapAll.LOG_TAG, result);
+			} else {
+				Toast.makeText(activityContex, "发送经纬度到后台失败!", Toast.LENGTH_LONG).show();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Toast.makeText(activityContex, "发送经纬度到后台失败!请检查网络连接!", Toast.LENGTH_LONG).show();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Toast.makeText(activityContex, "发送经纬度到后台失败!请检查参数格式!", Toast.LENGTH_LONG).show();
+		}
+         
     }
 
 	public String getErrorMessage(int locationType) {

@@ -36,6 +36,7 @@
 				/unauthorized.jsp*=anon
 				/login.do*=anon
 				/logout.do*=anon
+				/geolocation/mobile/upload.do*=anon
 				/**/*.css=anon
 				/**/*.js=anon
 				/**/*.gif=anon
@@ -80,7 +81,7 @@
 	    <property name="activeSessionsCacheName" value="shiro-activeSessionCache"/>  
 	    <property name="sessionIdGenerator" ref="sessionIdGenerator"/>  
 	</bean>  
-	<bean id="sessionListener" class="com.mawujun.shiro.ShiroSessionListener">
+	<bean id="sessionListener" class="com.mawujun.mobile.geolocation.ShiroSessionListener">
 	</bean>
     <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
     	<property name="globalSessionTimeout" value="1800000"/>  

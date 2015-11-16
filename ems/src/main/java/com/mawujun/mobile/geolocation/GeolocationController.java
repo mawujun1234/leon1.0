@@ -28,7 +28,7 @@ public class GeolocationController {
 	private Map<String,WaringGps> waringGpsMap=new HashMap<String,WaringGps>();
 	
 	@RequestMapping("/geolocation/mobile/upload.do")
-	public String upload(String longitude,String latitude,String uuid,String loginName) {
+	public String upload(String longitude,String latitude,String uuid,String loginName,String sessionId) {
 		//地理信息没有上报
 		//System.out.println(longitude);
 		//System.out.println(latitude);
@@ -52,7 +52,10 @@ public class GeolocationController {
 		geolocation.setCreateDate(new Date());
 		
 		geolocationService.create(geolocation);
-		updateGpsUploadTime(SecurityUtils.getSubject().getSession().getId().toString(),longitude,latitude);
+		
+		
+		//updateGpsUploadTime(SecurityUtils.getSubject().getSession().getId().toString(),longitude,latitude);
+		updateGpsUploadTime(sessionId,longitude,latitude);
 		return "success";
 	}
 	
@@ -61,8 +64,8 @@ public class GeolocationController {
 	 * @author mawujun 16064988@qq.com 
 	 * @param loginName
 	 */
-	public void updateGpsUploadTime(String loginName,String lasted_longitude, String lasted_latitude) {
-		WaringGps waringGps=waringGpsMap.get(loginName);
+	public void updateGpsUploadTime(String sessionId,String lasted_longitude, String lasted_latitude) {
+		WaringGps waringGps=waringGpsMap.get(sessionId);
 		waringGps.setIsUploadGps(true);
 		waringGps.setLastedUploadTime(new Date());
 		waringGps.setLasted_longitude(lasted_longitude);
