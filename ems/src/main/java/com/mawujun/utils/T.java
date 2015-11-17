@@ -337,12 +337,16 @@ public static final class ems_metaversion {
 	public static final String version="version";
 }
 public static final class ems_geolocation {
+	public static final String sessionId="sessionId";
 	public static final String uuid="uuid";
 	public static final String loginName="loginName";
-	public static final String createDate="createDate";
 	public static final String longitude="longitude";
 	public static final String latitude="latitude";
 	public static final String radius="radius";
+	public static final String direction="direction";
+	public static final String speed="speed";
+	public static final String locationDate="locationDate";
+	public static final String createDate="createDate";
 	public static final String id="id";
 }
 public static final class ems_gpsconfig {

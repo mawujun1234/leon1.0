@@ -31,6 +31,7 @@ public class ShiroSessionListener extends SessionListenerAdapter {
 		//System.out.println(session.getId());
 		//String loginName=ShiroUtils.getAuthenticationInfo().getUsername();
 		// no-op
+		//System.out.println("=============================================================="+session.getId().toString());
 		geolocationController.getWaringGpsMap().remove(session.getId().toString());
 	}
 

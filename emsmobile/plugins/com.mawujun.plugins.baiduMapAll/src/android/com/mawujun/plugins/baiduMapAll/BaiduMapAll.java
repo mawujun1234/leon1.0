@@ -29,27 +29,24 @@ public class BaiduMapAll  extends CordovaPlugin {
 		//setCallbackContext(callbackContext);
 		//final LocationApplication locationApplication=(LocationApplication)cordova.getActivity().getApplication();
 		if(locationApplication==null){
-			locationApplication=new LocationApplication();
-			try {
-//				locationApplication.setSessionId(args.getString(0));
-//				locationApplication.setLoginName(args.getString(1));
-//				locationApplication.setUuid(args.getString(2));
-				JSONObject params= args.getJSONObject(0);
-				locationApplication.setUploadUrl(params.getString("uploadUrl"));
-				locationApplication.setGps_interval(params.getInt("gps_interval"));
-				locationApplication.setParams(params);
-				
-				
-				locationApplication.onCreate(cordova.getActivity());
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				callbackContext.error("传递的参数有问题!");
-				return false;
-			}
+			locationApplication=new LocationApplication();	
+		}
+		try {
+//			locationApplication.setSessionId(args.getString(0));
+//			locationApplication.setLoginName(args.getString(1));
+//			locationApplication.setUuid(args.getString(2));
+			JSONObject params= args.getJSONObject(0);
+			locationApplication.setUploadUrl(params.getString("uploadUrl"));
+			locationApplication.setGps_interval(params.getInt("gps_interval"));
+			locationApplication.setParams(params);
 			
 			
-			
+			locationApplication.onCreate(cordova.getActivity());
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			callbackContext.error("传递的参数有问题!");
+			return false;
 		}
 		//locationApplication.callbackContext=callbackContext;
 		

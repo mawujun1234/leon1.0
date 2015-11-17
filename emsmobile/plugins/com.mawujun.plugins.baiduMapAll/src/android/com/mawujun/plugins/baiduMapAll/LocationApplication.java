@@ -182,10 +182,10 @@ public class LocationApplication {
 			currentLongitude=location.getLongitude();
 			currentLatitude=location.getLatitude();
 			if (location.getLocType() == BDLocation.TypeGpsLocation) {// GPS定位结果
-				 postCoords(location.getLatitude()+"",location.getLongitude()+"");
+				 postCoords(location);
 
 			} else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {// 网络定位结果
-				 postCoords(location.getLatitude()+"",location.getLongitude()+"");
+				 postCoords(location);
 			} else {
 				int locationType = location.getLocType();
 				Toast.makeText(activityContex, "获取地址失败:"+getErrorMessage(locationType), Toast.LENGTH_LONG).show();
@@ -235,7 +235,7 @@ public class LocationApplication {
 
     }
     
-    public void postCoords(String latitude,String longitude){
+    public void postCoords(BDLocation location){
     	
            
 		HttpResponse httpResponse;
@@ -254,8 +254,13 @@ public class LocationApplication {
 				}
 				nameValuePairs.add(new BasicNameValuePair(key, params.getString(key)));
 			}
-			nameValuePairs.add(new BasicNameValuePair("longitude", longitude));
-			nameValuePairs.add(new BasicNameValuePair("latitude", latitude));
+			nameValuePairs.add(new BasicNameValuePair("longitude", location.getLongitude()+""));
+			nameValuePairs.add(new BasicNameValuePair("latitude", location.getLatitude()+""));
+			nameValuePairs.add(new BasicNameValuePair("radius", location.getRadius()+""));
+			nameValuePairs.add(new BasicNameValuePair("direction", location.getDirection()+""));
+			nameValuePairs.add(new BasicNameValuePair("speed", location.getDirection()+""));
+			nameValuePairs.add(new BasicNameValuePair("locationDate", location.getTime()));//String，时间，ex:2010-01-01 14:01:01
+			
 			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
 			
 			
@@ -266,10 +271,12 @@ public class LocationApplication {
 		    HttpClient client = new DefaultHttpClient(httpParameters);
 			httpResponse = client.execute(httpPost);
 			if (httpResponse.getStatusLine().getStatusCode() == 200) {
+				
 				//String result = EntityUtils.toString(httpResponse.getEntity());
 				//Log.d(BaiduMapAll.LOG_TAG, result);
 			} else {
-				Toast.makeText(activityContex, "发送经纬度到后台失败!", Toast.LENGTH_LONG).show();
+				//这里响应代码不是200 页正茬插入了
+				Toast.makeText(activityContex, "发送经纬度到后台失败!"+httpResponse.getStatusLine().getStatusCode()+this.getUploadUrl(), Toast.LENGTH_LONG).show();
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
