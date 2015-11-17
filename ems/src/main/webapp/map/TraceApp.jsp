@@ -26,9 +26,21 @@
 		    float:right;
 		    cursor: pointer;
 		}
+		
+		#entryTracePanel_mask {    
+            position: absolute; top: 0px; filter: alpha(opacity=60); background-color: #777;  
+            z-index: 1002; left: 0px;  
+            opacity:0.5; -moz-opacity:0.5;  
+     
+        }  
 
 		
 	</style>
+	
+	<script type="text/javascript" >
+		var Ext={};
+		Ext.ContextPath="<%=request.getContextPath()%>";
+	</script>
 	<script src="http://api.map.baidu.com/api?v=2.0&ak=ED0fe5c7c869da5ee4260b4006e811b8"></script>
 	<script type="text/javascript" src="http://api.map.baidu.com/library/LuShu/1.2/src/LuShu_min.js"></script>
 	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
@@ -62,6 +74,7 @@
 	
 	
 	<div id="entryTracePanel" class="panel panel-info">
+	  <div id="entryTracePanel_mask"></div>
 	  <!-- Default panel contents   glyphicon glyphicon-chevron-down-->
 	  <div class="panel-heading" style="cursor:move;">  
 	  	<span id="entryTracePanel_button">
@@ -103,17 +116,13 @@
 				</form>
 		    	<table class="table table-hover">
 				  <tbody>
-			        <tr data-uuid="11" data-loginName="loginName" data-toggle="popover" data-trigger="click" data-title="Dismissible popover" data-content="And here's some amazing content. It's very engaging. Right?"  >
+			        <tr data-uuid="11" data-loginName="loginName">
 			          <th scope="row">1</th>
-			          <td>Mark</td>
-			          <td>Otto</td>
-			          <td>@mdo</td>
+			          <td>作业单位1</td>
 			        </tr>
-			        <tr data-uuid="11" data-loginName="loginName"  data-toggle="popover" data-trigger="click" data-title="Dismissible popover" data-content="And here's some amazing content. It's very engaging. Right?" >
+			        <tr data-uuid="11" data-loginName="loginName">
 			          <th scope="row">2</th>
-			          <td>Jacob</td>
-			          <td>Thornton</td>
-			          <td>@fat</td>
+			          <td>作业单位2</td>
 			        </tr>
 			      </tbody>
 				</table>

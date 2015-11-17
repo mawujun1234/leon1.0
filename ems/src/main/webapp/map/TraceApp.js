@@ -16,32 +16,65 @@ $(function(){
 	});
 	
 	
+	//$('[data-toggle="popover"]').popover();
 	var history_tab_tr=$("#history_tab tr ");
 	history_tab_tr.click(function(e){
 		history_tab_tr.removeClass("danger");
 		$(this).addClass("danger");
 
-		history_tab_tr.popover('hide');
-		$(this).popover('show');
+		history_tab_tr.popover('destroy');
+		
+		refreshPopoverContent($(this));
 //		var uuid=$(this).attr("data-uuid");//手机码
 //		var loginName=$(this).attr("data-loginName");//手机码
 //		alert(uuid);
 //		alert(loginName);
 	});
-////http://v3.bootcss.com/javascript/#tooltips
-//	$("#history_tab tr td").click(function(e){
-//		history_tab_tr.popover('hide');
-////		//aa
-////		$(this).parent().popover({
-////			trigger:"click",
-////			container:'body',
-////			html:true,
-////			placement:'right',
-////			content:"正在加载......"
-////		});
-//		$(this).parent().popover('show');
-//	});
 	
+	function refreshPopoverContent(tr){
+
+		
+		showMask();
+		$.ajax({
+			type: 'POST',
+		    url: Ext.ContextPath+"/trace/queryHistoryTrace.do" ,
+		    data: {
+		    
+		    } ,
+		    dataType: "json",
+		    success: function(data){
+		    	hideMask();
+		    	var html='<table class="table table-hover table-striped" ><thead><tr>'+
+		          '<th>#</th>'+
+		          '<th>起始时间--终止时间</th>'+
+		          '<th>时长</th>'+
+		          '<th>里程<small>公里</small></th>'+
+		        '</tr>'+
+		      '</thead><tbody>';
+		    	for(var i=0;i<data.root.length;i++){
+		    		html+='<tr scope="row">';
+		    		html+='<th>'+(i+1)+'</th>';
+		    		html+='<td>10:21:10--12:22:22</td>';
+		    		html+='<td>1111</td>';
+		    		html+='<td>222</td>';
+		    		html+='</tr>';
+		    	}
+		    	html+='</tbody></table>';
+		    	
+		    	tr.popover({
+					trigger:"focus",
+					container:'body',
+					template:'<div class="popover" role="tooltip" style="width:650px;"><div class="arrow"></div><div class="popover-content" ></div></div>',
+					html:true,
+					placement:'right',
+					content:html
+				});
+				tr.popover('show');
+		    }
+		});
+		
+	}
+
 	
 	//$('#datetimepicker4').datetimepicker('show');
 	//$('#datetimepicker4').datetimepicker('hide');
@@ -146,4 +179,13 @@ function initDrag(id){
                 drag_object.releaseCapture &&　drag_object.releaseCapture();
                 e.cancelBubble = true;
             })
+}
+function showMask(){  
+        $("#entryTracePanel_mask").css("height",$("#entryTracePanel").height());  
+        $("#entryTracePanel_mask").css("width",$("#entryTracePanel").width());  
+        $("#entryTracePanel_mask").show();  
+}  
+
+function hideMask(){ 
+	$("#entryTracePanel_mask").hide();
 }
