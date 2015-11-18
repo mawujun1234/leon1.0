@@ -139,7 +139,7 @@
         </span>
                            明细
 	  </div>
-	  <div class="panel-body">
+	  <div id="entryTracePanel_list_content" class="panel-body">
 	    <table class="table table-hover" style="font-size:14px;line-height:14px;margin-bottom:0px;">
 	    	<thead>
 	    		<tr>

@@ -18,6 +18,10 @@ $(function(){
 		//alert(uuid);
 		//alert(loginName);
 	});
+	$("#realtime_tab tbody tr").click(function(){
+		alert(1);
+		$(this).children("input").trigger("click");
+	});
 	
 	
 	
@@ -241,6 +245,29 @@ function initDrag(id){
         });
         //console.log(1);
     }).on('mousedown', '#entryTracePanel_content', function(e) {
+        $.extend(document, {
+            move: true,
+            call_down: function(e) {
+                return false;
+            }
+        });
+        return false;
+    });
+    
+    
+    var $entryTracePanely = $('#entryTracePanel_list').mousedown(function(e) {
+        var offset = $(this).offset();
+
+        this.posix = {
+            x: e.pageX - offset.left,
+            y: e.pageY - offset.top
+        };
+        $.extend(document, {
+            move: true,
+            move_target: this
+        });
+        //console.log(1);
+    }).on('mousedown', '#entryTracePanel_list_content', function(e) {
         $.extend(document, {
             move: true,
             call_down: function(e) {
