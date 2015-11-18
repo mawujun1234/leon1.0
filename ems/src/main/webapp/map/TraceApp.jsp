@@ -139,7 +139,7 @@
         </span>
                            明细
 	  </div>
-	  <div id="entryTracePanel_list_content" class="panel-body">
+	  <div id="entryTracePanel_list_content" class="panel-body" style="padding-top:5px;padding-bottom:5px;">
 	    <table class="table table-hover" style="font-size:14px;line-height:14px;margin-bottom:0px;">
 	    	<thead>
 	    		<tr>
@@ -192,7 +192,7 @@
 
 		
 	</style>
-	<div id="entryTracePanel" class="panel panel-info">
+	<div id="entryTracePanel" class="panel panel-info" >
 	  <div id="entryTracePanel_mask"></div>
 	  <!-- Default panel contents   glyphicon glyphicon-chevron-down-->
 	  <div class="panel-heading" style="cursor:move;">  
@@ -201,22 +201,22 @@
         </span>
                            作业单位行车轨迹
 	  </div>
-	  <div id="entryTracePanel_content">
+	  <div id="entryTracePanel_content"  >
 	  	<ul class="nav nav-tabs nav-justified">
 		  <li role="presentation" class="active"><a href="#realtime_tab" role="tab" data-toggle="tab">实时监控</a></li>
 		  <li role="presentation"><a href="#history_tab" role="tab" data-toggle="tab">历史轨迹</a></li>
 		</ul>
 		<div class="tab-content">
 		    <div role="tabpanel" class="tab-pane active" id="realtime_tab">
-		    	<table class="table table-hover">
+		    	<table class="table table-hover" style="margin-bottom:0px;">
 				  <tbody>
 			        <tr >
-			          <th scope="row" width="20"><input data-uuid="11" data-loginName="loginName" type="checkbox"></th>
+			          <th scope="row" width="20"><input data-uuid="11" data-loginName="loginName" type="checkbox" /></th>
 			          <td>作业单位1</td>
 			          <td>最后更新时间</td>
 			        </tr>
 			        <tr>
-			          <th scope="row"><input type="checkbox"></th>
+			          <th scope="row"><input type="checkbox"/></th>
 			          <td>作业单位2</td>
 			          <td>最后更新时间</td>
 			        </tr>
@@ -233,7 +233,7 @@
 				    </div>
 				  </div>
 				</form>
-		    	<table class="table table-hover">
+		    	<table class="table table-hover" style="margin-bottom:0px;">
 				  <tbody>
 			        <tr data-uuid="11" data-loginName="loginName">
 			          <th scope="row">1</th>

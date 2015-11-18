@@ -18,10 +18,10 @@ $(function(){
 		//alert(uuid);
 		//alert(loginName);
 	});
-	$("#realtime_tab tbody tr").click(function(){
-		alert(1);
-		$(this).children("input").trigger("click");
-	});
+//	$("#realtime_tab table tbody tr").click(function(){
+//		alert(1);
+//		$(this).children("input:checkbox").prop("checked",true);
+//	});
 	
 	
 	
@@ -198,7 +198,7 @@ function showMap() {
 
 	$(".tracks-history .close").click(function(){
 		 $('.tracks-history').hide();
-        lushu.stop();
+        tracksControl.trackStop();
 	});
 }
 

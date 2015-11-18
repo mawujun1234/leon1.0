@@ -56,7 +56,7 @@ function TracksControl(){
 			self.trackStart();
 			// self.onActiveTrack = id;
 			self.isPlayed = true;
-		} else if (self.isPaused) {
+		} else if (self.isPaused) {//alert(1);
 			self.isPaused = false;
 			self.lushu.start();
 		}
@@ -143,8 +143,13 @@ function TracksControl(){
 					self.curIndex = ui.value;
 					self.moveIndex(self.curIndex);
 				} else {
-					self.setSliderValue(0);
-					$('.ui-slider-label').hide();
+					//self.setSliderValue(0);
+					//$('.ui-slider-label').hide();
+					self.curIndex = ui.value;
+					self.moveIndex(self.curIndex);
+					self.isPlayed=true;
+					self.sliding=false;
+					self.isPaused=true;
 				}
 			}
 		});
