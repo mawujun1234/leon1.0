@@ -7,6 +7,10 @@ $(function(){
 		$("#entryTracePanel_content").toggle();
 	});
 	
+	$("#entryTracePanel_list_button i").click(function(){
+		$("#entryTracePanel_list").toggle();
+	});
+	
 	$("#realtime_tab tr th input").click(function(){
 		//var value=$(this).prop("checked");
 		var uuid=$(this).attr("data-uuid");//手机码
@@ -16,25 +20,36 @@ $(function(){
 	});
 	
 	
+	
+	
 	//$('[data-toggle="popover"]').popover();
 	var history_tab_tr=$("#history_tab tr ");
 	history_tab_tr.click(function(e){
 		history_tab_tr.removeClass("danger");
 		$(this).addClass("danger");
-
-		history_tab_tr.popover('destroy');
 		
-		refreshPopoverContent($(this));
+		refreshEntryTracePanel_list($(this));
+		//$("#tracks-history-play").hide();
+		
 //		var uuid=$(this).attr("data-uuid");//手机码
 //		var loginName=$(this).attr("data-loginName");//手机码
 //		alert(uuid);
 //		alert(loginName);
 	});
 	
-	function refreshPopoverContent(tr){
-
+	$("#entryTracePanel_list tbody tr").click(function(){
+		$("#entryTracePanel_list").hide();
+		$("#tracks-history-play").show();
+		//然后去获取这条轨迹的路径数据
 		
+	});
+	
+	/**
+	 * 更新明细数据
+	 */
+	function refreshEntryTracePanel_list(tr){
 		showMask();
+		$("#entryTracePanel_list").hide();
 		$.ajax({
 			type: 'POST',
 		    url: Ext.ContextPath+"/trace/queryHistoryTrace.do" ,
@@ -48,7 +63,8 @@ $(function(){
 		          '<th>#</th>'+
 		          '<th>起始时间--终止时间</th>'+
 		          '<th>时长</th>'+
-		          '<th>里程<small>公里</small></th>'+
+		          '<th>里程<small>(公里)</small></th>'+
+		          '<th>操作</th>'+
 		        '</tr>'+
 		      '</thead><tbody>';
 		    	for(var i=0;i<data.root.length;i++){
@@ -57,19 +73,19 @@ $(function(){
 		    		html+='<td>10:21:10--12:22:22</td>';
 		    		html+='<td>1111</td>';
 		    		html+='<td>222</td>';
+		    		html+='<td><span class="glyphicon glyphicon-pause"></span></td>';
 		    		html+='</tr>';
 		    	}
 		    	html+='</tbody></table>';
 		    	
-		    	tr.popover({
-					trigger:"focus",
-					container:'body',
-					template:'<div class="popover" role="tooltip" style="width:650px;"><div class="arrow"></div><div class="popover-content" ></div></div>',
-					html:true,
-					placement:'right',
-					content:html
-				});
-				tr.popover('show');
+		    	var $entryTracePanel_list=$("#entryTracePanel_list");
+		    	var $entryTracePanel=$("#entryTracePanel");
+
+		    	$entryTracePanel_list.css({
+		    		top:$("#entryTracePanel").css("top"),
+		    		left:parseFloat($entryTracePanel.css("left"))+parseFloat($entryTracePanel.outerWidth())+"px"
+		    	});
+				$("#entryTracePanel_list").show();
 		    }
 		});
 		
@@ -92,93 +108,191 @@ $(function(){
 		$('#datetimepicker').datetimepicker('show');
 	});
 	
-	initDrag("entryTracePanel");
+	initDrag();
+	//initDrag("tracks-history-play");
+	
+	$("#h-slider").slider({
+        range: "min",
+        min: 0,
+        max: 2000,
+        value: 0
+    });
+    
+
+
 });
 
+
+
 function showMap() {
-	var map = new BMap.Map('map_canvas');
+	window.map = new BMap.Map('map_canvas');
 	map.enableScrollWheelZoom();
 	map.centerAndZoom(new BMap.Point(116.404, 39.915), 13);
-	var lushu;
-	// 实例化一个驾车导航用来生成路线
-    var drv = new BMap.DrivingRoute('北京', {
-        onSearchComplete: function(res) {
-            if (drv.getStatus() == BMAP_STATUS_SUCCESS) {
-                var plan = res.getPlan(0);
-                var arrPois =[];
-                for(var j=0;j<plan.getNumRoutes();j++){
-                    var route = plan.getRoute(j);
-                    arrPois= arrPois.concat(route.getPath());
-                }
-                map.addOverlay(new BMap.Polyline(arrPois, {strokeColor: '#111'}));
-                map.setViewport(arrPois);
-                
-                lushu = new BMapLib.LuShu(map,arrPois,{
-                defaultContent:"",//"从天安门到百度大厦"
-                autoView:true,//是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
-                icon  : new BMap.Icon('http://developer.baidu.com/map/jsdemo/img/car.png', new BMap.Size(52,26),{anchor : new BMap.Size(27, 13)}),
-                speed: 4500,
-                enableRotation:true,//是否设置marker随着道路的走向进行旋转
-                landmarkPois: [
-                   {lng:116.314782,lat:39.913508,html:'加油站',pauseTime:2},
-                   {lng:116.315391,lat:39.964429,html:'高速公路收费<div><img src="http://map.baidu.com/img/logo-map.gif"/></div>',pauseTime:3},
-                   {lng:116.381476,lat:39.974073,html:'肯德基早餐<div><img src="http://ishouji.baidu.com/resource/images/map/show_pic04.gif"/></div>',pauseTime:2}
-                ]});          
-            }
-        }
+
+	
+	$("#h-slider").slider({
+        range: "min",
+        min: 0,
+        max: 20,
+        value: 0
     });
+    
+    var tracksControl=new TracksControl();
+    tracksControl.map=map;
+    tracksControl.timeControl=new TimeControl();
+    map.addControl(tracksControl.timeControl);
+    tracksControl.timeControl.hide();
+
+    
+    // 实例化一个驾车导航用来生成路线
+	//DrivingRoute是自动生成的导航，要换成从后台获取的
+	var drv = new BMap.DrivingRoute('北京', {
+	        onSearchComplete: function(res) {
+	            if (drv.getStatus() == BMAP_STATUS_SUCCESS) {
+	                var plan = res.getPlan(0);
+	                var arrPois =[];
+	                for(var j=0;j<plan.getNumRoutes();j++){
+	                    var route = plan.getRoute(j);
+	                    var aaa=route.getPath();
+	                   
+	                    //aaa.loc_time="2015-11-18 18:15:15";
+	                    arrPois= arrPois.concat(aaa);
+	                    // console.dir(aaa);
+	                }
+	                map.addOverlay(new BMap.Polyline(arrPois, {strokeColor: '#111'}));
+	                map.setViewport(arrPois);
+	                
+	                tracksControl.setLngLatpois(arrPois);
+	                
+	            }
+	        }
+	 });
 	drv.search('天安门', '百度大厦');
-	//绑定事件
-	$("run").onclick = function(){
-		lushu.start();
-	}
-	$("stop").onclick = function(){
-		lushu.stop();
-	}
-	$("pause").onclick = function(){
-		lushu.pause();
-	}
-	$("hide").onclick = function(){
-		lushu.hideInfoWindow();
-	}
-	$("show").onclick = function(){
-		lushu.showInfoWindow();
-	}
+	
+		
+	// 绑定事件
+	$("#btn-play").click(function(){
+		if ($(this).children().hasClass('glyphicon-play')) {
+			//lushu.start();
+			tracksControl.trackPlay();
+			//$(this).children().removeClass('glyphicon-play').addClass('glyphicon-pause');
+		} else if ($(this).children().hasClass('glyphicon-pause')) {
+			 //$(this).children().removeClass('glyphicon-pause').addClass('glyphicon-play');
+			//lushu.pause();
+			tracksControl.trackPause();
+		} else {
+			return;
+		}
+	});
+	$("#btn-stop").click(function(){
+		//lushu.stop();
+		//map.removeOverlay(lushu._marker);
+		//$("#btn-play").trigger("click");
+		//$("#btn-play").children().removeClass().addClass('glyphicon glyphicon-play');
+		tracksControl.trackStop();
+	});
+
+	$(".tracks-history .close").click(function(){
+		 $('.tracks-history').hide();
+        lushu.stop();
+	});
 }
 
 
 function initDrag(id){
-            /*--------------拖曳效果----------------
-            *原理：标记拖曳状态dragging ,坐标位置iX, iY
-            *         mousedown:fn(){dragging = true, 记录起始坐标位置，设置鼠标捕获}
-            *         mouseover:fn(){判断如果dragging = true, 则当前坐标位置 - 记录起始坐标位置，绝对定位的元素获得差值}
-            *         mouseup:fn(){dragging = false, 释放鼠标捕获，防止冒泡}
-            */
-            var dragging = false;
-            var iX, iY;
-            var drag_object=null;
-            $("#"+id).mousedown(function(e) {
-                dragging = true;
-                iX = e.clientX - this.offsetLeft;
-                iY = e.clientY - this.offsetTop;
-                this.setCapture && this.setCapture();
-                drag_object=$(this);
-                return false;
+ 	$(document).mousemove(function(e) {
+        if(!!this.move) {
+            var posix = !document.move_target ? {
+                    x: 0,
+                    y: 0
+                } : document.move_target.posix,
+                callback = document.call_down || function() {
+                    $(this.move_target).css({
+                        top: e.pageY - posix.y,
+                        left: e.pageX - posix.x
+                    });
+                };
+
+            callback.call(this, e, posix);
+        }
+    }).mouseup(function(e) {
+        if(!!this.move) {
+            var callback = document.call_up || function() {};
+            callback.call(this, e);
+            $.extend(this, {
+                move: false,
+                move_target: null,
+                call_down: false,
+                call_up: false
             });
-            document.onmousemove = function(e) {
-                if (dragging) {
-                var e = e || window.event;
-                var oX = e.clientX - iX;
-                var oY = e.clientY - iY;
-                drag_object.css({"left":oX + "px", "top":oY + "px"});
+        }
+    });
+    
+    var $entryTracePanely = $('#entryTracePanel').mousedown(function(e) {
+        var offset = $(this).offset();
+
+        this.posix = {
+            x: e.pageX - offset.left,
+            y: e.pageY - offset.top
+        };
+        $.extend(document, {
+            move: true,
+            move_target: this
+        });
+        //console.log(1);
+    }).on('mousedown', '#entryTracePanel_content', function(e) {
+        $.extend(document, {
+            move: true,
+            call_down: function(e) {
                 return false;
-                }
-            };
-            $(document).mouseup(function(e) {
-                dragging = false;
-                drag_object.releaseCapture &&　drag_object.releaseCapture();
-                e.cancelBubble = true;
-            })
+            }
+        });
+        return false;
+    });
+
+    var $box = $('#tracks-history-play').mousedown(function(e) {
+        var offset = $(this).offset();
+
+        this.posix = {
+            x: e.pageX - offset.left,
+            y: e.pageY - offset.top
+        };
+        $.extend(document, {
+            move: true,
+            move_target: this
+        });
+        //console.log(2);
+    }).on('mousedown', '#h-slider', function(e) {
+        $.extend(document, {
+            move: true,
+            call_down: function(e) {
+                return false;
+            }
+        });
+        return false;
+    });
+
+//    var $move = $('.slide-up').mousedown(function(e) {
+//        var pos = {
+//            x: e.pageX,
+//            y: e.pageY
+//        };
+//        $.extend(document, {
+//            move: true,
+//            call_down: function(e) {
+//                var h = e.pageY - posiy.y + posiy.h;
+//                h = (h < 50) ? 50 : h;
+//                h = (h > 250) ? 250 : h;
+//                $('.monitor-panel').css({
+//                    'height': h
+//                });
+//                $('#mapContainer').css({
+//                    'height':$('.row').height() - h
+//                })
+//            }
+//        });
+//        return false;
+//    });
 }
 function showMask(){  
         $("#entryTracePanel_mask").css("height",$("#entryTracePanel").height());  
