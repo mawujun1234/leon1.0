@@ -34,6 +34,13 @@
         }  
 
 		
+		
+		#full_screen_ctr { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; font-size: 12px; background: #fff; text-align: center; border: 1px solid #e5e0e4; color: #666; cursor: pointer; border-radius: 5px; padding-top: 4px; }
+		#full_screen_ctr:hover { color: #fff; background-color: #258BF0; }
+		.full-map { top: -52px; left: 0px; margin-left: 0px; width: 100%; }
+		
+		#new_screen_ctr { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; font-size: 12px; background: #fff; text-align: center; border: 1px solid #e5e0e4; color: #666; cursor: pointer; border-radius: 5px; padding-top: 4px; }
+		#new_screen_ctr:hover { color: #fff; background-color: #258BF0; }
 	</style>
 	
 	<script type="text/javascript" >
@@ -41,8 +48,7 @@
 		Ext.ContextPath="<%=request.getContextPath()%>";
 	</script>
 	<script src="http://api.map.baidu.com/api?v=2.0&ak=ED0fe5c7c869da5ee4260b4006e811b8"></script>
-	<script type="text/javascript" src="LuShu.js"></script>
-	<script type="text/javascript" src="TimeControl.js"></script>
+	
 	<!--
 	<script type="text/javascript" src="http://api.map.baidu.com/library/LuShu/1.2/src/LuShu_min.js"></script>
 	-->
@@ -67,6 +73,8 @@
 
 	<link rel="stylesheet" type="text/css" href="/jquery/slider/jquery-ui-1.9.2.custom.css"/ >
 	<script src="/jquery/slider/jquery.slider.js"></script>
+	
+	
 </head> 
 <body> 
 	<div id="map_canvas"></div> 
@@ -137,7 +145,7 @@
 	  	<span id="entryTracePanel_list_button">
         	<i class="glyphicon glyphicon-remove"></i>
         </span>
-                           明细
+                          轨迹列表
 	  </div>
 	  <div id="entryTracePanel_list_content" class="panel-body" style="padding-top:5px;padding-bottom:5px;">
 	    <table class="table table-hover" style="font-size:14px;line-height:14px;margin-bottom:0px;">
@@ -150,7 +158,7 @@
 	    		</tr>
 	    	</thead>
 			<tbody>
-			   <tr>
+			   <!--<tr>
 			      <th scope="row">1</th>
 			      <td>10:21:10--12:22:22</td>
 			      <td>1111</td>
@@ -161,7 +169,7 @@
 			      <td>10:21:10--12:22:22</td>
 			      <td>1111</td>
 			      <td>1111</td>
-			   </tr>
+			   </tr>-->
 			</tbody>
 		</table>
 	  </div>
@@ -210,7 +218,7 @@
 		    <div role="tabpanel" class="tab-pane active" id="realtime_tab">
 		    	<table class="table table-hover" style="margin-bottom:0px;">
 				  <tbody>
-			        <tr >
+			        <!--<tr >
 			          <th scope="row" width="20"><input data-uuid="11" data-loginName="loginName" type="checkbox" /></th>
 			          <td>作业单位1</td>
 			          <td>最后更新时间</td>
@@ -219,7 +227,7 @@
 			          <th scope="row"><input type="checkbox"/></th>
 			          <td>作业单位2</td>
 			          <td>最后更新时间</td>
-			        </tr>
+			        </tr>-->
 			      </tbody>
 				</table>
 		    </div>
@@ -235,14 +243,14 @@
 				</form>
 		    	<table class="table table-hover" style="margin-bottom:0px;">
 				  <tbody>
-			        <tr data-uuid="11" data-loginName="loginName">
+			       <!-- <tr data-uuid="11" data-loginName="loginName">
 			          <th scope="row">1</th>
 			          <td>作业单位1</td>
 			        </tr>
 			        <tr data-uuid="11" data-loginName="loginName">
 			          <th scope="row">2</th>
 			          <td>作业单位2</td>
-			        </tr>
+			        </tr>-->
 			      </tbody>
 				</table>
 		    </div>
@@ -252,9 +260,10 @@
 
 
 
-	
+	<script type="text/javascript" src="TraceApp.js"> </script>
 	<script type="text/javascript" src="tracksControl.js"> </script> 
-	<script type="text/javascript" src="TraceApp.js"> </script> 
+	<script type="text/javascript" src="LuShu.js"></script>
+	<script type="text/javascript" src="TimeControl.js"></script>
 	
 </body> 
 </html> 

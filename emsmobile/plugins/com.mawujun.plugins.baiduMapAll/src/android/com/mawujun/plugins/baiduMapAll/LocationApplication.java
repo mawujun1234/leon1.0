@@ -1,7 +1,9 @@
 package com.mawujun.plugins.baiduMapAll;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -29,6 +31,9 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.location.LocationClientOption.LocationMode;
+import com.baidu.mapapi.SDKInitializer;
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.utils.DistanceUtil;
 import com.baidu.platform.comapi.location.CoordinateType;
 
 /**
@@ -44,8 +49,8 @@ public class LocationApplication {
     
    // public CallbackContext callbackContext;
     
-    public double  currentLongitude;
-    public double  currentLatitude;
+    public Double  currentLongitude;
+    public Double  currentLatitude;
     
 //    private String sessionId;//回话的id
 //    public String getSessionId() {
@@ -126,7 +131,10 @@ public class LocationApplication {
     	     mMyLocationListener = new MyLocationListener();
     	     mLocationClient.registerLocationListener(mMyLocationListener);
     	    this.activityContex=context;  
-    	     initLocation();
+    	    //不初始化，不能计算距离
+    	    SDKInitializer.initialize(context.getApplicationContext());
+    	    
+    	    initLocation();
     	//}
        
         //mVibrator =(Vibrator)getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
@@ -179,8 +187,7 @@ public class LocationApplication {
         		return;
         	}
         	
-			currentLongitude=location.getLongitude();
-			currentLatitude=location.getLatitude();
+			
 			if (location.getLocType() == BDLocation.TypeGpsLocation) {// GPS定位结果
 				 postCoords(location);
 
@@ -235,9 +242,27 @@ public class LocationApplication {
 
     }
     
+    SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     public void postCoords(BDLocation location){
     	
-           
+    	Double distance=0.0;
+    	if(currentLatitude!=null){
+    		//上次的经纬度
+        	LatLng pt1 = new LatLng(currentLatitude, currentLongitude);
+        	//本次经纬度
+        	LatLng pt2 = new LatLng(location.getLatitude(), location.getLongitude());
+        	//计算p1、p2两点之间的直线距离，单位：米  
+        	distance=DistanceUtil. getDistance(pt1, pt2);
+    	}
+    
+    	
+    	currentLongitude=location.getLongitude();
+		currentLatitude=location.getLatitude();
+		
+		
+		
+		
+		
 		HttpResponse httpResponse;
 		try {
 			HttpPost httpPost = new HttpPost(this.getUploadUrl());
@@ -259,7 +284,9 @@ public class LocationApplication {
 			nameValuePairs.add(new BasicNameValuePair("radius", location.getRadius()+""));
 			nameValuePairs.add(new BasicNameValuePair("direction", location.getDirection()+""));
 			nameValuePairs.add(new BasicNameValuePair("speed", location.getDirection()+""));
-			nameValuePairs.add(new BasicNameValuePair("locationDate", location.getTime()));//String，时间，ex:2010-01-01 14:01:01
+			//nameValuePairs.add(new BasicNameValuePair("loc_time",location.getTime()));//不使用这个，因为百度会缓存金维度
+			nameValuePairs.add(new BasicNameValuePair("loc_time",format.format(new Date())));//String，时间，ex:2010-01-01 14:01:01
+			nameValuePairs.add(new BasicNameValuePair("distance", distance+""));
 			
 			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
 			

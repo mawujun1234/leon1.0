@@ -95,12 +95,12 @@
          <source-file src="libs/android/libs/armeabi/libapp_BaiduNaviApplib.so" target-dir="libs/armeabi" framework="true"/>   
          <source-file src="libs/android/libs/armeabi/libapp_BaiduPanoramaAppLib.so" target-dir="libs/armeabi" framework="true"/>
          <source-file src="libs/android/libs/armeabi/libapp_BaiduVIlib.so" target-dir="libs/armeabi" framework="true"/>   
-         <source-file src="libs/android/libs/armeabi/libBaiduMapSDK_base_v3_6_0.so" target-dir="libs/armeabi" framework="true"/>   
-         <source-file src="libs/android/libs/armeabi/libBaiduMapSDK_cloud_v3_6_0.so" target-dir="libs/armeabi" framework="true"/>   
-         <source-file src="libs/android/libs/armeabi/libBaiduMapSDK_map_v3_6_0.so" target-dir="libs/armeabi" framework="true"/>      
-         <source-file src="libs/android/libs/armeabi/libBaiduMapSDK_radar_v3_6_0.so" target-dir="libs/armeabi" framework="true"/>
-         <source-file src="libs/android/libs/armeabi/libBaiduMapSDK_search_v3_6_0.so" target-dir="libs/armeabi" framework="true"/>   
-         <source-file src="libs/android/libs/armeabi/libBaiduMapSDK_util_v3_6_0.so" target-dir="libs/armeabi" framework="true"/>   
+         <source-file src="libs/android/libs/armeabi/libBaiduMapSDK_base_v3_6_1.so" target-dir="libs/armeabi" framework="true"/>   
+         <source-file src="libs/android/libs/armeabi/libBaiduMapSDK_cloud_v3_6_1.so" target-dir="libs/armeabi" framework="true"/>   
+         <source-file src="libs/android/libs/armeabi/libBaiduMapSDK_map_v3_6_1.so" target-dir="libs/armeabi" framework="true"/>      
+         <source-file src="libs/android/libs/armeabi/libBaiduMapSDK_radar_v3_6_1.so" target-dir="libs/armeabi" framework="true"/>
+         <source-file src="libs/android/libs/armeabi/libBaiduMapSDK_search_v3_6_1.so" target-dir="libs/armeabi" framework="true"/>   
+         <source-file src="libs/android/libs/armeabi/libBaiduMapSDK_util_v3_6_1.so" target-dir="libs/armeabi" framework="true"/>   
          <source-file src="libs/android/libs/armeabi/libbd_etts.so" target-dir="libs/armeabi" framework="true"/>   
          <source-file src="libs/android/libs/armeabi/libbds.so" target-dir="libs/armeabi" framework="true"/>
          <source-file src="libs/android/libs/armeabi/libBDSpeechDecoder_V1.so" target-dir="libs/armeabi" framework="true"/>

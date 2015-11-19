@@ -62,7 +62,7 @@ public class GeolocationController {
 //	}
 	
 	@RequestMapping("/geolocation/mobile/upload.do")
-	public String upload(Geolocation geolocation) {
+	public String upload(Geolocation geolocation,String loc_time) {
 
 		
 		//logger.info("==========================================================================");
@@ -153,6 +153,8 @@ public class GeolocationController {
 			}
 			
 		}
+		
+		JsonConfigHolder.setDatePattern("yyyy-MM-dd HH:mm:ss");
 		return list;
 		
 	}

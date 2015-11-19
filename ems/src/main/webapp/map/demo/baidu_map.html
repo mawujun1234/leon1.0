@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>百度鹰眼</title>
+     <meta name="keywords" content="百度地图鹰眼,鹰眼,轨迹,大数据位置,位置智能" />
+    <meta name="description" content="百度鹰眼，来自百度LBS开放平台，打造最专业的位置轨迹大数据服务平台。" />
+    <link rel="shortcut icon" href="http://api.map.baidu.com/favicon.ico">
+    <link rel="stylesheet" href="static/css/bootstrap.min.css" media="screen">
+    <link rel="stylesheet" href="static/css/bootstrap-theme.min.css" media="screen">
+    <link href="static/css/main.css" rel="stylesheet" media="screen">
+    <link href="static/css/manage.css" rel="stylesheet" media="screen">
+    <link href="static/css/minimal/blue.css" rel="stylesheet" media="screen">
+    <link href="static/css/bootstrapValidator.min.css" rel="stylesheet" media="screen">
+     <link href="static/css/pagination.css" rel="stylesheet" media="screen">
+    <link href="static/css/jBox.css" rel="stylesheet" media="screen">
+    <link href="static/css/themes/TooltipBorder.css" rel="stylesheet" media="screen">
+    <!--[if lt IE 9]>
+            <link rel="stylesheet" type="text/css" href="static/css/custom-theme/jquery.ui.1.9.2.ie.css"/>
+        <![endif]-->
+    <link type="text/css" href="static/css/custom-theme/jquery-ui-1.9.2.custom.css" rel="stylesheet" />
+    <link href="static/css/jquery.datetimepicker.css" rel="stylesheet" media="screen">
+    <link href="static/css/jquery.alerts.css" rel="stylesheet" media="screen">
+    <script type="text/javascript" src="static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="static/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="static/js/jBox.min.js"></script>
+    <script src="static/js/jquery.slider.js" type="text/javascript"></script>
+    <script type="text/javascript" src="static/js/underscore-min.js"></script>
+    <script type="text/javascript" src="static/js/TweenMax.min.js"></script>
+    <script type="text/javascript" src="static/js/main.js"></script>
+    <script type="text/javascript" src="static/js/login.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=wWy2A8K94nhntYTYUHS19RXW"></script>
+    <script type="text/javascript" src="static/js/customControl.js"></script>
+    <script type="text/javascript" src="static/js/LuShu.js"></script>
+    <script type="text/javascript" src="static/js/baiduTemplate.js"></script>
+  <script type="text/javascript" src="static/js/jquery.pagination.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="static/js/jquery.datetimepicker.js" charset="UTF-8"></script>
+    <!--  <script type="text/javascript" src="static/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script> -->
+    <script type="text/javascript" src="static/js/esl/esl.js"></script>
+    <script type="text/javascript" src="static/js/manage.js"></script>
+    <script type="text/javascript" src="static/js/demoControl.js"></script>
+</head>
+
+<body>
+    <div class="container main-div">
+        <script type="text/javascript">
+        var tracksControl = new tracksControl();
+        var head = new header();
+        head.init();
+        </script>
+        <div class="row">
+            <div class="track-list-div left">
+                <div class="tracks-loading">
+                    <img src="static/images/loading.gif" alt="数据加载中...">
+                </div>
+                <div class="tracks-list-title">
+                    <div class="head-line"></div>
+                     <input name="chkAllItem" id="chk_all_track"  type="checkbox">
+                    <span class="title">示例车辆列表</span>
+                    <span class="total-items">(查询记录共<i class="nums"></i>条)</span>
+                  
+                </div>
+                <div class="panel-body tracks-list-panel frame" id="tracks-list-panel">
+                    <script type="text/template" id="tracks-list-tmpl">
+                        <ul class="tracks-ul">
+                            <%for(var i=0;i<tracksLength;i++){%>
+                                <li>
+                                  <%if(tracksList[i].isMonitorChecked){%>
+                                    <input name="chkItem" class="chk_<%=tracksList[i].track_id%>" data-id="<%=tracksList[i].track_id%>" type="checkbox" checked>
+                                  <%}else{%>
+                                      <input name="chkItem" class="chk_<%=tracksList[i].track_id%>" data-id="<%=tracksList[i].track_id%>" type="checkbox">
+                                  <%}%>
+                            <span class="car-icon" style="width:14px;top:-1px"><img src="static/images/caron.gif" alt="<%=tracksList[i].track_name%>"></span>
+                                    <span>(<%=tracksList[i].track_name%>)</span>
+                                </li>
+                           <%}%>
+                         </ul>
+                    </script>
+                </div>
+                <div class="tracks-pager-div">
+                    <ul id='tracks-pager-ul'></ul>
+                </div>
+            </div>
+            <div class="sidebar-contr" title="收起左栏">
+                <div class="triangel-left"></div>
+            </div>
+            <div class="map-nav-bar">
+                <div class="panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">数据面板</h3>
+                        <div class="input-group track-search-input">
+                            <input type="text" id="track-search-text" class="form-control" placeholder="输入关键字">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" id="track-search-btn" data-loading-text="查询中......">搜索</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="monitor-panel">
+                <div class="box-title">
+                    <ul class="box-tabs clearfix">
+                        <li id="monitoring" class="active"><a class="tab-link" href="javascript:void(0)">实时监控</a>
+                        </li>
+                        <li id="history-track"><a class="tab-link" href="javascript:void(0)">历史轨迹</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="box-content clearfix">
+                    <div class="history-time-div">
+                        <span class="label_span">查询日期&nbsp;:</span>
+                        <div class="date" id="div_date">
+                            <span class="date_title" id="date"></span>
+                            <span class="sele">
+                                <span class="triangel-bottom"></span>
+                            </span>
+                        </div>
+                        <a href="javascript:void(0)" class="date_btn pre_day" title="前一天">前一天</a>
+                        <a href="javascript:void(0)" class="date_btn to_day" title="今天">今天</a>
+                        <a href="javascript:void(0)" class="date_btn next_day" title="后一天">后一天</a>
+                    </div>
+                    <div class="box-table-container">
+                        <table class="box-table">
+                            <thead id="box-table-thead">
+                                <script type="text/template" id="monitor-table-thead">
+
+                                    <%for (var i=0 ; i < theads.length; i++) {%>
+                                        <%if(theads[i]=='序号' ){%>
+                                            <th>
+                                                <div style="width:50px">
+                                                    <%=theads[i]%>
+                                                </div>
+                                            </th>
+                                         <%}else if(theads[i]=='track ID' ){%>
+                                                <th>
+                                                    <div style="width:100px">轨迹ID</div>
+                                                </th>
+                                         <%}else if(theads[i]=='loc_time' ){%>
+                                                <th>
+                                                   <%if(type===1){%>
+                                                    <div style="width:180px" id="time_header">最后更新时间</div>
+                                                   <%}else{%>
+                                                    <div style="width:180px" id="time_header">起始时间 -- 终止时间</div>
+                                                    <%}%>
+                                                </th>
+                                         <%}else{%>
+                                                 <th><div style="width:150px"><%=theads[i]%></div>
+                                                 </th>
+                                         <%}%>
+                                    <%}%>
+                                </script>
+                            </thead>
+                            <tbody id="box-table-tbody">
+                             
+                            </tbody>
+                        </table>
+                        <div id="myAlert" style="display:none;" class="alert alert-warning alert-dismissible fade in" role="alert">
+                           <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                           <p>请先添加记录到监控面板</p>
+                        </div>
+                        </div>
+                        </div>
+                        <div class="bottom-ctr">
+                            <div class="slide-up">
+                                <div class="little-line little-line-1"></div>
+                                <div class="little-line little-line-2"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="map-div" id="mapContainer"></div>
+                </div>
+            </div>
+            <div class="tracks-history">
+                <div class="close">
+                     <span class="glyphicon glyphicon-remove"></span>
+                </div>   
+                <div class="play-control">
+                    <a class="btn btn-default " title="历史回放" href="javascript:void(0)" id="btn-play" role="button" disabled='disabled'>
+                        <span class="glyphicon glyphicon-play"></span>
+                    </a>
+                    <a class="btn btn-default " title="停止回放" href="javascript:void(0)" id="btn-stop" role="button" disabled='disabled'>
+                        <span class="glyphicon glyphicon-stop"></span>
+                    </a>
+                </div>
+                <div id="h-slider"></div>
+            </div>
+            <div class="load load_mask">
+            </div>
+            <div class="load loading_box">
+                <div class='loading_word'>
+                    <img src="static/images/waiting.gif" height="32" width="32" alt="加载中">
+                    <span>加载中，请稍候...</span>
+                </div>
+            </div>
+            <div class="no-poi-msg">
+                <span>该时间范围内未查到POI点!</span>
+            </div>
+            <div class="unlogin unlogin-mask">
+            </div>
+            <div class='unlogin unlogin-word'>
+                您还未登录，无法管理鹰眼服务，请先<a href="#">登录</a>
+            </div>
+            <div class='mobileAlert'>
+                亲爱的用户您好，建议您在PC端上进行鹰眼服务管理.
+            </div>
+            <script type="text/javascript" src="static/js/bootstrap.min.js"></script>
+            <script type="text/javascript" src="static/js/bootstrapValidator.min.js"></script>
+            <!--  <script type="text/javascript" src="static/js/icheck.min.js"></script> -->
+            <script type="text/javascript" src="static/js/sly.min.js"></script>
+            <script type="text/javascript" src="static/js/jquery.alerts.js"></script>
+            <script type="text/javascript" src="static/js/drag.js"></script>
+            <script type="text/template" id="monitor-table-tbody">
+                    <%for (var i=0 ; i < tracksMonitoring.length; i++) {%>
+                         <tr data-id="<%=tracksMonitoring[i].track_id%>" class="tr-<%=tracksMonitoring[i].track_id%> ">
+                         <%for (var j=0 ; j < theads.length; j++) {%>
+                             <%if(theads[j]=='序号' ){%>
+                                <td>
+                                  <div style="width:50px;position: relative;"> <%=tds[i][j]%>
+                                    <span id="no-track-<%=tracksMonitoring[i].track_id%>" class="glyphicon glyphicon-warning-sign no-tracks-warn" title="该车辆在选择时间范围内未查到GPS数据">
+                                    </span>
+                                    <span id="track-ok-<%=tracksMonitoring[i].track_id%>" class="glyphicon glyphicon-ok track-ok" title="加载成功">
+                                    </span>
+                                    <span id="track-load-<%=tracksMonitoring[i].track_id%>" class="track-load" title="加载中...">
+                                    </span>
+                                  </div>
+                               </td>
+                             <%}else if(theads[j]=='track ID' ){%>
+                                <td>
+                                  <div style="width:100px"><%=tds[i][j]%></div>
+                                </td>
+                             <%}else if(theads[j]=='loc_time' ){%>
+                                <td>
+                                <%if(type==2){%>
+                                  <div style="width:180px" id="time-<%=tracksMonitoring[i].track_id%>">
+                                   --   --
+                                  </div>  
+                                <%}else{%>
+                                  <div style="width:180px" id="loctime-<%=tracksMonitoring[i].track_id%>">
+                                  <%=tds[i][j]%></div>
+                                <%}%>
+                               </td>
+                             <%}else if(theads[j]=='操作' ){%>
+                                <td>
+                                  <div style="width:150px">
+                                    <%if(type==2){%>
+                                   <a class="btn tip play ply-<%=tracksMonitoring[i].track_id%>" href="javascript:void(0)" data-id="<%=tracksMonitoring[i].track_id%>" role="button" data-toggle="tooltip" data-placement="top" title="轨迹回放" disabled>
+                                    <span class="glyphicon glyphicon-play"></span>
+                                  </a>
+                                  <%}%>
+                                    <a class="btn tip remove" href="javascript:void(0)" data-id="<%=tracksMonitoring[i].track_id%>" role="button" data-toggle="tooltip" data-placement="top" title="移除监控">
+                                      <span class="glyphicon glyphicon-trash"></span>
+                                    </a>
+                                       
+                                  </div>
+                               </td>
+                            <%}else if(theads[j]=='里程(km)'){%>
+                                 <td>
+                                  <div style="width:150px">
+                                  <%if(type== 2){%>
+                                     <span id="history-dis-<%=tracksMonitoring[i].track_id%>"><%=tds[i][j]%>
+                                     </span>
+                                  <%}else{%>
+                                     <span id="monitor-dis-<%=tracksMonitoring[i].track_id%>"><%=tds[i][j]%>
+                                     </span>
+                                  <%}%> 
+                                   </div>
+                               </td>      
+                            <%}else{%>
+                                <td>
+                                  <div style="width:150px"><%=tds[i][j]%></div>
+                                </td>
+                            <%}%>
+                           <%}%>
+                           </tr>
+                         <%}%>
+                       </script>
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F2fafc66a147868e80d988e4a5737762b' type='text/javascript'%3E%3C/script%3E"));
+</script>
+</body>
+</html>
+<script type="text/javascript">
+function isMobile() {
+    var isMobile = {
+        Android: function() {
+            return navigator.userAgent.match(/Android/i) ? true : false;
+        },
+        BlackBerry: function() {
+            return navigator.userAgent.match(/BlackBerry/i) ? true : false;
+        },
+        iOS: function() {
+            return navigator.userAgent.match(/iPhone|iPad|iPod/i) ? true : false;
+        },
+        Windows: function() {
+            return navigator.userAgent.match(/IEMobile/i) ? true : false;
+        },
+        any: function() {
+            return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Windows());
+        }
+    };
+    if (isMobile.any()) {
+        return true;
+    }
+    return false;
+}
+if (isMobile()) {
+    $('.unlogin-mask').show();
+    $('.mobileAlert').show();
+}
+var isSupportCanvas = false;
+try {
+    document.createElement('canvas').getContext('2d');
+    isSupportCanvas = true;
+} catch (e) {
+    isSupportCanvas = false;
+}
+if (!isSupportCanvas) {
+    alert("您的浏览器版本过低：推荐使用百度浏览器、chrome、firefox、safari、IE10");
+}
+$(document).ready(function() {
+    $("#h-slider").slider({
+        range: "min",
+        min: 0,
+        max: 2000,
+        value: 0
+    });
+    var bottomSlide = false;
+    var bodyHeight = $('body').height();
+    $('.row').css('height', bodyHeight - 52);
+    var mapSize = {
+        width: $('#mapContainer').width(),
+        height: $('#mapContainer').height()
+    };
+    // var mainHeight = $('body').height();
+    // var mainWidth = $('body').width();
+    // $('.main-div').css('height', mainHeight-45);
+    mapSize.height -= 249;
+    $('#mapContainer').css('height', mapSize.height);
+    $('.monitor-panel').css('width', $('.row').width() - 260);
+    var map = new BMap.Map("mapContainer");
+    tracksControl.map = map;
+    var myControl=new ShowAllControl();
+    tracksControl.timeControl=new TimeControl();
+    var fullScreenCtr=new fullScreenControl();
+    function mapInit() {
+        var point = new BMap.Point(116.404, 39.915);
+        map.centerAndZoom(point, 12);
+        map.enableScrollWheelZoom();
+        var opts = {
+            type: BMAP_NAVIGATION_CONTROL_LARGE,
+            offset: new BMap.Size(15, 25)
+        };
+        map.addControl(new BMap.NavigationControl(opts));
+        map.addControl(myControl);
+        map.addControl(tracksControl.timeControl);
+        map.addControl(fullScreenCtr);
+        tracksControl.timeControl.hide();
+    }
+    mapInit();
+    tracksControl.init();
+    tracksControl.getTraceDetail();
+    tracksControl.initDateTimePicker();
+    tracksControl.initHistoryEvent();
+    $('.sidebar-contr').bind({
+        mouseenter: function() {
+            $(".triangel-left").css("border-color", "transparent #3193F5 transparent transparent");
+            $(".triangel-right").css("border-color", "transparent transparent transparent #3193F5");
+        },
+        mouseleave: function() {
+            $(".triangel-left").css("border-color", "transparent #979797 transparent transparent");
+            $(".triangel-right").css("border-color", "transparent transparent transparent #979797");
+        }
+    });
+    $('.sidebar-contr').toggle(
+        function() {
+            $('.track-list-div').hide();
+            $('.map-nav-bar .panel-default').hide();
+            $('.sidebar-contr').attr('title', '显示左栏').css('left', '0px');
+            $('.sidebar-contr div').removeClass().addClass('triangel-right');
+            $('.map-div').css('margin-left', '0px');
+            $('.track-control-div').css('margin-left', '0px');
+            // $('.track-monitor-table').css('min-width', '1334px');
+            $('.monitor-panel').css({
+                "margin-left": "0px",
+                "width": "100%"
+            });
+            mapSize.width += 260;
+        },
+        function() {
+            $('.map-div').css('margin-left', '260px');
+            $('.track-control-div').css('margin-left', '260px');
+            // $('.track-monitor-table').css('min-width', '1334px');
+            var width = $('.row').width() - 260;
+            $('.monitor-panel').css({
+                "margin-left": "260px",
+                "width": width + "px"
+            });
+            $('.sidebar-contr').attr('title', '收起左栏').css('left', '260px');
+            $('.track-list-div').show();
+            $('.map-nav-bar .panel-default').show();
+            $('.sidebar-contr div').removeClass().addClass('triangel-left');
+            mapSize.width -= 260;
+        }
+    );
+    $(window).resize(function() {
+        var mainHeight = $('body').height();
+        var mainWidth = $('body').width();
+        $('.row').css('height', mainHeight - 52);
+        var h = bottomSlide ? 0 : 249;
+        mapSize.height = $('.row').height() - $('.monitor-panel').height();
+        $("#mapContainer").css('height', mapSize.height);
+        $('.monitor-panel').css('width', mainWidth - 260);
+    });
+})
+</script>

@@ -3,11 +3,29 @@ package com.mawujun.mobile.geolocation;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
+
 @Controller
 public class TraceController {
+	
+	@Autowired
+	private GeolocationController geolocationController;
+	@Autowired
+	private GeolocationService geolocationService;
+	/**
+	 * 查询某天上过线的作业单位
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @return
+	 */
+	@RequestMapping("/trace/queryHistoryWorkunit.do")
+	public List<GeolocationVO> queryHistoryWorkunit(String loc_time){
+		
+		return geolocationService.queryHistoryWorkunit(loc_time);
+	}
 	
 	/**
 	 * 查询某天中的某个作业单位的
@@ -16,12 +34,10 @@ public class TraceController {
 	 * @return
 	 */
 	@RequestMapping("/trace/queryHistoryTrace.do")
-	public List<String> queryHistoryTrace(String locationDate,String loginName){
-		List<String> result=new ArrayList<String>();
-		result.add("1111");
-		result.add("2222");
-		result.add("3333");
-		return result;
+	public List<Trace> queryHistoryTrace(String loc_time,String loginName){
+	
+		JsonConfigHolder.setDatePattern("HH:mm:ss");
+		return geolocationService.queryHistoryTrace(loc_time, loginName);
 		
 	} 
 

@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.mawujun.repository.idEntity.UUIDEntity;
 
@@ -16,6 +17,12 @@ import com.mawujun.repository.idEntity.UUIDEntity;
 @Entity
 @Table(name="ems_geolocation")
 public class Geolocation extends UUIDEntity {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	
 	@Column(length=50,nullable=false)
 	private String sessionId;//回话id，可以用来区分同一天中的不同轨迹段
@@ -34,9 +41,12 @@ public class Geolocation extends UUIDEntity {
 	private Float  radius;///获取定位精度半径，单位是米
     public Float direction; // gps定位结果时，行进的方向，单位度，范围【0-360】，手机上部正朝向北的方向为0°方向
     public Float speed;// GPS速度当service的type是1，且创建该track的时候输入了这个字段才会返回。
-    private Date locationDate;// gps的上传时间
+    public Double distance;//在同个会话中，距离上一次地点的距离
+    private Date loc_time;// gps的上传时间
 	
     private Date createDate;//在服务端创建的时间
+    
+   
 	
 
 	
@@ -77,12 +87,7 @@ public class Geolocation extends UUIDEntity {
 	public void setSessionId(String sessionId) {
 		this.sessionId = sessionId;
 	}
-	public Date getLocationDate() {
-		return locationDate;
-	}
-	public void setLocationDate(Date locationDate) {
-		this.locationDate = locationDate;
-	}
+
 	public Float getRadius() {
 		return radius;
 	}
@@ -100,6 +105,18 @@ public class Geolocation extends UUIDEntity {
 	}
 	public void setSpeed(Float speed) {
 		this.speed = speed;
+	}
+	public Date getLoc_time() {
+		return loc_time;
+	}
+	public void setLoc_time(Date loc_time) {
+		this.loc_time = loc_time;
+	}
+	public Double getDistance() {
+		return distance;
+	}
+	public void setDistance(Double distance) {
+		this.distance = distance;
 	}
 
 	

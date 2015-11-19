@@ -8,9 +8,9 @@ import java.util.Date;
  *
  */
 public class WaringGps {
-	
+	private String sessionId;
 	private String loginName;
-	private String name;
+	private String name;//作业单位名称
 	private String phone;
 	private Date loginTime;
 	
@@ -67,6 +67,12 @@ public class WaringGps {
 	}
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+	public String getSessionId() {
+		return sessionId;
+	}
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
 	}
 	
 

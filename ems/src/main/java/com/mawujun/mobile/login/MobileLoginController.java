@@ -109,6 +109,7 @@ public class MobileLoginController {
              ShiroUtils.getAuthenticationInfo().setSessionId(subject.getSession().getId().toString());//就是用来和WaringGps统一管理的
              
              WaringGps waringGps=new WaringGps();
+             waringGps.setSessionId(subject.getSession().getId().toString());
              waringGps.setLoginName(loginName);
              waringGps.setName(ShiroUtils.getAuthenticationInfo().getName());
              waringGps.setPhone(ShiroUtils.getAuthenticationInfo().getPhone());

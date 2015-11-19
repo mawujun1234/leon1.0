@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
+<mapper namespace="com.mawujun.mobile.geolocation.GeolocationRepository">
+   
+   <!-- 查询某一天所有登录过的作业单位 -->
+   <select id="queryHistoryWorkunit" resultType="com.mawujun.mobile.geolocation.GeolocationVO">
+   	    select distinct a.loginname,b.name from  EMS_GEOLOCATION a,EMS_workunit b
+		where a.loginname=b.loginname and to_char(loc_time,'yyyy-mm-dd')=#{loc_time}
+   </select>
+
+    <!-- 查询某个作业单位在某一天轨迹列表 -->
+    <select id="queryHistoryTrace" resultType="com.mawujun.mobile.geolocation.Trace">
+   	    select sessionId,loginName,min(loc_time) startDate,max(loc_time) endDate,sum(distance) distance from  EMS_GEOLOCATION a
+		where a.loginname=#{loginName} and to_char(loc_time,'yyyy-mm-dd')=#{loc_time}
+		group by sessionId,loginName
+   </select>
+   
+</mapper>
+

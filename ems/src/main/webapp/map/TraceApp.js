@@ -1,44 +1,56 @@
 
+var isSupportCanvas = false;
+try {
+    document.createElement('canvas').getContext('2d');
+    isSupportCanvas = true;
+} catch (e) {
+    isSupportCanvas = false;
+}
+if (!isSupportCanvas) {
+    alert("您的浏览器版本过低：推荐使用、chrome、firefox、safari、IE10");
+}
+
 $(function(){
 	showMap()
 	
+	
+	//收缩、展开作业单位
 	$("#entryTracePanel_button i").click(function(){
 		$(this).toggleClass("glyphicon-chevron-down");
 		$("#entryTracePanel_content").toggle();
 	});
-	
+	//展开或显示历史轨迹明细
 	$("#entryTracePanel_list_button i").click(function(){
 		$("#entryTracePanel_list").toggle();
 	});
 	
-	$("#realtime_tab tr th input").click(function(){
-		//var value=$(this).prop("checked");
-		var uuid=$(this).attr("data-uuid");//手机码
-		var loginName=$(this).attr("data-loginName");//手机码
-		//alert(uuid);
-		//alert(loginName);
-	});
-//	$("#realtime_tab table tbody tr").click(function(){
-//		alert(1);
-//		$(this).children("input:checkbox").prop("checked",true);
-//	});
+//========================================================================================	
+	//获取当前正在线上的作业单位
 	
+	showWorkunitCar();
 	
-	
-	
-	//$('[data-toggle="popover"]').popover();
-	var history_tab_tr=$("#history_tab tr ");
-	history_tab_tr.click(function(e){
-		history_tab_tr.removeClass("danger");
+	$('#realtime_tab').on('click', 'tr', function(){
+		$('#realtime_tab tr').removeClass("danger");
 		$(this).addClass("danger");
 		
-		refreshEntryTracePanel_list($(this));
-		//$("#tracks-history-play").hide();
+		var marker=window.workunit_markeres[$(this).attr("data-sessionId")];
+		if(!marker){
+			return
+		}
+		map.setCenter(marker.getPosition());
+	}); 
+
+//========================================================================================		
+	//更新现在
+	window.loc_time=(new Date).format("yyyy-MM-dd");
+	showHistoryWorkunit(window.loc_time);
+	
+	$('#history_tab').on('click', 'tr', function(){
+		$("#history_tab tr ").removeClass("danger");
+		$(this).addClass("danger");
 		
-//		var uuid=$(this).attr("data-uuid");//手机码
-//		var loginName=$(this).attr("data-loginName");//手机码
-//		alert(uuid);
-//		alert(loginName);
+		//获取某个作业单位某天的轨迹列表
+		refreshEntryTracePanel_list($(this));
 	});
 	
 	$("#entryTracePanel_list tbody tr").click(function(){
@@ -47,53 +59,20 @@ $(function(){
 		//然后去获取这条轨迹的路径数据
 		
 	});
-	
-	/**
-	 * 更新明细数据
-	 */
-	function refreshEntryTracePanel_list(tr){
-		showMask();
+//========================================================================================
+	//当切换tab页的时候，隐藏历史轨迹明细数据
+	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+	  //e.target // newly activated tab
+	  //e.relatedTarget // previous active tab
 		$("#entryTracePanel_list").hide();
-		$.ajax({
-			type: 'POST',
-		    url: Ext.ContextPath+"/trace/queryHistoryTrace.do" ,
-		    data: {
-		    
-		    } ,
-		    dataType: "json",
-		    success: function(data){
-		    	hideMask();
-		    	var html='<table class="table table-hover table-striped" ><thead><tr>'+
-		          '<th>#</th>'+
-		          '<th>起始时间--终止时间</th>'+
-		          '<th>时长</th>'+
-		          '<th>里程<small>(公里)</small></th>'+
-		          '<th>操作</th>'+
-		        '</tr>'+
-		      '</thead><tbody>';
-		    	for(var i=0;i<data.root.length;i++){
-		    		html+='<tr scope="row">';
-		    		html+='<th>'+(i+1)+'</th>';
-		    		html+='<td>10:21:10--12:22:22</td>';
-		    		html+='<td>1111</td>';
-		    		html+='<td>222</td>';
-		    		html+='<td><span class="glyphicon glyphicon-pause"></span></td>';
-		    		html+='</tr>';
-		    	}
-		    	html+='</tbody></table>';
-		    	
-		    	var $entryTracePanel_list=$("#entryTracePanel_list");
-		    	var $entryTracePanel=$("#entryTracePanel");
+	})
+	
+	//$('[data-toggle="popover"]').popover();
 
-		    	$entryTracePanel_list.css({
-		    		top:$("#entryTracePanel").css("top"),
-		    		left:parseFloat($entryTracePanel.css("left"))+parseFloat($entryTracePanel.outerWidth())+"px"
-		    	});
-				$("#entryTracePanel_list").show();
-		    }
-		});
-		
-	}
+	
+
+	
+
 
 	
 	//$('#datetimepicker4').datetimepicker('show');
@@ -106,6 +85,9 @@ $(function(){
 	 onSelectDate:function(dp,$input){
 	    //alert($input.val());
 	    //alert(dp.dateFormat('d/m/Y'))
+	 	window.loc_time=$input.val();
+	 	showHistoryWorkunit(window.loc_time);
+	 	$("#entryTracePanel_list").hide();
 	  }
 	});
 	$('#datetimepicker').next().click(function(){
@@ -126,10 +108,152 @@ $(function(){
 
 });
 
+/**
+ * 更新轨迹列表，获取某个作业单位某天的轨迹列表
+ */
+function refreshEntryTracePanel_list(tr){
+		var loginName=tr.attr("data-loginName");//放这里的原因就是当没有数据的时候，在这里就会报错了
+		if(!loginName){
+			return;
+		}
+		showMask();
+		$("#entryTracePanel_list").hide();
+		$.ajax({
+			type: 'POST',
+		    url: Ext.ContextPath+"/trace/queryHistoryTrace.do" ,
+		    data: {
+		    	loc_time:window.loc_time,
+		    	loginName:loginName
+		    } ,
+		    dataType: "json",
+		    success: function(data){
+		    	hideMask();
+		    	var html='';
+		    	for(var i=0;i<data.root.length;i++){
+		    		html+='<tr scope="row">';
+		    		html+='<th>'+(i+1)+'</th>';
+		    		html+='<td>'+data.root[i].startDate+'--'+data.root[i].endDate+'</td>';
+		    		html+='<td>'+data.root[i].duration+'</td>';
+		    		html+='<td>'+data.root[i].distance+'</td>';
+		    		html+='</tr>';
+		    	}
+		    	
+		    	//把弹出的列表并列显示到主panel
+		    	var $entryTracePanel_list=$("#entryTracePanel_list");
+		    	var $entryTracePanel=$("#entryTracePanel");
 
+		    	$entryTracePanel_list.css({
+		    		top:$("#entryTracePanel").css("top"),
+		    		left:parseFloat($entryTracePanel.css("left"))+parseFloat($entryTracePanel.outerWidth())+"px"
+		    	});
+		    	$entryTracePanel_list.show();
+				$("#entryTracePanel_list tbody").html(html);
+		    }
+		});
+		
+}
+//获取某一天中，有登录过的作业单位
+function showHistoryWorkunit(loc_time){
+		$.ajax({
+			url : Ext.ContextPath + '/trace/queryHistoryWorkunit.do',
+			data:{loc_time:loc_time},
+			dataType:"json",
+			type: "POST",
+			success : function(data) {		
+				var html="";
+				var workunits=data.root;
+				if(!workunits || workunits.length==0){
+					html+='<tr scope="row">'+
+					   '<td>没有数据</td>'+
+					'</tr>';
+				} else {
+					for(var i=0;i<workunits.length;i++){
+						html+='<tr scope="row" data-loginName="'+workunits[i].loginName+'">'+
+						   '<th width="10">'+(i+1)+'</th>'+
+						   '<td>'+workunits[i].name+'</td>'+
+						'</tr>';
+					}
+				}
+				
+				
+				$("#history_tab tbody").html(html);
+			},
+			failure : function() {
+					//Ext.getBody().unmask();
+			}
+		});
+}
 
+function showWorkunitCar(){
+		$.ajax({
+			url : Ext.ContextPath + '/geolocation/queryWorkingWorkunit.do',
+			dataType:"json",
+			type: "POST",
+			success : function(data) {		
+				map.clearOverlays();
+				var html="";
+				var workunits=data.root;
+				//window.workunits=workunits;
+				
+				if(!workunits || workunits.length==0){
+					html+='<tr scope="row">'+
+					   '<td>没有数据</td>'+
+					'</tr>';
+				} else {
+					for(var i=0;i<workunits.length;i++){
+						html+='<tr scope="row" data-sessionId="'+workunits[i].sessionId+'">'+
+						   '<th width="10">'+(i+1)+'</th>'+
+						   '<td>'+workunits[i].name+'</td>'+
+						   '<td>'+workunits[i].lastedUploadTime+'</td>'+
+						'</tr>';
+						addCar2Map(workunits[i]);
+					}
+				}
+				
+				
+				$("#realtime_tab tbody").html(html);
+			},
+			failure : function() {
+					//Ext.getBody().unmask();
+			}
+		});
+		setTimeout("showWorkunitCar()",60*1000);//每一分钟发送一次
+}
+window.workunit_markeres={};
+function addCar2Map(workunit){
+		var point = new BMap.Point(workunit.lasted_longitude, workunit.lasted_latitude);
+		var car_marker = new BMap.Marker(point, {
+			icon : carIcon
+		});	
+		window.workunit_markeres[workunit.sessionId]=car_marker;
+		map.addOverlay(car_marker); // 将标注添加到地图中
+	
+		addMouseoverHandler("账号:"+workunit.loginName+"<br/>作业单位:"+workunit.name+"<br/>电话:"+workunit.phone+"<br/>登录时间:"+workunit.loginTime ,car_marker);
+	
+}
+function addMouseoverHandler(content,marker){
+		marker.addEventListener("mouseover",function(e){		
+			openMarkerInfo(content,e);
+		});
+		marker.addEventListener("mouseout",function(e){		
+			map.closeInfoWindow();
+		});
+}
+function openMarkerInfo(content,e){
+		var marker = e.target;
+		var point = new BMap.Point(marker.getPosition().lng, marker.getPosition().lat);
+		var infoWindow = new BMap.InfoWindow(content,{
+			width : 250,     // 信息窗口宽度
+			height: 80,     // 信息窗口高度
+			title : "" , // 信息窗口标题
+			enableMessage:true//设置允许信息窗发送短息
+		});  // 创建信息窗口对象 
+		map.openInfoWindow(infoWindow,point); //开启信息窗口
+}
 function showMap() {
+	window.carIcon = new BMap.Icon("./images/car.png", new BMap.Size(48,48));
 	window.map = new BMap.Map('map_canvas');
+	
 	map.enableScrollWheelZoom();
 	map.centerAndZoom(new BMap.Point(116.404, 39.915), 13);
 
@@ -143,10 +267,16 @@ function showMap() {
     
     var tracksControl=new TracksControl();
     tracksControl.map=map;
+    
     tracksControl.timeControl=new TimeControl();
     map.addControl(tracksControl.timeControl);
     tracksControl.timeControl.hide();
 
+    var fullScreenCtr=new FullScreenControl();
+    map.addControl(fullScreenCtr);
+    
+    var newScreenControl=new NewScreenControl();
+    map.addControl(newScreenControl);
     
     // 实例化一个驾车导航用来生成路线
 	//DrivingRoute是自动生成的导航，要换成从后台获取的
@@ -299,27 +429,6 @@ function initDrag(id){
         return false;
     });
 
-//    var $move = $('.slide-up').mousedown(function(e) {
-//        var pos = {
-//            x: e.pageX,
-//            y: e.pageY
-//        };
-//        $.extend(document, {
-//            move: true,
-//            call_down: function(e) {
-//                var h = e.pageY - posiy.y + posiy.h;
-//                h = (h < 50) ? 50 : h;
-//                h = (h > 250) ? 250 : h;
-//                $('.monitor-panel').css({
-//                    'height': h
-//                });
-//                $('#mapContainer').css({
-//                    'height':$('.row').height() - h
-//                })
-//            }
-//        });
-//        return false;
-//    });
 }
 function showMask(){  
         $("#entryTracePanel_mask").css("height",$("#entryTracePanel").height());  
@@ -330,3 +439,101 @@ function showMask(){
 function hideMask(){ 
 	$("#entryTracePanel_mask").hide();
 }
+
+
+/**
+ * 时间对象的格式化;
+ */
+Date.prototype.format = function(format) {
+	/*
+	 * eg:format="yyyy-MM-dd hh:mm:ss";
+	 */
+	var o = {
+		"M+" : this.getMonth() + 1, // month
+		"d+" : this.getDate(), // day
+		"h+" : this.getHours(), // hour
+		"m+" : this.getMinutes(), // minute
+		"s+" : this.getSeconds(), // second
+		"q+" : Math.floor((this.getMonth() + 3) / 3), // quarter
+		"S" : this.getMilliseconds()
+		// millisecond
+	}
+
+	if (/(y+)/.test(format)) {
+		format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4
+						- RegExp.$1.length));
+	}
+
+	for (var k in o) {
+		if (new RegExp("(" + k + ")").test(format)) {
+			format = format.replace(RegExp.$1, RegExp.$1.length == 1
+							? o[k]
+							: ("00" + o[k]).substr(("" + o[k]).length));
+		}
+	}
+	return format;
+}
+
+function launchFullscreen(element) {
+	//console.log(top.window.fullScreenElement);
+	if(top.window.fullScreenElement==true){
+		exitFullscreen();
+		return;
+	}
+	//alert(typeof window.ActiveXObject);
+	var element=element?element:top.document.documentElement; 
+ 	var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
+    if (requestMethod) {  
+        requestMethod.call(element);
+        top.window.fullScreenElement=true;
+    } else if (typeof window.ActiveXObject !== "undefined") {  
+        var wscript = new ActiveXObject("WScript.Shell");
+        if (wscript !== null) {
+            wscript.SendKeys("{F11}");
+            top.window.fullScreenElement=true;
+        }else {
+        	alert("请按F11进行全屏显示.");
+        }
+    } else {
+    	alert("请按F11进行全屏显示..");
+    }
+}
+
+// 判断浏览器种类
+function exitFullscreen() {
+  if(top.document.exitFullscreen) {
+    top.window.exitFullscreen();
+    top.document.fullScreenElement=false;
+  } else if(top.document.mozCancelFullScreen) {
+    top.document.mozCancelFullScreen();
+    top.window.fullScreenElement=false;
+  } else if(top.document.webkitExitFullscreen) {
+    top.document.webkitExitFullscreen();
+    top.window.fullScreenElement=false;
+  } else if (typeof window.ActiveXObject !== "undefined") {  
+        var wscript = new ActiveXObject("WScript.Shell");
+        if (wscript !== null) {
+            wscript.SendKeys("{F11}");
+            top.window.fullScreenElement=false;
+        }else {
+        	alert("请按F11或ESC进行退出全屏.");
+        }
+   } else {
+   		alert("请按F11或ESC进行退出全屏..");
+   }
+  
+}
+$.fn.toggler = function( fn, fn2 ) {
+    var args = arguments,guid = fn.guid || $.guid++,i=0,
+    toggler = function( event ) {
+      var lastToggle = ( $._data( this, "lastToggle" + fn.guid ) || 0 ) % i;
+      $._data( this, "lastToggle" + fn.guid, lastToggle + 1 );
+      event.preventDefault();
+      return args[ lastToggle ].apply( this, arguments ) || false;
+    };
+    toggler.guid = guid;
+    while ( i < args.length ) {
+      args[ i++ ].guid = guid;
+    }
+    return this.click( toggler );
+  };

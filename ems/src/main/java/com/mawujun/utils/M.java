@@ -353,7 +353,8 @@ public static final class Geolocation {
 	public static final String radius="radius";
 	public static final String direction="direction";
 	public static final String speed="speed";
-	public static final String locationDate="locationDate";
+	public static final String distance="distance";
+	public static final String loc_time="loc_time";
 	public static final String createDate="createDate";
 	public static final String id="id";
 }
