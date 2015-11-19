@@ -10,6 +10,7 @@ if (!isSupportCanvas) {
     alert("您的浏览器版本过低：推荐使用、chrome、firefox、safari、IE10");
 }
 
+
 $(function(){
 	showMap()
 	

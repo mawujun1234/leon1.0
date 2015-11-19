@@ -34,11 +34,6 @@ function FullScreenControl() {
 FullScreenControl.prototype = new BMap.Control();
 
 FullScreenControl.prototype.initialize = function(map) {
-	var params=getRequest();
-	var display="block";
-	if(top.window!=window){
-		display="none";
-	}
 	// 创建一个DOM元素  
 	var div = document.createElement("div");
 	// 添加文字说明  
@@ -48,7 +43,7 @@ FullScreenControl.prototype.initialize = function(map) {
 	div.style.cursor = "pointer";
 	div.style.width = '68px';
 	div.style.height = '28px';
-	div.style.display = display;
+	//div.style.display = display;
 	div.innerHTML = '全屏';
 	//div.style.background = "url(static/images/show_all.png)";
 	// 绑定事件，点击一次放大两级  
@@ -61,30 +56,14 @@ FullScreenControl.prototype.initialize = function(map) {
 		}
 	});
 
-	//alert(window.location.href);
-	if(params &&　params.fullscreen){
-		$(div).toggler(function() {
-			$(this).attr("title", "全屏").html('全屏');
-			exitFullscreen();
-		},function() {
-			$(this).attr("title", "退出全屏").html('退出全屏');
-			launchFullscreen();
-		});
-		
-		$(document).ready(function(){
-			//launchFullscreen();
-			$("#full_screen_ctr").trigger();
-    	});
-	} else {
-		$(div).toggler(function() {
-			$(this).attr("title", "退出全屏").html('退出全屏');
-			launchFullscreen();
-		},
-		function() {
-			$(this).attr("title", "全屏").html('全屏');
-			exitFullscreen();
-		});
-	}
+	$(div).toggler(function() {
+		$(this).attr("title", "退出全屏").html('退出全屏');
+		launchFullscreen();
+	},
+	function() {
+		$(this).attr("title", "全屏").html('全屏');
+		exitFullscreen();
+	});
 
 
 	// 添加DOM元素到地图中  
@@ -148,7 +127,7 @@ NewScreenControl.prototype.initialize = function(map) {
 	});
 
 	$(div).on("click",function(){
-		window.open(window.location.href+"?fullscreen=true"); 
+		window.open(window.location.href); 
 	});
 //	$(div).toggler(function() {
 //			$(this).attr("title", "退出全屏").html('退出全屏');
