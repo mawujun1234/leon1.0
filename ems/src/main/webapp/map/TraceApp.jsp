@@ -88,13 +88,13 @@
 	 -->
 	<!-- 播放器进度条 -->
 	<style type="text/css">
-	.tracks-history { font-size: 12px; font-weight: normal; position: absolute; z-index: 1002; right: 250px; bottom: 24px; display: none; width: 800px; height: 60px; cursor: move; color: #333; border: 1px solid #ddd; border-radius: 30px; background: #f8f8f8; }
+	.tracks-history { font-size: 12px; font-weight: normal; position: absolute; z-index: 1002; right: 250px; bottom: 24px; display: none; width: 900px; height: 60px; cursor: move; color: #333; border: 1px solid #ddd; border-radius: 30px; background: #f8f8f8; }
 	#btn-play,
 	#btn-stop { color: #2d88f3; }
 	#btn-play span { left: 1px; }
 	#btn-stop span { left: -1px; }
 	.tracks-history .row { margin: 0; }
-	#h-slider { top: 25px; left: 110px; width: 620px; cursor: pointer; }
+	#h-slider { top: 25px; left: 210px; width: 620px; cursor: pointer; }
 	#h-slider a { padding: 5px 5px; border-radius: 7px; }
 	.tracks-history .close { font-size: 15px; position: absolute; top: 15px; right: 21px; width: 25px; height: 25px; color: #adabab; text-align: center; border-radius: 15px; border: 1px solid #ccc; background-image: -webkit-linear-gradient(top, #fff 0, #e0e0e0 100%); background-image: -o-linear-gradient(top, #fff 0, #e0e0e0 100%); background-image: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#e0e0e0)); background-image: linear-gradient(to bottom, #fff 0, #e0e0e0 100%); filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe0e0e0', GradientType=0); filter: progid:DXImageTransform.Microsoft.gradient(enabled=false); background-repeat: repeat-x; opacity: 0.8; }
 	.tracks-history .close:hover { color: #666; }
@@ -105,6 +105,10 @@
 	.tracks-history .input-group .form-control { font-size: 12px; height: 28px; padding: 0 3px; }
 	.play-control { position: absolute; top: 12px; left: 5px; width: 110px; padding-left: 6px; }
 	.play-control a { margin: 0 2px; padding: 8px 10px; border-radius: 20px; }
+	
+	#track_detail_info {
+		position: absolute; top: 40px; left: 100px; width: 100%; padding-left: 6px;
+	}
 	</style>
 	<div id="tracks-history-play" class="tracks-history">
                 <div class="close">
@@ -117,8 +121,17 @@
                     <a class="btn btn-default " title="停止回放" href="javascript:void(0)" id="btn-stop" role="button">
                         <span class="glyphicon glyphicon-stop"></span>
                     </a>
+                    <a class="btn btn-default " title="停止回放" href="javascript:void(0)" id="btn-backward" role="button">
+                        <span class="glyphicon glyphicon-backward"></span>
+                    </a>
+                    <a class="btn btn-default " title="停止回放" href="javascript:void(0)" id="btn-forward" role="button">
+                        <span class="glyphicon glyphicon-forward"></span>
+                    </a>
                 </div>
                 <div id="h-slider"></div>
+                <div id="track_detail_info">
+                     	轨迹信息
+                </div>  
     </div>
 	
 	
@@ -154,7 +167,7 @@
 	    			<th>#</th>
 	    			<th>起始时间--终止时间</th>
 	    			<th>时长</th>
-	    			<th>里程<small>(公里)</small></th>
+	    			<th>里程<small>(km)</small></th>
 	    		</tr>
 	    	</thead>
 			<tbody>

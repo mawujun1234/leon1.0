@@ -60,6 +60,21 @@ $(function(){
 		//然后去获取这条轨迹的路径数据
 		queryHistoryTraceList($(this).attr("data-sessionId"));
 		
+		//把任务的信息填写在播放器上
+		var html="";
+		$(this).children().each(function(index,element){
+			if(index==1){
+				html+="&nbsp;&nbsp;&nbsp;&nbsp;时间范围:";
+			} else if(index==2){
+				html+="&nbsp;&nbsp;&nbsp;&nbsp;时长:";
+			} else if(index==3){
+				html+="&nbsp;&nbsp;&nbsp;&nbsp;里程:";
+			}
+			html+=$(this).text()+"     "
+		});
+		
+		$("#track_detail_info").html(html);
+		
 	});
 //========================================================================================
 	//当切换tab页的时候，隐藏历史轨迹明细数据
