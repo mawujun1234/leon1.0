@@ -426,7 +426,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
                         }
                     }
 
-pos.loc_time="2015-11-18 18:15:15";
+//pos.loc_time="2015-11-18 18:15:15";
                     //正在移动
                     me._marker.setPosition(pos);
                     me._trackControl.curIndex = me.i;

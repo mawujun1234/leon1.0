@@ -40,5 +40,13 @@ public class TraceController {
 		return geolocationService.queryHistoryTrace(loc_time, loginName);
 		
 	} 
+	
+	@RequestMapping("/trace/queryHistoryTraceList.do")
+	public List<TraceList> queryHistoryTraceList(String sessionId){
+
+		JsonConfigHolder.setDatePattern("yyyy-MM-dd HH:mm:ss");
+		return geolocationService.queryHistoryTraceList(sessionId);
+		
+	} 
 
 }

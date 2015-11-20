@@ -27,4 +27,8 @@ public class GeolocationService extends AbstractService<Geolocation, String> {
 	public List<Trace> queryHistoryTrace(String loc_time,String loginName) {
 		return geolocationRepository.queryHistoryTrace(loc_time, loginName);
 	}
+	
+	public List<TraceList> queryHistoryTraceList(String sessionId) {
+		return geolocationRepository.queryHistoryTraceList(sessionId);
+	}
 }

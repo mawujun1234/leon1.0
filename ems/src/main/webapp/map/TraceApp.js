@@ -53,11 +53,12 @@ $(function(){
 		//获取某个作业单位某天的轨迹列表
 		refreshEntryTracePanel_list($(this));
 	});
-	
-	$("#entryTracePanel_list tbody tr").click(function(){
+	//当点击轨迹列表中某条具体的轨迹的时候
+	$("#entryTracePanel_list tbody").on('click','tr',function(){
 		$("#entryTracePanel_list").hide();
 		$("#tracks-history-play").show();
 		//然后去获取这条轨迹的路径数据
+		queryHistoryTraceList($(this).attr("data-sessionId"));
 		
 	});
 //========================================================================================
@@ -110,6 +111,25 @@ $(function(){
 });
 
 /**
+ * 查询某个会话的所有轨迹数据，并显示在地图上
+ */
+function queryHistoryTraceList(sessionId){
+	//alert(sessionId);return;
+	$.ajax({
+			type: 'POST',
+		    url: Ext.ContextPath+"/trace/queryHistoryTraceList.do" ,
+		    data: {
+		    	sessionId:sessionId
+		    } ,
+		    dataType: "json",
+		    success: function(data){
+		    	//window.tracksControl.setLngLatpois(data.root);
+		    	window.tracksControl.drawPolylineOvelay();
+		    }
+	});
+}
+
+/**
  * 更新轨迹列表，获取某个作业单位某天的轨迹列表
  */
 function refreshEntryTracePanel_list(tr){
@@ -131,7 +151,7 @@ function refreshEntryTracePanel_list(tr){
 		    	hideMask();
 		    	var html='';
 		    	for(var i=0;i<data.root.length;i++){
-		    		html+='<tr scope="row">';
+		    		html+='<tr scope="row" data-sessionId="'+data.root[i].sessionId+'">';
 		    		html+='<th>'+(i+1)+'</th>';
 		    		html+='<td>'+data.root[i].startDate+'--'+data.root[i].endDate+'</td>';
 		    		html+='<td>'+data.root[i].duration+'</td>';
@@ -266,7 +286,7 @@ function showMap() {
         value: 0
     });
     
-    var tracksControl=new TracksControl();
+    window.tracksControl=new TracksControl();
     tracksControl.map=map;
     
     tracksControl.timeControl=new TimeControl();
@@ -294,8 +314,8 @@ function showMap() {
 	                    arrPois= arrPois.concat(aaa);
 	                    // console.dir(aaa);
 	                }
-	                map.addOverlay(new BMap.Polyline(arrPois, {strokeColor: '#111'}));
-	                map.setViewport(arrPois);
+	                //map.addOverlay(new BMap.Polyline(arrPois, {strokeColor: '#111'}));
+	                //map.setViewport(arrPois);
 	                
 	                tracksControl.setLngLatpois(arrPois);
 	                

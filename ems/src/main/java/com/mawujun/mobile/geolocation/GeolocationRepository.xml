@@ -19,5 +19,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		group by sessionId,loginName
    </select>
    
+   <select id="queryHistoryTraceList" resultType="com.mawujun.mobile.geolocation.TraceList">
+   	    select * from  EMS_GEOLOCATION a
+		where a.sessionId=#{sessionId}
+		order by loc_time asc
+   </select>
+   
 </mapper>
 

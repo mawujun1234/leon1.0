@@ -7,17 +7,38 @@ function TracksControl(){
     this.curIndex = 0; //小车移动的动画游标
 	this.defaultSpeed=4500;//值越大越快，//默认速度 米/秒
 	
-	this._encrLngLatPois=null;//这次路书的节点
+	this._encrLngLatPois=[];//这次路书的节点
 	
 	var lushuMarker;//路书上的图标
 	
 	/**
 	 * 获取某个轨迹的所有节点
 	 */
+	this.setTraceListpois=function(traceList){
+		var self=this;
+		
+		for(var i=0;i<traceList.length;i++){
+			 var pos = new BMap.Point(traceList[i].longitude, traceList[i].latitude);
+             pos.loc_time = traceList[i].loc_time
+             self._encrLngLatPois.push(pos);
+		}
+		//self._encrLngLatPois=pois;
+		self.totalStep=self._encrLngLatPois.length;
+	};
+	/**
+	 * 直接设置baidu的经纬度
+	 */
 	this.setLngLatpois=function(pois){
 		var self=this;
 		self._encrLngLatPois=pois;
 		self.totalStep=self._encrLngLatPois.length;
+	};
+	/**
+	 * 在界面上画出运动轨迹
+	 */
+	this.drawPolylineOvelay=function(){
+		 map.addOverlay(new BMap.Polyline(this._encrLngLatPois, {strokeColor: '#111'}));
+	     map.setViewport(this._encrLngLatPois);
 	};
 	//添加lushu，开始小车沿轨迹移动动画
 	this.trackStart = function() {
