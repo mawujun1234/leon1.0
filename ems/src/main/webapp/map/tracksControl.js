@@ -5,7 +5,7 @@ function TracksControl(){
     this.isPaused = false; //小车移动动画是否暂停
     this.totalStep = 0; //小车走完轨迹所需的步数
     this.curIndex = 0; //小车移动的动画游标
-	this.defaultSpeed=4500;//值越大越快，//默认速度 米/秒
+	this.defaultSpeed=4000;//值越大越快，//默认速度 米/秒
 	
 	this._encrLngLatPois=[];//这次路书的节点
 	
@@ -37,6 +37,9 @@ function TracksControl(){
 	 * 在界面上画出运动轨迹
 	 */
 	this.drawPolylineOvelay=function(){
+		if(!this._encrLngLatPois){
+			alert("请先设置轨迹的经纬度数据!");
+		}
 		 map.addOverlay(new BMap.Polyline(this._encrLngLatPois, {strokeColor: '#111'}));
 	     map.setViewport(this._encrLngLatPois);
 	};
@@ -135,6 +138,26 @@ function TracksControl(){
         });
         $('.ui-slider-label').html('');
     };
+    
+    /**
+     * 快进
+     * @param {} speed 每次快进的速度，默认是增加s是2000m/s
+     */
+    this.trackBackward = function(speed) {
+    	var self=this;
+		if(self.lushu){
+			self.lushu._opts.speed=self.lushu._opts.speed/2;
+		}
+    	
+    }
+    this.trackForward = function(speed) {
+    	var self=this;
+    	if(self.lushu){
+    		self.lushu._opts.speed=self.lushu._opts.speed*2;
+    	}
+    	//self.lushu._opts.speed=self.lushu._opts.speed+(speed?speed:2000);
+    	
+    }
     
     //播放那个进度条开始
 	this.sliderStart = function() {

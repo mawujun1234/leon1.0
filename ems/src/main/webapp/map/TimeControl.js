@@ -1,6 +1,6 @@
 function TimeControl() {
 	this.defaultAnchor = BMAP_ANCHOR_TOP_RIGHT;
-	this.defaultOffset = new BMap.Size(150, 10);
+	this.defaultOffset = new BMap.Size(220, 10);
 }
 
 TimeControl.prototype = new BMap.Control();
@@ -28,7 +28,7 @@ TimeControl.prototype.initialize = function(map) {
 
 function FullScreenControl() {
 	this.defaultAnchor = BMAP_ANCHOR_TOP_RIGHT;
-	this.defaultOffset = new BMap.Size(10, 8);
+	this.defaultOffset = new BMap.Size(100, 8);
 }
 
 FullScreenControl.prototype = new BMap.Control();
@@ -91,7 +91,7 @@ function getRequest() {
 //打开新窗口
 function NewScreenControl() {
 	this.defaultAnchor = BMAP_ANCHOR_TOP_RIGHT;
-	this.defaultOffset = new BMap.Size(90, 8);
+	this.defaultOffset = new BMap.Size(170, 8);
 }
 
 NewScreenControl.prototype = new BMap.Control();

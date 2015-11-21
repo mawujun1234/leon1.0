@@ -170,7 +170,7 @@ function refreshEntryTracePanel_list(tr){
 		    		html+='<th>'+(i+1)+'</th>';
 		    		html+='<td>'+data.root[i].startDate+'--'+data.root[i].endDate+'</td>';
 		    		html+='<td>'+data.root[i].duration+'</td>';
-		    		html+='<td>'+data.root[i].distance+'</td>';
+		    		html+='<td>'+data.root[i].distance_km+'</td>';
 		    		html+='</tr>';
 		    	}
 		    	
@@ -314,6 +314,12 @@ function showMap() {
     var newScreenControl=new NewScreenControl();
     map.addControl(newScreenControl);
     
+    //添加地图类型控件
+    map.addControl(new BMap.MapTypeControl({
+    	type:'BMAP_MAPTYPE_CONTROL_HORIZONTAL',
+    	mapTypes:[BMAP_NORMAL_MAP,BMAP_SATELLITE_MAP,BMAP_HYBRID_MAP]
+    }));
+    
     // 实例化一个驾车导航用来生成路线
 	//DrivingRoute是自动生成的导航，要换成从后台获取的
 	var drv = new BMap.DrivingRoute('北京', {
@@ -323,16 +329,24 @@ function showMap() {
 	                var arrPois =[];
 	                for(var j=0;j<plan.getNumRoutes();j++){
 	                    var route = plan.getRoute(j);
-	                    var aaa=route.getPath();
-	                   
 	                    //aaa.loc_time="2015-11-18 18:15:15";
-	                    arrPois= arrPois.concat(aaa);
-	                    // console.dir(aaa);
+	                    //arrPois= arrPois.concat(route.getPath());
+	                    
+	                    var aa=route.getPath(); 
+	                    for(var x=0;x<aa.length;x++){
+	                    	 arrPois.push({
+		                    	longitude:aa[x].lng,
+		                    	latitude:aa[x].lat,
+		                    	loc_time:'2015-12-12 12:12:12'
+		                    });
+	                    }
+	                    
+	                   
 	                }
 	                //map.addOverlay(new BMap.Polyline(arrPois, {strokeColor: '#111'}));
 	                //map.setViewport(arrPois);
 	                
-	                tracksControl.setLngLatpois(arrPois);
+	                tracksControl.setTraceListpois(arrPois);
 	                
 	            }
 	        }
@@ -360,6 +374,12 @@ function showMap() {
 		//$("#btn-play").trigger("click");
 		//$("#btn-play").children().removeClass().addClass('glyphicon glyphicon-play');
 		tracksControl.trackStop();
+	});
+	$("#btn-backward").click(function(){
+		tracksControl.trackBackward();
+	});
+	$("#btn-forward").click(function(){
+		tracksControl.trackForward();
 	});
 
 	$(".tracks-history .close").click(function(){

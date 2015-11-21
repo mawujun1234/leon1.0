@@ -16,7 +16,7 @@ public class Trace {
 	private Date startDate;
 	private Date endDate;
 	private String duration;//时长
-	private String distance;//距离
+	private Double distance;//距离
 	
 	
 	public String getDuration() {
@@ -32,6 +32,14 @@ public class Trace {
 		//   System.out.println(""+day+"天"+hour+"小时"+min+"分"+s+"秒");  
 		 setDuration(hour+"小时"+min+"分"+s+"秒");
 		return duration;
+	}
+	
+	public Double getDistance_km() {
+		if(distance!=null){
+			return Math.round(distance/1000*100)/100.0;
+		} else {
+			return 0.0;
+		}
 	}
 
 
@@ -51,10 +59,10 @@ public class Trace {
 	public void setDuration(String duration) {
 		this.duration = duration;
 	}
-	public String getDistance() {
+	public Double getDistance() {
 		return distance;
 	}
-	public void setDistance(String distance) {
+	public void setDistance(String Double) {
 		this.distance = distance;
 	}
 	public String getSessionId() {
