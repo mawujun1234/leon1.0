@@ -1,6 +1,9 @@
 package com.mawujun.mobile.login;
 
 import java.util.Date;
+import java.util.List;
+
+import com.mawujun.mobile.geolocation.TraceList;
 
 /**
  * gps未上传的警告
@@ -18,6 +21,8 @@ public class WaringGps {
 	private Date lastedUploadTime;//最近一次上传时间
 	private String lasted_longitude;
 	private String lasted_latitude;
+	
+	//private List<TraceList> traceListes;
 	
 	
 	public String getLoginName() {
@@ -74,6 +79,12 @@ public class WaringGps {
 	public void setSessionId(String sessionId) {
 		this.sessionId = sessionId;
 	}
+//	public List<TraceList> getTraceListes() {
+//		return traceListes;
+//	}
+//	public void setTraceListes(List<TraceList> traceListes) {
+//		this.traceListes = traceListes;
+//	}
 	
 
 }

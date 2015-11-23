@@ -2,12 +2,15 @@ package com.mawujun.mobile.geolocation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
+import com.mawujun.mobile.login.WaringGps;
 
 @Controller
 public class TraceController {
@@ -16,6 +19,30 @@ public class TraceController {
 	private GeolocationController geolocationController;
 	@Autowired
 	private GeolocationService geolocationService;
+	
+	/**
+	 * 查询正在工作，也表示正在上传gps数据的作业单位
+	 * @author mawujun 16064988@qq.com 
+	 * @return
+	 */
+	@RequestMapping("/trace/queryWorkingWorkunit.do")
+	@ResponseBody
+	public List<WaringGps> queryWorkingWorkunit(){
+		List<WaringGps> list=new ArrayList<WaringGps>();
+		for(Entry<String,WaringGps> entry:geolocationController.getWaringGpsMap().entrySet()){
+			WaringGps waringGps=entry.getValue();
+			if(waringGps.getIsUploadGps()){
+				//waringGps.setTraceListes(queryHistoryTraceList(waringGps.getSessionId()));
+				list.add(waringGps);
+	
+			}
+			
+		}
+		
+		JsonConfigHolder.setDatePattern("yyyy-MM-dd HH:mm:ss");
+		return list;
+		
+	}
 	/**
 	 * 查询某天上过线的作业单位
 	 * @author mawujun email:160649888@163.com qq:16064988

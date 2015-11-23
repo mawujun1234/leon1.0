@@ -17,6 +17,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
    	    select sessionId,loginName,min(loc_time) startDate,max(loc_time) endDate,sum(distance) distance from  EMS_GEOLOCATION a
 		where a.loginname=#{loginName} and to_char(loc_time,'yyyy-mm-dd')=#{loc_time}
 		group by sessionId,loginName
+		order by startDate
    </select>
    
    <select id="queryHistoryTraceList" resultType="com.mawujun.mobile.geolocation.TraceList">

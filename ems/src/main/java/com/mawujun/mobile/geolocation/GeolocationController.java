@@ -62,7 +62,7 @@ public class GeolocationController {
 //	}
 	
 	@RequestMapping("/geolocation/mobile/upload.do")
-	public String upload(Geolocation geolocation,String loc_time) {
+	public String upload(Geolocation geolocation) {
 
 		
 		//logger.info("==========================================================================");
@@ -84,7 +84,7 @@ public class GeolocationController {
 		
 		geolocationService.create(geolocation);
 		
-		updateGpsUploadTime(geolocation.getSessionId(),geolocation.getLongitude(),geolocation.getLatitude());
+		updateGpsUploadTime(geolocation.getSessionId(),geolocation.getLongitude(),geolocation.getLatitude(),geolocation.getLoc_time());
 		return "success";
 	}
 	
@@ -93,10 +93,10 @@ public class GeolocationController {
 	 * @author mawujun 16064988@qq.com 
 	 * @param loginName
 	 */
-	public void updateGpsUploadTime(String sessionId,String lasted_longitude, String lasted_latitude) {
+	public void updateGpsUploadTime(String sessionId,String lasted_longitude, String lasted_latitude,Date loc_time) {
 		WaringGps waringGps=waringGpsMap.get(sessionId);
 		waringGps.setIsUploadGps(true);
-		waringGps.setLastedUploadTime(new Date());
+		waringGps.setLastedUploadTime(loc_time);
 		waringGps.setLasted_longitude(lasted_longitude);
 		waringGps.setLasted_latitude(lasted_latitude);
 		

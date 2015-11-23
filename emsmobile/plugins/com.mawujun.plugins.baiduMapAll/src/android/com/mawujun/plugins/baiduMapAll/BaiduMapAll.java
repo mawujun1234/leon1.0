@@ -45,7 +45,7 @@ public class BaiduMapAll  extends CordovaPlugin {
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			callbackContext.error("传递的参数有问题!");
+			callbackContext.error("传递的参数有问题!"+e.getMessage());
 			return false;
 		}
 		//locationApplication.callbackContext=callbackContext;

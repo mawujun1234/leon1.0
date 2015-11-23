@@ -238,10 +238,9 @@ function TracksControl(){
         self.isPlayed = false;
         //self.isPaused = false;
         $("#btn-play").children().removeClass().addClass('glyphicon glyphicon-play');
-        //self.currentPlayTrack = null;
-        $('.ui-slider-range').css('width', '100%');
-        $('.ui-slider-handle').css('left', '100%');
-        //self.setTimeControl(str)
+       
+        //$('.ui-slider-range').css('width', '100%');
+       // $('.ui-slider-handle').css('left', '100%');
         
        
     }

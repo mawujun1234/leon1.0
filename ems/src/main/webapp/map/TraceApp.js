@@ -28,8 +28,6 @@ $(function(){
 //========================================================================================	
 	//获取当前正在线上的作业单位
 	
-	showWorkunitCar();
-	
 	$('#realtime_tab').on('click', 'tr', function(){
 		$('#realtime_tab tr').removeClass("danger");
 		$(this).addClass("danger");
@@ -43,8 +41,8 @@ $(function(){
 
 //========================================================================================		
 	//更新现在
-	window.loc_time=(new Date).format("yyyy-MM-dd");
-	showHistoryWorkunit(window.loc_time);
+		
+
 	
 	$('#history_tab').on('click', 'tr', function(){
 		$("#history_tab tr ").removeClass("danger");
@@ -82,6 +80,13 @@ $(function(){
 	  //e.target // newly activated tab
 	  //e.relatedTarget // previous active tab
 		$("#entryTracePanel_list").hide();
+		//.当点击历史轨迹的时候，就清空界面元素和停止这个定时调用，翻过来一样
+		map.clearOverlays();
+		showWorkunitCar_setTimeout=!showWorkunitCar_setTimeout;//来回切换定时更新定时数据
+		if(showWorkunitCar_setTimeout){//去获取实时监控轨迹中的轨迹数据
+			showWorkunitCar();
+		}
+
 	})
 	
 	//$('[data-toggle="popover"]').popover();
@@ -220,13 +225,24 @@ function showHistoryWorkunit(loc_time){
 		});
 }
 
+//true：的时候定时去后台取数据
+var showWorkunitCar_setTimeout=true;
 function showWorkunitCar(){
+		if(!showWorkunitCar_setTimeout){
+			return;	
+		}
 		$.ajax({
-			url : Ext.ContextPath + '/geolocation/queryWorkingWorkunit.do',
+			url : Ext.ContextPath + '/trace/queryWorkingWorkunit.do',
 			dataType:"json",
 			type: "POST",
 			success : function(data) {		
-				map.clearOverlays();
+				
+				$.each(window.workunit_markeres,function(name, value){
+					map.removeOverlays(value);
+				});
+				//map.clearOverlays();.当点击历史轨迹的时候，就清空界面元素和停止这个定时调用，翻过来一样
+				//当前轨迹的时候，把所有作业单位的轨迹都画出来
+				//....
 				var html="";
 				var workunits=data.root;
 				//window.workunits=workunits;
@@ -240,9 +256,15 @@ function showWorkunitCar(){
 						html+='<tr scope="row" data-sessionId="'+workunits[i].sessionId+'">'+
 						   '<th width="10">'+(i+1)+'</th>'+
 						   '<td>'+workunits[i].name+'</td>'+
+						   '<td>'+workunits[i].name+'</td>'+
 						   '<td>'+workunits[i].lastedUploadTime+'</td>'+
 						'</tr>';
+						
 						addCar2Map(workunits[i]);
+						
+						//同时绘制路线图
+						//map.addOverlay(new BMap.Polyline(workunits[i].traceListes, {strokeColor: '#111'}));
+	     				//map.setViewport(workunits[i].traceListes);
 					}
 				}
 				
@@ -386,6 +408,11 @@ function showMap() {
 		 $('.tracks-history').hide();
         tracksControl.trackStop();
 	});
+	
+	//获取实时监控 数据
+	showWorkunitCar();
+	window.loc_time=(new Date).format("yyyy-MM-dd");
+	showHistoryWorkunit(window.loc_time);
 }
 
 
