@@ -1,0 +1,52 @@
+账号密码:system/system
+		ems/ems
+
+数据库的导入，导出
+	导出ems的表和数据: exp system/system@ems file=E:\eclipse\workspace\leon\ems\document\dmp\daochu0720.dmp owner=(ems)
+	导入到新的数据库:imp ems/ems@ems   file=E:\eclipse\workspace\leon\ems\document\dmp\daochu0908.dmp full=Y
+	不同名用户导入
+		imp system/test@xe fromuser=hkb touser=hkb_new file=c:\orabackup\hkbfull.dmp
+	空表不能导出的问题：http://www.2cto.com/database/201211/166179.html
+		alter system set deferred_segment_creation=false scope=both;
+	http://huanyue.iteye.com/blog/533982
+	
+	删除用户和用户拥有的表
+	drop user ems cascade;
+	create user ems identified by ems;
+	grant dba,connect,resource to ems;
+	
+	
+	imp ems/ems@ems   file=E:\eclipse\workspace\leon\ems\document\dmp\20151116.dmp fromuser=ems touser=ems
+=====================================================================================================测试库的更新
+		drop user emstest cascade;
+	create user emstest identified by emstest;
+	grant dba,connect,resource to emstest;
+	
+	exp system/system@emstest file=d:\daochutest0608.dmp owner=(emstest)
+	imp emstest/emstest@emstest   file=d:\20151110.dmp fromuser=ems touser=emstest
+	
+	
+	从新计算所有仓库的所有日结，月结报表
+	begin
+  for store in (
+    select * from ems_store  where type in (1,3)
+  ) loop
+    proc_day_sparepart_init(store.id,'20150710');
+  END LOOP;
+end;
+	
+	
+	
+  CREATE MATERIALIZED VIEW mv_ems_equipmenttype
+BUILD IMMEDIATE
+refresh force 
+ON COMMIT
+as
+select a.id as type_id,b.id as subtype_id,c.id as prod_id,
+a.text as type_text,b.text as subtype_text,c.text as prod_text,c.unit
+from ems_equipmenttype a,ems_equipmentsubtype b,ems_equipmentprod c
+where a.id=b.parent_id and b.id=c.parent_id;
+
+select * from mv_ems_equipmenttype
+
+DROP MATERIALIZED VIEW mv_ems_equipmenttype

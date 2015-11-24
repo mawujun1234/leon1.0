@@ -182,6 +182,7 @@ public static final class Pole {
 	public static final String latitude="latitude";
 	public static final String longitude_orgin="longitude_orgin";
 	public static final String latitude_orgin="latitude_orgin";
+	public static final String lngLatIsTrans="lngLatIsTrans";
 	public static final String customer_id="customer_id";
 	public static final String area_id="area_id";
 	public static final String project_id="project_id";

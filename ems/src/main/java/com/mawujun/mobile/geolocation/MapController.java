@@ -7,8 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -21,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.mawujun.baseinfo.Pole;
 import com.mawujun.baseinfo.PoleRepository;
-import com.mawujun.exception.BusinessException;
 import com.mawujun.utils.Params;
 import com.mawujun.utils.page.Page;
 
@@ -85,15 +84,24 @@ public class MapController {
         Sheet sheet = wb.getSheetAt(0);
         int row_num=sheet.getLastRowNum();
         for(int i=2;i<row_num;i++){
-        	Cell cell=sheet.getRow(i).getCell(1);
-        	//取出所有的编码和经纬度，然后直接update
-        	System.out.println(cell.getStringCellValue());
+        	Row row=sheet.getRow(i);
+        	Cell code=row.getCell(3);//点位编号
+        	Cell lng=row.getCell(4);//经度
+        	Cell lat=row.getCell(5);//纬度
+        	if(lng==null || lat==null){
+        		continue;
+        	}
+        	System.out.println(code.getStringCellValue());
+        	poleRepository.updateOrginLngLatByPoleCode(code.getStringCellValue(), lng.getNumericCellValue()+"", lat.getNumericCellValue()+"");
+        	//取出所有的编码和经纬度，然后直接update	
         }
-        
+        //转换坐标
+        mapService.transform();
         //pkg.close();
 		
 		return "已经成功初始化！"+fileName;
 	}
+
 	
 	
 	/**

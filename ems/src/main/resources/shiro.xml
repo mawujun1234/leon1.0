@@ -37,6 +37,7 @@
 				/login.do*=anon
 				/logout.do*=anon
 				/geolocation/mobile/upload.do*=anon
+				/map/TraceApp.jsp*=anon
 				/**/*.css=anon
 				/**/*.js=anon
 				/**/*.gif=anon

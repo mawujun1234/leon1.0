@@ -32,14 +32,16 @@ public class Pole extends UUIDEntity {
 	@Column(length=20)
 	public PoleType poleType;
 	
-	@Column(length=15)
+	@Column(length=25)
 	private String longitude;//经度
-	@Column(length=15)
+	@Column(length=25)
 	private String latitude;//纬度
-	@Column(length=15)
+	@Column(length=25)
 	private String longitude_orgin;//经度,原始的导过来的经纬度
-	@Column(length=15)
+	@Column(length=25)
 	private String latitude_orgin;//纬度,原始的导过来的经纬度
+	@org.hibernate.annotations.Type(type="yes_no")
+	private Boolean lngLatIsTrans=false;//经纬度是否已经转换过了
 	
 	@Column(length=36)
 	private String customer_id;
@@ -188,6 +190,14 @@ public class Pole extends UUIDEntity {
 
 	public void setLatitude_orgin(String latitude_orgin) {
 		this.latitude_orgin = latitude_orgin;
+	}
+
+	public Boolean getLngLatIsTrans() {
+		return lngLatIsTrans;
+	}
+
+	public void setLngLatIsTrans(Boolean lngLatIsTrans) {
+		this.lngLatIsTrans = lngLatIsTrans;
 	}
 
 
