@@ -26,8 +26,8 @@ public class BaiduMapAll  extends CordovaPlugin {
 	@Override
 	public boolean execute(String action, final JSONArray args,
 			final CallbackContext callbackContext) {
-		//setCallbackContext(callbackContext);
-		//final LocationApplication locationApplication=(LocationApplication)cordova.getActivity().getApplication();
+
+		//acquireWakeLock();
 		if(locationApplication==null){
 			locationApplication=new LocationApplication();	
 		}
@@ -118,7 +118,10 @@ public class BaiduMapAll  extends CordovaPlugin {
 	@Override
 	public void onDestroy() {
 		locationApplication.stop();
+		//releaseWakeLock();
 		super.onDestroy();
 	}
+	
+	
 
 }

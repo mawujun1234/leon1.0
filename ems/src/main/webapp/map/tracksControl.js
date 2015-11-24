@@ -8,11 +8,117 @@ function TracksControl(){
 	this.defaultSpeed=4000;//值越大越快，//默认速度 米/秒
 	
 	this._encrLngLatPois=[];//这次路书的节点
+	this.historyoverlay=null;//历史的轨迹线路
 	
-	var lushuMarker;//路书上的图标
+	this.lushuMarker;//路书上的图标
+	
+	this.timerrLngLatPois={};//实时轨迹的数据
+	this.timerrOverlay={};
+	this.timerrOverlay_car={};//实时轨迹的车
+	
 	
 	/**
-	 * 获取某个轨迹的所有节点
+	 * 设置实时监控的轨迹数据
+	 * @param {} traceList
+	 */
+	this.setTimerTraceListpois=function(workunits){
+		var self=this;
+		
+		//清空现有存在的所有car图标
+		$.each(self.timerrOverlay_car,function(name, value){
+			map.removeOverlay(value);
+		});
+		self.timerrOverlay_car={};
+		
+		for(var i=0;i<workunits.length;i++){
+			var sessionId=workunits[i].sessionId;
+			var traceList=workunits[i].traceListes;
+			
+			var lngLatPois=[];
+			for(var j=0;j<traceList.length;j++){
+				 var pos = new BMap.Point(traceList[j].longitude, traceList[j].latitude);
+	             pos.loc_time = traceList[j].loc_time
+	             lngLatPois.push(pos);
+			}
+			this.timerrLngLatPois[sessionId]=lngLatPois;
+
+			this.drawTimerCar(workunits[i]);
+		}
+		
+		//清空所有的线，然后重新画所有的选择了的线 
+		$.each(this.timerrOverlay,function(name, value){
+			//清除所有的当前已经选择了的线
+			map.removeOverlay(value);
+			//重新画现在已经存在的线，即还在线上并且已经选择划线了的
+			self.drawTimerPolylineOvelay(name);
+		});
+		
+		
+	}
+		/**
+	 * 在界面上画出运动轨迹
+	 */
+	this.drawTimerPolylineOvelay=function(sessionId){
+
+		if(!this.timerrLngLatPois[sessionId]){
+			//alert("还没有该作业单位的轨迹数据!");
+			return;
+		}
+		
+		//先清除已经存在的
+		this.removeTimerPolylineOvelay(sessionId);
+		var overlay=new BMap.Polyline(this.timerrLngLatPois[sessionId], {strokeColor: '#111'});
+		map.addOverlay(overlay);
+	    map.setViewport(this.timerrLngLatPois[sessionId]);
+	    
+	    this.timerrOverlay[sessionId]=overlay;
+	    
+	};
+	this.removeTimerPolylineOvelay=function(sessionId){
+		map.removeOverlay(this.timerrOverlay[sessionId])	
+	};
+	
+	this.clearTimerOvelay=function(sessionId){
+		var self=this;
+		//清空现有存在的所有car图标
+		$.each(self.timerrOverlay_car,function(name, value){
+			map.removeOverlay(value);
+		});
+		self.timerrOverlay_car={};
+		
+		//清空现有存在的所有car图标
+		$.each(self.timerrOverlay,function(name, value){
+			map.removeOverlay(value);
+		});
+		self.timerrOverlay={};
+	};
+	
+	this.drawTimerCar=function(workunit){
+		var point = new BMap.Point(workunit.lasted_longitude, workunit.lasted_latitude);
+		var car_marker = new BMap.Marker(point, {
+			icon : carIcon
+		});	
+		//window.workunit_markeres[workunit.sessionId]=car_marker;
+		this.timerrOverlay_car[workunit.sessionId]=car_marker;
+		map.addOverlay(car_marker); // 将标注添加到地图中
+	
+		//addMouseoverHandler("账号:"+workunit.loginName+"<br/>作业单位:"+workunit.name+"<br/>电话:"+workunit.phone+"<br/>登录时间:"+workunit.loginTime ,car_marker);
+	};
+	/**
+	 * 把当前选中的车展现在地图中央
+	 * @param {} sessionId
+	 */
+	this.centerTimerCar=function(sessionId){
+		var marker=this.timerrOverlay_car[sessionId];
+		if(!marker){
+			return
+		}
+		map.setCenter(marker.getPosition());
+	}
+	
+	
+	/**
+	 * 获取某个历史轨迹的所有节点
 	 */
 	this.setTraceListpois=function(traceList){
 		var self=this;
@@ -36,12 +142,22 @@ function TracksControl(){
 	/**
 	 * 在界面上画出运动轨迹
 	 */
-	this.drawPolylineOvelay=function(){
+	this.drawPolylineOvelay=function(traceList){
+		if(traceList){
+			this.setTraceListpois(traceList);
+		}
 		if(!this._encrLngLatPois){
 			alert("请先设置轨迹的经纬度数据!");
 		}
-		 map.addOverlay(new BMap.Polyline(this._encrLngLatPois, {strokeColor: '#111'}));
+		if(this.historyoverlay){
+			map.removeOverlay(this.historyoverlay);
+		}
+		
+		//alert(this._encrLngLatPois.length);
+		var overlay=new BMap.Polyline(this._encrLngLatPois, {strokeColor: '#111'});
+		 map.addOverlay(overlay);
 	     map.setViewport(this._encrLngLatPois);
+	     this.historyoverlay=overlay;
 	};
 	//添加lushu，开始小车沿轨迹移动动画
 	this.trackStart = function() {

@@ -7,7 +7,7 @@
 # view AndroidManifest.xml #generated:97
 -keep class com.google.zxing.client.android.PreferencesActivity { <init>(...); }
 
-# view ldpi\res/layout-ldpi/capture.xml #generated:25
+# view ldpi-v4\res/layout-ldpi-v4/capture.xml #generated:25
 # view res/layout/capture.xml #generated:25
 -keep class com.google.zxing.client.android.ViewfinderView { <init>(...); }
 

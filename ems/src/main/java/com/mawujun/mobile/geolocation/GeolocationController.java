@@ -1,5 +1,6 @@
 package com.mawujun.mobile.geolocation;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.mobile.login.MobileLoginController;
 import com.mawujun.mobile.login.WaringGps;
+import com.mawujun.utils.BeanUtils;
 
 @Controller
 public class GeolocationController {
@@ -84,7 +86,8 @@ public class GeolocationController {
 		
 		geolocationService.create(geolocation);
 		
-		updateGpsUploadTime(geolocation.getSessionId(),geolocation.getLongitude(),geolocation.getLatitude(),geolocation.getLoc_time());
+		//updateGpsUploadTime(geolocation.getSessionId(),geolocation.getLongitude(),geolocation.getLatitude(),geolocation.getLoc_time());
+		updateGpsUploadTime(geolocation);
 		return "success";
 	}
 	
@@ -93,13 +96,39 @@ public class GeolocationController {
 	 * @author mawujun 16064988@qq.com 
 	 * @param loginName
 	 */
-	public void updateGpsUploadTime(String sessionId,String lasted_longitude, String lasted_latitude,Date loc_time) {
-		WaringGps waringGps=waringGpsMap.get(sessionId);
+	//public void updateGpsUploadTime(String sessionId,String lasted_longitude, String lasted_latitude,Date loc_time) {
+	public void updateGpsUploadTime(Geolocation geolocation) {
+		WaringGps waringGps=waringGpsMap.get(geolocation.getSessionId());
 		waringGps.setIsUploadGps(true);
-		waringGps.setLastedUploadTime(loc_time);
-		waringGps.setLasted_longitude(lasted_longitude);
-		waringGps.setLasted_latitude(lasted_latitude);
+		waringGps.setLastedUploadTime(geolocation.getLoc_time());
+		waringGps.setLasted_longitude(geolocation.getLongitude());
+		waringGps.setLasted_latitude(geolocation.getLatitude());
 		
+		TraceList traceList=new TraceList();
+		try {
+			BeanUtils.copyProperties(traceList, geolocation);
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		waringGps.addTraceListes(traceList);
+		
+//		TraceList traceList1=new TraceList();
+//		try {
+//			BeanUtils.copyProperties(traceList1, geolocation);
+//		} catch (IllegalAccessException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (InvocationTargetException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		traceList1.setLongitude("121.52997");
+//		traceList1.setLatitude("29.825078");
+//		waringGps.addTraceListes(traceList1);
 	}
 	
 	

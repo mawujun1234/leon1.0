@@ -1,5 +1,6 @@
 package com.mawujun.mobile.login;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,8 +23,12 @@ public class WaringGps {
 	private String lasted_longitude;
 	private String lasted_latitude;
 	
-	//private List<TraceList> traceListes;
+	private List<TraceList> traceListes=new ArrayList<TraceList>();
 	
+	
+	public void addTraceListes(TraceList traceList) {
+		this.traceListes.add(traceList);
+	}
 	
 	public String getLoginName() {
 		return loginName;
@@ -79,12 +84,12 @@ public class WaringGps {
 	public void setSessionId(String sessionId) {
 		this.sessionId = sessionId;
 	}
-//	public List<TraceList> getTraceListes() {
-//		return traceListes;
-//	}
-//	public void setTraceListes(List<TraceList> traceListes) {
-//		this.traceListes = traceListes;
-//	}
+	public List<TraceList> getTraceListes() {
+		return traceListes;
+	}
+	public void setTraceListes(List<TraceList> traceListes) {
+		this.traceListes = traceListes;
+	}
 	
 
 }

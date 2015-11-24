@@ -32,18 +32,30 @@ $(function(){
 		$('#realtime_tab tr').removeClass("danger");
 		$(this).addClass("danger");
 		
-		var marker=window.workunit_markeres[$(this).attr("data-sessionId")];
-		if(!marker){
-			return
-		}
-		map.setCenter(marker.getPosition());
+		tracksControl.centerTimerCar($(this).attr("data-sessionId"));
 	}); 
+	
+	//当点击复选框的时候，在界面上刻画路线，并且定位到响应的地方
+	$("#realtime_tab tbody").on('click','input',function(e){
+		//alert(1);
+		//return false;
+		var value=$(this).prop("checked");
+		var sessionId=$(this).parent().parent().attr("data-sessionId");
+
+		if(value){
+			//alert('划线!');
+			tracksControl.drawTimerPolylineOvelay(sessionId);
+		} else {
+			tracksControl.removeTimerPolylineOvelay(sessionId);
+		}
+		
+		//tracksControl.centerTimerCar(sessionId);
+		//e.preventDefault();
+		//e.stopPropagation();
+	});
 
 //========================================================================================		
 	//更新现在
-		
-
-	
 	$('#history_tab').on('click', 'tr', function(){
 		$("#history_tab tr ").removeClass("danger");
 		$(this).addClass("danger");
@@ -74,6 +86,8 @@ $(function(){
 		$("#track_detail_info").html(html);
 		
 	});
+	
+	
 //========================================================================================
 	//当切换tab页的时候，隐藏历史轨迹明细数据
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
@@ -143,8 +157,8 @@ function queryHistoryTraceList(sessionId){
 		    } ,
 		    dataType: "json",
 		    success: function(data){
-		    	//window.tracksControl.setLngLatpois(data.root);
-		    	window.tracksControl.drawPolylineOvelay();
+		    	//window.tracksControl.setTraceListpois(data.root);
+		    	window.tracksControl.drawPolylineOvelay(data.root);
 		    }
 	});
 }
@@ -236,10 +250,7 @@ function showWorkunitCar(){
 			dataType:"json",
 			type: "POST",
 			success : function(data) {		
-				
-				$.each(window.workunit_markeres,function(name, value){
-					map.removeOverlays(value);
-				});
+
 				//map.clearOverlays();.当点击历史轨迹的时候，就清空界面元素和停止这个定时调用，翻过来一样
 				//当前轨迹的时候，把所有作业单位的轨迹都画出来
 				//....
@@ -251,21 +262,24 @@ function showWorkunitCar(){
 					html+='<tr scope="row">'+
 					   '<td>没有数据</td>'+
 					'</tr>';
+					//清空界面上关于实时的数据
+					tracksControl.clearTimerOvelay();
 				} else {
 					for(var i=0;i<workunits.length;i++){
 						html+='<tr scope="row" data-sessionId="'+workunits[i].sessionId+'">'+
-						   '<th width="10">'+(i+1)+'</th>'+
-						   '<td>'+workunits[i].name+'</td>'+
+						   '<th width="10"><input type="checkbox" ></th>'+
+						   //'<th width="10">'+(i+1)+'</th>'+
 						   '<td>'+workunits[i].name+'</td>'+
 						   '<td>'+workunits[i].lastedUploadTime+'</td>'+
 						'</tr>';
 						
-						addCar2Map(workunits[i]);
-						
+						//addCar2Map(workunits[i]);
+						tracksControl.setTimerTraceListpois(workunits);
 						//同时绘制路线图
 						//map.addOverlay(new BMap.Polyline(workunits[i].traceListes, {strokeColor: '#111'}));
-	     				//map.setViewport(workunits[i].traceListes);
+	     				//map.setViewport(workunits[i].traceListes);	
 					}
+					
 				}
 				
 				
@@ -277,18 +291,18 @@ function showWorkunitCar(){
 		});
 		setTimeout("showWorkunitCar()",60*1000);//每一分钟发送一次
 }
-window.workunit_markeres={};
-function addCar2Map(workunit){
-		var point = new BMap.Point(workunit.lasted_longitude, workunit.lasted_latitude);
-		var car_marker = new BMap.Marker(point, {
-			icon : carIcon
-		});	
-		window.workunit_markeres[workunit.sessionId]=car_marker;
-		map.addOverlay(car_marker); // 将标注添加到地图中
-	
-		addMouseoverHandler("账号:"+workunit.loginName+"<br/>作业单位:"+workunit.name+"<br/>电话:"+workunit.phone+"<br/>登录时间:"+workunit.loginTime ,car_marker);
-	
-}
+//window.workunit_markeres={};
+//function addCar2Map(workunit){
+//		var point = new BMap.Point(workunit.lasted_longitude, workunit.lasted_latitude);
+//		var car_marker = new BMap.Marker(point, {
+//			icon : carIcon
+//		});	
+//		window.workunit_markeres[workunit.sessionId]=car_marker;
+//		map.addOverlay(car_marker); // 将标注添加到地图中
+//	
+//		addMouseoverHandler("账号:"+workunit.loginName+"<br/>作业单位:"+workunit.name+"<br/>电话:"+workunit.phone+"<br/>登录时间:"+workunit.loginTime ,car_marker);
+//	
+//}
 function addMouseoverHandler(content,marker){
 		marker.addEventListener("mouseover",function(e){		
 			openMarkerInfo(content,e);
@@ -368,7 +382,7 @@ function showMap() {
 	                //map.addOverlay(new BMap.Polyline(arrPois, {strokeColor: '#111'}));
 	                //map.setViewport(arrPois);
 	                
-	                tracksControl.setTraceListpois(arrPois);
+	                //tracksControl.setTraceListpois(arrPois);
 	                
 	            }
 	        }
