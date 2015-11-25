@@ -91,6 +91,10 @@
                             "count": 1
                         },
                         {
+                            "xml": "<uses-permission android:name=\"android.permission.DEVICE_POWER\" />",
+                            "count": 1
+                        },
+                        {
                             "xml": "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\" />",
                             "count": 1
                         },
@@ -162,6 +166,10 @@
                         },
                         {
                             "xml": "<meta-data android:name=\"com.baidu.lbsapi.API_KEY\" android:value=\"Gf2Q8bxraGg8SASQuOmvenLS\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<service android:name=\"com.mawujun.plugins.baiduMapAll.LocationApplication\" />",
                             "count": 1
                         },
                         {

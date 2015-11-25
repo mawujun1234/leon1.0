@@ -23,7 +23,17 @@ import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
+import android.location.LocationManager;
+import android.os.Binder;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Looper;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
+import android.provider.Settings;
 import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
@@ -42,7 +52,7 @@ import com.baidu.platform.comapi.location.CoordinateType;
  * 百度定位SDK官方网站：http://developer.baidu.com/map/index.php?title=android-locsdk
  */
 //public class LocationApplication extends Application {
-public class LocationApplication {
+public class LocationApplication extends Service{
     public LocationClient mLocationClient;
     public MyLocationListener mMyLocationListener;
     //
@@ -51,19 +61,9 @@ public class LocationApplication {
     
     public Double  currentLongitude;
     public Double  currentLatitude;
-    
-//    private String sessionId;//回话的id
-//    public String getSessionId() {
-//		return sessionId;
-//	}
-//	public void setSessionId(String sessionId) {
-//		this.sessionId = sessionId;
-//	}
-//
-//	private String uuid;
-//    private String loginName;
+
     private String uploadUrl;
-    private int gps_interval;
+    private int gps_interval=0;
     private JSONObject params;//需要传递到后台的数据
     //public Vibrator mVibrator;
 
@@ -90,8 +90,8 @@ public class LocationApplication {
 	private static final Map<Integer, String> ERROR_MESSAGE_MAP = new HashMap<Integer, String>();
 
 	//private static final String DEFAULT_ERROR_MESSAGE = "服务端定位失败";
-    Context activityContex;
-    
+    //Context activityContex;
+    private Handler handler;  
     
 	
 	static {
@@ -112,33 +112,32 @@ public class LocationApplication {
 		ERROR_MESSAGE_MAP.put(602, " key mcode不匹配，您的ak配置过程中安全码设置有问题，请确保：sha1正确");
 	};
 	
-	public void start(){
-		mLocationClient.start();
-	}
-	public void stop(){
-		if (mLocationClient != null && mLocationClient.isStarted()) {
-			mLocationClient.stop();
-		}
-	}
+//	public void start(){
+//		mLocationClient.start();
+//	}
+//	public void stop(){
+//		if (mLocationClient != null && mLocationClient.isStarted()) {
+//			mLocationClient.stop();
+//		}
+//	}
 
-	/**
-	 * 初始化定位代码
-	 * @param context
-	 */
-    public void onCreate(Context context) {
-    	//if(mLocationClient==null){
-    		 mLocationClient = new LocationClient(context);
-    	     mMyLocationListener = new MyLocationListener();
-    	     mLocationClient.registerLocationListener(mMyLocationListener);
-    	    this.activityContex=context;  
-    	    //不初始化，不能计算距离
-    	    SDKInitializer.initialize(context.getApplicationContext());
-    	    
-    	    initLocation();
-    	//}
-       
-        //mVibrator =(Vibrator)getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
-    }
+//	/**
+//	 * 初始化定位代码
+//	 * @param context
+//	 */
+//    public void onCreate() {
+//    	//if(mLocationClient==null){
+//    		 mLocationClient = new LocationClient(this.getBaseContext());
+//    	     mMyLocationListener = new MyLocationListener();
+//    	     mLocationClient.registerLocationListener(mMyLocationListener);
+//    	    //this.activityContex=context;  
+//    	    //不初始化，不能计算距离
+//    	    SDKInitializer.initialize(this.getBaseContext().getApplicationContext());
+//    	    
+//    	    //initLocation();
+//    	//}
+//        //mVibrator =(Vibrator)getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
+//    }
 	
 //    @Override
 //    public void onCreate() {
@@ -183,60 +182,29 @@ public class LocationApplication {
         public void onReceiveLocation(BDLocation location) {
         	//JSONObject jsonObj = new JSONObject();
         	if (location == null) {
-        		Toast.makeText(activityContex, "没有获取到经纬度数据!", Toast.LENGTH_LONG).show();
+        		//Toast.makeText(activityContex, "没有获取到经纬度数据!", Toast.LENGTH_LONG).show();
+        		toast("没有获取到经纬度数据!",Toast.LENGTH_LONG);
         		return;
         	}
         	
 			
 			if (location.getLocType() == BDLocation.TypeGpsLocation) {// GPS定位结果
 				 postCoords(location);
+				 
+				 currentLongitude=location.getLongitude();
+					currentLatitude=location.getLatitude();
 
 			} else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {// 网络定位结果
 				 postCoords(location);
+				 
+				 currentLongitude=location.getLongitude();
+				 currentLatitude=location.getLatitude();
 			} else {
 				int locationType = location.getLocType();
-				Toast.makeText(activityContex, "获取地址失败:"+getErrorMessage(locationType), Toast.LENGTH_LONG).show();
+				//Toast.makeText(activityContex, "获取地址失败:"+getErrorMessage(locationType), Toast.LENGTH_LONG).show();
+				toast("获取地址失败:"+getErrorMessage(locationType),Toast.LENGTH_LONG);
 			}
-				
-//			try {
-//				JSONObject coords = new JSONObject();
-//				coords.put("latitude", location.getLatitude());
-//				coords.put("longitude", location.getLongitude());
-//				coords.put("radius", location.getRadius());
-//				jsonObj.put("coords", coords);
-//				
-//				currentLongitude=location.getLongitude();
-//				currentLatitude=location.getLatitude();
-//
-//				int locationType = location.getLocType();
-//				jsonObj.put("time", location.getTime());
-//				jsonObj.put("locationType", locationType);
-//				jsonObj.put("errorcode", locationType);
-//				jsonObj.put("message", getErrorMessage(locationType));
-//				
-//				 if (location.getLocType() == BDLocation.TypeGpsLocation){// GPS定位结果
-//					 	coords.put("speed", location.getSpeed());// 单位：公里每小时
-//						coords.put("height", location.getAltitude());// 单位：米
-//						coords.put("satellite", location.getSatelliteNumber());
-//						coords.put("direction", location.getDirection());// 单位度
-//						coords.put("addr", location.getAddrStr());
-//		 
-//		            } else if (location.getLocType() == BDLocation.TypeNetWorkLocation){// 网络定位结果
-//		            	coords.put("addr", location.getAddrStr());
-//						coords.put("operationers", location.getOperators());
-//		            } else {
-//		            	//callbackContext.error(getErrorMessage(locationType));
-//		            }
-//				 postCoords();
-//
-//				 Log.i(BaiduMapAll.LOG_TAG, "======================== " );
-//				Log.d(BaiduMapAll.LOG_TAG, "run: " + jsonObj.toString());
-//				//callbackContext.success(jsonObj);
-//				Toast.makeText(activityContex, "获取地址成功", Toast.LENGTH_SHORT).show();
-//			} catch (JSONException e) {
-//				//callbackContext.error(e.getMessage());
-//				Toast.makeText(activityContex, "获取地址失败:"+getErrorMessage(locationType), Toast.LENGTH_LONG).show();
-//			}
+
         }
 
 
@@ -244,6 +212,10 @@ public class LocationApplication {
     
     SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     public void postCoords(BDLocation location){
+    	//如果没有上传路径就不进行上传
+    	if(this.getUploadUrl()==null || "".equals(this.getUploadUrl()) ){
+    		return;
+    	}
     	
     	Double distance=0.0;
     	if(currentLatitude!=null){
@@ -256,8 +228,7 @@ public class LocationApplication {
     	}
     
     	
-    	currentLongitude=location.getLongitude();
-		currentLatitude=location.getLatitude();
+    	
 		
 		
 		
@@ -303,16 +274,19 @@ public class LocationApplication {
 				//Log.d(BaiduMapAll.LOG_TAG, result);
 			} else {
 				//这里响应代码不是200 页正茬插入了
-				Toast.makeText(activityContex, "发送经纬度到后台失败!"+httpResponse.getStatusLine().getStatusCode()+this.getUploadUrl(), Toast.LENGTH_LONG).show();
+				//Toast.makeText(activityContex, "发送经纬度到后台失败!"+httpResponse.getStatusLine().getStatusCode()+this.getUploadUrl(), Toast.LENGTH_LONG).show();
+				toast("发送经纬度到后台失败!",Toast.LENGTH_LONG);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			Toast.makeText(activityContex, "发送经纬度到后台失败!请检查网络连接!", Toast.LENGTH_LONG).show();
+			//Toast.makeText(activityContex, "发送经纬度到后台失败!请检查网络连接!", Toast.LENGTH_LONG).show();
+			toast("发送经纬度到后台失败!请检查网络连接!",Toast.LENGTH_LONG);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			Toast.makeText(activityContex, "发送经纬度到后台失败!请检查参数格式!", Toast.LENGTH_LONG).show();
+			//Toast.makeText(activityContex, "发送经纬度到后台失败!请检查参数格式!", Toast.LENGTH_LONG).show();
+			toast("发送经纬度到后台失败!请检查参数格式!",Toast.LENGTH_LONG);
 		}
          
     }
@@ -330,7 +304,84 @@ public class LocationApplication {
 		}
 		return result;
 	}
+	
+	public void toast(final String content,final int duration){
+		handler.post(new Runnable() {    
+			             @Override    
+			             public void run() {    
+			                Toast.makeText(getApplicationContext(), content,duration).show();    
+			             }    
+			        }); 
+	}
+	
+	
+	
+	
+	
+	
+	
+	public class MyBinder extends Binder {
+
+		public LocationApplication getService() {
+			return LocationApplication.this;
+		}
+	}
+
+	private MyBinder myBinder = new MyBinder();
+
+	@Override
+	public IBinder onBind(Intent intent) {
+		// TODO Auto-generated method stub
+		return myBinder;
+	}
+
+	@Override
+	public void onCreate() {
+		super.onCreate();
+		//onCreate(getBaseContext());
+		 mLocationClient = new LocationClient(this.getBaseContext());
+	     mMyLocationListener = new MyLocationListener();
+	     mLocationClient.registerLocationListener(mMyLocationListener);
+	    //this.activityContex=context;  
+	    //不初始化，不能计算距离
+	    SDKInitializer.initialize(this.getBaseContext().getApplicationContext());
+		handler = new Handler(Looper.getMainLooper());
+	}
+
+	@Override
+	 public int onStartCommand(Intent intent, int flags, int startId) {
+		
+		this.setUploadUrl(intent.getStringExtra("uploadUrl"));
+		this.setGps_interval(intent.getIntExtra("gps_interval",0));
+		String params_str=intent.getStringExtra("params");
+		try {
+			if(params_str!=null){
+				this.setParams(new JSONObject(params_str));
+			}
+			
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//mLocationClient.getLocOption().setScanSpan(this.getGps_interval());
+		initLocation();
+		
+		mLocationClient.start();
+		mLocationClient.requestLocation();
+
+		toast("开始获取gps信息了", Toast.LENGTH_LONG);
+		//LOG.i(BaiduMapAll.LOG_TAG, "开始获取gps信息了================================================");
+		return super.onStartCommand(intent, flags,startId);
+	}
+
+	@Override
+	public void onDestroy() {
+		if (mLocationClient != null && mLocationClient.isStarted()) {
+			mLocationClient.stop();
+		}
+		super.onDestroy();
+	}
     
-    
+	
 
 }

@@ -5,10 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.IBinder;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -28,6 +32,7 @@ import com.baidu.navisdk.adapter.BNRoutePlanNode.CoordinateType;
 import com.baidu.navisdk.adapter.BaiduNaviManager;
 import com.baidu.navisdk.adapter.BaiduNaviManager.NaviInitListener;
 import com.baidu.navisdk.adapter.BaiduNaviManager.RoutePlanListener;
+import com.mawujun.plugins.baiduMapAll.LocationApplication.MyBinder;
 
 public class BNDemoMainActivity extends Activity {
 
@@ -62,6 +67,8 @@ public class BNDemoMainActivity extends Activity {
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);  
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		
+		bindService();
 		
 //		setContentView(R.layout.activity_main);
 //		
@@ -226,12 +233,18 @@ public class BNDemoMainActivity extends Activity {
 		return LocationClient.getBDLocationInCoorType(bd, BDLocation.BDLOCATION_BD09LL_TO_GCJ02);
 		
 	}
+
 	
 	private void routeplanToNavi(CoordinateType coType) {
 		//BDLocation bDLocation= BaiduMapAll.locationApplication.mLocationClient.getLastKnownLocation();
 		
 		//BNRoutePlanNode sNode = new BNRoutePlanNode(bDLocation.getLongitude(), bDLocation.getLatitude(),bDLocation.getBuildingName(), null, coType);
-		BDLocation start_dest=bd09llTOgcj02(BaiduMapAll.locationApplication.currentLongitude,BaiduMapAll.locationApplication.currentLatitude);
+		
+		BDLocation start_dest=bd09llTOgcj02(conn.getBindService().currentLongitude,conn.getBindService().currentLatitude);
+//		BDLocation start_dest=new BDLocation();
+//		start_dest.setLatitude(116.30142);
+//		start_dest.setLongitude(40.05087);
+		
 		BNRoutePlanNode sNode = new BNRoutePlanNode( start_dest.getLongitude(),start_dest.getLatitude(),"起点", null, coType);
 		//Log.i(BaiduMapAll.LOG_TAG, bDLocation.getLongitude()+","+bDLocation.getLatitude()+","+bDLocation.getBuildingName());
 		BDLocation end_dest=bd09llTOgcj02(Double.parseDouble(longitude),Double.parseDouble(latitude));
@@ -245,42 +258,12 @@ public class BNDemoMainActivity extends Activity {
 		}
 	    
 	}
+	@Override
+	public void onDestroy(){
+		unBind();
+		super.onDestroy();
+	}
 	
-//	private void routeplanToNavi(CoordinateType coType) {
-//		////wgs84:国际经纬度坐标  "gcj02":国家测绘局标准,"bd09ll":百度经纬度标准,"bd09":百度墨卡托标准
-//	    BNRoutePlanNode sNode = null;
-//	    BNRoutePlanNode eNode = null;
-//		switch(coType) {
-//			case GCJ02: {
-//				sNode = new BNRoutePlanNode(116.293616, 39.862738, 
-//			    		"百度大厦", null, coType);
-//				eNode = new BNRoutePlanNode(116.560377, 40.100691, 
-//			    		"北京天安门", null, coType);
-//				break;
-//			}
-//			case WGS84: {
-//				sNode = new BNRoutePlanNode(116.300821,40.050969,
-//			    		"百度大厦", null, coType);
-//				eNode = new BNRoutePlanNode(116.397491,39.908749, 
-//			    		"北京天安门", null, coType);
-//				break;
-//			}
-//			case BD09_MC: {
-//				sNode = new BNRoutePlanNode(12947471,4846474,  
-//			    		"百度大厦", null, coType);
-//				eNode = new BNRoutePlanNode(12958160,4825947,  
-//			    		"北京天安门", null, coType);
-//				break;
-//			}
-//			default : ;
-//		}
-//		if (sNode != null && eNode != null) {
-//	        List<BNRoutePlanNode> list = new ArrayList<BNRoutePlanNode>();
-//	        list.add(sNode);
-//	        list.add(eNode);
-//	        BaiduNaviManager.getInstance().launchNavigator(this, list, 1, true, new DemoRoutePlanListener(sNode));
-//		}
-//	}
 	
 	public class DemoRoutePlanListener implements RoutePlanListener {
 		
@@ -303,6 +286,71 @@ public class BNDemoMainActivity extends Activity {
 			
 		}
 	}
+	
+	//http://blog.163.com/allegro_tyc/blog/static/337437682013629348791/
+	private boolean flag = false;
+
+	private void bindService() {
+		Intent intent = new Intent(BNDemoMainActivity.this,LocationApplication.class);
+		bindService(intent, conn, Context.BIND_AUTO_CREATE);
+	}
+
+	private void unBind() {
+		if (flag == true) {
+			// Log.i(TAG, "BindService-->unBind()");
+			unbindService(conn);
+			flag = false;
+		}
+	}
+
+	public class MyServiceConnection implements ServiceConnection {
+		LocationApplication bindService;
+
+		public LocationApplication getBindService() {
+			return bindService;
+		}
+
+		@Override
+		public void onServiceDisconnected(ComponentName name) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void onServiceConnected(ComponentName name, IBinder service) {
+			// TODO Auto-generated method stub
+			MyBinder binder = (MyBinder) service;
+			bindService = binder.getService();
+			//bindService.mLocationClient.requestLocation();
+			// bindService.
+			flag = true;
+		}
+
+	}
+
+	private MyServiceConnection conn = new MyServiceConnection();
+//	private ServiceConnection conn = new ServiceConnection() {    
+//		LocationApplication bindService;
+//        public LocationApplication getBindService() {
+//			return bindService;
+//		}
+//
+//		@Override
+//        public void onServiceDisconnected(ComponentName name) {
+//            // TODO Auto-generated method stub
+//            
+//        }
+//        
+//        @Override
+//        public void onServiceConnected(ComponentName name, IBinder service) {
+//            // TODO Auto-generated method stub
+//            MyBinder binder = (MyBinder)service;
+//            bindService = binder.getService();
+//            bindService.mLocationClient.requestLocation();
+//            //bindService.
+//            flag = true;
+//        }
+//    };
 	
 	private BNOuterTTSPlayerCallback mTTSCallback = new BNOuterTTSPlayerCallback() {
 		
