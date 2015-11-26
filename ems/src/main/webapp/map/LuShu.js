@@ -373,7 +373,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
          * @param {Function} effect 缓动效果.
          * @return 无返回值.
          */
-        aaa:0,
+        //aaa:0,
         _move: function(initPos, targetPos, effect) {
             var me = this,
                 //当前的帧数
