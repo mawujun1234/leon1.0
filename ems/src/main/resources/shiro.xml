@@ -37,7 +37,10 @@
 				/login.do*=anon
 				/logout.do*=anon
 				/geolocation/mobile/upload.do*=anon
+				####轨迹查询---------开始
 				/map/TraceApp.jsp*=anon
+				/trace/*.do*=anon
+				####轨迹查询---------结束
 				/**/*.css=anon
 				/**/*.js=anon
 				/**/*.gif=anon

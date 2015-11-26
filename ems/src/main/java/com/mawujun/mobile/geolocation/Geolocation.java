@@ -5,7 +5,6 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.mawujun.repository.idEntity.UUIDEntity;
 
@@ -43,6 +42,7 @@ public class Geolocation extends UUIDEntity {
     public Float speed;// GPS速度当service的type是1，且创建该track的时候输入了这个字段才会返回。
     public Double distance;//在同个会话中，距离上一次地点的距离
     private Date loc_time;// gps的上传时间
+    private Integer gps_interval;//定位时间间隔
 	
     private Date createDate;//在服务端创建的时间
     
@@ -117,6 +117,12 @@ public class Geolocation extends UUIDEntity {
 	}
 	public void setDistance(Double distance) {
 		this.distance = distance;
+	}
+	public Integer getGps_interval() {
+		return gps_interval;
+	}
+	public void setGps_interval(Integer gps_interval) {
+		this.gps_interval = gps_interval;
 	}
 
 	

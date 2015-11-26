@@ -24,16 +24,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.location.LocationManager;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
-import android.os.PowerManager;
-import android.os.PowerManager.WakeLock;
-import android.provider.Settings;
 import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
@@ -61,6 +56,7 @@ public class LocationApplication extends Service{
     
     public Double  currentLongitude;
     public Double  currentLatitude;
+    public Long  current_loc_time;//最近一次的提交时间
 
     private String uploadUrl;
     private int gps_interval=0;
@@ -217,6 +213,13 @@ public class LocationApplication extends Service{
     		return;
     	}
     	
+    	Date loc_time=new Date();	
+		//如果这次上传还上一次上传的时间间隔小于规定的时间间隔，那就不上传
+		if(current_loc_time!=null && (loc_time.getTime()-current_loc_time)<this.getGps_interval()){
+			return;
+		}
+		current_loc_time=loc_time.getTime();
+		
     	Double distance=0.0;
     	if(currentLatitude!=null){
     		//上次的经纬度
@@ -232,8 +235,6 @@ public class LocationApplication extends Service{
 		
 		
 		
-		
-		
 		HttpResponse httpResponse;
 		try {
 			HttpPost httpPost = new HttpPost(this.getUploadUrl());
@@ -245,7 +246,7 @@ public class LocationApplication extends Service{
 			Iterator<String> iterator=params.keys();
 			while(iterator.hasNext()){
 				String key=iterator.next();
-				if("uploadUrl".equals(key) || "gps_interval".equals(key)){
+				if("uploadUrl".equals(key)){
 					continue;
 				}
 				nameValuePairs.add(new BasicNameValuePair(key, params.getString(key)));
@@ -256,10 +257,15 @@ public class LocationApplication extends Service{
 			nameValuePairs.add(new BasicNameValuePair("direction", location.getDirection()+""));
 			nameValuePairs.add(new BasicNameValuePair("speed", location.getDirection()+""));
 			//nameValuePairs.add(new BasicNameValuePair("loc_time",location.getTime()));//不使用这个，因为百度会缓存金维度
-			nameValuePairs.add(new BasicNameValuePair("loc_time",format.format(new Date())));//String，时间，ex:2010-01-01 14:01:01
+			nameValuePairs.add(new BasicNameValuePair("loc_time",format.format(loc_time)));//String，时间，ex:2010-01-01 14:01:01
 			nameValuePairs.add(new BasicNameValuePair("distance", distance+""));
 			
 			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
+			
+			if(this.getParams().getString("sessionId")!=null){
+				String sessionId=this.getParams().getString("sessionId");
+				httpPost.setHeader("Cookie", "JSESSIONID=" + sessionId+";sid="+sessionId); 
+			}
 			
 			
 			HttpParams httpParameters = new BasicHttpParams();
@@ -357,6 +363,7 @@ public class LocationApplication extends Service{
 		try {
 			if(params_str!=null){
 				this.setParams(new JSONObject(params_str));
+				
 			}
 			
 		} catch (JSONException e) {

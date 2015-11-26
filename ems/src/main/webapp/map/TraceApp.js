@@ -94,6 +94,7 @@ $(function(){
 	  //e.target // newly activated tab
 	  //e.relatedTarget // previous active tab
 		$("#entryTracePanel_list").hide();
+		$("#tracks-history-play").hide();//隐藏播放器
 		//.当点击历史轨迹的时候，就清空界面元素和停止这个定时调用，翻过来一样
 		map.clearOverlays();
 		showWorkunitCar_setTimeout=!showWorkunitCar_setTimeout;//来回切换定时更新定时数据
@@ -157,8 +158,9 @@ function queryHistoryTraceList(sessionId){
 		    } ,
 		    dataType: "json",
 		    success: function(data){
-		    	//window.tracksControl.setTraceListpois(data.root);
-		    	window.tracksControl.drawPolylineOvelay(data.root);
+		    	////window.tracksControl.setTraceListpois(data.root);
+		    	//window.tracksControl.drawPolylineOvelay(data.root);
+		    	window.tracksControl.drawPolylineOvelay(arrPois);
 		    }
 	});
 }
@@ -325,6 +327,8 @@ function openMarkerInfo(content,e){
 function showMap() {
 	window.carIcon = new BMap.Icon("./images/car.png", new BMap.Size(48,48));
 	window.map = new BMap.Map('map_canvas');
+	map.centerAndZoom("宁波", 14); 
+	map.setMapStyle({style:'light'});
 	
 	map.enableScrollWheelZoom();
 	map.centerAndZoom(new BMap.Point(116.404, 39.915), 13);
@@ -358,11 +362,11 @@ function showMap() {
     
     // 实例化一个驾车导航用来生成路线
 	//DrivingRoute是自动生成的导航，要换成从后台获取的
-	var drv = new BMap.DrivingRoute('北京', {
+	var drv = new BMap.DrivingRoute('宁波', {
 	        onSearchComplete: function(res) {
 	            if (drv.getStatus() == BMAP_STATUS_SUCCESS) {
 	                var plan = res.getPlan(0);
-	                var arrPois =[];
+	                window.arrPois =[];
 	                for(var j=0;j<plan.getNumRoutes();j++){
 	                    var route = plan.getRoute(j);
 	                    //aaa.loc_time="2015-11-18 18:15:15";
@@ -373,7 +377,7 @@ function showMap() {
 	                    	 arrPois.push({
 		                    	longitude:aa[x].lng,
 		                    	latitude:aa[x].lat,
-		                    	loc_time:'2015-12-12 12:12:12'
+		                    	loc_time:'2015-11-25 12:12:12'
 		                    });
 	                    }
 	                    
@@ -384,10 +388,11 @@ function showMap() {
 	                
 	                //tracksControl.setTraceListpois(arrPois);
 	                
+	                
 	            }
 	        }
 	 });
-	drv.search('天安门', '百度大厦');
+	drv.search('雅戈尔国际展销中心', '都市森林');
 	
 		
 	// 绑定事件

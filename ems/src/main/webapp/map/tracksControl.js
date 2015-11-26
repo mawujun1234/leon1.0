@@ -5,7 +5,7 @@ function TracksControl(){
     this.isPaused = false; //小车移动动画是否暂停
     this.totalStep = 0; //小车走完轨迹所需的步数
     this.curIndex = 0; //小车移动的动画游标
-	this.defaultSpeed=4000;//值越大越快，//默认速度 米/秒
+	this.defaultSpeed=2000;//值越大越快，//默认速度 米/秒
 	
 	this._encrLngLatPois=[];//这次路书的节点
 	this.historyoverlay=null;//历史的轨迹线路
@@ -163,12 +163,16 @@ function TracksControl(){
 	this.trackStart = function() {
 		 var self = this;
 		 
-		 
+		 var speed=self.defaultSpeed;
+		 if(self.lushu){
+		 	speed=self.lushu._opts.speed;
+		 }
+		//alert(speed);
 	     self.lushu = new BMapLib.LuShu(self,self.map,self._encrLngLatPois,{
 		 	defaultContent:"",// "从天安门到百度大厦"
 		    autoView:true,// 是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
 		    icon  : new BMap.Icon('http://developer.baidu.com/map/jsdemo/img/car.png', new BMap.Size(52,26),{anchor : new BMap.Size(27, 13)}),
-		    speed: self.defaultSpeed,
+		    speed: speed,
 		    enableRotation:true,// 是否设置marker随着道路的走向进行旋转
 		    landmarkPois: [
                    {lng:116.314782,lat:39.913508,html:'加油站',pauseTime:2},
@@ -262,14 +266,19 @@ function TracksControl(){
     this.trackBackward = function(speed) {
     	var self=this;
 		if(self.lushu){
-			self.lushu._opts.speed=self.lushu._opts.speed/2;
+			//self.lushu._opts.speed=self.lushu._opts.speed/2;
+			if(self.lushu._opts.speed-500>0){
+				self.lushu._opts.speed=self.lushu._opts.speed-500;
+			}
+			
 		}
     	
     }
     this.trackForward = function(speed) {
     	var self=this;
     	if(self.lushu){
-    		self.lushu._opts.speed=self.lushu._opts.speed*2;
+    		//self.lushu._opts.speed=self.lushu._opts.speed*2;
+    		self.lushu._opts.speed=self.lushu._opts.speed+500;
     	}
     	//self.lushu._opts.speed=self.lushu._opts.speed+(speed?speed:2000);
     	
@@ -327,6 +336,7 @@ function TracksControl(){
         //self.setSliderTime(self.monitoringTrackOverlays[self.currentPlayTrack]._encrLngLatPois[v].loc_time);
     }
     this.moveIndex = function(index) {
+    	console.log(index+"=="+this.totalStep);
     	var self = this;
         this.lushu.i = index;
         this.lushu._marker.setPosition(self._encrLngLatPois[index]);

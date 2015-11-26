@@ -121,10 +121,10 @@
                     <a class="btn btn-default " title="停止回放" href="javascript:void(0)" id="btn-stop" role="button">
                         <span class="glyphicon glyphicon-stop"></span>
                     </a>
-                    <a class="btn btn-default " title="减速x2" href="javascript:void(0)" id="btn-backward" role="button">
+                    <a class="btn btn-default " title="减速" href="javascript:void(0)" id="btn-backward" role="button">
                         <span class="glyphicon glyphicon-backward"></span>
                     </a>
-                    <a class="btn btn-default " title="加速x2" href="javascript:void(0)" id="btn-forward" role="button">
+                    <a class="btn btn-default " title="加速" href="javascript:void(0)" id="btn-forward" role="button">
                         <span class="glyphicon glyphicon-forward"></span>
                     </a>
                 </div>
