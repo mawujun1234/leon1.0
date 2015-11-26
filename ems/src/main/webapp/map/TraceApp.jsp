@@ -27,8 +27,8 @@
 		}
 		
 		#entryTracePanel_mask {    
-            position: absolute; top: 0px; filter: alpha(opacity=60); background-color: #777;  
-            z-index: 1002; left: 0px;  
+            position: absolute; top: 0px;left: 0px; filter: alpha(opacity=60); background-color: #777;  
+            z-index: 1002;   
             opacity:0.5; -moz-opacity:0.5;  
      
         }  
@@ -77,6 +77,7 @@
 	
 </head> 
 <body> 
+<div id="entryTracePanel_mask"></div>
 	<div id="map_canvas"></div> 
 	<!--
 	<div id="result"></div>
@@ -214,7 +215,7 @@
 		
 	</style>
 	<div id="entryTracePanel" class="panel panel-info" >
-	  <div id="entryTracePanel_mask"></div>
+	  
 	  <!-- Default panel contents   glyphicon glyphicon-chevron-down-->
 	  <div class="panel-heading" style="cursor:move;">  
 	  	<span id="entryTracePanel_button">

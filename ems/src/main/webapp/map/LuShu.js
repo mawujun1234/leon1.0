@@ -430,8 +430,8 @@ var BMapLib = window.BMapLib = BMapLib || {};
 //pos.loc_time="2015-11-18 18:15:15";
                     //正在移动
                     me._marker.setPosition(pos);
-                   // me._trackControl.curIndex = me.i;
-                    me._trackControl.curIndex = me.aaa++;//因为用上面那行会出现，滑动条不到底的情况，所以就改用这个了
+                    me._trackControl.curIndex = me.i;
+                   // me._trackControl.curIndex = me.aaa++;//因为用上面那行会出现，滑动条不到底的情况，所以就改用这个了
                     console.log(me.i);
                     //进度条控制游标移动
                     me._trackControl.setSliderValue(me._trackControl.curIndex);

@@ -159,8 +159,8 @@ function queryHistoryTraceList(sessionId){
 		    dataType: "json",
 		    success: function(data){
 		    	////window.tracksControl.setTraceListpois(data.root);
-		    	//window.tracksControl.drawPolylineOvelay(data.root);
-		    	window.tracksControl.drawPolylineOvelay(arrPois);
+		    	window.tracksControl.drawPolylineOvelay(data.root);
+		    	//window.tracksControl.drawPolylineOvelay(arrPois);
 		    }
 	});
 }
@@ -173,6 +173,7 @@ function refreshEntryTracePanel_list(tr){
 		if(!loginName){
 			return;
 		}
+		
 		showMask();
 		$("#entryTracePanel_list").hide();
 		$.ajax({
@@ -327,11 +328,13 @@ function openMarkerInfo(content,e){
 function showMap() {
 	window.carIcon = new BMap.Icon("./images/car.png", new BMap.Size(48,48));
 	window.map = new BMap.Map('map_canvas');
-	map.centerAndZoom("宁波", 14); 
+	
+//	var centerPoint= new BMap.Point(48,48)
+//	map.centerAndZoom("宁波", 14); 
 	map.setMapStyle({style:'light'});
 	
 	map.enableScrollWheelZoom();
-	map.centerAndZoom(new BMap.Point(116.404, 39.915), 13);
+	map.centerAndZoom(new BMap.Point(121.558321,29.814518), 14);
 
 	
 	$("#h-slider").slider({
@@ -533,8 +536,8 @@ function initDrag(id){
 
 }
 function showMask(){  
-        $("#entryTracePanel_mask").css("height",$("#entryTracePanel").height());  
-        $("#entryTracePanel_mask").css("width",$("#entryTracePanel").width());  
+        $("#entryTracePanel_mask").css("height",$(document).height());  
+        $("#entryTracePanel_mask").css("width",$(document).width());  
         $("#entryTracePanel_mask").show();  
 }  
 

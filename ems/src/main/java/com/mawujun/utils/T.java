@@ -348,6 +348,7 @@ public static final class ems_geolocation {
 	public static final String speed="speed";
 	public static final String distance="distance";
 	public static final String loc_time="loc_time";
+	public static final String gps_interval="gps_interval";
 	public static final String createDate="createDate";
 	public static final String id="id";
 }
