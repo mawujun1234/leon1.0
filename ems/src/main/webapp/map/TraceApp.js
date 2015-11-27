@@ -159,7 +159,7 @@ function queryHistoryTraceList(sessionId){
 		    dataType: "json",
 		    success: function(data){
 		    	////window.tracksControl.setTraceListpois(data.root);
-		    	window.tracksControl.drawPolylineOvelay(data.root);
+		    	window.tracksControl.drawPolylineOvelay(sessionId,data.root);
 		    	//window.tracksControl.drawPolylineOvelay(arrPois);
 		    }
 	});
@@ -389,7 +389,7 @@ function showMap() {
 	                //map.addOverlay(new BMap.Polyline(arrPois, {strokeColor: '#111'}));
 	                //map.setViewport(arrPois);
 	                
-	                //tracksControl.setTraceListpois(arrPois);
+
 	                
 	                
 	            }

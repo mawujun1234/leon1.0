@@ -432,7 +432,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
                     me._marker.setPosition(pos);
                     me._trackControl.curIndex = me.i;
                    // me._trackControl.curIndex = me.aaa++;//因为用上面那行会出现，滑动条不到底的情况，所以就改用这个了
-                    console.log(me.i);
+                   // console.log(me.i);
                     //进度条控制游标移动
                     me._trackControl.setSliderValue(me._trackControl.curIndex);
                     //设置自定义overlay的位置

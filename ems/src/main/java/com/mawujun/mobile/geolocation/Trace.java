@@ -62,7 +62,7 @@ public class Trace {
 	public Double getDistance() {
 		return distance;
 	}
-	public void setDistance(String Double) {
+	public void setDistance(Double distance) {
 		this.distance = distance;
 	}
 	public String getSessionId() {

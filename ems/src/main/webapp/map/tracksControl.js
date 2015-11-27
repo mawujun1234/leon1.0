@@ -8,6 +8,7 @@ function TracksControl(){
 	this.defaultSpeed=2000;//值越大越快，//默认速度 米/秒
 	
 	this._encrLngLatPois=[];//这次路书的节点
+	this._sessionId=null;//这次路书的sessionId
 	this.historyoverlay=null;//历史的轨迹线路
 	
 	this.lushuMarker;//路书上的图标
@@ -120,9 +121,9 @@ function TracksControl(){
 	/**
 	 * 获取某个历史轨迹的所有节点
 	 */
-	this.setTraceListpois=function(traceList){
+	this.setTraceListpois=function(sessionId,traceList){
 		var self=this;
-		
+		this.sessionId=sessionId;
 		for(var i=0;i<traceList.length;i++){
 			 var pos = new BMap.Point(traceList[i].longitude, traceList[i].latitude);
              pos.loc_time = traceList[i].loc_time
@@ -142,9 +143,16 @@ function TracksControl(){
 	/**
 	 * 在界面上画出运动轨迹
 	 */
-	this.drawPolylineOvelay=function(traceList){
+	this.drawPolylineOvelay=function(sessionId,traceList){
+		//如果是刚刚画过的线，就不再画了
+		if(this.sessionId==sessionId){
+			return;
+		} else {
+			//清除原来的，如果换了一条轨迹，就清空原来的数据
+			this.trackStop();
+		}
 		if(traceList){
-			this.setTraceListpois(traceList);
+			this.setTraceListpois(sessionId,traceList);
 		}
 		if(!this._encrLngLatPois){
 			alert("请先设置轨迹的经纬度数据!");

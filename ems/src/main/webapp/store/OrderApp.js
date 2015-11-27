@@ -571,7 +571,7 @@ Ext.onReady(function(){
 					orderNo:order_no.getValue(),
 					store_id:store_combox.getValue(),
 		            store_name:store_combox.getRawValue(),
-		            orderDate:orderDate.getValue(),
+		            orderDate:orderDate.getRawValue()+" 00:00:00",
 		            project_id:project_combox.getValue(),
 		            supplier_id:supplier_combox.getValue(),
 	            	supplier_name:supplier_combox.getRawValue(),
