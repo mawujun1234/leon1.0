@@ -88,6 +88,7 @@ public class BNDemoMainActivity extends Activity {
 		
 		isGPSNavButton = (ToggleButton) findViewById(context.getResources().getIdentifier("isGPSNavButton","id", context.getPackageName()));
 		mBd09llNaviBtn = (Button) findViewById(context.getResources().getIdentifier("mBd09llNaviBtn","id", context.getPackageName()));
+		mBd09llNaviBtn.setClickable(false);
 		
 		
 		
@@ -178,38 +179,45 @@ public class BNDemoMainActivity extends Activity {
 	String authinfo = null;
 	
 	private void initNavi() {
-	    BaiduNaviManager.getInstance().setNativeLibraryPath(mSDCardPath + "/BaiduNaviSDK_SO");
+		BaiduNaviManager.getInstance().setNativeLibraryPath(
+				mSDCardPath + "/BaiduNaviSDK_SO");
 		BaiduNaviManager.getInstance().init(this, mSDCardPath, APP_FOLDER_NAME,
-			new NaviInitListener() {
-            @Override
-            public void onAuthResult(int status, String msg) {
-                if (0 == status) {
-                    authinfo = "key校验成功!";
-                } else {
-                    authinfo = "key校验失败, " + msg;
-                }
-                BNDemoMainActivity.this.runOnUiThread(new Runnable() {
+				new NaviInitListener() {
+					@Override
+					public void onAuthResult(int status, String msg) {
+						if (0 == status) {
+							authinfo = "key校验成功!";
+						} else {
+							authinfo = "key校验失败, " + msg;
+						}
+						BNDemoMainActivity.this.runOnUiThread(new Runnable() {
 
-                    @Override
-                    public void run() {
-                        Toast.makeText(BNDemoMainActivity.this, authinfo, Toast.LENGTH_LONG).show();
-                    }
-                });
+							@Override
+							public void run() {
+								Toast.makeText(BNDemoMainActivity.this,
+										authinfo, Toast.LENGTH_LONG).show();
+							}
+						});
 
-            }
-				public void initSuccess() {
-					Toast.makeText(BNDemoMainActivity.this, "导航引擎初始化成功", Toast.LENGTH_SHORT).show();
-					
-				}
-				
-				public void initStart() {
-					Toast.makeText(BNDemoMainActivity.this, "导航引擎初始化开始", Toast.LENGTH_SHORT).show();
-				}
-				
-				public void initFailed() {
-					Toast.makeText(BNDemoMainActivity.this, "导航引擎初始化失败", Toast.LENGTH_SHORT).show();
-				}
-		}, null /*mTTSCallback*/);
+					}
+
+					public void initSuccess() {
+						Toast.makeText(BNDemoMainActivity.this, "导航引擎初始化成功",
+								Toast.LENGTH_SHORT).show();
+						mBd09llNaviBtn.setClickable(true);
+						mBd09llNaviBtn.setText("开始导航");
+					}
+
+					public void initStart() {
+						Toast.makeText(BNDemoMainActivity.this, "导航引擎初始化开始",
+								Toast.LENGTH_SHORT).show();
+					}
+
+					public void initFailed() {
+						Toast.makeText(BNDemoMainActivity.this, "导航引擎初始化失败",
+								Toast.LENGTH_SHORT).show();
+					}
+				}, null /* mTTSCallback */);
 	}
 	
 	
@@ -239,7 +247,8 @@ public class BNDemoMainActivity extends Activity {
 		//BDLocation bDLocation= BaiduMapAll.locationApplication.mLocationClient.getLastKnownLocation();
 		
 		//BNRoutePlanNode sNode = new BNRoutePlanNode(bDLocation.getLongitude(), bDLocation.getLatitude(),bDLocation.getBuildingName(), null, coType);
-		
+		//同步定位，返回最近一次定位结果
+		//BDLocation start_dest=conn.getBindService().mLocationClient.getLastKnownLocation();
 		BDLocation start_dest=bd09llTOgcj02(conn.getBindService().currentLongitude,conn.getBindService().currentLatitude);
 //		BDLocation start_dest=new BDLocation();
 //		start_dest.setLatitude(116.30142);

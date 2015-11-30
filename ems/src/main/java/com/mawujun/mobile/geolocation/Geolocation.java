@@ -37,12 +37,18 @@ public class Geolocation extends UUIDEntity {
 	private String longitude;//经度
 	@Column(length=20)
 	private String latitude;//维度
+	private Double altitude;//获取高度信息，目前只有是GPS定位结果时才有效，单位米.默认值Double.MIN_VALUE,但是数据库存储会出问题，所以默认值就改成0
 	private Float  radius;///获取定位精度半径，单位是米
     public Float direction; // gps定位结果时，行进的方向，单位度，范围【0-360】，手机上部正朝向北的方向为0°方向
-    public Float speed;// GPS速度当service的type是1，且创建该track的时候输入了这个字段才会返回。
+    public Float speed;// GPS速度当service的type是1，且创建该track的时候输入了这个字段才会返回。单位公里/小时，默认值0.0f
     public Double distance;//在同个会话中，距离上一次地点的距离
+    @Column(length=20)
+    public String loc_type;//定位类型是gps定位还是网络定位
     private Date loc_time;// gps的上传时间
-    private Integer gps_interval;//定位时间间隔
+    private Long loc_time_interval;//两次定位的时间间隔，毫秒，主要用于过滤漂移的点位，gps_interval也可以，但是可能会存在定位数据丢失，所以自已有重新定义了一个
+    								//第一个点位为0
+    private Integer gps_interval;//定位时间间隔，毫秒，这是定义的时间间隔
+   
 	
     private Date createDate;//在服务端创建的时间
     
@@ -124,7 +130,24 @@ public class Geolocation extends UUIDEntity {
 	public void setGps_interval(Integer gps_interval) {
 		this.gps_interval = gps_interval;
 	}
+	public Long getLoc_time_interval() {
+		return loc_time_interval;
+	}
+	public void setLoc_time_interval(Long loc_time_interval) {
+		this.loc_time_interval = loc_time_interval;
+	}
+	public String getLoc_type() {
+		return loc_type;
+	}
+	public void setLoc_type(String loc_type) {
+		this.loc_type = loc_type;
+	}
+	public Double getAltitude() {
+		return altitude;
+	}
+	public void setAltitude(Double altitude) {
+		this.altitude = altitude;
+	}
 
-	
 	
 }

@@ -101,6 +101,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="开始导航" />
+        android:text="导航正在初始化，请稍候" />
 
 </LinearLayout>

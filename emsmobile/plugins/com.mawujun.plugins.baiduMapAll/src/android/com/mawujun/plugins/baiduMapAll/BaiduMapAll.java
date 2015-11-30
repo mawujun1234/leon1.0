@@ -80,7 +80,7 @@ public class BaiduMapAll  extends CordovaPlugin {
 					intent.putExtra("params", params.toString());
 					
 					
-					initGPS();
+					//initGPS();
 					cordova.getActivity().startService(intent);
 					
 					
@@ -143,47 +143,47 @@ public class BaiduMapAll  extends CordovaPlugin {
 		return false;
 	}
 	
-	private void initGPS(){ 
-        LocationManager locationManager=(LocationManager) cordova.getActivity().getSystemService(Context.LOCATION_SERVICE); 
-
-        //判断GPS模块是否开启，如果没有则开启 
-        if(!locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)){ 
-//         Toast.makeText( cordova.getActivity(), "GPS没有打开，请打开它!", Toast.LENGTH_SHORT).show(); 
-//         //转到手机设置界面，用户设置GPS
-//         Intent intent=new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS); 
-//         cordova.getActivity().startActivityForResult(intent,0); //设置完成后返回到原来的界面
-         
-			AlertDialog.Builder dialog = new AlertDialog.Builder(cordova.getActivity());
-			dialog.setMessage("请打开GPS!!");
-			dialog.setPositiveButton("确定",
-					new android.content.DialogInterface.OnClickListener() {
-
-						@Override
-						public void onClick(DialogInterface arg0, int arg1) {
-
-							// 转到手机设置界面，用户设置GPS
-							Intent intent = new Intent(
-									Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-							cordova.getActivity().startActivityForResult(
-									intent, 0); // 设置完成后返回到原来的界面
-
-						}
-					});
-			dialog.setNeutralButton("取消",
-					new android.content.DialogInterface.OnClickListener() {
-
-						@Override
-						public void onClick(DialogInterface arg0, int arg1) {
-							arg0.dismiss();
-						}
-					});
-			dialog.show();
-         
-        } 
-        else { 
-        	
-        } 
-   } 
+//	private void initGPS(){ 
+//        LocationManager locationManager=(LocationManager) cordova.getActivity().getSystemService(Context.LOCATION_SERVICE); 
+//
+//        //判断GPS模块是否开启，如果没有则开启 
+//        if(!locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)){ 
+////         Toast.makeText( cordova.getActivity(), "GPS没有打开，请打开它!", Toast.LENGTH_SHORT).show(); 
+////         //转到手机设置界面，用户设置GPS
+////         Intent intent=new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS); 
+////         cordova.getActivity().startActivityForResult(intent,0); //设置完成后返回到原来的界面
+//         
+//			AlertDialog.Builder dialog = new AlertDialog.Builder(cordova.getActivity());
+//			dialog.setMessage("请打开GPS!!");
+//			dialog.setPositiveButton("确定",
+//					new android.content.DialogInterface.OnClickListener() {
+//
+//						@Override
+//						public void onClick(DialogInterface arg0, int arg1) {
+//
+//							// 转到手机设置界面，用户设置GPS
+//							Intent intent = new Intent(
+//									Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+//							cordova.getActivity().startActivityForResult(
+//									intent, 0); // 设置完成后返回到原来的界面
+//
+//						}
+//					});
+//			dialog.setNeutralButton("取消",
+//					new android.content.DialogInterface.OnClickListener() {
+//
+//						@Override
+//						public void onClick(DialogInterface arg0, int arg1) {
+//							arg0.dismiss();
+//						}
+//					});
+//			dialog.show();
+//         
+//        } 
+//        else { 
+//        	
+//        } 
+//   } 
 	
 
 

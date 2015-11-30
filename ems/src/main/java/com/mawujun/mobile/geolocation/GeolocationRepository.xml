@@ -15,14 +15,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     <!-- 查询某个作业单位在某一天轨迹列表 -->
     <select id="queryHistoryTrace" resultType="com.mawujun.mobile.geolocation.Trace">
    	    select sessionId,loginName,min(loc_time) startDate,max(loc_time) endDate,sum(distance) distance from  EMS_GEOLOCATION a
-		where a.loginname=#{loginName} and to_char(loc_time,'yyyy-mm-dd')=#{loc_time}
+		where a.loginname=#{loginName} and to_char(loc_time,'yyyy-mm-dd')=#{loc_time} 
 		group by sessionId,loginName
 		order by startDate
    </select>
    
    <select id="queryHistoryTraceList" resultType="com.mawujun.mobile.geolocation.TraceList">
    	    select * from  EMS_GEOLOCATION a
-		where a.sessionId=#{sessionId}
+		where a.sessionId=#{sessionId} and a.distance &lt;= a.speed/60/60*a.loc_time_interval and radius &lt;= 10
 		order by loc_time asc
    </select>
    

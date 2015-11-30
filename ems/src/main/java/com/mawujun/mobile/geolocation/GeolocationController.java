@@ -84,6 +84,23 @@ public class GeolocationController {
 //		geolocation.setSessionId(sessionId);
 		geolocation.setCreateDate(new Date());
 		
+//		//两次定位的时间间隔
+//		long loc_time_interval=0;
+//		WaringGps waringGps=waringGpsMap.get(geolocation.getSessionId());
+//		if(waringGps.getTraceListes().size()>0){
+//			TraceList traceList=waringGps.getTraceListes().get((waringGps.getTraceListes().size()-1));
+//			if(traceList.getLoc_time()!=null){
+//				loc_time_interval=geolocation.getLoc_time().getTime()-traceList.getLoc_time().getTime();
+//			}
+//		}
+//		geolocation.setLoc_time_interval(loc_time_interval);
+		
+		
+		
+		
+		
+		
+		
 		geolocationService.create(geolocation);
 		
 		SecurityUtils.getSubject().getSession().getId();

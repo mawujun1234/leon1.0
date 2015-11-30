@@ -343,11 +343,14 @@ public static final class ems_geolocation {
 	public static final String loginName="loginName";
 	public static final String longitude="longitude";
 	public static final String latitude="latitude";
+	public static final String altitude="altitude";
 	public static final String radius="radius";
 	public static final String direction="direction";
 	public static final String speed="speed";
 	public static final String distance="distance";
+	public static final String loc_type="loc_type";
 	public static final String loc_time="loc_time";
+	public static final String loc_time_interval="loc_time_interval";
 	public static final String gps_interval="gps_interval";
 	public static final String createDate="createDate";
 	public static final String id="id";
