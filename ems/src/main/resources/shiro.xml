@@ -36,8 +36,9 @@
 				/unauthorized.jsp*=anon
 				/login.do*=anon
 				/logout.do*=anon
-				/geolocation/mobile/upload.do*=anon
+				
 				####轨迹查询---------开始
+				##/geolocation/mobile/upload.do*=anon
 				/map/TraceApp.jsp*=anon
 				/trace/*.do*=anon
 				####轨迹查询---------结束
@@ -68,7 +69,7 @@
 	<bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">  
 	    <constructor-arg value="sid"/>  
 	    <property name="httpOnly" value="true"/>  
-	    <property name="maxAge" value="1800000"/>  
+	    <property name="maxAge" value="60000"/>  
 	</bean>  
 	<!-- 会话验证调度器 -->  
 	<bean id="sessionValidationScheduler"   
@@ -88,7 +89,7 @@
 	<bean id="sessionListener" class="com.mawujun.mobile.geolocation.ShiroSessionListener">
 	</bean>
     <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
-    	<property name="globalSessionTimeout" value="1800000"/>  
+    	<property name="globalSessionTimeout" value="60000"/>  
 	    <property name="deleteInvalidSessions" value="true"/>  
 	    <property name="sessionValidationSchedulerEnabled" value="true"/>
 	    <property name="sessionValidationScheduler" ref="sessionValidationScheduler"/> 

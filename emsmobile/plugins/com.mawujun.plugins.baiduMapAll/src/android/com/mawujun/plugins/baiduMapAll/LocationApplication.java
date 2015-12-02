@@ -248,8 +248,8 @@ public class LocationApplication extends Service{
     	}
     	
     	Date loc_time=new Date();	
-		//如果这次上传还上一次上传的时间间隔小于规定的时间间隔，那就不上传,弄一个10秒的误差，如果快10秒多算可以，因为两次定位之间会有几毫秒的误差
-		if(current_loc_time!=null && (loc_time.getTime()-current_loc_time)<(this.getGps_interval()-10000)){
+		//如果这次上传还上一次上传的时间间隔小于规定的时间间隔
+		if(current_loc_time!=null && (loc_time.getTime()-current_loc_time)<5000){
 			return;
 		}
 
@@ -308,7 +308,8 @@ public class LocationApplication extends Service{
 			
 			if(this.getParams().getString("sessionId")!=null){
 				String sessionId=this.getParams().getString("sessionId");
-				httpPost.setHeader("Cookie", "JSESSIONID=" + sessionId+";sid="+sessionId); 
+				//httpPost.setHeader("Cookie", "JSESSIONID=" + sessionId+";sid="+sessionId); 
+				httpPost.addHeader("Cookie", "JSESSIONID=" + sessionId+"; sid="+sessionId);
 			}
 			
 			

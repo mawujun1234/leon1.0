@@ -49,7 +49,7 @@ Ext.onReady(function(){
 	        name: 'interval',
 	        readOnly:false,
 	        xtype:'numberfield',
-	        minValue:30,
+	        //minValue:30,
 	        allowBlank: false
 	    }
 	  ],
