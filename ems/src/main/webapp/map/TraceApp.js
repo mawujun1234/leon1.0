@@ -159,8 +159,8 @@ function queryHistoryTraceList(sessionId){
 		    dataType: "json",
 		    success: function(data){
 		    	////window.tracksControl.setTraceListpois(data.root);
-		    	window.tracksControl.drawPolylineOvelay(sessionId,data.root);
-		    	//window.tracksControl.drawPolylineOvelay(arrPois);
+		    	//window.tracksControl.drawPolylineOvelay(sessionId,data.root);
+		    	window.tracksControl.drawPolylineOvelay("aaa",arrPois);
 		    }
 	});
 }

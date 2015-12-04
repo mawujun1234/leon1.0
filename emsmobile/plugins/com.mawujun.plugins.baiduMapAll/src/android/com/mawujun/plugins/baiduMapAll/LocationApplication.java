@@ -30,6 +30,7 @@ import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
@@ -55,33 +56,33 @@ public class LocationApplication extends Service{
     
    // public CallbackContext callbackContext;
     
-    public Double  currentLongitude;
-    public Double  currentLatitude;
-    public Long  current_loc_time;//最近一次的提交时间
-
-    private String uploadUrl;
-    private int gps_interval=0;
-    private JSONObject params;//需要传递到后台的数据
-    //public Vibrator mVibrator;
-
-    public JSONObject getParams() {
-		return params;
-	}
-	public void setParams(JSONObject params) {
-		this.params = params;
-	}
-	public int getGps_interval() {
-		return gps_interval;
-	}
-	public void setGps_interval(int gps_interval) {
-		this.gps_interval = gps_interval;
-	}
-	public String getUploadUrl() {
-		return uploadUrl;
-	}
-	public void setUploadUrl(String uploadUrl) {
-		this.uploadUrl = uploadUrl;
-	}
+//    public Double  currentLongitude;
+//    public Double  currentLatitude;
+//    public Long  current_loc_time;//最近一次的提交时间
+//
+//    private String uploadUrl;
+//    private int gps_interval=0;
+//    private JSONObject params;//需要传递到后台的数据
+//    //public Vibrator mVibrator;
+//
+//    public JSONObject getParams() {
+//		return params;
+//	}
+//	public void setParams(JSONObject params) {
+//		this.params = params;
+//	}
+//	public int getGps_interval() {
+//		return gps_interval;
+//	}
+//	public void setGps_interval(int gps_interval) {
+//		this.gps_interval = gps_interval;
+//	}
+//	public String getUploadUrl() {
+//		return uploadUrl;
+//	}
+//	public void setUploadUrl(String uploadUrl) {
+//		this.uploadUrl = uploadUrl;
+//	}
 
 
 	private static final Map<Integer, String> ERROR_MESSAGE_MAP = new HashMap<Integer, String>();
@@ -155,7 +156,8 @@ public class LocationApplication extends Service{
 		//低功耗定位模式：这种定位模式下，不会使用GPS，只会使用网络定位（Wi-Fi和基站定位）；
 		//仅用设备定位模式：这种定位模式下，不需要连接网络，只使用GPS进行定位，这种模式下不支持室内环境的定位。
 		option.setLocationMode(LocationMode.Hight_Accuracy);////可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
-        option.setScanSpan(this.getGps_interval());//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
+        //option.setScanSpan(this.getGps_interval());//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
+		option.setScanSpan(0);
         option.setIsNeedAddress(false);//可选，设置是否需要地址信息，默认不需要
         option.setLocationNotify(true);//可选，默认false，设置是否当gps有效时按照1S1次频率输出GPS结果
         option.setIsNeedLocationDescribe(false);//可选，默认false，设置是否需要位置语义化结果，可以在BDLocation.getLocationDescribe里得到，结果类似于“在北京天安门附近”
@@ -180,6 +182,7 @@ public class LocationApplication extends Service{
         @Override
         public void onReceiveLocation(BDLocation location) {
         	
+        	
         	//JSONObject jsonObj = new JSONObject();
         	if (location == null) {
         		//Toast.makeText(activityContex, "没有获取到经纬度数据!", Toast.LENGTH_LONG).show();
@@ -189,7 +192,7 @@ public class LocationApplication extends Service{
         		return;
         	}
         	
-			
+        	Log.i(BaiduMapAll.LOG_TAG, "接收到定位信息!!"+location.getLocType());
 			if (location.getLocType() == BDLocation.TypeGpsLocation) {// GPS定位结果
 				//toast("开始获取gps信息了", Toast.LENGTH_SHORT);
 				 postCoords(location);
@@ -204,6 +207,7 @@ public class LocationApplication extends Service{
 //				 currentLongitude=location.getLongitude();
 //				 currentLatitude=location.getLatitude();
 			} else if (location.getLocType() == BDLocation.TypeOffLineLocation) {// 离线定位结果
+				Log.i(BaiduMapAll.LOG_TAG, "离线定位成功，离线定位结果也是有效的!!");
                 toast("离线定位成功，离线定位结果也是有效的",Toast.LENGTH_LONG);
             } else if (location.getLocType() == BDLocation.TypeServerError) {
             	toast("服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因",Toast.LENGTH_LONG);
@@ -230,9 +234,9 @@ public class LocationApplication extends Service{
 			// 速度为0时，强制方向为0；
 			location.setDirection(0f);
 			//数据中的速度值为0时，就不去更新地图上的经纬度
-			if(currentLongitude!=null){
-				location.setLatitude(currentLatitude);
-				location.setLongitude(currentLongitude);
+			if(BaiduMapAll.currentLongitude!=null){
+				location.setLatitude(BaiduMapAll.currentLatitude);
+				location.setLongitude(BaiduMapAll.currentLongitude);
 			}
 			
 		} else {
@@ -242,29 +246,30 @@ public class LocationApplication extends Service{
     
     SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     public void postCoords(BDLocation location) {
+    	//Log.i(BaiduMapAll.LOG_TAG, "11111111111111!!"+this.getUploadUrl());
     	//如果没有上传路径就不进行上传
-    	if(this.getUploadUrl()==null || "".equals(this.getUploadUrl()) ){
+    	if(BaiduMapAll.uploadUrl==null || "".equals(BaiduMapAll.uploadUrl) ){
     		return;
     	}
-    	
+    	Log.i(BaiduMapAll.LOG_TAG, "11111111111111!!");
     	Date loc_time=new Date();	
 		//如果这次上传还上一次上传的时间间隔小于规定的时间间隔
-		if(current_loc_time!=null && (loc_time.getTime()-current_loc_time)<5000){
+		if(BaiduMapAll.current_loc_time!=null && (loc_time.getTime()-BaiduMapAll.current_loc_time)<5000){
 			return;
 		}
 
 		// 两次定位的时间间隔
 		long loc_time_interval = 0;
-		if (current_loc_time != null) {
-			loc_time_interval = loc_time.getTime() - current_loc_time;
+		if (BaiduMapAll.current_loc_time != null) {
+			loc_time_interval = loc_time.getTime() - BaiduMapAll.current_loc_time;
 		}
 		
 		
-		
+		Log.i(BaiduMapAll.LOG_TAG, "正在发送定位信息!!");
     	Double distance=0.0;
-    	if(currentLatitude!=null){
+    	if(BaiduMapAll.currentLatitude!=null){
     		//上次的经纬度
-        	LatLng pt1 = new LatLng(currentLatitude, currentLongitude);
+        	LatLng pt1 = new LatLng(BaiduMapAll.currentLatitude, BaiduMapAll.currentLongitude);
         	//本次经纬度
         	LatLng pt2 = new LatLng(location.getLatitude(), location.getLongitude());
         	//计算p1、p2两点之间的直线距离，单位：米  
@@ -278,19 +283,19 @@ public class LocationApplication extends Service{
 		
 		HttpResponse httpResponse;
 		try {
-			HttpPost httpPost = new HttpPost(this.getUploadUrl());
+			HttpPost httpPost = new HttpPost(BaiduMapAll.uploadUrl);
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 //			params.add(new BasicNameValuePair("sessionId", this.getSessionId()));
 //			params.add(new BasicNameValuePair("loginName", this.getLoginName()));
 //			params.add(new BasicNameValuePair("uuid", this.getUuid()));
 			
-			Iterator<String> iterator=params.keys();
+			Iterator<String> iterator=BaiduMapAll.params.keys();
 			while(iterator.hasNext()){
 				String key=iterator.next();
 				if("uploadUrl".equals(key)){
 					continue;
 				}
-				nameValuePairs.add(new BasicNameValuePair(key, params.getString(key)));
+				nameValuePairs.add(new BasicNameValuePair(key, BaiduMapAll.params.getString(key)));
 			}
 			nameValuePairs.add(new BasicNameValuePair("longitude", location.getLongitude()+""));
 			nameValuePairs.add(new BasicNameValuePair("latitude", location.getLatitude()+""));
@@ -306,10 +311,11 @@ public class LocationApplication extends Service{
 			
 			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
 			
-			if(this.getParams().getString("sessionId")!=null){
-				String sessionId=this.getParams().getString("sessionId");
+			Log.i(BaiduMapAll.LOG_TAG, "会话id!!"+BaiduMapAll.params.getString("sessionId"));
+			if(BaiduMapAll.params.getString("sessionId")!=null){
+				String sessionId=BaiduMapAll.params.getString("sessionId");
 				//httpPost.setHeader("Cookie", "JSESSIONID=" + sessionId+";sid="+sessionId); 
-				httpPost.addHeader("Cookie", "JSESSIONID=" + sessionId+"; sid="+sessionId);
+				httpPost.setHeader("Cookie", "JSESSIONID=" + sessionId+"; sid="+sessionId);
 			}
 			
 			
@@ -320,9 +326,9 @@ public class LocationApplication extends Service{
 		    HttpClient client = new DefaultHttpClient(httpParameters);
 			httpResponse = client.execute(httpPost);
 			if (httpResponse.getStatusLine().getStatusCode() == 200) {			
-				currentLongitude=location.getLongitude();
-				currentLatitude=location.getLatitude();
-				current_loc_time=loc_time.getTime();
+				BaiduMapAll.currentLongitude=location.getLongitude();
+				BaiduMapAll.currentLatitude=location.getLatitude();
+				BaiduMapAll.current_loc_time=loc_time.getTime();
 				
 			} else {
 				//这里响应代码不是200 页正茬插入了
@@ -389,6 +395,7 @@ public class LocationApplication extends Service{
 
 	@Override
 	public void onCreate() {
+		Log.i(BaiduMapAll.LOG_TAG, "初始化LocationApplication!");
 		super.onCreate();
 		//onCreate(getBaseContext());
 		 mLocationClient = new LocationClient(this.getBaseContext());
@@ -402,20 +409,22 @@ public class LocationApplication extends Service{
 
 	@Override
 	 public int onStartCommand(Intent intent, int flags, int startId) {
+		Log.i(BaiduMapAll.LOG_TAG, "启动LocationApplication!");
 		
-		this.setUploadUrl(intent.getStringExtra("uploadUrl"));
-		this.setGps_interval(intent.getIntExtra("gps_interval",0));
-		String params_str=intent.getStringExtra("params");
-		try {
-			if(params_str!=null){
-				this.setParams(new JSONObject(params_str));
-				
-			}
-			
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		//this.setUploadUrl(intent.getStringExtra("uploadUrl"));
+		//this.setGps_interval(intent.getIntExtra("gps_interval",0));
+//		String params_str=intent.getStringExtra("params");
+//		try {
+//			if(params_str!=null){
+//				this.setParams(new JSONObject(params_str));
+//				
+//			}
+//			
+//		} catch (JSONException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			Log.e(BaiduMapAll.LOG_TAG, e.getMessage());
+//		}
 		//mLocationClient.getLocOption().setScanSpan(this.getGps_interval());
 		initLocation();
 		
