@@ -69,12 +69,12 @@
 	<bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">  
 	    <constructor-arg value="sid"/>  
 	    <property name="httpOnly" value="true"/>  
-	    <property name="maxAge" value="60000"/>  
+	    <property name="maxAge" value="6000000"/>  
 	</bean>  
 	<!-- 会话验证调度器 -->  
 	<bean id="sessionValidationScheduler"   
 	class="org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler">  
-	    <property name="interval" value="300000"/>  
+	    <property name="interval" value="120000"/>  
 	    <property name="sessionManager" ref="sessionManager"/>  
 	</bean>  
 	<!-- 会话DAO -->  

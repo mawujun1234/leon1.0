@@ -94,7 +94,7 @@ public class BaiduMapAll  extends CordovaPlugin {
 					
 					
 					//am.cancel(collectSender);
-					am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(),params.getInt("gps_interval"), pendingIntent);
+					am.setRepeating(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime(),params.getInt("gps_interval"), pendingIntent);
 					
 					callbackContext.success("success");
 					

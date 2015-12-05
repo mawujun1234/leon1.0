@@ -1,6 +1,7 @@
 package com.mawujun.mobile.geolocation;
 
 import java.lang.reflect.InvocationTargetException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -62,10 +64,10 @@ public class GeolocationController {
 //		updateGpsUploadTime(sessionId,longitude,latitude);
 //		return "success";
 //	}
-	
+	SimpleDateFormat ff=new SimpleDateFormat("HH:mm:ss");
 	@RequestMapping("/geolocation/mobile/upload.do")
 	public String upload(Geolocation geolocation) {
-
+		System.out.println(ff.format(new Date())+"-----"+geolocation.getSessionId());
 		
 		//logger.info("==========================================================================");
 		//logger.info("经度:{},维度:{},uuid:{},loginname:{}",longitude,latitude,uuid,loginName);
@@ -75,37 +77,15 @@ public class GeolocationController {
 		}
 		
 		
-//		Geolocation geolocation=new Geolocation();
-//		geolocation.setCreateDate(new Date());
-//		geolocation.setLatitude(latitude);
-//		geolocation.setLongitude(longitude);
-//		geolocation.setLoginName(loginName);
-//		geolocation.setUuid(uuid);
-//		geolocation.setSessionId(sessionId);
+
 		geolocation.setCreateDate(new Date());
 		
-//		//两次定位的时间间隔
-//		long loc_time_interval=0;
-//		WaringGps waringGps=waringGpsMap.get(geolocation.getSessionId());
-//		if(waringGps.getTraceListes().size()>0){
-//			TraceList traceList=waringGps.getTraceListes().get((waringGps.getTraceListes().size()-1));
-//			if(traceList.getLoc_time()!=null){
-//				loc_time_interval=geolocation.getLoc_time().getTime()-traceList.getLoc_time().getTime();
-//			}
-//		}
-//		geolocation.setLoc_time_interval(loc_time_interval);
 		
-		
-		
-		
-		
-		
-		
-		geolocationService.create(geolocation);
-		
-		SecurityUtils.getSubject().getSession().getId();
-		//updateGpsUploadTime(geolocation.getSessionId(),geolocation.getLongitude(),geolocation.getLatitude(),geolocation.getLoc_time());
-		updateGpsUploadTime(geolocation);
+//		geolocationService.create(geolocation);
+//		
+//		SecurityUtils.getSubject().getSession().getId();
+//		//updateGpsUploadTime(geolocation.getSessionId(),geolocation.getLongitude(),geolocation.getLatitude(),geolocation.getLoc_time());
+//		updateGpsUploadTime(geolocation);
 		return "success";
 	}
 	
