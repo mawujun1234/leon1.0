@@ -248,8 +248,8 @@ public class BNDemoMainActivity extends Activity {
 		
 		//BNRoutePlanNode sNode = new BNRoutePlanNode(bDLocation.getLongitude(), bDLocation.getLatitude(),bDLocation.getBuildingName(), null, coType);
 		//同步定位，返回最近一次定位结果
-		//BDLocation start_dest=conn.getBindService().mLocationClient.getLastKnownLocation();
-		BDLocation start_dest=bd09llTOgcj02(BaiduMapAll.currentLongitude,BaiduMapAll.currentLatitude);
+		BDLocation start_dest=conn.getBindService().mLocationClient.getLastKnownLocation();
+		//BDLocation start_dest=bd09llTOgcj02(BaiduMapAll.currentLongitude,BaiduMapAll.currentLatitude);
 //		BDLocation start_dest=new BDLocation();
 //		start_dest.setLatitude(116.30142);
 //		start_dest.setLongitude(40.05087);
