@@ -24,18 +24,18 @@ public class BaiduMapAll  extends CordovaPlugin {
 	private static final String NAVI_ACTION = "navi";
 	public static final String LOG_TAG = "BaiduMapAll";
 	
-	public static final String loc_action = "com.mawujun.plugins.baiduMapAll.LocationApplication";
+	//public static final String loc_action = "com.mawujun.plugins.baiduMapAll.LocationApplication";
 	//public static LocationApplication locationApplication;
 	//private LocationClient mLocationClient;
 	
 	
-    public static Double  currentLongitude;
-    public static Double  currentLatitude;
-    public static Long  current_loc_time;//最近一次的提交时间
-
-    public static String uploadUrl;
-    public static int gps_interval=0;
-    public static JSONObject params;//需要传递到后台的数据
+//    public static Double  currentLongitude;
+//    public static Double  currentLatitude;
+//    public static Long  current_loc_time;//最近一次的提交时间
+//
+//    public static String uploadUrl;
+//    public static int gps_interval=0;
+//    public static JSONObject params;//需要传递到后台的数据
 	
 
 
@@ -46,15 +46,15 @@ public class BaiduMapAll  extends CordovaPlugin {
 		
 		if (GET_ACTION.equals(action)) {
 			
-			try {
-				params= args.getJSONObject(0);
-				BaiduMapAll.uploadUrl=params.getString("uploadUrl");
-				BaiduMapAll.gps_interval=params.getInt("gps_interval");
-			} catch (JSONException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			
+//			try {
+//				params= args.getJSONObject(0);
+//				BaiduMapAll.uploadUrl=params.getString("uploadUrl");
+//				BaiduMapAll.gps_interval=params.getInt("gps_interval");
+//			} catch (JSONException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
+//			
 			
 			cordova.getActivity().runOnUiThread(new Runnable() {
 				@Override
@@ -65,36 +65,38 @@ public class BaiduMapAll  extends CordovaPlugin {
 					
 					acquireWakeLock();
 					try {
-//					JSONObject params= args.getJSONObject(0);
-//					Intent intent=new Intent(cordova.getActivity(), LocationApplication.class);
-//					intent.putExtra("uploadUrl", params.getString("uploadUrl"));
-//					intent.putExtra("gps_interval", params.getInt("gps_interval"));
-//					intent.putExtra("params", params.toString());
-//					
-//					
-//					//initGPS();
-//					cordova.getActivity().startService(intent);
+					JSONObject params= args.getJSONObject(0);
+					Intent intent=new Intent(cordova.getActivity(), LocationApplication.class);
+					intent.putExtra("uploadUrl", params.getString("uploadUrl"));
+					intent.putExtra("gps_interval", params.getInt("gps_interval"));
+					intent.putExtra("params", params.toString());
+					MyLog.i(BaiduMapAll.LOG_TAG,  params.getInt("gps_interval")+"=111111111");
+					
+					
+					//initGPS();
+					cordova.getActivity().startService(intent);
 					
 						
-					Log.i(LOG_TAG, "start alarm");
-					
-					
-					AlarmManager am = (AlarmManager)cordova.getActivity().getSystemService(Context.ALARM_SERVICE);
-
-					Intent intent=new Intent(cordova.getActivity(), LocationApplication.class);
-					intent.setAction(loc_action);
-					//intent.putExtra("uploadUrl", params.getString("uploadUrl"));
-					//intent.putExtra("gps_interval", params.getInt("gps_interval"));
-					//intent.putExtra("params", params.toString());
-					
-					//String params_str=intent.getStringExtra("params");
-					
-					
-					PendingIntent pendingIntent = PendingIntent.getService(cordova.getActivity(), 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
-					
-					
-					//am.cancel(collectSender);
-					am.setRepeating(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime(),params.getInt("gps_interval"), pendingIntent);
+//					MyLog.i(LOG_TAG, "start alarm");
+//
+//					
+//					
+//					AlarmManager am = (AlarmManager)cordova.getActivity().getSystemService(Context.ALARM_SERVICE);
+//
+//					Intent intent=new Intent(cordova.getActivity(), LocationApplication.class);
+//					intent.setAction(loc_action);
+//					//intent.putExtra("uploadUrl", params.getString("uploadUrl"));
+//					//intent.putExtra("gps_interval", params.getInt("gps_interval"));
+//					//intent.putExtra("params", params.toString());
+//					
+//					//String params_str=intent.getStringExtra("params");
+//					
+//					
+//					PendingIntent pendingIntent = PendingIntent.getService(cordova.getActivity(), 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
+//					
+//					
+//					//am.cancel(collectSender);
+//					am.setRepeating(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime(),params.getInt("gps_interval"), pendingIntent);
 					
 					callbackContext.success("success");
 					
@@ -164,19 +166,20 @@ public class BaiduMapAll  extends CordovaPlugin {
 	public void onDestroy() {
 		//locationApplication.stop();
 		releaseWakeLock();
-		//cordova.getActivity().stopService(new Intent(cordova.getActivity(), LocationApplication.class));
-		stopPollingService(cordova.getActivity());
+		cordova.getActivity().stopService(new Intent(cordova.getActivity(), LocationApplication.class));
+		//stopPollingService(cordova.getActivity());
 		super.onDestroy();
 	}
 	
-	public static void stopPollingService(Context context) {
-		Log.i("ServiceUtil-AlarmManager", "cancleAlarmManager to start ");  
-	    Intent intent = new Intent(context,LocationApplication.class);  
-	    intent.setAction(loc_action);  
-	    PendingIntent pendingIntent=PendingIntent.getService(context, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);  
-	    AlarmManager alarm=(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);  
-	    alarm.cancel(pendingIntent);  
-	}
+//	public static void stopPollingService(Context context) {
+//		MyLog.i(BaiduMapAll.LOG_TAG, "stopPollingService()方法中停止了定时启动!");
+//		Log.i("ServiceUtil-AlarmManager", "cancleAlarmManager to start ");  
+//	    Intent intent = new Intent(context,LocationApplication.class);  
+//	    intent.setAction(loc_action);  
+//	    PendingIntent pendingIntent=PendingIntent.getService(context, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);  
+//	    AlarmManager alarm=(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);  
+//	    alarm.cancel(pendingIntent);  
+//	}
 	
 	 WakeLock wakeLock; 
 		private void acquireWakeLock() {

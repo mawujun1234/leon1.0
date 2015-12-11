@@ -82,6 +82,7 @@
         <source-file src="src/android/layout/bndemomainactivity.xml" target-dir="res/layout" /> 
         <source-file src="src/android/com/mawujun/plugins/baiduMapAll/BNDemoMainActivity.java" target-dir="src/com/mawujun/plugins/baiduMapAll" />
         <source-file src="src/android/com/mawujun/plugins/baiduMapAll/BNDemoGuideActivity.java" target-dir="src/com/mawujun/plugins/baiduMapAll" />
+        <source-file src="src/android/com/mawujun/plugins/baiduMapAll/MyLog.java" target-dir="src/com/mawujun/plugins/baiduMapAll" />
         
         <source-file src="src/android/drawable/selector_butn_toggle.xml" target-dir="res/drawable" /> 
         <source-file src="src/android/drawable/butn_close.png" target-dir="res/drawable" /> 

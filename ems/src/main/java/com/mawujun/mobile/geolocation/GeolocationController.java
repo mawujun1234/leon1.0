@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.mobile.login.WaringGps;
-import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.BeanUtils;
 
 @Controller
@@ -81,11 +79,11 @@ public class GeolocationController {
 		geolocation.setCreateDate(new Date());
 		
 		
-//		geolocationService.create(geolocation);
-//		
-//		SecurityUtils.getSubject().getSession().getId();
-//		//updateGpsUploadTime(geolocation.getSessionId(),geolocation.getLongitude(),geolocation.getLatitude(),geolocation.getLoc_time());
-//		updateGpsUploadTime(geolocation);
+		geolocationService.create(geolocation);
+		
+		SecurityUtils.getSubject().getSession().getId();
+		//updateGpsUploadTime(geolocation.getSessionId(),geolocation.getLongitude(),geolocation.getLatitude(),geolocation.getLoc_time());
+		updateGpsUploadTime(geolocation);
 		return "success";
 	}
 	
