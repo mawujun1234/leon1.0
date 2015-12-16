@@ -7,13 +7,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
+import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
-import android.os.SystemClock;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -70,10 +72,10 @@ public class BaiduMapAll  extends CordovaPlugin {
 					intent.putExtra("uploadUrl", params.getString("uploadUrl"));
 					intent.putExtra("gps_interval", params.getInt("gps_interval"));
 					intent.putExtra("params", params.toString());
-					MyLog.i(BaiduMapAll.LOG_TAG,  params.getInt("gps_interval")+"=111111111");
+					//MyLog.i(BaiduMapAll.LOG_TAG,  params.getInt("gps_interval")+"=111111111");
 					
 					
-					//initGPS();
+					initGPS();
 					cordova.getActivity().startService(intent);
 					
 						
@@ -158,7 +160,54 @@ public class BaiduMapAll  extends CordovaPlugin {
 	}
 
 	
+	public void initGPS(){
+		LocationManager locationManager = (LocationManager)cordova.getActivity().getSystemService(Context.LOCATION_SERVICE);
+		boolean bool= locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+		if(!bool){
+			new AlertDialog.Builder(cordova.getActivity())
+					.setTitle("系统提示")
+					// 设置对话框标
+					.setMessage("请打开gps！")
+					// 设置显示的内容
+					.setPositiveButton("确定",
+							new DialogInterface.OnClickListener() {// 添加确定按钮
 
+								@Override
+								public void onClick(DialogInterface dialog,int which) {// 确定按钮的响应事件
+									  
+									Intent intent = new Intent();
+							        intent.setAction(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+							        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+							        try 
+							        {
+							        	cordova.getActivity().startActivity(intent);                     
+							        } catch(ActivityNotFoundException ex) 
+							        {
+							            // General settings activity
+							            intent.setAction(Settings.ACTION_SETTINGS);
+							            try {
+							            	cordova.getActivity().startActivity(intent);
+							            } catch (Exception e) {
+							            }
+							        }
+								}
+
+							})
+					.setNegativeButton("取消",
+							new DialogInterface.OnClickListener() {// 添加返回按钮
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {// 响应事件
+
+
+								}
+
+							}).show();
+
+		}
+				
+	}
 
 
 
@@ -181,27 +230,28 @@ public class BaiduMapAll  extends CordovaPlugin {
 //	    alarm.cancel(pendingIntent);  
 //	}
 	
-	 WakeLock wakeLock; 
-		private void acquireWakeLock() {
-			if (null == wakeLock) {
-				PowerManager pm = (PowerManager) cordova.getActivity().getSystemService(Context.POWER_SERVICE);
-				wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK
-						| PowerManager.ON_AFTER_RELEASE, getClass()
-						.getCanonicalName());
-				if (null != wakeLock) {
-					// Log.i(TAG, "call acquireWakeLock");
-					wakeLock.acquire();
-				}
+	WakeLock wakeLock;
+
+	private void acquireWakeLock() {
+		if (null == wakeLock) {
+			PowerManager pm = (PowerManager) cordova.getActivity()
+					.getSystemService(Context.POWER_SERVICE);
+			//wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK| PowerManager.ON_AFTER_RELEASE, getClass().getCanonicalName());
+			wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass().getCanonicalName());
+			if (null != wakeLock) {
+				// Log.i(TAG, "call acquireWakeLock");
+				wakeLock.acquire();
 			}
 		}
+	}
 
-		// 释放设备电源锁
-		private void releaseWakeLock() {
-			if (null != wakeLock && wakeLock.isHeld()) {
-				// Log.i(TAG, "call releaseWakeLock");
-				wakeLock.release();
-				wakeLock = null;
-			}
-		}	
+	// 释放设备电源锁
+	private void releaseWakeLock() {
+		if (null != wakeLock && wakeLock.isHeld()) {
+			// Log.i(TAG, "call releaseWakeLock");
+			wakeLock.release();
+			wakeLock = null;
+		}
+	}
 
 }

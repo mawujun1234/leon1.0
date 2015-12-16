@@ -20,6 +20,10 @@ $(function(){
 		$(this).toggleClass("glyphicon-chevron-down");
 		$("#entryTracePanel_content").toggle();
 	});
+	$("#showPolePanel_button i").click(function(){
+		$(this).toggleClass("glyphicon-chevron-down");
+		$("#showPolePanel_content").toggle();
+	});
 	//展开或显示历史轨迹明细
 	$("#entryTracePanel_list_button i").click(function(){
 		$("#entryTracePanel_list").toggle();
@@ -49,9 +53,6 @@ $(function(){
 			tracksControl.removeTimerPolylineOvelay(sessionId);
 		}
 		
-		//tracksControl.centerTimerCar(sessionId);
-		//e.preventDefault();
-		//e.stopPropagation();
 	});
 
 //========================================================================================		
@@ -96,7 +97,7 @@ $(function(){
 		$("#entryTracePanel_list").hide();
 		$("#tracks-history-play").hide();//隐藏播放器
 		//.当点击历史轨迹的时候，就清空界面元素和停止这个定时调用，翻过来一样
-		map.clearOverlays();
+		tracksControl.removePolylineOvelay();
 		showWorkunitCar_setTimeout=!showWorkunitCar_setTimeout;//来回切换定时更新定时数据
 		if(showWorkunitCar_setTimeout){//去获取实时监控轨迹中的轨迹数据
 			showWorkunitCar();
@@ -104,16 +105,6 @@ $(function(){
 
 	})
 	
-	//$('[data-toggle="popover"]').popover();
-
-	
-
-	
-
-
-	
-	//$('#datetimepicker4').datetimepicker('show');
-	//$('#datetimepicker4').datetimepicker('hide');
 	$.datetimepicker.setLocale('zh');
 	$('#datetimepicker').datetimepicker({
 	 timepicker:false,
@@ -128,7 +119,7 @@ $(function(){
 	  }
 	});
 	$('#datetimepicker').next().click(function(){
-		$('#datetimepicker').datetimepicker('show');
+		$('#datetimepicker').datetimepicker('toggle');
 	});
 	
 	initDrag();
@@ -142,6 +133,36 @@ $(function(){
     });
     
 
+    //=======================显示点位信息
+    queryCustomer();
+	$("#customer_area").change(function(){
+		//alert($(this).val());
+		queryCustomer($(this).val());
+	});
+	$("#showPolePanel_querybutton").click(function(){
+		showMask();
+		var val=$("#customeres").val();
+		var params={
+			customer_0or1_id:val
+		}
+		
+		$.ajax({
+			url : Ext.ContextPath + '/map/queryPolesAll.do',
+			dataType:"json",
+			type: "POST",
+			data:$.param(params,true),
+			success : function(data) {
+				removePoleMarkers();
+				for(var i=0;i<data.root.length;i++){
+					//console.log("longitude:"+pole.longitude+",latitude:"+pole.latitude);
+					var pole=data.root[i];
+					addMarker2Map(pole);
+				}
+				hideMask();
+			}
+		});
+		
+	});
 
 });
 
@@ -363,39 +384,39 @@ function showMap() {
     	mapTypes:[BMAP_NORMAL_MAP,BMAP_SATELLITE_MAP,BMAP_HYBRID_MAP]
     }));
     
-    // 实例化一个驾车导航用来生成路线
-	//DrivingRoute是自动生成的导航，要换成从后台获取的
-	var drv = new BMap.DrivingRoute('宁波', {
-	        onSearchComplete: function(res) {
-	            if (drv.getStatus() == BMAP_STATUS_SUCCESS) {
-	                var plan = res.getPlan(0);
-	                window.arrPois =[];
-	                for(var j=0;j<plan.getNumRoutes();j++){
-	                    var route = plan.getRoute(j);
-	                    //aaa.loc_time="2015-11-18 18:15:15";
-	                    //arrPois= arrPois.concat(route.getPath());
-	                    
-	                    var aa=route.getPath(); 
-	                    for(var x=0;x<aa.length;x++){
-	                    	 arrPois.push({
-		                    	longitude:aa[x].lng,
-		                    	latitude:aa[x].lat,
-		                    	loc_time:'2015-11-25 12:12:12'
-		                    });
-	                    }
-	                    
-	                   
-	                }
-	                //map.addOverlay(new BMap.Polyline(arrPois, {strokeColor: '#111'}));
-	                //map.setViewport(arrPois);
-	                
-
-	                
-	                
-	            }
-	        }
-	 });
-	drv.search('雅戈尔国际展销中心', '都市森林');
+//    // 实例化一个驾车导航用来生成路线
+//	//DrivingRoute是自动生成的导航，要换成从后台获取的
+//	var drv = new BMap.DrivingRoute('宁波', {
+//	        onSearchComplete: function(res) {
+//	            if (drv.getStatus() == BMAP_STATUS_SUCCESS) {
+//	                var plan = res.getPlan(0);
+//	                window.arrPois =[];
+//	                for(var j=0;j<plan.getNumRoutes();j++){
+//	                    var route = plan.getRoute(j);
+//	                    //aaa.loc_time="2015-11-18 18:15:15";
+//	                    //arrPois= arrPois.concat(route.getPath());
+//	                    
+//	                    var aa=route.getPath(); 
+//	                    for(var x=0;x<aa.length;x++){
+//	                    	 arrPois.push({
+//		                    	longitude:aa[x].lng,
+//		                    	latitude:aa[x].lat,
+//		                    	loc_time:'2015-11-25 12:12:12'
+//		                    });
+//	                    }
+//	                    
+//	                   
+//	                }
+//	                //map.addOverlay(new BMap.Polyline(arrPois, {strokeColor: '#111'}));
+//	                //map.setViewport(arrPois);
+//	                
+//
+//	                
+//	                
+//	            }
+//	        }
+//	 });
+//	drv.search('雅戈尔国际展销中心', '都市森林');
 	
 		
 	// 绑定事件
@@ -435,6 +456,7 @@ function showMap() {
 	showWorkunitCar();
 	window.loc_time=(new Date).format("yyyy-MM-dd");
 	showHistoryWorkunit(window.loc_time);
+
 }
 
 
@@ -489,6 +511,28 @@ function initDrag(id){
         return false;
     });
     
+    var $showPolePanel = $('#showPolePanel').mousedown(function(e) {
+        var offset = $(this).offset();
+
+        this.posix = {
+            x: e.pageX - offset.left,
+            y: e.pageY - offset.top
+        };
+        $.extend(document, {
+            move: true,
+            move_target: this
+        });
+        //console.log(1);
+    }).on('mousedown', '#showPolePanel_content', function(e) {
+        $.extend(document, {
+            move: true,
+            call_down: function(e) {
+                return false;
+            }
+        });
+        return false;
+    });
+    
     
     var $entryTracePanely = $('#entryTracePanel_list').mousedown(function(e) {
         var offset = $(this).offset();
@@ -511,6 +555,8 @@ function initDrag(id){
         });
         return false;
     });
+    
+    
 
     var $box = $('#tracks-history-play').mousedown(function(e) {
         var offset = $(this).offset();
@@ -533,6 +579,110 @@ function initDrag(id){
         });
         return false;
     });
+
+}
+
+function queryCustomer(node){
+	var params={};
+	if(node){
+	 params={
+	 	node:node
+	 }
+	}
+	//
+	
+	$.ajax({
+			url : Ext.ContextPath + '/customer/query.do',
+			dataType:"json",
+			type: "POST",
+			data:params,
+			success : function(data) {
+				var root=data;
+				var html="";
+				for(var i=0;i<root.length;i++){
+					html+="<option value='"+root[i].id+"'>"+root[i].name+"</option>";
+				}
+				if(node){
+					$("#customeres").html(html);
+					$("#customeres").selectpicker('refresh');
+				} else {
+					$("#customer_area").html(html);
+				}
+			}
+	});
+
+}
+
+var poleIcon = new BMap.Icon("./images/camera48.png", new BMap.Size(48,48));
+var brokenIcon = new BMap.Icon("./images/broken48.png", new BMap.Size(48,48));
+var pole_markers=[];
+function addMarker2Map(pole){
+	if(!pole.longitude){
+		return;
+	}
+	var point = new BMap.Point(pole.longitude, pole.latitude);
+
+	var marker = null;
+	if (pole.status == 'hitch') {
+		marker = new BMap.Marker(point, {
+					icon : brokenIcon
+				}); // 创建标注
+	} else {
+		marker = new BMap.Marker(point, {
+					icon : poleIcon
+				}); // 创建标注
+	}
+
+	map.addOverlay(marker); // 将标注添加到地图中
+	//marker.enableDragging();
+	marker.pole_id = pole.id;
+
+	addMouseoverHandler("编码:" + pole.code + "<br/>名称:" + pole.name + "<br/>地址:"
+					+ pole.province + pole.city + pole.area + pole.address,
+			marker);
+	pole_markers.push(marker);
+			
+//	marker.addEventListener("click",function(type,target){		
+//			//alert("弹出定位的设备信息和设备生命周期");
+//			showEquipments(type.target.pole_id);
+//	});
+	
+}
+function removePoleMarkers(){
+	for(var i=0;i<pole_markers.length;i++){
+		map.removeOverlay(window.pole_markers[i]);
+	}
+	window.pole_markers=[];
+}
+function showEquipments(pole_id){
+//	var equipments=Ext.create('Ems.map.PoleEquipmentGrid',{
+//		region:'center'
+//	});
+//	equipments.getStore().load({params:{
+//		id:pole_id
+//	}
+//	});
+//	var equipmentCycle=Ext.create('Ems.map.EquipmentCycleGrid',{
+//		region:'south',
+//		split:true,
+//		height:230
+//	});
+//	equipments.on("itemclick",function(view, record, item, index, e, eOpts){
+//		equipmentCycle.getStore().getProxy().extraParams={ecode:record.get("ecode")};
+//		equipmentCycle.ecode=record.get("ecode");
+//		equipmentCycle.getStore().reload();
+//	});
+//	
+//	var win=Ext.create('Ext.window.Window',{
+//		layout:'border',
+//		title:'点位设备信息',
+//		width:700,
+//		height:500,
+//		modal:true,
+//		items:[equipments,equipmentCycle]
+//		
+//	});
+//	win.show();
 
 }
 function showMask(){  

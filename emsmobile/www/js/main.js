@@ -148,6 +148,7 @@ $(function(){
 		var params={
 			sessionId:user.sessionId,
 			loginName:user.username,
+			radius:50,//精度，少于这个精度就不上传到服务器了
 			uuid:uuid,
 			uploadUrl:$.ServerPath+"/geolocation/mobile/upload.do",//必须要有
 			gps_interval:user.gps_interval*1000//必须要有

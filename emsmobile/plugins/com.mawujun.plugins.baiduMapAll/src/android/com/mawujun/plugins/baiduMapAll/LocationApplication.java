@@ -152,7 +152,6 @@ public class LocationApplication extends Service{
 	public void initLocation() {
 		//配置参数是可以每次定位的时候都不同的
 		LocationClientOption option = new LocationClientOption();
-		option.setOpenGps(true);//可选，默认false,设置是否使用gps
 		//高精度定位模式：这种定位模式下，会同时使用网络定位和GPS定位，优先返回最高精度的定位结果；
 		//低功耗定位模式：这种定位模式下，不会使用GPS，只会使用网络定位（Wi-Fi和基站定位）；
 		//仅用设备定位模式：这种定位模式下，不需要连接网络，只使用GPS进行定位，这种模式下不支持室内环境的定位。
@@ -172,9 +171,12 @@ public class LocationApplication extends Service{
 		option.setCoorType(CoordinateType.BD09LL);// 返回的定位结果是百度经纬度，默认值gcj02,//wgs84:国际经纬度坐标  "gcj02":国家测绘局标准,"bd09ll":百度经纬度标准,"bd09":百度墨卡托标准
 		option.setProdName("BaiduLoc");
 		mLocationClient.setLocOption(option);
+		
+		//MyLog.i(BaiduMapAll.LOG_TAG, this.getGps_interval()+"");
 	}
 
 
+	
     /**
      * 实现实时位置回调监听
      */
@@ -182,7 +184,6 @@ public class LocationApplication extends Service{
     	
         @Override
         public void onReceiveLocation(BDLocation location) {
-        	
         	
         	//JSONObject jsonObj = new JSONObject();
         	if (location == null) {
@@ -192,27 +193,24 @@ public class LocationApplication extends Service{
         		toast(msg,Toast.LENGTH_LONG);
         		return;
         	}
+        	//toast(location.getRadius()+"",Toast.LENGTH_LONG);
+        	//if (location.getLocType() != BDLocation.TypeGpsLocation) {// 网络定位结果
+        	
         	
         	Log.i(BaiduMapAll.LOG_TAG, "接收到定位信息!!"+location.getLocType());
 			if (location.getLocType() == BDLocation.TypeGpsLocation) {// GPS定位结果
 				//toast("开始获取gps信息了", Toast.LENGTH_SHORT);
 				 postCoords(location);
-				 
-//				 currentLongitude=location.getLongitude();
-//					currentLatitude=location.getLatitude();
 
 			} else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {// 网络定位结果
 				//toast("开始获取gps信息了", Toast.LENGTH_SHORT);
 				 postCoords(location);
-				 
-//				 currentLongitude=location.getLongitude();
-//				 currentLatitude=location.getLatitude();
 			} else if (location.getLocType() == BDLocation.TypeOffLineLocation) {// 离线定位结果
 				Log.i(BaiduMapAll.LOG_TAG, "离线定位成功，离线定位结果也是有效的!!");
 				postCoords(location);
                // toast("离线定位成功，离线定位结果也是有效的",Toast.LENGTH_LONG);
             } else if (location.getLocType() == BDLocation.TypeServerError) {
-            	toast("服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因",Toast.LENGTH_LONG);
+            	toast("服务端网络定位失败",Toast.LENGTH_LONG);
             } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
             	toast("网络不通导致定位失败，请检查网络是否通畅",Toast.LENGTH_LONG);
             } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
@@ -220,6 +218,7 @@ public class LocationApplication extends Service{
             }else {
 				int locationType = location.getLocType();
 				String msg="获取地址失败:"+getErrorMessage(locationType);
+				//MyLog.i(BaiduMapAll.LOG_TAG, msg);
 				LOG.e(BaiduMapAll.LOG_TAG, msg);
 				//Toast.makeText(activityContex, "获取地址失败:"+getErrorMessage(locationType), Toast.LENGTH_LONG).show();
 				toast(msg,Toast.LENGTH_LONG);
@@ -236,16 +235,17 @@ public class LocationApplication extends Service{
      * @param location
      */
     public void filter(BDLocation location){
-    	//把过滤的规则放这里第一个是为了
-    	if(location.getLocType()==BDLocation.TypeNetWorkLocation) {
-			//如果是网络定位，就使用上一次的gps定位结果,保持网络定位的原因是保持心跳反应
-			if(this.currentLongitude!=null) {
-				location.setLatitude(this.currentLatitude);
-				location.setLongitude(this.currentLongitude);
-				location.setRadius(this.currentRadius);
-				location.setLocType(BDLocation.TypeGpsLocation);
-			}
-		}
+//    	//把过滤的规则放这里第一个是为了计算两个点位之间的距离是不是对的
+//    	if(location.getLocType()==BDLocation.TypeNetWorkLocation) {
+//			//如果是网络定位，就使用上一次的gps定位结果,保持网络定位的原因是保持心跳反应
+//			if(this.currentLongitude!=null) {
+//				location.setLatitude(this.currentLatitude);
+//				location.setLongitude(this.currentLongitude);
+//				location.setRadius(this.currentRadius);
+//				//location.setLocType(BDLocation.TypeGpsLocation);
+//			}
+//			return;
+//		}
     	
 		//对数据进行纠偏
 		if(location.getSpeed()==0){
@@ -255,8 +255,8 @@ public class LocationApplication extends Service{
 			if(this.currentLongitude!=null){
 				location.setLatitude(this.currentLatitude);
 				location.setLongitude(this.currentLongitude);
-				location.setRadius(this.currentRadius);
-				location.setLocType(BDLocation.TypeGpsLocation);
+				//location.setRadius(this.currentRadius);
+				//location.setLocType(BDLocation.TypeGpsLocation);
 			}
 			
 		}  
@@ -270,7 +270,24 @@ public class LocationApplication extends Service{
     	if(this.getUploadUrl()==null || "".equals(this.getUploadUrl()) ){
     		return;
     	}
-    	Log.i(BaiduMapAll.LOG_TAG, "11111111111111!!");
+    	//Log.i(BaiduMapAll.LOG_TAG, "11111111111111!!");
+    	
+    	//如果不是gps定位，并且精度大于50m的就不提交到后台了
+    	int need_radius=50;
+    	try {
+			need_radius=this.getParams().getInt("radius");
+			
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+    	if (location.getLocType() != BDLocation.TypeGpsLocation && location.getRadius()>need_radius) {
+    		
+    		heartbeat();
+    		return;
+		}
+    	
+    	
     	Date loc_time=new Date();	
 		//如果这次上传还上一次上传的时间间隔小于规定的时间间隔
 		if(this.current_loc_time!=null && (loc_time.getTime()-this.current_loc_time)<5000){
@@ -283,7 +300,7 @@ public class LocationApplication extends Service{
 			loc_time_interval = loc_time.getTime() - this.current_loc_time;
 		}
 		
-		filter(location);
+		//filter(location);
 		
 		Log.i(BaiduMapAll.LOG_TAG, "正在发送定位信息!!");
     	Double distance=0.0;
@@ -373,7 +390,48 @@ public class LocationApplication extends Service{
 			//Toast.makeText(activityContex, "发送经纬度到后台失败!请检查参数格式!", Toast.LENGTH_LONG).show();
 			toast("发送经纬度到后台失败!请检查参数格式!",Toast.LENGTH_LONG);
 		}
+		heartbeat=0;
          
+    }
+    
+    private int heartbeat=0;
+    private int heartbeat_limit=300000;//超过这个时间就发送心跳,如果一直没有gps信号就10分钟发一次心跳反应
+    public void heartbeat() {
+    	//每5个事件周期提示一次
+    	if(heartbeat%15==0){
+    		toast("请打开gps或者到空旷的地方!",Toast.LENGTH_SHORT);
+    	}
+    	
+    	if(heartbeat*this.getGps_interval()<heartbeat_limit){
+    		heartbeat++;
+    		return;
+    	}
+    	heartbeat=0;
+    	HttpPost httpPost = new HttpPost(this.uploadUrl);
+    	try {
+	    	//List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    	if(this.params.getString("sessionId")!=null) {
+				String sessionId=this.params.getString("sessionId");
+				//httpPost.setHeader("Cookie", "JSESSIONID=" + sessionId+";sid="+sessionId); 
+				httpPost.setHeader("Cookie", "JSESSIONID=" + sessionId+"; sid="+sessionId);
+			}
+	    	HttpParams httpParameters = new BasicHttpParams();
+			HttpConnectionParams.setConnectionTimeout(httpParameters, 50000);
+			// Set the default socket timeout (SO_TIMEOUT) // in milliseconds which is the timeout for waiting for data.  
+		    HttpConnectionParams.setSoTimeout(httpParameters, 30000);  
+		    HttpClient client = new DefaultHttpClient(httpParameters);
+		    HttpResponse httpResponse = client.execute(httpPost);
+			if (httpResponse.getStatusLine().getStatusCode() == 200) {			
+	
+				
+			} else {
+	
+			}
+    	} catch(Exception e) {
+    		
+    	}
+    	
+    	
     }
 
 	public String getErrorMessage(int locationType) {
@@ -463,7 +521,7 @@ public class LocationApplication extends Service{
 		//toast("开始获取gps信息了", Toast.LENGTH_LONG);
 		//LOG.i(BaiduMapAll.LOG_TAG, "开始获取gps信息了================================================");
 		//return super.onStartCommand(intent, flags,startId);
-		return START_REDELIVER_INTENT;
+		return super.onStartCommand(intent, flags, startId);
 	}
 
 	@Override

@@ -4,7 +4,9 @@
 	<meta charset="utf-8" /> 
 	<title>轨迹</title> 
 	<style type="text/css">
-		body, html{width: 100%;height: 100%;margin:0;font-family:"微软雅黑";}
+		body, html{width: 100%;height: 100%;margin:0;font-family:"微软雅黑";
+			overflow:hidden;
+		}
 		#map_canvas{width:100%;height:100%;}
 		#result {width:100%}
 		
@@ -22,6 +24,22 @@
 			z-index:800;
 		}
 		#entryTracePanel_button {
+		    float:right;
+		    cursor: pointer;
+		}
+		
+		#showPolePanel{
+			width:300px;
+			background-color: rgba(231,246,253,0.8);
+			position:absolute;
+			left:380;
+			top:30;
+			z-index:800;
+		}
+		#showPolePanel_content{
+			display:none;
+		}
+		#showPolePanel_button {
 		    float:right;
 		    cursor: pointer;
 		}
@@ -87,6 +105,9 @@
 	<script src="/jquery/slider/jquery.slider.js"></script>
 	
 	
+	<link rel="stylesheet" type="text/css" href="../bootstrap/select/bootstrap-select.css"/ >
+	<script src="../bootstrap/select/bootstrap-select.js"></script>
+	
 </head> 
 <body> 
 <div id="entryTracePanel_mask"></div>
@@ -94,7 +115,7 @@
 
 	<!-- 播放器进度条 -->
 	<style type="text/css">
-	.tracks-history { font-size: 12px; font-weight: normal; position: absolute; z-index: 1002; right: 250px; bottom: 24px; display: none; width: 900px; height: 60px; cursor: move; color: #333; border: 1px solid #ddd; border-radius: 30px; background: #f8f8f8; }
+	.tracks-history { font-size: 12px; font-weight: normal; position: absolute; z-index: 1002; left: 250px; bottom: 24px; display: none; width: 900px; height: 60px; cursor: move; color: #333; border: 1px solid #ddd; border-radius: 30px; background: #f8f8f8; }
 	#btn-play,
 	#btn-stop,#btn-backward,#btn-forward { color: #2d88f3; }
 	#btn-play span { left: 1px; }
@@ -219,6 +240,32 @@
 
 		
 	</style>
+	
+	<div id="showPolePanel" class="panel panel-info" >
+	  <div class="panel-heading" style="cursor:move;">  
+	  	<span id="showPolePanel_button">
+        	<i class="glyphicon glyphicon-chevron-up"></i>
+        </span>
+                           显示点位
+	  </div>
+	  <div id="showPolePanel_content">
+		  <div class="form-group">
+		  	 <label for="customer_area">片区:</label>
+		  	 <select id="customer_area" class="selectpicker form-control"  title="请选择" >
+		        
+		      </select>
+		  </div>
+	      <div class="form-group">
+	        <label for="customeres">派出所:</label>
+		  	<select id="customeres" class="selectpicker form-control" multiple data-live-search="true" data-max-options="5" data-size="auto"  data-done-button="true" title="请选择">
+			    
+			</select>
+		  </div>
+		  <button id="showPolePanel_querybutton" type="button" class="btn btn-primary btn-block">查询</button>
+	  </div>
+	 </div>
+	 
+	 
 	<div id="entryTracePanel" class="panel panel-info" >
 	  
 	  <!-- Default panel contents   glyphicon glyphicon-chevron-down-->
@@ -278,11 +325,14 @@
 	</div>
 
 
+	
 
 	<script type="text/javascript" src="TraceApp.js"> </script>
 	<script type="text/javascript" src="tracksControl.js"> </script> 
 	<script type="text/javascript" src="LuShu.js"></script>
 	<script type="text/javascript" src="TimeControl.js"></script>
+	
+
 	
 </body> 
 </html> 

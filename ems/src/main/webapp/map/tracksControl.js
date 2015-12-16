@@ -56,7 +56,8 @@ function TracksControl(){
 		
 		
 	}
-		/**
+	
+	/**
 	 * 在界面上画出运动轨迹
 	 */
 	this.drawTimerPolylineOvelay=function(sessionId){
@@ -124,6 +125,7 @@ function TracksControl(){
 	this.setTraceListpois=function(sessionId,traceList){
 		var self=this;
 		this.sessionId=sessionId;
+		this._encrLngLatPois=[];
 		for(var i=0;i<traceList.length;i++){
 			 var pos = new BMap.Point(traceList[i].longitude, traceList[i].latitude);
              pos.loc_time = traceList[i].loc_time
@@ -157,9 +159,7 @@ function TracksControl(){
 		if(!this._encrLngLatPois){
 			alert("请先设置轨迹的经纬度数据!");
 		}
-		if(this.historyoverlay){
-			map.removeOverlay(this.historyoverlay);
-		}
+		this.removePolylineOvelay();
 		
 		//alert(this._encrLngLatPois.length);
 		var overlay=new BMap.Polyline(this._encrLngLatPois, {strokeColor: '#111'});
@@ -167,6 +167,19 @@ function TracksControl(){
 	     map.setViewport(this._encrLngLatPois);
 	     this.historyoverlay=overlay;
 	};
+	/**
+	 * 清楚当前历史轨迹
+	 */
+	this.removePolylineOvelay=function(){
+		if(this.historyoverlay){
+			this.map.removeOverlay(this.historyoverlay);
+			this.map.removeOverlay(this.lushu._marker);
+			
+		}
+	}
+	
+	this.carIcon = new BMap.Icon('./images/car1.png', new BMap.Size(52,26),{anchor : new BMap.Size(27, 13)});//new BMap.Icon("./images/car.png", new BMap.Size(48,48));
+	//new BMap.Icon('http://developer.baidu.com/map/jsdemo/img/car.png', new BMap.Size(52,26),{anchor : new BMap.Size(27, 13)})
 	//添加lushu，开始小车沿轨迹移动动画
 	this.trackStart = function() {
 		 var self = this;
@@ -179,7 +192,7 @@ function TracksControl(){
 	     self.lushu = new BMapLib.LuShu(self,self.map,self._encrLngLatPois,{
 		 	defaultContent:"",// "从天安门到百度大厦"
 		    autoView:true,// 是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
-		    icon  : new BMap.Icon('http://developer.baidu.com/map/jsdemo/img/car.png', new BMap.Size(52,26),{anchor : new BMap.Size(27, 13)}),
+		    icon  : self.carIcon,
 		    speed: speed,
 		    enableRotation:true,// 是否设置marker随着道路的走向进行旋转
 		    landmarkPois: [

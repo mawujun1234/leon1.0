@@ -17,9 +17,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mawujun.baseinfo.CustomerVO;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.mobile.login.WaringGps;
 import com.mawujun.utils.BeanUtils;
+import com.mawujun.utils.StringUtils;
 
 @Controller
 public class GeolocationController {
@@ -62,10 +64,14 @@ public class GeolocationController {
 //		updateGpsUploadTime(sessionId,longitude,latitude);
 //		return "success";
 //	}
-	SimpleDateFormat ff=new SimpleDateFormat("HH:mm:ss");
+	//SimpleDateFormat ff=new SimpleDateFormat("HH:mm:ss");
 	@RequestMapping("/geolocation/mobile/upload.do")
 	public String upload(Geolocation geolocation) {
-		System.out.println(ff.format(new Date())+"-----"+geolocation.getSessionId());
+		//如果是很么值都没有就表示是心跳反应
+		if(geolocation==null || geolocation.getLatitude()==null || geolocation.getLongitude()==null){
+			return "success";
+		}
+		//System.out.println(ff.format(new Date())+"-----"+geolocation.getSessionId());
 		
 		//logger.info("==========================================================================");
 		//logger.info("经度:{},维度:{},uuid:{},loginname:{}",longitude,latitude,uuid,loginName);
@@ -86,6 +92,14 @@ public class GeolocationController {
 		updateGpsUploadTime(geolocation);
 		return "success";
 	}
+	
+	
+//	@RequestMapping("/geolocation/mobile/heartbeat.do")
+//	public String heartbeat(String sessionId) {
+//		
+//		//SecurityUtils.getSubject().getSession().getId();
+//		return "success";
+//	}
 	
 	/**
 	 * 更新某个作业单位最近一次gps上传信息
