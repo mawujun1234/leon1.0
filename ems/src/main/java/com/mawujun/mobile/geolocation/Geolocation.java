@@ -41,7 +41,7 @@ public class Geolocation extends UUIDEntity {
 	private Float  radius;///获取定位精度半径，单位是米
     public Float direction; // gps定位结果时，行进的方向，单位度，范围【0-360】，手机上部正朝向北的方向为0°方向
     public Float speed;// GPS速度当service的type是1，且创建该track的时候输入了这个字段才会返回。单位公里/小时，默认值0.0f
-    public Double distance;//在同个会话中，距离上一次地点的距离
+    public Double distance;//在同个会话中，距离上一次地点的距离,单位 米
     @Column(length=20)
     public String loc_type;//定位类型是gps定位还是网络定位
     private Date loc_time;// gps的上传时间

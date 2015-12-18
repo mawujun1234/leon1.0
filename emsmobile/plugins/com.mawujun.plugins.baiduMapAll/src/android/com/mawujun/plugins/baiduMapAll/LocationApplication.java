@@ -159,7 +159,7 @@ public class LocationApplication extends Service{
         option.setScanSpan(this.getGps_interval());//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
 		//option.setScanSpan(0);
         option.setIsNeedAddress(false);//可选，设置是否需要地址信息，默认不需要
-        option.setLocationNotify(true);//可选，默认false，设置是否当gps有效时按照1S1次频率输出GPS结果
+        option.setLocationNotify(false);//可选，默认false，设置是否当gps有效时按照1S1次频率输出GPS结果
         option.setIsNeedLocationDescribe(false);//可选，默认false，设置是否需要位置语义化结果，可以在BDLocation.getLocationDescribe里得到，结果类似于“在北京天安门附近”
         option.setIsNeedLocationPoiList(false);//可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
         option.setIgnoreKillProcess(false);//可选，默认false，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认杀死
@@ -234,32 +234,24 @@ public class LocationApplication extends Service{
      * http://wenku.baidu.com/link?url=6ujvZatU_4gVsgATf43p8uC2us3zr0_J6dri7VZJTR4Z0wch0ZACUAa3U8y74a-lQFKujSuvzcSSK5_ZGZ971Y-BRCKIM2Rrs1Do0xDOgVu
      * @param location
      */
-    public void filter(BDLocation location){
-//    	//把过滤的规则放这里第一个是为了计算两个点位之间的距离是不是对的
-//    	if(location.getLocType()==BDLocation.TypeNetWorkLocation) {
-//			//如果是网络定位，就使用上一次的gps定位结果,保持网络定位的原因是保持心跳反应
-//			if(this.currentLongitude!=null) {
+    public void filter(BDLocation location,long loc_time_interval,Double distance){
+    	
+//		//对数据进行纠偏
+//		if(location.getSpeed()==0){
+//			// 速度为0时，强制方向为0；
+//			location.setDirection(0f);
+//			//数据中的速度值为0时，就不去更新地图上的经纬度
+//			if(this.currentLongitude!=null){
 //				location.setLatitude(this.currentLatitude);
 //				location.setLongitude(this.currentLongitude);
-//				location.setRadius(this.currentRadius);
+//				//location.setRadius(this.currentRadius);
 //				//location.setLocType(BDLocation.TypeGpsLocation);
 //			}
-//			return;
-//		}
+//			
+//		}  
     	
-		//对数据进行纠偏
-		if(location.getSpeed()==0){
-			// 速度为0时，强制方向为0；
-			location.setDirection(0f);
-			//数据中的速度值为0时，就不去更新地图上的经纬度
-			if(this.currentLongitude!=null){
-				location.setLatitude(this.currentLatitude);
-				location.setLongitude(this.currentLongitude);
-				//location.setRadius(this.currentRadius);
-				//location.setLocType(BDLocation.TypeGpsLocation);
-			}
-			
-		}  
+    	//过滤掉速度异常的点位 and a.distance &lt;= a.speed/60/60*a.loc_time_interval 
+    	//如果这个点位的距离
     }
     
     SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -300,7 +292,7 @@ public class LocationApplication extends Service{
 			loc_time_interval = loc_time.getTime() - this.current_loc_time;
 		}
 		
-		//filter(location);
+		
 		
 		Log.i(BaiduMapAll.LOG_TAG, "正在发送定位信息!!");
     	Double distance=0.0;
@@ -314,6 +306,14 @@ public class LocationApplication extends Service{
     	}
     
     	
+//    	//filter(location,loc_time_interval,distance);
+//    	//过滤掉速度异常的点位 and a.distance &lt;= a.speed/60/60*a.loc_time_interval 
+//    	//如果这个点位的距离,过滤掉漂移的点,过滤掉在一定速度下，距离过大的点位
+//    	//if(distance>= (location.getSpeed()/60/60*loc_time_interval) ){
+//    	//如果平均速度大于120公里/小时,那这个点位是无效的，34的单位是米/秒
+//    	if(loc_time_interval!=0 && (distance/(loc_time_interval/1000))>=34 ){
+//    		return;
+//    	}
     	
 		
 		

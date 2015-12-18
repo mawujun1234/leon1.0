@@ -47,6 +47,7 @@ $(function(){
 		var sessionId=$(this).parent().parent().attr("data-sessionId");
 
 		if(value){
+			//alert(sessionId);
 			//alert('划线!');
 			tracksControl.drawTimerPolylineOvelay(sessionId);
 		} else {

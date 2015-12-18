@@ -29,15 +29,24 @@ public class TraceController {
 	@ResponseBody
 	public List<WaringGps> queryWorkingWorkunit(){
 		List<WaringGps> list=new ArrayList<WaringGps>();
-		for(Entry<String,WaringGps> entry:geolocationController.getWaringGpsMap().entrySet()){
-			WaringGps waringGps=entry.getValue();
-			if(waringGps.getIsUploadGps()){
-				//waringGps.setTraceListes(queryHistoryTraceList(waringGps.getSessionId()));
-				list.add(waringGps);
-	
-			}
-			
-		}
+//		for(Entry<String,WaringGps> entry:geolocationController.getWaringGpsMap().entrySet()){
+//			WaringGps waringGps=entry.getValue();
+//			if(waringGps.getIsUploadGps()){
+//				//waringGps.setTraceListes(queryHistoryTraceList(waringGps.getSessionId()));
+//				list.add(waringGps);
+//	
+//			}
+//			
+//		}
+		
+		WaringGps waringGps=new WaringGps();
+		waringGps.setLasted_longitude("121.518223");
+		waringGps.setLasted_latitude("29.826982");
+		waringGps.setName("哈哈");
+		waringGps.setLoginName("yinzhou1");
+		waringGps.setSessionId("913b3633-a350-48ff-80b8-3d33ee96f59d");
+		waringGps.setTraceListes(queryHistoryTraceList(waringGps.getSessionId()));
+		list.add(waringGps);
 		
 		JsonConfigHolder.setDatePattern("yyyy-MM-dd HH:mm:ss");
 		return list;

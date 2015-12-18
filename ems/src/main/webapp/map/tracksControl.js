@@ -173,8 +173,9 @@ function TracksControl(){
 	this.removePolylineOvelay=function(){
 		if(this.historyoverlay){
 			this.map.removeOverlay(this.historyoverlay);
-			this.map.removeOverlay(this.lushu._marker);
-			
+			if(this.lushu._marker){
+				this.map.removeOverlay(this.lushu._marker);
+			}
 		}
 	}
 	
