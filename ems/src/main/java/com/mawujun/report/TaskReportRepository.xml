@@ -47,7 +47,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     <!-- 查询维修任务明细表-->
     <select id="queryTaskRepairReport" resultType="com.mawujun.report.TaskRepairReport" parameterType="map">
     	select a.*,b.code as pole_code, c.name as handleMethod_name
-		,case when  a.status='over' then '已修复' else '未修复' end  as result
+		,case when  a.status='complete' then '已修复' else '未修复' end  as result
 		from ems_task a
 		inner join ems_pole b on a.pole_id=b.id
 		left join ems_handlemethod c on a.handleMethod_id=c.id

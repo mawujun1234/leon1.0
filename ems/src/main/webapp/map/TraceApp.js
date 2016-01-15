@@ -99,6 +99,7 @@ $(function(){
 		$("#tracks-history-play").hide();//隐藏播放器
 		//.当点击历史轨迹的时候，就清空界面元素和停止这个定时调用，翻过来一样
 		tracksControl.removePolylineOvelay();
+		tracksControl.clearTimerOvelay
 		showWorkunitCar_setTimeout=!showWorkunitCar_setTimeout;//来回切换定时更新定时数据
 		if(showWorkunitCar_setTimeout){//去获取实时监控轨迹中的轨迹数据
 			showWorkunitCar();

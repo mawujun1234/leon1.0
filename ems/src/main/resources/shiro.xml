@@ -89,7 +89,7 @@
 	<bean id="sessionListener" class="com.mawujun.mobile.geolocation.ShiroSessionListener">
 	</bean>
     <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
-    	<property name="globalSessionTimeout" value="600000"/>  
+    	<property name="globalSessionTimeout" value="1800000"/>  
 	    <property name="deleteInvalidSessions" value="true"/>  
 	    <property name="sessionValidationSchedulerEnabled" value="true"/>
 	    <property name="sessionValidationScheduler" ref="sessionValidationScheduler"/> 

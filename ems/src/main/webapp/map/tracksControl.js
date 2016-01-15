@@ -79,8 +79,10 @@ function TracksControl(){
 	this.removeTimerPolylineOvelay=function(sessionId){
 		map.removeOverlay(this.timerrOverlay[sessionId])	
 	};
-	
-	this.clearTimerOvelay=function(sessionId){
+	/**
+	 * 清楚所有的实时的路径
+	 */
+	this.clearTimerOvelay=function(){
 		var self=this;
 		//清空现有存在的所有car图标
 		$.each(self.timerrOverlay_car,function(name, value){
@@ -173,7 +175,7 @@ function TracksControl(){
 	this.removePolylineOvelay=function(){
 		if(this.historyoverlay){
 			this.map.removeOverlay(this.historyoverlay);
-			if(this.lushu._marker){
+			if(this.lushu && this.lushu._marker){
 				this.map.removeOverlay(this.lushu._marker);
 			}
 		}
