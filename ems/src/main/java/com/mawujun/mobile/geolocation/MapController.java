@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.mawujun.baseinfo.CustomerController;
+import com.mawujun.baseinfo.CustomerVO;
 import com.mawujun.baseinfo.Pole;
 import com.mawujun.baseinfo.PoleRepository;
 import com.mawujun.utils.Params;
@@ -30,6 +32,8 @@ public class MapController {
 	private MapService mapService;
 	@Autowired
 	private PoleRepository poleRepository;
+	@Autowired
+	private CustomerController customerController;
 //	/**
 //	 * 初始化所有不存在经纬度的点位
 //	 * @author mawujun email:160649888@163.com qq:16064988
@@ -164,6 +168,16 @@ public class MapController {
 		if(queryBrokenPoles!=null && queryBrokenPoles==true){
 			return queryBrokenPoles();
 		}
+		
+//		if(customer_0or1_id==null || customer_0or1_id.length==0){
+//			List<CustomerVO>  list=customerController.query(customer_2_id);
+//			customer_0or1_id=new String[list.size()];
+//			int i=0;
+//			for(CustomerVO vo:list){
+//				customer_0or1_id[i]=list.get(i).getId();
+//				i++;
+//			}
+//		}
 
 		Params param=Params.init();
 		param.addIf("customer_2_id", customer_2_id);

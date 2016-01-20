@@ -656,6 +656,7 @@ var center_point = new BMap.Point(121.551852,29.834513);//宁波的中心位置�
 function showMap(params){
 	// 百度地图API功能
 	map = new BMap.Map("allmap");
+	map.enableScrollWheelZoom();
 	//定位到宁波的某个地方，中心点显示
 	map.centerAndZoom(center_point, 15);
 	map.addEventListener("zoomstart", function(type, target){

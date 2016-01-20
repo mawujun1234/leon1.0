@@ -257,7 +257,7 @@
 		  </div>
 	      <div class="form-group">
 	        <label for="customeres">派出所:</label>
-		  	<select id="customeres" class="selectpicker form-control" multiple data-live-search="true" data-max-options="5" data-size="auto"  data-done-button="true" title="请选择">
+		  	<select id="customeres" class="selectpicker form-control" multiple data-live-search="true" data-max-options="10" data-size="auto"  data-done-button="true" title="必选，最多10个">
 			    
 			</select>
 		  </div>

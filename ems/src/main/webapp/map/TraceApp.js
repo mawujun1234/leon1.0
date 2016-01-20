@@ -144,7 +144,15 @@ $(function(){
 	$("#showPolePanel_querybutton").click(function(){
 		showMask();
 		var val=$("#customeres").val();
+		//alert(val);
+		//console.log(val);
+		if(!val){
+			alert("请选择派出所!最多能选10个!");
+			hideMask();
+			return;
+		}
 		var params={
+			customer_2_id:$("#customer_area").val(),
 			customer_0or1_id:val
 		}
 		
