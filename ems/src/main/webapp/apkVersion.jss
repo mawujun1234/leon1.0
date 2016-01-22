@@ -1,1 +1,1 @@
-{verCode:119,verName:"1.1.9",changelog:" 1:维修任务时，增加处理方法选择，处理备注信息填写。\n "}
+{verCode:120,verName:"1.2.0",changelog:" 1:添加导航。\n2：修复维修不替换设备功能。 "}

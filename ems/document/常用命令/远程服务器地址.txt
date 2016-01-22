@@ -1,5 +1,5 @@
  122.227.163.82:8083
- administrator   nbdw001111
+ administrator   nbdw001y54986tr
  
  网站的地址是8080
  http://122.227.163.82:8080/ems/index.jsp

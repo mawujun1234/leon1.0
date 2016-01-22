@@ -1015,17 +1015,19 @@ $(document).ready(function(e) {
 	function renderEquipmentInfo(obj,coverHtml){
 		var html="";
 		var root=obj.equipmentVOs;
+		//如果存在就表示是查询任务，进行渲染的
 		if(!(obj.equipmentVOs instanceof Array)){
+			//否则就是扫描设备
 			root=[obj];
 		} 
 		var color="";
 		var installoutType_name="";
 		for(var i=0;i<root.length;i++){
 			color="";
-			if(root[i].type=='uninstall'){
+			if(root[i].type=='uninstall'){//在后台默认就判断设备为替换设备
 				//如果是uninstall。就表示点位上的设备，这个时候要让施工人员选择是替换还是不替换
 				//如果不替换，那就变成了巡检设备
-				if(coverHtml==false && obj.type=='repair'){
+				if(coverHtml==false && taskInfoParam.type=='repair'){
 					var r=confirm("该设备是否要拆卸下来!如果不需要，请选择'取消'");
 					if(!r){
 						root[i].type=='patrol';
