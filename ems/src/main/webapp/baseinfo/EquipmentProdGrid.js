@@ -34,6 +34,7 @@ Ext.define('Ems.baseinfo.EquipmentProdGrid',{
 		{dataIndex:'name',text:'名称',flex:1},
 		{dataIndex:'style',text:'型号',flex:1},
 		{dataIndex:'quality_month',text:'质保(月)',width:50},
+		{dataIndex:'depreci_year',text:'折旧年限',width:60},
 		{dataIndex:'memo',text:'描述'},
 		{dataIndex:'unit',text:'单位',width:60},
 		{dataIndex:'brand_name',text:'品牌',width:100},

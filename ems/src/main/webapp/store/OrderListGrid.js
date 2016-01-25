@@ -124,6 +124,7 @@ Ext.define('Ems.store.OrderListGrid',{
 				}
 			}	
 		});
+		form.toggleDepreci(me.order_orderType);
 		var win=Ext.create('Ext.window.Window',{
 			modal:true,
 			width:documentWidth-100,
@@ -169,6 +170,8 @@ Ext.define('Ems.store.OrderListGrid',{
 		});
 		//form.updateFieldValue(record);
 		form.loadRecord(record);
+		
+		form.toggleDepreci(me.order_orderType);
 		
 		var type_combox=form.getForm().findField("type_id");
 		var type_model= type_combox.getStore().createModel({id:record.get("type_id"),name:record.get("type_name")});

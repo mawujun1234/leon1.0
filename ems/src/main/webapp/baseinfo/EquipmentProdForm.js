@@ -145,6 +145,17 @@ Ext.define('Ems.baseinfo.EquipmentProdForm',{
 	        xtype:'numberfield'
 	    },
 	    {
+	        fieldLabel: '折旧年限',
+	        afterLabelTextTpl: '<span class="icons_help" data-qtip="默认电子年限为5年，机械设备为10年">&nbsp;&nbsp;&nbsp;&nbsp;</span>',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'depreci_year',
+	       // hidden:!me.isprod,
+	        xtype:'numberfield',
+	        allowBlank:false,
+	        minValue:0,
+	        value:5
+	    },
+	    {
 	        fieldLabel: '描述',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'memo',

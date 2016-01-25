@@ -33,7 +33,22 @@ Ext.onReady(function(){
 										id : "new_equipment",
 										name : "新品订单"
 									}]
-						})
+						}),
+				listeners:{
+					change:function(field,newValue, oldValue){
+						if("new_equipment"==newValue){
+							var depreci_container=step1.child("form").getComponent("depreci_container");
+							if(depreci_container){
+								depreci_container.hide();
+							}
+						} else {
+							var depreci_container=step1.child("form").getComponent("depreci_container");
+							if(depreci_container){
+								depreci_container.show();
+							}
+						}
+					}
+				}
 	});
 	var store_combox=Ext.create('Ext.form.field.ComboBox',{
 	        fieldLabel: '入库仓库',
@@ -331,6 +346,18 @@ Ext.onReady(function(){
 	var totalprice_display=Ext.create('Ext.form.field.Display',{
 		xtype:'displayfield',fieldLabel:'总价(元)',name:'totalprice',labelWidth:60,submitValue : true,labelAlign:'right',width:180
 	});
+	
+	
+	var depreci_year=Ext.create('Ext.form.field.Number',{
+		xtype:'numberfield',name:'depreci_year',minValue:0,value:0,labelWidth:80,allowBlank:true,labelAlign:'right'
+	});
+	var depreci_month=Ext.create('Ext.form.field.Number',{
+		xtype:'numberfield',name:'depreci_month',minValue:0,value:0,labelWidth:80,allowBlank:true,labelAlign:'right'
+	});
+	var depreci_day=Ext.create('Ext.form.field.Number',{
+		xtype:'depreci_day',name:'depreci_day',minValue:0,value:0,labelWidth:80,allowBlank:true,labelAlign:'right'
+	});
+	
 	var equipStore = Ext.create('Ext.data.Store', {
         autoDestroy: true,
         model: 'Ems.store.OrderList',
@@ -452,10 +479,14 @@ Ext.onReady(function(){
 	            quality_month:quality_month_field.getValue(),
 	            orderNum:orderNum_field.getValue(),
 	            unitPrice:unitprice_field.getValue(),
-	            totalprice:totalprice_display.getValue()
+	            totalprice:totalprice_display.getValue(),
+	            
+	            depreci_year:depreci_year.getValue(),
+	            depreci_month:depreci_month.getValue(),
+	            depreci_day:depreci_day.getValue()
 	            //orderDate:orderDate.getValue(),
 	            //operater:loginUserId
-		    })
+		    });
 			equipStore.add(record);
 			//订单号和仓库变味不可编辑
 			//order_no.disable();
@@ -477,12 +508,18 @@ Ext.onReady(function(){
 			unitprice_field.setValue(0);
 			totalprice_display.setValue(0);
 			
+			depreci_year.setValue(0);
+			depreci_month.setValue(0);
+			depreci_day.setValue(0);
+			
+			orderType.disable();
+			
 		}
 		
 		
 	}
 	
-	equip_grid.on('itemclick',function(view, record, item, index, e, eOpts){
+	equip_grid.on('itemclick',function(view, record, item, index, e, eOpts) {
 		//console.log(record.get("type_id"));
 		//console.log(record.get("type_name"));
 			//var type_model= type_combox.getStore().createModel({id:record.get("type_id"),text:record.get("type_name")});
@@ -519,6 +556,10 @@ Ext.onReady(function(){
 			totalprice_display.setValue(record.get("totalprice"));
 			//orderType.setValue(record.get("orderType"));
 			
+			depreci_year.setValue(record.get("depreci_year")?record.get("depreci_year"):0);
+			depreci_month.setValue(record.get("depreci_month")?record.get("depreci_month"):0);
+			depreci_day.setValue(record.get("depreci_day")?record.get("depreci_day"):0);
+			
 			type_combox.disable();
 			subtype_combox.disable();
 			
@@ -534,9 +575,20 @@ Ext.onReady(function(){
         defaults:{margins:'0 0 5 0',border:false},
         items:[{xtype:'form',items:[
         							{xtype:'fieldcontainer',layout: 'hbox',items:[order_no,orderType,store_combox,orderDate,operater]},
+        							
         							{xtype:'fieldcontainer',layout: 'hbox',items:[project_combox,supplier_combox]},
         							{xtype:'fieldcontainer',layout: 'hbox',items:[type_combox,subtype_combox,prod_name,queryProd_button,brand_name,style]},
         							{xtype:'fieldcontainer',layout: 'hbox',items:[prod_spec,prod_unit]},
+        							{itemId:'depreci_container',hidden:true,xtype:'fieldcontainer',layout: 'hbox',items:[{xtype:'displayfield',value:'还可以使用的年数:',labelWidth:120},depreci_year,{
+		                               xtype: 'displayfield',
+		                               value: '-年'
+		                           },depreci_month,{
+		                           		xtype: 'displayfield',
+		                               value: '-月'
+		                           },depreci_day,{
+		                           		xtype: 'displayfield',
+		                               value: '-日'
+		                           }]},
                                     {xtype:'fieldcontainer',layout: 'hbox',items:[
                                     	
                                     	quality_month_field,
@@ -620,6 +672,8 @@ Ext.onReady(function(){
 						Ext.getBody().unmask();
 					}
 				});
+				
+				orderType.enable();
             }else{
             	Ext.Msg.alert('提示','请先添加一个设备');
             }

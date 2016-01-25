@@ -39,6 +39,11 @@ public class OrderList extends UUIDEntity {
 	private Integer orderNum=0;//订货数量
 	private Integer totalNum=0;//累计入库数量,如果该品名下面还有拆分，拆分几个就会乘以几个，会是orderNum的倍数
 	
+	//还可使用的年数，在旧设备订单录入的时候,同时预估原值和还可以使用的年数
+		private Integer depreci_year;//
+		private Integer depreci_month;//
+		private Integer depreci_day;//
+	
 	@Transient
 	private Integer  printNum;//要打印的数目
 	
@@ -118,6 +123,30 @@ public class OrderList extends UUIDEntity {
 	}
 	public void setQuality_month(Integer quality_month) {
 		this.quality_month = quality_month;
+	}
+
+	public Integer getDepreci_year() {
+		return depreci_year;
+	}
+
+	public void setDepreci_year(Integer depreci_year) {
+		this.depreci_year = depreci_year;
+	}
+
+	public Integer getDepreci_month() {
+		return depreci_month;
+	}
+
+	public void setDepreci_month(Integer depreci_month) {
+		this.depreci_month = depreci_month;
+	}
+
+	public Integer getDepreci_day() {
+		return depreci_day;
+	}
+
+	public void setDepreci_day(Integer depreci_day) {
+		this.depreci_day = depreci_day;
 	}
 
 }

@@ -20,11 +20,12 @@ Ext.onReady(function(){
 		title:'订单明细'
 	});
 	
-	grid.on('itemclick',function(view,record,item,index){
+	grid.on('itemclick',function(view,record,item,index) {
 		//gridList.getStore().load({params:{orderNo:record.get("orderNo")}});
 		gridList.getStore().getProxy().extraParams={order_id:record.get("id")};
 		gridList.getStore().load();
-		gridList.order_status=record.get("status")
+		gridList.order_status=record.get("status");
+		gridList.order_orderType=record.get("orderType");
 	});
 	
 	var viewPort=Ext.create('Ext.container.Viewport',{

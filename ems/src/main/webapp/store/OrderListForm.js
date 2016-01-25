@@ -219,10 +219,30 @@ Ext.define('Ems.store.OrderListForm',{
 	});
 	me.totalNum_display=totalNum_display;
 	
+	var depreci_year=Ext.create('Ext.form.field.Number',{
+		xtype:'numberfield',name:'depreci_year',minValue:0,value:0,labelWidth:80,allowBlank:true,labelAlign:'right'
+	});
+	var depreci_month=Ext.create('Ext.form.field.Number',{
+		xtype:'numberfield',name:'depreci_month',minValue:0,value:0,labelWidth:80,allowBlank:true,labelAlign:'right'
+	});
+	var depreci_day=Ext.create('Ext.form.field.Number',{
+		xtype:'depreci_day',name:'depreci_day',minValue:0,value:0,labelWidth:80,allowBlank:true,labelAlign:'right'
+	});
+	
 	me.items=[
 			{xtype:'fieldcontainer',layout: 'hbox',items:[id_field,order_id,brand_id,prod_id]},
         							{xtype:'fieldcontainer',layout: 'hbox',items:[type_combox,subtype_combox,prod_name,queryProd_button,brand_name,style]},
         							{xtype:'fieldcontainer',layout: 'hbox',items:[prod_spec,prod_unit]},
+        							{itemId:'depreci_container',hidden:true,xtype:'fieldcontainer',layout: 'hbox',items:[{xtype:'displayfield',value:'还可以使用的年数:',labelWidth:120},depreci_year,{
+		                               xtype: 'displayfield',
+		                               value: '-年'
+		                           },depreci_month,{
+		                           		xtype: 'displayfield',
+		                               value: '-月'
+		                           },depreci_day,{
+		                           		xtype: 'displayfield',
+		                               value: '-日'
+		                           }]},
                                     {xtype:'fieldcontainer',layout: 'hbox',items:[
                                    		quality_month_field,
                                     	orderNum_field,
@@ -311,5 +331,23 @@ Ext.define('Ems.store.OrderListForm',{
 
 		this.type_combox.setReadOnly(true);
 		this.subtype_combox.setReadOnly(true);
+	},
+	/**
+	 * 如果是旧品订单，就显示要还可以使用的的年月日，否则就不显示
+	 * @param {} order_orderType
+	 */
+	toggleDepreci:function(order_orderType){
+		var me=this;
+		if ("new_equipment" == order_orderType) {
+					var depreci_container = me.getComponent("depreci_container");
+					if (depreci_container) {
+						depreci_container.hide();
+					}
+		} else {
+					var depreci_container = me.getComponent("depreci_container");
+					if (depreci_container) {
+						depreci_container.show();
+					}
+		}
 	}
 });

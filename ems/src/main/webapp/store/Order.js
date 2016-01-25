@@ -23,6 +23,7 @@ Ext.defineModel("Ems.store.Order",{
 		{name:'status',type:'string'},
 		{name:'orderType',type:'string'},
 		{name:'orderType_name',type:'string'},
+
 		
 		//{name:'brand_name',type:'string'},
 		//{name:'prod_name',type:'string'},

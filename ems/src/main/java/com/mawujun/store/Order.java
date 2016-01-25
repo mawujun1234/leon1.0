@@ -38,6 +38,9 @@ public class Order extends UUIDEntity {
 	@Column(length=15)
 	private OrderType orderType;
 	
+	
+	
+	
 	public String getOrderType_name() {
 		if(orderType!=null){
 			return orderType.getName();
@@ -155,7 +158,6 @@ public class Order extends UUIDEntity {
 	public void setOrderType(OrderType orderType) {
 		this.orderType = orderType;
 	}
-
 
 	
 }

@@ -117,6 +117,7 @@ public static final class ems_equipmentprod {
 	public static final String quality_month="quality_month";
 	public static final String lock_style="lock_style";
 	public static final String id_suffix="id_suffix";
+	public static final String depreci_year="depreci_year";
 }
 public static final class ems_equipment_repair {
 	public static final String ecode="ecode";
@@ -533,6 +534,9 @@ public static final class ems_orderlist {
 	public static final String quality_month="quality_month";
 	public static final String orderNum="orderNum";
 	public static final String totalNum="totalNum";
+	public static final String depreci_year="depreci_year";
+	public static final String depreci_month="depreci_month";
+	public static final String depreci_day="depreci_day";
 	public static final String printNum="printNum";
 	public static final String id="id";
 }

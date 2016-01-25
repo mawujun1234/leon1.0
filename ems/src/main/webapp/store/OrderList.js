@@ -21,6 +21,10 @@ Ext.defineModel("Ems.store.OrderList",{
 		{name:'quality_month',type:'int'},
 		//{name:'status',type:'string'},
 		
+		{name:'depreci_year',type:'string'},
+		{name:'depreci_month',type:'string'},
+		{name:'depreci_day',type:'string'},
+		
 		{name:'brand_name',type:'string'},
 		{name:'prod_style',type:'string'},
 		{name:'prod_id',type:'string'},

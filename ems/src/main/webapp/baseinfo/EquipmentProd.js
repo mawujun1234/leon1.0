@@ -17,6 +17,7 @@ Ext.defineModel("Ems.baseinfo.EquipmentProd",{
 		{name:'quality_month',type:'int'},
 		{name:'lock_style',type:'bool'},
 		//{name:'type_parent_id',type:'string'},
+		{name:'depreci_year',type:'string'},
 		
 		{name:'id_suffix',type:'string'},
 		{name:'type_name',type:'string'},

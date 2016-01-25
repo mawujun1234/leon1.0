@@ -53,6 +53,8 @@ public class EquipmentProd  implements
 	@Transient
 	private String id_suffix;
 	
+	private Integer depreci_year;//默认是5年
+	
 	/**
 	 * 这个字段是要删除的
 	 * @author mawujun email:160649888@163.com qq:16064988
@@ -175,6 +177,14 @@ public class EquipmentProd  implements
 
 	public void setId_suffix(String id_suffix) {
 		this.id_suffix = id_suffix;
+	}
+
+	public Integer getDepreci_year() {
+		return depreci_year;
+	}
+
+	public void setDepreci_year(Integer depreci_year) {
+		this.depreci_year = depreci_year;
 	}
 
 
