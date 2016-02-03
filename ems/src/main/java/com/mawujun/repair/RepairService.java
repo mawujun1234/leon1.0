@@ -126,7 +126,12 @@ public class RepairService extends AbstractService<Repair, String>{
 			repair.setStr_in_id(repair.getStr_out_id());//出库和入库的仓库必须一致
 			//获取报修时间
 			InstallIn installIn=installInRepository.get(repair.getInstallIn_id());
-			repair.setRepair_date(installIn.getOperateDate());
+			if(installIn!=null){
+				repair.setRepair_date(installIn.getOperateDate());
+			} else {
+				repair.setRepair_date(new Date());
+			}
+			
 			if(repair.getTask_id()!=null && !"".equals(repair.getTask_id())){
 				Task task=taskRepository.get(repair.getTask_id());
 				repair.setBroken_memo(task.getHitchType()+"-"+task.getHitchReason());

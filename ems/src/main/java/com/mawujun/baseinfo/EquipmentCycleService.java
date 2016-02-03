@@ -59,6 +59,7 @@ public class EquipmentCycleService extends AbstractService<EquipmentCycle, Strin
 		
 		cycle.setOperater_id(ShiroUtils.getUserId());
 		cycle.setOperater_name(ShiroUtils.getUserName());
+		cycle.setOperater_ipAddr(ShiroUtils.getAuthenticationInfo().getIpAddr());
 		
 		cycle.setOperateType(operateType);
 		

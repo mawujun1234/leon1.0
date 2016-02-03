@@ -52,6 +52,10 @@ Ext.defineModel("Ems.repair.Repair",{
 		{name:'status_name',type:'string'},
 		{name:'rpa_type_name',type:'string'},
 		
+		{name:'depreci_year',type:'string'},
+		{name:'depreci_month',type:'string'},
+		{name:'depreci_day',type:'string'},
+		
 		{name:'handler_method',type:'string'},
 		
 		{name:'scrap_id',type:'string'}

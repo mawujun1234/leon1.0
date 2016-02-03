@@ -18,6 +18,18 @@ Ext.define('Ems.repair.RepairForm',{
  //   },
 	initComponent: function () {
        var me = this;
+       
+       
+       var depreci_year=Ext.create('Ext.form.field.Number',{
+		xtype:'numberfield',name:'depreci_year',minValue:0,value:0,labelWidth:80,allowBlank:true,labelAlign:'right'
+	});
+	var depreci_month=Ext.create('Ext.form.field.Number',{
+		xtype:'numberfield',name:'depreci_month',minValue:0,value:0,labelWidth:80,allowBlank:true,labelAlign:'right'
+	});
+	var depreci_day=Ext.create('Ext.form.field.Number',{
+		xtype:'depreci_day',name:'depreci_day',minValue:0,value:0,labelWidth:80,allowBlank:true,labelAlign:'right'
+	});
+	
        me.items= [{
                         name: 'workunit_id',
                         fieldLabel: '作业单位',
@@ -230,7 +242,18 @@ Ext.define('Ems.repair.RepairForm',{
                         //hideLabel: 'true'
                     },
                     items: []
-     },{
+     },
+     {itemId:'depreci_container',hidden:false,xtype:'fieldcontainer',layout: 'hbox',items:[{xtype:'displayfield',value:'还可使用年数:',labelWidth:120},depreci_year,{
+		                               xtype: 'displayfield',
+		                               value: '-年'
+		                           },depreci_month,{
+		                           		xtype: 'displayfield',
+		                               value: '-月'
+		                           },depreci_day,{
+		                           		xtype: 'displayfield',
+		                               value: '-天'
+	}]},
+	{
                     xtype: 'fieldcontainer',
                     //fieldLabel: 'Name',
                     layout: 'hbox',
@@ -378,6 +401,10 @@ Ext.define('Ems.repair.RepairForm',{
             //formBind: true,当设置这个值得时候，当表单里面有内容后，就自动会变成可执行
             //hidden :true,
             handler: function(btn) {
+            	if(!(depreci_year.getValue() || depreci_month.getValue() || depreci_month.getValue())){
+					alert("请填写还可使用年数!");
+					return;
+				}
             	var form=this.up('form');
                 if(!form.getForm().isValid()) {
                 	return;

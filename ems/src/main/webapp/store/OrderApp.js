@@ -439,6 +439,11 @@ Ext.onReady(function(){
 	}
 	
 	function addEquip(){
+		if(orderType.getValue()=="old_equipment" && !(depreci_year.getValue() || depreci_month.getValue() || depreci_month.getValue())){
+			alert("请填写还可使用年数!");
+			return;
+		}
+		
 		type_combox.enable();
 		subtype_combox.enable();
 		if(equip_grid.click_record){
@@ -587,7 +592,7 @@ Ext.onReady(function(){
 		                               value: '-月'
 		                           },depreci_day,{
 		                           		xtype: 'displayfield',
-		                               value: '-日'
+		                               value: '-天'
 		                           }]},
                                     {xtype:'fieldcontainer',layout: 'hbox',items:[
                                     	

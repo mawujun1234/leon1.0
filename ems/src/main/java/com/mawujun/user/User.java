@@ -41,6 +41,8 @@ public class User extends UUIDEntity{
 	//判断是不是worunit的账号
 	@Transient
 	private Boolean isWorkunit=false;
+	@Transient
+	private String ipAddr;//登录的IP地址
 	//@Transient
 	//private Map<String,Integer> metaVersion;
 	
@@ -132,6 +134,14 @@ public class User extends UUIDEntity{
 
 	public void setGps_interval(int gps_interval) {
 		this.gps_interval = gps_interval;
+	}
+
+	public String getIpAddr() {
+		return ipAddr;
+	}
+
+	public void setIpAddr(String ipAddr) {
+		this.ipAddr = ipAddr;
 	}
 
 

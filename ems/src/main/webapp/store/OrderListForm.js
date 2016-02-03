@@ -241,7 +241,7 @@ Ext.define('Ems.store.OrderListForm',{
 		                               value: '-月'
 		                           },depreci_day,{
 		                           		xtype: 'displayfield',
-		                               value: '-日'
+		                               value: '-天'
 		                           }]},
                                     {xtype:'fieldcontainer',layout: 'hbox',items:[
                                    		quality_month_field,
@@ -261,6 +261,11 @@ Ext.define('Ems.store.OrderListForm',{
             //hidden :true,
             itemId:'save',
             handler: function(btn) {
+            	
+            	if(me.order_orderType=="old_equipment" && !(depreci_year.getValue() || depreci_month.getValue() || depreci_month.getValue())){
+					alert("请填写还可使用年数!");
+					return;
+				}
             	var form=this.up('form');
                 if(!form.getForm().isValid()) {
                 	return;
@@ -338,6 +343,7 @@ Ext.define('Ems.store.OrderListForm',{
 	 */
 	toggleDepreci:function(order_orderType){
 		var me=this;
+		me.order_orderType=order_orderType;
 		if ("new_equipment" == order_orderType) {
 					var depreci_container = me.getComponent("depreci_container");
 					if (depreci_container) {

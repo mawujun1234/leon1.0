@@ -88,6 +88,7 @@ public static final class ems_equipmentcycle {
 	public static final String operateDate="operateDate";
 	public static final String operater_id="operater_id";
 	public static final String operater_name="operater_name";
+	public static final String operater_ipAddr="operater_ipAddr";
 	public static final String operateType="operateType";
 	public static final String type_id="type_id";
 	public static final String target_id="target_id";
@@ -459,6 +460,9 @@ public static final class ems_repair {
 	public static final String sendno="sendno";
 	public static final String receive_date="receive_date";
 	public static final String repairFactory="repairFactory";
+	public static final String depreci_year="depreci_year";
+	public static final String depreci_month="depreci_month";
+	public static final String depreci_day="depreci_day";
 }
 public static final class ems_scrap {
 	public static final String id="id";
@@ -583,6 +587,7 @@ public static final class sys_user {
 	public static final String loginDate="loginDate";
 	public static final String status="status";
 	public static final String isWorkunit="isWorkunit";
+	public static final String ipAddr="ipAddr";
 	public static final String sessionId="sessionId";
 	public static final String gps_interval="gps_interval";
 	public static final String id="id";

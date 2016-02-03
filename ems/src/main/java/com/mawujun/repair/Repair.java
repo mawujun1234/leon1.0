@@ -91,6 +91,12 @@ public class Repair  implements IdEntity<String>{
 	private Date receive_date;//维修好后 ，收货时间
 	@Column(length=80) 
 	private String repairFactory;//维修厂方
+	
+	
+	//还可使用的年数，在旧设备订单录入的时候,同时预估原值和还可以使用的年数
+			private Integer depreci_year=0;//
+			private Integer depreci_month=0;//
+			private Integer depreci_day=0;//
 
 	public String getId() {
 		return id;
@@ -272,6 +278,24 @@ public class Repair  implements IdEntity<String>{
 	}
 	public void setRepairFactory(String repairFactory) {
 		this.repairFactory = repairFactory;
+	}
+	public Integer getDepreci_year() {
+		return depreci_year;
+	}
+	public void setDepreci_year(Integer depreci_year) {
+		this.depreci_year = depreci_year;
+	}
+	public Integer getDepreci_month() {
+		return depreci_month;
+	}
+	public void setDepreci_month(Integer depreci_month) {
+		this.depreci_month = depreci_month;
+	}
+	public Integer getDepreci_day() {
+		return depreci_day;
+	}
+	public void setDepreci_day(Integer depreci_day) {
+		this.depreci_day = depreci_day;
 	}
 
 }

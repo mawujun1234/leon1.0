@@ -28,6 +28,8 @@ public class EquipmentCycle extends UUIDEntity{
 	private String operater_id;//操作者id
 	@Column(length=36)
 	private String operater_name;//操作者名称
+	@Column(length=26)
+	private String operater_ipAddr;//操作者当时的ip
 	
 	@Enumerated(EnumType.STRING)
 	@Column(length=30)
@@ -115,6 +117,14 @@ public class EquipmentCycle extends UUIDEntity{
 
 	public void setMemo(String memo) {
 		this.memo = memo;
+	}
+
+	public String getOperater_ipAddr() {
+		return operater_ipAddr;
+	}
+
+	public void setOperater_ipAddr(String operater_ipAddr) {
+		this.operater_ipAddr = operater_ipAddr;
 	}
 
 }

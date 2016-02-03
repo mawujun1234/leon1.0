@@ -72,6 +72,9 @@ public class RepairController {
 //		if("".equals(repair.getRpa_type())){
 //			
 //		}
+		if(repair.getStatus()!=RepairStatus.repairing){
+			throw new BusinessException("该维修单不在'维修中'状态，不能更新了!");
+		}
 		repairService.update(repair);
 		return repair;
 	}
