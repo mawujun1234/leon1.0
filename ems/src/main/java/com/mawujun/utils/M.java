@@ -486,6 +486,15 @@ public static final class Scrap {
 	public static final String repair_id="repair_id";
 	public static final String status="status";
 }
+public static final class AssetClean {
+	public static final String ecode="ecode";
+	public static final String hava_day="hava_day";
+	public static final String used_day="used_day";
+	public static final String original_value="original_value";
+	public static final String depreciation="depreciation";
+	public static final String net_value="net_value";
+	public static final String id="id";
+}
 public static final class Barcode {
 	public static final String ecode="ecode";
 	public static final String orderlist_id="orderlist_id";

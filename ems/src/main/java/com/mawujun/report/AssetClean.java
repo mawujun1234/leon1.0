@@ -4,9 +4,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.mawujun.repository.idEntity.UUIDEntity;
+
 @Entity
 @Table(name="ems_assetclean")
-public class AssetClean {
+public class AssetClean extends UUIDEntity{
 	
 	@Column(length=25)
 	private String ecode;
