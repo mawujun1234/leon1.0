@@ -122,7 +122,7 @@ public class RepairReportController {
 		
 	}
 	
-	SimpleDateFormat yMdHms=new SimpleDateFormat("yyyy-MM-dd");
+	SimpleDateFormat yMdHms=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private void build_content(List<RepairReport> list,XSSFWorkbook wb,Sheet sheet,int rownum){
 		int cellnum=0;
 

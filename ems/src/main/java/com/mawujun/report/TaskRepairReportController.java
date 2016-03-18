@@ -116,7 +116,7 @@ public class TaskRepairReportController {
 		
 	}
 	
-	SimpleDateFormat yMdHms=new SimpleDateFormat("yyyy-MM-dd");
+	SimpleDateFormat yMdHms=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private void build_content(List<TaskRepairReport> list,XSSFWorkbook wb,Sheet sheet,int rownum){
 		int cellnum=0;
 
