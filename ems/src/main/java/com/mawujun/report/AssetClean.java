@@ -27,7 +27,7 @@ public class AssetClean extends UUIDEntity{
 
 	private Integer day_now;//这是计算当天的数据，用来保存历史数据的
 	
-	private Integer day_hava;//可使用天数
+	private Integer day_have;//可使用天数
 	private Integer day_used;//已经使用天数
 	private Double value_original;//原值
 	private Double value_depreciation;//折旧
@@ -44,12 +44,7 @@ public class AssetClean extends UUIDEntity{
 	public void setDay_now(Integer day_now) {
 		this.day_now = day_now;
 	}
-	public Integer getDay_hava() {
-		return day_hava;
-	}
-	public void setDay_hava(Integer day_hava) {
-		this.day_hava = day_hava;
-	}
+
 	public Integer getDay_used() {
 		return day_used;
 	}
@@ -73,6 +68,12 @@ public class AssetClean extends UUIDEntity{
 	}
 	public void setValue_net(Double value_net) {
 		this.value_net = value_net;
+	}
+	public Integer getDay_have() {
+		return day_have;
+	}
+	public void setDay_have(Integer day_have) {
+		this.day_have = day_have;
 	}
 	
 	
