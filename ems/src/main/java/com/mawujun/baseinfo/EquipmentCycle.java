@@ -6,7 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.mawujun.repository.idEntity.UUIDEntity;
@@ -37,6 +36,10 @@ public class EquipmentCycle extends UUIDEntity{
 	@Column(length=36)
 	private String type_id;//入库id，领用单id等等 各种单据id,还有任务id，如果是手动修改，就填写修改人的id
 	
+	@Column(length=36)
+	private String source_id;//移动的时候的源id。仓库id，作业单位id，维修中心id等,维修出库的时候，就是维修中心id，维修中心入库的时候就是仓库id
+	@Column(length=50)
+	private String source_name;
 	@Column(length=36)
 	private String target_id;//目标id。仓库id，作业单位id，维修中心id等,维修出库的时候，就是仓库id，维修中心入库的时候就是维修中心id
 	@Column(length=50)
@@ -125,6 +128,22 @@ public class EquipmentCycle extends UUIDEntity{
 
 	public void setOperater_ipAddr(String operater_ipAddr) {
 		this.operater_ipAddr = operater_ipAddr;
+	}
+
+	public String getSource_id() {
+		return source_id;
+	}
+
+	public void setSource_id(String source_id) {
+		this.source_id = source_id;
+	}
+
+	public String getSource_name() {
+		return source_name;
+	}
+
+	public void setSource_name(String source_name) {
+		this.source_name = source_name;
 	}
 
 }

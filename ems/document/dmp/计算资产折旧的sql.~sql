@@ -1,6 +1,6 @@
 select * from ems_equipment
 select * from ems_equipmentprod
-
+--插入初始化数据
 insert into ems_assetclean(id,ecode,day_now,day_hava)
 select sys_guid(),ecode,to_char(sysdate,'yyyymmdd'),b.depreci_year*365 from ems_equipment a,ems_equipmentprod b
 where a.prod_id=b.id
@@ -31,7 +31,7 @@ group by id,ecode
 where a.ecode=b.ecode 
 ) where day_have is not null--排除历史中没有数据的
 
-
+--计算老旧订单的剩余使用年限
 update ems_assetclean a set day_hava=(
 select day_hava from (
 select c.ecode,b.depreci_year*365+b.depreci_month*30+b.depreci_day as day_hava from ems_order a,ems_orderlist b,ems_equipment c
@@ -48,7 +48,7 @@ where a.id=b.order_id and b.prod_id=c.prod_id and a.ordertype='old_equipment'
 select distinct c.ecode,b.depreci_year*365+b.depreci_month*30+b.depreci_day as day_hava from ems_order a,ems_orderlist b,ems_equipment c
 where a.id=b.order_id and b.prod_id=c.prod_id and a.ordertype='old_equipment'
 
-
+--计算折旧后重新设置的有效期
 update ems_assetclean a set day_hava=(
 select day_hava from (
   select * from (
@@ -92,6 +92,38 @@ order by ecode,operatedate
 select ecode,count(ecode) from ems_equipmentcycle where operateType='task_install' or operateType='task_cancel'
 group by ecode
 having count(ecode)>3
+
+--获取一个安装卸载的时间
+select ecode,ROUND(TO_NUMBER((cancel_date+0)-(install_date+0) ))from (
+select ecode,operateType,operatedate install_date,lead(operatedate, 1, sysdate) over(partition by ecode order by ecode,operatedate) as cancel_date
+from ems_equipmentcycle where (operateType='task_install' or operateType='task_cancel')
+and ecode in ('04030P-**-1508030107')
+--and ecode in ('030101-**-1507310028','04030P-**-1508030107','040403-**-1507100049','01010Q-**-1507100049')
+order by ecode,operatedate
+) where operateType='task_install'
+
+select ecode,sum(ROUND(TO_NUMBER((cancel_date+0)-(install_date+0) ))) from (
+select ecode,operateType,operatedate install_date,lead(operatedate, 1, sysdate) over(partition by ecode order by ecode,operatedate) as cancel_date
+from ems_equipmentcycle where (operateType='task_install' or operateType='task_cancel')
+and ecode in ('04030P-**-1508030107')
+--and ecode in ('030101-**-1507310028','04030P-**-1508030107','040403-**-1507100049','01010Q-**-1507100049')
+order by ecode,operatedate
+) where operateType='task_install'
+group by ecode
+---更新已经使用天数的sql
+update ems_assetclean a set day_used=(
+select day_used from (
+      select ecode,sum(ROUND(TO_NUMBER((cancel_date+0)-(install_date+0) ))) day_used from (
+      select ecode,operateType,operatedate install_date,lead(operatedate, 1, sysdate) over(partition by ecode order by ecode,operatedate) as cancel_date
+      from ems_equipmentcycle where (operateType='task_install' or operateType='task_cancel')
+      order by ecode,operatedate
+      ) where operateType='task_install'
+      group by ecode
+) b where a.ecode=b.ecode
+) where exists (
+  select 1 from ems_equipmentcycle c where a.ecode=c.ecode
+) and a.day_now=to_char(sysdate,'yyyymmdd')
+
 
 
 
