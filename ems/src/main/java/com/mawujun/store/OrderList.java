@@ -33,7 +33,7 @@ public class OrderList extends UUIDEntity {
 //	private String style;//型号
 	
 	@Column(precision=10,scale=2)
-	private Double unitPrice;
+	private Double unitPrice;//单价
 	private Integer quality_month;//质保时间长度，以月为单位
 	
 	private Integer orderNum=0;//订货数量

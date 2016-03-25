@@ -91,6 +91,8 @@ public static final class EquipmentCycle {
 	public static final String operater_ipAddr="operater_ipAddr";
 	public static final String operateType="operateType";
 	public static final String type_id="type_id";
+	public static final String source_id="source_id";
+	public static final String source_name="source_name";
 	public static final String target_id="target_id";
 	public static final String target_name="target_name";
 	public static final String memo="memo";
@@ -489,7 +491,7 @@ public static final class Scrap {
 public static final class AssetClean {
 	public static final String ecode="ecode";
 	public static final String day_now="day_now";
-	public static final String day_hava="day_hava";
+	public static final String day_have="day_have";
 	public static final String day_used="day_used";
 	public static final String value_original="value_original";
 	public static final String value_depreciation="value_depreciation";

@@ -53,7 +53,7 @@ public class EquipmentProd  implements
 	@Transient
 	private String id_suffix;
 	
-	private Integer depreci_year;//默认是5年
+	private Integer depreci_year;//默认是5年，报废年限，可使用的年限
 	
 	/**
 	 * 这个字段是要删除的

@@ -31,6 +31,16 @@ group by id,ecode
 where a.ecode=b.ecode 
 ) where day_have is not null--排除历史中没有数据的
 
+
+
+
+-- Create/Recreate indexes 
+create index AssetClean_ecode on EMS_ASSETCLEAN (ecode);
+create index AssetClean_day_now on EMS_ASSETCLEAN (day_now);
+-- Create/Recreate indexes 
+create index lifecycle on EMS_EQUIPMENTCYCLE (ecode);
+--初始化所有设备，默认使用年限是5年
+update ems_equipmentprod set depreci_year=5 where depreci_year is null;
 --计算老旧订单的剩余使用年限
 update ems_assetclean a set day_hava=(
 select day_hava from (
@@ -120,10 +130,24 @@ select day_used from (
       ) where operateType='task_install'
       group by ecode
 ) b where a.ecode=b.ecode
-) where exists (
-  select 1 from ems_equipmentcycle c where a.ecode=c.ecode
-) and a.day_now=to_char(sysdate,'yyyymmdd')
+) where exists ( select 1 from ems_equipmentcycle c where a.ecode=c.ecode) and
+  a.day_now=to_char(sysdate,'yyyymmdd')
 
+--更新原值
+update ems_assetclean a set value_original=(
+select unitPrice from (
+select  b.ecode,a.unitPrice from ems_orderlist a,ems_equipment b
+where a.id=b.orderlist_id
+) b where a.ecode=b.ecode
+) where exists(
+select 1 from ems_equipment c where a.ecode=c.ecode
+)
+
+
+
+--计算净值和原值
+update ems_assetclean a set value_depreciation=(value_original*0.95/day_hava*day_used);
+update ems_assetclean a set value_net=(value_original-value_depreciation);
 
 
 
