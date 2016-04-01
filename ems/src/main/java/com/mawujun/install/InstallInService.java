@@ -129,6 +129,7 @@ public class InstallInService extends AbstractService<InstallIn, String>{
 		installin.setOperater(ShiroUtils.getAuthenticationInfo().getId());
 		//outStore.setType(1);
 		installInRepository.create(installin);
+
 		
 		for(InstallInList list:equipments){
 			

@@ -1,4 +1,4 @@
---调用这个存储过程，将会计算所有的数据库的今日结算数据
+--璋冪敤杩欎釜瀛樺偍杩囩▼锛屽皢浼氳绠楁墍鏈夌殑鏁版嵁搴撶殑浠婃棩缁撶畻鏁版嵁
 create or replace procedure proc_day_sparepart_all(in_todaykey in varchar2)
 as
 begin
@@ -8,4 +8,3 @@ begin
     proc_day_sparepart(store.id,in_todaykey);
   END LOOP;
 end;
-

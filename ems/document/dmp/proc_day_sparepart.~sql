@@ -1,28 +1,28 @@
-  --¼ÆËãµ±ÈÕµÄ·¢Éú¶îÊı¾İ
+  --è®¡ç®—å½“æ—¥çš„å‘ç”Ÿé¢æ•°æ®
 create or replace procedure proc_day_sparepart(in_store_id in varchar2, in_todaykey in varchar2)
 as
---×òÌìµÄkey
+--æ˜¨å¤©çš„key
 in_yesterdaykey varchar2(8):=to_char(TRUNC(to_date(in_todaykey,'yyyymmdd'))-1,'yyyymmdd');
---Õâ¸öÔÂµÄkey
+--è¿™ä¸ªæœˆçš„key
 in_monthkey varchar2(6):=to_char(TRUNC(to_date(in_todaykey,'yyyymmdd'),'month'),'yyyymm');
---ÉÏ¸öÔÂµÄkey
+--ä¸Šä¸ªæœˆçš„key
 --in_lastmonthkey varchar2(6):=to_char(TRUNC(to_date('20150101','yyyymmdd'),'month')-1,'yyyymm');
 begin
-  --É¾µôÏÖÔÚÓĞµÄÊı¾İ,ÖØĞÂ¼ÆËã
+  --åˆ æ‰ç°åœ¨æœ‰çš„æ•°æ®,é‡æ–°è®¡ç®—
   delete report_day_sparepart where daykey=in_todaykey and store_id=in_store_id;
   
   
  insert into report_day_sparepart(daykey,store_id,prod_id,monthkey,yesterdaynum, purchasenum, oldnum,installoutnum,repairinnum,scrapoutnum,repairoutnum,borrownum,borrowreturnnum)  
  select in_todaykey,in_store_id,prod_id,in_monthkey,sum(yesterdaynum) yesterdaynum, sum(purchasenum) purchasenum,sum(oldnum) oldnum,-sum(installoutnum) installoutnum,sum(repairinnum) repairinnum,sum(scrapoutnum) scrapoutnum,sum(repairoutnum) repairoutnum,-sum(borrownum) borrownum,sum(borrowreturnnum) borrowreturnnum from (
- --»ñÈ¡×òÌìµÄ½áÓàÊı¾İ
+ --è·å–æ˜¨å¤©çš„ç»“ä½™æ•°æ®
   select prod_id,todaynum as yesterdaynum,0 purchasenum,0 oldnum,0 installoutnum,0 repairinnum,0 scrapoutnum,0 repairoutnum,0 borrownum,0 borrowreturnnum
   from report_day_sparepart a
   where a.daykey=in_yesterdaykey and a.store_id=in_store_id
   union all
- ----ÏÂÃæµÄËùÓĞÕâĞ©Ó¦¸ÃÊÇµ±ÈÕµÃ·¢Éú¶î
- --²É¹ºĞÂÔö
+ ----ä¸‹é¢çš„æ‰€æœ‰è¿™äº›åº”è¯¥æ˜¯å½“æ—¥å¾—å‘ç”Ÿé¢
+ --é‡‡è´­æ–°å¢
   select prod_id,0 yesterdaynum,sum(purchasenum) purchasenum,0 oldnum,0 installoutnum,0 repairinnum,0 scrapoutnum,0 repairoutnum,0 borrownum,0 borrowreturnnum from (
-    --¶©µ¥Â¼ÈëµÄÊ±ºò£¬ĞÂÆ·ĞÂÔöÊıÁ¿
+    --è®¢å•å½•å…¥çš„æ—¶å€™ï¼Œæ–°å“æ–°å¢æ•°é‡
     select c.prod_id,count(b.ecode) as purchasenum from ems_instore a,ems_instorelist b,ems_equipment c
     where a.id=b.instore_id and b.ecode=c.ecode and to_char(a.operatedate,'yyyymmdd') =in_todaykey and a.store_id=in_store_id
     and b.isnew='Y'
@@ -35,10 +35,10 @@ begin
   )
   group by prod_id
    union all
-  --¾ÉÆ·ĞÂÔö
+  --æ—§å“æ–°å¢
   select prod_id,0 yesterdaynum,0 purchasenum,sum(oldnum) oldnum,0 installoutnum,0 repairinnum,0 scrapoutnum,0 repairoutnum,0 borrownum,0 borrowreturnnum from (
-    --¶©µ¥Â¼ÈëµÄÊ±ºò£¬¾ÉÆ·ĞÂÔöÊıÁ¿
-    select c.prod_id,count(b.ecode) as purchasenum from ems_instore a,ems_instorelist b,ems_equipment c
+    --è®¢å•å½•å…¥çš„æ—¶å€™ï¼Œæ—§å“æ–°å¢æ•°é‡
+    select c.prod_id,count(b.ecode) as oldnum from ems_instore a,ems_instorelist b,ems_equipment c
     where a.id=b.instore_id and b.ecode=c.ecode and to_char(a.operatedate,'yyyymmdd') =in_todaykey and a.store_id=in_store_id
     and b.isnew='N'
     group by c.prod_id
@@ -55,7 +55,7 @@ begin
   )
   group by prod_id
    union all
-  --±¾ÆÚÁìÓÃ
+  --æœ¬æœŸé¢†ç”¨
   select prod_id,0 yesterdaynum,0 purchasenum,0 oldnum,sum(installoutnum) installoutnum,0 repairinnum,0 scrapoutnum,0 repairoutnum,0 borrownum,0 borrowreturnnum from (
     select c.prod_id,count(b.ecode) as installoutnum from ems_installout a,ems_installoutlist b,ems_equipment c
     where a.id=b.installout_id and b.ecode=c.ecode and to_char(a.operatedate,'yyyymmdd') =in_todaykey and a.store_id=in_store_id
@@ -79,24 +79,24 @@ begin
   )
   group by prod_id
    union all
-  --±¾ÆÚÎ¬ĞŞ·µ»¹Êı
+  --æœ¬æœŸç»´ä¿®è¿”è¿˜æ•°
   select c.prod_id,0 yesterdaynum,0 purchasenum,0 oldnum,0 installoutnum,count(a.ecode) as repairinnum,0 scrapoutnum,0 repairoutnum,0 borrownum,0 borrowreturnnum from ems_repair a,ems_equipment c
   where a.ecode=c.ecode and to_char(a.str_in_date,'yyyymmdd') =in_todaykey and a.str_in_id=in_store_id
   and a.status='over'
   group by c.prod_id
    union all
-  --±¨·ÏÊı
+  --æŠ¥åºŸæ•°
   select c.prod_id,0 yesterdaynum,0 purchasenum,0 oldnum,0 installoutnum,0 repairinnum,count(a.ecode) as scrapoutnum,0 repairoutnum,0 borrownum,0 borrowreturnnum from ems_scrap a,ems_equipment c
   where a.ecode=c.ecode and to_char(a.operateDate,'yyyymmdd') =in_todaykey and a.store_id=in_store_id
   and a.status='scrap'
   group by c.prod_id
    union all
-  --Î¬ĞŞ³ö¿âÊıÁ¿
+  --ç»´ä¿®å‡ºåº“æ•°é‡
    select c.prod_id,0 yesterdaynum,0 purchasenum,0 oldnum,0 installoutnum,0 repairinnum,0 scrapoutnum,count(a.ecode) as repairoutnum,0 borrownum,0 borrowreturnnum from ems_repair a,ems_equipment c
   where a.ecode=c.ecode and to_char(a.str_out_date,'yyyymmdd') =in_todaykey and a.str_out_id=in_store_id
   group by c.prod_id
    union all
-  --±¾ÆÚ½è³öÊı 
+  --æœ¬æœŸå€Ÿå‡ºæ•° 
   select prod_id,0 yesterdaynum,0 purchasenum,0 oldnum,0 installoutnum,0 repairinnum,0 scrapoutnum,0 repairoutnum,sum(borrownum) borrownum,0 borrowreturnnum from (
     select c.prod_id,count(b.ecode) as borrownum from ems_installout a,ems_installoutlist b,ems_equipment c
     where a.id=b.installout_id and b.ecode=c.ecode and to_char(a.operatedate,'yyyymmdd') =in_todaykey and a.store_id=in_store_id
@@ -115,7 +115,7 @@ begin
   )
   group by prod_id 
    union all
-  --¹é»¹Êı
+  --å½’è¿˜æ•°
   select prod_id,0 yesterdaynum,0 purchasenum,0 oldnum,0 installoutnum,0 repairinnum,0 scrapoutnum,0 repairoutnum,0 borrownum,sum(borrowreturnnum) as borrowreturnnum from  (
    select c.prod_id,count(b.ecode) as borrowreturnnum from ems_installout a,ems_installoutlist b,ems_equipment c
     where a.id=b.installout_id and b.ecode=c.ecode and to_char(b.returnDate,'yyyymmdd') =in_todaykey and a.store_id=in_store_id
@@ -131,12 +131,17 @@ begin
     where a.id=b.adjust_id and b.ecode=c.ecode and to_char(a.str_in_date,'yyyymmdd') =in_todaykey and a.str_in_id=in_store_id 
     and a.adjustType='returnback' and b.adjustListStatus='in'
     group by c.prod_id 
+    union all
+    select c.prod_id,count(b.ecode) as borrowreturnnum from ems_installin a,ems_installinlist b,ems_equipment c
+    where a.id=b.installIn_id and b.ecode=c.ecode and to_char(a.operatedate,'yyyymmdd') =in_todaykey and a.store_id=in_store_id
+    and b.isBad='N' and b.installInListType='installout'
+    group by c.prod_id 
   ) group by prod_id 
 ) group by prod_id ;
 commit;
 
---¿ªÊ¼¼ÆËã½ñÈÕµÄ½áÓàÊı¾İ
-    --±¾ÈÕ½áÓà=×òÌì½áÓà+²É¹ºĞÂÔö+¾ÉÆ·ĞÂÔö+(-±¾ÆÚÁìÓÃÊı)+Î¬ĞŞ·µ»¹Êı+(-±¾ÆÚ½èÓÃÊı)+±¾ÆÚ¹é»¹Êı
+--å¼€å§‹è®¡ç®—ä»Šæ—¥çš„ç»“ä½™æ•°æ®
+    --æœ¬æ—¥ç»“ä½™=æ˜¨å¤©ç»“ä½™+é‡‡è´­æ–°å¢+æ—§å“æ–°å¢+(-æœ¬æœŸé¢†ç”¨æ•°)+ç»´ä¿®è¿”è¿˜æ•°+(-æœ¬æœŸå€Ÿç”¨æ•°)+æœ¬æœŸå½’è¿˜æ•°
     update report_day_sparepart 
     set todaynum=yesterdaynum+purchasenum+oldnum+installoutnum+repairinnum+borrownum+borrowreturnnum
     where daykey=in_todaykey and store_id=in_store_id;
