@@ -1,5 +1,5 @@
 -- Create/Recreate indexes 
-create index AssetClean_ecode on EMS_ASSETCLEAN (ecode);
-create index AssetClean_day_now on EMS_ASSETCLEAN (day_now);
+create index AssetClean_ecode on report_assetclean (ecode);
+create index AssetClean_day_now on report_assetclean (day_now);
 -- Create/Recreate indexes 
 create index lifecycle on EMS_EQUIPMENTCYCLE (ecode);

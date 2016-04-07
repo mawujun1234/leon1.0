@@ -480,7 +480,7 @@ public static final class ems_scrap {
 	public static final String repair_id="repair_id";
 	public static final String status="status";
 }
-public static final class ems_assetclean {
+public static final class report_assetclean {
 	public static final String ecode="ecode";
 	public static final String day_now="day_now";
 	public static final String day_have="day_have";

@@ -1,7 +1,7 @@
 select * from ems_equipment
 select * from ems_equipmentprod
 --插入初始化数据
-insert into ems_assetclean(id,ecode,day_now,day_hava)
+insert into report_assetclean(id,ecode,day_now,day_have) 
 select sys_guid(),ecode,to_char(sysdate,'yyyymmdd'),b.depreci_year*365 from ems_equipment a,ems_equipmentprod b
 where a.prod_id=b.id
 
@@ -35,32 +35,32 @@ where a.ecode=b.ecode
 
 
 -- Create/Recreate indexes 
-create index AssetClean_ecode on EMS_ASSETCLEAN (ecode);
-create index AssetClean_day_now on EMS_ASSETCLEAN (day_now);
+create index AssetClean_ecode on report_assetclean (ecode);
+create index AssetClean_day_now on report_assetclean (day_now);
 -- Create/Recreate indexes 
 create index lifecycle on EMS_EQUIPMENTCYCLE (ecode);
 --初始化所有设备，默认使用年限是5年
 update ems_equipmentprod set depreci_year=5 where depreci_year is null;
 --计算老旧订单的剩余使用年限
-update ems_assetclean a set day_hava=(
-select day_hava from (
-select c.ecode,b.depreci_year*365+b.depreci_month*30+b.depreci_day as day_hava from ems_order a,ems_orderlist b,ems_equipment c
-where a.id=b.order_id and b.prod_id=c.prod_id and a.ordertype='old_equipment'
+update report_assetclean a set day_have=(
+select day_have from (
+select c.ecode,b.depreci_year*365+b.depreci_month*30+b.depreci_day as day_have from ems_order a,ems_orderlist b,ems_equipment c
+where a.id=b.order_id and b.id=c.orderlist_id and a.ordertype='old_equipment'
 ) b where a.ecode=b.ecode
 ) 
 where exists (select 1 from (
-select c.ecode,b.depreci_year*365+b.depreci_month*30+b.depreci_day as day_hava from ems_order a,ems_orderlist b,ems_equipment c
+select c.ecode,b.depreci_year*365+b.depreci_month*30+b.depreci_day as day_have from ems_order a,ems_orderlist b,ems_equipment c
 where a.id=b.order_id and b.prod_id=c.prod_id and a.ordertype='old_equipment'
 ) b where a.ecode=b.ecode) and a.day_now=to_char(sysdate,'yyyymmdd')
 
 
 
-select distinct c.ecode,b.depreci_year*365+b.depreci_month*30+b.depreci_day as day_hava from ems_order a,ems_orderlist b,ems_equipment c
+select distinct c.ecode,b.depreci_year*365+b.depreci_month*30+b.depreci_day as day_have from ems_order a,ems_orderlist b,ems_equipment c
 where a.id=b.order_id and b.prod_id=c.prod_id and a.ordertype='old_equipment'
 
 --计算折旧后重新设置的有效期
-update ems_assetclean a set day_hava=(
-select day_hava from (
+update report_assetclean a set day_have=(
+select day_have from (
   select * from (
   select a.ecode,a.depreci_year*365+a.depreci_month*30+a.depreci_day as day_have from ems_repair a,(
   select ecode,max(id) from ems_repair
@@ -121,7 +121,7 @@ order by ecode,operatedate
 ) where operateType='task_install'
 group by ecode
 ---更新已经使用天数的sql
-update ems_assetclean a set day_used=(
+update report_assetclean a set day_used=(
 select day_used from (
       select ecode,sum(ROUND(TO_NUMBER((cancel_date+0)-(install_date+0) ))) day_used from (
       select ecode,operateType,operatedate install_date,lead(operatedate, 1, sysdate) over(partition by ecode order by ecode,operatedate) as cancel_date
@@ -134,7 +134,7 @@ select day_used from (
   a.day_now=to_char(sysdate,'yyyymmdd')
 
 --更新原值
-update ems_assetclean a set value_original=(
+update report_assetclean a set value_original=(
 select unitPrice from (
 select  b.ecode,a.unitPrice from ems_orderlist a,ems_equipment b
 where a.id=b.orderlist_id
@@ -146,8 +146,11 @@ select 1 from ems_equipment c where a.ecode=c.ecode
 
 
 --计算净值和原值
-update ems_assetclean a set value_depreciation=(value_original*0.95/day_hava*day_used);
-update ems_assetclean a set value_net=(value_original-value_depreciation);
+update report_assetclean a set value_depreciation=(value_original*0.95/day_have*day_used);
+update report_assetclean a set value_net=(value_original-value_depreciation);
+
+call proc_report_assetclean();
+
 
 
 

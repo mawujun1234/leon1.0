@@ -13,7 +13,7 @@ import com.mawujun.repository.idEntity.UUIDEntity;
  *
  */
 @Entity
-@Table(name="ems_assetclean",uniqueConstraints = {@UniqueConstraint(columnNames={"ecode", "day_now"})})
+@Table(name="report_assetclean",uniqueConstraints = {@UniqueConstraint(columnNames={"ecode", "day_now"})})
 public class AssetClean extends UUIDEntity{
 	
 	/**
