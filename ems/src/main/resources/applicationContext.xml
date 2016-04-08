@@ -63,7 +63,7 @@
         <task:scheduled ref="day_sparepart_Service" method="proc_report_day_sparepart_all" cron="0 0 23 * * ?"/> 
         <!-- 计算设备的净值
         <task:scheduled ref="day_sparepart_Service" method="proc_equipment_unitprice" cron="0 52 02 * * ?"/>  -->
-        <task:scheduled ref="day_sparepart_Service" method="proc_report_assetclean" cron="0 52 02 * * ?"/>  
+         <!--<task:scheduled ref="day_sparepart_Service" method="proc_report_assetclean" cron="0 52 02 * * ?"/>   -->
 
         
         <!-- ==============================在建仓库=================================== -->
