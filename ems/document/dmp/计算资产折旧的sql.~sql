@@ -50,7 +50,7 @@ where a.id=b.order_id and b.id=c.orderlist_id and a.ordertype='old_equipment'
 ) 
 where exists (select 1 from (
 select c.ecode,b.depreci_year*365+b.depreci_month*30+b.depreci_day as day_have from ems_order a,ems_orderlist b,ems_equipment c
-where a.id=b.order_id and b.prod_id=c.prod_id and a.ordertype='old_equipment'
+where a.id=b.order_id and b.id=c.orderlist_id and a.ordertype='old_equipment'
 ) b where a.ecode=b.ecode) and a.day_now=to_char(sysdate,'yyyymmdd')
 
 

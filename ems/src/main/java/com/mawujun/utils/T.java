@@ -320,6 +320,16 @@ public static final class ems_installouttype {
 	public static final String memo="memo";
 	public static final String id="id";
 }
+public static final class report_assetclean {
+	public static final String ecode="ecode";
+	public static final String day_key="day_key";
+	public static final String day_have="day_have";
+	public static final String day_used="day_used";
+	public static final String value_original="value_original";
+	public static final String value_old="value_old";
+	public static final String value_net="value_net";
+	public static final String id="id";
+}
 public static final class report_day_sparepart {
 	public static final String daykey="daykey";
 	public static final String store_id="store_id";
@@ -479,16 +489,6 @@ public static final class ems_scrap {
 	public static final String operateDate="operateDate";
 	public static final String repair_id="repair_id";
 	public static final String status="status";
-}
-public static final class report_assetclean {
-	public static final String ecode="ecode";
-	public static final String day_now="day_now";
-	public static final String day_have="day_have";
-	public static final String day_used="day_used";
-	public static final String value_original="value_original";
-	public static final String value_depreciation="value_depreciation";
-	public static final String value_net="value_net";
-	public static final String id="id";
 }
 public static final class ems_barcode {
 	public static final String ecode="ecode";

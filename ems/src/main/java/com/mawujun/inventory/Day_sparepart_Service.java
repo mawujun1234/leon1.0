@@ -82,6 +82,15 @@ public class Day_sparepart_Service extends AbstractService<Day_sparepart, Day_sp
 		day_sparepart_Repository.proc_report_day_sparepart_all(day_in);
 	}
 	
+	/**
+	 * 定时调用计算设备的残值
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 */
+	public void proc_report_assetclean(){	
+		String day_in=yyyyMMdd_format.format(new Date());
+		day_sparepart_Repository.proc_report_day_sparepart_all(day_in);
+	}
+	
 	
 	public List<Day_sparepart_type> queryDay_sparepart(String store_id,Integer store_type,String day_start,String day_end){
 		if(!StringUtils.hasText(store_id) && store_type!=null){

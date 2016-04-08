@@ -1,4 +1,4 @@
-package com.mawujun.report;
+package com.mawujun.inventory;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +13,7 @@ import com.mawujun.repository.idEntity.UUIDEntity;
  *
  */
 @Entity
-@Table(name="report_assetclean",uniqueConstraints = {@UniqueConstraint(columnNames={"ecode", "day_now"})})
+@Table(name="report_assetclean",uniqueConstraints = {@UniqueConstraint(columnNames={"ecode", "day_key"})})
 public class AssetClean extends UUIDEntity{
 	
 	/**
@@ -25,12 +25,12 @@ public class AssetClean extends UUIDEntity{
 	@Column(length=25)
 	private String ecode;
 
-	private Integer day_now;//这是计算当天的数据，用来保存历史数据的
+	private Integer day_key;//这是计算当天的数据，用来保存历史数据的
 	
 	private Integer day_have;//可使用天数
 	private Integer day_used;//已经使用天数
 	private Double value_original;//原值
-	private Double value_depreciation;//折旧
+	private Double value_old;//折旧
 	private Double value_net;//净值
 	public String getEcode() {
 		return ecode;
@@ -38,12 +38,7 @@ public class AssetClean extends UUIDEntity{
 	public void setEcode(String ecode) {
 		this.ecode = ecode;
 	}
-	public Integer getDay_now() {
-		return day_now;
-	}
-	public void setDay_now(Integer day_now) {
-		this.day_now = day_now;
-	}
+
 
 	public Integer getDay_used() {
 		return day_used;
@@ -57,12 +52,7 @@ public class AssetClean extends UUIDEntity{
 	public void setValue_original(Double value_original) {
 		this.value_original = value_original;
 	}
-	public Double getValue_depreciation() {
-		return value_depreciation;
-	}
-	public void setValue_depreciation(Double value_depreciation) {
-		this.value_depreciation = value_depreciation;
-	}
+
 	public Double getValue_net() {
 		return value_net;
 	}
@@ -74,6 +64,18 @@ public class AssetClean extends UUIDEntity{
 	}
 	public void setDay_have(Integer day_have) {
 		this.day_have = day_have;
+	}
+	public Double getValue_old() {
+		return value_old;
+	}
+	public void setValue_old(Double value_old) {
+		this.value_old = value_old;
+	}
+	public Integer getDay_key() {
+		return day_key;
+	}
+	public void setDay_key(Integer day_key) {
+		this.day_key = day_key;
 	}
 	
 	

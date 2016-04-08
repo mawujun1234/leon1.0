@@ -146,10 +146,14 @@ select 1 from ems_equipment c where a.ecode=c.ecode
 
 
 --计算净值和原值
-update report_assetclean a set value_depreciation=(value_original*0.95/day_have*day_used);
-update report_assetclean a set value_net=(value_original-value_depreciation);
+update report_assetclean a set value_old=(value_original*0.95/day_have*day_used);
+update report_assetclean a set value_net=(value_original-value_old);
 
 call proc_report_assetclean();
+
+select * from report_assetclean where day_have is  null
+
+
 
 
 

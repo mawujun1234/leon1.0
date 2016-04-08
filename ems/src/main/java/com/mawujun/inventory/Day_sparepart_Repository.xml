@@ -181,7 +181,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
    
     -->
     
-    
+    <!-- 计算设备残值 -->
+    <parameterMap type="map" id="proc_report_assetclean_params">  
+	   <parameter property="in_todaykey" jdbcType="VARCHAR" mode="IN"/>   
+	</parameterMap>  
+	<update id="proc_report_assetclean" parameterMap="proc_report_assetclean_params" statementType="CALLABLE">  
+       {call proc_report_assetclean(?)}  
+   </update>
    
 </mapper>
 
