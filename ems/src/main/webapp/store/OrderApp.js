@@ -41,11 +41,17 @@ Ext.onReady(function(){
 							if(depreci_container){
 								depreci_container.hide();
 							}
+							equip_grid.down('#depreci_year').hide();
+			equip_grid.down('#depreci_month').hide();
+			equip_grid.down('#depreci_day').hide();
 						} else {
 							var depreci_container=step1.child("form").getComponent("depreci_container");
 							if(depreci_container){
 								depreci_container.show();
 							}
+							equip_grid.down('#depreci_year').show();
+			equip_grid.down('#depreci_month').show();
+			equip_grid.down('#depreci_day').show();
 						}
 					}
 				}
@@ -404,7 +410,10 @@ Ext.onReady(function(){
 				  {header: '单位', dataIndex: 'prod_unit',width:70},
     	          {header: '数量', dataIndex: 'orderNum',width:70},
     	          {header: '单价(元)', dataIndex: 'unitPrice',width:70},
-    	          {header: '总价(元)', dataIndex: 'totalprice',width:70}
+    	          {header: '总价(元)', dataIndex: 'totalprice',width:70},
+    	          {header: '年',itemId: 'depreci_year',dataIndex:'depreci_year',xtype: 'numbercolumn', format:'0',width:30,hidden:true},
+    			  {header: '月',itemId: 'depreci_month',dataIndex:'depreci_month',xtype: 'numbercolumn', format:'0',width:30,hidden:true},
+    			 {header: '天',itemId: 'depreci_day',dataIndex:'depreci_day',xtype: 'numbercolumn', format:'0',width:30,hidden:true}
     	          
 
     	          ],
@@ -586,13 +595,13 @@ Ext.onReady(function(){
         							{xtype:'fieldcontainer',layout: 'hbox',items:[prod_spec,prod_unit]},
         							{itemId:'depreci_container',hidden:true,xtype:'fieldcontainer',layout: 'hbox',items:[{xtype:'displayfield',value:'还可以使用的年数:',labelWidth:120},depreci_year,{
 		                               xtype: 'displayfield',
-		                               value: '-年'
+		                               value: '年-'
 		                           },depreci_month,{
 		                           		xtype: 'displayfield',
-		                               value: '-月'
+		                               value: '月-'
 		                           },depreci_day,{
 		                           		xtype: 'displayfield',
-		                               value: '-天'
+		                               value: '天'
 		                           }]},
                                     {xtype:'fieldcontainer',layout: 'hbox',items:[
                                     	
@@ -678,6 +687,8 @@ Ext.onReady(function(){
 					}
 				});
 				
+				type_combox.enable();
+				subtype_combox.enable();
 				orderType.enable();
             }else{
             	Ext.Msg.alert('提示','请先添加一个设备');

@@ -235,13 +235,13 @@ Ext.define('Ems.store.OrderListForm',{
         							{xtype:'fieldcontainer',layout: 'hbox',items:[prod_spec,prod_unit]},
         							{itemId:'depreci_container',hidden:true,xtype:'fieldcontainer',layout: 'hbox',items:[{xtype:'displayfield',value:'还可以使用的年数:',labelWidth:120},depreci_year,{
 		                               xtype: 'displayfield',
-		                               value: '-年'
+		                               value: '年-'
 		                           },depreci_month,{
 		                           		xtype: 'displayfield',
-		                               value: '-月'
+		                               value: '月-'
 		                           },depreci_day,{
 		                           		xtype: 'displayfield',
-		                               value: '-天'
+		                               value: '天'
 		                           }]},
                                     {xtype:'fieldcontainer',layout: 'hbox',items:[
                                    		quality_month_field,

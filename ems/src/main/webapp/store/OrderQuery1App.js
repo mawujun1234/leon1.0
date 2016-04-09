@@ -27,6 +27,18 @@ Ext.onReady(function(){
 		gridList.getStore().getProxy().extraParams={order_id:record.get("id")};
 		gridList.getStore().load();
 		gridList.order_status=record.get("status")
+		gridList.order_orderType=record.get("orderType");
+		
+		//如果是新品订单，隐藏后面的年，月，日3列
+		if(record.get("orderType")=='new_equipment'){
+			gridList.down('#depreci_year').hide();
+			gridList.down('#depreci_month').hide();
+			gridList.down('#depreci_day').hide();
+		} else {
+			gridList.down('#depreci_year').show();
+			gridList.down('#depreci_month').show();
+			gridList.down('#depreci_day').show();
+		}
 	});
 	
 	var viewPort=Ext.create('Ext.container.Viewport',{

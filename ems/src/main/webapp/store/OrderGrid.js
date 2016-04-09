@@ -21,6 +21,7 @@ Ext.define('Ems.store.OrderGrid',{
 		{dataIndex:'orderNo',text:'订单号',width:150},
 		{dataIndex:'store_name',text:'入库仓库',flex:1},
 		{dataIndex: 'status_name',text: '状态',width:70},
+		{dataIndex: 'orderType_name',text: '订单类型',width:70},
 		{dataIndex: 'project_name',text: '项目',width:70},
 		{dataIndex:'operater_name',text:'操作者',width:70},
 		{header: '供应商', dataIndex: 'supplier_name'},
