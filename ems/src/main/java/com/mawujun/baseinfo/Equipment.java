@@ -53,10 +53,12 @@ public class Equipment implements IdEntity<String>,IEcodeCache{
 	@Column(length=20)
 	private EquipmentPlace place;
 	
-	@Column(precision=10,scale=2)
-	private Double unitPrice;//价格
-	@Column(precision=10,scale=2)
-	private Double unitPrice_nav;//资产净值  Net Asset Value,简称NAV
+	//@Column(precision=10,scale=2)
+	//private Double unitPrice;//价格
+	//@Column(precision=10,scale=2)
+	//private Double unitPrice_nav;//资产净值  Net Asset Value,简称NAV
+	private Double value_original;//原值,建立订单的时候的值
+	private Double value_net;//净值
 	@Column(updatable=false)
 	private Date first_install_date;//第一次安装的时间,现在是在任务确认的时候设置初次安装时间
 	
@@ -152,12 +154,7 @@ public class Equipment implements IdEntity<String>,IEcodeCache{
 	public void setMemo(String memo) {
 		this.memo = memo;
 	}
-	public Double getUnitPrice() {
-		return unitPrice;
-	}
-	public void setUnitPrice(Double unitPrice) {
-		this.unitPrice = unitPrice;
-	}
+
 	
 	public Date getFisData() {
 		return fisData;
@@ -241,12 +238,7 @@ public class Equipment implements IdEntity<String>,IEcodeCache{
 	public void setCurrt_task_id(String currt_task_id) {
 		this.currt_task_id = currt_task_id;
 	}
-	public Double getUnitPrice_nav() {
-		return unitPrice_nav;
-	}
-	public void setUnitPrice_nav(Double unitPrice_nav) {
-		this.unitPrice_nav = unitPrice_nav;
-	}
+
 	public Date getFirst_install_date() {
 		return first_install_date;
 	}
@@ -258,6 +250,18 @@ public class Equipment implements IdEntity<String>,IEcodeCache{
 	}
 	public void setLast_pole_id(String last_pole_id) {
 		this.last_pole_id = last_pole_id;
+	}
+	public Double getValue_original() {
+		return value_original;
+	}
+	public void setValue_original(Double value_original) {
+		this.value_original = value_original;
+	}
+	public Double getValue_net() {
+		return value_net;
+	}
+	public void setValue_net(Double value_net) {
+		this.value_net = value_net;
 	}
 
 

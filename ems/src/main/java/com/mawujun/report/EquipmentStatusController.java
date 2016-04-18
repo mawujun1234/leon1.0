@@ -69,7 +69,8 @@ public class EquipmentStatusController {
 		baseinfo.setFisData(null);
 		baseinfo.setIsInStore(null);
 		baseinfo.setMemo(null);
-		baseinfo.setUnitPrice(null);
+		//baseinfo.setUnitPrice(null);
+		baseinfo.setValue_original(null);
 		//result.put("baseinfo", baseinfo);
 		
 //		List<EquipmentCycle> lifeCycles=equipmentCycleService.query(Cnd.select().andEquals(M.EquipmentCycle.ecode, ecode).asc(M.EquipmentCycle.operateDate));

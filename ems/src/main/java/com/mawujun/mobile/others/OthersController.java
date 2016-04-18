@@ -50,7 +50,8 @@ public class OthersController {
 		vo.setFisData(null);
 		vo.setIsInStore(null);
 		vo.setMemo(null);
-		vo.setUnitPrice(null);
+		//vo.setUnitPrice(null);
+		vo.setValue_original(null);
 		//vo.set
 		return vo;
 		//return equipmentVO;

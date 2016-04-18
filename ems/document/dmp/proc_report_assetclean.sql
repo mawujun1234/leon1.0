@@ -1,26 +1,26 @@
 /**
-* è°ƒç”¨æ–¹æ³•call proc_report_assetclean('20151101');
-è®¡ç®—æˆªæ­¢æŸä¸€ä¸ªè®¾å¤‡çš„ æ®‹å€¼æƒ…å†µ
+* µ÷ÓÃ·½·¨call proc_report_assetclean('20151101');
+¼ÆËã½ØÖ¹Ä³Ò»¸öÉè±¸µÄ ²ĞÖµÇé¿ö
 *
 **/
 create or replace procedure proc_report_assetclean(in_day_now varchar2)
 as
   --v_day_now varchar2(8):=to_char(sysdate,'yyyymmdd');
 begin
-  --ç¬¬ä¸€æ¬¡åˆ«å¿˜è®°æ‰§è¡Œ
+  --µÚÒ»´Î±ğÍü¼ÇÖ´ĞĞ
   --update ems_equipmentprod set depreci_year=5 where depreci_year is null;
-  --æ¸…ç†æ•°æ®
+  --ÇåÀíÊı¾İ
   delete report_assetclean where day_key=in_day_now;
-  --æ’å…¥åˆå§‹åŒ–æ•°æ®,day_key=å¯¼æ•°æ®çš„æ—¥æœŸï¼Œå¯ä½¿ç”¨å¤©æ•°
+  --²åÈë³õÊ¼»¯Êı¾İ,day_key=µ¼Êı¾İµÄÈÕÆÚ£¬¿ÉÊ¹ÓÃÌìÊı
   insert into report_assetclean(id,ecode,day_key,day_have)
   select sys_guid() AS id,ecode,in_day_now as day_key,b.depreci_year*365 AS day_have 
   from ems_equipment a,ems_equipmentprod b
   where a.prod_id=b.id 
-  and to_char(a.fisData,'yyyymmdd')<=in_day_now;--åªè®¡ç®—æˆªæ­¢å½“å‰æ—¶é—´ä¸ºæ­¢çš„å·²ç»å…¥åº“äº†çš„è®¾å¤‡
+  and to_char(a.fisData,'yyyymmdd')<=in_day_now;--Ö»¼ÆËã½ØÖ¹µ±Ç°Ê±¼äÎªÖ¹µÄÒÑ¾­Èë¿âÁËµÄÉè±¸
   commit;
 
-  --è®¡ç®—è€æ—§è®¢å•çš„å‰©ä½™å¯ä½¿ç”¨å¤©æ•°,è¦†ç›–é»˜è®¤çš„å¯ä½¿ç”¨å¤©æ•°(ä¸Šä¸€æ¡ä¸­è¯»å–çš„)
-  --ä¸‹é¢3è¡Œï¼Œä¸ºäº†æ¸…ç†ä¸æ­£å¸¸çš„æ•°æ®å¦åˆ™ï¼ŒåŠ å‡ºæ¥ä¸ºnull
+  --¼ÆËãÀÏ¾É¶©µ¥µÄÊ£Óà¿ÉÊ¹ÓÃÌìÊı,¸²¸ÇÄ¬ÈÏµÄ¿ÉÊ¹ÓÃÌìÊı(ÉÏÒ»ÌõÖĞ¶ÁÈ¡µÄ)
+  --ÏÂÃæ3ĞĞ£¬ÎªÁËÇåÀí²»Õı³£µÄÊı¾İ·ñÔò£¬¼Ó³öÀ´Îªnull
   update ems_orderlist set depreci_year=0 where  depreci_year is null;
   update ems_orderlist set depreci_month=0 where  depreci_month is null;
   update ems_orderlist set depreci_day=0 where  depreci_day is null;
@@ -36,8 +36,8 @@ begin
   where a.id=b.order_id and b.id=c.orderlist_id and a.ordertype='old_equipment'
   ) b where a.ecode=b.ecode  and day_have!=0) and a.day_key=in_day_now;
 commit;
-  --è®¡ç®—ç»´ä¿®åé‡æ–°è®¾ç½®çš„å¯ä½¿ç”¨å¤©æ•°ï¼Œè¦†ç›–å‰é¢è®¾ç½®çš„å¯ä½¿ç”¨å¤©æ•°
-  --ä¸‹é¢3è¡Œï¼Œä¸ºäº†æ¸…ç†ä¸æ­£å¸¸çš„æ•°æ®å¦åˆ™ï¼ŒåŠ å‡ºæ¥ä¸ºnull
+  --¼ÆËãÎ¬ĞŞºóÖØĞÂÉèÖÃµÄ¿ÉÊ¹ÓÃÌìÊı£¬¸²¸ÇÇ°ÃæÉèÖÃµÄ¿ÉÊ¹ÓÃÌìÊı
+  --ÏÂÃæ3ĞĞ£¬ÎªÁËÇåÀí²»Õı³£µÄÊı¾İ·ñÔò£¬¼Ó³öÀ´Îªnull
   update ems_repair set depreci_year=0 where  depreci_year is null;
   update ems_repair set depreci_month=0 where  depreci_month is null;
   update ems_repair set depreci_day=0 where  depreci_day is null;
@@ -48,11 +48,11 @@ commit;
     select a.ecode,a.depreci_year*365+a.depreci_month*30+a.depreci_day as day_have from ems_repair a,(
     select ecode,max(id) from ems_repair
     where  status in ('over')
-    and to_char(str_in_date,'yyyymmdd')<=in_day_now--åªè®¡ç®—æˆªæ­¢å½“å‰æ—¶é—´ä¸ºæ­¢çš„ç»´ä¿®å¥½äº†çš„è®¾å¤‡
+    and to_char(str_in_date,'yyyymmdd')<=in_day_now--Ö»¼ÆËã½ØÖ¹µ±Ç°Ê±¼äÎªÖ¹µÄÎ¬ĞŞºÃÁËµÄÉè±¸
     group by id,ecode
     ) b
     where a.ecode=b.ecode
-    ) where day_have!=0--æ’é™¤å†å²ä¸­æ²¡æœ‰æ•°æ®çš„
+    ) where day_have!=0--ÅÅ³ıÀúÊ·ÖĞÃ»ÓĞÊı¾İµÄ
   ) b where a.ecode=b.ecode and  b.day_have!=0
   )
   where exists (select 1 from (
@@ -60,31 +60,31 @@ commit;
     select a.ecode,a.depreci_year*365+a.depreci_month*30+a.depreci_day as day_have from ems_repair a,(
     select ecode,max(id) from ems_repair
     where  status in ('over')
-    and to_char(str_in_date,'yyyymmdd')<=in_day_now--åªè®¡ç®—æˆªæ­¢å½“å‰æ—¶é—´ä¸ºæ­¢çš„ç»´ä¿®å¥½äº†çš„è®¾å¤‡
+    and to_char(str_in_date,'yyyymmdd')<=in_day_now--Ö»¼ÆËã½ØÖ¹µ±Ç°Ê±¼äÎªÖ¹µÄÎ¬ĞŞºÃÁËµÄÉè±¸
     group by id,ecode
     ) b
     where a.ecode=b.ecode
-    ) where day_have!=0--æ’é™¤å†å²ä¸­æ²¡æœ‰æ•°æ®çš„
+    ) where day_have!=0--ÅÅ³ıÀúÊ·ÖĞÃ»ÓĞÊı¾İµÄ
   ) b where a.ecode=b.ecode) and a.day_key=in_day_now;
 commit;
-  ---æ›´æ–°å·²ç»ä½¿ç”¨å¤©æ•°çš„sql
+  ---¸üĞÂÒÑ¾­Ê¹ÓÃÌìÊıµÄsql
 update report_assetclean a set day_used=(
 select day_used from (
       select ecode,sum(ROUND(TO_NUMBER((cancel_date+0)-(install_date+0) ))) day_used from (
       select ecode,operateType,operatedate install_date,lead(operatedate, 1, sysdate) over(partition by ecode order by ecode,operatedate) as cancel_date
       from ems_equipmentcycle 
       where (operateType='task_install' or operateType='task_cancel')
-      and to_char(operateDate,'yyyymmdd')<=in_day_now--æˆªæ­¢æŒ‡å®šæ—¶é—´çš„è®¾å¤‡å®‰è£…è¿‡çš„æ—¶é—´
+      and to_char(operateDate,'yyyymmdd')<=in_day_now--½ØÖ¹Ö¸¶¨Ê±¼äµÄÉè±¸°²×°¹ıµÄÊ±¼ä
       order by ecode,operatedate
       ) where operateType='task_install'
       group by ecode
 ) b where a.ecode=b.ecode
 ) where exists ( select 1 from ems_equipmentcycle c 
         where a.ecode=c.ecode 
-        and to_char(c.operateDate,'yyyymmdd')<=in_day_now--æˆªæ­¢æŒ‡å®šæ—¶é—´çš„è®¾å¤‡å®‰è£…è¿‡çš„æ—¶é—´
+        and to_char(c.operateDate,'yyyymmdd')<=in_day_now--½ØÖ¹Ö¸¶¨Ê±¼äµÄÉè±¸°²×°¹ıµÄÊ±¼ä
   ) and a.day_key=in_day_now;
 commit;
-  --æ›´æ–°åŸå€¼
+  --¸üĞÂÔ­Öµ
   update report_assetclean a set value_original=(
   select unitPrice from (
   select  b.ecode,a.unitPrice from ems_orderlist a,ems_equipment b
@@ -92,12 +92,17 @@ commit;
   ) b where a.ecode=b.ecode
   ) where exists(
   select 1 from ems_equipment c where a.ecode=c.ecode
-  );
+  ) and a.day_key=in_day_now;
 
   commit;
 
-  --è®¡ç®—å‡€å€¼å’ŒåŸå€¼
-  update report_assetclean a set value_old=(value_original*0.95/day_have*day_used);
-  update report_assetclean a set value_net=(value_original-value_old);
+  --¼ÆËã¾»ÖµºÍÔ­Öµ
+  update report_assetclean a set value_old=(value_original*0.95/day_have*day_used) where a.day_key=in_day_now;
+  update report_assetclean a set value_net=(value_original-value_old) where a.day_key=in_day_now;
+  commit;
+  
+  --°Ñ¾»Öµ£¬Ô­Öµ¿½±´µ½ems_equipment±íÖĞ
+  update ems_equipment a set (a.value_original,a.value_net)=(select b.value_original,b.value_net from 
+  report_assetclean b where a.ecode=b.ecode and b.day_key=in_day_now);
   commit;
 end;

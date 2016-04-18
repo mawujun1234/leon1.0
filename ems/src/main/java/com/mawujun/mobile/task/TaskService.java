@@ -831,7 +831,7 @@ public class TaskService extends AbstractService<Task, String>{
 					
 					equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using).set(M.Equipment.isnew, false)
 							.set(M.Equipment.place, EquipmentPlace.pole).set(M.Equipment.last_install_date, date)
-							.set(M.Equipment.last_pole_id, task.getPole_address()).set(M.Equipment.last_task_id, task.getId())
+							.set(M.Equipment.last_pole_id, task.getPole_id()).set(M.Equipment.last_task_id, task.getId())
 							.set(M.Equipment.currt_task_id, null).andEquals(M.Equipment.ecode, ecode));
 					//要放在最前面，把设备从借用变成领用
 					changeInstallOutListType2installout(taskEquipmentList.getEcode(),task.getWorkunit_id(),task.getPole_id(),task_id);
@@ -1014,7 +1014,7 @@ public class TaskService extends AbstractService<Task, String>{
 //				if (taskEquipmentList.getType() == TaskListTypeEnum.install) {
 //					equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.using).set(M.Equipment.isnew, false)
 //							.set(M.Equipment.place, EquipmentPlace.pole).set(M.Equipment.last_install_date, new Date())
-//							.set(M.Equipment.last_pole_id, task.getPole_address()).set(M.Equipment.last_task_id, task.getId())
+//							.set(M.Equipment.last_pole_id, task.getPole_id()).set(M.Equipment.last_task_id, task.getId())
 //							.set(M.Equipment.currt_task_id, null).andEquals(M.Equipment.ecode, ecode));
 //					//要放在最前面，把设备从借用变成领用
 //					changeInstallOutListType2installout(taskEquipmentList.getEcode(),task.getWorkunit_id(),task.getPole_id());

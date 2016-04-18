@@ -146,11 +146,161 @@ select 1 from ems_equipment c where a.ecode=c.ecode
 
 
 --计算净值和原值
-update report_assetclean a set value_depreciation=(value_original*0.95/day_have*day_used);
-update report_assetclean a set value_net=(value_original-value_depreciation);
+update report_assetclean a set value_old=(value_original*0.95/day_have*day_used);
+update report_assetclean a set value_net=(value_original-value_old);
 
-call proc_report_assetclean();
 
+delete report_assetclean
+call proc_report_assetclean('20151101');
+call proc_report_assetclean_init('20160404');
+select * from report_assetclean where day_have is  null
+select count(*) from report_assetclean 
+
+select distinct day_key from report_assetclean 
+select * from ems_equipment
+
+
+
+UPDATE ems_pole SET STATUS='using' WHERE ID IN (
+select A.ID from ems_pole a
+where  a.status='hitch'
+and not exists (select * from ems_task b where a.id=b.pole_id and b.status!='complete')
+AND exists (select * from ems_task b WHERE a.id=b.pole_id and b.status='complete' AND B.TYPE='newInstall')
+)
+
+select * from ems_pole where id='2c9085494d4c5635014d551eefaf0020'
+
+select * from ems_task where pole_id='2c9085494d4c5635014d551eefaf0020'
+select * from  ems_handlemethod where id='82f9ecbd-9e09-422f-a3b5-b31c371cfd0f'
+
+select * from ems_taskequipmentlist where task_id='20160314-0001'
+
+
+select * from ems_pole where code='231001'
+select * from ems_equipment_pole where pole_id='2c9085494d4c5635014d55115f740000'
+select * from ems_task where pole_id='2c9085494d4c5635014d55115f740000'
+01010Q-**-1507100001
+select * from ems_taskequipmentlist where task_id='20160408-0002'
+
+
+select * from report_assetclean where day_key='20160418'
+update ems_equipment a set (a.value_original,a.value_net)=(select b.value_original,b.value_net from 
+report_assetclean b where a.ecode=b.ecode and b.day_key='20160404')
+
+select * from ems_equipment where 
+ecode='04030P-**-1508030107'
+
+
+last_pole_id like '%宁波%'
+
+
+
+update ems_equipment set last_pole_id='2c9085494d4c5635014d5558a83c00b3'
+where last_pole_id='浙江省宁波市鄞州区鄞州中学门口'
+
+select last_pole_id,count(ecode) from ems_equipment where last_pole_id like '%宁波%'
+group by last_pole_id
+having count(ecode)>1
+
+select * from ems_equipment where last_pole_id like '%宁波%'
+
+select * from ems_pole where code='QG0044'
+select * from ems_equipment where ecode='04030P-**-1508030107'
+select * from ems_pole where address='瞻歧镇东城村关兴度路口 '
+
+select a.last_pole_id,b.id from ems_equipment a,ems_pole b
+where a.last_pole_id like '%宁波%' and a.last_pole_id=b.province||b.city||b.area||b.address
+
+
+select c.ecode from (
+select a.ecode,a.last_pole_id,count(b.id) as pole_id from ems_equipment a,ems_pole b
+where a.last_pole_id like '%宁波%' and a.last_pole_id=b.province||b.city||b.area||b.address
+group by a.ecode,a.last_pole_id
+having count(b.id)=1
+) c --where d.last_pole_id=c.last_pole_id --and d.ecode=c.ecode
+
+
+
+select a.ecode,count(b.id) as pole_id from ems_equipment a,ems_pole b
+where a.last_pole_id like '%宁波%' and trim(a.last_pole_id)=b.province||b.city||b.area||b.address
+group by a.ecode,b.id
+having count(b.id)=1
+
+
+
+update ems_equipment d set d.last_pole_id=(
+select c.pole_id from (
+select a.ecode,a.last_pole_id,b.id as pole_id from ems_equipment a,ems_pole b
+where a.last_pole_id like '%宁波%' and a.last_pole_id=b.province||b.city||b.area||b.address
+and a.ecode in (select c.ecode from (
+select a.ecode,a.last_pole_id,count(b.id) as pole_id from ems_equipment a,ems_pole b
+where a.last_pole_id like '%宁波%' and a.last_pole_id=b.province||b.city||b.area||b.address
+group by a.ecode,a.last_pole_id
+having count(b.id)=1
+) c)
+) c where d.last_pole_id=c.last_pole_id and d.ecode=c.ecode
+) where d.ecode in (
+
+  select c.ecode from (
+select a.ecode,a.last_pole_id,count(b.id) as pole_id from ems_equipment a,ems_pole b
+where a.last_pole_id like '%宁波%' and a.last_pole_id=b.province||b.city||b.area||b.address
+group by a.ecode,a.last_pole_id
+having count(b.id)=1
+) c
+)
+
+select * from ems_equipment where last_pole_id like '%宁波%'
+select * from ems_equipment where ecode='04030P-**-1508030107'
+select * from ems_pole where id='2c9085494d4158a4014d4165ab130005'
+select * from ems_equipmentcycle where ecode='04030P-**-1508030107' order by operatedate
+
+select a.ecode,count(a.ecode) from ems_equipmentcycle a,ems_equipmentcycle b
+where  a.ecode=b.ecode
+and a.operatetype='task_install' and a.operatetype=b.operatetype
+ and a.operatedate>b.operatedate --and a.ecode!='04030P-**-1508030107'
+ group by a.ecode
+ having count(a.ecode)>1
+ 
+ 
+ select a.* from ems_equipmentcycle a,( select ecode,max(operatedate) max_operatedate from ems_equipmentcycle
+ where operatetype='task_install'  --and ecode='04030P-**-1508030107'
+ group by ecode) b
+where  a.ecode=b.ecode
+and a.operatetype='task_install' 
+ and a.operatedate=b.max_operatedate 
+ 
+ select ecode,max(operatedate) from ems_equipmentcycle
+ where operatetype='task_install'  --and ecode='04030P-**-1508030107'
+ group by ecode
+ 
+ 
+ 
+ 
+ 
+  update ems_equipment a set last_pole_id='2c9085494d4158a4014d4165ab130005' where ecode='04030P-**-1508030107'
+ 
+ update ems_equipment a set last_pole_id=(
+ select b.target_id from (
+ select a.* from ems_equipmentcycle a,( select ecode,max(operatedate) max_operatedate from ems_equipmentcycle
+ where operatetype='task_install'  --and ecode='04030P-**-1508030107'
+ group by ecode) b
+where  a.ecode=b.ecode
+and a.operatetype='task_install' 
+ and a.operatedate=b.max_operatedate 
+ ) b where a.ecode=b.ecode
+ ) 
+ where exists (
+       select  1 from 
+       (
+ select a.* from ems_equipmentcycle a,( select ecode,max(operatedate) max_operatedate from ems_equipmentcycle
+ where operatetype='task_install'  --and ecode='04030P-**-1508030107'
+ group by ecode) b
+where  a.ecode=b.ecode
+and a.operatetype='task_install' 
+ and a.operatedate=b.max_operatedate 
+ ) d where a.ecode=d.ecode
+ )
+ and a.last_pole_id like '%宁波%'
 
 
 

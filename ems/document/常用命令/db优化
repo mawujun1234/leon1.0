@@ -1,5 +1,15 @@
+-- Drop columns 
+alter table EMS_EQUIPMENT drop column unitprice;
+alter table EMS_EQUIPMENT drop column unitprice_nav;
+
+
 -- Create/Recreate indexes 
 create index AssetClean_ecode on report_assetclean (ecode);
-create index AssetClean_day_now on report_assetclean (day_now);
+create index AssetClean_day_now on report_assetclean (day_key);
 -- Create/Recreate indexes 
 create index lifecycle on EMS_EQUIPMENTCYCLE (ecode);
+
+ -- Create/Recreate indexes 
+create index equipment_last_pole_id on EMS_EQUIPMENT (last_installin_id);
+-- Create/Recreate indexes 
+create index equipmentcycle_ecode on EMS_EQUIPMENTCYCLE (ecode);

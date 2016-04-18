@@ -71,8 +71,8 @@ public static final class ems_equipment {
 	public static final String memo="memo";
 	public static final String status="status";
 	public static final String place="place";
-	public static final String unitPrice="unitPrice";
-	public static final String unitPrice_nav="unitPrice_nav";
+	public static final String value_original="value_original";
+	public static final String value_net="value_net";
 	public static final String first_install_date="first_install_date";
 	public static final String fisData="fisData";
 	public static final String last_installIn_id="last_installIn_id";
