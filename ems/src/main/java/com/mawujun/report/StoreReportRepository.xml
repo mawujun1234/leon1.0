@@ -206,6 +206,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		    </collection>
        </collection>  
     </resultMap>
+    <!-- 零星项目领用    returnDate：归还时间。领用时间(任务提交的时间)-->
     <select id="queryInstalloutReport" resultMap="installout_report_map" parameterType="map">
     	select  a.store_id,a.installouttype_name,a.installouttype_content,
 		e.id as type_id,e.name as type_name,d.id as subtype_id,d.name as subtype_name,c.id as prod_id,c.name as prod_name,c.unit as prod_unit,c.style prod_style,f.name as brand_name,count(a.installoutlist_id) as installoutnum 

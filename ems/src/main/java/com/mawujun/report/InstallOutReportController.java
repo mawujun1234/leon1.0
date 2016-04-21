@@ -53,6 +53,16 @@ public class InstallOutReportController {
 	int sparepart_month_freeze_num = 7;// 在建仓库月冻结的列数
 	int type_group_end_num = 6;// 小类和大类分组的结束列
 	
+	/**
+	 * 零星项目领用报表
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param response
+	 * @param store_id
+	 * @param date_start
+	 * @param date_end
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	@RequestMapping("/report/installout/excelExport.do")
 	public void excelExport(HttpServletResponse response, String store_id, String date_start, String date_end) throws IOException, ParseException {
 		long diff = yyyy_MM_dd_formater.parse(date_end).getTime() - yyyy_MM_dd_formater.parse(date_start).getTime();	
