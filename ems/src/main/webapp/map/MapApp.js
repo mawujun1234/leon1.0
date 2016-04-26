@@ -464,6 +464,7 @@ function showEquipments(pole_id){
 		title:'点位设备信息',
 		width:700,
 		height:500,
+		maximized:true,
 		modal:true,
 		items:[equipments,equipmentCycle]
 		

@@ -31,4 +31,6 @@ public interface InstallOutRepository extends IRepository<InstallOut, String>{
 	public List<InstallOutVO> queryEditInstallOut();
 	
 	public InstallOutListVO getInstallOutListVOByEcode(@Param("ecode")String ecode,@Param("store_id")String store_id);
+	
+	public Page queryDifference(Page page);
 }

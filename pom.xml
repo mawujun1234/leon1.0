@@ -92,13 +92,7 @@
 		</plugins>
 	</build>
 
-	<!-- 这个是临时的，为org.aspectj�?.8.0.M1版本使用的，dbqbroker,ems项目中叶有这个配�?
-	<repositories>
-		<repository>
-			<id>opencast-public</id>
-			<url>http://repository.opencastproject.org/nexus/content/repositories/public/</url>
-		</repository>
-	</repositories>-->
+
 
 	<dependencies>
 		<!-- http://mvnrepository.com/artifact/javax.servlet -->

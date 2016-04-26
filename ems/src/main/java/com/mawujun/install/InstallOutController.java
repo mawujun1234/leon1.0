@@ -411,4 +411,27 @@ public class InstallOutController {
 		return installOutStoreService.queryEditInstallOut();
 	}
 	
+	/**
+	 * 查询差异化的领用设备，因为一种情况就是一个设备领出去后，过了几个月才安装的
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param installOut_id
+	 * @return
+	 */
+	@RequestMapping("/installOut/queryDifference.do")
+	@ResponseBody
+	public Page queryDifference(Integer start,Integer limit
+			,String operateDate_start,String operateDate_end
+			,String returnDate_start,String returnDate_end,String store_id,String workUnit_id,String project_id) { 
+		Page page=Page.getInstance(start, limit);
+		page.addParam("operateDate_start", operateDate_start);
+		page.addParam("operateDate_end", operateDate_end);
+		page.addParam("returnDate_start", returnDate_start);
+		page.addParam("returnDate_end", returnDate_end);
+		page.addParam(M.InstallOut.store_id, store_id);
+		page.addParam(M.InstallOut.workUnit_id, workUnit_id);
+		//page.addParam(M.InstallOut.installOutType_id, installOutType_id);
+		page.addParam(M.InstallOut.project_id, project_id);
+		page=installOutStoreService.queryDifference(page);
+		return page;
+	}
 }

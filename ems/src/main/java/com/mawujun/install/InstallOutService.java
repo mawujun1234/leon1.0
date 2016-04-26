@@ -262,4 +262,10 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 	public List<InstallOutVO> queryEditInstallOut() {
 		return installOutRepository.queryEditInstallOut();
 	}
+	
+	public Page queryDifference(Page page){
+		return installOutRepository.queryDifference(page);
+
+		
+	}
 }

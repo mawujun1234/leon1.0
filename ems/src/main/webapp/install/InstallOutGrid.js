@@ -119,7 +119,7 @@ Ext.define('Ems.install.InstallOutGrid',{
 	  
 	  
 	  var operateDate_start=Ext.create('Ext.form.field.Date',{
-	  	fieldLabel: '领用时间',
+	  	fieldLabel: '出库时间',
 	  	labelWidth:60,
 	  	width:155,
 	  	format:'Y-m-d',
@@ -134,6 +134,7 @@ Ext.define('Ems.install.InstallOutGrid',{
         //name: 'date_end',
         value: new Date()
 	  });
+
 	  
 //	var types=Ext.create('Ext.form.RadioGroup',{
 //        //xtype: 'radiogroup',

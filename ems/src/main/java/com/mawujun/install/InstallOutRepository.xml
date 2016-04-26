@@ -102,5 +102,44 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	from ems_installout a,ems_store b,ems_workunit c,ems_project d
 		where a.store_id=b.id and a.workunit_id=c.id and a.project_id=d.id and a.status='edit'
     </select>
+    
+    
+    <select id="queryDifference" resultType="com.mawujun.install.InstallOutDifferentVO" parameterType="map">
+    	select  a.type,a.operateDate,a.returnDate,a.installOut_id,a.store_id,a.ecode,a.installouttype_name,a.installouttype_content,
+	    e.id as type_id,e.name as type_name,d.id as subtype_id,d.name as subtype_name,c.id as prod_id,c.name as prod_name,c.unit as prod_unit,c.style prod_style,c.spec prod_spec,f.name as brand_name
+	    from (
+		    select '领用单' as type,b.installOut_id,a.store_id,b.ecode,c.name as installouttype_name,b.installouttype_content,b.id as installoutlist_id,a.operateDate,b.returnDate
+		    from ems_installout a,ems_installoutlist b,ems_installouttype c
+		    where a.id=b.installout_id and b.installouttype_id=c.id  and b.installoutlisttype='installout'
+		    <if test="store_id!=null and store_id!=''">
+			and a.store_id =#{store_id}
+		    </if> 
+		    <if test="returnDate_start!=null">
+				and to_char(b.returnDate,'yyyy-mm-dd') &gt;=#{returnDate_start}
+			</if>
+			<if test="returnDate_end!=null">
+				and to_char(b.returnDate,'yyyy-mm-dd') &lt;=#{returnDate_end}
+			</if>
+			<if test="operateDate_start!=null">
+				and to_char(a.operateDate,'yyyy-mm-dd') &gt;=#{operateDate_start}
+			</if>
+			<if test="operateDate_end!=null">
+				and to_char(a.operateDate,'yyyy-mm-dd') &lt;=#{operateDate_end}
+			</if>
+			<if test="workUnit_id!=null and workUnit_id!=''">
+				and a.workUnit_id =#{workUnit_id}
+			</if>
+			<if test="project_id!=null and project_id!=''">
+				and a.project_id =#{project_id}
+			</if> 
+		  
+		 ) a
+	    inner join ems_equipment b on a.ecode=b.ecode
+	    inner join ems_equipmentprod c on b.prod_id=c.id
+	    inner join ems_equipmentsubtype d on c.subtype_id=d.id
+	    inner join ems_equipmenttype e on d.parent_id=e.id
+	    inner join ems_brand f on c.brand_id=f.id
+	    
+    </select>
 </mapper>
 
