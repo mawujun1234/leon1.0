@@ -91,10 +91,52 @@ Ext.onReady(function(){
 	        //value: new Date()
 		  });
 	  
-	  var project_combox=Ext.create('Ems.baseinfo.ProjectCombo',{
-		flex:1,
-		allowBlank: false
-	  });
+//	  var project_combox=Ext.create('Ems.baseinfo.ProjectCombo',{
+//		flex:1,
+//		allowBlank: false
+//	  });
+	var type_combox=Ext.create('Ems.baseinfo.TypeCombo',{
+		labelAlign:'right',
+		allowBlank: false,
+		labelWidth:50,
+		//minChars:-1
+		listeners:{
+			change:function(field,newValue, oldValue){
+				subtype_combox.clearValue( );
+				if(newValue){
+					subtype_combox.getStore().getProxy().extraParams={equipmentType_id:newValue};
+					subtype_combox.getStore().reload();
+				}
+				
+			}
+		}
+	});
+	
+	var subtype_combox=Ext.create('Ems.baseinfo.SubtypeCombo',{
+		labelAlign:'right',
+		allowBlank: false,
+		labelWidth:50,
+		//minChars:-1，
+		listeners:{
+			beforeload:function(store){
+				if(type_combox.getValue()){
+					return true;
+				} 
+				Ext.Msg.alert("消息","请先选择大类!");
+				return false;
+			},
+			select:function( combo, records, eOpts){
+				//当小类变化后，品名要清空
+				prod_id.setValue(""); 
+				prod_name.setValue(""); 
+				brand_id.setValue(""); 
+				brand_name.setValue(""); 
+				style.setValue(""); 
+				prod_spec.setValue(""); 
+				prod_unit.setValue("");
+			}
+		}
+	});
 	  
 	  
 	  
@@ -155,7 +197,7 @@ Ext.onReady(function(){
 	      },{
 	      	xtype: 'toolbar',
 	    	 dock: 'top',
-	    	 items:[operateDate_start,operateDate_end,project_combox,{
+	    	 items:[operateDate_start,operateDate_end,type_combox,subtype_combox,{
 		    	text: '查询',
 				iconCls:'form-search-button',
 				handler: function(btn){
@@ -171,7 +213,9 @@ Ext.onReady(function(){
 		store.getProxy().extraParams={
 					store_id:store_combox.getValue(),
 					workUnit_id:workUnit_combox.getValue(),
-					project_id:project_combox.getValue( ),
+					//project_id:project_combox.getValue( ),
+					type_id:type_combox.getValue(),
+					subtype_id:subtype_combox.getValue(),
 					//installOutType_id:installOutType_combox.getValue(),
 					returnDate_start: returnDate_start.getRawValue(),
 					returnDate_end: returnDate_end.getRawValue(),

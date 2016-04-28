@@ -421,7 +421,10 @@ public class InstallOutController {
 	@ResponseBody
 	public Page queryDifference(Integer start,Integer limit
 			,String operateDate_start,String operateDate_end
-			,String returnDate_start,String returnDate_end,String store_id,String workUnit_id,String project_id) { 
+			,String returnDate_start,String returnDate_end,String store_id,String workUnit_id
+			,String project_id
+			,String type_id
+			,String subtype_id) { 
 		Page page=Page.getInstance(start, limit);
 		page.addParam("operateDate_start", operateDate_start);
 		page.addParam("operateDate_end", operateDate_end);
@@ -430,7 +433,9 @@ public class InstallOutController {
 		page.addParam(M.InstallOut.store_id, store_id);
 		page.addParam(M.InstallOut.workUnit_id, workUnit_id);
 		//page.addParam(M.InstallOut.installOutType_id, installOutType_id);
-		page.addParam(M.InstallOut.project_id, project_id);
+		//page.addParam(M.InstallOut.project_id, project_id);
+		page.addParam("type_id", type_id);
+		page.addParam(M.Equipment.subtype_id, subtype_id);
 		page=installOutStoreService.queryDifference(page);
 		return page;
 	}

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mawujun.baseinfo.CustomerController;
-import com.mawujun.baseinfo.CustomerVO;
 import com.mawujun.baseinfo.Pole;
 import com.mawujun.baseinfo.PoleRepository;
 import com.mawujun.utils.Params;
@@ -96,7 +96,10 @@ public class MapController {
         		continue;
         	}
         	System.out.println(code.getStringCellValue());
-        	poleRepository.updateOrginLngLatByPoleCode(code.getStringCellValue(), lng.getNumericCellValue()+"", lat.getNumericCellValue()+"");
+        	
+        	
+
+        	poleRepository.updateOrginLngLatByPoleCode(code.getStringCellValue(), getCellValue(lng), getCellValue(lat));
         	//取出所有的编码和经纬度，然后直接update	
         }
         //转换坐标
@@ -105,6 +108,27 @@ public class MapController {
 		
 		return "已经成功初始化！"+fileName;
 	}
+	private String getCellValue(Cell cell) {  
+        String cellValue = "";  
+        //DecimalFormat df = new DecimalFormat("#");  
+        switch (cell.getCellType()) {  
+        case HSSFCell.CELL_TYPE_STRING:  
+            cellValue = cell.getRichStringCellValue().getString().trim();  
+            break;  
+        case HSSFCell.CELL_TYPE_NUMERIC:  
+            cellValue =cell.getNumericCellValue()+"";  
+            break;  
+        case HSSFCell.CELL_TYPE_BOOLEAN:  
+            cellValue = String.valueOf(cell.getBooleanCellValue()).trim();  
+            break;  
+        case HSSFCell.CELL_TYPE_FORMULA:  
+            cellValue = cell.getCellFormula();  
+            break;  
+        default:  
+            cellValue = "";  
+        }  
+        return cellValue;  
+    }  
 
 	
 	

@@ -132,6 +132,31 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="project_id!=null and project_id!=''">
 				and a.project_id =#{project_id}
 			</if> 
+			union all
+			select  '借用单' as type,b.borrow_id as installOut_id,a.store_id,b.ecode,c.name as installouttype_name,b.installouttype_content,b.id as installoutlist_id,a.operateDate,b.returnDate
+		    from ems_borrow a,ems_borrowlist b,ems_installouttype c
+		    where a.id=b.borrow_id and b.installouttype_id=c.id  and b.borrowListType='installout'
+			<if test="store_id!=null and store_id!=''">
+			and a.store_id =#{store_id}
+		    </if> 
+		    <if test="returnDate_start!=null">
+				and to_char(b.returnDate,'yyyy-mm-dd') &gt;=#{returnDate_start}
+			</if>
+			<if test="returnDate_end!=null">
+				and to_char(b.returnDate,'yyyy-mm-dd') &lt;=#{returnDate_end}
+			</if>
+			<if test="operateDate_start!=null">
+				and to_char(a.operateDate,'yyyy-mm-dd') &gt;=#{operateDate_start}
+			</if>
+			<if test="operateDate_end!=null">
+				and to_char(a.operateDate,'yyyy-mm-dd') &lt;=#{operateDate_end}
+			</if>
+			<if test="workUnit_id!=null and workUnit_id!=''">
+				and a.workUnit_id =#{workUnit_id}
+			</if>
+			<if test="project_id!=null and project_id!=''">
+				and a.project_id =#{project_id}
+			</if> 
 		  
 		 ) a
 	    inner join ems_equipment b on a.ecode=b.ecode
@@ -139,6 +164,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    inner join ems_equipmentsubtype d on c.subtype_id=d.id
 	    inner join ems_equipmenttype e on d.parent_id=e.id
 	    inner join ems_brand f on c.brand_id=f.id
+	    <where> 1=1
+	    <if test="type_id!=null and type_id!=''">
+			and e.id =#{type_id}
+		</if> 
+		<if test="subtype_id!=null and subtype_id!=''">
+			and d.id =#{subtype_id}
+		</if>
+		</where> 
+			
 	    
     </select>
 </mapper>

@@ -164,7 +164,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				and a.status in ('newTask','read') and floor(to_number(sysdate-(a.createDate+0))*24*60) &gt; #{handling}
 			</if>
 		</where>
-		order by b.code
+		order by a.id desc
     </select>
     
     
@@ -187,7 +187,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				and (a.pole_name like #{pole_name} or b.code like #{pole_name} )
 			</if>
 		</where>
-		order by a.id
+		order by a.id desc
     </select>
     
    
