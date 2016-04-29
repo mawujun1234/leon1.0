@@ -49,7 +49,7 @@ public interface PoleRepository extends IRepository<Pole, String>{
 	public Pole geetFullAddress(@Param("pole_id")String pole_id);
 	
 	public List<Pole> queryNoTransformPoles();
-	public void updateOrginLngLatByPoleCode(@Param("code")String code,@Param("longitude")String longitude,@Param("latitude")String latitude);
+	public void updateOrginLngLatByPoleCode(@Param("code")String code,@Param("longitude")String longitude,@Param("latitude")String latitude,@Param("customer_2")String customer_2);
 	public void updateLngLatByPoleCode(@Param("code")String code,@Param("longitude")String longitude,@Param("latitude")String latitude);
 }
 

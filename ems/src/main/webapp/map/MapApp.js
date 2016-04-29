@@ -253,12 +253,24 @@ Ext.onReady(function(){
 		    text: '初始化',
 		    
 		    handler: function(){
+		    	if(!customer_2.getValue()){
+		    		alert("请选择一个区，因为不同的区可能出现点位代码一致的情况!");
+		    		return;
+		    	}
 		    	var form=Ext.create('Ext.form.Panel', {
 				    
 				    width: 400,
 				    bodyPadding: 10,
 				    frame: true,
 				    items: [{
+				        xtype: 'hiddenfield',
+				        name: 'customer_2',
+				        //fieldLabel: 'excel',
+				        labelWidth: 50,
+				        msgTarget: 'side',
+				        allowBlank: false,
+						value:customer_2.getValue()
+				    },{
 				        xtype: 'filefield',
 				        name: 'excel',
 				        //fieldLabel: 'excel',

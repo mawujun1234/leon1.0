@@ -94,10 +94,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	select * from ems_pole where id=#{pole_id}
     </select>-->
     
-    <!-- 在地图中导入excel初始化点位经纬度的时候 ,更新原始的经纬度,只更新经纬度有变化的-->
+    <!-- 在地图中导入excel初始化点位经纬度的时候 ,更新原始的经纬度,只更新经纬度有变化的customer_2-->
     <update id="updateOrginLngLatByPoleCode">
-    	update ems_pole set longitude_orgin=#{longitude},latitude_orgin=#{latitude},lngLatIsTrans='N' 
+    	update ems_pole a set longitude_orgin=#{longitude},latitude_orgin=#{latitude},lngLatIsTrans='N' 
     	where (longitude_orgin is null or longitude_orgin!=#{longitude} or latitude_orgin is null or latitude_orgin!=#{latitude}) and code=#{code}
+    	and exists (select 1 from ems_customer b where a.customer_id=b.id and b.parent_id=#{customer_2} )
+    	
     </update>
     <!-- 获取所有经纬度还没有转换过的点位 -->
     <select id="queryNoTransformPoles" resultType="com.mawujun.baseinfo.Pole"  parameterType="map">

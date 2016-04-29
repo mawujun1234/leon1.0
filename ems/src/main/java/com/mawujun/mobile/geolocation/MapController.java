@@ -48,7 +48,7 @@ public class MapController {
 	
 	@RequestMapping("/map/initAllPoleNoLngLat.do")
 	@ResponseBody
-	public String initAllPoleNoLngLat(@RequestParam(value = "excel") MultipartFile file, HttpServletRequest request) throws InvalidFormatException, IOException{
+	public String initAllPoleNoLngLat(@RequestParam(value = "excel") MultipartFile file,String customer_2, HttpServletRequest request) throws InvalidFormatException, IOException{
 //		System.out.println("开始");  
 //        String path = request.getSession().getServletContext().getRealPath("upload");  
 //        String fileName = file.getOriginalFilename();  
@@ -99,7 +99,7 @@ public class MapController {
         	
         	
 
-        	poleRepository.updateOrginLngLatByPoleCode(code.getStringCellValue(), getCellValue(lng), getCellValue(lat));
+        	poleRepository.updateOrginLngLatByPoleCode(code.getStringCellValue(), getCellValue(lng), getCellValue(lat),customer_2);
         	//取出所有的编码和经纬度，然后直接update	
         }
         //转换坐标
