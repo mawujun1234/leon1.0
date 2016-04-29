@@ -32,7 +32,7 @@ public class MapService {
 	private static String url = "http://api.map.baidu.com/geocoder/v2/?address=aaaaaaaaaaaaaaaaaaaaaa&output=json&ak=ED0fe5c7c869da5ee4260b4006e811b8&callback=showLocation";
 	//http://api.map.baidu.com/geoconv/v1/?coords=116.3786889372559,39.90762965106183;116.38632786853032,39.90795884517671;116.39534009082035,39.907432133833574;116.40624058825688,39.90789300648029;116.41413701159672,39.90795884517671&from=1&to=5&ak=E4805d16520de693a3fe707cdc962045&callback=BMap._rd._cbk16761
 	private static String transform_url = "http://api.map.baidu.com/geoconv/v1/?coords=aaaaaaaaaaaaaaaaaaaaaa&from=1&to=5&ak=ED0fe5c7c869da5ee4260b4006e811b8&callback=showLocation";
-
+										 //http://api.map.baidu.com/geoconv/v1/?coords=116.32715863448607,39.990912172420714&from=1&to=5&ak=E4805d16520de693a3fe707cdc962045&callback=BMap._rd._cbk26948
 	public void transform() {
 		List<Pole> poles=poleRepository.queryNoTransformPoles();
 		StringBuilder builder=new StringBuilder();
