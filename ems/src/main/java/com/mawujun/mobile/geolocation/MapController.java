@@ -87,7 +87,7 @@ public class MapController {
        
         Sheet sheet = wb.getSheetAt(0);
         int row_num=sheet.getLastRowNum();
-        for(int i=2;i<row_num;i++){
+        for(int i=1;i<=row_num;i++){
         	Row row=sheet.getRow(i);
         	Cell code=row.getCell(3);//点位编号
         	Cell lng=row.getCell(4);//经度
@@ -153,10 +153,6 @@ public class MapController {
 			return page;
 		}
 		Page page=Page.getInstance(start,limit);
-		//查询所有没有设置过经纬度的数据
-		if(queryNoLngLatPole==true){	
-			return poleRepository.queryNoLngLatPole(page);
-		}
 		
 		page.addParam("customer_2_id", customer_2_id);
 		StringBuilder builder=new StringBuilder("");
@@ -169,6 +165,11 @@ public class MapController {
 		page.addParam("workunit_id", workunit_id);
 		page.addParam("novalue", "novalue");
 		
+		// 查询所有没有设置过经纬度的数据
+		if (queryNoLngLatPole == true) {
+			return poleRepository.queryNoLngLatPole(page);
+		}
+				
 		return poleRepository.queryPoles4Map(page);
 		
 //		List<Pole> poles=poleService.query(Cnd.where().andEquals(M.Pole.area_id, area_id).asc(M.Pole.code));

@@ -271,6 +271,9 @@ Ext.onReady(function(){
 				        allowBlank: false,
 						value:customer_2.getValue()
 				    },{
+				        xtype: 'label',
+				         text: '注意：只会初始化到前面所选择的区中。'
+				    },{
 				        xtype: 'filefield',
 				        name: 'excel',
 				        //fieldLabel: 'excel',
@@ -341,18 +344,38 @@ Ext.onReady(function(){
 		
 		
 		var queryNoLngLatPole = new Ext.Action({
-		    text: '未初始化点位',
+		    text: '未初始化点位查询',
 		    
 		    handler: function(){
-				Ext.Msg.confirm("提醒","这里查询的是没有设置经纬度的点位!!不受查询条件影响!",function(btn){
-					if(btn=='yes'){
-						showMap(null);
-						poleStore.getProxy().extraParams={
-							queryNoLngLatPole:true
-						}
-						poleStore.loadPage(1);
-					}
-				});
+		    	if(!customer_2.getValue() && !workUnit_combox.getValue()){
+		    		alert("请选择一个客户或者作业单位!");
+		    		return;
+		    	}
+		    	//console.log(customer_0or1.getValue().length==0);
+		    	//return;
+		    	if(customer_2.getValue() && (!customer_0or1.getValue() || customer_0or1.getValue().length==0)){
+		    		alert("请选择一个客户,不选的话，将会由于数据量太大，导致浏览那群奔溃!");
+		    		return;
+		    	}
+		    	//alert("在查询的同时，将会对所有查询结果在地图上进行初始化!如果数据量较大，速度将会有点慢!");
+		    	poleStore.getProxy().extraParams=Ext.apply(poleStore.getProxy().extraParams,{
+		    		queryNoLngLatPole:true,
+		    		queryBrokenPoles:false,
+		    		customer_2_id:customer_2.getValue(),
+		    		customer_0or1_id:customer_0or1.getValue(),
+		    		workunit_id:workUnit_combox.getValue()
+		    	});
+		    	poleStore.loadPage(1);
+		    	
+//				Ext.Msg.confirm("提醒","这里查询的是没有设置经纬度的点位!!不受查询条件影响!",function(btn){
+//					if(btn=='yes'){
+//						showMap(null);
+//						poleStore.getProxy().extraParams={
+//							queryNoLngLatPole:true
+//						}
+//						poleStore.loadPage(1);
+//					}
+//				});
 		    },
 		    icon: '../icons/zoom_refresh.png'
 		});	

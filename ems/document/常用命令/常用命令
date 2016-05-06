@@ -17,7 +17,7 @@
 	grant dba,connect,resource to ems;
 	
 	
-	imp ems/ems@ems   file=E:\20160421.dmp fromuser=ems touser=ems
+	imp ems/ems@ems   file=E:\20160506.dmp fromuser=ems touser=ems
 =====================================================================================================测试库的更新
 		drop user emstest cascade;
 	create user emstest identified by emstest;
