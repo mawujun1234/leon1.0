@@ -87,7 +87,7 @@ public class MapController {
        
         Sheet sheet = wb.getSheetAt(0);
         int row_num=sheet.getLastRowNum();
-        for(int i=1;i<=row_num;i++){
+        for(int i=1;i<=row_num;i++) {
         	Row row=sheet.getRow(i);
         	Cell code=row.getCell(3);//点位编号
         	Cell lng=row.getCell(4);//经度
@@ -95,7 +95,7 @@ public class MapController {
         	if(lng==null || lat==null){
         		continue;
         	}
-        	System.out.println(code.getStringCellValue());
+        	//System.out.println(code.getStringCellValue());
         	
         	
 
