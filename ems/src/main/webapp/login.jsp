@@ -36,6 +36,10 @@
 		font-weight:bold;  
 		color:#000033;  
 	}
+	
+	body{
+	  background:url(images/bg.jpg) no-repeat 1px 2px;
+	}
 	</style>
   </head>
   <body>
