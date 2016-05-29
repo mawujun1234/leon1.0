@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
+import com.mawujun.baseinfo.EquipmentCycleService;
 import com.mawujun.baseinfo.EquipmentPlace;
 import com.mawujun.baseinfo.EquipmentRepository;
 import com.mawujun.baseinfo.EquipmentStatus;
@@ -17,9 +17,9 @@ import com.mawujun.baseinfo.EquipmentStore;
 import com.mawujun.baseinfo.EquipmentStorePK;
 import com.mawujun.baseinfo.EquipmentStoreRepository;
 import com.mawujun.baseinfo.EquipmentStoreType;
-import com.mawujun.baseinfo.Store;
-import com.mawujun.baseinfo.StoreRepository;
+import com.mawujun.baseinfo.OperateType;
 import com.mawujun.baseinfo.StoreService;
+import com.mawujun.baseinfo.TargetType;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
@@ -52,6 +52,9 @@ public class AdjustService extends AbstractService<Adjust, String>{
 	private StoreService storeService;
 	@Autowired
 	private UserRepository userRepository; 
+	
+	
+	private EquipmentCycleService equipmentCycleService;
 	SimpleDateFormat ymdHmsDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
 	
 	@Override
@@ -62,7 +65,11 @@ public class AdjustService extends AbstractService<Adjust, String>{
 	public AdjustListVO getAdjustListVOByEcode(String ecode,String store_id) {
 		return adjustRepository.getAdjustListVOByEcode(ecode, store_id);
 	}
-	
+	/***
+	 * 这里包括创建普通的调拨单和归还的调拨单
+	 * @param adjust
+	 * @param adjuestLists
+	 */
 	public void newAdjuest(Adjust adjust,AdjustList[] adjuestLists) {
 		//创建调拨单
 		//Adjust adjust=BeanUtils.copyOrCast(adjuestVOs[0], Adjust.class);//adjuestVOs[0];//每条记录的主单内容都是一样的
@@ -91,6 +98,8 @@ public class AdjustService extends AbstractService<Adjust, String>{
 			
 			//修改设备状态为"在途"
 			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.in_transit).andEquals(M.Equipment.ecode, adjustList.getEcode()));
+			
+			equipmentCycleService.logEquipmentCycle(adjustList.getEcode(), OperateType.adjust_out, adjust.getId(), TargetType.store, adjust.getStr_out_id(), null);
 		}
 		//
 	}
@@ -159,6 +168,9 @@ public class AdjustService extends AbstractService<Adjust, String>{
 						.set(M.AdjustList.ecode_returnback, adjuestList.getEcode())
 						.set(M.AdjustList.isReturn, false)
 						.andEquals(M.AdjustList.id,exists_adjustList_borrow.getId()));
+				//这里不需要了，因为在上面的newAdjuest（）方法中进行记录过了
+				//equipmentCycleService.logEquipmentCycle(adjuestList.getEcode(), OperateType.adjust_in, adjust.getId(), TargetType.store, adjust.getStr_in_id(), null);
+
 			} else {
 				throw new BusinessException(adjuestList.getEcode()+"该条码设备的品名不对,在借用单中已经不存在该品名的设备需要归还!");
 			}
@@ -224,6 +236,8 @@ public class AdjustService extends AbstractService<Adjust, String>{
 			adjustListRepository.update(Cnd.update().set(M.AdjustList.adjustListStatus, AdjustListStatus.in)
 					.set(M.AdjustList.indate, inDate)
 					.andEquals(M.AdjustList.id, adjustList.getId()));
+			//记录该设备的调整记录,设备调拨入库
+			equipmentCycleService.logEquipmentCycle(adjustList.getEcode(), OperateType.adjust_in,adjust.getId() , TargetType.store, adjust.getStr_in_id(), null);
 			
 			
 			//更新出借方明细单上的数据表示已经归还
