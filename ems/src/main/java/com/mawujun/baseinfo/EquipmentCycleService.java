@@ -72,6 +72,7 @@ public class EquipmentCycleService extends AbstractService<EquipmentCycle, Strin
 		} else if(targetType==TargetType.workunit){
 			cycle.setTarget_name(workUnitService.get(target_id).getName());
 		}
+		cycle.setTargetType(targetType);
 		
 		
 		cycle.setType_id(type_id);

@@ -93,6 +93,7 @@ public static final class EquipmentCycle {
 	public static final String type_id="type_id";
 	public static final String source_id="source_id";
 	public static final String source_name="source_name";
+	public static final String targetType="targetType";
 	public static final String target_id="target_id";
 	public static final String target_name="target_name";
 	public static final String memo="memo";

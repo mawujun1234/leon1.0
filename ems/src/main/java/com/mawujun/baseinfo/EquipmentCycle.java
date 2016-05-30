@@ -40,6 +40,10 @@ public class EquipmentCycle extends UUIDEntity{
 	private String source_id;//移动的时候的源id。仓库id，作业单位id，维修中心id等,维修出库的时候，就是维修中心id，维修中心入库的时候就是仓库id
 	@Column(length=50)
 	private String source_name;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(length=36)
+	private TargetType targetType;
 	@Column(length=36)
 	private String target_id;//目标id。仓库id，作业单位id，维修中心id等,维修出库的时候，就是仓库id，维修中心入库的时候就是维修中心id
 	@Column(length=50)
@@ -144,6 +148,14 @@ public class EquipmentCycle extends UUIDEntity{
 
 	public void setSource_name(String source_name) {
 		this.source_name = source_name;
+	}
+
+	public TargetType getTargetType() {
+		return targetType;
+	}
+
+	public void setTargetType(TargetType targetType) {
+		this.targetType = targetType;
 	}
 
 }
