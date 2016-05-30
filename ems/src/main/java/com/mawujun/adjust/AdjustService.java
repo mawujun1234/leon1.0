@@ -53,7 +53,7 @@ public class AdjustService extends AbstractService<Adjust, String>{
 	@Autowired
 	private UserRepository userRepository; 
 	
-	
+	@Autowired
 	private EquipmentCycleService equipmentCycleService;
 	SimpleDateFormat ymdHmsDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
 	
@@ -99,7 +99,7 @@ public class AdjustService extends AbstractService<Adjust, String>{
 			//修改设备状态为"在途"
 			equipmentRepository.update(Cnd.update().set(M.Equipment.status, EquipmentStatus.in_transit).andEquals(M.Equipment.ecode, adjustList.getEcode()));
 			
-			equipmentCycleService.logEquipmentCycle(adjustList.getEcode(), OperateType.adjust_out, adjust.getId(), TargetType.store, adjust.getStr_out_id(), null);
+			equipmentCycleService.logEquipmentCycle(adjustList.getEcode(), OperateType.adjust_out, adjust.getId(), TargetType.store, adjust.getStr_out_id(), adjust.getMemo());
 		}
 		//
 	}
@@ -237,7 +237,7 @@ public class AdjustService extends AbstractService<Adjust, String>{
 					.set(M.AdjustList.indate, inDate)
 					.andEquals(M.AdjustList.id, adjustList.getId()));
 			//记录该设备的调整记录,设备调拨入库
-			equipmentCycleService.logEquipmentCycle(adjustList.getEcode(), OperateType.adjust_in,adjust.getId() , TargetType.store, adjust.getStr_in_id(), null);
+			equipmentCycleService.logEquipmentCycle(adjustList.getEcode(), OperateType.adjust_in,adjust.getId() , TargetType.store, adjust.getStr_in_id(), adjust.getMemo());
 			
 			
 			//更新出借方明细单上的数据表示已经归还
