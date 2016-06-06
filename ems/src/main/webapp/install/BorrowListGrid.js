@@ -19,7 +19,14 @@ Ext.define('Ems.install.BorrowListGrid',{
       	Ext.create('Ext.grid.RowNumberer'),
 		//{dataIndex:'id',text:'id'},
 		{dataIndex:'ecode',text:'条码',width:130},
-		{dataIndex:'borrowListType_name',text:'借/领'},
+		{dataIndex:'borrowListType_name',text:'借/领',
+			renderer:function(value,metadata,record){
+				if("领用"==value){
+					return "<span style='color:green;'>"+value+"</span>";
+				}
+				return value;
+			}
+		},
 		//{dataIndex:'installIn_id',text:'installIn_id'},
 		//{dataIndex:'isBad',text:'isBad'}
 		{dataIndex:'returnDate',text:'归还/安装日期',xtype: 'datecolumn',   format:'Y-m-d'},

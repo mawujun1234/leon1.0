@@ -715,6 +715,7 @@ public class TaskService extends AbstractService<Task, String>{
 			if(pole_eqips!=scan_count){
 				throw new BusinessException("该杆位上实际的设备数量为:"+pole_eqips+",但现在只扫描了"+scan_count+"!");
 			}
+			//再添加一个比较，如果
 		}
 		
 		//更新任务状态

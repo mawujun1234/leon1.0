@@ -96,7 +96,7 @@ public class WorkUnitController {
 	
 	@RequestMapping("/workUnit/destroy.do")
 	@ResponseBody
-	public WorkUnit destroy(WorkUnit workUnit) {
+	public WorkUnit destroy(@RequestBody WorkUnit workUnit) {
 		//workUnitService.delete(workUnit);
 		workUnit.setStatus(false);
 		workUnitService.update(workUnit);

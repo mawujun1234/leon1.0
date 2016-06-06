@@ -21,7 +21,14 @@ Ext.define('Ems.install.InstallOutListGrid',{
 		{dataIndex:'ecode',text:'条码',width:130},
 		{dataIndex:'installOutType_name',text:'领用类型'},
 		{dataIndex:'installOutType_name',text:'领用类型二级'},
-		{dataIndex:'installOutListType_name',text:'借/领'},
+		{dataIndex:'installOutListType_name',text:'借/领',
+			renderer:function(value,metadata,record){
+				if("领用"==value){
+					return "<span style='color:green;'>"+value+"</span>";
+				}
+				return value;
+			}
+		},
 		//{dataIndex:'installIn_id',text:'installIn_id'},
 		//{dataIndex:'isBad',text:'isBad'}
 		{dataIndex:'subtype_name',text:'小类'},
