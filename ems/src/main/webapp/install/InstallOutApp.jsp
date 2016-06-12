@@ -28,6 +28,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		var loginName='<%=ShiroUtils.getUserName()%>';
 		var loginUserId='<%=ShiroUtils.getAuthenticationInfo().getId()%>';
 	</script>
+	<style>
+	 .edit_grid_cell {
+	 	background-color:#98FB98 !important;
+	 }
+	</style>
   </head>
   
   <body>

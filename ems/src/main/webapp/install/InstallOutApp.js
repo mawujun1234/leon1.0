@@ -318,6 +318,7 @@ Ext.onReady(function(){
 					params : {
 						ecode:newValue,
 						store_id:store_combox.getValue(),
+						project_id:project_combox.getValue(),
 						checkDate:checkDate,
 						installOutType_content:installOutType_content_textfield.getValue(),
 						installOutType_id:installOutType_combox.getValue(),
@@ -355,6 +356,7 @@ Ext.onReady(function(){
 							//}	
 							workUnit_combox.disable();
 							store_combox.disable();
+							project_combox.disable();
 						}
 					},
 					failure : function(response) {//加载失败的处理函数   
@@ -382,6 +384,30 @@ Ext.onReady(function(){
     });
     var toolbar_title_text_num=Ext.create('Ext.form.Label',{
     	html:"0"
+    });
+    var  cellEditing = new Ext.grid.plugin.CellEditing({  
+            clicksToEdit : 1  
+      }); 
+    cellEditing.on("edit",function(editor, context){
+	  	var record=context.record;
+	  	var grid=context.grid;
+	  	var field =context.field ;
+	  	var value=context.value;
+	  	
+	  	Ext.Ajax.request({
+						url:Ext.ContextPath+'/installOut/updateMemoFromCache.do',
+						params:{
+							ecode:record.get("ecode"),
+							memo:value,
+							store_id:store_combox.getValue(),
+							checkDate:checkDate
+						},
+						success:function(){
+							record.commit();
+							//me.getStore().reload();
+						}
+						
+					});
     });
 	var equip_grid=Ext.create('Ext.grid.Panel',{
 		flex:1,
@@ -418,6 +444,16 @@ Ext.onReady(function(){
     			  {header: '领用类型', dataIndex: 'installOutType_name'},
     			  {header: '领用类型二级', dataIndex: 'installOutType_content'},
     	          {header: '设备类型', dataIndex: 'subtype_name',width:120},
+    	          {header: '明细备注(可编辑)', dataIndex: 'memo',width:120,
+	    	         renderer:function(value, metaData, record, rowIndex, colIndex, store){
+						//metaData.tdStyle = 'color:red;background-color:#98FB98;' ;
+		            	metaData.tdCls  ='edit_grid_cell';
+		            	 return value;
+		            },editor: {
+		                xtype: 'textfield',
+		                selectOnFocus:true 
+		            }
+	              },
     	          {header: '品名', dataIndex: 'prod_name'},
     	          {header: '品牌', dataIndex: 'brand_name',width:120},
     	          {header: '供应商', dataIndex: 'supplier_name'},
@@ -436,6 +472,7 @@ Ext.onReady(function(){
     	         // {header: '库房', dataIndex: 'stock',width:120},
     	          //{header: '状态', dataIndex: 'status_name',width:100}
     	          ],
+    	plugins:[cellEditing],
         tbar:['<span id="toolbar-title-text">当前领用记录:</span>',toolbar_title_text_num,'->',
               {text:'清空所有的设备',
         	   iconCls:'icon-clearall',
@@ -452,6 +489,7 @@ Ext.onReady(function(){
 										equipStore.removeAll();
 										workUnit_combox.enable();
 										store_combox.enable();
+										project_combox.enable();
 										toolbar_title_text_num.update(""+equipStore.getCount());
 									}
 								}
@@ -536,10 +574,7 @@ Ext.onReady(function(){
 								}
 						});
 						Ext.getBody().unmask();
-						//equipStore.removeAll();
-						//Ext.getBody().unmask();
-						//workUnit_combox.enable();
-						//store_combox.enable();
+
 					},
 					failure:function(){
 						Ext.getBody().unmask();
@@ -595,6 +630,7 @@ Ext.onReady(function(){
 									Ext.getBody().unmask();
 									workUnit_combox.enable();
 									store_combox.enable();
+									project_combox.enable();
 									installOut_id=null;
 								},
 								failure:function(){

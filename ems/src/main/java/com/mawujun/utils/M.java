@@ -322,6 +322,7 @@ public static final class InstallOutList {
 	public static final String returnDate="returnDate";
 	public static final String installOutType_id="installOutType_id";
 	public static final String installOutType_content="installOutType_content";
+	public static final String memo="memo";
 	public static final String id="id";
 }
 public static final class InstallOutType {

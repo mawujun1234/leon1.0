@@ -140,6 +140,14 @@ public class InstallOutController {
 		return "success";
 	}
 	
+	@RequestMapping("/installOut/updateMemoFromCache.do")
+	@ResponseBody
+	public String updateMemoFromCache(String ecode,String store_id,Long checkDate,String memo) {	
+		InstallOutListVO equipment=(InstallOutListVO)cacheMgr.getQrcode(EquipKey.getInstance(EquipScanType.installout, store_id,checkDate),ecode);
+		equipment.setMemo(memo);
+		return "success";
+	}
+	
 	/**
 	 * 查询缓存中的数据
 	 * @author mawujun email:160649888@163.com qq:16064988

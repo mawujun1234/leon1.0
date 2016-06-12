@@ -281,6 +281,7 @@ Ext.onReady(function(){
 							}	
 							workUnit_combox.disable();
 							store_combox.disable();
+							project_combox.disable();
 						}
 					}
 //					failure : function(response) {//加载失败的处理函数   
@@ -300,6 +301,30 @@ Ext.onReady(function(){
 	 var toolbar_title_text_num=Ext.create('Ext.form.Label',{
     	html:"0"
     });
+     var  cellEditing = new Ext.grid.plugin.CellEditing({  
+            clicksToEdit : 1  
+      }); 
+//    cellEditing.on("edit",function(editor, context){
+//	  	var record=context.record;
+//	  	var grid=context.grid;
+//	  	var field =context.field ;
+//	  	var value=context.value;
+//	  	
+//	  	Ext.Ajax.request({
+//						url:Ext.ContextPath+'/borrow/updateMemoFromCache.do',
+//						params:{
+//							ecode:record.get("ecode"),
+//							memo:value,
+//							store_id:store_combox.getValue(),
+//							checkDate:checkDate
+//						},
+//						success:function(){
+//							record.commit();
+//							//me.getStore().reload();
+//						}
+//						
+//					});
+//    });
 	var equipStore = Ext.create('Ext.data.Store', {
         autoDestroy: true,
         model: 'Ems.install.BorrowList',
@@ -329,6 +354,16 @@ Ext.onReady(function(){
 	            },
     			  {header: '条码', dataIndex: 'ecode',width:150},
     	          {header: '设备类型', dataIndex: 'subtype_name',width:120},
+    	           {header: '明细备注(可编辑)', dataIndex: 'memo',width:120,
+	    	         renderer:function(value, metaData, record, rowIndex, colIndex, store){
+						//metaData.tdStyle = 'color:red;background-color:#98FB98;' ;
+		            	metaData.tdCls  ='edit_grid_cell';
+		            	 return value;
+		            },editor: {
+		                xtype: 'textfield',
+		                selectOnFocus:true 
+		            }
+	              },
     	          {header: '品名', dataIndex: 'prod_name'},
     	          {header: '品牌', dataIndex: 'brand_name',width:120},
     	          {header: '供应商', dataIndex: 'supplier_name'},
@@ -341,6 +376,7 @@ Ext.onReady(function(){
     	          //{header: '仓库', dataIndex: 'store_name'},
     	         // {header: '状态', dataIndex: 'status_name',width:100}
     	          ],
+    	plugins:[cellEditing],
         tbar:['<pan id="toolbar-title-text">当前借用记录:</span>',toolbar_title_text_num,'->',
               {text:'清空所有的设备',
         	   iconCls:'icon-clearall',
@@ -350,6 +386,7 @@ Ext.onReady(function(){
 							equipStore.removeAll();
 							workUnit_combox.enable();
 							store_combox.enable();
+							project_combox.enable();
 						}
 					});
         	   }
@@ -465,6 +502,7 @@ Ext.onReady(function(){
 						Ext.getBody().unmask();
 						workUnit_combox.enable();
 						store_combox.enable();
+						project_combox.enable();
 						borrow_id=null;
 					},
 					failure:function(){

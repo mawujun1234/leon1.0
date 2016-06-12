@@ -40,7 +40,11 @@ Ext.define('Ems.install.InstallOutListGrid',{
 						metadata.tdAttr = "data-qtip='" + value+ "'";
 					    return value;
 						}
-		}
+		},
+		{dataIndex:'memo',text:'备注',renderer:function(value,metadata,record){
+						metadata.tdAttr = "data-qtip='" + value+ "'";
+					    return value;
+						}}
 		//{dataIndex:'num',text:'数量',summaryType: 'sum'}
       ];
       

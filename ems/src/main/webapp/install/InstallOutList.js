@@ -19,7 +19,8 @@ Ext.defineModel("Ems.install.InstallOutList",{
 		{name:'supplier_name',type:'string'},
 		{name:'style',type:'string'},
 		{name:'installOutType_name',type:'string'},
-		{name:'num',type:'int'}
+		{name:'num',type:'int'},
+		{name:'memo',type:'string'}
 	],
 	associations:[
 	]

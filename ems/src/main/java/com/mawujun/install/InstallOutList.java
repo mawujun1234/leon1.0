@@ -41,7 +41,8 @@ public class InstallOutList  extends UUIDEntity  implements IEcodeCache {
 	@Column(length=50)
 	private String installOutType_content;//领用类型的二级
 	
-	
+	@Column(length=100)
+	private String memo;
 	
 	
 
@@ -98,6 +99,12 @@ public class InstallOutList  extends UUIDEntity  implements IEcodeCache {
 	}
 	public void setPole_id(String pole_id) {
 		this.pole_id = pole_id;
+	}
+	public String getMemo() {
+		return memo;
+	}
+	public void setMemo(String memo) {
+		this.memo = memo;
 	}
 
 }

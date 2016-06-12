@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.ObjectNotFoundException;
@@ -13,39 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-import com.mawujun.repository.cnd.Cnd;
-import com.mawujun.service.AbstractService;
-import com.mawujun.shiro.ShiroUtils;
-import com.mawujun.user.UserService;
-import com.mawujun.utils.M;
-import com.mawujun.utils.page.Page;
-import com.mawujun.baseinfo.Equipment;
 import com.mawujun.baseinfo.EquipmentCycleService;
 import com.mawujun.baseinfo.EquipmentPlace;
 import com.mawujun.baseinfo.EquipmentRepository;
@@ -59,12 +25,14 @@ import com.mawujun.baseinfo.EquipmentWorkunitPK;
 import com.mawujun.baseinfo.EquipmentWorkunitRepository;
 import com.mawujun.baseinfo.EquipmentWorkunitType;
 import com.mawujun.baseinfo.OperateType;
-import com.mawujun.baseinfo.StoreService;
 import com.mawujun.baseinfo.TargetType;
-import com.mawujun.baseinfo.WorkUnitService;
 import com.mawujun.exception.BusinessException;
-import com.mawujun.install.Borrow;
-import com.mawujun.install.BorrowRepository;
+import com.mawujun.repository.cnd.Cnd;
+import com.mawujun.service.AbstractService;
+import com.mawujun.shiro.ShiroUtils;
+import com.mawujun.user.UserService;
+import com.mawujun.utils.M;
+import com.mawujun.utils.page.Page;
 
 
 /**
@@ -197,7 +165,7 @@ public class BorrowService extends AbstractService<Borrow, String>{
 			borrowListRepository.create(borrowlist);
 			
 			//记录设备入库的生命周期
-			equipmentCycleService.logEquipmentCycle(borrowlist.getEcode(), OperateType.borrow_out, borrow_id, TargetType.workunit,borrow.getWorkUnit_id(),borrow.getMemo());
+			equipmentCycleService.logEquipmentCycle(borrowlist.getEcode(), OperateType.borrow_out, borrow_id, TargetType.workunit,borrow.getWorkUnit_id(),borrowlist.getMemo());
 		}
 		return borrow_id;
 	}
