@@ -22,9 +22,12 @@ Ext.define('Ems.baseinfo.EquipmentCycleGrid',{
 		{dataIndex:'ecode',text:'二维码',width:140},
 		{dataIndex:'operateType_name',text:'类型',width:100},
 		{dataIndex:'type_id',text:'单据号'},
-		{dataIndex:'target_name',text:'设备去向',flex:1},
+		{dataIndex:'target_name',text:'设备去向'},
 		{dataIndex:'operater_name',text:'操作者'},
-		{dataIndex:'memo',text:'备注'}
+		{dataIndex:'memo',text:'备注',flex:1,renderer:function(value,metadata,record){
+						metadata.tdAttr = "data-qtip='" + value+ "'";
+					    return value;
+						}}
       ];
       
 	  me.store=Ext.create('Ext.data.Store',{

@@ -39,6 +39,9 @@
 	<field name="prod_unit" class="java.lang.String">
 		<fieldDescription><![CDATA[prod_unit]]></fieldDescription>
 	</field>
+	<field name="memo" class="java.lang.String">
+		<fieldDescription><![CDATA[memo]]></fieldDescription>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -221,6 +224,13 @@
 			<line>
 				<reportElement x="430" y="-1" width="1" height="24" uuid="5fc1a986-849a-40bf-91d6-80db4d2801f6"/>
 			</line>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="499" y="0" width="55" height="24" uuid="d9bb9dca-08c1-4770-849c-2ac092a20bd8"/>
+				<textElement>
+					<font fontName="宋体" size="6" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{memo}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
