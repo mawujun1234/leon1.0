@@ -228,7 +228,7 @@
 				<reportElement x="437" y="-1" width="1" height="24" uuid="c26dd1b8-4557-47b9-ab6a-488625d40290"/>
 			</line>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="500" y="2" width="57" height="20" uuid="eb5533cf-54e8-4ce2-9e36-dc2cf9901064"/>
+				<reportElement stretchType="RelativeToTallestObject" x="496" y="0" width="59" height="22" uuid="eb5533cf-54e8-4ce2-9e36-dc2cf9901064"/>
 				<textElement>
 					<font size="6" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
