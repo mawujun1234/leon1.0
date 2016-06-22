@@ -73,7 +73,8 @@ Ext.define('Ems.baseinfo.PoleForm',{
 				    fields: ['id', 'name'],
 				    data : [
 				        {"id":"pole", "name":"点位"},
-				        {"id":"machineroom", "name":"机房"}
+				        {"id":"machineroom", "name":"机房"},
+				        {"id":"kakou", "name":"卡扣"}
 				    ]
 				}),
 			    queryMode: 'local',

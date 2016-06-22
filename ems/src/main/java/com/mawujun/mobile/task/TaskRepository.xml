@@ -335,7 +335,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     
     <!-- 在删除维修处理方法之前，先判断有没有被引用 -->
     <select id="check_handleMethod_used">
-    	select count(id) from esm_task where handleMethod_id=#{handleMethod_id}
+    	select count(id) from ems_task where handleMethod_id=#{handleMethod_id}
+    </select>
+    
+    <!-- 查询某个点位上是否还有维修任务挂着，如果 有挂着，提交任务的时候，是不能修改点位状态为使用中的 -->
+    <select id="count_repair_task_by_pole_id" resultType="int" parameterType="map">
+    	select count(id) from ems_task where pole_id=#{pole_id} and type='repair' and status!='complete'
     </select>
 </mapper>
 

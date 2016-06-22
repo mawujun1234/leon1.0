@@ -72,4 +72,6 @@ public interface TaskRepository extends IRepository<Task, String>{
 	public void update_to_handling_status(@Param("task_id")String task_id);
 	
 	public int check_handleMethod_used(@Param("handleMethod_id")String handleMethod_id);
+	
+	public int count_repair_task_by_pole_id(@Param("pole_id")String pole_id);
 }

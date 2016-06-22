@@ -772,7 +772,11 @@ public class TaskService extends AbstractService<Task, String>{
 		if (task.getType() == TaskType.newInstall) {
 			poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.using).andEquals(M.Pole.id, task.getPole_id()));
 		} else if (task.getType() == TaskType.repair) {
-			poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.using).andEquals(M.Pole.id, task.getPole_id()));
+			//如果还有维修任务，就不是使用中,finishRepairTask（）手工结束任务的方法也有这个判断
+			if(taskRepository.count_repair_task_by_pole_id(task.getPole_id())==0){
+				poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.using).andEquals(M.Pole.id, task.getPole_id()));
+			}
+			
 		} else if (task.getType() == TaskType.cancel) {
 			poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.cancel).andEquals(M.Pole.id, task.getPole_id()));
 		}
@@ -1303,5 +1307,11 @@ public class TaskService extends AbstractService<Task, String>{
 		task.setStatus(TaskStatus.complete);
 		
 		taskRepository.update(task);
+		
+		//更新点位状态
+		//如果还有维修任务，就不是使用中,777行的confirm()方法有类似的判断
+		if(taskRepository.count_repair_task_by_pole_id(task.getPole_id())==0){
+			poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.using).andEquals(M.Pole.id, task.getPole_id()));
+		}
 	}
 }
