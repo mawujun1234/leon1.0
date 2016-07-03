@@ -1,4 +1,4 @@
-Ext.defineModel("Ems.task.Task",{
+Ext.define("Ems.task.Task",{
 	extend:"Ext.data.Model",
 	idProperty:'id',
 	fields:[
@@ -28,6 +28,28 @@ Ext.defineModel("Ems.task.Task",{
 		{name:'type_name',type:'string'},
 		{name:'equipList',type:'string'}
 	],
-	associations:[
-	]
+	proxy:{
+			//type:'bajax',
+			type:'ajax',
+			actionMethods: { read: 'POST' },
+			timeout :600000,
+			headers:{ 'Accept':'application/json;'},
+			reader:{
+					type:'json',
+					rootProperty:'root',
+					successProperty:'success',
+					totalProperty:'total'
+					
+			}
+			,writer:{
+				type:'json'
+			},
+			api:{
+				read:Ext.ContextPath+'/task/query.do',
+				load : Ext.ContextPath+'/task/load.do',
+				create:Ext.ContextPath+'/task/create.do',
+				update:Ext.ContextPath+'/task/update.do',
+				destroy:Ext.ContextPath+'/task/destroy.do'
+			}
+		}
 });

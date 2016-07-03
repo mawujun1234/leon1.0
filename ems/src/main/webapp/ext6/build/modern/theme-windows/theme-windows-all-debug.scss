@@ -622,7 +622,6 @@ $current-resource-root: $theme-base-resource-root;
 $relative-image-path-for-uis: $theme-base-resource-path;
 @import '../../../modern/theme-base/sass/var/scroll/Indicator';
 @import '../../../modern/theme-base/sass/var/Component';
-@import '../../../modern/theme-base/sass/var/grid/plugin/ColumnResizing';
 @import '../../../modern/theme-base/sass/var/plugin/field/PlaceHolderLabel';
 
 /* including package theme-device-base */
@@ -681,7 +680,6 @@ $relative-image-path-for-uis: $theme-base-resource-path;
 @import '../../../modern/theme-base/sass/src/layout/Float';
 @import '../../../modern/theme-base/sass/src/Mask';
 @import '../../../modern/theme-base/sass/src/Container';
-@import '../../../modern/theme-base/sass/src/viewport/Default';
 @import '../../../modern/theme-base/sass/src/viewport/Viewport';
 @import '../../../modern/theme-base/sass/src/Panel';
 @import '../../../modern/theme-base/sass/src/Button';
@@ -709,10 +707,8 @@ $relative-image-path-for-uis: $theme-base-resource-path;
 @import '../../../modern/theme-base/sass/src/slider/Slider';
 @import '../../../modern/theme-base/sass/src/field/Spinner';
 @import '../../../modern/theme-base/sass/src/form/FieldSet';
-@import '../../../modern/theme-base/sass/src/grid/column/Column';
 @import '../../../modern/theme-base/sass/src/grid/HeaderContainer';
 @import '../../../modern/theme-base/sass/src/grid/Grid';
-@import '../../../modern/theme-base/sass/src/grid/plugin/ColumnResizing';
 @import '../../../modern/theme-base/sass/src/panel/Title';
 @import '../../../modern/theme-base/sass/src/plugin/ListPaging';
 @import '../../../modern/theme-base/sass/src/plugin/PullRefresh';

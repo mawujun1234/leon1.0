@@ -122,13 +122,16 @@ public class TaskController {
 	 */
 	@RequestMapping("/task/querySubmited.do")
 	@ResponseBody
-	public Page querySubmited(Integer start,Integer limit,String customer_id,String type,String workunit_id,String pole_name) {
+	public Page querySubmited(Integer start,Integer limit,String customer_id,String type,String hitchType_id,String workunit_id,String pole_name) {
 		Page page=Page.getInstance(start,limit);
 		page.addParam(M.Task.customer_id, customer_id);
 		page.addParam(M.Task.workunit_id, workunit_id);
 		//page.addParam(M.Task.pole_id, pole_id);
 		if(StringUtils.hasText(type)){
 			page.addParam(M.Task.type, type);
+		}
+		if(StringUtils.hasText(hitchType_id)){
+			page.addParam(M.Task.hitchType_id, hitchType_id);
 		}
 		
 		if(pole_name!=null && !"".equals(pole_name)){

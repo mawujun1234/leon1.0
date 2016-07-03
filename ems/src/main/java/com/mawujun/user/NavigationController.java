@@ -17,6 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
+
 
 @Controller
 public class NavigationController {
@@ -265,7 +267,7 @@ public class NavigationController {
 		if("root".equals(node)){
 			node=null;
 		}
-
+		JsonConfigHolder.setRootName("children");
 		return navigationService.list(node);
 	}
 

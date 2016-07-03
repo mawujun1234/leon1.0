@@ -660,6 +660,8 @@ $include-ext-rtl-dd-dd: dynamic(false);;
 $include-ext-rtl-dom-element: dynamic(false);;
 $include-ext-rtl-event-event: dynamic(false);;
 $include-ext-rtl-form-labelable: dynamic(false);;
+$include-ext-rtl-form-field-file: dynamic(false);;
+$include-ext-rtl-form-field-filebutton: dynamic(false);;
 $include-ext-rtl-form-field-tag: dynamic(false);;
 $include-ext-rtl-grid-celleditor: dynamic(false);;
 $include-ext-rtl-grid-columnlayout: dynamic(false);;
@@ -689,7 +691,6 @@ $include-ext-rtl-scroll-indicator: dynamic(false);;
 $include-ext-rtl-scroll-scroller: dynamic(false);;
 $include-ext-rtl-scroll-touchscroller: dynamic(false);;
 $include-ext-rtl-slider-multi: dynamic(false);;
-$include-ext-rtl-slider-widget: dynamic(false);;
 $include-ext-rtl-tab-bar: dynamic(false);;
 $include-ext-rtl-tip-quicktipmanager: dynamic(false);;
 $include-ext-rtl-tree-column: dynamic(false);;
@@ -894,6 +895,14 @@ $current-resource-root: $theme-classic-resource-root;
 $relative-image-path-for-uis: $theme-classic-resource-path;
 @import '../../../classic/theme-classic/sass/etc/all';
 
+/* including package theme-classic */
+$theme-classic-resource-root: '' !default;
+$theme-classic-resource-path: 'images' !default;
+$current-package: 'theme-classic';
+$current-resource-root: $theme-classic-resource-root;
+$relative-image-path-for-uis: $theme-classic-resource-path;
+@import '../../../classic/theme-classic/sass/etc/all';
+
 
 /* ======================== VAR ======================== */
 
@@ -1028,6 +1037,55 @@ $relative-image-path-for-uis: $theme-classic-resource-path;
 @import '../../../classic/theme-classic/sass/var/tab/Bar';
 @import '../../../classic/theme-classic/sass/var/tree/View';
 
+/* including package theme-classic */
+$theme-classic-resource-root: '' !default;
+$theme-classic-resource-path: 'images' !default;
+$current-package: 'theme-classic';
+$current-resource-root: $theme-classic-resource-root;
+$relative-image-path-for-uis: $theme-classic-resource-path;
+@import '../../../classic/theme-classic/sass/var/Component';
+@import '../../../classic/theme-classic/sass/var/LoadMask';
+@import '../../../classic/theme-classic/sass/var/ProgressBar';
+@import '../../../classic/theme-classic/sass/var/button/Button';
+@import '../../../classic/theme-classic/sass/var/panel/Tool';
+@import '../../../classic/theme-classic/sass/var/resizer/Splitter';
+@import '../../../classic/theme-classic/sass/var/toolbar/Toolbar';
+@import '../../../classic/theme-classic/sass/var/dd/StatusProxy';
+@import '../../../classic/theme-classic/sass/var/panel/Panel';
+@import '../../../classic/theme-classic/sass/var/container/ButtonGroup';
+@import '../../../classic/theme-classic/sass/var/window/Window';
+@import '../../../classic/theme-classic/sass/var/form/Labelable';
+@import '../../../classic/theme-classic/sass/var/form/field/Base';
+@import '../../../classic/theme-classic/sass/var/form/field/Text';
+@import '../../../classic/theme-classic/sass/var/window/MessageBox';
+@import '../../../classic/theme-classic/sass/var/form/FieldSet';
+@import '../../../classic/theme-classic/sass/var/form/field/Spinner';
+@import '../../../classic/theme-classic/sass/var/view/BoundList';
+@import '../../../classic/theme-classic/sass/var/picker/Date';
+@import '../../../classic/theme-classic/sass/var/form/field/Display';
+@import '../../../classic/theme-classic/sass/var/tip/Tip';
+@import '../../../classic/theme-classic/sass/var/picker/Color';
+@import '../../../classic/theme-classic/sass/var/form/field/HtmlEditor';
+@import '../../../classic/theme-classic/sass/var/form/field/Tag';
+@import '../../../classic/theme-classic/sass/var/form/field/Trigger';
+@import '../../../classic/theme-classic/sass/var/view/Table';
+@import '../../../classic/theme-classic/sass/var/grid/header/Container';
+@import '../../../classic/theme-classic/sass/var/grid/column/Column';
+@import '../../../classic/theme-classic/sass/var/grid/column/Widget';
+@import '../../../classic/theme-classic/sass/var/grid/feature/Grouping';
+@import '../../../classic/theme-classic/sass/var/menu/Menu';
+@import '../../../classic/theme-classic/sass/var/grid/plugin/Editing';
+@import '../../../classic/theme-classic/sass/var/grid/plugin/RowEditing';
+@import '../../../classic/theme-classic/sass/var/grid/plugin/RowExpander';
+@import '../../../classic/theme-classic/sass/var/grid/property/Grid';
+@import '../../../classic/theme-classic/sass/var/layout/container/Accordion';
+@import '../../../classic/theme-classic/sass/var/layout/container/Border';
+@import '../../../classic/theme-classic/sass/var/resizer/Resizer';
+@import '../../../classic/theme-classic/sass/var/slider/Multi';
+@import '../../../classic/theme-classic/sass/var/tab/Tab';
+@import '../../../classic/theme-classic/sass/var/tab/Bar';
+@import '../../../classic/theme-classic/sass/var/tree/View';
+
 
 /* ======================== RULE ======================== */
 
@@ -1092,7 +1150,6 @@ $relative-image-path-for-uis: $theme-base-resource-path;
 @import '../../../classic/theme-base/sass/src/form/field/Tag';
 @import '../../../classic/theme-base/sass/src/layout/container/Fit';
 @import '../../../classic/theme-base/sass/src/panel/Table';
-@import '../../../classic/theme-base/sass/src/view/Table';
 @import '../../../classic/theme-base/sass/src/grid/header/DropZone';
 @import '../../../classic/theme-base/sass/src/grid/header/Container';
 @import '../../../classic/theme-base/sass/src/grid/column/Column';
@@ -1191,6 +1248,20 @@ $relative-image-path-for-uis: $theme-neutral-resource-path;
 @import '../../../classic/theme-neutral/sass/src/tree/ViewDropZone';
 @import '../../../classic/theme-neutral/sass/src/view/MultiSelector';
 @import '../../../classic/theme-neutral/sass/src/window/Toast';
+
+/* including package theme-classic */
+$theme-classic-resource-root: '' !default;
+$theme-classic-resource-path: 'images' !default;
+$current-package: 'theme-classic';
+$current-resource-root: $theme-classic-resource-root;
+$relative-image-path-for-uis: $theme-classic-resource-path;
+@import '../../../classic/theme-classic/sass/src/dom/Element';
+@import '../../../classic/theme-classic/sass/src/window/MessageBox';
+@import '../../../classic/theme-classic/sass/src/form/field/HtmlEditor';
+@import '../../../classic/theme-classic/sass/src/grid/column/Column';
+@import '../../../classic/theme-classic/sass/src/layout/container/Accordion';
+@import '../../../classic/theme-classic/sass/src/resizer/Resizer';
+@import '../../../classic/theme-classic/sass/src/slider/Multi';
 
 /* including package theme-classic */
 $theme-classic-resource-root: '' !default;

@@ -97,7 +97,7 @@ public class UserController {
 		if("root".equals(node)){
 			node=null;
 		}
-
+JsonConfigHolder.setRootName("children");
 		return userService.listFunRole(node,user_id);
 	}
 	

@@ -21,6 +21,8 @@ Ext.define('Ems.task.TaskConfirmGrid',{
         {dataIndex:'submitDate',text:'提交时间'},
 		//{dataIndex:'status_name',text:'状态',width:50},
 		{dataIndex:'type_name',text:'任务类型',width:60},
+		{dataIndex:'hitchType',text:'故障类型',width:60},
+		{dataIndex:'hitchReason',text:'故障类型',width:60},
 		{dataIndex:'pole_code',text:'点位编号',width:55},
 		{dataIndex:'pole_name',text:'点位名称'},
 		{dataIndex:'pole_address',text:'地址',flex:1},
@@ -127,7 +129,7 @@ Ext.define('Ems.task.TaskConfirmGrid',{
 	        fieldLabel: '类型',
 	        labelAlign:'right',
             labelWidth:40,
-            //width:120,
+            //width:100,
 	        //xtype:'combobox',
 	        //afterLabelTextTpl: Ext.required,
 	        name: 'status',
@@ -139,6 +141,32 @@ Ext.define('Ems.task.TaskConfirmGrid',{
 			    data:[{id:'',name:'所有'},{id:'newInstall',name:'新安装'},{id:'repair',name:'维修维护'},{id:'patrol',name:'巡检'},{id:'cancel',name:'取消'}]
 		   })
 	  }); 
+	  var hitchType_combox=Ext.create('Ext.form.field.ComboBox',{
+	       // fieldLabel: '作业单位',
+		  emptyText:'故障原因',
+	        labelAlign:'right',
+          labelWidth:55,
+          width:170,
+	        //xtype:'combobox',
+	        //afterLabelTextTpl: Ext.required,
+	        name: 'workunit_id',
+		    displayField: 'name',
+		    valueField: 'id',
+
+	        store:Ext.create('Ext.data.Store', {
+		    	fields: ['id', 'name'],
+			    proxy:{
+			    	type:'ajax',
+			    	//extraParams:{type:1,edit:true},
+			    	url:Ext.ContextPath+"/hitchType/query.do",
+			    	reader:{
+			    		type:'json',
+			    		root:'root'
+			    	}
+			    }
+		   })
+	    });
+
 		
 	  var pole_textfield=Ext.create('Ext.form.field.Text',{
 			labelAlign:'right',
@@ -156,6 +184,7 @@ Ext.define('Ems.task.TaskConfirmGrid',{
 				customer_id:customer_combox.getValue(),
 				pole_name:pole_textfield.getValue(),
 				type:task_type_combox.getValue(),
+				hitchType_id:hitchType_combox.getValue(),
 				workunit_id:workunit_combox.getValue()
 			};
 		});
@@ -257,7 +286,9 @@ Ext.define('Ems.task.TaskConfirmGrid',{
 			items: [{
 				items: [customer_combox,workunit_combox] // toolbar 1
 			}, {
-				items: [task_type_combox,pole_textfield,query_button] // toolbar 2
+				items: [task_type_combox,hitchType_combox] // toolbar 2
+			}, {
+				items: [pole_textfield,query_button] // toolbar 2
 			},{
 			
 				items: [confirm_button,sendback_button]

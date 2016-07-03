@@ -39,11 +39,11 @@
 			</activation>
 		</profile>
 		<profile>
-			<id>test</id>
+			<id>home</id>
 			<properties>
-				<profiles.active>test</profiles.active>
+				<profiles.active>home</profiles.active>
 				<log4j2.level>debug</log4j2.level>
-				<finalName>test</finalName>
+				<finalName>ROOT</finalName>
 			</properties>
 		</profile>
 		<profile>

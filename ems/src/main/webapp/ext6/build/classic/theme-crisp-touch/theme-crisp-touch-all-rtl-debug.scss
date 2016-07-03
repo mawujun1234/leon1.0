@@ -659,6 +659,8 @@ $include-ext-rtl-dd-dd: dynamic(true);;
 $include-ext-rtl-dom-element: dynamic(true);;
 $include-ext-rtl-event-event: dynamic(true);;
 $include-ext-rtl-form-labelable: dynamic(true);;
+$include-ext-rtl-form-field-file: dynamic(true);;
+$include-ext-rtl-form-field-filebutton: dynamic(true);;
 $include-ext-rtl-form-field-tag: dynamic(true);;
 $include-ext-rtl-grid-celleditor: dynamic(true);;
 $include-ext-rtl-grid-columnlayout: dynamic(true);;
@@ -688,7 +690,6 @@ $include-ext-rtl-scroll-indicator: dynamic(true);;
 $include-ext-rtl-scroll-scroller: dynamic(true);;
 $include-ext-rtl-scroll-touchscroller: dynamic(true);;
 $include-ext-rtl-slider-multi: dynamic(true);;
-$include-ext-rtl-slider-widget: dynamic(true);;
 $include-ext-rtl-tab-bar: dynamic(true);;
 $include-ext-rtl-tip-quicktipmanager: dynamic(true);;
 $include-ext-rtl-tree-column: dynamic(true);;
@@ -936,6 +937,14 @@ $current-resource-root: $theme-crisp-touch-resource-root;
 $relative-image-path-for-uis: $theme-crisp-touch-resource-path;
 @import '../../../classic/theme-crisp-touch/sass/etc/all';
 
+/* including package theme-crisp-touch */
+$theme-crisp-touch-resource-root: '' !default;
+$theme-crisp-touch-resource-path: 'images' !default;
+$current-package: 'theme-crisp-touch';
+$current-resource-root: $theme-crisp-touch-resource-root;
+$relative-image-path-for-uis: $theme-crisp-touch-resource-path;
+@import '../../../classic/theme-crisp-touch/sass/etc/all';
+
 
 /* ======================== VAR ======================== */
 
@@ -1152,6 +1161,20 @@ $relative-image-path-for-uis: $theme-crisp-touch-resource-path;
 @import '../../../classic/theme-crisp-touch/sass/var/tab/Tab';
 @import '../../../classic/theme-crisp-touch/sass/var/tab/Bar';
 
+/* including package theme-crisp-touch */
+$theme-crisp-touch-resource-root: '' !default;
+$theme-crisp-touch-resource-path: 'images' !default;
+$current-package: 'theme-crisp-touch';
+$current-resource-root: $theme-crisp-touch-resource-root;
+$relative-image-path-for-uis: $theme-crisp-touch-resource-path;
+@import '../../../classic/theme-crisp-touch/sass/var/resizer/Splitter';
+@import '../../../classic/theme-crisp-touch/sass/var/picker/Date';
+@import '../../../classic/theme-crisp-touch/sass/var/grid/feature/Grouping';
+@import '../../../classic/theme-crisp-touch/sass/var/grid/plugin/RowExpander';
+@import '../../../classic/theme-crisp-touch/sass/var/resizer/Resizer';
+@import '../../../classic/theme-crisp-touch/sass/var/tab/Tab';
+@import '../../../classic/theme-crisp-touch/sass/var/tab/Bar';
+
 
 /* ======================== RULE ======================== */
 
@@ -1217,7 +1240,6 @@ $relative-image-path-for-uis: $theme-base-resource-path;
 @import '../../../classic/theme-base/sass/src/form/field/Tag';
 @import '../../../classic/theme-base/sass/src/layout/container/Fit';
 @import '../../../classic/theme-base/sass/src/panel/Table';
-@import '../../../classic/theme-base/sass/src/view/Table';
 @import '../../../classic/theme-base/sass/src/grid/header/DropZone';
 @import '../../../classic/theme-base/sass/src/grid/header/Container';
 @import '../../../classic/theme-base/sass/src/grid/column/Column';

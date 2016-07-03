@@ -1,8 +1,3 @@
-/* http://localhost:1842/packages/ux/classic/sass/src/DataView/DragSelector.scss:1 */
-.x-view-selector {
-    position: absolute;
-    border: 1px dotted #39b;
-}
 /* http://localhost:1842/packages/ux/classic/sass/src/Explorer.scss:1 */
 .x-explorer-view {
     background-color: #fff;
@@ -372,11 +367,7 @@
 .x-colorpicker-draghandle-container {
     width: 20px;
 }
-/* http://localhost:1842/packages/ux/classic/sass/src/colorpick/Selector.scss:63 */
-.x-colorpicker-draghandle-container .x-autocontainer-outerCt {
-    height: 100%;
-}
-/* http://localhost:1842/packages/ux/classic/sass/src/colorpick/Selector.scss:68 */
+/* http://localhost:1842/packages/ux/classic/sass/src/colorpick/Selector.scss:64 */
 .x-colorpicker-draghandle {
     width: 32px;
     height: 9px;
@@ -387,11 +378,11 @@
     background-repeat: no-repeat;
     z-index: 1;
 }
-/* http://localhost:1842/packages/ux/classic/sass/src/colorpick/Selector.scss:79 */
+/* http://localhost:1842/packages/ux/classic/sass/src/colorpick/Selector.scss:75 */
 .x-colorpicker-hue {
     background-image: url(images/colorpick/huegradient.png);
 }
-/* http://localhost:1842/packages/ux/classic/sass/src/colorpick/Selector.scss:86 */
+/* http://localhost:1842/packages/ux/classic/sass/src/colorpick/Selector.scss:82 */
 .x-colorpicker-hue-gradient {
     position: absolute;
     top: 0;
@@ -399,9 +390,9 @@
     width: 100%;
     height: 100%;
 }
-/* http://localhost:1842/packages/ux/classic/sass/src/colorpick/Selector.scss:95 */
-.x-colorpicker-saturation .x-colorpicker-draghandle-container {
-    background: -moz-linear-gradient(top, #fff 0%, #000 100%);
+/* http://localhost:1842/packages/ux/classic/sass/src/colorpick/Selector.scss:91 */
+.x-colorpicker-saturation > .x-colorpicker-draghandle-container {
+    background: -mox-linear-gradient(top, #fff 0%, #000 100%);
     /* FF3.6+ */
     background: -webkit-linear-gradient(top, #fff 0%, #000 100%);
     /* Chrome10+,Safari5.1+ */
@@ -413,9 +404,9 @@
     /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#000000',GradientType=0 );
 }
-/* http://localhost:1842/packages/ux/classic/sass/src/colorpick/Selector.scss:106 */
-.x-colorpicker-value .x-colorpicker-draghandle-container {
-    background: -moz-linear-gradient(top, red 0%, #000 100%);
+/* http://localhost:1842/packages/ux/classic/sass/src/colorpick/Selector.scss:102 */
+.x-colorpicker-value > .x-colorpicker-draghandle-container {
+    background: -mox-linear-gradient(top, red 0%, #000 100%);
     /* FF3.6+ */
     background: -webkit-linear-gradient(top, red 0%, #000 100%);
     /* Chrome10+,Safari5.1+ */
@@ -427,11 +418,11 @@
     /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff0000', endColorstr='#000000',GradientType=0 );
 }
-/* http://localhost:1842/packages/ux/classic/sass/src/colorpick/Selector.scss:117 */
-.x-colorpicker-alpha .x-colorpicker-draghandle-container {
+/* http://localhost:1842/packages/ux/classic/sass/src/colorpick/Selector.scss:113 */
+.x-colorpicker-alpha > .x-colorpicker-draghandle-container {
     background-image: url(images/colorpick/checkerboard.png);
 }
-/* http://localhost:1842/packages/ux/classic/sass/src/colorpick/Selector.scss:123 */
+/* http://localhost:1842/packages/ux/classic/sass/src/colorpick/Selector.scss:119 */
 .x-colorpicker-preview {
     background-image: url(images/colorpick/checkerboard.png);
 }
@@ -588,7 +579,7 @@ tr.x-grid-subtable-row {
 .ux-rating-picker {
     overflow: hidden;
     color: #ccc;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
     opacity: 0.8;
     display: inline-block;
     vertical-align: top;
@@ -637,6 +628,6 @@ tr.x-grid-subtable-row {
 }
 /* http://localhost:1842/packages/ux/classic/sass/src/rating/Picker.scss:62 */
 .ux-rating-picker-over {
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
     opacity: 1;
 }

@@ -7,15 +7,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
-
-
 import com.mawujun.service.AbstractService;
-
-
+import com.mawujun.user.UserArea;
+import com.mawujun.user.UserAeeaRepository;
+import com.mawujun.user.User;
+import com.mawujun.user.UserRepository;
 import com.mawujun.utils.page.Page;
-import com.mawujun.baseinfo.Area;
-import com.mawujun.baseinfo.AreaRepository;
 
 
 /**
@@ -29,6 +26,10 @@ public class AreaService extends AbstractService<Area, String>{
 
 	@Autowired
 	private AreaRepository areaRepository;
+	@Autowired
+	private UserRepository userRepository;
+	@Autowired
+	private UserAeeaRepository userAreaRepository;
 	
 	@Override
 	public AreaRepository getRepository() {
@@ -45,5 +46,23 @@ public class AreaService extends AbstractService<Area, String>{
 	
 	public List<PoleVO> queryPolesAndEquipments(String area_id) {
 		return areaRepository.queryPolesAndEquipments(area_id);
+	}
+	
+	public List<Area> queryByUser(String user_id){
+		return areaRepository.queryByUser(user_id);
+	}
+	
+	public void checkByUser(String area_id,String user_id) {
+		User user=userRepository.get(user_id);
+		Area area=areaRepository.get(area_id);
+		UserArea areaUser=new UserArea(area,user);
+		userAreaRepository.create(areaUser);
+	}
+	
+	public void uncheckByUser(String area_id,String user_id) {
+		User user=userRepository.get(user_id);
+		Area area=areaRepository.get(area_id);
+		UserArea areaUser=new UserArea(area,user);
+		userAreaRepository.delete(areaUser);
 	}
 }

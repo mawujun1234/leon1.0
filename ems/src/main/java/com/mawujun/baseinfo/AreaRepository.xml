@@ -60,6 +60,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		   <result property="last_install_date" column="last_install_date"/>
        </collection>  
     </resultMap>
+    
+    
+    <select id="queryByUser" resultType="com.mawujun.baseinfo.AreaVO" parameterType="map">
+    	SELECT a.*,b.name as workunit_name,decode(c.user_id,null,'N','Y') selected
+	    FROM ems_area a 
+	    inner join ems_workunit b on a.workunit_id=b.id
+	    left join sys_user_area c on a.id=c.area_id and c.user_id=#{user_id}
+	    
+    </select>
   
 </mapper>
 

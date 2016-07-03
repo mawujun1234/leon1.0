@@ -659,6 +659,8 @@ $include-ext-rtl-dd-dd: dynamic(true);;
 $include-ext-rtl-dom-element: dynamic(true);;
 $include-ext-rtl-event-event: dynamic(true);;
 $include-ext-rtl-form-labelable: dynamic(true);;
+$include-ext-rtl-form-field-file: dynamic(true);;
+$include-ext-rtl-form-field-filebutton: dynamic(true);;
 $include-ext-rtl-form-field-tag: dynamic(true);;
 $include-ext-rtl-grid-celleditor: dynamic(true);;
 $include-ext-rtl-grid-columnlayout: dynamic(true);;
@@ -688,7 +690,6 @@ $include-ext-rtl-scroll-indicator: dynamic(true);;
 $include-ext-rtl-scroll-scroller: dynamic(true);;
 $include-ext-rtl-scroll-touchscroller: dynamic(true);;
 $include-ext-rtl-slider-multi: dynamic(true);;
-$include-ext-rtl-slider-widget: dynamic(true);;
 $include-ext-rtl-tab-bar: dynamic(true);;
 $include-ext-rtl-tip-quicktipmanager: dynamic(true);;
 $include-ext-rtl-tree-column: dynamic(true);;
@@ -933,6 +934,14 @@ $current-resource-root: $theme-triton-resource-root;
 $relative-image-path-for-uis: $theme-triton-resource-path;
 @import '../../../classic/theme-triton/sass/etc/all';
 
+/* including package theme-triton */
+$theme-triton-resource-root: '' !default;
+$theme-triton-resource-path: 'images' !default;
+$current-package: 'theme-triton';
+$current-resource-root: $theme-triton-resource-root;
+$relative-image-path-for-uis: $theme-triton-resource-path;
+@import '../../../classic/theme-triton/sass/etc/all';
+
 
 /* ======================== VAR ======================== */
 
@@ -1109,6 +1118,49 @@ $relative-image-path-for-uis: $theme-triton-resource-path;
 @import '../../../classic/theme-triton/sass/var/tab/Bar';
 @import '../../../classic/theme-triton/sass/var/tree/View';
 
+/* including package theme-triton */
+$theme-triton-resource-root: '' !default;
+$theme-triton-resource-path: 'images' !default;
+$current-package: 'theme-triton';
+$current-resource-root: $theme-triton-resource-root;
+$relative-image-path-for-uis: $theme-triton-resource-path;
+@import '../../../classic/theme-triton/sass/var/Component';
+@import '../../../classic/theme-triton/sass/var/LoadMask';
+@import '../../../classic/theme-triton/sass/var/ProgressBar';
+@import '../../../classic/theme-triton/sass/var/button/Button';
+@import '../../../classic/theme-triton/sass/var/panel/Tool';
+@import '../../../classic/theme-triton/sass/var/resizer/Splitter';
+@import '../../../classic/theme-triton/sass/var/toolbar/Toolbar';
+@import '../../../classic/theme-triton/sass/var/panel/Panel';
+@import '../../../classic/theme-triton/sass/var/container/ButtonGroup';
+@import '../../../classic/theme-triton/sass/var/window/Window';
+@import '../../../classic/theme-triton/sass/var/form/field/Base';
+@import '../../../classic/theme-triton/sass/var/window/MessageBox';
+@import '../../../classic/theme-triton/sass/var/form/field/Checkbox';
+@import '../../../classic/theme-triton/sass/var/form/FieldSet';
+@import '../../../classic/theme-triton/sass/var/view/BoundList';
+@import '../../../classic/theme-triton/sass/var/picker/Date';
+@import '../../../classic/theme-triton/sass/var/tip/Tip';
+@import '../../../classic/theme-triton/sass/var/form/field/HtmlEditor';
+@import '../../../classic/theme-triton/sass/var/form/field/Tag';
+@import '../../../classic/theme-triton/sass/var/view/Table';
+@import '../../../classic/theme-triton/sass/var/grid/header/Container';
+@import '../../../classic/theme-triton/sass/var/grid/column/Column';
+@import '../../../classic/theme-triton/sass/var/grid/column/Action';
+@import '../../../classic/theme-triton/sass/var/grid/feature/Grouping';
+@import '../../../classic/theme-triton/sass/var/menu/Menu';
+@import '../../../classic/theme-triton/sass/var/grid/filters/Filters';
+@import '../../../classic/theme-triton/sass/var/grid/locking/Lockable';
+@import '../../../classic/theme-triton/sass/var/grid/plugin/RowExpander';
+@import '../../../classic/theme-triton/sass/var/layout/container/Accordion';
+@import '../../../classic/theme-triton/sass/var/layout/container/Border';
+@import '../../../classic/theme-triton/sass/var/resizer/Resizer';
+@import '../../../classic/theme-triton/sass/var/selection/CheckboxModel';
+@import '../../../classic/theme-triton/sass/var/slider/Multi';
+@import '../../../classic/theme-triton/sass/var/tab/Tab';
+@import '../../../classic/theme-triton/sass/var/tab/Bar';
+@import '../../../classic/theme-triton/sass/var/tree/View';
+
 
 /* ======================== RULE ======================== */
 
@@ -1174,7 +1226,6 @@ $relative-image-path-for-uis: $theme-base-resource-path;
 @import '../../../classic/theme-base/sass/src/form/field/Tag';
 @import '../../../classic/theme-base/sass/src/layout/container/Fit';
 @import '../../../classic/theme-base/sass/src/panel/Table';
-@import '../../../classic/theme-base/sass/src/view/Table';
 @import '../../../classic/theme-base/sass/src/grid/header/DropZone';
 @import '../../../classic/theme-base/sass/src/grid/header/Container';
 @import '../../../classic/theme-base/sass/src/grid/column/Column';
@@ -1315,4 +1366,19 @@ $relative-image-path-for-uis: $theme-triton-resource-path;
 @import '../../../classic/theme-triton/sass/src/form/field/Tag';
 @import '../../../classic/theme-triton/sass/src/menu/Menu';
 @import '../../../classic/theme-triton/sass/src/tab/Tab';
+@import '../../../classic/theme-triton/sass/src/tree/View';
+@import '../../../classic/theme-triton/sass/src/window/Toast';
+
+/* including package theme-triton */
+$theme-triton-resource-root: '' !default;
+$theme-triton-resource-path: 'images' !default;
+$current-package: 'theme-triton';
+$current-resource-root: $theme-triton-resource-root;
+$relative-image-path-for-uis: $theme-triton-resource-path;
+@import '../../../classic/theme-triton/sass/src/Component';
+@import '../../../classic/theme-triton/sass/src/form/FieldSet';
+@import '../../../classic/theme-triton/sass/src/form/field/Tag';
+@import '../../../classic/theme-triton/sass/src/menu/Menu';
+@import '../../../classic/theme-triton/sass/src/tab/Tab';
+@import '../../../classic/theme-triton/sass/src/tree/View';
 @import '../../../classic/theme-triton/sass/src/window/Toast';

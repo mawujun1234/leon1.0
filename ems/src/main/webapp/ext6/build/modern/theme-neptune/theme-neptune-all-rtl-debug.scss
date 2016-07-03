@@ -568,14 +568,6 @@ $current-resource-root: $theme-base-resource-root;
 $relative-image-path-for-uis: $theme-base-resource-path;
 @import '../../../modern/theme-base/sass/etc/all';
 
-/* including package font-awesome */
-$font-awesome-resource-root: 'font-awesome' !default;
-$font-awesome-resource-path: 'font-awesome/images' !default;
-$current-package: 'font-awesome';
-$current-resource-root: $font-awesome-resource-root;
-$relative-image-path-for-uis: $font-awesome-resource-path;
-@import '../../../packages/font-awesome/sass/etc/all';
-
 /* including package theme-neptune */
 $theme-neptune-resource-root: '' !default;
 $theme-neptune-resource-path: 'images' !default;
@@ -604,7 +596,6 @@ $current-resource-root: $theme-base-resource-root;
 $relative-image-path-for-uis: $theme-base-resource-path;
 @import '../../../modern/theme-base/sass/var/scroll/Indicator';
 @import '../../../modern/theme-base/sass/var/Component';
-@import '../../../modern/theme-base/sass/var/grid/plugin/ColumnResizing';
 @import '../../../modern/theme-base/sass/var/plugin/field/PlaceHolderLabel';
 
 /* including package theme-neptune */
@@ -638,7 +629,6 @@ $relative-image-path-for-uis: $theme-neptune-resource-path;
 @import '../../../modern/theme-neptune/sass/var/form/Panel';
 @import '../../../modern/theme-neptune/sass/var/grid/column/Column';
 @import '../../../modern/theme-neptune/sass/var/grid/Grid';
-@import '../../../modern/theme-neptune/sass/var/grid/plugin/ColumnResizing';
 @import '../../../modern/theme-neptune/sass/var/grid/plugin/ViewOptions';
 @import '../../../modern/theme-neptune/sass/var/panel/Tool';
 @import '../../../modern/theme-neptune/sass/var/tab/Tab';
@@ -678,7 +668,6 @@ $relative-image-path-for-uis: $theme-base-resource-path;
 @import '../../../modern/theme-base/sass/src/layout/Float';
 @import '../../../modern/theme-base/sass/src/Mask';
 @import '../../../modern/theme-base/sass/src/Container';
-@import '../../../modern/theme-base/sass/src/viewport/Default';
 @import '../../../modern/theme-base/sass/src/viewport/Viewport';
 @import '../../../modern/theme-base/sass/src/Panel';
 @import '../../../modern/theme-base/sass/src/Button';
@@ -706,32 +695,14 @@ $relative-image-path-for-uis: $theme-base-resource-path;
 @import '../../../modern/theme-base/sass/src/slider/Slider';
 @import '../../../modern/theme-base/sass/src/field/Spinner';
 @import '../../../modern/theme-base/sass/src/form/FieldSet';
-@import '../../../modern/theme-base/sass/src/grid/column/Column';
 @import '../../../modern/theme-base/sass/src/grid/HeaderContainer';
 @import '../../../modern/theme-base/sass/src/grid/Grid';
-@import '../../../modern/theme-base/sass/src/grid/plugin/ColumnResizing';
 @import '../../../modern/theme-base/sass/src/panel/Title';
 @import '../../../modern/theme-base/sass/src/plugin/ListPaging';
 @import '../../../modern/theme-base/sass/src/plugin/PullRefresh';
 @import '../../../modern/theme-base/sass/src/plugin/field/PlaceHolderLabel';
 @import '../../../modern/theme-base/sass/src/tab/Panel';
 @import '../../../modern/theme-base/sass/src/table/Table';
-
-/* including package font-awesome */
-$font-awesome-resource-root: 'font-awesome' !default;
-$font-awesome-resource-path: 'font-awesome/images' !default;
-$current-package: 'font-awesome';
-$current-resource-root: $font-awesome-resource-root;
-$relative-image-path-for-uis: $font-awesome-resource-path;
-@import '../../../packages/font-awesome/sass/src/all';
-
-/* including package font-ext */
-$font-ext-resource-root: 'font-ext' !default;
-$font-ext-resource-path: 'font-ext/images' !default;
-$current-package: 'font-ext';
-$current-resource-root: $font-ext-resource-root;
-$relative-image-path-for-uis: $font-ext-resource-path;
-@import '../../../packages/font-ext/sass/src/all';
 
 /* including package theme-neptune */
 $theme-neptune-resource-root: '' !default;
@@ -768,7 +739,6 @@ $relative-image-path-for-uis: $theme-neptune-resource-path;
 @import '../../../modern/theme-neptune/sass/src/form/Panel';
 @import '../../../modern/theme-neptune/sass/src/grid/column/Column';
 @import '../../../modern/theme-neptune/sass/src/grid/Grid';
-@import '../../../modern/theme-neptune/sass/src/grid/plugin/ColumnResizing';
 @import '../../../modern/theme-neptune/sass/src/panel/Tool';
 @import '../../../modern/theme-neptune/sass/src/plugin/ListPaging';
 @import '../../../modern/theme-neptune/sass/src/plugin/PullRefresh';

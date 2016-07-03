@@ -1,4 +1,4 @@
-Ext.defineModel("Ems.task.TaskEquipmentList",{
+Ext.define("Ems.task.TaskEquipmentList",{
 	extend:"Ext.data.Model",
 	idProperty:'id',
 	fields:[
@@ -16,6 +16,28 @@ Ext.defineModel("Ems.task.TaskEquipmentList",{
 		{name:'prod_style',type:'string'}
 
 	],
-	associations:[
-	]
+	proxy:{
+		//type:'bajax',
+		type:'ajax',
+		actionMethods: { read: 'POST' },
+		timeout :600000,
+		headers:{ 'Accept':'application/json;'},
+		reader:{
+				type:'json',
+				rootProperty:'root',
+				successProperty:'success',
+				totalProperty:'total'
+				
+		}
+		,writer:{
+			type:'json'
+		},
+		api:{
+			read:Ext.ContextPath+'/task/query.do',
+			load : Ext.ContextPath+'/task/load.do',
+			create:Ext.ContextPath+'/task/create.do',
+			update:Ext.ContextPath+'/task/update.do',
+			destroy:Ext.ContextPath+'/task/destroy.do'
+		}
+	}
 });

@@ -659,6 +659,8 @@ $include-ext-rtl-dd-dd: dynamic(false);;
 $include-ext-rtl-dom-element: dynamic(false);;
 $include-ext-rtl-event-event: dynamic(false);;
 $include-ext-rtl-form-labelable: dynamic(false);;
+$include-ext-rtl-form-field-file: dynamic(false);;
+$include-ext-rtl-form-field-filebutton: dynamic(false);;
 $include-ext-rtl-form-field-tag: dynamic(false);;
 $include-ext-rtl-grid-celleditor: dynamic(false);;
 $include-ext-rtl-grid-columnlayout: dynamic(false);;
@@ -688,7 +690,6 @@ $include-ext-rtl-scroll-indicator: dynamic(false);;
 $include-ext-rtl-scroll-scroller: dynamic(false);;
 $include-ext-rtl-scroll-touchscroller: dynamic(false);;
 $include-ext-rtl-slider-multi: dynamic(false);;
-$include-ext-rtl-slider-widget: dynamic(false);;
 $include-ext-rtl-tab-bar: dynamic(false);;
 $include-ext-rtl-tip-quicktipmanager: dynamic(false);;
 $include-ext-rtl-tree-column: dynamic(false);;
@@ -917,6 +918,14 @@ $current-package: 'touch-sizing';
 $current-resource-root: $touch-sizing-resource-root;
 $relative-image-path-for-uis: $touch-sizing-resource-path;
 @import '../../../classic/touch-sizing/sass/etc/all';
+
+/* including package theme-neptune-touch */
+$theme-neptune-touch-resource-root: '' !default;
+$theme-neptune-touch-resource-path: 'images' !default;
+$current-package: 'theme-neptune-touch';
+$current-resource-root: $theme-neptune-touch-resource-root;
+$relative-image-path-for-uis: $theme-neptune-touch-resource-path;
+@import '../../../classic/theme-neptune-touch/sass/etc/all';
 
 /* including package theme-neptune-touch */
 $theme-neptune-touch-resource-root: '' !default;
@@ -1161,7 +1170,6 @@ $relative-image-path-for-uis: $theme-base-resource-path;
 @import '../../../classic/theme-base/sass/src/form/field/Tag';
 @import '../../../classic/theme-base/sass/src/layout/container/Fit';
 @import '../../../classic/theme-base/sass/src/panel/Table';
-@import '../../../classic/theme-base/sass/src/view/Table';
 @import '../../../classic/theme-base/sass/src/grid/header/DropZone';
 @import '../../../classic/theme-base/sass/src/grid/header/Container';
 @import '../../../classic/theme-base/sass/src/grid/column/Column';

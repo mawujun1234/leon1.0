@@ -3,7 +3,7 @@
 <html>
   <head>
     <title>用户单位</title>
-    <%@include file="../common/init.jsp" %>
+    <%@include file="../common/init6.jsp" %>
     <script type="text/javascript" src="navigation.js"></script>
 	<style type="text/css">
 		.icon-add {

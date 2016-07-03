@@ -21,4 +21,6 @@ public interface AreaRepository extends IRepository<Area, String>{
 	public Page queryPoles(Page page);
 	
 	public List<PoleVO> queryPolesAndEquipments(@Param("area_id")String area_id);
+	
+	public List<Area> queryByUser(@Param("user_id")String user_id);
 }

@@ -390,5 +390,10 @@
 		<artifactId>httpclient</artifactId>
 		<version>4.5</version>
 	</dependency>
+	<dependency>
+		<groupId>com.mawujun</groupId>
+		<artifactId>leon-generator</artifactId>
+		<version>1.0</version>
+	</dependency>
 	</dependencies> 
 </project>

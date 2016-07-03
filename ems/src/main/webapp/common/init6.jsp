@@ -3,7 +3,8 @@
 String extjscontextPath=request.getContextPath();
 String ip=request.getRemoteAddr();
 String extjs="ext-all.js";
-if("localhost".equals(ip) ||"127.0.0.1".equals(ip)){
+System.out.println(ip);
+if("localhost".equals(ip) ||"127.0.0.1".equals(ip) || "0:0:0:0:0:0:0:1".equals(ip)){
 	extjs="ext-all-debug.js";
 }
 
@@ -15,14 +16,14 @@ if("localhost".equals(ip) ||"127.0.0.1".equals(ip)){
     <script type="text/javascript" src="./ext6/build/classic/theme-neptune/theme-triton.js"></script>-->
     
     
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     
-    
-     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/ext6/build/classic/theme-crisp/resources/theme-crisp-all.css">
+     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/ext6/build/classic/theme-classic/resources/theme-classic-all.css">
    
         <script type="text/javascript" src="<%=request.getContextPath()%>/ext6/build/<%=extjs%>"></script>
          <script type="text/javascript" src="<%=request.getContextPath()%>/ext6/build/classic/theme-classic/theme-classic.js"></script>
          <script type="text/javascript" src="<%=request.getContextPath()%>/ext6/build/classic/locale/locale-zh_CN.js"></script>
-        <script type="text/javascript" src="<%=request.getContextPath()%>/common/common.js"></script>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/common/common6.js"></script>
 	<link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/css/font-awesome.min.css">
 	
 	<!--

@@ -180,6 +180,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="type!=null and type!=''">
 				and a.type=#{type}
 			</if>
+			<if test="hitchType_id!=null and hitchType_id!=''">
+				and a.hitchType_id=#{hitchType_id}
+			</if>
 			<if test="workunit_id!=null and workunit_id!=''">
 				and a.workunit_id=#{workunit_id}
 			</if>

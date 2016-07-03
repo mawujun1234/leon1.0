@@ -1,4 +1,4 @@
-Ext.defineModel("Ems.mgr.User",{
+Ext.define("Ems.mgr.User",{
 	extend:"Ext.data.Model",
 	fields:[
 		{name:'id',type:'auto'},
@@ -13,5 +13,29 @@ Ext.defineModel("Ems.mgr.User",{
 		{name:'createDate',type:'date'},
 		{name:'expireDate',type:'date'},
 		{name:'lastLoginDate',type:'date'}
-	]
+	],
+	proxy:{
+		//type:'bajax',
+		type:'ajax',
+		actionMethods: { read: 'POST' },
+		timeout :600000,
+		headers:{ 'Accept':'application/json;'},
+		reader:{
+				type:'json',
+				rootProperty:'root',
+				successProperty:'success',
+				totalProperty:'total'
+				
+		}
+		,writer:{
+			type:'json'
+		},
+		api:{
+			read:Ext.ContextPath+'/user/query.do',
+			load : Ext.ContextPath+'/user/load.do',
+			create:Ext.ContextPath+'/user/create.do',
+			update:Ext.ContextPath+'/user/update.do',
+			destroy:Ext.ContextPath+'/user/destroy.do'
+		}
+	}
 });

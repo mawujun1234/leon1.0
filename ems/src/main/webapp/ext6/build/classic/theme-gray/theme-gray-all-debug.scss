@@ -660,6 +660,8 @@ $include-ext-rtl-dd-dd: dynamic(false);;
 $include-ext-rtl-dom-element: dynamic(false);;
 $include-ext-rtl-event-event: dynamic(false);;
 $include-ext-rtl-form-labelable: dynamic(false);;
+$include-ext-rtl-form-field-file: dynamic(false);;
+$include-ext-rtl-form-field-filebutton: dynamic(false);;
 $include-ext-rtl-form-field-tag: dynamic(false);;
 $include-ext-rtl-grid-celleditor: dynamic(false);;
 $include-ext-rtl-grid-columnlayout: dynamic(false);;
@@ -689,7 +691,6 @@ $include-ext-rtl-scroll-indicator: dynamic(false);;
 $include-ext-rtl-scroll-scroller: dynamic(false);;
 $include-ext-rtl-scroll-touchscroller: dynamic(false);;
 $include-ext-rtl-slider-multi: dynamic(false);;
-$include-ext-rtl-slider-widget: dynamic(false);;
 $include-ext-rtl-tab-bar: dynamic(false);;
 $include-ext-rtl-tip-quicktipmanager: dynamic(false);;
 $include-ext-rtl-tree-column: dynamic(false);;
@@ -903,6 +904,14 @@ $current-resource-root: $theme-gray-resource-root;
 $relative-image-path-for-uis: $theme-gray-resource-path;
 @import '../../../classic/theme-gray/sass/etc/all';
 
+/* including package theme-gray */
+$theme-gray-resource-root: '' !default;
+$theme-gray-resource-path: 'images' !default;
+$current-package: 'theme-gray';
+$current-resource-root: $theme-gray-resource-root;
+$relative-image-path-for-uis: $theme-gray-resource-path;
+@import '../../../classic/theme-gray/sass/etc/all';
+
 
 /* ======================== VAR ======================== */
 
@@ -1060,6 +1069,29 @@ $relative-image-path-for-uis: $theme-gray-resource-path;
 @import '../../../classic/theme-gray/sass/var/layout/container/Accordion';
 @import '../../../classic/theme-gray/sass/var/tab/Tab';
 
+/* including package theme-gray */
+$theme-gray-resource-root: '' !default;
+$theme-gray-resource-path: 'images' !default;
+$current-package: 'theme-gray';
+$current-resource-root: $theme-gray-resource-root;
+$relative-image-path-for-uis: $theme-gray-resource-path;
+@import '../../../classic/theme-gray/sass/var/Component';
+@import '../../../classic/theme-gray/sass/var/ProgressBar';
+@import '../../../classic/theme-gray/sass/var/button/Button';
+@import '../../../classic/theme-gray/sass/var/toolbar/Toolbar';
+@import '../../../classic/theme-gray/sass/var/panel/Panel';
+@import '../../../classic/theme-gray/sass/var/container/ButtonGroup';
+@import '../../../classic/theme-gray/sass/var/window/Window';
+@import '../../../classic/theme-gray/sass/var/form/FieldSet';
+@import '../../../classic/theme-gray/sass/var/view/BoundList';
+@import '../../../classic/theme-gray/sass/var/picker/Date';
+@import '../../../classic/theme-gray/sass/var/tip/Tip';
+@import '../../../classic/theme-gray/sass/var/form/field/Tag';
+@import '../../../classic/theme-gray/sass/var/grid/column/Column';
+@import '../../../classic/theme-gray/sass/var/menu/Menu';
+@import '../../../classic/theme-gray/sass/var/layout/container/Accordion';
+@import '../../../classic/theme-gray/sass/var/tab/Tab';
+
 
 /* ======================== RULE ======================== */
 
@@ -1124,7 +1156,6 @@ $relative-image-path-for-uis: $theme-base-resource-path;
 @import '../../../classic/theme-base/sass/src/form/field/Tag';
 @import '../../../classic/theme-base/sass/src/layout/container/Fit';
 @import '../../../classic/theme-base/sass/src/panel/Table';
-@import '../../../classic/theme-base/sass/src/view/Table';
 @import '../../../classic/theme-base/sass/src/grid/header/DropZone';
 @import '../../../classic/theme-base/sass/src/grid/header/Container';
 @import '../../../classic/theme-base/sass/src/grid/column/Column';

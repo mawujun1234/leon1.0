@@ -1,4 +1,4 @@
-Ext.defineModel("Ems.user.UserStore",{
+Ext.define("Ems.user.UserStore",{
 	extend:"Ext.data.Model",
 	idProperty:'id',
 	fields:[
@@ -13,8 +13,30 @@ Ext.defineModel("Ems.user.UserStore",{
 		{name:'store_type',type:'int'},
 		{name:'store_typeName',type:'string'}
 	],
-	associations:[
-	]
+	proxy:{
+		//type:'bajax',
+		type:'ajax',
+		actionMethods: { read: 'POST' },
+		timeout :600000,
+		headers:{ 'Accept':'application/json;'},
+		reader:{
+				type:'json',
+				rootProperty:'root',
+				successProperty:'success',
+				totalProperty:'total'
+				
+		}
+		,writer:{
+			type:'json'
+		},
+		api:{
+			read:Ext.ContextPath+'/user/query.do'
+//			load : Ext.ContextPath+'/user/load.do',
+//			create:Ext.ContextPath+'/user/create.do',
+//			update:Ext.ContextPath+'/user/update.do',
+//			destroy:Ext.ContextPath+'/user/destroy.do'
+		}
+	}
 });
 
 /**
@@ -94,7 +116,7 @@ Ext.define('Ems.mgr.UserStoreGrid',{
 				url:Ext.ContextPath+'/user/selectAllCheckedStore.do',
 				reader:{
 					type:'json',
-					root:'root'
+					rootProperty:'root'
 				}
 			}
 	  });
@@ -110,8 +132,8 @@ Ext.define('Ems.mgr.UserStoreGrid',{
 			},
 			iconCls: 'form-reload-button'
 		}]
-      me.addEvents("storeSelect");
-      me.addEvents("storeDeselect");
+      //me.addEvents("storeSelect");
+      //me.addEvents("storeDeselect");
       me.callParent();
 	}
 });

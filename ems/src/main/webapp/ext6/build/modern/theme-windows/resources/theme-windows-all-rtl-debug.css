@@ -195,8 +195,6 @@
 /* http://localhost:1843/packages/core/sass/src/scroll/DomScroller.scss:1 */
 .x-domscroller-spacer {
     position: absolute;
-    top: 0;
-    overflow: hidden;
     height: 1px;
     width: 1px;
     font-size: 0;
@@ -459,11 +457,8 @@
 /* http://localhost:1843/modern/theme-base/sass/src/scroll/TouchScroller.scss:5 */
 .x-scroll-scroller {
     height: auto !important;
-    position: relative !important;
-}
-/* http://localhost:1843/modern/theme-base/sass/src/scroll/TouchScroller.scss:6 */
-.x-scroll-scroller:not(.x-scroll-scroller-has-width) {
     width: auto !important;
+    position: relative !important;
 }
 /* http://localhost:1843/modern/theme-base/sass/src/scroll/DomScroller.scss:1 */
 .x-domscroller > .x-inner {
@@ -743,115 +738,115 @@ textarea {
         -webkit-transform: rotate(330deg);
     }
 }
-/* http://localhost:1843/modern/theme-base/sass/src/Component.scss:208 */
+/* http://localhost:1843/modern/theme-base/sass/src/Component.scss:206 */
 @keyframes x-loading-spinner-rotate {
-    /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:209 */
+    /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:207 */
     0% {
-        transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+    }
+    /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:208 */
+    8.32% {
+        -ms-transform: rotate(0deg);
     }
     /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:210 */
-    8.32% {
-        transform: rotate(0deg);
-    }
-    /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:212 */
     8.33% {
-        transform: rotate(30deg);
+        -ms-transform: rotate(30deg);
+    }
+    /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:211 */
+    16.65% {
+        -ms-transform: rotate(30deg);
     }
     /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:213 */
-    16.65% {
-        transform: rotate(30deg);
-    }
-    /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:215 */
     16.66% {
-        transform: rotate(60deg);
+        -ms-transform: rotate(60deg);
+    }
+    /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:214 */
+    24.99% {
+        -ms-transform: rotate(60deg);
     }
     /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:216 */
-    24.99% {
-        transform: rotate(60deg);
-    }
-    /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:218 */
     25% {
-        transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+    }
+    /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:217 */
+    33.32% {
+        -ms-transform: rotate(90deg);
     }
     /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:219 */
-    33.32% {
-        transform: rotate(90deg);
-    }
-    /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:221 */
     33.33% {
-        transform: rotate(120deg);
+        -ms-transform: rotate(120deg);
+    }
+    /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:220 */
+    41.65% {
+        -ms-transform: rotate(120deg);
     }
     /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:222 */
-    41.65% {
-        transform: rotate(120deg);
-    }
-    /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:224 */
     41.66% {
-        transform: rotate(150deg);
+        -ms-transform: rotate(150deg);
+    }
+    /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:223 */
+    49.99% {
+        -ms-transform: rotate(150deg);
     }
     /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:225 */
-    49.99% {
-        transform: rotate(150deg);
-    }
-    /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:227 */
     50% {
-        transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+    }
+    /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:226 */
+    58.32% {
+        -ms-transform: rotate(180deg);
     }
     /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:228 */
-    58.32% {
-        transform: rotate(180deg);
-    }
-    /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:230 */
     58.33% {
-        transform: rotate(210deg);
+        -ms-transform: rotate(210deg);
+    }
+    /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:229 */
+    66.65% {
+        -ms-transform: rotate(210deg);
     }
     /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:231 */
-    66.65% {
-        transform: rotate(210deg);
-    }
-    /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:233 */
     66.66% {
-        transform: rotate(240deg);
+        -ms-transform: rotate(240deg);
+    }
+    /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:232 */
+    74.99% {
+        -ms-transform: rotate(240deg);
     }
     /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:234 */
-    74.99% {
-        transform: rotate(240deg);
-    }
-    /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:236 */
     75% {
-        transform: rotate(270deg);
+        -ms-transform: rotate(270deg);
+    }
+    /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:235 */
+    83.32% {
+        -ms-transform: rotate(270deg);
     }
     /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:237 */
-    83.32% {
-        transform: rotate(270deg);
-    }
-    /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:239 */
     83.33% {
-        transform: rotate(300deg);
+        -ms-transform: rotate(300deg);
+    }
+    /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:238 */
+    91.65% {
+        -ms-transform: rotate(300deg);
     }
     /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:240 */
-    91.65% {
-        transform: rotate(300deg);
-    }
-    /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:242 */
     91.66% {
-        transform: rotate(330deg);
+        -ms-transform: rotate(330deg);
     }
-    /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:243 */
+    /* http://localhost:1843/modern/theme-base/sass/src/Component.scss:241 */
     100% {
-        transform: rotate(330deg);
+        -ms-transform: rotate(330deg);
     }
 }
-/* http://localhost:1843/modern/theme-base/sass/src/Component.scss:246 */
+/* http://localhost:1843/modern/theme-base/sass/src/Component.scss:244 */
 .x-shim {
     position: absolute;
     left: 0;
     top: 0;
     overflow: hidden;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
     opacity: 0;
 }
-/* http://localhost:1843/modern/theme-base/sass/src/Component.scss:254 */
+/* http://localhost:1843/modern/theme-base/sass/src/Component.scss:252 */
 .x-css-shadow {
     position: absolute;
     -webkit-border-radius: 5px;
@@ -1378,37 +1373,6 @@ body {
 /* http://localhost:1843/modern/theme-base/sass/src/Container.scss:98 */
 .x-ie .x-has-height > .x-dock.x-unsized.x-dock-vertical > .x-dock-body {
     height: 0;
-}
-/* http://localhost:1843/modern/theme-base/sass/src/viewport/Default.scss:1 */
-.x-orientation-inspector {
-    display: none;
-    content: "landscape";
-}
-/* http://localhost:1843/modern/theme-base/sass/src/viewport/Default.scss:4 */
-@media (orientation: portrait) {
-    .x-orientation-inspector {
-        content: "portrait";
-    }
-}
-/* http://localhost:1843/modern/theme-base/sass/src/viewport/Viewport.scss:2 */
-@font-face {
-    font-family: 'ext-watermark';
-    src: url(ext/ext-watermark/fonts/ext-watermark.eot?n6lnws);
-    src: url(ext/ext-watermark/fonts/ext-watermark.eot?#iefixn6lnws) format('embedded-opentype'), url(ext/ext-watermark/fonts/ext-watermark.woff?n6lnws) format('woff'), url(ext/ext-watermark/fonts/ext-watermark.ttf?n6lnws) format('truetype'), url(ext/ext-watermark/fonts/ext-watermark.svg?n6lnws#ext-watermark) format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
-/* http://localhost:1843/modern/theme-base/sass/src/viewport/Viewport.scss:15 */
-#ext-viewport:after {
-    font-family: ext-watermark;
-    text-shadow: 1px 1px #fff;
-    font-size: 2em;
-    content: 'd';
-    position: absolute;
-    bottom: 0.5em;
-    right: 0.5em;
-    opacity: 0.5;
-    pointer-events: none;
 }
 /* http://localhost:1843/modern/theme-base/sass/src/viewport/Viewport.scss:42 */
 #ext-viewport {
@@ -2391,17 +2355,6 @@ input[type="search"]::-webkit-search-cancel-button {
 .x-form-fieldset-instructions {
     text-align: center;
 }
-/* http://localhost:1843/modern/theme-base/sass/src/grid/column/Column.scss:2 */
-.x-grid-column .x-innerhtml {
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-/* http://localhost:1843/modern/theme-base/sass/src/grid/column/Column.scss:8 */
-.x-grid-column-trigger {
-    position: absolute;
-    right: 0;
-    cursor: pointer;
-}
 /* http://localhost:1843/modern/theme-base/sass/src/grid/HeaderContainer.scss:1 */
 .x-grid-header-container > .x-body,
 .x-grid-headergroup-inner {
@@ -2546,30 +2499,6 @@ input[type="search"]::-webkit-search-cancel-button {
 .x-grid-grouped .x-grid-row.x-grid-header-wrap .x-dock-horizontal,
 .x-grid-grouped .x-grid-row-tpl.x-grid-header-wrap {
     border-top: 0;
-}
-/* http://localhost:1843/modern/theme-base/sass/src/grid/Grid.scss:138 */
-.x-grid-resize-marker {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 1px;
-    height: 100%;
-}
-/* http://localhost:1843/modern/theme-base/sass/src/grid/plugin/ColumnResizing.scss:1 */
-.x-grid-column-resizer {
-    content: '';
-    position: absolute;
-    right: -10px;
-    width: 20px;
-    height: 100%;
-    background-color: transparent;
-    z-index: 1;
-    cursor: col-resize;
-    display: none;
-}
-/* http://localhost:1843/modern/theme-base/sass/src/grid/plugin/ColumnResizing.scss:12 */
-.x-grid-with-column-resize .x-grid-column-resizer.x-grid-column-resizable {
-    display: block;
 }
 /* http://localhost:1843/modern/theme-base/sass/src/panel/Title.scss:1 */
 .x-panel-title {
@@ -3813,34 +3742,40 @@ body p {
 /* http://localhost:1843/modern/theme-base/sass/etc/mixins.scss:304 */
 .x-loading-spinner > span.x-loading-top {
     -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
 }
 /* http://localhost:1843/modern/theme-base/sass/etc/mixins.scss:305 */
 .x-loading-spinner > span.x-loading-right {
     -webkit-transform: rotate(90deg);
-    transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
 }
 /* http://localhost:1843/modern/theme-base/sass/etc/mixins.scss:306 */
 .x-loading-spinner > span.x-loading-bottom {
     -webkit-transform: rotate(180deg);
-    transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
 }
 /* http://localhost:1843/modern/theme-base/sass/etc/mixins.scss:307 */
 .x-loading-spinner > span.x-loading-left {
     -webkit-transform: rotate(270deg);
-    transform: rotate(270deg);
+    -moz-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
 }
 /* http://localhost:1843/modern/theme-base/sass/etc/mixins.scss:310 */
 .x-loading-spinner > span::before {
     -webkit-transform: rotate(30deg);
-    transform: rotate(30deg);
+    -moz-transform: rotate(30deg);
+    -ms-transform: rotate(30deg);
 }
 /* http://localhost:1843/modern/theme-base/sass/etc/mixins.scss:311 */
 .x-loading-spinner > span::after {
     -webkit-transform: rotate(-30deg);
-    transform: rotate(-30deg);
+    -moz-transform: rotate(-30deg);
+    -ms-transform: rotate(-30deg);
 }
-/* http://localhost:1843/modern/theme-base/sass/etc/mixins.scss:313 */
+/* http://localhost:1843/modern/theme-base/sass/etc/mixins.scss:314 */
 .x-loading-spinner {
     /* Set Animation */
     -webkit-animation-name: x-loading-spinner-rotate;
@@ -4226,35 +4161,7 @@ body p {
 }
 /* http://localhost:1843/modern/theme-windows/sass/src/Panel.scss:196 */
 .x-sheet .x-button.x-item-disabled .x-button-label,
-.x-sheet .x-clear-icon.x-item-disabled .x-button-label,
-.x-sheet .x-input-el.x-item-disabled .x-button-label,
-.x-sheet-action .x-button.x-item-disabled .x-button-label,
-.x-sheet-action .x-clear-icon.x-item-disabled .x-button-label,
-.x-sheet-action .x-input-el.x-item-disabled .x-button-label,
-.x-msgbox .x-button.x-item-disabled .x-button-label,
-.x-msgbox .x-clear-icon.x-item-disabled .x-button-label,
-.x-msgbox .x-input-el.x-item-disabled .x-button-label,
-.x-panel.x-floating .x-button.x-item-disabled .x-button-label,
-.x-panel.x-floating .x-clear-icon.x-item-disabled .x-button-label,
-.x-panel.x-floating .x-input-el.x-item-disabled .x-button-label,
-.x-form.x-floating .x-button.x-item-disabled .x-button-label,
-.x-form.x-floating .x-clear-icon.x-item-disabled .x-button-label,
-.x-form.x-floating .x-input-el.x-item-disabled .x-button-label,
-.x-sheet .x-button.x-item-disabled .x-badge,
-.x-sheet .x-clear-icon.x-item-disabled .x-badge,
-.x-sheet .x-input-el.x-item-disabled .x-badge,
-.x-sheet-action .x-button.x-item-disabled .x-badge,
-.x-sheet-action .x-clear-icon.x-item-disabled .x-badge,
-.x-sheet-action .x-input-el.x-item-disabled .x-badge,
-.x-msgbox .x-button.x-item-disabled .x-badge,
-.x-msgbox .x-clear-icon.x-item-disabled .x-badge,
-.x-msgbox .x-input-el.x-item-disabled .x-badge,
-.x-panel.x-floating .x-button.x-item-disabled .x-badge,
-.x-panel.x-floating .x-clear-icon.x-item-disabled .x-badge,
-.x-panel.x-floating .x-input-el.x-item-disabled .x-badge,
-.x-form.x-floating .x-button.x-item-disabled .x-badge,
-.x-form.x-floating .x-clear-icon.x-item-disabled .x-badge,
-.x-form.x-floating .x-input-el.x-item-disabled .x-badge {
+.x-sheet .x-button.x-item-disabled .x-badge {
     color: #bbb !important;
 }
 /* http://localhost:1843/modern/theme-windows/sass/src/Panel.scss:202 */
@@ -4440,14 +4347,7 @@ body p {
     color: #999;
 }
 /* http://localhost:1843/modern/theme-windows/sass/src/Button.scss:39 */
-.x-button.x-button-pressing,
-.x-button.x-button-pressing .x-button-label,
-.x-button.x-button-pressing .x-button-icon:before,
-.x-button.x-button-pressed,
-.x-button.x-button-pressed .x-button-label,
-.x-button.x-button-pressed .x-button-icon:before,
-.x-button.x-button-pressing .x-badge,
-.x-button.x-button-pressed .x-badge {
+.x-button.x-button-pressing {
     color: #111;
 }
 /* http://localhost:1843/modern/theme-windows/sass/src/Button.scss:47 */
@@ -5204,57 +5104,35 @@ body p {
  */
     padding-top: 0.5em;
 }
-/* http://localhost:1843/modern/theme-device-base/sass/etc/mixins.scss:32 */
-.x-picker .x-toolbar .x-button-icon.check2:before {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    text-align: center;
-    font-family: 'Pictos';
-    content: "3";
-}
-/* http://localhost:1843/modern/theme-device-base/sass/etc/mixins.scss:32 */
-.x-picker .x-toolbar .x-button-icon.delete:before {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    text-align: center;
-    font-family: 'Pictos';
-    content: "*";
-}
-/* http://localhost:1843/modern/theme-windows/sass/src/picker/Picker.scss:21 */
+/* http://localhost:1843/modern/theme-windows/sass/src/picker/Picker.scss:13 */
 .x-picker .x-picker-inner {
     margin: 0em;
     background-color: #111;
 }
-/* http://localhost:1843/modern/theme-windows/sass/src/picker/Picker.scss:29 */
+/* http://localhost:1843/modern/theme-windows/sass/src/picker/Picker.scss:21 */
 .x-picker .x-picker-inner .x-picker-slot .x-body {
     border-width: 0;
 }
-/* http://localhost:1843/modern/theme-windows/sass/src/picker/Picker.scss:34 */
+/* http://localhost:1843/modern/theme-windows/sass/src/picker/Picker.scss:26 */
 .x-picker .x-picker-inner .x-picker-slot.x-last .x-body {
     border-left: 0;
     border-right: 0;
 }
-/* http://localhost:1843/modern/theme-windows/sass/src/picker/Picker.scss:42 */
+/* http://localhost:1843/modern/theme-windows/sass/src/picker/Picker.scss:34 */
 .x-picker-bar {
     height: 90px;
 }
-/* http://localhost:1843/modern/theme-windows/sass/src/picker/Picker.scss:46 */
+/* http://localhost:1843/modern/theme-windows/sass/src/picker/Picker.scss:38 */
 .x-use-titles .x-picker-bar {
     margin-top: 400px;
 }
-/* http://localhost:1843/modern/theme-windows/sass/src/picker/Picker.scss:50 */
+/* http://localhost:1843/modern/theme-windows/sass/src/picker/Picker.scss:42 */
 .x-picker-slot-title {
     position: relative;
     z-index: 2;
     background-color: #1f1f1f;
 }
-/* http://localhost:1843/modern/theme-windows/sass/src/picker/Picker.scss:55 */
+/* http://localhost:1843/modern/theme-windows/sass/src/picker/Picker.scss:47 */
 .x-picker-slot-title > div {
     font-weight: 700;
     padding: 0 5px;
@@ -5262,7 +5140,7 @@ body p {
     text-transform: uppercase;
     color: #fff;
 }
-/* http://localhost:1843/modern/theme-windows/sass/src/picker/Picker.scss:65 */
+/* http://localhost:1843/modern/theme-windows/sass/src/picker/Picker.scss:57 */
 .x-picker-slot .x-dataview-item {
     margin: 10px 5px;
     height: 80px;
@@ -5272,29 +5150,29 @@ body p {
     border: 1px solid #5e5e5e;
     line-height: 80px;
 }
-/* http://localhost:1843/modern/theme-windows/sass/src/picker/Picker.scss:74 */
+/* http://localhost:1843/modern/theme-windows/sass/src/picker/Picker.scss:66 */
 .x-picker-slot .x-dataview-item.x-item-selected {
     color: #fff;
     background: #910091;
     border-color: #910091;
 }
-/* http://localhost:1843/modern/theme-windows/sass/src/picker/Picker.scss:80 */
+/* http://localhost:1843/modern/theme-windows/sass/src/picker/Picker.scss:72 */
 .x-picker-slot .x-dataview-item.x-item-pressed {
     color: #fff;
 }
-/* http://localhost:1843/modern/theme-windows/sass/src/picker/Picker.scss:85 */
+/* http://localhost:1843/modern/theme-windows/sass/src/picker/Picker.scss:77 */
 .x-picker-slot .x-picker-item {
     font-size: 17pt;
 }
-/* http://localhost:1843/modern/theme-windows/sass/src/picker/Picker.scss:90 */
+/* http://localhost:1843/modern/theme-windows/sass/src/picker/Picker.scss:82 */
 .x-picker-right {
     text-align: right;
 }
-/* http://localhost:1843/modern/theme-windows/sass/src/picker/Picker.scss:94 */
+/* http://localhost:1843/modern/theme-windows/sass/src/picker/Picker.scss:86 */
 .x-picker-center {
     text-align: center;
 }
-/* http://localhost:1843/modern/theme-windows/sass/src/picker/Picker.scss:98 */
+/* http://localhost:1843/modern/theme-windows/sass/src/picker/Picker.scss:90 */
 .x-picker-left {
     text-align: left;
 }
@@ -5723,12 +5601,12 @@ body p {
 .x-tab.x-item-disabled span.x-button-label,
 .x-tab.x-item-disabled .x-button-icon,
 .x-tab.x-item-disabled span.x-badge {
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
     opacity: 0.5;
 }
 /* http://localhost:1843/modern/theme-windows/sass/src/tab/Panel.scss:27 */
 .x-tab.x-draggable {
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=70);
     opacity: 0.7;
 }
 /* http://localhost:1843/modern/theme-windows/sass/src/tab/Panel.scss:31 */

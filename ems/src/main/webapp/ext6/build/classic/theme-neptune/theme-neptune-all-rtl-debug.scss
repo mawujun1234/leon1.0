@@ -659,6 +659,8 @@ $include-ext-rtl-dd-dd: dynamic(true);;
 $include-ext-rtl-dom-element: dynamic(true);;
 $include-ext-rtl-event-event: dynamic(true);;
 $include-ext-rtl-form-labelable: dynamic(true);;
+$include-ext-rtl-form-field-file: dynamic(true);;
+$include-ext-rtl-form-field-filebutton: dynamic(true);;
 $include-ext-rtl-form-field-tag: dynamic(true);;
 $include-ext-rtl-grid-celleditor: dynamic(true);;
 $include-ext-rtl-grid-columnlayout: dynamic(true);;
@@ -688,7 +690,6 @@ $include-ext-rtl-scroll-indicator: dynamic(true);;
 $include-ext-rtl-scroll-scroller: dynamic(true);;
 $include-ext-rtl-scroll-touchscroller: dynamic(true);;
 $include-ext-rtl-slider-multi: dynamic(true);;
-$include-ext-rtl-slider-widget: dynamic(true);;
 $include-ext-rtl-tab-bar: dynamic(true);;
 $include-ext-rtl-tip-quicktipmanager: dynamic(true);;
 $include-ext-rtl-tree-column: dynamic(true);;
@@ -903,6 +904,14 @@ $current-resource-root: $theme-neptune-resource-root;
 $relative-image-path-for-uis: $theme-neptune-resource-path;
 @import '../../../classic/theme-neptune/sass/etc/all';
 
+/* including package theme-neptune */
+$theme-neptune-resource-root: '' !default;
+$theme-neptune-resource-path: 'images' !default;
+$current-package: 'theme-neptune';
+$current-resource-root: $theme-neptune-resource-root;
+$relative-image-path-for-uis: $theme-neptune-resource-path;
+@import '../../../classic/theme-neptune/sass/etc/all';
+
 
 /* ======================== VAR ======================== */
 
@@ -1036,6 +1045,54 @@ $relative-image-path-for-uis: $theme-neptune-resource-path;
 @import '../../../classic/theme-neptune/sass/var/tree/View';
 @import '../../../classic/theme-neptune/sass/var/window/Toast';
 
+/* including package theme-neptune */
+$theme-neptune-resource-root: '' !default;
+$theme-neptune-resource-path: 'images' !default;
+$current-package: 'theme-neptune';
+$current-resource-root: $theme-neptune-resource-root;
+$relative-image-path-for-uis: $theme-neptune-resource-path;
+@import '../../../classic/theme-neptune/sass/var/Component';
+@import '../../../classic/theme-neptune/sass/var/LoadMask';
+@import '../../../classic/theme-neptune/sass/var/ProgressBar';
+@import '../../../classic/theme-neptune/sass/var/button/Button';
+@import '../../../classic/theme-neptune/sass/var/panel/Tool';
+@import '../../../classic/theme-neptune/sass/var/resizer/Splitter';
+@import '../../../classic/theme-neptune/sass/var/toolbar/Toolbar';
+@import '../../../classic/theme-neptune/sass/var/dd/StatusProxy';
+@import '../../../classic/theme-neptune/sass/var/panel/Panel';
+@import '../../../classic/theme-neptune/sass/var/container/ButtonGroup';
+@import '../../../classic/theme-neptune/sass/var/window/Window';
+@import '../../../classic/theme-neptune/sass/var/form/Labelable';
+@import '../../../classic/theme-neptune/sass/var/form/field/Base';
+@import '../../../classic/theme-neptune/sass/var/form/field/Text';
+@import '../../../classic/theme-neptune/sass/var/form/field/Checkbox';
+@import '../../../classic/theme-neptune/sass/var/form/FieldSet';
+@import '../../../classic/theme-neptune/sass/var/toolbar/Paging';
+@import '../../../classic/theme-neptune/sass/var/view/BoundList';
+@import '../../../classic/theme-neptune/sass/var/picker/Date';
+@import '../../../classic/theme-neptune/sass/var/form/field/Display';
+@import '../../../classic/theme-neptune/sass/var/tip/Tip';
+@import '../../../classic/theme-neptune/sass/var/picker/Color';
+@import '../../../classic/theme-neptune/sass/var/form/field/Tag';
+@import '../../../classic/theme-neptune/sass/var/form/field/Trigger';
+@import '../../../classic/theme-neptune/sass/var/view/Table';
+@import '../../../classic/theme-neptune/sass/var/grid/header/Container';
+@import '../../../classic/theme-neptune/sass/var/grid/column/Column';
+@import '../../../classic/theme-neptune/sass/var/grid/column/Action';
+@import '../../../classic/theme-neptune/sass/var/grid/feature/Grouping';
+@import '../../../classic/theme-neptune/sass/var/menu/Menu';
+@import '../../../classic/theme-neptune/sass/var/grid/filters/Filters';
+@import '../../../classic/theme-neptune/sass/var/grid/plugin/RowEditing';
+@import '../../../classic/theme-neptune/sass/var/layout/container/Accordion';
+@import '../../../classic/theme-neptune/sass/var/layout/container/Border';
+@import '../../../classic/theme-neptune/sass/var/resizer/Resizer';
+@import '../../../classic/theme-neptune/sass/var/selection/CheckboxModel';
+@import '../../../classic/theme-neptune/sass/var/tab/Tab';
+@import '../../../classic/theme-neptune/sass/var/tab/Bar';
+@import '../../../classic/theme-neptune/sass/var/toolbar/Breadcrumb';
+@import '../../../classic/theme-neptune/sass/var/tree/View';
+@import '../../../classic/theme-neptune/sass/var/window/Toast';
+
 
 /* ======================== RULE ======================== */
 
@@ -1101,7 +1158,6 @@ $relative-image-path-for-uis: $theme-base-resource-path;
 @import '../../../classic/theme-base/sass/src/form/field/Tag';
 @import '../../../classic/theme-base/sass/src/layout/container/Fit';
 @import '../../../classic/theme-base/sass/src/panel/Table';
-@import '../../../classic/theme-base/sass/src/view/Table';
 @import '../../../classic/theme-base/sass/src/grid/header/DropZone';
 @import '../../../classic/theme-base/sass/src/grid/header/Container';
 @import '../../../classic/theme-base/sass/src/grid/column/Column';
@@ -1200,6 +1256,20 @@ $relative-image-path-for-uis: $theme-neutral-resource-path;
 @import '../../../classic/theme-neutral/sass/src/tree/ViewDropZone';
 @import '../../../classic/theme-neutral/sass/src/view/MultiSelector';
 @import '../../../classic/theme-neutral/sass/src/window/Toast';
+
+/* including package theme-neptune */
+$theme-neptune-resource-root: '' !default;
+$theme-neptune-resource-path: 'images' !default;
+$current-package: 'theme-neptune';
+$current-resource-root: $theme-neptune-resource-root;
+$relative-image-path-for-uis: $theme-neptune-resource-path;
+@import '../../../classic/theme-neptune/sass/src/button/Button';
+@import '../../../classic/theme-neptune/sass/src/panel/Panel';
+@import '../../../classic/theme-neptune/sass/src/form/field/File';
+@import '../../../classic/theme-neptune/sass/src/form/field/HtmlEditor';
+@import '../../../classic/theme-neptune/sass/src/grid/header/Container';
+@import '../../../classic/theme-neptune/sass/src/grid/column/Column';
+@import '../../../classic/theme-neptune/sass/src/resizer/Resizer';
 
 /* including package theme-neptune */
 $theme-neptune-resource-root: '' !default;

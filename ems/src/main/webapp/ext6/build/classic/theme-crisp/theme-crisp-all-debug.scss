@@ -659,6 +659,8 @@ $include-ext-rtl-dd-dd: dynamic(false);;
 $include-ext-rtl-dom-element: dynamic(false);;
 $include-ext-rtl-event-event: dynamic(false);;
 $include-ext-rtl-form-labelable: dynamic(false);;
+$include-ext-rtl-form-field-file: dynamic(false);;
+$include-ext-rtl-form-field-filebutton: dynamic(false);;
 $include-ext-rtl-form-field-tag: dynamic(false);;
 $include-ext-rtl-grid-celleditor: dynamic(false);;
 $include-ext-rtl-grid-columnlayout: dynamic(false);;
@@ -688,7 +690,6 @@ $include-ext-rtl-scroll-indicator: dynamic(false);;
 $include-ext-rtl-scroll-scroller: dynamic(false);;
 $include-ext-rtl-scroll-touchscroller: dynamic(false);;
 $include-ext-rtl-slider-multi: dynamic(false);;
-$include-ext-rtl-slider-widget: dynamic(false);;
 $include-ext-rtl-tab-bar: dynamic(false);;
 $include-ext-rtl-tip-quicktipmanager: dynamic(false);;
 $include-ext-rtl-tree-column: dynamic(false);;
@@ -913,6 +914,14 @@ $current-resource-root: $theme-crisp-resource-root;
 $relative-image-path-for-uis: $theme-crisp-resource-path;
 @import '../../../classic/theme-crisp/sass/etc/all';
 
+/* including package theme-crisp */
+$theme-crisp-resource-root: '' !default;
+$theme-crisp-resource-path: 'images' !default;
+$current-package: 'theme-crisp';
+$current-resource-root: $theme-crisp-resource-root;
+$relative-image-path-for-uis: $theme-crisp-resource-path;
+@import '../../../classic/theme-crisp/sass/etc/all';
+
 
 /* ======================== VAR ======================== */
 
@@ -1077,6 +1086,37 @@ $relative-image-path-for-uis: $theme-crisp-resource-path;
 @import '../../../classic/theme-crisp/sass/var/tab/Bar';
 @import '../../../classic/theme-crisp/sass/var/window/Toast';
 
+/* including package theme-crisp */
+$theme-crisp-resource-root: '' !default;
+$theme-crisp-resource-path: 'images' !default;
+$current-package: 'theme-crisp';
+$current-resource-root: $theme-crisp-resource-root;
+$relative-image-path-for-uis: $theme-crisp-resource-path;
+@import '../../../classic/theme-crisp/sass/var/Component';
+@import '../../../classic/theme-crisp/sass/var/button/Button';
+@import '../../../classic/theme-crisp/sass/var/panel/Tool';
+@import '../../../classic/theme-crisp/sass/var/resizer/Splitter';
+@import '../../../classic/theme-crisp/sass/var/toolbar/Toolbar';
+@import '../../../classic/theme-crisp/sass/var/panel/Panel';
+@import '../../../classic/theme-crisp/sass/var/window/Window';
+@import '../../../classic/theme-crisp/sass/var/form/Labelable';
+@import '../../../classic/theme-crisp/sass/var/form/field/Base';
+@import '../../../classic/theme-crisp/sass/var/picker/Date';
+@import '../../../classic/theme-crisp/sass/var/tip/Tip';
+@import '../../../classic/theme-crisp/sass/var/form/field/Tag';
+@import '../../../classic/theme-crisp/sass/var/view/Table';
+@import '../../../classic/theme-crisp/sass/var/grid/header/Container';
+@import '../../../classic/theme-crisp/sass/var/grid/column/Column';
+@import '../../../classic/theme-crisp/sass/var/grid/feature/Grouping';
+@import '../../../classic/theme-crisp/sass/var/grid/filters/Filters';
+@import '../../../classic/theme-crisp/sass/var/grid/locking/Lockable';
+@import '../../../classic/theme-crisp/sass/var/layout/container/Accordion';
+@import '../../../classic/theme-crisp/sass/var/layout/container/Border';
+@import '../../../classic/theme-crisp/sass/var/resizer/Resizer';
+@import '../../../classic/theme-crisp/sass/var/tab/Tab';
+@import '../../../classic/theme-crisp/sass/var/tab/Bar';
+@import '../../../classic/theme-crisp/sass/var/window/Toast';
+
 
 /* ======================== RULE ======================== */
 
@@ -1141,7 +1181,6 @@ $relative-image-path-for-uis: $theme-base-resource-path;
 @import '../../../classic/theme-base/sass/src/form/field/Tag';
 @import '../../../classic/theme-base/sass/src/layout/container/Fit';
 @import '../../../classic/theme-base/sass/src/panel/Table';
-@import '../../../classic/theme-base/sass/src/view/Table';
 @import '../../../classic/theme-base/sass/src/grid/header/DropZone';
 @import '../../../classic/theme-base/sass/src/grid/header/Container';
 @import '../../../classic/theme-base/sass/src/grid/column/Column';

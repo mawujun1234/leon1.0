@@ -659,6 +659,8 @@ $include-ext-rtl-dd-dd: dynamic(true);;
 $include-ext-rtl-dom-element: dynamic(true);;
 $include-ext-rtl-event-event: dynamic(true);;
 $include-ext-rtl-form-labelable: dynamic(true);;
+$include-ext-rtl-form-field-file: dynamic(true);;
+$include-ext-rtl-form-field-filebutton: dynamic(true);;
 $include-ext-rtl-form-field-tag: dynamic(true);;
 $include-ext-rtl-grid-celleditor: dynamic(true);;
 $include-ext-rtl-grid-columnlayout: dynamic(true);;
@@ -688,7 +690,6 @@ $include-ext-rtl-scroll-indicator: dynamic(true);;
 $include-ext-rtl-scroll-scroller: dynamic(true);;
 $include-ext-rtl-scroll-touchscroller: dynamic(true);;
 $include-ext-rtl-slider-multi: dynamic(true);;
-$include-ext-rtl-slider-widget: dynamic(true);;
 $include-ext-rtl-tab-bar: dynamic(true);;
 $include-ext-rtl-tip-quicktipmanager: dynamic(true);;
 $include-ext-rtl-tree-column: dynamic(true);;
@@ -912,6 +913,14 @@ $current-resource-root: $theme-aria-resource-root;
 $relative-image-path-for-uis: $theme-aria-resource-path;
 @import '../../../classic/theme-aria/sass/etc/all';
 
+/* including package theme-aria */
+$theme-aria-resource-root: '' !default;
+$theme-aria-resource-path: 'images' !default;
+$current-package: 'theme-aria';
+$current-resource-root: $theme-aria-resource-root;
+$relative-image-path-for-uis: $theme-aria-resource-path;
+@import '../../../classic/theme-aria/sass/etc/all';
+
 
 /* ======================== VAR ======================== */
 
@@ -1067,7 +1076,43 @@ $relative-image-path-for-uis: $theme-aria-resource-path;
 @import '../../../classic/theme-aria/sass/var/form/FieldSet';
 @import '../../../classic/theme-aria/sass/var/view/BoundList';
 @import '../../../classic/theme-aria/sass/var/picker/Date';
-@import '../../../classic/theme-aria/sass/var/form/field/Display';
+@import '../../../classic/theme-aria/sass/var/tip/Tip';
+@import '../../../classic/theme-aria/sass/var/form/field/HtmlEditor';
+@import '../../../classic/theme-aria/sass/var/panel/Table';
+@import '../../../classic/theme-aria/sass/var/view/Table';
+@import '../../../classic/theme-aria/sass/var/grid/header/Container';
+@import '../../../classic/theme-aria/sass/var/grid/column/Column';
+@import '../../../classic/theme-aria/sass/var/menu/Menu';
+@import '../../../classic/theme-aria/sass/var/grid/plugin/RowEditing';
+@import '../../../classic/theme-aria/sass/var/layout/container/Accordion';
+@import '../../../classic/theme-aria/sass/var/layout/container/Border';
+@import '../../../classic/theme-aria/sass/var/slider/Multi';
+@import '../../../classic/theme-aria/sass/var/tab/Tab';
+@import '../../../classic/theme-aria/sass/var/tab/Bar';
+@import '../../../classic/theme-aria/sass/var/tree/Panel';
+
+/* including package theme-aria */
+$theme-aria-resource-root: '' !default;
+$theme-aria-resource-path: 'images' !default;
+$current-package: 'theme-aria';
+$current-resource-root: $theme-aria-resource-root;
+$relative-image-path-for-uis: $theme-aria-resource-path;
+@import '../../../classic/theme-aria/sass/var/Component';
+@import '../../../classic/theme-aria/sass/var/LoadMask';
+@import '../../../classic/theme-aria/sass/var/ProgressBar';
+@import '../../../classic/theme-aria/sass/var/button/Button';
+@import '../../../classic/theme-aria/sass/var/panel/Tool';
+@import '../../../classic/theme-aria/sass/var/resizer/Splitter';
+@import '../../../classic/theme-aria/sass/var/toolbar/Toolbar';
+@import '../../../classic/theme-aria/sass/var/panel/Panel';
+@import '../../../classic/theme-aria/sass/var/container/ButtonGroup';
+@import '../../../classic/theme-aria/sass/var/window/Window';
+@import '../../../classic/theme-aria/sass/var/form/field/Base';
+@import '../../../classic/theme-aria/sass/var/form/field/Checkbox';
+@import '../../../classic/theme-aria/sass/var/form/CheckboxGroup';
+@import '../../../classic/theme-aria/sass/var/form/FieldSet';
+@import '../../../classic/theme-aria/sass/var/view/BoundList';
+@import '../../../classic/theme-aria/sass/var/picker/Date';
 @import '../../../classic/theme-aria/sass/var/tip/Tip';
 @import '../../../classic/theme-aria/sass/var/form/field/HtmlEditor';
 @import '../../../classic/theme-aria/sass/var/panel/Table';
@@ -1148,7 +1193,6 @@ $relative-image-path-for-uis: $theme-base-resource-path;
 @import '../../../classic/theme-base/sass/src/form/field/Tag';
 @import '../../../classic/theme-base/sass/src/layout/container/Fit';
 @import '../../../classic/theme-base/sass/src/panel/Table';
-@import '../../../classic/theme-base/sass/src/view/Table';
 @import '../../../classic/theme-base/sass/src/grid/header/DropZone';
 @import '../../../classic/theme-base/sass/src/grid/header/Container';
 @import '../../../classic/theme-base/sass/src/grid/column/Column';
@@ -1261,6 +1305,17 @@ $relative-image-path-for-uis: $theme-neptune-resource-path;
 @import '../../../classic/theme-neptune/sass/src/grid/header/Container';
 @import '../../../classic/theme-neptune/sass/src/grid/column/Column';
 @import '../../../classic/theme-neptune/sass/src/resizer/Resizer';
+
+/* including package theme-aria */
+$theme-aria-resource-root: '' !default;
+$theme-aria-resource-path: 'images' !default;
+$current-package: 'theme-aria';
+$current-resource-root: $theme-aria-resource-root;
+$relative-image-path-for-uis: $theme-aria-resource-path;
+@import '../../../classic/theme-aria/sass/src/Component';
+@import '../../../classic/theme-aria/sass/src/panel/Title';
+@import '../../../classic/theme-aria/sass/src/panel/Tool';
+@import '../../../classic/theme-aria/sass/src/form/FieldSet';
 
 /* including package theme-aria */
 $theme-aria-resource-root: '' !default;

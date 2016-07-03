@@ -1,3 +1,47 @@
+/* http://localhost:1843/classic/theme-classic/sass/src/dom/Element.scss:106 */
+.x-box-blue .x-box-bl,
+.x-box-blue .x-box-br,
+.x-box-blue .x-box-tl,
+.x-box-blue .x-box-tr {
+    background-image: url(images/box/corners-blue.gif);
+}
+/* http://localhost:1843/classic/theme-classic/sass/src/dom/Element.scss:110 */
+.x-box-blue .x-box-bc,
+.x-box-blue .x-box-mc,
+.x-box-blue .x-box-tc {
+    background-image: url(images/box/tb-blue.gif);
+}
+/* http://localhost:1843/classic/theme-classic/sass/src/dom/Element.scss:114 */
+.x-box-blue .x-box-mc {
+    background-color: #c3daf9;
+}
+/* http://localhost:1843/classic/theme-classic/sass/src/dom/Element.scss:118 */
+.x-box-blue .x-box-mc h3 {
+    color: #17385b;
+}
+/* http://localhost:1843/classic/theme-classic/sass/src/dom/Element.scss:122 */
+.x-box-blue .x-box-ml {
+    background-image: url(images/box/l-blue.gif);
+}
+/* http://localhost:1843/classic/theme-classic/sass/src/dom/Element.scss:126 */
+.x-box-blue .x-box-mr {
+    background-image: url(images/box/r-blue.gif);
+}
+/* http://localhost:1843/classic/theme-classic/sass/src/window/MessageBox.scss:2 */
+.x-message-box .x-msg-box-wait {
+    background-image: url(images/shared/blue-loading.gif);
+}
+/* http://localhost:1843/classic/theme-classic/sass/src/form/field/HtmlEditor.scss:2 */
+.x-html-editor-wrap .x-toolbar {
+    border-left-color: #b5b8c8;
+    border-top-color: #b5b8c8;
+    border-right-color: #b5b8c8;
+}
+/* http://localhost:1843/classic/theme-classic/sass/src/form/field/HtmlEditor.scss:9 */
+.x-html-editor-input {
+    border: 1px solid #b5b8c8;
+    border-top-width: 0;
+}
 /* http://localhost:1843/classic/theme-classic/sass/src/grid/column/Column.scss:1 */
 .x-column-header-trigger {
     background-color: #c5c5c5;

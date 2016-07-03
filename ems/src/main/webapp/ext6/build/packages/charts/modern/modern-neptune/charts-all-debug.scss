@@ -155,7 +155,6 @@ $include-ext-chart-interactions-rotate: dynamic(true);;
 $include-ext-chart-interactions-rotatepie3d: dynamic(true);;
 $include-ext-chart-label-callout: dynamic(true);;
 $include-ext-chart-label-label: dynamic(true);;
-$include-ext-chart-modifier-callout: dynamic(true);;
 $include-ext-chart-overrides-abstractchart: dynamic(true);;
 $include-ext-chart-plugin-itemevents: dynamic(true);;
 $include-ext-chart-series-area: dynamic(true);;
@@ -187,7 +186,6 @@ $include-ext-chart-series-sprite-radar: dynamic(true);;
 $include-ext-chart-series-sprite-scatter: dynamic(true);;
 $include-ext-chart-series-sprite-series: dynamic(true);;
 $include-ext-chart-series-sprite-stackedcartesian: dynamic(true);;
-$include-ext-chart-sprite-label: dynamic(true);;
 $include-ext-chart-theme-base: dynamic(true);;
 $include-ext-chart-theme-blue: dynamic(true);;
 $include-ext-chart-theme-bluegradients: dynamic(true);;
@@ -730,14 +728,6 @@ $current-resource-root: $theme-base-resource-root;
 $relative-image-path-for-uis: $theme-base-resource-path;
 @import '../../../../../modern/theme-base/sass/etc/all';
 
-/* including package font-awesome */
-$font-awesome-resource-root: 'font-awesome' !default;
-$font-awesome-resource-path: 'font-awesome/images' !default;
-$current-package: 'font-awesome';
-$current-resource-root: $font-awesome-resource-root;
-$relative-image-path-for-uis: $font-awesome-resource-path;
-@import '../../../../../packages/font-awesome/sass/etc/all';
-
 /* including package theme-neptune */
 $theme-neptune-resource-root: '' !default;
 $theme-neptune-resource-path: 'images' !default;
@@ -774,7 +764,6 @@ $current-resource-root: $theme-base-resource-root;
 $relative-image-path-for-uis: $theme-base-resource-path;
 @import '../../../../../modern/theme-base/sass/var/scroll/Indicator';
 @import '../../../../../modern/theme-base/sass/var/Component';
-@import '../../../../../modern/theme-base/sass/var/grid/plugin/ColumnResizing';
 @import '../../../../../modern/theme-base/sass/var/plugin/field/PlaceHolderLabel';
 
 /* including package theme-neptune */
@@ -808,7 +797,6 @@ $relative-image-path-for-uis: $theme-neptune-resource-path;
 @import '../../../../../modern/theme-neptune/sass/var/form/Panel';
 @import '../../../../../modern/theme-neptune/sass/var/grid/column/Column';
 @import '../../../../../modern/theme-neptune/sass/var/grid/Grid';
-@import '../../../../../modern/theme-neptune/sass/var/grid/plugin/ColumnResizing';
 @import '../../../../../modern/theme-neptune/sass/var/grid/plugin/ViewOptions';
 @import '../../../../../modern/theme-neptune/sass/var/panel/Tool';
 @import '../../../../../modern/theme-neptune/sass/var/tab/Tab';

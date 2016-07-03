@@ -1,7 +1,4 @@
-// This is needed until we can refactor all of the locales into individual files
-Ext.define("Ext.locale.pt_BR.Component", {	
-    override: "Ext.Component"
-});/**
+/**
  * Portuguese/Brazil Translation by Weber Souza
  * 08 April 2007
  * Updated by Allan Brazute Alves (EthraZa)
@@ -174,7 +171,10 @@ Ext.define("Ext.locale.pt_BR.form.field.VTypes", {
     alphaText: 'Este campo deve conter apenas letras e _',
     alphanumText: 'Este campo deve conter apenas letras, números e _'
 });
-Ext.define("Ext.locale.pt_BR.grid.PropertyColumnModel", {
+// This is needed until we can refactor all of the locales into individual files
+Ext.define("Ext.locale.pt_BR.Component", {	
+    override: "Ext.Component"
+});Ext.define("Ext.locale.pt_BR.grid.PropertyColumnModel", {
     override: "Ext.grid.PropertyColumnModel",
     nameText: "Nome",
     valueText: "Valor",
@@ -225,15 +225,14 @@ Ext.define('Ext.locale.pt_BR.grid.filters.filter.String', {
 });Ext.define("Ext.locale.pt_BR.grid.plugin.DragDrop", {
     override: "Ext.grid.plugin.DragDrop",
     dragText: "{0} linha(s) selecionada(s)"
-});/**
- * Portuguese/Brazil Translation by Guilherme Portela
- * 07 March 2016
- */
-Ext.define("Ext.locale.pt_BR.panel.Panel", {
-    override: "Ext.panel.Panel",
-    closeToolText: "Fechar painel",
-    collapseToolText: "Recolher painel",
-    expandToolText: "Expandir painel"   
+});Ext.define("Ext.locale.pt_BR.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "OK",
+        cancel: "Cancelar",
+        yes: "Sim",
+        no: "Não"
+    }    
 });Ext.define("Ext.locale.pt_BR.picker.Date", {
     override: "Ext.picker.Date",
     todayText: "Hoje",
@@ -272,12 +271,4 @@ Ext.define("Ext.locale.pt_BR.view.AbstractView", {
 });Ext.define("Ext.locale.pt_BR.view.View", {
     override: "Ext.view.View",
     emptyText: ""
-});Ext.define("Ext.locale.pt_BR.window.MessageBox", {
-    override: "Ext.window.MessageBox",
-    buttonText: {
-        ok: "OK",
-        cancel: "Cancelar",
-        yes: "Sim",
-        no: "Não"
-    }    
 });

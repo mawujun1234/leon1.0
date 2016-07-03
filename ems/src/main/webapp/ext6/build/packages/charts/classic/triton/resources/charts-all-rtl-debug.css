@@ -58,7 +58,7 @@
 }
 /* http://localhost:1842/packages/charts/sass/src/chart/AbstractChart.scss:61 */
 .x-legend-inactive {
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
     opacity: 0.3;
 }
 /* http://localhost:1842/packages/charts/sass/src/chart/AbstractChart.scss:65 */

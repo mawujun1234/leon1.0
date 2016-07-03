@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
+
 @Controller
 public class FunRoleController {
 
@@ -20,7 +22,7 @@ public class FunRoleController {
 		if("root".equals(node)){
 			node=null;
 		}
-
+		JsonConfigHolder.setRootName("children");
 		return funRoleService.list(node);
 	}
 
@@ -62,7 +64,7 @@ public class FunRoleController {
 		if("root".equals(node)){
 			node=null;
 		}
-
+		JsonConfigHolder.setRootName("children");
 		return funRoleService.listNav4Checked(node,funRole_id);
 	}
 	

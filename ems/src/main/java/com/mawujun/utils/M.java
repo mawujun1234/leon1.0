@@ -598,6 +598,52 @@ public static final class Navigation {
 	public static final String checked="checked";
 	public static final String id="id";
 }
+public static final class UIElement {
+	public static final String text="text";
+	public static final String code="code";
+	public static final String navigation_id="navigation_id";
+	public static final String memo="memo";
+	public static final String id="id";
+}
+public static final class UIElementFunRole {
+	 /**
+	 * 返回关联对象的属性，，以对象关联的方式(a.b这种形式)，只有一些基本属性，层级不再往下了
+	 */
+	public static final class uIElement {
+		public static final String text="uIElement.text";
+		public static final String code="uIElement.code";
+		public static final String navigation_id="uIElement.navigation_id";
+		public static final String memo="uIElement.memo";
+		public static final String id="uIElement.id";
+			
+	    /**
+	    * 返回的是关联类的属性名称，主要用于属性过滤的时候
+	    */
+	    public static String name(){ 
+		    return "uIElement";
+	    }
+	}
+	 /**
+	 * 返回关联对象的属性，，以对象关联的方式(a.b这种形式)，只有一些基本属性，层级不再往下了
+	 */
+	public static final class funRole {
+		public static final String text="funRole.text";
+		public static final String leaf="funRole.leaf";
+		public static final String memo="funRole.memo";
+		public static final String parentId="funRole.parentId";
+		public static final String cls="funRole.cls";
+		public static final String iconCls="funRole.iconCls";
+		public static final String checked="funRole.checked";
+		public static final String id="funRole.id";
+			
+	    /**
+	    * 返回的是关联类的属性名称，主要用于属性过滤的时候
+	    */
+	    public static String name(){ 
+		    return "funRole";
+	    }
+	}
+}
 public static final class User {
 	public static final String username="username";
 	public static final String password="password";

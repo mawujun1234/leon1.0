@@ -28,8 +28,7 @@ Ext.define('Ext.ux.ajax.Simlet', function() {
             'responseText',
             'responseXML',
             'status',
-            'statusText',
-            'responseHeaders'
+            'statusText'
         ],
         /**
          * @cfg {Number} responseText
@@ -2995,7 +2994,7 @@ Ext.define('Ext.ux.CellDragDrop', {
 
 /**
  * @class Ext.ux.DataTip
- * @extends Ext.tip.ToolTip
+ * @extends Ext.ToolTip.
  * This plugin implements automatic tooltip generation for an arbitrary number of child nodes *within* a Component.
  *
  * This plugin is applied to a high level Component, which contains repeating elements, and depending on the host Component type,
@@ -3722,10 +3721,11 @@ Ext.define('Ext.ux.DataView.DragSelector', {
         this.tracker = Ext.create('Ext.dd.DragTracker', {
             dataview: this.dataview,
             el: this.dataview.el,
+            dragSelector: this,
             onBeforeStart: this.onBeforeStart,
-            onStart: this.onStart.bind(this),
-            onDrag: this.onDrag.bind(this),
-            onEnd: Ext.Function.createDelayed(this.onEnd, 100, this)
+            onStart: this.onStart,
+            onDrag: this.onDrag,
+            onEnd: this.onEnd
         });
         /**
          * @property dragRegion
@@ -3750,14 +3750,15 @@ Ext.define('Ext.ux.DataView.DragSelector', {
      * @param {Ext.event.Event} e The click event
      */
     onStart: function(e) {
-        var dataview = this.dataview;
+        var dragSelector = this.dragSelector,
+            dataview = this.dataview;
         // Flag which controls whether the cancelClick method vetoes the processing of the DataView's containerclick event.
         // On IE (where else), this needs to remain set for a millisecond after mouseup because even though the mouse has
         // moved, the mouseup will still trigger a click event.
         this.dragging = true;
         //here we reset and show the selection proxy element and cache the regions each item in the dataview take up
-        this.fillRegions();
-        this.getProxy().show();
+        dragSelector.fillRegions();
+        dragSelector.getProxy().show();
         dataview.getSelectionModel().deselectAll();
     },
     /**
@@ -3766,7 +3767,7 @@ Ext.define('Ext.ux.DataView.DragSelector', {
      * details
      */
     cancelClick: function() {
-        return !this.dragging;
+        return !this.tracker.dragging;
     },
     /**
      * @private
@@ -3776,14 +3777,15 @@ Ext.define('Ext.ux.DataView.DragSelector', {
      * @param {Ext.event.Event} e The drag event
      */
     onDrag: function(e) {
-        var selModel = this.dataview.getSelectionModel(),
-            dragRegion = this.dragRegion,
-            bodyRegion = this.bodyRegion,
-            proxy = this.getProxy(),
-            regions = this.regions,
+        var dragSelector = this.dragSelector,
+            selModel = dragSelector.dataview.getSelectionModel(),
+            dragRegion = dragSelector.dragRegion,
+            bodyRegion = dragSelector.bodyRegion,
+            proxy = dragSelector.getProxy(),
+            regions = dragSelector.regions,
             length = regions.length,
-            startXY = this.tracker.startXY,
-            currentXY = this.tracker.getXY(),
+            startXY = this.startXY,
+            currentXY = this.getXY(),
             minX = Math.min(startXY[0], currentXY[0]),
             minY = Math.min(startXY[1], currentXY[1]),
             width = Math.abs(startXY[0] - currentXY[0]),
@@ -3815,12 +3817,13 @@ Ext.define('Ext.ux.DataView.DragSelector', {
      * the containerclick event which the mouseup event will trigger.
      * @param {Ext.event.Event} e The event object
      */
-    onEnd: function(e) {
+    onEnd: Ext.Function.createDelayed(function(e) {
         var dataview = this.dataview,
-            selModel = dataview.getSelectionModel();
+            selModel = dataview.getSelectionModel(),
+            dragSelector = this.dragSelector;
         this.dragging = false;
-        this.getProxy().hide();
-    },
+        dragSelector.getProxy().hide();
+    }, 1),
     /**
      * @private
      * Creates a Proxy element that will be used to highlight the drag selection region
@@ -6892,7 +6895,7 @@ Ext.define('Ext.ux.colorpick.Selection', {
     },
     applyValue: function(color) {
         // Transform whatever incoming color we get to the proper format
-        var c = Ext.ux.colorpick.ColorUtils.parseColor(color || '#000000');
+        var c = Ext.ux.colorpick.ColorUtils.parseColor(color);
         return this.formatColor(c);
     },
     formatColor: function(color) {
@@ -8498,6 +8501,7 @@ Ext.define('Ext.ux.colorpick.SelectorController', {
         s = vm.get('saturation');
         v = vm.get('value');
         a = vm.get('alpha');
+        console.log('h=' + h);
         // Reposition the colormap's & sliders' drag handles
         refs.colorMap.setPosition(vm.getData());
         refs.hueSlider.setHue(h);
@@ -8519,9 +8523,9 @@ Ext.define('Ext.ux.colorpick.ColorPreview', {
     ],
     //hack to solve issue with IE, when applying a filter the click listener is not being fired.
     style: 'position: relative',
-    html: '<div class="' + Ext.baseCSSPrefix + 'colorpreview-filter" style="height:100%; width:100%; position: absolute;"></div>' + '<a class="btn" style="height:100%; width:100%; position: absolute;"></a>',
+    html: '<div class="filter" style="height:100%; width:100%; position: absolute;"></div>' + '<a class="btn" style="height:100%; width:100%; position: absolute;"></a>',
     //eo hack
-    cls: Ext.baseCSSPrefix + 'colorpreview',
+    cls: 'x-colorpreview',
     height: 256,
     onRender: function() {
         var me = this;
@@ -8547,8 +8551,7 @@ Ext.define('Ext.ux.colorpick.ColorPreview', {
     applyBgStyle: function(color) {
         var me = this,
             colorUtils = Ext.ux.colorpick.ColorUtils,
-            filterSelector = '.' + Ext.baseCSSPrefix + 'colorpreview-filter',
-            el = me.getEl().down(filterSelector),
+            el = me.getEl().down('.filter'),
             hex, alpha, rgba, bgStyle;
         hex = colorUtils.rgb2hex(color.r, color.g, color.b);
         alpha = Ext.util.Format.hex(Math.floor(color.a * 255), 2);
@@ -8640,15 +8643,10 @@ Ext.define('Ext.ux.colorpick.Slider', {
     extend: 'Ext.container.Container',
     xtype: 'colorpickerslider',
     controller: 'colorpick-slidercontroller',
-    afterRender: function() {
-        this.callParent(arguments);
-        var width = this.width,
-            dragCt = this.lookupReference('dragHandleContainer'),
-            dragWidth = dragCt.getWidth();
-        dragCt.el.setStyle('left', ((width - dragWidth) / 2) + 'px');
-    },
     baseCls: Ext.baseCSSPrefix + 'colorpicker-slider',
+    layout: 'center',
     requires: [
+        'Ext.layout.container.Center',
         'Ext.ux.colorpick.SliderController'
     ],
     referenceHolder: true,
@@ -8705,7 +8703,7 @@ Ext.define('Ext.ux.colorpick.SliderAlpha', {
         'Ext.XTemplate'
     ],
     gradientStyleTpl: Ext.create('Ext.XTemplate', Ext.isIE && Ext.ieVersion < 10 ? 'filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=\'#FF{hex}\', endColorstr=\'#00{hex}\');' : /* IE6-9 */
-    'background: -moz-linear-gradient(top, rgba({r}, {g}, {b}, 1) 0%, rgba({r}, {g}, {b}, 0) 100%);' + /* FF3.6+ */
+    'background: -mox-linear-gradient(top, rgba({r}, {g}, {b}, 1) 0%, rgba({r}, {g}, {b}, 0) 100%);' + /* FF3.6+ */
     'background: -webkit-linear-gradient(top,rgba({r}, {g}, {b}, 1) 0%, rgba({r}, {g}, {b}, 0) 100%);' + /* Chrome10+,Safari5.1+ */
     'background: -o-linear-gradient(top, rgba({r}, {g}, {b}, 1) 0%, rgba({r}, {g}, {b}, 0) 100%);' + /* Opera 11.10+ */
     'background: -ms-linear-gradient(top, rgba({r}, {g}, {b}, 1) 0%, rgba({r}, {g}, {b}, 0) 100%);' + /* IE10+ */
@@ -8746,7 +8744,7 @@ Ext.define('Ext.ux.colorpick.SliderAlpha', {
         }
         // Determine HEX for new hue and set as background based on template
         hex = Ext.ux.colorpick.ColorUtils.rgb2hex(color.r, color.g, color.b);
-        el = container.getEl().first();
+        el = container.getEl().down('.x-autocontainer-innerCt');
         el.applyStyles(me.gradientStyleTpl.apply({
             hex: hex,
             r: color.r,
@@ -9162,13 +9160,12 @@ Ext.define('Ext.ux.colorpick.Selector', {
     // Splits up view declaration for readability
     // Slider and H field 
     getSliderAndHField: function(childViewModel) {
-        var me = this,
-            fieldWidth = me.fieldWidth;
+        var me = this;
         return {
             xtype: 'container',
             viewModel: childViewModel,
             cls: Ext.baseCSSPrefix + 'colorpicker-escape-overflow',
-            width: fieldWidth,
+            width: me.fieldWidth,
             layout: {
                 type: 'vbox',
                 align: 'stretch'
@@ -9181,7 +9178,6 @@ Ext.define('Ext.ux.colorpick.Selector', {
                     bind: {
                         hue: '{selectedColor.h}'
                     },
-                    width: fieldWidth,
                     listeners: {
                         handledrag: 'onHueSliderHandleDrag'
                     }
@@ -9190,6 +9186,7 @@ Ext.define('Ext.ux.colorpick.Selector', {
                     xtype: 'numberfield',
                     fieldLabel: 'H',
                     labelAlign: 'top',
+                    width: me.fieldWidth,
                     labelSeparator: '',
                     bind: '{hue}',
                     hideTrigger: true,
@@ -9204,13 +9201,12 @@ Ext.define('Ext.ux.colorpick.Selector', {
     // Splits up view declaration for readability
     // Slider and S field 
     getSliderAndSField: function(childViewModel) {
-        var me = this,
-            fieldWidth = me.fieldWidth;
+        var me = this;
         return {
             xtype: 'container',
             viewModel: childViewModel,
             cls: Ext.baseCSSPrefix + 'colorpicker-escape-overflow',
-            width: fieldWidth,
+            width: me.fieldWidth,
             layout: {
                 type: 'vbox',
                 align: 'stretch'
@@ -9228,7 +9224,6 @@ Ext.define('Ext.ux.colorpick.Selector', {
                         saturation: '{saturation}',
                         hue: '{selectedColor.h}'
                     },
-                    width: fieldWidth,
                     listeners: {
                         handledrag: 'onSaturationSliderHandleDrag'
                     }
@@ -9251,13 +9246,12 @@ Ext.define('Ext.ux.colorpick.Selector', {
     // Splits up view declaration for readability
     // Slider and V field 
     getSliderAndVField: function(childViewModel) {
-        var me = this,
-            fieldWidth = me.fieldWidth;
+        var me = this;
         return {
             xtype: 'container',
             viewModel: childViewModel,
             cls: Ext.baseCSSPrefix + 'colorpicker-escape-overflow',
-            width: fieldWidth,
+            width: me.fieldWidth,
             layout: {
                 type: 'vbox',
                 align: 'stretch'
@@ -9271,7 +9265,6 @@ Ext.define('Ext.ux.colorpick.Selector', {
                         value: '{value}',
                         hue: '{selectedColor.h}'
                     },
-                    width: fieldWidth,
                     listeners: {
                         handledrag: 'onValueSliderHandleDrag'
                     }
@@ -9294,13 +9287,12 @@ Ext.define('Ext.ux.colorpick.Selector', {
     // Splits up view declaration for readability
     // Slider and A field 
     getSliderAndAField: function(childViewModel) {
-        var me = this,
-            fieldWidth = me.fieldWidth;
+        var me = this;
         return {
             xtype: 'container',
             viewModel: childViewModel,
             cls: Ext.baseCSSPrefix + 'colorpicker-escape-overflow',
-            width: fieldWidth,
+            width: me.fieldWidth,
             layout: {
                 type: 'vbox',
                 align: 'stretch'
@@ -9320,7 +9312,6 @@ Ext.define('Ext.ux.colorpick.Selector', {
                             deep: true
                         }
                     },
-                    width: fieldWidth,
                     listeners: {
                         handledrag: 'onAlphaSliderHandleDrag'
                     }
@@ -12411,11 +12402,11 @@ Ext.define('Ext.ux.grid.SubTable', {
     extend: 'Ext.grid.plugin.RowExpander',
     alias: 'plugin.subtable',
     rowBodyTpl: [
-        '<table class="' + Ext.baseCSSPrefix + 'grid-subtable">',
+        '<table class="' + Ext.baseCSSPrefix + 'grid-subtable"><tbody>',
         '{%',
         'this.owner.renderTable(out, values);',
         '%}',
-        '</table>'
+        '</tbody></table>'
     ],
     init: function(grid) {
         var me = this,
@@ -12461,7 +12452,7 @@ Ext.define('Ext.ux.grid.SubTable', {
         for (j = 0; j < numColumns; j++) {
             out.push('<th class="' + Ext.baseCSSPrefix + 'grid-subtable-header">', columns[j].text, '</th>');
         }
-        out.push('</thead><tbody>');
+        out.push('</thead>');
         for (i = 0; i < recCount; i++) {
             rec = associatedRecords[i];
             out.push('<tr>');
@@ -12479,7 +12470,6 @@ Ext.define('Ext.ux.grid.SubTable', {
             }
             out.push('</tr>');
         }
-        out.push('</tbody>');
     },
     getRowBodyContentsFn: function(rowBodyTpl) {
         var me = this;
@@ -12571,65 +12561,6 @@ Ext.define('Ext.ux.grid.TransformGrid', {
         this.callParent();
         this.table.remove();
         delete this.table;
-    }
-});
-
-/**
- * This plugin ensures that its associated grid or tree always has a selection record. The
- * only exception is, of course, when there are no records in the store.
- * @since 6.0.2
- */
-Ext.define('Ext.ux.grid.plugin.AutoSelector', {
-    extend: 'Ext.plugin.Abstract',
-    alias: 'plugin.gridautoselector',
-    config: {
-        store: null
-    },
-    init: function(grid) {
-        //<debug>
-        if (!grid.isXType('tablepanel')) {
-            Ext.raise('The gridautoselector plugin is designed only for grids and trees');
-        }
-        //</debug>
-        var me = this;
-        me.grid = grid;
-        me.watchGrid();
-        grid.on({
-            reconfigure: me.watchGrid,
-            scope: me
-        });
-    },
-    destroy: function() {
-        this.setStore(null);
-        this.grid = null;
-        this.callParent();
-    },
-    ensureSelection: function() {
-        var grid = this.grid,
-            store = grid.getStore(),
-            selection;
-        if (store.getCount()) {
-            selection = grid.getSelection();
-            if (!selection || !selection.length) {
-                grid.getSelectionModel().select(0);
-            }
-        }
-    },
-    watchGrid: function() {
-        this.setStore(this.grid.getStore());
-        this.ensureSelection();
-    },
-    updateStore: function(store) {
-        var me = this;
-        Ext.destroy(me.storeListeners);
-        me.storeListeners = store && store.on({
-            // We could go from 0 records to 1+ records... now we can select one!
-            add: me.ensureSelection,
-            // We might remove the selected record...
-            remove: me.ensureSelection,
-            destroyable: true,
-            scope: me
-        });
     }
 });
 

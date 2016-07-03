@@ -660,6 +660,8 @@ $include-ext-rtl-dd-dd: dynamic(true);;
 $include-ext-rtl-dom-element: dynamic(true);;
 $include-ext-rtl-event-event: dynamic(true);;
 $include-ext-rtl-form-labelable: dynamic(true);;
+$include-ext-rtl-form-field-file: dynamic(true);;
+$include-ext-rtl-form-field-filebutton: dynamic(true);;
 $include-ext-rtl-form-field-tag: dynamic(true);;
 $include-ext-rtl-grid-celleditor: dynamic(true);;
 $include-ext-rtl-grid-columnlayout: dynamic(true);;
@@ -689,7 +691,6 @@ $include-ext-rtl-scroll-indicator: dynamic(true);;
 $include-ext-rtl-scroll-scroller: dynamic(true);;
 $include-ext-rtl-scroll-touchscroller: dynamic(true);;
 $include-ext-rtl-slider-multi: dynamic(true);;
-$include-ext-rtl-slider-widget: dynamic(true);;
 $include-ext-rtl-tab-bar: dynamic(true);;
 $include-ext-rtl-tip-quicktipmanager: dynamic(true);;
 $include-ext-rtl-tree-column: dynamic(true);;
@@ -902,6 +903,14 @@ $current-resource-root: $theme-classic-sandbox-resource-root;
 $relative-image-path-for-uis: $theme-classic-sandbox-resource-path;
 @import '../../../classic/theme-classic-sandbox/sass/etc/all';
 
+/* including package theme-classic-sandbox */
+$theme-classic-sandbox-resource-root: '' !default;
+$theme-classic-sandbox-resource-path: 'images' !default;
+$current-package: 'theme-classic-sandbox';
+$current-resource-root: $theme-classic-sandbox-resource-root;
+$relative-image-path-for-uis: $theme-classic-sandbox-resource-path;
+@import '../../../classic/theme-classic-sandbox/sass/etc/all';
+
 
 /* ======================== VAR ======================== */
 
@@ -1044,6 +1053,14 @@ $current-resource-root: $theme-classic-sandbox-resource-root;
 $relative-image-path-for-uis: $theme-classic-sandbox-resource-path;
 @import '../../../classic/theme-classic-sandbox/sass/var/Component';
 
+/* including package theme-classic-sandbox */
+$theme-classic-sandbox-resource-root: '' !default;
+$theme-classic-sandbox-resource-path: 'images' !default;
+$current-package: 'theme-classic-sandbox';
+$current-resource-root: $theme-classic-sandbox-resource-root;
+$relative-image-path-for-uis: $theme-classic-sandbox-resource-path;
+@import '../../../classic/theme-classic-sandbox/sass/var/Component';
+
 
 /* ======================== RULE ======================== */
 
@@ -1109,7 +1126,6 @@ $relative-image-path-for-uis: $theme-base-resource-path;
 @import '../../../classic/theme-base/sass/src/form/field/Tag';
 @import '../../../classic/theme-base/sass/src/layout/container/Fit';
 @import '../../../classic/theme-base/sass/src/panel/Table';
-@import '../../../classic/theme-base/sass/src/view/Table';
 @import '../../../classic/theme-base/sass/src/grid/header/DropZone';
 @import '../../../classic/theme-base/sass/src/grid/header/Container';
 @import '../../../classic/theme-base/sass/src/grid/column/Column';
