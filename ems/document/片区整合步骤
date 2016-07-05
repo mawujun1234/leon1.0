@@ -1,5 +1,36 @@
 这种方案和直接改为维护组维护的区别就在于，是否对维护组进行分类处理，最终都是要对pole改成归属于某个workunit_id,而不是归属于某个area
 
+1:Pole新建workunit_id
+2:根据片区对应的area_id，更新pole中的workunit_id
+	update ems_pole a set workunit_id=(select workunit_id from ems_area b
+    where  a.area_id=b.id )
+3:进行数据比对，看看有没有更新正确
+	---从总数进行对比
+	 select * from (   
+	    select c.name,count(a.id) aaa from ems_pole a,ems_area b,ems_workunit c
+	    where a.area_id=b.id and b.workunit_id=c.id
+	    group by c.name
+	    order by c.name
+	) x,(
+	    select a.name ,count(b.id) aaa from ems_workunit a,ems_pole b
+	    where a.id=b.workunit_id
+	    group by a.name
+	    order by a.name
+	) y where x.name=y.name and x.aaa!=y.aaa
+	--进行明细比对，数据是否都一样
+	select count(*) from (   
+	    select a.id,c.id as workunit_id from ems_pole a,ems_area b,ems_workunit c
+	    where a.area_id=b.id and b.workunit_id=c.id
+	) x,(
+	    select b.id ,a.id as workunit_id  from ems_workunit a,ems_pole b
+	    where a.id=b.workunit_id
+	) y where x.id=y.id and x.workunit_id!=y.workunit_id
+4：新增作业单位点位维护，维护作业单位可以看到的点位
+4:删除area_id
+
+
+
+
 1：新建AreaWorkUnit类
 2:把Area中的数据更新到AreaWorkUnit中
   2.1先备份area表的数据

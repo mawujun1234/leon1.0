@@ -49,6 +49,8 @@ public class Pole extends UUIDEntity {
 	@Column(length=36)
 	private String area_id;
 	@Column(length=36)
+	private String workunit_id;
+	@Column(length=36)
 	private String project_id;
 	
 //	@org.hibernate.annotations.Type(type="yes_no")
@@ -198,6 +200,14 @@ public class Pole extends UUIDEntity {
 
 	public void setLngLatIsTrans(Boolean lngLatIsTrans) {
 		this.lngLatIsTrans = lngLatIsTrans;
+	}
+
+	public String getWorkunit_id() {
+		return workunit_id;
+	}
+
+	public void setWorkunit_id(String workunit_id) {
+		this.workunit_id = workunit_id;
 	}
 
 

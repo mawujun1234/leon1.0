@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- mawujun qq:16064988 e-mail:16064988@qq.com 承接各种项目 -->
+<!-- 注意文件名称为:Example_${DbName}_Mapper.xml-->
+<mapper namespace="com.mawujun.fun.FunRepository">
+	<!-- 控制界面元素的显示的sql，获取用户拥有的角色，所在的组，职位，组织单元所拥有的角色，再获取这些角色在某个功能下面的所有子功能 -->
+	<select id="queryAllowedFunId" resultType="string" >	
+	select o.id from leon_fun o where o.isenable=#{isenable}
+	or not exists(
+		select distinct n.fun_id from (
+	    	select b.role_id from leon_group_user a,leon_group_role b where a.group_id=b.group_id and a.user_id=#{user_id}
+	    	union
+	    	select a.role_id from leon_user_role a where a.user_id=#{user_id}
+	    ) m, leon_role_fun  n
+	    where m.role_id=n.role_id and n.fun_id=o.id 
+	)
+    </select>
+    
+    
+    <select id="queryPage" parameterType="map" resultType="com.mawujun.fun.Fun">	
+    	select * from leon_fun
+    </select>
+</mapper>

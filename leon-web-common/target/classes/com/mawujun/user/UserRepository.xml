@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- mawujun qq:16064988 e-mail:16064988@qq.com 承接各种项目 -->
+<!-- 注意文件名称为:Example_${DbName}_Mapper.xml-->
+<mapper namespace="com.mawujun.user.UserRepository">
+	<select id="queryRoleId" resultType="String" parameterType="String" >
+    	SELECT a.role_id
+	    FROM leon_user_role a
+		where a.user_id=#{user_id}
+		union all
+		SELECT b.role_id  FROM leon_group_user  a,leon_group_role  b
+		where a.group_id=b.group_id and a.user_id=#{user_id}
+    </select>
+	<!-- select语句的生成结束=============================================================================================== -->
+	
+	<select id="queryFun" resultType="com.mawujun.fun.Fun" parameterType="map">
+    	SELECT distinct c.*
+	    FROM leon_user_role a,leon_role_fun b,leon_fun c
+		where a.role_id=b.role_id and b.fun_id=c.id and a.user_id=#{user_id}
+    </select>
+    
+    <select id="queryPage" resultType="com.mawujun.user.User" parameterType="map">
+    	SELECT a.*
+	    FROM leon_user a
+	    <where>
+	    	<if test="name!=null">
+	    		a.name like #{name} 
+	    	</if>
+	    </where>
+		
+    </select>
+    
+    <select id="querySwitchUsers" resultType="com.mawujun.user.User" parameterType="String">
+    	SELECT a.*
+	    FROM leon_user a,leon_switchuser b
+		where a.id=b.switchuser_id and b.master_id=#{masterId} 
+    </select>
+    <!-- 查找某个用户时候具有另一个用户的切换权限 -->
+     <select id="querySwitchUsersCount" resultType="int" parameterType="map">
+    	SELECT count(a.id)
+	    FROM leon_user a,leon_switchuser b
+		where a.id=b.switchuser_id and b.master_id=#{masterId} and  a.loginName=#{j_username}
+    </select>
+</mapper>

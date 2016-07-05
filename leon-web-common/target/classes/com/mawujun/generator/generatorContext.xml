@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd"
+		default-lazy-init="true">
+	<!--
+	<context:component-scan base-package="com.mawujun">
+		<context:exclude-filter expression="org.springframework.stereotype.Controller" type="annotation"/> 
+	</context:component-scan>
+-->
+
+	<bean name="javaEntityMetaDataService" class="com.mawujun.generator.JavaEntityMetaDataService">
+		<property name="dbName" value="h2"></property>
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean name="generatorService" class="com.mawujun.generator.GeneratorService">
+		<property name="javaEntityMetaDataService" ref="javaEntityMetaDataService"></property>
+	</bean>
+	<jdbc:embedded-database id="dataSource" type="H2">
+			<!--<jdbc:script location="classpath:sql/test.sql" />
+			<jdbc:script location="classpath:sql/initData.sql" />-->
+	</jdbc:embedded-database>
+	
+	
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" lazy-init="false" >
+			<property name="dataSource" ref="dataSource" /> 
+			<!-- 
+			<property name="namingStrategy">
+				<bean class="com.mawujun.repository.hibernate.NamingStrategy"/>
+			</property>
+			-->
+			<property name="hibernateProperties">
+				<props>
+					<prop key="hibernate.hbm2ddl.auto">update</prop>
+					
+					<prop key="hibernate.dialect">com.mawujun.repository.hibernate.MyH2Dialect</prop>
+					
+					<prop key="hibernate.archive.autodetection">class</prop>
+					
+					<prop key="hibernate.validator.apply_to_ddl">true</prop>
+					<prop key="hibernate.validator.autoregister_listeners">true</prop>
+					<prop key="hibernate.cache.use_second_level_cache">false</prop>  
+				</props>
+			</property>
+			<property name="packagesToScan">
+				<list>
+			        <value>com.mawujun</value>
+	    		</list>
+			</property>
+	</bean>
+	
+</beans>

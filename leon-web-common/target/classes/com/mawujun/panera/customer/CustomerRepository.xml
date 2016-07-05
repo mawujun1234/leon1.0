@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
+<mapper namespace="com.mawujun.panera.customer.CustomerRepository">
+
+	<select id="queryPage_count" resultType="com.mawujun.panera.customer.Customer" parameterType="map">
+		select count(a.id) FROM panera_customer a 
+	</select>
+	<select id="queryPage" resultType="com.mawujun.panera.customer.Customer" parameterType="map">
+		SELECT  a.*,
+		b.id as contact_id ,
+		b.isDefault as contact_isDefault,
+		b.name  as  contact_name,
+		b.position   as contact_position ,
+		b.phone  as  contact_phone,
+		b.mobile  as  contact_mobile,
+		b.chatNum   as contact_chatNum ,
+		b.fax  as  contact_fax,
+		b.email as  contact_email,
+		b.isDefault as contact_isDefault,
+		c.name as customerProperty_name,
+		d.name as customerSource_name,
+		e.name as country_name,
+		e.continent as continent_id,
+		f.followupNum 
+		FROM panera_customer a 
+		left join panera_contact  b on  a.id=b.customer_id and b.isdefault='Y'
+		left join panera_customerproperty  c on a.customerProperty_id=c.id
+		inner join panera_customersource  d on a.customerSource_id=d.id
+		inner join panera_country e on a.country_id=e.id
+                left join (select customer_id ,count(id) followupNum from panera_followup group by customer_id ) f on a.id=f.customer_id 
+		<where>
+		<if test="deleted==false">
+			 a.deleted ='N'
+		</if>
+		<if test="customer_name!=null">
+			and a.name like '%${customer_name}%'
+		</if>
+		<if test="contact_name!=null">
+			and b.name like '%${contact_name}%'
+		</if>
+		<if test="contact_email!=null">
+			and b.email like '%${contact_email}%'
+		</if>
+		</where>
+    </select>
+    
+    <select id="get" resultType="com.mawujun.panera.customer.Customer" parameterType="String">
+    	SELECT *
+	    FROM panera_customer 
+		WHERE 
+        	id=#{id}    
+    </select>
+	<!-- select语句的生成结束=============================================================================================== -->
+	<select id="queryByContinent" resultType="com.mawujun.panera.customer.ReportEntity" >
+		SELECT b.continent as id,b.continent_name as name,count(a.id) as data from panera_customer a inner join panera_country b
+		on a.country_id=b.id
+		group by b.continent,b.continent_name
+	</select>
+	
+	<select id="queryByCountry" resultType="com.mawujun.panera.customer.ReportEntity" >
+		SELECT b.id as id,b.name as name,count(a.id) as data from panera_customer a inner join panera_country b
+		on a.country_id=b.id
+		group by b.id,b.name
+	</select>
+
+	<select id="queryByBusinessPhase" resultType="com.mawujun.panera.customer.ReportEntity" >
+		SELECT a.businessPhase_id as id,a.businessPhase_id as name,count(a.id) as data FROM panera_customer a
+		group by  a.businessPhase_id
+	</select>
+	
+	<select id="queryByCustomerSource" resultType="com.mawujun.panera.customer.ReportEntity" >
+		SELECT b.id as id,b.name as name,count(a.id) as data FROM PANERA_CUSTOMER a inner join panera_customersource  b
+		on a.customerSource_id=b.id
+		group by b.id,b.name
+	</select>
+	
+	<select id="queryByCustomerProperty" resultType="com.mawujun.panera.customer.ReportEntity" >
+		SELECT b.id as id,b.name as name,count(a.id) as data FROM PANERA_CUSTOMER a inner join panera_customerproperty  b
+		on a.customerProperty_id=b.id
+		group by b.id,b.name
+	</select>
+	
+	<select id="queryByStar" resultType="com.mawujun.panera.customer.ReportEntity" >
+		SELECT a.star as id,a.star as name,count(a.id) as data FROM panera_customer a 
+		group by a.star 
+	</select>
+</mapper>
+

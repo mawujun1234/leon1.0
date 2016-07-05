@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"  
+	 xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd"
+		default-lazy-init="true">
+
+     
+    <!-- ①：对web包中的所有类进行扫描，以完成Bean创建和自动依赖注入的功能 ，mvc 的只扫描controller组件 注意使用 use-default-filters="false" 
+    1、如果不设置use-default-filters="false"，则Spring会扫描并优先注册默认的bean（当然包括标记为@Service的bean），这样，标记为@Transactional的service由于transaction manager尚未注册而未能生效，导致事务管理失效。 
+	原理是：标记为@Transactional的service会wrap为经过transactional proxied（不管是CGLIB based或是JDK based）的bean，而不再是纯的service； 
+	
+	2、app的context-scan其实无所谓，但exclude掉controller显然会improve efficiency.
+	    -->
+    <context:component-scan base-package="com.mawujun" use-default-filters="false">
+    	<context:include-filter expression="org.springframework.stereotype.Controller" type="annotation"/> 
+    </context:component-scan> 
+    
+    <!--<mvc:resources mapping="/ueditor/**" location="/ueditor/"/> 
+    
+     配置静态资源，直接映射到对应的文件夹，不被DispatcherServlet处理，看a总括.docx 
+    <mvc:resources mapping="/img/**" location="/img/"/>  
+    <mvc:resources mapping="/js/**" location="/js/"/>  
+    <mvc:resources mapping="/css/**" location="/css/"/> 
+    <mvc:resources mapping="/ext/**" location="/ext-4/"/>
+    <mvc:resources mapping="/common/**" location="/common/"/>
+    <mvc:resources mapping="/main/**" location="/main/"/>
+    <mvc:resources mapping="/console/**" location="/console/"/>
+    
+    <mvc:default-servlet-handler />  -->
+
+
+
+
+	<!-- ②：启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+	</bean>
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="webBindingInitializer">
+			<bean class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
+				<property name="conversionService" >
+					<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+						<property name="converters">
+							<list>
+								<bean class="com.mawujun.controller.spring.mvc.JsonStringToPageRequest_FastJson"></bean>
+								<bean class="com.mawujun.controller.spring.mvc.JsonStringToSortInfo_FastJson"></bean>
+								<bean class="com.mawujun.controller.spring.mvc.JsonStringToWhereInfo_FastJson"></bean>
+							</list>
+						</property>
+					</bean>
+				</property> 
+				<property name="propertyEditorRegistrars">
+					<array>
+						<bean class="com.mawujun.controller.spring.mvc.CustomPropertyEditorRegistrar"></bean>
+					</array>
+				</property>
+			</bean>
+		</property>
+		<property name="messageConverters">
+			<list>
+				<bean id="stringHttpMessageConverter"
+					class="com.mawujun.controller.spring.mvc.StringHttpMessageConverterImpl">
+					<constructor-arg value="UTF-8">
+						
+					</constructor-arg>
+					<property name="writeAcceptCharset" value="false" />
+				</bean>
+				<bean id="jsonHttpMessageConverter"
+					class="com.mawujun.controller.spring.mvc.MappingFastJson2HttpMessageConverter" /><!-- 在循环引用和属性过滤上设置更方便 -->
+				<bean id="byteArrayHttpMessageConverter"
+					class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
+				<bean id="xmlAwareFormHttpMessageConverter"
+					class="org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter" />
+				<bean id="sourceHttpMessageConverter"
+					class="org.springframework.http.converter.xml.SourceHttpMessageConverter" />
+			</list>
+		</property>
+	</bean>
+	
+	
+<!--不推荐使用了
+<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+	<property name="order" value="1" />
+</bean>
+-->
+<!-- 参数绑定，请求体数据绑定，响应体数据返回  不推荐使用了
+<bean
+	class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+	<property name="webBindingInitializer">
+		<bean class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
+			<property name="conversionService" >
+				<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+					<property name="converters">
+						<list>
+							<bean class="com.mawujun.controller.spring.mvc.JsonStringToPageRequest_FastJson"></bean>
+							<bean class="com.mawujun.controller.spring.mvc.JsonStringToSortInfo_FastJson"></bean>
+							<bean class="com.mawujun.controller.spring.mvc.JsonStringToWhereInfo_FastJson"></bean>
+						</list>
+					</property>
+				</bean>
+			</property> 
+			<property name="propertyEditorRegistrars">
+				<array>
+					<bean class="com.mawujun.controller.spring.mvc.CustomPropertyEditorRegistrar"></bean>
+				</array>
+			</property>
+		</bean>
+	</property>
+	<property name="messageConverters">
+		<list>
+			<bean id="stringHttpMessageConverter"
+				class="com.mawujun.controller.spring.mvc.StringHttpMessageConverterImpl">
+				<constructor-arg value="UTF-8">
+					
+				</constructor-arg>
+				<property name="writeAcceptCharset" value="false" />
+			</bean>
+			<bean id="jsonHttpMessageConverter"
+				class="com.mawujun.controller.spring.mvc.MappingFastJson2HttpMessageConverter" />
+			<bean id="byteArrayHttpMessageConverter"
+				class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
+			<bean id="xmlAwareFormHttpMessageConverter"
+				class="org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter" />
+			<bean id="sourceHttpMessageConverter"
+				class="org.springframework.http.converter.xml.SourceHttpMessageConverter" />
+		</list>
+	</property>
+</bean>
+-->
+    
+
+<bean id="freemarkerConfig"
+    class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+    <property name="templateLoaderPath" value="/" />
+</bean>
+
+<!-- 视图数据解析  可以通过三种方式，来确定返回的类型是什么-->
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+	  <property name="contentNegotiationManager"> 
+         <bean class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean"> 
+         <!--<bean class="com.mawujun.controller.spring.mvc.exception.ContentNegotiationManagerFactoryBean_Custom">-->
+             <property name="mediaTypes"> 
+                   <props>
+                   	<prop key="json">application/json</prop>
+                   	<prop key="html">text/html</prop>
+                   	<prop key="xml">application/xml</prop>
+                   </props>
+             </property> 
+             <!-- 默认展现形式  ,如果使用application/json这个形式，即使不加@ResponseBody也会走JsonView的线路
+			  <property name="defaultContentType" value="application/json"/> -->  
+			  <property name="defaultContentType" value="text/html"/> 
+			  <!-- 设置为true以忽略对Accept Header的支持-->
+			  <property name="ignoreAcceptHeader" value="false" />
+			  <!-- 用于开启 /userinfo/123?format=json 的支持 -->  
+			  <property name="favorParameter" value="true"/>
+			  <!-- 用于关闭 /userinfo/123.json 的支持，扩展名至mimeType的映射,即 /user.json => application/json -->  
+			  <!-- 现在变成这三种方式，只能选一个的情况了，看ContentNegotiationManager的resolveMediaTypes方法，主要还是因为启用后缀这个
+			  的优先级比较高，而这个ServletPathExtensionContentNegotiationStrategy又会返回默认值，所以一直都走不到其他两种方案了
+			  现在重新实现了两个类，注意这个bug的解决ContentNegotiationManagerFactoryBean_Custom，现在先禁用favorPathExtension这种方式 -->
+			  <property name="favorPathExtension" value="false"/>
+         </bean> 
+     	</property> 
+	  <!--  默认视图解析,加了这个后，就能同时支持jsp跳转-->
+	  <property name="viewResolvers">  
+            <list>       
+                <bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+                	 <property name="viewClass"  
+            value="org.springframework.web.servlet.view.freemarker.FreeMarkerView" />
+				    <property name="cache" value="true" />
+				    <property name="prefix" value="" />
+				    <property name="suffix" value=".ftl" />
+				    <property name="contentType" value="text/html; charset=UTF-8"/> 
+				</bean>
+				<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">               
+                    <property name="prefix" value="/" />  
+                    <property name="suffix" value=".jsp" />  
+                </bean>
+                          
+            </list>  
+      </property>  
+      
+      <!-- 根据MediaType进行返回视图的选择 -->
+	  <property name="defaultViews">
+		<list>
+		    <bean id="jsonView" class="com.mawujun.controller.spring.mvc.MappingFastjson2JsonView">
+			</bean>
+            <bean class="org.springframework.web.servlet.view.xml.MarshallingView" >  
+                <property name="marshaller">  
+                	<bean class="org.springframework.oxm.xstream.XStreamMarshaller"/>  
+            	</property>  
+            </bean>   
+		 </list>
+	  </property> 
+	</bean>
+	
+	<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+  		<property name="exceptionMappings"> 
+             <props>     
+             	 <prop key="java.lang.Exception">errors/503</prop>      
+             </props>     
+         </property>     
+        <property name="statusCodes">     
+             <props>     
+                 <prop key="errors/500">500</prop>   
+                 <prop key="errors/503">503</prop>     
+                 <prop key="errors/404">404</prop>  
+                 <prop key="exceptionJsonView">503</prop>     
+             </props>     
+         </property> 
+          <!-- 设置日志输出级别，不定义则默认不输出警告等错误日志信息 -->    
+         <property name="warnLogCategory" value="WARN" />    
+         <!-- 默认错误页面，当找不到上面mappings中指定的异常对应视图时，使用本默认配置 -->    
+         <property name="defaultErrorView" value="jsonView" />    
+         <!-- 默认HTTP状态码 -->    
+         <property name="defaultStatusCode" value="503" />  
+   </bean> 
+<!-- 
+	
+   <tx:annotation-driven transaction-manager="transactionManager"  proxy-target-class="false" />
+   -->
+</beans>
