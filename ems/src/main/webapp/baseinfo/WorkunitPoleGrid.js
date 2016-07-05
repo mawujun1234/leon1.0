@@ -55,7 +55,7 @@ Ext.define('Ems.baseinfo.WorkunitPoleGrid',{
 			model: 'Ems.baseinfo.Pole',
 			proxy: {
 			        type: 'ajax',
-			        url: Ext.ContextPath+'/area/queryPoles.do',
+			        url: Ext.ContextPath+'/workunit/queryPoles.do',
 			        reader: {
 			        	type:'json',
 			            root: 'root'
@@ -263,7 +263,7 @@ Ext.define('Ems.baseinfo.WorkunitPoleGrid',{
     },
     onCreate:function(){
     	var me=this;
-    	if(!me.area_id){
+    	if(!me.workunit_id){
     		Ext.Msg.alert("消息","请先选择一个片区!");
     		return;
     	}
@@ -286,9 +286,9 @@ Ext.define('Ems.baseinfo.WorkunitPoleGrid',{
 						pole_ids.push(records[i].get("id"));
 					}
 					 Ext.Ajax.request({
-					        url : Ext.ContextPath+'/area/savePoles.do',
+					        url : Ext.ContextPath+'/workunit/savePoles.do',
 					        method : 'post',
-					        params:{pole_ids:pole_ids,area_id:me.area_id},
+					        params:{pole_ids:pole_ids,workunit_id:me.workunit_id},
 					        success : function(response, options) {
 					        	//Ext.MessageBoxEx('提示','删除成功');
 					        	win.getEl().unmask();
@@ -333,7 +333,7 @@ Ext.define('Ems.baseinfo.WorkunitPoleGrid',{
 						pole_ids.push(records[i].get("id"));
 					}
 					Ext.Ajax.request({
-						url:Ext.ContextPath+'/area/deletePoles.do',
+						url:Ext.ContextPath+'/workunit/deletePoles.do',
 						params:{
 							pole_ids:pole_ids
 						},

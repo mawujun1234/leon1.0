@@ -75,16 +75,16 @@ public class PoleService extends AbstractService<Pole, String>{
 		return poleRepository;
 	}
 	
-	public void savePoles(String area_id,String[] pole_ids) {	
-		for(int i=0;i<pole_ids.length;i++){
-			poleRepository.savePoles(area_id, pole_ids[i]);
-		}
-	}
-	public void deletePoles(String area_id,String[] pole_ids) {	
-		for(int i=0;i<pole_ids.length;i++){
-			poleRepository.deletePoles(pole_ids[i]);
-		}
-	}
+//	public void savePoles(String area_id,String[] pole_ids) {	
+//		for(int i=0;i<pole_ids.length;i++){
+//			poleRepository.savePoles(area_id, pole_ids[i]);
+//		}
+//	}
+//	public void deletePoles(String area_id,String[] pole_ids) {	
+//		for(int i=0;i<pole_ids.length;i++){
+//			poleRepository.deletePoles(pole_ids[i]);
+//		}
+//	}
 	
 	public List<Pole> queryEquipments(String id){
 		return poleRepository.queryEquipments(id);

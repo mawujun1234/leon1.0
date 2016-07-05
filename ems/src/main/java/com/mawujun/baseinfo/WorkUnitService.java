@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 import com.mawujun.utils.M;
@@ -43,6 +44,8 @@ public class WorkUnitService extends AbstractService<WorkUnit, String>{
 
 	@Autowired
 	private WorkUnitRepository workUnitRepository;
+	@Autowired
+	private PoleRepository poleRepository;
 	
 	private HashMap<String,WorkUnit> workunits_cache=new HashMap<String,WorkUnit>();
 	@Override
@@ -104,6 +107,21 @@ public class WorkUnitService extends AbstractService<WorkUnit, String>{
 	}
 	public List<EquipmentVO> queryHaveEquipmentInfosDetail(String workUnit_id,String prod_id) {
 		return workUnitRepository.queryHaveEquipmentInfosDetail(workUnit_id, prod_id);
+	}
+	
+	public Page queryPoles(Page page) {
+		return workUnitRepository.queryPoles(page);
+	}
+	
+	public void savePoles(String area_id,String[] pole_ids) {	
+		for(int i=0;i<pole_ids.length;i++){
+			workUnitRepository.savePoles(area_id, pole_ids[i]);
+		}
+	}
+	public void deletePoles(String area_id,String[] pole_ids) {	
+		for(int i=0;i<pole_ids.length;i++){
+			workUnitRepository.deletePoles(pole_ids[i]);
+		}
 	}
 	
 //	@Override

@@ -113,5 +113,21 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		order by d.name
     </select> 
    
+   <!-- 查询某个作业单位下的点位 -->
+    <select id="queryPoles" resultType="com.mawujun.baseinfo.Pole" parameterType="map">
+    	SELECT a.*
+	    FROM ems_pole a
+		where a.workunit_id=#{workunit_id}
+		<if test="customer_id!=null and customer_id!=''">
+			 and a.customer_id=#{customer_id}
+		</if>
+		order by a.code asc
+    </select>
+    <update id="savePoles">
+	  	update ems_pole set workunit_id=#{workunit_id} where id=#{pole_id}
+	</update>
+	<update id="deletePoles">
+	  	update ems_pole set workunit_id=null where id=#{pole_id}
+	</update>
 </mapper>
 

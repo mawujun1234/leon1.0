@@ -46,9 +46,9 @@ public class AreaService extends AbstractService<Area, String>{
 		super.delete(area);
 	}
 
-	public Page queryPoles(Page page) {
-		return areaRepository.queryPoles(page);
-	}
+//	public Page queryPoles(Page page) {
+//		return areaRepository.queryPoles(page);
+//	}
 	
 	public List<PoleVO> queryPolesAndEquipments(String area_id) {
 		return areaRepository.queryPolesAndEquipments(area_id);

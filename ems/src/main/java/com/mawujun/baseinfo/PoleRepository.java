@@ -16,19 +16,19 @@ import com.mawujun.utils.page.Page;
 @Repository
 public interface PoleRepository extends IRepository<Pole, String>{
 
-	/**
-	 * 王片区里面添加Pole
-	 * @author mawujun email:160649888@163.com qq:16064988
-	 * @param area_id
-	 * @param pole_id
-	 */
-	public void savePoles(@Param("area_id")String area_id,@Param("pole_id")String pole_id);
-	/**
-	 * 把pole从某个area中移除
-	 * @author mawujun email:160649888@163.com qq:16064988
-	 * @param pole_id
-	 */
-	public void deletePoles(@Param("pole_id")String pole_id);
+//	/**
+//	 * 王片区里面添加Pole
+//	 * @author mawujun email:160649888@163.com qq:16064988
+//	 * @param area_id
+//	 * @param pole_id
+//	 */
+//	public void savePoles(@Param("area_id")String area_id,@Param("pole_id")String pole_id);
+//	/**
+//	 * 把pole从某个area中移除
+//	 * @author mawujun email:160649888@163.com qq:16064988
+//	 * @param pole_id
+//	 */
+//	public void deletePoles(@Param("pole_id")String pole_id);
 	
 	public List<Pole> queryEquipments(@Param("id")String id);
 	

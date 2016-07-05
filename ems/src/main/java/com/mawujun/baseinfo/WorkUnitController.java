@@ -125,4 +125,46 @@ public class WorkUnitController {
 	}
 	
 	
+	/**
+	 * 查询某个片区下的杆位
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param start
+	 * @param limit
+	 * @param area_id
+	 * @return
+	 */
+	@RequestMapping("/workunit/queryPoles.do")
+	@ResponseBody
+	public Page queryPoles(Integer start,Integer limit,String workunit_id,String customer_id) {	
+		Page page=Page.getInstance(start,limit);
+		page.addParam(M.Pole.workunit_id, workunit_id);
+		//page.addParam("customer_id_2", customer_id_2);
+		page.addParam(M.Pole.customer_id, customer_id);
+		
+		return workUnitService.queryPoles(page);
+		
+//		List<Pole> poles=poleService.query(Cnd.where().andEquals(M.Pole.area_id, area_id).asc(M.Pole.code));
+//		return poles;
+	}
+	
+	@RequestMapping("/workunit/savePoles.do")
+	@ResponseBody
+	public String savePoles(String workunit_id,String[] pole_ids) {	
+		if(pole_ids==null){
+			return "sucess";
+		}
+		workUnitService.savePoles(workunit_id, pole_ids);
+		return "success";
+	}
+	
+	@RequestMapping("/workunit/deletePoles.do")
+	@ResponseBody
+	public String deletePoles(String workunit_id,String[] pole_ids) {	
+		if(pole_ids==null){
+			return "sucess";
+		}
+		workUnitService.deletePoles(workunit_id, pole_ids);
+		return "success";
+	}
+	
 }

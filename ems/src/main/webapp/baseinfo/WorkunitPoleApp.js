@@ -15,9 +15,9 @@ Ext.onReady(function(){
 	grid.on('itemclick',function(view,record,item,index){
 		areaPoleGrid.getEl().unmask();
 		
-		areaPoleGrid.area_id=record.get("id");
+		areaPoleGrid.workunit_id=record.get("id");
 		
-		areaPoleGrid.getStore().getProxy().extraParams={area_id:record.get("id")};
+		areaPoleGrid.getStore().getProxy().extraParams={workunit_id:record.get("id")};
 		areaPoleGrid.getStore().reload();
 		
 		equipment_grid.getStore().removeAll();

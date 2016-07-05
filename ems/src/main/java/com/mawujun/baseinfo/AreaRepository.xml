@@ -13,7 +13,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		where a.id=b.area_id and b.workunit_id=c.id
 		order by a.id
     </select>-->
-    <!-- 查询某个片区下的点位 -->
+    <!-- 查询某个片区下的点位 
     <select id="queryPoles" resultType="com.mawujun.baseinfo.Pole" parameterType="map">
     	SELECT a.*
 	    FROM ems_pole a
@@ -22,7 +22,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			 and a.customer_id=#{customer_id}
 		</if>
 		order by a.code asc
-    </select>
+    </select>-->
     
     <!-- 查询某个片区下所有的点位 机器点位上的设备信息, -->
     <select id="queryPolesAndEquipments" resultMap="poleMap" parameterType="string">

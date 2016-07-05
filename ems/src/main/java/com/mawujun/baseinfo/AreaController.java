@@ -129,27 +129,27 @@ public class AreaController {
 		return area;
 	}
 	
-	/**
-	 * 查询某个片区下的杆位
-	 * @author mawujun email:160649888@163.com qq:16064988
-	 * @param start
-	 * @param limit
-	 * @param area_id
-	 * @return
-	 */
-	@RequestMapping("/area/queryPoles.do")
-	@ResponseBody
-	public Page queryPoles(Integer start,Integer limit,String area_id,String customer_id) {	
-		Page page=Page.getInstance(start,limit);
-		page.addParam(M.Pole.area_id, area_id);
-		//page.addParam("customer_id_2", customer_id_2);
-		page.addParam(M.Pole.customer_id, customer_id);
-		
-		return areaService.queryPoles(page);
-		
-//		List<Pole> poles=poleService.query(Cnd.where().andEquals(M.Pole.area_id, area_id).asc(M.Pole.code));
-//		return poles;
-	}
+//	/**
+//	 * 查询某个片区下的杆位
+//	 * @author mawujun email:160649888@163.com qq:16064988
+//	 * @param start
+//	 * @param limit
+//	 * @param area_id
+//	 * @return
+//	 */
+//	@RequestMapping("/area/queryPoles.do")
+//	@ResponseBody
+//	public Page queryPoles(Integer start,Integer limit,String area_id,String customer_id) {	
+//		Page page=Page.getInstance(start,limit);
+//		page.addParam(M.Pole.area_id, area_id);
+//		//page.addParam("customer_id_2", customer_id_2);
+//		page.addParam(M.Pole.customer_id, customer_id);
+//		
+//		return areaService.queryPoles(page);
+//		
+////		List<Pole> poles=poleService.query(Cnd.where().andEquals(M.Pole.area_id, area_id).asc(M.Pole.code));
+////		return poles;
+//	}
 	
 	
 	private void build_addColumnName(XSSFWorkbook wb,Sheet sheet,int rowInt){
@@ -373,25 +373,25 @@ public class AreaController {
 		out.close();
 	}
 	
-	@RequestMapping("/area/savePoles.do")
-	@ResponseBody
-	public String savePoles(String area_id,String[] pole_ids) {	
-		if(pole_ids==null){
-			return "sucess";
-		}
-		poleService.savePoles(area_id, pole_ids);
-		return "success";
-	}
-	
-	@RequestMapping("/area/deletePoles.do")
-	@ResponseBody
-	public String deletePoles(String area_id,String[] pole_ids) {	
-		if(pole_ids==null){
-			return "sucess";
-		}
-		poleService.deletePoles(area_id, pole_ids);
-		return "success";
-	}
+//	@RequestMapping("/area/savePoles.do")
+//	@ResponseBody
+//	public String savePoles(String area_id,String[] pole_ids) {	
+//		if(pole_ids==null){
+//			return "sucess";
+//		}
+//		poleService.savePoles(area_id, pole_ids);
+//		return "success";
+//	}
+//	
+//	@RequestMapping("/area/deletePoles.do")
+//	@ResponseBody
+//	public String deletePoles(String area_id,String[] pole_ids) {	
+//		if(pole_ids==null){
+//			return "sucess";
+//		}
+//		poleService.deletePoles(area_id, pole_ids);
+//		return "success";
+//	}
 	
 	@RequestMapping("/area/queryCombo.do")
 	@ResponseBody

@@ -24,4 +24,19 @@ public interface WorkUnitRepository extends IRepository<WorkUnit, String>{
 	public List<EquipmentSubtype> queryHaveEquipmentInfosTotal(String workUnit_id);
 	
 	public List<EquipmentVO> queryHaveEquipmentInfosDetail(@Param("workUnit_id")String workUnit_id,@Param("prod_id")String prod_id);
+	
+	public Page queryPoles(Page page);
+	/**
+	 * 王片区里面添加Pole
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param area_id
+	 * @param pole_id
+	 */
+	public void savePoles(@Param("workunit_id")String workunit_id,@Param("pole_id")String pole_id);
+	/**
+	 * 把pole从某个area中移除
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param pole_id
+	 */
+	public void deletePoles(@Param("pole_id")String pole_id);
 }

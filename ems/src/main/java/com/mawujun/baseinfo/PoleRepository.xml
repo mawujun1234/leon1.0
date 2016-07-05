@@ -11,17 +11,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    FROM ems_pole a,ems_project b
 	    where a.project_id=b.id and customer_id=#{customer_id}
 	    <if test="filterContainArea==true">
-	    	and area_id is null
+	    	and workunit_id is null
 	    </if>
 	    order by code
     </select>
 
-    <update id="savePoles">
-	  	update ems_pole set area_id=#{area_id} where id=#{pole_id}
-	</update>
-	<update id="deletePoles">
-	  	update ems_pole set area_id=null where id=#{pole_id}
-	</update>
+    
 	<!-- 查询某个杆位下的所有设备 -->
 	<select id="queryEquipments" resultType="com.mawujun.baseinfo.EquipmentVO" >
     	select a.*,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name,g.quality_month as prod_quality_month

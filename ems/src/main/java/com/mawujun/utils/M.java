@@ -30,8 +30,6 @@ public static final class AdjustList {
 public static final class Area {
 	public static final String name="name";
 	public static final String memo="memo";
-	public static final String workunit_id="workunit_id";
-	public static final String workunit_name="workunit_name";
 	public static final String id="id";
 }
 public static final class Brand {
@@ -190,6 +188,7 @@ public static final class Pole {
 	public static final String lngLatIsTrans="lngLatIsTrans";
 	public static final String customer_id="customer_id";
 	public static final String area_id="area_id";
+	public static final String workunit_id="workunit_id";
 	public static final String project_id="project_id";
 	public static final String status="status";
 	public static final String id="id";
@@ -667,8 +666,6 @@ public static final class UserArea {
 	public static final class area {
 		public static final String name="area.name";
 		public static final String memo="area.memo";
-		public static final String workunit_id="area.workunit_id";
-		public static final String workunit_name="area.workunit_name";
 		public static final String id="area.id";
 			
 	    /**
