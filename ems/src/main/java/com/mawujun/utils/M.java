@@ -660,6 +660,51 @@ public static final class User {
 	public static final String gps_interval="gps_interval";
 	public static final String id="id";
 }
+public static final class UserArea {
+	 /**
+	 * 返回关联对象的属性，，以对象关联的方式(a.b这种形式)，只有一些基本属性，层级不再往下了
+	 */
+	public static final class area {
+		public static final String name="area.name";
+		public static final String memo="area.memo";
+		public static final String workunit_id="area.workunit_id";
+		public static final String workunit_name="area.workunit_name";
+		public static final String id="area.id";
+			
+	    /**
+	    * 返回的是关联类的属性名称，主要用于属性过滤的时候
+	    */
+	    public static String name(){ 
+		    return "area";
+	    }
+	}
+	 /**
+	 * 返回关联对象的属性，，以对象关联的方式(a.b这种形式)，只有一些基本属性，层级不再往下了
+	 */
+	public static final class user {
+		public static final String username="user.username";
+		public static final String password="user.password";
+		public static final String name="user.name";
+		public static final String phone="user.phone";
+		public static final String email="user.email";
+		public static final String address="user.address";
+		public static final String type="user.type";
+		public static final String loginDate="user.loginDate";
+		public static final String status="user.status";
+		public static final String isWorkunit="user.isWorkunit";
+		public static final String ipAddr="user.ipAddr";
+		public static final String sessionId="user.sessionId";
+		public static final String gps_interval="user.gps_interval";
+		public static final String id="user.id";
+			
+	    /**
+	    * 返回的是关联类的属性名称，主要用于属性过滤的时候
+	    */
+	    public static String name(){ 
+		    return "user";
+	    }
+	}
+}
 public static final class UserStore {
 	public static final String user_id="user_id";
 	public static final String store_id="store_id";

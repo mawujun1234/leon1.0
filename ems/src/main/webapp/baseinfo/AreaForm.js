@@ -27,36 +27,36 @@ Ext.define('Ems.baseinfo.AreaForm',{
 	        xtype:'hidden',
 	        allowBlank: false
 	    },
-		{
-	        fieldLabel: '作业单位',
-	        xtype:'combobox',
-	        //afterLabelTextTpl: Ext.required,
-	        name: 'workunit_id',
-		    displayField: 'name',
-		    valueField: 'id',
-		    queryParam: 'name',
-    		queryMode: 'remote',
-    		triggerAction: 'query',
-    		minChars:-1,
-		    trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
-		    trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
-			onTrigger1Click : function(){
-			    var me = this;
-			    me.setValue('');
-			},
-	        allowBlank: false,
-	        store:Ext.create('Ext.data.Store', {
-		    	fields: ['id', 'name'],
-			    proxy:{
-			    	type:'ajax',
-			    	url:Ext.ContextPath+"/workUnit/queryCombo.do",
-			    	reader:{
-			    		type:'json',
-			    		root:'root'
-			    	}
-			    }
-		   })
-	    },
+//		{
+//	        fieldLabel: '作业单位',
+//	        xtype:'combobox',
+//	        //afterLabelTextTpl: Ext.required,
+//	        name: 'workunit_id',
+//		    displayField: 'name',
+//		    valueField: 'id',
+//		    queryParam: 'name',
+//    		queryMode: 'remote',
+//    		triggerAction: 'query',
+//    		minChars:-1,
+//		    trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
+//		    trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
+//			onTrigger1Click : function(){
+//			    var me = this;
+//			    me.setValue('');
+//			},
+//	        allowBlank: false,
+//	        store:Ext.create('Ext.data.Store', {
+//		    	fields: ['id', 'name'],
+//			    proxy:{
+//			    	type:'ajax',
+//			    	url:Ext.ContextPath+"/workUnit/queryCombo.do",
+//			    	reader:{
+//			    		type:'json',
+//			    		root:'root'
+//			    	}
+//			    }
+//		   })
+//	    },
 		{
 	        fieldLabel: '片区名称',
 	        //afterLabelTextTpl: Ext.required,

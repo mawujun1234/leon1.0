@@ -20,7 +20,7 @@ Ext.define('Ems.baseinfo.AreaGrid',{
 		//{dataIndex:'id',text:'id'},
 		
 		{dataIndex:'name',text:'名称'},
-		{dataIndex:'workunit_name',text:'作业单位'},
+		//{dataIndex:'workunit_name',text:'作业单位'},
 		{dataIndex:'memo',text:'描述',flex:1}
 		
       ];
@@ -132,8 +132,8 @@ Ext.define('Ems.baseinfo.AreaGrid',{
 		});
 		
 		var data=form.getValues();
-		data.customer_id=me.customer_id;
-		data.status=true;
+		//data.customer_id=me.customer_id;
+		//data.status=true;
 		var record=new Ems.baseinfo.Area(data);    
 		form.getForm().loadRecord(record);
 		var win=new Ext.window.Window({
@@ -170,13 +170,13 @@ Ext.define('Ems.baseinfo.AreaGrid',{
 			}
 		});
 		form.getForm().loadRecord(record);
-		//var ids=record.get("id").split("_");
-		//form.getForm().findField("id").setValue(ids[0]);
-		var workunit=Ext.create('Ems.baseinfo.Area',{
-			id:record.get("workunit_id"),
-			name:record.get("workunit_name")
-		});
-		form.getForm().findField("workunit_id").setValue(workunit);
+//		//var ids=record.get("id").split("_");
+//		//form.getForm().findField("id").setValue(ids[0]);
+//		var workunit=Ext.create('Ems.baseinfo.Area',{
+//			//id:record.get("workunit_id"),
+//			//name:record.get("workunit_name")
+//		});
+//		form.getForm().findField("workunit_id").setValue(workunit);
 		
 		var win=new Ext.window.Window({
 			items:[form],

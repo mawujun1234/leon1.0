@@ -16,7 +16,7 @@ import com.mawujun.baseinfo.Area;
 @Repository
 public interface AreaRepository extends IRepository<Area, String>{
 
-	public List<Area> queryAllWithWorkunit();
+	//public List<Area> queryAllWithWorkunit();
 	
 	public Page queryPoles(Page page);
 	

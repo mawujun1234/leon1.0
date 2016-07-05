@@ -90,7 +90,8 @@ public class AreaController {
 	@RequestMapping("/area/query.do")
 	@ResponseBody
 	public List<Area> query() {	
-		List<Area> areaes=areaService.queryAllWithWorkunit();
+		//List<Area> areaes=areaService.queryAllWithWorkunit();
+		List<Area> areaes=areaService.queryAll();
 		return areaes;
 	}
 	
@@ -327,7 +328,7 @@ public class AreaController {
 	public void exportPoles(HttpServletResponse response,String area_id) throws IOException {	
 		List<PoleVO> poles=areaService.queryPolesAndEquipments(area_id);
 		Area area=areaService.get(area_id);
-		WorkUnit workUnit=workUnitService.get(area.getWorkunit_id());
+		WorkUnit workUnit=null;//workUnitService.get(area.getWorkunit_id());
 		
 		XSSFWorkbook wb =new XSSFWorkbook();
 		Sheet sheet = wb.createSheet();

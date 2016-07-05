@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.mawujun.service.AbstractService;
 import com.mawujun.user.UserArea;
@@ -36,8 +37,13 @@ public class AreaService extends AbstractService<Area, String>{
 		return areaRepository;
 	}
 	
-	public List<Area> queryAllWithWorkunit() {
-		return this.getRepository().queryAllWithWorkunit();
+//	public List<Area> queryAllWithWorkunit() {
+//		return this.getRepository().queryAllWithWorkunit();
+//	}
+	@Override
+	public void delete(Area area) {
+		//判断是否已经被使用了
+		super.delete(area);
 	}
 
 	public Page queryPoles(Page page) {

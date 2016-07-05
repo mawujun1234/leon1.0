@@ -6,12 +6,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
 <mapper namespace="com.mawujun.baseinfo.AreaRepository">
 
-	<!-- 查询所有片区 -->
+	<!-- 查询所有片区 
 	<select id="queryAllWithWorkunit" resultType="com.mawujun.baseinfo.Area" parameterType="map">
-    	SELECT a.*,b.name as workunit_name
-	    FROM ems_area a,ems_workunit b 
-		where a.workunit_id=b.id
-    </select>
+    	SELECT a.*,c.name as workunit_name
+	    FROM ems_area a,ems_area_workunit b,ems_workunit c
+		where a.id=b.area_id and b.workunit_id=c.id
+		order by a.id
+    </select>-->
     <!-- 查询某个片区下的点位 -->
     <select id="queryPoles" resultType="com.mawujun.baseinfo.Pole" parameterType="map">
     	SELECT a.*
