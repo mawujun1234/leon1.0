@@ -38,7 +38,7 @@ import com.mawujun.baseinfo.AreaService;
  * @version 1.0
  * @since 1.0
  */
-@Controller
+//@Controller
 //@RequestMapping("/area")
 public class AreaController {
 
@@ -400,24 +400,24 @@ public class AreaController {
 		return areaService.query(Cnd.select().andLike(M.Area.name, name));	
 	}
 	
-	@RequestMapping("/area/queryByUser.do")
-	@ResponseBody
-	public List<Area> queryByUser(String user_id) {	
-		List<Area> areaes=areaService.queryByUser(user_id);
-		return areaes;
-	}
-	
-	@RequestMapping("/area/checkByUser.do")
-	@ResponseBody
-	public String checkByUser(String area_id,String user_id) {
-		areaService.checkByUser(area_id, user_id);
-		return "success";
-	}
-	
-	@RequestMapping("/area/uncheckByUser.do")
-	@ResponseBody
-	public String uncheckByUser(String area_id,String user_id) {
-		areaService.uncheckByUser(area_id, user_id);
-		return "success";
-	}
+//	@RequestMapping("/area/queryByUser.do")
+//	@ResponseBody
+//	public List<Area> queryByUser(String user_id) {	
+//		List<Area> areaes=areaService.queryByUser(user_id);
+//		return areaes;
+//	}
+//	
+//	@RequestMapping("/area/checkByUser.do")
+//	@ResponseBody
+//	public String checkByUser(String area_id,String user_id) {
+//		areaService.checkByUser(area_id, user_id);
+//		return "success";
+//	}
+//	
+//	@RequestMapping("/area/uncheckByUser.do")
+//	@ResponseBody
+//	public String uncheckByUser(String area_id,String user_id) {
+//		areaService.uncheckByUser(area_id, user_id);
+//		return "success";
+//	}
 }

@@ -167,4 +167,25 @@ public class WorkUnitController {
 		return "success";
 	}
 	
+	@RequestMapping("/workunit/queryByUser.do")
+	@ResponseBody
+	public List<WorkUnit> queryByUser(String user_id) {	
+		List<WorkUnit> areaes=workUnitService.queryByUser(user_id);
+		return areaes;
+	}
+	
+	@RequestMapping("/workunit/checkByUser.do")
+	@ResponseBody
+	public String checkByUser(String workunit_id,String user_id) {
+		workUnitService.checkByUser(workunit_id, user_id);
+		return "success";
+	}
+	
+	@RequestMapping("/workunit/uncheckByUser.do")
+	@ResponseBody
+	public String uncheckByUser(String workunit_id,String user_id) {
+		workUnitService.uncheckByUser(workunit_id, user_id);
+		return "success";
+	}
+	
 }

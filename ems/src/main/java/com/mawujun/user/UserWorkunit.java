@@ -6,35 +6,36 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import com.mawujun.baseinfo.Area;
+import com.mawujun.baseinfo.WorkUnit;
 
-@Entity(name="sys_user_area")
-public class UserArea implements Serializable{
+@Entity(name="sys_user_workunit")
+public class UserWorkunit implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
     @ManyToOne
-	private Area area;
+	private WorkUnit workunit;
 	@Id
     @ManyToOne
 	private User user;
-	public UserArea() {
+	public UserWorkunit() {
 		super();
 	}
 
-	public UserArea(Area area, User user) {
+	public UserWorkunit(WorkUnit workunit, User user) {
 		super();
-		this.area = area;
+		this.workunit = workunit;
 		this.user = user;
 	}
-	public Area getArea() {
-		return area;
+
+	public WorkUnit getWorkunit() {
+		return workunit;
 	}
 
-	public void setArea(Area area) {
-		this.area = area;
+	public void setWorkunit(WorkUnit workunit) {
+		this.workunit = workunit;
 	}
 
 	public User getUser() {
@@ -49,8 +50,8 @@ public class UserArea implements Serializable{
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((area == null) ? 0 : area.hashCode());
 		result = prime * result + ((user == null) ? 0 : user.hashCode());
+		result = prime * result + ((workunit == null) ? 0 : workunit.hashCode());
 		return result;
 	}
 
@@ -62,19 +63,18 @@ public class UserArea implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		UserArea other = (UserArea) obj;
-		if (area == null) {
-			if (other.area != null)
-				return false;
-		} else if (!area.equals(other.area))
-			return false;
+		UserWorkunit other = (UserWorkunit) obj;
 		if (user == null) {
 			if (other.user != null)
 				return false;
 		} else if (!user.equals(other.user))
 			return false;
+		if (workunit == null) {
+			if (other.workunit != null)
+				return false;
+		} else if (!workunit.equals(other.workunit))
+			return false;
 		return true;
 	}
-
-
+	
 }

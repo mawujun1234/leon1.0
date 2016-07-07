@@ -9,7 +9,7 @@ import com.mawujun.repository1.IRepository;
  * @since 1.0
  */
 @Repository
-public interface UserAeeaRepository extends IRepository<UserArea, UserArea>{
+public interface UserWorkunitRepository extends IRepository<UserWorkunit, UserWorkunit>{
 
 
 }

@@ -39,4 +39,6 @@ public interface WorkUnitRepository extends IRepository<WorkUnit, String>{
 	 * @param pole_id
 	 */
 	public void deletePoles(@Param("pole_id")String pole_id);
+	
+	public List<WorkUnit> queryByUser(@Param("user_id")String user_id);
 }

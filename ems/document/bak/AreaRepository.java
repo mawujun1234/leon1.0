@@ -13,7 +13,7 @@ import com.mawujun.baseinfo.Area;
  * @version 1.0
  * @since 1.0
  */
-@Repository
+//@Repository
 public interface AreaRepository extends IRepository<Area, String>{
 
 	//public List<Area> queryAllWithWorkunit();

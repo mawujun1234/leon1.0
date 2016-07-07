@@ -1,36 +1,21 @@
 package com.mawujun.baseinfo;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
+import com.mawujun.user.User;
+import com.mawujun.user.UserRepository;
+import com.mawujun.user.UserWorkunit;
+import com.mawujun.user.UserWorkunitRepository;
 import com.mawujun.utils.M;
 import com.mawujun.utils.page.Page;
-import com.mawujun.baseinfo.WorkUnit;
-import com.mawujun.baseinfo.WorkUnitRepository;
-import com.mawujun.exception.BusinessException;
 
 
 /**
@@ -46,6 +31,10 @@ public class WorkUnitService extends AbstractService<WorkUnit, String>{
 	private WorkUnitRepository workUnitRepository;
 	@Autowired
 	private PoleRepository poleRepository;
+	@Autowired
+	private UserWorkunitRepository userWorkunitRepository;
+	@Autowired
+	private UserRepository userRepository;
 	
 	private HashMap<String,WorkUnit> workunits_cache=new HashMap<String,WorkUnit>();
 	@Override
@@ -124,6 +113,23 @@ public class WorkUnitService extends AbstractService<WorkUnit, String>{
 		}
 	}
 	
+	public List<WorkUnit> queryByUser(String user_id){
+		return workUnitRepository.queryByUser(user_id);
+	}
+	
+	public void checkByUser(String workunit_id,String user_id) {
+		User user=userRepository.get(user_id);
+		WorkUnit area=workUnitRepository.get(workunit_id);
+		UserWorkunit areaUser=new UserWorkunit(area,user);
+		userWorkunitRepository.create(areaUser);
+	}
+	
+	public void uncheckByUser(String workunit_id,String user_id) {
+		User user=userRepository.get(user_id);
+		WorkUnit area=workUnitRepository.get(workunit_id);
+		UserWorkunit areaUser=new UserWorkunit(area,user);
+		userWorkunitRepository.delete(areaUser);
+	}
 //	@Override
 //	public void delete(WorkUnit entity) {
 ////		// 先判断是否有订单引用他了，如果有就不能删除

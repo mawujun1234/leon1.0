@@ -27,11 +27,13 @@
 	) y where x.id=y.id and x.workunit_id!=y.workunit_id
 4：新增作业单位点位维护，维护作业单位可以看到的点位
 5:修改菜单 /baseinfo/WorkunitPoleApp.jsp
+新增作业单位权限管理
 4:删除area_id
+
 任务查询中的area_id的问题的排查,所有有area_id的地方都要去掉
 作业单位点位维护中查询点位的时候的区和客户的查询条件，过滤成这个用户拥有的。
 点位导出
-新增作业单位权限管理
+
 
 
 

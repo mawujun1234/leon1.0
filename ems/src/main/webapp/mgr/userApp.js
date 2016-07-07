@@ -494,12 +494,12 @@ Ext.onReady(function() {
 		// });
 	}
 
-	var userAreaGrid = Ext.create('Ems.mgr.UserAreaGrid', {
+	var userAreaGrid = Ext.create('Ems.mgr.UserWorkunitGrid', {
 		title : "可以访问的片区",
 		listeners : {
 			select : function(model, record, index, eOpts) {
 				Ext.Ajax.request({
-					url : Ext.ContextPath + "/area/checkByUser.do",
+					url : Ext.ContextPath + "/workunit/checkByUser.do",
 					params : {
 						area_id : record.get("id"),
 						user_id : selectedNode.get("id")
@@ -511,7 +511,7 @@ Ext.onReady(function() {
 			},
 			deselect : function(model, record, index, eOpts) {
 				Ext.Ajax.request({
-					url : Ext.ContextPath + "/area/uncheckByUser.do",
+					url : Ext.ContextPath + "/workunit/uncheckByUser.do",
 					params : {
 						area_id : record.get("id"),
 						user_id : selectedNode.get("id")

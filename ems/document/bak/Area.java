@@ -7,8 +7,8 @@ import javax.persistence.Transient;
 
 import com.mawujun.repository.idEntity.UUIDEntity;
 
-@Entity
-@Table(name="ems_area")
+//@Entity
+//@Table(name="ems_area")
 public class Area extends UUIDEntity {
 	@Column(length=30)
 	private String name;

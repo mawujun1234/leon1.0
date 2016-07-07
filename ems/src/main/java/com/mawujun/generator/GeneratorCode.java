@@ -3,7 +3,7 @@ package com.mawujun.generator;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
-import com.mawujun.user.UserArea;
+import com.mawujun.user.UserWorkunit;
 
 import freemarker.template.TemplateException;
 /**
@@ -26,7 +26,7 @@ public class GeneratorCode {
 		aa.extjs_grid_createDelUpd_button = true;
 		generatorService.setExtenConfig(aa);
 
-		generatorService.generatorAllFile(UserArea.class);
+		generatorService.generatorAllFile(UserWorkunit.class);
 
 	}
 	

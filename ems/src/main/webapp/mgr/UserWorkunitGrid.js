@@ -1,4 +1,4 @@
-Ext.define('Ems.mgr.UserAreaGrid',{
+Ext.define('Ems.mgr.UserWorkunitGrid',{
 	extend:'Ext.grid.Panel',
 	requires: [
 	     //'Ems.baseinfo.Area'
@@ -17,7 +17,7 @@ Ext.define('Ems.mgr.UserAreaGrid',{
       me.columns=[
       	{xtype: 'rownumberer'},
       	{dataIndex:'name',text:'名称'},
-		{dataIndex:'workunit_name',text:'作业单位'},
+		//{dataIndex:'workunit_name',text:'作业单位'},
 		{dataIndex:'memo',text:'描述',flex:1}
       ];
       
@@ -30,13 +30,11 @@ Ext.define('Ems.mgr.UserAreaGrid',{
 			fields:[
 					{name:'id',type:'string'},
 					{name:'memo',type:'string'},
-					{name:'name',type:'string'},
-					{name:'workunit_id',type:'string'},
-					{name:'workunit_name',type:'string'}
+					{name:'name',type:'string'}
 				],
 			proxy:{
 				type: 'ajax',
-			    url : Ext.ContextPath+'/area/queryByUser.do',
+			    url : Ext.ContextPath+'/workunit/queryByUser.do',
 			    headers:{ 'Accept':'application/json;'},
 			    actionMethods: { read: 'POST' },
 			    extraParams:{limit:50},
