@@ -35,9 +35,31 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	select count(ecode) from ems_equipment_pole where  pole_id=#{pole_id}
     </select>
    
-   
+       <resultMap type="com.mawujun.baseinfo.PoleVO" id="poleMap">
+     	<id property="id" column="id"/>
+    	<result property="code" column="code"/>
+    	<result property="name" column="name"/>
+    	<result property="province" column="province"/>
+    	<result property="city" column="city"/>
+    	<result property="area" column="area"/>
+    	<result property="address" column="address"/>
+    	<result property="status" column="status"/>
+    	<result property="area_name" column="area_name"/>
+    	<result property="customer_name" column="customer_name"/>
+    	<result property="workunit_name" column="workunit_name"/>
+    	<collection property="equipments" ofType="com.mawujun.baseinfo.EquipmentVO">  
+            <id property="ecode" column="ecode"/>
+		   <result property="subtype_name" column="subtype_name"/>
+		   <result property="prod_name" column="prod_name"/>
+		   <result property="prod_spec" column="prod_spec"/>
+		   <result property="brand_name" column="brand_name"/>
+		   <result property="supplier_name" column="supplier_name"/>
+		   <result property="style" column="style"/>
+		   <result property="last_install_date" column="last_install_date"/>
+       </collection>  
+    </resultMap>
     <!-- 查询某个客户下所有的点位 机器点位上的设备信息 -->
-    <select id="queryPolesAndEquipments" resultMap="com.mawujun.baseinfo.AreaRepository.poleMap" parameterType="string">
+    <select id="queryPolesAndEquipments" resultMap="poleMap" parameterType="string">
     	SELECT a.*,b.ecode,b.style,b.last_install_date,c.name as subtype_name,d.name as prod_name,d.spec as prod_spec,e.name as brand_name,f.name as supplier_name
       FROM (select a.*,b.name  as customer_name 
            from ems_pole a,ems_customer b where a.customer_id=b.id

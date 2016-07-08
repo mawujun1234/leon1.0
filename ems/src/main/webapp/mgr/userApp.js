@@ -1,5 +1,5 @@
 Ext.require("Ems.mgr.UserStoreGrid");
-Ext.require('Ems.mgr.UserAreaGrid');
+Ext.require('Ems.mgr.UserWorkunitGrid');
 Ext.onReady(function() {
 
 	var selectedNode;
@@ -495,7 +495,7 @@ Ext.onReady(function() {
 	}
 
 	var userAreaGrid = Ext.create('Ems.mgr.UserWorkunitGrid', {
-		title : "可以访问的片区",
+		title : "可访问作业单位",
 		listeners : {
 			select : function(model, record, index, eOpts) {
 				Ext.Ajax.request({
