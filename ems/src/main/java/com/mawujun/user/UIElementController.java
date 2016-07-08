@@ -1,20 +1,19 @@
 package com.mawujun.user;
+import java.awt.Menu;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
-import java.util.UUID;
+
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
+
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.utils.M;
-import com.mawujun.utils.page.PageParam;
-import com.mawujun.utils.page.PageResult;
-
-import com.mawujun.user.UIElement;
-import com.mawujun.user.UIElementService;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
  * @version 1.0
@@ -92,5 +91,29 @@ public class UIElementController {
 	public String uncheckByFunRole(String uIElement_id,String funRole_id) {
 		uIElementService.uncheckByFunRole(uIElement_id, funRole_id);
 		return "success";
+	}
+	
+	@RequestMapping("/uIElement/queryElementPermission.do")
+	//@ResponseBody
+	public void queryElementPermission(String url,HttpServletResponse response) throws IOException {
+		if(url==null || "".equals(url)){
+			return;
+		}
+		response.setContentType("application/json");
+		List<UIElement> elements=uIElementService.queryElement(url);
+		StringBuilder builder=new StringBuilder("{");
+		for(UIElement menu:elements){
+			builder.append(menu.getCode()+":true,");
+		}
+		String aa="{}";
+		if(builder.length()>1){
+			aa=builder.substring(0,builder.length()-1);
+			aa=aa+"}";
+		}
+		aa="var Permision = {elements:"+aa+",canShow: function(code) {if(!code){alert('请输入界面元素的code!');return;}if(this.elements[code]){return true;} else {return false;}}};";
+		PrintWriter out = response.getWriter();  
+		out.write(aa);
+		out.flush();
+		out.close();
 	}
 }

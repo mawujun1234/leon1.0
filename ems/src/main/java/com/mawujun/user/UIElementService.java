@@ -1,21 +1,15 @@
 package com.mawujun.user;
+import java.awt.Menu;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
-
-
-
 import com.mawujun.service.AbstractService;
-
-
-import com.mawujun.user.UIElement;
-import com.mawujun.user.UIElementRepository;
+import com.mawujun.shiro.ShiroUtils;
 
 
 /**
@@ -58,5 +52,14 @@ public class UIElementService extends AbstractService<UIElement, String>{
 		
 		UIElementFunRole uIElementFunRole=new UIElementFunRole(uIElement,funRole);
 		uIElementFunRoleRepository.delete(uIElementFunRole);
+	}
+	
+	@Transactional(readOnly=true)
+	public List<UIElement> queryElement(String jsp_url) {
+		if(!ShiroUtils.isLogon()){
+			return new ArrayList<UIElement>();
+		}
+		//使用方法hidden:!Permision.canShow('sample_design_create'),
+		return  uIElementRepository.queryElement(jsp_url, ShiroUtils.getUserId());
 	}
 }

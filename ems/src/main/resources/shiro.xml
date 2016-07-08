@@ -36,7 +36,7 @@
 				/unauthorized.jsp*=anon
 				/login.do*=anon
 				/logout.do*=anon
-				
+				/uIElement/queryElementPermission.do*=anon
 				####轨迹查询---------开始
 				##/geolocation/mobile/upload.do*=anon
 				/map/TraceApp.jsp*=anon
