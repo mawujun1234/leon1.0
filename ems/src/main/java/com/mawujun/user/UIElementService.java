@@ -55,9 +55,9 @@ public class UIElementService extends AbstractService<UIElement, String>{
 	}
 	
 	@Transactional(readOnly=true)
-	public List<UIElement> queryElement(String jsp_url) {
+	public List<String> queryElement(String jsp_url) {
 		if(!ShiroUtils.isLogon()){
-			return new ArrayList<UIElement>();
+			return new ArrayList<String>();
 		}
 		//使用方法hidden:!Permision.canShow('sample_design_create'),
 		return  uIElementRepository.queryElement(jsp_url, ShiroUtils.getUserId());

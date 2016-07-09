@@ -84,6 +84,7 @@ public class CustomerController {
 			if(StringUtils.hasText(name)){
 				name="%"+name+"%";
 			}
+			改成按用户可以访问的作业单位的所蜀的顾客进行过滤
 			customeres=customerService.queryChildren(parent_id,name);
 		}
 		

@@ -34,25 +34,21 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<select id="queryPoles" resultType="com.mawujun.baseinfo.PoleVO" parameterType="map">
     	select 
 		a.*,
-		b.name as area_name,
-		c.id as workunit_id,
 		c.name as workunit_name,
 		d.name as customer_name,
 		e.task_num
 		from EMS_pole a 
-		inner join ems_area b on  a.area_id=b.id
-		inner join Ems_Workunit c on b.workunit_id=c.id
+		
+		inner join Ems_Workunit c on a.workunit_id=c.id
 		inner join ems_customer d on a.customer_id=d.id
 		left join (select pole_id,count(id) as task_num from ems_task where  status!='complete' group by pole_id) e on a.id=e.pole_id
 		<where>
 			<if test="customer_id!=null">
 				and a.customer_id=#{customer_id}
 			</if>
-			<if test="area_id!=null">
-				and a.area_id=#{area_id}
-			</if>
+
 			<if test="workunit_id!=null">
-				and b.workunit_id=#{workunit_id}
+				and a.workunit_id=#{workunit_id}
 			</if>
 			<if test="pole_name!=null">
 				and (a.name like #{pole_name} or a.code like #{pole_name})
@@ -64,16 +60,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	select 
 			count(a.id)
 		from EMS_pole a 
-		inner join ems_area b on  a.area_id=b.id
+
 		<where>
 			<if test="customer_id!=null">
 				and a.customer_id=#{customer_id}
 			</if>
-			<if test="area_id!=null">
-				and a.area_id=#{area_id}
-			</if>
 			<if test="workunit_id!=null">
-				and b.workunit_id=#{workunit_id}
+				and a.workunit_id=#{workunit_id}
 			</if>
 			<if test="pole_name!=null">
 				and (a.name like #{pole_name} or a.code like #{pole_name})
@@ -89,25 +82,19 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     <select id="queryPoles_no_send_task" resultType="com.mawujun.baseinfo.PoleVO" parameterType="map">
     	select 
 		a.*,
-		b.name as area_name,
-		c.id as workunit_id,
 		c.name as workunit_name,
 		d.name as customer_name,
 		0 as task_num
 		from EMS_pole a 
-		inner join ems_area b on  a.area_id=b.id
-		inner join Ems_Workunit c on b.workunit_id=c.id
+		inner join Ems_Workunit c on a.workunit_id=c.id
 		inner join ems_customer d on a.customer_id=d.id
 		<where>
 			not exists ( select 1 from ems_task task where  task.pole_id=a.id)
 			<if test="customer_id!=null">
 				and a.customer_id=#{customer_id}
 			</if>
-			<if test="area_id!=null">
-				and a.area_id=#{area_id}
-			</if>
 			<if test="workunit_id!=null">
-				and b.workunit_id=#{workunit_id}
+				and a.workunit_id=#{workunit_id}
 			</if>
 			<if test="pole_name!=null">
 				and (a.name like #{pole_name} or a.code like #{pole_name})
@@ -119,17 +106,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	select 
 			count(a.id)
 		from EMS_pole a 
-		inner join ems_area b on  a.area_id=b.id
+		
 		<where>
 			not exists ( select 1 from ems_task task where  task.pole_id=a.id)
 			<if test="customer_id!=null">
 				and a.customer_id=#{customer_id}
 			</if>
-			<if test="area_id!=null">
-				and a.area_id=#{area_id}
-			</if>
 			<if test="workunit_id!=null">
-				and b.workunit_id=#{workunit_id}
+				and a.workunit_id=#{workunit_id}
 			</if>
 			<if test="pole_name!=null">
 				and (a.name like #{pole_name} or a.code like #{pole_name})
@@ -197,7 +181,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     
     
     <select id="mobile_queryPage" resultType="com.mawujun.mobile.task.TaskVO" parameterType="map">
-    	select a.id,a.memo,a.type,a.status,a.pole_id,b.code as pole_code,b.longitude as pole_longitude,b.latitude as pole_latitude,a.pole_name,a.pole_address,a.createDate from ems_task a,ems_pole b
+    	select a.id,a.memo,a.type,a.status,a.pole_id,b.code as pole_code,b.longitude as pole_longitude,b.latitude as pole_latitude,a.pole_name,a.pole_address,a.createDate 
+    	from ems_task a,ems_pole b
     	where a.workunit_id=#{workunit_id} and a.pole_id=b.id
     	and a.type=#{type}
     	<if test="status=='working'">
@@ -230,7 +215,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     </select>
     
     <select id="mobile_search" resultType="com.mawujun.mobile.task.TaskVO" parameterType="map">
-    	select a.id,a.memo,a.type,a.status,a.pole_id,b.code as pole_code,b.longitude as pole_longitude,b.latitude as pole_latitude,a.pole_name,a.pole_address,a.createDate from ems_task a,ems_pole b
+    	select a.id,a.memo,a.type,a.status,a.pole_id,b.code as pole_code,b.longitude as pole_longitude,b.latitude as pole_latitude,a.pole_name,a.pole_address,a.createDate 
+    	from ems_task a,ems_pole b
     	where a.workunit_id=#{workunit_id} and a.pole_id=b.id	
     	and (b.address like #{searchStr} or b.name like #{searchStr} or b.code like #{searchStr})
     	order by a.createDate desc
@@ -290,9 +276,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	select 
 		a.*
 		from EMS_pole a 
-		inner join ems_area b on  a.area_id=b.id
+		
 		where (a.address like #{pole_name} or a.name like #{pole_name} or a.code like #{pole_name})
-		and b.workunit_id=#{workunit_id}
+		and a.workunit_id=#{workunit_id}
 		
     </select>
     

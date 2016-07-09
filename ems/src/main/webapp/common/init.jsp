@@ -14,7 +14,7 @@ String contextPath = request.getContextPath();
 String requestURI=request.getRequestURI();
 String aa=requestURI.replaceAll("/"+contextPath+"/", "/");
 %>
-<script src="<%=request.getContextPath()%>/menu/queryElementPermission.do?url=<%=aa %>&timestamp="+new Date().getTime()></script>
+<script src="<%=request.getContextPath()%>/uIElement/queryElementPermission.do?url=<%=aa %>&timestamp="+new Date().getTime()></script>
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/common/icons.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/common/pngs.css">
 

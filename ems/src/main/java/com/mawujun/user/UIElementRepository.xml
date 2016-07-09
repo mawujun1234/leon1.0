@@ -12,5 +12,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	and b.funrole_id=#{funRole_id} where a.navigation_id=#{navigation_id}
     </select> 
   
+  <select id="queryElement" resultType="string"  parameterType="map">
+  	select b.code from sys_navigation a,sys_uielement b,sys_uielement_funrole c,sys_funrole_user d
+	where a.id=b.NAVIGATION_ID and b.id=c.UIELEMENT_ID and c.FUNROLE_ID=d.FUNROLE_ID and a.link=#{jsp_url}
+	and d.USER_ID=#{user_id}
+
+  </select>
 </mapper>
 

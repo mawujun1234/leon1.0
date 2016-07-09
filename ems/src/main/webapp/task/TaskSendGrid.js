@@ -60,7 +60,7 @@ Ext.define('Ems.task.TaskSendGrid',{
       		metadata.tdAttr = "data-qtip='" + aaa+ "'";
       		return aaa;
       	}},
-		{dataIndex:'area_name',text:'所属片区'},
+		//{dataIndex:'area_name',text:'所属片区'},
 		{dataIndex:'workunit_name',text:'作业单位'},
 		{dataIndex:'customer_name',text:'所属客户'}
       ];
@@ -168,40 +168,40 @@ Ext.define('Ems.task.TaskSendGrid',{
 		   })
 	    });
 	    
-	    var area_combox=Ext.create('Ext.form.field.ComboBox',{
-	        fieldLabel: '片区',
-	        labelAlign:'right',
-            labelWidth:40,
-            //width:250,
-	        //xtype:'combobox',
-	        //afterLabelTextTpl: Ext.required,
-	        name: 'area_id',
-		    displayField: 'name',
-		    valueField: 'id',
-		    queryParam: 'name',
-    		queryMode: 'remote',
-    		triggerAction: 'query',
-    		minChars:-1,
-		    trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
-		    trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
-			onTrigger1Click : function(){
-			    var me = this;
-			    me.setValue('');
-			},
-	        //allowBlank: false,
-	        store:Ext.create('Ext.data.Store', {
-		    	fields: ['id', 'name'],
-			    proxy:{
-			    	type:'ajax',
-			    	//extraParams:{type:1,edit:true},
-			    	url:Ext.ContextPath+"/area/queryCombo.do",
-			    	reader:{
-			    		type:'json',
-			    		root:'root'
-			    	}
-			    }
-		   })
-	    });
+//	    var area_combox=Ext.create('Ext.form.field.ComboBox',{
+//	        fieldLabel: '片区',
+//	        labelAlign:'right',
+//            labelWidth:40,
+//            //width:250,
+//	        //xtype:'combobox',
+//	        //afterLabelTextTpl: Ext.required,
+//	        name: 'area_id',
+//		    displayField: 'name',
+//		    valueField: 'id',
+//		    queryParam: 'name',
+//    		queryMode: 'remote',
+//    		triggerAction: 'query',
+//    		minChars:-1,
+//		    trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
+//		    trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
+//			onTrigger1Click : function(){
+//			    var me = this;
+//			    me.setValue('');
+//			},
+//	        //allowBlank: false,
+//	        store:Ext.create('Ext.data.Store', {
+//		    	fields: ['id', 'name'],
+//			    proxy:{
+//			    	type:'ajax',
+//			    	//extraParams:{type:1,edit:true},
+//			    	url:Ext.ContextPath+"/area/queryCombo.do",
+//			    	reader:{
+//			    		type:'json',
+//			    		root:'root'
+//			    	}
+//			    }
+//		   })
+//	    });
 	    
 	    var workunit_combox=Ext.create('Ext.form.field.ComboBox',{
 	        fieldLabel: '作业单位',
@@ -213,16 +213,16 @@ Ext.define('Ems.task.TaskSendGrid',{
 	        name: 'workunit_id',
 		    displayField: 'name',
 		    valueField: 'id',
-		    queryParam: 'name',
-    		queryMode: 'remote',
-    		triggerAction: 'query',
-    		minChars:-1,
-		    trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
-		    trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
-			onTrigger1Click : function(){
-			    var me = this;
-			    me.setValue('');
-			},
+		    //queryParam: 'name',
+    		//queryMode: 'remote',
+    		//triggerAction: 'query',
+//    		minChars:-1,
+//		    trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
+//		    trigger2Cls: Ext.baseCSSPrefix + 'form-arrow-trigger',//'form-search-trigger',
+//			onTrigger1Click : function(){
+//			    var me = this;
+//			    me.setValue('');
+//			},
 	        //allowBlank: false,
 	        store:Ext.create('Ext.data.Store', {
 		    	fields: ['id', 'name'],
@@ -255,7 +255,7 @@ Ext.define('Ems.task.TaskSendGrid',{
 					customer_id:customer_combox.getValue(),
 					filter_other:filter_other_combox.getValue(),
 					pole_name:pole_textfield.getValue(),
-					area_id:area_combox.getValue(),
+					//area_id:area_combox.getValue(),
 					workunit_id:workunit_combox.getValue()
 			};
 		});
@@ -493,7 +493,7 @@ Ext.define('Ems.task.TaskSendGrid',{
 			defaults: {anchor: '0'},
 			defaultType: 'toolbar',
 			items: [{
-				items: [customer_combox,filter_other_combox,area_combox,workunit_combox,pole_textfield,query_button] // toolbar 1
+				items: [customer_combox,filter_other_combox,workunit_combox,pole_textfield,query_button] // toolbar 1
 			}, {
 				items: [install_button,repair_button,patrol_button,cancel_button] // toolbar 2
 			}]

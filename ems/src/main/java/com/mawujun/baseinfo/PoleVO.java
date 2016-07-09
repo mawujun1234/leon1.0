@@ -9,7 +9,7 @@ public class PoleVO extends Pole {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String area_name;
+	//private String area_name;
 	private String customer_name;
 	private String workunit_id;
 	private String workunit_name;
@@ -38,12 +38,7 @@ public class PoleVO extends Pole {
 //		return null;
 //	}
 	
-	public String getArea_name() {
-		return area_name;
-	}
-	public void setArea_name(String area_name) {
-		this.area_name = area_name;
-	}
+
 	public String getCustomer_name() {
 		return customer_name;
 	}

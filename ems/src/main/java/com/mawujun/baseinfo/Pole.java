@@ -46,8 +46,8 @@ public class Pole extends UUIDEntity {
 	@Column(length=36)
 	private String customer_id;
 	
-	@Column(length=36)
-	private String area_id;
+//	@Column(length=36)
+//	private String area_id;
 	@Column(length=36)
 	private String workunit_id;
 	@Column(length=36)
@@ -138,13 +138,6 @@ public class Pole extends UUIDEntity {
 		this.area = area;
 	}
 
-	public String getArea_id() {
-		return area_id;
-	}
-
-	public void setArea_id(String area_id) {
-		this.area_id = area_id;
-	}
 
 	public PoleStatus getStatus() {
 		return status;

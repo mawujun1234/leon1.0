@@ -100,10 +100,10 @@ public class UIElementController {
 			return;
 		}
 		response.setContentType("application/json");
-		List<UIElement> elements=uIElementService.queryElement(url);
+		List<String> elements=uIElementService.queryElement(url);
 		StringBuilder builder=new StringBuilder("{");
-		for(UIElement menu:elements){
-			builder.append(menu.getCode()+":true,");
+		for(String code:elements){
+			builder.append(code+":true,");
 		}
 		String aa="{}";
 		if(builder.length()>1){

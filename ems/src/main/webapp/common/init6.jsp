@@ -13,7 +13,7 @@ String requestURI=request.getRequestURI();
 String aa=requestURI.replaceAll("/"+contextPath+"/", "/");
 
 %>
-<script src="<%=request.getContextPath()%>/menu/queryElementPermission.do?url=<%=aa %>&timestamp="+new Date().getTime()></script>
+<script src="<%=request.getContextPath()%>/uIElement/queryElementPermission.do?url=<%=aa %>&timestamp="+new Date().getTime()></script>
     <!-- <link rel="stylesheet" type="text/css" href="./ext6/build/classic/theme-neptune/resources/theme-neptune-all.css">
     <script type="text/javascript" src="./ext6/build/classic/theme-neptune/theme-neptune.js"></script>
     <link rel="stylesheet" type="text/css" href="./ext6/build/classic/theme-triton/resources/theme-triton-all.css">

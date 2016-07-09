@@ -501,7 +501,7 @@ Ext.onReady(function() {
 				Ext.Ajax.request({
 					url : Ext.ContextPath + "/workunit/checkByUser.do",
 					params : {
-						area_id : record.get("id"),
+						workunit_id : record.get("id"),
 						user_id : selectedNode.get("id")
 					},
 					success : function(response) {
@@ -513,7 +513,7 @@ Ext.onReady(function() {
 				Ext.Ajax.request({
 					url : Ext.ContextPath + "/workunit/uncheckByUser.do",
 					params : {
-						area_id : record.get("id"),
+						workunit_id : record.get("id"),
 						user_id : selectedNode.get("id")
 					},
 					success : function(response) {

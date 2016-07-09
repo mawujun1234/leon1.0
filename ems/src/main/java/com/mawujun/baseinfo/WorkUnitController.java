@@ -106,14 +106,15 @@ public class WorkUnitController {
 	@RequestMapping("/workUnit/queryCombo.do")
 	@ResponseBody
 	public List<WorkUnit> queryCombo(String name) {	
-		List<WorkUnit> workUnites=null;
-		if(name==null){
-			workUnites=workUnitService.queryAll();
-		} else {
-			workUnites=workUnitService.query(Cnd.select().andLike(M.WorkUnit.name, name));
-		}
-		//List<WorkUnit> workUnites=workUnitService.query(Cnd.select().andLike(M.WorkUnit.name, name));
-		return workUnites;
+		return workUnitService.queryCombo(name);
+//		List<WorkUnit> workUnites=null;
+//		if(name==null){
+//			workUnites=workUnitService.queryAll();
+//		} else {
+//			workUnites=workUnitService.query(Cnd.select().andLike(M.WorkUnit.name, name));
+//		}
+//		//List<WorkUnit> workUnites=workUnitService.query(Cnd.select().andLike(M.WorkUnit.name, name));
+//		return workUnites;
 	}
 	
 	@RequestMapping("/workUnit/queryEquipments.do")

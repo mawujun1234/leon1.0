@@ -348,6 +348,7 @@ Ext.define('Ems.task.TaskQueryGrid',{
 		var cancel_button=Ext.create('Ext.button.Button',{
 			text:'取消',
 			margin:'0 0 0 5',
+			hidden:!Permision.canShow('task_cancel'),
 			icon:'../icons/cancel.png',
 			handler:function(){
 				Ext.Msg.confirm("消息","确定要取消该任务吗?",function(btn){
@@ -388,6 +389,7 @@ Ext.define('Ems.task.TaskQueryGrid',{
 		//手工结束维修任务
 		var finish_repair_task_button=Ext.create('Ext.button.Button',{
 			text:'手工结束维修任务',
+			hidden:!Permision.canShow('task_finishRepairTask'),
 			margin:'0 0 0 5',
 			icon:'../icons/arrow_undo.png',
 			handler:function(){

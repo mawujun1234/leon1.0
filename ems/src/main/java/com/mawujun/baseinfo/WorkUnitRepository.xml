@@ -133,8 +133,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<select id="queryByUser" resultType="com.mawujun.baseinfo.WorkUnitVO" parameterType="map">
     	SELECT a.*,decode(c.user_id,null,'N','Y') selected
 	    FROM ems_workunit a
-	    left join sys_user_workunit c on a.id=c.workunit_id and c.user_id=#{user_id}
-	    
+	    left join sys_user_workunit c on a.id=c.workunit_id and c.user_id=#{user_id}	    
+    </select>
+    
+    <select id="queryCombo" resultType="com.mawujun.baseinfo.WorkUnit" parameterType="map">
+    	SELECT a.*
+	    FROM ems_workunit a
+	    inner join sys_user_workunit c on a.id=c.workunit_id and c.user_id=#{user_id}	    
     </select>
 </mapper>
 

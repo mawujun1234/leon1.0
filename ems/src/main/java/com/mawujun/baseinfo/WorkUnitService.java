@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
+import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.user.User;
 import com.mawujun.user.UserRepository;
 import com.mawujun.user.UserWorkunit;
@@ -129,6 +130,9 @@ public class WorkUnitService extends AbstractService<WorkUnit, String>{
 		WorkUnit area=workUnitRepository.get(workunit_id);
 		UserWorkunit areaUser=new UserWorkunit(area,user);
 		userWorkunitRepository.delete(areaUser);
+	}
+	public List<WorkUnit> queryCombo(String name){
+		return workUnitRepository.queryCombo(ShiroUtils.getUserId());
 	}
 //	@Override
 //	public void delete(WorkUnit entity) {

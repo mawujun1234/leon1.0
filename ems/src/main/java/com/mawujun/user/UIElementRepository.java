@@ -15,4 +15,6 @@ import com.mawujun.repository1.IRepository;
 public interface UIElementRepository extends IRepository<UIElement, String>{
 
 	public List<UIElement> queryByFunRole(@Param("navigation_id")String navigation_id,@Param("funRole_id")String funRole_id) ;
+	
+	public List<String> queryElement(@Param("jsp_url")String jsp_url,@Param("user_id")String user_id);
 }
