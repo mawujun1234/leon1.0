@@ -1,6 +1,7 @@
 这种方案和直接改为维护组维护的区别就在于，是否对维护组进行分类处理，最终都是要对pole改成归属于某个workunit_id,而不是归属于某个area
 
 1:Pole新建workunit_id
+ create table ems_pole_bak as select * from ems_pole
 2:根据片区对应的area_id，更新pole中的workunit_id
 	update ems_pole a set workunit_id=(select workunit_id from ems_area b
     where  a.area_id=b.id )
@@ -29,7 +30,7 @@
 5:修改菜单 /baseinfo/WorkunitPoleApp.jsp
 6:新增作业单位权限管理
 7:任务下发和任务查询中作业单位权限管理
-8：任务洗发和任务查询中客户按照作业单位权限进行过滤
+8：任务下发和任务查询中客户按照作业单位权限进行过滤
 4:删除area_id
 	alter table "EMS"."EMS_POLE" drop column "AREA_ID"
 
@@ -39,58 +40,24 @@
 
 
 
+Insert into EMS.SYS_UIELEMENT (ID,CODE,MEMO,NAVIGATION_ID,TEXT) values ('f4e6506d-fc1f-43cd-a679-aaf51cb7279a','task_send_install',null,'373d4584-3767-4311-9825-9ab95c031db8',' 发送安装任务');
+Insert into EMS.SYS_UIELEMENT (ID,CODE,MEMO,NAVIGATION_ID,TEXT) values ('6d5d7870-bfed-48d2-8b46-9a320edb50d6','task_send_repair',null,'373d4584-3767-4311-9825-9ab95c031db8','发送维修维护任务');
+Insert into EMS.SYS_UIELEMENT (ID,CODE,MEMO,NAVIGATION_ID,TEXT) values ('fa3bf7b5-83d7-4918-8264-2fafdc0daf21','task_send_patrol',null,'373d4584-3767-4311-9825-9ab95c031db8','发送巡检任务');
+Insert into EMS.SYS_UIELEMENT (ID,CODE,MEMO,NAVIGATION_ID,TEXT) values ('9b1bd169-8016-4429-be68-01c95e366798','task_send_cancel',null,'373d4584-3767-4311-9825-9ab95c031db8','取消点位');
+Insert into EMS.SYS_UIELEMENT (ID,CODE,MEMO,NAVIGATION_ID,TEXT) values ('413a09a4-80e7-4986-b1fc-5f27f56acbae','customer_create',null,'5ac203f7-8d5b-40ea-8654-e951594db6a8','新建');
+Insert into EMS.SYS_UIELEMENT (ID,CODE,MEMO,NAVIGATION_ID,TEXT) values ('ccca2fc7-4bd1-46d1-a6c3-e354541d6252','customer_update',null,'5ac203f7-8d5b-40ea-8654-e951594db6a8','更新');
+Insert into EMS.SYS_UIELEMENT (ID,CODE,MEMO,NAVIGATION_ID,TEXT) values ('1f38eb1c-34e4-4c59-9df6-66f76539b3fb','customer_delete',null,'5ac203f7-8d5b-40ea-8654-e951594db6a8','删除');
+Insert into EMS.SYS_UIELEMENT (ID,CODE,MEMO,NAVIGATION_ID,TEXT) values ('8a948484-02af-472f-bdbd-86533c68b5d1','workunit_pole_add',null,'ca8be663-0055-4786-8590-ea788c065be0','新增');
+Insert into EMS.SYS_UIELEMENT (ID,CODE,MEMO,NAVIGATION_ID,TEXT) values ('9eb6b41b-ef6a-44ff-8a30-ca030143eda6','workunit_pole_delete',null,'ca8be663-0055-4786-8590-ea788c065be0','删除');
+Insert into EMS.SYS_UIELEMENT (ID,CODE,MEMO,NAVIGATION_ID,TEXT) values ('ef6f9dc1-5631-4c66-96aa-ffaa1f3c84eb','hitchtype_create',null,'4b59ebbd-c5fa-47e5-8932-1385b0912f1a','故障类型新增');
+Insert into EMS.SYS_UIELEMENT (ID,CODE,MEMO,NAVIGATION_ID,TEXT) values ('66eaccc3-74a0-4796-a8bc-2d2f89150841','hitchtype_update',null,'4b59ebbd-c5fa-47e5-8932-1385b0912f1a','故障类型更新');
+Insert into EMS.SYS_UIELEMENT (ID,CODE,MEMO,NAVIGATION_ID,TEXT) values ('9e14d24f-32ac-4793-8215-42cf1416abcc','handlemethod_create',null,'5e128321-749e-4d3e-838c-266099b38839','新增');
+Insert into EMS.SYS_UIELEMENT (ID,CODE,MEMO,NAVIGATION_ID,TEXT) values ('96591139-be50-4d85-9960-86084d887572','hitchreasontpl_create',null,'4b59ebbd-c5fa-47e5-8932-1385b0912f1a','故障原因模板新增');
+Insert into EMS.SYS_UIELEMENT (ID,CODE,MEMO,NAVIGATION_ID,TEXT) values ('371a0972-5912-4aee-a694-ea7551330933','hitchreasontpl_update',null,'4b59ebbd-c5fa-47e5-8932-1385b0912f1a','故障原因模板更新');
+Insert into EMS.SYS_UIELEMENT (ID,CODE,MEMO,NAVIGATION_ID,TEXT) values ('c693765a-e91e-42f3-af1f-16a08fbdb9f5','handlemethod_update',null,'5e128321-749e-4d3e-838c-266099b38839','更新');
+Insert into EMS.SYS_UIELEMENT (ID,CODE,MEMO,NAVIGATION_ID,TEXT) values ('c3b460c2-7230-498a-8f75-c8fd72a8fa1f','handlemethod_delete',null,'5e128321-749e-4d3e-838c-266099b38839','删除');
+Insert into EMS.SYS_UIELEMENT (ID,CODE,MEMO,NAVIGATION_ID,TEXT) values ('f791ebdd-995d-4af7-af17-9e47e9108ee8','task_cancel',null,'dd2f0178-bc59-422e-ae96-0af92bc6cc0c','取消');
+Insert into EMS.SYS_UIELEMENT (ID,CODE,MEMO,NAVIGATION_ID,TEXT) values ('3ba10687-9c86-447c-a831-4bc5fc274b2a','task_finishRepairTask',null,'dd2f0178-bc59-422e-ae96-0af92bc6cc0c','手工结束维修任务');
+Insert into EMS.SYS_UIELEMENT (ID,CODE,MEMO,NAVIGATION_ID,TEXT) values ('9566b45d-382f-4b0b-8526-b345be899cec','task_confirm',null,'affd4c79-32e7-4a33-8682-bd149566a9aa','确认');
+Insert into EMS.SYS_UIELEMENT (ID,CODE,MEMO,NAVIGATION_ID,TEXT) values ('97fc2d72-eb1a-4efd-a0fc-9cc1284490bd','task_sendBack',null,'affd4c79-32e7-4a33-8682-bd149566a9aa','退回');
 
-1：新建AreaWorkUnit类
-2:把Area中的数据更新到AreaWorkUnit中
-  2.1先备份area表的数据
-  	create table ems_area_bak as select * from ems_area
-  2.2确定合并的area_id，注意只有4个片区，其中海曙现在还只建了1个
-  	慈溪
-	9b723d8c-b56d-49af-a465-13995f298492--->f9190444-f671-4c09-91d3-cb2ee64c1d25
-	3caa1ff4-2df6-430f-965b-9f3af0912890
-	2b18a682-3d19-4082-8717-3c329a89a365
-	北仑
-	c0364e4f-4a56-4295-b15d-75e3efb3ad17--->972f5e5f-6341-44b7-ae1d-b37452694488
-	鄞州
-	2c9085494d226c99014d270732e60027---->98a1f81d-82ac-4a6f-8ba9-8993c50f39ce
-	f6e36542-95fd-49fd-a07d-e9274be7d619
-	901ec0f5-2dd5-4fac-92a8-0bed83a133a0
-  2.3插入area和workunit的对应关系,一共11行
-    insert into ems_area_workunit(area_id,workUnit_id)
-	select id,workUnit_id from ems_area
-  2.4使用合并规则更新   AreaWorkUnit表中的数据
-  	update ems_area_workunit set area_id='f9190444-f671-4c09-91d3-cb2ee64c1d25'
-	where area_id in('9b723d8c-b56d-49af-a465-13995f298492','3caa1ff4-2df6-430f-965b-9f3af0912890','2b18a682-3d19-4082-8717-3c329a89a365');
-	update ems_area_workunit set area_id='972f5e5f-6341-44b7-ae1d-b37452694488'
-	where area_id in('c0364e4f-4a56-4295-b15d-75e3efb3ad17');
-	update ems_area_workunit set area_id='98a1f81d-82ac-4a6f-8ba9-8993c50f39ce'
-	where area_id in('2c9085494d226c99014d270732e60027','f6e36542-95fd-49fd-a07d-e9274be7d619','901ec0f5-2dd5-4fac-92a8-0bed83a133a0');
-  2.5在area表中删除多余的area	 ，一共删除7行 	
-  	delete ems_area where id in ('9b723d8c-b56d-49af-a465-13995f298492','3caa1ff4-2df6-430f-965b-9f3af0912890',
-	'2b18a682-3d19-4082-8717-3c329a89a365','c0364e4f-4a56-4295-b15d-75e3efb3ad17',
-	'2c9085494d226c99014d270732e60027','f6e36542-95fd-49fd-a07d-e9274be7d619',
-	'901ec0f5-2dd5-4fac-92a8-0bed83a133a0')
-  2.6删除area中的workunit_id
-  	-- Drop columns 
-	alter table EMS_AREA drop column workunit_id;
-	-- Create/Recreate primary, unique and foreign key constraints 
-	alter table EMS_AREA
-	  drop constraint FK_EMS_AREA_WORKUNIT_ID;
-	alter table EMS_AREA
-	  add constraint FK_EMS_AREA_WORKUNIT_ID foreign key ()
-	  references EMS_WORKUNIT (ID);
-  2.7:更新片区管理中，片区查询的sql，获取正确的数据
-      	更改xml文件  ，AreaRepository.queryAllWithWorkunit
-  2.8修改片区的增，删，改，查功能
-3：Pole中合并area_id，
-	3.1先备份pole
-		
-	3.2统计各个area中原始的pole有多少个
-	3.2更新合并后的pole
-	3.3进行比对，看看有没有对
-5:com.mawujun.baseinfo.AreaRepository中的queryByUser需要改下
-6：task功能中很多地方都需要修改，需要进行测试
-7：把片区改成上下各grid，上面是片区，下面是作业单位，点击片区的时候，同时更新 作业单位信息和点位信息
-
-8：片区管理中的导出点位功能检查
-  WorkUnit workUnit=null 这行肯定要进行修改

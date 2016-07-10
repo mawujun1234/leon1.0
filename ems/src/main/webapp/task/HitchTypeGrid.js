@@ -45,6 +45,7 @@ Ext.define('Ems.task.HitchTypeGrid',{
        var create = new Ext.Action({
 		    text: '新建',
 		    itemId:'create',
+		    hidden:!Permision.canShow('hitchtype_create'),
 		    disabled:me.disabledAction,
 		    handler: function(b){
 		    	me.onCreate(null,b);
@@ -56,6 +57,7 @@ Ext.define('Ems.task.HitchTypeGrid',{
 		var update = new Ext.Action({
 		    text: '更新',
 		    itemId:'update',
+		    hidden:!Permision.canShow('hitchtype_update'),
 		    disabled:me.disabledAction,
 		    handler: function(b){
 		    	me.onUpdate(null,b);
@@ -69,6 +71,7 @@ Ext.define('Ems.task.HitchTypeGrid',{
 		    text: '删除',
 		    itemId:'destroy',
 		    hidden:true,
+		    //hidden:!Permision.canShow('hitchtype_delete'),
 		    disabled:me.disabledAction,
 		    handler: function(){
 		    	me.onDelete();    

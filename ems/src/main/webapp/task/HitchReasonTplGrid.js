@@ -47,6 +47,7 @@ Ext.define('Ems.task.HitchReasonTplGrid',{
        var create = new Ext.Action({
 		    text: '新建',
 		    itemId:'create',
+		    hidden:!Permision.canShow('hitchreasontpl_create'),
 		    disabled:me.disabledAction,
 		    handler: function(b){
 		    	me.onCreate(null,b);
@@ -58,6 +59,7 @@ Ext.define('Ems.task.HitchReasonTplGrid',{
 		var update = new Ext.Action({
 		    text: '更新',
 		    itemId:'update',
+		    hidden:!Permision.canShow('hitchreasontpl_update'),
 		    disabled:me.disabledAction,
 		    handler: function(b){
 		    	me.onUpdate(null,b);
@@ -70,6 +72,7 @@ Ext.define('Ems.task.HitchReasonTplGrid',{
 		var destroy = new Ext.Action({
 		    text: '删除',
 		    itemId:'destroy',
+		    
 		    hidden:true,
 		    disabled:me.disabledAction,
 		    handler: function(){

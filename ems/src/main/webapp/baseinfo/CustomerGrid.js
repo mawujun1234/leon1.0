@@ -70,6 +70,7 @@ Ext.define('Ems.baseinfo.CustomerGrid',{
        var create = new Ext.Action({
 		    text: '新建',
 		    itemId:'create',
+		    hidden:!Permision.canShow('customer_create'),
 		    disabled:me.disabledAction,
 		    handler: function(b){
 		    	me.onCreate(null,b);
@@ -81,6 +82,7 @@ Ext.define('Ems.baseinfo.CustomerGrid',{
 		var update = new Ext.Action({
 		    text: '更新',
 		    itemId:'update',
+		    hidden:!Permision.canShow('customer_update'),
 		    disabled:me.disabledAction,
 		    handler: function(b){
 		    	me.onUpdate(null,b);
@@ -93,6 +95,7 @@ Ext.define('Ems.baseinfo.CustomerGrid',{
 		var destroy = new Ext.Action({
 		    text: '删除',
 		    itemId:'destroy',
+		    hidden:!Permision.canShow('customer_delete'),
 		    disabled:me.disabledAction,
 		    handler: function(){
 		    	me.onDelete();    

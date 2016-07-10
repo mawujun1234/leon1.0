@@ -280,6 +280,7 @@ Ext.define('Ems.task.TaskSendGrid',{
 			text:'发送安装任务',
 			margin:'0 0 0 5',
 			icon:'../images/install.png',
+			hidden:!Permision.canShow('task_send_install'),
 			handler:function(){
 				var records=me.getSelectionModel().getSelection();
 				if(!records || records.length==0){
@@ -339,6 +340,7 @@ Ext.define('Ems.task.TaskSendGrid',{
 		var repair_button=Ext.create('Ext.button.Button',{
 			text:'发送维修/维护任务',
 			margin:'0 0 0 5',
+			hidden:!Permision.canShow('task_send_repair'),
 			icon:'../images/repair.png',
 			handler:function(){
 				var records=me.getSelectionModel().getSelection();
@@ -401,6 +403,7 @@ Ext.define('Ems.task.TaskSendGrid',{
 		var patrol_button=Ext.create('Ext.button.Button',{
 			text:'发送巡检任务',
 			margin:'0 0 0 5',
+			hidden:!Permision.canShow('task_send_patrol'),
 			icon:'../images/patrols.png',
 			handler:function(){
 				var records=me.getSelectionModel().getSelection();
@@ -461,6 +464,7 @@ Ext.define('Ems.task.TaskSendGrid',{
 		var cancel_button=Ext.create('Ext.button.Button',{
 			text:'取消点位',
 			margin:'0 0 0 5',
+			hidden:!Permision.canShow('task_send_cancel'),
 			icon:'../images/cancel.png',
 			handler:function(){
 				var records=me.getSelectionModel().getSelection();

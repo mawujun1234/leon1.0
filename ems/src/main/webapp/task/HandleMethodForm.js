@@ -111,6 +111,7 @@ Ext.define('Ems.task.HandleMethodForm',{
 		  	text: '新增',
 			itemId:'create',
 			cls:'fla_form_action',
+			hidden:!Permision.canShow('handlemethod_create'),
 			handler: function(btn){
 				var form=btn.up("form");
 				var grid=form.grid;//是在HandleMethodApp.js中把引用授予的
@@ -133,6 +134,7 @@ Ext.define('Ems.task.HandleMethodForm',{
 		},{
 			text: '更新',
 			itemId:'update',
+			hidden:!Permision.canShow('handlemethod_update'),
 			disabled:true,
 			cls:'fla_form_action',
 			handler: function(btn){
@@ -152,6 +154,7 @@ Ext.define('Ems.task.HandleMethodForm',{
 		},{
 			text: '删除',
 			itemId:'destroy',
+			hidden:!Permision.canShow('handlemethod_delete'),
 			disabled:true,
 			cls:'fla_form_action',
 			handler: function(btn){

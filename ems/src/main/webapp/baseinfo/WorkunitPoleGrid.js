@@ -194,6 +194,7 @@ Ext.define('Ems.baseinfo.WorkunitPoleGrid',{
        var create = new Ext.Action({
 		    text: '添加',
 		    itemId:'create',
+		    hidden:!Permision.canShow('workunit_pole_add'),
 		    disabled:me.disabledAction,
 		    handler: function(b){
 		    	me.onCreate(null,b);
@@ -217,6 +218,7 @@ Ext.define('Ems.baseinfo.WorkunitPoleGrid',{
 		var destroy = new Ext.Action({
 		    text: '删除',
 		    itemId:'destroy',
+		    hidden:!Permision.canShow('workunit_pole_delete'),
 		    disabled:me.disabledAction,
 		    handler: function(){
 		    	me.onDelete();    
