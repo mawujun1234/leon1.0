@@ -73,7 +73,12 @@ public class CustomerController {
 		JsonConfigHolder.setAutoWrap(false);
 		return customeres;
 	}
-	
+	/**
+	 * 用在地图上获取的
+	 * @param parent_id
+	 * @param name
+	 * @return
+	 */
 	@RequestMapping("/customer/query4combo.do")
 	@ResponseBody
 	public List<CustomerVO> query4combo(String parent_id,String name) {	
@@ -84,7 +89,7 @@ public class CustomerController {
 			if(StringUtils.hasText(name)){
 				name="%"+name+"%";
 			}
-			改成按用户可以访问的作业单位的所蜀的顾客进行过滤
+			//改成按用户可以访问的作业单位的所蜀的顾客进行过滤
 			customeres=customerService.queryChildren(parent_id,name);
 		}
 		
@@ -134,8 +139,8 @@ public class CustomerController {
 	@RequestMapping("/customer/queryCombo.do")
 	@ResponseBody
 	public List<Customer> queryCombo(String name) {	
-		
-		return customerService.query(Cnd.select().andEquals(M.Customer.status, true).andLike(M.Customer.name, name));	
+		return customerService.queryCombo(name);
+		//return customerService.query(Cnd.select().andEquals(M.Customer.status, true).andLike(M.Customer.name, name));	
 	}
 	
 //	@RequestMapping("/customer/queryPole.do")

@@ -105,9 +105,11 @@ public class TaskService extends AbstractService<Task, String>{
 	}
 
 	public Page queryPoles(Page page) {
+		page.addParam("user_id", ShiroUtils.getUserId());
 		return taskRepository.queryPoles(page);
 	}
 	public Page queryPoles_no_send_task(Page page) {
+		page.addParam("user_id", ShiroUtils.getUserId());
 		return taskRepository.queryPoles_no_send_task(page);
 	}
 	
@@ -1280,6 +1282,7 @@ public class TaskService extends AbstractService<Task, String>{
 	
 	
 	public Page querySubmited(Page page) {
+		page.addParam("user_id", ShiroUtils.getUserId());
 		return taskRepository.querySubmited(page);
 	}
 	

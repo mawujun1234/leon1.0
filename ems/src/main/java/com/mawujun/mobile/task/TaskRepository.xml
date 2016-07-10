@@ -38,9 +38,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		d.name as customer_name,
 		e.task_num
 		from EMS_pole a 
-		
+		inner join sys_user_workunit b on a.workunit_id=b.workunit_id and b.user_id=#{user_id}
 		inner join Ems_Workunit c on a.workunit_id=c.id
 		inner join ems_customer d on a.customer_id=d.id
+		
 		left join (select pole_id,count(id) as task_num from ems_task where  status!='complete' group by pole_id) e on a.id=e.pole_id
 		<where>
 			<if test="customer_id!=null">
@@ -60,7 +61,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	select 
 			count(a.id)
 		from EMS_pole a 
-
+		inner join sys_user_workunit b on a.workunit_id=b.workunit_id and b.user_id=#{user_id}
 		<where>
 			<if test="customer_id!=null">
 				and a.customer_id=#{customer_id}
@@ -86,6 +87,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		d.name as customer_name,
 		0 as task_num
 		from EMS_pole a 
+		inner join sys_user_workunit b on a.workunit_id=b.workunit_id and b.user_id=#{user_id}
 		inner join Ems_Workunit c on a.workunit_id=c.id
 		inner join ems_customer d on a.customer_id=d.id
 		<where>
@@ -106,7 +108,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	select 
 			count(a.id)
 		from EMS_pole a 
-		
+		inner join sys_user_workunit b on a.workunit_id=b.workunit_id and b.user_id=#{user_id}
 		<where>
 			not exists ( select 1 from ems_task task where  task.pole_id=a.id)
 			<if test="customer_id!=null">
@@ -154,9 +156,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     
     <!-- 查询所有已经提交的任务 -->
     <select id="querySubmited" resultType="com.mawujun.mobile.task.TaskVO" parameterType="map">
-    	select a.*,b.code as pole_code from ems_task a,ems_pole b
+    	select a.*,b.code as pole_code from ems_task a,ems_pole b,sys_user_workunit c
     	<where>
-    		a.pole_id=b.id and a.status='submited'
+    	    b.workunit_id=c.workunit_id and c.user_id=#{user_id}
+    		and a.pole_id=b.id and a.status='submited'
 			<if test="customer_id!=null and customer_id!=''">
 				and a.customer_id=#{customer_id}
 			</if>

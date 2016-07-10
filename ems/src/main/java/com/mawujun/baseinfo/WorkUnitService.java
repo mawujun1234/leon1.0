@@ -103,12 +103,12 @@ public class WorkUnitService extends AbstractService<WorkUnit, String>{
 		return workUnitRepository.queryPoles(page);
 	}
 	
-	public void savePoles(String area_id,String[] pole_ids) {	
+	public void savePoles(String workunit_id,String[] pole_ids) {	
 		for(int i=0;i<pole_ids.length;i++){
-			workUnitRepository.savePoles(area_id, pole_ids[i]);
+			workUnitRepository.savePoles(workunit_id, pole_ids[i]);
 		}
 	}
-	public void deletePoles(String area_id,String[] pole_ids) {	
+	public void deletePoles(String workunit_id,String[] pole_ids) {	
 		for(int i=0;i<pole_ids.length;i++){
 			workUnitRepository.deletePoles(pole_ids[i]);
 		}

@@ -25,6 +25,21 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		    </if>
         </where>
     </select>
+    
+    <select id="queryCombo" resultType="com.mawujun.baseinfo.CustomerVO" parameterType="map">
+    	SELECT a.*
+	    FROM ems_customer  a
+		<where>
+			status='Y' AND a.type!=2
+			
+		    <if test="name!=null and name!=''">
+		    	and a.name like #{name}
+		    </if>
+		    <if test="user_id!=null and user_id!=''">
+		    	and exists (select 1 from ems_pole b,sys_user_workunit c where b.workunit_id=c.workunit_id and a.id=b.customer_id and c.user_id=#{user_id})
+		    </if>
+        </where>
+    </select>
    
 </mapper>
 

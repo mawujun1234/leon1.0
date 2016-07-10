@@ -11,7 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
+
 import com.mawujun.service.AbstractService;
+import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.baseinfo.Customer;
 import com.mawujun.baseinfo.CustomerRepository;
 
@@ -47,5 +50,9 @@ public class CustomerService extends AbstractService<Customer, String>{
 
 	public List<CustomerVO> queryChildren(String parent_id,String name) {
 		return customerRepository.queryChildren(parent_id,name);
+	}
+	
+	public List<Customer> queryCombo(String name) {
+		return customerRepository.queryCombo(name,ShiroUtils.getUserId());
 	}
 }

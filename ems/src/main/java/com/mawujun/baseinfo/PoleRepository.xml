@@ -84,17 +84,17 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     		and exists (select 1 from ems_customer c where a.customer_id=c.id and c.parent_id=#{customer_2_id})
     	</if>
     	<if test="workunit_id!=null and workunit_id!=''">
-    		and b.workunit_id=#{workunit_id}
+    		and a.workunit_id=#{workunit_id}
     	</if>
     </sql>
     <select id="queryNoLngLatPole" resultType="com.mawujun.baseinfo.Pole">
-    	select * from ems_pole a ,ems_area b
-    	where  a.area_id=b.id and (a.longitude is null or a.latitude is null)
+    	select * from ems_pole a 
+    	where   (a.longitude is null or a.latitude is null)
     	<include refid="queryPoles4Map_where"></include>
     </select>
      <select id="queryNoLngLatPole_count" resultType="int">
-    	select count(a.id) from ems_pole a ,ems_area b
-    	where  a.area_id=b.id and (a.longitude is null or a.latitude is null)
+    	select count(a.id) from ems_pole a
+    	where  (a.longitude is null or a.latitude is null)
     	<include refid="queryPoles4Map_where"></include>
     </select>
     <!-- 更新点位的经纬度 -->
@@ -103,8 +103,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     </update>
     <!-- 获取要在地图上显示的点位 -->
     <select id="queryPoles4Map" resultType="com.mawujun.baseinfo.Pole"  parameterType="map">
-    	select a.* from ems_pole a ,ems_area b
-		where a.area_id=b.id
+    	select a.* from ems_pole a
+		where 1=1
     	<include refid="queryPoles4Map_where"></include>
     	and a.longitude is not null and a.latitude is not null
     </select>

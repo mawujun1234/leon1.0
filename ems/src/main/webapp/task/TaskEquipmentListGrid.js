@@ -39,7 +39,7 @@ Ext.define('Ems.task.TaskEquipmentListGrid',{
 			    	url:Ext.ContextPath+"/task/queryTaskEquipmentList.do",
 			    	reader:{
 			    		type:'json',
-			    		root:'root'
+			    		rootProperty:'root'
 			    	}
 			}
 	  });

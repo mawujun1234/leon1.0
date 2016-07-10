@@ -16,4 +16,7 @@ import com.mawujun.baseinfo.Customer;
 public interface CustomerRepository extends IRepository<Customer, String>{
 
 	public List<CustomerVO> queryChildren(@Param("parent_id")String parent_id,@Param("name")String name);
+	
+	public List<Customer> queryCombo(@Param("name")String name,@Param("user_id")String user_id);
+
 }

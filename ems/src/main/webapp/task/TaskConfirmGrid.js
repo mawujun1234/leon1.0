@@ -45,7 +45,7 @@ Ext.define('Ems.task.TaskConfirmGrid',{
 				url:Ext.ContextPath+'/task/querySubmited.do',
 				reader:{
 					type:'json',
-					root:'root'
+					rootProperty:'root'
 				}
 			}
 	  });
@@ -93,7 +93,7 @@ Ext.define('Ems.task.TaskConfirmGrid',{
 			    	url:Ext.ContextPath+"/customer/queryCombo.do",
 			    	reader:{
 			    		type:'json',
-			    		root:'root'
+			    		rootProperty:'root'
 			    	}
 			    }
 		   })
@@ -119,7 +119,7 @@ Ext.define('Ems.task.TaskConfirmGrid',{
 			    	url:Ext.ContextPath+"/workUnit/queryCombo.do",
 			    	reader:{
 			    		type:'json',
-			    		root:'root'
+			    		rootProperty:'root'
 			    	}
 			    }
 		   })
@@ -161,7 +161,7 @@ Ext.define('Ems.task.TaskConfirmGrid',{
 			    	url:Ext.ContextPath+"/hitchType/query.do",
 			    	reader:{
 			    		type:'json',
-			    		root:'root'
+			    		rootProperty:'root'
 			    	}
 			    }
 		   })
@@ -200,6 +200,7 @@ Ext.define('Ems.task.TaskConfirmGrid',{
 		var confirm_button=Ext.create('Ext.button.Button',{
 			text:'确认',
 			margin:'0 0 0 5',
+			hidden:!Permision.canShow('task_confirm'),
 			icon:'../icons/gem_okay.png',
 			handler:function(){
 				var records=me.getSelectionModel().getSelection();
@@ -237,6 +238,7 @@ Ext.define('Ems.task.TaskConfirmGrid',{
 		var sendback_button=Ext.create('Ext.button.Button',{
 			text:'退回',
 			margin:'0 0 0 5',
+			hidden:!Permision.canShow('task_sendBack'),
 			icon:'../icons/arrow_undo.png',
 			handler:function(){
 				Ext.Msg.confirm("消息","确定要退回吗?",function(btn){

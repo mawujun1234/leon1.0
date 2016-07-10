@@ -27,11 +27,7 @@ public static final class AdjustList {
 	public static final String prod_id="prod_id";
 	public static final String id="id";
 }
-public static final class Area {
-	public static final String name="name";
-	public static final String memo="memo";
-	public static final String id="id";
-}
+
 public static final class Brand {
 	public static final String id="id";
 	public static final String name="name";
@@ -187,7 +183,6 @@ public static final class Pole {
 	public static final String latitude_orgin="latitude_orgin";
 	public static final String lngLatIsTrans="lngLatIsTrans";
 	public static final String customer_id="customer_id";
-	public static final String area_id="area_id";
 	public static final String workunit_id="workunit_id";
 	public static final String project_id="project_id";
 	public static final String status="status";
