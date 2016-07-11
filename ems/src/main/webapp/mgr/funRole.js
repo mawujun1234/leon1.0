@@ -276,10 +276,10 @@ Ext.onReady(function() {
 					}
 
 				});
-			},
-			itemclick : function() {
-				uielemencheckgrid.unmask();
 			}
+//			itemclick : function() {
+//				uielemencheckgrid.unmask();
+//			}
 
 		}
 	});
@@ -317,7 +317,15 @@ Ext.onReady(function() {
 			navigation_id : record.get("id"),
 			funRole_id : selectedNode.get("id")
 		}
+		//alert(record.get("checked"));
+		if(record.get("checked")){
+			
+			uielemencheckgrid.unmask();
+		} else {
+			uielemencheckgrid.mask();
+		}
 		uielemencheckgrid.getStore().reload();
+		
 	});
 
 	var uielemencheckgrid = Ext.create('Ems.mgr.UIElemenCheckGrid', {
@@ -370,6 +378,7 @@ Ext.onReady(function() {
 
 	var tabPanel = Ext.create('Ext.tab.Panel', {
 		region : 'center',
+		deferredRender:false,
 		items : [ nav_form, navigationTree_panel ],
 		listeners : {
 			render : function(tabPanel) {
