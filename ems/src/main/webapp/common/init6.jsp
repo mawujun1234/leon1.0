@@ -10,7 +10,7 @@ if("localhost".equals(ip) ||"127.0.0.1".equals(ip) || "0:0:0:0:0:0:0:1".equals(i
 
 String contextPath = request.getContextPath();
 String requestURI=request.getRequestURI();
-String aa=requestURI.replaceAll("/"+contextPath+"/", "/");
+String aa=requestURI.replaceAll(contextPath+"/", "/");
 
 %>
 <script src="<%=request.getContextPath()%>/uIElement/queryElementPermission.do?url=<%=aa %>&timestamp="+new Date().getTime()></script>
