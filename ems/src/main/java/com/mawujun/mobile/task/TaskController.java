@@ -88,6 +88,7 @@ public class TaskController {
 		}
 		page.addParam(M.Task.workunit_id, workunit_id);
 		page.addParam(M.Task.pole_id, pole_id);
+		page.addParam("user_id", ShiroUtils.getUserId());
 		if(StringUtils.hasText(type)){
 			page.addParam(M.Task.type, type);
 		}
