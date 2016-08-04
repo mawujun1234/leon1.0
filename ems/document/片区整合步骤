@@ -1,8 +1,9 @@
 这种方案和直接改为维护组维护的区别就在于，是否对维护组进行分类处理，最终都是要对pole改成归属于某个workunit_id,而不是归属于某个area
 
 1:Pole新建workunit_id
- drop table ems_pole_bak
- create table ems_pole_bak as select * from ems_pole
+ --drop table ems_pole_bak
+ create table ems_pole_0804 as select * from ems_pole
+   然后备份数据库： exp system/system@ems file=c:\dmp\daochu08042000.dmp owner=(ems)
 2:启动tomcat,根据片区对应的area_id，更新pole中的workunit_id
 	update ems_pole a set workunit_id=(select workunit_id from ems_area b
     where  a.area_id=b.id )
@@ -28,7 +29,7 @@
 	    where a.id=b.workunit_id
 	) y where x.id=y.id and x.workunit_id!=y.workunit_id
 4：新增作业单位点位维护，维护作业单位可以看到的点位
-5:修改菜单,把片区管理改成，作业单位点位维护 =/baseinfo/WorkunitPoleApp.jsp
+5:修改菜单,把片区管理改成-->作业单位点位维护 =/baseinfo/WorkunitPoleApp.jsp
 6:新增作业单位权限管理
 7:任务下发和任务查询中作业单位权限管理
 8：任务下发和任务查询中客户按照作业单位权限进行过滤
