@@ -2,8 +2,8 @@
 
 1:Pole新建workunit_id
  --drop table ems_pole_bak
- create table ems_pole_0804 as select * from ems_pole
-   然后备份数据库： exp system/system@ems file=c:\dmp\daochu08042000.dmp owner=(ems)
+ create table ems_pole_0805 as select * from ems_pole
+   然后备份数据库： exp system/system@ems file=c:\dmp\daochu08051850.dmp owner=(ems)
 2:启动tomcat,根据片区对应的area_id，更新pole中的workunit_id
 	update ems_pole a set workunit_id=(select workunit_id from ems_area b
     where  a.area_id=b.id )
