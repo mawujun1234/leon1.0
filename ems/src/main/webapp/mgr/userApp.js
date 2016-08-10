@@ -100,10 +100,10 @@ Ext.onReady(function() {
 				refreshSelectedFunRole();
 				refreshSelectedStore();
 
-				userAreaGrid.getStore().getProxy().extraParams = {
+				userWorkunitGrid.getStore().getProxy().extraParams = {
 					user_id : selectedNode.get("id")
 				}
-				userAreaGrid.getStore().reload();
+				userWorkunitGrid.getStore().reload();
 
 				tabPanel.getEl().unmask();
 			}
@@ -494,7 +494,7 @@ Ext.onReady(function() {
 		// });
 	}
 
-	var userAreaGrid = Ext.create('Ems.mgr.UserWorkunitGrid', {
+	var userWorkunitGrid = Ext.create('Ems.mgr.UserWorkunitGrid', {
 		title : "可访问作业单位",
 		listeners : {
 			select : function(model, record, index, eOpts) {
@@ -523,16 +523,17 @@ Ext.onReady(function() {
 			}
 		}
 	});
-	userAreaGrid.getStore().on("load",
+	userWorkunitGrid.getStore().on("load",
 			function(store, records, successful, eOpt) {
-				userAreaGrid.getSelectionModel().deselectAll();
+				userWorkunitGrid.getSelectionModel().deselectAll(true);
 				var seles = [];
 				for (var i = 0; i < records.length; i++) {
 					if (records[i].get("selected") == true) {
 						seles.push(records[i]);
 					}
 				}
-				userAreaGrid.getSelectionModel().select(seles, false, true)
+				
+				userWorkunitGrid.getSelectionModel().select(seles, false, true)
 			});
 	var tabPanel = Ext.create('Ext.tab.Panel', {
 		region : 'center',
@@ -541,7 +542,7 @@ Ext.onReady(function() {
 		// collapsed:false,
 		// collapseMode: 'mini',
 		// hideCollapseTool: true,
-		items : [ user_form, funRoleTree, store_grid, userAreaGrid ],
+		items : [ user_form, funRoleTree, store_grid, userWorkunitGrid ],
 		listeners : {
 			render : function(tabPanel) {
 				tabPanel.getEl().mask();

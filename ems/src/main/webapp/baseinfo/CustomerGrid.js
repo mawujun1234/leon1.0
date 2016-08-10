@@ -66,7 +66,8 @@ Ext.define('Ems.baseinfo.CustomerGrid',{
 	initAction:function(){
      	var me = this;
      	var actions=[];
-     	
+     	//alert(1);
+     	//alert(Permision.canShow('customer_create'));
        var create = new Ext.Action({
 		    text: '新建',
 		    itemId:'create',
