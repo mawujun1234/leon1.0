@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.mobile.task.Overtime;
 import com.mawujun.mobile.task.OvertimeController;
+import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.page.Page;
 
 @Controller
@@ -35,7 +36,8 @@ public class TaskRepairReportController {
 		Page page=Page.getInstance(start, limit).addParam("date_start", date_start)
 				.addParam("date_end", date_end)
 				.addParam("pole_code", pole_code)
-				.addParam("hitchType_id", hitchType_id);
+				.addParam("hitchType_id", hitchType_id)
+				.addParam("user_id", ShiroUtils.getUserId());
 		
 		JsonConfigHolder.setDatePattern("yyyy-MM-dd HH:mm:ss");
 		
@@ -59,7 +61,7 @@ public class TaskRepairReportController {
 	@RequestMapping("/report/taskrepair/exportRepairReport.do")
 	@ResponseBody
 	public void exportRepairReport(HttpServletResponse response,String date_start,String date_end,String pole_code,String hitchType_id) throws IOException {
-		List<TaskRepairReport> result= taskReportRepository.queryTaskRepairReport(date_start, date_end, pole_code, hitchType_id);
+		List<TaskRepairReport> result= taskReportRepository.queryTaskRepairReport(date_start, date_end, pole_code, hitchType_id,ShiroUtils.getUserId());
 		
 		XSSFWorkbook wb =new XSSFWorkbook();
 		Sheet sheet = wb.createSheet();

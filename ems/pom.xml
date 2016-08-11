@@ -19,17 +19,21 @@
 				<profiles.active>dev</profiles.active>
 				<log4j2.level>debug</log4j2.level>
 				<finalName>ROOT</finalName>
+				<reble.classes.dir>E:/eclipse/workspace/leon/ems/target/classes</reble.classes.dir>
+				<reble.test-classes.dir>E:/eclipse/workspace/leon/ems/target/classes</reble.test-classes.dir>
 			</properties>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
 		</profile>
 		<profile>
-			<id>test</id>
+			<id>dev_mac</id>
 			<properties>
-				<profiles.active>test</profiles.active>
+				<profiles.active>dev</profiles.active>
 				<log4j2.level>debug</log4j2.level>
-				<finalName>test</finalName>
+				<finalName>ROOT</finalName>
+				<reble.classes.dir>E:/eclipse/workspace/leon/ems/target/classes</reble.classes.dir>
+				<reble.test-classes.dir>E:/eclipse/workspace/leon/ems/target/classes</reble.test-classes.dir>
 			</properties>
 		</profile>
 		<profile>

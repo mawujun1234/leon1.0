@@ -16,5 +16,5 @@ public interface TaskReportRepository {
 	
 	public Page queryTaskRepairReport(Page page);
 	public List<TaskRepairReport> queryTaskRepairReport(@Param("date_start")String date_start,@Param("date_end")String date_end
-			,@Param("pole_code")String pole_code,@Param("hitchType_id")String hitchType_id);
+			,@Param("pole_code")String pole_code,@Param("hitchType_id")String hitchType_id,@Param("user_id")String user_id);
 }

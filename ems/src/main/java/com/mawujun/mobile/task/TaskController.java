@@ -54,7 +54,7 @@ public class TaskController {
 	public Page queryPoles(Integer start,Integer limit,String customer_id,String filter_other,String area_id,String workunit_id,String pole_name) {
 		Page page=Page.getInstance(start,limit);
 		page.addParam("customer_id", customer_id);
-		page.addParam("area_id", area_id);
+		//page.addParam("area_id", area_id);
 		page.addParam("workunit_id", workunit_id);
 		if(StringUtils.hasText(pole_name)){
 			page.addParam("pole_name", "%"+pole_name+"%");
