@@ -65,8 +65,9 @@ public class PoleController {
 	 */
 	@RequestMapping("/pole/query.do")
 	@ResponseBody
-	public Page query(Integer start,Integer limit,String sampleName,String customer_id,Boolean filterContainArea){
+	public Page query(Integer start,Integer limit,String sampleName,String customer_id,String nameORcode,Boolean filterContainArea){
 		Page page=Page.getInstance(start,limit).addParam(M.Pole.customer_id, customer_id);//.addParam(M.Pole.sampleName, "%"+sampleName+"%");
+		page.addParam("nameORcode", nameORcode);
 		if(filterContainArea!=null && filterContainArea==true){
 			//filterContainArea=true表示过滤掉已经选择了片区的杆位,主要用在为area选择杆位的时候
 			page.addParam("filterContainArea", true);

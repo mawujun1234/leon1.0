@@ -63,6 +63,7 @@ Ext.define('Ems.baseinfo.WorkUnitContactGrid',{
        var create = new Ext.Action({
 		    text: '新建',
 		    itemId:'create',
+		    hidden:!Permision.canShow('workunitcontact_create'),
 		    disabled:me.disabledAction,
 		    handler: function(b){
 		    	me.onCreate(null,b);
@@ -74,6 +75,7 @@ Ext.define('Ems.baseinfo.WorkUnitContactGrid',{
 		var update = new Ext.Action({
 		    text: '更新',
 		    itemId:'update',
+		    hidden:!Permision.canShow('workunitcontact_update'),
 		    disabled:me.disabledAction,
 		    handler: function(b){
 		    	me.onUpdate(null,b);
@@ -86,6 +88,7 @@ Ext.define('Ems.baseinfo.WorkUnitContactGrid',{
 		var destroy = new Ext.Action({
 		    text: '删除',
 		    itemId:'destroy',
+		    hidden:!Permision.canShow('workunitcontact_delete'),
 		    disabled:me.disabledAction,
 		    handler: function(){
 		    	me.onDelete();    

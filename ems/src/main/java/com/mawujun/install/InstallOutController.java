@@ -39,6 +39,7 @@ import com.mawujun.cache.EquipKey;
 import com.mawujun.cache.EquipScanType;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.exception.BusinessException;
+import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.store.IEcodeCache;
 import com.mawujun.utils.BeanUtils;
 import com.mawujun.utils.M;
@@ -417,6 +418,13 @@ public class InstallOutController {
 	@ResponseBody
 	public List<InstallOutVO> queryEditInstallOut() { 
 		return installOutStoreService.queryEditInstallOut();
+	}
+	
+	@RequestMapping("/installOut/deleteEditInstallOut.do")
+	@ResponseBody
+	public String deleteEditInstallOut(String id) { 
+		installOutStoreService.deleteEditInstallOut(id);
+		return "success";
 	}
 	
 	/**

@@ -50,7 +50,7 @@ Ext.define('Ems.baseinfo.WorkUnitForm',{
 	        name: 'password',
 	        readOnly:true,
 	        xtype:'textfield',
-	        inputType:'password',
+	        //inputType:'password',
 	        value:0,
 	        allowBlank: false
 	    },
@@ -155,6 +155,7 @@ Ext.define('Ems.baseinfo.WorkUnitForm',{
 	  me.tbar=	[saveButton,cancelButton,{
 		  	text: '新增',
 			itemId:'create',
+			hidden:!Permision.canShow('workunit_create'),
 			cls:'fla_form_action',
 			handler: function(btn){
 				var form=btn.up("form");
@@ -180,6 +181,7 @@ Ext.define('Ems.baseinfo.WorkUnitForm',{
 		},{
 			text: '更新',
 			itemId:'update',
+			hidden:!Permision.canShow('workunit_update'),
 			disabled:true,
 			cls:'fla_form_action',
 			handler: function(btn){
@@ -199,6 +201,7 @@ Ext.define('Ems.baseinfo.WorkUnitForm',{
 		},{
 			text: '删除',
 			itemId:'destroy',
+			hidden:!Permision.canShow('workunit_delete'),
 			disabled:true,
 			cls:'fla_form_action',
 			handler: function(btn){

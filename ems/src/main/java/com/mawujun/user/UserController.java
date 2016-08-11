@@ -46,7 +46,8 @@ public class UserController {
 	@RequestMapping("/user/list.do")
 	@ResponseBody
 	public Page list(Integer start,Integer limit,String name ) {
-		Page page=Page.getInstance(start, limit).addParam(M.User.name, StringUtils.hasText(name)?"%"+name+"%":null);
+		Page page=Page.getInstance(start, limit).addParam(M.User.name, StringUtils.hasText(name)?"%"+name+"%":null)
+				.addParam(M.User.status, true);
 		return userService.queryPage(page);
 	}
 	@RequestMapping("/user/listUserByFunRole.do")
@@ -74,7 +75,7 @@ public class UserController {
 		if("admin".equalsIgnoreCase(id)){
 			throw new BusinessException("管理员账号不能删除!");
 		}
-		userService.deleteById(id);
+		userService.delete(id);
 		return "success";
 	}
 	
@@ -204,6 +205,19 @@ JsonConfigHolder.setRootName("children");
         	return successUrl;
         }  
 		
+	}
+	/**
+	 * 保持在线的请求
+	 * @author mawujun qq:16064988 mawujun1234@163.com
+	 * @return
+	 */
+	@RequestMapping("/user/onlineling.do")
+	@ResponseBody
+	public String onlineling() {
+		if(!ShiroUtils.isLogon()){
+			return "{success:false}";
+		}
+		return "{success:true}";
 	}
 	
 	private String getIpAddr(HttpServletRequest request) {

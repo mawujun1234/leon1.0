@@ -112,8 +112,14 @@ Ext.define('Ems.baseinfo.PoleGrid',{
 		//me.addAction(destroy);
 		actions.push(destroy)
 		
+		var nameORcode=Ext.create('Ext.form.field.Text',{
+			emptyText:'点位名称或编号',
+			itemId:'nameORcode',
+			width:120
+		});
+		actions.push(nameORcode);
 		var reload = new Ext.Action({
-		    text: '刷新',
+		    text: '查询',
 		    itemId:'reload',
 		    handler: function(){
 		    	me.onReload();
@@ -266,6 +272,10 @@ Ext.define('Ems.baseinfo.PoleGrid',{
     },
     onReload:function(){
     	var me=this;
+    	me.getStore().getProxy().extraParams={
+    		nameORcode:me.down("#nameORcode").getValue(),
+    		customer_id:me.customer_id
+    	}
     	me.getStore().reload();	      
     },
 //    onShowEquipment:function(){

@@ -68,8 +68,9 @@ public class OvertimeController {
 	
 
 	@RequestMapping("/overtime/load.do")
-	public Overtime load(String id) {
-		return overtimeService.get(id);
+	@ResponseBody
+	public Overtime load() {
+		return overtimeService.get("overtime");
 	}
 	
 	
@@ -77,7 +78,10 @@ public class OvertimeController {
 	@RequestMapping("/overtime/update.do")
 	@ResponseBody
 	public  Overtime update(Overtime overtime) {
-		overtimeService.update(overtime);
+		if(overtime.getId()==null || "".equals(overtime.getId())){
+			overtime.setId("overtime");
+		}
+		overtimeService.createOrUpdate(overtime);
 		return overtime;
 	}
 	

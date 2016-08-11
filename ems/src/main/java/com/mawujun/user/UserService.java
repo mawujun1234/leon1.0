@@ -75,7 +75,7 @@ public class UserService  extends AbstractService<User, String>{
 //		userRepository.delete(id);
 //		userRepository.deleteAllFunRole(id);
 //		userRepository.deleteAllDataRole(id);
-		userRepository.update(Cnd.update().set(M.User.status, false));
+		userRepository.update(Cnd.update().set(M.User.status, false).andEquals(M.User.id, id));
 	}
 	
 	public int changePwd(String username,String password_old,String password_new) {

@@ -20,7 +20,7 @@ Ext.onReady(function(){
 		        labelWidth:120,
 		        xtype:'numberfield',
 		        //value:1440,
-		        minValue:60,
+		        //minValue:60,
 		        allowBlank: false
 		    },
 			{

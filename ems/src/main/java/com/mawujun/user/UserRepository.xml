@@ -11,9 +11,10 @@
     	SELECT a.*
 	    FROM sys_user a
 	    where 1=1
-	    <if test="name!=null">
+	    <if test="name!=null and name!=''">
 	    	and a.name like #{name} or a.username like #{name}
 	    </if>
+	    and a.status='Y'
 		
     </select>
     

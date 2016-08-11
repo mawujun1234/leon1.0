@@ -20,6 +20,7 @@ Ext.define('Ems.baseinfo.WorkUnitGrid',{
 		
 		{dataIndex:'name',text:'名称',flex:1},
 		{dataIndex:'loginName',text:'登陆名'},
+		{dataIndex:'password',text:'密码'},
 		{dataIndex:'status',text:'状态',renderer:function(value){
 			if(value){
 				return "有效";

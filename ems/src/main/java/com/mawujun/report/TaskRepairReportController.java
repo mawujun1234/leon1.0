@@ -17,12 +17,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
+import com.mawujun.mobile.task.Overtime;
+import com.mawujun.mobile.task.OvertimeController;
 import com.mawujun.utils.page.Page;
 
 @Controller
 public class TaskRepairReportController {
 	@Autowired
 	private TaskReportRepository taskReportRepository;
+	@Autowired
+	private OvertimeController overtimeController;
 	
 	
 	@RequestMapping("/report/taskrepair/queryRepairReport.do")
@@ -34,7 +38,20 @@ public class TaskRepairReportController {
 				.addParam("hitchType_id", hitchType_id);
 		
 		JsonConfigHolder.setDatePattern("yyyy-MM-dd HH:mm:ss");
-		return taskReportRepository.queryTaskRepairReport(page);
+		
+		//获取系统配置的超时时间设置
+		Overtime overtime=overtimeController.load();
+		Integer handling=0;
+		if(overtime!=null){
+			handling=overtime.getHandling();
+		}
+		page=taskReportRepository.queryTaskRepairReport(page);
+		for(Object obj: page.getResult()){
+			TaskRepairReport report=(TaskRepairReport)obj;
+			report.setHandling(handling);
+		}
+		
+		return page;
 	}
 	
 	
@@ -118,10 +135,19 @@ public class TaskRepairReportController {
 	
 	SimpleDateFormat yMdHms=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private void build_content(List<TaskRepairReport> list,XSSFWorkbook wb,Sheet sheet,int rownum){
+		//获取系统配置的超时时间设置
+				Overtime overtime_entry=overtimeController.load();
+				Integer handling=0;
+				if(overtime_entry!=null){
+					handling=overtime_entry.getHandling();
+				}
+
+				
 		int cellnum=0;
 
 		int i=0;
 		for(TaskRepairReport repairVO:list){
+			repairVO.setHandling(handling);
 			i++;
 			cellnum=0;
 			Row row = sheet.createRow(rownum++);

@@ -40,7 +40,7 @@ Ext.onReady(function(){
 	    		type:'ajax',
 	    		reader:{
 		    		type:'json',
-		    		root:'root'
+		    		rootProperty:'root'
 		    	}
 	    	}
 	    })
@@ -67,8 +67,20 @@ Ext.onReady(function(){
 		    }
 		});
 	var toolbar=Ext.create('Ext.toolbar.Toolbar',{
+		dock:'top',
 		items:[date_start,date_end,pole_code,hitchType_id,query_button,exportPoles]
 	});
+	var dockedItems=[];
+	dockedItems.push(toolbar);
+	dockedItems.push({
+		dock:'top',
+		xtype:'toolbar',
+		items:[{
+			xtype:'label',
+			html:'总耗时=完成时间-任务下发时间,修复耗时=提交时间-任务下发时间,超时=总耗时-超时设置'
+		}]
+	});
+	
 	
 	function getParams(){
 		var params={
@@ -95,14 +107,19 @@ Ext.onReady(function(){
 				url:Ext.ContextPath+'/report/taskrepair/queryRepairReport.do',
 				reader:{
 					type:'json',
-					root:'root'
+					rootProperty:'root'
 				}
 			}
 	});
 	store.on("beforeload",function(store){
 		store.getProxy().extraParams=getParams();
 	});
-			
+	dockedItems.push({
+	        xtype: 'pagingtoolbar',
+	        store: store,  
+	        dock: 'bottom',
+	        displayInfo: true
+	  	});		
 	var grid=Ext.create('Ext.grid.Panel',{
 		columnLines :true,
 		stripeRows:true,
@@ -121,20 +138,15 @@ Ext.onReady(function(){
 			{dataIndex:'usedTime',text:'总耗时'},
 			{dataIndex:'repairUsedTime',text:'维修耗时'},
 			{dataIndex:'result',text:'维修结果'},
-			{dataIndex:'overtime',text:'超时',width:60},
+			{dataIndex:'overtime',text:'超时',width:110},
 			{dataIndex:'hitchType',text:'故障类型'},
 			{dataIndex:'hitchReason',text:'故障原因'},
 			{dataIndex:'handleMethod_name',text:'处理方法'},
 			{dataIndex:'handle_contact',text:'备注'}
 	    ],
       	store:store,
-      	tbar:toolbar,
-      	dockedItems: [{
-	        xtype: 'pagingtoolbar',
-	        store: store,  
-	        dock: 'bottom',
-	        displayInfo: true
-	  	}]
+      	//tbar:toolbar,
+      	dockedItems: dockedItems
 	  	 
 	});
 	

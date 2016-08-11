@@ -13,6 +13,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    <if test="filterContainArea==true">
 	    	and workunit_id is null
 	    </if>
+	    <if test="nameORcode!=null and nameORcode!=''">
+	    	and (lower(a.name) like lower('%${nameORcode}%') or lower(a.code) like lower('%${nameORcode}%'))
+	    </if>
 	    order by code
     </select>
 

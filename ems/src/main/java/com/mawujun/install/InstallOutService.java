@@ -262,6 +262,10 @@ public class InstallOutService extends AbstractService<InstallOut, String>{
 	public List<InstallOutVO> queryEditInstallOut() {
 		return installOutRepository.queryEditInstallOut();
 	}
+	public void deleteEditInstallOut(String id) { 
+		installOutListRepository.deleteBatch(Cnd.delete().andEquals(M.InstallOutList.installOut_id, id));
+		installOutRepository.deleteBatch(Cnd.delete().andEquals(M.InstallOut.id, id));
+	}
 	
 	public Page queryDifference(Page page){
 		return installOutRepository.queryDifference(page);

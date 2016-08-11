@@ -84,6 +84,9 @@ Ext.onReady(function() {
 		}, {
 			header : '姓名',
 			dataIndex : 'name'
+		},{
+			header : '密码',
+			dataIndex : 'password'
 		}, {
 			header : '电话',
 			dataIndex : 'phone',
@@ -235,8 +238,8 @@ Ext.onReady(function() {
 		}, {
 			fieldLabel : '密码',
 			name : 'password',
-			readOnly : true,
-			inputType : 'password'
+			readOnly : true
+			//inputType : 'password'
 		}, {
 			fieldLabel : '电话',
 			name : 'phone',

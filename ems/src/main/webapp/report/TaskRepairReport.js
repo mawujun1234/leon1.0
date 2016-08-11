@@ -1,6 +1,6 @@
-Ext.defineModel("Ems.report.TaskRepairReport",{
+Ext.define("Ems.report.TaskRepairReport",{
 	extend:"Ext.data.Model",
-	idProperty:'id',
+	//idProperty:'id',
 	fields:[
 		{name:'customer_name',type:'string'},
 		{name:'pole_id',type:'string'},

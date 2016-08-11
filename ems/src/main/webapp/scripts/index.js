@@ -37,6 +37,21 @@ Ext.require([
 Ext.onReady(function() {    
 	Ext.tip.QuickTipManager.init();
 	
+	window.onlineling=function() {
+		Ext.Ajax.request({
+			url:Ext.ContextPath+'/user/onlineling.do',
+			success:function(response){
+				var obj=Ext.decode(response.responseText);
+				if(!obj.success){
+				  location.href="./login.jsp";
+				}
+			}
+			
+		});
+		setTimeout("onlineling()",120000);
+	}
+	onlineling();
+	
 	var naviPanel=Ext.create("Ext.ms.navi.Panel",{
 		contentEl:'div-left',
 	    title:'常用功能',
