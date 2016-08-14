@@ -50,6 +50,7 @@
 				/**/*.png=anon
 				/**/*.apk=anon
 				/**/*.jss=anon
+				/**/*.html=anon
 				/index.jsp*=authc
 				/**/*.jsp=authc,perms
 				#/**/*.do=authc,perms

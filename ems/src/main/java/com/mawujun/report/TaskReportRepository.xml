@@ -70,6 +70,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		from ems_task a
 		inner join ems_pole b on a.pole_id=b.id
 		where a.type='repair'
+		and exists (select 1 from sys_user_workunit x where x.workunit_id=b.workunit_id and x.user_id=#{user_id})
 		and to_char(a.createDate,'yyyy-mm-dd')&gt;=#{date_start}
 		and to_char(a.createDate,'yyyy-mm-dd')&lt;=#{date_end}
 		<if test="pole_code!=null and pole_code!=''">
