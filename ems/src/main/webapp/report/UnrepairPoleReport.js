@@ -29,7 +29,7 @@ Ext.onReady(function(){
 			    	url:Ext.ContextPath+"/customer/queryCombo.do",
 			    	reader:{
 			    		type:'json',
-			    		root:'root'
+			    		rootProperty:'root'
 			    	}
 			    }
 		   })
@@ -54,7 +54,7 @@ Ext.onReady(function(){
 			    	url:Ext.ContextPath+"/workUnit/queryCombo.do",
 			    	reader:{
 			    		type:'json',
-			    		root:'root'
+			    		rootProperty:'root'
 			    	}
 			    }
 		   })
@@ -125,7 +125,7 @@ Ext.onReady(function(){
 				url:Ext.ContextPath+'/report/task/queryUnrepairPoleReport.do',
 				reader:{
 					type:'json',
-					root:'root'
+					rootProperty:'root'
 				}
 			}
 	});

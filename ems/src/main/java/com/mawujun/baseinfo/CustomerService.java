@@ -49,7 +49,7 @@ public class CustomerService extends AbstractService<Customer, String>{
 	}
 
 	public List<CustomerVO> queryChildren(String parent_id,String name) {
-		return customerRepository.queryChildren(parent_id,name);
+		return customerRepository.queryChildren(parent_id,name,ShiroUtils.getUserId());
 	}
 	
 	public List<Customer> queryCombo(String name) {

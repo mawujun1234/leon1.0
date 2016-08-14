@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.mobile.task.Task;
 import com.mawujun.mobile.task.TaskVO;
+import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.M;
 import com.mawujun.utils.Params;
 import com.mawujun.utils.page.Page;
@@ -39,6 +40,7 @@ public class TaskReportController {
 		page.addParam(M.Task.customer_id, customer_id);
 		page.addParam("date_start", date_start);
 		page.addParam("date_end", date_end);
+		page.addParam("user_id", ShiroUtils.getUserId());
 
 		JsonConfigHolder.setDatePattern("yyyy-MM-dd HH:mm:ss");
 		return taskReportRepository.queryUnrepairPoleReport(page);
@@ -49,7 +51,7 @@ public class TaskReportController {
 	@ResponseBody
 	public void exportUnrepairPoleReport(HttpServletResponse response,String workunit_id,String customer_id,String date_start,String date_end) throws IOException {
 		Params params=Params.init().add(M.Task.workunit_id, workunit_id).add("customer_id", customer_id)
-				.add("date_start", date_start).add("date_end", date_end);
+				.add("date_start", date_start).add("date_end", date_end).add("user_id", ShiroUtils.getUserId());;
 		List<TaskVO> taskes=taskReportRepository.exportUnrepairPoleReport(params);
 		
 		XSSFWorkbook wb =new XSSFWorkbook();

@@ -22,7 +22,7 @@ Ext.onReady(function(){
 												+ "/customer/query4combo.do",
 										reader : {
 											type : 'json',
-											root : 'root'
+											rootProperty : 'root'
 										}
 									}
 								}),
@@ -33,7 +33,7 @@ Ext.onReady(function(){
 									customer_0or1.getStore().getProxy().extraParams = {
 										parent_id : newValue
 									};
-									// customer_0or1.getStore().reload();
+									customer_0or1.getStore().reload();
 								}
 
 							}
@@ -55,13 +55,25 @@ Ext.onReady(function(){
 						queryMode : 'remote',
 						triggerAction : 'query',
 						minChars : -1,
-						trigger1Cls : Ext.baseCSSPrefix + 'form-clear-trigger',
-						trigger2Cls : Ext.baseCSSPrefix + 'form-arrow-trigger',// 'form-search-trigger',
-						onTrigger1Click : function() {
-							var me = this;
-							me.setValue('');
+						//trigger1Cls : Ext.baseCSSPrefix + 'form-clear-trigger',
+						//trigger2Cls : Ext.baseCSSPrefix + 'form-arrow-trigger',// 'form-search-trigger',
+//						
+//						onTrigger1Click : function() {
+//							var me = this;
+//							me.setValue('');
+//						},
+						triggers:{
+							foo: {
+					            cls: Ext.baseCSSPrefix + 'form-clear-trigger',
+					            weight: -2, // negative to place before default triggers
+					            handler: function() {
+					                //console.log('foo trigger clicked');
+					            	var me = this;
+									me.setValue('');
+					            }
+					        }
 						},
-						allowBlank : false,
+						//allowBlank : false,
 						store : Ext.create('Ext.data.Store', {
 									fields : ['id', 'name'],
 									proxy : {
@@ -72,7 +84,7 @@ Ext.onReady(function(){
 												+ "/customer/query4combo.do",
 										reader : {
 											type : 'json',
-											root : 'root'
+											rootProperty : 'root'
 										}
 									},
 									listeners : {

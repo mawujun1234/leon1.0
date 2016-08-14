@@ -75,13 +75,13 @@
 				<property name="databaseId" value="${jdbc.dbName}"></property>
 			</bean>
 		</property>
-		<!--  -->
+		<!--  
 		<property name="mapperLocations">
 			<list>
 				<value>classpath:/**/*_${jdbc.dbName}_Mapper.xml</value>
 				<value>classpath:/**/*_common_Mapper.xml</value>
 			</list>
-		</property>
+		</property>-->
 	</bean>
 	<!-- 自动搜索IRepository的dao层类和相应的mapper.xml文件 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer" >
@@ -216,7 +216,32 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
     <tx:annotation-driven transaction-manager="transactionManager"  proxy-target-class="false" />
-    
+    <!-- 
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close"> 
+    	<property name="driverClassName" value="${jdbc.driver}"/>
+	    <property name="url" value="${jdbc.url}" />
+	    <property name="username" value="${jdbc.username}" />
+	    <property name="password" value="${jdbc.password}" />
+	
+	    <property name="filters" value="stat" />
+	
+	    <property name="maxActive" value="${dbcp.maxActive}" />
+	    <property name="initialSize" value="${dbcp.maxIdle}" />
+	    <property name="maxWait" value="60000" />
+	    <property name="minIdle" value="${dbcp.maxIdle}" />
+	
+	    <property name="timeBetweenEvictionRunsMillis" value="60000" />
+	    <property name="minEvictableIdleTimeMillis" value="300000" />
+	
+	    <property name="validationQuery" value="SELECT 'x' from sys_user" />
+	    <property name="testWhileIdle" value="true" />
+	    <property name="testOnBorrow" value="false" />
+	    <property name="testOnReturn" value="false" />
+	    <property name="poolPreparedStatements" value="true" />
+	    <property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
+	</bean>
+    -->
+    <!---->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="${jdbc.driver}"/>
 		<property name="url" value="${jdbc.url}" />
@@ -229,9 +254,10 @@
 		<property name="timeBetweenEvictionRunsMillis" value="3600000" />
 		<property name="minEvictableIdleTimeMillis" value="3600000" />
 	</bean>
-		
+	
+	<!--	
 	<beans profile="prod">
-		<!-- 数据源配置,使用应用内的DBCP数据库连接池 
+		 数据源配置,使用应用内的DBCP数据库连接池 
 		<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 			<property name="driverClassName" value="${jdbc.driver}"/>
 			<property name="url" value="${jdbc.url}" />
@@ -244,20 +270,10 @@
 			<property name="timeBetweenEvictionRunsMillis" value="3600000" />
 			<property name="minEvictableIdleTimeMillis" value="3600000" />
 		</bean>
-		-->
+		
 	</beans>
-	
-	<beans profile="dev" >
-		<!--
-		<jdbc:initialize-database data-source="dataSource" enabled="#{systemProperties.INITIALIZE_DATABASE}"  ignore-failures="DROPS">
-		  <jdbc:script location="classpath:sql/initData.sql" encoding="UTF-8" />
-		</jdbc:initialize-database>
-		 -->
-		 <!-- 开发的时候只要初始化过一次就可以了，就不用再进行初始化了,如果是使用h2，那拷贝过去就可以了，不需要再进行初始化，如果是外部数据库，更加不需要重新进行初始化了 -->
-		 <jdbc:initialize-database data-source="dataSource" enabled="false" ignore-failures="DROPS">
-		 	<jdbc:script location="classpath:sql/initData.sql" encoding="UTF-8" />
-		 </jdbc:initialize-database>
-	</beans>
+	-->
+
 	
 	<!-- unit test环境 
 	<beans profile="test">

@@ -21,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mawujun.baseinfo.CustomerService;
+import com.mawujun.shiro.ShiroUtils;
 
 @Controller
 public class FrontEquipReportController {
@@ -118,15 +119,15 @@ public class FrontEquipReportController {
 		String customer_2_name=customerService.get(customer_2).getName();
 		List<FrontEquipSumReport_subtype> list_subtype_prod=null;
 		if(isMaching){
-			 list_subtype_prod=frontEquipReportRepository.queryMachineroomEquipSumReport_header(customer_2, customer_0or1);
+			 list_subtype_prod=frontEquipReportRepository.queryMachineroomEquipSumReport_header(customer_2, customer_0or1,ShiroUtils.getUserId());
 		} else {
-			 list_subtype_prod=frontEquipReportRepository.queryFrontEquipSumReport_header(customer_2, customer_0or1);
+			 list_subtype_prod=frontEquipReportRepository.queryFrontEquipSumReport_header(customer_2, customer_0or1,ShiroUtils.getUserId());
 		}
 		List<FrontEquipSumReport> list=null;
 		if(isMaching){
-			list=frontEquipReportRepository.queryMachineroomEquipSumReport(customer_2, customer_0or1);
+			list=frontEquipReportRepository.queryMachineroomEquipSumReport(customer_2, customer_0or1,ShiroUtils.getUserId());
 		} else {
-			list=frontEquipReportRepository.queryFrontEquipSumReport(customer_2, customer_0or1);
+			list=frontEquipReportRepository.queryFrontEquipSumReport(customer_2, customer_0or1,ShiroUtils.getUserId());
 		}
 		
 		XSSFWorkbook wb =new XSSFWorkbook();

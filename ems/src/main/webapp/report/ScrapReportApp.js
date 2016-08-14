@@ -62,7 +62,7 @@ Ext.onReady(function(){
 				url:Ext.ContextPath+'/report/scrap/queryScrapReport.do',
 				reader:{
 					type:'json',
-					root:'root'
+					rootProperty:'root'
 				}
 			}
 	});

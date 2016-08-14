@@ -29,11 +29,11 @@
 		<profile>
 			<id>dev_mac</id>
 			<properties>
-				<profiles.active>dev</profiles.active>
+				<profiles.active>mac</profiles.active>
 				<log4j2.level>debug</log4j2.level>
 				<finalName>ROOT</finalName>
-				<reble.classes.dir>E:/eclipse/workspace/leon/ems/target/classes</reble.classes.dir>
-				<reble.test-classes.dir>E:/eclipse/workspace/leon/ems/target/classes</reble.test-classes.dir>
+				<reble.classes.dir>/Users/mawujun/git/leon/ems/target/classes</reble.classes.dir>
+				<reble.test-classes.dir>/Users/mawujun/git/leon/ems/target/test-classes</reble.test-classes.dir>
 			</properties>
 		</profile>
 		<profile>
@@ -68,6 +68,7 @@
 		
 
 		<plugins>
+		<!--
 		 <plugin>
 	        <groupId>org.apache.maven.plugins</groupId>
 	        <artifactId>maven-compiler-plugin</artifactId>
@@ -77,7 +78,7 @@
 	            <target>1.7</target>
 	        </configuration>
 	     </plugin>
-			
+			  -->
 			<!-- 打成war包用来发布 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -156,7 +157,7 @@
 
 			
 			<!-- jrebel热替换功能的插件  http://zeroturnaround.com/forums/topic/jrebel-maven-plugin-not-available-in-eclipse-juno-solved/ 
-				https://github.com/ktoso/maven-git-commit-id-plugin/issues/22 http://update.zeroturnaround.com/update-site/ -->
+				https://github.com/ktoso/maven-git-commit-id-plugin/issues/22 http://update.zeroturnaround.com/update-site/
 			<plugin>
 				<groupId>org.zeroturnaround</groupId>
 				<artifactId>jrebel-maven-plugin</artifactId>
@@ -171,7 +172,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+			 -->
 			
 		</plugins>
 	</build>
@@ -346,6 +347,12 @@
 		<groupId>com.mawujun</groupId>
 		<artifactId>leon-generator</artifactId>
 		<version>1.0</version>
+	</dependency>
+	
+	<dependency>
+     <groupId>com.alibaba</groupId>
+     <artifactId>druid</artifactId>
+     <version>1.0.24</version>
 	</dependency>
 	</dependencies> 
 </project>

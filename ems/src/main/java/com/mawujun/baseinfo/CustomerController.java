@@ -96,6 +96,12 @@ public class CustomerController {
 		//JsonConfigHolder.setAutoWrap(false);
 		return customeres;
 	}
+	@RequestMapping("/customer/queryCombo.do")
+	@ResponseBody
+	public List<Customer> queryCombo(String name) {	
+		return customerService.queryCombo(name);
+		//return customerService.query(Cnd.select().andEquals(M.Customer.status, true).andLike(M.Customer.name, name));	
+	}
 	
 
 	@RequestMapping("/customer/load.do")
@@ -136,12 +142,7 @@ public class CustomerController {
 		return customer;
 	}
 	
-	@RequestMapping("/customer/queryCombo.do")
-	@ResponseBody
-	public List<Customer> queryCombo(String name) {	
-		return customerService.queryCombo(name);
-		//return customerService.query(Cnd.select().andEquals(M.Customer.status, true).andLike(M.Customer.name, name));	
-	}
+
 	
 //	@RequestMapping("/customer/queryPole.do")
 //	@ResponseBody

@@ -19,6 +19,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	select a.subtype_id,b.name as subtype_name,a.prod_id,c.name as prod_name,c.style as prod_style from (
 		select c.id,c.name,b.ecode,d.subtype_id,d.prod_id from ems_pole a,ems_equipment_pole b,ems_customer c,ems_equipment d
 		where a.id=b.pole_id and a.customer_id=c.id and b.ecode=d.ecode
+		and exists (select 1 from sys_user_workunit x where x.workunit_id=a.workunit_id and x.user_id=#{user_id})
 		and c.parent_id=#{customer_2} and c.type!=2
 		<if test="customer_0or1!=null and customer_0or1!=''">
 				and c.id=#{customer_0or1}
@@ -42,6 +43,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	select a.id as customer_id,a.name as customer_name,a.prod_id,c.name as prod_name,count(a.ecode) num from (
 		select c.id,c.name,b.ecode,d.prod_id from ems_pole a,ems_equipment_pole b,ems_customer c,ems_equipment d
 		where a.id=b.pole_id and a.customer_id=c.id and b.ecode=d.ecode
+		and exists (select 1 from sys_user_workunit x where x.workunit_id=a.workunit_id and x.user_id=#{user_id})
 		and c.parent_id=#{customer_2} and c.type!=2
 		<if test="customer_0or1!=null and customer_0or1!=''">
 				and c.id=#{customer_0or1}
@@ -58,6 +60,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	select a.subtype_id,b.name as subtype_name,a.prod_id,c.name as prod_name,c.style as prod_style from (
 		select a.id,a.name,b.ecode,d.subtype_id,d.prod_id from ems_pole a,ems_equipment_pole b,ems_customer c,ems_equipment d
 		where a.id=b.pole_id and a.customer_id=c.id and b.ecode=d.ecode
+		and exists (select 1 from sys_user_workunit x where x.workunit_id=a.workunit_id and x.user_id=#{user_id})
 		and c.parent_id=#{customer_2} and c.type!=2 and a.poleType='machineroom'
 		<if test="customer_0or1!=null and customer_0or1!=''">
 				and c.id=#{customer_0or1}
@@ -71,6 +74,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	select a.id as customer_id,a.name as customer_name,a.prod_id,c.name as prod_name,count(a.ecode) num from (
 		select a.id,a.name,b.ecode,d.prod_id from ems_pole a,ems_equipment_pole b,ems_customer c,ems_equipment d
 		where a.id=b.pole_id and a.customer_id=c.id and b.ecode=d.ecode
+		and exists (select 1 from sys_user_workunit x where x.workunit_id=a.workunit_id and x.user_id=#{user_id})
 		and c.parent_id=#{customer_2} and c.type!=2  and a.poleType='machineroom'
 		<if test="customer_0or1!=null and customer_0or1!=''">
 				and c.id=#{customer_0or1}

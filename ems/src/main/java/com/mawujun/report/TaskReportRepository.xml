@@ -9,6 +9,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     <select id="exportUnrepairPoleReport" resultType="com.mawujun.mobile.task.TaskVO" parameterType="map">
     	select a.*,b.code as pole_code from ems_task a,ems_pole b
 		where a.pole_id=b.id
+			and exists (select 1 from sys_user_workunit x where x.workunit_id=b.workunit_id and x.user_id=#{user_id})
 			and a.type='repair' and a.status!='complete'
 			<if test="workunit_id!=null and workunit_id!=''">
 				and a.workunit_id=#{workunit_id}
@@ -28,6 +29,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     <select id="queryUnrepairPoleReport" resultType="com.mawujun.mobile.task.TaskVO" parameterType="map">
     	select a.*,b.code as pole_code from ems_task a,ems_pole b
 		where a.pole_id=b.id
+			and exists (select 1 from sys_user_workunit x where x.workunit_id=b.workunit_id and x.user_id=#{user_id})
 			and a.type='repair'
 			and a.status !='complete'
 			<if test="workunit_id!=null">
