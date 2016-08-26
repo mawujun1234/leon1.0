@@ -62,11 +62,13 @@
 						</property>
 					</bean>
 				</property> 
+				<!--08.26订单更新导入日期出问题,所以把CustomPropertyEditorRegistrar的日期格式改成了 yyyy-MM-dd -->
 				<property name="propertyEditorRegistrars">
 					<array>
 						<bean class="com.mawujun.controller.spring.mvc.CustomPropertyEditorRegistrar"></bean>
 					</array>
 				</property>
+				
 			</bean>
 		</property>
 		<property name="messageConverters">

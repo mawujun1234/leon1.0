@@ -20,12 +20,16 @@ Ext.define('Ems.store.OrderForm',{
     },
 	initComponent: function () {
        var me = this;
-       var id_field=Ext.create('Ext.form.field.Hidden',{
+     var id_field=Ext.create('Ext.form.field.Hidden',{
 		fieldLabel:'id',
 		name:'id',
 		labelWidth:50,
 		allowBlank:false,
 		labelAlign:'right'
+	});
+	var orderType_field=Ext.create('Ext.form.field.Hidden',{
+		fieldLabel:'orderType',
+		name:'orderType'
 	});
 	var status=Ext.create('Ext.form.field.Hidden',{
 		fieldLabel:'status',
@@ -207,7 +211,7 @@ Ext.define('Ems.store.OrderForm',{
 	});
 	//me.supplier_combox=supplier_combox;
 		
-		me.items=[id_field,status,order_no,store_combox,orderDate,operater,operater_name,project_combox,supplier_combox];
+		me.items=[orderType_field,id_field,status,order_no,store_combox,orderDate,operater,operater_name,project_combox,supplier_combox];
 		
 		var saveButton=Ext.create('Ext.button.Button',{
             text: '保存',

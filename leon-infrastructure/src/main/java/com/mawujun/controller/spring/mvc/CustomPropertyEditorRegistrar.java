@@ -8,7 +8,7 @@ import org.springframework.beans.PropertyEditorRegistry;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 
 public class CustomPropertyEditorRegistrar implements PropertyEditorRegistrar {
-	private String formatStr="yyyy-MM-dd HH:mm:ss";
+	private String formatStr="yyyy-MM-dd";
 
 	public void registerCustomEditors(PropertyEditorRegistry registry) {
 		// TODO Auto-generated method stub
