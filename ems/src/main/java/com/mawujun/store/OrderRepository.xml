@@ -36,6 +36,19 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    	<if test="orderType!=null and orderType!=''">
 	    		and a.orderType = #{orderType}
 	    	</if>
+	    	<if test="(instore_date_start!=null and instore_date_start!='') or (instore_date_end!=null and instore_date_end!='')">
+	    		and exists (
+	    			select 1 from ems_instore a1,ems_instorelist b1,ems_orderlist c1
+					where a1.id=b1.instore_id and b1.orderlist_id=c1.id
+					and a.id=c1.order_id
+					<if test="instore_date_start!=null and instore_date_start!=''">
+						and to_char(a1.operatedate,'yyyy-mm-dd') &gt;=#{instore_date_start}
+					</if>
+					<if test="instore_date_end!=null and instore_date_end!=''">
+						and to_char(a1.operatedate,'yyyy-mm-dd') &lt;=#{instore_date_end}
+					</if>
+					)
+	    	</if>
     	</where>
     	order by a.orderDate desc
     </select>
@@ -63,6 +76,22 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    	</if>
 	    	<if test="status!=null and status!=''">
 	    		and a.status = #{status}
+	    	</if>
+	    	<if test="orderType!=null and orderType!=''">
+	    		and a.orderType = #{orderType}
+	    	</if>
+	    	<if test="(instore_date_start!=null and instore_date_start!='') or (instore_date_end!=null and instore_date_end!='')">
+	    		and exists (
+	    			select 1 from ems_instore a1,ems_instorelist b1,ems_orderlist c1
+					where a1.id=b1.instore_id and b1.orderlist_id=c1.id
+					and a.id=c1.order_id
+					<if test="instore_date_start!=null and instore_date_start!=''">
+						and to_char(a1.operatedate,'yyyy-mm-dd') &gt;=#{instore_date_start}
+					</if>
+					<if test="instore_date_end!=null and instore_date_end!=''">
+						and to_char(a1.operatedate,'yyyy-mm-dd') &lt;=#{instore_date_end}
+					</if>
+					)
 	    	</if>
     	</where>
     	order by a.orderDate desc

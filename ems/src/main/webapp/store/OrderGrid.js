@@ -150,6 +150,23 @@ Ext.define('Ems.store.OrderGrid',{
 		allowBlank:true,
 		labelAlign:'right'
 	});
+	
+	var instore_date_start=Ext.create('Ext.form.field.Date',{
+	  	fieldLabel: '入库日期',
+	  	labelWidth:60,
+	  	width:160,
+	  	format:'Y-m-d'
+        //name: 'date_start',
+        //value:  Ext.Date.add(new Date(), Ext.Date.DAY, -7)
+	  });
+	  var instore_date_end=Ext.create('Ext.form.field.Date',{
+	  	fieldLabel: '到',
+	  	format:'Y-m-d',
+	  	labelWidth:15,
+	  	width:115
+        //name: 'date_end',
+        //value: new Date()
+	  });
 	  
 	me.store.on("beforeload",function(store){
 		store.getProxy().extraParams={
@@ -157,6 +174,8 @@ Ext.define('Ems.store.OrderGrid',{
 					store_id:store_combox.getValue(),
 					date_start: date_start.getRawValue(),
 					date_end: date_end.getRawValue(),
+					instore_date_start: instore_date_start.getRawValue(),
+					instore_date_end: instore_date_end.getRawValue(),
 					orderNo:order_no.getValue(),
 					project_id:project_combox.getValue(),
 					supplier_id:supplier_combox.getValue(),
@@ -170,6 +189,8 @@ Ext.define('Ems.store.OrderGrid',{
 		defaultType: 'toolbar',
 		items: [{
 			items: [store_combox,date_start,date_end] // toolbar 1
+		},{
+			items: [instore_date_start,instore_date_end] // toolbar 1
 		},{
 			items: [supplier_combox] // toolbar 1
 		},{
