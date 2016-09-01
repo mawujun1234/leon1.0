@@ -13,9 +13,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<choose>
 			    <when test="parent_id!=null and parent_id!=''">
 			      a.parent_id = #{parent_id}
-			      <if test="user_id!=null and user_id!=''">
-				    	and exists (select 1 from ems_pole b,sys_user_workunit c where b.workunit_id=c.workunit_id and a.id=b.customer_id and c.user_id=#{user_id})
-				    </if>
+			      
 			    </when>
 			    
 			    <otherwise>
