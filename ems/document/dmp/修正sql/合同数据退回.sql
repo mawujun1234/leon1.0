@@ -1,27 +1,30 @@
 
----ÓÃÓÚÉè±¸»¹Ã»ÓĞ±»Èë¿â»òÁìÓÃ³öÈ¥µÄÊ±ºò
+---ç”¨äºè®¾å¤‡è¿˜æ²¡æœ‰è¢«å…¥åº“æˆ–é¢†ç”¨å‡ºå»çš„æ—¶å€™
 SELECT * FROM EMS_equipmentprod where style='' 
---Ê×ÏÈ¸ù¾İºÏÍ¬ºÅÕÒµ½ÏàÓ¦µÄ¶©µ¥
+--é¦–å…ˆæ ¹æ®åˆåŒå·æ‰¾åˆ°ç›¸åº”çš„è®¢å•
 select * from ems_order
-      where orderno='NBDW-2016-020£¨06-BL£©'
+      where orderno like '%2016-267%'
 select * from ems_order
       where orderno like 'NBDW-2016-020%'
---¸ù¾İ¶©µ¥idÕÒµ½ÏàÓ¦µÄ¶©µ¥Ã÷Ï¸
-select * from ems_orderlist where order_id='b498c8ec-7d40-4851-a0c1-90bcc2d746b7'
+--æ ¹æ®è®¢å•idæ‰¾åˆ°ç›¸åº”çš„è®¢å•æ˜ç»†
+select * from ems_orderlist where order_id='9df49df2-e1a6-4d99-bc15-117a7ed00617'
 and prod_id='050104'
 
---ÅĞ¶ÏÕâĞ©Éè±¸ÓĞÃ»ÓĞ±»Ê¹ÓÃ»ò±»Èë¿â
+--åˆ¤æ–­è¿™äº›è®¾å¤‡æœ‰æ²¡æœ‰è¢«ä½¿ç”¨æˆ–è¢«å…¥åº“
 select * from ems_equipment_workunit where ecode in (   
-  select ecode from ems_equipment where orderlist_id='bc6faed3-fd68-4a87-8e43-122c69271051'
+  select ecode from ems_equipment where orderlist_id='ba1f9984-177d-427c-b020-c499f3dd5355'
 )
 select * from ems_equipment_store where ecode in (
-       select ecode from ems_equipment where orderlist_id='bc6faed3-fd68-4a87-8e43-122c69271051'
+       select ecode from ems_equipment where orderlist_id='ba1f9984-177d-427c-b020-c499f3dd5355'
 )
 select * from ems_equipment_pole where ecode in (
-       select ecode from ems_equipment where orderlist_id='bc6faed3-fd68-4a87-8e43-122c69271051'
+       select ecode from ems_equipment where orderlist_id='ba1f9984-177d-427c-b020-c499f3dd5355'
+)
+select * from ems_equipment_repair where ecode in (
+       select ecode from ems_equipment where orderlist_id='ba1f9984-177d-427c-b020-c499f3dd5355'
 )
 
-
+--è¦ä»è¯¥è®¾å¤‡å…¥åº“çš„æ—¶å€™å¼€å§‹é‡æ–°ç®—
 begin
   for store in (
     select * from ems_store  where type in (1,3)
@@ -30,35 +33,38 @@ begin
   END LOOP;
 end;
 
-update ems_orderlist set totalnum=(select count(ecode) from ems_equipment where orderlist_id='bc6faed3-fd68-4a87-8e43-122c69271051') where id='bc6faed3-fd68-4a87-8e43-122c69271051'
+update ems_orderlist set totalnum=(select count(ecode) from ems_equipment where orderlist_id='ba1f9984-177d-427c-b020-c499f3dd5355') where id='ba1f9984-177d-427c-b020-c499f3dd5355'
 delete ems_installout a where not exists(select 1 from ems_installoutlist b where a.id=b.installout_id );
 delete ems_instore a where not exists(select 1 from ems_instorelist b where a.id=b.instore_id );
 --delete ems_order where id='1d651eb4-50af-4530-9779-30d13b6566d8'
---delete ems_orderlist where ID='bc6faed3-fd68-4a87-8e43-122c69271051' --and order_id='1d651eb4-50af-4530-9779-30d13b6566d8'
-delete ems_barcode where orderlist_id='bc6faed3-fd68-4a87-8e43-122c69271051';-- and status='1'
-delete ems_equipment where orderlist_id='bc6faed3-fd68-4a87-8e43-122c69271051';
+--delete ems_orderlist where ID='ba1f9984-177d-427c-b020-c499f3dd5355' --and order_id='1d651eb4-50af-4530-9779-30d13b6566d8'
+delete ems_barcode where orderlist_id='ba1f9984-177d-427c-b020-c499f3dd5355';-- and status='1'
+delete ems_equipment where orderlist_id='ba1f9984-177d-427c-b020-c499f3dd5355';
 delete ems_instorelist where ecode in(
-       select ecode from ems_equipment where orderlist_id='bc6faed3-fd68-4a87-8e43-122c69271051'
+       select ecode from ems_equipment where orderlist_id='ba1f9984-177d-427c-b020-c499f3dd5355'
 );
 --select * from ems_instorelist where instore_id='20150721134052'
---20150724140513»¹ÓĞÉ¾³ıÃ»ÓĞÈë¿â¼ÇÂ¼Ã÷Ï¸µÄĞÂÆ·Èë¿âµ¥
+--20150724140513è¿˜æœ‰åˆ é™¤æ²¡æœ‰å…¥åº“è®°å½•æ˜ç»†çš„æ–°å“å…¥åº“å•
 delete ems_installoutlist where ecode in(
-       select ecode from ems_equipment where orderlist_id='bc6faed3-fd68-4a87-8e43-122c69271051'
+       select ecode from ems_equipment where orderlist_id='ba1f9984-177d-427c-b020-c499f3dd5355'
 );
 --select * from ems_installoutlist where installout_id='20150721135630'
 
 delete ems_equipment_workunit where ecode in (
-       select ecode from ems_equipment where orderlist_id='bc6faed3-fd68-4a87-8e43-122c69271051'
+       select ecode from ems_equipment where orderlist_id='ba1f9984-177d-427c-b020-c499f3dd5355'
 );
 delete ems_equipment_store where ecode in (
-       select ecode from ems_equipment where orderlist_id='bc6faed3-fd68-4a87-8e43-122c69271051'
+       select ecode from ems_equipment where orderlist_id='ba1f9984-177d-427c-b020-c499f3dd5355'
 );
 delete ems_equipment_pole where ecode in (
-       select ecode from ems_equipment where orderlist_id='bc6faed3-fd68-4a87-8e43-122c69271051'
+       select ecode from ems_equipment where orderlist_id='ba1f9984-177d-427c-b020-c499f3dd5355'
+);
+delete ems_equipment_repair where ecode in (
+       select ecode from ems_equipment where orderlist_id='ba1f9984-177d-427c-b020-c499f3dd5355'
 )
 
 delete ems_equipmentcycle where ecode in (
-       select ecode from ems_equipment where orderlist_id='bc6faed3-fd68-4a87-8e43-122c69271051'
+       select ecode from ems_equipment where orderlist_id='ba1f9984-177d-427c-b020-c499f3dd5355'
 );
 
 
