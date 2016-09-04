@@ -276,6 +276,7 @@ Ext.define('Ems.task.TaskSendGrid',{
 				return true;
 			}
 		}
+		window.checkTasknum=checkTasknum;
 		var install_button=Ext.create('Ext.button.Button',{
 			text:'发送安装任务',
 			margin:'0 0 0 5',
@@ -293,11 +294,13 @@ Ext.define('Ems.task.TaskSendGrid',{
 						alert("只有'未安装'或'取消'状态的点位，才能发送新安装任务!");
 						return;
 					}
+					//所有点位都必须属于同一个作业单位才允许发送
+					
 					var bool=checkTasknum(records[0]);
 					if(!bool){
 						return;
 					}
-					me.showTaskForm(records[0],"newInstall");
+					//me.showTaskForm(records[0],"newInstall");
 					
 				} else {
 					Ext.Msg.confirm("提醒","只会为对'未安装'的点位发送安装任务,选'是'进行发送,并且将会直接发送，不能填写任务描述信息",function(btn){
@@ -362,7 +365,8 @@ Ext.define('Ems.task.TaskSendGrid',{
 								}
 					me.showTaskForm(records[0],"repair");
 				} else {
-					alert("维修任务只能一个一个发，因为要选故障时间!");
+					//alert("维修任务只能一个一个发，因为要选故障时间!");
+					me.createBatchRepairTask(records);
 //					Ext.Msg.confirm("提醒","只会为对'使用中','有损坏'的点位发送维修/维护任务,选'是'进行发送",function(btn){
 //						if(btn=='yes'){
 //							var taskes=[];
@@ -568,5 +572,52 @@ Ext.define('Ems.task.TaskSendGrid',{
 		        	});
 		        	win.show();
 		return record;
+	},
+	/**
+	 * 创建批量的维修任务
+	 */
+	createBatchRepairTask:function(records){
+					Ext.Msg.confirm("提醒","只会为对'使用中','有损坏'的点位发送维修/维护任务,选'是'进行发送",function(btn){
+						if(btn=='yes'){
+							var taskes=[];
+							var workunit_id_temp='';//只有所有点位都属于一个作业单位才允许发送
+							for(var i=0;i<records.length;i++){
+								if(records[i].get("status")!="using" && records[i].get("status")!="hitch"){
+									alert("点位‘"+records[i].get("name")+"’不能发送维修任务!");
+									return;
+								}
+								if(!workunit_id_temp){
+									workunit_id_temp=records[i].get("workunit_id");
+								} else if(workunit_id_temp!=records[i].get("workunit_id")){
+									//客户要求，只有同一个作业单位的才能批量发送
+									alert("点位‘"+records[i].get("name")+"’的作业单位不一致，不能发送!");
+									return;
+								}
+								var bool=window.checkTasknum(records[i]);
+								if(!bool){
+									return;
+								}
+								taskes.push(me.initTask_value(records[i],"repair"));
+							}
+							//填写任务信息
+							var win=Ext.create();
+							//
+							Ext.Ajax.request({
+								method:'POST',
+								jsonData:taskes,
+								headers:{ 'Content-Type':'application/json;charset=UTF-8'},
+								url:Ext.ContextPath+"/task/create.do",
+								success:function(response){
+									var obj=Ext.decode(response.responseText);
+									if(obj.success){
+										me.getSelectionModel( ).deselectAll();
+										me.getStore().reload();
+										alert("发送成功!");
+									}
+									
+								}
+							});
+						}
+					});
 	}
 });
