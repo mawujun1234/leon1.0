@@ -416,6 +416,7 @@ public class TaskController {
 	
 	/**
 	 * 用于处理，单子已经派发出去，但是没有经过修理就自动好了的设备
+	 * 后台手工结束任务
 	 * @author mawujun 16064988@qq.com 
 	 * @param task
 	 * @return

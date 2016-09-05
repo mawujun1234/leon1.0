@@ -577,18 +577,19 @@ Ext.define('Ems.task.TaskSendGrid',{
 	 * 创建批量的维修任务
 	 */
 	createBatchRepairTask:function(records){
+		var me=this;
 					Ext.Msg.confirm("提醒","只会为对'使用中','有损坏'的点位发送维修/维护任务,选'是'进行发送",function(btn){
 						if(btn=='yes'){
 							var taskes=[];
-							var workunit_id_temp='';//只有所有点位都属于一个作业单位才允许发送
+							var workunit_name='';//只有所有点位都属于一个作业单位才允许发送
 							for(var i=0;i<records.length;i++){
 								if(records[i].get("status")!="using" && records[i].get("status")!="hitch"){
 									alert("点位‘"+records[i].get("name")+"’不能发送维修任务!");
 									return;
 								}
-								if(!workunit_id_temp){
-									workunit_id_temp=records[i].get("workunit_id");
-								} else if(workunit_id_temp!=records[i].get("workunit_id")){
+								if(!workunit_name){
+									workunit_name=records[i].get("workunit_name");
+								} else if(workunit_name!=records[i].get("workunit_name")){
 									//客户要求，只有同一个作业单位的才能批量发送
 									alert("点位‘"+records[i].get("name")+"’的作业单位不一致，不能发送!");
 									return;
@@ -600,23 +601,85 @@ Ext.define('Ems.task.TaskSendGrid',{
 								taskes.push(me.initTask_value(records[i],"repair"));
 							}
 							//填写任务信息
-							var win=Ext.create();
-							//
-							Ext.Ajax.request({
-								method:'POST',
-								jsonData:taskes,
-								headers:{ 'Content-Type':'application/json;charset=UTF-8'},
-								url:Ext.ContextPath+"/task/create.do",
-								success:function(response){
-									var obj=Ext.decode(response.responseText);
-									if(obj.success){
-										me.getSelectionModel( ).deselectAll();
-										me.getStore().reload();
-										alert("发送成功!");
-									}
-									
-								}
+							var win=Ext.create('Ext.window.Window',{
+								modal:true,
+								width:280,
+								height:250,
+								title:'批量提交任务',
+								items:[{
+						            fieldLabel: '故障时间',
+						            afterLabelTextTpl: Ext.required,
+						            itemId: 'hitchDate',
+						            editable:false,
+						            allowBlank: true,
+						            xtype: 'DatetimeField'
+						        },
+								{
+							        fieldLabel: '任务描述',
+							        afterLabelTextTpl: Ext.required,
+							        itemId: 'memo',
+							        readOnly:false,
+							        xtype:'textareafield',
+							        grow:true,
+							        allowBlank: false
+							    },
+								{
+							        fieldLabel: '作业单位',
+							        //afterLabelTextTpl: Ext.required,
+							        name: 'workunit_name',
+							        readOnly:true,
+							        value:workunit_name,
+							        xtype:'textfield',
+							        allowBlank: false
+							    }],
+							    buttons:[{
+							    	text:'取 消',
+							    	handler:function(btn){
+							    		win.close();
+							    	}
+							    },{
+							    	text:'保存',
+							    	handler:function(btn){
+							    		var hitchDate=win.down("#hitchDate").getRawValue();
+							    		if(!hitchDate){
+							    			Ext.Msg.alert("消息","请先输入故障时间");
+							    			return;
+							    		}
+							    		var memo=win.down("#memo").getValue();
+							    		if(!memo){
+							    			Ext.Msg.alert("消息","请先输入备注");
+							    			return;
+							    		}
+							    		for(var i=0;i<taskes.length;i++) {
+							    			taskes[i].hitchDate=hitchDate;
+							    			taskes[i].memo=memo;
+							    		}
+							    		Ext.Ajax.request({
+											method:'POST',
+											jsonData:taskes,
+											headers:{ 'Content-Type':'application/json;charset=UTF-8'},
+											url:Ext.ContextPath+"/task/create.do",
+											success:function(response){
+												var obj=Ext.decode(response.responseText);
+												if(obj.success){
+													me.getSelectionModel( ).deselectAll();
+													me.getStore().reload();
+													alert("发送成功!");
+													win.close();
+												}
+												
+											}
+										});
+							    	}
+							    
+							    }]
+								
 							});
+							win.show();
+							
+							
+							//
+							
 						}
 					});
 	}
