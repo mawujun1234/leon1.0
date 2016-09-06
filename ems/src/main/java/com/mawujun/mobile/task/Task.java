@@ -66,6 +66,11 @@ public class Task implements IdEntity<String> {
 	@Column(length=100)
 	private String handle_contact;//相关联系人的号码
 	
+	@Column(length=100)
+	private String patrolTaskType_id;//巡检任务类型，只有巡检任务可用
+	
+
+
 	public Boolean getCanEdit(){
 		if(this.getStatus()==TaskStatus.newTask || this.getStatus()==TaskStatus.handling || this.getStatus()==TaskStatus.read){
 			return true;
@@ -145,6 +150,13 @@ public class Task implements IdEntity<String> {
 	}
 	public void setSubmitDate(Date submitDate) {
 		this.submitDate = submitDate;
+	}
+	public String getPatrolTaskType_id() {
+		return patrolTaskType_id;
+	}
+
+	public void setPatrolTaskType_id(String patrolTaskType_id) {
+		this.patrolTaskType_id = patrolTaskType_id;
 	}
 
 	public String getHitchType() {

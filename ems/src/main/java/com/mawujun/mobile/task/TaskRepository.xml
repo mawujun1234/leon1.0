@@ -335,5 +335,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     <select id="count_repair_task_by_pole_id" resultType="int" parameterType="map">
     	select count(id) from ems_task where pole_id=#{pole_id} and type='repair' and status!='complete'
     </select>
+    
+    <!-- 在删除巡检类型的时候，判断 是否被引用了-->
+    <select id="count_patrolTaskType_id" resultType="int" parameterType="map">
+    	select count(id) from ems_task where patrolTaskType_id=#{patrolTaskType_id}
+    </select>
 </mapper>
 

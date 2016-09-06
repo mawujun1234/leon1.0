@@ -105,6 +105,30 @@ Ext.define('Ems.task.TaskForm',{
             //,value:new Date()
             //,format: 'Y-m-d H:i:s'
         },
+        {
+            fieldLabel: '巡检类型',
+            afterLabelTextTpl: Ext.required,
+            name: 'patrolTaskType_id',
+            editable:false,
+            xtype:'combo',
+            allowBlank: true,
+            displayField: 'name',
+		    valueField: 'id',
+		    hidden:me.task_type=='patrol'?false:true,
+	        store:Ext.create('Ext.data.Store', {
+		    	fields: ['id', 'name'],
+			    proxy:{
+			    	type:'ajax',
+			    	//extraParams:{type:1,edit:true},
+			    	url:Ext.ContextPath+"/patrolTaskType/queryAll.do",
+			    	reader:{
+			    		type:'json',
+			    		root:'root'
+			    	}
+			    }
+		   })
+            
+        },
 		{
 	        fieldLabel: '任务描述',
 	        afterLabelTextTpl: Ext.required,
@@ -197,6 +221,14 @@ Ext.define('Ems.task.TaskForm',{
                 if(!hitchDate_fiedl.getValue() && me.task_type=='repair'){
                 	alert("请先选故障时间!");
                 	return;
+                }
+                if( me.task_type=='patrol'){
+                	var patrolTaskType_id=form.getForm().findField("patrolTaskType_id");
+                	if(!patrolTaskType_id.getValue()){
+                		alert("请先选择巡检类型!");
+                		return;
+                	}
+	
                 }
                 form.getEl().mask("正在执行...");
                 var values=form.getForm().getValues();

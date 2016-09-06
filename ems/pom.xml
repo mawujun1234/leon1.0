@@ -88,44 +88,7 @@
 				</configuration>
 			</plugin>
 			
-			<!-- 压缩js,css -->
-			<plugin>  
-	            <groupId>net.alchim31.maven</groupId>  
-	            <artifactId>yuicompressor-maven-plugin</artifactId>  
-	            <!--   <version>1.3.0</version> -->
-	    		
-                <executions>
-                	<!-- 这里报错没关系，如果不加的话，不会在mvn install的时候运行这个插件,那就要手工运行了--> 
-                	<execution>  
-	                    <phase>prepare-package</phase>  
-	                    <goals>  
-	                        <goal>compress</goal>  
-	                    </goals>  
-	                </execution>  
-                </executions>
-	            <configuration>  
-	                <!-- 包含js文件和css文件 -->  
-	                <includes>  
-	                    <include>**/*.js</include>  
-	                    <include>**/*.css</include>  
-	                </includes>  
-	                <!-- 排除本来就压缩的js文件，比如jquery.min.js  xxx-min.js之类的文件 -->  
-	                <excludes>  
-	                    <exclude>**/*.min.js</exclude>  
-	                    <exclude>**/*-min.js</exclude>  
-	                    <!-- <exclude>ext-4.2.1/**/*.js</exclude>  
-	                    <exclude>ext-4.2.1/**/*.css</exclude>   -->
-	                    <exclude>www/**/*.*</exclude>  
-	                </excludes>  
-	                <encoding>utf8</encoding>  
-	                <failOnWarning>false</failOnWarning>  
-	                <force>true</force>  
-	                <nosuffix>true</nosuffix>  
-	                <linebreakpos>-1</linebreakpos>  
-	                <sourceDirectory>${basedir}/main/webapp</sourceDirectory>  
-	                <jswarn>false</jswarn>  
-	            </configuration>  
-	        </plugin>  			
+			
 			
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
