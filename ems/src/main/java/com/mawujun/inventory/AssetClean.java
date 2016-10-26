@@ -1,10 +1,15 @@
 package com.mawujun.inventory;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
+import com.mawujun.inventory.AssetClean.PK;
+import com.mawujun.repository.idEntity.IdEntity;
 import com.mawujun.repository.idEntity.UUIDEntity;
 
 /**
@@ -13,18 +18,20 @@ import com.mawujun.repository.idEntity.UUIDEntity;
  *
  */
 @Entity
-@Table(name="report_assetclean",uniqueConstraints = {@UniqueConstraint(columnNames={"ecode", "day_key"})})
-public class AssetClean extends UUIDEntity{
+@Table(name="report_assetclean")
+@IdClass(PK.class)
+//@Table(name="report_assetclean",uniqueConstraints = {@UniqueConstraint(columnNames={"ecode", "day_key"})})
+public class AssetClean implements IdEntity<AssetClean.PK>{
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-
+    @Id
 	@Column(length=25)
 	private String ecode;
-
+    @Id
 	private Integer day_key;//这是计算当天的数据，用来保存历史数据的
 	
 	private Integer day_have;//可使用天数
@@ -32,6 +39,48 @@ public class AssetClean extends UUIDEntity{
 	private Double value_original;//原值
 	private Double value_old;//折旧
 	private Double value_net;//净值
+	
+	
+	@Override
+	public void setId(PK id) {
+		if(id!=null){
+			this.ecode=id.getEcode();
+			this.day_key=id.getDay_key();
+		}
+	}
+	@Override
+	public PK getId() {
+		return new AssetClean.PK(ecode,day_key);
+	}
+	
+	
+	public static class PK implements Serializable {
+		private String ecode;
+		private Integer day_key;
+		
+		public PK() {
+			super();
+		}
+		public PK(String ecode, Integer day_key) {
+			super();
+			this.ecode = ecode;
+			this.day_key = day_key;
+		}
+		public String getEcode() {
+			return ecode;
+		}
+		public void setEcode(String ecode) {
+			this.ecode = ecode;
+		}
+		public Integer getDay_key() {
+			return day_key;
+		}
+		public void setDay_key(Integer day_key) {
+			this.day_key = day_key;
+		}
+	}
+	
+	
 	public String getEcode() {
 		return ecode;
 	}
@@ -77,7 +126,7 @@ public class AssetClean extends UUIDEntity{
 	public void setDay_key(Integer day_key) {
 		this.day_key = day_key;
 	}
-	
+
 	
 	
 }
