@@ -4,7 +4,7 @@
 数据库的导入，导出
 	导出ems的表和数据: exp system/system@ems file=E:\eclipse\workspace\leon\ems\document\dmp\daochu0720.dmp owner=(ems)
 				 exp system/system@ems file=c:\daochu225.dmp owner=(ems)
-	导入到新的数据库:imp ems/ems@ems   file=E:\20160809.dmp full=Y
+	导入到新的数据库:imp ems/ems@ems   file=E:\201610260605.dmp full=Y
 	不同名用户导入
 		imp system/test@xe fromuser=hkb touser=hkb_new file=c:\orabackup\hkbfull.dmp
 	空表不能导出的问题：http://www.2cto.com/database/201211/166179.html
