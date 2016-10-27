@@ -201,8 +201,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		    	<result property="prod_unit" column="prod_unit"/>
 		    	<result property="prod_style" column="prod_style"/>
 		    	<result property="brand_name" column="brand_name"/>
-
+				
 		    	<result property="installoutnum" column="installoutnum"/>
+		    	<result property="value_net" column="value_net"/>
 		    </collection>
        </collection>  
     </resultMap>
@@ -210,8 +211,31 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     <select id="queryInstalloutReport" resultMap="installout_report_map" parameterType="map">
     	select  a.store_id,a.installouttype_name,a.installouttype_content,
 		e.id as type_id,e.name as type_name,d.id as subtype_id,d.name as subtype_name,c.id as prod_id,c.name as prod_name,c.unit as prod_unit,c.style prod_style,f.name as brand_name,count(a.installoutlist_id) as installoutnum 
+		,sum(g.value_net) value_net
 		from (
-		select a.store_id,b.ecode,c.name as installouttype_name,b.installouttype_content,b.id as installoutlist_id
+	    <include refid="queryInstalloutReport_inner_sql"></include>  
+		) a
+		inner join ems_equipment b on a.ecode=b.ecode
+		inner join ems_equipmentprod c on b.prod_id=c.id
+		inner join ems_equipmentsubtype d on c.subtype_id=d.id
+		inner join ems_equipmenttype e on d.parent_id=e.id
+		inner join ems_brand f on c.brand_id=f.id
+		left join report_assetclean g on a.ecode=g.ecode
+		group by a.store_id,a.installouttype_name ,a.installouttype_content,
+		e.id,e.name ,d.id,d.name,c.id,c.name ,c.unit,c.style ,f.name
+    	order by a.installouttype_name,a.installouttype_content
+    </select>
+    <!-- 获取领用类型的一共有的一二级数据 -->
+    <select id="queryInstalloutReport_title" resultType="com.mawujun.report.InstallOutReport_title" parameterType="map">
+    	select distinct a.installouttype_name,a.installouttype_content from (
+    		<include refid="queryInstalloutReport_inner_sql"></include>  
+    	) a
+    	order by a.installouttype_name,a.installouttype_content
+    </select>
+    
+    <!-- 获取所有零星数据的合计 -->
+    <sql id="queryInstalloutReport_inner_sql">
+    	select a.store_id,b.ecode,c.name as installouttype_name,b.installouttype_content,b.id as installoutlist_id
 		from ems_installout a,ems_installoutlist b,ems_installouttype c
 		where a.id=b.installout_id and b.installouttype_id=c.id  and b.installoutlisttype='installout'
 		<if test="use_in!=null and use_in==false">
@@ -243,16 +267,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			and a.str_out_id in (${store_id})  
 		</if>
 	    and to_char(a.str_out_date,'yyyy-mm-dd') &gt;=#{date_start}  and to_char(a.str_out_date,'yyyy-mm-dd') &lt;=#{date_end}
-		) a
-		inner join ems_equipment b on a.ecode=b.ecode
-		inner join ems_equipmentprod c on b.prod_id=c.id
-		inner join ems_equipmentsubtype d on c.subtype_id=d.id
-		inner join ems_equipmenttype e on d.parent_id=e.id
-		inner join ems_brand f on c.brand_id=f.id
-		group by a.store_id,a.installouttype_name ,a.installouttype_content,
-		e.id,e.name ,d.id,d.name,c.id,c.name ,c.unit,c.style ,f.name
-    	order by installouttype_name,installouttype_content
-    </select>
+    </sql>
 
 </mapper>
 

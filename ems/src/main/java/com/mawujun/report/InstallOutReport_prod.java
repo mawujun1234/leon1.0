@@ -1,5 +1,8 @@
 package com.mawujun.report;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class InstallOutReport_prod {
 	private String prod_id;
 	private String store_id;
@@ -13,9 +16,19 @@ public class InstallOutReport_prod {
 	private String prod_unit;
 	
 	private Integer installoutnum;
+	private BigDecimal value_net;
 	
 	
 	
+	public BigDecimal getValue_net() {
+		if(value_net!=null){
+			return value_net.setScale(2, RoundingMode.HALF_UP);
+		}
+		return new BigDecimal(0);
+	}
+	public void setValue_net(BigDecimal value_net) {
+		this.value_net = value_net;
+	}
 	public String getStore_id() {
 		return store_id;
 	}

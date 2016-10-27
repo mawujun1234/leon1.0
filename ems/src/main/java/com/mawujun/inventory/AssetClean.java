@@ -36,6 +36,7 @@ public class AssetClean implements IdEntity<AssetClean.PK>{
 	
 	private Integer day_have;//可使用天数
 	private Integer day_used;//已经使用天数
+	
 	private Double value_original;//原值
 	private Double value_old;//折旧
 	private Double value_net;//净值

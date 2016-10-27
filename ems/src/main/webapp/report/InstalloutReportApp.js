@@ -56,6 +56,17 @@ Ext.onReady(function(){
 				var pp=Ext.Object.toQueryString(params);
 				window.open(Ext.ContextPath+"/report/installout/excelExport.do?"+pp, "_blank");
 			}
+		},{
+			text:'导出-净值',
+			icon:'../icons/page_excel.png',
+			handler:function(){
+				var params=getParams();
+				if(!params){
+					return false;
+				}
+				var pp=Ext.Object.toQueryString(params);
+				window.open(Ext.ContextPath+"/report/installout/excelExport_assetclean.do?"+pp, "_blank");
+			}
 		}
 		]
 	})

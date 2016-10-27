@@ -16,4 +16,6 @@ public interface StoreReportRepository {
 	
 	public List<InstallOutReport_type> queryInstalloutReport(@Param("store_id")String store_id,@Param("use_in")Boolean use_in,
 			@Param("date_start")String date_start,@Param("date_end")String date_end);
+	public List<InstallOutReport_title> queryInstalloutReport_title(@Param("store_id")String store_id,@Param("use_in")Boolean use_in,
+			@Param("date_start")String date_start,@Param("date_end")String date_end);
 }
