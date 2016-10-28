@@ -80,6 +80,7 @@ Ext.define('Ems.baseinfo.PoleGrid',{
        var create = new Ext.Action({
 		    text: '新建',
 		    itemId:'create',
+		    hidden:!Permision.canShow('customer_pole_create'),
 		    disabled:me.disabledAction,
 		    handler: function(b){
 		    	me.onCreate(null,b);
@@ -91,6 +92,7 @@ Ext.define('Ems.baseinfo.PoleGrid',{
 		var update = new Ext.Action({
 		    text: '更新',
 		    itemId:'update',
+		    hidden:!Permision.canShow('customer_pole_update'),
 		    disabled:me.disabledAction,
 		    handler: function(b){
 		    	me.onUpdate(null,b);
@@ -103,6 +105,7 @@ Ext.define('Ems.baseinfo.PoleGrid',{
 		var destroy = new Ext.Action({
 		    text: '删除',
 		    itemId:'destroy',
+		    hidden:!Permision.canShow('customer_pole_delete'),
 		    disabled:me.disabledAction,
 		    handler: function(){
 		    	me.onDelete();    

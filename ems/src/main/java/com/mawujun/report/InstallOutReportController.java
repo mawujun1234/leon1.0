@@ -336,6 +336,7 @@ public class InstallOutReportController {
 	private void sparepart_addRow1(XSSFWorkbook wb, Sheet sheet) {
 		Row row = sheet.createRow(2);
 		Row row2 = sheet.createRow(3);
+		Row row3 = sheet.createRow(4);
 
 		CellStyle black_style = getStyle(wb, IndexedColors.BLACK, null);
 		int cellnum = 0;
@@ -499,6 +500,90 @@ public class InstallOutReportController {
 	}
 	
 	/**
+	 * 添加动态的标题,包含净值的
+	 * @param wb
+	 * @param sheet
+	 */
+	private int addInstallouttype_name_title_assetclean(XSSFWorkbook wb, Sheet sheet,List<InstallOutReport_title> installOutReport_titles) {
+		Row row1 = sheet.getRow(2);
+		Row row2 = sheet.getRow(3);
+		Row row3 = sheet.getRow(4);
+		
+		CellStyle content_subtitle_style = getStyle(wb, IndexedColors.BLACK, null);
+		
+		int exists_cellnum=sparepart_month_freeze_num;//领用类型的初始迁移量
+		int first_first_cellnum=exists_cellnum;
+		int second_first_cellnum=exists_cellnum;
+		
+		
+		Set<String> temp_first=new HashSet<String>();//一级领用各类型
+		Set<String> temp_second=new HashSet<String>();//二级领用各类型
+		for(InstallOutReport_title installOutReport_title:installOutReport_titles){
+			
+			if(!temp_first.contains(installOutReport_title.getInstallouttype_name())){
+				Cell installtype_cell=row1.createCell(exists_cellnum);
+				installtype_cell.setCellValue(installOutReport_title.getInstallouttype_name());//
+				installtype_cell.setCellStyle(content_subtitle_style);
+				
+				temp_first.add(installOutReport_title.getInstallouttype_name());
+				
+				if(first_first_cellnum!=exists_cellnum){
+					sheet.addMergedRegion(new CellRangeAddress(2, 2, first_first_cellnum,exists_cellnum-1));
+					first_first_cellnum=exists_cellnum;
+				}
+				
+			}
+			
+			
+			//二级领用类型，单元格合并在后面进行合并
+			Cell content_cell=row2.createCell(exists_cellnum);
+			content_cell.setCellValue(installOutReport_title.getInstallouttype_content());
+			content_cell.setCellStyle(content_subtitle_style);
+			installOutReport_title.setCell_index(exists_cellnum);
+			
+			
+			//后面的数量和净值
+			Cell cell=row3.createCell(exists_cellnum);
+			cell.setCellValue("数量");
+			cell.setCellStyle(content_subtitle_style);
+//			//边框
+//			cell=row2.createCell(exists_cellnum);
+//			cell.setCellStyle(content_subtitle_style);
+			
+			exists_cellnum++;
+			cell=row3.createCell(exists_cellnum);
+			cell.setCellValue("净值");
+			cell.setCellStyle(content_subtitle_style);
+//			//边框
+//			cell=row2.createCell(exists_cellnum);
+//			cell.setCellStyle(content_subtitle_style);
+			sheet.addMergedRegion(new CellRangeAddress(3, 3, second_first_cellnum,second_first_cellnum+1));
+			
+			
+			
+			if(!temp_second.contains(installOutReport_title.getInstallouttype_content())){	
+				if(second_first_cellnum!=exists_cellnum){
+					//第一行标题 合并单元格
+					//sheet.addMergedRegion(new CellRangeAddress(2, 2, first_cellnum,exists_cellnum));
+					//sheet.addMergedRegion(new CellRangeAddress(2, 2, first_cellnum,first_cellnum+(exists_cellnum-first_cellnum+1)*2));
+					second_first_cellnum=exists_cellnum+1;
+				}
+				
+				
+				temp_second.add(installOutReport_title.getInstallouttype_content());
+				exists_cellnum++;
+				
+				
+				
+			}
+		}
+		sheet.addMergedRegion(new CellRangeAddress(2, 2, first_first_cellnum,exists_cellnum-1));
+		//返回一共有多少个二级类型的个数
+		return temp_second.size()*2;
+		
+	}
+	
+	/**
 	 * 零星项目领用报表
 	 * @author mawujun email:160649888@163.com qq:16064988
 	 * @param response
@@ -629,10 +714,10 @@ public class InstallOutReportController {
 //		// content_subtitle_style.setBorderTop(CellStyle.BORDER_NONE);
 		
 		//添加动态标题，即一级，二级领用类型
-		int exists_cellnum=addInstallouttype_name_title(wb,sheet,installOutReport_titles);
+		int exists_cellnum=addInstallouttype_name_title_assetclean(wb,sheet,installOutReport_titles);
 
 		int cellnum = 0;
-		int rownum = 4;//从第3行开始
+		int rownum = 5;//从第3行开始
 		////用来存放领用类型所属的单元格第一个key是第一级的name，第二个map的key是第二级的name
 		//Map<String,Map<String,Integer>> installtype_map=new LinkedHashMap<String,Map<String,Integer>>();
 		Set<Integer> haveDataRow=new HashSet<Integer>();
@@ -739,6 +824,10 @@ public class InstallOutReportController {
 								Cell content_cell = row_prod.createCell(installOutReport_title.getCell_index());
 								content_cell.setCellValue(prod.getInstalloutnum());
 								content_cell.setCellStyle(content_style);
+								
+								content_cell = row_prod.createCell(installOutReport_title.getCell_index()+1);
+								content_cell.setCellValue(prod.getValue_net().toString());
+								content_cell.setCellStyle(content_style);
 							}
 						}
 						
@@ -768,7 +857,7 @@ public class InstallOutReportController {
 		}
 
 
-		String filename = "零星项目领用报表.xlsx";
+		String filename = "零星项目领用报表-净值.xlsx";
 
 		// FileOutputStream out = new FileOutputStream(filename);
 		response.setHeader("content-disposition", "attachment; filename=" + new String(filename.getBytes("UTF-8"), "ISO8859-1"));

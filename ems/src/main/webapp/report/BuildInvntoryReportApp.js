@@ -135,6 +135,7 @@ Ext.onReady(function(){
 	
 	var tbar2=Ext.create('Ext.toolbar.Toolbar',{
 		items:[
+			
 		{
 			text:'导出月报表模板',
 			icon:'../icons/page_excel.png',
@@ -147,6 +148,30 @@ Ext.onReady(function(){
 			icon:'../icons/page_excel.png',
 			handler:function(){
 				window.open(Ext.ContextPath+"/inventory/day/sparepart/excelTpl.do?store_type=1", "_blank");
+			}
+		},{
+			text:'导出月报表-净资产',
+			icon:'../icons/page_excel.png',
+			handler:function(){
+				var params=getParams();
+				if(!params){
+					return false;
+				}
+				params.store_type=1;
+				var pp=Ext.Object.toQueryString(params);
+				window.open(Ext.ContextPath+"/inventory/month/sparepart/excelExport_assetclean.do?"+pp, "_blank");
+			}
+		},{
+			text:'导出日报表-净资产',
+			icon:'../icons/page_excel.png',
+			handler:function(){
+				var params=getParams();
+				if(!params){
+					return false;
+				}
+				params.store_type=1;
+				var pp=Ext.Object.toQueryString(params);
+				window.open(Ext.ContextPath+"/inventory/day/sparepart/excelExport_assetclean.do?"+pp, "_blank");
 			}
 		}
 		]

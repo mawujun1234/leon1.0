@@ -1,5 +1,8 @@
 package com.mawujun.report;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 /**
  * 这里存放的hi品名和 数量
  * @author mawujun email:16064988@qq.com qq:16064988
@@ -10,6 +13,17 @@ public class FrontEquipListReport_prod {
 	private String prod_name;
 	private String prod_style;
 	private Integer num;
+	private BigDecimal value_net;
+	public BigDecimal getValue_net() {
+		if(value_net!=null){
+			return value_net.setScale(2, RoundingMode.HALF_UP);
+		}
+		return new BigDecimal(0);
+	}
+	public void setValue_net(BigDecimal value_net) {
+		this.value_net = value_net;
+	}
+	
 	public String getProd_id() {
 		return prod_id;
 	}

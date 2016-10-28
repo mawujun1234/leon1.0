@@ -115,6 +115,18 @@ Ext.onReady(function(){
 				var pp=Ext.Object.toQueryString(params);
 				window.open(Ext.ContextPath+"/report/frontequip/exportFrontEquipSumReport.do?"+pp, "_blank");
 			}
+		},{
+			text:'导出-净值',
+			icon:'../icons/page_excel.png',
+			handler:function(){
+				var params=getParams();
+				if(!params){
+					return false;
+				}
+				params.isMaching=false;
+				var pp=Ext.Object.toQueryString(params);
+				window.open(Ext.ContextPath+"/report/frontequip/exportFrontEquipSumReport_assetclean.do?"+pp, "_blank");
+			}
 		}]
 	})
 

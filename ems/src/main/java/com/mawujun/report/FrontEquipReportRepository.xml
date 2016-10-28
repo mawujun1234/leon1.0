@@ -37,17 +37,23 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		    <id property="prod_id" column="prod_id"/>
 		    <result property="prod_name" column="prod_name"/>
 		    <result property="num" column="num"/>
+		    <result property="value_net" column="value_net"/>
 		</collection>
     </resultMap>
     <select id="queryFrontEquipSumReport" resultMap="frontEquipSumReport_map" parameterType="map">
-    	select a.id as customer_id,a.name as customer_name,a.prod_id,c.name as prod_name,count(a.ecode) num from (
-		select c.id,c.name,b.ecode,d.prod_id from ems_pole a,ems_equipment_pole b,ems_customer c,ems_equipment d
-		where a.id=b.pole_id and a.customer_id=c.id and b.ecode=d.ecode
-		and exists (select 1 from sys_user_workunit x where x.workunit_id=a.workunit_id and x.user_id=#{user_id})
-		and c.parent_id=#{customer_2} and c.type!=2
-		<if test="customer_0or1!=null and customer_0or1!=''">
-				and c.id=#{customer_0or1}
-		</if>
+    	select a.id as customer_id,a.name as customer_name,a.prod_id,c.name as prod_name,count(a.ecode) num,sum(a.value_net) value_net from (
+			select c.id,c.name,b.ecode,d.prod_id ,g.value_net 
+			from ems_pole a
+			inner join ems_equipment_pole b on a.id=b.pole_id
+			inner join ems_customer c on a.customer_id=c.id
+			inner join ems_equipment d on b.ecode=d.ecode
+			left join report_assetclean g on b.ecode=g.ecode
+			where  
+			 exists (select 1 from sys_user_workunit x where x.workunit_id=a.workunit_id and x.user_id=#{user_id})
+			and c.parent_id=#{customer_2} and c.type!=2
+			<if test="customer_0or1!=null and customer_0or1!=''">
+					and c.id=#{customer_0or1}
+			</if>
 		) a,ems_equipmentprod c
 		where  a.prod_id=c.id
 		group by a.id,a.name,a.prod_id,c.name
@@ -71,14 +77,19 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		order by a.subtype_id,a.prod_id
     </select>
     <select id="queryMachineroomEquipSumReport" resultMap="frontEquipSumReport_map" parameterType="map">
-    	select a.id as customer_id,a.name as customer_name,a.prod_id,c.name as prod_name,count(a.ecode) num from (
-		select a.id,a.name,b.ecode,d.prod_id from ems_pole a,ems_equipment_pole b,ems_customer c,ems_equipment d
-		where a.id=b.pole_id and a.customer_id=c.id and b.ecode=d.ecode
-		and exists (select 1 from sys_user_workunit x where x.workunit_id=a.workunit_id and x.user_id=#{user_id})
-		and c.parent_id=#{customer_2} and c.type!=2  and a.poleType='machineroom'
-		<if test="customer_0or1!=null and customer_0or1!=''">
-				and c.id=#{customer_0or1}
-		</if>
+    	select a.id as customer_id,a.name as customer_name,a.prod_id,c.name as prod_name,count(a.ecode) num,sum(a.value_net) value_net from (
+			select a.id,a.name,b.ecode,d.prod_id,g.value_net 
+			from ems_pole a
+			inner join ems_equipment_pole b on a.id=b.pole_id
+			inner join ems_customer c on a.customer_id=c.id
+			inner join ems_equipment d on b.ecode=d.ecode
+			left join report_assetclean g on b.ecode=g.ecode
+			where  
+			 exists (select 1 from sys_user_workunit x where x.workunit_id=a.workunit_id and x.user_id=#{user_id})
+			and c.parent_id=#{customer_2} and c.type!=2  and a.poleType='machineroom'
+			<if test="customer_0or1!=null and customer_0or1!=''">
+					and c.id=#{customer_0or1}
+			</if>
 		) a,ems_equipmentprod c
 		where  a.prod_id=c.id
 		group by a.id,a.name,a.prod_id,c.name
@@ -114,13 +125,19 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		    <id property="prod_id" column="prod_id"/>
 		    <result property="prod_name" column="prod_name"/>
 		    <result property="num" column="num"/>
+		    <result property="value_net" column="value_net"/>
 		</collection>
     </resultMap>
    <select id="queryFrontEquipListReport" resultMap="frontEquipListReport_map" parameterType="map">
-    	select a.id as pole_id,a.code as pole_code,a.name as pole_name,a.prod_id,c.name as prod_name,count(a.ecode) num from (
-		select a.id,a.code,a.name,b.ecode,d.prod_id from ems_pole a,ems_equipment_pole b,ems_customer c,ems_equipment d
-		where a.id=b.pole_id and a.customer_id=c.id and b.ecode=d.ecode
-		and c.parent_id=#{customer_2} and c.type!=2
+    	select a.id as pole_id,a.code as pole_code,a.name as pole_name,a.prod_id,c.name as prod_name,count(a.ecode) num,sum(a.value_net) value_net from (
+		select a.id,a.code,a.name,b.ecode,d.prod_id ,g.value_net
+		from ems_pole a
+		inner join ems_equipment_pole b on a.id=b.pole_id
+		inner join ems_customer c on a.customer_id=c.id
+		inner join ems_equipment d on b.ecode=d.ecode
+		left join report_assetclean g on b.ecode=g.ecode
+		where  
+		 c.parent_id=#{customer_2} and c.type!=2
 			and c.id=#{customer_0or1}
     ) a,ems_equipmentprod c
 		where  a.prod_id=c.id
