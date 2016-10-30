@@ -1,5 +1,8 @@
 package com.mawujun.inventory;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class Day_sparepart_prod extends Day_sparepart{
 	//private String prod_id;
 	private String prod_name;
@@ -7,6 +10,17 @@ public class Day_sparepart_prod extends Day_sparepart{
 	private String prod_style;
 	private String store_name;
 	private String brand_name;
+	
+	private BigDecimal value_net;//净值
+	public BigDecimal getValue_net() {
+		if(value_net!=null){
+			return value_net.setScale(2, RoundingMode.HALF_UP);
+		}
+		return new BigDecimal(0);
+	}
+	public void setValue_net(BigDecimal value_net) {
+		this.value_net = value_net;
+	}
 	
 	public String getkey(){
 		return this.getProd_id()+"_"+this.getStore_id();

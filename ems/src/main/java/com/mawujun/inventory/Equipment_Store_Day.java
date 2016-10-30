@@ -26,7 +26,7 @@ public class Equipment_Store_Day implements IdEntity<Equipment_Store_Day.PK>{
 	private String ecode;
     @Id
 	private Integer day_key;
-    //@Id因为ecode和day_key就可以唯一确定了，所以这个不加了，因为一个设备在一个时间点，只能处于某个设备上
+    @Id
    	@Column(length=36,nullable=false)
    	private String store_id;
     
@@ -40,26 +40,28 @@ public class Equipment_Store_Day implements IdEntity<Equipment_Store_Day.PK>{
 		if(id!=null){
 			this.ecode=id.getEcode();
 			this.day_key=id.getDay_key();
+			this.store_id=id.getStore_id();
 		}
 	}
 	@Override
 	public PK getId() {
-		return new Equipment_Store_Day.PK(ecode,day_key);
+		return new Equipment_Store_Day.PK(ecode,day_key,store_id);
 	}
 	
 	
 	public static class PK implements Serializable {
 		private String ecode;
 		private Integer day_key;
-		
+		private String store_id;
 		
 		public PK() {
 			super();
 		}
-		public PK(String ecode, Integer day_key) {
+		public PK(String ecode, Integer day_key,String store_id) {
 			super();
 			this.ecode = ecode;
 			this.day_key = day_key;
+			this.store_id = store_id;
 		}
 		public String getEcode() {
 			return ecode;
@@ -72,6 +74,12 @@ public class Equipment_Store_Day implements IdEntity<Equipment_Store_Day.PK>{
 		}
 		public void setDay_key(Integer day_key) {
 			this.day_key = day_key;
+		}
+		public String getStore_id() {
+			return store_id;
+		}
+		public void setStore_id(String store_id) {
+			this.store_id = store_id;
 		}
 		
 	}

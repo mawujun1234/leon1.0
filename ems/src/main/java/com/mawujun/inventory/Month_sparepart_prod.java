@@ -1,5 +1,8 @@
 package com.mawujun.inventory;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 
@@ -39,6 +42,17 @@ public class Month_sparepart_prod {
 	private String store_name;
 	private String brand_name;
 	
+	
+	private BigDecimal value_net;//净值
+	public BigDecimal getValue_net() {
+		if(value_net!=null){
+			return value_net.setScale(2, RoundingMode.HALF_UP);
+		}
+		return new BigDecimal(0);
+	}
+	public void setValue_net(BigDecimal value_net) {
+		this.value_net = value_net;
+	}
 
 
 	public String getProd_name() {

@@ -139,7 +139,7 @@ public class Day_sparepart_Service extends AbstractService<Day_sparepart, Day_sp
 	 * @param day_start
 	 * @return
 	 */
-	public Map<String,Integer> queryMonth_yesterdaynum(String store_id,Integer store_type,String day_start) {
+	public Map<String,Object> queryMonth_yesterdaynum(String store_id,Integer store_type,String day_start) {
 		List<Month_sparepart_prod> yesterdaynums_list;
 		if(!StringUtils.hasText(store_id) && store_type!=null){
 			List<Store> stores=storeService.queryCombo(new Integer[]{store_type},true,true);
@@ -157,10 +157,16 @@ public class Day_sparepart_Service extends AbstractService<Day_sparepart, Day_sp
 			yesterdaynums_list=day_sparepart_Repository.queryMonth_yesterdaynum(store_id,false, day_start);
 		}
 		//再转换成使用store_id+prod_id为key，yesterdaynum为value的map，方便后面读取出来填充
-		Map<String,Integer> result=new HashMap<String,Integer>();
+		Map<String,Object> result=new HashMap<String,Object>();
 		if(yesterdaynums_list!=null) {
 			for(Month_sparepart_prod prod:yesterdaynums_list) {
 				result.put(prod.getProd_id()+"_"+prod.getStore_id(), prod.getYesterdaynum());
+				if(prod.getValue_net()==null){
+					result.put(prod.getProd_id()+"_"+prod.getStore_id()+"_net", 0D);
+				} else {
+					result.put(prod.getProd_id()+"_"+prod.getStore_id()+"_net", prod.getValue_net().doubleValue());
+				}
+				
 			}
 		}
 		

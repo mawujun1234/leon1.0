@@ -150,6 +150,32 @@ Ext.onReady(function(){
 				window.open(Ext.ContextPath+"/inventory/day/sparepart/excelTpl.do?store_type=3", "_blank");
 			}
 		}
+		,{
+			text:'导出月报表-净资产',
+			icon:'../icons/page_excel.png',
+			handler:function(){
+				var params=getParams();
+				if(!params){
+					return false;
+				}
+				params.store_type=3;
+				var pp=Ext.Object.toQueryString(params);
+				window.open(Ext.ContextPath+"/inventory/month/sparepart/excelExport_assetclean.do?"+pp, "_blank");
+			}
+		},
+		{
+			text:'导出日报表-净资产',
+			icon:'../icons/page_excel.png',
+			handler:function(){
+				var params=getParams();
+				if(!params){
+					return false;
+				}
+				params.store_type=3;
+				var pp=Ext.Object.toQueryString(params);
+				window.open(Ext.ContextPath+"/inventory/day/sparepart/excelExport_assetclean.do?"+pp, "_blank");
+			}
+		}
 		]
 	})
 	
