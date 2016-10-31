@@ -63,6 +63,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		    	<result property="prod_style" column="prod_style"/>
 		    	<result property="store_name" column="store_name"/>
 		    	<result property="brand_name" column="brand_name"/>
+		    	
+		    	<result property="value_net" column="value_net"/>
 		    </collection>
        </collection>  
     </resultMap>
@@ -70,12 +72,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
    <select id="queryDay_sparepartVO" resultMap="day_sparepart_map">
    select  a.daykey,a.store_id,a.prod_id,a.monthkey,a.todaynum,a.yesterdaynum,a.purchasenum,a.oldnum,a.installoutnum,a.repairinnum,a.scrapoutnum,a.repairoutnum,a.borrownum,a.borrowreturnnum
    ,f.name as type_name,f.id as type_id,b.id as subtype_id,b.name as subtype_name,c.name as prod_name,c.unit as prod_unit,c.style prod_style,d.name as brand_name  ,e.name as store_name
+    ,nvl(g.value_net,0) value_net
     from report_day_sparepart a 
      inner join ems_equipmentprod c on a.prod_id=c.id
     inner join ems_equipmentsubtype b on c.subtype_id=b.id
     inner join ems_equipmenttype f on b.parent_id=f.id
     inner join ems_brand d on c.brand_id=d.id
     inner join ems_store e on a.store_id=e.id
+    left join (select x.day_key,x.store_id,y.prod_id,sum(nvl(x.value_net,0)) value_net from report_equipment_store_day x,ems_equipment y
+	     	where x.ecode=y.ecode and x.day_key&gt;=#{day_start} and x.day_key&lt;=#{day_end} group by x.day_key,x.store_id,y.prod_id) g on a.daykey=g.day_key and a.store_id=g.store_id and a.prod_id=g.prod_id
     where 
     <if test="use_in!=null and use_in==false">
 		a.store_id=#{store_id} and 
@@ -129,8 +134,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    inner join ems_equipmenttype f on b.parent_id=f.id
 	    inner join ems_brand d on c.brand_id=d.id
 	    inner join ems_store e on a.store_id=e.id
-	     left join (select day_key,store_id,sum(nvl(value_net,0)) value_net from report_equipment_store_day 
-	     	where day_key= #{day_end} group by day_key,store_id) g on a.daykey=g.day_key and a.store_id=g.store_id
+	     left join (select x.day_key,x.store_id,y.prod_id,sum(nvl(x.value_net,0)) value_net from report_equipment_store_day x,ems_equipment y 
+	     	where x.ecode=y.ecode and x.day_key= #{day_end} group by x.day_key,x.store_id,y.prod_id) g 
+	     	on a.daykey=g.day_key and a.store_id=g.store_id and a.prod_id=g.prod_id
 	    where 
 	    <if test="use_in!=null and use_in==false">
 			a.store_id=#{store_id} and 
@@ -147,8 +153,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
    <select id="queryMonth_yesterdaynum" resultType="com.mawujun.inventory.Month_sparepart_prod">
    	   select  a.store_id,a.prod_id ,sum(a.yesterdaynum) yesterdaynum,sum(nvl(b.value_net,0)) value_net
 	   from report_day_sparepart a 
-	     left join (select day_key,store_id,sum(nvl(value_net,0)) value_net from report_equipment_store_day where day_key= #{day_start} group by day_key,store_id) b
-	     on a.daykey=b.day_key and a.store_id=b.store_id
+	     left join (select x.day_key,x.store_id,y.prod_id,sum(nvl(x.value_net,0)) value_net from report_equipment_store_day x,ems_equipment y 
+	     	where x.ecode=y.ecode and x.day_key= #{day_start} group by x.day_key,x.store_id,y.prod_id) b
+	     on a.daykey=b.day_key and a.store_id=b.store_id and a.prod_id=b.prod_id
 	    where 
 	    <if test="use_in!=null and use_in==false">
 			a.store_id=#{store_id} and 

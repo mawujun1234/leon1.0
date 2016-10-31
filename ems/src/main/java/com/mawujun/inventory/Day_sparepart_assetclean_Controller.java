@@ -221,13 +221,17 @@ public class Day_sparepart_assetclean_Controller {
 					//要先对prods进行行列转换
 					equipmentSubtype.changeProdes();
 					//int prods_size=equipmentSubtype.getProdSize();
+					//key 日期,value是当天的数据,value_key是daykey
 					List<Map<Integer,Day_sparepart_prod>> prodes_list=equipmentSubtype.getProdes_list();
 					// 弄几行模拟品名的数据，即几个空行
 					int fromRow_subtype = rownum;
 					for (int k = 0; k < prodes_list.size(); k++) {
 						Map<Integer,Day_sparepart_prod> prod_maps=prodes_list.get(k);
-						//主要是为了填写当前行的品名，品牌，所属仓库等信息
+						//主要是为了填写当前行的品名，品牌，所属仓库等信息,获取第一天的数据
 						Day_sparepart_prod prod_first=prod_maps.values().iterator().next();
+						Day_sparepart_prod prod_last=prod_maps.values().toArray(new Day_sparepart_prod[prod_maps.size()])[prod_maps.size()-1];
+								
+								
 						//String prod_id=prod_first.getProd_id();
 						
 								
@@ -259,11 +263,11 @@ public class Day_sparepart_assetclean_Controller {
 						unit.setCellValue(prod_first.getProd_unit());
 						unit.setCellStyle(content_style);
 
-						// 额定数量
-						if(store_type == 3){
-							Cell fixednum = row_prod.createCell(cellnum++);
-							fixednum.setCellStyle(fixednum_style);
-						}
+//						// 额定数量
+//						if(store_type == 3){
+//							Cell fixednum = row_prod.createCell(cellnum++);
+//							fixednum.setCellStyle(fixednum_style);
+//						}
 						
 
 						// 上期结余
@@ -272,6 +276,10 @@ public class Day_sparepart_assetclean_Controller {
 						nownum_formule_builder.append(CellReference.convertNumToColString(cellnum - 1) + (rownum));
 						nownum_formule_builder.append(",");
 						yesterdaynum.setCellStyle(yesterdaynum_style);
+						//上期结余-净资产
+						Cell yesterdaynum_net = row_prod.createCell(cellnum++);
+						yesterdaynum_net.setCellValue(prod_first.getValue_net().doubleValue());
+						yesterdaynum_net.setCellStyle(yesterdaynum_style);
 
 						// 本期采购新增
 						Cell purchasenum = row_prod.createCell(cellnum++);
@@ -323,6 +331,10 @@ public class Day_sparepart_assetclean_Controller {
 						Cell nownum = row_prod.createCell(cellnum++);
 						nownum.setCellFormula(nownum_formule_builder.toString());
 						nownum.setCellStyle(nownum_style);
+						
+						Cell nownum_net = row_prod.createCell(cellnum++);
+						nownum_net.setCellValue(prod_last.getValue_net().doubleValue());
+						nownum_net.setCellStyle(nownum_style);
 
 						
 						//日报表，表头的日期改成真是日期，而不是1，2，3这样的序号，变成月日，或者年月日
@@ -521,15 +533,15 @@ public class Day_sparepart_assetclean_Controller {
 		 unit.setCellStyle(black_style);
 		 sheet.setColumnWidth(cellnum-1,600);
 		 
-		 if(store_type == 3){
-			 CellStyle fixednum_style=getStyle(wb,IndexedColors.BLACK,(short)9);
-			 fixednum_style.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);
-			 fixednum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-			 Cell fixednum=row.createCell(cellnum++);
-			 fixednum.setCellValue("额定数量");
-			 fixednum.setCellStyle(fixednum_style);
-			 sheet.setColumnWidth(cellnum-1, 1200);
-		 }
+//		 if(store_type == 3){
+//			 CellStyle fixednum_style=getStyle(wb,IndexedColors.BLACK,(short)9);
+//			 fixednum_style.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);
+//			 fixednum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+//			 Cell fixednum=row.createCell(cellnum++);
+//			 fixednum.setCellValue("额定数量");
+//			 fixednum.setCellStyle(fixednum_style);
+//			 sheet.setColumnWidth(cellnum-1, 1200);
+//		 }
 		
 		 
 		 CellStyle yesterdaynum_style=getStyle(wb,IndexedColors.BLACK,(short)9);
@@ -540,6 +552,7 @@ public class Day_sparepart_assetclean_Controller {
 		 lastnum.setCellStyle(yesterdaynum_style);
 		 //sheet.setColumnWidth(cellnum-1, 1800);
 		 
+		 int not_region_lastnum=cellnum-1;
 		 Cell lastnum_num = row4.createCell(cellnum-1);
 			lastnum_num.setCellValue("数量");
 			lastnum_num.setCellStyle(yesterdaynum_style);
@@ -548,6 +561,7 @@ public class Day_sparepart_assetclean_Controller {
 			lastnum_net.setCellValue("金额");
 			lastnum_net.setCellStyle(yesterdaynum_style);
 			sheet.setColumnWidth(cellnum - 1, 1800);
+			sheet.addMergedRegion(new CellRangeAddress(2,3,cellnum - 2,cellnum - 1)); 
 		 
 		 CellStyle blue_style=getStyle(wb,IndexedColors.LIGHT_BLUE,(short)9);
 		 Cell purchasenum=row.createCell(cellnum++);
@@ -601,6 +615,8 @@ public class Day_sparepart_assetclean_Controller {
 		 nownum.setCellValue("本期结余数");
 		 nownum.setCellStyle(nownum_style);
 		 //sheet.setColumnWidth(cellnum-1, 1800);
+		 
+		 int not_region_nownum=cellnum-1;
 		 Cell nownum_num = row4.createCell(cellnum-1);
 			nownum_num.setCellValue("数量");
 			nownum_num.setCellStyle(nownum_style);
@@ -609,6 +625,7 @@ public class Day_sparepart_assetclean_Controller {
 			nownum_net.setCellValue("金额");
 			nownum_net.setCellStyle(nownum_style);
 			sheet.setColumnWidth(cellnum - 1, 1800);
+			sheet.addMergedRegion(new CellRangeAddress(2,3,cellnum - 2,cellnum - 1)); 
 		 
 //		 CellStyle supplementnum_style=getStyle(wb,IndexedColors.BLACK,(short)9);
 //		 supplementnum_style.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);
@@ -635,6 +652,9 @@ public class Day_sparepart_assetclean_Controller {
 
 		 Row row2 = sheet.createRow(3);
 		for (int j = 0; j < cellnum; j++) {
+			if(j==not_region_lastnum||j==not_region_lastnum+1 || j==not_region_nownum|| j==not_region_nownum+1){
+				continue;
+			}
 
 			sheet.addMergedRegion(new CellRangeAddress(2, 3, (short) j, (short) j));
 			// 同时设置第二行的单元格的样式
@@ -772,7 +792,7 @@ public class Day_sparepart_assetclean_Controller {
 
 			 
 			 //冻结行和列
-			 sheet.createFreezePane(sparepart_month_freeze_num, 4);
+			 sheet.createFreezePane(sparepart_month_freeze_num, 5);
 			 
 			 //生成本期新增数公式
 			 StringBuilder[] formulas=new StringBuilder[]{purchasenum_formula,oldnum_formula,installoutnum_formula,repairinnum_formula,scrapoutnum_formula,repairoutnum_formula,adjustoutnum_formula,adjustinnum_formula};
@@ -781,7 +801,7 @@ public class Day_sparepart_assetclean_Controller {
 		 //sheet.createFreezePane(16, 2);
 		
 	}
-	int sparepart_month_freeze_num=18;//在建仓库月冻结的列数
+	int sparepart_month_freeze_num=19;//在建仓库月冻结的列数
 	int type_group_end_num=17;//小类和大类分组的结束列
 	int day_of_month_num=31;
 //	@RequestMapping("/inventory/day/sparepart/excelTpl.do")

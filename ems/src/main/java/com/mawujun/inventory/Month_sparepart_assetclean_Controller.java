@@ -209,13 +209,13 @@ public class Month_sparepart_assetclean_Controller {
 						unit.setCellValue(prod.getProd_unit());
 						unit.setCellStyle(content_style);
 
-						if (store_type == 3) {
-							// 额定数量
-							Cell fixednum = row_prod.createCell(cellnum++);
-							//fixednum.setCellValue();
-							fixednum.setCellStyle(fixednum_style);
-							supplementnum_formule_builder.append(CellReference.convertNumToColString(cellnum - 1) + (rownum));
-						}
+//						if (store_type == 3) {
+//							// 额定数量
+//							Cell fixednum = row_prod.createCell(cellnum++);
+//							//fixednum.setCellValue();
+//							fixednum.setCellStyle(fixednum_style);
+//							supplementnum_formule_builder.append(CellReference.convertNumToColString(cellnum - 1) + (rownum));
+//						}
 
 						// 上月结余
 						Cell yesterdaynum = row_prod.createCell(cellnum++);
@@ -422,15 +422,15 @@ public class Month_sparepart_assetclean_Controller {
 		unit.setCellStyle(black_style);
 		sheet.setColumnWidth(cellnum - 1, 600);
 
-		if (store_type == 3) {
-			CellStyle fixednum_style = getStyle(wb, IndexedColors.BLACK, null);
-			fixednum_style.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);
-			fixednum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-			Cell fixednum = row.createCell(cellnum++);
-			fixednum.setCellValue("额定数量");
-			fixednum.setCellStyle(fixednum_style);
-			sheet.setColumnWidth(cellnum - 1, 1200);
-		}
+//		if (store_type == 3) {
+//			CellStyle fixednum_style = getStyle(wb, IndexedColors.BLACK, null);
+//			fixednum_style.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);
+//			fixednum_style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+//			Cell fixednum = row.createCell(cellnum++);
+//			fixednum.setCellValue("额定数量");
+//			fixednum.setCellStyle(fixednum_style);
+//			sheet.setColumnWidth(cellnum - 1, 1200);
+//		}
 		
 
 		CellStyle yesterdaynum_style = getStyle(wb, IndexedColors.BLACK, null);
@@ -533,7 +533,7 @@ public class Month_sparepart_assetclean_Controller {
 		sheet.addMergedRegion(new CellRangeAddress(2, (short) 2, 17, 18));
 	}
 
-	int sparepart_month_freeze_num = 17;// 在建仓库月冻结的列数
+	int sparepart_month_freeze_num = 20;// 在建仓库月冻结的列数
 	int type_group_end_num = 15;// 小类和大类分组的结束列
 
 //	@RequestMapping("/inventory/month/sparepart/excelTpl.do")
