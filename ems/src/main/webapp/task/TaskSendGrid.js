@@ -367,38 +367,6 @@ Ext.define('Ems.task.TaskSendGrid',{
 				} else {
 					//alert("维修任务只能一个一个发，因为要选故障时间!");
 					me.createBatchRepairTask(records);
-//					Ext.Msg.confirm("提醒","只会为对'使用中','有损坏'的点位发送维修/维护任务,选'是'进行发送",function(btn){
-//						if(btn=='yes'){
-//							var taskes=[];
-//							for(var i=0;i<records.length;i++){
-//								if(records[i].get("status")!="using" && records[i].get("status")!="hitch"){
-//									alert("点位‘"+records[i].get("name")+"’不能发送维修任务!");
-//									return;
-//								}
-//								var bool=checkTasknum(records[i]);
-//								if(!bool){
-//									return;
-//								}
-//								taskes.push(me.initTask_value(records[i],"repair"));
-//							}
-//							//
-//							Ext.Ajax.request({
-//								method:'POST',
-//								jsonData:taskes,
-//								headers:{ 'Content-Type':'application/json;charset=UTF-8'},
-//								url:Ext.ContextPath+"/task/create.do",
-//								success:function(response){
-//									var obj=Ext.decode(response.responseText);
-//									if(obj.success){
-//										me.getSelectionModel( ).deselectAll();
-//										me.getStore().reload();
-//										alert("发送成功!");
-//									}
-//									
-//								}
-//							});
-//						}
-//					});
 				}
 				
 			}
@@ -428,6 +396,35 @@ Ext.define('Ems.task.TaskSendGrid',{
 					me.showTaskForm(records[0],"patrol");
 				} else {
 					me.createBatchPatrolTask(records);
+				}
+				
+			}
+		});
+		var check_button=Ext.create('Ext.button.Button',{
+			text:'发送盘点任务',
+			margin:'0 0 0 5',
+			hidden:!Permision.canShow('task_send_check'),
+			icon:'../images/patrols.png',
+			handler:function(){
+				var records=me.getSelectionModel().getSelection();
+				if(!records || records.length==0){
+					alert("请先选择点位");
+					return;
+				}
+				if(records.length==1){
+//					var pole_status=records[0].get("status");
+//					if(pole_status!="using" && pole_status!="hitch"){
+//						alert("只有'使用中','有损坏'状态的点位，才能发送巡检任务!");
+//						return;
+//					}
+//					var bool=checkTasknum(records[0]);
+//								if(!bool){
+//									return;
+//								}
+					//me.showTaskForm(records[0],"check");
+					me.createBatchcheckTask(records);
+				} else {
+					me.createBatchcheckTask(records);
 				}
 				
 			}
@@ -472,7 +469,7 @@ Ext.define('Ems.task.TaskSendGrid',{
 			items: [{
 				items: [customer_combox,filter_other_combox,workunit_combox,pole_textfield,query_button] // toolbar 1
 			}, {
-				items: [install_button,repair_button,patrol_button,cancel_button] // toolbar 2
+				items: [install_button,repair_button,patrol_button,check_button,cancel_button] // toolbar 2
 			}]
 		  }	
 		
@@ -754,5 +751,78 @@ Ext.define('Ems.task.TaskSendGrid',{
 			}
 		});
 		
-	}//createBatchPatrolTask
+	},//createBatchPatrolTask
+	createBatchcheckTask:function(records){
+		var me=this;
+		var taskes=[];
+				//var workunit_name="";
+			for(var i=0;i<records.length;i++){
+//					if(records[i].get("status")!="using" && records[i].get("status")!="hitch"){
+//					var bool=checkTasknum(records[i]);
+//					if(!bool){
+//						return;
+//					}
+					taskes.push(me.initTask_value(records[i],"check"));
+					//workunit_name+=","+records[i].get("workunit_name");
+				
+			}
+		var win=Ext.create('Ext.window.Window',{
+					modal:true,
+					width:280,
+					height:250,
+					title:'批量提交任务',
+					items:[
+					{
+				        fieldLabel: '任务描述',
+				        afterLabelTextTpl: Ext.required,
+				        itemId: 'memo',
+				        readOnly:false,
+				        xtype:'textareafield',
+				        value:'扫描点位上所有的设备',
+				        grow:true,
+				        allowBlank: false
+				    }],
+				    buttons:[{
+				    	text:'取 消',
+				    	handler:function(btn){
+				    		win.close();
+				    	}
+				    },{
+				    	text:'保存',
+				    	handler:function(btn){
+				    		
+				    		var memo=win.down("#memo").getValue();
+				    		if(!memo){
+				    			Ext.Msg.alert("消息","请先输入备注");
+				    			return;
+				    		}
+				    		for(var i=0;i<taskes.length;i++) {
+				    			//taskes[i].patrolTaskType_id=patrolTaskType_id;
+				    			taskes[i].memo=memo;
+				    		}
+				    		Ext.Ajax.request({
+								method:'POST',
+								jsonData:taskes,
+								headers:{ 'Content-Type':'application/json;charset=UTF-8'},
+								url:Ext.ContextPath+"/task/create.do",
+								success:function(response){
+									var obj=Ext.decode(response.responseText);
+									if(obj.success){
+										me.getSelectionModel( ).deselectAll();
+										me.getStore().reload();
+										alert("发送成功!");
+										win.close();
+									}
+									
+								}
+							});
+				    	}
+				    
+				    }]
+				});
+				win.show();
+				
+			
+	}
+	
 });

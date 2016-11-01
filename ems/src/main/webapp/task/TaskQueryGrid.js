@@ -211,7 +211,7 @@ Ext.define('Ems.task.TaskQueryGrid',{
 	        //allowBlank: false,
 	        store:Ext.create('Ext.data.Store', {
 		    	fields: ['id', 'name'],
-			    data:[{id:'',name:'无'},{id:'newInstall',name:'新安装'},{id:'repair',name:'维修维护'},{id:'patrol',name:'巡检'},{id:'cancel',name:'取消'}]
+			    data:[{id:'',name:'无'},{id:'newInstall',name:'新安装'},{id:'repair',name:'维修维护'},{id:'patrol',name:'巡检'},{id:'check',name:'盘点'},{id:'cancel',name:'取消'}]
 		   })
 	  }); 
 		
