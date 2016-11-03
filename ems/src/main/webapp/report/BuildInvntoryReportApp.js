@@ -152,6 +152,7 @@ Ext.onReady(function(){
 		},{
 			text:'导出月报表-净资产',
 			icon:'../icons/page_excel.png',
+			hidden:!Permision.canShow('buildinvntory_month_export_assetclean'),
 			handler:function(){
 				var params=getParams();
 				if(!params){
@@ -164,6 +165,7 @@ Ext.onReady(function(){
 		},{
 			text:'导出日报表-净资产',
 			icon:'../icons/page_excel.png',
+			hidden:!Permision.canShow('buildinvntory_day_export_assetclean'),
 			handler:function(){
 				var params=getParams();
 				if(!params){

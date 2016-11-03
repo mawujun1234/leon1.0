@@ -57,8 +57,9 @@ Ext.onReady(function(){
 				window.open(Ext.ContextPath+"/report/installout/excelExport.do?"+pp, "_blank");
 			}
 		},{
-			text:'导出-净值',
+			text:'导出-净资产',
 			icon:'../icons/page_excel.png',
+			hidden:!Permision.canShow('installout_export_assetclean'),
 			handler:function(){
 				var params=getParams();
 				if(!params){

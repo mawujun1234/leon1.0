@@ -116,7 +116,8 @@ Ext.onReady(function(){
 				window.open(Ext.ContextPath+"/report/frontequip/exportFrontEquipSumReport.do?"+pp, "_blank");
 			}
 		},{
-			text:'导出-净值',
+			text:'导出-净资产',
+			hidden:!Permision.canShow('frontequipsum_export_assetclean'),
 			icon:'../icons/page_excel.png',
 			handler:function(){
 				var params=getParams();

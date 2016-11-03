@@ -27,6 +27,16 @@
 			</activation>
 		</profile>
 		<profile>
+			<id>test</id>
+			<properties>
+				<profiles.active>test</profiles.active>
+				<log4j2.level>debug</log4j2.level>
+				<finalName>test</finalName>
+				<reble.classes.dir>E:/eclipse/workspace/leon/ems/target/classes</reble.classes.dir>
+				<reble.test-classes.dir>E:/eclipse/workspace/leon/ems/target/classes</reble.test-classes.dir>
+			</properties>
+		</profile>
+		<profile>
 			<id>dev_mac</id>
 			<properties>
 				<profiles.active>mac</profiles.active>

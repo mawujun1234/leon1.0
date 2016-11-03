@@ -118,6 +118,7 @@ Ext.onReady(function(){
 		},{
 			text:'导出-净资产',
 			icon:'../icons/page_excel.png',
+			hidden:!Permision.canShow('machingequipsum_export_assetclean'),
 			handler:function(){
 				var params=getParams();
 				if(!params){

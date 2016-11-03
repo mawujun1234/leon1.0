@@ -108,6 +108,7 @@ Ext.onReady(function(){
 		},{
 			text:'导出月报表',
 			icon:'../icons/page_excel.png',
+			
 			handler:function(){
 				var params=getParams();
 				if(!params){
@@ -120,6 +121,7 @@ Ext.onReady(function(){
 		},
 		{
 			text:'导出日报表',
+			
 			icon:'../icons/page_excel.png',
 			handler:function(){
 				var params=getParams();
@@ -153,6 +155,7 @@ Ext.onReady(function(){
 		,{
 			text:'导出月报表-净资产',
 			icon:'../icons/page_excel.png',
+			hidden:!Permision.canShow('sparepartinventory_month_export_assetclean'),
 			handler:function(){
 				var params=getParams();
 				if(!params){
@@ -166,6 +169,7 @@ Ext.onReady(function(){
 		{
 			text:'导出日报表-净资产',
 			icon:'../icons/page_excel.png',
+			hidden:!Permision.canShow('sparepartinventory_day_export_assetclean'),
 			handler:function(){
 				var params=getParams();
 				if(!params){

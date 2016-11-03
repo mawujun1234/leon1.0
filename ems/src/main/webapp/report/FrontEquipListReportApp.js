@@ -98,6 +98,7 @@ Ext.onReady(function(){
 	var tbar1=Ext.create('Ext.toolbar.Toolbar',{
 		items:[customer_2,customer_0or1,{
 			text:'导出',
+			
 			icon:'../icons/page_excel.png',
 			handler:function(){
 				var params=getParams();
@@ -110,6 +111,7 @@ Ext.onReady(function(){
 		},{
 			text:'导出-净资产',
 			icon:'../icons/page_excel.png',
+			hidden:!Permision.canShow('frontequiplist_export_assetclean'),
 			handler:function(){
 				var params=getParams();
 				if(!params){
