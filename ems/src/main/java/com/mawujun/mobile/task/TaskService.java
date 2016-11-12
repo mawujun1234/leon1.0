@@ -720,6 +720,7 @@ public class TaskService extends AbstractService<Task, String>{
 			//再添加一个比较，如果
 		}
 		
+		
 		//更新任务状态
 		task.setStatus( TaskStatus.submited);
 		task.setSubmitDate(new Date());
@@ -923,6 +924,9 @@ public class TaskService extends AbstractService<Task, String>{
 				//记录设备入库的生命周期
 				equipmentCycleService.logEquipmentCycle(taskEquipmentList.getEcode(), OperateType.task_cancel, task.getId(),TargetType.pole,task.getPole_id(),task.getMemo());
 			} else if (TaskType.patrol== task.getType()) {
+
+			} else if (TaskType.check== task.getType()) {
+				//如果时盘点，就生成盘点单
 
 			}
 
