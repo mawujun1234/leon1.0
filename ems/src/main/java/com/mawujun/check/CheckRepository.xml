@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
+<mapper namespace="com.mawujun.check.CheckRepository">
+	<!-- 查询语句，会自动分页
+	<sql id="queryPage_where">
+		<where>
+		
+		</where>
+	</sql>
+    <select id="queryPage" resultType="com.mawujun.check.Check" parameterType="map">
+    	select * from ems_check a
+    	<include refid="queryPage_where" />
+    </select> -->
+     <!-- 根据盘点任务扫描的设备，生成盘点单明细 -->
+     <update id="createCheckList" parameterType="map">
+     	insert into ems_checklist(check_id,ecode) as
+     	select '${check_id}', ecode from ems_taskequipmentlist where task_id=#{task_id}
+     </update>
+     
+    <sql id="queryPage_where">
+		<where>
+		    1=1
+			<if test="status!=null and status!=''">
+				and a.status=#{status}
+			</if>
+		</where>
+	</sql>
+    <select id="queryPage" resultType="com.mawujun.check.Check" parameterType="map">
+    	select * from ems_check a
+    	<include refid="queryPage_where" />
+    </select>
+</mapper>
+

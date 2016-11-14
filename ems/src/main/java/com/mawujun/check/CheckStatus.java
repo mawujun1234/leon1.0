@@ -1,4 +1,4 @@
-package com.mawujun.mobile.check;
+package com.mawujun.check;
 
 /**
  * 盘点单状态

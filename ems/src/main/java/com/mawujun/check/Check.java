@@ -1,4 +1,4 @@
-package com.mawujun.mobile.check;
+package com.mawujun.check;
 
 import java.util.Date;
 
@@ -17,9 +17,9 @@ import com.mawujun.repository.idEntity.IdEntity;
  */
 @Entity
 @Table(name="ems_check")
-public class Check implements IdEntity<Integer>{
+public class Check implements IdEntity<String>{
 	@Id
-	private Integer id;//20161111080808这种样子
+	private String id;//20161111080808这种样子
 	@Enumerated(EnumType.STRING)
 	private CheckStatus status;
 	@Column(length=50)
@@ -31,10 +31,10 @@ public class Check implements IdEntity<Integer>{
 	@Column(length=36)
 	private String task_id;//任务id
 	
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public CheckStatus getStatus() {

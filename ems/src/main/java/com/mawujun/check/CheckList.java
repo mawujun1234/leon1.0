@@ -1,4 +1,4 @@
-package com.mawujun.mobile.check;
+package com.mawujun.check;
 
 import java.io.Serializable;
 
@@ -21,7 +21,7 @@ import com.mawujun.repository.idEntity.IdEntity;
 @IdClass(CheckList.PK.class)
 public class CheckList implements IdEntity<CheckList.PK>{
 	@Id
-	private Integer check_id;
+	private String check_id;
 	@Id
 	@Column(length=25)
 	private String ecode;
@@ -31,21 +31,21 @@ public class CheckList implements IdEntity<CheckList.PK>{
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
-		private Integer check_id;
+		private String check_id;
 		private String ecode;
 		
 		public PK() {
 			super();
 		}
-		public PK(Integer check_id, String ecode) {
+		public PK(String check_id, String ecode) {
 			super();
 			this.check_id = check_id;
 			this.ecode = ecode;
 		}
-		public Integer getCheck_id() {
+		public String getCheck_id() {
 			return check_id;
 		}
-		public void setCheck_id(Integer check_id) {
+		public void setCheck_id(String check_id) {
 			this.check_id = check_id;
 		}
 		public String getEcode() {

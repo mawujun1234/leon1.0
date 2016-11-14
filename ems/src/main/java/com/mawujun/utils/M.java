@@ -27,7 +27,6 @@ public static final class AdjustList {
 	public static final String prod_id="prod_id";
 	public static final String id="id";
 }
-
 public static final class Brand {
 	public static final String id="id";
 	public static final String name="name";
@@ -242,6 +241,30 @@ public static final class WorkUnitContact {
 	public static final String workunit_id="workunit_id";
 	public static final String id="id";
 }
+public static final class Check {
+	public static final String id="id";
+	public static final String status="status";
+	public static final String creater="creater";
+	public static final String createDate="createDate";
+	public static final String completer="completer";
+	public static final String completeDate="completeDate";
+	public static final String task_id="task_id";
+}
+public static final class CheckList {
+	public static final String check_id="check_id";
+	public static final String ecode="ecode";
+}
+public static final class Trim {
+	public static final String id="id";
+	public static final String ecode="ecode";
+	public static final String orginal_id="orginal_id";
+	public static final String orginal_type="orginal_type";
+	public static final String target_id="target_id";
+	public static final String target_type="target_type";
+	public static final String creater="creater";
+	public static final String createDate="createDate";
+	public static final String check_id="check_id";
+}
 public static final class B2INotify {
 	public static final String ecode="ecode";
 	public static final String store_id="store_id";
@@ -332,7 +355,6 @@ public static final class AssetClean {
 	public static final String value_original="value_original";
 	public static final String value_old="value_old";
 	public static final String value_net="value_net";
-	public static final String id="id";
 }
 public static final class Day_sparepart {
 	public static final String daykey="daykey";
@@ -350,6 +372,14 @@ public static final class Day_sparepart {
 	public static final String borrownum="borrownum";
 	public static final String borrowreturnnum="borrowreturnnum";
 	public static final String createDate="createDate";
+}
+public static final class Equipment_Store_Day {
+	public static final String ecode="ecode";
+	public static final String day_key="day_key";
+	public static final String store_id="store_id";
+	public static final String value_original="value_original";
+	public static final String value_old="value_old";
+	public static final String value_net="value_net";
 }
 public static final class MetaVersion {
 	public static final String clasName="clasName";
@@ -408,8 +438,12 @@ public static final class LockEquipment {
 	public static final String createDate="createDate";
 }
 public static final class Overtime {
+	public static final String id="id";
 	public static final String read="read";
 	public static final String handling="handling";
+}
+public static final class PatrolTaskType {
+	public static final String name="name";
 	public static final String id="id";
 }
 public static final class Task {
@@ -436,6 +470,7 @@ public static final class Task {
 	public static final String hitchReason="hitchReason";
 	public static final String handleMethod_id="handleMethod_id";
 	public static final String handle_contact="handle_contact";
+	public static final String patrolTaskType_id="patrolTaskType_id";
 }
 public static final class TaskEquipmentList {
 	public static final String task_id="task_id";
@@ -654,20 +689,33 @@ public static final class User {
 	public static final String gps_interval="gps_interval";
 	public static final String id="id";
 }
-public static final class UserArea {
+public static final class UserStore {
+	public static final String user_id="user_id";
+	public static final String store_id="store_id";
+	public static final String look="look";
+	public static final String edit="edit";
+	public static final String store_name="store_name";
+	public static final String store_status="store_status";
+	public static final String store_type="store_type";
+	public static final String id="id";
+}
+public static final class UserWorkunit {
 	 /**
 	 * 返回关联对象的属性，，以对象关联的方式(a.b这种形式)，只有一些基本属性，层级不再往下了
 	 */
-	public static final class area {
-		public static final String name="area.name";
-		public static final String memo="area.memo";
-		public static final String id="area.id";
+	public static final class workunit {
+		public static final String name="workunit.name";
+		public static final String memo="workunit.memo";
+		public static final String status="workunit.status";
+		public static final String loginName="workunit.loginName";
+		public static final String password="workunit.password";
+		public static final String id="workunit.id";
 			
 	    /**
 	    * 返回的是关联类的属性名称，主要用于属性过滤的时候
 	    */
 	    public static String name(){ 
-		    return "area";
+		    return "workunit";
 	    }
 	}
 	 /**
@@ -696,15 +744,5 @@ public static final class UserArea {
 		    return "user";
 	    }
 	}
-}
-public static final class UserStore {
-	public static final String user_id="user_id";
-	public static final String store_id="store_id";
-	public static final String look="look";
-	public static final String edit="edit";
-	public static final String store_name="store_name";
-	public static final String store_status="store_status";
-	public static final String store_type="store_type";
-	public static final String id="id";
 }
 }

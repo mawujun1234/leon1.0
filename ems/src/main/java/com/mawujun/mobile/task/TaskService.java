@@ -35,6 +35,9 @@ import com.mawujun.baseinfo.Pole;
 import com.mawujun.baseinfo.PoleRepository;
 import com.mawujun.baseinfo.PoleStatus;
 import com.mawujun.baseinfo.TargetType;
+import com.mawujun.check.Check;
+import com.mawujun.check.CheckService;
+import com.mawujun.check.CheckStatus;
 import com.mawujun.exception.BusinessException;
 import com.mawujun.install.B2INotify;
 import com.mawujun.install.B2INotifyRepository;
@@ -92,6 +95,8 @@ public class TaskService extends AbstractService<Task, String>{
 	private EquipmentProdService equipmentProdService;
 	@Autowired
 	private B2INotifyRepository b2INotifyRepository;
+	@Autowired
+	private CheckService checkService;
 	
 	@Override
 	public TaskRepository getRepository() {
@@ -99,6 +104,7 @@ public class TaskService extends AbstractService<Task, String>{
 	}
 	
 	SimpleDateFormat ymdHmsDateFormat=new SimpleDateFormat("yyyyMMdd");
+	SimpleDateFormat yyyyMMddHHmmssDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
 	
 	public List<TaskEquipmentListVO> queryTaskEquipmentListVO(String task_id) {
 		return taskRepository.queryTaskEquipmentListVO(task_id);
@@ -926,7 +932,19 @@ public class TaskService extends AbstractService<Task, String>{
 			} else if (TaskType.patrol== task.getType()) {
 
 			} else if (TaskType.check== task.getType()) {
+				Date createDate=new Date();
+				String check_id=yyyyMMddHHmmssDateFormat.format(createDate);
 				//如果时盘点，就生成盘点单
+				Check check=new Check();
+				check.setId(check_id);
+				check.setStatus(CheckStatus.handling);
+				check.setTask_id(task.getId());
+				check.setCreater(ShiroUtils.getUserId());
+				check.setCreateDate(createDate);
+				checkService.create(check);
+				//生成盘点单的明细数据
+				checkService.createCheckList(check_id, ecode);
+				
 
 			}
 

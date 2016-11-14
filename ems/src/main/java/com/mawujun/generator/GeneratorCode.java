@@ -3,7 +3,7 @@ package com.mawujun.generator;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
-import com.mawujun.inventory.AssetClean;
+import com.mawujun.check.Trim;
 
 import freemarker.template.TemplateException;
 /**
@@ -26,7 +26,7 @@ public class GeneratorCode {
 		aa.extjs_grid_createDelUpd_button = true;
 		generatorService.setExtenConfig(aa);
 
-		generatorService.generatorAllFile(AssetClean.class);
+		generatorService.generatorAllFile(Trim.class);
 
 	}
 	

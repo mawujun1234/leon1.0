@@ -1,4 +1,4 @@
-package com.mawujun.mobile.check;
+package com.mawujun.check;
 
 import java.util.Date;
 
@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.mawujun.repository.idEntity.IdEntity;
+
 /**
  * 调整单，这时单据，时用来生成生命周期的原始数据
  * @author mawujun
@@ -14,9 +16,9 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="ems_trim")
-public class Trim {
+public class Trim  implements IdEntity<String>{
 	@Id
-	private Integer id;
+	private String id;
 	@Column(length=25)
 	private String ecode;
 	@Column(length=36)
@@ -33,15 +35,15 @@ public class Trim {
 	private Date createDate;//创建时间
 	
 	
-	private Integer check_id;//盘点单id
+	private String check_id;//盘点单id
 
 
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
 
 
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -116,12 +118,12 @@ public class Trim {
 	}
 
 
-	public Integer getCheck_id() {
+	public String getCheck_id() {
 		return check_id;
 	}
 
 
-	public void setCheck_id(Integer check_id) {
+	public void setCheck_id(String check_id) {
 		this.check_id = check_id;
 	}
 	
