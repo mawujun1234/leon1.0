@@ -1,10 +1,13 @@
 package com.mawujun.check;
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.service.AbstractService;
 
 
@@ -26,8 +29,17 @@ public class CheckService extends AbstractService<Check, String>{
 	public CheckRepository getRepository() {
 		return checkRepository;
 	}
+	
+	public List<EquipmentVO> queryScanEquipment(String check_id) {	
 
-	public void createCheckList(String check_id,String ecode){
-		checkRepository.createCheckList(check_id, ecode);
+		return checkRepository.queryScanEquipment(check_id);
 	}
+	public List<EquipmentVO> queryPoleEquipment(String pole_id) {	
+
+		return checkRepository.queryPoleEquipment(pole_id);
+	}
+
+//	public void createCheckList(String check_id,String task_id){
+//		checkRepository.createCheckList(check_id, task_id);
+//	}
 }

@@ -1,4 +1,5 @@
-Ext.defineModel("Ems.baseinfo.EquipmentCycle",{
+//Ext.defineModel("Ems.baseinfo.EquipmentCycle",{
+Ext.define("Ems.baseinfo.EquipmentCycle",{
 	extend:"Ext.data.Model",
 	idProperty:'id',
 	fields:[

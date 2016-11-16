@@ -3,11 +3,15 @@ Ext.define("Ems.check.Check",{
 	fields:[
 		{name:'id',type:'string'},
 		{name:'status',type:'string'},
+		{name:'status_name',type:'string'},
 		{name:'creater',type:'string'},
-		{name:'createDate',type:'date', dateFormat: 'Y-m-d H:i:s'},
+		{name:'createDate',type:'string'},
 		{name:'completer',type:'string'},
-		{name:'completeDate',type:'date', dateFormat: 'Y-m-d H:i:s'},
-		{name:'task_id',type:'string'}
+		{name:'completeDate',type:'string'},
+		{name:'task_id',type:'string'},
+		
+		{name:'pole_id',type:'string'},
+		{name:'pole_name',type:'string'}
 	],
 	proxy:{
 		type:'ajax',

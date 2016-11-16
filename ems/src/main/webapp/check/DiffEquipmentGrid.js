@@ -1,7 +1,7 @@
 /**
  * 显示点位上有哪些设备的
  */
-Ext.define('Ems.baseinfo.PoleEquipmentGrid',{
+Ext.define('Ems.check.DiffEquipmentGrid',{
 	extend:'Ext.grid.Panel',
 	requires: [
 	     'Ems.baseinfo.Equipment'
@@ -64,12 +64,13 @@ Ext.define('Ems.baseinfo.PoleEquipmentGrid',{
 			pageSize:50,
 			model: 'Ems.baseinfo.Equipment',
 	        autoLoad:false,
+	        //data :[]
 	        proxy: {
 		        type: 'ajax',
-		        url: Ext.ContextPath+'/pole/queryEquipments.do',  // url that will load data with respect to start and limit params
+		        url: Ext.ContextPath+'/check/queryDifferentPoleEquipment.do',  // url that will load data with respect to start and limit params
 		        reader: {
 		            type: 'json',
-		            root: 'root',
+		            rootProperty: 'root',
 		            totalProperty: 'total'
 		        }
 		    }

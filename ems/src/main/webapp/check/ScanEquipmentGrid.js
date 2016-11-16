@@ -1,7 +1,7 @@
 /**
- * 显示点位上有哪些设备的
+ *扫描过的点位上有哪些设备
  */
-Ext.define('Ems.baseinfo.PoleEquipmentGrid',{
+Ext.define('Ems.check.ScanEquipmentGrid',{
 	extend:'Ext.grid.Panel',
 	requires: [
 	     'Ems.baseinfo.Equipment'
@@ -56,7 +56,48 @@ Ext.define('Ems.baseinfo.PoleEquipmentGrid',{
     	{header: '品牌', dataIndex: 'brand_name',width:60},
     	{header: '质保', dataIndex: 'prod_quality_month',width:60},
     	{header: '供应商', dataIndex: 'supplier_name'},
-    	{header: '安装时间', dataIndex: 'last_install_date',renderer:Ext.util.Format.dateRenderer('Y-m-d')}
+    	{header: '安装时间', dataIndex: 'last_install_date',renderer:Ext.util.Format.dateRenderer('Y-m-d')},
+    	{
+            xtype:'actioncolumn',
+            width:50,
+            header: '替换',
+            items: [{
+            	iconCls: 'icon-cogs',
+            	tooltip: '替换',
+                handler: function(grid, rowIndex, colIndex) {
+                    var rec = grid.getStore().getAt(rowIndex);
+                    
+                    var diffgrid=Ext.create('Ems.check.DiffEquipmentGrid',{});
+                    var win=Ext.create('Ext.window.Window',{
+                    	layout:'fit',
+                    	title:'替换掉点位上的设备(双击选择)',
+                    	modal:true,
+                    	height:300,
+                    	width:500,
+                    	items:[diffgrid]
+                    });
+                    win.show();
+                    
+                }
+            }]
+        },
+        {
+            xtype:'actioncolumn',
+            width:50,
+            header: '转移',
+            items: [{
+            	iconCls: 'icon-wrench',
+            	tooltip: '转移',
+                handler: function(grid, rowIndex, colIndex) {
+                    var rec = grid.getStore().getAt(rowIndex);
+                    Ext.Msg.confirm("转移",'确定把该设备转移到当前点位上?', function(btn, text){
+            			if (btn == 'yes'){
+            				
+            			}
+                	});
+                }
+            }]
+        }
       ];
       
 	  me.store=Ext.create('Ext.data.Store',{
@@ -64,15 +105,16 @@ Ext.define('Ems.baseinfo.PoleEquipmentGrid',{
 			pageSize:50,
 			model: 'Ems.baseinfo.Equipment',
 	        autoLoad:false,
-	        proxy: {
-		        type: 'ajax',
-		        url: Ext.ContextPath+'/pole/queryEquipments.do',  // url that will load data with respect to start and limit params
-		        reader: {
-		            type: 'json',
-		            root: 'root',
-		            totalProperty: 'total'
-		        }
-		    }
+	        data :[]
+//	        proxy: {
+//		        type: 'ajax',
+//		        url: Ext.ContextPath+'/check/queryScanEquipment.do',  // url that will load data with respect to start and limit params
+//		        reader: {
+//		            type: 'json',
+//		            rootProperty: 'root',
+//		            totalProperty: 'total'
+//		        }
+//		    }
 	  });
 	  //me.store.getProxy().extraParams ={isGrid:true}
 	  

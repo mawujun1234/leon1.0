@@ -36,6 +36,8 @@ import com.mawujun.baseinfo.PoleRepository;
 import com.mawujun.baseinfo.PoleStatus;
 import com.mawujun.baseinfo.TargetType;
 import com.mawujun.check.Check;
+import com.mawujun.check.CheckList;
+import com.mawujun.check.CheckListService;
 import com.mawujun.check.CheckService;
 import com.mawujun.check.CheckStatus;
 import com.mawujun.exception.BusinessException;
@@ -97,6 +99,8 @@ public class TaskService extends AbstractService<Task, String>{
 	private B2INotifyRepository b2INotifyRepository;
 	@Autowired
 	private CheckService checkService;
+	@Autowired
+	private CheckListService checkListService;
 	
 	@Override
 	public TaskRepository getRepository() {
@@ -773,9 +777,12 @@ public class TaskService extends AbstractService<Task, String>{
 //		}
 		
 		//更新任务状态
+		Date createDate=new Date();
 		task.setStatus(TaskStatus.complete);
-		task.setCompleteDate(new Date());
+		task.setCompleteDate(createDate);
 		taskRepository.update(task);
+		
+		String check_id=yyyyMMddHHmmssDateFormat.format(createDate);
 		
 		// 修改杆位状态为"使用中"
 		if (task.getType() == TaskType.newInstall) {
@@ -788,6 +795,17 @@ public class TaskService extends AbstractService<Task, String>{
 			
 		} else if (task.getType() == TaskType.cancel) {
 			poleRepository.update(Cnd.update().set(M.Pole.status, PoleStatus.cancel).andEquals(M.Pole.id, task.getPole_id()));
+		} else if(task.getType() == TaskType.check){
+			//创建盘点主单，明细数据在和面进行插入
+			
+			//如果时盘点，就生成盘点单
+			Check check=new Check();
+			check.setId(check_id);
+			check.setStatus(CheckStatus.handling);
+			check.setTask_id(task.getId());
+			check.setCreater(ShiroUtils.getUserId());
+			check.setCreateDate(createDate);
+			checkService.create(check);
 		}
 
 		//String task_type = task.getType().toString();
@@ -932,18 +950,13 @@ public class TaskService extends AbstractService<Task, String>{
 			} else if (TaskType.patrol== task.getType()) {
 
 			} else if (TaskType.check== task.getType()) {
-				Date createDate=new Date();
-				String check_id=yyyyMMddHHmmssDateFormat.format(createDate);
-				//如果时盘点，就生成盘点单
-				Check check=new Check();
-				check.setId(check_id);
-				check.setStatus(CheckStatus.handling);
-				check.setTask_id(task.getId());
-				check.setCreater(ShiroUtils.getUserId());
-				check.setCreateDate(createDate);
-				checkService.create(check);
+				
 				//生成盘点单的明细数据
-				checkService.createCheckList(check_id, ecode);
+				CheckList checkList=new CheckList();
+				checkList.setCheck_id(check_id);
+				checkList.setEcode(ecode);
+				checkListService.create(checkList);
+				//checkService.createCheckList(check_id, ecode);
 				
 
 			}

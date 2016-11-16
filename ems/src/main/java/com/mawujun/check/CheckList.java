@@ -26,6 +26,22 @@ public class CheckList implements IdEntity<CheckList.PK>{
 	@Column(length=25)
 	private String ecode;
 	
+	public String getCheck_id() {
+		return check_id;
+	}
+
+	public void setCheck_id(String check_id) {
+		this.check_id = check_id;
+	}
+
+	public String getEcode() {
+		return ecode;
+	}
+
+	public void setEcode(String ecode) {
+		this.ecode = ecode;
+	}
+
 	public static class PK implements Serializable {
 		/**
 		 * 

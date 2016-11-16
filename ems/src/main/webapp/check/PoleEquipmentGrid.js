@@ -1,7 +1,7 @@
 /**
  * 显示点位上有哪些设备的
  */
-Ext.define('Ems.baseinfo.PoleEquipmentGrid',{
+Ext.define('Ems.check.PoleEquipmentGrid',{
 	extend:'Ext.grid.Panel',
 	requires: [
 	     'Ems.baseinfo.Equipment'
@@ -56,7 +56,24 @@ Ext.define('Ems.baseinfo.PoleEquipmentGrid',{
     	{header: '品牌', dataIndex: 'brand_name',width:60},
     	{header: '质保', dataIndex: 'prod_quality_month',width:60},
     	{header: '供应商', dataIndex: 'supplier_name'},
-    	{header: '安装时间', dataIndex: 'last_install_date',renderer:Ext.util.Format.dateRenderer('Y-m-d')}
+    	{header: '安装时间', dataIndex: 'last_install_date',renderer:Ext.util.Format.dateRenderer('Y-m-d')},
+    	{
+            xtype:'actioncolumn',
+            width:50,
+            header: '卸载',
+            items: [{
+            	iconCls: 'icon-remove',
+            	tooltip: '卸载',
+                handler: function(grid, rowIndex, colIndex) {
+                    var rec = grid.getStore().getAt(rowIndex);
+                    Ext.Msg.confirm("卸载",'确定把该设备从点位上卸载?', function(btn, text){
+            			if (btn == 'yes'){
+            				//添加作业单位的选择
+            			}
+                	});
+                }
+            }]
+        }
       ];
       
 	  me.store=Ext.create('Ext.data.Store',{
@@ -64,15 +81,16 @@ Ext.define('Ems.baseinfo.PoleEquipmentGrid',{
 			pageSize:50,
 			model: 'Ems.baseinfo.Equipment',
 	        autoLoad:false,
-	        proxy: {
-		        type: 'ajax',
-		        url: Ext.ContextPath+'/pole/queryEquipments.do',  // url that will load data with respect to start and limit params
-		        reader: {
-		            type: 'json',
-		            root: 'root',
-		            totalProperty: 'total'
-		        }
-		    }
+	        data :[]
+//	        proxy: {
+//		        type: 'ajax',
+//		        url: Ext.ContextPath+'/check/queryPoleEquipment.do',  // url that will load data with respect to start and limit params
+//		        reader: {
+//		            type: 'json',
+//		            rootProperty: 'root',
+//		            totalProperty: 'total'
+//		        }
+//		    }
 	  });
 	  //me.store.getProxy().extraParams ={isGrid:true}
 	  

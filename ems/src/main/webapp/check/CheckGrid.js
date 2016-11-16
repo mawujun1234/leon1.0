@@ -16,6 +16,8 @@ Ext.define('Ems.check.CheckGrid',{
         },
         {dataIndex:'task_id',header:'任务编号'
         },
+        {dataIndex:'pole_name',header:'点位'
+        },
 		{dataIndex:'status_name',header:'状态'
         },
 //        {dataIndex:'creater',header:'创建人'
@@ -87,6 +89,13 @@ Ext.define('Ems.check.CheckGrid',{
 					grid.getStore().reload();
 				},
 				iconCls: 'icon-refresh'
+			},{
+				text: '完成',
+				handler: function(btn){
+					var grid=btn.up("grid");
+    				grid.onComplete();
+				},
+				iconCls: 'icon-refresh'
 			}]
 		});
 
@@ -102,77 +111,18 @@ Ext.define('Ems.check.CheckGrid',{
 		return params;
 
 	},
-	onCreate:function(){
+	onComplete:function(){
     	var me=this;
-		var child=Ext.create('Ems.check.Check',{
-
-		});
-		child.set("id",null);
-		
-		var formpanel=Ext.create('Ems.check.CheckForm',{});
-		formpanel.loadRecord(child);
-		
-    	var win=Ext.create('Ext.window.Window',{
-    		layout:'fit',
-    		title:'新增',
-    		modal:true,
-    		width:400,
-    		height:300,
-    		closeAction:'hide',
-    		items:[formpanel],
-    		listeners:{
-    			close:function(){
-    				me.getStore().reload();
-    			}
-    		}
-    	});
-    	win.show();
-    },
-    
-     onUpdate:function(){
-    	var me=this;
-
-    	var node=me.getSelectionModel( ).getLastSelected();
-    	if(node==null){
+    	var record=me.getSelectionModel( ).getLastSelected();
+    	if(record==null){
     		Ext.Msg.alert("提醒","请选择一行数据!");
     		return;
     	}
-
-		var formpanel=Ext.create('Ems.check.CheckForm',{});
-		formpanel.loadRecord(node);
-		
-    	var win=Ext.create('Ext.window.Window',{
-    		layout:'fit',
-    		title:'更新',
-    		modal:true,
-    		width:400,
-    		height:300,
-    		closeAction:'hide',
-    		items:[formpanel]
-    	});
-    	win.show();
-    },
-    
-    onDelete:function(){
-    	var me=this;
-    	var node=me.getSelectionModel( ).getLastSelected( );
-
-		if(!node){
-		    Ext.Msg.alert("消息","请先选择一行数据");	
-			return;
-		}
-		var parent=node.parentNode;
-		Ext.Msg.confirm("删除",'确定要删除吗?', function(btn, text){
-				if (btn == 'yes'){
-					node.erase({
-					    failure: function(record, operation) {
-			            	me.getStore().reload();
-					    },
-					    success:function(){
-					    	me.getStore().reload();
-					    }
-				});
+    	Ext.Msg.confirm("完成",'确定该盘点单已经全部调整完成?', function(btn, text){
+			if (btn == 'yes'){
+				
 			}
-		});
+    	});
     }
+    
 });

@@ -1,10 +1,17 @@
 package com.mawujun.check;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mawujun.baseinfo.EquipmentVO;
+import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.utils.M;
 import com.mawujun.utils.page.Page;
 /**
@@ -27,8 +34,118 @@ public class CheckController {
 		page.addParam(M.Check.status, status);
 		
 		Page checkes=checkService.queryPage(page);
+		
+		JsonConfigHolder.setDatePattern("yyyy-MM-dd HH:mm:ss");
 		return checkes;
 	}
+	
+	@RequestMapping("/check/queryDifferentEquipment.do")
+	@ResponseBody
+	public Map<String,List<EquipmentVO>> queryDifferentEquipment(String check_id,String pole_id,Boolean onlyDifferent) {	
+		List<EquipmentVO> scan_records= checkService.queryScanEquipment(check_id);
+		List<EquipmentVO> pole_records= checkService.queryPoleEquipment(pole_id);
+		Map<String,List<EquipmentVO>> results=new HashMap<String,List<EquipmentVO>>();
+		//只显示有差异的
+		if(onlyDifferent){
+			List<EquipmentVO> scan_records_new=new ArrayList<EquipmentVO>();
+			List<EquipmentVO> pole_records_new=new ArrayList<EquipmentVO>();
+			
+			for(EquipmentVO scan_record:scan_records){
+				boolean bool=true;
+				for(EquipmentVO pole_record:pole_records){
+					if(scan_record.getEcode().equals(pole_record.getEcode())){
+						bool=false;
+						break;
+					}
+				}
+				if(bool){
+					scan_records_new.add(scan_record);
+				}
+			}
+			
+			for(EquipmentVO pole_record:pole_records){
+				boolean bool=true;
+				for(EquipmentVO scan_record:scan_records){
+					if(scan_record.getEcode().equals(pole_record.getEcode())){
+						bool=false;
+						break;
+					}
+				}
+				if(bool){
+					pole_records_new.add(pole_record);
+				}
+			}
+			results.put("scan_records",scan_records_new );
+			results.put("pole_records", pole_records_new);
+		} else {
+			results.put("scan_records",scan_records );
+			results.put("pole_records", pole_records);
+		}
+		return results;
+	}
+	/**
+	 * 查询出点位上和扫描出来设备不 一样的，用来替换用
+	 * @param check_id
+	 * @param pole_id
+	 * @param onlyDifferent
+	 * @return
+	 */
+	@RequestMapping("/check/queryDifferentPoleEquipment.do")
+	@ResponseBody
+	public List<EquipmentVO> queryDifferentPoleEquipment(String check_id,String pole_id,Boolean onlyDifferent) {	
+		List<EquipmentVO> scan_records= checkService.queryScanEquipment(check_id);
+		List<EquipmentVO> pole_records= checkService.queryPoleEquipment(pole_id);
+		//Map<String,List<EquipmentVO>> results=new HashMap<String,List<EquipmentVO>>();
+		//只显示有差异的
+		//if(onlyDifferent){
+		//	List<EquipmentVO> scan_records_new=new ArrayList<EquipmentVO>();
+			List<EquipmentVO> pole_records_new=new ArrayList<EquipmentVO>();
+			
+//			for(EquipmentVO scan_record:scan_records){
+//				boolean bool=true;
+//				for(EquipmentVO pole_record:pole_records){
+//					if(scan_record.getEcode().equals(pole_record.getEcode())){
+//						bool=false;
+//						break;
+//					}
+//				}
+//				if(bool){
+//					scan_records_new.add(scan_record);
+//				}
+//			}
+			
+			for(EquipmentVO pole_record:pole_records){
+				boolean bool=true;
+				for(EquipmentVO scan_record:scan_records){
+					if(scan_record.getEcode().equals(pole_record.getEcode())){
+						bool=false;
+						break;
+					}
+				}
+				if(bool){
+					pole_records_new.add(pole_record);
+				}
+			}
+			//results.put("scan_records",scan_records_new );
+			//results.put("pole_records", pole_records_new);
+		//} else {
+			//results.put("scan_records",scan_records );
+			//results.put("pole_records", pole_records);
+		//}
+		return pole_records_new;
+	}
+//	@RequestMapping("/check/queryScanEquipment.do")
+//	@ResponseBody
+//	public List<EquipmentVO> queryScanEquipment(String check_id) {	
+//
+//		return checkService.queryScanEquipment(check_id);
+//	}
+//	@RequestMapping("/check/queryPoleEquipment.do")
+//	@ResponseBody
+//	public List<EquipmentVO> queryPoleEquipment(String pole_id) {	
+//
+//		return checkService.queryPoleEquipment(pole_id);
+//	}
 	
 
 //	@RequestMapping("/check/load.do")

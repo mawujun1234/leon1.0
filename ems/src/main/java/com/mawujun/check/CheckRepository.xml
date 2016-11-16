@@ -15,11 +15,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	select * from ems_check a
     	<include refid="queryPage_where" />
     </select> -->
-     <!-- 根据盘点任务扫描的设备，生成盘点单明细 -->
+     <!-- 根据盘点任务扫描的设备，生成盘点单明细 
      <update id="createCheckList" parameterType="map">
      	insert into ems_checklist(check_id,ecode) as
      	select '${check_id}', ecode from ems_taskequipmentlist where task_id=#{task_id}
      </update>
+     -->
      
     <sql id="queryPage_where">
 		<where>
@@ -29,9 +30,35 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			</if>
 		</where>
 	</sql>
-    <select id="queryPage" resultType="com.mawujun.check.Check" parameterType="map">
-    	select * from ems_check a
+    <select id="queryPage" resultType="com.mawujun.check.CheckVO" parameterType="map">
+    	select a.*,c.id as pole_id,c.name as pole_name from ems_check a
+    	inner join ems_task b on a.task_id=b.id
+    	inner join ems_pole c on b.pole_id=c.id
     	<include refid="queryPage_where" />
+    </select>
+    
+    <select id="queryScanEquipment" resultType="com.mawujun.baseinfo.EquipmentVO" parameterType="map">
+    	select a.*,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name
+    	from ems_checklist h
+    	inner join ems_equipment a on h.ecode=a.ecode
+		inner join ems_equipmentsubtype b on a.subtype_id=b.id
+		inner join ems_equipmentprod c on a.prod_id=c.id
+		inner join ems_brand d on a.brand_id=d.id
+		inner join ems_supplier e on a.supplier_id=e.id
+		inner join ems_equipment_pole f on a.ecode=f.ecode
+		where h.check_id=#{check_id}
+		order by a.ecode
+    </select>
+    <select id="queryPoleEquipment" resultType="com.mawujun.baseinfo.EquipmentVO" parameterType="map">
+    	select a.*,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name
+    	from ems_equipment a
+		inner join ems_equipmentsubtype b on a.subtype_id=b.id
+		inner join ems_equipmentprod c on a.prod_id=c.id
+		inner join ems_brand d on a.brand_id=d.id
+		inner join ems_supplier e on a.supplier_id=e.id
+		inner join ems_equipment_pole f on a.ecode=f.ecode
+		where f.pole_id=#{pole_id}
+		order by a.ecode
     </select>
 </mapper>
 

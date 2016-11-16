@@ -1,4 +1,5 @@
-Ext.defineModel("Ems.baseinfo.Equipment",{
+//Ext.defineModel("Ems.baseinfo.Equipment",{
+Ext.define("Ems.baseinfo.Equipment",{//2016.11.15改的
 	extend:"Ext.data.Model",
 	idProperty:'ecode',
 	fields:[

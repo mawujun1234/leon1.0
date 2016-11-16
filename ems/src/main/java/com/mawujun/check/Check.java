@@ -31,6 +31,15 @@ public class Check implements IdEntity<String>{
 	@Column(length=36)
 	private String task_id;//任务id
 	
+	
+	
+	public String getStatus_name() {
+		if(status!=null){
+			return status.getName();
+		}
+		return "";
+	}
+	
 	public String getId() {
 		return id;
 	}
