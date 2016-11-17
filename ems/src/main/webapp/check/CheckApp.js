@@ -10,7 +10,27 @@ Ext.onReady(function(){
 		collapsible : true,
 		region:'west'
 	});
-	var selRecord=null;
+	window.selRecord=null;
+	
+	window.reloadDiff=function(params){
+		if(params){
+			window.reload_params=params;
+		} else {
+			params=indow.reload_params;
+		}
+		
+		Ext.Ajax.request({
+			url:Ext.ContextPath+"/check/queryDifferentEquipment.do",
+			method:'POST',
+			params:params,
+			success:function(response) {
+				var obj=Ext.decode(response.responseText);
+				scanEquipmentGrid.getStore().loadData(obj.root.scan_records);
+				poleEquipmentGrid.getStore().loadData(obj.root.pole_records);
+			}
+			
+		});
+	}
 	grid.on("itemclick",function(view, record , item , index , e , eOpts){
 //		scanEquipmentGrid.getStore().reload({params:{check_id:record.get("id")}});
 //		poleEquipmentGrid.getStore().reload({params:{pole_id:record.get("pole_id")}});
@@ -20,20 +40,10 @@ Ext.onReady(function(){
 //			check_id:record.get("id")
 //		}
 		selRecord=record;
-		Ext.Ajax.request({
-			url:Ext.ContextPath+"/check/queryDifferentEquipment.do",
-			method:'POST',
-			params:{
-				check_id:selRecord.get("id"),
-				pole_id:selRecord.get("pole_id"),
-				onlyDifferent:true
-			},
-			success:function(response) {
-				var obj=Ext.decode(response.responseText);
-				scanEquipmentGrid.getStore().loadData(obj.root.scan_records);
-				poleEquipmentGrid.getStore().loadData(obj.root.pole_records);
-			}
-			
+		window.reloadDiff({
+			check_id:selRecord.get("id"),
+			pole_id:selRecord.get("pole_id"),
+			onlyDifferent:true
 		});
 	});
 	
@@ -56,21 +66,26 @@ Ext.onReady(function(){
 		labelWidth:80
 	});
 	onlyDifferent.on("change",function(field , newValue , oldValue , eOpts){
-		Ext.Ajax.request({
-			url:Ext.ContextPath+"/check/queryDifferentEquipment.do",
-			method:'POST',
-			params:{
-				check_id:selRecord.get("id"),
-				pole_id:selRecord.get("pole_id"),
-				onlyDifferent:newValue
-			},
-			success:function(response) {
-				var obj=Ext.decode(response.responseText);
-				scanEquipmentGrid.getStore().loadData(obj.root.scan_records);
-				poleEquipmentGrid.getStore().loadData(obj.root.pole_records);
-			}
-			
+		window.reloadDiff({
+			check_id:selRecord.get("id"),
+			pole_id:selRecord.get("pole_id"),
+			onlyDifferent:newValue
 		});
+//		Ext.Ajax.request({
+//			url:Ext.ContextPath+"/check/queryDifferentEquipment.do",
+//			method:'POST',
+//			params:{
+//				check_id:selRecord.get("id"),
+//				pole_id:selRecord.get("pole_id"),
+//				onlyDifferent:newValue
+//			},
+//			success:function(response) {
+//				var obj=Ext.decode(response.responseText);
+//				scanEquipmentGrid.getStore().loadData(obj.root.scan_records);
+//				poleEquipmentGrid.getStore().loadData(obj.root.pole_records);
+//			}
+//			
+//		});
 
 		
 	});

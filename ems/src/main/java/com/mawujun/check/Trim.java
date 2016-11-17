@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -33,8 +35,20 @@ public class Trim  implements IdEntity<String>{
 	@Column(length=50)
 	private String creater;//创建者
 	private Date createDate;//创建时间
+	@Enumerated(EnumType.STRING)
+	private TrimType trimType;
 	
 	
+	public TrimType getTrimType() {
+		return trimType;
+	}
+
+
+	public void setTrimType(TrimType trimType) {
+		this.trimType = trimType;
+	}
+
+
 	private String check_id;//盘点单id
 
 

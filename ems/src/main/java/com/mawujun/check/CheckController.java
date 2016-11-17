@@ -26,7 +26,7 @@ public class CheckController {
 	@Resource
 	private CheckService checkService;
 
-
+	
 	@RequestMapping("/check/queryPager.do")
 	@ResponseBody
 	public Page queryPager(Integer start,Integer limit,CheckStatus status) {	
@@ -38,6 +38,54 @@ public class CheckController {
 		JsonConfigHolder.setDatePattern("yyyy-MM-dd HH:mm:ss");
 		return checkes;
 	}
+	@RequestMapping("/check/complete.do")
+	@ResponseBody
+	public String complete(String check_id) {	
+		
+		checkService.complete(check_id);
+
+		return "success";
+	}
+	/**
+	 * 转移
+	 * @param check_id
+	 * @return
+	 */
+	@RequestMapping("/check/transfer.do")
+	@ResponseBody
+	public String transfer(String check_id) {	
+		
+		
+
+		return "success";
+	}
+	/**
+	 * 卸载，从点位上把多余的设备卸载下来
+	 * @param uninstall
+	 * @return
+	 */
+	@RequestMapping("/check/uninstall.do")
+	@ResponseBody
+	public String uninstall(String check_id) {	
+		
+		
+
+		return "success";
+	}
+	/**
+	 * 交换，把两个点位上的设备进行交换
+	 * @param check_id
+	 * @returnexchange
+	 */
+	@RequestMapping("/check/exchange.do")
+	@ResponseBody
+	public String exchange(String check_id) {	
+		
+		
+
+		return "success";
+	}
+	
 	
 	@RequestMapping("/check/queryDifferentEquipment.do")
 	@ResponseBody

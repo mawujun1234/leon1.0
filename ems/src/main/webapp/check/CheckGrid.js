@@ -120,7 +120,18 @@ Ext.define('Ems.check.CheckGrid',{
     	}
     	Ext.Msg.confirm("完成",'确定该盘点单已经全部调整完成?', function(btn, text){
 			if (btn == 'yes'){
-				
+				Ext.Ajax.request({
+					url:Ext.ContextPath+"/check/complete.do",
+					method:'POST',
+					params:{
+						check_id:record.get("id"),
+					},
+					success:function(response) {
+						var obj=Ext.decode(response.responseText);
+						Ex.Msg.alert("消息","成功!");
+					}
+					
+				});
 			}
     	});
     }

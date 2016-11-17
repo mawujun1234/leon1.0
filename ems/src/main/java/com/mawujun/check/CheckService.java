@@ -1,7 +1,7 @@
 package com.mawujun.check;
+import java.util.Date;
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.service.AbstractService;
+import com.mawujun.shiro.ShiroUtils;
 
 
 /**
@@ -30,6 +31,14 @@ public class CheckService extends AbstractService<Check, String>{
 		return checkRepository;
 	}
 	
+	public void complete(String check_id) {
+		Check check=checkRepository.get(check_id);
+		check.setStatus(CheckStatus.complete);
+		check.setCompleteDate(new Date());
+		check.setCompleter(ShiroUtils.getUserId());
+		checkRepository.update(check);
+	}
+	
 	public List<EquipmentVO> queryScanEquipment(String check_id) {	
 
 		return checkRepository.queryScanEquipment(check_id);
@@ -42,4 +51,5 @@ public class CheckService extends AbstractService<Check, String>{
 //	public void createCheckList(String check_id,String task_id){
 //		checkRepository.createCheckList(check_id, task_id);
 //	}
+	
 }

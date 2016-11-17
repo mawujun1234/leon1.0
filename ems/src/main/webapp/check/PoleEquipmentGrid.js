@@ -69,6 +69,21 @@ Ext.define('Ems.check.PoleEquipmentGrid',{
                     Ext.Msg.confirm("卸载",'确定把该设备从点位上卸载?', function(btn, text){
             			if (btn == 'yes'){
             				//添加作业单位的选择
+            				Ext.Ajax.request({
+            					url:Ext.ContextPath+"/check/uninstall.do",
+            					method:'POST',
+            					params:{
+            						check_id:window.selRecord.get("id"),
+            						pole_id:window.selRecord.get("pole_id"),
+            						ecode:record.get("ecode"),
+            					},
+            					success:function(response) {
+            						var obj=Ext.decode(response.responseText);
+            						Ex.Msg.alert("消息","成功!");
+            						window.reloadDiff();
+            					}
+            					
+            				});
             			}
                 	});
                 }

@@ -60,23 +60,29 @@ Ext.define('Ems.check.ScanEquipmentGrid',{
     	{
             xtype:'actioncolumn',
             width:50,
-            header: '替换',
+            header: '交换',
             items: [{
             	iconCls: 'icon-cogs',
-            	tooltip: '替换',
+            	tooltip: '交换',
                 handler: function(grid, rowIndex, colIndex) {
-                    var rec = grid.getStore().getAt(rowIndex);
+                    var record = grid.getStore().getAt(rowIndex);
                     
-                    var diffgrid=Ext.create('Ems.check.DiffEquipmentGrid',{});
+                    var diffgrid=Ext.create('Ems.check.DiffEquipmentGrid',{
+                    	
+                    });
                     var win=Ext.create('Ext.window.Window',{
                     	layout:'fit',
-                    	title:'替换掉点位上的设备(双击选择)',
+                    	title:'把当前设备和当前点位上的某个设备(双击选择的设备)进行交换',
                     	modal:true,
                     	height:300,
                     	width:500,
                     	items:[diffgrid]
                     });
                     win.show();
+                    
+                    diffgrid.on("itemdblclick",function(view , record , item , index , e , eOpts){
+                    	
+                    });
                     
                 }
             }]
@@ -89,10 +95,24 @@ Ext.define('Ems.check.ScanEquipmentGrid',{
             	iconCls: 'icon-wrench',
             	tooltip: '转移',
                 handler: function(grid, rowIndex, colIndex) {
-                    var rec = grid.getStore().getAt(rowIndex);
-                    Ext.Msg.confirm("转移",'确定把该设备转移到当前点位上?', function(btn, text){
+                    var record = grid.getStore().getAt(rowIndex);
+                    Ext.Msg.confirm("转移",'确定把该设备从其他地方转移到当前点位上?', function(btn, text){
             			if (btn == 'yes'){
-            				
+            				Ext.Ajax.request({
+            					url:Ext.ContextPath+"/check/transfer.do",
+            					method:'POST',
+            					params:{
+            						check_id:window.selRecord.get("id"),
+            						pole_id:window.selRecord.get("pole_id"),
+            						ecode:record.get("ecode"),
+            					},
+            					success:function(response) {
+            						var obj=Ext.decode(response.responseText);
+            						Ex.Msg.alert("消息","成功!");
+            						window.reloadDiff();
+            					}
+            					
+            				});
             			}
                 	});
                 }
