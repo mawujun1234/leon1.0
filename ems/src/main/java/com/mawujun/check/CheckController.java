@@ -53,7 +53,7 @@ public class CheckController {
 	 */
 	@RequestMapping("/check/transfer.do")
 	@ResponseBody
-	public String transfer(String check_id) {	
+	public String transfer(Trim trim) {	
 		
 		
 

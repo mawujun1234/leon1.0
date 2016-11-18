@@ -139,6 +139,11 @@ window["cancel_pageParam"].params={
 	status:"working",
 	type:"cancel"
 }
+window["check_pageParam"]=new Page(0,20);
+window["check_pageParam"].params={
+	status:"working",
+	type:"check"
+}
 //查询任务
 //status:working,confirm,complete
 //appendDir:append表示是要加在现有数据后面的，prepend在开头插入数据，用在定时刷新上,其他的值，全部刷新
@@ -232,7 +237,8 @@ var taskes_list_query_type={
 	newInstall:false,
 	'repair':false,
 	patrol:false,
-	'cancel':false
+	'cancel':false,
+	'check':false
 };
 //这个是临时的，要进行修改的，要把所有变量集中在一起进行管理
 //默认的值
@@ -401,11 +407,15 @@ $(document).ready(function(e) {
         <div id="left-menu-contanier"></div>
         <div  data-role="controlgroup" data-type="horizontal" align="center" >
             <input type="radio" name="radio-choice-taskes-type" id="radio-choice-taskes-typea" value="repair" checked="checked">
-            <label for="radio-choice-taskes-typea">维修维护</label>
+            <label for="radio-choice-taskes-typea">维修</label>
             <input type="radio" name="radio-choice-taskes-type" id="radio-choice-taskes-typeb" value="patrol">
             <label for="radio-choice-taskes-typeb">巡检</label>
             <input type="radio" name="radio-choice-taskes-type" id="radio-choice-taskes-typec" value="newInstall">
             <label for="radio-choice-taskes-typec">新安装</label>
+            
+            <input type="radio" name="radio-choice-taskes-type" id="radio-choice-taskes-typee" value="check">
+            <label for="radio-choice-taskes-typee">盘点</label>
+            
             <input type="radio" name="radio-choice-taskes-type" id="radio-choice-taskes-typed" value="cancel">
             <label for="radio-choice-taskes-typed">取消</label>
         </div>
@@ -432,6 +442,8 @@ $(document).ready(function(e) {
         <ul data-role="listview" id="taskes_list_newInstall" style="margin-top:8px;"> 
         </ul>
         <ul data-role="listview" id="taskes_list_cancel" style="margin-top:8px;"> 
+        </ul>
+        <ul data-role="listview" id="taskes_list_check" style="margin-top:8px;"> 
         </ul>
         <a href="#" class="ui-shadow ui-btn ui-corner-all" onClick="queryMore();" style="margin-top:20px;">获取更多...</a>
 	</div>
@@ -854,13 +866,50 @@ $(document).ready(function(e) {
     </div>
 </div>
 
+<div data-role="page" id="page_check">
+
+	<div data-role="header" data-position="fixed">
+    	<a href="#page_homepage" class="ui-btn ui-corner-all" data-rel="back" data-theme="c">返回</a>
+        <h1>盘点点位</h1> 
+	</div>
+	<div role="main" class="ui-content">
+        <div class="ui-field-contain">
+            <label for="id">任务编号:</label>
+            <input type="text"  id="page_check_id" placeholder="只读" value="">
+            <label for="page_check_pole_code">编号:</label>
+            <input readonly type="text" id="page_check_pole_code" placeholder="只读" value="">
+            <label for="pole">点位:</label>
+            <input readonly type="text" id="page_check_pole_name" placeholder="只读" value="">
+        	<label  for="memo">任务描述:</label>
+    		<textarea readonly  id="page_check_memo" placeholder="只读" data-mini="true"></textarea>
+         </div>	
+         <a href="#" class="ui-btn ui-corner-all actionbutton" name="scan_button">扫描设备</a>
+         <input type="text" name="scan_textfield" class="actionbutton"  value="" placeholder="请扫描或手动输入...">
+         <div id="page_check_equipments_list">
+         	
+         </div>
+         <div class="ui-field-contain actionbutton"  align="center">
+            
+            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="submitTask">提交</button>
+            <a href="#page_homepage" class="ui-btn ui-corner-all ui-btn-inline" data-rel="back" data-theme="c">返回</a>
+            <!--<button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="saveTask">保存</button>-->
+         </div>
+	</div>
+    <script type="text/javascript">
+
+	</script>
+    <div data-role="popup" id="page_check_deleteEquipmentInfo_popup" data-arrow="b" data-theme="b">
+        <a href="javascript:void(0);" data-role="button" name="deleteEquipmentInfo">删除</a>
+    </div>
+</div>
+
 <script type="application/javascript">
 $(document).ready(function(e) {
 	
 	$( document).on( "pagecontainershow", function( event, ui ) {
 		var page_id=ui.toPage.attr("id");
 		//if (sessionStorage.taskInfoParamStr!='null') {
-		if (page_id=="page_newInstall" || page_id=="page_repair" || page_id=="page_patrol" || page_id=="page_cancel") {
+		if (page_id=="page_newInstall" || page_id=="page_repair" || page_id=="page_patrol" || page_id=="page_cancel" || page_id=="page_check") {
 			//从url中解析参数  
 			//var params = $.getUrlParam(sessionStorage.taskInfoParamStr);  
 			//var params =JSON.parse(sessionStorage.taskInfoParamStr);

@@ -1,6 +1,6 @@
 
 发布新版本的流程：
-	1:进入emsmoile的文件夹
+	1:进入emsmoile的文件夹 cd E:\eclipse\workspace\leon\emsmobile
 	2：首先修改config.xml中的版本信息
 		version="0.0.7" android-versionCode="7"
 	3：修改login.html中的版本提示信息，改成一样。

@@ -103,8 +103,13 @@ Ext.define('Ems.check.ScanEquipmentGrid',{
             					method:'POST',
             					params:{
             						check_id:window.selRecord.get("id"),
-            						pole_id:window.selRecord.get("pole_id"),
+            						//pole_id:window.selRecord.get("pole_id"),
             						ecode:record.get("ecode"),
+            						orginal_id:,
+            						orginal_type:,
+            						target_id:window.selRecord.get("pole_id"),
+            						target_type:'pole',
+            						
             					},
             					success:function(response) {
             						var obj=Ext.decode(response.responseText);

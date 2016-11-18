@@ -209,6 +209,7 @@ $(function(){
 		if(location.href.indexOf("login.html")!=-1){
 			return;
 		}
+		
 		//如果已经检查过了，就不再进行检查了
 		if(sessionStorage.getItem("checkOrUpdateApp_48837")){
 			return;
@@ -222,7 +223,6 @@ $(function(){
 		if(!$.ServerPath){
 			return;
 		}
-		
 		//cordova.plugins.updateApp.manuallyUpdateApp(
 		cordova.plugins.updateApp.autoUpdateApp(
 			function(){

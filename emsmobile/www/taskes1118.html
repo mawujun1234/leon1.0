@@ -1,0 +1,1352 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<meta charset="utf-8">
+<title>任务列表</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="text/javascript" src="cordova.js"></script>
+<link href="jquery.mobile/jquery.mobile-1.4.4.min.css" rel="stylesheet" type="text/css"/>
+<script src="jquery.mobile/jquery-2.1.1.min.js" type="text/javascript"></script>
+<script src="jquery.mobile/jquery.mobile-1.4.4.min.js" type="text/javascript"></script>
+<script src="js/main.js" type="text/javascript"></script>
+<style type="text/css">
+.secondNavbar-glyphish-example .ui-btn { padding-top: 40px !important; }
+.secondNavbar-glyphish-example .ui-btn:after { width: 34px!important; height: 34px!important; margin-left: -15px !important; box-shadow: none!important; -moz-box-shadow: none!important; -webkit-box-shadow: none!important; -webkit-border-radius: 0 !important; border-radius: 0 !important; }
+.ui-icon-install:after {
+    background-image: url("img/install.png");
+    /* Make your icon fit */
+    background-size: 34px 34px;
+	background-color:#f6f6f6;
+}
+.ui-icon-repair:after {
+    background-image: url("img/repair.png");
+    /* Make your icon fit */
+    background-size: 34px 34px;
+	background-color:#f6f6f6;
+}
+.ui-icon-patrols:after {
+    background-image: url("img/patrols.png");
+    /* Make your icon fit */
+    background-size: 34px 34px;
+	background-color:#f6f6f6;
+}
+.ui-icon-cancel:after {
+    background-image: url("img/cancel.png");
+    /* Make your icon fit */
+    background-size: 34px 34px;
+	background-color:#f6f6f6;
+}
+.ui-icon-taskes-refresh:after {
+    background-image: url("img/refresh.png");
+    /* Make your icon fit */
+    background-size: 34px 34px;
+	background-color:#f6f6f6;
+}
+
+
+
+#fullbg {
+    background-color:Gray;
+    left:0px;
+    opacity:0.5;
+    position:absolute;
+    top:0px;
+    z-index:100;
+    filter:alpha(opacity=50); /* IE6 */
+    -moz-opacity:0.5; /* Mozilla */
+    -khtml-opacity:0.5; /* Safari */
+}
+
+.taskes_list_display_none{
+	display:none;
+}
+.taskes_list_display_block{
+	display:block;
+}
+
+.longContent{
+	white-space:normal !important;
+}
+
+</style>
+<script type="application/javascript">
+$(function(){
+	//$( ":mobile-pagecontainer" ).pagecontainer( "load", "taskes_new.html", {  } );
+	//当遮罩层被点击的时候	
+	$("#fullbg").on( "tap", function(){
+		toggleSecondNavbar();
+	});
+})
+var secondNavbarIsHide=true;
+//切换二级菜单，type就是新建任务的类型,也可以为null
+//callback:当菜单切换完后执行的函数
+function toggleSecondNavbar(callback){	
+	$("#secondNavbar").toggle(500,function(){
+		secondNavbarIsHide=!secondNavbarIsHide;
+		if(callback){
+			callback();
+		}
+	});
+	if(secondNavbarIsHide){
+		var footernavZIndex=$("#footernav").css("z-index");
+		$("#footernav").css("z-index","50");
+		//$("#footernav").css("z-index","50");
+		showBg(true,52);	
+		$("#dialog").show();//显示二级菜单
+	} else {
+		$("#footernav").css("z-index",footernavZIndex);
+		closeBg();
+	}
+}
+
+//显示灰色 jQuery 遮罩层
+function showBg(fullScreen,zIndex) {//alert(1);
+    var bh = $(document).height();
+    var bw = $(document).width();
+
+    $("#fullbg").css({
+        height:bh,
+        width:bw,
+		top:fullScreen?$("#page_homepage_header").height():0
+		,zIndex:zIndex,
+        //display:"block"
+    }).show();
+    
+}
+//关闭灰色 jQuery 遮罩
+function closeBg() {//alert(2);
+    $("#fullbg").hide();
+}
+
+//working状态包含多种状态:newTask,read,handling
+window["newInstall_pageParam"]=new Page(0,20);
+window["newInstall_pageParam"].params={
+	status:"working",
+	type:"newInstall"
+}
+window["repair_pageParam"]=new Page(0,20);
+window["repair_pageParam"].params={
+	status:"working",
+	type:"repair"
+}
+window["patrol_pageParam"]=new Page(0,20);
+window["patrol_pageParam"].params={
+	status:"working",
+	type:"patrol"
+}
+window["cancel_pageParam"]=new Page(0,20);
+window["cancel_pageParam"].params={
+	status:"working",
+	type:"cancel"
+}
+//查询任务
+//status:working,confirm,complete
+//appendDir:append表示是要加在现有数据后面的，prepend在开头插入数据，用在定时刷新上,其他的值，全部刷新
+function queryTasks(type,appendDir,callBack){
+	var pageParam =window[type+"_pageParam"];
+	var post_params=pageParam.params;
+	var status=post_params.status;
+	var type=post_params.type;
+
+	$.ajax({   
+		url : $.ServerPath+"/task/mobile/query.do",  
+		data:{start:pageParam.start,limit:pageParam.limit,status:status,type:type,orderBy:post_params.orderBy},  
+		success : function(data){
+			if(data.success==true){
+				var root=data.root;
+				var html='';
+				var status_name="";
+				for(var i=0;i<root.length;i++){
+	//				var taskInfoParamStr='?id='+root[i].id+'&pole_id='+root[i].pole_id+'&pole_code='+root[i].pole_code+'&pole_name='+root[i].pole_name+'&memo='+root[i].memo+'&type='+root[i].type+'&canEdit='+(status=="working"?true:false);
+					var taskInfoParamStr=JSON.stringify(root[i]);
+					//alert(taskInfoParamStr);
+					var page_id="page_"+root[i].type;
+					var h2_title=root[i].pole_code;
+					//var type_name="";
+					//var img="";
+					if("newTask"==root[i].status){
+						//page_id="page_newInstall";
+						status_name="新任务";
+						//img="img/install.png";
+					} else if("read"==root[i].status){
+						//page_id="page_repair";
+						status_name="已阅";
+						//img="img/repair.png";
+					}  else if("handling"==root[i].status){
+						//page_id="page_repair";
+						status_name="处理中";
+						//img="img/repair.png";
+					}else if("submited"==root[i].status){
+						//page_id="page_repair";
+						status_name="已提交";
+						//img="img/repair.png";
+					} else if("complete"==root[i].status){
+						//page_id="page_patrol";
+						status_name="完成";
+						//img="img/patrols.png";
+					} else {
+						status_name="";	
+					}
+					html+='<li id="li_'+root[i].id+'">'+
+					//'<a href="#'+page_id+'" onclick="sessionStorage.taskInfoParamStr=\''+taskInfoParamStr+'\'" data-transition="slide" >'+
+						'<a href="#'+page_id+'" onclick=\'window.taskInfoParam='+taskInfoParamStr+'\' data-transition="slide" >'+
+						//'<img src="'+img+'">'+
+						'<h2>'+root[i].id+'</h2>'+
+						'<p>'+h2_title+':'+root[i].pole_name+'</p>'+
+						'<p class="longContent">地址:'+root[i].pole_address+'</p>'+
+						'<p class="ui-li-aside"><strong>'+root[i].createDate+'</strong></p>'+
+						((root[i].status!="newTask")?'<p class="ui-li-count">'+status_name+'</p>':'<p id="'+root[i].id+'_isNew" class="ui-li-count" style="color:#FFF;background-color:#F00;">new</p>')+
+					'</a>'+
+					'</li>'
+				}
+				
+				if(appendDir=="append"){
+					$("#taskes_list_"+type).append(html).listview('refresh');
+				} else if(appendDir=="prepend"){
+					$("#taskes_list_"+type).prepend(html).listview('refresh');
+				} else {
+					$("#taskes_list_"+type).html(html).listview('refresh');
+				}
+				//下次开始获取的数据
+				//pageParam.start=pageParam.start+root.length;
+				pageParam.addStart(root.length);
+				
+			}else{
+				//$("#errorMsg").html(data.reasons.reason);
+			}
+			 
+			if(callBack){
+				callBack();
+			}
+			},
+			error:function(jqxhq){  
+				$("#errorMsg").html('网络异常或服务停止了');  
+				if(callBack){
+					callBack();
+				}
+			}  
+	});
+}
+//切换任务状态框
+var taskes_list_query_type={
+	newInstall:false,
+	'repair':false,
+	patrol:false,
+	'cancel':false
+};
+//这个是临时的，要进行修改的，要把所有变量集中在一起进行管理
+//默认的值
+var post_params={
+	status:"working",
+	type:"repair"
+}
+//当任务类型发生变化后，所做的工作
+function changeTaskesType(type){//alert(type);
+	//window[type+"_pageParam"].params.type=type;
+	$("ul[id^='taskes_list_']").removeClass("taskes_list_display_block").addClass("taskes_list_display_none");
+	$("#taskes_list_"+type).removeClass("taskes_list_display_none").addClass("taskes_list_display_block");
+
+	//如果数据已经查询过了，就不再查询了
+	if(!taskes_list_query_type[type]){
+		$.showLoader("正在加载....");
+		queryTasks(type,null,function(){
+			$.hideLoader();
+			window.isLazyLoading=false;
+		});
+		taskes_list_query_type[type]=true;
+	}
+	var type_status=window[type+"_pageParam"].params.status;
+	//设置二级菜单中当前的状态,回到当前类型下面的状态值
+	$("#secondNavbar #secondNavbar_ul li a").each(function(index, element) {
+        //alert($(element).attr("status"));
+		if($(element).attr("status")==type_status){
+			//	
+			$(element).addClass("ui-btn-active");
+		} else {
+			$(element).removeClass("ui-btn-active");
+		}
+    });
+	////当切换类型时，隐藏二级菜单
+	//toggleSecondNavbar();
+	
+}
+//点击刷新按钮，刷新任务
+function refreshTaskes(){
+	toggleSecondNavbar(function(){
+		var type=$("input:checked[name='radio-choice-taskes-type']").val();
+		window[type+"_pageParam"].reset();
+		queryTasks(type,null,function(){
+				window.isLazyLoading=false;
+				$.hideLoader(); 
+		});
+	});
+	
+}
+//点击查询更多的时候，查询更多的数据
+function queryMore(){
+	$.showLoader("正在查询....");
+	showBg(false,2500);
+	window.isLazyLoading=true;
+	var type=$("input:checked[name='radio-choice-taskes-type']").val();
+	queryTasks(type,"append",function(){
+		window.isLazyLoading=false;
+		$.hideLoader(); 
+		closeBg();
+	});
+	
+}
+//当状态发生变化的时候进行查询
+function queryByStatusChange(status){
+	toggleSecondNavbar(function(){
+		var type=$("input:checked[name='radio-choice-taskes-type']").val();
+		window[type+"_pageParam"].reset();
+		var pageParam =window[type+"_pageParam"];
+		pageParam.params.status=status;
+		queryTasks(type,null,function(){
+				window.isLazyLoading=false;
+				$.hideLoader(); 
+		});
+	});
+}
+//对内容进行排序，按照点位编号进行排序
+function sortByColumn(column){
+	var type=$("input:checked[name='radio-choice-taskes-type']").val();
+	var pageParam =window[type+"_pageParam"];
+	var post_params=pageParam.params;
+	post_params.orderBy=column;
+	
+	$( "#page_homepage_sort_popup" ).popup( "close");
+	
+	window[type+"_pageParam"].reset();
+	queryTasks(type,null,function(){
+		window.isLazyLoading=false;
+		$.hideLoader(); 
+	});
+	
+}
+
+function createTaskes(){
+	var type=$("input:checked[name='radio-choice-taskes-type']").val();
+	//window.page_taskes_new_type=type;
+	var params={
+		type:type
+	};
+	window.page_taskes_new_params=params;
+	//closeBg();
+	toggleSecondNavbar();
+}
+
+$(document).ready(function(e) {
+	//---初始化任务信息
+	var type=$("input:checked[name='radio-choice-taskes-type']").val();
+	changeTaskesType(type);
+	$("input[name=radio-choice-taskes-type]").click(function(e){
+	    //var val=$("input:checked[name='radio-choice-taskes-status']").val();
+	    //当选择条件发生变化的时候
+		
+	    type=$(e.target).val();
+		changeTaskesType(type);
+	});
+//	//到底部的时候去加在最新的数据
+//	window.isLazyLoading=true;//防止二次刷新,设置为true是防止只有一个页面数据的时候，两次查询
+//	$(window).scroll(function(){
+//	if(!window.isLazyLoading&&($(window).scrollTop()==$(document).height()-$(window).height())){
+//		$.showLoader("正在查询....");
+//		showBg(false,2500);
+//		window.isLazyLoading=true;
+//
+//		queryTasks(status,"append",function(){
+//			window.isLazyLoading=false;
+//			$.hideLoader(); 
+//			closeBg();
+//		});
+//	}
+//	});
+//	//定时刷新任务,定时更新数据
+//	setInterval(function(){
+//		//$.showLoader("正在加载....");
+//		queryTasks("working","prepend",function(){
+//			//$.hideLoader();
+//		});
+//	 }, 30*60*1000);
+	
+	//初始化滑出菜单
+	htmlobj=$.ajax({url:"leftMenu.html",async:false});
+  	$("#left-menu-contanier").html(htmlobj.responseText).trigger('create');
+	
+	
+	$("#page_content_search_input").click(function(){
+		$(":mobile-pagecontainer").pagecontainer("change","#page_search" , { 
+			transition:'slide'
+		});
+	});
+	
+	$("#page_homepage [id^='taskes_list_']").bind( "taphold", function(event){
+			//alert(1);
+			$( "#page_homepage_sort_popup" ).popup( "open", { positionTo:event.target,transition: "slideup" } );
+    		event.preventDefault();
+	});
+
+});
+</script>
+
+
+</head> 
+<body> 
+ <!-- jQuery 遮罩层 -->
+<div id="fullbg" ></div>
+<div data-role="page" id="page_homepage">
+	<div id="page_homepage_header" data-role="header" data-position="fixed"  >
+        <a href="#left-menu" data-icon="gear" data-iconpos="notext"></a> 
+        <div id="left-menu-contanier"></div>
+        <div  data-role="controlgroup" data-type="horizontal" align="center" >
+            <input type="radio" name="radio-choice-taskes-type" id="radio-choice-taskes-typea" value="repair" checked="checked">
+            <label for="radio-choice-taskes-typea">维修维护</label>
+            <input type="radio" name="radio-choice-taskes-type" id="radio-choice-taskes-typeb" value="patrol">
+            <label for="radio-choice-taskes-typeb">巡检</label>
+            <input type="radio" name="radio-choice-taskes-type" id="radio-choice-taskes-typec" value="newInstall">
+            <label for="radio-choice-taskes-typec">新安装</label>
+            <input type="radio" name="radio-choice-taskes-type" id="radio-choice-taskes-typed" value="cancel">
+            <label for="radio-choice-taskes-typed">取消</label>
+        </div>
+        <!--<a href="#" data-icon="plus" data-iconpos="notext" data-ajax="false"></a>-->
+        <button href="#" data-icon="carat-d" data-iconpos="notext" onClick="toggleSecondNavbar();"></button>
+		<div data-role="navbar" id="secondNavbar" class="secondNavbar-glyphish-example" style="display:none;">
+        	<ul id="secondNavbar_ul">
+            	<li><a href="#page_taskes_new" onClick="createTaskes();" class="ui-icon-install ui-btn-icon-top">新建</a></li>
+            	<li><a href="#" status='working' onClick="queryByStatusChange('working');"  class="ui-icon-taskes-refresh ui-btn-icon-top ui-btn-active">处理中</a></li>
+                <li><a href="#" status='submited' onClick="queryByStatusChange('submited');" class="ui-icon-taskes-refresh ui-btn-icon-top">已提交</a></li>   
+                 <!--<li><a href="#" status='refresh' onClick="refresh('complete');" class="ui-icon-taskes-refresh ui-btn-icon-top">刷新</a></li>-->
+            </ul>
+        </div>
+    </div>
+	<div role="main" class="ui-content" id="page_content">
+        <form class="ui-filterable" style="margin-top:-25px;">
+            <input id="page_content_search_input" data-type="search" placeholder="搜索任务...">
+        </form>
+		<ul data-role="listview" id="taskes_list_repair" >
+        </ul> 
+        
+        <ul data-role="listview" id="taskes_list_patrol" style="margin-top:8px;"> 
+        </ul> 
+        <ul data-role="listview" id="taskes_list_newInstall" style="margin-top:8px;"> 
+        </ul>
+        <ul data-role="listview" id="taskes_list_cancel" style="margin-top:8px;"> 
+        </ul>
+        <a href="#" class="ui-shadow ui-btn ui-corner-all" onClick="queryMore();" style="margin-top:20px;">获取更多...</a>
+	</div>
+	<div data-role="popup" id="page_homepage_sort_popup" >
+        <ul data-role="listview" data-inset="true" style="margin-top:-20px;margin-bottom:-20px;">
+            <li ><a href="javascript:void(0);" onClick="sortByColumn('poleCode_asc')" >点位升序</a></li>
+			<li style=""><a href="javascript:void(0);" onClick="sortByColumn('poleCode_desc')" >点位降序</a></li>
+            <li style=""><a href="javascript:void(0);" onClick="sortByColumn('createDate_asc')">日期升序</a></li>
+			<li ><a href="javascript:void(0);" onClick="sortByColumn('createDate_desc')">日期降序</a></li>
+        </ul>
+    </div>
+    
+    
+	<div data-role="footer" id="footernav"  data-id="footernav" data-position="fixed" data-tap-toggle="false">
+		<div data-role="navbar">  
+            <ul>  
+                <li><a href="messages.html"  data-icon="mail" data-ajax="false" data-transition="fade">消息提醒</a></li>  
+                <li><a href="taskes.html" data-icon="bullets" data-ajax="false" data-transition="fade" class="ui-btn-active ui-state-persist" >任务列表</a></li>  
+                <li><a href="others.html" data-icon="star" data-ajax="false" data-transition="fade">其他</a></li>  
+            </ul>  
+        </div>  
+	</div>
+</div>
+
+<div data-role="page" id="page_search">
+	<div data-role="header" data-position="fixed">
+    	<a href="#page_homepage" class="ui-btn ui-corner-all" data-rel="back"  data-theme="c">返回</a>
+        <h1>搜索任务</h1> 
+	</div>
+    <div role="main" class="ui-content">
+    	<form class="ui-filterable">
+        	<table>
+        	<tr>
+            	<td width="100%"><input id="page_search_search_input" data-type="search" placeholder="请输入杆位编号或名称"></td>
+                <td width="60"><a href="#" id="page_search_search__button" class="ui-shadow ui-btn ui-corner-all ui-btn-inline" >搜索</a></td>
+            </tr>
+            <tr>
+            	<td colspan="2">你可能想要找:</td>
+            </tr>
+        </table>
+            
+        </form>
+        <ul data-role="listview" id="page_search_search_history" data-inset="true" style="margin-top:-20px;">
+
+        </ul>
+        <ul data-role="listview" id="page_search_search_result" style="margin-top:-20px;"> 
+        </ul>
+        <a href="#" class="ui-shadow ui-btn ui-corner-all" onClick="clickSearch(true);" style="margin-top:20px;">获取更多...</a>
+    </div>
+    <script type="application/javascript">
+		function clearSearchVal(){
+			//var searchVal=$("#page_search_search_input").val();
+			
+			$("#page_search_search_input").val("");
+			
+			$("#page_search_search_result").html("").listview('refresh');
+			window.page_search_search_pageParam={start:0,limit:20};
+			//$("#page_search_search_history").css("display","block");
+			//return searchVal;
+		}
+		
+		function clickSearch(isappend){
+			//点击搜索或者第一次进来的时候初始化这个分页参数
+			if(!isappend){
+				window.page_search_search_pageParam={start:0,limit:20};
+			}
+			var searchVal=$("#page_search_search_input").val();
+				if(!searchVal){
+					return;
+				}
+				if(searchVal.length<3){
+					alert("请至少输入3个字符!");
+					return;
+				}
+				
+				//var status=$("input:checked[name='radio-choice-taskes-status']").val();
+				$.ajax({   
+					url : $.ServerPath+"/task/mobile/search.do",  
+					data:{searchStr:searchVal,start:window.page_search_search_pageParam.start,limit:window.page_search_search_pageParam.limit},  
+					success : function(data){
+						window.page_search_search_pageParam.start=window.page_search_search_pageParam.start+data.root.length;
+						//console.dir(data);
+						var root=data.root;
+						var html='';//'newTask','read','handling'
+						for(var i=0;i<root.length;i++){
+//							var taskInfoParamStr='?id='+root[i].id+'&pole_code='+root[i].pole_code+'&pole_name='+root[i].pole_name+'&memo='+root[i].memo+'&type='+root[i].type+'&canEdit='+((root[i].status=="newTask"|| root[i].status=="read"|| root[i].status=="handling")?true:false);
+							var taskInfoParamStr=JSON.stringify(root[i]);
+							//alert(taskInfoParamStr);
+							var page_id="page_"+root[i].type;
+							var h2_title="";
+							if("newTask"==root[i].status){
+								//page_id="page_newInstall";
+								status_name="新任务";
+								//img="img/install.png";
+							} else if("read"==root[i].status){
+								//page_id="page_repair";
+								status_name="已阅";
+								//img="img/repair.png";
+							}  else if("handling"==root[i].status){
+								//page_id="page_repair";
+								status_name="处理中";
+								//img="img/repair.png";
+							}else if("submited"==root[i].status){
+								//page_id="page_repair";
+								status_name="已提交";
+								//img="img/repair.png";
+							} else if("complete"==root[i].status){
+								//page_id="page_patrol";
+								status_name="完成";
+								//img="img/patrols.png";
+							} else {
+								status_name="";	
+							}
+							//h2_title+="<br/>新任务"
+							//console.log(h2_title);
+							html+='<li id="li_'+root[i].id+'">'+
+							//'<a href="#'+page_id+'" onclick="sessionStorage.taskInfoParamStr=\''+taskInfoParamStr+'\'" data-transition="slide" >'+
+								//'<img src="'+img+'">'+
+								'<a href="#'+page_id+'" onclick=\'window.taskInfoParam='+taskInfoParamStr+'\' data-transition="slide" >'+
+								'<h2>'+root[i].id+'</h2>'+
+								'<p>'+root[i].pole_code+':'+root[i].pole_name+'</p>'+
+								'<p class="longContent">地址:'+root[i].pole_address+'</p>'+
+								'<p class="ui-li-aside"><strong>'+root[i].createDate+'</strong></p>'+
+								'<p id="'+root[i].id+'_isNew" class="ui-li-count" >'+status_name+'</p>'+
+							'</a>'+
+							'</li>'
+						}
+						if(isappend){
+							$("#page_search_search_result").append(html).listview('refresh');
+						} else {
+							$("#page_search_search_result").html(html).listview('refresh');
+						}
+						
+						$("#page_search_search_history").css("display","none");
+						
+						
+					}
+				});
+		}
+//		//重新渲染查询历史
+//		function renderSearchHistory(array){
+//			//渲染查询历史  
+//					var html="";
+//					for(var i=0;i<window.page_search_search_history_array.length;i++){
+//						html+="<li><a href='#' onClick='clickSearch(\""+window.page_search_search_history_array[i]+"\")'>"+window.page_search_search_history_array[i]+"</a></li>";
+//					}
+//					$("#page_search_search_history").html(html).listview('refresh');
+//		}
+//		
+//		function computSearchHistory(){
+//			var searchVal=$("#page_search_search_input").val();
+//			  clearSearchVal();
+//			  
+//			  登录后第一次初始化
+//			  if(window.page_search_search_history_array==null || !window.page_search_search_history_array){
+//				  if(localStorage.getItem("page_search_search_history")!=null){
+//					  window.page_search_search_history_array=JSON.parse(localStorage.getItem("page_search_search_history"));
+//					renderSearchHistory(window.page_search_search_history_array);
+//			      } else {
+//					  window.page_search_search_history_array=[];
+//				  }
+//				  
+//			  } else {
+//				 
+//			  }
+//			  重复就不添加
+//			  var isExistsIndex=0;
+//			  for(var i=0;i<window.page_search_search_history_array.length;i++){
+//				  if(window.page_search_search_history_array[i]==searchVal){
+//					  
+//					  isExistsIndex=i;
+//					  break;
+//				  }
+//			  }
+//			  alert(isExists);
+//			  alert(searchVal);
+//			  if(isExistsIndex==0 && searchVal){
+//				   window.page_search_search_history_array.unshift(searchVal);
+//				   if(window.page_search_search_history_array.length>15){
+//					  window.page_search_search_history_array.pop();
+//				  }
+//				  往list里面添加内容
+//				  var html="<li><a href='#' onClick='clickSearch(\""+searchVal+"\")'>"+searchVal+"</a></li>"
+//				  $("#page_search_search_history").prepend(html).listview('refresh');
+//				  localStorage.setItem("page_search_search_history",JSON.stringify( window.page_search_search_history_array));
+//			  } else if(isExistsIndex>0){//如果已经存在，就把最新的放到最前面来
+//				  var aa=window.page_search_search_history_array.del(isExistsIndex);
+//				  if(aa){
+//					  window.page_search_search_history_array.unshift(aa);
+//					  renderSearchHistory(window.page_search_search_history_array);
+//				  }
+//			  }
+//		}
+		$(function(){
+
+			$(document).on("pagebeforeshow","#page_search",function(e,ui){
+				if(ui.prevPage.attr("id")!="page_homepage"){
+					return;
+				}
+				//computSearchHistory();
+				//当从page_homepage进来的时候就清空历史查询记录
+				clearSearchVal();
+			});
+			
+			$("#page_search_search__button").click(function(){
+				clickSearch();
+			});
+		});
+	</script></div>
+
+<div data-role="page" id="page_newInstall">
+	<div data-role="header" data-position="fixed">
+    	<a href="#page_homepage" class="ui-btn ui-corner-all" data-rel="back" data-theme="c">返回</a>
+        <h1>设备新安装</h1> 
+	</div>
+	<div role="main" class="ui-content">
+    	
+        <div class="ui-field-contain">
+            <label for="id">任务编号:</label>
+            <input type="text"  id="page_newInstall_id" placeholder="只读" value="">
+            <label for="page_newInstall_pole_code">编号:</label>
+            <input readonly type="text" id="page_newInstall_pole_code" placeholder="只读" value="">
+            <label for="pole">点位:</label>
+            <input readonly type="text" id="page_newInstall_pole_name" placeholder="只读" value="">
+        	<label  for="memo">任务描述:</label>
+    		<textarea readonly id="page_newInstall_memo" placeholder="只读" data-mini="true"></textarea>
+            <a href="#" class="ui-btn ui-corner-all"  id="page_newInstall_nav_button" name="nav_button">导航</a>
+         </div>	
+         <a href="#" class="ui-btn ui-corner-all actionbutton"  id="page_newInstall_scan_button" name="scan_button">扫描新设备</a>
+         <input type="text" id="page_newInstall_scan_textfield" class="actionbutton" name="scan_textfield"  value="" placeholder="请扫描或手动输入...">
+         <div id="page_newInstall_equipments_list">
+         	
+          </div>
+          <!--
+            <textarea cols="40" rows="8" name="textarea" id="textarea" placeholder="请填写设备安装描述"></textarea>
+         -->
+         <div class="ui-field-contain actionbutton"  align="center">
+            
+            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="submitTask">提交</button>
+            <a href="#page_homepage" class="ui-btn ui-corner-all ui-btn-inline" data-rel="back" data-theme="c">返回</a>
+            <!-- <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="saveTask">保存</button>-->
+         </div>
+	</div>
+    <script type="text/javascript">
+
+	</script>
+    <div data-role="popup" id="page_newInstall_deleteEquipmentInfo_popup" data-arrow="b" data-theme="b">
+        <a href="javascript:void(0);" data-role="button" name="deleteEquipmentInfo">删除</a>
+    </div>
+</div>
+
+<div data-role="page" id="page_repair">
+	<div data-role="header" data-position="fixed">
+    	<a href="#page_homepage" class="ui-btn ui-corner-all" data-rel="back" data-theme="c">返回</a>
+        <h1>设备维修</h1> 
+	</div>
+	<div role="main" class="ui-content">
+        <div class="ui-field-contain">
+            <label for="id">任务编号:</label>
+            <input type="text"  id="page_repair_id" placeholder="只读" value="">
+            <label for="page_repair_pole_code">编号:</label>
+            <input readonly type="text" id="page_repair_pole_code" placeholder="只读" value="">
+            <label for="pole">点位:</label>
+            <input readonly type="text" id="page_repair_pole_name" placeholder="只读" value="">
+        	<label  for="memo">任务描述:</label>
+    		<textarea readonly  id="page_repair_memo" placeholder="只读" data-mini="true"></textarea>
+            <a href="#" class="ui-btn ui-corner-all"  id="page_repair_nav_button" name="nav_button">导航</a>
+         </div>	
+         <select name="select-choice-a" id="select-choice-hitchType">
+        	<option selected value="0">请选择故障类型</option>
+        </select>
+
+        <select name="select-choice-b" id="select-choice-hitchReasonTpl" >
+        	<option selected value="0">请选择原因</option>
+        </select>
+        <textarea  name="textarea" id="textarea-hitchReasonTpl" placeholder="请填写设备故障原因情况"></textarea>
+        
+        <select name="select-choice-c" id="select-choice-handleMethod" >
+        	<option selected value="0">请选择处理方法</option>
+        </select>
+        <textarea  name="textarea" id="textarea-handle_contact" placeholder="请填写处理备注信息"></textarea>
+        
+         <a href="#" class="ui-btn ui-corner-all actionbutton" name="scan_button">扫描设备</a>
+         <input type="text" name="scan_textfield" class="actionbutton"  value="" placeholder="请扫描或手动输入...">
+         <div id="page_repair_equipments_list">
+         	
+          </div>
+         <div class="ui-field-contain actionbutton"  align="center">
+            
+            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="submitTask">提交</button>
+            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="saveTask">保存</button>
+            <a href="#page_homepage" class="ui-btn ui-corner-all ui-btn-inline" data-rel="back" data-theme="c">返回</a>
+         </div>
+	</div>
+    <script type="text/javascript">
+		
+		$(function(){
+			//初始化故障类型和原因模板
+//			var hitchTypes=$.tasks.getHitchType();
+//			hitchTypes=hitchTypes==null?[]:hitchTypes;
+//			var html="";
+//			for(var i=0;i<hitchTypes.length;i++){
+//				html+='<option value="'+hitchTypes[i].id+'">'+hitchTypes[i].name+'</option>';
+//			}
+//			$("#select-choice-hitchType").append(html);//.trigger("create");;
+
+			$("#select-choice-hitchType").append($.tasks.getSelectOption('HitchType'));
+			$("#select-choice-handleMethod").append($.tasks.getSelectOption('HandleMethod'));
+			var hitchReasonTples=[];
+			$("#select-choice-hitchType").change(function(e){
+				//去后台获取数据
+				var hitchType_id=$(e.target).val();
+				//alert(hitchType_id);
+				$.ajax({   
+					url : $.ServerPath+"/hitchReasonTpl/mobile/query.do",
+					data:{hitchType_id:hitchType_id},   
+					success : function(data){
+						hitchReasonTples=data.root;
+						//hitchReasonTples=hitchReasonTples==null?[]:hitchReasonTples;
+						html='<option selected value="0">请选择原因</option>';
+						for(var i=0;i<hitchReasonTples.length;i++){
+							html+='<option value="'+hitchReasonTples[i].id+'">'+hitchReasonTples[i].name+'</option>';
+						}
+						$("#select-choice-hitchReasonTpl").html(html);//.trigger("create");
+						//$("#select-choice-hitchReasonTpl").val("0").selectmenu( "refresh" );
+						init_update_repair_task();
+					}
+				});
+				
+			});
+			$("#select-choice-hitchReasonTpl").change(function(e){
+				var hitchReasonTpl =$(e.target).val();
+				for(var i=0;i<hitchReasonTples.length;i++){
+					if(hitchReasonTples[i].id==hitchReasonTpl){
+						$("#textarea-hitchReasonTpl").val(hitchReasonTples[i].tpl);
+					}
+				}
+				
+			});
+		});
+	</script>
+    <div data-role="popup" id="page_repair_deleteEquipmentInfo_popup" data-arrow="b" data-theme="b">
+        <a href="javascript:void(0);" data-role="button" name="deleteEquipmentInfo">删除</a>
+    </div>
+</div>
+
+<div data-role="page" id="page_patrol">
+
+	<div data-role="header" data-position="fixed">
+    	<a href="#page_homepage" class="ui-btn ui-corner-all" data-rel="back" data-theme="c">返回</a>
+        <h1>巡检</h1> 
+	</div>
+	<div role="main" class="ui-content">
+        <div class="ui-field-contain">
+            <label for="id">任务编号:</label>
+            <input type="text"  id="page_patrol_id" placeholder="只读" value="">
+            <label for="page_patrol_pole_code">编号:</label>
+            <input readonly type="text" id="page_patrol_pole_code" placeholder="只读" value="">
+            <label for="pole">点位:</label>
+            <input readonly type="text" id="page_patrol_pole_name" placeholder="只读" value="">
+        	<label  for="memo">任务描述:</label>
+    		<textarea readonly  id="page_patrol_memo" placeholder="只读" data-mini="true"></textarea>
+            <a href="#" class="ui-btn ui-corner-all"  id="page_patrol_nav_button" name="nav_button">导航</a>
+         </div>	
+         <a href="#" class="ui-btn ui-corner-all actionbutton" name="scan_button">扫描设备</a>
+         <input type="text" name="scan_textfield" class="actionbutton"  value="" placeholder="请扫描或手动输入...">
+         <div id="page_patrol_equipments_list">
+         	
+         </div>
+         <div class="ui-field-contain actionbutton"  align="center">
+           
+            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="submitTask">提交</button>
+            <a href="#page_homepage" class="ui-btn ui-corner-all ui-btn-inline" data-rel="back" data-theme="c">返回</a>
+             <!--<button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="saveTask">保存</button>-->
+         </div>
+	</div>
+    <script type="text/javascript">
+
+	</script>
+    <div data-role="popup" id="page_patrol_deleteEquipmentInfo_popup" data-arrow="b" data-theme="b">
+        <a href="javascript:void(0);" data-role="button" name="deleteEquipmentInfo">删除</a>
+    </div>
+</div>
+
+<div data-role="page" id="page_cancel">
+
+	<div data-role="header" data-position="fixed">
+    	<a href="#page_homepage" class="ui-btn ui-corner-all" data-rel="back" data-theme="c">返回</a>
+        <h1>取消点位</h1> 
+	</div>
+	<div role="main" class="ui-content">
+        <div class="ui-field-contain">
+            <label for="id">任务编号:</label>
+            <input type="text"  id="page_cancel_id" placeholder="只读" value="">
+            <label for="page_cancel_pole_code">编号:</label>
+            <input readonly type="text" id="page_cancel_pole_code" placeholder="只读" value="">
+            <label for="pole">点位:</label>
+            <input readonly type="text" id="page_cancel_pole_name" placeholder="只读" value="">
+        	<label  for="memo">任务描述:</label>
+    		<textarea readonly  id="page_cancel_memo" placeholder="只读" data-mini="true"></textarea>
+            <a href="#" class="ui-btn ui-corner-all"  id="page_cancel_nav_button" name="nav_button">导航</a>
+         </div>	
+         <a href="#" class="ui-btn ui-corner-all actionbutton" name="scan_button">扫描设备</a>
+         <input type="text" name="scan_textfield" class="actionbutton"  value="" placeholder="请扫描或手动输入...">
+         <div id="page_cancel_equipments_list">
+         	
+         </div>
+         <div class="ui-field-contain actionbutton"  align="center">
+            
+            <button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="submitTask">提交</button>
+            <a href="#page_homepage" class="ui-btn ui-corner-all ui-btn-inline" data-rel="back" data-theme="c">返回</a>
+            <!--<button class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left" name="saveTask">保存</button>-->
+         </div>
+	</div>
+    <script type="text/javascript">
+
+	</script>
+    <div data-role="popup" id="page_cancel_deleteEquipmentInfo_popup" data-arrow="b" data-theme="b">
+        <a href="javascript:void(0);" data-role="button" name="deleteEquipmentInfo">删除</a>
+    </div>
+</div>
+
+<script type="application/javascript">
+$(document).ready(function(e) {
+	
+	$( document).on( "pagecontainershow", function( event, ui ) {
+		var page_id=ui.toPage.attr("id");
+		//if (sessionStorage.taskInfoParamStr!='null') {
+		if (page_id=="page_newInstall" || page_id=="page_repair" || page_id=="page_patrol" || page_id=="page_cancel") {
+			//从url中解析参数  
+			//var params = $.getUrlParam(sessionStorage.taskInfoParamStr);  
+			//var params =JSON.parse(sessionStorage.taskInfoParamStr);
+			//window.taskInfoParam=params;
+			var params=window.taskInfoParam;
+			taskInfoParam.page_id=page_id; 
+			//alert(params.canEdit);
+			if(params.canEdit==true){//隐藏按钮
+				$(".actionbutton").show();
+			} else {
+				$(".actionbutton").hide();
+			}
+			$("#"+page_id+"_id").val(params.id);  
+			$("#"+page_id+"_pole_code").val(params.pole_code);
+			$("#"+page_id+"_pole_name").val(params.pole_name);  
+			$("#"+page_id+"_memo").val(params.memo);
+			sessionStorage.taskInfoParamStr=null;
+			//初始化设备列表信息
+			queryTaskEquipmentInfos(params.id);
+			$("#"+taskInfoParam.id+"_isNew").remove();
+			
+		}  	
+	});
+	//isSubmit：true表示是提交的时候获取参数
+	function getSubmitParams(isSubmit){
+		//var params="&task_id="+$("#page_newInstall_id").val();
+		var params="&task_id="+taskInfoParam.id+"&task_type="+taskInfoParam.type;
+		var page_id=taskInfoParam.page_id;
+		var scaned=false;
+//		$("#"+page_id+"_equipments_list [data-role='collapsible']").each(function(index, element) {
+//            //values.push($(this).attr("ecode"));
+//			params+="&ecodes="+$(this).attr("ecode");
+//			params+="&equipment_statuses="+$(this).attr("equipment_status");
+//			scaned=true;
+//        });
+		if($("#"+page_id+"_equipments_list [data-role='collapsible']").size()>0){
+			scaned=true;
+		}
+		if(isSubmit&&!scaned){
+			alert("请先扫描设备!");
+			return false;
+		}
+		
+		if(taskInfoParam.type=='repair'){
+			var hitchType_id=$("#select-choice-hitchType").val();
+			if("0"==hitchType_id){
+				alert("请先选故障类型");
+				return false;
+			}
+			var hitchReasonTpl_id=$("#select-choice-hitchReasonTpl").val();
+			if("0"==hitchReasonTpl_id){
+				alert("请先选故障原因模板!");
+				return false;
+			}
+			params+="&hitchType_id="+hitchType_id;
+			params+="&hitchReasonTpl_id="+hitchReasonTpl_id;
+			params+="&hitchReason="+$("#textarea-hitchReasonTpl").val();
+			
+			var handleMethod_id=$("#select-choice-handleMethod").val();
+			if(handleMethod_id=="0"){
+				alert("请先选择处理方法!");
+				return false;
+			}
+			params+="&handleMethod_id="+handleMethod_id;
+			
+			var handle_contact=$("#textarea-handle_contact").val();
+			if(handle_contact){
+				params+="&handle_contact="+handle_contact;
+			}	
+		}
+		return params;
+	}
+	function saveTask(){
+		$.showLoader("正在保存....");
+		var params=getSubmitParams();
+		if(params==false){
+			$.hideLoader();  
+			return;
+		}
+		/****/
+		$.ajax({   
+			url : $.ServerPath+"/task/mobile/save.do",  
+			data:params,  
+			success : function(data){
+				if(data.success==true){	
+					
+				}
+				$.hideLoader();  
+			}
+		});	
+	}
+	function submitTask(){
+		var r=confirm("是否确认提交!");
+		if(!r){
+			return;
+		}
+		$.showLoader("正在提交....");
+
+		var params=getSubmitParams(true);
+		
+		if(params==false){
+			$.hideLoader();  
+			return;
+		}
+		/****/
+		$.ajax({   
+			url : $.ServerPath+"/task/mobile/submit.do",  
+			data:params,  
+			success : function(data){
+				if(data.success==true){	
+					//var previous = $(':mobile-pagecontainer').pagecontainer( "getActivePage" ).prev('[data-role=page]');
+					$.mobile.changePage("#page_homepage", { 
+						  transition: 'slide',
+						  reverse: true });
+					//并且刷新任务,或者移除该任务
+					//changeTaskesType("working");
+					$('#li_'+taskInfoParam.id).remove();
+					
+					//刷新待确认的任务
+					//window["confirm_pageParam"].reset();
+					var type=$("input:checked[name='radio-choice-taskes-type']").val();
+					window[type+"_pageParam"].reset();
+					queryTasks(type,null,function(){
+						//切换confirm任务的状态,这样再点击的时候，就不会重新去查询了
+						taskes_list_query_type[type]=true;
+					});
+				}
+				$.hideLoader();  
+			}
+		});	
+	}
+	/**
+	  *  当维修任务的时候，如果发现设备不需要拆下来的时候，就更新任务设备的状态为patrol
+	**/
+	function updateTasklistType(ecode,taskEquipmentList_id,type){
+		$.ajax({   
+			url : $.ServerPath+"/task/mobile/updateTaskEquipmentListType.do",  
+			data:{ecode:ecode,taskEquipmentList_id:taskEquipmentList_id,type:type},  
+			success : function(data){
+				if(!data.success){	
+					alert("设备状态更新失败，请删除该设备，重新扫描!");
+				}
+				$.hideLoader();  
+			},
+			error:function(){
+				alert("设备状态更新失败，请删除该设备，重新扫描!");
+			}
+		});
+	}
+	//渲染设备列表
+	//coverHtml=true表示是在查询某个任务下的所有设备的时候，要覆盖任务
+	function renderEquipmentInfo(obj,coverHtml){
+		var html="";
+		var root=obj.equipmentVOs;
+		//如果存在就表示是查询任务，进行渲染的
+		if(!(obj.equipmentVOs instanceof Array)){
+			//否则就是扫描设备
+			root=[obj];
+		} 
+		var color="";
+		var installoutType_name="";
+		for(var i=0;i<root.length;i++){
+			color="";
+			if(root[i].type=='uninstall'){//在后台默认就判断设备为替换设备
+				//如果是uninstall。就表示点位上的设备，这个时候要让施工人员选择是替换还是不替换
+				//如果不替换，那就变成了巡检设备
+				if(coverHtml==false && taskInfoParam.type=='repair'){
+					var r=confirm("该设备是否要拆卸下来!如果不需要，请选择'取消'");
+					if(!r){
+						root[i].type=='patrol';
+						updateTasklistType(root[i].ecode,root[i].id,'patrol')
+					} else {
+						color='color="#F00"';//如果是损坏设备就表示为红色
+					}
+				} else {
+					color='color="#F00"';
+				}
+				
+				
+			}
+			if(root[i].installoutType_name){
+				installoutType_name="("+root[i].installoutType_name+")";
+			}
+			//如果设备状态是手持，就是安装，如果是using就是维修或者巡检，巡检任务扫描的设备都是巡检
+			html+='<div data-role="collapsible" taskEquipmentList_id="'+root[i].id+'" ecode="'+root[i].ecode+'">'+
+				'<h4><font '+color+'>'+installoutType_name+root[i].ecode+':'+root[i].prod_style+'</font></h4>'+
+				'<p>'+root[i].brand_name+':'+root[i].subtype_name+'>'+root[i].prod_name+'>'+root[i].prod_style+installoutType_name+'</p>'+
+				'</div>';	
+		}
+		var page_id=taskInfoParam.page_id;
+		if(coverHtml){
+			//覆盖已经有的html
+			$("#"+page_id+"_equipments_list").html(html).enhanceWithin();
+		} else {
+			$("#"+page_id+"_equipments_list").append(html).enhanceWithin();
+		}
+		
+		$("#"+page_id+"_equipments_list [data-role='collapsible']").unbind("taphold"); 
+		$("#"+page_id+"_equipments_list [data-role='collapsible']").bind( "taphold", function(event){
+			//window.equipmentInfoCollapsible=event.target;
+			
+			//触发的是<a>,但删除的是div，所以要parent
+			window.equipmentInfoCollapsible=$(event.target).parents('div[data-role="collapsible"]');//.parent();
+			//console.log($(window.equipmentInfoCollapsible).html());
+			//$( "#popupArrow" ).popup( "open", { positionTo:event.target,transition: "pop" } );
+			$( "#"+page_id+"_deleteEquipmentInfo_popup" ).popup( "open", { positionTo:event.target,transition: "pop" } );
+    		event.preventDefault();
+		});
+		
+		//渲染损坏类型和损坏原因
+		
+		if(obj.type=="repair"){
+			if(obj.hitchType_id){
+				$("#select-choice-hitchType").val(obj.hitchType_id).selectmenu( "refresh" );
+				$("#select-choice-hitchType").trigger("change");
+				init_update_repair_task_hitchReasonTpl_id=obj.hitchReasonTpl_id
+				//$("#select-choice-hitchReasonTpl").val(obj.hitchReasonTpl_id).selectmenu( "refresh" );
+			} else {
+				$("#select-choice-hitchType").val("0").selectmenu( "refresh" );
+				$("#select-choice-hitchReasonTpl").val("0").selectmenu( "refresh" );
+			}
+			$("#textarea-hitchReasonTpl").val(obj.hitchReason);
+			
+			if(obj.handleMethod_id){
+				$("#select-choice-handleMethod").val(obj.handleMethod_id).selectmenu( "refresh" );	
+			} else {
+				$("#select-choice-handleMethod").val("0").selectmenu( "refresh" );	
+			}
+			$("#textarea-handle_contact").val(obj.handle_contact);
+		}
+		
+	}
+	//重新打开维修任务的时候的数据
+	var init_update_repair_task_hitchReasonTpl_id=null;
+	window.init_update_repair_task =function(){
+		if(!init_update_repair_task_hitchReasonTpl_id){
+			return;
+		}
+		$("#select-choice-hitchReasonTpl").val(init_update_repair_task_hitchReasonTpl_id).selectmenu( "refresh" );
+		init_update_repair_task_hitchReasonTpl_id=null;
+	}
+	//获取某个任务所有相关设备信息
+	function queryTaskEquipmentInfos(task_id){
+		$.ajax({   
+			url : $.ServerPath+"/task/mobile/queryTaskEquipmentInfos.do",  
+			data:{task_id:task_id},  
+			success : function(data){
+				if(data.success==true){	
+					var root=data.root;
+					renderEquipmentInfo(root,true);
+				}
+				$.hideLoader();  
+			}
+		});
+	}
+	//扫描的时候获取设备相关信息
+	function getTaskEquipmentList(ecode){
+		$.ajax({   
+			url : $.ServerPath+"/task/mobile/getTaskEquipmentList.do",  
+			data:{ecode:ecode,task_id:taskInfoParam.id,task_type:taskInfoParam.type,pole_id:taskInfoParam.pole_id},  
+			success : function(data){
+				if(data.success==true){	
+					var root=data.root;
+	//				if(root.status!=2 && taskInfoParam.type=='newInstall'){
+//						alert("设备没有不是'安装出库'状态，不能进行安装!");
+//						return;
+//					} else if((root.status!=2 && root.status!=3) && taskInfoParam.type=='repair'){
+//						alert("设备没有不是'安装出库','使用中'状态，不能进行扫描!");
+//						return;
+//					} else if(root.status!=3 && taskInfoParam.type=='patrol'){
+//						alert("设备没有不是'使用中'状态，不能进行扫描!");
+//						return;
+//					}
+					renderEquipmentInfo(root,false);
+				}
+				$.hideLoader();  
+			}
+		});
+	}
+
+	function deleteEquipmentInfo(){
+		//window.equipmentInfoCollapsible是当前选中的行
+		var li=$(window.equipmentInfoCollapsible);
+		//选择了设备
+		$.ajax({   
+			url : $.ServerPath+"/task/mobile/deleteTaskEquipmentList.do",  
+			data:{ecode:li.attr("ecode"),taskEquipmentList_id:li.attr("taskEquipmentList_id")},  
+			success : function(data){
+				if(data.success!=true){	
+					alert("删除失败,请重新尝试");
+					return;
+				} else {
+					$(window.equipmentInfoCollapsible).remove();
+					window.equipmentInfoCollapsible=null;
+				}
+				
+				$.hideLoader();  
+			}
+		});
+		var page_id=taskInfoParam.page_id;
+		$( "#"+page_id+"_deleteEquipmentInfo_popup" ).popup( "close");
+		//alert(2);
+		
+	}
+//	//把设备标识为“安装出库”状态
+//	function out_storageEquipmentInfo(){
+//		var li=$(window.equipmentInfoCollapsible);
+//		var equipment_status=li.attr("equipment_status");
+//		//alert(equipment_status);
+//		if(equipment_status==4){
+//			li.attr("equipment_status",2);
+//			//修改颜色为黑色
+//			//alert(li.find("font"));
+//			li.find("font").removeAttr("color");
+//			//$( "#"+page_id+"_equipments_list" ).trigger( "updatelayout" );
+//		}
+//		var page_id=taskInfoParam.page_id;
+//		$( "#"+page_id+"_deleteEquipmentInfo_popup" ).popup( "close");
+//	}
+	//把设备标识为损坏
+	function breakdownEquipmentInfo(){
+		
+	}
+
+	$("input[name='scan_textfield']").keyup(function(event){
+	  	if(event.target.value.length==$.ecodeLength){
+			getTaskEquipmentList(event.target.value);
+			event.target.value="";
+		}	
+	});
+	$("a[name='scan_button']").click(function(event){
+		
+	  	cordova.plugins.barcodeScanner.scan(
+			function (result) {
+		    	//alert("We got a barcode\n" +
+  		          //     "Result: " + result.text + "\n" +
+  		          //      "Format: " + result.format + "\n" +
+  		          //      "Cancelled: " + result.cancelled);
+				if(!result.cancelled){
+					$.showLoader("扫描成功,正在获取设备信息....");
+					//同时去后台获取设备信息
+					getTaskEquipmentList(result.text);
+					
+				}
+		    }, 
+		    function (error) {
+		     	alert("扫描失败");
+		    }
+		); 
+	});
+//	$("a[name='out_storageEquipmentInfo']").click(function(event){
+//	  	out_storageEquipmentInfo();
+//	});
+	$("a[name='deleteEquipmentInfo']").click(function(event){
+	  	deleteEquipmentInfo();
+	});
+	$("button[name='saveTask']").click(function(event){
+	  	saveTask();
+		//history.back();
+	});
+	$("button[name='submitTask']").click(function(event){
+	  	submitTask();
+	});
+	//导航按钮按下去的时候
+	$("a[name='nav_button']").click(function(event){
+		//alert(window.taskInfoParam.pole_longitude+"----"+window.taskInfoParam.pole_latitude);
+		//return;
+		if(!window.taskInfoParam.pole_longitude || !window.taskInfoParam.pole_latitude ){
+			alert("当前点位未设置gps数据，不能导航!");
+			return;
+		}
+	  	cordova.plugins.baiduMapAll.navi(
+			function (result) {
+		    	//alert(1);
+		    },
+			function(error){
+				alert(error);
+				//alert(JSON.stringify(error));
+				//alert("后台发生异常!");
+			},
+			[window.taskInfoParam.pole_longitude,window.taskInfoParam.pole_latitude]
+		); 
+	});
+	
+});
+
+
+</script>
+
+
+<!----------------------新建任务系列--------------------------->
+<div data-role="page" id="page_taskes_new" data-dom-cache="true">
+	<div data-role="header"  data-position="fixed">
+    	<a href="#page_homepage" class="ui-btn ui-corner-all" data-theme="c">返回</a>
+        <h1>新建任务</h1> 
+	</div>
+	<div role="main" class="ui-content">
+    	<!--<input id="autocomplete-input" data-type="search" placeholder="输入点位信息...">-->
+    	 <a href="taskes_search_pole.html" data-prefetch="true" class="ui-btn ui-corner-all actionbutton">搜索点位</a>
+        <div class="ui-field-contain">
+        	<input type="hidden" id="page_taskes_new_type" value="" />
+            <input type="hidden" id="page_taskes_new_pole_id" value="" />
+            <label for="page_taskes_new_pole_code">编号:</label>
+            <input type="text"  id="page_taskes_new_pole_code" placeholder="只读" readonly>
+        	<label for="page_taskes_new_pole_name">点位:</label>
+            <input type="text"  id="page_taskes_new_pole_name" placeholder="只读" readonly>
+       		<label for="page_taskes_new_pole_address">地址:</label>
+            <input type="text"  id="page_taskes_new_pole_address" placeholder="只读" readonly>
+            <label for="page_taskes_new_pole_memo">任务描述:</label>
+            <textarea id="page_taskes_new_pole_memo" placeholder="请输入" data-mini="true"></textarea>  
+            
+            <div id="page_taskes_new_errorMsg" style="color:red;height:36px;font-weight:bold;"></div>        
+         </div>	
+         
+         <div class="ui-field-contain actionbutton"  align="center">
+            <button class="ui-shadow ui-btn ui-corner-all ui-btn-icon-left"  id="page_taskes_new_submitNewTask">提交</button>
+         </div>
+	</div>
+    <script type="application/javascript">
+	$(document).ready(function(e) {
+		//$( ":mobile-pagecontainer" ).pagecontainer( "load", "taskes_search_pole.html", {  } );
+        $(document).on('pagebeforeshow', "#page_taskes_new", function (event, data) {
+			var params=window.page_taskes_new_params;	
+			if(params.pole_id){
+				$("#page_taskes_new_type").val(params.type);
+				$("#page_taskes_new_pole_id").val(params.pole_id);
+				$("#page_taskes_new_pole_code").val(params.pole_code);
+				$("#page_taskes_new_pole_name").val(params.pole_name);
+				$("#page_taskes_new_pole_address").val(params.pole_address);
+			} else {
+				if(params.type=="newInstall"){
+					$("#page_taskes_new h1").html("新建'安装'任务");
+				} else if(params.type=="repair"){
+					$("#page_taskes_new h1").html("新建'维修/维护'任务");
+				} else if(params.type=="patrol"){
+					$("#page_taskes_new h1").html("新建'巡检'任务");
+				} else {
+					$("#page_taskes_new h1").html("新建任务");
+				}
+				
+			}
+		});//pagebeforeshow
+		$("#page_taskes_new_submitNewTask").click(function(event){
+			var params=window.page_taskes_new_params;	
+			if(!params.pole_id){
+				$("#page_taskes_new_errorMsg").html("请先选择一个点位");
+				return;
+			}
+			
+			params.memo=$("#page_taskes_new_pole_memo").val();
+			$.ajax({   
+				url : $.ServerPath+"/task/mobile/create.do",  
+				data:params,  
+				success : function(data){
+					if(data.success==true){	
+						$("#page_taskes_new_type").val("");
+						$("#page_taskes_new_pole_code").val("");
+						$("#page_taskes_new_pole_id").val("");
+						$("#page_taskes_new_pole_name").val("");
+						$("#page_taskes_new_pole_address").val("");
+						$("#page_taskes_new_pole_memo").val("");
+						
+						//并且刷新任务,或者移除该任务
+						//或者手动构建li，然后动态添加到界面中，同时，别忘记更改page的参数
+						var type=$("input:checked[name='radio-choice-taskes-type']").val();
+						window[type+"_pageParam"].reset();
+						queryTasks(type,null,function(){
+							taskes_list_query_type[type]=true;
+						});					
+						window.page_taskes_new_params={};
+						
+						$(":mobile-pagecontainer").pagecontainer("change", "#page_homepage", { 
+							type:'POST',
+							transition:'slideup'
+		 				});
+					}
+					$.hideLoader();  
+				}
+			});	//ajax
+		//}
+		});//click
+    });//ready
+	</script>
+</div>
+
+
+
+</body>
+</html>

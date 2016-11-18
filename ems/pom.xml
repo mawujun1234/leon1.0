@@ -89,15 +89,15 @@
 	        </configuration>
 	     </plugin>
 			  -->
-			<!-- 打成war包用来发布 -->
+			<!-- 打成war包用来发布 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
-					<!-- <warSourceExcludes>www/**/*.*,**/*.js,**/*.css</warSourceExcludes>		 -->		
+	
 				</configuration>
 			</plugin>
-			
+			-->
 			
 			
 			<plugin>
@@ -319,7 +319,7 @@
 	<dependency>
 		<groupId>com.mawujun</groupId>
 		<artifactId>leon-generator</artifactId>
-		<version>1.0</version>
+		<version>1.0-SNAPSHOT</version>
 	</dependency>
 	
 	<dependency>

@@ -1,4 +1,5 @@
 package com.mawujun.check;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +26,10 @@ public class CheckService extends AbstractService<Check, String>{
 	private CheckRepository checkRepository;
 //	@Autowired
 //	private CheckListRepository checkListRepository;
+	@Autowired
+	private TrimRepository trimRepository;
+	
+	SimpleDateFormat yyyyMMddHHmmssDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
 	
 	@Override
 	public CheckRepository getRepository() {
@@ -51,5 +56,19 @@ public class CheckService extends AbstractService<Check, String>{
 //	public void createCheckList(String check_id,String task_id){
 //		checkRepository.createCheckList(check_id, task_id);
 //	}
+	/**
+	 * 转移，先从另外一个点位上卸载下来，
+	 * 然后这边再安装
+	 * @param trim
+	 */
+	public void transfer(Trim trim) {	
+		String id=yyyyMMddHHmmssDateFormat.format(new Date());
+		trim.setId(id);
+		trim.setCreateDate(new Date());
+		trim.setCreater(ShiroUtils.getUserId());
+		trim.setTrimType(TrimType.transfer);
+		trimRepository.create(trim);
+		
+	}
 	
 }

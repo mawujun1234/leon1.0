@@ -1,1 +1,1 @@
-{verCode:120,verName:"1.2.0",changelog:" 1:添加导航。\n2：修复维修不替换设备功能。 "}
+{verCode:130,verName:"1.3.0",changelog:" 1:添加了盘点任务。 "}

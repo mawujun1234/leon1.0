@@ -31,6 +31,8 @@ public class Trim  implements IdEntity<String>{
 	private String target_id;//调整后所在位置的id
 	@Column(length=36)
 	private String target_type;//调整后所在位置的类型，点位，仓库，作业单位，维修中心
+	@Column(length=36)
+	private String check_id;//盘点单id
 	
 	@Column(length=50)
 	private String creater;//创建者
@@ -38,6 +40,8 @@ public class Trim  implements IdEntity<String>{
 	@Enumerated(EnumType.STRING)
 	private TrimType trimType;
 	
+	
+
 	
 	public TrimType getTrimType() {
 		return trimType;
@@ -49,8 +53,7 @@ public class Trim  implements IdEntity<String>{
 	}
 
 
-	private String check_id;//盘点单id
-
+	
 
 	public String getId() {
 		return id;

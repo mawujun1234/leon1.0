@@ -45,7 +45,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		inner join ems_equipmentprod c on a.prod_id=c.id
 		inner join ems_brand d on a.brand_id=d.id
 		inner join ems_supplier e on a.supplier_id=e.id
-		inner join ems_equipment_pole f on a.ecode=f.ecode
+		inner join (
+			select a.ecode,b.id as orginal_id,'pole' as orginal_type,b.name as orginal_name from ems_equipment_pole a,ems_pole b where a.pole_id=b.id --and ecode='01011Z-**-1607290051'
+			union all
+			select a.ecode,b.id as orginal_id,'repair' as orginal_type,b.name as orginal_name from ems_equipment_repair a,ems_store b where a.repair_id=b.id --and ecode='01011Z-**-1607290051'
+			union all
+			select a.ecode,b.id as orginal_id,'store' as orginal_type,b.name as orginal_name from ems_equipment_store a,ems_store b where a.store_id=b.id --and ecode='01011Z-**-1607290051'
+			union all
+			select a.ecode,b.id as orginal_id,'workunit' as orginal_type,b.name as orginal_name from ems_equipment_workunit a,ems_workunit b where a.workunit_id=b.id --and ecode='01011Z-**-1607290051'			
+		) f on a.ecode=f.ecode
 		where h.check_id=#{check_id}
 		order by a.ecode
     </select>
