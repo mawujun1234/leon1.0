@@ -53,7 +53,7 @@ Ext.onReady(function(){
 		region:'center'
 	});
 	var poleEquipmentGrid=Ext.create('Ems.check.PoleEquipmentGrid',{
-		title:'记录的设备',
+		title:'点位上记录的设备',
 		split:true,
 		width:400,
 		collapsible : true,

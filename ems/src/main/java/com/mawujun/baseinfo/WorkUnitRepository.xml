@@ -136,6 +136,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    left join sys_user_workunit c on a.id=c.workunit_id and c.user_id=#{user_id}	    
     </select>
     
+    <select id="queryByPole" resultType="com.mawujun.baseinfo.WorkUnitVO" parameterType="map">
+    	SELECT a.*
+	    FROM ems_workunit a
+	    , ems_pole b where a.id=b.workunit_id and b.id=#{pole_id}	    
+    </select>
+    
     <select id="queryCombo" resultType="com.mawujun.baseinfo.WorkUnit" parameterType="map">
     	SELECT a.*
 	    FROM ems_workunit a

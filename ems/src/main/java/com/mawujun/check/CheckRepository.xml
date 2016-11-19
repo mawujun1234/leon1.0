@@ -37,8 +37,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	<include refid="queryPage_where" />
     </select>
     
-    <select id="queryScanEquipment" resultType="com.mawujun.baseinfo.EquipmentVO" parameterType="map">
+    <select id="queryScanEquipment" resultType="com.mawujun.check.EquipmentVO1" parameterType="map">
     	select a.*,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name
+    	,f.orginal_id,f.orginal_type,f.orginal_name
     	from ems_checklist h
     	inner join ems_equipment a on h.ecode=a.ecode
 		inner join ems_equipmentsubtype b on a.subtype_id=b.id
@@ -57,14 +58,17 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		where h.check_id=#{check_id}
 		order by a.ecode
     </select>
-    <select id="queryPoleEquipment" resultType="com.mawujun.baseinfo.EquipmentVO" parameterType="map">
+    <select id="queryPoleEquipment" resultType="com.mawujun.check.EquipmentVO1" parameterType="map">
     	select a.*,b.name as subtype_name,c.name as prod_name,c.spec as prod_spec,d.name as brand_name,e.name as supplier_name
+    	,f.orginal_id,f.orginal_type,f.orginal_name
     	from ems_equipment a
 		inner join ems_equipmentsubtype b on a.subtype_id=b.id
 		inner join ems_equipmentprod c on a.prod_id=c.id
 		inner join ems_brand d on a.brand_id=d.id
 		inner join ems_supplier e on a.supplier_id=e.id
-		inner join ems_equipment_pole f on a.ecode=f.ecode
+		inner join (
+			select a.ecode,b.id as orginal_id,'pole' as orginal_type,b.name as orginal_name,a.pole_id from ems_equipment_pole a,ems_pole b where a.pole_id=b.id 
+		) f on a.ecode=f.ecode
 		where f.pole_id=#{pole_id}
 		order by a.ecode
     </select>

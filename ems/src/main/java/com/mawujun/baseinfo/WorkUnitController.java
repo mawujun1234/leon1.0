@@ -174,6 +174,17 @@ public class WorkUnitController {
 		List<WorkUnit> areaes=workUnitService.queryByUser(user_id);
 		return areaes;
 	}
+	/**
+	 * 根据作业单位管理的点位来获取作业单位，因为一个点位可能归属于两个作业单位进行管理
+	 * @param user_id
+	 * @return
+	 */
+	@RequestMapping("/workunit/queryByPole.do")
+	@ResponseBody
+	public List<WorkUnit> queryByPole(String pole_id) {	
+		List<WorkUnit> areaes=workUnitService.queryByPole(pole_id);
+		return areaes;
+	}
 	
 	@RequestMapping("/workunit/checkByUser.do")
 	@ResponseBody

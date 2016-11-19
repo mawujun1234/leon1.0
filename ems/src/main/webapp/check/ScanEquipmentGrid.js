@@ -45,6 +45,7 @@ Ext.define('Ems.check.ScanEquipmentGrid',{
     	{header: '条码', dataIndex: 'ecode',width:140,renderer:function(value,metadata,record){
     		return "<a href='javascript:void(0);' >"+value+"</a>";
     	}},
+    	{header: '所在位置', dataIndex: 'orginal_name',width:120},
     	{header: '设备类型', dataIndex: 'subtype_name',width:120},
     	{header: '品名', dataIndex: 'prod_name'},
     	{header: '设备型号', dataIndex: 'style',width:120},
@@ -80,8 +81,41 @@ Ext.define('Ems.check.ScanEquipmentGrid',{
                     });
                     win.show();
                     
-                    diffgrid.on("itemdblclick",function(view , record , item , index , e , eOpts){
-                    	
+                    diffgrid.on("itemdblclick",function(view , record_new , item , index , e , eOpts){
+                    	Ext.Msg.confirm("交换",'确定把设备"'+record.get("ecode")+'"转移到"'+record_new.get("orginal_name")+'"上?\n '+
+                    		'把设备"'+record_new.get("ecode")+'"转移到"'+record.get("orginal_name")+'"上，让它们交换下位置。', function(btn, text){
+	            			if (btn == 'yes'){
+	            				Ext.Ajax.request({
+	            					url:Ext.ContextPath+"/check/exchange.do",
+	            					method:'POST',
+	            					params:{
+	            						scan_eqip:{
+	            							check_id:window.selRecord.get("id"),
+		            						ecode:record.get("ecode"),
+		            						orginal_id:record.get("orginal_id"),
+		            						orginal_type:record.get("orginal_type"),
+		            						target_id:record_new.get("pole_id"),
+		            						target_type:record_new.get("orginal_type")
+	            						},
+	            						pole_eqip:{
+	            							check_id:window.selRecord.get("id"),
+		            						ecode:record_new.get("ecode"),
+		            						orginal_id:record_new.get("orginal_id"),
+		            						orginal_type:record_new.get("orginal_type"),
+		            						target_id:record.get("pole_id"),
+		            						target_type:record.get("orginal_type")
+	            						}
+	            						
+	            					},
+	            					success:function(response) {
+	            						var obj=Ext.decode(response.responseText);
+	            						Ex.Msg.alert("消息","成功!");
+	            						window.reloadDiff();
+	            					}
+	            					
+	            				});
+	            			}
+	                	});
                     });
                     
                 }
@@ -96,7 +130,7 @@ Ext.define('Ems.check.ScanEquipmentGrid',{
             	tooltip: '转移',
                 handler: function(grid, rowIndex, colIndex) {
                     var record = grid.getStore().getAt(rowIndex);
-                    Ext.Msg.confirm("转移",'确定把该设备从其他地方转移到当前点位上?', function(btn, text){
+                    Ext.Msg.confirm("转移",'确定把该设备从"'+record.get("orginal_name")+'"转移到"'+window.selRecord.get("pole_name")+'"点位上?', function(btn, text){
             			if (btn == 'yes'){
             				Ext.Ajax.request({
             					url:Ext.ContextPath+"/check/transfer.do",
@@ -105,10 +139,10 @@ Ext.define('Ems.check.ScanEquipmentGrid',{
             						check_id:window.selRecord.get("id"),
             						//pole_id:window.selRecord.get("pole_id"),
             						ecode:record.get("ecode"),
-            						orginal_id:,
-            						orginal_type:,
+            						orginal_id:record.get("orginal_id"),
+            						orginal_type:record.get("orginal_type"),
             						target_id:window.selRecord.get("pole_id"),
-            						target_type:'pole',
+            						target_type:'pole'
             						
             					},
             					success:function(response) {

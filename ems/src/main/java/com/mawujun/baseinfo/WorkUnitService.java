@@ -117,6 +117,9 @@ public class WorkUnitService extends AbstractService<WorkUnit, String>{
 	public List<WorkUnit> queryByUser(String user_id){
 		return workUnitRepository.queryByUser(user_id);
 	}
+	public List<WorkUnit> queryByPole(String user_id){
+		return workUnitRepository.queryByPole(user_id);
+	}
 	
 	public void checkByUser(String workunit_id,String user_id) {
 		User user=userRepository.get(user_id);

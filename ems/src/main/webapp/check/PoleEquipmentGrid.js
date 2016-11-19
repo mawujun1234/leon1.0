@@ -45,6 +45,7 @@ Ext.define('Ems.check.PoleEquipmentGrid',{
     	{header: '条码', dataIndex: 'ecode',width:140,renderer:function(value,metadata,record){
     		return "<a href='javascript:void(0);' >"+value+"</a>";
     	}},
+    	{header: '所在位置', dataIndex: 'orginal_name',width:120},
     	{header: '设备类型', dataIndex: 'subtype_name',width:120},
     	{header: '品名', dataIndex: 'prod_name'},
     	{header: '设备型号', dataIndex: 'style',width:120},
@@ -65,25 +66,75 @@ Ext.define('Ems.check.PoleEquipmentGrid',{
             	iconCls: 'icon-remove',
             	tooltip: '卸载',
                 handler: function(grid, rowIndex, colIndex) {
-                    var rec = grid.getStore().getAt(rowIndex);
+                    var record = grid.getStore().getAt(rowIndex);
                     Ext.Msg.confirm("卸载",'确定把该设备从点位上卸载?', function(btn, text){
             			if (btn == 'yes'){
-            				//添加作业单位的选择
-            				Ext.Ajax.request({
-            					url:Ext.ContextPath+"/check/uninstall.do",
-            					method:'POST',
-            					params:{
-            						check_id:window.selRecord.get("id"),
-            						pole_id:window.selRecord.get("pole_id"),
-            						ecode:record.get("ecode"),
-            					},
-            					success:function(response) {
-            						var obj=Ext.decode(response.responseText);
-            						Ex.Msg.alert("消息","成功!");
-            						window.reloadDiff();
-            					}
+            				var workunit_combox=Ext.create('Ext.form.field.ComboBox',{
+						        fieldLabel: '作业单位',
+						        labelAlign:'right',
+					            labelWidth:55,
+						        name: 'workunit_id',
+							    displayField: 'name',
+							    valueField: 'id',
+						        store:Ext.create('Ext.data.Store', {
+							    	fields: ['id', 'name'],
+								    proxy:{
+								    	type:'ajax',
+								    	extraParams:{pole_id:record.get("orginal_id")},
+								    	url:Ext.ContextPath+"/workunit/queryByPole.do",
+								    	reader:{
+								    		type:'json',
+								    		rootProperty:'root'
+								    	}
+								    }
+							   })
+						    });
+            				var win=Ext.create('Ext.window.Window',{
+            					title:'选择作业单位',
+            					layout:'form',
+            					items:[workunit_combox],
+            					modal:true,
+            					width:260,
+            					height:100,
+            					buttons:[{
+            						text:'取消',
+            						handler:function(){
+            							win.close();
+            						}
+            					},{
+            						text:'确定',
+            						handler:function(){
+            							var workunit_id=workunit_combox.getValue();
+            							if(!workunit_id){
+            								Ext.Msg.alert("消息","请先选择一个作业单位！");
+            								return;
+            							}
+            							//添加作业单位的选择
+			            				Ext.Ajax.request({
+			            					url:Ext.ContextPath+"/check/uninstall.do",
+			            					method:'POST',
+			            					params:{
+			            						check_id:window.selRecord.get("id"),
+			            						pole_id:window.selRecord.get("pole_id"),
+			            						ecode:record.get("ecode"),
+			            						orginal_id:record.get("orginal_id"),
+			            						orginal_type:record.get("orginal_type"),
+			            						target_id:workunit_id,
+			            						target_type:'workunit'
+			            					},
+			            					success:function(response) {
+			            						var obj=Ext.decode(response.responseText);
+			            						Ext.Msg.alert("消息","成功!");
+			            						win.close();
+			            					}
+			            					
+			            				});
+            						}
             					
+            					}]
             				});
+            				win.show();
+            				
             			}
                 	});
                 }

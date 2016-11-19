@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.mawujun.baseinfo.EquipmentVO;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.utils.M;
 import com.mawujun.utils.page.Page;
@@ -60,26 +59,26 @@ public class CheckController {
 		return "success";
 	}
 	/**
-	 * 卸载，从点位上把多余的设备卸载下来
-	 * @param uninstall
-	 * @return
-	 */
-	@RequestMapping("/check/uninstall.do")
-	@ResponseBody
-	public String uninstall(String check_id) {	
-		
-		
-
-		return "success";
-	}
-	/**
 	 * 交换，把两个点位上的设备进行交换
 	 * @param check_id
 	 * @returnexchange
 	 */
 	@RequestMapping("/check/exchange.do")
 	@ResponseBody
-	public String exchange(String check_id) {	
+	public String exchange(Trim scan_eqip,Trim pole_eqip) {	
+		
+		
+
+		return "success";
+	}
+	/**
+	 * 卸载，从点位上把多余的设备卸载下来
+	 * @param uninstall
+	 * @return
+	 */
+	@RequestMapping("/check/uninstall.do")
+	@ResponseBody
+	public String uninstall(Trim trim) {	
 		
 		
 
@@ -87,20 +86,21 @@ public class CheckController {
 	}
 	
 	
+	
 	@RequestMapping("/check/queryDifferentEquipment.do")
 	@ResponseBody
-	public Map<String,List<EquipmentVO>> queryDifferentEquipment(String check_id,String pole_id,Boolean onlyDifferent) {	
-		List<EquipmentVO> scan_records= checkService.queryScanEquipment(check_id);
-		List<EquipmentVO> pole_records= checkService.queryPoleEquipment(pole_id);
-		Map<String,List<EquipmentVO>> results=new HashMap<String,List<EquipmentVO>>();
+	public Map<String,List<EquipmentVO1>> queryDifferentEquipment(String check_id,String pole_id,Boolean onlyDifferent) {	
+		List<EquipmentVO1> scan_records= checkService.queryScanEquipment(check_id);
+		List<EquipmentVO1> pole_records= checkService.queryPoleEquipment(pole_id);
+		Map<String,List<EquipmentVO1>> results=new HashMap<String,List<EquipmentVO1>>();
 		//只显示有差异的
 		if(onlyDifferent){
-			List<EquipmentVO> scan_records_new=new ArrayList<EquipmentVO>();
-			List<EquipmentVO> pole_records_new=new ArrayList<EquipmentVO>();
+			List<EquipmentVO1> scan_records_new=new ArrayList<EquipmentVO1>();
+			List<EquipmentVO1> pole_records_new=new ArrayList<EquipmentVO1>();
 			
-			for(EquipmentVO scan_record:scan_records){
+			for(EquipmentVO1 scan_record:scan_records){
 				boolean bool=true;
-				for(EquipmentVO pole_record:pole_records){
+				for(EquipmentVO1 pole_record:pole_records){
 					if(scan_record.getEcode().equals(pole_record.getEcode())){
 						bool=false;
 						break;
@@ -111,9 +111,9 @@ public class CheckController {
 				}
 			}
 			
-			for(EquipmentVO pole_record:pole_records){
+			for(EquipmentVO1 pole_record:pole_records){
 				boolean bool=true;
-				for(EquipmentVO scan_record:scan_records){
+				for(EquipmentVO1 scan_record:scan_records){
 					if(scan_record.getEcode().equals(pole_record.getEcode())){
 						bool=false;
 						break;
@@ -140,14 +140,14 @@ public class CheckController {
 	 */
 	@RequestMapping("/check/queryDifferentPoleEquipment.do")
 	@ResponseBody
-	public List<EquipmentVO> queryDifferentPoleEquipment(String check_id,String pole_id,Boolean onlyDifferent) {	
-		List<EquipmentVO> scan_records= checkService.queryScanEquipment(check_id);
-		List<EquipmentVO> pole_records= checkService.queryPoleEquipment(pole_id);
+	public List<EquipmentVO1> queryDifferentPoleEquipment(String check_id,String pole_id,Boolean onlyDifferent) {	
+		List<EquipmentVO1> scan_records= checkService.queryScanEquipment(check_id);
+		List<EquipmentVO1> pole_records= checkService.queryPoleEquipment(pole_id);
 		//Map<String,List<EquipmentVO>> results=new HashMap<String,List<EquipmentVO>>();
 		//只显示有差异的
 		//if(onlyDifferent){
 		//	List<EquipmentVO> scan_records_new=new ArrayList<EquipmentVO>();
-			List<EquipmentVO> pole_records_new=new ArrayList<EquipmentVO>();
+			List<EquipmentVO1> pole_records_new=new ArrayList<EquipmentVO1>();
 			
 //			for(EquipmentVO scan_record:scan_records){
 //				boolean bool=true;
@@ -162,9 +162,9 @@ public class CheckController {
 //				}
 //			}
 			
-			for(EquipmentVO pole_record:pole_records){
+			for(EquipmentVO1 pole_record:pole_records){
 				boolean bool=true;
-				for(EquipmentVO scan_record:scan_records){
+				for(EquipmentVO1 scan_record:scan_records){
 					if(scan_record.getEcode().equals(pole_record.getEcode())){
 						bool=false;
 						break;

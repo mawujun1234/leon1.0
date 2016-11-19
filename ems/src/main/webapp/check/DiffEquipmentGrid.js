@@ -45,6 +45,7 @@ Ext.define('Ems.check.DiffEquipmentGrid',{
     	{header: '条码', dataIndex: 'ecode',width:140,renderer:function(value,metadata,record){
     		return "<a href='javascript:void(0);' >"+value+"</a>";
     	}},
+    	{header: '所在位置', dataIndex: 'orginal_name',width:120},
     	{header: '设备类型', dataIndex: 'subtype_name',width:120},
     	{header: '品名', dataIndex: 'prod_name'},
     	{header: '设备型号', dataIndex: 'style',width:120},
