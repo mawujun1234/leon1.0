@@ -29,46 +29,46 @@ public class TrimController {
 
 
 
-	@RequestMapping("/trim/queryAll.do")
+	@RequestMapping("/trim/queryByCheck.do")
 	@ResponseBody
-	public List<Trim> queryAll() {	
-		List<Trim> trimes=trimService.queryAll();
+	public List<TrimVO> queryByCheck(String check_id) {	
+		List<TrimVO> trimes=trimService.queryByCheck(check_id);
 		return trimes;
 	}
 	
 
-	@RequestMapping("/trim/load.do")
-	public Trim load(String id) {
-		return trimService.get(id);
-	}
-	
-	@RequestMapping("/trim/create.do")
-	@ResponseBody
-	public Trim create(@RequestBody Trim trim) {
-		trimService.create(trim);
-		return trim;
-	}
-	
-	@RequestMapping("/trim/update.do")
-	@ResponseBody
-	public  Trim update(@RequestBody Trim trim) {
-		trimService.update(trim);
-		return trim;
-	}
-	
-	@RequestMapping("/trim/deleteById.do")
-	@ResponseBody
-	public String deleteById(String id) {
-		trimService.deleteById(id);
-		return id;
-	}
-	
-	@RequestMapping("/trim/destroy.do")
-	@ResponseBody
-	public Trim destroy(@RequestBody Trim trim) {
-		trimService.delete(trim);
-		return trim;
-	}
+//	@RequestMapping("/trim/load.do")
+//	public Trim load(String id) {
+//		return trimService.get(id);
+//	}
+//	
+//	@RequestMapping("/trim/create.do")
+//	@ResponseBody
+//	public Trim create(@RequestBody Trim trim) {
+//		trimService.create(trim);
+//		return trim;
+//	}
+//	
+//	@RequestMapping("/trim/update.do")
+//	@ResponseBody
+//	public  Trim update(@RequestBody Trim trim) {
+//		trimService.update(trim);
+//		return trim;
+//	}
+//	
+//	@RequestMapping("/trim/deleteById.do")
+//	@ResponseBody
+//	public String deleteById(String id) {
+//		trimService.deleteById(id);
+//		return id;
+//	}
+//	
+//	@RequestMapping("/trim/destroy.do")
+//	@ResponseBody
+//	public Trim destroy(@RequestBody Trim trim) {
+//		trimService.delete(trim);
+//		return trim;
+//	}
 	
 	
 }

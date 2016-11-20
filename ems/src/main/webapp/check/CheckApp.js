@@ -2,6 +2,7 @@ Ext.require("Ems.check.Check");
 Ext.require("Ems.check.CheckGrid");
 Ext.require("Ems.check.PoleEquipmentGrid");
 Ext.require("Ems.check.ScanEquipmentGrid");
+Ext.require("Ems.check.TrimGrid");
 Ext.onReady(function(){
 	var grid=Ext.create('Ems.check.CheckGrid',{
 		title:'盘点单',
@@ -16,7 +17,7 @@ Ext.onReady(function(){
 		if(params){
 			window.reload_params=params;
 		} else {
-			params=indow.reload_params;
+			params=window.reload_params;
 		}
 		
 		Ext.Ajax.request({
@@ -39,17 +40,23 @@ Ext.onReady(function(){
 //		pubCodeGrid.getStore().getProxy().extraParams={
 //			check_id:record.get("id")
 //		}
+		onlyDifferent.setValue(true);
 		selRecord=record;
 		window.reloadDiff({
 			check_id:selRecord.get("id"),
 			pole_id:selRecord.get("pole_id"),
 			onlyDifferent:true
 		});
+		
+		trimGrid.getStore().getProxy().extraParams={
+			check_id:record.get("id")
+		}
+		trimGrid.getStore().reload();
 	});
 	
 	
 	var scanEquipmentGrid=Ext.create('Ems.check.ScanEquipmentGrid',{
-		title:'扫描的设备',
+		title:'扫描的设备--点位上实际存在的设备记录',
 		region:'center'
 	});
 	var poleEquipmentGrid=Ext.create('Ems.check.PoleEquipmentGrid',{
@@ -90,6 +97,10 @@ Ext.onReady(function(){
 		
 	});
 	
+	var trimGrid=Ext.create('Ems.check.TrimGrid',{
+		title:'调整记录'
+	});
+	
 	var tabpanel=Ext.create('Ext.TabPanel', {
 	    fullscreen: true,
 	    region:'center',
@@ -105,10 +116,7 @@ Ext.onReady(function(){
 	            tbar:[onlyDifferent],
 	            items:[scanEquipmentGrid,poleEquipmentGrid]
 	        },
-	        {
-	            title: '调整记录',
-	            html: 'Contact Screen'
-	        }
+	        trimGrid
 	    ]
 	});
 	var viewPort=Ext.create('Ext.container.Viewport',{

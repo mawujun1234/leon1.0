@@ -14,7 +14,13 @@ Ext.define('Ems.check.ScanEquipmentGrid',{
 			refresh:function(){
 				//this.select(0);
 			}
+		},
+		getRowClass: function(record, rowIndex, rowParams, store){
+		    	if(record.get('diff')){
+                	return "yellowColor";
+                }
 		}
+
 	},
 	listeners : {
 		cellclick : function(view, td, cellIndex, record, tr, rowIndex,e, eOpts) {
@@ -67,10 +73,18 @@ Ext.define('Ems.check.ScanEquipmentGrid',{
             	tooltip: '交换',
                 handler: function(grid, rowIndex, colIndex) {
                     var record = grid.getStore().getAt(rowIndex);
-                    
+                    if(!record.get("diff")){
+                    	Ext.Msg.alert("消息","该设备没有问题，不准操作！");
+                    	return;
+                    }
                     var diffgrid=Ext.create('Ems.check.DiffEquipmentGrid',{
                     	
                     });
+                    diffgrid.getStore().getProxy().extraParams={
+						check_id:window.selRecord.get("id"),
+						pole_id:window.selRecord.get("pole_id"),
+					}
+					diffgrid.getStore().reload();
                     var win=Ext.create('Ext.window.Window',{
                     	layout:'fit',
                     	title:'把当前设备和当前点位上的某个设备(双击选择的设备)进行交换',
@@ -88,13 +102,13 @@ Ext.define('Ems.check.ScanEquipmentGrid',{
 	            				Ext.Ajax.request({
 	            					url:Ext.ContextPath+"/check/exchange.do",
 	            					method:'POST',
-	            					params:{
+	            					jsonData:{
 	            						scan_eqip:{
 	            							check_id:window.selRecord.get("id"),
 		            						ecode:record.get("ecode"),
 		            						orginal_id:record.get("orginal_id"),
 		            						orginal_type:record.get("orginal_type"),
-		            						target_id:record_new.get("pole_id"),
+		            						target_id:record_new.get("orginal_id"),
 		            						target_type:record_new.get("orginal_type")
 	            						},
 	            						pole_eqip:{
@@ -102,15 +116,16 @@ Ext.define('Ems.check.ScanEquipmentGrid',{
 		            						ecode:record_new.get("ecode"),
 		            						orginal_id:record_new.get("orginal_id"),
 		            						orginal_type:record_new.get("orginal_type"),
-		            						target_id:record.get("pole_id"),
+		            						target_id:record.get("orginal_id"),
 		            						target_type:record.get("orginal_type")
 	            						}
 	            						
 	            					},
 	            					success:function(response) {
 	            						var obj=Ext.decode(response.responseText);
-	            						Ex.Msg.alert("消息","成功!");
+	            						Ext.Msg.alert("消息","成功!");
 	            						window.reloadDiff();
+	            						win.close();
 	            					}
 	            					
 	            				});
@@ -130,6 +145,10 @@ Ext.define('Ems.check.ScanEquipmentGrid',{
             	tooltip: '转移',
                 handler: function(grid, rowIndex, colIndex) {
                     var record = grid.getStore().getAt(rowIndex);
+                    if(!record.get("diff")){
+                    	Ext.Msg.alert("消息","该设备没有问题，不准操作！");
+                    	return;
+                    }
                     Ext.Msg.confirm("转移",'确定把该设备从"'+record.get("orginal_name")+'"转移到"'+window.selRecord.get("pole_name")+'"点位上?', function(btn, text){
             			if (btn == 'yes'){
             				Ext.Ajax.request({
@@ -147,7 +166,7 @@ Ext.define('Ems.check.ScanEquipmentGrid',{
             					},
             					success:function(response) {
             						var obj=Ext.decode(response.responseText);
-            						Ex.Msg.alert("消息","成功!");
+            						Ext.Msg.alert("消息","成功!");
             						window.reloadDiff();
             					}
             					

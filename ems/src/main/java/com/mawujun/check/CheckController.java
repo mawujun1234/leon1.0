@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -54,7 +55,7 @@ public class CheckController {
 	@ResponseBody
 	public String transfer(Trim trim) {	
 		
-		
+		checkService.transfer(trim);
 
 		return "success";
 	}
@@ -65,10 +66,10 @@ public class CheckController {
 	 */
 	@RequestMapping("/check/exchange.do")
 	@ResponseBody
-	public String exchange(Trim scan_eqip,Trim pole_eqip) {	
+	//public String exchange(@RequestBody Trim scan_eqip,@RequestBody Trim pole_eqip) {	
+	public String exchange(@RequestBody TrimBindVO trimBindVO) {	
 		
-		
-
+		checkService.exchange(trimBindVO.getScan_eqip(), trimBindVO.getPole_eqip());
 		return "success";
 	}
 	/**
@@ -80,7 +81,7 @@ public class CheckController {
 	@ResponseBody
 	public String uninstall(Trim trim) {	
 		
-		
+		checkService.uninstall(trim);
 
 		return "success";
 	}
@@ -94,7 +95,7 @@ public class CheckController {
 		List<EquipmentVO1> pole_records= checkService.queryPoleEquipment(pole_id);
 		Map<String,List<EquipmentVO1>> results=new HashMap<String,List<EquipmentVO1>>();
 		//只显示有差异的
-		if(onlyDifferent){
+		//if(onlyDifferent){
 			List<EquipmentVO1> scan_records_new=new ArrayList<EquipmentVO1>();
 			List<EquipmentVO1> pole_records_new=new ArrayList<EquipmentVO1>();
 			
@@ -106,7 +107,13 @@ public class CheckController {
 						break;
 					}
 				}
-				if(bool){
+				//if(bool){
+					//scan_records_new.add(scan_record);
+				//}
+				scan_record.setDiff(bool);
+				if(onlyDifferent && bool){
+					scan_records_new.add(scan_record);
+				} else if(!onlyDifferent){
 					scan_records_new.add(scan_record);
 				}
 			}
@@ -119,16 +126,22 @@ public class CheckController {
 						break;
 					}
 				}
-				if(bool){
+//				if(bool){
+//					pole_records_new.add(pole_record);
+//				}
+				pole_record.setDiff(bool);
+				if(onlyDifferent && bool){
+					pole_records_new.add(pole_record);
+				} else  if(!onlyDifferent){
 					pole_records_new.add(pole_record);
 				}
 			}
 			results.put("scan_records",scan_records_new );
 			results.put("pole_records", pole_records_new);
-		} else {
-			results.put("scan_records",scan_records );
-			results.put("pole_records", pole_records);
-		}
+//		} else {
+//			results.put("scan_records",scan_records );
+//			results.put("pole_records", pole_records);
+//		}
 		return results;
 	}
 	/**

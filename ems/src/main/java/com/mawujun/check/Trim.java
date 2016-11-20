@@ -9,6 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.mawujun.baseinfo.TargetType;
 import com.mawujun.repository.idEntity.IdEntity;
 
 /**
@@ -25,12 +26,14 @@ public class Trim  implements IdEntity<String>{
 	private String ecode;
 	@Column(length=36)
 	private String orginal_id;//调整前所在单位置id
-	@Column(length=36)
-	private String orginal_type;//调整前的位置的类型，点位，仓库，作业单位，维修中心
+	@Column(length=15)
+	@Enumerated(EnumType.STRING)
+	private TargetType orginal_type;//调整前的位置的类型，点位，仓库，作业单位，维修中心
 	@Column(length=36)
 	private String target_id;//调整后所在位置的id
-	@Column(length=36)
-	private String target_type;//调整后所在位置的类型，点位，仓库，作业单位，维修中心
+	@Column(length=15)
+	@Enumerated(EnumType.STRING)
+	private TargetType target_type;//调整后所在位置的类型，点位，仓库，作业单位，维修中心
 	@Column(length=36)
 	private String check_id;//盘点单id
 	
@@ -40,7 +43,26 @@ public class Trim  implements IdEntity<String>{
 	@Enumerated(EnumType.STRING)
 	private TrimType trimType;
 	
+	public String getTargetType_name() {
+		if(target_type!=null){
+			return target_type.getName();
+		}
+		return "";
+	}
+	public String getOrginal_type_name() {
+		if(orginal_type!=null){
+			return orginal_type.getName();
+		}
+		return "";
+	}
 	
+	
+	public String getTrimType_name() {
+		if(trimType!=null){
+			return trimType.getName();
+		}
+		return "";
+	}
 
 	
 	public TrimType getTrimType() {
@@ -84,17 +106,6 @@ public class Trim  implements IdEntity<String>{
 		this.orginal_id = orginal_id;
 	}
 
-
-	public String getOrginal_type() {
-		return orginal_type;
-	}
-
-
-	public void setOrginal_type(String orginal_type) {
-		this.orginal_type = orginal_type;
-	}
-
-
 	public String getTarget_id() {
 		return target_id;
 	}
@@ -103,17 +114,6 @@ public class Trim  implements IdEntity<String>{
 	public void setTarget_id(String target_id) {
 		this.target_id = target_id;
 	}
-
-
-	public String getTarget_type() {
-		return target_type;
-	}
-
-
-	public void setTarget_type(String target_type) {
-		this.target_type = target_type;
-	}
-
 
 	public String getCreater() {
 		return creater;
@@ -143,6 +143,26 @@ public class Trim  implements IdEntity<String>{
 	public void setCheck_id(String check_id) {
 		this.check_id = check_id;
 	}
-	
+
+
+	public TargetType getOrginal_type() {
+		return orginal_type;
+	}
+
+
+	public void setOrginal_type(TargetType orginal_type) {
+		this.orginal_type = orginal_type;
+	}
+
+
+	public TargetType getTarget_type() {
+		return target_type;
+	}
+
+
+	public void setTarget_type(TargetType target_type) {
+		this.target_type = target_type;
+	}
+
 
 }

@@ -1,4 +1,6 @@
 package com.mawujun.check;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -24,4 +26,7 @@ public class TrimService extends AbstractService<Trim, String>{
 		return trimRepository;
 	}
 
+	public List<TrimVO> queryByCheck(String check_id) {
+		return trimRepository.queryByCheck(check_id);
+	}
 }

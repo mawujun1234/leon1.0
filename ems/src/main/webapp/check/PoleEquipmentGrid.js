@@ -14,6 +14,11 @@ Ext.define('Ems.check.PoleEquipmentGrid',{
 			refresh:function(){
 				//this.select(0);
 			}
+		},
+		getRowClass: function(record, rowIndex, rowParams, store){
+		    	if(record.get('diff')){
+                	return "yellowColor";
+                }
 		}
 	},
 	listeners : {
@@ -67,6 +72,10 @@ Ext.define('Ems.check.PoleEquipmentGrid',{
             	tooltip: '卸载',
                 handler: function(grid, rowIndex, colIndex) {
                     var record = grid.getStore().getAt(rowIndex);
+                    if(!record.get("diff")){
+                    	Ext.Msg.alert("消息","该设备没有问题，不准操作！");
+                    	return;
+                    }
                     Ext.Msg.confirm("卸载",'确定把该设备从点位上卸载?', function(btn, text){
             			if (btn == 'yes'){
             				var workunit_combox=Ext.create('Ext.form.field.ComboBox',{

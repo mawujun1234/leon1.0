@@ -35,6 +35,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	inner join ems_task b on a.task_id=b.id
     	inner join ems_pole c on b.pole_id=c.id
     	<include refid="queryPage_where" />
+    	order by a.id desc
     </select>
     
     <select id="queryScanEquipment" resultType="com.mawujun.check.EquipmentVO1" parameterType="map">

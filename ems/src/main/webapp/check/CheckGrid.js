@@ -124,11 +124,14 @@ Ext.define('Ems.check.CheckGrid',{
 					url:Ext.ContextPath+"/check/complete.do",
 					method:'POST',
 					params:{
-						check_id:record.get("id"),
+						check_id:record.get("id")
 					},
 					success:function(response) {
 						var obj=Ext.decode(response.responseText);
-						Ex.Msg.alert("消息","成功!");
+						Ext.Msg.alert("消息","成功!");
+						var grid=btn.up("grid");
+	    				grid.getStore().getProxy().extraParams=grid.getParams();
+						grid.getStore().reload();
 					}
 					
 				});

@@ -5,20 +5,26 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 <!-- mawujun qq:16064988 e-mail:16064988@qq.com-->
 <mapper namespace="com.mawujun.check.TrimRepository">
-	<!-- 查询语句，会自动分页-->
-	<sql id="queryPage_where">
-		<where>
-		
-		</where>
-	</sql>
-    <select id="queryPage" resultType="com.mawujun.check.Trim" parameterType="map">
-    	select * from ems_trim a
-    	<include refid="queryPage_where" />
+	
+    <select id="queryByCheck" resultType="com.mawujun.check.TrimVO" parameterType="map">
+    	select a.*,orginal.name as orginal_name,target.name as target_name from ems_trim a,
+		(
+			select id, name from ems_store
+			union all
+			select id,name||'('||code||')' as name from ems_pole
+			union all
+			select id,name from ems_workunit
+		) orginal
+		,(
+			select id, name from ems_store
+			union all
+			select id,name||'('||code||')' as name from ems_pole
+			union all
+			select id,name from ems_workunit
+		) target
+		where a.orginal_id=orginal.id and a.target_id=target.id
+		and a.check_id=#{check_id}
     </select> 
-     <!-- 名称模式为：****_count,也可以不写，但如果查询叫复杂的话，自己写有助于控制查询性能-->
-    <select id="queryPage_count" resultType="int" parameterType="map">
-    	select count(a.*)
-		from ems_trim a
-    </select>
+    
 </mapper>
 

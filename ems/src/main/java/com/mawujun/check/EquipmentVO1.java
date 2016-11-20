@@ -17,6 +17,8 @@ private String subtype_name;
 	private String orginal_type;
 	private String orginal_name;
 	
+	private Boolean diff=false;//是不是差异的条码
+	
 	public String getSubtype_name() {
 		return subtype_name;
 	}
@@ -70,6 +72,12 @@ private String subtype_name;
 	}
 	public void setOrginal_name(String orginal_name) {
 		this.orginal_name = orginal_name;
+	}
+	public Boolean getDiff() {
+		return diff;
+	}
+	public void setDiff(Boolean diff) {
+		this.diff = diff;
 	}
 
 }

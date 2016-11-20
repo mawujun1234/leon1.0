@@ -1,5 +1,8 @@
 package com.mawujun.check;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.mawujun.repository1.IRepository;
@@ -11,5 +14,5 @@ import com.mawujun.repository1.IRepository;
 @Repository
 public interface TrimRepository extends IRepository<Trim, String>{
 
-
+	public List<TrimVO> queryByCheck(@Param("check_id")String check_id);
 }
