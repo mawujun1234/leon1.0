@@ -1,4 +1,5 @@
-Ext.defineModel("Ems.baseinfo.WorkUnitContact",{
+//Ext.defineModel("Ems.baseinfo.WorkUnitContact",{
+Ext.define("Ems.baseinfo.WorkUnitContact",{
 	extend:"Ext.data.Model",
 	idProperty:'id',
 	fields:[

@@ -69,7 +69,7 @@ Ext.define('Ems.baseinfo.PoleEquipmentGrid',{
 		        url: Ext.ContextPath+'/pole/queryEquipments.do',  // url that will load data with respect to start and limit params
 		        reader: {
 		            type: 'json',
-		            root: 'root',
+		            rootProperty: 'root',
 		            totalProperty: 'total'
 		        }
 		    }

@@ -2,6 +2,7 @@
 Ext.require("Ems.baseinfo.WorkUnitGrid");
 Ext.require("Ems.baseinfo.WorkunitPoleGrid");
 Ext.require("Ems.baseinfo.PoleEquipmentGrid");
+Ext.require('Ems.baseinfo.EquipmentCycleGrid');
 Ext.onReady(function(){
 	var grid=Ext.create('Ems.baseinfo.WorkUnitGrid',{
 		region:'west',

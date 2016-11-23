@@ -229,7 +229,7 @@ Ext.define('Ems.baseinfo.WorkUnitForm',{
 		}];
 
 	
-      me.addEvents("saved");
+      //me.addEvents("saved");
       me.callParent();
 	},
 	/**

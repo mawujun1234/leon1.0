@@ -32,7 +32,21 @@ Ext.define('Ems.baseinfo.CustomerContactGrid',{
 			autoSync:false,
 			pageSize:50,
 			model: 'Ems.baseinfo.CustomerContact',
-			autoLoad:false
+			autoLoad:false,
+			proxy:{
+				type: 'ajax',
+			    url : Ext.ContextPath+'/customerContact/query.do',
+			    headers:{ 'Accept':'application/json;'},
+			    actionMethods: { read: 'POST' },
+			    extraParams:{limit:50},
+			    reader:{
+					type:'json',//如果没有分页，那么可以把后面三行去掉，而且后台只需要返回一个数组就行了
+					rootProperty:'root',
+					//root:'root',
+					successProperty:'success',
+					totalProperty:'total'		
+				}
+			}
 	  });
 	  
 //      me.dockedItems= [{

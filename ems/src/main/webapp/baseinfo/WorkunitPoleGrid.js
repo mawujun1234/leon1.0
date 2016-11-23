@@ -58,7 +58,7 @@ Ext.define('Ems.baseinfo.WorkunitPoleGrid',{
 			        url: Ext.ContextPath+'/workunit/queryPoles.do',
 			        reader: {
 			        	type:'json',
-			            root: 'root'
+			            rootProperty: 'root'
 			        }
 			},
 			autoLoad:false
@@ -108,7 +108,7 @@ Ext.define('Ems.baseinfo.WorkunitPoleGrid',{
 			    	url:Ext.ContextPath+"/customer/query4combo.do",
 			    	reader:{
 			    		type:'json',
-			    		root:'root'
+			    		rootProperty:'root'
 			    	}
 			    }
 		   }),
@@ -155,7 +155,7 @@ Ext.define('Ems.baseinfo.WorkunitPoleGrid',{
 			    	url:Ext.ContextPath+"/customer/query4combo.do",
 			    	reader:{
 			    		type:'json',
-			    		root:'root'
+			    		rootProperty:'root'
 			    	}
 			    },
 			    listeners:{
