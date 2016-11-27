@@ -1,7 +1,7 @@
 //Ext.defineModel("Ems.baseinfo.Pole",{
 Ext.define("Ems.baseinfo.Pole",{
 	extend:"Ext.data.Model",
-	idProperty:'id',
+	//idProperty:'id',
 	fields:[
 		{name:'id',type:'string'},
 		{name:'code',type:'string'},

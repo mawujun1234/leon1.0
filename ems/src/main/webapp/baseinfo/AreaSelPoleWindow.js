@@ -5,16 +5,16 @@ Ext.define('Ems.baseinfo.AreaSelPoleWindow', {
 		modal:true,
 	    initComponent: function(){
 	    	var me=this;
-	    	var customerStore = new Ext.data.TreeStore({
+	    	var customerStore = Ext.create('Ext.data.TreeStore', {//new Ext.data.TreeStore({
 				model: 'Ems.baseinfo.Customer',
 			    proxy: {
 			        type: 'ajax',
-			        url: Ext.ContextPath+'/customer/query.do',
-			        reader: {
-			        	type:'json',
-			            root: 'root'
-			        }
-			    },
+			        url: Ext.ContextPath+'/customer/query.do'
+//			        reader: {
+//			        	type:'json',
+//			            rootProperty: 'root'
+//			        }
+			    }
 			    //autoLoad:true,
 //			    listeners:{
 //				    load:function(s,records,success,o,e){
@@ -23,11 +23,13 @@ Ext.define('Ems.baseinfo.AreaSelPoleWindow', {
 //				    	}
 //				    }
 //			    }
-			    root: {
+			    ,root: {
 				    expanded: true,
-				    text: "根节点"
+				    text: "根节点",
+				    name:'111'
 				}
 			});
+			//customerStore.load();
 			var customer_grid=Ext.create('Ext.tree.Panel', {
 		    	region:'west',
 		    	width:230,
@@ -61,6 +63,10 @@ Ext.define('Ems.baseinfo.AreaSelPoleWindow', {
 			    	}
 			    }
 			});
+			
+//			var customer_grid=Ext.create('Ext.panel.Panel',{
+//				html:'1111'
+//			});
 	    	
 			var pole_pageSize=50;
 			var poleStore = new Ext.data.JsonStore({
@@ -71,7 +77,7 @@ Ext.define('Ems.baseinfo.AreaSelPoleWindow', {
 			        url: Ext.ContextPath+'/pole/query.do',
 			        reader: {
 			        	type:'json',
-			            root: 'root'
+			            rootProperty: 'root'
 			        }
 			    }
 			});

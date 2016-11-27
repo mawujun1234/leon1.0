@@ -1,7 +1,7 @@
 //Ext.defineModel("Ems.baseinfo.Customer",{
 Ext.define("Ems.baseinfo.Customer",{
 	extend:"Ext.data.Model",
-	idProperty:'id',
+	//idProperty:'id',
 	fields:[
 		{name:'id',type:'string'},
 		{name:'memo',type:'string'},
