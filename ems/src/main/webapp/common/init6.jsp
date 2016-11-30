@@ -57,5 +57,6 @@ Ext.Loader.setConfig({
 Ext.setGlyphFontFamily('FontAwesome');
 Ext.required='<span style="color:red;font-weight:bold" data-qtip="Required">*</span>';
 Ext.ContextPath="<%=request.getContextPath()%>";
+Ext.ecode_length=20;
 </script>
 

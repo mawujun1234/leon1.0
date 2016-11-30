@@ -30,6 +30,7 @@ Ext.onReady(function(){
 					Ext.Ajax.request({
 						url:Ext.ContextPath+'/equipmentstatus/query.do',
 						method:'POST',
+						timeout:60000,
 						params:{ecode:newValue},
 						success:function(response){
 							var obj=Ext.decode(response.responseText);

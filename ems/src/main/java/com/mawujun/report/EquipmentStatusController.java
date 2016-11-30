@@ -5,7 +5,9 @@ import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.baseinfo.EquipmentPlace;
 import com.mawujun.baseinfo.EquipmentPoleVO;
@@ -39,6 +41,7 @@ public class EquipmentStatusController {
 	//private EquipmentCycleService equipmentCycleService;
 
 	@RequestMapping("/equipmentstatus/query.do")
+	@ResponseBody
 	public EquipmentVO query(String ecode){
 		//Map<String,Object> result=new HashMap<String,Object>();
 		//获取基本信息
