@@ -220,7 +220,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		inner join ems_equipmentsubtype d on c.subtype_id=d.id
 		inner join ems_equipmenttype e on d.parent_id=e.id
 		inner join ems_brand f on c.brand_id=f.id
-		left join report_assetclean g on a.ecode=g.ecode
+		left join report_assetclean g on a.ecode=g.ecode and g.day_key=to_char(sysdate,'yyyymmdd')
 		group by a.store_id,a.installouttype_name ,a.installouttype_content,
 		e.id,e.name ,d.id,d.name,c.id,c.name ,c.unit,c.style ,f.name
     	order by a.installouttype_name,a.installouttype_content

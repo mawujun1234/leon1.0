@@ -47,13 +47,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			inner join ems_equipment_pole b on a.id=b.pole_id
 			inner join ems_customer c on a.customer_id=c.id
 			inner join ems_equipment d on b.ecode=d.ecode
-			left join report_assetclean g on b.ecode=g.ecode
+			left join report_assetclean g on b.ecode=g.ecode and g.day_key=to_char(sysdate,'yyyymmdd')
 			where  
 			 exists (select 1 from sys_user_workunit x where x.workunit_id=a.workunit_id and x.user_id=#{user_id})
 			and c.parent_id=#{customer_2} and c.type!=2
 			<if test="customer_0or1!=null and customer_0or1!=''">
 					and c.id=#{customer_0or1}
 			</if>
+			
 		) a,ems_equipmentprod c
 		where  a.prod_id=c.id
 		group by a.id,a.name,a.prod_id,c.name
@@ -83,13 +84,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			inner join ems_equipment_pole b on a.id=b.pole_id
 			inner join ems_customer c on a.customer_id=c.id
 			inner join ems_equipment d on b.ecode=d.ecode
-			left join report_assetclean g on b.ecode=g.ecode
+			left join report_assetclean g on b.ecode=g.ecode and g.day_key=to_char(sysdate,'yyyymmdd')
 			where  
 			 exists (select 1 from sys_user_workunit x where x.workunit_id=a.workunit_id and x.user_id=#{user_id})
 			and c.parent_id=#{customer_2} and c.type!=2  and a.poleType='machineroom'
 			<if test="customer_0or1!=null and customer_0or1!=''">
 					and c.id=#{customer_0or1}
 			</if>
+			
 		) a,ems_equipmentprod c
 		where  a.prod_id=c.id
 		group by a.id,a.name,a.prod_id,c.name
@@ -135,10 +137,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		inner join ems_equipment_pole b on a.id=b.pole_id
 		inner join ems_customer c on a.customer_id=c.id
 		inner join ems_equipment d on b.ecode=d.ecode
-		left join report_assetclean g on b.ecode=g.ecode
+		left join report_assetclean g on b.ecode=g.ecode and g.day_key=to_char(sysdate,'yyyymmdd')
 		where  
 		 c.parent_id=#{customer_2} and c.type!=2
 			and c.id=#{customer_0or1}
+			
     ) a,ems_equipmentprod c
 		where  a.prod_id=c.id
 		group by a.id,a.code,a.name,a.prod_id,c.name
