@@ -300,7 +300,7 @@ Ext.define('Ems.task.TaskSendGrid',{
 					if(!bool){
 						return;
 					}
-					//me.showTaskForm(records[0],"newInstall");
+					me.showTaskForm(records[0],"newInstall");
 					
 				} else {
 					Ext.Msg.confirm("提醒","只会为对'未安装'的点位发送安装任务,选'是'进行发送,并且将会直接发送，不能填写任务描述信息",function(btn){
