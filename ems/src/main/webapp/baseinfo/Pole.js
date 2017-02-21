@@ -36,6 +36,27 @@ Ext.define("Ems.baseinfo.Pole",{
 //		{name:'task_status_name',type:'string'},
 //		{name:'task_memo',type:'string'}
 	],
-	associations:[
-	]
+	proxy:{
+		type:'ajax',
+		actionMethods: { read: 'POST' },
+		timeout :600000,
+		headers:{ 'Accept':'application/json;'},
+		writer:{
+			type:'json',
+			writeRecordId:true,
+			writeAllFields:true
+		},
+		reader:{
+			type:'json'
+			///rootProperty:'root',
+			//successProperty:'success',
+			//totalProperty:'total'		
+		},
+		api:{
+			read:Ext.ContextPath+'/pole/load.do',
+			create:Ext.ContextPath+'/pole/create.do',
+			update:Ext.ContextPath+'/pole/update.do',
+			destroy:Ext.ContextPath+'/pole/destroy.do'
+		}
+	}
 });
