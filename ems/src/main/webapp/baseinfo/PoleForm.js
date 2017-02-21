@@ -211,7 +211,7 @@ Ext.define('Ems.baseinfo.PoleForm',{
       });
       me.buttons=[saveButton];
 	
-      me.addEvents("saved");
+      //me.addEvents("saved");
       me.callParent();
 	}
 });
