@@ -8,15 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
-
-
-
-
+import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
 import com.mawujun.shiro.ShiroUtils;
-import com.mawujun.baseinfo.Customer;
-import com.mawujun.baseinfo.CustomerRepository;
+import com.mawujun.utils.M;
 
 
 /**
@@ -54,5 +49,18 @@ public class CustomerService extends AbstractService<Customer, String>{
 	
 	public List<Customer> queryCombo(String name) {
 		return customerRepository.queryCombo(name,ShiroUtils.getUserId());
+	}
+	
+	public List<Customer> queryAreaCombo() {
+		return customerRepository.queryAreaCombo(ShiroUtils.getUserId());
+	}
+	
+	public void transform(String parent_id,String[] customer_ids) {
+		if(parent_id==null || customer_ids==null || customer_ids.length==0){
+			return;
+		}
+		for(String customer_id:customer_ids){
+			customerRepository.update(Cnd.update().set(M.Customer.parent_id, parent_id).andEquals(M.Customer.id, customer_id));
+		}
 	}
 }

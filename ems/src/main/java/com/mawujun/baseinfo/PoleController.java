@@ -118,6 +118,13 @@ public class PoleController {
 		return pole;
 	}
 	
+	@RequestMapping("/pole/transform.do")
+	@ResponseBody
+	public  String transform(String customer_id,String[] pole_ids) {
+		poleService.transform(customer_id, pole_ids);
+		return "{success:true}";
+	}
+	
 	
 	@RequestMapping("/pole/queryEquipments.do")
 	@ResponseBody

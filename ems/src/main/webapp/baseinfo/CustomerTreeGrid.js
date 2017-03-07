@@ -21,6 +21,18 @@ Ext.define('Ems.baseinfo.CustomerTreeGrid',{
     rootVisible: false,
     //multiSelect: true,
     //singleExpand: true,
+    selModel: {
+    	selType: 'checkboxmodel',
+    	checkOnly:false,
+    	listeners:{
+    		beforeselect:function(model,record ,index){
+    			if(record.get("type")==2){
+    				return false;
+    			}
+    			return true;
+    		}
+    	}
+    },
 	initComponent: function () {
       var me = this;
       me.columns=[
@@ -130,6 +142,18 @@ Ext.define('Ems.baseinfo.CustomerTreeGrid',{
 		});
 		//me.addAction(destroy);
 		actions.push(destroy)
+		
+		var transform = new Ext.Action({
+		    text: '转移',
+		    itemId:'transform',
+		    hidden:!Permision.canShow('customer_transform'),
+		    handler: function(){
+		    	me.onTransform();    
+		    },
+		    iconCls: 'icon-exchange'
+		});
+		//me.addAction(destroy);
+		actions.push(transform)
 		
 		var reload = new Ext.Action({
 		    text: '刷新',
@@ -258,6 +282,54 @@ Ext.define('Ems.baseinfo.CustomerTreeGrid',{
 					});
 			}
 		});
+    },
+    onTransform:function(){
+    	var me=this;
+    	var records=me.getSelectionModel().getSelection();
+		if(records==null || records.length==0){
+			Ext.Msg.alert("消息","请先选择派出所!");
+			return;
+		}
+		Ext.Msg.confirm("消息","确认转移吗?",function(aa){
+			if(aa=='yes'){
+				//alert(records.length);
+				var customer_ids=[];
+				for(var i=0;i<records.length;i++){
+					//alert(records[i].get("compno"));
+					customer_ids.push(records[i].get("id"));
+				}
+				//var extraParams=me.getStore().getProxy().extraParams;
+				var customerarea=Ext.create('Ems.baseinfo.CustomerAreaCombo',{
+				
+				});
+				var win=Ext.create('Ext.window.Window',{
+					layout:'form',
+					title:'转移派出所',
+					width:280,
+					height:150,
+					modal:true,
+					items:[customerarea],
+					buttons:[{
+						text:'确认',
+						handler:function(){
+							Ext.Ajax.request({
+						  		url:Ext.ContextPath+'/customer/transform.do',
+						  		params:{
+						  			parent_id:customerarea.getValue(),
+						  			customer_ids:customer_ids
+						  		},
+						  		success:function(response){
+						  			me.getStore().reload();
+						  			win.close();
+						  		}
+						  	});
+						}
+					}]
+				});
+				win.show();
+				
+	  		}//if(aa=='yes'){
+		})
     },
     onReload:function(){
     	var me=this;

@@ -19,6 +19,9 @@ public class Customer extends UUIDEntity {
 	@org.hibernate.annotations.Type(type="yes_no")
 	private Boolean status;
 	
+	public String getKey() {
+		return id;
+	} 
 	
 	
 	public String getName() {

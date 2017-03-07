@@ -9,8 +9,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mawujun.mobile.geolocation.MapService;
+import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.service.AbstractService;
-import com.mawujun.utils.StringUtils;
+import com.mawujun.utils.M;
 
 
 /**
@@ -85,6 +86,15 @@ public class PoleService extends AbstractService<Pole, String>{
 //			poleRepository.deletePoles(pole_ids[i]);
 //		}
 //	}
+	
+	public  void transform(String customer_id,String[] pole_ids) {
+		if(customer_id==null || "".equals(customer_id) ||pole_ids ==null || pole_ids.length==0){
+			return;
+		}
+		for(String pole_id:pole_ids){
+			poleRepository.update(Cnd.update().set(M.Pole.customer_id, customer_id).andEquals(M.Pole.id, pole_id));
+		}
+	}
 	
 	public List<Pole> queryEquipments(String id){
 		return poleRepository.queryEquipments(id);
