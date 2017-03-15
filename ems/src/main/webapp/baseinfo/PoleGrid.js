@@ -274,6 +274,14 @@ Ext.define('Ems.baseinfo.PoleGrid',{
 		var project_model= project_combox.getStore().createModel({id:record.get("project_id"),name:record.get("project_name")});
 		project_combox.setValue(project_model);
 		
+		var city_combox=form.getForm().findField("city");
+		var city_model= city_combox.getStore().createModel({key:record.get("city"),name:record.get("city")});
+		city_combox.setValue(city_model);
+		
+		var area_combox=form.getForm().findField("area");
+		var area_model= area_combox.getStore().createModel({key:record.get("area"),name:record.get("area")});
+		area_combox.setValue(area_model);
+		
 		var win=new Ext.window.Window({
 			items:[form],
 			layout:'fit',

@@ -1,3 +1,104 @@
+var cityes={
+getProvices:function(){
+	
+	return this.provices;
+},
+getCitys:function(provice){
+	var aaa=[]
+	for(var i=0;i<this.cityes.length;i++){
+		if(this.cityes[i].parent_key==provice){
+			aaa.push({
+				key:this.cityes[i].key,
+				name:this.cityes[i].name
+			});
+		}
+	}
+	return aaa;
+},
+getAreas:function(city){
+	var aaa=[]
+	for(var i=0;i<this.areas.length;i++){
+		if(this.areas[i].parent_key==city){
+			aaa.push({
+				key:this.areas[i].key,
+				name:this.areas[i].name
+			});
+		}
+	}
+	return aaa;
+},
+provices:[
+	{
+		key:'浙江省',
+		name:'浙江省'
+	},{
+		key:'',
+		name:'直辖市'
+	}
+],
+cityes:[
+{
+	key:'宁波市',
+	name:'宁波市',
+	parent_key:'浙江省'
+},{
+	key:'上海市',
+	name:'上海市',
+	parent_key:''
+}
+],
+areas:[{
+	parent_key:'宁波市',
+	key:'海曙区',
+	name:'海曙区'
+},{
+	key:'江东区',
+	name:'江东区',
+	parent_key:'宁波市'
+},{
+	key:'江北区',
+	name:'江北区',
+	parent_key:'宁波市'
+},{
+	key:'北仑区',
+	name:'北仑区',
+	parent_key:'宁波市'
+},{
+	key:'镇海区',
+	name:'镇海区',
+	parent_key:'宁波市'
+},{
+	key:'鄞州区',
+	name:'鄞州区',
+	parent_key:'宁波市'
+},{
+	key:'象山县',
+	name:'象山县',
+	parent_key:'宁波市'
+},{
+	key:'宁海县',
+	name:'宁海县',
+	parent_key:'宁波市'
+},{
+	key:'余姚市',
+	name:'余姚市',
+	parent_key:'宁波市'
+},{
+	key:'慈溪市',
+	name:'慈溪市',
+	parent_key:'宁波市'
+},{
+	key:'奉化市',
+	name:'奉化市',
+	parent_key:'宁波市'
+},
+{
+	key:'青浦区',
+	name:'青浦区',
+	parent_key:'上海市'
+}]
+}
+
 //用于这些公用的combobox
 Ext.define("Ems.baseinfo.IdName",{
 	extend:"Ext.data.Model",

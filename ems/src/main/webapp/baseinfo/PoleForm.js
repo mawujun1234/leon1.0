@@ -90,58 +90,84 @@ Ext.define('Ems.baseinfo.PoleForm',{
 	        	xtype:'combobox',
 			    fieldLabel: '省',
 			    store:  Ext.create('Ext.data.Store', {
-				    fields: ['id', 'name'],
-				    data : [
-				        {"id":"浙江省", "name":"浙江省"}
-				    ]
+//				    fields: ['key', 'name'],
+//				    data : [
+//				        {"key":"浙江省", "name":"浙江省"},
+//				        {"key":"", "name":"直辖市"}
+//				    ]
+				    model:'Ems.baseinfo.IdName',
+				    data:cityes.getProvices()
 				}),
 			    queryMode: 'local',
 			    displayField: 'name',
-			    valueField: 'id',  
+			    valueField: 'key',  
 			    editable:false,
 			    allowBlank:false,
-			    value:"浙江省",
-			    name:'province'
+			    value:"无",
+			    name:'province',
+			    listeners:{
+			    	select:function( combo , record , eOpts ) {
+			    		//alert(cityes.getCitys(record.get("key")).length);
+			    		
+			    	},
+			    	change :function(combo , newValue , oldValue , eOpts){
+			    		combo.nextSibling().reset();
+			    		combo.nextSibling().nextSibling().reset();
+			    		combo.nextSibling().getStore().loadData(cityes.getCitys(newValue));
+			    	}
+			    }
 		},
 		{
 	        	xtype:'combobox',
 			    fieldLabel: '市',
 			    store:  Ext.create('Ext.data.Store', {
-				    fields: ['id', 'name'],
-				    data : [
-				        {"id":"宁波市", "name":"宁波市"}
-				    ]
+//				    fields: ['key', 'name'],
+//				    data : [
+//				        {"id":"宁波市", "name":"宁波市"}
+//				    ]
+			    	model:'Ems.baseinfo.IdName',
+				    data:[]
 				}),
 			    queryMode: 'local',
 			    displayField: 'name',
-			    valueField: 'id',
+			    valueField: 'key',
 			    editable:false,
 			    allowBlank:false,
-			    value:"宁波市",
-			    name:'city'
+			    //value:"宁波市",
+			    name:'city',
+			    listeners:{
+			    	select:function( combo , record , eOpts ) {
+			    		
+			    	},
+			    	change :function(combo , newValue , oldValue , eOpts){
+			    		combo.nextSibling().getStore().loadData(cityes.getAreas(newValue))
+			    	}
+			    }
 		},
 		{
 	        	xtype:'combobox',
 			    fieldLabel: '区/县',
 			    store:  Ext.create('Ext.data.Store', {
-				    fields: ['id', 'name'],
-				    data : [
-				        {"id":"海曙区", "name":"海曙区"},
-				        {"id":"江东区", "name":"江东区"},
-				        {"id":"江北区", "name":"江北区"},
-				        {"id":"北仑区", "name":"北仑区"},
-				        {"id":"镇海区", "name":"镇海区"},
-				        {"id":"鄞州区", "name":"鄞州区"},
-				        {"id":"象山县", "name":"象山县"},
-				        {"id":"宁海县", "name":"宁海县"},
-				        {"id":"余姚市", "name":"余姚市"},
-				        {"id":"慈溪市", "name":"慈溪市"},
-				        {"id":"奉化市", "name":"奉化市"}
-				    ]
+//				    fields: ['key', 'name'],
+//				    data : [
+//				        {"id":"海曙区", "name":"海曙区"},
+//				        {"id":"江东区", "name":"江东区"},
+//				        {"id":"江北区", "name":"江北区"},
+//				        {"id":"北仑区", "name":"北仑区"},
+//				        {"id":"镇海区", "name":"镇海区"},
+//				        {"id":"鄞州区", "name":"鄞州区"},
+//				        {"id":"象山县", "name":"象山县"},
+//				        {"id":"宁海县", "name":"宁海县"},
+//				        {"id":"余姚市", "name":"余姚市"},
+//				        {"id":"慈溪市", "name":"慈溪市"},
+//				        {"id":"奉化市", "name":"奉化市"}
+//				    ]
+			    	model:'Ems.baseinfo.IdName',
+				    data:[]
 				}),
 			    queryMode: 'local',
 			    displayField: 'name',
-			    valueField: 'id',  
+			    valueField: 'key',  
 			    editable:false,
 			    allowBlank:false,
 			    name:'area'
