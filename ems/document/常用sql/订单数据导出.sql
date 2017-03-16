@@ -3,6 +3,7 @@ select a.orderno as "订单号",c.name as "仓库",decode(a.status,'edit','编�
 ,a.orderDate as "订购日期",h.name as "设备类型",g.name as "品名",i.name as "品牌"
 ,g.style as "型号",g.quality_month as "质保",g.spec as "规格",g.unit as "单位"
 ,b.ordernum as "订购数量",b.unitPrice as "单价"
+,TO_CHAR(A.CREATEDATE,'YYYY-mm-dd') "订单创建日期"
 from 
 ems_order a 
 inner join ems_orderlist b on a.id=b.order_id
