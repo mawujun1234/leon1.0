@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 import com.mawujun.exception.BusinessException;
+import com.mawujun.repository.cnd.Cnd;
 import com.mawujun.shiro.ShiroUtils;
 import com.mawujun.utils.M;
 import com.mawujun.utils.page.Page;
@@ -67,6 +68,9 @@ public class UserController {
 	@ResponseBody
 	public String update(User user) {
 		userService.update(user);
+		
+		userService.update(Cnd.update().set(M.User.password, user.getPassword()).andEquals(M.User.id, user.getId()));
+		
 		return "success";
 	}
 	@RequestMapping("/user/delete.do")
