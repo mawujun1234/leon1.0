@@ -1,5 +1,6 @@
 Ext.define('Ems.baseinfo.EquipmentProdGrid',{
-	extend:'Ext.tree.Panel',
+	//extend:'Ext.tree.Panel',
+	extend:'Ext.grid.Panel',
 	requires: [
 	     'Ems.baseinfo.EquipmentProd',
 	     'Ems.baseinfo.EquipmentProdForm'
@@ -26,7 +27,8 @@ Ext.define('Ems.baseinfo.EquipmentProdGrid',{
       var me = this;
       me.columns=[
       	//{xtype:'rownumberer',text:'序号'},
-		{xtype:'treecolumn',dataIndex:'id',text:'编码',width:120},
+		//{xtype:'treecolumn',dataIndex:'id',text:'编码',width:120},
+    	  {dataIndex:'id',text:'编码',width:120},
 
 //		{dataIndex:'subtype_name',text:'类型',renderer:function(){
 //			return me.subtype_name;
@@ -57,7 +59,8 @@ Ext.define('Ems.baseinfo.EquipmentProdGrid',{
 //			model: 'Ems.baseinfo.EquipmentProd',
 //			autoLoad:false
 //	  });
-      me.store= new Ext.data.TreeStore({
+      //me.store= new Ext.data.TreeStore({
+      me.store= new Ext.data.Store({
       	autoLoad:false,
       	nodeParam :'parent_id',
                 model: 'Ems.baseinfo.EquipmentProd',
@@ -419,13 +422,13 @@ Ext.define('Ems.baseinfo.EquipmentProdGrid',{
     },
     onReload:function(node,params){
     	var me=this;
-    	var parent=node||me.getSelectionModel( ).getLastSelected( );
-		if(parent){
-			//走展开子节点的
-		    me.getStore().reload({node:parent});
-		} else {
+//    	var parent=node||me.getSelectionModel( ).getLastSelected( );
+//		if(parent){
+//			//走展开子节点的
+//		    me.getStore().reload({node:parent});
+//		} else {
 		    me.getStore().reload({params:params});	
-		}      
+//		}      
     },
     /**
      * 当点击左边的树的时候，清空型号和全部型号的关键字

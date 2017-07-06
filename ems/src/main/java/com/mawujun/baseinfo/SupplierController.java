@@ -62,9 +62,15 @@ public class SupplierController {
 
 	@RequestMapping("/supplier/query.do")
 	@ResponseBody
-	public List<Supplier> query() {	
-		List<Supplier> supplieres=supplierService.queryAll();
-		return supplieres;
+	public List<Supplier> query(String name) {	
+		if(StringUtils.hasText(name)){
+			List<Supplier> supplieres=supplierService.query(Cnd.select().andLike(M.Supplier.name, name, true));
+			return supplieres;
+		} else {
+			List<Supplier> supplieres=supplierService.queryAll();
+			return supplieres;
+		}
+		
 	}
 	
 

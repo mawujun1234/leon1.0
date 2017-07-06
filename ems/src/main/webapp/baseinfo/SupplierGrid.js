@@ -45,12 +45,17 @@ Ext.define('Ems.baseinfo.SupplierGrid',{
 //	  }];
 	  
 	  me.tbar=	[{
+		    emptyText : '名称',
+		    itemId:'name',
+		    xtype:'textfield'
+		},{
 			text: '刷新',
 			itemId:'reload',
 			disabled:me.disabledAction,
 			handler: function(btn){
 				var grid=btn.up("grid");
-				grid.getStore().reload();
+				var name=btn.previousSibling ("#name").getValue();
+				grid.getStore().reload({params:{name:name}});
 			},
 			iconCls: 'form-reload-button'
 		}]

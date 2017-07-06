@@ -143,6 +143,18 @@ public class EquipmentTypeController {
 
 		return equipmentType;
 	}
+	
+	public boolean have_same_style(String subtype_id,String style){
+		if("/".equals(style)){
+			return false;
+		}
+		Long count=equipmentProdService.queryCount(Cnd.count().andEquals(M.EquipmentProd.subtype_id, subtype_id).andEquals(M.EquipmentProd.style, style));
+		if(count>0){
+			return true;
+		} else {
+			return false;
+		}
+	}
 	/**
 	 * 增加品名和增加套件
 	 * @author mawujun email:160649888@163.com qq:16064988
@@ -153,6 +165,10 @@ public class EquipmentTypeController {
 	@RequestMapping("/equipmentType/createProd.do")
 	@ResponseBody
 	public  EquipmentProd createProd(@RequestBody EquipmentProd equipmentProd) {
+		if(have_same_style(equipmentProd.getSubtype_id(),equipmentProd.getStyle())){
+			throw new BusinessException("该型号已经存在，请修改!");
+		}
+		//
 		if(equipmentProd.getId_suffix()==null || "".equals(equipmentProd.getId_suffix().trim())){
 			//在OrderService.insertBarcode中会自动补全-**,达到ecode长度一致
 			equipmentProd.setId(equipmentProd.getSubtype_id()+equipmentProd.getId());
@@ -200,6 +216,9 @@ public class EquipmentTypeController {
 	@RequestMapping("/equipmentType/updateProd.do")
 	@ResponseBody
 	public  EquipmentProd updateProd(@RequestBody EquipmentProd equipmentProd) {
+		if(have_same_style(equipmentProd.getSubtype_id(),equipmentProd.getStyle())){
+			throw new BusinessException("该型号已经存在，请修改!");
+		}
 		equipmentProdService.update(equipmentProd);
 		return equipmentProd;
 	}
