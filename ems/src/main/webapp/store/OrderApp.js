@@ -341,7 +341,7 @@ Ext.onReady(function(){
 		allowBlank: true
 	});
 	var quality_month_field=Ext.create('Ext.form.field.Number',{
-		xtype:'numberfield',itemId:'quality_month_field',fieldLabel:'质保(月)',name:'quality_month',minValue:1,labelWidth:60,allowBlank:false,labelAlign:'right',value:0
+		xtype:'numberfield',itemId:'quality_month_field',fieldLabel:'质保(月)',name:'quality_month',minValue:0,labelWidth:60,allowBlank:false,labelAlign:'right',value:0
 	});
 	var orderNum_field=Ext.create('Ext.form.field.Number',{
 		xtype:'numberfield',itemId:'orderNum_field',fieldLabel:'数目',name:'orderNum',minValue:1,labelWidth:40,listeners:{change:countTotal},allowBlank:false,labelAlign:'right',value:1
@@ -448,7 +448,7 @@ Ext.onReady(function(){
 	}
 	
 	function addEquip(){
-		if(orderType.getValue()=="old_equipment" && !(depreci_year.getValue() || depreci_month.getValue() || depreci_month.getValue())){
+		if(orderType.getValue()=="old_equipment" && !(depreci_year.getValue() || depreci_month.getValue() || depreci_day.getValue())){
 			alert("请填写还可使用年数!");
 			return;
 		}
