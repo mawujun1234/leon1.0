@@ -1,20 +1,11 @@
 package com.mawujun.check;
 import java.util.List;
-import java.util.UUID;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
-import com.mawujun.repository.cnd.Cnd;
-import com.mawujun.utils.M;
-import com.mawujun.utils.page.PageParam;
-import com.mawujun.utils.page.PageResult;
-
-import com.mawujun.check.Trim;
-import com.mawujun.check.TrimService;
 /**
  * @author mawujun qq:16064988 e-mail:16064988@qq.com 
  * @version 1.0

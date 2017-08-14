@@ -109,8 +109,7 @@
 					<path>/</path>
 					<uriEncoding>utf-8</uriEncoding>
 					<contextReloadable>false</contextReloadable>
-					<!--<backgroundProcessorDelay>0</backgroundProcessorDelay> -->
-					<!-- http://blog.csdn.net/jbgtwang/article/details/7696908 <warSourceDirectory>${project.build.directory}/WebContent</warSourceDirectory> -->
+					
 				</configuration>
 			</plugin>
 			
@@ -123,29 +122,12 @@
 					<path>/</path>
 					<uriEncoding>utf-8</uriEncoding>
 					<contextReloadable>false</contextReloadable>
-					<!--<backgroundProcessorDelay>0</backgroundProcessorDelay> -->
-					<!-- http://blog.csdn.net/jbgtwang/article/details/7696908 <warSourceDirectory>${project.build.directory}/WebContent</warSourceDirectory> -->
+					
 				</configuration>
 			</plugin>
 
 			
-			<!-- jrebel热替换功能的插件  http://zeroturnaround.com/forums/topic/jrebel-maven-plugin-not-available-in-eclipse-juno-solved/ 
-				https://github.com/ktoso/maven-git-commit-id-plugin/issues/22 http://update.zeroturnaround.com/update-site/
-			<plugin>
-				<groupId>org.zeroturnaround</groupId>
-				<artifactId>jrebel-maven-plugin</artifactId>
-				<version>1.1.5</version>
-				<executions>
-					<execution>
-						<id>generate-rebel-xml</id>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			 -->
+
 			
 		</plugins>
 	</build>
@@ -316,11 +298,7 @@
 		<artifactId>httpclient</artifactId>
 		<version>4.5</version>
 	</dependency>
-	<dependency>
-		<groupId>com.mawujun</groupId>
-		<artifactId>leon-generator</artifactId>
-		<version>1.0-SNAPSHOT</version>
-	</dependency>
+
 	
 	<dependency>
      <groupId>com.alibaba</groupId>
