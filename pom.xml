@@ -21,7 +21,7 @@
 		<module>leon-utils</module>
 		<module>leon-infrastructure</module>
 		<!-- <module>leon-example</module> -->
-		<module>leon-web-common</module>
+		<!-- <module>leon-web-common</module>-->
     	<module>leon-maven-plugin</module>
     	<module>ems</module>
   </modules>
