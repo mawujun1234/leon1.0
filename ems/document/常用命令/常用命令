@@ -15,7 +15,7 @@
 	drop user ems cascade;
 	create user ems identified by ems;
 	grant dba,connect,resource to ems;
-	
+	create user emsread identified by emsread;
 	
 	imp ems/ems@ems   file=E:\20160628.dmp fromuser=ems touser=ems
 =====================================================================================================测试库的更新

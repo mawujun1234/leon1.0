@@ -226,6 +226,8 @@ public class MapController {
 //			map.put(M.Pole.latitude, pole.getLatitude());
 //			result.add(map);
 //		}
+		
+		//return list.subList(1, 50);
 		return list;
 	}
 	
